@@ -1,0 +1,219 @@
+{
+  "title": "Kích thước video TikTok, YouTube Shorts và vùng an toàn — cv.cm",
+  "description": "Kích thước video TikTok, YouTube Shorts, Reels và vùng an toàn trong một bảng, kèm lệnh ffmpeg đổi clip AI sang 1080×1920.",
+  "h1": "Kích thước video TikTok và YouTube Shorts: bảng tra cứu đầy đủ",
+  "answer": "Với TikTok, YouTube Shorts và Reels, hãy xuất video dọc tỉ lệ 9:16, kích thước 1080×1920 pixel, MP4 H.264, 30 khung hình mỗi giây. Tại thời điểm viết bài, TikTok cho tải lên từ web tối đa 30 phút, Shorts tối đa 3 phút và Instagram Reels tối đa 20 phút. Đặt chữ và khuôn mặt ở giữa khung hình, tránh 14% phía trên và 35% phía dưới.",
+  "sections": [
+    {
+      "h": "Câu trả lời ngắn: một file gốc cho mọi ứng dụng",
+      "body": [
+        "Mọi ứng dụng video ngắn lớn đều chiếu video toàn màn hình khi bạn cầm điện thoại dọc. Màn hình đó có tỉ lệ 9:16, và kích thước lấp đầy màn hình ở độ phân giải full HD là rộng 1080 pixel, cao 1920 pixel. Nếu bạn làm một file gốc (master) 1080×1920, bạn có thể đăng cùng file đó lên TikTok, YouTube Shorts, Instagram Reels và Facebook Reels mà không cần dựng lại.",
+        "Các con số dưới đây lấy từ trang trợ giúp chính thức của từng nền tảng tại thời điểm viết bài (tháng 11/2026). Nền tảng hay thay đổi giới hạn, và một số giới hạn khác nhau giữa app điện thoại và trang tải lên trên web. Chỗ nào trang chính thức không nêu giá trị, bảng sẽ ghi rõ thay vì đoán.",
+        {
+          "note": "File gốc mặc định an toàn: 1080×1920, 9:16, video H.264 trong file MP4, âm thanh AAC, 30 fps, tốc độ khung hình cố định. Cấu hình này đáp ứng mọi giới hạn đã kiểm chứng trong bảng bên dưới."
+        }
+      ]
+    },
+    {
+      "h": "Kích thước video dọc theo nền tảng (tháng 11/2026)",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Nền tảng",
+              "Tỉ lệ khung hình",
+              "Độ phân giải",
+              "Độ dài",
+              "File và tốc độ khung hình"
+            ],
+            "rows": [
+              [
+                "TikTok (tải lên từ web trong TikTok Studio)",
+                "Trang tải lên không nêu; 9:16 lấp đầy màn hình",
+                "720×1280 trở lên",
+                "Tối đa 30 phút",
+                "MP4 hoặc WebM, dưới 10 GB"
+              ],
+              [
+                "YouTube Shorts",
+                "Vuông hoặc dọc; 16:9 và rộng hơn được xem là video dài",
+                "Tối đa 1080p cho video Shorts",
+                "Tối đa 3 phút",
+                "Các trang về Shorts không nêu"
+              ],
+              [
+                "Instagram Reels",
+                "Từ 1,91:1 đến 9:16",
+                "Tối thiểu 720 pixel",
+                "Tối đa 20 phút; reel trên 3 phút không được đề xuất cho người xem mới",
+                "Tối thiểu 30 fps"
+              ],
+              [
+                "Facebook Reels",
+                "Mọi hướng",
+                "Không nêu",
+                "Mọi độ dài",
+                "Không nêu"
+              ],
+              [
+                "Quảng cáo Reels trên Instagram (hướng dẫn quảng cáo của Meta)",
+                "9:16",
+                "1440×2560",
+                "Từ 0 giây đến 15 phút",
+                "MP4 hoặc MOV, tối đa 4 GB, tốc độ khung hình cố định"
+              ],
+              [
+                "Douyin, Kuaishou, Xiaohongshu, WeChat Channels, Snapchat Spotlight",
+                "Xem trong ứng dụng",
+                "Xem trong ứng dụng",
+                "Xem trong ứng dụng",
+                "Chúng tôi không kiểm chứng được trên trang chính thức; trên thực tế MP4 1080×1920 được chấp nhận rộng rãi"
+              ]
+            ]
+          }
+        },
+        "Hai chi tiết trong bảng quan trọng hơn vẻ ngoài của chúng. Thứ nhất, trên YouTube tỉ lệ khung hình quyết định định dạng: video vuông hoặc dọc dài tối đa 3 phút sẽ thành Short, còn video 16:9 vẫn là video thường. Thứ hai, Instagram yêu cầu tối thiểu 30 fps. Nhiều mô hình video AI xuất ở 24 fps, nên hãy đổi tốc độ khung hình trước khi đăng reel (xem các lệnh bên dưới).",
+        "Facebook đã gộp mọi video vào Reels từ tháng 6/2025, nên reel trên Facebook có thể có độ dài và tỉ lệ bất kỳ. File dọc 9:16 vẫn tận dụng trình phát toàn màn hình tốt nhất."
+      ]
+    },
+    {
+      "h": "Vùng an toàn (safe zone): nơi phụ đề và nút bấm che video",
+      "body": [
+        "Trên mọi ứng dụng video ngắn, giao diện nằm đè lên hình của bạn: tên tài khoản và mô tả ở dưới, các nút thích, bình luận, chia sẻ dọc bên phải, còn tab hoặc thanh tìm kiếm ở trên cùng. Bất cứ thứ gì đặt ở đó đều có thể bị che.",
+        "Hướng dẫn quảng cáo Reels của Meta nêu quy tắc rõ ràng: chừa trống ít nhất 14% phía trên, 35% phía dưới và 6% mỗi bên, không đặt chữ, logo hay yếu tố quan trọng. TikTok cũng công bố file vùng an toàn riêng cho quảng cáo, và nguyên tắc tương tự. Trên thực tế, con số của Meta dùng được như một quy tắc chung cho mọi nền tảng. Với khung 1080×1920, chúng trở thành:",
+        {
+          "table": {
+            "head": [
+              "Cạnh",
+              "Tỉ lệ khung hình",
+              "Pixel trên 1080×1920",
+              "Cần tránh"
+            ],
+            "rows": [
+              [
+                "Trên",
+                "14%",
+                "269 px",
+                "Tab, thanh tìm kiếm, nhãn Live hoặc Đang theo dõi"
+              ],
+              [
+                "Dưới",
+                "35%",
+                "672 px",
+                "Tên tài khoản, nội dung mô tả, dòng tên nhạc, thanh tiến trình"
+              ],
+              [
+                "Trái",
+                "6%",
+                "65 px",
+                "Phần rìa bị cắt trên một số điện thoại"
+              ],
+              [
+                "Phải",
+                "6%",
+                "65 px",
+                "Cột nút bấm cần nhiều chỗ hơn; hãy đặt chữ quan trọng lùi hẳn vào trong"
+              ]
+            ]
+          }
+        },
+        "Như vậy hộp an toàn chạy từ x = 65 đến x = 1015 và từ y = 269 đến y = 1248: rộng 950 pixel, cao 979 pixel. Hãy đặt phụ đề cứng (burned-in), tên sản phẩm và khuôn mặt trong hộp này. Một phần ba phía dưới vẫn có thể chứa hình, ví dụ đôi chân, mặt bàn hay sàn nhà, chỉ không nên đặt chữ.",
+        {
+          "note": "Kiểm tra nhanh: xuất một khung hình từ bản dựng, vẽ hộp an toàn lên đó rồi xem trên điện thoại. Nếu một dòng phụ đề chạm mép hộp, hãy đẩy nó lên cao hơn hoặc rút ngắn."
+        }
+      ]
+    },
+    {
+      "h": "Ảnh bìa (cover) và thumbnail",
+      "body": [
+        "Ảnh bìa là hình tĩnh mà mọi người thấy trên lưới video của trang cá nhân và ở một số bảng tin. Mỗi ứng dụng xử lý hơi khác nhau:",
+        {
+          "ul": [
+            "Instagram Reels: trang trợ giúp đề xuất ảnh bìa 420×654 pixel, tỉ lệ 1:1,55. Trang cũng nói rằng không thể sửa ảnh bìa sau khi đăng, nên hãy chọn trước khi chia sẻ.",
+            "TikTok: trang tải lên trên web cho phép chọn ảnh bìa sau khi tải video lên. Lưới video trên trang cá nhân cắt ảnh bìa dọc, nên hãy đặt chữ tiêu đề ở giữa.",
+            "YouTube Shorts: các tuỳ chọn thumbnail cho Shorts đã thay đổi theo thời gian. Hãy xem màn hình tải lên hiện tại thay vì tin vào hướng dẫn cũ."
+          ]
+        },
+        "Một thói quen đơn giản dùng được ở mọi ứng dụng: thiết kế ảnh bìa trong một hình vuông 1080×1080 nằm giữa khung 1080×1920. Nếu ứng dụng cắt ảnh bìa thành hình vuông hoặc ô 3:4, tiêu đề và khuôn mặt vẫn còn nguyên."
+      ]
+    },
+    {
+      "h": "Chuyện gì xảy ra với video 16:9 hoặc 1:1",
+      "body": [
+        "Video ngang 16:9 không lấp đầy màn hình khi cầm điện thoại dọc. Trên YouTube, nó hoàn toàn không phải là Short. Trên TikTok và Reels, nó thường phát nhỏ xíu, với các dải đen hoặc mờ lớn ở trên và dưới. Người xem lướt qua những khoảng trống đó, nên phiên bản dọc hầu như luôn hiệu quả hơn.",
+        "Video vuông 1:1 được tính là Short trên YouTube và được Instagram chấp nhận, nhưng vẫn để trống trên màn hình cao. Vuông là lựa chọn hợp lý khi cùng một clip còn phải dùng cho bài đăng trên bảng tin; với Shorts, TikTok và Reels, hãy làm bản 9:16 đúng nghĩa.",
+        "Có ba cách biến clip ngang thành clip dọc:",
+        {
+          "ol": [
+            "Crop (cắt): lấy một cửa sổ 9:16 từ khung hình rộng. Tốt nhất khi chủ thể ở gần giữa khung. Bạn sẽ mất hai bên.",
+            "Pad (đệm): thu nhỏ cả khung hình rộng cho vừa chiều ngang rồi thêm dải trên và dưới. Không mất gì, nhưng hình nhỏ.",
+            "Nền mờ (blurred background): đặt nguyên khung hình rộng ở giữa, phía sau là bản phóng to và làm mờ của chính nó. Đẹp hơn dải đen; hình vẫn nhỏ."
+          ]
+        },
+        "Nếu chủ thể di chuyển khắp khung hình rộng, cắt cố định sẽ làm mất chủ thể. Đó là việc của auto reframe, tính năng bám theo chủ thể; xem hướng dẫn chỉnh sửa video bằng AI của chúng tôi."
+      ]
+    },
+    {
+      "h": "Cách xuất clip AI sang 1080×1920 bằng ffmpeg",
+      "body": [
+        "Mô hình video AI thường trả về 720p, hoặc kích thước gần đúng một tỉ lệ chuẩn nhưng không chính xác, ví dụ 720×1280 hoặc chiều rộng lệch vài pixel. Một số chỉ trả về 16:9. Hãy đổi mọi clip sang cùng một file gốc 1080×1920 trước khi dựng, để timeline chỉ có một kích thước và một tốc độ khung hình.",
+        "Nếu clip đã dọc nhưng nhỏ, hãy phóng to và cắt phần pixel dư để kết quả đúng 9:16:",
+        {
+          "code": "# Vertical AI clip (for example 720x1280) -> exactly 1080x1920\nffmpeg -i ai_clip.mp4 \\\n  -vf \"scale=1080:1920:force_original_aspect_ratio=increase:flags=lanczos,crop=1080:1920,setsar=1\" \\\n  -r 30 -c:v libx264 -crf 18 -preset slow -pix_fmt yuv420p \\\n  -c:a aac -b:a 192k -movflags +faststart vertical.mp4",
+          "lang": "bash"
+        },
+        "Nếu clip là 16:9, hãy chọn một trong ba phương pháp:",
+        {
+          "code": "# 1) Center crop a 16:9 clip to 9:16 (loses the sides)\nffmpeg -i wide.mp4 -vf \"scale=-2:1920,crop=1080:1920,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy crop.mp4\n\n# 2) Pad: fit the full frame, black bands above and below\nffmpeg -i wide.mp4 \\\n  -vf \"scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=black,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy pad.mp4\n\n# 3) Blurred background behind the full frame\nffmpeg -i wide.mp4 -filter_complex \\\n  \"[0:v]split=2[bg][fg];[bg]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920,boxblur=20:2[bg];[fg]scale=1080:-2[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1[v]\" \\\n  -map \"[v]\" -map 0:a? -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy blur.mp4",
+          "lang": "bash"
+        },
+        "Trong lệnh crop, cửa sổ cắt mặc định nằm giữa. Để bám theo chủ thể ở bên trái, hãy thêm độ lệch x, ví dụ `crop=1080:1920:200:0` giữ cửa sổ cách mép trái 200 pixel.",
+        "Về tốc độ khung hình: `-r 30` biến clip 24 fps thành 30 fps bằng cách lặp khung hình. Cách này đáp ứng mức tối thiểu 30 fps của Instagram và trông giống bản gốc. Muốn có khung hình trung gian mượt thì cần nội suy khung hình (frame interpolation), có thể làm méo bàn tay và chuyển động nhanh, nên chỉ dùng khi clip thật sự cần.",
+        {
+          "note": "Hãy upscale sau khi dựng, không phải trước. Clip AI 720p thường có chi tiết mềm; phóng to từng clip sớm làm tăng khối lượng việc và có thể khiến các đoạn cắt trông không đồng đều. Dựng ở 1080×1920, rồi upscale hoặc làm nét bản master cuối cùng một lần, và giữ đúng một file master đó. Mỗi lần mã hoá lại, kể cả của chính các ứng dụng, đều thêm nhiễu hình."
+        }
+      ]
+    },
+    {
+      "h": "Các lỗi thường gặp",
+      "body": [
+        {
+          "ul": [
+            "Vô tình xuất 1920×1080. Nhiều phần mềm dựng mặc định timeline ngang. Hãy đặt dự án ở 1080×1920 trước khi đặt clip đầu tiên.",
+            "Trộn nhiều tốc độ khung hình trên một timeline. Clip AI 24 fps đặt cạnh clip điện thoại 30 fps có thể bị giật ở điểm cắt. Hãy đổi tất cả clip về cùng một tốc độ trước.",
+            "Đặt phụ đề cứng ở một phần ba phía dưới. Chúng sẽ nằm dưới mô tả và các nút của ứng dụng. Hãy giữ chúng trong hộp an toàn.",
+            "Tin vào danh sách thông số cũ. Các giới hạn như độ dài Shorts và độ dài reel Instagram đã đổi nhiều lần. Hãy kiểm tra ngày của mọi bảng, kể cả bảng này.",
+            "Tải lên file nén quá nặng. Ứng dụng sẽ nén thêm lần nữa. Hãy xuất ở chất lượng cao (ví dụ `-crf 18`) và để nền tảng nén lần cuối một lần duy nhất."
+          ]
+        },
+        "Về phần còn lại của quy trình, từ hook đến đăng bài, xem hướng dẫn quy trình làm video ngắn bằng AI của chúng tôi. Để kiểm tra nhanh một kích thước lạ, máy tính tỉ lệ khung hình như công cụ aspect của cv.cm cho biết 1080×1920 đúng là 9:16 còn 1248×704 thì không phải 16:9."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Kích thước video TikTok tốt nhất là bao nhiêu?",
+      "a": "1080×1920 pixel trong khung dọc 9:16. Tại thời điểm viết bài, trang tải lên trên web của TikTok yêu cầu tối thiểu 720×1280, MP4 hoặc WebM, dưới 10 GB và dài tối đa 30 phút."
+    },
+    {
+      "q": "Kích thước YouTube Shorts là bao nhiêu?",
+      "a": "Dùng 1080×1920 (9:16). YouTube coi video vuông hoặc dọc dài tối đa 3 phút là Shorts, và trang trợ giúp của YouTube nói video Shorts tải lên có thể đạt tới 1080p."
+    },
+    {
+      "q": "1080×1920 có phải là 9:16 không?",
+      "a": "Có. 1080 chia 1920 bằng 9 chia 16, nên 1080×1920 đúng là 9:16. 720×1280 và 1440×2560 cùng tỉ lệ ở độ phân giải thấp hơn và cao hơn."
+    },
+    {
+      "q": "Có đăng video 16:9 làm YouTube Short được không?",
+      "a": "Không. YouTube cho biết tỉ lệ rộng hơn như 16:9 giữ video ở dạng video dài. Hãy cắt hoặc reframe sang dọc hoặc vuông trước."
+    },
+    {
+      "q": "Vùng an toàn của Reels và TikTok là gì?",
+      "a": "Hướng dẫn quảng cáo Reels của Meta đề xuất chừa trống 14% phía trên, 35% phía dưới và 6% mỗi bên, không đặt chữ và logo. Trên khung 1080×1920, đó là 269 px ở trên, 672 px ở dưới và 65 px mỗi bên."
+    },
+    {
+      "q": "Ảnh bìa Instagram Reels nên có kích thước bao nhiêu?",
+      "a": "Trang trợ giúp của Instagram đề xuất 420×654 pixel, tỉ lệ 1:1,55. Hãy đặt tiêu đề ở giữa để nó không bị mất khi lưới trang cá nhân cắt thành hình vuông."
+    }
+  ]
+}

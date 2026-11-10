@@ -1,0 +1,184 @@
+{
+  "title": "Lip sync AI: cách hoạt động và để có kết quả sạch — cv.cm",
+  "description": "Lip sync AI hoạt động ra sao, cần khuôn mặt và âm thanh thế nào, cách chuẩn bị giọng hát sạch, cùng cách sửa răng nhòe, lệch hình – tiếng và lỗi khi quay nghiêng.",
+  "h1": "Lip sync AI (AI hát nhép) hoạt động thế nào và làm sao để có kết quả sạch?",
+  "answer": "Lip sync AI nhận một đoạn âm thanh và một khuôn mặt, dự đoán hình dạng miệng khớp với từng khoảnh khắc âm thanh, rồi vẽ lại vùng miệng từng khung hình. Muốn kết quả sạch cần khuôn mặt nhìn thẳng, đủ sáng, thấy rõ miệng, cùng giọng khô, không tạp âm, cắt đúng đoạn cần dùng. Hãy kiểm tra độ khớp với âm thanh gốc và gắn nhãn cho kết quả chân thực.",
+  "sections": [
+    {
+      "h": "Cách lip sync dựa trên âm thanh hoạt động",
+      "body": [
+        "Âm thanh lời nói tương ứng với một tập nhỏ hình dạng miệng nhìn thấy được, thường gọi là viseme. Các âm p, b và m khép môi; f và v đặt môi dưới chạm răng; âm “a” mở rộng làm hàm hạ xuống. Lip sync AI học phép tương ứng này từ hàng nghìn giờ video người nói chuyện, nhờ vậy khi có âm thanh mới nó dự đoán được miệng nên có hình dạng nào ở từng khung hình.",
+        "Một ví dụ nổi tiếng là Wav2Lip, công bố năm 2020 bởi Prajwal cùng cộng sự. Bộ sinh của nó nhận một khung hình khuôn mặt bị che nửa dưới, một khung hình tham chiếu của cùng người đó và một đoạn âm thanh ngắn, rồi vẽ nửa dưới khuôn mặt mới cho khớp với âm thanh. Một mạng riêng, “chuyên gia” lip sync đã huấn luyện sẵn, đánh giá xem miệng có khớp âm thanh không, và bộ sinh được huấn luyện để làm hài lòng nó. Bài báo cho biết chuyên gia này là lý do chính khiến mô hình giữ được độ khớp trên khuôn mặt bất kỳ trong video không ràng buộc.",
+        "Các hệ thống mới hơn đi xa hơn. Mô hình khuếch tán và mô hình avatar tạo cả khuôn mặt hoặc đầu, với chớp mắt, chuyển động đầu và biểu cảm do âm thanh điều khiển, nhờ vậy một tấm ảnh duy nhất trở thành video nói chuyện. Một số công cụ tạo video hiện nay còn tạo cả lời nói và khẩu hình cùng lúc từ một prompt. Ý tưởng cốt lõi vẫn vậy: âm thanh vào, chuyển động miệng khớp ra, và chất lượng phụ thuộc rất nhiều vào thứ bạn đưa vào."
+      ]
+    },
+    {
+      "h": "Ba cách dùng: ảnh biết nói, lồng tiếng, hát",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Trường hợp",
+              "Đầu vào",
+              "Thường sai ở đâu",
+              "Mẹo"
+            ],
+            "rows": [
+              [
+                "Ảnh biết nói hoặc video avatar AI",
+                "Một ảnh hoặc đoạn clip ngắn + lời nói",
+                "Đầu cứng, mắt vô hồn, răng nhìn như vẽ",
+                "Chọn ảnh có miệng hơi hé, thư giãn và ánh sáng mềm từ phía trước"
+              ],
+              [
+                "Lồng tiếng cho cảnh quay thật",
+                "Video có sẵn + lời nói đã dịch",
+                "Miệng khớp nhưng khuôn mặt không còn giống người đó",
+                "Dùng các cảnh người nói nhìn thẳng vào máy quay; cắt sát quanh đoạn nói"
+              ],
+              [
+                "Hát hoặc video ca nhạc",
+                "Clip biểu diễn hoặc ảnh + vocal stem",
+                "Nốt kéo dài trông bị đơ, lời nhanh bị nhòe",
+                "Dùng giọng hát đã tách riêng chứ không phải bản mix đầy đủ, và chia bài dài thành từng câu nhạc"
+              ]
+            ]
+          }
+        },
+        "Ảnh biết nói dễ làm nhất nhưng khó làm thuyết phục nhất, vì mô hình tự bịa ra mọi khung hình chuyển động. Lồng tiếng cho cảnh quay thật giữ nguyên chuyển động thật và chỉ thay miệng, nên trông tự nhiên hơn nhưng ít du di hơn với video nguồn kém. Hát là khó nhất: nguyên âm kéo dài, miệng mở rộng hơn khi nói, và nhịp phải khớp với nhạc chứ không chỉ với lời. Về quy trình trọn bài hát, xem hướng dẫn làm MV bằng AI của chúng tôi."
+      ]
+    },
+    {
+      "h": "Yêu cầu đầu vào cho khuôn mặt và âm thanh",
+      "body": [
+        "Phần lớn lỗi bắt nguồn từ đầu vào. Hãy kiểm tra những điểm sau trước khi tạo.",
+        {
+          "ul": [
+            "Góc mặt: nhìn thẳng hoặc nghiêng tối đa khoảng ba phần tư. Góc nghiêng hoàn toàn hay thất bại, vì mô hình thấy quá ít miệng.",
+            "Miệng nhìn thấy: không có tay, micro, tóc hay khẩu trang che môi, và không bị nhòe chuyển động nặng.",
+            "Ánh sáng: đều và mềm trên khuôn mặt. Bóng đổ gắt ngang miệng làm vùng được vẽ lại lộ rõ.",
+            "Kích thước mặt: khuôn mặt nên chiếm một phần đáng kể khung hình. Mặt nhỏ trong cảnh rộng cho mô hình quá ít điểm ảnh, và kết quả bị mềm.",
+            "Âm thanh: một giọng, khô (ít vang phòng), không có nhạc nền bên dưới, không bị vỡ tiếng.",
+            "Độ dài: kiểm tra giới hạn của công cụ. Nhiều công cụ giới hạn độ dài clip hoặc tổng độ dài âm thanh, và clip dài dễ bị lệch hơn. Đoạn ngắn dễ kiểm tra và làm lại hơn."
+          ]
+        },
+        {
+          "note": "Qua thử nghiệm của chúng tôi, một giọng hát sạch và khô quan trọng hơn ảnh khuôn mặt. Tiếng vang, nhạc nền và tiếng ồn đám đông khiến miệng cử động ở những âm không phải lời nói, như tiếng trống hay hơi thở."
+        }
+      ]
+    },
+    {
+      "h": "Chuẩn bị âm thanh và một ví dụ hoàn chỉnh",
+      "body": [
+        "Hãy coi âm thanh là bản gốc và video là thứ đi theo nó. Dưới đây là ví dụ hoàn chỉnh: một câu tiếng Anh dài 12 giây từ clip người nói trước ống kính, được lồng tiếng sang tiếng Tây Ban Nha kèm lip sync cho một video dọc ngắn.",
+        {
+          "ol": [
+            "Xuất lời nói gốc và phiên âm thành văn bản. Công cụ chuyển giọng nói thành văn bản dựa trên Whisper, ví dụ công cụ speech-to-text của cv.cm, cho bạn mốc thời gian của từng câu.",
+            "Dịch câu đó và rút gọn cho vừa khoảng 12 giây khi nói. Tiếng Tây Ban Nha thường cần nhiều thời gian hơn tiếng Anh, nên hãy cắt bớt từ thay vì tăng tốc giọng.",
+            "Tạo giọng tiếng Tây Ban Nha, hoặc tự thu âm. Xem hướng dẫn lồng tiếng AI của chúng tôi về chọn giọng và sửa phát âm.",
+            "Làm sạch: loại tạp âm, giữ giọng khô, và cắt khoảng lặng đầu để âm đầu tiên rơi đúng lúc miệng người nói bắt đầu cử động.",
+            "Cắt âm thanh đúng đoạn công cụ sẽ dùng, bằng công cụ cắt âm thanh, thay vì để công cụ tự chọn một đoạn từ file dài.",
+            "Chuyển sang định dạng đơn giản mà công cụ chấp nhận, rồi chạy lip sync trên clip video 12 giây.",
+            "Ghép lại âm thanh sạch vào kết quả và kiểm tra độ khớp ở toàn màn hình, từng khung hình ở các âm p, b và m."
+          ]
+        },
+        {
+          "code": "# 1. Extract a mono 48 kHz WAV from the source clip\nffmpeg -i source.mp4 -vn -ac 1 -ar 48000 speech.wav\n\n# 2. Cut the dubbed voice to exactly 12 seconds, starting at 0.25 s\nffmpeg -ss 0.25 -t 12 -i dub_es.wav -ac 1 -ar 48000 dub_es_12s.wav\n\n# 3. Replace whatever audio the tool returned with your own clean track\nffmpeg -i lipsync.mp4 -i dub_es_12s.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Bước 3 quan trọng hơn vẻ ngoài của nó. Khi công cụ tạo lại hoặc mã hóa lại âm thanh, âm thanh có thể bắt đầu hơi muộn trong khi hình vẫn theo nhịp ban đầu. Với các mô hình video tự tạo âm thanh, chúng tôi từng đo được độ lệch khoảng một giây. Trước khi kết luận là lệch, hãy ghép lại âm thanh của chính bạn vào clip bằng lệnh ở trên rồi kiểm tra lại.",
+        "Với ảnh biết nói, các bước xử lý âm thanh cũng như vậy. Một số công cụ còn nhận mẫu giọng để đặt giọng; mẫu sạch 3 giây thường là đủ. Hãy lấy câu to và liên tục nhất, và nhớ rằng một số công cụ giới hạn tổng độ dài của toàn bộ âm thanh tham chiếu cộng lại."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp và cách sửa",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Lỗi",
+              "Nguyên nhân có thể",
+              "Cách sửa"
+            ],
+            "rows": [
+              [
+                "Răng nhòe hoặc bị lem",
+                "Vùng miệng được vẽ lại ở độ phân giải thấp, hoặc mặt nhỏ trong khung hình",
+                "Dùng cảnh gần hơn; chạy lip sync trên phần mặt đã cắt rồi ghép lại; chỉ upscale sau khi dựng xong"
+              ],
+              [
+                "Độ khớp lệch dần về cuối clip",
+                "Clip dài, âm thanh bị mã hóa lại, hoặc lệch tốc độ khung hình",
+                "Chia thành đoạn ngắn hơn; dùng tốc độ khung hình cố định; thay âm thanh bằng bản gốc của bạn"
+              ],
+              [
+                "Miệng cử động khi im lặng hoặc có nhạc",
+                "Có tạp âm, nhạc hoặc tiếng vang trong âm thanh",
+                "Dùng giọng đã tách riêng và khô; tắt tiếng ở khoảng trống giữa các câu"
+              ],
+              [
+                "Môi lỗi khi quay nghiêng",
+                "Thấy quá ít miệng",
+                "Chọn cảnh nhìn thẳng, hoặc cắt sang cảnh khác trong những lúc nghiêng mặt"
+              ],
+              [
+                "Khuôn mặt không còn giống người đó",
+                "Mô hình vẽ đè quá nhiều lên nửa dưới khuôn mặt",
+                "Dùng khung hình tham chiếu mạnh hơn của cùng người; giảm vùng hoặc cường độ nếu công cụ cho phép"
+              ],
+              [
+                "Nốt hát kéo dài trông bị đơ",
+                "Mô hình thấy một nguyên âm dài và ngừng cử động",
+                "Thêm chuyển động nhẹ của đầu và hàm vào nguồn, hoặc cắt cảnh trong lúc nốt dài"
+              ],
+              [
+                "Đường nối lộ ra quanh hàm",
+                "Màu hoặc độ nét của miệng mới khác với khuôn mặt",
+                "Khớp grain và màu khi dựng; tránh ánh sáng gắt trên đường viền hàm"
+              ]
+            ]
+          }
+        },
+        "Upscale giúp ích cho kết quả mềm, nhưng chỉ làm một lần, sau khi dựng, và giữ một bản xuất gốc. Mỗi lần mã hóa thêm, kể cả lần mạng xã hội thực hiện khi tải lên, đều thêm lỗi quanh vùng miệng, nơi người xem nhìn đầu tiên."
+      ]
+    },
+    {
+      "h": "Sự đồng ý, quy định về deepfake và gắn nhãn",
+      "body": [
+        "Lip sync thay đổi điều một người có vẻ đang nói. Đó chính xác là điều các quy định về deepfake nhắm tới, nên hãy coi sự đồng ý và nhãn là một phần của quy trình, không phải việc làm sau.",
+        {
+          "ul": [
+            "Chỉ dùng khuôn mặt và giọng nói bạn sở hữu hoặc có văn bản cho phép, với mục đích được nêu rõ. Lồng tiếng video của khách hàng sang các ngôn ngữ khác là trường hợp rõ ràng; bắt một người của công chúng nói những lời mới thì không.",
+            "YouTube yêu cầu nhà sáng tạo công khai nội dung chân thực bị chỉnh sửa hoặc tổng hợp, kể cả nội dung khiến một người thật có vẻ nói hoặc làm điều họ không làm. YouTube cũng có tính năng lip sync thử nghiệm riêng cho video lồng tiếng tự động trên một số kênh được chọn.",
+            "Đạo luật AI của EU (Điều 50) yêu cầu bên triển khai phải công bố âm thanh và video do AI tạo ra hoặc bị chỉnh sửa cấu thành deepfake. Với tác phẩm rõ ràng mang tính nghệ thuật, sáng tạo, châm biếm hoặc hư cấu, nghĩa vụ chỉ giới hạn ở việc công bố sự tồn tại của nội dung theo cách không làm hỏng tác phẩm.",
+            "Biện pháp gắn nhãn nội dung tổng hợp do trí tuệ nhân tạo tạo ra của Trung Quốc, có hiệu lực từ ngày 1 tháng 9 năm 2025, yêu cầu nhãn hiển thị trên video tổng hợp, kể cả ở phần đầu, và yêu cầu người dùng khai báo nội dung AI khi đăng lên các nền tảng như Douyin, Kuaishou, Xiaohongshu hay WeChat Channels.",
+            "Tránh dùng khuôn mặt của trẻ vị thành niên, và tuyệt đối không dùng lip sync để tạo nội dung khiêu dâm, phỉ báng hoặc lừa đảo. Những việc đó bị cấm trên các nền tảng lớn và phạm pháp ở nhiều nơi, có nhãn hay không."
+          ]
+        },
+        "Hướng dẫn gắn nhãn nội dung AI của chúng tôi giải thích cách nhãn AI của từng nền tảng hoạt động."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Cách tốt nhất để làm ảnh biết nói là gì?",
+      "a": "Bắt đầu bằng một ảnh nét, nhìn thẳng, ánh sáng mềm, miệng thư giãn và hơi hé, kèm bản ghi giọng sạch và khô. Giữ clip ngắn và tạo nhiều bản."
+    },
+    {
+      "q": "Lip sync AI có dùng được cho hát không?",
+      "a": "Được, nhưng khó hơn lời nói. Hãy dùng vocal stem đã tách riêng thay vì cả bài hát, chia bài thành từng câu nhạc, và kiểm tra kỹ các nốt dài và lời nhanh."
+    },
+    {
+      "q": "Vì sao video lip sync của tôi bị lệch hình – tiếng?",
+      "a": "Nguyên nhân phổ biến nhất là âm thanh bị công cụ mã hóa lại hoặc dịch chuyển, clip dài bị trôi, hoặc lệch tốc độ khung hình. Hãy thay âm thanh bằng bản của bạn và làm theo từng đoạn ngắn."
+    },
+    {
+      "q": "Lip sync AI có hợp pháp không?",
+      "a": "Lip sync với khuôn mặt của chính bạn hoặc khuôn mặt bạn được phép dùng nhìn chung là ổn. Khiến một người thật có vẻ nói điều họ không nói có thể vi phạm quy định nền tảng và luật về lừa đảo, phỉ báng, deepfake, và thường cần gắn nhãn."
+    },
+    {
+      "q": "Lồng tiếng bằng lip sync có làm đổi khuôn mặt người nói không?",
+      "a": "Nó vẽ lại miệng và nửa dưới khuôn mặt. Công cụ tốt giữ được diện mạo, nhưng thiết lập quá mạnh hoặc khuôn mặt độ phân giải thấp có thể khiến người đó trông hơi khác, nên hãy so với bản gốc."
+    }
+  ]
+}

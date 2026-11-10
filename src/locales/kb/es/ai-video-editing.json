@@ -1,0 +1,194 @@
+{
+  "title": "Editar video con IA: qué hace cada función y cuándo usarla — cv.cm",
+  "description": "Editar video con IA explicado: cortes de silencios, edición por transcripción, reencuadre automático, aislar la voz, escalado y más, con un flujo para cortar un short de 60 segundos.",
+  "h1": "Cómo editar videos con IA: qué hace cada función y cuándo usarla",
+  "answer": "La edición de video con IA usa modelos para hacer por ti las tareas lentas: cortar silencios y muletillas, editar por transcripción, reencuadrar material 16:9 a 9:16, añadir subtítulos, limpiar la voz, quitar fondos, escalar la resolución y generar B-roll. Usa la IA para el primer montaje en bruto y revisa tú cada corte, porque estas herramientas pierden el contexto, crean saltos de imagen y pueden procesar la voz en exceso.",
+  "sections": [
+    {
+      "h": "Qué hace un editor de video con IA y qué no",
+      "body": [
+        "Un editor de video con IA es un editor normal con modelos conectados a tareas concretas. Los modelos escuchan el habla, siguen caras y objetos, separan la voz del ruido o generan píxeles nuevos. Editores como CapCut o Jianying, Premiere Pro, DaVinci Resolve y Descript incluyen funciones así al momento de escribir esto, con nombres distintos.",
+        "Lo más útil es pensar la edición con IA en dos grupos. Las funciones de análisis encuentran cosas en tu material: palabras, pausas, caras, ritmos, cambios de plano. Ahorran tiempo y son fáciles de comprobar. Las funciones generativas crean imagen o sonido nuevos: detalle escalado, fotogramas intermedios, fondos ampliados, B-roll nuevo. Pueden añadir cosas que nunca se filmaron, así que exigen una revisión más atenta y, cuando son realistas, avisar de que se generaron con IA.",
+        "La IA no decide de qué trata tu video. No sabe cuáles son los 60 segundos más interesantes de una charla larga para tu audiencia, ni distingue qué pausa es un golpe dramático y cuál es tiempo muerto. Ese criterio sigue siendo tuyo."
+      ]
+    },
+    {
+      "h": "Las funciones de edición con IA de un vistazo",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Función",
+              "Qué hace",
+              "Úsala cuando",
+              "Ten cuidado con"
+            ],
+            "rows": [
+              [
+                "Corte de silencios y muletillas",
+                "Encuentra pausas y palabras como eh y mmm en la transcripción o en el nivel de audio, y las elimina",
+                "Clips de una persona hablando a cámara, tutoriales, pódcast",
+                "Ritmo sin respiro, finales de palabra cortados, saltos de imagen"
+              ],
+              [
+                "Edición por transcripción",
+                "Muestra el habla como texto; borrar texto borra el video correspondiente",
+                "Entrevistas y grabaciones largas que editas según el sentido",
+                "Cortes que suenan bien en el texto pero saltan en la imagen"
+              ],
+              [
+                "Reencuadre automático",
+                "Sigue al sujeto principal y mueve una ventana de recorte 9:16 por un encuadre 16:9",
+                "Convertir material horizontal en Shorts, TikToks y Reels",
+                "Perder a la segunda persona en un plano de dos; movimientos de recorte temblorosos"
+              ],
+              [
+                "Subtítulos automáticos",
+                "El reconocimiento de voz escribe subtítulos sincronizados",
+                "Casi cualquier video corto",
+                "Nombres y cifras equivocados"
+              ],
+              [
+                "Eliminación de ruido y aislamiento de voz",
+                "Separa el habla del sonido de fondo y quita el resto",
+                "Habitaciones ruidosas, grabaciones en la calle, zumbido de ventiladores",
+                "Voz fina, metálica o que suena bajo el agua"
+              ],
+              [
+                "Eliminación de fondo",
+                "Recorta a la persona del fondo en cada fotograma",
+                "Efectos tipo croma sin pantalla verde",
+                "Bordes que parpadean, pelo y dedos perdidos"
+              ],
+              [
+                "Escalado de resolución",
+                "Amplía los fotogramas y añade detalle con un modelo de superresolución",
+                "Clips de IA blandos en 720p o material antiguo para un maestro en 1080p",
+                "Detalle inventado en caras, texto y telas"
+              ],
+              [
+                "Interpolación de fotogramas",
+                "Crea fotogramas nuevos entre los existentes para cámara lenta o más fps",
+                "Cámara lenta suave a partir de material normal",
+                "Manos deformadas, objetos que se derriten en movimientos rápidos"
+              ],
+              [
+                "Igualar color",
+                "Ajusta el color de un clip al de un clip de referencia",
+                "Mezclar cámaras, móviles y clips de IA en un mismo video",
+                "Cambios en el tono de piel; no arregla una mala exposición"
+              ],
+              [
+                "Sincronizar con el ritmo",
+                "Detecta los tiempos de la música y coloca los cortes sobre ellos",
+                "Montajes y ediciones guiadas por la música",
+                "Cortar en cada tiempo resulta mecánico"
+              ],
+              [
+                "Generación de B-roll",
+                "Genera clips nuevos a partir de un prompt de texto o imagen",
+                "Ilustrar una idea sin material que encaje",
+                "Escenas falsas realistas que requieren aviso"
+              ],
+              [
+                "Extender y rellenar con IA",
+                "Añade fotogramas al final de un clip o imagen nueva fuera del borde del encuadre",
+                "Un plano al que le falta un segundo; ampliar un encuadre",
+                "Contenido que se aleja del original"
+              ]
+            ]
+          }
+        },
+        "Varias de estas funciones se apoyan en investigación publicada que puedes leer: RIFE para interpolación de fotogramas en tiempo real, Real-ESRGAN para superresolución de imágenes del mundo real, Hybrid Demucs para separar fuentes de audio y Whisper para reconocimiento de voz. Las herramientas comerciales usan sus propios modelos, pero los puntos fuertes y los fallos son parecidos."
+      ]
+    },
+    {
+      "h": "Flujo de trabajo: sacar un short de 60 segundos de una grabación larga",
+      "body": [
+        "Un ejemplo práctico. Tienes una grabación horizontal de 40 minutos de un pódcast con dos personas y quieres un clip vertical de 60 segundos para Shorts, TikTok y Reels.",
+        {
+          "ol": [
+            "Transcribe la grabación completa. Ahora tienes texto con marcas de tiempo en el que puedes buscar.",
+            "Encuentra el momento. Lee o busca en la transcripción un pasaje que se entienda por sí solo: una pregunta y su respuesta claras, una opinión fuerte, una cifra sorprendente. Marca dos o tres candidatos.",
+            "Calcula el presupuesto de palabras. El español hablado va a unas 2,5 a 3 palabras por segundo, así que 60 segundos caben unas 150 a 180 palabras. Elige un pasaje de unas 200 a 250 palabras, porque vas a recortar algo.",
+            "Haz el primer montaje por transcripción. Borra las frases que se desvían del tema y la introducción que el espectador no necesita. Empieza por la frase más interesante, no por el saludo.",
+            "Ejecuta la eliminación de silencios y muletillas y luego escucha. Devuelve cualquier pausa que tenga sentido, como el instante antes de un remate.",
+            "Limpia el audio. Aplica eliminación de ruido o aislamiento de voz con intensidad moderada y compara con el original con auriculares.",
+            "Reencuadra a 9:16. Deja que el reencuadre automático siga al hablante y revisa cada corte entre hablantes. Arregla cualquier momento en que el recorte muestre una silla vacía.",
+            "Añade subtítulos. Corrige nombres y cifras y mantén el texto dentro de la zona segura.",
+            "Añade el gancho. Asegúrate de que el primer fotograma ya muestre la cara del hablante, bien iluminada y a mitad de frase. En nuestras pruebas, un primer segundo lento u oscuro pierde espectadores antes de que el clip tenga oportunidad.",
+            "Exporta un único maestro de alta calidad a 1080×1920 y publica el mismo archivo en cada plataforma."
+          ]
+        },
+        "Si tu editor no tiene función de reencuadre, ffmpeg puede hacer un recorte fijo. Estos comandos cortan el segmento, listan las pausas y recortan la mitad izquierda de un plano de dos personas a 9:16:",
+        {
+          "code": "# 1) Cut the chosen passage (from 12:04 to 13:15) out of the recording\nffmpeg -ss 00:12:04 -to 00:13:15 -i podcast.mp4 -c:v libx264 -crf 18 -c:a aac -b:a 192k segment.mp4\n\n# 2) List pauses longer than 0.6 s that are quieter than -35 dB\nffmpeg -i segment.mp4 -af silencedetect=noise=-35dB:d=0.6 -f null - 2>&1 | grep silence_\n\n# 3) Fixed 9:16 crop around the left speaker of a 1920x1080 frame\nffmpeg -i segment.mp4 -vf \"crop=608:1080:180:0,scale=1080:1920:flags=lanczos,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy vertical.mp4",
+          "lang": "bash"
+        },
+        "En el paso 3, `crop=608:1080:180:0` toma una ventana de 608 píxeles de ancho y 1080 de alto, que empieza a 180 píxeles del borde izquierdo. 608 por 1080 se acerca a 9:16, y el paso de escalado lo deja exactamente en 1080×1920. Cambia el tercer número para mover la ventana."
+      ]
+    },
+    {
+      "h": "El orden correcto de las operaciones",
+      "body": [
+        "El orden importa porque algunos pasos destruyen información que los siguientes necesitan, y parte del trabajo se desperdicia si lo haces demasiado pronto.",
+        {
+          "ol": [
+            "Elige y corta primero el contenido. Así, cada paso posterior trabaja con menos material.",
+            "Limpia el audio antes de los subtítulos, para que el reconocimiento de voz oiga un habla clara.",
+            "Reencuadra antes de los subtítulos, para colocar el texto sobre el encuadre final.",
+            "Iguala el color antes de exportar, cuando todos los clips ya estén en la línea de tiempo.",
+            "Escala la resolución al final, una sola vez, sobre la edición terminada. Escalar cada clip antes de editar multiplica el tiempo de renderizado, y ajustes distintos pueden hacer que los cortes no coincidan.",
+            "Conserva un único archivo maestro. Cada app vuelve a comprimir tu subida, y cada recodificación extra añade artefactos."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Funciones generativas y aviso de contenido de IA",
+      "body": [
+        "Las funciones de análisis rara vez plantean dudas. Las generativas, sí. La política de divulgación de YouTube pide a los creadores que marquen el contenido realista creado o modificado con IA, como una persona real que parece decir algo que no dijo, material alterado de un hecho real o una escena realista que nunca ocurrió. La misma página enumera ediciones que no requieren aviso, como el ajuste de color, los filtros de belleza, la creación de subtítulos y la ayuda con tareas de producción.",
+        "En la práctica: los subtítulos, los cortes de silencios, la eliminación de ruido y la igualación de color no cambian lo que pasó ante la cámara. El B-roll generado de una calle realista, un plano ampliado que añade personas o una cara sustituida en un clip, sí. Si un espectador pudiera confundir la parte generada con material real, etiquétala. TikTok, Douyin y otras plataformas tienen sus propias etiquetas de contenido de IA, y China y la UE tienen normas de etiquetado; consulta nuestra guía sobre cómo etiquetar contenido de IA."
+      ]
+    },
+    {
+      "h": "Límites y errores comunes",
+      "body": [
+        {
+          "ul": [
+            "Saltos de imagen por todas partes. Quitar todas las pausas hace que la cabeza del hablante salte entre fotogramas. Tapa algunos cortes con un zoom de entrada de un 10 a un 15 por ciento, un plano de B-roll o un cambio de subtítulo, y deja algunas pausas naturales.",
+            "Pérdida de contexto. Un clip corto sacado de una charla larga puede cambiar lo que el hablante quiso decir. Lee las frases anteriores y posteriores a tu clip y no cortes una cita de modo que diga lo contrario.",
+            "Voz procesada en exceso. Una eliminación de ruido fuerte hace que las voces suenen finas o robóticas. Usa el ajuste más bajo que quite la molestia y conserva un poco de sonido ambiente.",
+            "Escalado que inventa detalle. Los modelos de superresolución adivinan el detalle. Las caras pueden cambiar ligeramente y el texto pequeño puede convertirse en letras falsas. Compara el maestro escalado con el original en una pantalla grande.",
+            "Interpolación en movimiento rápido. Los fotogramas intermedios nuevos son suposiciones. Las manos, los objetos que giran y las personas que se cruzan suelen deformarse. Usa la interpolación solo en movimientos lentos y sencillos.",
+            "Fiarse del reencuadre. El reencuadre automático sigue el movimiento y las caras, no el sentido. En una charla de dos personas puede quedarse en la persona equivocada. Revisa cada cambio de hablante.",
+            "Editar primero con IA las grabaciones en bruto completas. Elige el pasaje antes de ejecutar procesos pesados; es más rápido y revisas menos."
+          ]
+        },
+        "Un editor de video con IA gratis suele bastar para clips cortos. Al comparar opciones, fíjate en lo que importa para tu caso en vez de en un ranking: si la exportación lleva marca de agua, la resolución de exportación, si los archivos se procesan en tu dispositivo o se suben, y qué idiomas admiten los subtítulos. Para la forma y el tamaño del archivo final, consulta nuestra guía de tamaños de video vertical."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Puede la IA editar un video por mí automáticamente?",
+      "a": "La IA puede hacer un primer montaje: quitar silencios, cortar por transcripción, reencuadrar y subtitular. Tú sigues teniendo que elegir el contenido, revisar cada corte y corregir errores antes de publicar."
+    },
+    {
+      "q": "¿Cómo convierto un video horizontal en vertical con IA?",
+      "a": "Usa una función de reencuadre automático, que sigue al sujeto y mueve un recorte 9:16 por el encuadre. Si el sujeto se mantiene quieto, basta un recorte fijo en cualquier editor o con ffmpeg."
+    },
+    {
+      "q": "¿La eliminación de ruido con IA daña la calidad de la voz?",
+      "a": "Puede hacerlo. Los ajustes fuertes hacen que las voces suenen finas o metálicas. Usa un nivel moderado y compara con el original con auriculares."
+    },
+    {
+      "q": "¿Conviene escalar un video de IA antes o después de editar?",
+      "a": "Después. Edita al tamaño final y luego escala el maestro terminado una sola vez. Escalar primero cada clip hace perder tiempo y puede hacer que los cortes no coincidan."
+    },
+    {
+      "q": "¿Tengo que etiquetar los videos editados con IA?",
+      "a": "No para ediciones normales como subtítulos, color o eliminación de ruido. YouTube pide avisar cuando la IA crea contenido realista que podría confundirse con hechos o personas reales."
+    }
+  ]
+}

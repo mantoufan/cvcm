@@ -1,0 +1,236 @@
+{
+  "title": "短影音腳本怎麼寫？開頭鉤子、時間配置與範例 — cv.cm",
+  "description": "短影音腳本怎麼寫？整理開頭鉤子公式、五種常見結構、每秒字數配置、含時間碼的分鏡表，並附完整 30 秒腳本範例，可直接套用。",
+  "h1": "短影音腳本怎麼寫？",
+  "answer": "寫短影音腳本，要從影片長度倒推。以每秒約 2.5 到 3 個字的口說速度計算，30 秒的短影音大約容納 75 到 90 字。第一秒就用一句鉤子點出問題或承諾，挑一種結構，替每個段落標上時間碼並配一個畫面，結尾留下收穫或接回開頭形成循環。",
+  "sections": [
+    {
+      "h": "先算時間，再談創意",
+      "body": [
+        "短影音腳本其實是一份帶時間軸的計畫：說什麼、拍什麼、在第幾秒出現。在 TikTok（抖音國際版）、Reels 或 YouTube Shorts 上，觀眾通常在一兩秒內就決定要不要看下去，整支影片又常常不到一分鐘，根本沒有暖身的空間，所以先有長度，才有創意。",
+        "以英文口說的清晰講解風格來看，語速大約是每秒 2.5 到 3 個英文單字。語速快的創作者會超過 3，沉穩的旁白則接近 2.5。把目標秒數乘上這個速度，就是你的字數預算。接著再扣掉約 2 秒的字數，因為短影音幾乎都需要留一拍空白給揭曉、反應或最後一個畫面。中文口說不要套用英文單字數：自然語速大約每秒 4 到 5 個字，30 秒的旁白約 120 到 150 字，扣掉 2 秒停頓後大約 110 到 140 字。最可靠的做法是拿碼錶把自己的稿子唸一遍。",
+        {
+          "table": {
+            "head": [
+              "長度",
+              "每秒 2.5 字",
+              "每秒 3 字",
+              "實用預算"
+            ],
+            "rows": [
+              [
+                "15 秒",
+                "37 字",
+                "45 字",
+                "約 35–40 字"
+              ],
+              [
+                "30 秒",
+                "75 字",
+                "90 字",
+                "約 70–85 字"
+              ],
+              [
+                "45 秒",
+                "112 字",
+                "135 字",
+                "約 105–125 字"
+              ],
+              [
+                "60 秒",
+                "150 字",
+                "180 字",
+                "約 140–165 字"
+              ]
+            ]
+          }
+        },
+        "30 秒的算法：30 × 2.5 = 75，30 × 3 = 90。扣掉 2 秒空白（5 到 6 個英文單字），大約剩 70 到 85 個英文單字。如果你的英文草稿有 130 個單字，那就是一支 45 秒的影片，不是 30 秒。別靠講快一點來硬塞，直接刪掉一個重點。",
+        "實際數字要靠計時朗讀來確認。例如 cv.cm 的字數統計工具會顯示字數與預估口說時間，文字轉語音工具則會用你裝置內建的聲音念稿，讓你在錄音或生成之前先聽聽節奏。另外，YouTube Shorts 現在最長可到 3 分鐘，但上限變長並不代表要寫長；請寫出仍能交付收穫的最短版本。"
+      ]
+    },
+    {
+      "h": "影片開頭鉤子公式與範例句",
+      "body": [
+        "影片的鉤子（hook）是第一句話加上第一個畫面，目的是讓觀眾心裡冒出一個問題，並由後面的內容來回答。如果鉤子承諾了影片給不出的東西，觀眾只是晚一點滑走而已，所以請保持誠實。以下公式涵蓋了大部分短影音的開頭：",
+        {
+          "table": {
+            "head": [
+              "公式",
+              "範例句"
+            ],
+            "rows": [
+              [
+                "點出錯誤",
+                "你把麵包放在廚房裡最糟的地方。"
+              ],
+              [
+                "具體成果",
+                "只要改這一個設定，我的手機影片就清晰了一倍。"
+              ],
+              [
+                "反轉矛盾",
+                "多喝水沒有治好我的頭痛，這個才有。"
+              ],
+              [
+                "數字加承諾",
+                "三個剪輯技巧，讓任何 30 秒影片看起來更快。"
+              ],
+              [
+                "讓觀眾答不出的問題",
+                "為什麼冷的房間會讓咖啡嚐起來更苦？"
+              ],
+              [
+                "先給結果",
+                "這是完成的層架，它原本只是兩個舊木箱。"
+              ],
+              [
+                "直接點名",
+                "如果你的植物每到冬天就枯死，下次澆水前先看這支。"
+              ],
+              [
+                "購買前提醒",
+                "買環形燈之前，先試試這個只要十塊錢的小技巧。"
+              ],
+              [
+                "POV",
+                "POV：你終於讀了防曬乳上的標籤。"
+              ]
+            ]
+          }
+        },
+        "這句話只是鉤子的一半，第一個畫面同樣重要。我們用 AI 生成短影音測試發現，開場畫面往往決定了早期的流失：它應該已經是整支影片最好看的一格，明亮、主體的臉完整入鏡且打光清楚，並且已經在動或有反應。慢慢揭曉、人物低頭、光線昏暗，或是剛睡醒的開場，都會在第一句話說完前就流失觀眾。與其用慢節奏開場，不如把概念放進場景和道具裡，前幾秒用特寫或中景，讓主體佔滿大部分畫面。"
+      ]
+    },
+    {
+      "h": "短影音的五種結構",
+      "body": [
+        "每支影片只選一種結構。30 秒內混用兩種，通常兩邊都講不好。下表依序列出每種結構的段落。",
+        {
+          "table": {
+            "head": [
+              "結構",
+              "段落",
+              "適合"
+            ],
+            "rows": [
+              [
+                "問題—解法",
+                "以問題當鉤子 → 為什麼會這樣 → 解法 → 證明 → 收穫",
+                "小技巧、教學、產品示範"
+              ],
+              [
+                "清單",
+                "以數字當鉤子 → 第 1 項 → 第 2 項 → 第 3 項（最好的放最後）→ 收尾",
+                "工具、常見錯誤、點子"
+              ],
+              [
+                "前後對比",
+                "先秀「後」→ 再秀「前」→ 中間的步驟 → 再回到「後」",
+                "改造、剪輯、清潔、設計"
+              ],
+              [
+                "故事循環",
+                "從緊張時刻開場 → 倒帶 → 鋪陳 → 在開頭畫面收束",
+                "故事、短劇、揭曉"
+              ],
+              [
+                "POV",
+                "POV 字幕 → 觀眾熟悉的情境 → 升級 → 反轉或引人共鳴的結尾",
+                "喜劇、生活共鳴片段"
+              ]
+            ]
+          }
+        },
+        "兩個技巧在每種結構都適用。第一，每隔幾秒做一次節奏轉換：換鏡頭、換角度、跳出數字或加一個音效，腳本裡要標出這些位置。第二，做成循環：如果最後一句能接回第一句，一直看下去的觀眾就會無縫回到開頭，許多人也因此會重看一次。最簡單的循環做法，是讓結尾停在半句話，由開頭的鉤子把它補完。"
+      ]
+    },
+    {
+      "h": "30 秒腳本實例與分鏡表",
+      "body": [
+        "下面是一份完整的「問題—解法」直式短影音腳本，長度 30 秒。每個段落都有時間碼、旁白（VO）、螢幕文字與畫面。旁白共 79 字，落在 30 秒的 70 到 85 字預算內，結尾留有短暫停頓。",
+        {
+          "code": "TITLE: Why bread goes stale faster in the fridge\nLENGTH: 30 s, 9:16, voiceover + captions\n\n0.0-2.5 s  HOOK\n  VO:     You are storing bread in the worst place in your kitchen.\n  SCREEN: The fridge = stale bread\n  VISUAL: Close-up, hand pulls a loaf out of a bright open fridge, taps it, it sounds hard.\n\n2.5-9.0 s  PROBLEM\n  VO:     Cold air does not keep bread fresh. It makes the starch firm up faster,\n          so a chilled loaf turns stale in days.\n  SCREEN: Cold = faster staling\n  VISUAL: Medium shot, loaf cut in half, crumb looks dry, a slice snaps instead of bending.\n\n9.0-19.0 s  FIX\n  VO:     Keep the bread you will eat in two days on the counter, in a paper bag or bread box.\n          Slice the rest and freeze it.\n  SCREEN: 2 days: counter / rest: freezer\n  VISUAL: Top shot, bread into a paper bag; cut to slices going into a freezer bag.\n\n19.0-26.5 s  PROOF\n  VO:     A frozen slice goes straight into the toaster and tastes close to fresh.\n  SCREEN: Freezer -> toaster, no thawing\n  VISUAL: Close-up, frozen slice into toaster, pops up golden, butter melts on it.\n\n26.5-30.0 s  PAYOFF + LOOP\n  VO:     So next time you reach for the fridge...\n  SCREEN: (none)\n  VISUAL: Same open fridge as the first frame, hand stops, turns to the bread box.\n          Last frame matches the first frame for a clean loop.",
+          "lang": "text"
+        },
+        "看看這份腳本做對了什麼：鉤子點出觀眾很可能犯的錯；問題段只給一個原因，不是三個；解法是兩個帶有數字的具體動作；證明靠畫面，所以只需要少量文字；最後一句停在半句話，畫面回到開頭的冰箱，讓重播一開始就接上自己問題的答案。"
+      ]
+    },
+    {
+      "h": "從腳本到分鏡表與 AI 影片提示詞",
+      "body": [
+        "想用腳本轉影片的 AI，最好自己先把腳本拆開，而不是整份貼進生成器。每個段落變成一個或多個鏡頭，每個鏡頭再寫成一則提示詞（prompt）。完整方法請看我們的分鏡提示詞教學；做短影音時，最重要的是這三條：",
+        {
+          "ol": [
+            "只寫鏡頭拍得到的東西。影片模型常常把比喻照字面畫出來：像「他的話像刀一樣鋒利」這種句子，畫面裡可能真的出現一把刀。旁白想怎麼有文采都可以，但畫面描述要平實：主體、動作、材質、光線、構圖。",
+            "鏡頭長度要配合模型能產出的規格。許多影片模型只接受固定長度，例如整數秒，或 5、10、15 秒這類檔位。請規劃好段落，讓它們能從這些長度裁出來：6.5 秒的段落可以從 10 秒的片段裁出，但無法從 5 秒的片段變出來。",
+            "先生成鉤子鏡頭，並且最嚴格地挑剔它。如果開場畫面不夠明亮、不夠近、沒有在動，就先重新生成，再花時間處理其他部分。"
+          ]
+        },
+        "以下是把範例腳本的第一個段落寫成影片提示詞的樣子：",
+        {
+          "code": "Vertical 9:16, close-up. A hand opens a brightly lit white fridge and pulls out a loaf of\nsourdough bread, then taps the crust twice with a knuckle. The crust looks dry and hard.\nCool white fridge light on the bread, warm kitchen light behind. The camera is static,\nslightly below eye level. Duration 3 seconds. No text on screen.",
+          "lang": "text"
+        },
+        "字幕和螢幕文字不要寫進影片提示詞，改到剪輯軟體裡加。模型常常會把生成的文字拼錯，而且之後你多半還會想改措辭。提示詞結構的一般做法，請參考我們的影片提示詞教學。"
+      ]
+    },
+    {
+      "h": "用 AI 影片腳本生成器，怎麼避免千篇一律",
+      "body": [
+        "ChatGPT、Claude、Gemini、DeepSeek 或 Qwen 這類大型語言模型（LLM），幾秒內就能擬出腳本。但如果只是隨口一問，得到的會是大家都拿到的同一份：模糊的鉤子、三個軟綿綿的小技巧，外加「追蹤我看更多」。解法是給它只有你才有的素材，以及它必須遵守的硬性限制。",
+        {
+          "code": "Write a 30-second vertical video script, 70-85 spoken words.\nStructure: problem-solution. Beats with timestamps: hook 0-2.5 s, problem, fix, proof, payoff.\nFor each beat give: VO line, on-screen text (max 6 words), and one visual a camera could film.\nAudience: renters with small kitchens.\nFacts to use (do not add others): [paste your notes or source]\nMy own detail to include: [what you tried and what happened]\nRules: no rhetorical questions after the hook, no \"in this video\", no \"follow for more\",\nno similes in the visual lines. Give 5 alternative hook lines at the end.",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "餵事實，不要只給主題。模型會用看似合理的猜測填補空白；請給它你的筆記或資料來源，並叫它不要自行添加論述。",
+            "加入一個個人細節：你量過的數字、犯過的錯、拍攝過的地點。這個細節才讓腳本變成你的。",
+            "請它多給幾個鉤子，再由你自己選一個，然後改成你實際會說的口吻。",
+            "把草稿大聲念出來。凡是你不會對朋友說的句子，以及只為了顯得厲害而存在的字，都刪掉。",
+            "逐一檢查模型保留下來的每個事實。一份要念給成千上萬人聽的腳本，最不該放的就是 AI 幻覺編出來的統計數字。"
+          ]
+        }
+      ]
+    },
+    {
+      "h": "常見腳本錯誤與限制",
+      "body": [
+        {
+          "ul": [
+            "字太多。這是最常見的問題。如果旁白得加速才塞得進去，就代表腳本太長。",
+            "打招呼或開場白。「大家好，今天我想聊聊……」會浪費決定觀眾去留的那兩秒。",
+            "鉤子沒有兌現。覺得被騙的觀眾會直接滑走，也比較不會看到你的下一支影片。",
+            "一個段落塞三個想法。每個段落只該有一個想法和一個畫面。",
+            "沒有畫面規劃。只有旁白的腳本，會逼剪輯者或模型自己編畫面，常常做出千篇一律的素材庫風格鏡頭。",
+            "忽略留存數據。在 YouTube 工作室裡，Shorts 分析會顯示有多少觀眾撐過了開頭幾秒。先比較不同鉤子的這個數字，再決定哪種公式適合你的受眾。"
+          ]
+        },
+        "腳本只是起點。最好的短影音腳本，通常在第一次剪輯之後才會重寫，因為這時你已經看得出哪些句子畫面本身就解釋了、可以刪掉。如果成品裡出現 AI 生成的人物或擬真場景，請加上平台的 AI 標示；各平台的規則，請看我們的 AI 內容標示教學。"
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "60 秒影片的腳本大約幾個字？",
+      "a": "以每秒 2.5 到 3 個字的一般口說速度，大約 150 到 180 字。要預留一點停頓的空間，所以抓 140 到 165 字比較穩。"
+    },
+    {
+      "q": "YouTube Shorts 的好鉤子長什麼樣子？",
+      "a": "第一秒就點出具體的問題、成果或反轉的一句話，搭配明亮、近距離、主體已經在動的第一個畫面。避免打招呼和慢慢揭曉。"
+    },
+    {
+      "q": "AI 可以把腳本變成影片嗎？",
+      "a": "可以，但先把腳本拆成鏡頭，每個鏡頭各寫一則畫面提示詞，效果會比整份貼上好。旁白、字幕和音樂，之後再到剪輯軟體裡加。"
+    },
+    {
+      "q": "短影音腳本用什麼格式最好？",
+      "a": "帶時間碼的分鏡表，每個段落列出口說台詞、螢幕文字與畫面。它能讓你在拍攝或生成之前，就先看出時間配置的問題。"
+    },
+    {
+      "q": "短影音腳本要押韻或加笑點嗎？",
+      "a": "看你的風格。清楚、具體的語言通常比文字遊戲有效，尤其是影片要加字幕或翻譯的時候。"
+    }
+  ]
+}

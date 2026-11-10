@@ -1,0 +1,177 @@
+{
+  "title": "Voz en off con IA para video: cómo hacer que suene natural — cv.cm",
+  "description": "Cómo hacer una voz en off con IA para video: elige la voz, escribe para el oído, ajusta el ritmo a los cortes, corrige la pronunciación, llega a -14 LUFS y dobla.",
+  "h1": "¿Cómo hacer una voz en off con IA que suene natural?",
+  "answer": "Elige una voz que encaje con tu audiencia, reescribe el guion para escucharlo (frases cortas, sin listas de cifras), genera la voz línea a línea y corrige las palabras mal pronunciadas con una escritura fonética o con SSML si tu generador de voz en off lo admite. Monta el video sobre la voz, normaliza a unos -14 LUFS para redes y clona solo voces con permiso por escrito.",
+  "sections": [
+    {
+      "h": "El flujo de trabajo de una voz en off con IA en ocho pasos",
+      "body": [
+        "Una voz en off con IA es una narración producida por una voz de síntesis neuronal (texto a voz) en lugar de un micrófono. El modelo de voz es solo una parte del trabajo. Gran parte de la calidad depende del guion, el ritmo y la mezcla. Un flujo fiable para un video corto o explicativo es este:",
+        {
+          "ol": [
+            "Termina el guion y léelo tú una vez en voz alta, con cronómetro.",
+            "Elige una voz y pruébala con las dos frases más difíciles del guion, no con un párrafo de muestra.",
+            "Reescribe las líneas que suenan mal al hablarse: frases largas, abreviaturas, cifras, nombres de marca.",
+            "Genera la voz en fragmentos cortos, un momento o una frase cada vez, para poder repetir una toma mala sin tocar el resto.",
+            "Corrige la pronunciación con escritura fonética o etiquetas SSML.",
+            "Coloca primero la voz en la línea de tiempo y luego corta las imágenes a su medida.",
+            "Limpia y normaliza la voz, y después mezcla la música por debajo.",
+            "Exporta, escucha en el altavoz del móvil y con auriculares, y añade una etiqueta de IA donde la plataforma lo exija."
+          ]
+        },
+        "Esta página trata del uso de voces de IA para video. Para saber cómo se sintetiza el habla por dentro, consulta nuestra guía de texto a voz."
+      ]
+    },
+    {
+      "h": "Cómo elegir la voz para el video",
+      "body": [
+        "La mayoría de los generadores de voz en off, como ElevenLabs, las voces integradas en CapCut o Jianying, o el TTS de las grandes plataformas en la nube, ofrecen decenas de voces. Elige según el trabajo, no según la demostración. Los textos de demostración están escritos para favorecer a la voz; tu guion tendrá nombres de producto, cifras y frases cortas y contundentes.",
+        {
+          "table": {
+            "head": [
+              "Tipo de video",
+              "Rasgos de voz que buscar",
+              "Evitar"
+            ],
+            "rows": [
+              [
+                "Consejos rápidos y listas",
+                "Brillante, tono medio, consonantes claras, algo rápida",
+                "Voces susurrantes o muy graves que se empastan a velocidad"
+              ],
+              [
+                "Narración de historias",
+                "Cálida, con amplio rango de tono y pausas naturales",
+                "Una entrega plana de «locutor»"
+              ],
+              [
+                "Tutoriales y grabaciones de pantalla",
+                "Tranquila, neutra, de ritmo uniforme",
+                "Emoción fuerte que distrae de los pasos"
+              ],
+              [
+                "Video de producto o marca",
+                "Acorde con la edad y la región de la marca",
+                "Una voz parecida a la de un famoso que sugiera aval"
+              ],
+              [
+                "Personaje o comedia",
+                "Timbre distintivo, expresiva",
+                "Voces que suenen como una figura pública real"
+              ]
+            ]
+          }
+        },
+        "Usa una sola voz por canal o serie. El público aprende a reconocerla, y cambiar de voz entre episodios hace que la serie parezca subidas sueltas. Anota el nombre de la voz y todos los ajustes (velocidad, valores de estabilidad o estilo, modelo), porque los proveedores actualizan sus modelos y los mismos ajustes pueden dar resultados distintos."
+      ]
+    },
+    {
+      "h": "Escribir para el oído y ajustar el ritmo a los cortes",
+      "body": [
+        "Un texto que se lee bien en una página suele sonar rígido al hablarse. Quien escucha no puede volver atrás. Escribe de modo que cada frase se entienda a la primera.",
+        {
+          "ul": [
+            "Una idea por frase, idealmente de menos de 15 palabras.",
+            "Pon la palabra importante al final de la frase, donde la voz aterriza de forma natural.",
+            "Escribe las cifras como se dicen: «unos dos mil» en lugar de «~2.000».",
+            "Escribe las abreviaturas completas, salvo que se lean letra a letra.",
+            "Usa comas y puntos para controlar el ritmo. La mayoría de las voces hacen pausa en el punto y apenas en la coma."
+          ]
+        },
+        {
+          "code": "Before (written):\n  Our app supports 4K/60fps export, HDR & batch processing (Win/Mac).\n\nAfter (for the ear):\n  You can export in 4K at sixty frames per second.\n  It handles HDR. And it works in batches, on Windows and Mac.",
+          "lang": "text"
+        },
+        "Para el ritmo, calcula entre 2,5 y 3 palabras por segundo para una narración clara. En video corto, corta las imágenes al ritmo de la voz y no al revés: coloca primero la voz en la línea de tiempo y haz que cada corte coincida con el inicio de una frase nueva o con la palabra clave. Si un tramo de voz es demasiado largo para su plano, reescribe la línea más corta en lugar de acelerar la voz. En la práctica, cambios de velocidad superiores a un 10 % tienden a hacer que las voces de IA suenen apresuradas y poco naturales.",
+        "Para oír el ritmo antes de pagar por generar, puedes leer el guion con la voz de tu dispositivo, por ejemplo en la herramienta de texto a voz de cv.cm, que usa las voces integradas del navegador y permite cambiar la velocidad. No exporta audio y no es una voz de estudio: sirve para comprobar tiempos. Si prefieres tu propia voz como pista guía, grábala con una grabadora de voz y ajusta los cortes a ella."
+      ]
+    },
+    {
+      "h": "Corregir la pronunciación: respelling, pausas y fonemas",
+      "body": [
+        "Los nombres, marcas, siglas y palabras extranjeras son donde más fallan las voces de IA. Prueba estas soluciones en orden, de la más sencilla a la más precisa.",
+        {
+          "ol": [
+            "Reescribe la palabra fonéticamente en el guion: «Nguyen» como «Win», «GIF» como «jif» o «gif» según lo que prefieras. Mantén una lista de reescrituras por proyecto.",
+            "Añade puntuación para forzar una pausa o cambiar el acento: una coma antes de un nombre o un guion en una palabra compuesta.",
+            "Usa SSML si la herramienta lo admite. SSML (Speech Synthesis Markup Language) es un estándar del W3C. Su elemento `break` inserta una pausa con un `time` como `400ms`, `sub` sustituye el texto escrito por lo que debe pronunciarse, y `phoneme` da una pronunciación exacta en AFI (IPA) mediante el atributo `ph`.",
+            "Usa el diccionario de pronunciación de la herramienta, si lo tiene, para que la corrección se aplique a todos tus guiones futuros."
+          ]
+        },
+        {
+          "code": "<speak>\n  Welcome to <sub alias=\"see vee dot see em\">cv.cm</sub>.\n  <break time=\"400ms\"/>\n  Today we test the <phoneme alphabet=\"ipa\" ph=\"ˈkiːnwɑː\">quinoa</phoneme> recipe.\n</speak>",
+          "lang": "text"
+        },
+        {
+          "note": "La compatibilidad con SSML varía según el proveedor. Algunos aceptan el estándar completo, otros solo `break`, y otros ignoran las etiquetas o las leen en voz alta. Prueba una frase con etiquetas antes de etiquetar un guion entero."
+        }
+      ]
+    },
+    {
+      "h": "Objetivos de sonoridad para video en redes",
+      "body": [
+        "La sonoridad se mide en LUFS (unidades de sonoridad relativas a la escala completa) con el algoritmo de la norma ITU-R BS.1770, la misma medición en que se basa la recomendación de radiodifusión EBU R 128. EBU R 128 fija -23 LUFS para programas de emisión. Las plataformas de streaming y redes sociales no publican todas sus objetivos, pero unos -14 LUFS integrados con un pico real no superior a unos -1 dBTP son un objetivo de trabajo habitual para el video en línea.",
+        "La mayoría de las grandes plataformas normalizan la sonoridad de reproducción, así que un video masterizado mucho más fuerte se baja sin ganar nada, y el limitado intenso para llegar ahí hace que la voz suene áspera. Uno masterizado mucho más bajo puede subirse menos de lo que esperas. Apuntar cerca del objetivo común evita ambos problemas.",
+        {
+          "code": "# Measure, then normalize a voiceover to about -14 LUFS, true peak -1 dBTP (ffmpeg loudnorm)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=summary -f null -\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11 -ar 48000 voice_norm.wav",
+          "lang": "bash"
+        },
+        "Normaliza la mezcla final, no solo la voz. En la práctica, la música bajo el habla debe quedar bastante por debajo de la voz; mantenerla unos 12 a 20 dB más baja mientras alguien habla es un buen punto de partida, y súbela entre frases. Comprueba siempre en el altavoz del móvil, donde la música baja desaparece y las frecuencias agudas ásperas se notan."
+      ]
+    },
+    {
+      "h": "Doblaje con IA a otros idiomas",
+      "body": [
+        "El doblaje con IA traduce el guion y genera habla en otro idioma, a menudo con una voz parecida a la original. El principal problema práctico es el tiempo. La misma frase suele ocupar más en español o alemán que en inglés, así que un doblaje que sigue los cortes del original tiende a pasarse de largo.",
+        {
+          "ul": [
+            "Escribe el guion original con margen. Si el inglés ocupa todo el hueco, la traducción no cabrá. Dejar entre un 10 y un 20 % de cada momento libre en el original facilita mucho el doblaje.",
+            "Traduce para el habla, no palabra por palabra. Pide al traductor o al LLM que acorte las líneas para ajustarse a un número dado de segundos.",
+            "Revisa nombres, unidades y texto en pantalla en cada idioma. Un doblaje que dice «millas» sobre un rótulo en kilómetros parece descuidado.",
+            "Vuelve a cortar donde haga falta. Añadir unos fotogramas a un plano sale más barato que acelerar la voz hasta que suene poco natural."
+          ]
+        },
+        "Las plataformas están incorporando sus propias herramientas. El doblaje automático de YouTube crea pistas de audio traducidas y marca esos videos como doblados automáticamente. Su página de ayuda advierte de que los doblajes pueden contener errores de pronunciación, nombres propios, modismos y jerga, y permite a los creadores revisarlos antes de publicarlos. Aprovecha ese paso de revisión o sube tu propia pista ya comprobada. Si quieres que la boca del hablante coincida con el nuevo idioma, consulta nuestra guía de lip sync con IA."
+      ]
+    },
+    {
+      "h": "Clonación de voz: consentimiento, divulgación y ley",
+      "body": [
+        "La clonación de voz crea una voz sintética a partir de grabaciones de una persona real. A veces bastan unos segundos de habla limpia para un resultado reconocible, por eso las normas se centran en el consentimiento y la divulgación.",
+        {
+          "ul": [
+            "Clona solo tu propia voz o una voz que tengas permiso por escrito para usar. El permiso debe indicar para qué se puede usar la voz, durante cuánto tiempo y cómo se puede retirar.",
+            "No clones a personajes públicos, actores o creadores para hacerles decir cosas. Eso puede infringir las normas de las plataformas y, en muchos países, las leyes sobre derechos de la personalidad, imagen o fraude.",
+            "Las reglas de divulgación de YouTube exigen una etiqueta cuando un contenido realista hace que una persona real parezca decir o hacer algo que no dijo ni hizo. Su página de ayuda cita clonar tu propia voz para voces en off o doblajes como ejemplo que no requiere divulgación.",
+            "La Ley de IA de la UE (artículo 50) obliga a los responsables del despliegue a revelar el audio y el video generados o manipulados con IA que constituyan una ultrasuplantación (deepfake), con una obligación más leve para las obras evidentemente artísticas, creativas o satíricas.",
+            "Las Medidas de China para el etiquetado de contenido sintético generado por IA, en vigor desde el 1 de septiembre de 2025, exigen a los proveedores etiquetar el audio sintético, por ejemplo con una señal hablada o rítmica, y exigen a los usuarios que publican ese contenido declararlo y usar la función de etiquetado."
+          ]
+        },
+        "Un narrador sintético genérico que lee tu propio guion rara vez es un problema legal. La voz clonada de una persona real, sí. Nuestra guía sobre etiquetar contenido de IA detalla las etiquetas de cada plataforma."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la diferencia entre texto a voz y una voz en off con IA?",
+      "a": "El texto a voz es la tecnología que convierte texto en habla. Una voz en off con IA es la narración terminada de un video: una voz elegida, un guion escrito para escucharse, tiempos ajustados a los cortes y una mezcla limpia."
+    },
+    {
+      "q": "¿Hay alguna voz en off con IA gratis?",
+      "a": "Muchos generadores de voz en off tienen un plan gratuito con minutos limitados, menos voces o sin derechos comerciales. Revisa la licencia de uso comercial antes de publicar."
+    },
+    {
+      "q": "¿Qué volumen debe tener una voz en off para TikTok o Reels?",
+      "a": "Unos -14 LUFS integrados con un pico real cercano a -1 dBTP son un objetivo de trabajo habitual para el video en línea. Las plataformas normalizan la reproducción, así que masterizar mucho más fuerte no aporta nada."
+    },
+    {
+      "q": "¿Por qué mi voz de IA pronuncia mal los nombres?",
+      "a": "El modelo adivina la pronunciación a partir de la grafía y de sus datos de entrenamiento. Reescribe el nombre fonéticamente o usa una etiqueta SSML de fonema o un diccionario de pronunciación, si la herramienta los admite."
+    },
+    {
+      "q": "¿Tengo que avisar de que usé una voz en off con IA?",
+      "a": "Un narrador sintético genérico normalmente no necesita etiqueta en YouTube. Una voz realista que haga que una persona real parezca decir algo que no dijo, sí, y algunas leyes exigen etiquetar el audio sintético."
+    }
+  ]
+}

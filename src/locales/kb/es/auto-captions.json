@@ -1,0 +1,183 @@
+{
+  "title": "Subtítulos automáticos con IA: cómo ponerlos a un video — cv.cm",
+  "description": "Cómo poner subtítulos automáticos a un video con un generador de subtítulos con IA: transcribir, corregir, ajustar líneas y velocidad de lectura, exportar SRT o VTT.",
+  "h1": "Cómo poner subtítulos automáticos a un video con IA",
+  "answer": "Para poner subtítulos automáticos, pasa el audio por un modelo de reconocimiento de voz como Whisper, corrige nombres y cifras, divide el texto en líneas cortas de hasta unos 42 caracteres (16 en chino), mantén la velocidad de lectura por debajo de unos 20 caracteres por segundo y exporta un archivo SRT o WebVTT. Súbelo como subtítulos independientes o incrústalo en la imagen.",
+  "sections": [
+    {
+      "h": "Qué hace realmente un generador de subtítulos con IA",
+      "body": [
+        "Los subtítulos automáticos salen del reconocimiento automático del habla (ASR). Un modelo escucha la pista de audio y escribe las palabras con un tiempo de inicio y de fin para cada frase. Whisper es un ejemplo abierto muy conocido: su artículo describe un entrenamiento con 680.000 horas de audio multilingüe, y por eso un solo modelo puede transcribir muchos idiomas y además traducirlos al inglés. Para saber cómo funciona por dentro, consulta nuestra guía sobre cómo funciona la conversión de voz a texto.",
+        "El resultado del ASR es un borrador, no unos subtítulos terminados. La página de ayuda de YouTube sobre los subtítulos automáticos dice que la calidad puede variar y pide a los creadores que los revisen siempre y corrijan las partes que no se transcribieron bien. Unos buenos subtítulos necesitan tres pasos más que una transcripción en bruto no incluye: corregir errores, dividir el texto en líneas legibles y sincronizar cada línea para que se pueda leer.",
+        "Puedes generar subtítulos de un video en tres sitios habituales: dentro de la plataforma (YouTube, TikTok e Instagram ofrecen subtítulos automáticos de algún tipo), dentro de un editor (CapCut o Jianying, Premiere Pro, DaVinci Resolve, Descript) o con una herramienta de transcripción aparte que exporte un archivo de subtítulos. Un archivo independiente te da el mayor control y se puede reutilizar en todas las plataformas. Por ejemplo, la herramienta de voz a texto de cv.cm ejecuta Whisper en el navegador y exporta TXT, SRT o VTT sin subir el audio."
+      ]
+    },
+    {
+      "h": "El flujo de trabajo, paso a paso",
+      "body": [
+        {
+          "ol": [
+            "Exporta una pista de audio limpia desde tu edición final. Los subtítulos deben coincidir con el montaje que vas a publicar, así que transcribe al final, cuando la imagen ya esté cerrada.",
+            "Transcribe con un modelo de la familia Whisper. Si conoces el idioma, indícalo a mano; la detección automática puede equivocarse en clips cortos o que empiezan con música.",
+            "Lee la transcripción mientras escuchas. Corrige nombres, marcas, cifras, términos técnicos y palabras que suenan parecido.",
+            "Divide el texto en tarjetas de subtítulo: una o dos líneas cortas cada una, cortadas en pausas naturales de la frase.",
+            "Revisa los tiempos: cada tarjeta debe aparecer cuando empiezan las palabras y quedarse el tiempo suficiente para leerla.",
+            "Dale estilo para la pantalla: tamaño de letra, contorno o recuadro y una posición dentro de la zona segura.",
+            "Entrega: sube el SRT o el VTT como pista de subtítulos, o incrusta los subtítulos en el video, o ambas cosas."
+          ]
+        },
+        {
+          "note": "Transcribir la edición final y no la grabación original te ahorra volver a sincronizar cada línea después de cada corte."
+        }
+      ]
+    },
+    {
+      "h": "Reglas de longitud de línea y velocidad de lectura",
+      "body": [
+        "Las guías profesionales de subtitulado fijan límites estrictos para que el espectador pueda leer sin perderse la imagen. Netflix publica guías de estilo de texto temporizado por idioma; son cifras útiles y verificables para empezar:",
+        {
+          "table": {
+            "head": [
+              "Idioma (guía de Netflix)",
+              "Caracteres por línea",
+              "Líneas por tarjeta",
+              "Velocidad de lectura, adultos",
+              "Velocidad de lectura, niños"
+            ],
+            "rows": [
+              [
+                "Inglés (EE. UU.)",
+                "42",
+                "2 como máximo",
+                "Hasta 20 caracteres por segundo",
+                "Hasta 17 caracteres por segundo"
+              ],
+              [
+                "Chino (simplificado)",
+                "16",
+                "2 como máximo",
+                "Hasta 9 caracteres por segundo",
+                "Hasta 7 caracteres por segundo"
+              ]
+            ]
+          }
+        },
+        "La guía en inglés también explica dónde cortar una línea: después de un signo de puntuación, antes de una conjunción y antes de una preposición. Mantén juntos el artículo y su sustantivo, el adjetivo y su sustantivo, y el nombre de pila con el apellido.",
+        "Así funciona la regla de velocidad de lectura en la práctica. Una tarjeta que dice `Three things nobody tells you about captions` tiene 44 caracteres, espacios incluidos. A 20 caracteres por segundo necesita al menos 2,2 segundos en pantalla. Si el hablante lo dice en 1,5 segundos, o dejas la tarjeta más tiempo o acortas el texto, por ejemplo a `Three things nobody tells you` (29 caracteres, unos 1,5 segundos).",
+        "Los videos verticales cortos necesitan límites más estrictos que una pantalla de televisión. Un encuadre de teléfono de 1080 píxeles de ancho con texto grande y en negrita admite muchos menos caracteres por línea que 42. En la práctica, una línea de unos 20 a 30 caracteres latinos, o de 8 a 12 caracteres chinos, se lee bien en el móvil. Muchos creadores muestran una frase corta por tarjeta y cambian de tarjeta a menudo."
+      ]
+    },
+    {
+      "h": "SRT y WebVTT: los dos formatos de archivo de subtítulos",
+      "body": [
+        "Casi todas las plataformas y editores aceptan SRT. WebVTT (VTT) es el formato del W3C para subtítulos en la web, usado por el elemento de video de HTML. Se parecen mucho:",
+        {
+          "code": "SRT (file: captions.srt)\n\n1\n00:00:00,000 --> 00:00:01,600\nThree things nobody tells you\n\n2\n00:00:01,600 --> 00:00:03,400\nabout auto captions.\n\nWebVTT (file: captions.vtt)\n\nWEBVTT\n\n00:00:00.000 --> 00:00:01.600\nThree things nobody tells you\n\n00:00:01.600 --> 00:00:03.400 line:70%\nabout auto captions.",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "SRT numera cada tarjeta y usa una coma antes de los milisegundos: `00:00:01,600`.",
+            "WebVTT empieza con la línea `WEBVTT`, usa un punto antes de los milisegundos: `00:00:01.600`, y no necesita numerar las tarjetas.",
+            "WebVTT puede llevar ajustes de posición después del tiempo, como `line`, `position` y `align`, para colocar una tarjeta en pantalla. No todos los reproductores los respetan.",
+            "Guarda ambos como texto UTF-8 para que sobrevivan las tildes y los caracteres CJK."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Subtítulos incrustados o independientes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Tipo",
+              "Qué es",
+              "Sirve para",
+              "Inconveniente"
+            ],
+            "rows": [
+              [
+                "Subtítulos independientes (pista de subtítulos)",
+                "Un archivo SRT o VTT aparte que el reproductor dibuja encima",
+                "Subidas a YouTube, varios idiomas, accesibilidad, texto indexable",
+                "No todas las apps de video corto aceptan subir un archivo; el estilo depende del reproductor"
+              ],
+              [
+                "Subtítulos incrustados (abiertos)",
+                "Texto dibujado en los píxeles del video",
+                "TikTok, Reels y Shorts, donde mucha gente ve los videos sin sonido; control total del estilo",
+                "No se pueden desactivar ni traducir; los errores obligan a exportar de nuevo"
+              ]
+            ]
+          }
+        },
+        "Muchos creadores hacen ambas cosas: subtítulos incrustados con estilo para las apps de video corto y un SRT limpio para YouTube. Estos comandos de ffmpeg muestran cada opción. El filtro `subtitles` necesita una versión de ffmpeg compilada con libass.",
+        {
+          "code": "# Burn captions into a 1080x1920 video (white text, black outline, raised above the bottom UI)\nffmpeg -i final.mp4 \\\n  -vf \"subtitles=captions.srt:force_style='FontName=Arial,FontSize=12,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=2,Alignment=2,MarginV=100'\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy captioned.mp4\n\n# Add a soft caption track to an MP4 without re-encoding the video\nffmpeg -i final.mp4 -i captions.srt -map 0 -map 1 -c copy -c:s mov_text \\\n  -metadata:s:s:0 language=eng soft_captions.mp4",
+          "lang": "bash"
+        },
+        "En el comando de incrustación, un archivo SRT se dibuja sobre un lienzo virtual de 288 unidades de alto, así que `FontSize=12` equivale a unos 80 píxeles en un encuadre de 1920 píxeles, y `MarginV=100` sube el texto cerca de un tercio de la altura desde el borde inferior. Prueba con un clip corto y ajusta."
+      ]
+    },
+    {
+      "h": "Estilo de los subtítulos en video vertical",
+      "body": [
+        {
+          "ul": [
+            "Posición: mantén los subtítulos fuera del tercio inferior, donde la app muestra el nombre de la cuenta, la descripción y los botones. Consulta nuestra guía de tamaños de video vertical para ver los píxeles de la zona segura.",
+            "Tamaño: en un teléfono, el texto que se ve grande en el editor suele quedar justo bien. Compruébalo en un móvil real, a la distancia del brazo.",
+            "Contraste: el texto blanco o amarillo con contorno oscuro o un recuadro semitransparente se lee sobre cualquier fondo.",
+            "No tapes la cara. Si la cara del hablante está en el centro del encuadre, coloca los subtítulos justo debajo de la barbilla, no sobre la boca.",
+            "Un solo estilo por video. Cambiar de fuente y de color entre tarjetas hace que el espectador lea el estilo en lugar de las palabras."
+          ]
+        },
+        "Los subtítulos palabra por palabra o tipo karaoke muestran de una a tres palabras a la vez y resaltan la que se está diciendo. Necesitan marcas de tiempo por palabra, que las herramientas de la familia Whisper pueden generar. Mantienen la mirada en la pantalla en clips rápidos de una persona hablando a cámara, pero cansan en explicaciones largas. Úsalos para los ganchos y los remates, y tarjetas normales de dos líneas para el resto."
+      ]
+    },
+    {
+      "h": "Traducir subtítulos",
+      "body": [
+        "Traduce los subtítulos de origen ya corregidos, no la transcripción en bruto. Conserva los mismos tiempos de tarjeta y traduce tarjeta por tarjeta, para que cada línea traducida siga coincidiendo con el momento en que se dice.",
+        "Las traducciones cambian de longitud. El español y el alemán suelen necesitar más caracteres que el inglés para la misma idea, mientras que el chino y el japonés necesitan menos caracteres pero tienen límites de velocidad de lectura mucho más bajos. Tras traducir, comprueba cada tarjeta con los límites de longitud de línea y velocidad de lectura del idioma de destino y acorta donde haga falta. La traducción automática de un archivo de subtítulos es un primer borrador rápido; una persona que hable el idioma con fluidez debe leerla antes de publicar."
+      ]
+    },
+    {
+      "h": "Errores comunes y límites de los subtítulos automáticos",
+      "body": [
+        {
+          "ul": [
+            "Nombres y palabras nuevas: el modelo escribe la palabra común más cercana. Ten una lista de nombres y grafías de marcas y búscalos en la transcripción.",
+            "Cifras: comprueba cada precio, fecha y medida con lo que se dijo. Una cifra equivocada en un subtítulo es peor que no tener subtítulo.",
+            "Música y ruido: la música de fondo, el ruido de gente y las voces superpuestas reducen la precisión. Si puedes, transcribe una versión con la música más baja.",
+            "Texto en los silencios: en la práctica, los modelos de ASR a veces escriben palabras durante silencios largos o partes con solo música. Borra las tarjetas que aparezcan donde nadie habla.",
+            "Idiomas mezclados: un clip que cambia de idioma puede transcribirse solo en uno de ellos. Divídelo y transcribe cada parte indicando el idioma a mano.",
+            "Accesibilidad: los subtítulos para personas sordas o con dificultades auditivas también deben marcar los sonidos importantes, como [portazo], algo que el ASR no añade."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo generar subtítulos de un video gratis?",
+      "a": "Usa una herramienta de transcripción basada en Whisper o los subtítulos automáticos de tu editor y exporta un archivo SRT. Revisa y corrige el texto antes de publicar."
+    },
+    {
+      "q": "¿Son precisos los subtítulos automáticos de YouTube?",
+      "a": "A menudo son aprovechables, pero no son fiables con nombres, cifras o audio con ruido. El propio YouTube dice que la calidad puede variar y pide a los creadores que los revisen y los editen."
+    },
+    {
+      "q": "¿Qué diferencia hay entre SRT y VTT?",
+      "a": "Ambos enumeran el texto de los subtítulos con tiempos de inicio y fin. SRT usa una coma antes de los milisegundos y numera cada tarjeta; WebVTT empieza con WEBVTT, usa un punto y puede llevar ajustes de posición."
+    },
+    {
+      "q": "¿Cuántos caracteres por línea deben tener los subtítulos?",
+      "a": "La guía en inglés de Netflix permite hasta 42 caracteres por línea y dos líneas; su guía de chino simplificado permite 16 caracteres por línea. En videos cortos verticales, las líneas más cortas se leen mejor."
+    },
+    {
+      "q": "¿Incrusto los subtítulos o subo un SRT?",
+      "a": "Incrústalos en TikTok, Reels y Shorts, donde quieres un estilo fijo y mucha gente mira sin sonido. Sube un SRT para YouTube y para otros idiomas, de modo que los espectadores puedan activar o desactivar los subtítulos."
+    }
+  ]
+}

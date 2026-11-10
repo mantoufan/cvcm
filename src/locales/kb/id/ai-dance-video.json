@@ -1,0 +1,181 @@
+{
+  "title": "Cara Membuat Video Dance AI: Foto Menari Tanpa Glitch — cv.cm",
+  "description": "Cara membuat video dance AI: motion transfer dari video tari referensi atau tarian dari prompt dan musik, lengkap dengan aturan timing, kostum, dan frame pertama.",
+  "h1": "Cara Membuat Video Dance AI",
+  "answer": "Ada dua cara membuat video dance AI. Motion transfer menyalin gerakan dari video tari referensi ke karakter atau foto Anda. Tarian berbasis prompt membuat gerakan dari timeline teks dan musik. Apa pun caranya, mulailah dari frame pertama yang terang dan jelas, tulis gerakan yang mengalir untuk tiap frasa musik, potong audionya sendiri, dan cek sinkronisasi dengan lagu aslinya.",
+  "sections": [
+    {
+      "h": "Dua metode: motion transfer atau tarian berbasis prompt",
+      "body": [
+        "Motion transfer mengambil gerakan tubuh dari video pemandu dan menerapkannya ke orang atau karakter lain. Sistem riset seperti Everybody Dance Now memakai pose sebagai jembatan antara penari sumber dan target; metode difusi berikutnya seperti Animate Anyone menganimasikan satu gambar diam dari urutan pose sambil mempertahankan tampilan gambar referensi. Generator video dance untuk konsumen dan mode video referensi di tool seperti Kling, Seedance, Runway, atau Hailuo memakai ide yang sama.",
+        "Tarian berbasis prompt memberi model gambar karakter, musik, dan timeline gerakan tertulis. Tidak ada video pemandu, jadi model menciptakan koreografinya dari kata-kata Anda.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Motion transfer",
+              "Tarian berbasis prompt"
+            ],
+            "rows": [
+              [
+                "Input",
+                "Gambar karakter plus video tari referensi",
+                "Gambar karakter, musik, timeline teks"
+              ],
+              [
+                "Koreografi",
+                "Disalin dengan ketat dari referensi",
+                "Diciptakan model dari kata-kata Anda"
+              ],
+              [
+                "Akurasi beat",
+                "Sebagus video referensinya",
+                "Tergantung cara Anda mengatur timing prompt"
+              ],
+              [
+                "Risiko utama",
+                "Ikut menyalin detail referensi yang tidak diinginkan",
+                "Pose kaku atau gerakan acak yang patah-patah"
+              ],
+              [
+                "Cocok untuk",
+                "Dance tren yang sudah dikenal, rutinitas yang harus persis",
+                "Gerakan lembut atau freestyle orisinal"
+              ]
+            ]
+          }
+        },
+        "Pakai motion transfer ketika rutinitas tarinya penting. Pakai tarian berbasis prompt ketika Anda ingin karya orisinal, atau ketika tidak ada referensi yang bersih."
+      ]
+    },
+    {
+      "h": "Siapkan foto dan frame pertama",
+      "body": [
+        "Gambar karakter menjadi frame pertama atau jangkar identitas, jadi ia menentukan kualitas sekaligus retensi. Dalam praktiknya, frame pertama menentukan berapa banyak penonton yang pergi dalam dua atau tiga detik pertama. Ia harus sudah menjadi frame terbaik dari seluruh video.",
+        {
+          "ul": [
+            "Seluruh tubuh atau dari lutut ke atas, berdiri, dengan seluruh badan dan kedua tangan berada di dalam frame. Kaki atau tangan yang terpotong akan dikarang model dengan buruk.",
+            "Cahaya terang dan merata, wajah terlihat penuh dan tersinari. Jangan kepala menunduk, rambut atau topi menutupi wajah, atau ruangan gelap.",
+            "Subjek sudah dalam pose siap menari atau tersenyum, bukan berdiri kaku. Tarian yang dimulai dari pose diam yang netral terasa seperti pembukaan yang lambat.",
+            "Dalam 9:16, penari sebaiknya memenuhi sebagian besar tinggi frame. Sosok kecil di ruangan besar menghasilkan wajah buram serta anggota badan berlebih atau menyatu.",
+            "Pakaian yang terbaca jelas: pinggang yang tegas, lengan yang berakhir di pergelangan tangan, rok yang berakhir di atas mata kaki. Kain panjang yang menjuntai adalah kasus tersulit (lihat di bawah)."
+          ]
+        },
+        "Jika Anda memakai beberapa karakter, cek setiap gambar referensi baru terhadap character sheet, karakter demi karakter: pakaian, tangan atau cakar, aksesori, rambut, warna, dan rasio tinggi. Tool edit gambar diam-diam mengubah detail yang tidak Anda minta, dan model video menyalin kesalahan itu ke setiap frame. Panduan karakter AI yang konsisten kami menjelaskan cara membuat sheet-nya."
+      ]
+    },
+    {
+      "h": "Motion transfer: perbaiki referensi sebelum generate",
+      "body": [
+        "Video referensi adalah jangkar yang jauh lebih kuat daripada teks. Jika referensinya punya lens flare, properti di tangan penari, cermin, gaya pencahayaan tertentu, atau orang kedua di latar belakang, model cenderung menyalinnya walaupun prompt melarang. Berdebat dengan referensi lewat prompt jarang berhasil.",
+        {
+          "ol": [
+            "Pangkas referensi hanya pada bagian rutinitas yang Anda butuhkan, dengan musik dipotong pada rentang yang sama.",
+            "Crop agar penari berada di tengah, seluruh tubuh terlihat, dengan rasio aspek yang sama seperti output Anda.",
+            "Masking atau hapus properti dan orang di latar belakang. Regrade warna jika cahayanya kuat atau berwarna.",
+            "Pastikan penari referensi dan karakter Anda punya proporsi tubuh yang mirip. Maskot pendek dan bulat yang menyalin gerakan kaki panjang penari jangkung akan melar atau rusak.",
+            "Lalu tulis prompt yang menggambarkan hasil yang Anda inginkan (karakter, latar, cahaya), bukan masalah-masalah di referensi."
+          ]
+        },
+        "Grid storyboard juga bekerja baik sebagai referensi gerakan. Buat satu gambar 9:16 dengan, misalnya, 12 panel, satu pose beat per panel, dan tulis timeline prompt sebagai 'panel 1 (kiri atas) = 0–2 dtk'. Jangan beri angka atau teks pada panel; model menyalinnya sebagai grafik di layar. Cek setiap panel dalam ukuran penuh, karena kesalahan di satu panel akan disalin ke video.",
+        "Persetujuan itu penting di sini. Pakai foto orang sungguhan hanya dengan izinnya, dan jangan menganimasikan gambar seseorang menjadi tarian yang tidak pernah ia lakukan lalu menyajikannya sebagai nyata. Koreografi seorang koreografer juga bisa dilindungi; dance tren yang dibagikan untuk dipakai ulang di suatu platform biasanya aman di platform itu, tetapi iklan berbayar yang memakai koreografi orang lain butuh izin."
+      ]
+    },
+    {
+      "h": "Tarian berbasis prompt: tulis gerakan yang mengalir",
+      "body": [
+        "Model video mengikuti sebagian kata dengan sangat persis. Dalam pengujian kami, 'hold the pose', 'freeze', 'still', dan 'slow motion' mengubah tarian menjadi tayangan slide pose: penari melompat antar bentuk dan berhenti di antaranya. Hindari kata-kata itu dan gambarkan gerakan yang berkelanjutan.",
+        "Rencanakan satu shot panjang per frasa musik, sekitar 4 detik atau satu hitungan delapan, dengan beberapa jangkar gerakan bertimestamp di dalamnya. Tetapi jangan berlebihan: terlalu banyak gerakan kecil per ketukan terlihat patah-patah dan lucu. Untuk gaya lembut seperti klasik, kontemporer, atau pop lambat, gambarkan lintasan gerak, bukan pose, beri satu gerakan per satu atau dua ketukan, dan batasi setiap tahan hingga setengah ketukan atau kurang.",
+        {
+          "code": "Phrase 2 (4.0-8.0 s), one continuous shot, 9:16, medium-wide, camera at chest height.\nThe dancer from the reference: long white sleeves, pale blue skirt, hair in a low bun.\n4.0-5.0 s (downbeat): step right, weight shifts onto the right foot, both arms open low at hip height.\n5.0-6.0 s: the right arm sweeps in an arc from the hip to shoulder height while the body turns a quarter left.\n6.0-7.0 s: step back with the left foot, both arms float down, sleeves trail behind the hands.\n7.0-8.0 s (pause in the music): a soft half turn to face the camera, arms rising to chest height, smile.\nArms stay below 45 degrees above the shoulder. Continuous movement, no stops.",
+          "lang": "text"
+        },
+        "Kain butuh aturan tersendiri. Dengan lengan lebar, pita panjang, atau jubah, kain mengikuti lengan dan bisa menutupi wajah. Batasi tinggi lengan, misalnya tidak lebih dari 45 derajat di atas bahu, dan tulis di setiap frasa.",
+        "Tulis hanya apa yang akan terlihat kamera. Model video menerjemahkan metafora secara harfiah: 'lengan bajunya bergerak seperti kuas melukis di udara' bisa memunculkan kuas sungguhan di tangannya. Gambarkan aksi, bahan, dan cahaya, dan hindari perumpamaan."
+      ]
+    },
+    {
+      "h": "Jaga gerakan tetap di beat",
+      "body": [
+        "Cari BPM dulu, misalnya dengan mengetuk mengikuti metronom cv.cm. Pada 120 BPM satu ketukan berdurasi 0,5 dtk dan satu hitungan delapan 4 dtk; pada 100 BPM hitungan delapan adalah 4,8 dtk. Beri timestamp tiap jangkar dalam detik dan sebutkan juga peristiwa musiknya: 'downbeat pertama', 'nada paling keras', 'jeda'. Model memakai keduanya.",
+        "Banyak model hanya menerima durasi tetap, seperti hitungan detik utuh atau tingkatan 5, 10, atau 15 dtk. Pilih potongan musik yang persis sama panjang dengan klipnya, dan saat generate per segmen, potong sendiri audio tiap segmen alih-alih membiarkan model memilih. Sebagian tool membatasi total audio referensi sekitar 30 detik untuk semua klip, jadi tarian yang panjang butuh beberapa segmen.",
+        "Ketika model membuat atau merender ulang soundtrack, musik bisa mulai terlambat. Kami mengukur pergeseran sekitar 1 detik, sementara gerakannya mengikuti timing prompt dengan cukup akurat. Sebelum memutuskan bahwa gerakannya meleset dari beat, pasang kembali lagu aslinya:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Jika sebuah segmen masih terlihat beberapa frame terlalu awal atau terlambat, geser di editor alih-alih generate ulang."
+      ]
+    },
+    {
+      "h": "Artefak umum dan solusinya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Artefak",
+              "Penyebab yang biasa",
+              "Solusi"
+            ],
+            "rows": [
+              [
+                "Tayangan slide pose",
+                "Kata seperti hold, freeze, still, slow motion",
+                "Gambarkan lintasan gerak yang berkelanjutan; tahan maksimal setengah ketukan"
+              ],
+              [
+                "Gerakan patah-patah dan lucu",
+                "Terlalu banyak gerakan per ketukan",
+                "Satu gerakan per satu atau dua ketukan"
+              ],
+              [
+                "Lengan baju atau rambut menutupi wajah",
+                "Lengan diangkat terlalu tinggi dengan kain panjang",
+                "Batasi tinggi lengan di setiap frasa"
+              ],
+              [
+                "Anggota badan berlebih atau menyatu",
+                "Sosok kecil, lengan bersilang, putaran cepat",
+                "Perbesar di frame, kurangi persilangan, putar lebih pelan"
+              ],
+              [
+                "Kostum berganti di tengah tarian",
+                "Pakaian di gambar sumber tidak jelas",
+                "Referensi yang jelas, sebutkan pakaian di setiap prompt"
+              ],
+              [
+                "Properti atau flare yang tidak diinginkan",
+                "Disalin dari video referensi",
+                "Edit referensinya, lalu generate ulang"
+              ]
+            ]
+          }
+        },
+        "Siap-siap bahwa tangan dan kaki adalah bagian terlemah, terutama pada gerak kaki cepat dan putaran. Jaga kamera tetap stabil selama gerakan kompleks; kamera bergerak ditambah tubuh bergerak menggandakan peluang frame rusak.",
+        "Klip hasil generate sering berukuran 720p atau 1080p dengan detail lembut. Upscale sekali saja setelah editing, dan simpan satu master ekspor agar klip tidak di-encode ulang berulang kali. Beri label pada hasil yang realistis bila platform memintanya; lihat panduan pelabelan konten AI kami."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bagaimana cara membuat foto menari dengan AI?",
+      "a": "Unggah foto seluruh tubuh yang jelas ke tool yang punya mode dance atau video referensi, tambahkan klip tari referensi atau deskripsi teks bertimestamp, lalu generate. Pakai foto diri sendiri atau foto orang yang sudah setuju."
+    },
+    {
+      "q": "Kenapa dance AI saya terlihat seperti rangkaian pose?",
+      "a": "Kemungkinan prompt Anda memuat kata seperti freeze, hold, atau slow motion, yang diikuti model secara sangat harfiah. Gambarkan gerakan yang berkelanjutan di antara jangkar bertimestamp dan batasi setiap tahan di bawah setengah ketukan."
+    },
+    {
+      "q": "Bisakah saya membuat video dance AI selebriti?",
+      "a": "Sebaiknya jangan. Tarian realistis seseorang tanpa persetujuannya bisa melanggar hak atas citra dan hak kepribadian di banyak negara, dan platform mewajibkan pengungkapan untuk manusia sintetis yang realistis."
+    },
+    {
+      "q": "Apakah legal meniru dance TikTok dengan AI?",
+      "a": "Membuat ulang dance tren di platform yang sama dengan suara bawaan aplikasi adalah praktik yang lazim. Memakai koreografi seseorang atau video referensi dalam iklan atau konteks komersial lain butuh izin."
+    },
+    {
+      "q": "Berapa durasi terbaik untuk klip dance AI?",
+      "a": "Satu frasa musik per shot, sekitar 4 sampai 5 detik, adalah satuan paling andal. Gabungkan beberapa frasa di editor untuk video pendek 15 sampai 30 detik."
+    }
+  ]
+}

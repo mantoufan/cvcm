@@ -1,0 +1,184 @@
+{
+  "title": "Lip sync con IA: cómo funciona y cómo lograr un buen resultado — cv.cm",
+  "description": "Cómo funciona el lip sync con IA, qué rostro y audio necesita, cómo preparar una voz limpia y cómo corregir dientes borrosos, desincronización y fallos de perfil.",
+  "h1": "¿Cómo funciona el lip sync con IA y cómo conseguir un resultado limpio?",
+  "answer": "El lip sync con IA toma una pista de audio y un rostro, predice las formas de la boca que corresponden a cada instante del sonido y redibuja la zona de la boca fotograma a fotograma. Para un buen resultado necesitas un rostro frontal y bien iluminado con la boca visible, y una voz seca y sin ruido cortada en el segmento exacto. Comprueba la sincronía con el audio original y etiqueta los resultados realistas.",
+  "sections": [
+    {
+      "h": "Cómo funciona el lip sync guiado por audio",
+      "body": [
+        "Los sonidos del habla se corresponden con un pequeño conjunto de formas visibles de la boca, llamadas a menudo visemas. Los sonidos p, b y m cierran los labios; f y v apoyan el labio inferior en los dientes; una «a» abierta baja la mandíbula. La IA de lip sync aprende esta correspondencia a partir de muchas horas de video de personas hablando, de modo que, ante un audio nuevo, puede predecir qué forma debe adoptar la boca en cada fotograma.",
+        "Un ejemplo conocido es Wav2Lip, publicado en 2020 por Prajwal y sus colegas. Su generador recibe un fotograma del rostro con la mitad inferior oculta, un fotograma de referencia de la misma persona y una breve ventana de audio, y pinta una nueva parte inferior del rostro que encaje con el sonido. Una red aparte, un «experto» preentrenado en lip sync, juzga si la boca coincide con el audio, y el generador se entrena para satisfacerlo. El artículo señala que este experto es la razón principal de que el modelo mantenga la sincronía en rostros arbitrarios y en video sin restricciones.",
+        "Los sistemas más recientes van más allá. Los modelos basados en difusión y los de avatar generan todo el rostro o la cabeza, con parpadeos, movimientos de cabeza y expresiones guiados por el audio, y así una sola foto se convierte en un video hablado. Algunos generadores de video ya producen el habla y el movimiento de labios juntos a partir de un prompt. La idea central es la misma: entra el sonido y sale el movimiento de boca correspondiente, y la calidad depende mucho de lo que le des."
+      ]
+    },
+    {
+      "h": "Tres usos: foto parlante, doblaje y canto",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Uso",
+              "Entrada",
+              "Qué suele salir mal",
+              "Consejo"
+            ],
+            "rows": [
+              [
+                "Foto parlante o video con avatar de IA",
+                "Una foto o un clip corto + habla",
+                "Cabeza rígida, ojos sin vida, dientes que parecen pintados",
+                "Elige una foto con la boca relajada y ligeramente abierta, y luz frontal suave"
+              ],
+              [
+                "Doblaje de metraje real",
+                "Video existente + habla traducida",
+                "La boca coincide pero el rostro ya no se parece a la persona",
+                "Usa tomas en las que el hablante mira a cámara; mantén el corte ajustado al habla"
+              ],
+              [
+                "Canto o videoclip",
+                "Clip de actuación o foto + pista de voz aislada (stem)",
+                "Las notas largas se ven congeladas, la letra rápida se emborrona",
+                "Usa una voz aislada, no la mezcla completa, y divide las canciones largas en frases"
+              ]
+            ]
+          }
+        },
+        "Las fotos parlantes son lo más fácil de hacer y lo más difícil de hacer convincente, porque el modelo se inventa cada fotograma de movimiento. Doblar metraje real conserva el movimiento real y solo sustituye la boca, así que resulta más natural, pero perdona menos un video de origen deficiente. Cantar es lo más exigente: las vocales son largas, la boca se abre más que al hablar y el tiempo debe encajar con la música, no solo con las palabras. Para los flujos de trabajo con canciones completas, consulta nuestra guía de videoclips con IA."
+      ]
+    },
+    {
+      "h": "Requisitos de entrada para el rostro y el audio",
+      "body": [
+        "La mayoría de los fallos vienen de la entrada. Revisa esto antes de generar.",
+        {
+          "ul": [
+            "Ángulo del rostro: frontal o hasta aproximadamente tres cuartos. Los perfiles laterales fallan a menudo, porque el modelo ve muy poca boca.",
+            "Boca visible: sin mano, micrófono, pelo ni mascarilla sobre los labios, y sin mucho desenfoque de movimiento.",
+            "Luz: uniforme y suave sobre el rostro. Las sombras duras sobre la boca hacen que la zona redibujada destaque.",
+            "Tamaño del rostro: debe ocupar buena parte del encuadre. Los rostros pequeños en planos generales dan al modelo pocos píxeles con que trabajar, y el resultado queda blando.",
+            "Audio: una sola voz, seca (poca reverberación de sala), sin música debajo y sin saturación.",
+            "Duración: revisa los límites de la herramienta. Muchas limitan la duración del clip o del audio total, y los clips largos se desincronizan más. Los segmentos cortos son más fáciles de revisar y repetir."
+          ]
+        },
+        {
+          "note": "En nuestras pruebas, una voz limpia y seca importa más que la imagen del rostro. La reverberación, la música de fondo y el ruido de multitud provocan movimiento de boca en sonidos que no son habla, como un golpe de batería o una respiración."
+        }
+      ]
+    },
+    {
+      "h": "Preparar el audio y un ejemplo completo",
+      "body": [
+        "Trata el audio como el maestro y el video como algo que lo sigue. Aquí tienes un ejemplo completo: una frase de 12 segundos en inglés de un clip de busto parlante, doblada al español con lip sync para un video corto vertical.",
+        {
+          "ol": [
+            "Exporta el habla original y transcríbela. Un transcriptor basado en Whisper, por ejemplo la herramienta de voz a texto de cv.cm, te da marcas de tiempo para cada línea.",
+            "Traduce la frase y acórtala para que dure unos 12 segundos al hablarla. El español suele necesitar más tiempo que el inglés, así que recorta palabras en lugar de acelerar la voz.",
+            "Genera la voz en español, o grábala. Consulta nuestra guía de voz en off con IA para elegir la voz y corregir la pronunciación.",
+            "Límpiala: quita el ruido de fondo, mantén la voz seca y recorta el silencio inicial para que el primer sonido caiga donde el hablante empieza a mover la boca.",
+            "Corta el audio al segmento exacto que usará la herramienta, con un cortador de audio, en lugar de dejar que la herramienta elija un trozo de un archivo más largo.",
+            "Conviértelo a un formato sencillo que la herramienta acepte y aplica el lip sync al clip de video de 12 segundos.",
+            "Vuelve a poner el audio limpio sobre el resultado y comprueba la sincronía a pantalla completa, fotograma a fotograma, en los sonidos p, b y m."
+          ]
+        },
+        {
+          "code": "# 1. Extract a mono 48 kHz WAV from the source clip\nffmpeg -i source.mp4 -vn -ac 1 -ar 48000 speech.wav\n\n# 2. Cut the dubbed voice to exactly 12 seconds, starting at 0.25 s\nffmpeg -ss 0.25 -t 12 -i dub_es.wav -ac 1 -ar 48000 dub_es_12s.wav\n\n# 3. Replace whatever audio the tool returned with your own clean track\nffmpeg -i lipsync.mp4 -i dub_es_12s.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "El paso 3 importa más de lo que parece. Cuando una herramienta regenera o recodifica la banda sonora, el audio puede empezar algo tarde mientras la imagen sigue el tiempo original. Con modelos de video que renderizan el audio por sí mismos, hemos medido desfases de alrededor de un segundo. Antes de decidir que la sincronía está mal, vuelve a poner tu propio audio sobre el clip con el comando anterior y comprueba de nuevo.",
+        "Para una foto parlante, los pasos de audio son los mismos. Algunas herramientas también aceptan una muestra de voz para definir la voz; una muestra limpia de 3 segundos suele bastar. Elige la frase más fuerte y continua, y ten en cuenta que algunas herramientas limitan la duración total de todo el audio de referencia combinado."
+      ]
+    },
+    {
+      "h": "Artefactos habituales y cómo corregirlos",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Artefacto",
+              "Causa probable",
+              "Solución"
+            ],
+            "rows": [
+              [
+                "Dientes borrosos o emborronados",
+                "La zona de la boca se redibuja a baja resolución, o el rostro es pequeño en el encuadre",
+                "Usa un plano más cercano; aplica el lip sync a un recorte del rostro y vuelve a componerlo; amplía la resolución solo después del montaje final"
+              ],
+              [
+                "La sincronía se desvía hacia el final del clip",
+                "Clip largo, audio recodificado o frecuencia de fotogramas distinta",
+                "Divide en segmentos más cortos; usa frecuencia de fotogramas constante; sustituye el audio por tu pista maestra"
+              ],
+              [
+                "La boca se mueve durante el silencio o la música",
+                "Ruido, música o reverberación en el audio",
+                "Usa una voz aislada y seca; silencia los huecos entre líneas"
+              ],
+              [
+                "Los labios fallan de perfil",
+                "Se ve muy poca boca",
+                "Elige tomas frontales o corta a otro plano durante los momentos de perfil"
+              ],
+              [
+                "El rostro ya no se parece a la persona",
+                "El modelo repinta en exceso la parte inferior del rostro",
+                "Usa un fotograma de referencia más sólido de la misma persona; reduce el área o la intensidad si la herramienta lo permite"
+              ],
+              [
+                "Las notas largas cantadas se ven congeladas",
+                "El modelo ve una sola vocal larga y deja de moverse",
+                "Añade pequeños movimientos de cabeza y mandíbula en el original, o corta durante las notas largas"
+              ],
+              [
+                "Costura visible alrededor de la mandíbula",
+                "El color o la nitidez difieren entre la boca nueva y el rostro",
+                "Iguala el grano y el color en el montaje; evita la luz dura sobre la línea de la mandíbula"
+              ]
+            ]
+          }
+        },
+        "Ampliar la resolución ayuda con los resultados blandos, pero hazlo una sola vez, después del montaje, y conserva una exportación maestra. Cada codificación adicional, incluida la que hace una aplicación social al subir el video, añade artefactos alrededor de la boca, justo donde primero mira el espectador."
+      ]
+    },
+    {
+      "h": "Consentimiento, normas sobre deepfakes y etiquetado",
+      "body": [
+        "El lip sync cambia lo que una persona parece decir. Eso es exactamente lo que regulan las normas sobre deepfakes, así que trata el consentimiento y las etiquetas como parte del flujo de trabajo, no como algo de última hora.",
+        {
+          "ul": [
+            "Usa solo rostros y voces que sean tuyos o para los que tengas permiso por escrito, con el propósito indicado. Doblar a otros idiomas el video de un cliente es un caso claro; hacer que una figura pública diga palabras nuevas, no.",
+            "YouTube pide a los creadores que revelen el contenido realista alterado o sintético, incluido el que hace que una persona real parezca decir o hacer algo que no dijo ni hizo. YouTube también ofrece su propio lip sync experimental para videos doblados automáticamente en canales seleccionados.",
+            "La Ley de IA de la UE (artículo 50) obliga a los responsables del despliegue a revelar el audio y el video generados o manipulados con IA que constituyan una ultrasuplantación (deepfake). En las obras evidentemente artísticas, creativas, satíricas o de ficción, la obligación se limita a revelar la existencia del contenido de un modo que no estropee la obra.",
+            "Las Medidas de China para el etiquetado de contenido sintético generado por IA, en vigor desde el 1 de septiembre de 2025, exigen etiquetas visibles en el video sintético, también al principio, y exigen a los usuarios declarar el contenido de IA al publicarlo en plataformas como Douyin, Kuaishou, Xiaohongshu o WeChat Channels.",
+            "Evita los rostros de menores y nunca uses el lip sync para crear contenido sexual, difamatorio o fraudulento. Esos usos están prohibidos en las grandes plataformas y son ilegales en muchos lugares, con o sin etiqueta."
+          ]
+        },
+        "Nuestra guía sobre etiquetar contenido de IA explica cómo funciona la etiqueta de IA de cada plataforma."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es la mejor forma de hacer una foto parlante?",
+      "a": "Empieza con una foto nítida y frontal, con luz suave y la boca relajada y ligeramente abierta, y combínala con una grabación de voz limpia y seca. Mantén los clips cortos y genera varias tomas."
+    },
+    {
+      "q": "¿Funciona el lip sync con IA con canciones?",
+      "a": "Sí, pero es más difícil que con el habla. Usa una pista de voz aislada en lugar de la canción completa, divide la canción en frases y revisa con atención las notas largas y la letra rápida."
+    },
+    {
+      "q": "¿Por qué mi video con lip sync está desincronizado?",
+      "a": "Las causas más comunes son una pista de audio recodificada o desplazada por la herramienta, un clip largo que se desvía o una frecuencia de fotogramas distinta. Sustituye el audio por tu propia pista y trabaja en segmentos más cortos."
+    },
+    {
+      "q": "¿Es legal el lip sync con IA?",
+      "a": "Hacer lip sync con tu propio rostro o con uno que tengas permiso para usar suele estar bien. Hacer que una persona real parezca decir cosas que no dijo puede infringir las normas de las plataformas y las leyes sobre fraude, difamación y deepfakes, y normalmente requiere etiqueta."
+    },
+    {
+      "q": "¿El lip sync de un doblaje cambia el rostro del hablante?",
+      "a": "Redibuja la boca y la parte inferior del rostro. Las buenas herramientas mantienen la identidad, pero los ajustes fuertes o los rostros de baja resolución pueden hacer que la persona se vea algo distinta, así que compara con el original."
+    }
+  ]
+}

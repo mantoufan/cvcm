@@ -1,0 +1,161 @@
+{
+  "title": "Làm MV bằng AI: cách tạo video nhạc AI khớp nhịp từng cảnh — cv.cm",
+  "description": "Cách làm MV bằng AI: xử lý bản quyền bài hát, lập bản đồ BPM và phần nhạc, chia cảnh theo nhịp, tạo video từng đoạn rồi kiểm tra độ khớp âm thanh.",
+  "h1": "Cách làm MV bằng AI (video nhạc AI)",
+  "answer": "Để làm MV bằng AI, hãy bắt đầu từ một bài hát bạn có quyền sử dụng, rồi lập bản đồ bài hát: BPM, các phần và mốc phách mạnh. Lên kế hoạch mỗi câu nhạc một cảnh trên lưới nhịp, cố định nhân vật và phong cách, rồi tạo từng đoạn với đoạn nhạc do chính bạn cắt. Dựng cắt đúng phách, sau đó ghép lại bài hát gốc và kiểm tra độ khớp.",
+  "sections": [
+    {
+      "h": "Công cụ tạo MV bằng AI thực chất làm gì",
+      "body": [
+        "Công cụ tạo video nhạc AI biến prompt, ảnh hoặc clip tham chiếu thành các đoạn video ngắn, thường dài vài giây. Tại thời điểm viết bài, chưa có công cụ nào tạo ra trọn vẹn một MV từ bài hát ba phút chỉ trong một lần một cách đáng tin cậy. Cách làm thực tế giống nhau với Veo, Kling, Seedance, Runway, Hailuo hay bất kỳ mô hình tương tự: chia bài hát thành nhiều đoạn, tạo một clip cho mỗi đoạn, rồi ghép lại trong phần mềm dựng như CapCut, Premiere Pro hoặc DaVinci Resolve.",
+        "Nghĩa là bài hát điều khiển mọi thứ. Mô hình chỉ tạo ra những hình ảnh chuyển động; còn bạn quyết định mỗi hình bắt đầu và kết thúc ở đâu. Phần việc khiến MV trông chuyên nghiệp nằm ở trước và sau khi tạo video: lập bản đồ bài hát, chia cảnh theo nhịp và kiểm tra độ khớp ở cuối.",
+        {
+          "note": "Hướng dẫn này dành cho video theo bài hát đăng lên Shorts, Reels, TikTok, Douyin hoặc một video YouTube đầy đủ. Nếu bạn cần vũ đạo, hãy xem hướng dẫn về video AI nhảy. Nếu cần giữ nhất quán qua nhiều cảnh, hãy xem hướng dẫn về video AI nhiều cảnh."
+        }
+      ]
+    },
+    {
+      "h": "Bước 1: Đảm bảo bạn được phép dùng bài hát",
+      "body": [
+        "Hãy kiểm tra bản quyền trước khi tốn bất kỳ credit nào. Video dùng bài hát mà bạn không được phép đăng sẽ bị tắt tiếng, chặn hoặc khiếu nại bản quyền. Trên YouTube, mọi video tải lên đều được Content ID quét; khi khớp với tệp tham chiếu của chủ sở hữu, họ quyết định chặn video, chạy quảng cáo trên đó hoặc chỉ theo dõi, và lựa chọn này có thể khác nhau tùy quốc gia.",
+        {
+          "ul": [
+            "Bài hát của chính bạn: không vấn đề gì, nhưng hãy đăng ký với đơn vị phát hành nhạc nếu muốn Content ID đứng về phía bạn.",
+            "Bản nhạc có giấy phép: đọc kỹ giấy phép về việc ghép vào video (sync) và về từng nền tảng bạn định đăng. Giấy phép nhạc nền cho video ngắn có thể không bao gồm một MV đầy đủ.",
+            "Bài hát do AI tạo (ví dụ từ Suno): đọc điều khoản của công cụ về sử dụng thương mại và quyền sở hữu theo gói của bạn. Điều khoản khác nhau theo gói và thay đổi theo thời gian.",
+            "Bài hit thương mại không thuộc về bạn: chỉ dùng qua thư viện nhạc có sẵn trong ứng dụng của nền tảng, nơi nền tảng giữ giấy phép. Không xuất ra rồi đăng lại ở nơi khác."
+          ]
+        },
+        "YouTube cũng yêu cầu người sáng tạo khai báo nhạc do AI tạo khi đó là trọng tâm của video, cũng như cảnh quay AI chân thực về người hoặc địa điểm có thật. Hướng dẫn gắn nhãn nội dung AI của chúng tôi giải thích quy định của từng nền tảng và khu vực."
+      ]
+    },
+    {
+      "h": "Bước 2: Chia bài hát thành lưới nhịp",
+      "body": [
+        "Hãy viết ra dòng thời gian của bài hát trước khi viết bất kỳ prompt nào. Bạn cần bốn thứ: nhịp độ, các phần, các phách mạnh và vài sự kiện âm nhạc nổi bật.",
+        {
+          "ol": [
+            "Tìm BPM. Gõ theo nhịp điệp khúc; ví dụ, máy đếm nhịp của cv.cm có chức năng tap tempo cho ra BPM sau vài lần chạm.",
+            "Đánh dấu các phần bằng mốc thời gian: intro, đoạn verse, pre-chorus, điệp khúc (chorus), bridge, outro.",
+            "Đánh dấu phách mạnh đầu tiên của mỗi phần, nốt to nhất và mọi đoạn ngắt hoặc drop. Đây là những điểm mà một cú cắt hoặc chuyển động lớn nên rơi vào.",
+            "Tính độ dài một câu nhạc. Với nhịp 4/4, một ô nhịp có 4 phách nên kéo dài 240 / BPM giây. Ở 120 BPM, một ô nhịp là 2 giây và một câu hai ô nhịp (một eight-count) là 4 giây."
+          ]
+        },
+        "Câu nhạc 4 giây là đơn vị rất tiện vì gần bằng độ dài clip ngắn nhất mà nhiều mô hình chấp nhận. Ở 90 BPM, một ô nhịp khoảng 2,67 giây nên một eight-count khoảng 5,3 giây; ở 128 BPM là 3,75 giây. Hãy chọn độ dài cảnh bằng số nguyên câu nhạc, rồi cắt bớt phần lẻ dưới một giây khi dựng."
+      ]
+    },
+    {
+      "h": "Bước 3: Chia cảnh trên lưới nhịp và cố định phong cách",
+      "body": [
+        "Biến dòng thời gian thành danh sách cảnh quay (shot list). Mặc định mỗi câu nhạc một cảnh; bài nhanh có thể mỗi ô nhịp một cảnh ở đoạn điệp khúc. Mỗi dòng nên ghi khoảng thời gian, phần nhạc, máy quay thấy gì và hành động chính rơi vào sự kiện âm nhạc nào.",
+        {
+          "table": {
+            "head": [
+              "Thời gian",
+              "Phần nhạc",
+              "Cảnh quay",
+              "Rơi vào"
+            ],
+            "rows": [
+              [
+                "0,0–4,0 giây",
+                "Intro",
+                "Cận cảnh, ca sĩ đã nhìn thẳng vào máy quay, ánh sáng ấm từ cửa sổ, từ từ đẩy máy vào",
+                "Phách mạnh đầu tiên ở 0,0 giây: mở mắt nhìn vào ống kính"
+              ],
+              [
+                "4,0–8,0 giây",
+                "Verse, câu 1",
+                "Trung cảnh, đi dọc con phố ướt lúc chạng vạng, máy quay cầm tay bám theo",
+                "Bước chân đúng phách 1 của mỗi ô nhịp"
+              ],
+              [
+                "8,0–12,0 giây",
+                "Verse, câu 2",
+                "Cận cảnh, hát một câu, lip sync",
+                "Câu hát bắt đầu ở 8,2 giây"
+              ],
+              [
+                "12,0–16,0 giây",
+                "Pre-chorus",
+                "Góc thấp, gió nổi lên, tà áo khoác bay",
+                "Nốt to nhất ở 15,5 giây: quay sang máy quay"
+              ],
+              [
+                "16,0–20,0 giây",
+                "Điệp khúc",
+                "Toàn cảnh, sân thượng, đèn thành phố, quay vòng sang trái",
+                "Cắt đúng vào phách mạnh của điệp khúc"
+              ]
+            ]
+          }
+        },
+        "Cảnh mở đầu quan trọng nhất. Trên thực tế, khung hình đầu tiên quyết định có bao nhiêu người xem rời đi trong hai đến ba giây đầu. Hãy làm cho khung hình đầu tiên cũng là khung đẹp nhất: sáng, khuôn mặt hiện rõ và đủ sáng, chủ thể đã chuyển động hoặc đang cười, khung hình cận hoặc trung để chủ thể chiếm phần lớn khung. Mờ dần từ màu đen, đầu cúi xuống hay căn phòng tối sẽ làm mất người xem trước khi bài hát bắt đầu. Nếu ý tưởng cần dựng bối cảnh câu chuyện, hãy đặt nó vào đạo cụ và không gian, đừng dùng một đoạn mở đầu chậm.",
+        "Sau đó cố định diện mạo. Làm một character sheet (góc nhìn trước, bên, sau, trang phục, tóc, màu sắc) và một dòng mô tả phong cách ngắn, dán nguyên văn vào mọi prompt, chẳng hạn ống kính, ánh sáng và tông màu. Hướng dẫn về nhân vật AI nhất quán của chúng tôi giải thích cách tạo character sheet. Mỗi ảnh tham chiếu mới bạn tạo đều phải được đối chiếu với sheet đó, từng nhân vật một: quần áo, bàn tay, phụ kiện, tóc, màu sắc và tỷ lệ chiều cao. Công cụ chỉnh sửa ảnh âm thầm thay đổi những chi tiết bạn không yêu cầu, rồi mô hình video sao chép lỗi đó vào mọi cảnh."
+      ]
+    },
+    {
+      "h": "Bước 4: Tạo từng đoạn với âm thanh đã cắt sẵn",
+      "body": [
+        "Hãy tạo mỗi cảnh thành một đoạn riêng, kèm đoạn bài hát tương ứng. Tự cắt âm thanh cho từng đoạn, ví dụ bằng công cụ cắt audio của cv.cm, thay vì tải cả bài hát lên và để mô hình tự chọn đoạn. Như vậy dòng thời gian của bạn và của mô hình sẽ trùng nhau.",
+        "Nhiều mô hình chỉ nhận thời lượng cố định, như số giây nguyên hoặc các mức 5, 10, 15 giây. Hãy lên kế hoạch dựng theo các độ dài đó và cắt mỗi đoạn âm thanh đúng bằng độ dài clip sẽ yêu cầu. Một số công cụ còn giới hạn tổng âm thanh tham chiếu, ví dụ khoảng 30 giây cho tất cả clip tham chiếu, và giới hạn độ dài prompt ở vài nghìn ký tự. Nếu cần thêm giọng nói tham chiếu, hãy tính cả vào: đoạn nhạc cộng mẫu giọng phải nằm trong giới hạn. Một mẫu giọng sạch dài 3 giây thường là đủ; hãy lấy câu to và liền mạch nhất.",
+        "Viết prompt như một dòng thời gian, nêu cả giây lẫn sự kiện âm nhạc. Chỉ viết những gì máy quay nhìn thấy. Mô hình video hiểu ẩn dụ theo nghĩa đen: 'giọng cô vút lên như chim' có thể đưa một con chim thật vào cảnh, và 'thành phố như một bức tranh' có thể biến phông nền thật thành tranh minh họa phẳng.",
+        {
+          "code": "Segment 4 (12.0-16.0 s of the song, pre-chorus), 4 seconds, 9:16.\nSame woman as the reference: short black bob, cream trench coat, silver hoop earrings.\nLow-angle medium shot on a rooftop at blue hour, city lights behind her, soft rim light.\n0-1 s: she stands facing left, wind moves her hair and coat.\n1-3 s: she turns slowly toward the camera, chin lifting, the coat swings out.\n3.5 s (loudest note): she looks straight into the lens and opens her mouth to sing.\nCamera: slow push in from waist to chest height. No text on screen.",
+          "lang": "text"
+        },
+        "Với những câu có hát, hãy dùng lip sync. Hoặc tạo cảnh với giọng hát đã cắt làm đầu vào âm thanh nếu mô hình hỗ trợ, hoặc tạo cảnh trước rồi chạy lip sync theo âm thanh với giọng hát đã tách riêng. Cảnh chính diện cận và trung hoạt động tốt nhất; góc nghiêng và tay che gần miệng hay hỏng nhất. Hướng dẫn về lip sync AI của chúng tôi nói rõ đầu vào và cách khắc phục."
+      ]
+    },
+    {
+      "h": "Bước 5: Dựng đúng phách và kiểm tra độ khớp",
+      "body": [
+        "Đặt trọn bài hát gốc lên timeline trước, rồi thả từng đoạn vào đúng thời điểm bắt đầu đã lên kế hoạch. Đặt các điểm cắt vào phách mạnh hoặc các sự kiện nổi bật bạn đã đánh dấu. Cắt sớm hay muộn vài khung hình cũng dễ cảm nhận được ở đoạn drop của điệp khúc.",
+        "Khi mô hình tự tạo hoặc render lại nhạc nền, nhạc trong clip có thể bắt đầu muộn. Trong thử nghiệm của chúng tôi, độ lệch khoảng 1 giây trong khi chuyển động bám sát thời gian trong prompt. Vì vậy đừng bao giờ đánh giá độ khớp bằng âm thanh bên trong tệp đã tạo. Hãy thay bằng bài hát gốc trước:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Nếu một đoạn vẫn trông sớm hoặc muộn so với nhạc, hãy trượt nó đi vài khung hình nguyên trong phần mềm dựng thay vì tạo lại. Xem các câu lip sync ở kích thước đầy đủ; miệng lệch hai ba khung hình là nhìn thấy được ở cận cảnh.",
+        "Clip tạo ra thường ở 720p hoặc 1080p và chi tiết hơi mềm. Hãy nâng độ phân giải sau khi dựng, không phải trước, để chỉ nâng những gì bạn giữ lại, và giữ một bản xuất master. Tải đúng bản master đó lên từng nền tảng; mã hóa lại tệp nhiều lần, ví dụ tải từ ứng dụng này rồi đăng sang ứng dụng khác, sẽ làm lỗi nén chồng chất."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp và giới hạn thực tế",
+      "body": [
+        {
+          "ul": [
+            "Viết prompt cho cả bài hát một lúc. Mô hình không thể theo một cấu trúc ba phút; hãy chia thành các cảnh dài bằng một câu nhạc.",
+            "Cãi nhau với ảnh tham chiếu. Video hoặc ảnh tham chiếu là mỏ neo mạnh hơn văn bản rất nhiều. Nếu nó có lóa sáng ống kính, đạo cụ hoặc ánh sáng bạn không muốn, mô hình vẫn có xu hướng chép lại. Hãy sửa tham chiếu (cắt, che, chỉnh màu) trước khi tạo.",
+            "Nhân vật bị trôi. Không có sheet và dòng phong cách cố định thì khuôn mặt, trang phục sẽ đổi giữa các cảnh. Đối chiếu từng đoạn với sheet trước khi chấp nhận.",
+            "Chữ trên màn hình. Lời bài hát và tiêu đề tạo ngay trong video thường sai chính tả. Hãy thêm chữ trong phần mềm dựng.",
+            "Ca sĩ có thật. Đừng làm video chân thực cho thấy một nghệ sĩ có thật hát bài họ không thu âm hay biểu diễn. Việc này cần sự đồng ý và khai báo, và ở nhiều nơi vi phạm quyền nhân thân và quyền về hình ảnh."
+          ]
+        },
+        "Hãy chuẩn bị tạo hai đến bốn lần cho những cảnh khó nhất, thường là cận cảnh có hát và cảnh mở đầu điệp khúc. Phần lớn chất lượng đến từ bản đồ nhịp và khâu dựng, không phải từ một lần tạo hoàn hảo."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "AI có thể tự động làm MV từ một bài hát không?",
+      "a": "Một số công cụ tự cắt các clip đã tạo theo nhịp, nhưng tại thời điểm viết bài, kết quả còn chung chung. Muốn video bám theo lời bài hát và cấu trúc bản nhạc, hãy tự lên kế hoạch các cảnh và tạo từng đoạn một."
+    },
+    {
+      "q": "Làm một MV bằng AI mất bao lâu?",
+      "a": "Một video ngắn 30 giây với sáu đến tám cảnh có thể mất trọn một buổi chiều, kể cả tạo lại. Một bài hát đầy đủ ba phút có từ 40 cảnh trở lên, nên hãy dự trù vài ngày và tái sử dụng character sheet cùng dòng phong cách đã cố định."
+    },
+    {
+      "q": "Tôi có thể dùng bài hát nổi tiếng trong MV AI không?",
+      "a": "Chỉ khi bạn có giấy phép. Trong TikTok, Reels hay Shorts, bạn có thể dùng bài hát từ thư viện nhạc của ứng dụng, nơi nền tảng giữ quyền; bản tự tải lên nhiều khả năng sẽ bị tắt tiếng, chặn hoặc khiếu nại."
+    },
+    {
+      "q": "Tôi có phải gắn nhãn cho MV AI không?",
+      "a": "Trên YouTube, bạn phải khai báo nội dung tổng hợp chân thực và nhạc do AI tạo khi đó là trọng tâm của video. Các nền tảng và khu vực khác có nhãn riêng; xem hướng dẫn gắn nhãn nội dung AI của chúng tôi."
+    },
+    {
+      "q": "Vì sao MV AI của tôi bị lệch nhạc?",
+      "a": "Thường là do mô hình dịch chuyển nhạc bên trong clip đã tạo, đôi khi khoảng một giây, trong khi chuyển động vẫn đúng giờ. Hãy thay âm thanh bằng bài hát gốc trước khi đánh giá độ khớp, và tự cắt mỗi đoạn âm thanh đúng bằng độ dài đoạn video."
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "title": "Lồng tiếng AI cho video: cách làm giọng tự nhiên — cv.cm",
+  "description": "Cách lồng tiếng AI cho video: chọn giọng, viết cho tai nghe, khớp nhịp cắt, sửa phát âm, chuẩn -14 LUFS, lồng tiếng đa ngôn ngữ và chỉ nhân bản giọng khi được phép.",
+  "h1": "Làm sao để lồng tiếng AI nghe tự nhiên?",
+  "answer": "Hãy chọn giọng hợp với khán giả, viết lại kịch bản để nghe cho dễ (câu ngắn, không liệt kê dãy số), tạo giọng từng câu một, và sửa từ đọc sai bằng cách viết lại theo cách đọc hoặc dùng SSML nếu công cụ tạo giọng hỗ trợ. Dựng video theo giọng, chuẩn hóa về khoảng -14 LUFS cho mạng xã hội, và chỉ nhân bản giọng khi bạn có sự cho phép bằng văn bản.",
+  "sections": [
+    {
+      "h": "Quy trình lồng tiếng AI trong tám bước",
+      "body": [
+        "Lồng tiếng AI là phần thuyết minh do giọng chuyển văn bản thành giọng nói (text-to-speech) dùng mạng nơ-ron tạo ra, thay cho micro. Mô hình giọng chỉ là một phần của công việc. Phần lớn chất lượng đến từ kịch bản, nhịp và bản mix. Một quy trình đáng tin cậy cho video ngắn hoặc video giải thích như sau:",
+        {
+          "ol": [
+            "Hoàn thiện kịch bản và tự đọc to một lần, có bấm giờ.",
+            "Chọn giọng và thử trên hai câu khó nhất của kịch bản, không phải đoạn mẫu.",
+            "Viết lại những câu nghe sai khi đọc thành tiếng: câu dài, từ viết tắt, con số, tên thương hiệu.",
+            "Tạo giọng theo từng đoạn ngắn, mỗi lần một nhịp hoặc một câu, để làm lại bản lỗi mà không đụng đến phần còn lại.",
+            "Sửa phát âm bằng cách viết lại theo cách đọc hoặc dùng thẻ SSML.",
+            "Đặt giọng lên timeline trước, rồi cắt hình theo giọng.",
+            "Làm sạch và chuẩn hóa giọng, sau đó mix nhạc nền bên dưới.",
+            "Xuất file, nghe thử trên loa điện thoại và tai nghe, rồi thêm nhãn AI nếu nền tảng yêu cầu."
+          ]
+        },
+        "Trang này nói về dùng giọng AI cho video. Về cách giọng nói được tổng hợp bên trong, xem hướng dẫn chuyển văn bản thành giọng nói của chúng tôi."
+      ]
+    },
+    {
+      "h": "Chọn giọng cho video",
+      "body": [
+        "Hầu hết công cụ tạo giọng lồng tiếng, như ElevenLabs, các giọng tích hợp trong CapCut hay Jianying, hoặc TTS trên các nền tảng đám mây lớn, đều có hàng chục giọng. Hãy chọn theo công việc, đừng chọn theo bản demo. Văn bản demo được viết để làm giọng nghe hay; kịch bản của bạn sẽ có tên sản phẩm, con số và những câu ngắn dứt khoát.",
+        {
+          "table": {
+            "head": [
+              "Loại video",
+              "Đặc điểm giọng nên tìm",
+              "Nên tránh"
+            ],
+            "rows": [
+              [
+                "Mẹo nhanh và danh sách",
+                "Sáng, tông trung, phụ âm rõ, hơi nhanh",
+                "Giọng thều thào hoặc quá trầm, dễ nhòe khi đọc nhanh"
+              ],
+              [
+                "Kể chuyện",
+                "Ấm, quãng cao độ rộng, ngắt nghỉ tự nhiên",
+                "Giọng đều đều kiểu “phát thanh viên”"
+              ],
+              [
+                "Hướng dẫn và quay màn hình",
+                "Điềm tĩnh, trung tính, nhịp đều",
+                "Cảm xúc mạnh làm phân tán khỏi các bước"
+              ],
+              [
+                "Video sản phẩm hoặc thương hiệu",
+                "Hợp với độ tuổi và vùng miền của thương hiệu",
+                "Giọng giống người nổi tiếng, gợi cảm giác được họ quảng cáo"
+              ],
+              [
+                "Nhân vật hoặc hài",
+                "Âm sắc riêng biệt, giàu biểu cảm",
+                "Giọng nghe giống một nhân vật công chúng có thật"
+              ]
+            ]
+          }
+        },
+        "Mỗi kênh hay mỗi series nên dùng một giọng. Người xem quen dần với giọng đó, còn đổi giọng giữa các tập khiến series giống như những video rời rạc. Hãy ghi lại tên giọng và mọi thiết lập (tốc độ, giá trị ổn định hoặc phong cách, mô hình) vào một ghi chú, vì nhà cung cấp cập nhật mô hình và cùng thiết lập đó có thể cho kết quả lệch đi."
+      ]
+    },
+    {
+      "h": "Viết cho tai nghe và khớp nhịp với cảnh cắt",
+      "body": [
+        "Văn bản đọc trên trang giấy hay thường nghe cứng khi nói thành tiếng. Người nghe không thể cuộn ngược lại. Hãy viết sao cho mỗi câu nghe một lần là hiểu.",
+        {
+          "ul": [
+            "Mỗi câu một ý, tốt nhất dưới 15 từ.",
+            "Đặt từ quan trọng ở cuối câu, nơi giọng tự nhiên hạ xuống.",
+            "Viết con số đúng như cách đọc: “khoảng hai nghìn” thay vì “~2.000”.",
+            "Viết đầy đủ các từ viết tắt, trừ khi người ta đọc chúng từng chữ cái.",
+            "Dùng dấu phẩy và dấu chấm để điều khiển nhịp. Hầu hết giọng ngắt ở dấu chấm và gần như không ngắt ở dấu phẩy."
+          ]
+        },
+        {
+          "code": "Before (written):\n  Our app supports 4K/60fps export, HDR & batch processing (Win/Mac).\n\nAfter (for the ear):\n  You can export in 4K at sixty frames per second.\n  It handles HDR. And it works in batches, on Windows and Mac.",
+          "lang": "text"
+        },
+        "Về nhịp, hãy tính khoảng 2,5 đến 3 từ mỗi giây cho lời đọc tiếng Anh rõ ràng. Với video ngắn, hãy cắt hình theo giọng chứ không làm ngược lại: đặt giọng lên timeline trước, rồi để mỗi cú cắt rơi đúng vào đầu một câu mới hoặc vào từ khóa. Nếu một đoạn giọng quá dài so với cảnh, hãy viết câu ngắn lại thay vì tăng tốc giọng. Trên thực tế, tăng tốc quá khoảng 10 phần trăm thường làm giọng AI nghe vội và thiếu tự nhiên.",
+        "Để nghe nhịp trước khi trả tiền tạo giọng, bạn có thể đọc kịch bản bằng giọng của thiết bị, ví dụ trong công cụ chuyển văn bản thành giọng nói của cv.cm, dùng các giọng có sẵn của trình duyệt và cho phép đổi tốc độ. Công cụ này không xuất âm thanh và không phải giọng phòng thu; nó chỉ để kiểm tra nhịp. Nếu muốn dùng giọng của chính mình làm bản dẫn, hãy thu bằng ứng dụng ghi âm rồi cắt theo đó."
+      ]
+    },
+    {
+      "h": "Sửa phát âm: viết lại cách đọc, ngắt và phiên âm",
+      "body": [
+        "Tên riêng, thương hiệu, từ viết tắt và từ mượn là nơi giọng AI hay sai nhất. Hãy thử các cách sửa sau theo thứ tự, từ đơn giản nhất đến chính xác nhất.",
+        {
+          "ol": [
+            "Viết lại từ theo cách đọc ngay trong kịch bản: “Nguyen” thành “Win”, “GIF” thành “jif” hoặc “gif” tùy lựa chọn của bạn. Giữ một danh sách các cách viết lại cho từng dự án.",
+            "Thêm dấu câu để buộc ngắt hoặc đổi trọng âm: dấu phẩy trước một cái tên, hoặc dấu gạch nối trong từ ghép.",
+            "Dùng SSML nếu công cụ hỗ trợ. SSML (Speech Synthesis Markup Language) là chuẩn của W3C. Phần tử `break` chèn một quãng ngắt với `time` như `400ms`, `sub` thay chữ viết bằng nội dung cần đọc, và `phoneme` cho phát âm chính xác bằng IPA qua thuộc tính `ph`.",
+            "Dùng từ điển phát âm của công cụ nếu có, để cách sửa áp dụng cho mọi kịch bản sau này."
+          ]
+        },
+        {
+          "code": "<speak>\n  Welcome to <sub alias=\"see vee dot see em\">cv.cm</sub>.\n  <break time=\"400ms\"/>\n  Today we test the <phoneme alphabet=\"ipa\" ph=\"ˈkiːnwɑː\">quinoa</phoneme> recipe.\n</speak>",
+          "lang": "text"
+        },
+        {
+          "note": "Mức hỗ trợ SSML khác nhau giữa các nhà cung cấp. Một số nhận đủ chuẩn, một số chỉ nhận `break`, và một số bỏ qua thẻ hoặc đọc to cả thẻ. Hãy thử một câu có gắn thẻ trước khi gắn thẻ cho cả kịch bản."
+        }
+      ]
+    },
+    {
+      "h": "Mức âm lượng chuẩn cho video mạng xã hội",
+      "body": [
+        "Độ lớn âm thanh được đo bằng LUFS (đơn vị độ ồn so với toàn thang) theo thuật toán trong ITU-R BS.1770, cũng là phép đo đứng sau khuyến nghị phát sóng EBU R 128. EBU R 128 đặt -23 LUFS cho chương trình phát sóng. Không phải nền tảng phát trực tuyến và mạng xã hội nào cũng công bố mức mục tiêu, nhưng khoảng -14 LUFS tích hợp với đỉnh thực (true peak) không quá khoảng -1 dBTP là mức làm việc phổ biến cho video trực tuyến.",
+        "Hầu hết nền tảng lớn đều chuẩn hóa âm lượng phát lại, nên video làm to hơn nhiều sẽ bị hạ xuống mà chẳng được lợi gì, còn việc nén giới hạn mạnh để đạt mức đó khiến giọng nghe gắt. Video làm nhỏ hơn nhiều có thể chỉ được tăng lên ít hơn bạn nghĩ. Nhắm gần mức mục tiêu phổ biến sẽ tránh được cả hai vấn đề.",
+        {
+          "code": "# Measure, then normalize a voiceover to about -14 LUFS, true peak -1 dBTP (ffmpeg loudnorm)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=summary -f null -\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11 -ar 48000 voice_norm.wav",
+          "lang": "bash"
+        },
+        "Hãy chuẩn hóa bản mix cuối chứ không chỉ riêng giọng. Trên thực tế, nhạc nền dưới lời nói nên nhỏ hơn giọng khá nhiều; để nhỏ hơn khoảng 12 đến 20 dB khi có người nói là điểm khởi đầu hợp lý, rồi tăng lên giữa các câu. Luôn kiểm tra trên loa điện thoại, nơi nhạc nhỏ biến mất và tần số cao chói tai lộ rõ."
+      ]
+    },
+    {
+      "h": "Lồng tiếng AI sang ngôn ngữ khác",
+      "body": [
+        "Lồng tiếng AI dịch kịch bản và tạo giọng nói bằng ngôn ngữ khác, thường với giọng gần giống bản gốc. Vấn đề thực tế chính là thời gian. Cùng một câu thường dài hơn trong tiếng Tây Ban Nha hay tiếng Đức so với tiếng Anh, nên bản lồng tiếng theo các cú cắt của bản tiếng Anh dễ bị tràn.",
+        {
+          "ul": [
+            "Viết kịch bản gốc có chừa dư địa. Nếu bản tiếng Anh dùng hết khung thời gian thì bản dịch sẽ không vừa. Để trống 10 đến 20 phần trăm mỗi nhịp trong bản gốc giúp việc lồng tiếng dễ hơn nhiều.",
+            "Dịch để nói, không dịch từng chữ. Yêu cầu người dịch hoặc mô hình ngôn ngữ rút gọn câu cho vừa số giây nhất định.",
+            "Kiểm tra lại tên, đơn vị và chữ trên màn hình ở mọi ngôn ngữ. Bản lồng tiếng đọc “miles” trong khi chú thích ghi kilômét trông rất cẩu thả.",
+            "Cắt lại khi cần. Thêm vài khung hình cho một cảnh rẻ hơn nhiều so với tăng tốc giọng đến mức nghe thiếu tự nhiên."
+          ]
+        },
+        "Các nền tảng đang bổ sung công cụ riêng. Tính năng lồng tiếng tự động của YouTube tạo các track âm thanh đã dịch và đánh dấu những video đó là lồng tiếng tự động. Trang trợ giúp của YouTube lưu ý rằng bản lồng tiếng có thể có lỗi về phát âm, tên riêng, thành ngữ và thuật ngữ, và cho phép nhà sáng tạo xem lại trước khi xuất bản. Hãy tận dụng bước xem lại này, hoặc tải lên track do chính bạn đã kiểm tra. Nếu muốn khẩu hình người nói khớp với ngôn ngữ mới, xem hướng dẫn lip sync AI của chúng tôi."
+      ]
+    },
+    {
+      "h": "Nhân bản giọng: sự đồng ý, công khai và pháp luật",
+      "body": [
+        "Nhân bản giọng tạo ra giọng tổng hợp từ bản ghi âm của một người thật. Vài giây giọng nói sạch có thể đủ để cho kết quả nhận ra được, vì vậy các quy tắc tập trung vào sự đồng ý và công khai.",
+        {
+          "ul": [
+            "Chỉ nhân bản giọng của chính bạn hoặc giọng bạn có văn bản cho phép sử dụng. Văn bản cho phép nên nêu giọng được dùng vào việc gì, trong bao lâu và có thể rút lại bằng cách nào.",
+            "Không nhân bản giọng người của công chúng, diễn viên hay nhà sáng tạo để bắt họ nói những điều họ không nói. Việc đó có thể vi phạm quy định nền tảng và, ở nhiều quốc gia, vi phạm luật về nhân thân, quyền hình ảnh hoặc lừa đảo.",
+            "Quy tắc công khai của YouTube yêu cầu gắn nhãn khi nội dung chân thực khiến một người thật có vẻ nói hoặc làm điều họ không làm. Trang trợ giúp của YouTube nêu việc nhân bản giọng của chính bạn để lồng tiếng là ví dụ không cần công khai.",
+            "Đạo luật AI của EU (Điều 50) yêu cầu bên triển khai phải công bố âm thanh và video do AI tạo ra hoặc bị chỉnh sửa cấu thành deepfake, với nghĩa vụ nhẹ hơn đối với tác phẩm rõ ràng mang tính nghệ thuật, sáng tạo hoặc châm biếm.",
+            "Biện pháp gắn nhãn nội dung tổng hợp do trí tuệ nhân tạo tạo ra của Trung Quốc, có hiệu lực từ ngày 1 tháng 9 năm 2025, yêu cầu nhà cung cấp gắn nhãn âm thanh tổng hợp, chẳng hạn bằng tín hiệu đọc thành lời hoặc nhịp điệu, và yêu cầu người dùng đăng nội dung đó phải khai báo và dùng chức năng gắn nhãn."
+          ]
+        },
+        "Một người dẫn chuyện tổng hợp chung chung đọc kịch bản của chính bạn hiếm khi là vấn đề pháp lý. Giọng nhân bản của một người thật thì có. Hướng dẫn gắn nhãn nội dung AI của chúng tôi trình bày chi tiết hơn về nhãn của các nền tảng."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Chuyển văn bản thành giọng nói và lồng tiếng AI khác nhau thế nào?",
+      "a": "Chuyển văn bản thành giọng nói là công nghệ biến văn bản thành lời nói. Lồng tiếng AI là phần thuyết minh hoàn chỉnh cho video: giọng đã chọn, kịch bản viết để nghe, nhịp khớp với cảnh cắt và bản mix sạch."
+    },
+    {
+      "q": "Có lồng tiếng AI miễn phí không?",
+      "a": "Nhiều công cụ tạo giọng có gói miễn phí với số phút giới hạn, ít giọng hơn hoặc không có quyền thương mại. Hãy kiểm tra giấy phép sử dụng thương mại trước khi đăng."
+    },
+    {
+      "q": "Giọng lồng tiếng nên to bao nhiêu cho TikTok hay Reels?",
+      "a": "Khoảng -14 LUFS tích hợp với đỉnh thực gần -1 dBTP là mức làm việc phổ biến cho video trực tuyến. Nền tảng chuẩn hóa âm lượng phát lại, nên làm to hơn nhiều cũng chẳng được lợi gì."
+    },
+    {
+      "q": "Vì sao giọng AI của tôi đọc sai tên?",
+      "a": "Mô hình đoán cách phát âm từ chính tả và dữ liệu huấn luyện. Hãy viết lại tên theo cách đọc, hoặc dùng thẻ phoneme SSML hay từ điển phát âm nếu công cụ hỗ trợ."
+    },
+    {
+      "q": "Tôi có phải công khai là dùng lồng tiếng AI không?",
+      "a": "Người dẫn chuyện tổng hợp chung chung thường không cần nhãn trên YouTube. Giọng chân thực khiến một người thật có vẻ nói điều họ chưa nói thì cần, và một số luật yêu cầu gắn nhãn âm thanh tổng hợp."
+    }
+  ]
+}

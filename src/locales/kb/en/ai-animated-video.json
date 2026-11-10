@@ -1,0 +1,142 @@
+{
+  "title": "AI Animated Video: Anime, Cartoon and 3D Shorts Step by Step — cv.cm",
+  "description": "How to make an AI animated video: lock an anime, cartoon or 3D style, build character sheets, make keyframes, animate them and avoid style drift.",
+  "h1": "How to Make an AI Animated Video",
+  "answer": "To make an AI animated video, choose one style and write it as a fixed style line, build a character sheet with a turnaround and expressions, then create a keyframe for each shot and animate it with image-to-video. Keep motion simple, add voice and lip sync, and check every shot against the sheet for style drift, extra limbs and wrong details.",
+  "sections": [
+    {
+      "h": "How AI animation works in practice",
+      "body": [
+        "An AI animated video generator produces anime, cartoon or 3D-style clips from text or images. Research such as AnimateDiff showed that a motion module trained on real videos can be plugged into many personalized text-to-image models, so a style that exists as an image model can also move. Commercial tools such as Veo, Kling, Runway, Seedance, Hailuo and Pika can all produce stylized animation at the time of writing.",
+        "Text-to-video alone gives you little control over a character's look from shot to shot. The method that holds up is keyframes first: you design the character, draw or generate one still image per shot in the locked style, and then animate each still with image-to-video. You fix problems in the stills, where they are cheap, not in the clips. Our guides to image-to-video and first and last frame video explain those modes in detail."
+      ]
+    },
+    {
+      "h": "Step 1: Choose a style and lock it",
+      "body": [
+        "Pick one style and describe it in words a model can use: line weight, shading, color palette, rendering. Then turn it into a style line you paste unchanged at the start of every image and video prompt.",
+        {
+          "table": {
+            "head": [
+              "Style",
+              "Describe it as",
+              "Watch out for"
+            ],
+            "rows": [
+              [
+                "2D anime",
+                "Clean thin line art, cel shading with two tones, flat background paintings, large expressive eyes",
+                "Line flicker between frames, eyes changing shape"
+              ],
+              [
+                "Flat cartoon",
+                "Thick even outlines, flat colors, no gradients, simple round shapes",
+                "Model adding 3D shading or texture"
+              ],
+              [
+                "3D stylized",
+                "Soft 3D render, rounded forms, subsurface skin, soft studio light, shallow depth of field",
+                "Plastic skin, faces that slide toward realism"
+              ],
+              [
+                "Paper cut-out or stop motion",
+                "Layered paper shapes, visible texture, slight frame-to-frame jitter",
+                "Smooth motion that breaks the effect"
+              ]
+            ]
+          }
+        },
+        "Describe the look; do not name a studio or a living artist. Prompts like 'in the style of' a famous studio push the model toward that studio's characters and can cause copyright and trademark trouble when you publish. Write the visual traits instead.",
+        {
+          "code": "Style line (paste first in every prompt):\n2D anime, clean thin black line art, two-tone cel shading, soft pastel palette of pink, cream and sky blue, painted watercolor backgrounds, gentle afternoon light, no text, no watermark.",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Step 2: Build character sheets",
+      "body": [
+        "A character sheet is the reference every shot is checked against. For each character, make one image with a turnaround (front, three-quarter, side, back) on a plain background, and a second image with five or six expressions (neutral, happy, sad, angry, surprised, talking). Write a short text description too: hair, eye color, outfit pieces, accessories, height relative to the other characters.",
+        "Every new reference image or keyframe must be checked against that sheet, character by character: clothing, hands or paws, accessories, hair, colors and height ratio. Image editing tools silently change details you did not ask about, such as a missing hairclip or a paw that grows a thumb, and the video model then copies the error. Our guide to consistent AI characters covers ways to keep the same face and outfit across images.",
+        "Keep designs simple. Fewer colors, a clear silhouette and no fine patterns animate better. Small characters in a wide shot are where models most often add extra limbs or merge fingers, so give each character enough of the frame."
+      ]
+    },
+    {
+      "h": "Step 3: Keyframes, then image-to-video",
+      "body": [
+        "Make one keyframe per shot in the locked style, at your final aspect ratio (9:16 for Shorts, Reels, TikTok and Douyin). For quick concept frames, a browser tool such as cv.cm's AI image generator is enough to try compositions, but its output is low resolution, so make final keyframes in a higher-resolution tool.",
+        "Then animate each keyframe. Choose how much motion you want:",
+        {
+          "ul": [
+            "Limited animation: small, readable moves such as blinking, hair moving in the wind, a head turn, a mouth talking, a slow camera push. This is how much TV anime works, and it is what AI handles most reliably.",
+            "Full motion: running, fighting, dancing, complex hand work. It looks impressive when it works, but it is where limbs break and the style drifts. Keep these shots short and use more takes."
+          ]
+        },
+        "Many models accept only fixed durations, such as whole seconds or tiers like 5, 10 or 15 s. Plan shots to those lengths and trim in the edit.",
+        "Write only what a camera would see. Video models render metaphors literally: 'the hills look like a watercolor painting' can turn part of the scene into a flat painted card, and 'she moves like a bird' can add a bird. The style line already sets the look; the shot line should say actions, materials and light.",
+        "A storyboard grid can also guide motion: one 9:16 image with, for example, 12 small panels, one pose per panel, and a prompt timeline written as 'panel 1 (top left) = 0–2 s'. Keep numbers and text off the panels, because the model copies them onto the screen, and check every panel at full size."
+      ]
+    },
+    {
+      "h": "Worked example: a 20-second shot list",
+      "body": [
+        "A small cartoon story for a vertical short: a cat baker and a mouse. Five shots, each animated from its own keyframe. The first shot opens on the best-looking frame: in practice the first frame decides the two- and three-second drop-off, so it should be bright, the face fully visible, the character already moving, in a close or medium shot.",
+        {
+          "code": "STYLE: flat cartoon, thick even outlines, flat colors, warm bakery palette, no text.\nCAST: Miso (orange cat, white apron, red scarf, round glasses); Pip (small grey mouse, blue cap).\n\n1. 0-4 s   Medium close-up. Miso already smiling, pulls a tray of round buns out of the oven, steam rises. Slow push in.\n2. 4-8 s   Close-up of the tray. One bun wobbles, then rolls off the edge. Static camera.\n3. 8-12 s  Low wide shot of the floor. Pip catches the bun with both arms and staggers back two steps.\n4. 12-16 s Medium two-shot. Miso leans down; Pip holds the bun up. Miso laughs, eyes close. (lip sync line)\n5. 16-20 s Close-up. Pip takes a big bite, cheeks puff out, ears pop up. Hold on his face to the end.",
+          "lang": "text"
+        },
+        "Check each finished clip against the sheet before moving on: the scarf is red in every shot, the glasses stay round, Pip has four fingers per hand, and Miso is about four times Pip's height."
+      ]
+    },
+    {
+      "h": "Voice, lip sync and sound",
+      "body": [
+        "Record or generate the dialogue first, then animate the talking shots to it. Cartoon lip sync is more forgiving than realistic faces: simple open, half-open and closed mouth shapes read well, and viewers accept stylized timing. Use an audio-driven lip-sync pass or a model that takes voice as input, with a clean, dry vocal. Front and three-quarter views sync best; side views and a paw in front of the mouth fail most often. See our guides to AI voiceover and AI lip sync.",
+        "If a tool caps reference audio, for example around 30 seconds in total, budget for it. A clean 3-second voice sample is usually enough to set a voice; take the loudest, most continuous sentence. When a model re-renders the soundtrack, the audio can drift from the motion, sometimes by about a second in our tests, so put the original track back with ffmpeg before judging sync:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Generated animation often comes out at 720p or 1080p. Upscale after the edit, once, and keep one master export instead of re-encoding the file again and again."
+      ]
+    },
+    {
+      "h": "What AI animation does badly, and the rules on copying",
+      "body": [
+        {
+          "ul": [
+            "Hands and paws: extra fingers, merged fingers, objects passing through hands.",
+            "Text: signs, labels and speech bubbles come out misspelled. Add all text in the editor.",
+            "Style drift: line weight, eye shape or shading slowly change within a clip or between shots. Re-anchor each shot on a checked keyframe.",
+            "Small characters: extra limbs and melted faces on figures that take up little of the frame.",
+            "Complex action: fights, crowds and fast spins break first. Cut them into shorter shots."
+          ]
+        },
+        "Do not copy a studio's or a franchise's characters, even with a new story. Characters are protected, and platforms remove infringing uploads. Make your own designs. The U.S. Copyright Office's report on copyrightability says purely AI-generated material is not protected by copyright, while human authorship, such as your own character designs, selection and arrangement, can be. Our guide to AI copyright and commercial use covers this in more depth.",
+        "Clearly non-realistic animation usually does not need YouTube's altered or synthetic content label, which targets realistic content. Other platforms and regions, such as the EU and China, have broader AI labeling duties; see our guide to labeling AI content."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can AI make an anime video from text?",
+      "a": "Yes, text-to-video models can produce anime-style clips, but the character usually changes from shot to shot. For a story with recurring characters, make keyframes from a character sheet and animate them with image-to-video."
+    },
+    {
+      "q": "How do I keep the same cartoon character in every AI shot?",
+      "a": "Use a character sheet with a turnaround and expressions, paste the same style line and character description into every prompt, and start each shot from a keyframe you checked against the sheet."
+    },
+    {
+      "q": "Can I make AI videos of existing anime characters?",
+      "a": "Fan videos of franchise characters infringe the rights holder's copyright and can be removed, and they cannot be monetized safely. Design original characters instead."
+    },
+    {
+      "q": "Why does my AI cartoon have extra fingers?",
+      "a": "Hands are a known weak point, especially on small characters and in fast motion. Give the character more of the frame, keep hand moves simple, and regenerate or fix the keyframe before animating."
+    },
+    {
+      "q": "Can I own the copyright to an AI animated video?",
+      "a": "In the United States, purely AI-generated material is not protected, but your human contributions, such as original designs and the edit, can be. Rules differ by country."
+    }
+  ]
+}

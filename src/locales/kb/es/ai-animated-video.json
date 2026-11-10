@@ -1,0 +1,142 @@
+{
+  "title": "Videos animados con IA: anime, cartoon y 3D paso a paso — cv.cm",
+  "description": "Cómo hacer videos animados con IA: fija un estilo anime, cartoon o 3D, crea hojas de personaje, genera fotogramas clave, anímalos y evita la deriva de estilo.",
+  "h1": "Cómo hacer videos animados con IA",
+  "answer": "Para hacer un video animado con IA, elige un solo estilo y escríbelo como una línea de estilo fija, crea una hoja de personaje con vistas giratorias y expresiones, y genera un fotograma clave para cada plano y anímalo con imagen a video. Mantén el movimiento sencillo, añade voz y lip sync, y revisa cada plano contra la hoja para detectar deriva de estilo, extremidades de más y detalles incorrectos.",
+  "sections": [
+    {
+      "h": "Cómo funciona la animación con IA en la práctica",
+      "body": [
+        "Un generador de videos animados con IA produce clips de estilo anime, cartoon o 3D a partir de texto o imágenes. Investigaciones como AnimateDiff mostraron que un módulo de movimiento entrenado con videos reales puede acoplarse a muchos modelos personalizados de texto a imagen, de modo que un estilo que existe como modelo de imagen también puede moverse. Herramientas comerciales como Veo, Kling, Runway, Seedance, Hailuo y Pika pueden producir animación estilizada hoy por hoy.",
+        "El texto a video por sí solo da poco control sobre el aspecto de un personaje de un plano a otro. El método que funciona es empezar por los fotogramas clave: diseñas el personaje, dibujas o generas una imagen fija por plano en el estilo fijado y luego animas cada imagen con imagen a video. Los problemas se corrigen en las imágenes fijas, donde es barato, no en los clips. Nuestras guías de imagen a video y de video con primer y último fotograma explican esos modos en detalle."
+      ]
+    },
+    {
+      "h": "Paso 1: Elige un estilo y fíjalo",
+      "body": [
+        "Elige un solo estilo y descríbelo con palabras que un modelo pueda usar: grosor de línea, sombreado, paleta de color, renderizado. Luego conviértelo en una línea de estilo que pegarás sin cambios al principio de cada prompt de imagen y de video.",
+        {
+          "table": {
+            "head": [
+              "Estilo",
+              "Descríbelo así",
+              "Ojo con"
+            ],
+            "rows": [
+              [
+                "Anime 2D",
+                "Línea fina y limpia, sombreado cel de dos tonos, fondos pintados planos, ojos grandes y expresivos",
+                "Parpadeo de líneas entre fotogramas, ojos que cambian de forma"
+              ],
+              [
+                "Cartoon plano",
+                "Contornos gruesos y uniformes, colores planos, sin degradados, formas redondas y simples",
+                "El modelo añade sombreado o textura 3D"
+              ],
+              [
+                "3D estilizado",
+                "Render 3D suave, formas redondeadas, piel con dispersión subsuperficial, luz de estudio suave, poca profundidad de campo",
+                "Piel de plástico, caras que derivan hacia el realismo"
+              ],
+              [
+                "Papel recortado o stop motion",
+                "Formas de papel en capas, textura visible, ligero temblor entre fotogramas",
+                "Movimiento demasiado suave que rompe el efecto"
+              ]
+            ]
+          }
+        },
+        "Describe el aspecto; no nombres un estudio ni a un artista vivo. Prompts como «al estilo de» un estudio famoso empujan al modelo hacia los personajes de ese estudio y pueden causar problemas de derechos de autor y de marca al publicar. Escribe en su lugar los rasgos visuales.",
+        {
+          "code": "Style line (paste first in every prompt):\n2D anime, clean thin black line art, two-tone cel shading, soft pastel palette of pink, cream and sky blue, painted watercolor backgrounds, gentle afternoon light, no text, no watermark.",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Paso 2: Crea las hojas de personaje",
+      "body": [
+        "Una hoja de personaje es la referencia contra la que se revisa cada plano. Para cada personaje, crea una imagen con una vista giratoria (de frente, de tres cuartos, de perfil y de espaldas) sobre fondo liso, y una segunda imagen con cinco o seis expresiones (neutra, feliz, triste, enfadada, sorprendida, hablando). Escribe también una descripción breve: pelo, color de ojos, prendas, accesorios y altura relativa a los demás personajes.",
+        "Cada nueva imagen de referencia o fotograma clave debe revisarse contra esa hoja, personaje por personaje: ropa, manos o patas, accesorios, pelo, colores y proporción de alturas. Las herramientas de edición de imágenes cambian en silencio detalles que no les pediste, como un pasador que desaparece o una pata a la que le sale un pulgar, y luego el modelo de video copia el error. Nuestra guía de personajes consistentes con IA explica cómo mantener la misma cara y el mismo vestuario entre imágenes.",
+        "Mantén los diseños sencillos. Menos colores, una silueta clara y sin estampados finos se animan mejor. Los personajes pequeños en un plano general son donde los modelos añaden extremidades de más o fusionan dedos con más frecuencia, así que dale a cada personaje suficiente espacio en el encuadre."
+      ]
+    },
+    {
+      "h": "Paso 3: Fotogramas clave y después imagen a video",
+      "body": [
+        "Crea un fotograma clave por plano en el estilo fijado, con tu relación de aspecto final (9:16 para Shorts, Reels, TikTok y Douyin). Para fotogramas conceptuales rápidos basta una herramienta del navegador como el generador de imágenes con IA de cv.cm para probar composiciones, pero su resultado es de baja resolución, así que crea los fotogramas clave finales en una herramienta de mayor resolución.",
+        "Luego anima cada fotograma clave. Elige cuánto movimiento quieres:",
+        {
+          "ul": [
+            "Animación limitada: movimientos pequeños y legibles como parpadear, el pelo movido por el viento, un giro de cabeza, una boca que habla, un travelling lento hacia delante. Así funciona buena parte del anime de televisión, y es lo que la IA resuelve con más fiabilidad.",
+            "Movimiento completo: correr, pelear, bailar, trabajo complejo con las manos. Impresiona cuando sale bien, pero es donde se rompen las extremidades y el estilo deriva. Mantén estos planos cortos y haz más tomas."
+          ]
+        },
+        "Muchos modelos solo aceptan duraciones fijas, como segundos enteros o niveles de 5, 10 o 15 s. Planifica los planos con esas duraciones y recorta en la edición.",
+        "Escribe solo lo que vería una cámara. Los modelos de video interpretan las metáforas al pie de la letra: «las colinas parecen una acuarela» puede convertir parte de la escena en una tarjeta pintada plana, y «se mueve como un pájaro» puede añadir un pájaro. La línea de estilo ya define el aspecto; la línea del plano debe indicar acciones, materiales y luz.",
+        "Una cuadrícula de storyboard también puede guiar el movimiento: una imagen 9:16 con, por ejemplo, 12 viñetas pequeñas, una pose por viñeta, y una línea de tiempo en el prompt escrita como «viñeta 1 (arriba a la izquierda) = 0–2 s». No pongas números ni texto en las viñetas, porque el modelo los copia en pantalla, y revisa cada viñeta a tamaño completo."
+      ]
+    },
+    {
+      "h": "Ejemplo práctico: una lista de planos de 20 segundos",
+      "body": [
+        "Una pequeña historia de dibujos animados para un video vertical: un gato panadero y un ratón. Cinco planos, cada uno animado a partir de su propio fotograma clave. El primer plano arranca con el fotograma más atractivo: en la práctica el primer fotograma decide el abandono en los segundos dos y tres, así que debe ser luminoso, con el rostro bien visible, con el personaje ya en movimiento y en primer plano o plano medio.",
+        {
+          "code": "STYLE: flat cartoon, thick even outlines, flat colors, warm bakery palette, no text.\nCAST: Miso (orange cat, white apron, red scarf, round glasses); Pip (small grey mouse, blue cap).\n\n1. 0-4 s   Medium close-up. Miso already smiling, pulls a tray of round buns out of the oven, steam rises. Slow push in.\n2. 4-8 s   Close-up of the tray. One bun wobbles, then rolls off the edge. Static camera.\n3. 8-12 s  Low wide shot of the floor. Pip catches the bun with both arms and staggers back two steps.\n4. 12-16 s Medium two-shot. Miso leans down; Pip holds the bun up. Miso laughs, eyes close. (lip sync line)\n5. 16-20 s Close-up. Pip takes a big bite, cheeks puff out, ears pop up. Hold on his face to the end.",
+          "lang": "text"
+        },
+        "Revisa cada clip terminado contra la hoja antes de pasar al siguiente: la bufanda es roja en todos los planos, las gafas siguen siendo redondas, Pip tiene cuatro dedos por mano y Miso mide aproximadamente cuatro veces la altura de Pip."
+      ]
+    },
+    {
+      "h": "Voz, lip sync y sonido",
+      "body": [
+        "Graba o genera primero el diálogo y luego anima los planos con diálogo sobre él. El lip sync en dibujos animados es más tolerante que con rostros realistas: las formas de boca simples, abierta, entreabierta y cerrada, se leen bien y el público acepta tiempos estilizados. Usa un paso de lip sync guiado por audio o un modelo que acepte voz como entrada, con una voz limpia y sin reverberación. Las vistas frontales y de tres cuartos sincronizan mejor; los perfiles y una pata delante de la boca fallan con más frecuencia. Consulta nuestras guías de voz en off con IA y de lip sync con IA.",
+        "Si una herramienta limita el audio de referencia, por ejemplo a unos 30 segundos en total, calcula el presupuesto. Una muestra de voz limpia de 3 segundos suele bastar para fijar una voz; toma la frase más fuerte y continua. Cuando un modelo vuelve a renderizar la banda sonora, el audio puede desfasarse del movimiento, a veces cerca de un segundo en nuestras pruebas, así que vuelve a poner la pista original con ffmpeg antes de juzgar la sincronía:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "La animación generada suele salir a 720p o 1080p. Escala una sola vez, después de la edición, y guarda una única exportación maestra en lugar de recodificar el archivo una y otra vez."
+      ]
+    },
+    {
+      "h": "Lo que la animación con IA hace mal y las reglas sobre copiar",
+      "body": [
+        {
+          "ul": [
+            "Manos y patas: dedos de más, dedos fusionados, objetos que atraviesan las manos.",
+            "Texto: carteles, etiquetas y bocadillos salen con faltas. Añade todo el texto en el editor.",
+            "Deriva de estilo: el grosor de línea, la forma de los ojos o el sombreado cambian poco a poco dentro de un clip o entre planos. Reancla cada plano en un fotograma clave revisado.",
+            "Personajes pequeños: extremidades de más y caras deformadas en figuras que ocupan poco del encuadre.",
+            "Acción compleja: las peleas, las multitudes y los giros rápidos se rompen primero. Divídelos en planos más cortos."
+          ]
+        },
+        "No copies los personajes de un estudio ni de una franquicia, ni siquiera con una historia nueva. Los personajes están protegidos y las plataformas eliminan las subidas que infringen derechos. Crea tus propios diseños. El informe de la Oficina de Derechos de Autor de EE. UU. sobre la protección por derechos de autor dice que el material generado puramente por IA no está protegido, mientras que la autoría humana, como tus diseños de personajes, la selección y la disposición, sí puede estarlo. Nuestra guía sobre derechos de autor y uso comercial de la IA lo explica con más detalle.",
+        "La animación claramente no realista normalmente no necesita la etiqueta de contenido alterado o sintético de YouTube, que está pensada para contenido realista. Otras plataformas y regiones, como la UE y China, tienen obligaciones de etiquetado de IA más amplias; consulta nuestra guía sobre cómo etiquetar contenido de IA."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Puede la IA hacer un video de anime a partir de texto?",
+      "a": "Sí, los modelos de texto a video pueden producir clips de estilo anime, pero el personaje suele cambiar de un plano a otro. Para una historia con personajes recurrentes, crea fotogramas clave a partir de una hoja de personaje y anímalos con imagen a video."
+    },
+    {
+      "q": "¿Cómo mantengo el mismo personaje de dibujos animados en todos los planos de IA?",
+      "a": "Usa una hoja de personaje con vista giratoria y expresiones, pega la misma línea de estilo y la misma descripción del personaje en cada prompt, y empieza cada plano desde un fotograma clave que hayas revisado contra la hoja."
+    },
+    {
+      "q": "¿Puedo hacer videos con IA de personajes de anime existentes?",
+      "a": "Los videos de fans con personajes de una franquicia infringen los derechos de autor del titular y pueden ser eliminados, y no se pueden monetizar con seguridad. Diseña personajes originales."
+    },
+    {
+      "q": "¿Por qué mi dibujo animado con IA tiene dedos de más?",
+      "a": "Las manos son un punto débil conocido, sobre todo en personajes pequeños y con movimiento rápido. Dale al personaje más espacio en el encuadre, mantén los movimientos de las manos sencillos y vuelve a generar o corrige el fotograma clave antes de animar."
+    },
+    {
+      "q": "¿Puedo tener los derechos de autor de un video animado con IA?",
+      "a": "En Estados Unidos el material generado puramente por IA no está protegido, pero tus aportaciones humanas, como los diseños originales y la edición, sí pueden estarlo. Las reglas varían según el país."
+    }
+  ]
+}

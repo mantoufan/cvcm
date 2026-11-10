@@ -1,0 +1,177 @@
+{
+  "title": "AI Voiceover for Video: How to Make It Sound Natural — cv.cm",
+  "description": "How to make an AI voiceover for video: pick a voice, write for the ear, pace to cuts, fix pronunciation, hit -14 LUFS, dub, and clone only with consent.",
+  "h1": "How do you make an AI voiceover that sounds natural?",
+  "answer": "Pick a voice that fits the audience, rewrite the script for listening (short sentences, no lists of numbers), generate it line by line, and fix mispronounced words by respelling or with SSML where the voiceover generator supports it. Edit the video to the voice, normalize to around -14 LUFS for social, and only clone voices you have written permission to use.",
+  "sections": [
+    {
+      "h": "The AI voiceover workflow in eight steps",
+      "body": [
+        "An AI voiceover is narration produced by a neural text-to-speech voice instead of a microphone. The voice model is only one part of the job. Most of the quality comes from the script, the timing and the mix. A reliable workflow for a short or an explainer looks like this:",
+        {
+          "ol": [
+            "Finish the script and read it aloud once yourself, with a timer.",
+            "Choose a voice and test it on the hardest two sentences of the script, not on a sample paragraph.",
+            "Rewrite lines that sound wrong when spoken: long sentences, abbreviations, numbers, brand names.",
+            "Generate the voiceover in short chunks, one beat or one sentence at a time, so a bad take can be redone without touching the rest.",
+            "Fix pronunciation with respelling or SSML tags.",
+            "Place the voice on the timeline first, then cut the pictures to it.",
+            "Clean and normalize the voice, then mix music under it.",
+            "Export, listen on a phone speaker and on headphones, and add an AI label where the platform requires it."
+          ]
+        },
+        "This page is about using AI voices for video. For how the speech is synthesized under the hood, see our guide to text-to-speech."
+      ]
+    },
+    {
+      "h": "Choosing a voice for the video",
+      "body": [
+        "Most voiceover generators, such as ElevenLabs, the voices built into CapCut or Jianying, or the TTS in large cloud platforms, offer dozens of voices. Choose by the job, not by the demo reel. Demo text is written to flatter a voice; your script will contain product names, numbers and short punchy lines.",
+        {
+          "table": {
+            "head": [
+              "Video type",
+              "Voice traits to look for",
+              "Avoid"
+            ],
+            "rows": [
+              [
+                "Fast tips and lists",
+                "Bright, mid-pitch, clear consonants, slightly fast",
+                "Breathy or very deep voices that blur at speed"
+              ],
+              [
+                "Story narration",
+                "Warm, wide pitch range, natural pauses",
+                "Flat \"announcer\" delivery"
+              ],
+              [
+                "Tutorials and screen recordings",
+                "Calm, neutral, even pace",
+                "Strong emotion that distracts from the steps"
+              ],
+              [
+                "Product or brand video",
+                "Matches the brand age and region",
+                "A celebrity-like voice that suggests endorsement"
+              ],
+              [
+                "Character or comedy",
+                "Distinct timbre, expressive",
+                "Voices that sound like a real public figure"
+              ]
+            ]
+          }
+        },
+        "Keep one voice per channel or series. Viewers learn to recognize it, and switching voices between episodes makes a series feel like separate uploads. Save the voice name and every setting (speed, stability or style values, model) in a note, because providers update their models and the same settings can drift."
+      ]
+    },
+    {
+      "h": "Writing for the ear and pacing to cuts",
+      "body": [
+        "Text that reads well on a page often sounds stiff when spoken. A listener cannot scroll back. Write so that each sentence makes sense on the first hearing.",
+        {
+          "ul": [
+            "One idea per sentence, ideally under 15 words.",
+            "Put the important word at the end of the sentence, where the voice naturally lands.",
+            "Write numbers the way they are said: \"about two thousand\" instead of \"~2,000\".",
+            "Spell out abbreviations unless people say them as letters.",
+            "Use commas and full stops to control rhythm. Most voices pause at a full stop and barely at a comma."
+          ]
+        },
+        {
+          "code": "Before (written):\n  Our app supports 4K/60fps export, HDR & batch processing (Win/Mac).\n\nAfter (for the ear):\n  You can export in 4K at sixty frames per second.\n  It handles HDR. And it works in batches, on Windows and Mac.",
+          "lang": "text"
+        },
+        "For pacing, plan around 2.5 to 3 words per second for clear English narration. In short-form video, cut the pictures to the voice, not the other way round: put the voiceover on the timeline first, then make each cut land on the start of a new sentence or on the key word. If a section of voice is too long for its shot, rewrite the line shorter instead of speeding up the voice. In practice, speed changes above about 10 percent tend to make AI voices sound rushed and unnatural.",
+        "To hear pace before you pay for generation, you can read the script with your device's voice, for example in cv.cm's text-to-speech tool, which uses the browser's built-in voices and lets you change the rate. It does not export audio and is not a studio voice; it is a timing check. If you prefer your own voice as a guide track, record it with a voice recorder and time the cuts to that."
+      ]
+    },
+    {
+      "h": "Fixing pronunciation: respelling, breaks and phonemes",
+      "body": [
+        "Names, brands, acronyms and borrowed words are where AI voices fail most. Try these fixes in order, from the simplest to the most precise.",
+        {
+          "ol": [
+            "Respell the word phonetically in the script: \"Nguyen\" as \"Win\", \"GIF\" as \"jif\" or \"gif\" depending on your choice. Keep a list of respellings per project.",
+            "Add punctuation to force a pause or change stress: a comma before a name, or a hyphen in a compound word.",
+            "Use SSML if the tool supports it. SSML (Speech Synthesis Markup Language) is a W3C standard. Its `break` element inserts a pause with a `time` such as `400ms`, `sub` replaces written text with what should be spoken, and `phoneme` gives an exact pronunciation in IPA through the `ph` attribute.",
+            "Use the tool's pronunciation dictionary, if it has one, so the fix applies to every future script."
+          ]
+        },
+        {
+          "code": "<speak>\n  Welcome to <sub alias=\"see vee dot see em\">cv.cm</sub>.\n  <break time=\"400ms\"/>\n  Today we test the <phoneme alphabet=\"ipa\" ph=\"ˈkiːnwɑː\">quinoa</phoneme> recipe.\n</speak>",
+          "lang": "text"
+        },
+        {
+          "note": "Support for SSML differs between providers. Some accept the full standard, some accept only `break`, and some ignore tags or read them aloud. Test one tagged sentence before you tag a whole script."
+        }
+      ]
+    },
+    {
+      "h": "Loudness targets for social video",
+      "body": [
+        "Loudness is measured in LUFS (loudness units relative to full scale) using the algorithm in ITU-R BS.1770, the same measurement behind the EBU R 128 broadcast recommendation. EBU R 128 sets -23 LUFS for broadcast programmes. Streaming and social platforms do not all publish their targets, but around -14 LUFS integrated with a true peak no higher than about -1 dBTP is a common working target for online video.",
+        "Most large platforms normalize playback loudness, so a video mastered much louder is turned down and gains nothing, while heavy limiting to get there makes the voice sound harsh. A video mastered far quieter may be turned up less than you expect. Aiming near the common target avoids both problems.",
+        {
+          "code": "# Measure, then normalize a voiceover to about -14 LUFS, true peak -1 dBTP (ffmpeg loudnorm)\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11:print_format=summary -f null -\nffmpeg -i voice.wav -af loudnorm=I=-14:TP=-1:LRA=11 -ar 48000 voice_norm.wav",
+          "lang": "bash"
+        },
+        "Normalize the final mix, not only the voice. In practice, music under speech should sit well below the voice; keeping it roughly 12 to 20 dB quieter while someone is talking is a reasonable starting point, then raise it between lines. Always check on a phone speaker, where low music disappears and harsh high frequencies stand out."
+      ]
+    },
+    {
+      "h": "AI dubbing into other languages",
+      "body": [
+        "AI dubbing translates the script and generates speech in another language, often in a voice similar to the original. The main practical problem is time. The same sentence usually takes longer in Spanish or German than in English, so a dub that follows the English cuts tends to run over.",
+        {
+          "ul": [
+            "Write the source script with headroom. If English uses the full slot, the translation will not fit. Leaving 10 to 20 percent of each beat empty in the original makes dubbing much easier.",
+            "Translate for speech, not word for word. Ask the translator or the LLM to shorten lines to fit a given number of seconds.",
+            "Re-check names, units and on-screen text in every language. A dub that says \"miles\" over a caption in kilometers looks careless.",
+            "Recut where needed. A few frames added to a shot are cheaper than a voice sped up until it sounds unnatural."
+          ]
+        },
+        "Platforms are adding their own tools. YouTube's automatic dubbing creates translated audio tracks and marks those videos as auto-dubbed. Its help page notes that dubs can contain errors in pronunciation, proper nouns, idioms and jargon, and it lets creators review dubs before they are published. Use that review step, or upload your own checked track. If you want the speaker's mouth to match the new language, see our guide to AI lip sync."
+      ]
+    },
+    {
+      "h": "Voice cloning: consent, disclosure and the law",
+      "body": [
+        "Voice cloning builds a synthetic voice from recordings of a real person. A few seconds of clean speech can be enough for a recognizable result, which is why the rules focus on consent and disclosure.",
+        {
+          "ul": [
+            "Clone only your own voice or a voice you have written permission to use. The permission should say what the voice may be used for, for how long, and how it can be withdrawn.",
+            "Do not clone public figures, actors or creators to make them say things. That can break platform rules and, in many countries, personality, publicity or fraud laws.",
+            "YouTube's disclosure rules require a label when realistic content makes a real person appear to say or do something they did not. Its help page lists cloning your own voice for voiceovers or dubs as an example that does not need disclosure.",
+            "The EU AI Act (Article 50) requires deployers to disclose AI-generated or manipulated audio and video that constitutes a deep fake, with a lighter duty for evidently artistic, creative or satirical works.",
+            "China's Measures for Labeling AI-Generated Synthetic Content, in force since 1 September 2025, require providers to label synthetic audio, for example with a spoken or rhythmic cue, and require users who publish such content to declare it and use the labeling function."
+          ]
+        },
+        "A generic synthetic narrator reading your own script is rarely a legal problem. A cloned voice of a real person is. Our guide to labeling AI content covers the platform labels in more detail."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the difference between text-to-speech and an AI voiceover?",
+      "a": "Text-to-speech is the technology that turns text into speech. An AI voiceover is the finished narration for a video: a chosen voice, a script written for listening, timing to the cuts and a clean mix."
+    },
+    {
+      "q": "Is there a free AI voiceover?",
+      "a": "Many voiceover generators have a free tier with limited minutes, fewer voices or no commercial rights. Check the license for commercial use before you publish."
+    },
+    {
+      "q": "How loud should a voiceover be for TikTok or Reels?",
+      "a": "Around -14 LUFS integrated with a true peak near -1 dBTP is a common working target for online video. Platforms normalize playback, so mastering much louder gains nothing."
+    },
+    {
+      "q": "Why does my AI voice mispronounce names?",
+      "a": "The model guesses pronunciation from spelling and its training data. Respell the name phonetically, or use an SSML phoneme tag or a pronunciation dictionary if the tool supports them."
+    },
+    {
+      "q": "Do I have to disclose an AI voiceover?",
+      "a": "A generic synthetic narrator usually does not need a label on YouTube. A realistic voice that makes a real person seem to say something they did not say does, and some laws require labels on synthetic audio."
+    }
+  ]
+}

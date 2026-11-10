@@ -1,0 +1,181 @@
+{
+  "title": "AI Dance Video: Make a Photo Dance Without Glitches — cv.cm",
+  "description": "How to make an AI dance video: motion transfer from a reference dance or a prompt-driven dance from music, with timing, costume and first-frame rules.",
+  "h1": "How to Make an AI Dance Video",
+  "answer": "There are two ways to make an AI dance video. Motion transfer copies the moves from a reference dance video onto your character or photo. Prompt-driven dance generates the moves from a text timeline and the music. Either way, start on a bright, clear first frame, describe continuous motion per musical phrase, cut the audio yourself and check sync with the original song.",
+  "sections": [
+    {
+      "h": "Two methods: motion transfer or prompt-driven dance",
+      "body": [
+        "Motion transfer takes the body movement from a driving video and applies it to a different person or character. Research systems such as Everybody Dance Now used pose as the bridge between the source dancer and the target; later diffusion methods such as Animate Anyone animate a single still image from a pose sequence while keeping the appearance of the reference image. Consumer dance video generators and the reference-video modes in tools like Kling, Seedance, Runway or Hailuo follow the same idea.",
+        "Prompt-driven dance gives the model a character image, the music and a written timeline of moves. There is no driving video, so the model invents the choreography from your words.",
+        {
+          "table": {
+            "head": [
+              "",
+              "Motion transfer",
+              "Prompt-driven dance"
+            ],
+            "rows": [
+              [
+                "Input",
+                "Character image plus a reference dance video",
+                "Character image, music, a text timeline"
+              ],
+              [
+                "Choreography",
+                "Copied closely from the reference",
+                "Invented by the model from your words"
+              ],
+              [
+                "Beat accuracy",
+                "As good as the reference video",
+                "Depends on how you time the prompt"
+              ],
+              [
+                "Main risk",
+                "Copies unwanted details of the reference",
+                "Stiff poses or random, jerky moves"
+              ],
+              [
+                "Best for",
+                "Known trend dances, exact routines",
+                "Original soft or freestyle movement"
+              ]
+            ]
+          }
+        },
+        "Use motion transfer when the routine matters. Use prompt-driven dance when you want an original piece, or when no clean reference exists."
+      ]
+    },
+    {
+      "h": "Prepare the photo and the first frame",
+      "body": [
+        "The character image becomes the first frame or the identity anchor, so it decides both quality and retention. In practice, the first frame decides how many viewers leave in the first two or three seconds. It should already be the best-looking frame of the video.",
+        {
+          "ul": [
+            "Full body or knees-up, standing, with the whole body and both hands inside the frame. Cropped feet or hands get invented badly.",
+            "Bright, even light with the face fully visible and lit. No head looking down, no hair or hat covering the face, no dim room.",
+            "The subject already in a dance-ready pose or smiling, not standing stiffly. A dance that starts from a still, neutral pose looks like a slow start.",
+            "In 9:16, the dancer should fill most of the frame height. A small figure in a big room gets soft faces and extra or merged limbs.",
+            "Clothing that reads clearly: a defined waist, sleeves that end at the wrist, a skirt that ends above the ankle. Long trailing fabric is the hardest case (see below)."
+          ]
+        },
+        "If you use a set of characters, check every new reference image against the character sheet, character by character: outfit, hands or paws, accessories, hair, colors and height ratio. Image editing tools silently change details you did not ask for, and the video model copies the mistake into every frame. Our guide to consistent AI characters covers how to build the sheet."
+      ]
+    },
+    {
+      "h": "Motion transfer: fix the reference before you generate",
+      "body": [
+        "A reference video is a much stronger anchor than text. If the reference has lens flare, a prop in the dancer's hand, a mirror, a particular lighting style or a second person in the background, the model tends to copy it even when the prompt says not to. Arguing with the reference in the prompt rarely works.",
+        {
+          "ol": [
+            "Trim the reference to the exact part of the routine you need, with the music cut to the same range.",
+            "Crop so the dancer is centered, full body, in the same aspect ratio as your output.",
+            "Mask or remove props and background people. Regrade the color if the light is strong or colored.",
+            "Check that the reference dancer and your character have similar body proportions. A short, round mascot copying a tall dancer's long-leg moves will stretch or break.",
+            "Then write a prompt that describes the result you want (the character, the setting, the light), not the problems in the reference."
+          ]
+        },
+        "A storyboard grid also works well as a motion reference. Make one 9:16 image with, for example, 12 panels, one beat pose per panel, and write the prompt timeline as 'panel 1 (top left) = 0–2 s'. Do not put numbers or text on the panels; models copy them as on-screen graphics. Check every panel at full size, because a mistake in one panel is copied into the video.",
+        "Consent matters here. Use a photo of a real person only with their permission, and do not animate someone's image into a dance they never did and present it as real. A choreographer's routine can also be protected; trend dances shared for reuse on a platform are usually fine inside that platform, but a paid ad built on someone's choreography needs permission."
+      ]
+    },
+    {
+      "h": "Prompt-driven dance: write motion that flows",
+      "body": [
+        "Video models follow some words very precisely. In our tests, 'hold the pose', 'freeze', 'still' and 'slow motion' turned a dance into a slideshow of poses: the dancer jumps between shapes and stops between them. Leave those words out and describe continuous motion instead.",
+        "Plan one long shot per musical phrase, about 4 seconds or one eight-count, with several timed motion anchors inside it. But do not overcorrect: too many tiny moves per beat looks jerky and comic. For soft styles such as classical, contemporary or slow pop, describe trajectories rather than poses, give one move per one or two beats, and keep any hold to half a beat or less.",
+        {
+          "code": "Phrase 2 (4.0-8.0 s), one continuous shot, 9:16, medium-wide, camera at chest height.\nThe dancer from the reference: long white sleeves, pale blue skirt, hair in a low bun.\n4.0-5.0 s (downbeat): step right, weight shifts onto the right foot, both arms open low at hip height.\n5.0-6.0 s: the right arm sweeps in an arc from the hip to shoulder height while the body turns a quarter left.\n6.0-7.0 s: step back with the left foot, both arms float down, sleeves trail behind the hands.\n7.0-8.0 s (pause in the music): a soft half turn to face the camera, arms rising to chest height, smile.\nArms stay below 45 degrees above the shoulder. Continuous movement, no stops.",
+          "lang": "text"
+        },
+        "Fabric needs its own rule. With wide sleeves, long ribbons or a cape, the fabric follows the arm and can cover the face. Cap arm height, for example no higher than 45 degrees above the shoulder, and write it into every phrase.",
+        "Write only what a camera would see. Video models render metaphors literally: 'her sleeves move like a brush painting in the air' can put a real brush in her hand. Describe the action, the material and the light, and keep similes out."
+      ]
+    },
+    {
+      "h": "Keep the moves on the beat",
+      "body": [
+        "Find the BPM first, for example by tapping along with cv.cm's metronome. At 120 BPM one beat is 0.5 s and an eight-count is 4 s; at 100 BPM an eight-count is 4.8 s. Time each anchor in seconds and name the musical event as well: 'first downbeat', 'loudest note', 'the pause'. The model uses both.",
+        "Many models accept only fixed durations, such as whole seconds or tiers like 5, 10 or 15 s. Choose a music slice that matches the clip length exactly, and when you generate in segments, cut the audio for each segment yourself rather than letting the model choose. Some tools cap total reference audio at around 30 seconds across all clips, so a long dance needs several segments.",
+        "When the model generates or re-renders the soundtrack, the music can start late. We measured shifts of roughly 1 second, while the motion followed the prompt timing closely. Before you decide the moves are off-beat, put the original song back on:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "If a segment still looks a few frames early or late, slide it in the editor rather than regenerating."
+      ]
+    },
+    {
+      "h": "Common artifacts and fixes",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Artifact",
+              "Usual cause",
+              "Fix"
+            ],
+            "rows": [
+              [
+                "Pose slideshow",
+                "Words like hold, freeze, still, slow motion",
+                "Describe continuous trajectories; holds of half a beat at most"
+              ],
+              [
+                "Jerky, comic moves",
+                "Too many moves per beat",
+                "One move per one or two beats"
+              ],
+              [
+                "Sleeve or hair covers face",
+                "Arms raised too high with long fabric",
+                "Cap arm height in every phrase"
+              ],
+              [
+                "Extra or merged limbs",
+                "Small figure, crossed arms, fast spins",
+                "Bigger in frame, fewer crossings, slower turns"
+              ],
+              [
+                "Costume changes mid-dance",
+                "Unclear outfit in the source image",
+                "Clear reference, outfit named in every prompt"
+              ],
+              [
+                "Unwanted prop or flare",
+                "Copied from the reference video",
+                "Edit the reference, then regenerate"
+              ]
+            ]
+          }
+        },
+        "Expect hands and feet to be the weakest part, especially in fast footwork and spins. Keep the camera mostly steady during complex moves; a moving camera plus a moving body doubles the chance of a broken frame.",
+        "Generated clips are often 720p or 1080p with soft detail. Upscale once, after the edit, and keep one master export so the clip is not re-encoded again and again. Label realistic results where the platform asks for it; see our guide to labeling AI content."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How do I make a photo dance with AI?",
+      "a": "Upload a clear full-body photo to a tool with a dance or reference-video mode, add a reference dance clip or a timed text description, and generate. Use a photo of yourself or of someone who has agreed."
+    },
+    {
+      "q": "Why does my AI dance look like a series of poses?",
+      "a": "The prompt likely contains words such as freeze, hold or slow motion, which models follow very literally. Describe continuous movement between timed anchors and keep any hold under half a beat."
+    },
+    {
+      "q": "Can I make an AI dance video of a celebrity?",
+      "a": "Avoid it. A realistic dance of a real person without consent can break likeness and personality rights in many countries, and platforms require disclosure of realistic synthetic people."
+    },
+    {
+      "q": "Is it legal to copy a TikTok dance with AI?",
+      "a": "Recreating a trend dance on the same platform with its in-app sound is common practice. Using someone's choreography or a reference video in an ad or another commercial context needs permission."
+    },
+    {
+      "q": "What is the best length for an AI dance clip?",
+      "a": "One musical phrase per shot, about 4 to 5 seconds, is the most reliable unit. Join several phrases in an editor for a 15 to 30 second short."
+    }
+  ]
+}

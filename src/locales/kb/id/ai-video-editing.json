@@ -1,0 +1,194 @@
+{
+  "title": "Edit Video AI: Fungsi Tiap Fitur dan Kapan Memakainya — cv.cm",
+  "description": "Edit video AI dijelaskan: potong jeda, edit lewat transkrip, auto reframe, isolasi suara, upscale, dan lainnya, plus alur kerja untuk memotong video pendek 60 detik.",
+  "h1": "Cara Edit Video dengan AI: Fungsi Tiap Fitur dan Kapan Memakainya",
+  "answer": "Edit video AI memakai model untuk mengerjakan tugas edit yang memakan waktu: memotong jeda dan kata pengisi, mengedit lewat transkrip, mengubah footage 16:9 menjadi 9:16, menambah subtitle, membersihkan suara, menghapus latar, upscale, dan membuat B-roll. Pakai AI untuk potongan kasar pertama, lalu periksa sendiri setiap potongan, karena alat AI bisa kehilangan konteks, membuat jump cut, dan memproses suara berlebihan.",
+  "sections": [
+    {
+      "h": "Apa yang dilakukan AI video editor, dan apa yang tidak",
+      "body": [
+        "AI video editor adalah editor biasa yang dilengkapi model untuk tugas-tugas tertentu. Model itu mendengarkan ucapan, melacak wajah dan objek, memisahkan suara dari noise, atau menghasilkan piksel baru. Editor seperti CapCut atau Jianying, Premiere Pro, DaVinci Resolve, dan Descript semuanya memiliki fitur seperti ini saat artikel ini ditulis, dengan nama yang berbeda-beda.",
+        "Cara berpikir yang berguna tentang edit AI adalah membaginya menjadi dua kelompok. Fitur analisis menemukan sesuatu di footage Anda: kata, jeda, wajah, ketukan musik, pergantian shot. Fitur ini menghemat waktu dan mudah diperiksa. Fitur generatif membuat gambar atau suara baru: detail hasil upscale, frame sisipan, latar yang diperluas, B-roll baru. Fitur ini bisa menambahkan hal yang tidak pernah direkam, jadi perlu ditinjau lebih teliti dan, bila tampak realistis, diungkapkan ke penonton.",
+        "AI tidak menentukan isi video Anda. Ia tidak bisa tahu 60 detik mana dari ceramah panjang yang paling menarik bagi audiens Anda, dan tidak tahu mana jeda yang berfungsi sebagai ketukan dramatis dan mana yang hanya hening kosong. Penilaian itu tetap ada di tangan Anda."
+      ]
+    },
+    {
+      "h": "Fitur edit AI sekilas",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Fitur",
+              "Fungsinya",
+              "Pakai saat",
+              "Waspadai"
+            ],
+            "rows": [
+              [
+                "Potong jeda dan kata pengisi",
+                "Menemukan jeda dan kata seperti um dan uh lewat transkrip atau level audio, lalu menghapusnya",
+                "Klip talking head, tutorial, podcast",
+                "Tempo yang terengah-engah, ujung kata terpotong, jump cut"
+              ],
+              [
+                "Edit berbasis transkrip",
+                "Menampilkan ucapan sebagai teks; menghapus teks berarti menghapus video yang sesuai",
+                "Wawancara dan rekaman panjang yang diedit berdasarkan makna",
+                "Potongan yang terdengar mulus di teks tetapi melompat secara visual"
+              ],
+              [
+                "Auto reframe",
+                "Melacak subjek utama dan menggeser jendela crop 9:16 di frame 16:9",
+                "Mengubah footage horizontal menjadi Shorts, TikTok, dan Reels",
+                "Orang kedua di two-shot hilang; gerakan crop yang bergetar"
+              ],
+              [
+                "Subtitle otomatis",
+                "Pengenalan suara menulis subtitle berwaktu",
+                "Hampir setiap video pendek",
+                "Nama dan angka yang salah"
+              ],
+              [
+                "Penghapus noise dan isolasi suara",
+                "Memisahkan ucapan dari suara latar dan membuang sisanya",
+                "Ruangan berisik, rekaman di jalan, dengung kipas",
+                "Suara terdengar tipis, metalik, atau seperti di dalam air"
+              ],
+              [
+                "Penghapus latar",
+                "Memotong sosok orang dari latar di setiap frame",
+                "Efek ala green screen tanpa green screen",
+                "Tepi yang berkedip, rambut dan jari yang hilang"
+              ],
+              [
+                "Upscale",
+                "Memperbesar frame dan menambah detail dengan model super-resolusi",
+                "Klip AI 720p yang lembut atau footage lama untuk master 1080p",
+                "Detail karangan pada wajah, teks, dan kain"
+              ],
+              [
+                "Interpolasi frame",
+                "Membuat frame baru di antara frame yang ada untuk slow motion atau frame rate lebih tinggi",
+                "Slow motion halus dari footage biasa",
+                "Tangan yang terdistorsi, objek yang meleleh saat gerakan cepat"
+              ],
+              [
+                "Color match",
+                "Menyamakan warna satu klip dengan klip referensi",
+                "Menggabungkan kamera, ponsel, dan klip AI dalam satu video",
+                "Warna kulit bergeser; tidak bisa memperbaiki eksposur yang buruk"
+              ],
+              [
+                "Beat sync",
+                "Mendeteksi ketukan musik dan menaruh potongan di ketukan itu",
+                "Montase dan edit yang digerakkan musik",
+                "Memotong di setiap ketukan terasa mekanis"
+              ],
+              [
+                "Pembuatan B-roll",
+                "Menghasilkan klip baru dari prompt teks atau gambar",
+                "Mengilustrasikan poin yang tidak punya footage pendukung",
+                "Adegan palsu yang realistis dan perlu diungkapkan"
+              ],
+              [
+                "AI extend dan fill",
+                "Menambah frame di ujung klip atau gambar baru di luar tepi frame",
+                "Shot yang kurang satu detik; memperlebar frame",
+                "Isi yang menyimpang dari aslinya"
+              ]
+            ]
+          }
+        },
+        "Beberapa fitur ini bertumpu pada riset terbit yang bisa Anda baca: RIFE untuk interpolasi frame real-time, Real-ESRGAN untuk super-resolusi gambar dunia nyata, Hybrid Demucs untuk memisahkan sumber suara pada audio, dan Whisper untuk pengenalan suara. Alat komersial memakai model mereka sendiri, tetapi kekuatan dan pola kegagalannya mirip."
+      ]
+    },
+    {
+      "h": "Alur kerja: memotong video pendek 60 detik dari rekaman panjang",
+      "body": [
+        "Berikut contoh nyatanya. Anda punya rekaman horizontal podcast dua orang berdurasi 40 menit dan ingin membuat satu klip vertikal 60 detik untuk Shorts, TikTok, dan Reels.",
+        {
+          "ol": [
+            "Transkripsikan seluruh rekaman. Sekarang Anda punya teks yang bisa dicari lengkap dengan stempel waktu.",
+            "Temukan momennya. Baca atau cari di transkrip bagian yang bisa dipahami sendiri: pertanyaan dan jawaban yang jelas, opini yang kuat, angka yang mengejutkan. Tandai dua atau tiga kandidat.",
+            "Hitung jatah katanya. Ucapan bahasa Inggris berjalan sekitar 2,5 sampai 3 kata per detik, jadi 60 detik memuat sekitar 150 sampai 180 kata. Pilih bagian sekitar 200 sampai 250 kata, karena sebagian akan dipotong.",
+            "Buat potongan kasar lewat transkrip. Hapus kalimat di luar topik dan pengantar yang tidak dibutuhkan penonton. Mulai dari kalimat yang paling menarik, bukan dari salam.",
+            "Jalankan penghapus jeda dan kata pengisi, lalu dengarkan. Kembalikan jeda yang bermakna, seperti ketukan sebelum punchline.",
+            "Bersihkan audionya. Terapkan penghapus noise atau isolasi suara dengan kekuatan sedang, lalu bandingkan dengan aslinya lewat headphone.",
+            "Reframe ke 9:16. Biarkan auto reframe mengikuti pembicara, lalu periksa setiap perpindahan antar pembicara. Perbaiki momen saat crop menampilkan kursi kosong.",
+            "Tambahkan subtitle. Koreksi nama dan angka, dan jaga teks tetap di dalam safe zone.",
+            "Tambahkan hook. Pastikan frame pertama sudah menampilkan wajah pembicara, dengan cahaya baik dan di tengah kalimat. Dalam pengujian kami, detik pertama yang lambat atau gelap membuat penonton pergi sebelum klip sempat bekerja.",
+            "Ekspor satu master berkualitas tinggi 1080×1920, lalu posting file yang sama ke setiap platform."
+          ]
+        },
+        "Kalau editor Anda tidak punya fitur reframe, ffmpeg bisa membuat crop tetap. Perintah berikut memotong segmen, mendaftar jeda, dan meng-crop separuh kiri shot dua orang menjadi 9:16:",
+        {
+          "code": "# 1) Cut the chosen passage (from 12:04 to 13:15) out of the recording\nffmpeg -ss 00:12:04 -to 00:13:15 -i podcast.mp4 -c:v libx264 -crf 18 -c:a aac -b:a 192k segment.mp4\n\n# 2) List pauses longer than 0.6 s that are quieter than -35 dB\nffmpeg -i segment.mp4 -af silencedetect=noise=-35dB:d=0.6 -f null - 2>&1 | grep silence_\n\n# 3) Fixed 9:16 crop around the left speaker of a 1920x1080 frame\nffmpeg -i segment.mp4 -vf \"crop=608:1080:180:0,scale=1080:1920:flags=lanczos,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy vertical.mp4",
+          "lang": "bash"
+        },
+        "Pada langkah 3, `crop=608:1080:180:0` mengambil jendela selebar 608 piksel dan setinggi 1080, mulai 180 piksel dari kiri. Ukuran 608 kali 1080 mendekati 9:16, dan langkah scale membuatnya tepat 1080×1920. Ubah angka ketiga untuk menggeser jendela."
+      ]
+    },
+    {
+      "h": "Urutan pengerjaan yang tepat",
+      "body": [
+        "Urutan itu penting karena sebagian langkah menghilangkan informasi yang dibutuhkan langkah berikutnya, dan sebagian pekerjaan terbuang kalau dilakukan terlalu awal.",
+        {
+          "ol": [
+            "Pilih dan potong isinya dulu. Setiap langkah berikutnya jadi memproses footage yang lebih sedikit.",
+            "Bersihkan audio sebelum membuat subtitle, supaya pengenalan suara mendengar ucapan yang jernih.",
+            "Reframe sebelum subtitle, supaya teks diletakkan di frame akhir.",
+            "Lakukan color match sebelum ekspor, setelah semua klip ada di timeline.",
+            "Upscale paling akhir, sekali saja, pada hasil edit yang sudah jadi. Meng-upscale tiap klip sebelum diedit melipatgandakan waktu render, dan pengaturan yang berbeda bisa membuat potongan tampak tidak serasi.",
+            "Simpan satu file master. Setiap aplikasi mengompres unggahan Anda lagi, dan setiap encode ulang tambahan menambah artefak."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Fitur generatif dan pengungkapan",
+      "body": [
+        "Fitur analisis jarang menimbulkan pertanyaan. Fitur generatif bisa. Kebijakan pengungkapan YouTube meminta kreator menandai konten realistis yang dibuat atau diubah dengan AI, seperti orang sungguhan yang tampak mengucapkan sesuatu yang tidak pernah ia katakan, footage peristiwa nyata yang diubah, atau adegan realistis yang tidak pernah terjadi. Halaman yang sama mencantumkan edit yang tidak perlu diungkapkan, termasuk penyesuaian warna, filter kecantikan, pembuatan subtitle, dan bantuan pekerjaan produksi.",
+        "Dalam praktik: subtitle, pemotongan jeda, penghapusan noise, dan color match tidak mengubah apa yang terjadi di depan kamera. B-roll hasil generasi berupa jalanan realistis, shot yang diperpanjang dengan tambahan orang, atau wajah yang diganti dalam klip, mengubahnya. Kalau penonton bisa mengira bagian hasil generasi itu footage asli, beri label. TikTok, Douyin, dan platform lain punya label konten AI sendiri, dan Tiongkok serta Uni Eropa punya aturan pelabelan; lihat panduan kami tentang pelabelan konten AI."
+      ]
+    },
+    {
+      "h": "Batasan dan kesalahan umum",
+      "body": [
+        {
+          "ul": [
+            "Jump cut di mana-mana. Menghapus semua jeda membuat kepala pembicara melompat antar frame. Tutupi sebagian potongan dengan zoom-in sekitar 10 sampai 15 persen, shot B-roll, atau pergantian subtitle, dan sisakan beberapa jeda alami.",
+            "Konteks hilang. Klip pendek yang dipotong dari ceramah panjang bisa mengubah maksud pembicara. Baca kalimat sebelum dan sesudah klip Anda, dan jangan memotong kutipan sampai artinya terbalik.",
+            "Suara terlalu diproses. Penghapus noise yang kuat membuat suara terdengar tipis atau seperti robot. Pakai pengaturan terendah yang masih menghilangkan gangguan, dan sisakan sedikit room tone.",
+            "Upscale yang mengarang detail. Model super-resolusi menebak detail. Wajah bisa sedikit berubah, dan teks kecil bisa jadi huruf palsu. Bandingkan master hasil upscale dengan aslinya di layar besar.",
+            "Interpolasi pada gerakan cepat. Frame sisipan baru hanyalah tebakan. Tangan, objek berputar, dan orang yang saling melintas sering terdistorsi. Pakai interpolasi hanya untuk gerakan yang lambat dan sederhana.",
+            "Terlalu memercayai reframe. Auto reframe mengikuti gerakan dan wajah, bukan makna. Pada obrolan dua orang, ia bisa tetap di orang yang salah. Periksa setiap pergantian pembicara.",
+            "Mengedit rekaman mentah sepanjang durasi penuh dengan AI lebih dulu. Pilih bagiannya sebelum menjalankan pemrosesan berat; lebih cepat dan lebih sedikit yang perlu Anda periksa."
+          ]
+        },
+        "AI video editor gratis sering sudah cukup untuk klip pendek. Saat membandingkan pilihan, periksa hal yang penting bagi keperluan Anda, bukan peringkat: apakah hasil ekspor berwatermark, resolusi ekspornya, apakah file diproses di perangkat Anda atau diunggah, dan bahasa apa saja yang didukung subtitle. Untuk bentuk dan ukuran file akhir, lihat panduan kami tentang ukuran video vertikal."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Bisakah AI mengedit video saya secara otomatis?",
+      "a": "AI bisa membuat potongan kasar: menghapus jeda, memotong lewat transkrip, reframe, dan menambah subtitle. Anda tetap perlu memilih isinya, memeriksa tiap potongan, dan memperbaiki kesalahan sebelum memposting."
+    },
+    {
+      "q": "Bagaimana cara mengubah video horizontal jadi vertikal dengan AI?",
+      "a": "Pakai fitur auto reframe, yang melacak subjek dan menggeser crop 9:16 di sepanjang frame. Untuk footage dengan subjek yang diam, crop tetap di editor mana pun atau ffmpeg sudah cukup."
+    },
+    {
+      "q": "Apakah penghapus noise AI merusak kualitas suara?",
+      "a": "Bisa. Pengaturan yang kuat membuat suara terdengar tipis atau metalik. Pakai level sedang dan bandingkan dengan aslinya lewat headphone."
+    },
+    {
+      "q": "Sebaiknya video AI di-upscale sebelum atau sesudah diedit?",
+      "a": "Sesudah. Edit pada ukuran akhir, lalu upscale master yang sudah jadi sekali saja. Meng-upscale tiap klip lebih dulu membuang waktu dan bisa membuat potongan tampak tidak serasi."
+    },
+    {
+      "q": "Apakah video yang diedit dengan AI wajib diberi label?",
+      "a": "Tidak untuk edit biasa seperti subtitle, warna, atau penghapusan noise. YouTube meminta pengungkapan saat AI membuat konten realistis yang bisa disangka peristiwa atau orang sungguhan."
+    }
+  ]
+}

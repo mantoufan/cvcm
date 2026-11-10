@@ -7,6 +7,8 @@ import { AI_MINUTES, AI_UPDATED } from "../locales/kb/meta-ai";
  * (src/locales/packs/kb-*.ts) and registers itself with kb.ts instead of sitting in the entry chunk.
  */
 const D = "2026-11-02";
+/** The AI short videos group. */
+const D2 = "2026-11-10";
 
 const META: Record<AiId, Omit<KbMeta, "tools">> = {
   "what-is-generative-ai": {
@@ -113,7 +115,7 @@ const META: Record<AiId, Omit<KbMeta, "tools">> = {
   "video-prompts": {
     published: D,
     tutorials: [],
-    related: ["camera-movement-terms", "storyboard-prompts", "text-to-video", "image-prompts"],
+    related: ["camera-movement-terms", "storyboard-prompts", "text-to-video", "short-video-script", "image-prompts"],
     sources: [
       { title: "Sora 2 Prompting Guide (OpenAI Cookbook)", href: "https://developers.openai.com/cookbook/examples/sora/sora2_prompting_guide" },
       { title: "Veo on Vertex AI video generation prompt guide (Google Cloud)", href: "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/video/video-gen-prompt-guide" },
@@ -213,7 +215,7 @@ const META: Record<AiId, Omit<KbMeta, "tools">> = {
   "text-to-video": {
     published: D,
     tutorials: [],
-    related: ["video-prompts", "image-to-video", "how-diffusion-models-work", "multi-shot-ai-video"],
+    related: ["how-to-make-ai-videos", "video-prompts", "image-to-video", "how-diffusion-models-work", "multi-shot-ai-video"],
     sources: [
       { title: "Video Diffusion Models (Ho et al., 2022)", href: "https://arxiv.org/abs/2204.03458" },
       { title: "Imagen Video: High Definition Video Generation with Diffusion Models (Ho et al., 2022)", href: "https://arxiv.org/abs/2210.02303" },
@@ -225,7 +227,7 @@ const META: Record<AiId, Omit<KbMeta, "tools">> = {
   "image-to-video": {
     published: D,
     tutorials: [],
-    related: ["text-to-video", "first-last-frame-video", "what-is-a-depth-map", "camera-movement-terms"],
+    related: ["how-to-make-ai-videos", "text-to-video", "first-last-frame-video", "what-is-a-depth-map", "camera-movement-terms"],
     sources: [
       { title: "Generate videos from an image with Veo on Vertex AI (Google Cloud)", href: "https://docs.cloud.google.com/vertex-ai/generative-ai/docs/video/generate-videos-from-an-image" },
       { title: "Stable Video Diffusion: Scaling Latent Video Diffusion Models to Large Datasets (Blattmann et al., 2023)", href: "https://arxiv.org/abs/2311.15127" },
@@ -258,7 +260,7 @@ const META: Record<AiId, Omit<KbMeta, "tools">> = {
   "ai-short-drama-workflow": {
     published: D,
     tutorials: [],
-    related: ["storyboard-prompts", "multi-shot-ai-video", "consistent-ai-characters", "labeling-ai-content"],
+    related: ["storyboard-prompts", "multi-shot-ai-video", "consistent-ai-characters", "ai-short-video-workflow", "labeling-ai-content"],
     sources: [
       { title: "YouTube Help: Understand three-minute YouTube Shorts", href: "https://support.google.com/youtube/answer/15424877" },
       { title: "YouTube Help: Disclosing use of altered or synthetic content", href: "https://support.google.com/youtube/answer/14328491" },
@@ -270,7 +272,7 @@ const META: Record<AiId, Omit<KbMeta, "tools">> = {
   "how-speech-to-text-works": {
     published: D,
     tutorials: [],
-    related: ["text-to-speech", "ai-hallucination", "run-ai-in-the-browser", "ai-short-drama-workflow"],
+    related: ["auto-captions", "text-to-speech", "ai-hallucination", "run-ai-in-the-browser", "ai-short-drama-workflow"],
     sources: [
       { title: "Robust Speech Recognition via Large-Scale Weak Supervision (Whisper), arXiv:2212.04356", href: "https://arxiv.org/abs/2212.04356" },
       { title: "openai/whisper repository (model card, approach, license)", href: "https://github.com/openai/whisper" },
@@ -281,7 +283,7 @@ const META: Record<AiId, Omit<KbMeta, "tools">> = {
   "text-to-speech": {
     published: D,
     tutorials: [],
-    related: ["how-speech-to-text-works", "labeling-ai-content", "ai-copyright-and-commercial-use", "ai-short-drama-workflow"],
+    related: ["ai-voiceover", "how-speech-to-text-works", "labeling-ai-content", "ai-copyright-and-commercial-use", "ai-short-drama-workflow"],
     sources: [
       { title: "Web Speech API specification (W3C Community Group)", href: "https://webaudio.github.io/web-speech-api/" },
       { title: "Speech Synthesis Markup Language (SSML) Version 1.1, W3C Recommendation", href: "https://www.w3.org/TR/speech-synthesis11/" },
@@ -348,6 +350,144 @@ const META: Record<AiId, Omit<KbMeta, "tools">> = {
       { title: "IPTC NewsCodes: Digital Source Type", href: "https://cv.iptc.org/newscodes/digitalsourcetype/" },
       { title: "SynthID, Google DeepMind", href: "https://deepmind.google/models/synthid/" },
       { title: "Measures for Labeling AI-Generated Synthetic Content (CAC)", href: "https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm" },
+    ],
+  },
+  "how-to-make-ai-videos": {
+    published: D2,
+    tutorials: [],
+    related: ["ai-short-video-workflow", "image-to-video", "video-prompts", "labeling-ai-content"],
+    sources: [
+      { title: "YouTube Help: Disclosing use of GenAI content", href: "https://support.google.com/youtube/answer/14328491" },
+      { title: "TikTok Newsroom: New labels for disclosing AI-generated content", href: "https://newsroom.tiktok.com/en-us/new-labels-for-disclosing-ai-generated-content" },
+      { title: "Cyberspace Administration of China: Measures for Labeling AI-Generated Synthetic Content", href: "https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm" },
+    ],
+  },
+  "ai-short-video-workflow": {
+    published: D2,
+    tutorials: [],
+    related: ["short-video-script", "vertical-video-sizes", "multi-shot-ai-video", "ai-short-drama-workflow"],
+    sources: [
+      { title: "YouTube Help: Understand three-minute YouTube Shorts", href: "https://support.google.com/youtube/answer/15424877" },
+      { title: "YouTube Help: How engagement metrics are counted", href: "https://support.google.com/youtube/answer/2991785" },
+      { title: "YouTube Help: Disclosing use of GenAI content", href: "https://support.google.com/youtube/answer/14328491" },
+      { title: "TikTok Newsroom: Partnering with our industry to advance AI transparency and literacy", href: "https://newsroom.tiktok.com/en-us/partnering-with-our-industry-to-advance-ai-transparency-and-literacy" },
+      { title: "Cyberspace Administration of China: Measures for Labeling AI-Generated Synthetic Content", href: "https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm" },
+    ],
+  },
+  "vertical-video-sizes": {
+    published: D2,
+    tutorials: [],
+    related: ["ai-short-video-workflow", "ai-video-editing", "auto-captions", "how-ai-upscaling-works"],
+    sources: [
+      { title: "Understand three-minute YouTube Shorts — YouTube Help", href: "https://support.google.com/youtube/answer/15424877" },
+      { title: "Get started creating YouTube Shorts — YouTube Help", href: "https://support.google.com/youtube/answer/10059070" },
+      { title: "Creator tools on TikTok (TikTok Studio upload requirements) — TikTok Support", href: "https://support.tiktok.com/en/using-tiktok/creating-videos/creator-tools-on-tiktok" },
+      { title: "Reel size and aspect ratios on Instagram — Instagram Help Center", href: "https://help.instagram.com/1038071743007909" },
+      { title: "Video ad specs for Instagram Reels (safe zone) — Meta Ads Guide", href: "https://www.facebook.com/business/ads-guide/update/video/instagram-reels" },
+      { title: "Instagram Help: How long can reels be", href: "https://help.instagram.com/225190788256708" },
+    ],
+  },
+  "short-video-script": {
+    published: D2,
+    tutorials: [],
+    related: ["ai-short-video-workflow", "ai-voiceover", "storyboard-prompts", "video-prompts"],
+    sources: [
+      { title: "Get started creating YouTube Shorts — YouTube Help", href: "https://support.google.com/youtube/answer/10059070" },
+      { title: "Understand your content reach and engagement (Shorts: stayed to watch) — YouTube Help", href: "https://support.google.com/youtube/answer/12220281" },
+      { title: "Disclosing use of GenAI content — YouTube Help", href: "https://support.google.com/youtube/answer/14328491" },
+    ],
+  },
+  "ai-voiceover": {
+    published: D2,
+    tutorials: [],
+    related: ["text-to-speech", "ai-lip-sync", "auto-captions", "labeling-ai-content"],
+    sources: [
+      { title: "ITU-R BS.1770: Algorithms to measure audio programme loudness and true-peak audio level", href: "https://www.itu.int/rec/R-REC-BS.1770" },
+      { title: "EBU R 128: Loudness normalisation and permitted maximum level of audio signals", href: "https://tech.ebu.ch/publications/r128" },
+      { title: "Speech Synthesis Markup Language (SSML) Version 1.1 — W3C", href: "https://www.w3.org/TR/speech-synthesis11/" },
+      { title: "Use automatic dubbing — YouTube Help", href: "https://support.google.com/youtube/answer/15569972" },
+      { title: "Disclosing use of GenAI content — YouTube Help", href: "https://support.google.com/youtube/answer/14328491" },
+    ],
+  },
+  "auto-captions": {
+    published: D2,
+    tutorials: [],
+    related: ["how-speech-to-text-works", "vertical-video-sizes", "ai-voiceover", "ai-video-editing"],
+    sources: [
+      { title: "Robust Speech Recognition via Large-Scale Weak Supervision (Whisper), arXiv:2212.04356", href: "https://arxiv.org/abs/2212.04356" },
+      { title: "Use automatic captioning — YouTube Help", href: "https://support.google.com/youtube/answer/6373554" },
+      { title: "English (USA) Timed Text Style Guide — Netflix Partner Help Center", href: "https://partnerhelp.netflixstudios.com/hc/en-us/articles/217350977-English-USA-Timed-Text-Style-Guide" },
+      { title: "Chinese (Simplified) Timed Text Style Guide — Netflix Partner Help Center", href: "https://partnerhelp.netflixstudios.com/hc/en-us/articles/215986007-Chinese-Simplified-Timed-Text-Style-Guide" },
+      { title: "WebVTT: The Web Video Text Tracks Format — W3C", href: "https://www.w3.org/TR/webvtt1/" },
+    ],
+  },
+  "ai-video-editing": {
+    published: D2,
+    tutorials: [],
+    related: ["auto-captions", "vertical-video-sizes", "how-ai-upscaling-works", "labeling-ai-content"],
+    sources: [
+      { title: "Real-Time Intermediate Flow Estimation for Video Frame Interpolation (RIFE), arXiv:2011.06294", href: "https://arxiv.org/abs/2011.06294" },
+      { title: "Real-ESRGAN: Training Real-World Blind Super-Resolution with Pure Synthetic Data, arXiv:2107.10833", href: "https://arxiv.org/abs/2107.10833" },
+      { title: "Hybrid Spectrogram and Waveform Source Separation (Hybrid Demucs), arXiv:2111.03600", href: "https://arxiv.org/abs/2111.03600" },
+      { title: "Robust Speech Recognition via Large-Scale Weak Supervision (Whisper), arXiv:2212.04356", href: "https://arxiv.org/abs/2212.04356" },
+      { title: "Disclosing use of altered or synthetic content — YouTube Help", href: "https://support.google.com/youtube/answer/14328491" },
+    ],
+  },
+  "ai-lip-sync": {
+    published: D2,
+    tutorials: [],
+    related: ["ai-voiceover", "ai-music-video", "image-to-video", "labeling-ai-content"],
+    sources: [
+      { title: "A Lip Sync Expert Is All You Need for Speech to Lip Generation In The Wild (Wav2Lip), arXiv:2008.10010", href: "https://arxiv.org/abs/2008.10010" },
+      { title: "Disclosing use of GenAI content — YouTube Help", href: "https://support.google.com/youtube/answer/14328491" },
+      { title: "Regulation (EU) 2024/1689 (AI Act), Article 50 — EUR-Lex", href: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj" },
+      { title: "人工智能生成合成内容标识办法 (Measures for Labeling AI-Generated Synthetic Content) — CAC", href: "https://www.cac.gov.cn/2025-03/14/c_1743654684782215.htm" },
+      { title: "Use automatic dubbing (experimental lip sync) — YouTube Help", href: "https://support.google.com/youtube/answer/15569972" },
+    ],
+  },
+  "ai-music-video": {
+    published: D2,
+    tutorials: [],
+    related: ["ai-dance-video", "ai-lip-sync", "multi-shot-ai-video", "consistent-ai-characters"],
+    sources: [
+      { title: "How Content ID works — YouTube Help", href: "https://support.google.com/youtube/answer/2797370" },
+      { title: "Disclosing use of altered or synthetic content — YouTube Help", href: "https://support.google.com/youtube/answer/14328491" },
+      { title: "A Lip Sync Expert Is All You Need for Speech to Lip Generation In The Wild (Wav2Lip)", href: "https://arxiv.org/abs/2008.10010" },
+      { title: "Regulation (EU) 2024/1689 (Artificial Intelligence Act), Article 50", href: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj" },
+    ],
+  },
+  "ai-dance-video": {
+    published: D2,
+    tutorials: [],
+    related: ["ai-music-video", "image-to-video", "storyboard-prompts", "consistent-ai-characters"],
+    sources: [
+      { title: "Everybody Dance Now (Chan et al.)", href: "https://arxiv.org/abs/1808.07371" },
+      { title: "Animate Anyone: Consistent and Controllable Image-to-Video Synthesis for Character Animation", href: "https://arxiv.org/abs/2311.17117" },
+      { title: "Disclosing use of altered or synthetic content — YouTube Help", href: "https://support.google.com/youtube/answer/14328491" },
+      { title: "Copyright and Artificial Intelligence (incl. Part 1: Digital Replicas) — U.S. Copyright Office", href: "https://www.copyright.gov/ai/" },
+    ],
+  },
+  "ai-animated-video": {
+    published: D2,
+    tutorials: [],
+    related: ["consistent-ai-characters", "image-to-video", "ai-lip-sync", "ai-copyright-and-commercial-use"],
+    sources: [
+      { title: "AnimateDiff: Animate Your Personalized Text-to-Image Diffusion Models without Specific Tuning", href: "https://arxiv.org/abs/2307.04725" },
+      { title: "Copyright and Artificial Intelligence, Part 2: Copyrightability — U.S. Copyright Office", href: "https://www.copyright.gov/ai/Copyright-and-Artificial-Intelligence-Part-2-Copyrightability-Report.pdf" },
+      { title: "Disclosing use of altered or synthetic content — YouTube Help", href: "https://support.google.com/youtube/answer/14328491" },
+      { title: "Regulation (EU) 2024/1689 (Artificial Intelligence Act), Article 50", href: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj" },
+    ],
+  },
+  "faceless-channel-with-ai": {
+    published: D2,
+    tutorials: [],
+    related: ["ai-short-video-workflow", "ai-voiceover", "ai-copyright-and-commercial-use", "labeling-ai-content"],
+    sources: [
+      { title: "YouTube Help: YouTube channel monetization policies", href: "https://support.google.com/youtube/answer/1311392" },
+      { title: "YouTube Help: How to earn money on YouTube", href: "https://support.google.com/youtube/answer/72857" },
+      { title: "YouTube Help: Disclosing use of GenAI content", href: "https://support.google.com/youtube/answer/14328491" },
+      { title: "TikTok Newsroom: Introducing the New Creator Rewards Program", href: "https://newsroom.tiktok.com/en-us/introducing-the-new-creator-rewards-program" },
+      { title: "TikTok Newsroom: New labels for disclosing AI-generated content", href: "https://newsroom.tiktok.com/en-us/new-labels-for-disclosing-ai-generated-content" },
     ],
   },
 };

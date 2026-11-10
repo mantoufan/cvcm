@@ -1,0 +1,184 @@
+{
+  "title": "Lip Sync AI: Cara Kerja dan Tips Hasil Bersih — cv.cm",
+  "description": "Cara kerja lip sync AI, wajah dan audio yang dibutuhkan, cara menyiapkan vokal bersih, serta cara memperbaiki gigi buram, sinkronisasi yang bergeser, dan kegagalan di tampak samping.",
+  "h1": "Bagaimana lip sync AI bekerja dan cara mendapat hasil bersih",
+  "answer": "Lip sync AI mengambil trek audio dan sebuah wajah, memprediksi bentuk mulut yang cocok untuk tiap momen suara, lalu menggambar ulang area mulut frame demi frame. Hasil bersih butuh wajah frontal yang terang dengan mulut terlihat, serta vokal kering tanpa noise yang dipotong tepat pada segmennya. Cek sinkronisasi terhadap audio asli dan beri label pada hasil yang realistis.",
+  "sections": [
+    {
+      "h": "Cara kerja lip sync berbasis audio",
+      "body": [
+        "Bunyi ucapan terpetakan ke sekumpulan kecil bentuk mulut yang terlihat, sering disebut viseme. Bunyi p, b, dan m menutup bibir; f dan v menempelkan bibir bawah ke gigi; \"a\" yang terbuka menurunkan rahang. Lip sync AI mempelajari pemetaan ini dari ribuan jam video orang berbicara, sehingga untuk audio baru ia bisa memprediksi bentuk mulut di tiap frame.",
+        "Contoh terkenal adalah Wav2Lip, terbit pada 2020 oleh Prajwal dan rekan-rekannya. Generatornya menerima frame wajah dengan separuh bawah disembunyikan, frame referensi dari orang yang sama, dan jendela audio singkat, lalu melukis wajah bagian bawah baru yang cocok dengan suara. Jaringan terpisah, \"pakar\" lip sync yang sudah dilatih, menilai apakah mulut cocok dengan audio, dan generator dilatih untuk memuaskannya. Makalahnya melaporkan bahwa pakar ini menjadi alasan utama model menjaga sinkronisasi pada wajah sembarang dalam video tanpa batasan.",
+        "Sistem yang lebih baru melangkah lebih jauh. Model berbasis difusi dan avatar menghasilkan seluruh wajah atau kepala, dengan kedipan, gerak kepala, dan ekspresi yang digerakkan audio, sehingga satu foto bisa menjadi video bicara. Sebagian generator video kini menghasilkan ucapan dan gerak bibir sekaligus dari prompt. Ide intinya sama: suara masuk, gerak mulut yang cocok keluar, dan kualitasnya sangat bergantung pada apa yang Anda masukkan."
+      ]
+    },
+    {
+      "h": "Tiga pemakaian: foto bicara, dubbing, bernyanyi",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Kasus",
+              "Input",
+              "Yang biasanya salah",
+              "Tips"
+            ],
+            "rows": [
+              [
+                "Foto bicara atau video avatar AI",
+                "Satu foto atau klip pendek + ucapan",
+                "Kepala kaku, mata mati, gigi terlihat seperti dilukis",
+                "Pilih foto dengan mulut sedikit terbuka dan rileks serta cahaya depan yang lembut"
+              ],
+              [
+                "Dubbing rekaman asli",
+                "Video yang ada + ucapan terjemahan",
+                "Mulut cocok tetapi wajah tidak lagi mirip orangnya",
+                "Pakai take saat pembicara menghadap kamera; potong rapat di sekitar ucapan"
+              ],
+              [
+                "Bernyanyi atau video musik",
+                "Klip penampilan atau foto + vocal stem",
+                "Nada panjang tampak membeku, lirik cepat membaur",
+                "Pakai vokal terisolasi, bukan mix penuh, dan pecah lagu panjang menjadi frasa"
+              ]
+            ]
+          }
+        },
+        "Foto bicara paling mudah dibuat tetapi paling sulit dibuat meyakinkan, karena model mengarang setiap frame gerakan. Dubbing rekaman asli mempertahankan gerak sungguhan dan hanya mengganti mulut, jadi terlihat lebih natural tetapi kurang toleran terhadap video sumber yang buruk. Bernyanyi paling menuntut: vokalnya panjang, mulut terbuka lebih lebar daripada saat bicara, dan timing harus cocok dengan musik, bukan hanya kata. Untuk alur kerja lagu penuh, lihat panduan video musik AI kami."
+      ]
+    },
+    {
+      "h": "Syarat input untuk wajah dan audio",
+      "body": [
+        "Sebagian besar kegagalan berasal dari input. Periksa hal berikut sebelum menghasilkan video.",
+        {
+          "ul": [
+            "Sudut wajah: frontal atau sampai kira-kira tampak tiga perempat. Tampak samping sering gagal karena model melihat terlalu sedikit bagian mulut.",
+            "Mulut terlihat: tidak ada tangan, mikrofon, rambut, atau masker yang menutupi bibir, dan tidak ada motion blur berat.",
+            "Cahaya: cahaya merata dan lembut di wajah. Bayangan keras melintasi mulut membuat area yang digambar ulang mencolok.",
+            "Ukuran wajah: wajah sebaiknya mengisi bagian besar frame. Wajah kecil di shot lebar memberi model sedikit piksel untuk dikerjakan, dan hasilnya lembek.",
+            "Audio: satu suara, kering (sedikit gema ruangan), tanpa musik di bawahnya, tanpa clipping.",
+            "Durasi: periksa batas tool. Banyak tool membatasi panjang klip atau total audio, dan klip panjang lebih mudah bergeser. Segmen yang lebih pendek lebih mudah dicek dan diulang."
+          ]
+        },
+        {
+          "note": "Dalam uji coba kami, vokal yang bersih dan kering lebih penting daripada gambar wajahnya. Reverb, musik latar, dan keramaian membuat mulut bergerak pada bunyi yang bukan ucapan, seperti pukulan drum atau tarikan napas."
+        }
+      ]
+    },
+    {
+      "h": "Menyiapkan audio dan contoh kerja",
+      "body": [
+        "Perlakukan audio sebagai master dan video sebagai pengikutnya. Berikut contoh lengkap: satu kalimat bahasa Inggris 12 detik dari klip talking head, di-dubbing ke bahasa Spanyol dengan lip sync untuk video pendek vertikal.",
+        {
+          "ol": [
+            "Ekspor ucapan asli dan transkripsikan. Transkriber berbasis Whisper, misalnya tool speech-to-text cv.cm, memberi timestamp untuk tiap baris.",
+            "Terjemahkan kalimatnya dan pangkas agar pas sekitar 12 detik saat diucapkan. Bahasa Spanyol biasanya butuh waktu lebih lama daripada bahasa Inggris, jadi kurangi kata alih-alih mempercepat suara.",
+            "Hasilkan suara Spanyol, atau rekam sendiri. Lihat panduan voice over AI kami untuk pemilihan suara dan perbaikan pelafalan.",
+            "Bersihkan: hilangkan noise latar, jaga suara tetap kering, dan potong hening di awal agar bunyi pertama jatuh tepat pada gerak mulut pertama pembicara.",
+            "Potong audio ke segmen tepat yang akan dipakai tool dengan audio cutter, alih-alih membiarkan tool memilih potongan dari file yang lebih panjang.",
+            "Ubah ke format sederhana yang diterima tool, lalu jalankan lip sync pada klip video 12 detik.",
+            "Pasang kembali audio bersih ke hasilnya dan cek sinkronisasi layar penuh, frame demi frame pada bunyi p, b, dan m."
+          ]
+        },
+        {
+          "code": "# 1. Extract a mono 48 kHz WAV from the source clip\nffmpeg -i source.mp4 -vn -ac 1 -ar 48000 speech.wav\n\n# 2. Cut the dubbed voice to exactly 12 seconds, starting at 0.25 s\nffmpeg -ss 0.25 -t 12 -i dub_es.wav -ac 1 -ar 48000 dub_es_12s.wav\n\n# 3. Replace whatever audio the tool returned with your own clean track\nffmpeg -i lipsync.mp4 -i dub_es_12s.wav -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Langkah 3 lebih penting daripada kelihatannya. Saat tool membuat ulang atau meng-encode ulang soundtrack, audio bisa mulai sedikit terlambat sementara gambar tetap mengikuti timing asli. Pada model video yang merender audio sendiri, kami pernah mengukur pergeseran sekitar satu detik. Sebelum menyimpulkan sinkronisasinya salah, pasang audio Anda sendiri ke klip dengan perintah di atas dan cek lagi.",
+        "Untuk foto bicara, langkah audio yang sama berlaku. Sebagian tool juga menerima sampel suara untuk menentukan suaranya; sampel bersih 3 detik biasanya cukup. Ambil kalimat paling keras dan paling berkesinambungan, dan ingat bahwa sebagian tool membatasi total panjang seluruh audio referensi."
+      ]
+    },
+    {
+      "h": "Artefak umum dan cara memperbaikinya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Artefak",
+              "Kemungkinan penyebab",
+              "Perbaikan"
+            ],
+            "rows": [
+              [
+                "Gigi buram atau berbayang",
+                "Area mulut digambar ulang beresolusi rendah, atau wajah kecil di frame",
+                "Pakai shot lebih dekat; jalankan lip sync pada potongan wajah lalu gabungkan kembali; upscale hanya setelah edit akhir"
+              ],
+              [
+                "Sinkronisasi bergeser di akhir klip",
+                "Klip panjang, audio di-encode ulang, atau frame rate tidak cocok",
+                "Pecah menjadi segmen lebih pendek; pakai constant frame rate; ganti audio dengan trek master Anda"
+              ],
+              [
+                "Mulut bergerak saat hening atau musik",
+                "Noise, musik, atau reverb di audio",
+                "Pakai vokal terisolasi dan kering; bisukan jeda antar baris"
+              ],
+              [
+                "Bibir gagal di tampak samping",
+                "Bagian mulut yang terlihat terlalu sedikit",
+                "Pilih take frontal, atau pindah ke shot lain saat momen tampak samping"
+              ],
+              [
+                "Wajah tidak lagi mirip orangnya",
+                "Model terlalu banyak melukis wajah bagian bawah",
+                "Pakai frame referensi yang lebih kuat dari orang yang sama; kecilkan area atau kekuatan bila tool mengizinkan"
+              ],
+              [
+                "Nada panjang saat bernyanyi tampak membeku",
+                "Model melihat satu vokal panjang lalu berhenti bergerak",
+                "Tambahkan gerak kepala dan rahang kecil di sumber, atau potong saat nada panjang"
+              ],
+              [
+                "Sambungan terlihat di sekitar rahang",
+                "Warna atau ketajaman mulut baru berbeda dari wajah",
+                "Samakan grain dan warna saat editing; hindari cahaya keras di garis rahang"
+              ]
+            ]
+          }
+        },
+        "Upscaling membantu hasil yang lembek, tetapi lakukan sekali, setelah editing, dan simpan satu ekspor master. Setiap encode tambahan, termasuk yang dilakukan aplikasi sosial saat unggah, menambah artefak di sekitar mulut, tempat penonton pertama kali melihat."
+      ]
+    },
+    {
+      "h": "Izin, aturan deepfake, dan pelabelan",
+      "body": [
+        "Lip sync mengubah apa yang tampak diucapkan seseorang. Itulah yang diatur aturan deepfake, jadi perlakukan izin dan label sebagai bagian dari alur kerja, bukan renungan belakangan.",
+        {
+          "ul": [
+            "Pakai hanya wajah dan suara yang Anda miliki atau yang izin tertulisnya Anda punya, dengan tujuan yang dinyatakan. Men-dubbing video klien ke bahasa lain adalah kasus yang jelas; membuat tokoh publik mengucapkan kata-kata baru bukan.",
+            "YouTube meminta kreator mengungkapkan konten yang diubah atau sintetis yang realistis, termasuk konten yang membuat orang sungguhan tampak mengatakan atau melakukan sesuatu yang tidak mereka lakukan. YouTube juga menawarkan lip sync eksperimental sendiri untuk video auto-dubbed di kanal tertentu.",
+            "EU AI Act (Pasal 50) mewajibkan deployer mengungkapkan audio dan video buatan AI atau hasil manipulasi yang merupakan deepfake. Untuk karya yang jelas bersifat seni, kreatif, satir, atau fiksi, kewajibannya terbatas pada mengungkapkan keberadaan konten itu dengan cara yang tidak merusak karyanya.",
+            "Peraturan Tiongkok tentang pelabelan konten sintetis buatan AI (Measures for Labeling AI-Generated Synthetic Content), berlaku sejak 1 September 2025, mewajibkan label yang terlihat pada video sintetis, termasuk di awal, dan mewajibkan pengguna mendeklarasikan konten AI saat memublikasikannya di platform seperti Douyin, Kuaishou, Xiaohongshu, atau WeChat Channels.",
+            "Hindari wajah anak di bawah umur, dan jangan pernah memakai lip sync untuk membuat konten seksual, pencemaran nama baik, atau penipuan. Pemakaian itu dilarang di platform besar dan melanggar hukum di banyak tempat, dengan atau tanpa label."
+          ]
+        },
+        "Panduan pelabelan konten AI kami menjelaskan cara kerja label AI di tiap platform."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Cara terbaik membuat foto bicara?",
+      "a": "Mulai dengan foto frontal yang tajam dalam cahaya lembut dengan mulut rileks dan sedikit terbuka, lalu padukan dengan rekaman suara yang bersih dan kering. Jaga klip tetap pendek dan buat beberapa take."
+    },
+    {
+      "q": "Bisakah lip sync AI dipakai untuk bernyanyi?",
+      "a": "Bisa, tetapi lebih sulit daripada ucapan. Pakai vocal stem terisolasi, bukan lagu penuh, pecah lagu menjadi frasa, dan periksa nada panjang serta lirik cepat dengan teliti."
+    },
+    {
+      "q": "Kenapa video lip sync saya tidak sinkron?",
+      "a": "Penyebab paling umum: trek audio yang di-encode ulang atau digeser oleh tool, klip panjang yang bergeser, atau frame rate tidak cocok. Ganti audio dengan trek Anda sendiri dan kerjakan dalam segmen lebih pendek."
+    },
+    {
+      "q": "Apakah lip sync AI legal?",
+      "a": "Menyinkronkan bibir wajah Anda sendiri atau wajah yang Anda punya izinnya umumnya tidak masalah. Membuat orang sungguhan tampak mengatakan hal yang tidak ia katakan bisa melanggar aturan platform dan hukum tentang penipuan, pencemaran nama baik, dan deepfake, dan biasanya perlu label."
+    },
+    {
+      "q": "Apakah lip sync pada dubbing mengubah wajah pembicara?",
+      "a": "Ia menggambar ulang mulut dan wajah bagian bawah. Tool yang bagus menjaga identitas, tetapi pengaturan terlalu kuat atau wajah beresolusi rendah bisa membuat orang tampak sedikit berbeda, jadi bandingkan dengan aslinya."
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+{
+  "title": "Làm video hoạt hình AI: anime, cartoon và 3D từng bước — cv.cm",
+  "description": "Cách làm video hoạt hình AI: cố định phong cách anime, cartoon hoặc 3D, tạo character sheet, làm keyframe, chuyển thành động và tránh trôi phong cách.",
+  "h1": "Cách làm video hoạt hình AI",
+  "answer": "Để làm video hoạt hình AI, hãy chọn một phong cách và viết thành dòng phong cách cố định, tạo character sheet có góc xoay và biểu cảm, rồi làm một keyframe cho mỗi cảnh và chuyển thành động bằng image-to-video. Giữ chuyển động đơn giản, thêm giọng nói và lip sync, và đối chiếu từng cảnh với sheet để bắt lỗi trôi phong cách, tay chân thừa và chi tiết sai.",
+  "sections": [
+    {
+      "h": "Hoạt hình AI hoạt động thực tế ra sao",
+      "body": [
+        "Công cụ tạo video hoạt hình AI tạo ra các clip kiểu anime, cartoon hoặc 3D từ văn bản hay hình ảnh. Nghiên cứu như AnimateDiff cho thấy một mô-đun chuyển động huấn luyện trên video thật có thể cắm vào nhiều mô hình tạo ảnh từ văn bản đã cá nhân hóa, nên một phong cách tồn tại dưới dạng mô hình ảnh cũng có thể chuyển động. Các công cụ thương mại như Veo, Kling, Runway, Seedance, Hailuo và Pika đều có thể tạo hoạt hình cách điệu tại thời điểm viết bài.",
+        "Chỉ dùng text-to-video thì bạn kiểm soát rất ít diện mạo nhân vật từ cảnh này sang cảnh khác. Cách làm bền vững là keyframe trước: bạn thiết kế nhân vật, vẽ hoặc tạo một ảnh tĩnh cho mỗi cảnh theo phong cách đã cố định, rồi chuyển từng ảnh tĩnh thành động bằng image-to-video. Bạn sửa lỗi ở ảnh tĩnh, nơi rẻ hơn nhiều, thay vì ở clip. Hướng dẫn về image-to-video và video khung hình đầu cuối của chúng tôi giải thích kỹ các chế độ này."
+      ]
+    },
+    {
+      "h": "Bước 1: Chọn phong cách và cố định nó",
+      "body": [
+        "Chọn một phong cách và mô tả bằng từ ngữ mà mô hình dùng được: độ đậm nét vẽ, đổ bóng, bảng màu, cách kết xuất. Sau đó biến nó thành một dòng phong cách (style line) dán nguyên văn ở đầu mọi prompt ảnh và video.",
+        {
+          "table": {
+            "head": [
+              "Phong cách",
+              "Mô tả bằng",
+              "Cần chú ý"
+            ],
+            "rows": [
+              [
+                "Anime 2D",
+                "Nét vẽ mảnh sạch, đổ bóng cel hai tông, phông nền vẽ phẳng, đôi mắt to biểu cảm",
+                "Nét vẽ nhấp nháy giữa các khung hình, mắt đổi hình dạng"
+              ],
+              [
+                "Cartoon phẳng",
+                "Viền dày đều, màu phẳng, không chuyển sắc, hình khối tròn đơn giản",
+                "Mô hình tự thêm đổ bóng 3D hoặc chất liệu"
+              ],
+              [
+                "3D cách điệu",
+                "Kết xuất 3D mềm, hình khối bo tròn, da có tán xạ dưới bề mặt, ánh sáng studio mềm, độ sâu trường ảnh nông",
+                "Da như nhựa, khuôn mặt trượt dần về phía chân thực"
+              ],
+              [
+                "Giấy cắt hoặc stop motion",
+                "Hình giấy nhiều lớp, thấy rõ chất liệu, hơi rung giữa các khung hình",
+                "Chuyển động quá mượt làm mất hiệu ứng"
+              ]
+            ]
+          }
+        },
+        "Hãy mô tả diện mạo; đừng nêu tên một hãng phim hay họa sĩ còn sống. Những prompt kiểu 'theo phong cách của' một hãng nổi tiếng đẩy mô hình về phía nhân vật của hãng đó và có thể gây rắc rối bản quyền, nhãn hiệu khi bạn đăng. Hãy viết ra các đặc điểm hình ảnh.",
+        {
+          "code": "Style line (paste first in every prompt):\n2D anime, clean thin black line art, two-tone cel shading, soft pastel palette of pink, cream and sky blue, painted watercolor backgrounds, gentle afternoon light, no text, no watermark.",
+          "lang": "text"
+        }
+      ]
+    },
+    {
+      "h": "Bước 2: Tạo character sheet",
+      "body": [
+        "Character sheet là tham chiếu để đối chiếu mọi cảnh. Với mỗi nhân vật, hãy tạo một ảnh có góc xoay (trước, ba phần tư, bên, sau) trên nền trơn, và một ảnh thứ hai với năm hoặc sáu biểu cảm (bình thường, vui, buồn, giận, ngạc nhiên, đang nói). Cũng viết một mô tả ngắn: tóc, màu mắt, các món trang phục, phụ kiện, chiều cao so với các nhân vật khác.",
+        "Mỗi ảnh tham chiếu hoặc keyframe mới đều phải được đối chiếu với sheet, từng nhân vật một: quần áo, bàn tay hoặc chân vuốt, phụ kiện, tóc, màu sắc và tỷ lệ chiều cao. Công cụ chỉnh sửa ảnh âm thầm thay đổi những chi tiết bạn không yêu cầu, như mất cái kẹp tóc hay một bàn chân vuốt mọc thêm ngón cái, rồi mô hình video sao chép lỗi đó. Hướng dẫn về nhân vật AI nhất quán của chúng tôi nói về cách giữ cùng khuôn mặt và trang phục qua nhiều ảnh.",
+        "Giữ thiết kế đơn giản. Ít màu, hình bóng rõ và không có họa tiết nhỏ sẽ dễ chuyển động hơn. Nhân vật nhỏ trong cảnh rộng là nơi mô hình hay thêm tay chân thừa hoặc làm dính ngón tay nhất, nên hãy để mỗi nhân vật chiếm đủ khung hình."
+      ]
+    },
+    {
+      "h": "Bước 3: Keyframe, rồi image-to-video",
+      "body": [
+        "Tạo một keyframe cho mỗi cảnh theo phong cách đã cố định, đúng tỷ lệ khung hình cuối cùng (9:16 cho Shorts, Reels, TikTok và Douyin). Để thử nhanh bố cục, một công cụ trên trình duyệt như trình tạo ảnh AI của cv.cm là đủ, nhưng ảnh đầu ra có độ phân giải thấp, nên hãy làm keyframe cuối cùng ở công cụ có độ phân giải cao hơn.",
+        "Sau đó chuyển từng keyframe thành động. Hãy chọn mức chuyển động bạn muốn:",
+        {
+          "ul": [
+            "Hoạt hình giới hạn (limited animation): các cử động nhỏ, dễ đọc như chớp mắt, tóc bay trong gió, quay đầu, miệng nói, máy quay từ từ đẩy vào. Đây là cách nhiều anime truyền hình làm, và cũng là thứ AI xử lý ổn định nhất.",
+            "Chuyển động đầy đủ: chạy, đánh nhau, nhảy múa, thao tác tay phức tạp. Khi thành công trông rất ấn tượng, nhưng đây cũng là nơi tay chân hỏng và phong cách trôi. Hãy giữ các cảnh này ngắn và chuẩn bị tạo nhiều lần hơn."
+          ]
+        },
+        "Nhiều mô hình chỉ nhận thời lượng cố định, như số giây nguyên hoặc các mức 5, 10, 15 giây. Hãy lên kế hoạch các cảnh theo những độ dài đó và cắt bớt khi dựng.",
+        "Chỉ viết những gì máy quay nhìn thấy. Mô hình video hiểu ẩn dụ theo nghĩa đen: 'những ngọn đồi trông như tranh màu nước' có thể biến một phần cảnh thành tấm thẻ vẽ phẳng, và 'cô chạy như chim' có thể thêm một con chim. Dòng phong cách đã quyết định diện mạo; dòng mô tả cảnh nên nói về hành động, chất liệu và ánh sáng.",
+        "Lưới storyboard cũng có thể dẫn dắt chuyển động: một ảnh 9:16 với, ví dụ, 12 ô nhỏ, mỗi ô một tư thế, và dòng thời gian trong prompt viết kiểu 'ô 1 (trên cùng bên trái) = 0–2 giây'. Đừng ghi số và chữ lên các ô, vì mô hình sẽ chép chúng lên màn hình, và hãy kiểm tra từng ô ở kích thước đầy đủ."
+      ]
+    },
+    {
+      "h": "Ví dụ thực tế: danh sách cảnh quay 20 giây",
+      "body": [
+        "Một câu chuyện cartoon nhỏ cho video ngắn dọc: chú mèo thợ làm bánh và chú chuột. Năm cảnh, mỗi cảnh được chuyển thành động từ keyframe riêng. Cảnh đầu mở bằng khung hình đẹp nhất: trên thực tế khung hình đầu quyết định lượng người xem rời đi ở giây thứ hai, thứ ba, nên nó cần sáng, khuôn mặt hiện rõ, nhân vật đã chuyển động, ở cự ly cận hoặc trung.",
+        {
+          "code": "STYLE: flat cartoon, thick even outlines, flat colors, warm bakery palette, no text.\nCAST: Miso (orange cat, white apron, red scarf, round glasses); Pip (small grey mouse, blue cap).\n\n1. 0-4 s   Medium close-up. Miso already smiling, pulls a tray of round buns out of the oven, steam rises. Slow push in.\n2. 4-8 s   Close-up of the tray. One bun wobbles, then rolls off the edge. Static camera.\n3. 8-12 s  Low wide shot of the floor. Pip catches the bun with both arms and staggers back two steps.\n4. 12-16 s Medium two-shot. Miso leans down; Pip holds the bun up. Miso laughs, eyes close. (lip sync line)\n5. 16-20 s Close-up. Pip takes a big bite, cheeks puff out, ears pop up. Hold on his face to the end.",
+          "lang": "text"
+        },
+        "Hãy đối chiếu từng clip hoàn thành với sheet trước khi sang cảnh tiếp theo: chiếc khăn quàng luôn đỏ ở mọi cảnh, cặp kính vẫn tròn, Pip có bốn ngón mỗi tay, và Miso cao gấp khoảng bốn lần Pip."
+      ]
+    },
+    {
+      "h": "Giọng nói, lip sync và âm thanh",
+      "body": [
+        "Hãy thu hoặc tạo lời thoại trước, rồi làm động các cảnh nói theo đó. Lip sync cho hoạt hình dễ tính hơn so với khuôn mặt thật: các dạng miệng đơn giản như mở, hé và đóng đọc rất rõ, và người xem chấp nhận nhịp điệu cách điệu. Hãy dùng bước lip sync theo âm thanh hoặc mô hình nhận giọng nói làm đầu vào, với giọng sạch, không vang. Góc chính diện và ba phần tư khớp tốt nhất; góc nghiêng và chân vuốt che trước miệng hay hỏng nhất. Xem hướng dẫn về lồng tiếng AI và lip sync AI của chúng tôi.",
+        "Nếu công cụ giới hạn âm thanh tham chiếu, ví dụ khoảng 30 giây tổng cộng, hãy tính trước. Một mẫu giọng sạch dài 3 giây thường đủ để định giọng; hãy lấy câu to và liền mạch nhất. Khi mô hình render lại nhạc nền, âm thanh có thể lệch so với chuyển động, trong thử nghiệm của chúng tôi đôi khi khoảng một giây, nên hãy ghép lại bản âm thanh gốc bằng ffmpeg trước khi đánh giá độ khớp:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "Hoạt hình tạo ra thường ở 720p hoặc 1080p. Hãy nâng độ phân giải một lần sau khi dựng, và giữ một bản xuất master thay vì mã hóa lại tệp nhiều lần."
+      ]
+    },
+    {
+      "h": "Điểm yếu của hoạt hình AI và quy tắc về sao chép",
+      "body": [
+        {
+          "ul": [
+            "Bàn tay và chân vuốt: thừa ngón, dính ngón, vật đi xuyên qua tay.",
+            "Chữ: biển hiệu, nhãn và bóng thoại bị sai chính tả. Hãy thêm mọi chữ trong phần mềm dựng.",
+            "Trôi phong cách: độ đậm nét vẽ, hình dạng mắt hoặc đổ bóng dần thay đổi trong một clip hoặc giữa các cảnh. Hãy neo lại mỗi cảnh vào một keyframe đã kiểm tra.",
+            "Nhân vật nhỏ: tay chân thừa và khuôn mặt chảy ở những hình chiếm ít khung hình.",
+            "Hành động phức tạp: đánh nhau, đám đông và xoay nhanh hỏng đầu tiên. Hãy cắt chúng thành các cảnh ngắn hơn."
+          ]
+        },
+        "Đừng sao chép nhân vật của một hãng phim hay thương hiệu, kể cả khi viết câu chuyện mới. Nhân vật được bảo hộ, và các nền tảng gỡ video vi phạm. Hãy tự thiết kế nhân vật của riêng bạn. Báo cáo của Văn phòng Bản quyền Hoa Kỳ về khả năng được bảo hộ nêu rằng nội dung hoàn toàn do AI tạo ra không được bảo hộ bản quyền, trong khi sự sáng tạo của con người, như thiết kế nhân vật, cách chọn lọc và sắp xếp của bạn, thì có thể. Hướng dẫn về bản quyền AI và sử dụng thương mại của chúng tôi nói sâu hơn về chủ đề này.",
+        "Hoạt hình rõ ràng không chân thực thường không cần nhãn nội dung bị thay đổi hoặc tổng hợp của YouTube, vì nhãn này nhắm vào nội dung chân thực. Các nền tảng và khu vực khác, như EU và Trung Quốc, có nghĩa vụ gắn nhãn AI rộng hơn; xem hướng dẫn gắn nhãn nội dung AI của chúng tôi."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "AI có thể làm video anime từ văn bản không?",
+      "a": "Có, các mô hình text-to-video có thể tạo clip phong cách anime, nhưng nhân vật thường thay đổi từ cảnh này sang cảnh khác. Với câu chuyện có nhân vật lặp lại, hãy làm keyframe từ character sheet rồi chuyển thành động bằng image-to-video."
+    },
+    {
+      "q": "Làm sao giữ cùng một nhân vật cartoon trong mọi cảnh AI?",
+      "a": "Dùng character sheet có góc xoay và biểu cảm, dán cùng dòng phong cách và mô tả nhân vật vào mọi prompt, và bắt đầu mỗi cảnh từ một keyframe đã đối chiếu với sheet."
+    },
+    {
+      "q": "Tôi có thể làm video AI về nhân vật anime có sẵn không?",
+      "a": "Video fan về nhân vật của một thương hiệu vi phạm bản quyền của chủ sở hữu và có thể bị gỡ, cũng không thể kiếm tiền an toàn. Hãy thiết kế nhân vật gốc."
+    },
+    {
+      "q": "Vì sao hoạt hình AI của tôi bị thừa ngón tay?",
+      "a": "Bàn tay là điểm yếu đã biết, nhất là ở nhân vật nhỏ và chuyển động nhanh. Hãy cho nhân vật chiếm nhiều khung hình hơn, giữ cử động tay đơn giản, và tạo lại hoặc sửa keyframe trước khi chuyển thành động."
+    },
+    {
+      "q": "Tôi có sở hữu bản quyền video hoạt hình AI không?",
+      "a": "Ở Hoa Kỳ, nội dung hoàn toàn do AI tạo ra không được bảo hộ, nhưng phần đóng góp của con người như thiết kế gốc và khâu dựng thì có thể. Quy định khác nhau theo từng quốc gia."
+    }
+  ]
+}

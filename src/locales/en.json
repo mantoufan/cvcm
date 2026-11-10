@@ -10085,6 +10085,7 @@
         "prompts": "Prompt writing",
         "image": "AI images",
         "video": "AI video",
+        "shorts": "AI short videos",
         "audio": "AI audio",
         "dev": "AI for developers",
         "trust": "Copyright and safety"
@@ -10094,6 +10095,7 @@
         "prompts": "Prompt formulas for text, images and video, camera moves and storyboards",
         "image": "Text to image, image to image, consistent characters, upscaling and cut-outs",
         "video": "Text to video, image to video, keyframes, multi-shot continuity and AI short dramas",
+        "shorts": "Make TikTok, Reels and Shorts with AI: scripts, voiceover, captions, sizes, lip sync, music and dance videos",
         "audio": "How speech to text and text to speech work, and their limits",
         "dev": "Run models in the browser and call an LLM API",
         "trust": "Who owns AI output, labeling rules, C2PA and AI watermarks"
@@ -10190,6 +10192,54 @@
     "ai-short-drama-workflow": {
       "name": "AI short drama workflow",
       "blurb": "From hook and script to a labeled 9:16 episode, with a 20-second shot list."
+    },
+    "how-to-make-ai-videos": {
+      "name": "How to make AI videos",
+      "blurb": "Five ways to make an AI video, a first 15 s clip, and free-tier trade-offs"
+    },
+    "ai-short-video-workflow": {
+      "name": "AI short video workflow",
+      "blurb": "Hook to analytics: the pipeline for 15–60 s AI shorts, reels and TikToks"
+    },
+    "vertical-video-sizes": {
+      "name": "Vertical video sizes",
+      "blurb": "TikTok, Shorts and Reels sizes, lengths and safe zones, plus ffmpeg resize commands"
+    },
+    "short-video-script": {
+      "name": "Short video scripts",
+      "blurb": "Hooks, structures, a words-per-second budget and a full 30-second script."
+    },
+    "ai-voiceover": {
+      "name": "AI voiceover for video",
+      "blurb": "Pick a voice, write for the ear, fix pronunciation, hit -14 LUFS, dub with care."
+    },
+    "auto-captions": {
+      "name": "Auto captions",
+      "blurb": "Transcribe with AI, fix errors, set line limits, export SRT or VTT and burn in"
+    },
+    "ai-video-editing": {
+      "name": "AI video editing",
+      "blurb": "What each AI editing feature does, when to use it, and a 60-second short workflow"
+    },
+    "ai-lip-sync": {
+      "name": "AI lip sync",
+      "blurb": "How lip sync AI works, clean inputs, audio prep and fixes for common artifacts."
+    },
+    "ai-music-video": {
+      "name": "AI music video",
+      "blurb": "Map the song, plan shots on the beat, generate in segments and fix audio sync."
+    },
+    "ai-dance-video": {
+      "name": "AI dance video",
+      "blurb": "Motion transfer or prompt-driven dance, with timing, fabric and first-frame rules."
+    },
+    "ai-animated-video": {
+      "name": "AI animated video",
+      "blurb": "Lock a style, build character sheets, animate keyframes and avoid style drift."
+    },
+    "faceless-channel-with-ai": {
+      "name": "Faceless channel with AI",
+      "blurb": "Formats, a production stack and YouTube's inauthentic content rules, honestly"
     },
     "how-speech-to-text-works": {
       "name": "How speech-to-text works",

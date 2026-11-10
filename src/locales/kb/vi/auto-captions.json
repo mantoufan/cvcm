@@ -1,0 +1,183 @@
+{
+  "title": "Phụ đề tự động: cách tạo phụ đề AI cho video, xuất SRT/VTT — cv.cm",
+  "description": "Cách tạo phụ đề tự động bằng AI: chuyển giọng nói thành văn bản, sửa lỗi, chỉnh độ dài dòng và tốc độ đọc, xuất SRT hoặc VTT, gắn cứng bằng ffmpeg.",
+  "h1": "Cách tạo phụ đề tự động cho video bằng AI",
+  "answer": "Để tạo phụ đề tự động, hãy cho âm thanh chạy qua mô hình nhận dạng giọng nói như Whisper, sửa tên riêng và số liệu, chia văn bản thành các dòng ngắn tối đa khoảng 42 ký tự (16 với tiếng Trung), giữ tốc độ đọc dưới khoảng 20 ký tự mỗi giây, rồi xuất file SRT hoặc WebVTT. Sau đó tải lên làm phụ đề mềm hoặc gắn cứng vào hình.",
+  "sections": [
+    {
+      "h": "Trình tạo phụ đề AI thực sự làm gì",
+      "body": [
+        "Phụ đề tự động đến từ nhận dạng giọng nói tự động (ASR). Một mô hình nghe track âm thanh và viết ra các từ, kèm thời điểm bắt đầu và kết thúc của từng cụm. Whisper là ví dụ mã nguồn mở nổi tiếng: bài báo khoa học mô tả việc huấn luyện trên 680.000 giờ âm thanh đa ngôn ngữ, nên một mô hình có thể nhận dạng nhiều thứ tiếng và dịch sang tiếng Anh. Về cách mô hình hoạt động bên trong, xem hướng dẫn của chúng tôi về cách chuyển giọng nói thành văn bản.",
+        "Kết quả của ASR là bản nháp, chưa phải phụ đề hoàn chỉnh. Trang trợ giúp của YouTube về phụ đề tự động cho biết chất lượng có thể khác nhau và yêu cầu người sáng tạo luôn xem lại, sửa những chỗ nhận dạng chưa đúng. Phụ đề tốt cần thêm ba bước mà bản ghi thô bỏ qua: sửa lỗi, chia văn bản thành các dòng dễ đọc, và canh thời gian từng dòng để người xem kịp đọc.",
+        "Bạn có thể tạo phụ đề từ video ở ba nơi phổ biến: ngay trên nền tảng (YouTube, TikTok và Instagram đều có phụ đề tự động ở một dạng nào đó), trong phần mềm dựng (CapCut hay Jianying, Premiere Pro, DaVinci Resolve, Descript), hoặc bằng một công cụ chép lời riêng xuất ra file phụ đề. File riêng cho bạn nhiều quyền kiểm soát nhất và dùng lại được trên mọi nền tảng. Ví dụ, công cụ chuyển giọng nói thành văn bản của cv.cm chạy Whisper ngay trong trình duyệt và xuất TXT, SRT hoặc VTT mà không tải âm thanh lên."
+      ]
+    },
+    {
+      "h": "Quy trình từng bước",
+      "body": [
+        {
+          "ol": [
+            "Xuất track âm thanh sạch từ bản dựng cuối. Phụ đề phải khớp với bản cắt bạn sẽ đăng, nên hãy chép lời sau cùng, khi hình đã chốt.",
+            "Chép lời bằng mô hình cỡ Whisper. Hãy chọn ngôn ngữ bằng tay nếu bạn biết; tự nhận diện có thể đoán sai với clip ngắn hoặc clip mở đầu bằng nhạc.",
+            "Vừa đọc bản ghi vừa nghe. Sửa tên riêng, tên thương hiệu, số liệu, thuật ngữ chuyên môn và các từ đọc gần giống nhau.",
+            "Chia văn bản thành các thẻ phụ đề: mỗi thẻ một hoặc hai dòng ngắn, ngắt ở chỗ ngừng tự nhiên của câu.",
+            "Kiểm tra thời gian: mỗi thẻ cần xuất hiện khi lời bắt đầu và hiện đủ lâu để đọc.",
+            "Định dạng cho màn hình: cỡ chữ, viền hoặc nền, và vị trí nằm trong vùng an toàn.",
+            "Xuất bản: tải SRT hoặc VTT lên làm track phụ đề, hoặc gắn cứng phụ đề vào video, hoặc cả hai."
+          ]
+        },
+        {
+          "note": "Chép lời bản dựng cuối thay vì bản ghi thô giúp bạn khỏi phải canh lại thời gian từng dòng sau mỗi lần cắt."
+        }
+      ]
+    },
+    {
+      "h": "Quy tắc độ dài dòng và tốc độ đọc",
+      "body": [
+        "Các hướng dẫn phụ đề chuyên nghiệp đặt giới hạn cứng để người xem đọc được mà không bỏ lỡ hình. Netflix công bố hướng dẫn timed text riêng cho từng ngôn ngữ; đây là những con số hữu ích, kiểm chứng được để làm điểm xuất phát:",
+        {
+          "table": {
+            "head": [
+              "Ngôn ngữ (hướng dẫn của Netflix)",
+              "Số ký tự mỗi dòng",
+              "Số dòng mỗi thẻ",
+              "Tốc độ đọc, người lớn",
+              "Tốc độ đọc, trẻ em"
+            ],
+            "rows": [
+              [
+                "Tiếng Anh (Mỹ)",
+                "42",
+                "Tối đa 2",
+                "Tối đa 20 ký tự mỗi giây",
+                "Tối đa 17 ký tự mỗi giây"
+              ],
+              [
+                "Tiếng Trung (giản thể)",
+                "16",
+                "Tối đa 2",
+                "Tối đa 9 ký tự mỗi giây",
+                "Tối đa 7 ký tự mỗi giây"
+              ]
+            ]
+          }
+        },
+        "Hướng dẫn tiếng Anh cũng giải thích chỗ nên ngắt dòng: sau dấu câu, trước liên từ và trước giới từ. Giữ mạo từ đi cùng danh từ, tính từ đi cùng danh từ, và tên riêng đi cùng họ.",
+        "Đây là cách quy tắc tốc độ đọc hoạt động trong thực tế. Một thẻ ghi `Three things nobody tells you about captions` có 44 ký tự, kể cả dấu cách. Ở 20 ký tự mỗi giây, nó cần hiện ít nhất 2,2 giây. Nếu người nói đọc câu đó trong 1,5 giây, bạn hoặc để thẻ hiện lâu hơn, hoặc rút ngắn chữ, ví dụ thành `Three things nobody tells you` (29 ký tự, khoảng 1,5 giây).",
+        "Video dọc ngắn cần giới hạn chặt hơn màn hình TV. Khung điện thoại rộng 1080 pixel với chữ lớn, đậm chứa ít ký tự mỗi dòng hơn nhiều so với 42. Trên thực tế, một dòng khoảng 20 đến 30 ký tự Latin, hoặc 8 đến 12 chữ Hán, đọc tốt trên điện thoại. Nhiều creator chỉ hiện một cụm ngắn mỗi thẻ và đổi thẻ liên tục."
+      ]
+    },
+    {
+      "h": "SRT và WebVTT: hai định dạng file phụ đề",
+      "body": [
+        "Hầu như mọi nền tảng và phần mềm dựng đều nhận SRT. WebVTT (VTT) là định dạng phụ đề trên web của W3C, dùng cho phần tử video HTML. Hai định dạng trông gần như giống nhau:",
+        {
+          "code": "SRT (file: captions.srt)\n\n1\n00:00:00,000 --> 00:00:01,600\nThree things nobody tells you\n\n2\n00:00:01,600 --> 00:00:03,400\nabout auto captions.\n\nWebVTT (file: captions.vtt)\n\nWEBVTT\n\n00:00:00.000 --> 00:00:01.600\nThree things nobody tells you\n\n00:00:01.600 --> 00:00:03.400 line:70%\nabout auto captions.",
+          "lang": "text"
+        },
+        {
+          "ul": [
+            "SRT đánh số từng thẻ và dùng dấu phẩy trước phần mili giây: `00:00:01,600`.",
+            "WebVTT bắt đầu bằng dòng `WEBVTT`, dùng dấu chấm trước phần mili giây: `00:00:01.600`, và không cần số thứ tự thẻ.",
+            "WebVTT có thể kèm các thiết lập cue sau phần thời gian, như `line`, `position` và `align`, để đặt thẻ trên màn hình. Không phải trình phát nào cũng hỗ trợ.",
+            "Lưu cả hai dưới dạng văn bản UTF-8 để dấu tiếng Việt và ký tự CJK không bị lỗi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Phụ đề gắn cứng hay phụ đề mềm",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Loại",
+              "Là gì",
+              "Phù hợp với",
+              "Nhược điểm"
+            ],
+            "rows": [
+              [
+                "Phụ đề mềm (track phụ đề)",
+                "File SRT hoặc VTT riêng mà trình phát vẽ đè lên",
+                "Video YouTube, nhiều ngôn ngữ, hỗ trợ tiếp cận, văn bản để tìm kiếm",
+                "Không phải ứng dụng video ngắn nào cũng nhận file tải lên; kiểu chữ do trình phát quyết định"
+              ],
+              [
+                "Phụ đề gắn cứng (burned-in, open caption)",
+                "Chữ được vẽ vào chính pixel của video",
+                "TikTok, Reels và Shorts, nơi nhiều người xem khi tắt tiếng; toàn quyền kiểm soát kiểu chữ",
+                "Không tắt hay dịch được; có lỗi phải xuất lại"
+              ]
+            ]
+          }
+        },
+        "Nhiều creator làm cả hai: phụ đề gắn cứng có kiểu dáng cho các ứng dụng video ngắn và một file SRT sạch cho YouTube. Các lệnh ffmpeg này minh hoạ từng cách. Bộ lọc `subtitles` cần bản ffmpeg có libass.",
+        {
+          "code": "# Burn captions into a 1080x1920 video (white text, black outline, raised above the bottom UI)\nffmpeg -i final.mp4 \\\n  -vf \"subtitles=captions.srt:force_style='FontName=Arial,FontSize=12,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BorderStyle=1,Outline=2,Alignment=2,MarginV=100'\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy captioned.mp4\n\n# Add a soft caption track to an MP4 without re-encoding the video\nffmpeg -i final.mp4 -i captions.srt -map 0 -map 1 -c copy -c:s mov_text \\\n  -metadata:s:s:0 language=eng soft_captions.mp4",
+          "lang": "bash"
+        },
+        "Trong lệnh gắn cứng, file SRT được vẽ trên khung ảo cao 288 đơn vị, nên `FontSize=12` tương đương khoảng 80 pixel trên khung hình cao 1920 pixel, và `MarginV=100` nâng chữ lên khoảng một phần ba chiều cao tính từ đáy. Hãy thử trên một clip ngắn rồi điều chỉnh."
+      ]
+    },
+    {
+      "h": "Định dạng phụ đề cho video dọc",
+      "body": [
+        {
+          "ul": [
+            "Vị trí: giữ phụ đề ngoài một phần ba phía dưới, nơi ứng dụng hiện tên tài khoản, mô tả và nút bấm. Xem hướng dẫn về kích thước video dọc để biết vùng an toàn tính bằng pixel.",
+            "Cỡ chữ: trên điện thoại, chữ trông lớn trong phần mềm dựng thường lại vừa đẹp. Hãy kiểm tra trên điện thoại thật ở khoảng cách một sải tay.",
+            "Độ tương phản: chữ trắng hoặc vàng có viền tối hoặc nền bán trong suốt luôn dễ đọc trên mọi nền.",
+            "Đừng che mặt. Nếu mặt người nói nằm giữa khung hình, hãy đặt phụ đề ngay dưới cằm, không đè lên miệng.",
+            "Một kiểu cho mỗi video. Đổi phông chữ và màu giữa các thẻ khiến người xem đọc kiểu dáng thay vì đọc lời."
+          ]
+        },
+        "Phụ đề từng từ hoặc kiểu karaoke hiện một đến ba từ mỗi lần và tô sáng từ đang được nói. Chúng cần mốc thời gian cấp độ từ, mà các công cụ cỡ Whisper có thể tạo ra. Kiểu này giữ mắt người xem trên màn hình trong clip người nói nhanh, nhưng mệt mỏi với phần giải thích dài. Hãy dùng cho hook và câu chốt, còn phần còn lại dùng thẻ hai dòng thông thường."
+      ]
+    },
+    {
+      "h": "Dịch phụ đề",
+      "body": [
+        "Hãy dịch phụ đề nguồn đã sửa, không dịch bản ghi thô. Giữ nguyên thời gian của từng thẻ và dịch từng thẻ một, để mỗi dòng đã dịch vẫn khớp với thời điểm lời được nói.",
+        "Bản dịch làm thay đổi độ dài. Tiếng Tây Ban Nha và tiếng Đức thường cần nhiều ký tự hơn tiếng Anh cho cùng một ý, còn tiếng Trung và tiếng Nhật cần ít ký tự hơn nhưng giới hạn tốc độ đọc thấp hơn nhiều. Sau khi dịch, hãy kiểm tra từng thẻ theo giới hạn độ dài dòng và tốc độ đọc của ngôn ngữ đích và rút ngắn khi cần. Bản dịch máy của file phụ đề là bản nháp đầu nhanh; hãy nhờ người thông thạo đọc lại trước khi đăng."
+      ]
+    },
+    {
+      "h": "Lỗi thường gặp và giới hạn của phụ đề tự động",
+      "body": [
+        {
+          "ul": [
+            "Tên riêng và từ mới: mô hình viết ra từ thông dụng gần nhất. Hãy lập danh sách tên và cách viết thương hiệu rồi tìm chúng trong bản ghi.",
+            "Số liệu: đối chiếu mọi giá, ngày tháng và số đo với những gì đã nói. Số sai trong phụ đề còn tệ hơn không có phụ đề.",
+            "Nhạc và tiếng ồn: nhạc nền, tiếng đám đông và nhiều người nói chồng lên nhau làm giảm độ chính xác. Nếu được, hãy chép lời bản đã hạ nhỏ nhạc.",
+            "Chữ xuất hiện trong khoảng lặng: trên thực tế, mô hình ASR đôi khi viết ra chữ ở đoạn im lặng dài hoặc đoạn chỉ có nhạc. Hãy xoá các thẻ xuất hiện ở chỗ không ai nói.",
+            "Nhiều ngôn ngữ: clip chuyển đổi giữa các ngôn ngữ có thể chỉ được chép lời bằng một thứ tiếng. Hãy tách ra và chép lời từng phần với ngôn ngữ chọn bằng tay.",
+            "Hỗ trợ tiếp cận: phụ đề cho người khiếm thính và nghe kém cũng nên ghi chú âm thanh quan trọng, như [tiếng cửa đóng sầm], điều mà ASR không tự thêm."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Làm sao tạo phụ đề từ video miễn phí?",
+      "a": "Dùng công cụ chép lời dựa trên Whisper hoặc phụ đề tự động tích hợp trong phần mềm dựng, rồi xuất file SRT. Hãy kiểm tra và sửa văn bản trước khi đăng."
+    },
+    {
+      "q": "Phụ đề tự động của YouTube có chính xác không?",
+      "a": "Thường dùng được nhưng không đáng tin với tên riêng, số liệu hay âm thanh nhiều tạp âm. Chính YouTube nói chất lượng có thể khác nhau và yêu cầu người sáng tạo xem lại và chỉnh sửa."
+    },
+    {
+      "q": "SRT và VTT khác nhau thế nào?",
+      "a": "Cả hai đều liệt kê nội dung phụ đề kèm thời điểm bắt đầu và kết thúc. SRT dùng dấu phẩy trước mili giây và đánh số từng thẻ; WebVTT bắt đầu bằng WEBVTT, dùng dấu chấm và có thể kèm thiết lập vị trí."
+    },
+    {
+      "q": "Mỗi dòng phụ đề nên có bao nhiêu ký tự?",
+      "a": "Hướng dẫn tiếng Anh của Netflix cho phép tối đa 42 ký tự mỗi dòng và hai dòng; hướng dẫn tiếng Trung giản thể cho phép 16 ký tự mỗi dòng. Với video ngắn dọc, dòng ngắn hơn sẽ dễ đọc hơn."
+    },
+    {
+      "q": "Nên gắn cứng phụ đề hay tải lên file SRT?",
+      "a": "Gắn cứng cho TikTok, Reels và Shorts, nơi bạn muốn kiểu chữ cố định và nhiều người xem khi tắt tiếng. Tải lên SRT cho YouTube và các ngôn ngữ khác, để người xem có thể bật hoặc tắt phụ đề."
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+{
+  "title": "AI Video Editing: What Each AI Editor Feature Does and When — cv.cm",
+  "description": "AI video editing explained: silence cuts, transcript editing, auto reframe, voice isolation, upscaling and more, with a workflow to cut a 60-second short.",
+  "h1": "How to Edit Videos with AI: What Each Feature Does and When to Use It",
+  "answer": "AI video editing uses models to do slow editing jobs for you: cutting silences and filler words, editing by transcript, reframing 16:9 footage to 9:16, adding captions, cleaning up voice, removing backgrounds, upscaling and generating B-roll. Use AI for the first rough pass, then review every cut yourself, because AI tools lose context, create jump cuts and can over-process the voice.",
+  "sections": [
+    {
+      "h": "What an AI video editor does, and what it does not",
+      "body": [
+        "An AI video editor is a normal editor with models attached to specific tasks. The models listen to speech, track faces and objects, separate voice from noise, or generate new pixels. Editors such as CapCut or Jianying, Premiere Pro, DaVinci Resolve and Descript all include features like these at the time of writing, under different names.",
+        "The useful way to think about AI editing is in two groups. Analysis features find things in your footage: words, pauses, faces, beats, shot changes. They save time and are easy to check. Generative features create new picture or sound: upscaled detail, in-between frames, extended backgrounds, new B-roll. They can add things that were never filmed, so they need closer review and, when realistic, disclosure.",
+        "AI does not decide what your video is about. It cannot tell which 60 seconds of a long talk are the most interesting to your audience, and it does not know which pause is a dramatic beat and which is dead air. That judgment stays with you."
+      ]
+    },
+    {
+      "h": "AI editing features at a glance",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Feature",
+              "What it does",
+              "Use it when",
+              "Watch out for"
+            ],
+            "rows": [
+              [
+                "Silence and filler cut",
+                "Finds pauses and words like um and uh in the transcript or audio level, and removes them",
+                "Talking-head clips, tutorials, podcasts",
+                "Breathless pacing, cut-off word endings, jump cuts"
+              ],
+              [
+                "Transcript-based editing",
+                "Shows speech as text; deleting text deletes the matching video",
+                "Interviews and long recordings where you edit by meaning",
+                "Cuts that sound fine in text but jump visually"
+              ],
+              [
+                "Auto reframe",
+                "Tracks the main subject and moves a 9:16 crop window across a 16:9 frame",
+                "Turning horizontal footage into Shorts, TikToks and Reels",
+                "Losing the second person in a two-shot; jittery crop moves"
+              ],
+              [
+                "Auto captions",
+                "Speech recognition writes timed subtitles",
+                "Almost every short video",
+                "Wrong names and numbers"
+              ],
+              [
+                "Noise removal and voice isolation",
+                "Separates speech from background sound and removes the rest",
+                "Noisy rooms, street recordings, fan hum",
+                "Thin, metallic or underwater-sounding voice"
+              ],
+              [
+                "Background removal",
+                "Cuts the person out of the background in every frame",
+                "Green-screen style effects without a green screen",
+                "Flickering edges, lost hair and fingers"
+              ],
+              [
+                "Upscaling",
+                "Enlarges frames and adds detail with a super-resolution model",
+                "Soft 720p AI clips or old footage for a 1080p master",
+                "Invented detail in faces, text and fabric"
+              ],
+              [
+                "Frame interpolation",
+                "Creates new frames between existing ones for slow motion or a higher frame rate",
+                "Smooth slow motion from normal footage",
+                "Warped hands, objects melting during fast motion"
+              ],
+              [
+                "Color match",
+                "Matches the color of one clip to a reference clip",
+                "Mixing cameras, phones and AI clips in one video",
+                "Skin tones shifting; it cannot fix bad exposure"
+              ],
+              [
+                "Beat sync",
+                "Detects beats in the music and places cuts on them",
+                "Montages and music-driven edits",
+                "Cutting on every beat feels mechanical"
+              ],
+              [
+                "B-roll generation",
+                "Generates new clips from a text or image prompt",
+                "Illustrating a point with no matching footage",
+                "Realistic fake scenes that need disclosure"
+              ],
+              [
+                "AI extend and fill",
+                "Adds frames at the end of a clip or new picture outside the frame edge",
+                "A shot that is a second too short; widening a frame",
+                "Content that drifts from the original"
+              ]
+            ]
+          }
+        },
+        "Several of these features rest on published research you can read: RIFE for real-time frame interpolation, Real-ESRGAN for super-resolution of real-world images, Hybrid Demucs for separating sources in audio, and Whisper for speech recognition. Commercial tools use their own models, but the strengths and failure modes are similar."
+      ]
+    },
+    {
+      "h": "Workflow: cut a 60-second short from a long recording",
+      "body": [
+        "Here is a worked example. You have a 40-minute horizontal recording of a two-person podcast and want one 60-second vertical clip for Shorts, TikTok and Reels.",
+        {
+          "ol": [
+            "Transcribe the full recording. You now have searchable text with timestamps.",
+            "Find the moment. Read or search the transcript for a passage that makes sense on its own: a clear question and answer, a strong opinion, a surprising number. Mark two or three candidates.",
+            "Budget the words. Spoken English runs at roughly 2.5 to 3 words per second, so 60 seconds holds about 150 to 180 words. Pick a passage of about 200 to 250 words, because you will cut some.",
+            "Make the rough cut by transcript. Delete the off-topic sentences and the setup the viewer does not need. Start on the most interesting sentence, not on the greeting.",
+            "Run silence and filler removal, then listen. Put back any pause that carries meaning, such as the beat before a punchline.",
+            "Clean the audio. Apply noise removal or voice isolation at a moderate strength, and compare with the original on headphones.",
+            "Reframe to 9:16. Let auto reframe follow the speaker, then check every cut between speakers. Fix any moment where the crop shows an empty chair.",
+            "Add captions. Correct names and numbers, and keep the text inside the safe zone.",
+            "Add the hook. Make sure the first frame already shows the speaker's face, well lit and mid-sentence. In our tests, a slow or dark first second loses viewers before the clip has a chance.",
+            "Export one high-quality master at 1080×1920, then post the same file to each platform."
+          ]
+        },
+        "If your editor has no reframe feature, ffmpeg can make a fixed crop. These commands cut the segment, list the pauses, and crop the left half of a two-person shot to 9:16:",
+        {
+          "code": "# 1) Cut the chosen passage (from 12:04 to 13:15) out of the recording\nffmpeg -ss 00:12:04 -to 00:13:15 -i podcast.mp4 -c:v libx264 -crf 18 -c:a aac -b:a 192k segment.mp4\n\n# 2) List pauses longer than 0.6 s that are quieter than -35 dB\nffmpeg -i segment.mp4 -af silencedetect=noise=-35dB:d=0.6 -f null - 2>&1 | grep silence_\n\n# 3) Fixed 9:16 crop around the left speaker of a 1920x1080 frame\nffmpeg -i segment.mp4 -vf \"crop=608:1080:180:0,scale=1080:1920:flags=lanczos,setsar=1\" \\\n  -c:v libx264 -crf 18 -pix_fmt yuv420p -c:a copy vertical.mp4",
+          "lang": "bash"
+        },
+        "In step 3, `crop=608:1080:180:0` takes a window 608 pixels wide and 1080 tall, starting 180 pixels from the left. 608 by 1080 is close to 9:16, and the scale step makes it exactly 1080×1920. Change the third number to move the window."
+      ]
+    },
+    {
+      "h": "The right order of operations",
+      "body": [
+        "Order matters because some steps destroy information that later steps need, and some work is wasted if you do it too early.",
+        {
+          "ol": [
+            "Choose and cut the content first. Every later step then runs on less footage.",
+            "Clean the audio before captions, so speech recognition hears clear speech.",
+            "Reframe before captions, so you place text on the final frame.",
+            "Color match before export, after all clips are on the timeline.",
+            "Upscale last, once, on the finished edit. Upscaling each clip before editing multiplies render time, and different settings can make cuts look mismatched.",
+            "Keep one master file. Each app compresses your upload again, and every extra re-encode adds artifacts."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Generative features and disclosure",
+      "body": [
+        "Analysis features rarely raise questions. Generative features can. YouTube's disclosure policy asks creators to mark realistic content that was made or changed with AI, such as a real person appearing to say something they did not say, altered footage of a real event, or a realistic scene that never happened. The same page lists edits that do not need disclosure, including color adjustment, beauty filters, caption creation and help with production work.",
+        "In practice: captions, silence cuts, noise removal and color matching do not change what happened on camera. Generated B-roll of a realistic street, an extended shot that adds people, or a face replaced in a clip does. If a viewer could mistake the generated part for real footage, label it. TikTok, Douyin and other platforms have their own AI content labels, and China and the EU have labeling rules; see our guide to labeling AI content."
+      ]
+    },
+    {
+      "h": "Limits and common mistakes",
+      "body": [
+        {
+          "ul": [
+            "Jump cuts everywhere. Removing every pause makes the speaker's head jump between frames. Cover some cuts with a zoom-in of about 10 to 15 percent, a B-roll shot or a caption change, and leave some natural pauses.",
+            "Lost context. A short clip cut from a long talk can change what the speaker meant. Read the sentences before and after your clip, and do not cut a quote so it says the opposite.",
+            "Over-processed voice. Strong noise removal makes voices sound thin or robotic. Use the lowest setting that removes the distraction, and keep a little room tone.",
+            "Upscaling that invents detail. Super-resolution models guess detail. Faces can change slightly, and small text can become fake letters. Compare the upscaled master with the original on a large screen.",
+            "Interpolation on fast motion. New in-between frames are guesses. Hands, spinning objects and crossing people often warp. Use interpolation on slow, simple motion only.",
+            "Trusting the reframe. Auto reframe follows motion and faces, not meaning. In a two-person talk it may stay on the wrong person. Check every speaker change.",
+            "Editing raw recordings at full length with AI first. Choose the passage before running heavy processing; it is faster and you check less."
+          ]
+        },
+        "A free AI video editor is often enough for short clips. When you compare options, check what matters for your use instead of a ranking: whether the export has a watermark, the export resolution, whether files are processed on your device or uploaded, and which languages the captions support. For the shape and size of the final file, see our guide to vertical video sizes."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can AI edit a video for me automatically?",
+      "a": "AI can make a rough cut: remove silences, cut by transcript, reframe and caption. You still need to choose the content, check each cut and fix errors before posting."
+    },
+    {
+      "q": "How do I turn a horizontal video into a vertical one with AI?",
+      "a": "Use an auto reframe feature, which tracks the subject and moves a 9:16 crop across the frame. For footage where the subject stays still, a fixed crop in any editor or ffmpeg works."
+    },
+    {
+      "q": "Does AI noise removal hurt voice quality?",
+      "a": "It can. Strong settings make voices sound thin or metallic. Use a moderate level and compare with the original on headphones."
+    },
+    {
+      "q": "Should I upscale AI video before or after editing?",
+      "a": "After. Edit at your final size, then upscale the finished master once. Upscaling each clip first wastes time and can make cuts look mismatched."
+    },
+    {
+      "q": "Do I have to label videos edited with AI?",
+      "a": "Not for ordinary edits such as captions, color or noise removal. YouTube asks for disclosure when AI makes realistic content that could be mistaken for real events or people."
+    }
+  ]
+}

@@ -1,0 +1,161 @@
+{
+  "title": "AI Music Video: How to Make One That Stays on the Beat — cv.cm",
+  "description": "How to make an AI music video: clear the song rights, map BPM and sections, plan shots on the beat grid, generate segment by segment and check sync.",
+  "h1": "How to Make an AI Music Video",
+  "answer": "To make an AI music video, start with a song you have the rights to, then map it: BPM, sections and downbeat timestamps. Plan one shot per phrase on that beat grid, lock the character and style, and generate each segment against audio you cut yourself. Edit on the beats, then put the original song back on and check sync.",
+  "sections": [
+    {
+      "h": "What an AI music video generator actually does",
+      "body": [
+        "An AI music video generator turns prompts, images or reference clips into short video segments, usually a few seconds each. At the time of writing, no tool reliably turns a whole three-minute song into a finished video in one pass. The practical method is the same with Veo, Kling, Seedance, Runway, Hailuo or any similar model: you split the song into pieces, generate a clip for each piece, and assemble them in an editor such as CapCut, Premiere Pro or DaVinci Resolve.",
+        "That means the song drives everything. The model makes pictures that move; you decide where each picture starts and stops. The work that makes a music video feel professional happens before and after generation: mapping the song, planning shots on the beat, and checking sync at the end.",
+        {
+          "note": "This guide covers song-driven videos for Shorts, Reels, TikTok, Douyin or a full YouTube upload. For dance choreography specifically, see our guide to AI dance video. For continuity across many shots, see our guide to multi-shot AI video."
+        }
+      ]
+    },
+    {
+      "h": "Step 1: Make sure you can use the song",
+      "body": [
+        "Check the rights before you spend a single credit. A video built on a song you cannot publish will be muted, blocked or claimed. On YouTube, every upload is scanned by Content ID; when it matches a rights holder's reference file, the owner decides whether to block the video, run ads on it, or track it, and that choice can differ by country.",
+        {
+          "ul": [
+            "Your own song: you are fine, but register it with your distributor if you want Content ID on your side.",
+            "A licensed track: read the license for video sync and for each platform you plan to post on. A license for background music in a short may not cover a full music video.",
+            "An AI-generated song (for example from Suno): read the tool's terms for commercial use and ownership on your plan. Terms differ by plan and change over time.",
+            "A commercial hit you do not own: use only through the platform's own music library inside the app, where the platform holds the license. Do not export and reupload elsewhere."
+          ]
+        },
+        "YouTube also asks creators to disclose AI-generated music when it is the main focus of the video, and realistic AI footage of real people or places. Our guide to labeling AI content explains the rules for each platform and region."
+      ]
+    },
+    {
+      "h": "Step 2: Map the song into a beat grid",
+      "body": [
+        "Write a timeline of the song before you write any prompt. You need four things: the tempo, the sections, the downbeats and a few strong musical events.",
+        {
+          "ol": [
+            "Find the BPM. Tap along to the chorus; for example, cv.cm's metronome has a tap tempo that gives you the BPM after a few taps.",
+            "Mark the sections with timestamps: intro, verse, pre-chorus, chorus, bridge, outro.",
+            "Mark the first downbeat of each section, the loudest note, and any pause or drop. These are the moments a cut or a big move should land on.",
+            "Work out the length of a phrase. In 4/4 time one bar is 4 beats, so one bar lasts 240 / BPM seconds. At 120 BPM a bar is 2 s and a two-bar phrase (one eight-count) is 4 s."
+          ]
+        },
+        "A 4-second phrase is a useful unit because it is close to the shortest clip length many models accept. At 90 BPM a bar is about 2.67 s, so an eight-count is about 5.3 s; at 128 BPM it is 3.75 s. Choose shot lengths that are whole phrases, and trim the extra fraction of a second in the edit."
+      ]
+    },
+    {
+      "h": "Step 3: Plan shots on the grid and lock the look",
+      "body": [
+        "Turn the timeline into a shot list. One shot per phrase is a good default; fast songs can use one shot per bar in the chorus. Each row should say the time range, the section, what the camera sees, and which musical event the main action lands on.",
+        {
+          "table": {
+            "head": [
+              "Time",
+              "Section",
+              "Shot",
+              "Lands on"
+            ],
+            "rows": [
+              [
+                "0.0–4.0 s",
+                "Intro",
+                "Close-up, singer already facing camera, warm window light, slow push in",
+                "First downbeat at 0.0 s: eyes open to lens"
+              ],
+              [
+                "4.0–8.0 s",
+                "Verse line 1",
+                "Medium shot, walking along a wet street at dusk, handheld follow",
+                "Step on beat 1 of each bar"
+              ],
+              [
+                "8.0–12.0 s",
+                "Verse line 2",
+                "Close-up, sung line, lip sync",
+                "Line starts at 8.2 s"
+              ],
+              [
+                "12.0–16.0 s",
+                "Pre-chorus",
+                "Low angle, wind picks up, coat moves",
+                "Loudest note at 15.5 s: turn to camera"
+              ],
+              [
+                "16.0–20.0 s",
+                "Chorus",
+                "Wide shot, rooftop, city lights, orbit left",
+                "Cut exactly on the chorus downbeat"
+              ]
+            ]
+          }
+        },
+        "The opening shot matters most. In practice, the first frame decides how many viewers leave in the first two or three seconds. Make the first frame already the best-looking frame: bright, the face fully visible and lit, the subject already moving or smiling, framed close or medium so the subject fills most of the frame. A slow fade-in from black, a head looking down or a dim room loses people before the song has started. If the concept needs a story setup, put it in the props and the setting, not in a slow opening.",
+        "Then lock the look. Make a character sheet (front, side and back views, outfit, hair, colors) and a short style line you paste into every prompt unchanged, such as lens, light and color grade. Our guide to consistent AI characters covers how to build the sheet. Every new reference image you make must be checked against that sheet, character by character: clothing, hands, accessories, hair, colors and height ratio. Image editing tools silently change details you did not ask about, and the video model then copies the error into every shot."
+      ]
+    },
+    {
+      "h": "Step 4: Generate segment by segment against cut audio",
+      "body": [
+        "Generate each shot as its own segment, with its own slice of the song. Cut the audio to each segment yourself, for example with cv.cm's audio cutter, rather than uploading the whole song and letting the model pick a slice. That keeps your timeline and the model's timeline the same.",
+        "Many models accept only fixed durations, such as whole seconds or tiers like 5, 10 or 15 s. Plan the edit around those lengths and make each audio slice exactly as long as the clip you will request. Some tools also cap the total reference audio, for example around 30 seconds across all reference clips, and the prompt length at a few thousand characters. If you also need a voice reference, budget for it: the music slice plus the voice sample must fit. A clean 3-second voice sample is usually enough; take the loudest, most continuous sentence.",
+        "Write the prompt as a timeline that names both seconds and musical events. Write only what a camera would see. Video models render metaphors literally: 'her voice rises like a bird' can put a real bird in the shot, and 'a city like a painting' can flatten a real background into an illustration.",
+        {
+          "code": "Segment 4 (12.0-16.0 s of the song, pre-chorus), 4 seconds, 9:16.\nSame woman as the reference: short black bob, cream trench coat, silver hoop earrings.\nLow-angle medium shot on a rooftop at blue hour, city lights behind her, soft rim light.\n0-1 s: she stands facing left, wind moves her hair and coat.\n1-3 s: she turns slowly toward the camera, chin lifting, the coat swings out.\n3.5 s (loudest note): she looks straight into the lens and opens her mouth to sing.\nCamera: slow push in from waist to chest height. No text on screen.",
+          "lang": "text"
+        },
+        "For sung lines, use lip sync. Either generate the shot with the cut vocal as audio input, if the model supports it, or generate the shot first and apply an audio-driven lip-sync pass with the isolated vocal. Close and medium frontal shots work best; side profiles and hands near the mouth fail most often. Our guide to AI lip sync covers inputs and fixes."
+      ]
+    },
+    {
+      "h": "Step 5: Edit on the beats and check sync",
+      "body": [
+        "Lay the full original song on the timeline first, then drop each segment at its planned start time. Put cuts on downbeats or on the strong events you marked. A cut a few frames early or late is easy to feel on a chorus drop.",
+        "When a model generates or re-renders the soundtrack itself, the music in the clip can start late. In our tests the shift was roughly 1 second, while the motion followed the prompt timing closely. So never judge sync by the audio inside the generated file. Replace it with the original song first:",
+        {
+          "code": "ffmpeg -i gen.mp4 -i song.mp3 -map 0:v:0 -map 1:a:0 -c:v copy -c:a aac -shortest synced.mp4",
+          "lang": "bash"
+        },
+        "If one segment still looks early or late against the music, slide it by whole frames in the editor instead of regenerating. Watch the lip-synced lines at full size; mouth drift of two or three frames is visible on close-ups.",
+        "Generated clips often come out at 720p or 1080p with soft detail. Upscale after the edit, not before, so you upscale only what you keep, and keep one master export. Upload that master to each platform directly; re-encoding the file several times, for example downloading from one app and reposting to another, compounds compression artifacts."
+      ]
+    },
+    {
+      "h": "Common mistakes and honest limits",
+      "body": [
+        {
+          "ul": [
+            "Prompting the whole song at once. The model cannot follow a three-minute structure; plan phrase-sized shots instead.",
+            "Arguing with a reference. A reference video or image is a much stronger anchor than text. If it has lens flare, a prop or lighting you do not want, the model tends to copy it anyway. Fix the reference (crop, mask, regrade) before you generate.",
+            "Character drift. Without a sheet and a fixed style line, faces and outfits change between shots. Check each segment against the sheet before you accept it.",
+            "Words on screen. Lyrics and titles generated inside the video are often misspelled. Add text in the editor.",
+            "Real singers. Do not make a realistic video of a real artist singing a song they did not record or perform. It needs consent and disclosure, and in many places it breaks personality and likeness rights."
+          ]
+        },
+        "Expect to generate two to four takes for the hardest shots, usually the sung close-ups and the chorus opener. Most of the quality comes from the beat map and the edit, not from a single perfect generation."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Can AI make a music video from a song automatically?",
+      "a": "Some tools cut generated clips to the beat automatically, but at the time of writing the results are generic. For a video that follows the lyrics and the song structure, plan the shots yourself and generate segment by segment."
+    },
+    {
+      "q": "How long does it take to make an AI music video?",
+      "a": "A 30-second short with six to eight shots can take an afternoon, including retakes. A full three-minute song has 40 or more shots, so plan several days and reuse a locked character sheet and style line."
+    },
+    {
+      "q": "Can I use a famous song in an AI music video?",
+      "a": "Only if you have a license for it. Inside TikTok, Reels or Shorts you can use songs from the in-app music library, where the platform holds the rights; an uploaded copy is likely to be muted, blocked or claimed."
+    },
+    {
+      "q": "Do I have to label an AI music video?",
+      "a": "On YouTube you must disclose realistic synthetic content and AI-generated music that is the main focus of the video. Other platforms and regions have their own labels; see our guide to labeling AI content."
+    },
+    {
+      "q": "Why is my AI music video out of sync?",
+      "a": "Often the model shifted the music inside the generated clip, sometimes by about a second, while the motion stayed on time. Replace the audio with the original song before judging sync, and cut each audio slice to the exact segment length yourself."
+    }
+  ]
+}
