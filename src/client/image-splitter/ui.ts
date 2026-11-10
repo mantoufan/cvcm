@@ -1,5 +1,5 @@
 import { mimeForFormat, safeStem } from "../../shared/filename";
-import { MAX_GRID, SPLIT_PRESETS, clampGrid, cropArea, postingOrder, splitGrid, tileName, type Tile } from "../../shared/image-split";
+import { MAX_GRID, SPLIT_PRESETS, TILE_SHAPES, type TileShape, clampGrid, cropArea, postingOrder, splitGrid, tileName, type Tile } from "../../shared/image-split";
 import { zipStore } from "../../shared/zip";
 import { blobFromBytes } from "../../shared/image-encode";
 import { canvasToBlob, decodeImage } from "../decode";
@@ -15,7 +15,7 @@ const state = {
   source: null as Source | null,
   rows: 3,
   cols: 3,
-  square: true,
+  shape: "portrait" as TileShape,
   format: "png" as Format,
   showOrder: false,
   /** Set once the user picks a format; until then each new picture keeps its own kind. */
@@ -33,7 +33,7 @@ let infoEl: HTMLElement | null = null;
 let galleryEl: HTMLElement | null = null;
 let rowsEl: HTMLInputElement | null = null;
 let colsEl: HTMLInputElement | null = null;
-let squareEl: HTMLInputElement | null = null;
+let shapeEl: HTMLSelectElement | null = null;
 let formatEl: HTMLSelectElement | null = null;
 let orderEl: HTMLInputElement | null = null;
 
@@ -59,7 +59,8 @@ export function unmountImageSplitter(): void {
   state.load++;
   splitting = null;
   preview = statusEl = infoEl = galleryEl = null;
-  rowsEl = colsEl = squareEl = null;
+  rowsEl = colsEl = null;
+  shapeEl = null;
   formatEl = orderEl = null;
   state.formatChosen = false;
 }
@@ -141,7 +142,9 @@ function controls(): HTMLElement {
   rowsEl.dataset.field = "rows";
   colsEl = num(state.cols, (n) => { state.cols = n; changed(); }, () => state.cols);
   colsEl.dataset.field = "cols";
-  squareEl = h("input", { type: "checkbox", checked: state.square, "data-field": "square", onChange: () => { state.square = squareEl!.checked; changed(); } });
+  shapeEl = h("select", { "data-field": "shape", onChange: () => { state.shape = shapeEl!.value as TileShape; changed(); } },
+    ...TILE_SHAPES.map((sh) => h("option", { value: sh, selected: sh === state.shape }, t(`imageSplitter.shape_${sh}`))),
+  );
   orderEl = h("input", { type: "checkbox", checked: state.showOrder, "data-field": "order", onChange: () => { state.showOrder = orderEl!.checked; paint(); renderGallery(); } });
   formatEl = h("select", { "data-field": "format", onChange: () => { state.format = formatEl!.value as Format; state.formatChosen = true; changed(); } },
     h("option", { value: "png", selected: state.format === "png" }, "PNG"),
@@ -158,16 +161,16 @@ function controls(): HTMLElement {
         onClick: () => {
           state.rows = p.rows;
           state.cols = p.cols;
-          state.square = p.square;
+          state.shape = p.shape;
           if (rowsEl) rowsEl.value = String(p.rows);
           if (colsEl) colsEl.value = String(p.cols);
-          if (squareEl) squareEl.checked = p.square;
+          if (shapeEl) shapeEl.value = p.shape;
           changed();
         },
       }, t(`imageSplitter.preset_${p.id}`)))),
       labeled(t("imageSplitter.rows"), rowsEl),
       labeled(t("imageSplitter.cols"), colsEl),
-      h("label", { class: "check" }, squareEl, h("span", null, t("imageSplitter.square"))),
+      labeled(t("imageSplitter.shape"), shapeEl),
       h("label", { class: "check" }, orderEl, h("span", null, t("imageSplitter.showOrder"))),
       labeled(t("imageSplitter.format"), formatEl),
     ),
@@ -216,7 +219,7 @@ async function setFile(file: File): Promise<void> {
 function tiles(): Tile[] {
   const s = state.source;
   if (!s) return [];
-  return splitGrid(cropArea(s.width, s.height, state.rows, state.cols, state.square), state.rows, state.cols);
+  return splitGrid(cropArea(s.width, s.height, state.rows, state.cols, state.shape), state.rows, state.cols);
 }
 
 /** Any setting changed: the old tiles no longer match. */
@@ -253,12 +256,12 @@ function paint(): void {
   preview.height = Math.max(1, Math.round(s.height * scale));
   ctx.drawImage(s.bitmap, 0, 0, preview.width, preview.height);
   const list = tiles();
-  const area = cropArea(s.width, s.height, state.rows, state.cols, state.square);
+  const area = cropArea(s.width, s.height, state.rows, state.cols, state.shape);
   if (tooFine(list)) {
     infoEl.textContent = t("imageSplitter.tooFine", { W: s.width, H: s.height });
     return;
   }
-  // Dim what the square crop trims off.
+  // Dim what the tile shape trims off.
   ctx.fillStyle = "rgba(255, 255, 255, 0.7)";
   ctx.fillRect(0, 0, preview.width, area.y * scale);
   ctx.fillRect(0, (area.y + area.height) * scale, preview.width, preview.height - (area.y + area.height) * scale);

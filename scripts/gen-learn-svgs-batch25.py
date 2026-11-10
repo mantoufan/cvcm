@@ -115,22 +115,24 @@ def gif_size(t) -> str:
 
 
 def split_grid(t) -> str:
-    # A landscape picture with its centred square cut into 3 × 3 tiles; the side strips are dimmed (trimmed).
+    # A landscape picture with its centred block of 3 × 3 portrait (3:4) tiles; the side strips are dimmed (trimmed).
     x0, y0, w, h = 130, 80, 700, 360
     out = f'<rect x="{x0}" y="{y0}" width="{w}" height="{h}" rx="10" fill="{SOFT}" stroke="{LINE}" stroke-width="3"/>'
-    side = h
-    sx = x0 + (w - side) / 2
+    th = h / 3
+    tw = th * 3 / 4
+    gw = tw * 3
+    sx = x0 + (w - gw) / 2
     out += f'<rect x="{x0}" y="{y0}" width="{sx - x0}" height="{h}" fill="{MUTED}" opacity="0.45"/>'
-    out += f'<rect x="{sx + side}" y="{y0}" width="{x0 + w - sx - side}" height="{h}" fill="{MUTED}" opacity="0.45"/>'
+    out += f'<rect x="{sx + gw}" y="{y0}" width="{x0 + w - sx - gw}" height="{h}" fill="{MUTED}" opacity="0.45"/>'
     out += wrapped((x0 + sx) / 2, y0 + h / 2, t["trimmed"], 22, WHITE, 800, "middle", 10)
-    out += wrapped((sx + side + x0 + w) / 2, y0 + h / 2, t["trimmed"], 22, WHITE, 800, "middle", 10)
+    out += wrapped((sx + gw + x0 + w) / 2, y0 + h / 2, t["trimmed"], 22, WHITE, 800, "middle", 10)
     for i in range(1, 3):
-        out += line(sx + i * side / 3, y0, sx + i * side / 3, y0 + h, PINK, 4) + line(sx, y0 + i * side / 3, sx + side, y0 + i * side / 3, PINK, 4)
-    out += f'<rect x="{sx}" y="{y0}" width="{side}" height="{side}" fill="none" stroke="{DEEP}" stroke-width="5"/>'
+        out += line(sx + i * tw, y0, sx + i * tw, y0 + h, PINK, 4) + line(sx, y0 + i * th, sx + gw, y0 + i * th, PINK, 4)
+    out += f'<rect x="{sx}" y="{y0}" width="{gw}" height="{h}" fill="none" stroke="{DEEP}" stroke-width="5"/>'
     for r in range(3):
         for c in range(3):
-            out += text(sx + (c + 0.5) * side / 3, y0 + (r + 0.5) * side / 3 + 10, str(r * 3 + c + 1), 30, DEEP, 800, "middle")
-    out += text(480, 490, "3 × 3", 26, DEEP, 800, "middle", MONO)
+            out += text(sx + (c + 0.5) * tw, y0 + (r + 0.5) * th + 10, str(r * 3 + c + 1), 30, DEEP, 800, "middle")
+    out += text(480, 490, "3 × 3 · 3:4", 26, DEEP, 800, "middle", MONO)
     return out
 
 

@@ -309,10 +309,15 @@ describe("image splitter", () => {
     expect(tiles[5]).toMatchObject({ row: 1, col: 2, index: 5, x: 667, y: 250 });
   });
 
-  it("crops to square tiles in the centre", () => {
-    expect(cropArea(1200, 900, 3, 3, true)).toEqual({ x: 150, y: 0, width: 900, height: 900 });
-    expect(cropArea(1000, 300, 1, 3, true)).toEqual({ x: 50, y: 0, width: 900, height: 300 });
-    expect(cropArea(1000, 300, 1, 3, false)).toEqual({ x: 0, y: 0, width: 1000, height: 300 });
+  it("crops to square or 3:4 tiles in the centre", () => {
+    expect(cropArea(1200, 900, 3, 3, "square")).toEqual({ x: 150, y: 0, width: 900, height: 900 });
+    expect(cropArea(1000, 300, 1, 3, "square")).toEqual({ x: 50, y: 0, width: 900, height: 300 });
+    expect(cropArea(1000, 300, 1, 3, "whole")).toEqual({ x: 0, y: 0, width: 1000, height: 300 });
+    // 3 × 3 portrait from a 3000 × 3000 picture: 750 × 1000 tiles (250 × 3 by 250 × 4), centred left to right.
+    const area = cropArea(3000, 3000, 3, 3, "portrait");
+    expect(area).toEqual({ x: 375, y: 0, width: 2250, height: 3000 });
+    const tiles = splitGrid(area, 3, 3);
+    for (const t of tiles) expect(t.width * 4).toBe(t.height * 3);
   });
 
   it("numbers posts from the last tile and names files in reading order", () => {
