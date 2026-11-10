@@ -7,7 +7,8 @@ import { appHref } from "../../shared/path";
 import { formatBytes } from "../../shared/resize";
 import { encodeWav } from "../../shared/wav";
 import { rms, toDbfs, meterPercent } from "../../shared/mic";
-import { AUDIO_TYPES, MAX_VOICE_MINUTES, clockText, elapsedMs, extensionFor, pickType, recordingName } from "../../shared/recorder";
+import { AUDIO_TYPES, MAX_VOICE_MINUTES, clockText, extensionFor, pickType, recordingName } from "../../shared/recorder";
+import { RecordingTake, errorName, type TakeResult } from "../recording-take";
 
 /** Downloaded takes beyond this many drop off the list, oldest first; a take not yet downloaded is never dropped. */
 const MAX_TAKES = 20;
@@ -31,18 +32,12 @@ let source: MediaStreamAudioSourceNode | null = null;
 let analyser: AnalyserNode | null = null;
 let sink: GainNode | null = null;
 let samples: Float32Array<ArrayBuffer> | null = null;
-let recorder: MediaRecorder | null = null;
-let chunks: Blob[] = [];
-let banked = 0;
-let startedAt: number | null = null;
+let recorder: RecordingTake | null = null;
 let frame = 0;
-let timer = 0;
 let run = 0;
 let asking = false;
 let takes: Take[] = [];
 let nextId = 1;
-/** The take was stopped by the length limit, so the status says that rather than a plain "saved". */
-let hitLimit = false;
 
 export function mountVoiceRecorder(host: HTMLElement): void {
   deviceEl = h("select", { "data-field": "device", disabled: true },
@@ -87,13 +82,9 @@ export function mountVoiceRecorder(host: HTMLElement): void {
 export function unmountVoiceRecorder(): void {
   setLeaveGuard(null);
   run++;
-  if (recorder && recorder.state !== "inactive") {
-    recorder.onstop = null;
-    recorder.stop();
-  }
+  recorder?.cancel();
   recorder = null;
   asking = false;
-  hitLimit = false;
   release();
   if (audio) void audio.close().catch(() => undefined);
   audio = null;
@@ -141,7 +132,7 @@ async function begin(): Promise<void> {
     if (mine !== run) return;
     asking = false;
     if (recordBtn) recordBtn.textContent = t("voiceRecorder.record");
-    const name = (err as { name?: string })?.name;
+    const name = errorName(err);
     if (id && (name === "NotFoundError" || name === "OverconstrainedError") && deviceEl) {
       // The chosen microphone is gone: fall back to the default one.
       deviceEl.replaceChildren(h("option", { value: "" }, t("voiceRecorder.defaultDevice")));
@@ -159,44 +150,38 @@ async function begin(): Promise<void> {
   asking = false;
   stream = s;
   const type = pickType(AUDIO_TYPES, (x) => MediaRecorder.isTypeSupported(x));
-  let rec: MediaRecorder;
+  let take: RecordingTake;
   try {
-    rec = new MediaRecorder(s, type ? { mimeType: type, audioBitsPerSecond: 128_000 } : undefined);
+    take = new RecordingTake(new MediaRecorder(s, type ? { mimeType: type, audioBitsPerSecond: 128_000 } : undefined), {
+      maxMinutes: MAX_VOICE_MINUTES,
+      fallbackType: "audio/webm",
+      onTick: showTime,
+      onLimit: finish,
+      onEnd: (result) => saveTake(take, result),
+    });
   } catch {
     release();
     if (recordBtn) recordBtn.textContent = t("voiceRecorder.record");
     say("failed");
     return;
   }
-  chunks = [];
-  rec.ondataavailable = (e) => {
-    if (e.data.size) chunks.push(e.data);
-  };
-  rec.onstop = () => saveTake(rec, mine);
-  try {
-    // One-second slices, so a crash or a long take does not hold everything in one buffer.
-    rec.start(1000);
-  } catch {
+  recorder = take;
+  if (!take.start()) {
+    recorder = null;
     release();
     if (recordBtn) recordBtn.textContent = t("voiceRecorder.record");
     say("failed");
     return;
   }
-  recorder = rec;
-  banked = 0;
-  startedAt = performance.now();
   attachMeter(s);
   if (pauseBtn) {
-    pauseBtn.disabled = typeof rec.pause !== "function";
+    pauseBtn.disabled = !take.canPause;
     pauseBtn.textContent = t("voiceRecorder.pause");
   }
   say("recording");
   s.getAudioTracks()[0]?.addEventListener("ended", () => {
     if (stream === s) finish();
   });
-  window.clearInterval(timer);
-  timer = window.setInterval(tickTime, 250);
-  tickTime();
   void listDevices(s.getAudioTracks()[0]?.getSettings().deviceId);
 }
 
@@ -226,34 +211,22 @@ function drawMeter(): void {
   frame = window.requestAnimationFrame(drawMeter);
 }
 
-function tickTime(): void {
-  const ms = elapsedMs(banked, startedAt, performance.now());
+function showTime(ms: number): void {
   if (timeEl) timeEl.textContent = clockText(ms);
-  if (recorder && ms >= MAX_VOICE_MINUTES * 60_000) {
-    hitLimit = true;
-    finish();
-  }
 }
 
 function togglePause(): void {
   if (!recorder) return;
+  let now: "paused" | "recording" | null;
   try {
-    if (recorder.state === "recording") {
-      recorder.pause();
-      banked = elapsedMs(banked, startedAt, performance.now());
-      startedAt = null;
-      if (pauseBtn) pauseBtn.textContent = t("voiceRecorder.resume");
-      say("paused");
-    } else if (recorder.state === "paused") {
-      recorder.resume();
-      startedAt = performance.now();
-      if (pauseBtn) pauseBtn.textContent = t("voiceRecorder.pause");
-      say("recording");
-    }
+    now = recorder.togglePause();
   } catch {
     say("failed");
+    return;
   }
-  tickTime();
+  if (!now) return;
+  if (pauseBtn) pauseBtn.textContent = t(now === "paused" ? "voiceRecorder.resume" : "voiceRecorder.pause");
+  say(now);
 }
 
 /** Stops recording; the take is added once MediaRecorder hands over the last chunk. */
@@ -267,38 +240,25 @@ function finish(): void {
     return;
   }
   if (!recorder) return;
-  banked = elapsedMs(banked, startedAt, performance.now());
-  startedAt = null;
-  // A second Stop (state already "inactive") waits for the same onstop, which brings the last chunk.
-  if (recorder.state !== "inactive") recorder.stop();
-  window.clearInterval(timer);
+  recorder.stop();
   say("saving");
 }
 
-function saveTake(rec: MediaRecorder, mine: number): void {
+function saveTake(rec: RecordingTake, { blob, ms, limited }: TakeResult): void {
   if (recorder !== rec) return;
   recorder = null;
-  // finish() banks the time; a recorder that stopped by itself (an error, a lost track) has not, so add it here.
-  const ms = elapsedMs(banked, startedAt, performance.now());
-  banked = ms;
-  startedAt = null;
-  const limited = hitLimit;
-  hitLimit = false;
   release();
   if (recordBtn) recordBtn.textContent = t("voiceRecorder.record");
   if (pauseBtn) {
     pauseBtn.disabled = true;
     pauseBtn.textContent = t("voiceRecorder.pause");
   }
-  if (mine !== run || !chunks.length) {
-    say(chunks.length ? "idle" : "emptyTake");
+  if (!blob) {
+    say("emptyTake");
     return;
   }
-  const type = rec.mimeType || chunks[0].type || "audio/webm";
-  const blob = new Blob(chunks, { type });
-  chunks = [];
   const at = new Date();
-  const take: Take = { id: nextId++, blob, url: URL.createObjectURL(blob), ms, at, name: recordingName("recording", at, extensionFor(type)), saved: false };
+  const take: Take = { id: nextId++, blob, url: URL.createObjectURL(blob), ms, at, name: recordingName("recording", at, extensionFor(blob.type)), saved: false };
   takes.unshift(take);
   listEl?.prepend(takeRow(take));
   for (let i = takes.length - 1; i >= 0 && takes.length > MAX_TAKES; i--) {
@@ -315,7 +275,6 @@ function saveTake(rec: MediaRecorder, mine: number): void {
 /** Stops the microphone and the meter (the recorder must already be stopped). */
 function release(): void {
   window.cancelAnimationFrame(frame);
-  window.clearInterval(timer);
   source?.disconnect();
   analyser?.disconnect();
   sink?.disconnect();

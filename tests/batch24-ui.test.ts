@@ -22,6 +22,7 @@ afterEach(() => {
   unmountTriangle();
   host.remove();
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
   try {
     localStorage.clear();
   } catch {
@@ -35,6 +36,38 @@ const set = (sel: string, value: string, event = "input") => {
   el.value = value;
   el.dispatchEvent(new Event(event));
 };
+
+
+/** MediaRecorder stand-in: stop() hands over one chunk, then onstop, on the next task like the real one. */
+class WorkingRecorder {
+  static isTypeSupported(type: string) { return type.startsWith("audio/webm") || type.startsWith("video/webm"); }
+  state: RecordingState = "inactive";
+  mimeType: string;
+  ondataavailable: ((e: { data: Blob }) => void) | null = null;
+  onstop: (() => void) | null = null;
+  constructor(_s: MediaStream, opts?: { mimeType?: string }) { this.mimeType = opts?.mimeType ?? ""; }
+  start() { this.state = "recording"; }
+  pause() { this.state = "paused"; }
+  resume() { this.state = "recording"; }
+  stop() {
+    this.state = "inactive";
+    setTimeout(() => {
+      this.ondataavailable?.({ data: new Blob(["take"]) });
+      this.onstop?.();
+    }, 0);
+  }
+}
+const fakeTrack = () => Object.assign(new EventTarget(), { kind: "audio", readyState: "live", stop() {}, getSettings: () => ({}) });
+const fakeStream = (video = false) => {
+  const audio = fakeTrack();
+  const vid = Object.assign(fakeTrack(), { kind: "video" });
+  return { getTracks: () => (video ? [vid, audio] : [audio]), getAudioTracks: () => [audio], getVideoTracks: () => (video ? [vid] : []) };
+};
+const stubObjectUrls = () => {
+  vi.spyOn(URL, "createObjectURL").mockReturnValue("blob:x");
+  vi.spyOn(URL, "revokeObjectURL").mockReturnValue(undefined);
+};
+const tick = () => new Promise((r) => setTimeout(r, 5));
 
 describe("white noise ui", () => {
   it("renders every colour and says when audio is blocked", () => {
@@ -138,6 +171,57 @@ describe("voice recorder ui", () => {
     unmountVoiceRecorder();
     expect(mustStay()).toBe(false);
   });
+
+  it("records a take, keeps the leave guard until it is downloaded", async () => {
+    vi.stubGlobal("MediaRecorder", WorkingRecorder);
+    vi.stubGlobal("AudioContext", undefined);
+    vi.stubGlobal("navigator", { ...navigator, mediaDevices: { getUserMedia: () => Promise.resolve(fakeStream()), enumerateDevices: () => Promise.resolve([]) } });
+    stubObjectUrls();
+    mountVoiceRecorder(host);
+    q<HTMLButtonElement>("[data-action=record]").click();
+    await tick();
+    expect(q("[data-out=status]").textContent).toBe("Recording…");
+    expect(q<HTMLButtonElement>("[data-action=pause]").disabled).toBe(false);
+    expect(mustStay()).toBe(true);
+    q<HTMLButtonElement>("[data-action=pause]").click();
+    expect(q("[data-action=pause]").textContent).toBe("Resume");
+    q<HTMLButtonElement>("[data-action=pause]").click();
+    expect(q("[data-action=pause]").textContent).toBe("Pause");
+    q<HTMLButtonElement>("[data-action=record]").click();
+    q<HTMLButtonElement>("[data-action=record]").click();
+    await tick();
+    expect(host.querySelectorAll(".rec-item")).toHaveLength(1);
+    expect(q(".rec-meta").textContent).toMatch(/^recording-\d{4}-\d\d-\d\d-\d{6}\.webm · 0:00 · /);
+    expect(q("[data-out=empty]").hidden).toBe(true);
+    expect(q("[data-action=record]").textContent).toBe("Record");
+    expect(q<HTMLButtonElement>("[data-action=pause]").disabled).toBe(true);
+    expect(mustStay()).toBe(true);
+    q<HTMLButtonElement>("[data-action=download]").click();
+    expect(mustStay()).toBe(false);
+  });
+
+  it("drops a take in progress on unmount and says when the recorder will not start", async () => {
+    vi.stubGlobal("MediaRecorder", WorkingRecorder);
+    vi.stubGlobal("AudioContext", undefined);
+    vi.stubGlobal("navigator", { ...navigator, mediaDevices: { getUserMedia: () => Promise.resolve(fakeStream()), enumerateDevices: () => Promise.resolve([]) } });
+    stubObjectUrls();
+    mountVoiceRecorder(host);
+    q<HTMLButtonElement>("[data-action=record]").click();
+    await tick();
+    expect(mustStay()).toBe(true);
+    unmountVoiceRecorder();
+    await tick();
+    expect(mustStay()).toBe(false);
+    expect(URL.createObjectURL).not.toHaveBeenCalled();
+
+    host.replaceChildren();
+    vi.stubGlobal("MediaRecorder", class extends WorkingRecorder { start() { throw new Error("no"); } });
+    mountVoiceRecorder(host);
+    q<HTMLButtonElement>("[data-action=record]").click();
+    await tick();
+    expect(q("[data-action=record]").textContent).toBe("Record");
+    expect(mustStay()).toBe(false);
+  });
 });
 
 describe("screen recorder ui", () => {
@@ -154,6 +238,28 @@ describe("screen recorder ui", () => {
     await new Promise((r) => setTimeout(r, 0));
     expect(q("[data-out=status]").textContent).toBe("Screen sharing was cancelled.");
     expect(host.querySelectorAll("[data-field=format] option")).toHaveLength(2);
+    expect(mustStay()).toBe(false);
+  });
+
+  it("records the screen, then asks for Download or Discard before the next one", async () => {
+    vi.stubGlobal("MediaRecorder", WorkingRecorder);
+    vi.stubGlobal("MediaStream", class { constructor(public tracks: unknown[]) {} });
+    vi.stubGlobal("navigator", { ...navigator, mediaDevices: { getDisplayMedia: () => Promise.resolve(fakeStream(true)) } });
+    stubObjectUrls();
+    mountScreenRecorder(host);
+    q<HTMLButtonElement>("[data-action=start]").click();
+    await tick();
+    expect(q("[data-out=status]").textContent).toBe("Recording…");
+    expect(mustStay()).toBe(true);
+    q<HTMLButtonElement>("[data-action=start]").click();
+    await tick();
+    expect(q("[data-out=result]").hidden).toBe(false);
+    expect(q(".rec-meta").textContent).toMatch(/^screen-recording-.*\.webm · 0:00 · /);
+    q<HTMLButtonElement>("[data-action=start]").click();
+    await tick();
+    expect(q("[data-out=status]").textContent).toContain("Download");
+    q<HTMLButtonElement>("[data-action=discard]").click();
+    expect(q("[data-out=result]").hidden).toBe(true);
     expect(mustStay()).toBe(false);
   });
 });

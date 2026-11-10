@@ -5,7 +5,8 @@ import { locale, t } from "../i18n";
 import { newAudioContext, resumeIfPaused } from "../audio";
 import { appHref } from "../../shared/path";
 import { formatBytes } from "../../shared/resize";
-import { MAX_SCREEN_MINUTES, VIDEO_MP4_TYPES, VIDEO_WEBM_TYPES, clockText, elapsedMs, extensionFor, pickType, recordingName } from "../../shared/recorder";
+import { MAX_SCREEN_MINUTES, VIDEO_MP4_TYPES, VIDEO_WEBM_TYPES, clockText, extensionFor, pickType, recordingName } from "../../shared/recorder";
+import { RecordingTake, errorName, type TakeResult } from "../recording-take";
 
 const FORMATS = ["auto", "webm"] as const;
 type Format = (typeof FORMATS)[number];
@@ -25,16 +26,11 @@ let resultEl: HTMLElement | null = null;
 let display: MediaStream | null = null;
 let mic: MediaStream | null = null;
 let mixCtx: AudioContext | null = null;
-let recorder: MediaRecorder | null = null;
-let chunks: Blob[] = [];
-let banked = 0;
-let startedAt: number | null = null;
-let timer = 0;
+let recorder: RecordingTake | null = null;
 let run = 0;
 let busy = false;
 let lastUrl = "";
 let unsaved = false;
-let hitLimit = false;
 
 export function mountScreenRecorder(host: HTMLElement): void {
   formatEl = h("select", { "data-field": "format" },
@@ -82,13 +78,9 @@ export function mountScreenRecorder(host: HTMLElement): void {
 export function unmountScreenRecorder(): void {
   setLeaveGuard(null);
   run++;
-  if (recorder && recorder.state !== "inactive") {
-    recorder.onstop = null;
-    recorder.stop();
-  }
+  recorder?.cancel();
   recorder = null;
   busy = false;
-  hitLimit = false;
   release();
   if (lastUrl) URL.revokeObjectURL(lastUrl);
   lastUrl = "";
@@ -150,7 +142,7 @@ async function begin(): Promise<void> {
     if (mine !== run) return;
     setupFailed();
     release();
-    const name = (err as { name?: string })?.name;
+    const name = errorName(err);
     say(name === "NotAllowedError" ? "cancelled" : name === "NotReadableError" ? "busy" : "failed");
     return;
   }
@@ -205,42 +197,36 @@ async function begin(): Promise<void> {
   const stream = new MediaStream(tracks);
   const type = chosenType();
   const bits = QUALITIES[(qualityEl?.value as Quality) in QUALITIES ? (qualityEl!.value as Quality) : "standard"];
-  let rec: MediaRecorder;
+  let take: RecordingTake;
   try {
-    rec = new MediaRecorder(stream, { ...(type ? { mimeType: type } : {}), videoBitsPerSecond: bits, audioBitsPerSecond: 128_000 });
+    take = new RecordingTake(new MediaRecorder(stream, { ...(type ? { mimeType: type } : {}), videoBitsPerSecond: bits, audioBitsPerSecond: 128_000 }), {
+      maxMinutes: MAX_SCREEN_MINUTES,
+      fallbackType: "video/webm",
+      onTick: showTime,
+      onLimit: finish,
+      onEnd: (result) => saveRecording(take, result),
+    });
   } catch {
     release();
     setupFailed();
     say("failed");
     return;
   }
-  chunks = [];
-  rec.ondataavailable = (e) => {
-    if (e.data.size) chunks.push(e.data);
-  };
-  rec.onstop = () => saveRecording(rec, mine);
-  try {
-    rec.start(1000);
-  } catch {
+  if (!take.start()) {
     release();
     setupFailed();
     say("failed");
     return;
   }
   busy = false;
-  recorder = rec;
-  banked = 0;
-  startedAt = performance.now();
+  recorder = take;
   if (startBtn) startBtn.textContent = t("screenRecorder.stop");
   if (pauseBtn) {
-    pauseBtn.disabled = typeof rec.pause !== "function";
+    pauseBtn.disabled = !take.canPause;
     pauseBtn.textContent = t("screenRecorder.pause");
   }
   // Recording goes on without the missing sound; the status says what is not in it.
   say(mixFailed ? "noMix" : wantMic && !mic ? "micDenied" : wantSystem && !screen.getAudioTracks().length ? "noSystemAudio" : "recording");
-  window.clearInterval(timer);
-  timer = window.setInterval(tickTime, 250);
-  tickTime();
 }
 
 /** Setup ended without recording: the button reads Start again. */
@@ -269,70 +255,45 @@ function mixAudio(streams: MediaStream[]): MediaStreamTrack | null {
   }
 }
 
-function tickTime(): void {
-  const ms = elapsedMs(banked, startedAt, performance.now());
+function showTime(ms: number): void {
   if (timeEl) timeEl.textContent = clockText(ms);
-  if (recorder && ms >= MAX_SCREEN_MINUTES * 60_000) {
-    hitLimit = true;
-    finish();
-  }
 }
 
 function togglePause(): void {
   if (!recorder) return;
+  let now: "paused" | "recording" | null;
   try {
-    if (recorder.state === "recording") {
-      recorder.pause();
-      banked = elapsedMs(banked, startedAt, performance.now());
-      startedAt = null;
-      if (pauseBtn) pauseBtn.textContent = t("screenRecorder.resume");
-      say("paused");
-    } else if (recorder.state === "paused") {
-      recorder.resume();
-      startedAt = performance.now();
-      if (pauseBtn) pauseBtn.textContent = t("screenRecorder.pause");
-      say("recording");
-    }
+    now = recorder.togglePause();
   } catch {
     say("failed");
+    return;
   }
-  tickTime();
+  if (!now) return;
+  if (pauseBtn) pauseBtn.textContent = t(now === "paused" ? "screenRecorder.resume" : "screenRecorder.pause");
+  say(now);
 }
 
 function finish(): void {
   if (!recorder) return;
-  banked = elapsedMs(banked, startedAt, performance.now());
-  startedAt = null;
-  window.clearInterval(timer);
   say("saving");
-  // Already stopping (a second Stop, or the browser's Stop sharing): onstop brings the last chunk.
-  if (recorder.state !== "inactive") recorder.stop();
+  // Already stopping (a second Stop, or the browser's Stop sharing): the same onstop brings the last chunk.
+  recorder.stop();
 }
 
-function saveRecording(rec: MediaRecorder, mine: number): void {
+function saveRecording(rec: RecordingTake, { blob, ms, limited }: TakeResult): void {
   if (recorder !== rec) return;
   recorder = null;
-  // finish() banks the time; a recorder that stopped by itself (an error, a lost track) has not, so add it here.
-  const ms = elapsedMs(banked, startedAt, performance.now());
-  banked = ms;
-  startedAt = null;
-  const limited = hitLimit;
-  hitLimit = false;
   release();
   if (startBtn) startBtn.textContent = t("screenRecorder.start");
   if (pauseBtn) {
     pauseBtn.disabled = true;
     pauseBtn.textContent = t("screenRecorder.pause");
   }
-  if (mine !== run) return;
-  if (!chunks.length) {
+  if (!blob) {
     say("emptyTake");
     return;
   }
-  const type = rec.mimeType || chunks[0].type || "video/webm";
-  const blob = new Blob(chunks, { type });
-  chunks = [];
-  const name = recordingName("screen-recording", new Date(), extensionFor(type));
+  const name = recordingName("screen-recording", new Date(), extensionFor(blob.type));
   if (lastUrl) URL.revokeObjectURL(lastUrl);
   lastUrl = URL.createObjectURL(blob);
   unsaved = true;
@@ -369,7 +330,6 @@ function discard(): void {
 }
 
 function release(): void {
-  window.clearInterval(timer);
   display?.getTracks().forEach((tr) => tr.stop());
   mic?.getTracks().forEach((tr) => tr.stop());
   display = null;
