@@ -41,13 +41,26 @@ type State = {
   pointsTimer: number;
   ro: ResizeObserver | null;
   pointsKey: string;
+  dpr: number;
   /** The canvas bitmap has been sized once (a fresh canvas is 300 × 150, not unsized). */
   sized: boolean;
 };
 
 let s: State | null = null;
 
-const fmt = () => formatter(locale());
+/** Number formatter for the page's locale, built once per mount (Intl objects are not cheap to make each frame). */
+let fmtCache: { loc: string; f: ReturnType<typeof formatter> } | null = null;
+const fmt = () => {
+  const loc = locale();
+  if (fmtCache?.loc !== loc) fmtCache = { loc, f: formatter(loc) };
+  return fmtCache.f;
+};
+
+/** The view and canvas width: what a sampled curve and the points list depend on. */
+function viewKey(): string {
+  const v = s!.view;
+  return `${v.xMin},${v.xMax},${v.yMin},${v.yMax},${s!.w}`;
+}
 
 export function mountGraphingCalculator(host: HTMLElement): void {
   unmountGraphingCalculator();
@@ -76,6 +89,7 @@ export function mountGraphingCalculator(host: HTMLElement): void {
     ro: null,
     sized: false,
     pointsKey: "",
+    dpr: 0,
   };
   const zoomBtn = (action: string, label: string, aria: string, k: number) =>
     h("button", { type: "button", class: "chip", "data-action": action, "aria-label": aria, onClick: () => zoom(k) }, label);
@@ -115,6 +129,8 @@ export function mountGraphingCalculator(host: HTMLElement): void {
   canvas.addEventListener("pointercancel", onUp);
   canvas.addEventListener("pointerleave", onLeave);
   canvas.addEventListener("wheel", onWheel, { passive: false });
+  // Moving the window to a screen with another pixel ratio fires resize, not the ResizeObserver.
+  window.addEventListener("resize", resize);
   if (typeof ResizeObserver !== "undefined") {
     s.ro = new ResizeObserver(() => resize());
     s.ro.observe(wrap);
@@ -127,6 +143,7 @@ export function unmountGraphingCalculator(): void {
   cancelAnimationFrame(s.frame);
   clearTimeout(s.pointsTimer);
   s.ro?.disconnect();
+  window.removeEventListener("resize", resize);
   s = null;
 }
 
@@ -175,7 +192,9 @@ function resize(): void {
   if (!s) return;
   const w = Math.max(240, Math.round(s.wrap.clientWidth || 640));
   const hgt = Math.round(w * HEIGHT_RATIO);
-  if (w === s.w && hgt === s.hgt && s.sized) {
+  const dpr = Math.min(3, window.devicePixelRatio || 1);
+  // A move to a screen with another pixel ratio needs a new bitmap even at the same CSS size.
+  if (w === s.w && hgt === s.hgt && s.sized && dpr === s.dpr) {
     redraw();
     return;
   }
@@ -187,7 +206,7 @@ function resize(): void {
   s.hgt = hgt;
   s.sized = true;
   s.view = { ...v, yMin: cy - (unit * hgt) / 2, yMax: cy + (unit * hgt) / 2 };
-  const dpr = Math.min(3, window.devicePixelRatio || 1);
+  s.dpr = dpr;
   s.canvas.width = Math.round(w * dpr);
   s.canvas.height = Math.round(hgt * dpr);
   s.canvas.style.height = `${hgt}px`;
@@ -292,8 +311,8 @@ function setTrace(e: PointerEvent): void {
 /** What the curves and the points list depend on: the view, the canvas width and the visible functions. */
 function sceneKey(): string {
   if (!s) return "";
-  const v = s.view;
-  return `${v.xMin},${v.xMax},${v.yMin},${v.yMax},${s.w}|${visible().map((r) => r.input.value).join("\n")}`;
+  // Every row, hidden or not, with its position: removing one renumbers the names (y2 becomes y1) in the list.
+  return `${viewKey()}|${s.rows.map((r) => `${r.show.checked ? 1 : 0}${r.fn ? 1 : 0}${r.input.value}`).join("\n")}`;
 }
 
 function redraw(): void {
@@ -383,7 +402,7 @@ function draw(target?: HTMLCanvasElement): void {
   for (const row of visible()) {
     ctx.strokeStyle = row.color;
     ctx.beginPath();
-    const key = `${v.xMin},${v.xMax},${v.yMin},${v.yMax},${w}|${row.input.value}`;
+    const key = `${viewKey()}|${row.input.value}`;
     if (row.runs?.key !== key) row.runs = { key, runs: sampleCurve(row.fn!, v, w * 2) };
     for (const run of row.runs.runs) {
       run.forEach(([x, y], i) => {
@@ -437,13 +456,13 @@ function listPoints(): void {
   const f = fmt();
   const v = s.view;
   const rows = visible();
-  const items: Array<{ text: string; color: string }> = [];
+  const items: Array<{ text: string; color: string; x: number }> = [];
   const name = (r: Row) => `y${s!.rows.indexOf(r) + 1}`;
   const inY = (y: number) => y >= v.yMin && y <= v.yMax;
   for (const r of rows) {
     const y0 = r.fn!(0);
-    if (v.xMin <= 0 && v.xMax >= 0 && Number.isFinite(y0) && inY(y0)) items.push({ text: t("graphingCalculator.yIntercept", { f: name(r), x: f(0), y: f(y0) }), color: r.color });
-    if (inY(0)) for (const x of findZeros(r.fn!, v.xMin, v.xMax)) items.push({ text: t("graphingCalculator.zero", { f: name(r), x: f(x), y: f(0) }), color: r.color });
+    if (v.xMin <= 0 && v.xMax >= 0 && Number.isFinite(y0) && inY(y0)) items.push({ text: t("graphingCalculator.yIntercept", { f: name(r), x: f(0), y: f(y0) }), color: r.color, x: 0 });
+    if (inY(0)) for (const x of findZeros(r.fn!, v.xMin, v.xMax)) items.push({ text: t("graphingCalculator.zero", { f: name(r), x: f(x), y: f(0) }), color: r.color, x });
   }
   for (let i = 0; i < rows.length; i++) {
     for (let j = i + 1; j < rows.length; j++) {
@@ -451,14 +470,18 @@ function listPoints(): void {
       const b = rows[j].fn!;
       for (const x of findZeros((x) => a(x) - b(x), v.xMin, v.xMax)) {
         const y = a(x);
-        if (Number.isFinite(y) && inY(y)) items.push({ text: t("graphingCalculator.crossing", { f: name(rows[i]), g: name(rows[j]), x: f(x), y: f(y) }), color: rows[i].color });
+        if (Number.isFinite(y) && inY(y)) items.push({ text: t("graphingCalculator.crossing", { f: name(rows[i]), g: name(rows[j]), x: f(x), y: f(y) }), color: rows[i].color, x });
       }
     }
   }
+  // Too many to list (sin x zoomed far out): keep those nearest the middle of the view, and say there are more.
+  const mid = (v.xMin + v.xMax) / 2;
+  const shown = items.length > MAX_POINTS ? [...items].sort((p, q) => Math.abs(p.x - mid) - Math.abs(q.x - mid)).slice(0, MAX_POINTS) : items;
   s.points.replaceChildren(
-    ...(items.length
-      ? items.slice(0, MAX_POINTS).map((it) => h("li", null, h("span", { class: "graph-swatch", style: { background: it.color }, "aria-hidden": "true" }), it.text))
+    ...(shown.length
+      ? shown.map((it) => h("li", null, h("span", { class: "graph-swatch", style: { background: it.color }, "aria-hidden": "true" }), it.text))
       : [h("li", { class: "hint" }, t("graphingCalculator.noPoints"))]),
+    ...(items.length > MAX_POINTS ? [h("li", { class: "hint", "data-out": "more-points" }, t("graphingCalculator.morePoints", { n: items.length - MAX_POINTS }))] : []),
   );
 }
 

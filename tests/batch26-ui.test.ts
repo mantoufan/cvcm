@@ -172,6 +172,25 @@ describe("graphing calculator ui", () => {
     expect(text).toContain("y1 crosses the y-axis at (0, -2)");
     expect(text).toContain("y1 and y2 cross at");
   });
+
+  it("renames the points when a hidden row is removed, and caps a long list", () => {
+    vi.useFakeTimers();
+    mountGraphingCalculator(host);
+    q<HTMLButtonElement>("[data-action=add]").click();
+    const exprs = host.querySelectorAll<HTMLInputElement>("[data-field=expr]");
+    exprs[2].value = "x";
+    exprs[2].dispatchEvent(new Event("input"));
+    host.querySelectorAll<HTMLInputElement>("[data-field=show]")[1].click();
+    vi.advanceTimersByTime(300);
+    expect(q("[data-out=points]").textContent).toContain("y1 and y3 cross");
+    host.querySelectorAll<HTMLButtonElement>("[data-action=remove]")[1].click();
+    vi.advanceTimersByTime(300);
+    expect(q("[data-out=points]").textContent).toContain("y1 and y2 cross");
+    exprs[0].value = "sin(20x)";
+    exprs[0].dispatchEvent(new Event("input"));
+    vi.advanceTimersByTime(300);
+    expect(q("[data-out=more-points]").textContent).toMatch(/more in this view/);
+  });
 });
 
 describe("piano ui", () => {

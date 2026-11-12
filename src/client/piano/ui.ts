@@ -1,4 +1,4 @@
-import { armAudio } from "../audio";
+import { armAudio, resumeIfPaused } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { appHref } from "../../shared/path";
@@ -104,6 +104,17 @@ export function mountPiano(host: HTMLElement): void {
   } });
   const sustain = h("input", { type: "checkbox", "data-field": "sustain", onChange: () => { st.sustain = sustain.checked; if (!st.sustain) liftPedal(); } });
   const shift = (d: number) => {
+    // When the keyboard is wider than the screen (fingers need wide keys, and keys swallow swipes), ◀ ▶ first scroll
+    // to the keys out of view, then move the octaves.
+    const scroller = st.keysEl.parentElement;
+    if (scroller && scroller.scrollWidth > scroller.clientWidth) {
+      const max = scroller.scrollWidth - scroller.clientWidth;
+      const room = d < 0 ? scroller.scrollLeft : max - scroller.scrollLeft;
+      if (room > 1) {
+        scroller.scrollLeft += d * Math.min(room, (scroller.scrollWidth / st.octaves));
+        return;
+      }
+    }
     const next = Math.max(MIN_START, Math.min(MAX_START + 1 - st.octaves, st.startOctave + d));
     if (next === st.startOctave) return;
     releaseAll();
@@ -443,6 +454,8 @@ function onPointerMove(e: PointerEvent): void {
 
 function onPointerUp(e: PointerEvent): void {
   if (!s) return;
+  // A touch pointerdown does not count as a user gesture for audio; its pointerup does, so wake the context here too.
+  if (s.ctx) resumeIfPaused(s.ctx);
   const midi = s.pointers.get(e.pointerId);
   if (midi === undefined) return;
   s.pointers.delete(e.pointerId);
@@ -592,6 +605,6 @@ function syncTake(): void {
   s.status.textContent = s.recording
     ? t("piano.recording")
     : notes
-      ? t("piano.takeReady", { n: notes, seconds: (s.take[s.take.length - 1].t).toFixed(1) })
+      ? t("piano.takeReady", { n: notes, seconds: new Intl.NumberFormat(locale(), { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(s.take[s.take.length - 1].t) })
       : t("piano.noTake");
 }

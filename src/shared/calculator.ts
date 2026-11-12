@@ -41,6 +41,14 @@ class Fail extends Error {
 }
 
 /** Maps the many ways people type the same operator onto one. */
+/**
+ * With a decimal comma, "1.250" is 1250 in Spain and Indonesia and 1.25 in Mexico: callers refuse it rather than be
+ * silently 1000 times out. Shared with the graphing calculator.
+ */
+export function ambiguousGroup(s: string): boolean {
+  return /(^|[^\d,.])[1-9]\d{0,2}\.\d{3}(?![\d.,])/.test(s);
+}
+
 export function normalize(src: string): string {
   // Full-width forms from CJK input first ("２＋２"). "**" before ×: two × keys in a row are a typo, not a power.
   return src
@@ -60,8 +68,7 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
   // Thousands are read only in real groups: 1,234,567 with a decimal point, 1.234.567 or 1.234,5 with a decimal comma. Any
   // other comma fails with a decimal point ("1,5" is not quietly 15); with a decimal comma, a lone "." is a decimal point too.
   if (decimal === ",") {
-    // "1.250" is 1250 in Spain and Indonesia and 1.25 in Mexico: refuse it rather than be silently 1000 times out.
-    if (/(^|[^\d,.])[1-9]\d{0,2}\.\d{3}(?![\d.,])/.test(s)) throw new Fail("syntax");
+    if (ambiguousGroup(s)) throw new Fail("syntax");
     s = s.replace(/(^|[^\d,.])([1-9]\d{0,2}(?:\.\d{3})+)(?![\d.])/g, (_, pre: string, n: string) => pre + n.replace(/\./g, ""));
     s = s.replace(/,/g, ".");
   } else {

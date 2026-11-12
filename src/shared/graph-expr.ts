@@ -1,4 +1,4 @@
-import { normalize } from "./calculator";
+import { ambiguousGroup, normalize } from "./calculator";
 
 /**
  * Graphing calculator expressions: y = f(x) typed the way people write it, compiled once into a function of x (no eval).
@@ -75,8 +75,8 @@ export function normalizeExpr(src: string): string {
 function tokenize(src: string, decimal: "." | ","): Tok[] {
   let s = src;
   if (decimal === ",") {
-    // As in the calculator: "1.250" is 1250 in Spain and Indonesia and 1.25 in Mexico, so it is refused, not guessed.
-    if (/(^|[^\d,.])[1-9]\d{0,2}\.\d{3}(?![\d.,])/.test(s)) throw new Fail();
+    // As in the calculator: "1.250" could be 1250 or 1.25, so it is refused, not guessed.
+    if (ambiguousGroup(s)) throw new Fail();
     s = s.replace(/(\d),(\d)/g, "$1.$2");
   }
   const out: Tok[] = [];
@@ -87,7 +87,7 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
       i++;
       continue;
     }
-    // No exponent notation: e is Euler's number here, so 2e+1 is 2·e + 1 however it is spaced.
+    // No exponent notation: e is Euler's number here, and "1e3" or "2e+1" (1000 or 1·e·3? 20 or 2e + 1?) is refused below.
     const num = /^(?:\d+(?:\.\d*)?|\.\d+)/.exec(s.slice(i));
     if (num) {
       const rest = s.slice(i + num[0].length);
@@ -493,7 +493,7 @@ function isJump(at: (x: number) => number, x0: number, y0: number, x1: number, y
  * such as the vertex of (x − 1)² found as a dip of |f| to zero. A stretch where f is 0 at several samples in a row
  * (two identical curves) has no single zero and is left out.
  */
-export function findZeros(f: Compiled, a: number, b: number, samples = 800, max = 20): number[] {
+export function findZeros(f: Compiled, a: number, b: number, samples = 800, max = 400): number[] {
   const out: number[] = [];
   const dx = (b - a) / samples;
   const xs = Array.from({ length: samples + 1 }, (_, i) => a + i * dx);
