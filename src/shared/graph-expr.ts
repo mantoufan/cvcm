@@ -53,6 +53,9 @@ const WORDS = [...FUNC_NAMES, "pi", "x", "e"].sort((a, b) => b.length - a.length
 type Tok = { k: "num"; v: number } | { k: "x" } | { k: "op"; v: string } | { k: "fn"; v: string };
 
 class Fail extends Error {}
+/** Too many ways tried to read the bars: refuse rather than search on (|x|x|x… doubles the work per bar). */
+class TooHard extends Error {}
+const MAX_BAR_RETRIES = 200;
 
 /** Same keys as the calculator: full-width forms, × ÷ −, superscript powers, a leading "y =" or "f(x) =". */
 export function normalizeExpr(src: string): string {
@@ -81,9 +84,9 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
       i++;
       continue;
     }
-    const num = /^(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?/.exec(s.slice(i));
+    // No exponent notation: e is Euler's number here, so 2e+1 is 2·e + 1 however it is spaced.
+    const num = /^(?:\d+(?:\.\d*)?|\.\d+)/.exec(s.slice(i));
     if (num) {
-      // "2e" is 2·e, not an exponent: only take the exponent when digits follow.
       out.push({ k: "num", v: Number(num[0]) });
       i += num[0].length;
       continue;
@@ -93,18 +96,17 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
       i++;
       continue;
     }
-    // log10(100) is the common log; "log" alone is already base 10.
-    const log10 = /^log10/i.exec(s.slice(i));
-    if (log10) {
-      out.push({ k: "fn", v: "log" });
-      i += log10[0].length;
+    // log10 and log2 name their base when no further digit follows ("log100" is log of 100, "log25" log of 25);
+    // "log" alone is already base 10.
+    const based = /^log(10|2)(?!\d)/i.exec(s.slice(i));
+    if (based) {
+      out.push({ k: "fn", v: based[1] === "2" ? "log2" : "log" });
+      i += based[0].length;
       continue;
     }
-    const word = /^[a-zA-Z]+\d?/.exec(s.slice(i));
+    const word = /^[a-zA-Z]+/.exec(s.slice(i));
     if (word) {
       let w = word[0].toLowerCase();
-      // log2 keeps its digit; any other trailing digit is a number ("x2" is x·2).
-      if (/\d$/.test(w) && !w.endsWith("log2")) w = w.slice(0, -1);
       let used = 0;
       while (w) {
         const name = WORDS.find((n) => w.startsWith(n));
@@ -166,6 +168,7 @@ class Parser {
   private depth = 0;
   /** Open |…| bars: inside one, a bar closes it rather than starting another factor. */
   private bars = 0;
+  private retries = 0;
   constructor(private readonly toks: Tok[]) {}
 
   parse(): Compiled {
@@ -250,6 +253,7 @@ class Parser {
           b = this.power();
         } catch (e) {
           if (!(e instanceof Fail) || !this.isBarAt(at) || bars === 0) throw e;
+          if (++this.retries > MAX_BAR_RETRIES) throw new TooHard();
           this.i = at;
           this.bars = bars;
           this.depth = depth;
@@ -358,7 +362,7 @@ export function parseExpr(src: string, decimal: "." | "," = "."): ParseResult {
     const fn = new Parser(tokenize(text, decimal)).parse();
     return { ok: true, fn, text };
   } catch (e) {
-    if (e instanceof Fail || e instanceof RangeError) return { ok: false, error: "syntax" };
+    if (e instanceof Fail || e instanceof TooHard || e instanceof RangeError) return { ok: false, error: "syntax" };
     throw e;
   }
 }

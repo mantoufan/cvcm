@@ -222,6 +222,20 @@ describe("piano ui", () => {
     expect(q("[data-out=status]").textContent).toBe("Nothing recorded yet.");
   });
 
+  it("records a note held by the pedal until the pedal lifts, and does not draw it pressed", () => {
+    vi.stubGlobal("AudioContext", FakeContext);
+    mountPiano(host);
+    q<HTMLButtonElement>("[data-action=record]").click();
+    window.dispatchEvent(new KeyboardEvent("keydown", { code: "Space" }));
+    window.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyQ" }));
+    window.dispatchEvent(new KeyboardEvent("keyup", { code: "KeyQ" }));
+    set("[data-field=labels]", "keys", "change");
+    expect(q('[data-midi="60"]').classList.contains("down")).toBe(false);
+    window.dispatchEvent(new KeyboardEvent("keyup", { code: "Space" }));
+    q<HTMLButtonElement>("[data-action=record]").click();
+    expect(q("[data-out=status]").textContent).toMatch(/^1 notes recorded/);
+  });
+
   it("moves the keyboard by octaves and labels keys", () => {
     vi.stubGlobal("AudioContext", FakeContext);
     mountPiano(host);

@@ -10,7 +10,7 @@ const LABELS = ["letters", "solfege", "keys", "none"] as const;
 type LabelMode = (typeof LABELS)[number];
 const OCTAVE_CHOICES = [1, 2, 3, 4] as const;
 
-type Voice = { release: (at: number) => void; /** Fades out now, even a note scheduled ahead or already given a release time. */ cut: () => void; kill: () => void };
+type Voice = { /** Audio-clock time the sound is over (Infinity while held). */ endsAt: number; release: (at: number) => void; /** Fades out now, even a note scheduled ahead or already given a release time. */ cut: () => void; kill: () => void };
 
 type State = {
   ctx: AudioContext | null;
@@ -196,7 +196,8 @@ function buildKeys(): void {
     if (!black) whiteIndex++;
     st.keyEls.set(midi, el);
     els.push(el);
-    if (st.voices.has(midi)) el.classList.add("down");
+    // Down only while something holds the key; a note the pedal keeps ringing is not pressed.
+    if (st.holders.get(midi)?.size) el.classList.add("down");
   }
   st.keysEl.style.setProperty("--piano-whites", String(whites.length));
   st.keysEl.replaceChildren(...els);
@@ -311,8 +312,10 @@ function voice(ctx: AudioContext, out: AudioNode, sound: Sound, midi: number, at
     }
   };
   // Free the nodes once the sound has died away even if the key is held.
-  if (sound === "piano" || sound === "epiano") stopAll(at + ring * 6);
-  return {
+  const decays = sound === "piano" || sound === "epiano";
+  if (decays) stopAll(at + ring * 6);
+  const v: Voice = {
+    endsAt: decays ? at + ring * 6 : Infinity,
     release(when: number) {
       if (done) return;
       done = true;
@@ -321,6 +324,7 @@ function voice(ctx: AudioContext, out: AudioNode, sound: Sound, midi: number, at
       env.gain.setValueAtTime(env.gain.value, from);
       env.gain.setTargetAtTime(0, from, releaseTime / 4);
       stopAll(from + releaseTime * 2);
+      v.endsAt = Math.min(v.endsAt, from + releaseTime * 2);
     },
     cut() {
       done = true;
@@ -329,13 +333,16 @@ function voice(ctx: AudioContext, out: AudioNode, sound: Sound, midi: number, at
       env.gain.setValueAtTime(env.gain.value, now);
       env.gain.linearRampToValueAtTime(0, now + 0.03);
       stopAll(now + 0.05);
+      v.endsAt = Math.min(v.endsAt, now + 0.05);
     },
     kill() {
       done = true;
       stopAll(ctx.currentTime);
+      v.endsAt = ctx.currentTime;
       env.disconnect();
     },
   };
+  return v;
 }
 
 function press(midi: number, source: string): void {
@@ -348,7 +355,9 @@ function press(midi: number, source: string): void {
   holders.add(source);
   if (!fresh) return;
   // Striking a note again restarts it, as a hammer does, even if the pedal still holds the last one.
-  s.voices.get(midi)?.release(ctx.currentTime);
+  const ringing = s.voices.get(midi);
+  if (ringing && s.recording) addEvent(midi, false);
+  ringing?.release(ctx.currentTime);
   s.pedalled.delete(midi);
   s.voices.set(midi, voice(ctx, s.master, s.sound, midi, ctx.currentTime));
   s.keyEls.get(midi)?.classList.add("down");
@@ -360,7 +369,7 @@ function release(midi: number, source: string): void {
   const holders = s.holders.get(midi);
   if (!holders?.delete(source) || holders.size > 0) return;
   s.keyEls.get(midi)?.classList.remove("down");
-  if (s.recording) addEvent(midi, false);
+  // A take records when a note stops sounding, so notes the pedal holds play back held too.
   if (s.sustain || s.pedal) {
     s.pedalled.add(midi);
     return;
@@ -370,7 +379,10 @@ function release(midi: number, source: string): void {
 
 function stopVoice(midi: number): void {
   if (!s?.ctx) return;
-  s.voices.get(midi)?.release(s.ctx.currentTime);
+  const v = s.voices.get(midi);
+  if (!v) return;
+  if (s.recording) addEvent(midi, false);
+  v.release(s.ctx.currentTime);
   s.voices.delete(midi);
 }
 
@@ -524,8 +536,8 @@ function togglePlay(): void {
       } else open.delete(e.midi);
       st.playTimers.push(window.setTimeout(() => st.keyEls.get(e.midi)?.classList.toggle("playing", e.on), Math.max(0, (at - ctx.currentTime) * 1000)));
     }
-    // Voices that have finished are dropped from the list Stop has to cut.
-    if (st.playVoices.length > 256) st.playVoices = st.playVoices.slice(-256);
+    // Voices that have finished are dropped from the list Stop has to cut; held ones stay however many came after.
+    st.playVoices = st.playVoices.filter((v) => v.endsAt > ctx.currentTime);
     if (next >= take.length) {
       clearInterval(timer);
       st.playTimers.push(window.setTimeout(() => { stopPlayback(true); syncTake(); }, Math.max(0, (start + take[take.length - 1].t - ctx.currentTime + 0.5) * 1000)));

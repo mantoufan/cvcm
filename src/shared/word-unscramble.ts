@@ -18,12 +18,12 @@ export type RackError = "empty" | "tooLong" | "tooManyBlanks";
 
 const A = 97;
 
-/** Reads typed letters: a–z in any case (accents dropped: "é" is e), ? * _ or space-free dots as blanks; anything else is ignored. */
+/** Reads typed letters: a–z in any case (accents dropped: "é" is e; full-width ｃａｔ from CJK input is cat), ? * _ or space-free dots as blanks; anything else is ignored. */
 export function parseRack(raw: string): { ok: true; rack: Rack } | { ok: false; error: RackError } {
   const counts = new Int8Array(26);
   let blanks = 0;
   let length = 0;
-  const plain = raw.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+  const plain = raw.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase();
   for (const ch of plain) {
     const c = ch.charCodeAt(0);
     if (c >= A && c < A + 26) {
@@ -42,7 +42,7 @@ export function parseRack(raw: string): { ok: true; rack: Rack } | { ok: false; 
 
 /** Letters a filter box asks for, lower-case a–z only. */
 export function plainLetters(raw: string): string {
-  return raw.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z]/g, "");
+  return raw.normalize("NFKD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/[^a-z]/g, "");
 }
 
 export type Filters = {

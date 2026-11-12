@@ -11,7 +11,16 @@ const START = ["x^2 - 2", "sin(x)"];
 const HEIGHT_RATIO = 0.7;
 const MAX_POINTS = 40;
 
-type Row = { el: HTMLElement; input: HTMLInputElement; show: HTMLInputElement; error: HTMLElement; color: string; fn: Compiled | null };
+type Row = {
+  el: HTMLElement;
+  input: HTMLInputElement;
+  show: HTMLInputElement;
+  error: HTMLElement;
+  color: string;
+  fn: Compiled | null;
+  /** Sampled curve for one view, so moving the trace redraws without sampling again. */
+  runs: { key: string; runs: Array<Array<[number, number]>> } | null;
+};
 
 type State = {
   rows: Row[];
@@ -31,6 +40,7 @@ type State = {
   frame: number;
   pointsTimer: number;
   ro: ResizeObserver | null;
+  pointsKey: string;
   /** The canvas bitmap has been sized once (a fresh canvas is 300 × 150, not unsized). */
   sized: boolean;
 };
@@ -65,6 +75,7 @@ export function mountGraphingCalculator(host: HTMLElement): void {
     pointsTimer: 0,
     ro: null,
     sized: false,
+    pointsKey: "",
   };
   const zoomBtn = (action: string, label: string, aria: string, k: number) =>
     h("button", { type: "button", class: "chip", "data-action": action, "aria-label": aria, onClick: () => zoom(k) }, label);
@@ -141,7 +152,7 @@ function addRow(expr: string): void {
     remove,
     error,
   );
-  const row: Row = { el, input, show, error, color, fn: null };
+  const row: Row = { el, input, show, error, color, fn: null, runs: null };
   compile(row);
   st.rows.push(row);
   st.list.append(el);
@@ -198,7 +209,8 @@ function zoom(k: number, cx?: number, cy?: number): void {
   const y = cy ?? (v.yMin + v.yMax) / 2;
   const span = (v.xMax - v.xMin) * k;
   // Stay where doubles still draw a smooth curve.
-  if (span < 1e-9 || span > 1e9) return;
+  // Stay where doubles still draw a smooth curve: never narrower than a billionth of where the view sits.
+  if (span < Math.max(1e-9, Math.abs(x) * 1e-9, Math.abs(y) * 1e-9) || span > 1e9) return;
   s.view = { xMin: x - (x - v.xMin) * k, xMax: x + (v.xMax - x) * k, yMin: y - (y - v.yMin) * k, yMax: y + (v.yMax - y) * k };
   redraw();
 }
@@ -267,13 +279,22 @@ function onWheel(e: WheelEvent): void {
   e.preventDefault();
   const [px, py] = local(e);
   const [gx, gy] = toGraph(px, py);
-  zoom(Math.exp(Math.max(-1, Math.min(1, e.deltaY / 300))), gx, gy);
+  // Lines (Firefox, some mice) and pages count as about 33 and 400 pixels.
+  const delta = e.deltaY * (e.deltaMode === 1 ? 33 : e.deltaMode === 2 ? 400 : 1);
+  zoom(Math.exp(Math.max(-1, Math.min(1, delta / 300))), gx, gy);
 }
 
 function setTrace(e: PointerEvent): void {
   if (!s) return;
   s.trace = toGraph(...local(e))[0];
   redraw();
+}
+
+/** What the curves and the points list depend on: the view, the canvas width and the visible functions. */
+function sceneKey(): string {
+  if (!s) return "";
+  const v = s.view;
+  return `${v.xMin},${v.xMax},${v.yMin},${v.yMax},${s.w}|${visible().map((r) => r.input.value).join("\n")}`;
 }
 
 function redraw(): void {
@@ -283,6 +304,10 @@ function redraw(): void {
     draw();
     readTrace();
   });
+  // Moving the trace alone changes nothing in the list: only re-list when the view or the functions change.
+  const key = sceneKey();
+  if (key === s.pointsKey) return;
+  s.pointsKey = key;
   clearTimeout(s.pointsTimer);
   s.pointsTimer = window.setTimeout(() => listPoints(), 200);
 }
@@ -309,11 +334,14 @@ function draw(target?: HTMLCanvasElement): void {
     ctx.strokeStyle = color;
     ctx.lineWidth = 1;
     ctx.beginPath();
-    for (let x = Math.ceil(v.xMin / k) * k; x <= v.xMax; x += k) {
+    // Lines by index (i·k), never by adding k: far from 0 a tiny step can be lost in rounding and never advance.
+    for (let i = Math.ceil(v.xMin / k), n = 0; i * k <= v.xMax && n < 400; i++, n++) {
+      const x = i * k;
       ctx.moveTo(Math.round(X(x)) + 0.5, 0);
       ctx.lineTo(Math.round(X(x)) + 0.5, hgt);
     }
-    for (let y = Math.ceil(v.yMin / k) * k; y <= v.yMax; y += k) {
+    for (let i = Math.ceil(v.yMin / k), n = 0; i * k <= v.yMax && n < 400; i++, n++) {
+      const y = i * k;
       ctx.moveTo(0, Math.round(Y(y)) + 0.5);
       ctx.lineTo(w, Math.round(Y(y)) + 0.5);
     }
@@ -335,14 +363,16 @@ function draw(target?: HTMLCanvasElement): void {
   ctx.textBaseline = "top";
   // Labels sit by the axis, or along the edge when the axis is off screen.
   const near = (n: number) => (Math.abs(n) < step / 1e6 ? 0 : n);
-  for (let x = Math.ceil(v.xMin / step) * step; x <= v.xMax; x += step) {
+  for (let i = Math.ceil(v.xMin / step), n = 0; i * step <= v.xMax && n < 100; i++, n++) {
+    const x = i * step;
     // A label centred on the edge would be cut in half ("-10" reads as "0"): leave those out.
     if (near(x) === 0 || X(x) < 16 || X(x) > w - 16) continue;
     ctx.fillText(f(near(x)), X(x), Math.min(ax + 4, hgt - 16));
   }
   ctx.textAlign = "right";
   ctx.textBaseline = "middle";
-  for (let y = Math.ceil(v.yMin / step) * step; y <= v.yMax; y += step) {
+  for (let i = Math.ceil(v.yMin / step), n = 0; i * step <= v.yMax && n < 100; i++, n++) {
+    const y = i * step;
     if (near(y) === 0 || Y(y) < 8 || Y(y) > hgt - 8) continue;
     ctx.fillText(f(near(y)), Math.max(ay - 4, 36), Y(y));
   }
@@ -354,7 +384,9 @@ function draw(target?: HTMLCanvasElement): void {
   for (const row of visible()) {
     ctx.strokeStyle = row.color;
     ctx.beginPath();
-    for (const run of sampleCurve(row.fn!, v, w * 2)) {
+    const key = `${v.xMin},${v.xMax},${v.yMin},${v.yMax},${w}|${row.input.value}`;
+    if (row.runs?.key !== key) row.runs = { key, runs: sampleCurve(row.fn!, v, w * 2) };
+    for (const run of row.runs.runs) {
       run.forEach(([x, y], i) => {
         // Clamp far-off points so the path stays drawable; the jump detector already split real breaks.
         const py = Math.max(-hgt * 4, Math.min(hgt * 5, Y(y)));

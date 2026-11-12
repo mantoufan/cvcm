@@ -52,6 +52,8 @@ describe("word unscrambler", () => {
   });
 
   it("reads accents, case and full-width blanks, and refuses empty or oversized racks", () => {
+    const wide = parseRack("ｃａｔ");
+    expect(wide.ok && wide.rack.length).toBe(3);
     const r = parseRack("CAFÉ？");
     expect(r.ok && r.rack.blanks).toBe(1);
     expect(r.ok && r.rack.length).toBe(5);
@@ -172,6 +174,17 @@ describe("graph expressions", () => {
     expect(f("|x|x", -2)).toBe(-4);
     expect(f("|x|sin(x)", -Math.PI / 2)).toBeCloseTo(-Math.PI / 2, 12);
     expect(f("log10 x", 1000)).toBeCloseTo(3, 12);
+    expect(f("log20", 0)).toBeCloseTo(Math.log10(20), 12);
+    expect(f("log100", 0)).toBeCloseTo(2, 12);
+    expect(f("log2 8", 0)).toBe(3);
+    expect(f("2e+1", 0)).toBeCloseTo(2 * Math.E + 1, 12);
+    expect(f("2e-1", 0)).toBeCloseTo(2 * Math.E - 1, 12);
+  });
+
+  it("gives up quickly on bars that cannot be read", () => {
+    const t0 = performance.now();
+    expect(parseExpr("|x".repeat(140) + "|").ok).toBe(false);
+    expect(performance.now() - t0).toBeLessThan(500);
   });
 
   it("finds touching zeros and ignores curves that coincide", () => {
