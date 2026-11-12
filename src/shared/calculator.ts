@@ -40,8 +40,26 @@ class Fail extends Error {
   }
 }
 
-/** Maps the many ways people type the same operator onto one. */
-function normalize(src: string): string {
+/**
+ * Thousands are read only in real groups: 1,234,567 with a decimal point, 1.234.567 or 1.234,5 with a decimal comma,
+ * and the result uses "." as the decimal point. Any other comma fails with a decimal point ("1,5" is not quietly 15); with
+ * a decimal comma, a lone "." is a decimal point too. With a decimal comma, "1.250" is 1250 in Spain and Indonesia and
+ * 1.25 in Mexico: it is refused rather than silently 1000 times out. Shared with the graphing calculator.
+ */
+export function readGroups(src: string, decimal: "." | ","): string {
+  let s = src;
+  if (decimal === ",") {
+    if (/(^|[^\d,.])[1-9]\d{0,2}\.\d{3}(?![\d.,])/.test(s)) throw new Fail("syntax");
+    s = s.replace(/(^|[^\d,.])([1-9]\d{0,2}(?:\.\d{3})+)(?![\d.])/g, (_, pre: string, n: string) => pre + n.replace(/\./g, ""));
+    s = s.replace(/,/g, ".");
+  } else {
+    s = s.replace(/(^|[^\d.,])([1-9]\d{0,2}(?:,\d{3})+)(?![\d,])/g, (_, pre: string, n: string) => pre + n.replace(/,/g, ""));
+  }
+  return s;
+}
+
+/** Maps the many ways people type the same operator onto one. Shared with the graphing calculator. */
+export function normalize(src: string): string {
   // Full-width forms from CJK input first ("２＋２"). "**" before ×: two × keys in a row are a typo, not a power.
   return src
     .replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
@@ -57,16 +75,7 @@ function normalize(src: string): string {
 function tokenize(src: string, decimal: "." | ","): Tok[] {
   // A pasted "2+2=" asks for the result.
   let s = normalize(src).replace(/[=＝]\s*$/, "");
-  // Thousands are read only in real groups: 1,234,567 with a decimal point, 1.234.567 or 1.234,5 with a decimal comma. Any
-  // other comma fails with a decimal point ("1,5" is not quietly 15); with a decimal comma, a lone "." is a decimal point too.
-  if (decimal === ",") {
-    // "1.250" is 1250 in Spain and Indonesia and 1.25 in Mexico: refuse it rather than be silently 1000 times out.
-    if (/(^|[^\d,.])[1-9]\d{0,2}\.\d{3}(?![\d.,])/.test(s)) throw new Fail("syntax");
-    s = s.replace(/(^|[^\d,.])([1-9]\d{0,2}(?:\.\d{3})+)(?![\d.])/g, (_, pre: string, n: string) => pre + n.replace(/\./g, ""));
-    s = s.replace(/,/g, ".");
-  } else {
-    s = s.replace(/(^|[^\d.,])([1-9]\d{0,2}(?:,\d{3})+)(?![\d,])/g, (_, pre: string, n: string) => pre + n.replace(/,/g, ""));
-  }
+  s = readGroups(s, decimal);
   const out: Tok[] = [];
   let i = 0;
   while (i < s.length) {

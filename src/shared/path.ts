@@ -31,7 +31,7 @@ export function isAgentDocPath(pathname: string): boolean {
 const AGENT_DOC_PATTERN = AGENT_DOC_PATHS.map((p) => `${p.slice(1).replace(/[.*+?^${}()|[\]\\/]/g, "\\$&")}$`).join("|");
 
 export const STATIC_FILE = new RegExp(
-  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|${AGENT_DOC_PATTERN}|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|(datasets|rankings)\/[a-z0-9-]+\.csv$)`,
+  String.raw`^\/(assets\/|brand\/|covers\/|thumbs\/|emu\/|ai\/|favicon(\.svg|-\d+\.png)$|robots\.txt$|${AGENT_DOC_PATTERN}|sitemap\.xml$|sitemaps\/(${SITEMAP_SECTIONS.join("|")})\.xml$|4972981e4cdf3fdd13b674ad85304c11\.txt$|manifest\.webmanifest$|(datasets|rankings)\/[a-z0-9-]+\.csv$|words\/[a-z0-9-]+\.txt$)`,
 );
 
 /** Personality tests live under `/{locale}/tests/` (the code calls them quizzes to keep them apart from unit tests). */
@@ -43,16 +43,16 @@ export const CATEGORIES = [
   { id: "ai", tools: ["v", "ai-image-generator", "ai-music-generator", "remove-background", "image-upscaler", "speech-to-text", "depth-map"] },
   { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "convert", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "image-colors", "tier-list", "gif-maker", "image-splitter"] },
   { id: "pdf", tools: ["image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice"] },
-  { id: "audio", tools: ["audio", "audio-cutter", "audio-joiner", "voice-recorder", "screen-recorder", "text-to-speech", "white-noise", "tone-generator", "metronome", "guitar-tuner"] },
+  { id: "audio", tools: ["audio", "audio-cutter", "audio-joiner", "voice-recorder", "screen-recorder", "text-to-speech", "white-noise", "tone-generator", "metronome", "guitar-tuner", "piano"] },
   { id: "text", tools: ["word-count", "case", "diff", "replace", "sort", "reverse", "slug", "lorem", "fancy-text", "markdown", "notepad", "reading-time", "morse"] },
   { id: "dev", tools: ["json", "data", "xml-json", "yaml-json", "base64", "url-encode", "html", "text-hex", "binary", "hash", "jwt", "uuid", "password", "regex", "cron", "cidr", "chmod", "timestamp"] },
-  { id: "math", tools: ["calculator", "percent", "fraction", "average", "factors", "lcm-gcf", "quadratic", "triangle", "area", "volume", "radix", "roman", "words", "aspect", "units", "gpa", "grade"] },
+  { id: "math", tools: ["calculator", "percent", "fraction", "average", "factors", "lcm-gcf", "quadratic", "triangle", "area", "volume", "slope", "graphing-calculator", "concrete", "radix", "roman", "words", "aspect", "units", "gpa", "grade"] },
   { id: "finance", tools: ["loan", "mortgage", "compound", "discount", "tip", "vat", "margin", "hourly", "time-card", "fuel-cost", "electricity"] },
   { id: "health", tools: ["bmi", "tdee", "body-fat", "ideal-weight", "water-intake", "macro", "calories-burned", "pace", "sleep", "due-date", "ovulation"] },
   { id: "time", tools: ["timezone", "countdown", "stopwatch", "alarm", "pomodoro", "days", "add-days", "workdays", "week", "duration", "age"] },
   { id: "design", tools: ["color", "hex-rgb", "contrast", "gradient"] },
   { id: "hardware", tools: ["mic-test", "decibel-meter", "webcam-test", "keyboard-test", "gamepad-test", "touch-test", "dead-pixel", "refresh-rate", "screen-resolution"] },
-  { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "zodiac", "typing", "click-test", "reaction-time", "tally-counter"] },
+  { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter"] },
   { id: "games", tools: ["rom-emulator", "flash-player"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
 ] as const;
@@ -204,6 +204,11 @@ export const TOOLS = [
   "area",
   "volume",
   "random-letter",
+  "word-unscrambler",
+  "concrete",
+  "graphing-calculator",
+  "piano",
+  "slope",
   "gold",
   "silver",
   "platinum",
@@ -375,6 +380,11 @@ export const TUTORIALS = [
   "calculate-area",
   "calculate-volume",
   "pick-random-letter",
+  "unscramble-words",
+  "calculate-concrete",
+  "graph-functions",
+  "play-piano-online",
+  "find-slope",
   "portrait",
   "algorithms",
   "phone-photos",
@@ -399,14 +409,14 @@ export const TUTORIAL_GROUPS: readonly {
   { id: "codes", tutorials: ["make-qr", "make-barcode"] },
   { id: "files", tutorials: ["merge-pdf", "compress-pdf", "split-pdf", "heic-to-jpg", "jpg-to-pdf", "pdf-to-jpg", "webp-to-png", "png-to-jpg", "jpg-to-png", "avif-to-jpg", "png-to-webp", "make-invoice"] },
   { id: "photo", tutorials: ["crop-photo", "rotate-photo", "resize-image", "add-watermark", "watermark-id-copy", "mosaic-photo", "remove-exif", "make-collage", "make-meme", "make-favicon", "make-signature", "annotate-screenshot", "remove-photo-background", "make-gif", "split-image"] },
-  { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio", "use-metronome", "generate-test-tone", "test-microphone", "tune-guitar", "play-white-noise", "measure-decibels", "record-voice-online"] },
+  { id: "audio", tutorials: ["trim-audio", "mp3-to-wav", "join-audio", "use-metronome", "generate-test-tone", "test-microphone", "tune-guitar", "play-white-noise", "measure-decibels", "record-voice-online", "play-piano-online"] },
   { id: "games", tutorials: ["use-emulator", "open-swf-file"] },
   { id: "dev", tutorials: ["format-json", "decode-base64", "encode-url", "read-jwt", "unix-time", "convert-base", "read-cron", "hash-text", "generate-uuid", "test-regex", "make-password", "check-contrast", "test-keyboard", "test-click-speed", "test-reaction-time", "test-webcam", "test-gamepad", "check-dead-pixels", "check-refresh-rate", "test-touch-screen", "make-css-gradient", "check-screen-resolution", "record-screen-online"] },
   { id: "text", tutorials: ["count-words", "compare-text", "estimate-reading-time", "use-online-notepad", "preview-markdown", "make-fancy-text"] },
   { id: "time", tutorials: ["days-between", "shift-date", "count-workdays", "add-duration", "calculate-age", "iso-week", "convert-timezone", "calculate-work-hours", "use-pomodoro", "find-zodiac-sign", "set-online-alarm"] },
   { id: "money", tutorials: ["calculate-percent", "percent-off", "vat-price", "split-tip", "profit-margin", "hourly-pay", "loan-payment", "compound-interest", "trip-fuel-cost", "electricity-cost", "calculate-mortgage"] },
   { id: "health", tutorials: ["calculate-bmi", "measure-body-fat", "find-ideal-weight", "calculate-tdee", "calculate-macros", "calories-burned-exercise", "daily-water", "calculate-pace", "find-bedtime", "find-due-date", "find-fertile-window"] },
-  { id: "math", tutorials: ["simplify-fraction", "aspect-ratio", "calculate-final-grade", "calculate-gpa", "calculate-average", "pick-random-name", "use-tally-counter", "use-scientific-calculator", "flip-coin", "find-factors", "find-lcm-gcf", "solve-quadratic", "make-random-teams", "solve-triangle", "calculate-area", "calculate-volume", "pick-random-letter"] },
+  { id: "math", tutorials: ["simplify-fraction", "aspect-ratio", "calculate-final-grade", "calculate-gpa", "calculate-average", "pick-random-name", "use-tally-counter", "use-scientific-calculator", "flip-coin", "find-factors", "find-lcm-gcf", "solve-quadratic", "make-random-teams", "solve-triangle", "calculate-area", "calculate-volume", "pick-random-letter", "unscramble-words", "calculate-concrete", "graph-functions", "find-slope"] },
 ];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],

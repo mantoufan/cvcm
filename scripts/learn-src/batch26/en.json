@@ -1,0 +1,235 @@
+{
+  "meta": {
+    "titleUnscrambleWords": "How to unscramble letters into words (with blank tiles) | cv.cm",
+    "descUnscrambleWords": "Unscramble letters for word games, crosswords and anagrams: type your rack, add ? for blanks, filter by length, start or end, and pick the longest word. Free, in your browser.",
+    "titleCalculateConcrete": "How to calculate concrete for a slab, footing or stairs (yards and bags) | cv.cm",
+    "descCalculateConcrete": "Work out how much concrete to order: measure, convert to one unit, multiply length × width × thickness, add 10% waste, then turn cubic yards or metres into 40, 60 or 80 lb bags.",
+    "titleGraphFunctions": "How to graph a function online (zeros, intercepts, crossings) | cv.cm",
+    "descGraphFunctions": "Graph y = f(x) online: type the function the right way, set a good window, read values, and find where a curve crosses the axes or another curve. Free graphing calculator, no install.",
+    "titlePlayPianoOnline": "How to play piano online with your computer keyboard | cv.cm",
+    "descPlayPianoOnline": "Play a virtual piano in your browser: which computer keys play which notes, how to find middle C, play chords, use the sustain pedal, change octave and record a take.",
+    "titleFindSlope": "How to find the slope of a line from two points (with examples) | cv.cm",
+    "descFindSlope": "Find slope as rise over run, write the line as y = mx + b, point-slope and standard form, and handle fractions, horizontal and vertical lines. Worked examples and a free calculator."
+  },
+  "lessons": {
+    "unscramble-words": {
+      "copy": {
+        "name": "How to unscramble letters into words",
+        "blurb": "Every word from your rack, blanks included.",
+        "title": "How to unscramble letters into words",
+        "lead": "A rack of seven tiles, a crossword clue with a few known letters or an anagram puzzle all come down to the same question: which words can these letters spell? You will type the letters, add blanks, narrow the list and pick the best word.",
+        "result": "A list of every English word your letters make, longest first, with the letters a blank filled in marked.",
+        "note": "Each tile is used once. If you have only one E, words with two Es need a blank for the second one.",
+        "s1t": "Open the Word unscrambler on cv.cm",
+        "s1b": "Have your letters ready: the tiles on your rack, the letters of an anagram, or the letters you can see in a puzzle.",
+        "s2t": "Type the letters and the blanks",
+        "s2b": "Type the letters in any order; case does not matter. For a blank tile, type ?. Up to three blanks are allowed, and the letter each blank stands for is highlighted in the results.",
+        "s3t": "Read the list from the top",
+        "s3b": "Words appear as you type, grouped by length with the longest group first. A group labelled Uses every letter holds the full anagrams.",
+        "s4t": "Narrow it with filters",
+        "s4b": "Pick a word length when a crossword gives you the number of squares. Starts with, Contains and Ends with keep only words that fit letters already on the board, such as words ending in ING.",
+        "s5t": "Check that the word fits your game",
+        "s5b": "The list is ENABLE, a public-domain word list that many word games use, with 172,823 words. Games have their own dictionaries, so a rare word may still be refused; when in doubt, play the commoner one.",
+        "s6t": "Copy the words",
+        "s6b": "Copy words puts the whole list on the clipboard, one group per length, to keep for later or share with the other players.",
+        "diagram1": "A blank (?) can stand for any one letter.",
+        "diagram2": "Filters keep only words that fit the board."
+      },
+      "faq": {
+        "q1": "What does unscramble mean?",
+        "a1": "Finding the words that can be spelt by rearranging a set of letters, using each letter no more often than it appears.",
+        "q2": "How many blanks can I use?",
+        "a2": "Up to three. Each blank adds every letter of the alphabet as an option, so lists grow fast.",
+        "q3": "Why is a word I know missing?",
+        "a3": "ENABLE leaves out proper nouns, abbreviations and some recent words such as qi and za, which newer word-game lists added. Check the spelling too.",
+        "q4": "Can I find words with a letter in a given position?",
+        "a4": "Use Starts with or Ends with for the ends of the word, and Contains for a run of letters in the middle.",
+        "q5": "Does it work for other languages?",
+        "a5": "No. The word list is English only, though the page itself is in eight languages."
+      }
+    },
+    "calculate-concrete": {
+      "copy": {
+        "name": "How to calculate concrete",
+        "blurb": "Yards, metres and bags for a pour.",
+        "title": "How to calculate how much concrete you need",
+        "lead": "Order too little concrete and the pour stops halfway; order too much and you pay to throw it away. You will measure the job, put every size in one unit, work out the volume, add a margin for waste and turn it into bags or a ready-mix order.",
+        "result": "The volume of concrete in cubic yards, cubic feet and cubic metres, and the number of premix bags to buy.",
+        "note": "Measure the depth at several points. Ground is rarely level, and an extra half inch over a whole slab adds about 12% more concrete.",
+        "s1t": "Open the Concrete calculator on cv.cm",
+        "s1b": "Choose what you are pouring: a slab or patio, a footing, a wall, round columns or post holes, a hollow tube or a set of stairs.",
+        "s2t": "Measure and put every size in one unit",
+        "s2b": "Volume is length × width × thickness, but only when all three are in the same unit. A 10 × 10 ft slab 4 in thick is 10 × 10 × 0.333 ft = 33.3 ft³. The calculator lets each size have its own unit and converts for you.",
+        "s3t": "Convert to the unit you order in",
+        "s3b": "In the US concrete is sold by the cubic yard: divide cubic feet by 27, so 33.3 ft³ is 1.23 yd³. Elsewhere it is sold by the cubic metre; 1 yd³ is 0.765 m³.",
+        "s4t": "Add a margin for waste",
+        "s4b": "Add 5% for formed slabs on a flat base and 10% or more for uneven ground, footings dug by hand or a first pour. The calculator adds 10% unless you change it.",
+        "s5t": "Turn the volume into bags",
+        "s5b": "An 80 lb bag of premix makes about 0.60 ft³, a 60 lb bag 0.45 ft³ and a 40 lb bag 0.30 ft³. Divide and round up: the 10 × 10 ft slab with 10% waste needs 62 bags of 80 lb.",
+        "s6t": "Decide between bags and ready-mix",
+        "s6b": "Bags suit small jobs such as post holes and steps. From about 1 yd³ (0.75 m³), a ready-mix truck is usually cheaper, quicker and more even than mixing dozens of bags by hand.",
+        "diagram1": "Volume = length × width × thickness, all in feet.",
+        "diagram2": "Add waste, then divide by what one bag makes."
+      },
+      "faq": {
+        "q1": "How many cubic yards are in a 10 × 10 slab?",
+        "a1": "At 4 in thick, 1.23 yd³; at 6 in thick, 1.85 yd³. Add your waste margin on top.",
+        "q2": "How thick should a slab be?",
+        "a2": "Usually 4 in (10 cm) for patios and paths, and 5–6 in (12–15 cm) for driveways or where vehicles park. Follow local building rules for structural work.",
+        "q3": "How do I calculate concrete for a post hole?",
+        "a3": "Use Round column: the hole's diameter and depth, times the number of holes. Subtract nothing for the post; the margin covers it.",
+        "q4": "How many 80 lb bags are in a yard?",
+        "a4": "About 45, since 27 ft³ ÷ 0.60 ft³ per bag = 45.",
+        "q5": "What is the difference between concrete and cement?",
+        "a5": "Cement is the powder that binds; concrete is cement mixed with sand, gravel and water. Premix bags already contain all the dry parts."
+      }
+    },
+    "graph-functions": {
+      "copy": {
+        "name": "How to graph a function online",
+        "blurb": "Type y = f(x), then read the points.",
+        "title": "How to graph a function online",
+        "lead": "A graph shows at a glance where a function is positive, where it turns and where it crosses zero. You will type a function the way a calculator reads it, choose a good window, read values off the curve and find its zeros and crossings.",
+        "result": "A graph of one or more functions with their zeros, y-intercepts and crossing points listed.",
+        "note": "Trigonometric functions use radians here, as in most graphing tools: sin(x) crosses zero at multiples of π ≈ 3.14, not at 180.",
+        "s1t": "Open the Graphing calculator on cv.cm",
+        "s1b": "The page starts with two examples, y = x^2 − 2 and y = sin(x), so you can see how a curve and its points look before typing your own.",
+        "s2t": "Type the function the calculator's way",
+        "s2b": "Write powers with ^ (x^2), roots as sqrt(x), absolute values as abs(x) or |x|, and use brackets for anything that belongs together: 1/(x + 1) is not 1/x + 1. 2x and 3(x + 1) multiply without a × sign.",
+        "s3t": "Add more functions to compare",
+        "s3b": "Add a function gives a new row in its own colour, up to six. Untick a row to hide its curve without deleting what you typed.",
+        "s4t": "Set a good window",
+        "s4b": "Drag to move and use the mouse wheel, a pinch or the + and − buttons to zoom. Large values need a wider view: y = x^3 at x = 10 is 1,000. Reset returns to −10 to 10.",
+        "s5t": "Read zeros, intercepts and crossings",
+        "s5b": "Under the graph the calculator lists where each curve crosses the x-axis (its zeros), where it crosses the y-axis, and where two curves meet. For y = x^2 − 2 the zeros are ±1.4142136, which is ±√2.",
+        "s6t": "Trace values and save the picture",
+        "s6b": "Point at the graph, or tap it, to read x and each function's value there. Download PNG saves the graph for homework or notes.",
+        "diagram1": "Type what you mean, the way the calculator reads it.",
+        "diagram2": "Zeros are where the curve meets the x-axis."
+      },
+      "faq": {
+        "q1": "How do I graph y = mx + b?",
+        "a1": "Type the line with numbers in place of m and b, for example 2x + 1. The slope is how steep it is; b is where it crosses the y-axis.",
+        "q2": "Why does tan(x) show breaks?",
+        "a2": "tan(x) has no value at π/2 and every π after it, where it shoots off to infinity. The calculator leaves a gap there instead of drawing a false vertical line.",
+        "q3": "Why does sqrt(x) stop at zero?",
+        "a3": "The square root of a negative number is not a real number, so the curve has no points left of x = 0. ln(x) and log(x) stop there too.",
+        "q4": "How do I find where two graphs meet?",
+        "a4": "Type both functions. Their crossings in the current view are listed under the graph with both coordinates.",
+        "q5": "Can I plot x = 3 or a circle?",
+        "a5": "Not directly: each row is y as a function of x. For a circle of radius 2, plot sqrt(4 − x^2) and −sqrt(4 − x^2)."
+      }
+    },
+    "play-piano-online": {
+      "copy": {
+        "name": "How to play piano online",
+        "blurb": "Your computer keyboard as a piano.",
+        "title": "How to play piano online with your computer keyboard",
+        "lead": "You do not need a real piano to try a melody, check a note or practise a scale. You will learn which computer keys play which notes, find middle C, play chords, hold notes with the pedal and record what you play.",
+        "result": "A playable piano in the browser, with the notes named on the keys and a take you can play back.",
+        "note": "Many computer keyboards register only three or four keys pressed together, so a big chord may drop a note. A touch screen does not have that limit.",
+        "s1t": "Open the Virtual piano on cv.cm",
+        "s1b": "Click, tap or press a key. Browsers only allow sound after a key press or click, so the first note also turns the sound on.",
+        "s2t": "Learn the computer keys",
+        "s2b": "The bottom row Z X C V B N M plays the white keys C to B of one octave, with S D G H J for the black keys. The row Q W E R T Y U plays the octave above, with 2 3 5 6 7 for its black keys. Choose Computer keys under Key labels to see them on the piano.",
+        "s3t": "Pick a sound and a range",
+        "s3b": "Choose piano, electric piano, organ or synth, and how many octaves to show. The ◀ and ▶ buttons move the keyboard down or up an octave; the computer keys move with it.",
+        "s4t": "Find the notes",
+        "s4b": "The white key just left of each pair of black keys is C. Middle C is C4; with labels on Note names it is marked on the keys, or choose Do Re Mi.",
+        "s5t": "Play chords and use the pedal",
+        "s5b": "Press several keys at once for a chord: C, E and G make C major. Hold Space as a sustain pedal so notes ring on after you let go, or tick Sustain to keep it on.",
+        "s6t": "Record and play back",
+        "s6b": "Press Record, play, then Stop. Play repeats your take with the same timing; change the sound and play it again to hear it on another instrument. Clear starts over.",
+        "diagram1": "Two rows of computer keys play two octaves.",
+        "diagram2": "C is the white key left of the two black keys."
+      },
+      "faq": {
+        "q1": "Where is middle C?",
+        "a1": "It is the C nearest the middle of a full piano, called C4. When the page opens on a computer, it is the C that the Q key plays.",
+        "q2": "How do I play a sharp or flat?",
+        "a2": "Use the black keys: the one right of C is C♯ (also D♭). On the computer keyboard they are the keys on the row above, such as S and 2.",
+        "q3": "What does the sustain pedal do?",
+        "a3": "It keeps notes sounding after you release the keys, so they blend. Lift it (let go of Space) to stop them.",
+        "q4": "Can I play on a phone?",
+        "a4": "Yes, with several fingers at once. On a narrow screen the keys keep a finger's width, so the keyboard opens on middle C and the rest is off to the side; ◀ ▶ move it by an octave.",
+        "q5": "Is the take saved?",
+        "a5": "It stays on the page until you clear it or leave. It is not uploaded or stored anywhere."
+      }
+    },
+    "find-slope": {
+      "copy": {
+        "name": "How to find the slope of a line",
+        "blurb": "Rise over run, and the line's equation.",
+        "title": "How to find the slope of a line from two points",
+        "lead": "Slope tells you how steep a line is and which way it goes: how much y changes for each step in x. You will work it out from two points, write the line's equation in the three usual forms and check special cases such as vertical lines.",
+        "result": "The slope as a fraction and decimal, the line's equation, its intercepts, angle, the distance between the points and their midpoint.",
+        "note": "Keep the points in the same order on top and bottom: (y₂ − y₁) over (x₂ − x₁). Swapping only one of them flips the sign.",
+        "s1t": "Open the Slope calculator on cv.cm",
+        "s1b": "You need two points on the line, such as (1, 2) and (4, 8). Coordinates can be whole numbers, decimals or fractions.",
+        "s2t": "Find the rise and the run",
+        "s2b": "The rise is the change in y: 8 − 2 = 6. The run is the change in x: 4 − 1 = 3. The slope is rise over run: m = 6 ÷ 3 = 2, so y goes up 2 for every 1 to the right.",
+        "s3t": "Read the sign",
+        "s3b": "A positive slope rises from left to right, a negative one falls, and a slope of 0 is a horizontal line. When the run is 0 the line is vertical and the slope is undefined.",
+        "s4t": "Find the y-intercept",
+        "s4b": "Put one point into y = mx + b and solve for b: 2 = 2 × 1 + b, so b = 0 and the line is y = 2x. The calculator keeps fractions exact, so a slope of 2/3 is not rounded to 0.67.",
+        "s5t": "Write the other forms",
+        "s5b": "Point-slope form uses a point directly: y − 2 = 2(x − 1). Standard form puts x and y on one side with whole numbers: 2x − y = 0. All three describe the same line.",
+        "s6t": "Use the extras",
+        "s6b": "The angle (63.43° here) and the grade (200%) describe steepness for ramps and roads. The distance between the points is √(Δx² + Δy²) = √45 = 3√5, and the midpoint is (2.5, 5).",
+        "diagram1": "Slope is rise over run between the two points.",
+        "diagram2": "Three ways to write the same line."
+      },
+      "faq": {
+        "q1": "What is the slope formula?",
+        "a1": "m = (y₂ − y₁) ÷ (x₂ − x₁): the change in y divided by the change in x between two points.",
+        "q2": "What is the slope of a horizontal line?",
+        "a2": "Zero. The rise is 0, so y stays the same whatever x is, and the equation is y = a number.",
+        "q3": "How is slope related to angle?",
+        "a3": "The slope is the tangent of the angle to the x-axis: a slope of 1 is 45°, a slope of 2 is about 63.4°.",
+        "q4": "What does a slope of 2/3 mean?",
+        "a4": "y rises 2 units for every 3 units to the right.",
+        "q5": "How do I turn slope into a percent grade?",
+        "a5": "Multiply by 100. A slope of 0.05 is a 5% grade: 5 m up for every 100 m along."
+      }
+    }
+  },
+  "svg": {
+    "unscramble-words": {
+      "rack": "Your letters",
+      "blank": "blank",
+      "words": "Words",
+      "starts": "Starts with",
+      "ends": "Ends with",
+      "kept": "Kept",
+      "dropped": "Left out"
+    },
+    "calculate-concrete": {
+      "length": "Length",
+      "width": "Width",
+      "thickness": "Thickness",
+      "waste": "Waste",
+      "bag": "per bag",
+      "bags": "bags"
+    },
+    "graph-functions": {
+      "write": "You mean",
+      "type": "Type",
+      "zero": "Zero",
+      "intercept": "y-intercept"
+    },
+    "play-piano-online": {
+      "lower": "Lower octave",
+      "upper": "Upper octave",
+      "middle": "Middle C",
+      "twoBlack": "two black keys",
+      "threeBlack": "three black keys"
+    },
+    "find-slope": {
+      "rise": "rise",
+      "run": "run",
+      "slopeIntercept": "Slope-intercept",
+      "pointSlope": "Point-slope",
+      "standard": "Standard"
+    }
+  }
+}

@@ -699,6 +699,36 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 1,
     related: ["random-letter", "wheel", "random"],
   },
+  "unscramble-words": {
+    minutes: 4,
+    steps: 6,
+    openAt: 1,
+    related: ["word-unscrambler", "random-letter", "word-count"],
+  },
+  "calculate-concrete": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["concrete", "volume", "area"],
+  },
+  "graph-functions": {
+    minutes: 6,
+    steps: 6,
+    openAt: 1,
+    related: ["graphing-calculator", "calculator", "quadratic"],
+  },
+  "play-piano-online": {
+    minutes: 4,
+    steps: 6,
+    openAt: 1,
+    related: ["piano", "metronome", "tone-generator"],
+  },
+  "find-slope": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["slope", "graphing-calculator", "triangle"],
+  },
   "electricity-cost": {
     minutes: 6,
     steps: 6,
@@ -1321,6 +1351,26 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "pick-random-letter": [
     { step: 2, src: "/covers/tutorials/pick-random-letter-pool.svg" },
     { step: 4, src: "/covers/tutorials/pick-random-letter-unique.svg" },
+  ],
+  "unscramble-words": [
+    { step: 2, src: "/covers/tutorials/unscramble-words-blanks.svg" },
+    { step: 4, src: "/covers/tutorials/unscramble-words-filters.svg" },
+  ],
+  "calculate-concrete": [
+    { step: 2, src: "/covers/tutorials/calculate-concrete-slab.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-concrete-bags.svg" },
+  ],
+  "graph-functions": [
+    { step: 2, src: "/covers/tutorials/graph-functions-syntax.svg" },
+    { step: 5, src: "/covers/tutorials/graph-functions-points.svg" },
+  ],
+  "play-piano-online": [
+    { step: 2, src: "/covers/tutorials/play-piano-online-keys.svg" },
+    { step: 4, src: "/covers/tutorials/play-piano-online-notes.svg" },
+  ],
+  "find-slope": [
+    { step: 2, src: "/covers/tutorials/find-slope-rise-run.svg" },
+    { step: 5, src: "/covers/tutorials/find-slope-forms.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },
