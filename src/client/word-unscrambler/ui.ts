@@ -113,7 +113,8 @@ export function mountWordUnscrambler(host: HTMLElement): void {
       h("h2", null, t("wordUnscrambler.groupTitle", { n: g.length, count: nf.format(res.counts.get(g.length) ?? g.words.length) }), g.length === full ? h("span", { class: "chip-note" }, t("wordUnscrambler.allLetters")) : null),
       h("ul", { class: "unscramble-words" }, ...g.words.map((w) => h("li", null, wordEl(w)))),
     )));
-    last = groups.map((g) => `${t("wordUnscrambler.groupTitle", { n: g.length, count: nf.format(res.counts.get(g.length) ?? g.words.length) })}\n${g.words.map((w) => w.word).join(", ")}`).join("\n\n");
+    // The copy holds the shown words, so its headings count those, after the same status line as the page.
+    last = [status.textContent, ...groups.map((g) => `${t("wordUnscrambler.groupTitle", { n: g.length, count: nf.format(g.words.length) })}\n${g.words.map((w) => w.word).join(", ")}`)].join("\n\n");
   }
 
   host.append(

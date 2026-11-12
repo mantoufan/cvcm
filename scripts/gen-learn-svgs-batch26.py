@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Step diagrams for the word unscrambler, concrete, graphing, piano and slope lessons.
 
-These draw the idea itself (a factor tree, a tuner meter, colour stops), so most of each picture is numbers and only
-a few labels need translating. Labels come from the `svg` block of scripts/learn-src/batch26/<locale>.json.
+These draw the idea itself (word tiles and a blank, a concrete slab and bags, function plots, piano keys, a rise/run
+triangle), so most of each picture is letters, numbers and formulas and only a few labels need translating. Labels come from the `svg` block of scripts/learn-src/batch26/<locale>.json.
 """
 from __future__ import annotations
 

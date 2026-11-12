@@ -19,6 +19,8 @@ describe("word unscrambler", () => {
   it("loads the whole ENABLE list as a static file", () => {
     expect(DICT).toHaveLength(172_823);
     expect(DICT.every((w) => /^[a-z]+$/.test(w))).toBe(true);
+    // The search walks each length in list order without sorting, so the list must be A–Z.
+    expect(DICT.every((w, i) => i === 0 || DICT[i - 1] < w)).toBe(true);
     expect(STATIC_FILE.test("/words/enable.txt")).toBe(true);
   });
 
@@ -216,6 +218,9 @@ describe("graph expressions", () => {
     const near = parseExpr("x^2 + 0.001");
     if (!near.ok) throw new Error();
     expect(findZeros(near.fn, -9.7, 10.3)).toEqual([]);
+    const lifted = parseExpr("x^2 + 0.0000000001");
+    if (!lifted.ok) throw new Error();
+    expect(findZeros(lifted.fn, -9.7, 10.3)).toEqual([]);
     expect(findZeros(() => 0, -10, 10)).toEqual([]);
     expect(findZeros((x) => Math.abs(x) - x, -10, 10)).toEqual([]);
   });

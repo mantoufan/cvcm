@@ -122,14 +122,12 @@ export function unscramble(dict: readonly string[], rack: Rack, filters: Filters
 
 const BUCKETS = new WeakMap<readonly string[], string[][]>();
 
-/** The list split by word length once, in its own (A–Z) order. */
+/** The list split by word length once, in its own order (ENABLE is A–Z; a test checks it). */
 function bucketsOf(dict: readonly string[]): string[][] {
   let b = BUCKETS.get(dict);
   if (!b) {
     b = [];
     for (const w of dict) (b[w.length] ??= []).push(w);
-    // ENABLE is sorted; a list that is not still shows A–Z within each length.
-    for (const list of b) if (list) list.sort();
     BUCKETS.set(dict, b);
   }
   return b;

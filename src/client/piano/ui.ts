@@ -116,7 +116,8 @@ export function mountPiano(host: HTMLElement): void {
         return;
       }
     }
-    const next = Math.max(MIN_START, Math.min(MAX_START + 1 - st.octaves, st.startOctave + d));
+    // One octave from C0 would show only A0–C1: start a lone octave at C1.
+    const next = Math.max(st.octaves === 1 ? 1 : MIN_START, Math.min(MAX_START + 1 - st.octaves, st.startOctave + d));
     if (next === st.startOctave) return;
     releaseAll();
     st.startOctave = next;
@@ -475,7 +476,8 @@ function onPointerUp(e: PointerEvent): void {
 
 function typing(e: KeyboardEvent): boolean {
   const el = e.target as HTMLElement | null;
-  return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) && !(el instanceof HTMLInputElement && (el.type === "range" || el.type === "checkbox"));
+  // A focused menu is not typing: its letters play notes (the keydown is prevented, so no type-ahead changes it).
+  return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA)$/.test(el.tagName)) && !(el instanceof HTMLInputElement && (el.type === "range" || el.type === "checkbox"));
 }
 
 function onControl(e: KeyboardEvent): boolean {

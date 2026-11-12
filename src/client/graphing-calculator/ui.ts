@@ -56,6 +56,17 @@ const fmt = () => {
   return fmtCache.f;
 };
 
+/** A locale formatter with a fixed number of decimals (trailing zeros dropped), cached per count. */
+const decimalsCache = new Map<string, Intl.NumberFormat>();
+function decimals(n: number): (v: number) => string {
+  const digits = Math.min(20, n);
+  const key = `${locale()}|${digits}`;
+  let nf = decimalsCache.get(key);
+  if (!nf) decimalsCache.set(key, (nf = new Intl.NumberFormat(locale(), { maximumFractionDigits: digits })));
+  // Very large or tiny values still read better in the 8-digit form with an exponent.
+  return (v) => (Math.abs(v) >= 1e15 || (v !== 0 && Math.abs(v) < 1e-6 && digits < 7) ? fmt()(v) : nf!.format(v));
+}
+
 /** The view and canvas width: what a sampled curve and the points list depend on. */
 function viewKey(): string {
   const v = s!.view;
@@ -356,7 +367,8 @@ function draw(target?: HTMLCanvasElement): void {
   const X = (x: number) => ((x - v.xMin) / (v.xMax - v.xMin)) * w;
   const Y = (y: number) => ((v.yMax - y) / (v.yMax - v.yMin)) * hgt;
   const step = niceStep(v.xMax - v.xMin, Math.max(4, Math.round(w / 80)));
-  const f = fmt();
+  // Labels need as many decimals as the grid step has, however many digits that makes (100.000002 near x = 100).
+  const f = decimals(Math.max(0, -Math.floor(Math.log10(step))));
   // Minor grid at a fifth of the step, then the major grid with labels, then the axes.
   for (const [k, color] of [[step / 5, "#f3eef1"], [step, "#e4dbe0"]] as const) {
     ctx.strokeStyle = color;
@@ -460,7 +472,8 @@ function readTrace(): void {
     s.readout.textContent = t("graphingCalculator.traceHint");
     return;
   }
-  const f = fmt();
+  // A pixel's worth of precision: more digits as the view narrows.
+  const f = decimals(Math.max(0, Math.ceil(-Math.log10((s.view.xMax - s.view.xMin) / s.w)) + 1));
   const x = s.trace;
   const parts = visible().map((r) => {
     const y = r.fn!(x);
@@ -481,7 +494,8 @@ function listPoints(): void {
   for (const r of rows) {
     const y0 = r.fn!(0);
     if (v.xMin <= 0 && v.xMax >= 0 && Number.isFinite(y0) && inY(y0)) items.push({ text: t("graphingCalculator.yIntercept", { f: name(r), x: f(0), y: f(y0) }), color: r.color, x: 0 });
-    if (inY(0)) for (const x of findZeros(r.fn!, v.xMin, v.xMax)) items.push({ text: t("graphingCalculator.zero", { f: name(r), x: f(x), y: f(0) }), color: r.color, x });
+    // A zero at x = 0 is the y-intercept already listed.
+    if (inY(0)) for (const x of findZeros(r.fn!, v.xMin, v.xMax)) if (!(x === 0 && y0 === 0)) items.push({ text: t("graphingCalculator.zero", { f: name(r), x: f(x), y: f(0) }), color: r.color, x });
   }
   for (let i = 0; i < rows.length; i++) {
     for (let j = i + 1; j < rows.length; j++) {

@@ -532,7 +532,7 @@ export function findZeros(f: Compiled, a: number, b: number, samples = 800, max 
     const yp = ys[i - 1];
     if (i > 0 && i < samples && Number.isFinite(yp) && Number.isFinite(y1) && Math.sign(yp) === Math.sign(y0) && Math.sign(y1) === Math.sign(y0)
       && Math.abs(y0) <= Math.abs(yp) && Math.abs(y0) < Math.abs(y1)) {
-      const z = touching(f, xs[i - 1], xs[i + 1], Math.max(1, Math.abs(yp), Math.abs(y1)));
+      const z = touching(f, xs[i - 1], xs[i + 1], Math.max(Math.abs(yp), Math.abs(y1)));
       if (z !== null) push(out, z, dx);
     }
   }
@@ -552,7 +552,8 @@ function touching(f: Compiled, a: number, b: number, scale: number): number | nu
   }
   const x = (lo + hi) / 2;
   const y = f(x);
-  return Number.isFinite(y) && Math.abs(y) <= 1e-9 * scale ? x : null;
+  // Relative to the neighbouring samples, so a vertex lifted even 1e-10 above the axis is not taken for a zero.
+  return Number.isFinite(y) && Math.abs(y) <= 1e-10 * scale ? x : null;
 }
 
 function push(out: number[], x: number, dx: number): void {
