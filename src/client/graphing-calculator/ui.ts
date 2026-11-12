@@ -208,7 +208,6 @@ function zoom(k: number, cx?: number, cy?: number): void {
   const x = cx ?? (v.xMin + v.xMax) / 2;
   const y = cy ?? (v.yMin + v.yMax) / 2;
   const span = (v.xMax - v.xMin) * k;
-  // Stay where doubles still draw a smooth curve.
   // Stay where doubles still draw a smooth curve: never narrower than a billionth of where the view sits.
   if (span < Math.max(1e-9, Math.abs(x) * 1e-9, Math.abs(y) * 1e-9) || span > 1e9) return;
   s.view = { xMin: x - (x - v.xMin) * k, xMax: x + (v.xMax - x) * k, yMin: y - (y - v.yMin) * k, yMax: y + (v.yMax - y) * k };

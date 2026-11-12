@@ -241,7 +241,12 @@ describe("piano ui", () => {
     mountPiano(host);
     q<HTMLButtonElement>("[data-action=octave-up]").click();
     expect(q("[data-out=range]").textContent).toBe("C4 – C7");
+    for (let i = 0; i < 8; i++) q<HTMLButtonElement>("[data-action=octave-down]").click();
+    // The 88-key piano starts at A0.
+    expect(q("[data-out=range]").textContent).toBe("A0 – C3");
+    for (let i = 0; i < 4; i++) q<HTMLButtonElement>("[data-action=octave-up]").click();
     set("[data-field=labels]", "keys", "change");
+    expect(q("[data-out=range]").textContent).toBe("C4 – C7");
     expect(q('[data-midi="60"]').textContent).toBe("Z");
     expect(q('[data-midi="72"]').textContent).toBe("Q");
   });

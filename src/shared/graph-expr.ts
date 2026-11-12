@@ -1,3 +1,5 @@
+import { normalize } from "./calculator";
+
 /**
  * Graphing calculator expressions: y = f(x) typed the way people write it, compiled once into a function of x (no eval).
  *
@@ -57,14 +59,9 @@ class Fail extends Error {}
 class TooHard extends Error {}
 const MAX_BAR_RETRIES = 200;
 
-/** Same keys as the calculator: full-width forms, × ÷ −, superscript powers, a leading "y =" or "f(x) =". */
+/** The calculator's operator spellings (full-width, × ÷ −, ** …), then superscript powers, √, π and a leading "y =" or "f(x) =". */
 export function normalizeExpr(src: string): string {
-  return src
-    .replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
-    .replace(/\*\*/g, "^")
-    .replace(/[×✕·⋅]/g, "*")
-    .replace(/[÷]/g, "/")
-    .replace(/[−–—﹣]/g, "-")
+  return normalize(src)
     .replace(/²/g, "^2")
     .replace(/³/g, "^3")
     .replace(/√/g, "sqrt")
@@ -75,7 +72,11 @@ export function normalizeExpr(src: string): string {
 
 function tokenize(src: string, decimal: "." | ","): Tok[] {
   let s = src;
-  if (decimal === ",") s = s.replace(/(\d),(\d)/g, "$1.$2");
+  if (decimal === ",") {
+    // As in the calculator: "1.250" is 1250 in Spain and Indonesia and 1.25 in Mexico, so it is refused, not guessed.
+    if (/(^|[^\d,.])[1-9]\d{0,2}\.\d{3}(?![\d.,])/.test(s)) throw new Fail();
+    s = s.replace(/(\d),(\d)/g, "$1.$2");
+  }
   const out: Tok[] = [];
   let i = 0;
   while (i < s.length) {
@@ -311,8 +312,16 @@ class Parser {
     }
     if (t.k === "x") return (x) => x;
     if (t.k === "fn") {
-      const f = FUNCS[t.v];
+      const base = FUNCS[t.v];
       this.enter();
+      // sin^2 x and sin^2(x) mean (sin x)², as in textbooks; the power is a single number or bracket.
+      let exp: Compiled | null = null;
+      if (this.isOp("^")) {
+        this.i++;
+        exp = this.atom();
+      }
+      const e = exp;
+      const call = (arg: Compiled): Compiled => (e ? (x) => power(base(arg(x)), e(x)) : (x) => base(arg(x)));
       // sin(x) or sin x / sin 2x (the argument runs to the next + or -, as people read "sin 2x").
       let arg: Compiled;
       if (this.isOp("(")) {
@@ -322,7 +331,7 @@ class Parser {
         this.i++;
         // sin(x)^2 squares the sine.
         this.depth--;
-        return (x) => f(arg(x));
+        return call(arg);
       }
       arg = this.power();
       // "sin 2x": numbers and x straight after the function belong to its argument; another function starts a new
@@ -333,7 +342,7 @@ class Parser {
         arg = (x) => a(x) * b(x);
       }
       this.depth--;
-      return (x) => f(arg(x));
+      return call(arg);
     }
     if (t.v === "(") {
       const inner = this.inBrackets(() => this.sum());

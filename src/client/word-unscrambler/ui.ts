@@ -24,7 +24,8 @@ function loadWords(): Promise<string[]> {
   return words;
 }
 
-const LENGTHS = [0, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15] as const;
+/** Any length, then every length a rack of MAX_LETTERS can make. */
+const LENGTHS = [0, ...Array.from({ length: MAX_LETTERS - 1 }, (_, i) => i + 2)];
 const DEBOUNCE_MS = 120;
 
 let mounted: { cleanup: () => void } | null = null;
@@ -35,6 +36,8 @@ export function mountWordUnscrambler(host: HTMLElement): void {
   let dict: string[] | null = null;
   let timer = 0;
   let alive = true;
+  /** The word list is on its way: one search runs when it lands, however many keystrokes came meanwhile. */
+  let loading = false;
   let last = "";
   let copyBtn: HTMLButtonElement | null = null;
   const text = (field: string, placeholder: string, extra: Record<string, unknown> = {}) =>
@@ -70,13 +73,19 @@ export function mountWordUnscrambler(host: HTMLElement): void {
     }
     if (!dict) {
       status.textContent = t("wordUnscrambler.loading");
+      if (loading) return;
+      loading = true;
       void loadWords().then(
         (list) => {
+          loading = false;
           if (!alive) return;
           dict = list;
           run();
         },
-        () => { if (alive) status.textContent = t("wordUnscrambler.loadFailed"); },
+        () => {
+          loading = false;
+          if (alive) status.textContent = t("wordUnscrambler.loadFailed");
+        },
       );
       return;
     }

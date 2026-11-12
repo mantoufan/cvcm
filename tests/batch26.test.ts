@@ -178,6 +178,11 @@ describe("graph expressions", () => {
     expect(f("log100", 0)).toBeCloseTo(2, 12);
     expect(f("log2 8", 0)).toBe(3);
     expect(f("2e+1", 0)).toBeCloseTo(2 * Math.E + 1, 12);
+    expect(f("sin^2 x + cos^2 x", 0.7)).toBeCloseTo(1, 12);
+    expect(f("sin^2(x)", Math.PI / 2)).toBeCloseTo(1, 12);
+    expect(f("8∶x", 2)).toBe(4);
+    expect(parseExpr("1.250x", ",").ok).toBe(false);
+    expect(f("1.25x", 2, ",")).toBe(2.5);
     expect(f("2e-1", 0)).toBeCloseTo(2 * Math.E - 1, 12);
   });
 
@@ -295,6 +300,7 @@ describe("slope", () => {
     expect(P("1 1/2")).toEqual(q(3n, 2n));
     expect(P("−2")).toEqual(q(-2n));
     expect(P("0.0000005")).toEqual(q(1n, 2_000_000n));
+    expect(parseCoord("1e-25", "en")).toBeNull();
     expect(parseCoord("2,5", "es")).toEqual(q(5n, 2n));
     expect(parseCoord("", "en")).toBeUndefined();
     expect(parseCoord("1/0", "en")).toBeNull();

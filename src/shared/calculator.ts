@@ -41,7 +41,7 @@ class Fail extends Error {
 }
 
 /** Maps the many ways people type the same operator onto one. */
-function normalize(src: string): string {
+export function normalize(src: string): string {
   // Full-width forms from CJK input first ("２＋２"). "**" before ×: two × keys in a row are a typo, not a power.
   return src
     .replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))

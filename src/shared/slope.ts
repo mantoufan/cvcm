@@ -3,17 +3,12 @@
  * fractions ("0.25", "-3/4"), with decimals alongside.
  */
 import { parseDecimalInput } from "./decimal-input";
+import { gcd, lcm } from "./factors";
 
 /** An exact fraction n/d with d > 0, in lowest terms. */
 export type Q = { n: bigint; d: bigint };
 
 const abs = (v: bigint) => (v < 0n ? -v : v);
-function gcd(a: bigint, b: bigint): bigint {
-  a = abs(a);
-  b = abs(b);
-  while (b) [a, b] = [b, a % b];
-  return a;
-}
 
 export function q(n: bigint, d: bigint = 1n): Q {
   if (d === 0n) throw new RangeError("zero denominator");
@@ -53,6 +48,8 @@ function decimalToQ(text: string): Q | null {
 export function parseCoord(raw: string, locale: string): Q | null | undefined {
   const text = raw.trim().replace(/^−/, "-").replace(/[⁄∕／]/g, "/");
   if (text === "") return undefined;
+  // Exponent notation ("1e-25") is not a coordinate anyone types by hand, and would round to 0: refuse it.
+  if (/e/i.test(text)) return null;
   const one = (s: string): Q | null => {
     const v = parseDecimalInput(s, locale);
     if (v === undefined || Number.isNaN(v)) return null;
@@ -137,17 +134,14 @@ export function solveSlope(x1: Q, y1: Q, x2: Q, y2: Q): { ok: true; r: SlopeResu
   return { ok: true, r: { dx, dy, line: { kind: "sloped", m, b: bIntercept }, angle, distance, radical, midpoint, xIntercept, standard: { a, b, c } } };
 }
 
-function lcm(a: bigint, b: bigint): bigint {
-  return (a / gcd(a, b)) * b;
-}
-
 /** √n as k√r with r square-free, for whole n up to about 10^12 (bigger ones keep r = n). */
 export function simplifyRoot(n: bigint): { k: bigint; r: bigint } {
   if (n <= 0n) return { k: 0n, r: 1n };
   let k = 1n;
   let r = n;
   if (n > 10n ** 12n) return { k, r };
-  for (let f = 2n; f * f <= r; f++) {
+  // 2, then odd numbers only.
+  for (let f = 2n; f * f <= r; f += f === 2n ? 1n : 2n) {
     while (r % (f * f) === 0n) {
       r /= f * f;
       k *= f;

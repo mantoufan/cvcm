@@ -44,7 +44,7 @@ type State = {
 let s: State | null = null;
 
 /** Lowest start octave and highest, so the shown keys stay within A0–C8. */
-const MIN_START = 1;
+const MIN_START = 0;
 const MAX_START = 7;
 
 export function mountPiano(host: HTMLElement): void {

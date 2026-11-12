@@ -4,6 +4,7 @@ import { locale, t } from "../i18n";
 import { formatter } from "../shape-calc";
 import { appHref } from "../../shared/path";
 import { parseDecimalInput } from "../../shared/decimal-input";
+import { decimalMarkOf } from "../../shared/calculator";
 import {
   CONCRETE_FIELDS,
   CONCRETE_SHAPES,
@@ -74,7 +75,8 @@ export function mountConcrete(host: HTMLElement): void {
           const from = unitOf(field.id, sh);
           const to = (next === "metric" ? field.metric : field.imperial) ?? "m";
           const v = parseDecimalInput(typed[sh][field.id] ?? "", loc);
-          if (v !== undefined && !Number.isNaN(v)) typed[sh][field.id] = String(Number((toMetres(v, from) / toMetres(1, to)).toPrecision(6)));
+          // Written back in the page's decimal mark (9,84252 in es/id/vi), like every other number on it.
+          if (v !== undefined && !Number.isNaN(v)) typed[sh][field.id] = String(Number((toMetres(v, from) / toMetres(1, to)).toPrecision(6))).replace(".", decimalMarkOf(loc));
         }
         units[sh] = {};
       }
