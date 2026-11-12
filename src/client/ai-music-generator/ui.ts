@@ -14,11 +14,10 @@ import {
   type Note,
   type Surprise,
 } from "../../shared/music-gen";
-import { appHref } from "../../shared/path";
 import { AI_MODELS, formatMb, modelBytes } from "../../shared/ai-models";
 import { chipGroup, formatSeconds } from "../ai/kit";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
+import { t } from "../i18n";
 import type { MusicRequest, MusicResponse } from "./model-worker";
 
 /** `job`: the worker job that wrote it, which "More like this" varies. */
@@ -153,7 +152,6 @@ export async function mountMusicGenerator(host: HTMLElement): Promise<void> {
   status = musicPanel();
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("musicGen.back")),
       h("h1", null, t("musicGen.title")),
       h("p", { class: "lede" }, t("musicGen.privacyNote")),
     ),

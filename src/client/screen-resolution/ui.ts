@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { aspectRatio, realResolution, resolutionName } from "../../shared/screen";
 
 let bigEl: HTMLElement | null = null;
@@ -19,7 +18,6 @@ export function mountScreenResolution(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid", "data-out": "details" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("screenResolution.back")),
       h("h1", null, t("screenResolution.title")),
       h("p", { class: "lede" }, t("screenResolution.privacyNote")),
     ),

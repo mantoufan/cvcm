@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { MAX_PRICE, MAX_YEARS, mortgage, type MortgageMethod } from "../../shared/mortgage";
 
 let priceEl: HTMLInputElement | null = null;
@@ -31,7 +30,6 @@ export function mountMortgage(host: HTMLElement): void {
   tableEl = h("div", { class: "kb-table", "data-out": "schedule" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("mortgage.back")),
       h("h1", null, t("mortgage.title")),
       h("p", { class: "lede" }, t("mortgage.privacyNote")),
     ),

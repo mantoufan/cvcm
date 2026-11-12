@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { workdaysBetween } from "../../shared/workdays";
 
 let fromEl: HTMLInputElement | null = null;
@@ -15,7 +14,6 @@ export function mountWorkdays(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("workdays.back")),
       h("h1", null, t("workdays.title")),
       h("p", { class: "lede" }, t("workdays.privacyNote")),
     ),

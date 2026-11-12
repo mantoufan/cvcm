@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { rangeToCidrs, subnetOf } from "../../shared/cidr";
 
 let cidrEl: HTMLInputElement | null = null;
@@ -25,7 +24,6 @@ export function mountCidr(host: HTMLElement): void {
   rangeOut = h("ul", { class: "uuid-list" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("cidr.back")),
       h("h1", null, t("cidr.title")),
       h("p", { class: "lede" }, t("cidr.privacyNote")),
     ),

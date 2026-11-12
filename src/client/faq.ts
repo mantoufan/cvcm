@@ -10,6 +10,7 @@ import {
   faqJsonLd,
   flashHubHowToJsonLd,
   flashHubSoftwareJsonLd,
+  gameBreadcrumbJsonLd,
   gameHowToJsonLd,
   gameVideoGameJsonLd,
   howToJsonLd,
@@ -17,10 +18,11 @@ import {
   marketBreadcrumbJsonLd,
   toolBreadcrumbJsonLd,
   toolSoftwareJsonLd,
+  tutorialBreadcrumbJsonLd,
   type FaqItem,
 } from "../shared/seo";
 import type { Locale } from "../shared/locale";
-import type { GameConsoleId, GameId } from "../shared/games";
+import { gameById, type GameConsoleId, type GameId } from "../shared/games";
 import type { MarketId } from "../shared/markets";
 import { deviceBreadcrumbJsonLd, deviceFaqJsonLd } from "../shared/device-i18n";
 import { quizBreadcrumbJsonLd, quizFaqJsonLd } from "../shared/quiz-i18n";
@@ -93,6 +95,7 @@ export function syncPageJsonLd(
   refPage: RefPage = null,
   rankingPage: RankingId | "hub" | null = null,
   slangPage: SlangPage = null,
+  learnHub = false,
 ): void {
   const refId = refPage === "hub" ? null : refPage;
   const slangId = slangPage === "hub" ? null : slangPage;
@@ -157,9 +160,15 @@ export function syncPageJsonLd(
       ? deviceBreadcrumbJsonLd(locale, devicePage)
       : marketsHub || market
         ? marketBreadcrumbJsonLd(locale, market)
-        : toolPage && tool
-          ? toolBreadcrumbJsonLd(locale, tool)
-          : null,
+        : game
+          ? gameBreadcrumbJsonLd(locale, gameById(game)?.console ?? null, game)
+          : gamesHub
+            ? gameBreadcrumbJsonLd(locale, gamesConsole)
+            : tutorial || learnHub
+              ? tutorialBreadcrumbJsonLd(locale, tutorial)
+              : toolPage && tool
+                ? toolBreadcrumbJsonLd(locale, tool)
+                : null,
   );
   writeJsonLd(
     "howto-jsonld",

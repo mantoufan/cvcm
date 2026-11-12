@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { formatElapsed } from "../../shared/stopwatch";
 
 let displayEl: HTMLElement | null = null;
@@ -15,7 +14,6 @@ export function mountStopwatch(host: HTMLElement): void {
   startBtn = h("button", { type: "button", class: "btn", onClick: () => toggle() }, t("stopwatch.start"));
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("stopwatch.back")),
       h("h1", null, t("stopwatch.title")),
       h("p", { class: "lede" }, t("stopwatch.privacyNote")),
     ),

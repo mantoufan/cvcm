@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { durationBetween } from "../../shared/duration";
 
 let aEl: HTMLInputElement | null = null;
@@ -20,7 +19,6 @@ export function mountDuration(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("duration.back")),
       h("h1", null, t("duration.title")),
       h("p", { class: "lede" }, t("duration.privacyNote")),
     ),

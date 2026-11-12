@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { countText } from "../../shared/word-count";
 import { debounce } from "../session";
 
@@ -32,7 +31,6 @@ export function mountWordCount(host: HTMLElement): void {
   });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("wordCount.back")),
       h("h1", null, t("wordCount.title")),
       h("p", { class: "lede" }, t("wordCount.privacyNote")),
     ),

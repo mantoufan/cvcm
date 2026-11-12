@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { DICE_SIDES, MAX_COINS, MAX_DICE, flipCoins, rollDice } from "../../shared/dice";
 
 let countEl: HTMLInputElement | null = null;
@@ -22,7 +21,6 @@ export function mountDice(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("dice.back")),
       h("h1", null, t("dice.title")),
       h("p", { class: "lede" }, t("dice.privacyNote")),
     ),

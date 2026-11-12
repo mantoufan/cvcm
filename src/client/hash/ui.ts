@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { HASH_ALGOS, digest, encodeUtf8, toB64, toHex, type HashAlgo } from "../../shared/hash";
 import { debounce } from "../session";
 
@@ -40,7 +39,6 @@ export function mountHash(host: HTMLElement): void {
   });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("hash.back")),
       h("h1", null, t("hash.title")),
       h("p", { class: "lede" }, t("hash.privacyNote")),
     ),

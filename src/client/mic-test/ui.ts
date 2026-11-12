@@ -1,7 +1,6 @@
 import { armAudio } from "../audio";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { levelVerdict, meterPercent, rms, toDbfs } from "../../shared/mic";
 
 const RECORD_MS = 5000;
@@ -59,7 +58,6 @@ export function mountMicTest(host: HTMLElement): void {
   playerEl = h("audio", { controls: true, class: "mic-player", hidden: true });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("micTest.back")),
       h("h1", null, t("micTest.title")),
       h("p", { class: "lede" }, t("micTest.privacyNote")),
     ),

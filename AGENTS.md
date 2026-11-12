@@ -21,6 +21,7 @@ Browser toolkit on a Cloudflare Worker with static assets (`wrangler deploy`; th
 - `src/clip-api.ts` / `src/clip-store.ts` — clipboard API + D1
 - `migrations/` — D1 schema
 - `src/client/` — SPA (`main.ts` shell + router, `tools.ts` lazy tool loaders, `links.ts` text link lists)
+- `src/client/crumb.ts` — the breadcrumb trail (`nav.device-crumb`) above a page's heading. `main.ts` puts Home / Tools / tool above every tool, so a tool's `tool-head` has no back link of its own; tutorials and game pages build theirs with `crumbNav`, with matching BreadcrumbList JSON-LD in `seo.ts` and `faq.ts`.
 - `scripts/prerender.mjs` / `scripts/prerender.ts` — build-time page bodies for the Worker
 - `src/client/clip/` — cloud clipboard
 - `src/client/watermark/` — ID Watermark & Redact (身份证水印打码): image watermark + drag-to-redact (mosaic / black box). `/mosaic/` mounts the same UI in redact mode. Brand icon `public/brand/safemark.svg`; Zhihu kit `docs/zhihu-ai-works/id-watermark/`

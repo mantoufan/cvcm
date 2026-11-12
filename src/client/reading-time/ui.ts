@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { CJK_CPM, READ_WPM, readingTime, splitSec, type Speed } from "../../shared/reading-time";
 
 let textEl: HTMLTextAreaElement | null = null;
@@ -22,7 +21,6 @@ export function mountReadingTime(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("readingTime.back")),
       h("h1", null, t("readingTime.title")),
       h("p", { class: "lede" }, t("readingTime.privacyNote")),
     ),

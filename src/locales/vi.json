@@ -635,6 +635,8 @@
   },
   "brand": "cv.cm",
   "nav": {
+    "home": "Trang chủ",
+    "breadcrumb": "Đường dẫn trang",
     "tools": "Công cụ",
     "privacy": "Trên máy",
     "share": "Chia sẻ",
@@ -1345,7 +1347,6 @@
   },
   "watermark": {
     "title": "Thêm watermark vào ảnh",
-    "back": "Tất cả công cụ",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
     "dropTypes": "PNG, JPEG, WebP, GIF",
@@ -1438,7 +1439,6 @@
   },
   "collage": {
     "title": "Ghép ảnh collage",
-    "back": "Tất cả công cụ",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
     "dropTypes": "PNG, JPEG, WebP, GIF",
@@ -1483,7 +1483,6 @@
   },
   "clip": {
     "title": "Clipboard trực tuyến",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chữ trên D1, tệp trên S3. Xóa sau 10 lần xem hoặc 24 giờ. Không cần tài khoản.",
     "bodyLabel": "Văn bản",
     "placeholder": "Dán văn bản, HTML hoặc kéo thả tệp vào đây…",
@@ -1552,7 +1551,6 @@
   },
   "convert": {
     "title": "Đổi HEIC, WebP, JPG, PNG",
-    "back": "Tất cả công cụ",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
     "dropTypes": "HEIC, PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
@@ -1614,7 +1612,6 @@
   },
   "imagePdf": {
     "title": "JPG / PNG sang PDF",
-    "back": "Tất cả công cụ",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán bằng Ctrl/⌘ V",
     "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
@@ -1640,7 +1637,6 @@
   },
   "audio": {
     "title": "Chuyển MP3 sang WAV",
-    "back": "Tất cả công cụ",
     "privacyNote": "Âm thanh được giải mã trong tab này và lưu WAV. Không tải lên.",
     "dropTitle": "Thả âm thanh vào đây",
     "dropHint": "hoặc bấm để chọn",
@@ -1662,7 +1658,6 @@
   },
   "data": {
     "title": "Định dạng JSON",
-    "back": "Tất cả công cụ",
     "privacyNote": "JSON, CSV, Base64, Markdown ở tab này.",
     "mode": "Chuyển đổi",
     "input": "Đầu vào",
@@ -5262,7 +5257,6 @@
   },
   "qr": {
     "title": "Tạo mã QR miễn phí",
-    "back": "Tất cả công cụ",
     "privacyNote": "QR vẽ trong tab này. Không tải lên.",
     "input": "Chữ hoặc URL",
     "placeholder": "https://cv.cm",
@@ -5280,7 +5274,6 @@
   },
   "password": {
     "title": "Tạo mật khẩu",
-    "back": "Tất cả công cụ",
     "privacyNote": "Web Crypto tạo trong tab này. Không tải lên.",
     "options": "Tùy chọn",
     "length": "Độ dài",
@@ -5297,7 +5290,6 @@
   },
   "wordCount": {
     "title": "Đếm từ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đếm trong tab này. Không tải lên.",
     "input": "Văn bản",
     "placeholder": "Dán hoặc gõ…",
@@ -5314,7 +5306,6 @@
   },
   "resize": {
     "title": "Đổi kích thước ảnh",
-    "back": "Tất cả công cụ",
     "privacyNote": "Thu nhỏ và nén trong tab này. Không tải lên.",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm chọn · Ctrl/⌘ V dán",
@@ -5343,7 +5334,6 @@
   },
   "crop": {
     "title": "Cắt ảnh",
-    "back": "Tất cả công cụ",
     "privacyNote": "Cắt trong tab này. Không tải lên.",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm chọn · Ctrl/⌘ V dán",
@@ -5361,7 +5351,6 @@
   },
   "color": {
     "title": "Chọn màu",
-    "back": "Tất cả công cụ",
     "privacyNote": "Màu ở tab này. Không tải lên.",
     "values": "Giá trị",
     "hex": "Hex",
@@ -5378,7 +5367,6 @@
   },
   "pdfJpg": {
     "title": "PDF sang JPG",
-    "back": "Tất cả công cụ",
     "privacyNote": "Trang vẽ trong tab này. Không tải lên.",
     "dropTitle": "Thả PDF vào đây",
     "dropHint": "hoặc bấm để chọn",
@@ -5401,7 +5389,6 @@
   },
   "mergePdf": {
     "title": "Gộp file PDF",
-    "back": "Tất cả công cụ",
     "privacyNote": "Gộp trong tab này. Không tải lên.",
     "dropTitle": "Thả PDF vào đây",
     "dropHint": "hoặc chọn nhiều tệp",
@@ -5421,7 +5408,6 @@
     "working": "Đang gộp…"
   },
   "learn": {
-    "back": "Tất cả bài học",
     "minutes": "{n} phút",
     "resultLabel": "Kết quả hôm nay",
     "practiceLabel": "Thẻ luyện tập",
@@ -8214,7 +8200,6 @@
   },
   "compressPdf": {
     "title": "Nén PDF",
-    "back": "Tất cả công cụ",
     "privacyNote": "Trang được mã hóa lại trong tab này. Không tải lên.",
     "dropTitle": "Thả PDF vào đây",
     "dropHint": "hoặc bấm để chọn",
@@ -8236,7 +8221,6 @@
   },
   "splitPdf": {
     "title": "Tách PDF",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tách trong tab này. Không tải lên.",
     "dropTitle": "Thả PDF vào đây",
     "dropHint": "hoặc bấm để chọn",
@@ -8257,7 +8241,6 @@
   },
   "names": {
     "title": "Tạo tên và username",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tên được tạo ngẫu nhiên trong tab này, không phải danh tính thật.",
     "options": "Tùy chọn",
     "kind": "Loại",
@@ -8271,7 +8254,6 @@
   },
   "timezone": {
     "title": "Đổi múi giờ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đổi giờ bằng múi IANA trong tab này. Không tải lên.",
     "options": "Tùy chọn",
     "from": "Từ",
@@ -8287,7 +8269,6 @@
   },
   "lorem": {
     "title": "Tạo lorem ipsum",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chữ giữ chỗ được tạo trong tab này. Không tải lên.",
     "options": "Tùy chọn",
     "kind": "Loại",
@@ -8302,7 +8283,6 @@
   },
   "units": {
     "title": "Đổi đơn vị",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đổi bằng hệ số SI trong tab này. Không tải lên.",
     "options": "Tùy chọn",
     "kindLabel": "Loại",
@@ -8325,7 +8305,6 @@
   },
   "barcode": {
     "title": "Tạo mã vạch miễn phí",
-    "back": "Tất cả công cụ",
     "privacyNote": "Mã vạch được vẽ trong tab này. Không tải lên.",
     "input": "Chữ hoặc số",
     "placeholder": "CVCM",
@@ -8346,7 +8325,6 @@
   },
   "meme": {
     "title": "Tạo meme",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chữ được vẽ lên ảnh trong tab này. Không tải lên.",
     "dropTitle": "Thả ảnh vào đây",
     "dropHint": "hoặc bấm để chọn · dán Ctrl/⌘ V",
@@ -8367,7 +8345,6 @@
   },
   "tts": {
     "title": "Chữ thành tiếng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Phát bằng giọng trên máy này. Không tải lên.",
     "input": "Chữ",
     "placeholder": "Dán hoặc gõ chữ để nghe…",
@@ -8389,7 +8366,6 @@
   },
   "invoice": {
     "title": "Tạo hóa đơn",
-    "back": "Tất cả công cụ",
     "privacyNote": "PDF hóa đơn được tạo trong tab này. Không tải lên. Không phải chứng từ thuế.",
     "hint": "Xem trước khi gõ. Tải PDF A4.",
     "download": "Tải PDF",
@@ -8423,7 +8399,6 @@
   },
   "signature": {
     "title": "Tạo chữ ký",
-    "back": "Tất cả công cụ",
     "privacyNote": "Nét vẽ ở tab này. Không tải lên. Không phải e-sign pháp lý.",
     "pad": "Bảng vẽ",
     "hint": "Vẽ bằng chuột, bút hoặc ngón tay. Tải PNG.",
@@ -8437,7 +8412,6 @@
   },
   "diff": {
     "title": "So sánh văn bản",
-    "back": "Tất cả công cụ",
     "privacyNote": "So sánh ở tab này. Không tải lên.",
     "left": "Gốc",
     "right": "Đã đổi",
@@ -8453,7 +8427,6 @@
   },
   "uuid": {
     "title": "Tạo UUID",
-    "back": "Tất cả công cụ",
     "privacyNote": "UUID được tạo ngẫu nhiên bằng Web Crypto trong tab này. Không tải lên.",
     "options": "Tùy chọn",
     "count": "Số lượng",
@@ -8466,7 +8439,6 @@
   },
   "regex": {
     "title": "Kiểm tra regex",
-    "back": "Tất cả công cụ",
     "privacyNote": "Công cụ chạy trong tab này. Không tải lên.",
     "options": "Mẫu",
     "pattern": "Biểu thức chính quy",
@@ -8487,7 +8459,6 @@
   },
   "favicon": {
     "title": "Tạo favicon",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ảnh ở lại tab này. Không tải lên.",
     "filesTitle": "Ảnh",
     "dropTitle": "Thả một ảnh",
@@ -8508,7 +8479,6 @@
   },
   "audioCutter": {
     "title": "Cắt audio",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tệp ở lại tab này. Không tải lên.",
     "filesTitle": "Audio",
     "dropTitle": "Thả audio vào đây",
@@ -8529,7 +8499,6 @@
   },
   "timestamp": {
     "title": "Đổi timestamp",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đổi trong tab này. Không tải lên.",
     "options": "Nhập",
     "input": "Timestamp hoặc ngày",
@@ -8550,7 +8519,6 @@
   },
   "rotateTool": {
     "title": "Xoay ảnh",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ảnh ở lại tab này. Không tải lên.",
     "filesTitle": "Ảnh",
     "dropTitle": "Thả một ảnh",
@@ -8575,7 +8543,6 @@
   },
   "exif": {
     "title": "Xóa EXIF",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ảnh ở lại tab này. Không tải lên.",
     "filesTitle": "Ảnh",
     "dropTitle": "Thả một ảnh",
@@ -8595,7 +8562,6 @@
   },
   "audioJoiner": {
     "title": "Ghép audio",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tệp ở lại tab này. Không tải lên.",
     "filesTitle": "Clip",
     "dropTitle": "Thả audio vào đây",
@@ -8615,7 +8581,6 @@
   },
   "hexRgb": {
     "title": "HEX sang RGB",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đổi trong tab này. Không tải lên.",
     "options": "Màu",
     "input": "HEX, RGB hoặc HSL",
@@ -8631,7 +8596,6 @@
   },
   "xmlJson": {
     "title": "XML sang JSON",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đổi trong tab này. Không tải lên.",
     "options": "Chiều đổi",
     "xmlJson": "XML → JSON",
@@ -8646,7 +8610,6 @@
   },
   "hash": {
     "title": "Tạo hash",
-    "back": "Tất cả công cụ",
     "privacyNote": "Hash trong tab này. Không tải lên.",
     "options": "Thuật toán",
     "algo": "Hash",
@@ -8662,7 +8625,6 @@
   },
   "yamlJson": {
     "title": "YAML sang JSON",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đổi trong tab này. Không tải lên.",
     "options": "Chiều đổi",
     "yamlJson": "YAML → JSON",
@@ -8677,7 +8639,6 @@
   },
   "caseTool": {
     "title": "Đổi chữ hoa thường",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đổi trong tab này. Không tải lên.",
     "options": "Kiểu chữ",
     "input": "Đầu vào",
@@ -8696,7 +8657,6 @@
   },
   "jwt": {
     "title": "Giải mã JWT",
-    "back": "Tất cả công cụ",
     "privacyNote": "Giải mã trong tab này. Không kiểm chữ ký.",
     "options": "Token",
     "note": "Chỉ giải mã. Không kiểm chữ ký, không tin bên phát hành.",
@@ -8714,7 +8674,6 @@
   },
   "screenshot": {
     "title": "Sửa ảnh chụp",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "filesTitle": "Ảnh",
     "dropTitle": "Thả ảnh chụp màn hình",
@@ -8736,7 +8695,6 @@
   },
   "percent": {
     "title": "Tính phần trăm",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Giá trị",
     "a": "A",
@@ -8753,7 +8711,6 @@
   },
   "random": {
     "title": "Số ngẫu nhiên",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Khoảng",
     "min": "Tối thiểu",
@@ -8766,7 +8723,6 @@
   },
   "html": {
     "title": "Mã hóa HTML",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Chiều đổi",
     "encode": "Mã hóa",
@@ -8779,7 +8735,6 @@
   },
   "cron": {
     "title": "Giải thích cron",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Biểu thức",
     "input": "Cron",
@@ -8793,7 +8748,6 @@
   },
   "slug": {
     "title": "Tạo slug",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "input": "Tiêu đề",
     "output": "Slug",
@@ -8803,7 +8757,6 @@
   },
   "portraitSim": {
     "title": "Mô phỏng máy ảnh chân dung",
-    "back": "Mọi công cụ",
     "privacyNote": "Bản in thuộc cv.cm. Không tải lên. Ảnh xuất ra ở máy bạn.",
     "lede": "Đổi người, dáng và cảnh. Chỉnh khẩu độ, tốc độ và ISO như máy ảnh.",
     "people": "Người",
@@ -8896,7 +8849,6 @@
   },
   "age": {
     "title": "Tính tuổi",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Ngày",
     "birth": "Ngày sinh",
@@ -8913,7 +8865,6 @@
   },
   "bmi": {
     "title": "Tính BMI",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Cơ thể",
     "kg": "Kilôgam",
@@ -8931,7 +8882,6 @@
   },
   "binary": {
     "title": "Đổi nhị phân",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Chiều đổi",
     "to": "Chữ → nhị phân",
@@ -8945,7 +8895,6 @@
   },
   "tip": {
     "title": "Tính tip",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Hóa đơn",
     "bill": "Hóa đơn",
@@ -8961,7 +8910,6 @@
   },
   "morse": {
     "title": "Mã Morse",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Chiều đổi",
     "to": "Chữ → Morse",
@@ -8975,7 +8923,6 @@
   },
   "roman": {
     "title": "Số La Mã",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Chiều đổi",
     "to": "Số → La Mã",
@@ -8990,7 +8937,6 @@
   },
   "discount": {
     "title": "Tính giảm giá",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Giá",
     "price": "Giá gốc",
@@ -9004,7 +8950,6 @@
   },
   "countdown": {
     "title": "Đếm ngược",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Thời lượng",
     "hours": "Giờ",
@@ -9017,7 +8962,6 @@
   },
   "loan": {
     "title": "Tính khoản vay",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Khoản vay",
     "principal": "Tiền gốc",
@@ -9033,7 +8977,6 @@
   },
   "stopwatch": {
     "title": "Đồng hồ bấm giờ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đồng hồ ở tab này. Không tải lên.",
     "options": "Điều khiển",
     "result": "Đã trôi qua",
@@ -9043,7 +8986,6 @@
   },
   "compound": {
     "title": "Lãi kép",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tính trong tab này. Không tải lên.",
     "options": "Thông số",
     "principal": "Tiền gốc",
@@ -9063,7 +9005,6 @@
   },
   "vat": {
     "title": "Tính VAT",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tính trong tab này. Không tải lên.",
     "options": "Số tiền",
     "amount": "Số tiền",
@@ -9080,7 +9021,6 @@
     "invalid": "Nhập số tiền từ 0 trở lên và thuế suất từ 0 trở lên."
   },
   "games": {
-    "back": "Tất cả game",
     "play": "Chơi",
     "loadRom": "Chọn ROM",
     "loadRomHint": "Tệp ở lại trong tab này. Nếu có ROM lưu trên S3, game tự chạy.",
@@ -9186,7 +9126,6 @@
   },
   "reverse": {
     "title": "Đảo chữ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Đảo ngược",
     "input": "Văn bản",
@@ -9199,7 +9138,6 @@
   },
   "url-encode": {
     "title": "URL encode",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Chiều đổi",
     "to": "Mã hóa",
@@ -9213,7 +9151,6 @@
   },
   "text-hex": {
     "title": "Chữ sang hex",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Chiều đổi",
     "to": "Chữ → hex",
@@ -9227,7 +9164,6 @@
   },
   "json": {
     "title": "Định dạng JSON",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Định dạng",
     "pretty": "Định dạng đẹp",
@@ -9241,7 +9177,6 @@
   },
   "base64": {
     "title": "Base64",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Chiều đổi",
     "to": "Mã hóa",
@@ -9255,7 +9190,6 @@
   },
   "days": {
     "title": "Khoảng ngày",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Ngày",
     "from": "Từ",
@@ -9270,7 +9204,6 @@
   },
   "sort": {
     "title": "Sắp dòng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Thứ tự",
     "az": "A → Z",
@@ -9284,7 +9217,6 @@
   },
   "replace": {
     "title": "Tìm thay",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Tìm",
     "find": "Tìm",
@@ -9299,7 +9231,6 @@
   },
   "words": {
     "title": "Số thành chữ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Số",
     "number": "Số nguyên",
@@ -9310,7 +9241,6 @@
   },
   "add-days": {
     "title": "Cộng ngày",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Ngày",
     "date": "Ngày bắt đầu",
@@ -9323,7 +9253,6 @@
   },
   "week": {
     "title": "Số tuần",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Ngày",
     "date": "Ngày",
@@ -9345,7 +9274,6 @@
   },
   "aspect": {
     "title": "Tỉ lệ khung",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Kích thước",
     "width": "Chiều rộng",
@@ -9359,7 +9287,6 @@
   },
   "workdays": {
     "title": "Ngày làm việc",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Ngày",
     "from": "Ngày bắt đầu",
@@ -9373,7 +9300,6 @@
   },
   "fraction": {
     "title": "Phân số",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Phân số",
     "mode": "Chế độ",
@@ -9391,7 +9317,6 @@
   },
   "hourly": {
     "title": "Lương giờ sang năm",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên. Chỉ lương gộp, không trừ thuế.",
     "options": "Lương",
     "mode": "Chế độ",
@@ -9410,7 +9335,6 @@
   },
   "margin": {
     "title": "Tỉ suất lợi nhuận",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Số tiền",
     "cost": "Giá vốn",
@@ -9426,7 +9350,6 @@
   },
   "radix": {
     "title": "Đổi hệ cơ số",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Số",
     "value": "Số nguyên",
@@ -9440,7 +9363,6 @@
   },
   "duration": {
     "title": "Thời lượng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ở tab này. Không tải lên.",
     "options": "Khoảng thời gian",
     "a": "Thứ nhất (giờ:phút:giây)",
@@ -9457,7 +9379,6 @@
   },
   "tdee": {
     "title": "Tính TDEE",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các con số chỉ được tính trong tab này. Không tải lên, không lưu.",
     "options": "Thông tin của bạn",
     "units": "Đơn vị",
@@ -9495,7 +9416,6 @@
   },
   "cidr": {
     "title": "Tính subnet",
-    "back": "Tất cả công cụ",
     "privacyNote": "Địa chỉ chỉ được tính trong tab này. Không gửi đi.",
     "subnet": "Subnet IPv4",
     "input": "Địa chỉ / prefix",
@@ -9520,7 +9440,6 @@
   },
   "chmod": {
     "title": "Tính chmod",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tính trong tab này. Không tải lên, không thay đổi file nào.",
     "permissions": "Quyền",
     "special": "Bit đặc biệt",
@@ -9552,7 +9471,6 @@
   },
   "typing": {
     "title": "Kiểm tra tốc độ gõ phím",
-    "back": "Tất cả công cụ",
     "privacyNote": "Nội dung bạn gõ và kết quả chỉ nằm trên trang này. Không tải lên, không lưu.",
     "duration": "Thời gian",
     "seconds": "{n} giây",
@@ -9574,7 +9492,6 @@
   },
   "image-colors": {
     "title": "Bảng màu từ ảnh",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ảnh chỉ được đọc trong tab này. Không tải lên.",
     "filesTitle": "Ảnh",
     "dropTitle": "Thả ảnh vào đây",
@@ -9594,7 +9511,6 @@
     "errorDecode": "Không đọc được ảnh này."
   },
   "gold": {
-    "back": "Mọi công cụ",
     "title": "Vàng",
     "privacyNote": "Phép tính ở lại trang này. Không tải lên và không tra giá.",
     "options": "Khối lượng",
@@ -9624,7 +9540,6 @@
     "toPalladium": "Paladi"
   },
   "silver": {
-    "back": "Mọi công cụ",
     "title": "Bạc",
     "privacyNote": "Phép tính ở lại trang này. Không tải lên và không tra giá.",
     "options": "Khối lượng",
@@ -9654,7 +9569,6 @@
     "toPalladium": "Paladi"
   },
   "platinum": {
-    "back": "Mọi công cụ",
     "title": "Bạch kim",
     "privacyNote": "Phép tính ở lại trang này. Không tải lên và không tra giá.",
     "options": "Khối lượng",
@@ -9684,7 +9598,6 @@
     "toPalladium": "Paladi"
   },
   "palladium": {
-    "back": "Mọi công cụ",
     "title": "Paladi",
     "privacyNote": "Phép tính ở lại trang này. Không tải lên và không tra giá.",
     "options": "Khối lượng",
@@ -9714,7 +9627,6 @@
     "toPalladium": "Paladi"
   },
   "oil": {
-    "back": "Mọi công cụ",
     "title": "Một thùng dầu bằng bao nhiêu lít",
     "options": "Thể tích",
     "amount": "Lượng",
@@ -9731,7 +9643,6 @@
     "privacyNote": "Phép đổi ở lại trang này. Không tải lên và không tra giá dầu."
   },
   "stocks": {
-    "back": "Mọi công cụ",
     "title": "Tính vốn hóa và P/E",
     "options": "Số liệu",
     "price": "Giá",
@@ -10841,7 +10752,6 @@
   },
   "dice": {
     "title": "Tung xúc xắc",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tung trong thẻ này. Không tải lên.",
     "options": "Xúc xắc",
     "count": "Số xúc xắc",
@@ -10865,7 +10775,6 @@
   },
   "gpa": {
     "title": "Máy tính GPA",
-    "back": "Tất cả công cụ",
     "privacyNote": "Phép tính nằm trong thẻ này. Không tải lên.",
     "options": "Môn học",
     "grade": "Điểm",
@@ -10884,7 +10793,6 @@
   },
   "pomodoro": {
     "title": "Đồng hồ Pomodoro",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đồng hồ chạy trong thẻ này. Không tải lên.",
     "options": "Độ dài",
     "focus": "Tập trung (phút)",
@@ -10905,7 +10813,6 @@
   },
   "sleep": {
     "title": "Tính giờ ngủ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các giờ nằm trong thẻ này. Không tải lên.",
     "options": "Giờ của bạn",
     "mode": "Tôi biết",
@@ -10925,7 +10832,6 @@
   },
   "bodyFat": {
     "title": "Tính tỷ lệ mỡ cơ thể",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các số đo nằm trong thẻ này. Không tải lên, không lưu.",
     "options": "Số đo",
     "units": "Đơn vị",
@@ -10962,7 +10868,6 @@
   },
   "contrast": {
     "title": "Kiểm tra độ tương phản màu",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tỷ lệ được tính trong thẻ này. Không tải lên.",
     "options": "Màu",
     "fg": "Màu chữ",
@@ -10988,7 +10893,6 @@
   },
   "pace": {
     "title": "Tính pace chạy bộ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Phép tính chạy trong thẻ này. Không tải lên.",
     "options": "Bài chạy",
     "solve": "Tính",
@@ -11018,7 +10922,6 @@
   },
   "grade": {
     "title": "Tính điểm thi cuối kỳ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các con số nằm trong thẻ này. Không tải lên.",
     "options": "Điểm của bạn",
     "current": "Điểm hiện tại (%)",
@@ -11038,7 +10941,6 @@
   },
   "dueDate": {
     "title": "Máy tính ngày dự sinh",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các ngày nằm trong thẻ này. Không tải lên.",
     "options": "Ngày của bạn",
     "mode": "Tôi biết",
@@ -11067,7 +10969,6 @@
   },
   "idealWeight": {
     "title": "Máy tính cân nặng lý tưởng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các con số nằm trong thẻ này. Không tải lên.",
     "options": "Về bạn",
     "units": "Đơn vị",
@@ -11098,7 +10999,6 @@
   },
   "waterIntake": {
     "title": "Máy tính lượng nước uống mỗi ngày",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các con số nằm trong thẻ này. Không tải lên.",
     "options": "Về bạn",
     "units": "Đơn vị cân nặng",
@@ -11127,7 +11027,6 @@
   },
   "fuelCost": {
     "title": "Máy tính chi phí xăng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Phép tính chạy trong thẻ này. Không tải lên.",
     "options": "Chuyến đi",
     "distance": "Quãng đường",
@@ -11160,7 +11059,6 @@
   },
   "readingTime": {
     "title": "Máy tính thời gian đọc",
-    "back": "Tất cả công cụ",
     "privacyNote": "Văn bản nằm trong thẻ này. Không tải lên.",
     "options": "Văn bản",
     "text": "Dán văn bản của bạn",
@@ -11188,7 +11086,6 @@
   },
   "timeCard": {
     "title": "Máy tính giờ công",
-    "back": "Tất cả công cụ",
     "privacyNote": "Giờ giấc ở lại trong thẻ này. Không tải lên.",
     "options": "Ca làm",
     "start": "Bắt đầu",
@@ -11218,7 +11115,6 @@
   },
   "electricity": {
     "title": "Máy tính tiền điện",
-    "back": "Tất cả công cụ",
     "privacyNote": "Phép tính chạy trong thẻ này. Không tải lên.",
     "options": "Thiết bị",
     "preset": "Thiết bị",
@@ -11249,7 +11145,6 @@
   },
   "ovulation": {
     "title": "Máy tính ngày rụng trứng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các ngày ở lại trong thẻ này. Không tải lên.",
     "options": "Chu kỳ của bạn",
     "lastPeriod": "Ngày đầu kỳ kinh gần nhất",
@@ -11270,7 +11165,6 @@
   },
   "macro": {
     "title": "Máy tính macro dinh dưỡng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các con số ở lại trong thẻ này. Không tải lên.",
     "options": "Mục tiêu của bạn",
     "kcal": "Calo duy trì (kcal/ngày)",
@@ -11302,7 +11196,6 @@
   },
   "caloriesBurned": {
     "title": "Máy tính calo tiêu hao",
-    "back": "Tất cả công cụ",
     "privacyNote": "Phép tính chạy trong thẻ này. Không tải lên.",
     "options": "Hoạt động",
     "activity": "Hoạt động",
@@ -11350,7 +11243,6 @@
     "errorRun": "Xử lý thất bại. Tải lại trang rồi thử lại, hoặc dùng tệp nhỏ hơn."
   },
   "removeBg": {
-    "back": "Tất cả công cụ",
     "title": "Xóa phông nền",
     "privacyNote": "AI chạy trong tab này. Ảnh của bạn không bao giờ bị tải lên.",
     "filesTitle": "Ảnh",
@@ -11378,7 +11270,6 @@
     "errorDecode": "Không đọc được ảnh này."
   },
   "upscaler": {
-    "back": "Tất cả công cụ",
     "title": "Làm nét ảnh AI",
     "privacyNote": "AI chạy trong tab này. Ảnh của bạn không bao giờ bị tải lên.",
     "filesTitle": "Ảnh",
@@ -11403,7 +11294,6 @@
     "errorDecode": "Không đọc được ảnh này."
   },
   "stt": {
-    "back": "Tất cả công cụ",
     "title": "Chuyển giọng nói thành văn bản",
     "privacyNote": "Whisper AI chạy trong tab này. Audio của bạn không bao giờ bị tải lên.",
     "filesTitle": "Audio hoặc video",
@@ -11440,7 +11330,6 @@
     "errorMic": "Không dùng được micro. Hãy cho phép trong trình duyệt, hoặc thả tệp vào."
   },
   "depthMap": {
-    "back": "Tất cả công cụ",
     "title": "Tạo bản đồ độ sâu",
     "privacyNote": "AI chạy trong tab này. Ảnh của bạn không bao giờ bị tải lên.",
     "filesTitle": "Ảnh",
@@ -11461,7 +11350,6 @@
   },
   "wheel": {
     "title": "Vòng quay may mắn",
-    "back": "Tất cả công cụ",
     "privacyNote": "Lượt bốc diễn ra trong thẻ này bằng Web Crypto. Không tải lên.",
     "entries": "Các mục, mỗi dòng một mục",
     "sample": "Phở\nBún chả\nBánh mì\nCơm tấm\nBún bò\nBánh xèo",
@@ -11481,7 +11369,6 @@
   },
   "average": {
     "title": "Tính trung bình cộng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Phép tính chạy trong thẻ này. Không tải lên.",
     "numbers": "Các số",
     "decimal": "Dấu thập phân",
@@ -11511,7 +11398,6 @@
   },
   "metronome": {
     "title": "Máy đếm nhịp",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tiếng tích được tạo trong trình duyệt. Không tải lên.",
     "options": "Nhịp độ",
     "bpm": "Số phách mỗi phút (BPM)",
@@ -11530,7 +11416,6 @@
   },
   "keyboardTest": {
     "title": "Kiểm tra bàn phím",
-    "back": "Tất cả công cụ",
     "privacyNote": "Lần nhấn phím chỉ hiện trong thẻ này. Không ghi lại, không tải lên.",
     "focusHint": "Bấm vào bàn phím rồi nhấn phím. Bấm ra ngoài để dừng.",
     "board": "Sơ đồ bàn phím. Nhấn phím để kiểm tra.",
@@ -11550,7 +11435,6 @@
   },
   "zodiac": {
     "title": "Cung hoàng đạo và con giáp",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tính trong thẻ này. Không tải lên.",
     "options": "Ngày sinh",
     "birthday": "Ngày sinh",
@@ -11610,7 +11494,6 @@
   },
   "clickTest": {
     "title": "Kiểm tra CPS",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đếm click trong thẻ này. Không tải lên.",
     "options": "Bài kiểm tra",
     "duration": "Thời lượng",
@@ -11635,7 +11518,6 @@
   },
   "reactionTime": {
     "title": "Kiểm tra phản xạ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Thời gian được đo trong thẻ này. Không tải lên.",
     "startTitle": "Click để bắt đầu",
     "startSub": "Chờ màu xanh rồi click nhanh nhất có thể.",
@@ -11664,7 +11546,6 @@
   },
   "toneGenerator": {
     "title": "Tạo âm thanh tần số",
-    "back": "Tất cả công cụ",
     "privacyNote": "Âm được tạo trong trình duyệt. Không tải lên.",
     "options": "Âm",
     "frequency": "Tần số (Hz)",
@@ -11686,7 +11567,6 @@
   },
   "tallyCounter": {
     "title": "Bộ đếm",
-    "back": "Tất cả công cụ",
     "privacyNote": "Số đếm được lưu trong trình duyệt này. Không tải lên.",
     "options": "Cài đặt",
     "step": "Bước đếm",
@@ -11708,7 +11588,6 @@
   },
   "micTest": {
     "title": "Kiểm tra micro",
-    "back": "Tất cả công cụ",
     "privacyNote": "Âm thanh ở lại trong thẻ này. Không tải lên.",
     "options": "Micro",
     "device": "Thiết bị đầu vào",
@@ -11744,7 +11623,6 @@
   },
   "webcamTest": {
     "title": "Kiểm tra webcam",
-    "back": "Tất cả công cụ",
     "privacyNote": "Video ở lại trong thẻ này. Không tải lên.",
     "options": "Camera",
     "device": "Camera",
@@ -11787,7 +11665,6 @@
   },
   "gamepadTest": {
     "title": "Test tay cầm",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tay cầm được đọc trong thẻ này. Không tải lên.",
     "options": "Tay cầm",
     "pad": "Tay cầm",
@@ -11814,7 +11691,6 @@
   },
   "deadPixel": {
     "title": "Test điểm chết",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong thẻ này. Không tải lên.",
     "options": "Màu",
     "colors": "Màu kiểm tra",
@@ -11837,7 +11713,6 @@
   },
   "refreshRate": {
     "title": "Kiểm tra tần số quét",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đo trong thẻ này. Không tải lên.",
     "measuring": "Đang đo… hãy giữ thẻ này ở phía trước.",
     "near": "Màn hình của bạn chạy khoảng {n} Hz.",
@@ -11858,7 +11733,6 @@
   },
   "touchTest": {
     "title": "Test cảm ứng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Các lần chạm được vẽ trong thẻ này. Không tải lên.",
     "pad": "Bảng test cảm ứng",
     "start": "Chạm và vẽ ở đây bằng một hoặc nhiều ngón",
@@ -11877,7 +11751,6 @@
     "hint": "Vuốt khắp bảng: ô nào vẫn trống là vùng chết. Esc để thoát toàn màn hình."
   },
   "v": {
-    "back": "Tất cả công cụ",
     "title": "AI biến ảnh thành video",
     "privacyNote": "Ước lượng độ sâu AI và mã hóa video chạy trong tab này. Ảnh không bao giờ bị tải lên.",
     "filesTitle": "Ảnh",
@@ -11918,7 +11791,6 @@
     "errorGpuReset": "Card đồ họa bị đặt lại trong lúc xuất. Hãy thử lại."
   },
   "imageGen": {
-    "back": "Tất cả công cụ",
     "title": "AI tạo ảnh",
     "privacyNote": "AI chạy trên card đồ họa của bạn trong tab này. Chữ và ảnh của bạn không bao giờ bị tải lên.",
     "promptLabel": "Mô tả bức ảnh",
@@ -11955,7 +11827,6 @@
     "errorRun": "Vẽ không thành công. Hãy tải lại trang và thử lại."
   },
   "musicGen": {
-    "back": "Tất cả công cụ",
     "title": "AI tạo nhạc",
     "privacyNote": "AI soạn nhạc trong tab này. Không có gì bị tải lên, và nhạc là của bạn.",
     "styleTitle": "Phong cách",
@@ -11988,7 +11859,6 @@
   },
   "coinFlip": {
     "title": "Tung đồng xu",
-    "back": "Tất cả công cụ",
     "privacyNote": "Mỗi lần tung dùng một bit ngẫu nhiên bảo mật của trình duyệt. Không tải lên.",
     "tapToFlip": "Chạm để tung",
     "flip": "Tung",
@@ -12019,7 +11889,6 @@
   },
   "guitarTuner": {
     "title": "Tuner guitar",
-    "back": "Tất cả công cụ",
     "privacyNote": "Nghe qua micro trong thẻ này. Không ghi âm, không tải lên.",
     "options": "Bộ chỉnh dây",
     "instrument": "Nhạc cụ",
@@ -12064,7 +11933,6 @@
   },
   "factors": {
     "title": "Phân tích thừa số nguyên tố",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tính chính xác số nguyên ngay trong thẻ này. Không tải lên.",
     "options": "Số",
     "number": "Số nguyên (tối đa {n} chữ số)",
@@ -12093,7 +11961,6 @@
   },
   "lcmGcf": {
     "title": "Tính ƯCLN và BCNN",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tính chính xác số nguyên ngay trong thẻ này. Không tải lên.",
     "options": "Các số",
     "numbers": "2 đến {n} số nguyên, cách nhau bằng dấu phẩy hoặc dấu cách",
@@ -12120,7 +11987,6 @@
   },
   "calculator": {
     "title": "Máy tính khoa học",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "expression": "Biểu thức",
     "keypad": "Phím máy tính",
@@ -12150,7 +12016,6 @@
   },
   "notepad": {
     "title": "Notepad online",
-    "back": "Tất cả công cụ",
     "privacyNote": "Lưu trong trình duyệt này khi bạn gõ. Không tải lên.",
     "placeholder": "Bắt đầu gõ…",
     "copy": "Sao chép tất cả",
@@ -12173,7 +12038,6 @@
   },
   "markdown": {
     "title": "Xem trước Markdown",
-    "back": "Tất cả công cụ",
     "privacyNote": "Hiển thị trong tab này và giữ trong trình duyệt này. Không tải lên.",
     "input": "Markdown",
     "preview": "Xem trước",
@@ -12194,7 +12058,6 @@
   },
   "gradient": {
     "title": "Tạo gradient CSS",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Dải màu",
     "type": "Kiểu",
@@ -12225,7 +12088,6 @@
   },
   "fancyText": {
     "title": "Tạo chữ kiểu",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "input": "Chữ của bạn",
     "placeholder": "Gõ gì đó…",
@@ -12281,7 +12143,6 @@
   },
   "romEmulator": {
     "title": "Trình giả lập game",
-    "back": "Tất cả công cụ",
     "privacyNote": "Mở ROM của bạn và chơi trong tab này. Hệ máy được nhận diện từ tệp. Không tải lên.",
     "auto": "Nhận diện từ tệp",
     "console": "Hệ máy",
@@ -12296,13 +12157,11 @@
   },
   "flashPlayer": {
     "title": "Flash Player",
-    "back": "Tất cả công cụ",
     "privacyNote": "Mở tệp .swf trong tab này bằng Ruffle. Không cần plugin Flash. Không tải lên.",
     "games": "Game Flash miễn phí"
   },
   "tierList": {
     "title": "Tạo tier list online (bảng xếp hạng)",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ảnh chỉ nằm trong trang này và PNG được tạo trên trình duyệt. Không có gì được tải lên.",
     "titleField": "Tiêu đề bảng",
     "titlePlaceholder": "Ví dụ: đồ ăn vặt ngon nhất",
@@ -12422,7 +12281,6 @@
   },
   "mortgage": {
     "title": "Tính lãi vay mua nhà",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tính trong tab này. Không tải lên.",
     "options": "Khoản vay",
     "price": "Giá nhà",
@@ -12456,7 +12314,6 @@
   },
   "quadratic": {
     "title": "Giải phương trình bậc hai",
-    "back": "Tất cả công cụ",
     "privacyNote": "Giải trong tab này. Không tải lên.",
     "options": "Hệ số",
     "copy": "Sao chép kết quả",
@@ -12487,7 +12344,6 @@
   },
   "teamGenerator": {
     "title": "Chia đội ngẫu nhiên",
-    "back": "Tất cả công cụ",
     "privacyNote": "Xáo trộn trong tab này bằng Web Crypto. Không tải lên.",
     "options": "Danh sách tên",
     "names": "Tên, mỗi dòng một tên hoặc cách nhau bằng dấu phẩy (tối đa {n})",
@@ -12515,7 +12371,6 @@
   },
   "screenResolution": {
     "title": "Độ phân giải màn hình của tôi là bao nhiêu?",
-    "back": "Tất cả công cụ",
     "privacyNote": "Trình duyệt đọc trong tab này. Không gửi đi đâu cả.",
     "yours": "Độ phân giải màn hình của bạn",
     "physical": "Độ phân giải màn hình (điểm ảnh thực)",
@@ -12536,7 +12391,6 @@
   },
   "alarm": {
     "title": "Đồng hồ báo thức online",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chạy trong tab này. Không tải lên.",
     "options": "Báo thức",
     "time": "Giờ báo thức",
@@ -12563,7 +12417,6 @@
   },
   "whiteNoise": {
     "title": "Tạo tiếng ồn trắng",
-    "back": "Tất cả công cụ",
     "privacyNote": "Tiếng ồn được tạo trong tab này. Không tải lên.",
     "options": "Âm thanh",
     "color": "Màu tiếng ồn",
@@ -12591,7 +12444,6 @@
   },
   "decibelMeter": {
     "title": "Máy đo decibel",
-    "back": "Tất cả công cụ",
     "privacyNote": "Đo trong tab này. Không ghi âm, không tải lên.",
     "options": "Máy đo",
     "weighting": "Trọng số tần số",
@@ -12642,7 +12494,6 @@
   },
   "voiceRecorder": {
     "title": "Ghi âm online",
-    "back": "Tất cả công cụ",
     "privacyNote": "Ghi âm trong tab này. Không tải lên.",
     "options": "Ghi âm",
     "device": "Micro",
@@ -12679,7 +12530,6 @@
   },
   "screenRecorder": {
     "title": "Quay màn hình online",
-    "back": "Tất cả công cụ",
     "privacyNote": "Quay trong tab này. Không tải lên, không logo.",
     "options": "Quay",
     "format": "Định dạng",
@@ -12718,7 +12568,6 @@
   },
   "triangle": {
     "title": "Giải tam giác",
-    "back": "Tất cả công cụ",
     "privacyNote": "Giải trên trình duyệt của bạn. Không tải lên.",
     "options": "Giá trị đã biết",
     "right": "Tam giác vuông (C = 90°)",
@@ -12779,7 +12628,6 @@
   },
   "gifMaker": {
     "title": "Tạo ảnh GIF",
-    "back": "Tất cả công cụ",
     "privacyNote": "Làm ảnh GIF động từ ảnh hoặc một đoạn video ngắn. Mọi thứ diễn ra trong tab này; không tải lên.",
     "filesTitle": "Khung hình",
     "clear": "Xóa hết",
@@ -12824,7 +12672,6 @@
   },
   "imageSplitter": {
     "title": "Cắt ảnh thành nhiều phần",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chia ảnh thành lưới nhiều ô cho lưới Instagram, carousel hoặc in ấn. Không tải lên.",
     "filesTitle": "Ảnh",
     "dropTitle": "Thả ảnh vào đây",
@@ -12864,7 +12711,6 @@
   },
   "area": {
     "title": "Tính diện tích",
-    "back": "Tất cả công cụ",
     "privacyNote": "Diện tích và chu vi của 12 hình, kèm công thức, lời giải và mọi đơn vị thông dụng.",
     "options": "Hình",
     "shape": "Hình",
@@ -12930,7 +12776,6 @@
   },
   "volume": {
     "title": "Tính thể tích",
-    "back": "Tất cả công cụ",
     "privacyNote": "Thể tích và diện tích bề mặt của 12 khối, kèm lời giải, lít, gallon và đơn vị khối.",
     "options": "Khối",
     "shape": "Khối",
@@ -12991,7 +12836,6 @@
   },
   "randomLetter": {
     "title": "Tạo chữ cái ngẫu nhiên",
-    "back": "Tất cả công cụ",
     "privacyNote": "Rút chữ cái ngẫu nhiên cho trò chơi chữ, lớp học và câu đố. Mọi chữ cái có khả năng ra như nhau.",
     "options": "Tùy chọn",
     "alphabet": "Bảng chữ cái",
@@ -13031,7 +12875,6 @@
   },
   "wordUnscrambler": {
     "title": "Sắp xếp chữ thành từ",
-    "back": "Tất cả công cụ",
     "privacyNote": "Gõ các chữ cái và xem mọi từ tiếng Anh ghép được, dùng cho trò chơi chữ, ô chữ và đảo chữ.",
     "letters": "Chữ cái của bạn",
     "lettersPlaceholder": "vd. tesrlan hoặc ca?t",
@@ -13065,7 +12908,6 @@
   },
   "concrete": {
     "title": "Tính bê tông",
-    "back": "Tất cả công cụ",
     "privacyNote": "Sàn, móng, tường, cột hay cầu thang cần bao nhiêu bê tông, và cần mua bao nhiêu bao.",
     "options": "Kích thước",
     "shape": "Bạn định đổ gì?",
@@ -13115,7 +12957,6 @@
   },
   "graphingCalculator": {
     "title": "Vẽ đồ thị hàm số",
-    "back": "Tất cả công cụ",
     "privacyNote": "Vẽ đồ thị hàm số theo x, di chuyển và phóng to, xem nghiệm, giao điểm với trục và chỗ các đường cong cắt nhau.",
     "functions": "Hàm số",
     "expr": "Hàm số theo x",
@@ -13140,7 +12981,6 @@
   },
   "piano": {
     "title": "Piano ảo",
-    "back": "Tất cả công cụ",
     "privacyNote": "Chơi bằng bàn phím máy tính, chuột hoặc ngón tay. Nhấn một phím để bật âm thanh.",
     "keysLabel": "Phím đàn piano",
     "octaveDown": "Xuống một quãng tám",
@@ -13173,7 +13013,6 @@
   },
   "slope": {
     "title": "Tính hệ số góc",
-    "back": "Tất cả công cụ",
     "privacyNote": "Nhập hai điểm để có hệ số góc, phương trình đường thẳng, khoảng cách và trung điểm, kèm lời giải.",
     "points": "Hai điểm",
     "point1": "Điểm 1",

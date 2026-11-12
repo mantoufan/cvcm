@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { FLAG_ORDER, MAX_TEXT, runRegex, type FlagChar, type RegexFlags, type RegexMatch } from "../../shared/regex";
 import { debounce } from "../session";
 
@@ -49,7 +48,6 @@ export function mountRegex(host: HTMLElement): void {
   metaEl = h("p", { class: "muted" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("regex.back")),
       h("h1", null, t("regex.title")),
       h("p", { class: "lede" }, t("regex.privacyNote")),
     ),

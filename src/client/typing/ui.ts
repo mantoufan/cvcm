@@ -1,6 +1,5 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import {
   TYPING_DURATIONS,
   TYPING_METRIC,
@@ -83,7 +82,6 @@ export function mountTyping(host: HTMLElement): void {
   resultEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("typing.back")),
       h("h1", null, t("typing.title")),
       h("p", { class: "lede" }, t("typing.privacyNote")),
     ),

@@ -1,13 +1,12 @@
 import { outputFilename } from "../../shared/filename";
 import { blobFromBytes } from "../../shared/image-encode";
-import { appHref } from "../../shared/path";
 import { zipStore } from "../../shared/zip";
 import { AiClient } from "../ai/client";
 import { dropZone, formatSeconds, deviceLabel, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
 import type { AiResponse } from "../ai/protocol";
 import { canvasToBlob, decodeImage } from "../decode";
 import { clear, downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
+import { t } from "../i18n";
 
 type Item = {
   file: File;
@@ -47,7 +46,6 @@ export async function mountRemoveBackground(host: HTMLElement): Promise<void> {
   status = statusPanel("BiRefNet lite", "birefnet");
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("removeBg.back")),
       h("h1", null, t("removeBg.title")),
       h("p", { class: "lede" }, t("removeBg.privacyNote")),
     ),

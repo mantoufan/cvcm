@@ -1,7 +1,6 @@
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { ICO_SIZES, PNG_SIZES, packIco, squareDest, squareSource, type FitMode } from "../../shared/favicon";
 import { blobFromBytes } from "../../shared/image-encode";
 import { zipStore } from "../../shared/zip";
@@ -20,7 +19,6 @@ let statusEl: HTMLElement | null = null;
 export async function mountFavicon(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("favicon.back")),
       h("h1", null, t("favicon.title")),
       h("p", { class: "lede" }, t("favicon.privacyNote")),
     ),

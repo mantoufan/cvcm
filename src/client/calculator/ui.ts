@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import {
   MAX_EVAL,
   MAX_EXPR,
@@ -109,7 +108,6 @@ export function mountCalculator(host: HTMLElement): void {
   );
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("calculator.back")),
       h("h1", null, t("calculator.title")),
       h("p", { class: "lede" }, t("calculator.privacyNote")),
     ),

@@ -30,7 +30,6 @@ export function mountMacro(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("macro.back")),
       h("h1", null, t("macro.title")),
       h("p", { class: "lede" }, t("macro.privacyNote")),
     ),

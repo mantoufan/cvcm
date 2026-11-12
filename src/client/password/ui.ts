@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { charsetFor, entropyBits, generatePassword, type PasswordOpts } from "../../shared/password";
 
 const state: PasswordOpts = {
@@ -28,7 +27,6 @@ export function mountPassword(host: HTMLElement): void {
   metaEl = h("p", { class: "hint" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("password.back")),
       h("h1", null, t("password.title")),
       h("p", { class: "lede" }, t("password.privacyNote")),
     ),

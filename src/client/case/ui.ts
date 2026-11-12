@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { CASE_IDS, convertCase, type CaseId } from "../../shared/case";
 import { debounce } from "../session";
 
@@ -26,7 +25,6 @@ export function mountCase(host: HTMLElement): void {
   });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("caseTool.back")),
       h("h1", null, t("caseTool.title")),
       h("p", { class: "lede" }, t("caseTool.privacyNote")),
     ),

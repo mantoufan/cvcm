@@ -1,7 +1,6 @@
 import { armAudio, resumeIfPaused } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { HIGHEST, KEY_MAP, LOWEST, MAX_TAKE, capsFor, closeTake, isBlack, keyRange, noteFrequency, noteName, type TakeEvent } from "../../shared/piano";
 
 export const SOUNDS = ["piano", "epiano", "organ", "synth"] as const;
@@ -125,7 +124,6 @@ export function mountPiano(host: HTMLElement): void {
   };
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("piano.back")),
       h("h1", null, t("piano.title")),
       h("p", { class: "lede" }, t("piano.privacyNote")),
     ),

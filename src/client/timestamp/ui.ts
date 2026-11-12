@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { parseStamp, toStamp, type Stamp } from "../../shared/timestamp";
 
 let inputEl: HTMLInputElement | null = null;
@@ -25,7 +24,6 @@ export function mountTimestamp(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out", "data-volatile": "" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("timestamp.back")),
       h("h1", null, t("timestamp.title")),
       h("p", { class: "lede" }, t("timestamp.privacyNote")),
     ),

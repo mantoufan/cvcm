@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { debounce } from "../session";
 import { diffCounts, diffLines, unifiedDiff } from "../../shared/diff";
 
@@ -31,7 +30,6 @@ export function mountDiff(host: HTMLElement): void {
   metaEl = h("p", { class: "muted" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("diff.back")),
       h("h1", null, t("diff.title")),
       h("p", { class: "lede" }, t("diff.privacyNote")),
     ),

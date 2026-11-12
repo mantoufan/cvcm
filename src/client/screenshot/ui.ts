@@ -1,7 +1,6 @@
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { outputFilename } from "../../shared/filename";
 
 type Kind = "rect" | "arrow" | "text";
@@ -24,7 +23,6 @@ let statusEl: HTMLElement | null = null;
 export async function mountScreenshot(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("screenshot.back")),
       h("h1", null, t("screenshot.title")),
       h("p", { class: "lede" }, t("screenshot.privacyNote")),
     ),

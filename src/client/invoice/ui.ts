@@ -1,7 +1,6 @@
 import { canvasToBlob } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { pdfFromJpegs } from "../../shared/pdf";
 import {
   CURRENCIES,
@@ -46,7 +45,6 @@ export function mountInvoice(host: HTMLElement): void {
   totalsEl = h("p", { class: "invoice-totals" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("invoice.back")),
       h("h1", null, t("invoice.title")),
       h("p", { class: "lede" }, t("invoice.privacyNote")),
     ),

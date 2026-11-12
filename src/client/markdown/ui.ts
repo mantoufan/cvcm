@@ -3,7 +3,6 @@ import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { debounce } from "../session";
 import { titleStem } from "../../shared/filename";
-import { appHref } from "../../shared/path";
 import { countText } from "../../shared/word-count";
 import { MAX_MARKDOWN, docText, escapeHtml, parseMarkdown, plain, toHtml, type Block, type Inline } from "../../shared/markdown";
 
@@ -47,7 +46,6 @@ export function mountMarkdown(host: HTMLElement): void {
   statsEl = h("p", { class: "hint", "data-out": "stats" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("markdown.back")),
       h("h1", null, t("markdown.title")),
       h("p", { class: "lede" }, t("markdown.privacyNote")),
     ),

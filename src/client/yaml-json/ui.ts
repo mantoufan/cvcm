@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { jsonToYaml, yamlToJson } from "../../shared/yaml-json";
 import { debounce } from "../session";
 
@@ -30,7 +29,6 @@ export function mountYamlJson(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("yamlJson.back")),
       h("h1", null, t("yamlJson.title")),
       h("p", { class: "lede" }, t("yamlJson.privacyNote")),
     ),

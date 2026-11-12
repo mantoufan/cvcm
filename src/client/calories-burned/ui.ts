@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { ACTIVITIES, caloriesBurned, type ActivityId } from "../../shared/calories-burned";
 import { LB_PER_KG, lbToKg } from "../../shared/tdee";
 
@@ -30,7 +29,6 @@ export function mountCaloriesBurned(host: HTMLElement): void {
   compareEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("caloriesBurned.back")),
       h("h1", null, t("caloriesBurned.title")),
       h("p", { class: "lede" }, t("caloriesBurned.privacyNote")),
     ),

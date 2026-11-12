@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h, keepShortcutsOnClick, onScreen } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { MIN_REACTION_MS, REACTION_TRIES, reactionBand, summarize, waitMs } from "../../shared/reaction";
 
 let padEl: HTMLButtonElement | null = null;
@@ -25,7 +24,6 @@ export function mountReactionTime(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("reactionTime.back")),
       h("h1", null, t("reactionTime.title")),
       h("p", { class: "lede" }, t("reactionTime.privacyNote")),
     ),

@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { WEBCAM_RESOLUTIONS, aspectText, framesPerSecond, sizeText, videoConstraints } from "../../shared/webcam";
 
 /** How often the live readouts (size, frame rate) are refreshed. */
@@ -72,7 +71,6 @@ export function mountWebcamTest(host: HTMLElement): void {
   saveEl = h("a", { class: "btn ghost", "data-action": "save", hidden: true }, t("webcamTest.save"));
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("webcamTest.back")),
       h("h1", null, t("webcamTest.title")),
       h("p", { class: "lede" }, t("webcamTest.privacyNote")),
     ),

@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { MAX_VALUES, parseNumbers, stats, type DecimalMark } from "../../shared/average";
 
 let inputEl: HTMLTextAreaElement | null = null;
@@ -25,7 +24,6 @@ export function mountAverage(host: HTMLElement): void {
   noteEl = h("p", { class: "hint" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("average.back")),
       h("h1", null, t("average.title")),
       h("p", { class: "lede" }, t("average.privacyNote")),
     ),

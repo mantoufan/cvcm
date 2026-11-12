@@ -5,7 +5,6 @@ import { blobFromBytes } from "../../shared/image-encode";
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 
 type Format = "png" | "jpeg" | "webp";
 type Source = { file: File; bitmap: ImageBitmap; width: number; height: number };
@@ -42,7 +41,6 @@ export function mountImageSplitter(host: HTMLElement): void {
   state.shape ??= defaultShape(locale());
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("imageSplitter.back")),
       h("h1", null, t("imageSplitter.title")),
       h("p", { class: "lede" }, t("imageSplitter.privacyNote")),
     ),

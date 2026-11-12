@@ -1,7 +1,6 @@
 import { armAudio, newAudioContext } from "../audio";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { clockText } from "../../shared/recorder";
 import { rms } from "../../shared/mic";
 import {
@@ -96,7 +95,6 @@ export function mountDecibelMeter(host: HTMLElement): void {
   graphEl = h("canvas", { class: "audio-wave db-graph", width: 640, height: 160, "aria-hidden": "true" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("decibelMeter.back")),
       h("h1", null, t("decibelMeter.title")),
       h("p", { class: "lede" }, t("decibelMeter.privacyNote")),
     ),

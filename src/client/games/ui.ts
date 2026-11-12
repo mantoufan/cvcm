@@ -1,3 +1,4 @@
+import { crumbNav, homeCrumb, type Crumb } from "../crumb";
 import { h } from "../dom";
 import { linkList, type LinkItem } from "../links";
 import { locale, t } from "../i18n";
@@ -26,6 +27,18 @@ function currentGenre(): GameGenreId | null {
   return isGameGenreId(raw) ? raw : null;
 }
 
+/** Home / Games, the start of every games trail. */
+function gamesCrumbs(loc: ReturnType<typeof locale>): Crumb[] {
+  return [homeCrumb(loc), { label: t("nav.games"), href: gamesHref(loc, null), nav: "games" }];
+}
+
+/** The trail on the games hub (Home / Games) or a console hub (Home / Games / console). */
+function hubCrumb(loc: ReturnType<typeof locale>, consoleId: GameConsoleId | null): HTMLElement {
+  return crumbNav(consoleId
+    ? [...gamesCrumbs(loc), { label: t(`games.consoles.${consoleId}`) }]
+    : [homeCrumb(loc), { label: t("nav.games") }]);
+}
+
 export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null): void {
   const loc = locale();
   const genre = currentGenre();
@@ -36,8 +49,8 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
     : h("p", { class: "learn-empty" }, flash && !genre ? t("games.flash.catalog") : t("games.empty"));
   if (flash) {
     host.append(
+      hubCrumb(loc, consoleId),
       h("header", { class: "tool-head game-head" },
-        h("a", { class: "back", href: gamesHref(loc, null), "data-nav": "games" }, t("games.back")),
         h("p", { class: "kicker" }, t("games.flash.kicker")),
         h("h1", null, t("games.flash.title")),
       ),
@@ -61,6 +74,7 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
     return;
   }
   host.append(
+    hubCrumb(loc, consoleId),
     h("header", { class: "tool-head" },
       h("h1", null, consoleId ? t(`games.consoles.${consoleId}`) : t("games.hub.title")),
       h("p", { class: "lede" }, t("games.hub.lead")),
@@ -144,8 +158,12 @@ export function mountGame(host: HTMLElement, id: GameId): void {
   const related = GAMES.filter((item) => item.id !== id && (item.console === game.console || item.genre === game.genre)).slice(0, 4);
 
   host.append(
+    crumbNav([
+      ...gamesCrumbs(loc),
+      { label: t(`games.consoles.${game.console}`), href: gamesHref(loc, game.console), nav: `games-${game.console}` },
+      { label: copy.name },
+    ]),
     h("header", { class: "tool-head game-head" },
-      h("a", { class: "back", href: gamesHref(loc, game.console), "data-nav": `games-${game.console}` }, t("games.back")),
       h("p", { class: "kicker" }, `${t(`games.consoles.${game.console}`)} · ${t(`games.genres.${game.genre}`)}`),
       h("h1", null, copy.name),
     ),

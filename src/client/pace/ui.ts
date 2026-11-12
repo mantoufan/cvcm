@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { formatTime, parseTime, solvePace, type DistanceUnit, type Solve } from "../../shared/pace";
 
 let solveEl: HTMLSelectElement | null = null;
@@ -41,7 +40,6 @@ export function mountPace(host: HTMLElement): void {
   racesEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("pace.back")),
       h("h1", null, t("pace.title")),
       h("p", { class: "lede" }, t("pace.privacyNote")),
     ),

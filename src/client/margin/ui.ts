@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { money } from "../../shared/discount";
 import { marginOf } from "../../shared/margin";
 
@@ -16,7 +15,6 @@ export function mountMargin(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("margin.back")),
       h("h1", null, t("margin.title")),
       h("p", { class: "lede" }, t("margin.privacyNote")),
     ),

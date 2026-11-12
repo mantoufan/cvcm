@@ -166,7 +166,6 @@ function cap(id: string): string {
 
 function head(id: string): HTMLElement {
   return h("header", { class: "tool-head" },
-    h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t(`${id}.back`)),
     h("h1", null, t(`${id}.title`)),
     h("p", { class: "lede" }, t(`${id}.privacyNote`)),
   );

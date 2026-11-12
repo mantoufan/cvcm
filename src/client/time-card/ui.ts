@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { MAX_SHIFTS, hhmm, timeCard, type ShiftRow } from "../../shared/time-card";
 
 type RowEls = { wrap: HTMLElement; start: HTMLInputElement; end: HTMLInputElement; brk: HTMLInputElement; out: HTMLElement };
@@ -31,7 +30,6 @@ export function mountTimeCard(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("timeCard.back")),
       h("h1", null, t("timeCard.title")),
       h("p", { class: "lede" }, t("timeCard.privacyNote")),
     ),

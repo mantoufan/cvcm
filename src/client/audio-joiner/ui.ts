@@ -3,8 +3,7 @@ import { outputFilename } from "../../shared/filename";
 import { blobFromBytes } from "../../shared/image-encode";
 import { encodeWav } from "../../shared/wav";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 
 type Item = {
   id: string;
@@ -24,7 +23,6 @@ let metaEl: HTMLElement | null = null;
 export async function mountAudioJoiner(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("audioJoiner.back")),
       h("h1", null, t("audioJoiner.title")),
       h("p", { class: "lede" }, t("audioJoiner.privacyNote")),
     ),

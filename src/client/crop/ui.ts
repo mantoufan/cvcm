@@ -2,8 +2,7 @@ import { mimeForFormat, outputFilename, type ImageFormat } from "../../shared/fi
 import { applyAspect, clampRect, fitContain, mapPoint, type Rect } from "../../shared/crop";
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 
 type Item = { file: File; url: string; width: number; height: number; bitmap: ImageBitmap };
 type AspectId = "free" | "1" | "4-5" | "16-9" | "9-16";
@@ -33,7 +32,6 @@ let wrapEl: HTMLElement | null = null;
 export async function mountCrop(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("crop.back")),
       h("h1", null, t("crop.title")),
       h("p", { class: "lede" }, t("crop.privacyNote")),
     ),

@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { decimalToFraction, simplifyFraction, type Fraction } from "../../shared/fraction";
 
 let modeEl: HTMLSelectElement | null = null;
@@ -28,7 +27,6 @@ export function mountFraction(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("fraction.back")),
       h("h1", null, t("fraction.title")),
       h("p", { class: "lede" }, t("fraction.privacyNote")),
     ),

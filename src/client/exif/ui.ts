@@ -2,8 +2,7 @@ import { mimeForFormat, outputFilename, type ImageFormat } from "../../shared/fi
 import { detectMetadata } from "../../shared/exif";
 import { canvasToBlob, decodeImage, drawToCanvas } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 
 type Item = { file: File; url: string; width: number; height: number; bitmap: ImageBitmap; tagged: boolean };
 
@@ -21,7 +20,6 @@ let qualityField: HTMLElement | null = null;
 export async function mountExif(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("exif.back")),
       h("h1", null, t("exif.title")),
       h("p", { class: "lede" }, t("exif.privacyNote")),
     ),

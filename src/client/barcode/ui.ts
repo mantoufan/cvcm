@@ -1,6 +1,5 @@
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { encodeBarcode, isBarcodeKind, type BarcodeKind } from "../../shared/barcode";
 import { debounce } from "../session";
 
@@ -24,7 +23,6 @@ export function mountBarcode(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("barcode.back")),
       h("h1", null, t("barcode.title")),
       h("p", { class: "lede" }, t("barcode.privacyNote")),
     ),

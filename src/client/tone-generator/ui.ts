@@ -1,7 +1,6 @@
 import { armAudio } from "../audio";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { DEFAULT_FREQ, MAX_FREQ, MIN_FREQ, SLIDER_STEPS, TONE_PRESETS, WAVEFORMS, clampFreq, freqToSlider, nearestNote, sliderToFreq, wavelength, type Waveform } from "../../shared/tone";
 
 /** Smoothing time for frequency, volume and pan changes, so they do not click. */
@@ -39,7 +38,6 @@ export function mountToneGenerator(host: HTMLElement): void {
   const nudge = (label: string, action: string, fn: () => number) => h("button", { type: "button", class: "chip", "data-action": action, onClick: () => setFreq(fn()) }, label);
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("toneGenerator.back")),
       h("h1", null, t("toneGenerator.title")),
       h("p", { class: "lede" }, t("toneGenerator.privacyNote")),
     ),

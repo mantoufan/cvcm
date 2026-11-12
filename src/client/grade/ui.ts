@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { finalGrade } from "../../shared/grade";
 
 let currentEl: HTMLInputElement | null = null;
@@ -24,7 +23,6 @@ export function mountGrade(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("grade.back")),
       h("h1", null, t("grade.title")),
       h("p", { class: "lede" }, t("grade.privacyNote")),
     ),

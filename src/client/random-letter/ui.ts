@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { ALPHABET, ALPHABETS, MAX_LETTERS, drawLetters, letterPool, type AlphabetId, type LetterCase, type LetterKind } from "../../shared/random-letter";
 
 const KINDS: readonly LetterKind[] = ["all", "vowels", "consonants"];
@@ -56,7 +55,6 @@ export function mountRandomLetter(host: HTMLElement): void {
   const field = (label: string, control: HTMLElement) => h("label", { class: "field" }, h("span", null, label), control);
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("randomLetter.back")),
       h("h1", null, t("randomLetter.title")),
       h("p", { class: "lede" }, t("randomLetter.privacyNote")),
     ),

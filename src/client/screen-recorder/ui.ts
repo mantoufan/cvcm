@@ -1,9 +1,8 @@
 import { downloadBlob, h } from "../dom";
 import { setLeaveGuard, syncLeaveGuard } from "../leave-guard";
 import { fixInfiniteDuration } from "../media-duration";
-import { locale, t } from "../i18n";
+import { t } from "../i18n";
 import { newAudioContext, resumeIfPaused } from "../audio";
-import { appHref } from "../../shared/path";
 import { formatBytes } from "../../shared/resize";
 import { MAX_SCREEN_MINUTES, VIDEO_MP4_TYPES, VIDEO_WEBM_TYPES, clockText, extensionFor, pickType, recordingName } from "../../shared/recorder";
 import { RecordingTake, errorName, type TakeResult } from "../recording-take";
@@ -48,7 +47,6 @@ export function mountScreenRecorder(host: HTMLElement): void {
   resultEl = h("div", { class: "rec-result", "data-out": "result", hidden: true });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("screenRecorder.back")),
       h("h1", null, t("screenRecorder.title")),
       h("p", { class: "lede" }, t("screenRecorder.privacyNote")),
     ),

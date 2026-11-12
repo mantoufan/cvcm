@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { fromSeconds, toSeconds } from "../../shared/countdown";
 
 let hoursEl: HTMLInputElement | null = null;
@@ -20,7 +19,6 @@ export function mountCountdown(host: HTMLElement): void {
   startBtn = h("button", { type: "button", class: "btn", onClick: () => toggle() }, t("countdown.start"));
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("countdown.back")),
       h("h1", null, t("countdown.title")),
       h("p", { class: "lede" }, t("countdown.privacyNote")),
     ),

@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import {
   ACTIVITIES,
   BULK_KCAL,
@@ -60,7 +59,6 @@ export function mountTdee(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("tdee.back")),
       h("h1", null, t("tdee.title")),
       h("p", { class: "lede" }, t("tdee.privacyNote")),
     ),

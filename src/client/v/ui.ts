@@ -18,13 +18,12 @@ import {
   type Strength,
 } from "../../shared/parallax";
 import { DEPTH_INPUT_MAX } from "../../shared/ai-models";
-import { appHref } from "../../shared/path";
 import { AiClient } from "../ai/client";
 import { chipGroup, deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
 import type { AiResponse } from "../ai/protocol";
 import { decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
+import { t } from "../i18n";
 import { ParallaxRenderer, prepareDepth } from "./render";
 
 /**
@@ -86,7 +85,6 @@ export async function mountV(host: HTMLElement): Promise<void> {
   status = statusPanel("Depth Anything V2", "depth");
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("v.back")),
       h("h1", null, t("v.title")),
       h("p", { class: "lede" }, t("v.privacyNote")),
     ),

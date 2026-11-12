@@ -635,6 +635,8 @@
   },
   "brand": "cv.cm",
   "nav": {
+    "home": "Beranda",
+    "breadcrumb": "Jejak navigasi",
     "tools": "Alat",
     "privacy": "Di perangkat",
     "share": "Bagikan",
@@ -1345,7 +1347,6 @@
   },
   "watermark": {
     "title": "Tambah watermark ke foto",
-    "back": "Semua alat",
     "dropTitle": "Letakkan gambar di sini",
     "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
     "dropTypes": "PNG, JPEG, WebP, GIF",
@@ -1438,7 +1439,6 @@
   },
   "collage": {
     "title": "Pembuat kolase foto",
-    "back": "Semua alat",
     "dropTitle": "Letakkan foto di sini",
     "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
     "dropTypes": "PNG, JPEG, WebP, GIF",
@@ -1483,7 +1483,6 @@
   },
   "clip": {
     "title": "Papan klip daring",
-    "back": "Semua alat",
     "privacyNote": "Teks di D1, berkas di S3. Dihapus setelah 10 kali dilihat atau 24 jam. Tanpa akun.",
     "bodyLabel": "Teks",
     "placeholder": "Tempel teks, HTML, atau letakkan file di sini…",
@@ -1552,7 +1551,6 @@
   },
   "convert": {
     "title": "Ubah HEIC, WebP, JPG, PNG",
-    "back": "Semua alat",
     "dropTitle": "Letakkan gambar di sini",
     "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
     "dropTypes": "HEIC, PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
@@ -1614,7 +1612,6 @@
   },
   "imagePdf": {
     "title": "JPG / PNG ke PDF",
-    "back": "Semua alat",
     "dropTitle": "Letakkan gambar di sini",
     "dropHint": "atau klik untuk pilih · tempel dengan Ctrl/⌘ V",
     "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
@@ -1640,7 +1637,6 @@
   },
   "audio": {
     "title": "Ubah MP3 ke WAV",
-    "back": "Semua alat",
     "privacyNote": "Audio didekode di tab ini dan disimpan sebagai WAV. Tidak diunggah.",
     "dropTitle": "Letakkan audio di sini",
     "dropHint": "atau klik untuk memilih",
@@ -1662,7 +1658,6 @@
   },
   "data": {
     "title": "Pemformat JSON",
-    "back": "Semua alat",
     "privacyNote": "JSON, CSV, Base64, Markdown tetap di tab ini.",
     "mode": "Konversi",
     "input": "Masukan",
@@ -5262,7 +5257,6 @@
   },
   "qr": {
     "title": "Pembuat kode QR gratis",
-    "back": "Semua alat",
     "privacyNote": "QR digambar di tab ini. Tanpa unggah.",
     "input": "Teks atau URL",
     "placeholder": "https://cv.cm",
@@ -5280,7 +5274,6 @@
   },
   "password": {
     "title": "Pembuat kata sandi",
-    "back": "Semua alat",
     "privacyNote": "Web Crypto membuatnya di tab ini. Tanpa unggah.",
     "options": "Opsi",
     "length": "Panjang",
@@ -5297,7 +5290,6 @@
   },
   "wordCount": {
     "title": "Penghitung kata",
-    "back": "Semua alat",
     "privacyNote": "Penghitungan di tab ini. Tanpa unggah.",
     "input": "Teks",
     "placeholder": "Tempel atau ketik…",
@@ -5314,7 +5306,6 @@
   },
   "resize": {
     "title": "Ubah ukuran gambar",
-    "back": "Semua alat",
     "privacyNote": "Ubah ukuran dan kompresi di tab ini. Tanpa unggah.",
     "dropTitle": "Letakkan gambar di sini",
     "dropHint": "atau klik pilih · Ctrl/⌘ V tempel",
@@ -5343,7 +5334,6 @@
   },
   "crop": {
     "title": "Potong gambar",
-    "back": "Semua alat",
     "privacyNote": "Pemotongan di tab ini. Tanpa unggah.",
     "dropTitle": "Letakkan foto di sini",
     "dropHint": "atau klik pilih · Ctrl/⌘ V tempel",
@@ -5361,7 +5351,6 @@
   },
   "color": {
     "title": "Pemilih warna",
-    "back": "Semua alat",
     "privacyNote": "Warna tetap di tab ini. Tanpa unggah.",
     "values": "Nilai",
     "hex": "Hex",
@@ -5378,7 +5367,6 @@
   },
   "pdfJpg": {
     "title": "PDF ke JPG",
-    "back": "Semua alat",
     "privacyNote": "Halaman digambar di tab ini. Tanpa unggah.",
     "dropTitle": "Letakkan PDF di sini",
     "dropHint": "atau klik untuk memilih",
@@ -5401,7 +5389,6 @@
   },
   "mergePdf": {
     "title": "Gabung file PDF",
-    "back": "Semua alat",
     "privacyNote": "Penggabungan di tab ini. Tanpa unggah.",
     "dropTitle": "Letakkan PDF di sini",
     "dropHint": "atau pilih beberapa file",
@@ -5421,7 +5408,6 @@
     "working": "Menggabung…"
   },
   "learn": {
-    "back": "Semua pelajaran",
     "minutes": "{n} mnt",
     "resultLabel": "Hasil hari ini",
     "practiceLabel": "Kartu latihan",
@@ -8214,7 +8200,6 @@
   },
   "compressPdf": {
     "title": "Kompres PDF",
-    "back": "Semua alat",
     "privacyNote": "Halaman dikode ulang di tab ini. Tanpa unggah.",
     "dropTitle": "Letakkan PDF di sini",
     "dropHint": "atau klik untuk memilih",
@@ -8236,7 +8221,6 @@
   },
   "splitPdf": {
     "title": "Pisah PDF",
-    "back": "Semua alat",
     "privacyNote": "Pemisanahan di tab ini. Tanpa unggah.",
     "dropTitle": "Letakkan PDF di sini",
     "dropHint": "atau klik untuk memilih",
@@ -8257,7 +8241,6 @@
   },
   "names": {
     "title": "Pembuat nama dan username",
-    "back": "Semua alat",
     "privacyNote": "Nama diacak di tab ini, bukan identitas nyata.",
     "options": "Opsi",
     "kind": "Jenis",
@@ -8271,7 +8254,6 @@
   },
   "timezone": {
     "title": "Pengubah zona waktu",
-    "back": "Semua alat",
     "privacyNote": "Konversi memakai zona IANA di tab ini. Tidak diunggah.",
     "options": "Opsi",
     "from": "Dari",
@@ -8287,7 +8269,6 @@
   },
   "lorem": {
     "title": "Pembuat lorem ipsum",
-    "back": "Semua alat",
     "privacyNote": "Teks placeholder dibuat di tab ini. Tidak diunggah.",
     "options": "Opsi",
     "kind": "Jenis",
@@ -8302,7 +8283,6 @@
   },
   "units": {
     "title": "Pengonversi satuan",
-    "back": "Semua alat",
     "privacyNote": "Konversi memakai faktor SI di tab ini. Tidak diunggah.",
     "options": "Opsi",
     "kindLabel": "Jenis",
@@ -8325,7 +8305,6 @@
   },
   "barcode": {
     "title": "Pembuat barcode gratis",
-    "back": "Semua alat",
     "privacyNote": "Barcode digambar di tab ini. Tidak diunggah.",
     "input": "Teks atau angka",
     "placeholder": "CVCM",
@@ -8346,7 +8325,6 @@
   },
   "meme": {
     "title": "Pembuat meme",
-    "back": "Semua alat",
     "privacyNote": "Teks digambar di foto pada tab ini. Tidak diunggah.",
     "dropTitle": "Letakkan foto di sini",
     "dropHint": "atau klik untuk pilih · tempel Ctrl/⌘ V",
@@ -8367,7 +8345,6 @@
   },
   "tts": {
     "title": "Teks ke suara",
-    "back": "Semua alat",
     "privacyNote": "Pemutaran memakai suara di perangkat ini. Tidak diunggah.",
     "input": "Teks",
     "placeholder": "Tempel atau ketik teks untuk didengar…",
@@ -8389,7 +8366,6 @@
   },
   "invoice": {
     "title": "Pembuat invoice",
-    "back": "Semua alat",
     "privacyNote": "PDF invoice dibuat di tab ini. Tidak diunggah. Bukan faktur pajak.",
     "hint": "Pratinjau berubah saat mengetik. Unduh PDF A4.",
     "download": "Unduh PDF",
@@ -8423,7 +8399,6 @@
   },
   "signature": {
     "title": "Pembuat tanda tangan",
-    "back": "Semua alat",
     "privacyNote": "Goresan tetap di tab ini. Tidak diunggah. Bukan e-sign legal.",
     "pad": "Area tanda tangan",
     "hint": "Gambar dengan mouse, stylus, atau jari. Unduh PNG.",
@@ -8437,7 +8412,6 @@
   },
   "diff": {
     "title": "Pemeriksa diff",
-    "back": "Semua alat",
     "privacyNote": "Perbandingan di tab ini. Tidak diunggah.",
     "left": "Asli",
     "right": "Diubah",
@@ -8453,7 +8427,6 @@
   },
   "uuid": {
     "title": "Pembuat UUID",
-    "back": "Semua alat",
     "privacyNote": "UUID diacak di tab ini dengan Web Crypto. Tidak diunggah.",
     "options": "Opsi",
     "count": "Jumlah",
@@ -8466,7 +8439,6 @@
   },
   "regex": {
     "title": "Penguji regex",
-    "back": "Semua alat",
     "privacyNote": "Penguji berjalan di tab ini. Tidak diunggah.",
     "options": "Pola",
     "pattern": "Ekspresi reguler",
@@ -8487,7 +8459,6 @@
   },
   "favicon": {
     "title": "Pembuat favicon",
-    "back": "Semua alat",
     "privacyNote": "Foto tetap di tab ini. Tidak diunggah.",
     "filesTitle": "Foto",
     "dropTitle": "Jatuhkan foto",
@@ -8508,7 +8479,6 @@
   },
   "audioCutter": {
     "title": "Pemotong audio",
-    "back": "Semua alat",
     "privacyNote": "Berkas tetap di tab ini. Tidak diunggah.",
     "filesTitle": "Audio",
     "dropTitle": "Jatuhkan audio di sini",
@@ -8529,7 +8499,6 @@
   },
   "timestamp": {
     "title": "Pengonversi timestamp",
-    "back": "Semua alat",
     "privacyNote": "Konversi tetap di tab ini. Tidak diunggah.",
     "options": "Masukan",
     "input": "Timestamp atau tanggal",
@@ -8550,7 +8519,6 @@
   },
   "rotateTool": {
     "title": "Putar gambar",
-    "back": "Semua alat",
     "privacyNote": "Foto tetap di tab ini. Tidak diunggah.",
     "filesTitle": "Foto",
     "dropTitle": "Jatuhkan foto",
@@ -8575,7 +8543,6 @@
   },
   "exif": {
     "title": "Penghapus EXIF",
-    "back": "Semua alat",
     "privacyNote": "Foto tetap di tab ini. Tidak diunggah.",
     "filesTitle": "Foto",
     "dropTitle": "Jatuhkan foto",
@@ -8595,7 +8562,6 @@
   },
   "audioJoiner": {
     "title": "Penggabung audio",
-    "back": "Semua alat",
     "privacyNote": "Berkas tetap di tab ini. Tidak diunggah.",
     "filesTitle": "Klip",
     "dropTitle": "Jatuhkan audio di sini",
@@ -8615,7 +8581,6 @@
   },
   "hexRgb": {
     "title": "HEX ke RGB",
-    "back": "Semua alat",
     "privacyNote": "Konversi tetap di tab ini. Tidak diunggah.",
     "options": "Warna",
     "input": "HEX, RGB, atau HSL",
@@ -8631,7 +8596,6 @@
   },
   "xmlJson": {
     "title": "XML ke JSON",
-    "back": "Semua alat",
     "privacyNote": "Konversi tetap di tab ini. Tidak diunggah.",
     "options": "Arah",
     "xmlJson": "XML → JSON",
@@ -8646,7 +8610,6 @@
   },
   "hash": {
     "title": "Pembuat hash",
-    "back": "Semua alat",
     "privacyNote": "Hash tetap di tab ini. Tidak diunggah.",
     "options": "Algoritma",
     "algo": "Hash",
@@ -8662,7 +8625,6 @@
   },
   "yamlJson": {
     "title": "YAML ke JSON",
-    "back": "Semua alat",
     "privacyNote": "Konversi tetap di tab ini. Tidak diunggah.",
     "options": "Arah",
     "yamlJson": "YAML → JSON",
@@ -8677,7 +8639,6 @@
   },
   "caseTool": {
     "title": "Pengubah huruf",
-    "back": "Semua alat",
     "privacyNote": "Konversi tetap di tab ini. Tidak diunggah.",
     "options": "Huruf",
     "input": "Masukan",
@@ -8696,7 +8657,6 @@
   },
   "jwt": {
     "title": "Dekoder JWT",
-    "back": "Semua alat",
     "privacyNote": "Dekode tetap di tab ini. Tanda tangan tidak diverifikasi.",
     "options": "Token",
     "note": "Hanya dekoder. Tanda tangan dan penerbit tidak diperiksa.",
@@ -8714,7 +8674,6 @@
   },
   "screenshot": {
     "title": "Editor screenshot",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "filesTitle": "Foto",
     "dropTitle": "Taruh screenshot",
@@ -8736,7 +8695,6 @@
   },
   "percent": {
     "title": "Kalkulator persen",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Nilai",
     "a": "A",
@@ -8753,7 +8711,6 @@
   },
   "random": {
     "title": "Generator angka acak",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Rentang",
     "min": "Minimum",
@@ -8766,7 +8723,6 @@
   },
   "html": {
     "title": "Enkode HTML",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Arah",
     "encode": "Enkode",
@@ -8779,7 +8735,6 @@
   },
   "cron": {
     "title": "Penjelas cron",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Ekspresi",
     "input": "Cron",
@@ -8793,7 +8748,6 @@
   },
   "slug": {
     "title": "Pembuat slug",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "input": "Judul",
     "output": "Slug",
@@ -8803,7 +8757,6 @@
   },
   "portraitSim": {
     "title": "Simulasi kamera potret",
-    "back": "Semua alat",
     "privacyNote": "Plat adalah bagian cv.cm. Tidak diunggah. Unduhan tetap di perangkat Anda.",
     "lede": "Ganti orang, pose, dan latar. Atur diafragma, rana, dan ISO seperti kamera.",
     "people": "Orang",
@@ -8896,7 +8849,6 @@
   },
   "age": {
     "title": "Kalkulator usia",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Tanggal",
     "birth": "Tanggal lahir",
@@ -8913,7 +8865,6 @@
   },
   "bmi": {
     "title": "Kalkulator BMI",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Tubuh",
     "kg": "Kilogram",
@@ -8931,7 +8882,6 @@
   },
   "binary": {
     "title": "Pengonversi biner",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Arah",
     "to": "Teks → biner",
@@ -8945,7 +8895,6 @@
   },
   "tip": {
     "title": "Kalkulator tip",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Tagihan",
     "bill": "Tagihan",
@@ -8961,7 +8910,6 @@
   },
   "morse": {
     "title": "Kode Morse",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Arah",
     "to": "Teks → Morse",
@@ -8975,7 +8923,6 @@
   },
   "roman": {
     "title": "Angka Romawi",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Arah",
     "to": "Angka → Romawi",
@@ -8990,7 +8937,6 @@
   },
   "discount": {
     "title": "Kalkulator diskon",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Harga",
     "price": "Harga asli",
@@ -9004,7 +8950,6 @@
   },
   "countdown": {
     "title": "Hitung mundur",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Durasi",
     "hours": "Jam",
@@ -9017,7 +8962,6 @@
   },
   "loan": {
     "title": "Kalkulator pinjaman",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak diunggah.",
     "options": "Pinjaman",
     "principal": "Pokok",
@@ -9033,7 +8977,6 @@
   },
   "stopwatch": {
     "title": "Stopwatch",
-    "back": "Semua alat",
     "privacyNote": "Timer tetap di tab ini. Tidak diunggah.",
     "options": "Kontrol",
     "result": "Waktu berlalu",
@@ -9043,7 +8986,6 @@
   },
   "compound": {
     "title": "Bunga majemuk",
-    "back": "Semua alat",
     "privacyNote": "Hitungan tetap di tab ini. Tidak diunggah.",
     "options": "Masukan",
     "principal": "Pokok",
@@ -9063,7 +9005,6 @@
   },
   "vat": {
     "title": "Kalkulator PPN",
-    "back": "Semua alat",
     "privacyNote": "Hitungan tetap di tab ini. Tidak diunggah.",
     "options": "Jumlah",
     "amount": "Jumlah",
@@ -9080,7 +9021,6 @@
     "invalid": "Isi jumlah 0 atau lebih dan tarif 0 atau lebih."
   },
   "games": {
-    "back": "Semua game",
     "play": "Main",
     "loadRom": "Pilih ROM",
     "loadRomHint": "Berkas tetap di tab ini. ROM yang di-host di S3 langsung jalan bila tersedia.",
@@ -9186,7 +9126,6 @@
   },
   "reverse": {
     "title": "Balik teks",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Balik",
     "input": "Teks",
@@ -9199,7 +9138,6 @@
   },
   "url-encode": {
     "title": "Enkode URL",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Arah",
     "to": "Enkode",
@@ -9213,7 +9151,6 @@
   },
   "text-hex": {
     "title": "Teks ke hex",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Arah",
     "to": "Teks → hex",
@@ -9227,7 +9164,6 @@
   },
   "json": {
     "title": "Pemformat JSON",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Format",
     "pretty": "Rapikan",
@@ -9241,7 +9177,6 @@
   },
   "base64": {
     "title": "Base64",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Arah",
     "to": "Enkode",
@@ -9255,7 +9190,6 @@
   },
   "days": {
     "title": "Selisih tanggal",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Tanggal",
     "from": "Dari",
@@ -9270,7 +9204,6 @@
   },
   "sort": {
     "title": "Urut baris",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Urutan",
     "az": "A → Z",
@@ -9284,7 +9217,6 @@
   },
   "replace": {
     "title": "Cari ganti",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Cari",
     "find": "Cari",
@@ -9299,7 +9231,6 @@
   },
   "words": {
     "title": "Angka ke kata",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Angka",
     "number": "Bilangan bulat",
@@ -9310,7 +9241,6 @@
   },
   "add-days": {
     "title": "Tambah hari",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Tanggal",
     "date": "Tanggal mulai",
@@ -9323,7 +9253,6 @@
   },
   "week": {
     "title": "Nomor minggu",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Tanggal",
     "date": "Tanggal",
@@ -9345,7 +9274,6 @@
   },
   "aspect": {
     "title": "Rasio aspek",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Ukuran",
     "width": "Lebar",
@@ -9359,7 +9287,6 @@
   },
   "workdays": {
     "title": "Hari kerja",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Tanggal",
     "from": "Tanggal mulai",
@@ -9373,7 +9300,6 @@
   },
   "fraction": {
     "title": "Pecahan",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Pecahan",
     "mode": "Mode",
@@ -9391,7 +9317,6 @@
   },
   "hourly": {
     "title": "Upah jam ke tahunan",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah. Hanya upah kotor, tanpa pajak.",
     "options": "Upah",
     "mode": "Mode",
@@ -9410,7 +9335,6 @@
   },
   "margin": {
     "title": "Margin laba",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Jumlah",
     "cost": "Biaya",
@@ -9426,7 +9350,6 @@
   },
   "radix": {
     "title": "Konversi basis",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Angka",
     "value": "Bilangan bulat",
@@ -9440,7 +9363,6 @@
   },
   "duration": {
     "title": "Durasi waktu",
-    "back": "Semua alat",
     "privacyNote": "Tetap di tab ini. Tidak diunggah.",
     "options": "Durasi",
     "a": "Pertama (jam:menit:detik)",
@@ -9457,7 +9379,6 @@
   },
   "tdee": {
     "title": "Kalkulator TDEE",
-    "back": "Semua alat",
     "privacyNote": "Angka dihitung di tab ini saja. Tidak diunggah dan tidak disimpan.",
     "options": "Data Anda",
     "units": "Satuan",
@@ -9495,7 +9416,6 @@
   },
   "cidr": {
     "title": "Kalkulator subnet",
-    "back": "Semua alat",
     "privacyNote": "Alamat dihitung di tab ini. Tidak ada yang dikirim.",
     "subnet": "Subnet IPv4",
     "input": "Alamat / prefix",
@@ -9520,7 +9440,6 @@
   },
   "chmod": {
     "title": "Kalkulator chmod",
-    "back": "Semua alat",
     "privacyNote": "Bekerja di tab ini. Tidak ada yang diunggah dan tidak ada file yang diubah.",
     "permissions": "Izin",
     "special": "Bit khusus",
@@ -9552,7 +9471,6 @@
   },
   "typing": {
     "title": "Tes kecepatan mengetik",
-    "back": "Semua alat",
     "privacyNote": "Ketikan dan skor Anda tetap di halaman ini. Tidak diunggah dan tidak disimpan.",
     "duration": "Waktu",
     "seconds": "{n} detik",
@@ -9574,7 +9492,6 @@
   },
   "image-colors": {
     "title": "Palet warna gambar",
-    "back": "Semua alat",
     "privacyNote": "Gambar dibaca di tab ini. Tidak ada yang diunggah.",
     "filesTitle": "Gambar",
     "dropTitle": "Letakkan gambar",
@@ -9594,7 +9511,6 @@
     "errorDecode": "Gambar itu tidak bisa dibaca."
   },
   "gold": {
-    "back": "Semua alat",
     "title": "Emas",
     "privacyNote": "Hitungan tetap di tab ini. Tidak diunggah dan tidak mencari harga.",
     "options": "Berat",
@@ -9624,7 +9540,6 @@
     "toPalladium": "Paladium"
   },
   "silver": {
-    "back": "Semua alat",
     "title": "Perak",
     "privacyNote": "Hitungan tetap di tab ini. Tidak diunggah dan tidak mencari harga.",
     "options": "Berat",
@@ -9654,7 +9569,6 @@
     "toPalladium": "Paladium"
   },
   "platinum": {
-    "back": "Semua alat",
     "title": "Platina",
     "privacyNote": "Hitungan tetap di tab ini. Tidak diunggah dan tidak mencari harga.",
     "options": "Berat",
@@ -9684,7 +9598,6 @@
     "toPalladium": "Paladium"
   },
   "palladium": {
-    "back": "Semua alat",
     "title": "Paladium",
     "privacyNote": "Hitungan tetap di tab ini. Tidak diunggah dan tidak mencari harga.",
     "options": "Berat",
@@ -9714,7 +9627,6 @@
     "toPalladium": "Paladium"
   },
   "oil": {
-    "back": "Semua alat",
     "title": "Satu barel minyak berapa liter",
     "options": "Volume",
     "amount": "Jumlah",
@@ -9731,7 +9643,6 @@
     "privacyNote": "Konversi tetap di tab ini. Tidak diunggah dan tidak mencari harga minyak."
   },
   "stocks": {
-    "back": "Semua alat",
     "title": "Hitung kapitalisasi dan P/E",
     "options": "Angka",
     "price": "Harga",
@@ -10841,7 +10752,6 @@
   },
   "dice": {
     "title": "Lempar dadu",
-    "back": "Semua alat",
     "privacyNote": "Lemparan terjadi di tab ini. Tidak ada unggahan.",
     "options": "Dadu",
     "count": "Jumlah dadu",
@@ -10865,7 +10775,6 @@
   },
   "gpa": {
     "title": "Kalkulator GPA",
-    "back": "Semua alat",
     "privacyNote": "Perhitungan tetap di tab ini. Tidak ada unggahan.",
     "options": "Mata kuliah",
     "grade": "Nilai",
@@ -10884,7 +10793,6 @@
   },
   "pomodoro": {
     "title": "Timer Pomodoro",
-    "back": "Semua alat",
     "privacyNote": "Timer berjalan di tab ini. Tidak ada unggahan.",
     "options": "Durasi",
     "focus": "Fokus (menit)",
@@ -10905,7 +10813,6 @@
   },
   "sleep": {
     "title": "Kalkulator tidur",
-    "back": "Semua alat",
     "privacyNote": "Waktu tetap di tab ini. Tidak ada unggahan.",
     "options": "Waktu Anda",
     "mode": "Saya tahu",
@@ -10925,7 +10832,6 @@
   },
   "bodyFat": {
     "title": "Kalkulator lemak tubuh",
-    "back": "Semua alat",
     "privacyNote": "Ukuran tetap di tab ini. Tidak diunggah dan tidak disimpan.",
     "options": "Ukuran",
     "units": "Satuan",
@@ -10962,7 +10868,6 @@
   },
   "contrast": {
     "title": "Pemeriksa kontras warna",
-    "back": "Semua alat",
     "privacyNote": "Rasio dihitung di tab ini. Tidak ada unggahan.",
     "options": "Warna",
     "fg": "Warna teks",
@@ -10988,7 +10893,6 @@
   },
   "pace": {
     "title": "Kalkulator pace lari",
-    "back": "Semua alat",
     "privacyNote": "Perhitungan berjalan di tab ini. Tidak ada unggahan.",
     "options": "Lari",
     "solve": "Hitung",
@@ -11018,7 +10922,6 @@
   },
   "grade": {
     "title": "Kalkulator nilai ujian akhir",
-    "back": "Semua alat",
     "privacyNote": "Angka tetap di tab ini. Tidak ada unggahan.",
     "options": "Nilai Anda",
     "current": "Nilai saat ini (%)",
@@ -11038,7 +10941,6 @@
   },
   "dueDate": {
     "title": "Kalkulator hari perkiraan lahir",
-    "back": "Semua alat",
     "privacyNote": "Tanggal tetap di tab ini. Tidak ada unggahan.",
     "options": "Tanggal Anda",
     "mode": "Saya tahu",
@@ -11067,7 +10969,6 @@
   },
   "idealWeight": {
     "title": "Kalkulator berat badan ideal",
-    "back": "Semua alat",
     "privacyNote": "Angka tetap di tab ini. Tidak ada unggahan.",
     "options": "Tentang Anda",
     "units": "Satuan",
@@ -11098,7 +10999,6 @@
   },
   "waterIntake": {
     "title": "Kalkulator kebutuhan air harian",
-    "back": "Semua alat",
     "privacyNote": "Angka tetap di tab ini. Tidak ada unggahan.",
     "options": "Tentang Anda",
     "units": "Satuan berat",
@@ -11127,7 +11027,6 @@
   },
   "fuelCost": {
     "title": "Kalkulator biaya BBM",
-    "back": "Semua alat",
     "privacyNote": "Perhitungan berjalan di tab ini. Tidak ada unggahan.",
     "options": "Perjalanan",
     "distance": "Jarak",
@@ -11160,7 +11059,6 @@
   },
   "readingTime": {
     "title": "Kalkulator waktu baca",
-    "back": "Semua alat",
     "privacyNote": "Teks tetap di tab ini. Tidak ada unggahan.",
     "options": "Teks",
     "text": "Tempel teks Anda",
@@ -11188,7 +11086,6 @@
   },
   "timeCard": {
     "title": "Kalkulator jam kerja",
-    "back": "Semua alat",
     "privacyNote": "Waktunya tetap di tab ini. Tidak ada unggahan.",
     "options": "Sif",
     "start": "Mulai",
@@ -11218,7 +11115,6 @@
   },
   "electricity": {
     "title": "Kalkulator biaya listrik",
-    "back": "Semua alat",
     "privacyNote": "Perhitungan berjalan di tab ini. Tidak ada unggahan.",
     "options": "Alat",
     "preset": "Alat",
@@ -11249,7 +11145,6 @@
   },
   "ovulation": {
     "title": "Kalkulator masa subur",
-    "back": "Semua alat",
     "privacyNote": "Tanggalnya tetap di tab ini. Tidak ada unggahan.",
     "options": "Siklus Anda",
     "lastPeriod": "Hari pertama haid terakhir",
@@ -11270,7 +11165,6 @@
   },
   "macro": {
     "title": "Kalkulator makro",
-    "back": "Semua alat",
     "privacyNote": "Angkanya tetap di tab ini. Tidak ada unggahan.",
     "options": "Target Anda",
     "kcal": "Kalori pemeliharaan (kcal/hari)",
@@ -11302,7 +11196,6 @@
   },
   "caloriesBurned": {
     "title": "Kalkulator kalori terbakar",
-    "back": "Semua alat",
     "privacyNote": "Perhitungan berjalan di tab ini. Tidak ada unggahan.",
     "options": "Aktivitas",
     "activity": "Aktivitas",
@@ -11350,7 +11243,6 @@
     "errorRun": "Pemrosesan gagal. Muat ulang halaman lalu coba lagi, atau pakai file yang lebih kecil."
   },
   "removeBg": {
-    "back": "Semua alat",
     "title": "Hapus background",
     "privacyNote": "AI berjalan di tab ini. Foto Anda tidak pernah diunggah.",
     "filesTitle": "Foto",
@@ -11378,7 +11270,6 @@
     "errorDecode": "Gambar tidak bisa dibaca."
   },
   "upscaler": {
-    "back": "Semua alat",
     "title": "AI upscale gambar",
     "privacyNote": "AI berjalan di tab ini. Gambar Anda tidak pernah diunggah.",
     "filesTitle": "Gambar",
@@ -11403,7 +11294,6 @@
     "errorDecode": "Gambar tidak bisa dibaca."
   },
   "stt": {
-    "back": "Semua alat",
     "title": "Ubah suara jadi teks",
     "privacyNote": "Whisper AI berjalan di tab ini. Audio Anda tidak pernah diunggah.",
     "filesTitle": "Audio atau video",
@@ -11440,7 +11330,6 @@
     "errorMic": "Mikrofon tidak tersedia. Izinkan di browser, atau taruh file saja."
   },
   "depthMap": {
-    "back": "Semua alat",
     "title": "Pembuat depth map",
     "privacyNote": "AI berjalan di tab ini. Foto Anda tidak pernah diunggah.",
     "filesTitle": "Foto",
@@ -11461,7 +11350,6 @@
   },
   "wheel": {
     "title": "Roda putar acak",
-    "back": "Semua alat",
     "privacyNote": "Undian terjadi di tab ini dengan Web Crypto. Tidak ada unggahan.",
     "entries": "Entri, satu per baris",
     "sample": "Nasi goreng\nSate ayam\nBakso\nMie ayam\nGado-gado\nRendang",
@@ -11481,7 +11369,6 @@
   },
   "average": {
     "title": "Kalkulator rata-rata",
-    "back": "Semua alat",
     "privacyNote": "Perhitungan berjalan di tab ini. Tidak ada unggahan.",
     "numbers": "Angka",
     "decimal": "Tanda desimal",
@@ -11511,7 +11398,6 @@
   },
   "metronome": {
     "title": "Metronom",
-    "back": "Semua alat",
     "privacyNote": "Bunyi klik dibuat di browser Anda. Tidak ada unggahan.",
     "options": "Tempo",
     "bpm": "Ketukan per menit (BPM)",
@@ -11530,7 +11416,6 @@
   },
   "keyboardTest": {
     "title": "Tes keyboard",
-    "back": "Semua alat",
     "privacyNote": "Tekanan tombol hanya ditampilkan di tab ini. Tidak ada yang direkam atau diunggah.",
     "focusHint": "Klik keyboard, lalu tekan tombol. Klik di tempat lain untuk berhenti.",
     "board": "Peta keyboard. Tekan tombol untuk mengetesnya.",
@@ -11550,7 +11435,6 @@
   },
   "zodiac": {
     "title": "Zodiak dan shio",
-    "back": "Semua alat",
     "privacyNote": "Dihitung di tab ini. Tidak ada unggahan.",
     "options": "Tanggal lahir",
     "birthday": "Tanggal lahir",
@@ -11610,7 +11494,6 @@
   },
   "clickTest": {
     "title": "Tes CPS",
-    "back": "Semua alat",
     "privacyNote": "Klik dihitung di tab ini. Tidak ada unggahan.",
     "options": "Tes",
     "duration": "Durasi",
@@ -11635,7 +11518,6 @@
   },
   "reactionTime": {
     "title": "Tes waktu reaksi",
-    "back": "Semua alat",
     "privacyNote": "Waktu diukur di tab ini. Tidak ada unggahan.",
     "startTitle": "Klik untuk mulai",
     "startSub": "Tunggu hijau, lalu klik secepat mungkin.",
@@ -11664,7 +11546,6 @@
   },
   "toneGenerator": {
     "title": "Generator nada",
-    "back": "Semua alat",
     "privacyNote": "Nada dibuat di browser Anda. Tidak ada unggahan.",
     "options": "Nada",
     "frequency": "Frekuensi (Hz)",
@@ -11686,7 +11567,6 @@
   },
   "tallyCounter": {
     "title": "Penghitung (tally counter)",
-    "back": "Semua alat",
     "privacyNote": "Hitungan disimpan di browser ini. Tidak ada unggahan.",
     "options": "Pengaturan",
     "step": "Langkah",
@@ -11708,7 +11588,6 @@
   },
   "micTest": {
     "title": "Tes mikrofon",
-    "back": "Semua alat",
     "privacyNote": "Suara tetap di tab ini. Tidak ada unggahan.",
     "options": "Mikrofon",
     "device": "Perangkat input",
@@ -11744,7 +11623,6 @@
   },
   "webcamTest": {
     "title": "Tes webcam",
-    "back": "Semua alat",
     "privacyNote": "Video tetap di tab ini. Tidak ada unggahan.",
     "options": "Kamera",
     "device": "Kamera",
@@ -11787,7 +11665,6 @@
   },
   "gamepadTest": {
     "title": "Tes gamepad",
-    "back": "Semua alat",
     "privacyNote": "Stik dibaca di tab ini. Tidak ada unggahan.",
     "options": "Stik",
     "pad": "Stik",
@@ -11814,7 +11691,6 @@
   },
   "deadPixel": {
     "title": "Tes dead pixel",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak ada unggahan.",
     "options": "Warna",
     "colors": "Warna tes",
@@ -11837,7 +11713,6 @@
   },
   "refreshRate": {
     "title": "Tes refresh rate",
-    "back": "Semua alat",
     "privacyNote": "Diukur di tab ini. Tidak ada unggahan.",
     "measuring": "Mengukur… biarkan tab ini di depan.",
     "near": "Layar Anda berjalan di sekitar {n} Hz.",
@@ -11858,7 +11733,6 @@
   },
   "touchTest": {
     "title": "Tes layar sentuh",
-    "back": "Semua alat",
     "privacyNote": "Sentuhan digambar di tab ini. Tidak ada unggahan.",
     "pad": "Area tes sentuh",
     "start": "Sentuh dan gambar di sini dengan satu jari atau lebih",
@@ -11877,7 +11751,6 @@
     "hint": "Usap seluruh area: kotak yang tetap kosong menandakan dead zone. Esc keluar dari layar penuh."
   },
   "v": {
-    "back": "Semua alat",
     "title": "AI foto jadi video",
     "privacyNote": "Kedalaman AI dan enkode video berjalan di tab ini. Foto Anda tidak pernah diunggah.",
     "filesTitle": "Foto",
@@ -11918,7 +11791,6 @@
     "errorGpuReset": "Kartu grafis direset saat ekspor. Coba lagi."
   },
   "imageGen": {
-    "back": "Semua alat",
     "title": "AI pembuat gambar",
     "privacyNote": "AI berjalan di kartu grafis Anda di tab ini. Teks dan gambar Anda tidak pernah diunggah.",
     "promptLabel": "Deskripsikan gambarnya",
@@ -11955,7 +11827,6 @@
     "errorRun": "Gagal menggambar. Muat ulang halaman lalu coba lagi."
   },
   "musicGen": {
-    "back": "Semua alat",
     "title": "AI pembuat musik",
     "privacyNote": "AI menggubah musik di tab ini. Tidak ada yang diunggah, dan musiknya milik Anda.",
     "styleTitle": "Gaya",
@@ -11988,7 +11859,6 @@
   },
   "coinFlip": {
     "title": "Lempar koin",
-    "back": "Semua alat",
     "privacyNote": "Setiap lemparan memakai satu bit acak aman dari browser Anda. Tidak ada unggahan.",
     "tapToFlip": "Ketuk untuk melempar",
     "flip": "Lempar",
@@ -12019,7 +11889,6 @@
   },
   "guitarTuner": {
     "title": "Tuner gitar",
-    "back": "Semua alat",
     "privacyNote": "Mendengarkan lewat mikrofon di tab ini. Tidak ada yang direkam atau diunggah.",
     "options": "Tuner",
     "instrument": "Instrumen",
@@ -12064,7 +11933,6 @@
   },
   "factors": {
     "title": "Kalkulator faktor",
-    "back": "Semua alat",
     "privacyNote": "Hitungan bilangan bulat yang tepat di tab ini. Tidak ada unggahan.",
     "options": "Bilangan",
     "number": "Bilangan bulat (sampai {n} digit)",
@@ -12093,7 +11961,6 @@
   },
   "lcmGcf": {
     "title": "Kalkulator KPK dan FPB",
-    "back": "Semua alat",
     "privacyNote": "Hitungan bilangan bulat yang tepat di tab ini. Tidak ada unggahan.",
     "options": "Bilangan",
     "numbers": "2 sampai {n} bilangan bulat, dipisah koma atau spasi",
@@ -12120,7 +11987,6 @@
   },
   "calculator": {
     "title": "Kalkulator ilmiah",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak ada unggahan.",
     "expression": "Ekspresi",
     "keypad": "Tombol kalkulator",
@@ -12150,7 +12016,6 @@
   },
   "notepad": {
     "title": "Notepad online",
-    "back": "Semua alat",
     "privacyNote": "Disimpan di browser ini saat Anda mengetik. Tidak ada unggahan.",
     "placeholder": "Mulai mengetik…",
     "copy": "Salin semua",
@@ -12173,7 +12038,6 @@
   },
   "markdown": {
     "title": "Pratinjau Markdown",
-    "back": "Semua alat",
     "privacyNote": "Dirender di tab ini dan disimpan di browser ini. Tidak ada unggahan.",
     "input": "Markdown",
     "preview": "Pratinjau",
@@ -12194,7 +12058,6 @@
   },
   "gradient": {
     "title": "Generator gradien CSS",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak ada unggahan.",
     "options": "Gradien",
     "type": "Jenis",
@@ -12225,7 +12088,6 @@
   },
   "fancyText": {
     "title": "Generator font keren",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak ada unggahan.",
     "input": "Teks Anda",
     "placeholder": "Ketik sesuatu…",
@@ -12281,7 +12143,6 @@
   },
   "romEmulator": {
     "title": "Emulator game",
-    "back": "Semua alat",
     "privacyNote": "Buka ROM milik Anda dan mainkan di tab ini. Konsol dikenali dari file. Tidak ada yang diunggah.",
     "auto": "Kenali dari file",
     "console": "Konsol",
@@ -12296,13 +12157,11 @@
   },
   "flashPlayer": {
     "title": "Flash Player",
-    "back": "Semua alat",
     "privacyNote": "Buka file .swf di tab ini dengan Ruffle. Tanpa plugin Flash. Tidak ada yang diunggah.",
     "games": "Game Flash gratis"
   },
   "tierList": {
     "title": "Pembuat tier list online (peringkat)",
-    "back": "Semua alat",
     "privacyNote": "Gambar tetap di halaman ini dan PNG dibuat di browser kamu. Tidak ada yang diunggah.",
     "titleField": "Judul bagan",
     "titlePlaceholder": "Contoh: jajanan terenak",
@@ -12422,7 +12281,6 @@
   },
   "mortgage": {
     "title": "Kalkulator KPR",
-    "back": "Semua alat",
     "privacyNote": "Dihitung di tab ini. Tidak ada yang diunggah.",
     "options": "Pinjaman",
     "price": "Harga rumah",
@@ -12456,7 +12314,6 @@
   },
   "quadratic": {
     "title": "Kalkulator persamaan kuadrat",
-    "back": "Semua alat",
     "privacyNote": "Diselesaikan di tab ini. Tidak ada yang diunggah.",
     "options": "Koefisien",
     "copy": "Salin hasil",
@@ -12487,7 +12344,6 @@
   },
   "teamGenerator": {
     "title": "Pembagi kelompok acak",
-    "back": "Semua alat",
     "privacyNote": "Diacak di tab ini dengan Web Crypto. Tidak ada yang diunggah.",
     "options": "Nama",
     "names": "Nama, satu per baris atau dipisah koma (maksimal {n})",
@@ -12515,7 +12371,6 @@
   },
   "screenResolution": {
     "title": "Berapa resolusi layar saya?",
-    "back": "Semua alat",
     "privacyNote": "Dibaca oleh browser Anda di tab ini. Tidak ada yang dikirim ke mana pun.",
     "yours": "Resolusi layar Anda",
     "physical": "Resolusi layar (piksel asli)",
@@ -12536,7 +12391,6 @@
   },
   "alarm": {
     "title": "Alarm online",
-    "back": "Semua alat",
     "privacyNote": "Berjalan di tab ini. Tidak ada yang diunggah.",
     "options": "Alarm",
     "time": "Waktu alarm",
@@ -12563,7 +12417,6 @@
   },
   "whiteNoise": {
     "title": "Generator white noise",
-    "back": "Semua alat",
     "privacyNote": "Noise dibuat di tab ini. Tidak ada yang diunggah.",
     "options": "Suara",
     "color": "Warna noise",
@@ -12591,7 +12444,6 @@
   },
   "decibelMeter": {
     "title": "Pengukur desibel",
-    "back": "Semua alat",
     "privacyNote": "Diukur di tab ini. Tidak ada yang direkam atau diunggah.",
     "options": "Pengukur",
     "weighting": "Pembobotan frekuensi",
@@ -12642,7 +12494,6 @@
   },
   "voiceRecorder": {
     "title": "Perekam suara",
-    "back": "Semua alat",
     "privacyNote": "Direkam di tab ini. Tidak ada yang diunggah.",
     "options": "Perekaman",
     "device": "Mikrofon",
@@ -12679,7 +12530,6 @@
   },
   "screenRecorder": {
     "title": "Perekam layar",
-    "back": "Semua alat",
     "privacyNote": "Direkam di tab ini. Tidak ada yang diunggah, tanpa watermark.",
     "options": "Perekaman",
     "format": "Format",
@@ -12718,7 +12568,6 @@
   },
   "triangle": {
     "title": "Kalkulator segitiga",
-    "back": "Semua alat",
     "privacyNote": "Diselesaikan di browser Anda. Tidak ada yang diunggah.",
     "options": "Nilai yang diketahui",
     "right": "Segitiga siku-siku (C = 90°)",
@@ -12779,7 +12628,6 @@
   },
   "gifMaker": {
     "title": "Pembuat GIF",
-    "back": "Semua alat",
     "privacyNote": "Buat GIF animasi dari gambar atau video pendek. Semuanya berjalan di tab ini; tidak ada yang diunggah.",
     "filesTitle": "Frame",
     "clear": "Hapus",
@@ -12824,7 +12672,6 @@
   },
   "imageSplitter": {
     "title": "Pembagi gambar",
-    "back": "Semua alat",
     "privacyNote": "Potong foto menjadi grid untuk feed Instagram, carousel, atau cetak. Tidak ada yang diunggah.",
     "filesTitle": "Foto",
     "dropTitle": "Letakkan foto",
@@ -12864,7 +12711,6 @@
   },
   "area": {
     "title": "Kalkulator luas",
-    "back": "Semua alat",
     "privacyNote": "Luas dan keliling 12 bangun datar, dengan rumus, langkah, dan semua satuan umum.",
     "options": "Bangun",
     "shape": "Bangun",
@@ -12930,7 +12776,6 @@
   },
   "volume": {
     "title": "Kalkulator volume",
-    "back": "Semua alat",
     "privacyNote": "Volume dan luas permukaan 12 bangun ruang, dengan langkah, liter, galon, dan satuan kubik.",
     "options": "Bangun ruang",
     "shape": "Bangun ruang",
@@ -12991,7 +12836,6 @@
   },
   "randomLetter": {
     "title": "Generator huruf acak",
-    "back": "Semua alat",
     "privacyNote": "Undi huruf acak untuk permainan kata, kelas, dan kuis. Setiap huruf punya peluang yang sama.",
     "options": "Opsi",
     "alphabet": "Alfabet",
@@ -13031,7 +12875,6 @@
   },
   "wordUnscrambler": {
     "title": "Penyusun kata",
-    "back": "Semua alat",
     "privacyNote": "Ketik huruf Anda dan lihat semua kata bahasa Inggris yang bisa dibentuk, untuk permainan kata, teka-teki silang, dan anagram.",
     "letters": "Huruf Anda",
     "lettersPlaceholder": "mis. tesrlan atau ca?t",
@@ -13065,7 +12908,6 @@
   },
   "concrete": {
     "title": "Kalkulator beton",
-    "back": "Semua alat",
     "privacyNote": "Berapa banyak beton yang dibutuhkan pelat, pondasi, dinding, kolom, atau tangga, dan berapa sak yang perlu dibeli.",
     "options": "Ukuran",
     "shape": "Apa yang akan dicor?",
@@ -13115,7 +12957,6 @@
   },
   "graphingCalculator": {
     "title": "Kalkulator grafik",
-    "back": "Semua alat",
     "privacyNote": "Gambar grafik fungsi x, geser dan perbesar, lalu baca titik nol, titik potong, dan perpotongan kurva.",
     "functions": "Fungsi",
     "expr": "Fungsi x",
@@ -13140,7 +12981,6 @@
   },
   "piano": {
     "title": "Piano virtual",
-    "back": "Semua alat",
     "privacyNote": "Mainkan dengan keyboard komputer, mouse, atau jari Anda. Tekan tuts untuk memulai suara.",
     "keysLabel": "Tuts piano",
     "octaveDown": "Oktaf turun",
@@ -13173,7 +13013,6 @@
   },
   "slope": {
     "title": "Kalkulator gradien",
-    "back": "Semua alat",
     "privacyNote": "Ketik dua titik untuk mendapat gradien, persamaan garis, jarak, dan titik tengah, lengkap dengan langkahnya.",
     "points": "Dua titik",
     "point1": "Titik 1",

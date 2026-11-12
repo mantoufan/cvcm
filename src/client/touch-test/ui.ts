@@ -1,7 +1,6 @@
 import { h } from "../dom";
 import { canFullscreen, enterFullscreen } from "../fullscreen";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { TOUCH_COLS, TOUCH_ROWS, cellsAlong, coveragePercent } from "../../shared/touch";
 
 /** One colour per finger, in the order they touch. */
@@ -50,7 +49,6 @@ export function mountTouchTest(host: HTMLElement): void {
   fullBtn = h("button", { type: "button", class: "btn ghost", "data-action": "fullscreen", onClick: () => void fullScreen() }, t("touchTest.fullscreen"));
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("touchTest.back")),
       h("h1", null, t("touchTest.title")),
       h("p", { class: "lede" }, t("touchTest.privacyNote")),
     ),

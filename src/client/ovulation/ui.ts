@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { todayIso } from "../../shared/age";
 import { DEFAULT_CYCLE, MAX_CYCLE, MAX_ELAPSED_DAYS, MIN_CYCLE, ovulationCycles } from "../../shared/ovulation";
 
@@ -18,7 +17,6 @@ export function mountOvulation(host: HTMLElement): void {
   outEl = h("div", { class: "ovulation-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("ovulation.back")),
       h("h1", null, t("ovulation.title")),
       h("p", { class: "lede" }, t("ovulation.privacyNote")),
     ),

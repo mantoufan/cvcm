@@ -7,7 +7,6 @@ import { downloadBlob, h } from "../dom";
 import { formatBytes } from "../../shared/resize";
 import { locale, t } from "../i18n";
 import { parseDecimalInput } from "../../shared/decimal-input";
-import { appHref } from "../../shared/path";
 
 /** A picture frame: its original size (for the GIF's shape), and a bitmap no bigger than the GIF can use. */
 type Still = { id: string; file: File; bitmap: ImageBitmap; width: number; height: number };
@@ -142,7 +141,6 @@ export function mountGifMaker(host: HTMLElement): void {
   els = { list, preview, videoBox, status, result, imageOpts, videoOpts, start, end, make };
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("gifMaker.back")),
       h("h1", null, t("gifMaker.title")),
       h("p", { class: "lede" }, t("gifMaker.privacyNote")),
     ),

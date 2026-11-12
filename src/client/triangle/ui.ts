@@ -2,7 +2,6 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { parseDecimalInput } from "../../shared/decimal-input";
-import { appHref } from "../../shared/path";
 import { fmt, layout, solveTriangle, type TriangleDetails, type TriangleInput, type TriangleResult } from "../../shared/triangle";
 
 const SVG = "http://www.w3.org/2000/svg";
@@ -38,7 +37,6 @@ export function mountTriangle(host: HTMLElement): void {
   const field = (f: Field, label: string) => h("label", { class: "field" }, h("span", null, label), inputs[f]!);
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("triangle.back")),
       h("h1", null, t("triangle.title")),
       h("p", { class: "lede" }, t("triangle.privacyNote")),
     ),

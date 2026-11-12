@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { hexToRgb, rgbToHex } from "../../shared/color";
 import { AAA_LARGE, AAA_NORMAL, AA_LARGE, AA_NORMAL, UI_MIN, contrastLevels, suggestForeground } from "../../shared/contrast";
 
@@ -30,7 +29,6 @@ export function mountContrast(host: HTMLElement): void {
   fixEl = h("p", { class: "hint" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("contrast.back")),
       h("h1", null, t("contrast.title")),
       h("p", { class: "lede" }, t("contrast.privacyNote")),
     ),

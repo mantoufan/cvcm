@@ -1,7 +1,6 @@
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { outputFilename } from "../../shared/filename";
 import {
   memeFontSize,
@@ -28,7 +27,6 @@ let bottomEl: HTMLTextAreaElement | null = null;
 export async function mountMeme(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("meme.back")),
       h("h1", null, t("meme.title")),
       h("p", { class: "lede" }, t("meme.privacyNote")),
     ),

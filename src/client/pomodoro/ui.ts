@@ -1,7 +1,6 @@
 import { armAudio } from "../audio";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import {
   DEFAULT_POMODORO, MAX_MINUTES, MAX_ROUNDS, mmss, nextPhase, normalizeSettings, phaseSeconds,
   type Phase, type PomodoroSettings,
@@ -41,7 +40,6 @@ export function mountPomodoro(host: HTMLElement): void {
   startBtn = h("button", { type: "button", class: "btn", "data-action": "start", onClick: () => toggle() }, t("pomodoro.start"));
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("pomodoro.back")),
       h("h1", null, t("pomodoro.title")),
       h("p", { class: "lede" }, t("pomodoro.privacyNote")),
     ),

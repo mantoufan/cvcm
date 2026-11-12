@@ -1,7 +1,6 @@
 import { armAudio, resumeIfPaused } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { RING_LIMIT_MS, SNOOZE_MINUTES, SOUNDS, nextAlarm, parseClock, remainingText, untilParts, type AlarmSound } from "../../shared/alarm";
 
 type Note = { at: number; f: number; d: number; type: OscillatorType; decay?: boolean };
@@ -64,7 +63,6 @@ export function mountAlarm(host: HTMLElement): void {
   );
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("alarm.back")),
       h("h1", null, t("alarm.title")),
       h("p", { class: "lede" }, t("alarm.privacyNote")),
     ),

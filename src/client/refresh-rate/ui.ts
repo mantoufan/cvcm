@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { MAX_FRAME_MS, countSkipped, hzFromInterval, medianInterval, nearestStandardRate, steadyInterval } from "../../shared/refresh-rate";
 
 /** Frame intervals kept for the estimate and the graph. */
@@ -48,7 +47,6 @@ export function mountRefreshRate(host: HTMLElement): void {
   copyBtn = h("button", { type: "button", class: "btn ghost", "data-action": "copy", disabled: true, onClick: () => void copyOut() }, t("refreshRate.copy"));
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("refreshRate.back")),
       h("h1", null, t("refreshRate.title")),
       h("p", { class: "lede" }, t("refreshRate.privacyNote")),
     ),
