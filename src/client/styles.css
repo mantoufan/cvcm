@@ -980,3 +980,50 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .letter-out.letter-many { font-size: clamp(1.4rem, 5vw, 2rem); }
 .letter-history-title { margin-top: 1.25rem; }
 .letter-history { margin: 0; padding-left: 1.4rem; overflow-wrap: anywhere; }
+
+/* Word unscrambler, concrete, graphing calculator, piano and slope calculators (batch 26). */
+.unscramble-form { margin: 0 0 1rem; }
+.unscramble-input { font-size: 1.6rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.unscramble-group h2 { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin: 1rem 0 0.4rem; font-size: 1.05rem; }
+.unscramble-words { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0; padding: 0; list-style: none; }
+.unscramble-word { display: inline-block; padding: 0.2rem 0.55rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; font-size: 0.95rem; letter-spacing: 0.02em; }
+.unscramble-blank { color: var(--pink-deep); font-weight: 700; text-decoration: underline dotted; }
+.chip-note { font-size: 0.75rem; font-weight: 600; color: var(--pink-deep); background: var(--pink-soft); border-radius: 999px; padding: 0.1rem 0.55rem; }
+.concrete-size { display: flex; gap: 0.35rem; }
+.concrete-size input { flex: 1 1 auto; min-width: 0; }
+.concrete-size select { flex: 0 0 auto; width: auto; }
+.graph-tool { display: grid; grid-template-columns: minmax(16rem, 22rem) minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+@media (max-width: 860px) { .graph-tool { grid-template-columns: minmax(0, 1fr); } }
+.graph-funcs { display: grid; gap: 0.5rem; margin-bottom: 0.6rem; }
+.graph-func { display: grid; grid-template-columns: auto auto auto minmax(0, 1fr) auto; align-items: center; gap: 0.35rem; }
+.graph-func input[type="text"] { min-width: 0; font-family: ui-monospace, Menlo, Consolas, monospace; }
+.graph-func .graph-error { grid-column: 1 / -1; margin: 0; }
+.graph-func .graph-error:empty { display: none; }
+.graph-swatch { display: inline-block; width: 0.8rem; height: 0.8rem; border-radius: 50%; flex: 0 0 auto; margin-right: 0.35rem; vertical-align: -0.05rem; }
+.graph-y { font-style: italic; white-space: nowrap; color: var(--ink-soft); }
+.graph-bar { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-bottom: 0.5rem; }
+.graph-wrap { width: 100%; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: #fff; }
+.graph-canvas { display: block; width: 100%; touch-action: none; cursor: crosshair; }
+.graph-readout { min-height: 1.4em; font-variant-numeric: tabular-nums; white-space: pre-wrap; }
+.graph-points { margin: 0; padding: 0; list-style: none; display: grid; gap: 0.25rem; font-variant-numeric: tabular-nums; }
+.piano-bar { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin: 0 0 0.5rem; }
+.piano-range { min-width: 7rem; text-align: center; font-weight: 700; color: var(--pink-deep); font-variant-numeric: tabular-nums; }
+.piano-scroll { overflow-x: auto; margin: 0 0 1.25rem; padding-bottom: 0.25rem; }
+.piano-keys { --piano-black: min(4.2%, 2.2rem); position: relative; height: clamp(9rem, 28vw, 14rem); min-width: 100%; user-select: none; -webkit-user-select: none; touch-action: none; -webkit-touch-callout: none; }
+.piano-key { position: absolute; top: 0; box-sizing: border-box; display: flex; align-items: flex-end; justify-content: center; cursor: pointer; }
+.piano-key.white { height: 100%; border: 1px solid #e3cdd8; border-radius: 0 0 8px 8px; background: #fff; z-index: 1; }
+.piano-key.black { width: var(--piano-black); height: 62%; border-radius: 0 0 6px 6px; background: #3a2b33; z-index: 2; }
+.piano-key.white.down, .piano-key.white.playing { background: #f7c3d7; }
+.piano-key.black.down, .piano-key.black.playing { background: var(--pink-deep); }
+.piano-label { pointer-events: none; margin-bottom: 0.45rem; font-size: clamp(0.62rem, 1.6vw, 0.82rem); font-weight: 600; color: var(--ink-soft); }
+.piano-key.black .piano-label { color: #f6dce8; font-size: clamp(0.55rem, 1.4vw, 0.72rem); }
+.btn.on { background: var(--pink-deep); color: #fff; }
+.slope-point { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 0.5rem; margin-bottom: 0.4rem; }
+.slope-point-name { grid-column: 1 / -1; font-weight: 700; color: var(--ink-soft); font-size: 0.85rem; }
+.slope-graph { display: block; width: 100%; max-width: 320px; aspect-ratio: 1; margin-top: 1rem; border: 1px solid var(--line); border-radius: var(--radius); }
+.slope-bg { fill: #fff; }
+.slope-axis { stroke: #b9a3ae; stroke-width: 1.5; }
+.slope-line { stroke: var(--pink-deep); stroke-width: 3; }
+.slope-run { fill: none; stroke: #8b6f7d; stroke-width: 2; stroke-dasharray: 5 4; }
+.slope-dot { fill: var(--pink-deep); stroke: #fff; stroke-width: 2; }
+.slope-text { fill: var(--ink); font-size: 14px; font-weight: 700; }

@@ -1,0 +1,235 @@
+{
+  "meta": {
+    "titleUnscrambleWords": "Cara menyusun huruf acak jadi kata bahasa Inggris (dengan ubin kosong) | cv.cm",
+    "descUnscrambleWords": "Susun huruf acak menjadi kata bahasa Inggris untuk permainan kata, teka-teki silang, dan anagram: ketik huruf Anda, tambahkan ? untuk ubin kosong, saring menurut panjang, awalan, atau akhiran, lalu pilih kata terpanjang. Gratis, di browser.",
+    "titleCalculateConcrete": "Cara menghitung kebutuhan beton untuk pelat, pondasi, atau tangga (kubikasi dan sak) | cv.cm",
+    "descCalculateConcrete": "Hitung berapa banyak beton yang perlu dipesan: ukur, samakan satuan, kalikan panjang × lebar × tebal, tambahkan 10% untuk sisa, lalu ubah meter atau yard kubik menjadi sak 40, 60, atau 80 lb.",
+    "titleGraphFunctions": "Cara menggambar grafik fungsi online (titik nol, titik potong, perpotongan) | cv.cm",
+    "descGraphFunctions": "Gambar grafik y = f(x) online: ketik fungsi dengan benar, atur tampilan yang pas, baca nilai, dan temukan di mana kurva memotong sumbu atau kurva lain. Kalkulator grafik gratis, tanpa instalasi.",
+    "titlePlayPianoOnline": "Cara bermain piano online dengan keyboard komputer | cv.cm",
+    "descPlayPianoOnline": "Mainkan piano virtual di browser: tombol komputer mana memainkan nada apa, cara menemukan C tengah, memainkan akor, memakai pedal sustain, mengganti oktaf, dan merekam permainan.",
+    "titleFindSlope": "Cara mencari gradien garis dari dua titik (dengan contoh) | cv.cm",
+    "descFindSlope": "Cari gradien sebagai perubahan tegak dibagi perubahan mendatar, tulis persamaan garis y = mx + b, bentuk titik-gradien dan bentuk baku, serta tangani pecahan, garis mendatar, dan garis tegak. Contoh soal dan kalkulator gratis."
+  },
+  "lessons": {
+    "unscramble-words": {
+      "copy": {
+        "name": "Cara menyusun huruf acak menjadi kata",
+        "blurb": "Semua kata Inggris dari huruf Anda, termasuk ubin kosong.",
+        "title": "Cara menyusun huruf acak menjadi kata bahasa Inggris",
+        "lead": "Tujuh ubin di rak, petunjuk teka-teki silang dengan beberapa huruf yang sudah diketahui, atau teka-teki anagram semuanya bermuara pada pertanyaan yang sama: kata apa yang bisa dieja dari huruf-huruf ini? Anda akan mengetik huruf, menambahkan ubin kosong, mempersempit daftar, dan memilih kata terbaik. Daftar katanya hanya berbahasa Inggris.",
+        "result": "Daftar semua kata bahasa Inggris yang bisa dibentuk dari huruf Anda, yang terpanjang lebih dulu, dengan huruf yang diisi ubin kosong ditandai.",
+        "note": "Setiap ubin dipakai sekali. Jika Anda hanya punya satu E, kata dengan dua E butuh ubin kosong untuk E yang kedua.",
+        "s1t": "Buka Penyusun kata di cv.cm",
+        "s1b": "Siapkan huruf Anda: ubin di rak, huruf-huruf sebuah anagram, atau huruf yang terlihat di teka-teki.",
+        "s2t": "Ketik huruf dan ubin kosong",
+        "s2b": "Ketik huruf dalam urutan apa saja; huruf besar atau kecil tidak berpengaruh. Untuk ubin kosong, ketik ?. Paling banyak tiga ubin kosong, dan huruf yang digantikan setiap ubin kosong disorot di hasil.",
+        "s3t": "Baca daftar dari atas",
+        "s3b": "Kata muncul saat Anda mengetik, dikelompokkan menurut panjang dengan kelompok terpanjang di atas. Kelompok berlabel Memakai semua huruf berisi anagram lengkap.",
+        "s4t": "Persempit dengan filter",
+        "s4b": "Pilih panjang kata jika teka-teki silang memberi jumlah kotaknya. Diawali, Mengandung, dan Diakhiri hanya menyisakan kata yang cocok dengan huruf yang sudah ada di papan, misalnya kata yang berakhiran ING.",
+        "s5t": "Pastikan kata itu berlaku di permainan Anda",
+        "s5b": "Daftarnya adalah ENABLE, daftar kata domain publik yang dipakai banyak permainan kata, berisi 172.823 kata. Setiap permainan punya kamusnya sendiri, jadi kata yang jarang mungkin tetap ditolak; jika ragu, mainkan kata yang lebih umum.",
+        "s6t": "Salin kata-katanya",
+        "s6b": "Salin kata menaruh seluruh daftar di clipboard, satu kelompok per panjang, untuk disimpan atau dibagikan ke pemain lain.",
+        "diagram1": "Ubin kosong (?) bisa menjadi satu huruf apa saja.",
+        "diagram2": "Filter hanya menyisakan kata yang cocok dengan papan."
+      },
+      "faq": {
+        "q1": "Apa arti menyusun huruf acak (unscramble)?",
+        "a1": "Mencari kata yang bisa dieja dengan menyusun ulang sekumpulan huruf, dengan setiap huruf dipakai tidak lebih sering daripada kemunculannya.",
+        "q2": "Berapa ubin kosong yang bisa saya pakai?",
+        "a2": "Paling banyak tiga. Setiap ubin kosong menambahkan semua huruf alfabet sebagai pilihan, jadi daftarnya cepat bertambah panjang.",
+        "q3": "Kenapa kata yang saya tahu tidak ada?",
+        "a3": "ENABLE tidak memuat nama diri, singkatan, dan beberapa kata baru seperti qi dan za, yang ditambahkan daftar permainan kata yang lebih baru. Periksa juga ejaannya.",
+        "q4": "Bisakah mencari kata dengan huruf di posisi tertentu?",
+        "a4": "Pakai Diawali atau Diakhiri untuk ujung kata, dan Mengandung untuk deretan huruf di tengah.",
+        "q5": "Apakah bisa untuk bahasa lain?",
+        "a5": "Tidak. Daftar katanya hanya bahasa Inggris, jadi kata bahasa Indonesia tidak akan ditemukan, meskipun halamannya sendiri tersedia dalam delapan bahasa."
+      }
+    },
+    "calculate-concrete": {
+      "copy": {
+        "name": "Cara menghitung kebutuhan beton",
+        "blurb": "Kubikasi dan jumlah sak untuk satu pengecoran.",
+        "title": "Cara menghitung berapa banyak beton yang Anda butuhkan",
+        "lead": "Pesan beton terlalu sedikit dan pengecoran berhenti di tengah jalan; pesan terlalu banyak dan Anda membayar untuk membuangnya. Anda akan mengukur pekerjaan, menyamakan satuan semua ukuran, menghitung volume, menambahkan cadangan untuk sisa, lalu mengubahnya menjadi jumlah sak atau pesanan beton ready mix.",
+        "result": "Volume beton dalam yard kubik, kaki kubik, dan meter kubik, serta jumlah sak beton instan yang perlu dibeli.",
+        "note": "Ukur kedalaman di beberapa titik. Tanah jarang benar-benar rata, dan tambahan setengah inci di seluruh pelat menambah sekitar 12% beton.",
+        "s1t": "Buka Kalkulator beton di cv.cm",
+        "s1b": "Pilih apa yang akan dicor: pelat lantai atau teras, pondasi telapak, dinding, kolom bulat atau lubang tiang, pipa berongga, atau tangga.",
+        "s2t": "Ukur dan samakan satuan semua ukuran",
+        "s2b": "Volume adalah panjang × lebar × tebal, tetapi hanya jika ketiganya dalam satuan yang sama. Pelat 10 × 10 ft setebal 4 in adalah 10 × 10 × 0,333 ft = 33,3 ft³. Kalkulator mengizinkan setiap ukuran memakai satuannya sendiri dan mengonversinya untuk Anda.",
+        "s3t": "Ubah ke satuan pemesanan",
+        "s3b": "Di AS beton dijual per yard kubik: bagi kaki kubik dengan 27, jadi 33,3 ft³ adalah 1,23 yd³. Di tempat lain, termasuk Indonesia, beton dijual per meter kubik; 1 yd³ adalah 0,765 m³.",
+        "s4t": "Tambahkan cadangan untuk sisa",
+        "s4b": "Tambahkan 5% untuk pelat berbekisting di atas dasar yang rata dan 10% atau lebih untuk tanah tidak rata, pondasi yang digali dengan tangan, atau pengecoran pertama. Kalkulator menambahkan 10% kecuali Anda mengubahnya.",
+        "s5t": "Ubah volume menjadi jumlah sak",
+        "s5b": "Satu sak beton instan 80 lb menghasilkan sekitar 0,60 ft³, sak 60 lb 0,45 ft³, dan sak 40 lb 0,30 ft³. Bagi dan bulatkan ke atas: pelat 10 × 10 ft dengan sisa 10% butuh 62 sak 80 lb.",
+        "s6t": "Pilih antara sak dan ready mix",
+        "s6b": "Sak cocok untuk pekerjaan kecil seperti lubang tiang dan anak tangga. Mulai sekitar 1 yd³ (0,75 m³), truk beton ready mix biasanya lebih murah, lebih cepat, dan lebih merata daripada mengaduk puluhan sak dengan tangan.",
+        "diagram1": "Volume = panjang × lebar × tebal, semuanya dalam kaki.",
+        "diagram2": "Tambahkan sisa, lalu bagi dengan hasil satu sak."
+      },
+      "faq": {
+        "q1": "Berapa yard kubik untuk pelat 10 × 10?",
+        "a1": "Dengan tebal 4 in, 1,23 yd³; dengan tebal 6 in, 1,85 yd³. Tambahkan cadangan sisa di atasnya.",
+        "q2": "Seberapa tebal pelat seharusnya?",
+        "a2": "Biasanya 4 in (10 cm) untuk teras dan jalan setapak, dan 5–6 in (12–15 cm) untuk jalan masuk mobil atau tempat parkir kendaraan. Ikuti aturan bangunan setempat untuk pekerjaan struktural.",
+        "q3": "Bagaimana menghitung beton untuk lubang tiang?",
+        "a3": "Pakai Kolom bulat: diameter dan kedalaman lubang, dikali jumlah lubang. Tidak perlu dikurangi untuk tiangnya; cadangan sisa sudah menutupinya.",
+        "q4": "Berapa sak 80 lb dalam satu yard?",
+        "a4": "Sekitar 45, karena 27 ft³ ÷ 0,60 ft³ per sak = 45.",
+        "q5": "Apa bedanya beton dan semen?",
+        "a5": "Semen adalah bubuk pengikat; beton adalah semen yang dicampur pasir, kerikil, dan air. Sak beton instan sudah berisi semua bahan keringnya."
+      }
+    },
+    "graph-functions": {
+      "copy": {
+        "name": "Cara menggambar grafik fungsi online",
+        "blurb": "Ketik y = f(x), lalu baca titik-titiknya.",
+        "title": "Cara menggambar grafik fungsi online",
+        "lead": "Grafik menunjukkan sekilas di mana fungsi bernilai positif, di mana ia berbalik arah, dan di mana ia memotong nol. Anda akan mengetik fungsi dengan cara yang dibaca kalkulator, memilih tampilan yang pas, membaca nilai dari kurva, serta menemukan titik nol dan perpotongannya.",
+        "result": "Grafik satu fungsi atau lebih dengan daftar titik nol, titik potong sumbu y, dan titik perpotongannya.",
+        "note": "Fungsi trigonometri di sini memakai radian, seperti kebanyakan alat grafik: sin(x) memotong nol di kelipatan π ≈ 3,14, bukan di 180.",
+        "s1t": "Buka Kalkulator grafik di cv.cm",
+        "s1b": "Halaman dibuka dengan dua contoh, y = x^2 − 2 dan y = sin(x), jadi Anda bisa melihat bentuk kurva dan titik-titiknya sebelum mengetik fungsi sendiri.",
+        "s2t": "Ketik fungsi dengan cara kalkulator",
+        "s2b": "Tulis pangkat dengan ^ (x^2), akar sebagai sqrt(x), nilai mutlak sebagai abs(x) atau |x|, dan pakai tanda kurung untuk apa pun yang harus menyatu: 1/(x + 1) tidak sama dengan 1/x + 1. 2x dan 3(x + 1) dikalikan tanpa tanda ×.",
+        "s3t": "Tambahkan fungsi lain untuk dibandingkan",
+        "s3b": "Tambah fungsi memberi baris baru dengan warnanya sendiri, sampai enam. Hapus centang pada baris untuk menyembunyikan kurvanya tanpa menghapus yang sudah Anda ketik.",
+        "s4t": "Atur tampilan yang pas",
+        "s4b": "Seret untuk menggeser dan pakai roda mouse, cubitan, atau tombol + dan − untuk memperbesar. Nilai besar butuh tampilan lebih lebar: y = x^3 di x = 10 adalah 1.000. Reset tampilan mengembalikan ke −10 sampai 10.",
+        "s5t": "Baca titik nol, titik potong, dan perpotongan",
+        "s5b": "Di bawah grafik, kalkulator mencantumkan di mana setiap kurva memotong sumbu x (titik nolnya), di mana ia memotong sumbu y, dan di mana dua kurva bertemu. Untuk y = x^2 − 2 titik nolnya ±1,4142136, yaitu ±√2.",
+        "s6t": "Telusuri nilai dan simpan gambarnya",
+        "s6b": "Arahkan ke grafik, atau ketuk, untuk membaca x dan nilai setiap fungsi di sana. Unduh PNG menyimpan grafik untuk PR atau catatan.",
+        "diagram1": "Ketik maksud Anda dengan cara yang dibaca kalkulator.",
+        "diagram2": "Titik nol adalah tempat kurva bertemu sumbu x."
+      },
+      "faq": {
+        "q1": "Bagaimana menggambar grafik y = mx + b?",
+        "a1": "Ketik garisnya dengan angka sebagai pengganti m dan b, misalnya 2x + 1. Gradien menunjukkan seberapa curam garisnya; b adalah tempat garis memotong sumbu y.",
+        "q2": "Kenapa tan(x) tampak terputus-putus?",
+        "a2": "tan(x) tidak punya nilai di π/2 dan setiap π sesudahnya, tempat nilainya melonjak ke tak hingga. Kalkulator membiarkan celah di sana alih-alih menggambar garis tegak yang keliru.",
+        "q3": "Kenapa sqrt(x) berhenti di nol?",
+        "a3": "Akar kuadrat bilangan negatif bukan bilangan real, jadi kurva tidak punya titik di kiri x = 0. ln(x) dan log(x) juga berhenti di sana.",
+        "q4": "Bagaimana menemukan tempat dua grafik bertemu?",
+        "a4": "Ketik kedua fungsi. Perpotongannya di tampilan saat ini tercantum di bawah grafik beserta kedua koordinatnya.",
+        "q5": "Bisakah menggambar x = 3 atau lingkaran?",
+        "a5": "Tidak secara langsung: setiap baris adalah y sebagai fungsi x. Untuk lingkaran berjari-jari 2, gambar sqrt(4 − x^2) dan −sqrt(4 − x^2)."
+      }
+    },
+    "play-piano-online": {
+      "copy": {
+        "name": "Cara bermain piano online",
+        "blurb": "Keyboard komputer Anda sebagai piano.",
+        "title": "Cara bermain piano online dengan keyboard komputer",
+        "lead": "Anda tidak butuh piano sungguhan untuk mencoba melodi, mengecek nada, atau berlatih tangga nada. Anda akan mempelajari tombol komputer mana memainkan nada apa, menemukan C tengah, memainkan akor, menahan nada dengan pedal, dan merekam permainan Anda.",
+        "result": "Piano yang bisa dimainkan di browser, dengan nama nada di tuts dan rekaman yang bisa diputar ulang.",
+        "note": "Banyak keyboard komputer hanya mencatat tiga atau empat tombol yang ditekan bersamaan, jadi akor besar bisa kehilangan satu nada. Layar sentuh tidak punya batas itu.",
+        "s1t": "Buka Piano virtual di cv.cm",
+        "s1b": "Klik, ketuk, atau tekan satu tuts. Browser hanya mengizinkan suara setelah tombol ditekan atau diklik, jadi nada pertama sekaligus menyalakan suara.",
+        "s2t": "Pelajari tombol komputer",
+        "s2b": "Baris bawah Z X C V B N M memainkan tuts putih C sampai B dalam satu oktaf, dengan S D G H J untuk tuts hitam. Baris Q W E R T Y U memainkan oktaf di atasnya, dengan 2 3 5 6 7 untuk tuts hitamnya. Pilih Tombol komputer di Label tuts untuk melihatnya di piano.",
+        "s3t": "Pilih suara dan rentang",
+        "s3b": "Pilih piano, piano elektrik, organ, atau synth, serta berapa oktaf yang ditampilkan. Tombol ◀ dan ▶ menggeser piano turun atau naik satu oktaf; tombol komputer ikut bergeser.",
+        "s4t": "Temukan nadanya",
+        "s4b": "Tuts putih tepat di kiri setiap pasangan dua tuts hitam adalah C. C tengah adalah C4; dengan label Nama nada, ia ditandai di tuts, atau pilih Do Re Mi.",
+        "s5t": "Mainkan akor dan pakai pedal",
+        "s5b": "Tekan beberapa tuts sekaligus untuk akor: C, E, dan G membentuk C mayor. Tahan Space sebagai pedal sustain agar nada tetap berbunyi setelah dilepas, atau centang Sustain agar tetap aktif.",
+        "s6t": "Rekam dan putar ulang",
+        "s6b": "Tekan Rekam, mainkan, lalu Hentikan. Putar mengulang rekaman Anda dengan ketukan yang sama; ganti suaranya dan putar lagi untuk mendengarnya di instrumen lain. Hapus untuk mulai dari awal.",
+        "diagram1": "Dua baris tombol komputer memainkan dua oktaf.",
+        "diagram2": "C adalah tuts putih di kiri dua tuts hitam."
+      },
+      "faq": {
+        "q1": "Di mana C tengah?",
+        "a1": "C yang paling dekat dengan tengah piano penuh, disebut C4. Saat halaman dibuka di komputer, itulah C yang dimainkan tombol Q.",
+        "q2": "Bagaimana memainkan kres atau mol?",
+        "a2": "Pakai tuts hitam: yang tepat di kanan C adalah C♯ (juga D♭). Di keyboard komputer, tuts itu ada di baris atasnya, seperti S dan 2.",
+        "q3": "Apa fungsi pedal sustain?",
+        "a3": "Pedal itu membuat nada tetap berbunyi setelah tuts dilepas, sehingga nada-nada menyatu. Angkat (lepaskan Space) untuk menghentikannya.",
+        "q4": "Bisakah dimainkan di ponsel?",
+        "a4": "Bisa, dengan beberapa jari sekaligus. Di layar sempit hanya satu oktaf yang ditampilkan agar tutsnya cukup lebar; pakai ◀ ▶ untuk menggesernya.",
+        "q5": "Apakah rekamannya disimpan?",
+        "a5": "Rekaman tetap ada di halaman sampai Anda menghapusnya atau keluar. Rekaman tidak diunggah atau disimpan di mana pun."
+      }
+    },
+    "find-slope": {
+      "copy": {
+        "name": "Cara mencari gradien garis",
+        "blurb": "Perubahan tegak per mendatar, dan persamaan garisnya.",
+        "title": "Cara mencari gradien garis dari dua titik",
+        "lead": "Gradien (kemiringan) menunjukkan seberapa curam sebuah garis dan ke mana arahnya: seberapa banyak y berubah untuk setiap langkah x. Anda akan menghitungnya dari dua titik, menulis persamaan garis dalam tiga bentuk yang umum, dan memeriksa kasus khusus seperti garis tegak.",
+        "result": "Gradien sebagai pecahan dan desimal, persamaan garis, titik potongnya, sudut, jarak antara kedua titik, dan titik tengahnya.",
+        "note": "Jaga urutan titik tetap sama di atas dan di bawah: (y₂ − y₁) per (x₂ − x₁). Menukar salah satunya saja membalik tandanya.",
+        "s1t": "Buka Kalkulator gradien di cv.cm",
+        "s1b": "Anda butuh dua titik pada garis, misalnya (1, 2) dan (4, 8). Koordinat bisa berupa bilangan bulat, desimal, atau pecahan.",
+        "s2t": "Cari perubahan tegak dan mendatar",
+        "s2b": "Perubahan tegak adalah perubahan y: 8 − 2 = 6. Perubahan mendatar adalah perubahan x: 4 − 1 = 3. Gradien adalah perubahan tegak dibagi perubahan mendatar: m = 6 ÷ 3 = 2, jadi y naik 2 untuk setiap 1 ke kanan.",
+        "s3t": "Baca tandanya",
+        "s3b": "Gradien positif naik dari kiri ke kanan, gradien negatif turun, dan gradien 0 adalah garis mendatar. Jika perubahan mendatarnya 0, garisnya tegak dan gradiennya tidak terdefinisi.",
+        "s4t": "Cari titik potong sumbu y",
+        "s4b": "Masukkan satu titik ke y = mx + b dan cari b: 2 = 2 × 1 + b, jadi b = 0 dan garisnya y = 2x. Kalkulator menjaga pecahan tetap tepat, jadi gradien 2/3 tidak dibulatkan menjadi 0,67.",
+        "s5t": "Tulis bentuk lainnya",
+        "s5b": "Bentuk titik-gradien langsung memakai satu titik: y − 2 = 2(x − 1). Bentuk baku menaruh x dan y di satu sisi dengan bilangan bulat: 2x − y = 0. Ketiganya menggambarkan garis yang sama.",
+        "s6t": "Pakai hasil tambahannya",
+        "s6b": "Sudut (di sini 63,43°) dan persen kemiringan (200%) menggambarkan kecuraman untuk ramp dan jalan. Jarak antara kedua titik adalah √(Δx² + Δy²) = √45 = 3√5, dan titik tengahnya (2,5; 5).",
+        "diagram1": "Gradien adalah perubahan tegak per mendatar antara kedua titik.",
+        "diagram2": "Tiga cara menulis garis yang sama."
+      },
+      "faq": {
+        "q1": "Apa rumus gradien?",
+        "a1": "m = (y₂ − y₁) ÷ (x₂ − x₁): perubahan y dibagi perubahan x antara dua titik.",
+        "q2": "Berapa gradien garis mendatar?",
+        "a2": "Nol. Perubahan tegaknya 0, jadi y tetap sama berapa pun x-nya, dan persamaannya y = sebuah angka.",
+        "q3": "Apa hubungan gradien dengan sudut?",
+        "a3": "Gradien adalah tangen sudut terhadap sumbu x: gradien 1 adalah 45°, gradien 2 sekitar 63,4°.",
+        "q4": "Apa arti gradien 2/3?",
+        "a4": "y naik 2 satuan untuk setiap 3 satuan ke kanan.",
+        "q5": "Bagaimana mengubah gradien menjadi persen kemiringan?",
+        "a5": "Kalikan dengan 100. Gradien 0,05 adalah kemiringan 5%: naik 5 m untuk setiap 100 m mendatar."
+      }
+    }
+  },
+  "svg": {
+    "unscramble-words": {
+      "rack": "Huruf Anda",
+      "blank": "kosong",
+      "words": "Kata",
+      "starts": "Diawali",
+      "ends": "Diakhiri",
+      "kept": "Disimpan",
+      "dropped": "Dibuang"
+    },
+    "calculate-concrete": {
+      "length": "Panjang",
+      "width": "Lebar",
+      "thickness": "Tebal",
+      "waste": "Sisa",
+      "bag": "per sak",
+      "bags": "sak"
+    },
+    "graph-functions": {
+      "write": "Maksud Anda",
+      "type": "Ketik",
+      "zero": "Titik nol",
+      "intercept": "Titik potong y"
+    },
+    "play-piano-online": {
+      "lower": "Oktaf bawah",
+      "upper": "Oktaf atas",
+      "middle": "C tengah",
+      "twoBlack": "dua tuts hitam",
+      "threeBlack": "tiga tuts hitam"
+    },
+    "find-slope": {
+      "rise": "tegak",
+      "run": "mendatar",
+      "slopeIntercept": "Gradien-titik potong",
+      "pointSlope": "Titik-gradien",
+      "standard": "Baku"
+    }
+  }
+}

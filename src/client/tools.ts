@@ -952,4 +952,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountRandomLetter(host);
     return m.unmountRandomLetter;
   },
+  "word-unscrambler": async (host, ctx) => {
+    const m = await import("./word-unscrambler/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountWordUnscrambler(host);
+    return m.unmountWordUnscrambler;
+  },
+  "concrete": async (host, ctx) => {
+    const m = await import("./concrete/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountConcrete(host);
+    return m.unmountConcrete;
+  },
+  "graphing-calculator": async (host, ctx) => {
+    const m = await import("./graphing-calculator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGraphingCalculator(host);
+    return m.unmountGraphingCalculator;
+  },
+  "piano": async (host, ctx) => {
+    const m = await import("./piano/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPiano(host);
+    return m.unmountPiano;
+  },
+  "slope": async (host, ctx) => {
+    const m = await import("./slope/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSlope(host);
+    return m.unmountSlope;
+  },
 };

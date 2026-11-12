@@ -289,3 +289,13 @@ GPT Image 2.6 Flare image-to-image on kie.ai (Codex at its usage limit until 202
 - `area`: she stretches a pastel tape measure along a pink floor plan with a cream rectangle, a pink circle and a small triangle; pencil and ruler nearby.
 - `volume`: she pours sparkling pink water into a clear measuring cube; a pink cylinder can, a cream sphere and a small cone on the desk; a blank measuring cup.
 - `random-letter`: she lifts one tile from a pink drawstring bag of cream tiles showing only hearts and stars (no real letters); tiles tumble on the desk.
+
+## Word unscrambler, concrete calculator, graphing calculator, virtual piano, slope calculator (2026-11-12)
+
+GPT Image 2.6 Flare image-to-image on kie.ai (Codex at its usage limit until 2026-11-13), refs `dice-sweet.jpg` + `metronome-sweet.jpg`, 16:9 2K, same base prompt as above. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `word-unscrambler`: chunky cream word-game tiles (blank or hearts and stars, never letters) tumble in an arc above her hands; a pink tile rack and a magnifying glass.
+- `concrete`: a tiny pink hard hat; she smooths a small fresh slab in a wooden frame with a pink trowel; a pink wheelbarrow and two plain premix sacks with ribbons.
+- `graphing-calculator`: she points a stylus at a glowing translucent graph panel with a pink parabola and a lilac wave crossing at glowing dots; no numbers.
+- `piano`: she plays a small ivory-and-pink toy grand piano; a pastel computer keyboard beside it; notes and hearts float up; blank music sheet.
+- `slope`: she slides a toy car down a pastel ramp on a grid board, a cream right triangle marking rise and run, glowing dots at the ends; a pink set square.

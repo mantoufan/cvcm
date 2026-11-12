@@ -117,6 +117,7 @@ describe("agent discovery files", () => {
       "src/client/games/player.ts": "HEAD request for a ROM file",
       "src/client/device/ui.ts": "reads the visitor's own IP address",
       "src/client/decode.ts": "decodes a local image with new Image()",
+      "src/client/word-unscrambler/ui.ts": "downloads the static ENABLE word list (/words/enable.txt)",
       "src/client/analytics.ts": "loads Google Analytics on tracked pages (src/shared/analytics.ts)",
     };
     const files = [...sourceFiles(join(root, "src/client")), ...sourceFiles(join(root, "src/shared"))]
