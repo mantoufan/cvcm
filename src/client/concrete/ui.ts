@@ -169,7 +169,7 @@ export function mountConcrete(host: HTMLElement): void {
       `${t("concrete.waste")}: ${waste.value || "0"}%`,
       `${t("concrete.total")}: ${main}`,
       ...rows.map(([k, v]) => `${k}: ${v}`),
-      ...bagRows.map((b) => `${t("concrete.bagOf", { size: b.label })}: ${b.count}`),
+      ...bagRows.map((b) => `${t("concrete.bagOf", { size: b.label })}: ${f(b.count)}`),
     ].join("\n");
   };
 

@@ -11,17 +11,20 @@ const LIST_URL = "/words/enable.txt";
 let words: Promise<string[]> | null = null;
 
 function loadWords(): Promise<string[]> {
-  words ??= fetch(LIST_URL)
+  if (words) return words;
+  const load: Promise<string[]> = fetch(LIST_URL)
     .then((r) => {
       if (!r.ok) throw new Error(String(r.status));
       return r.text();
     })
     .then(parseWordList)
     .catch((e: unknown) => {
-      words = null;
+      // Only this load is forgotten, so a retry can start; a newer one already under way is left alone.
+      if (words === load) words = null;
       throw e;
     });
-  return words;
+  words = load;
+  return load;
 }
 
 /** Any length, then every length a rack of MAX_LETTERS can make. */
@@ -145,8 +148,6 @@ export function mountWordUnscrambler(host: HTMLElement): void {
     cleanup: () => {
       alive = false;
       clearTimeout(timer);
-      // Several MB of words: let them go when the page closes (the file stays in the HTTP cache for next time).
-      words = null;
       copyBtn = null;
     },
   };

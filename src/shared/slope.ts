@@ -62,7 +62,8 @@ export function parseCoord(raw: string, locale: string): Q | null | undefined {
   const mixed = /^(-?)(\d+)\s+(\d+)\s*\/\s*(\d+)$/.exec(text);
   if (mixed) {
     const d = BigInt(mixed[4]);
-    if (d === 0n || mixed[2].length + mixed[3].length + mixed[4].length > MAX_DIGITS) return null;
+    // A mixed number's fraction is proper: "1 5/2" is a typo, not 3 1/2.
+    if (d === 0n || BigInt(mixed[3]) >= d || mixed[2].length + mixed[3].length + mixed[4].length > MAX_DIGITS) return null;
     const v = add(q(BigInt(mixed[2])), q(BigInt(mixed[3]), d));
     return mixed[1] ? q(-v.n, v.d) : v;
   }

@@ -196,7 +196,8 @@ function compile(row: Row): void {
 
 function resize(): void {
   if (!s) return;
-  const w = Math.max(240, Math.round(s.wrap.clientWidth || 640));
+  // The canvas is 100% of the wrap, so its logical width must be the wrap's, however narrow (else pan and trace drift).
+  const w = Math.max(1, Math.round(s.wrap.clientWidth || 640));
   const hgt = Math.round(w * HEIGHT_RATIO);
   const dpr = Math.min(3, window.devicePixelRatio || 1);
   // A move to a screen with another pixel ratio needs a new bitmap even at the same CSS size.
@@ -416,6 +417,13 @@ function draw(target?: HTMLCanvasElement): void {
     const key = `${viewKey()}|${per}|${row.input.value}`;
     if (row.runs?.key !== key) row.runs = { key, runs: sampleCurve(row.fn!, v, w * per) };
     for (const run of row.runs.runs) {
+      // A lone point (sqrt(-x^2) at 0, a sliver between gaps) has no segment to stroke: draw it as a dot.
+      if (run.length === 1) {
+        const [x, y] = run[0];
+        ctx.moveTo(X(x) + 1.5, Y(y));
+        ctx.arc(X(x), Y(y), 1.5, 0, Math.PI * 2);
+        continue;
+      }
       run.forEach(([x, y], i) => {
         // Clamp far-off points so the path stays drawable; the jump detector already split real breaks.
         const py = Math.max(-hgt * 4, Math.min(hgt * 5, Y(y)));
@@ -487,7 +495,9 @@ function listPoints(): void {
   }
   // Too many to list (sin x zoomed far out): keep those nearest the middle of the view, and say there are more.
   const mid = (v.xMin + v.xMax) / 2;
-  const shown = items.length > MAX_POINTS ? [...items].sort((p, q) => Math.abs(p.x - mid) - Math.abs(q.x - mid)).slice(0, MAX_POINTS) : items;
+  const shown = items.length > MAX_POINTS
+    ? [...items].sort((p, q) => Math.abs(p.x - mid) - Math.abs(q.x - mid)).slice(0, MAX_POINTS).sort((p, q) => p.x - q.x)
+    : items;
   s.points.replaceChildren(
     ...(shown.length
       ? shown.map((it) => h("li", null, h("span", { class: "graph-swatch", style: { background: it.color }, "aria-hidden": "true" }), it.text))

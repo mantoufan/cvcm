@@ -316,6 +316,7 @@ describe("slope", () => {
     expect(P("−2")).toEqual(q(-2n));
     expect(P("0.0000005")).toEqual(q(1n, 2_000_000n));
     expect(parseCoord("1e-25", "en")).toBeNull();
+    expect(parseCoord("1 5/2", "en")).toBeNull();
     expect(parseCoord("2,5", "es")).toEqual(q(5n, 2n));
     expect(parseCoord("", "en")).toBeUndefined();
     expect(parseCoord("1/0", "en")).toBeNull();

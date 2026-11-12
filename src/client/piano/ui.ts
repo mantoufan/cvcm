@@ -162,7 +162,7 @@ export function mountPiano(host: HTMLElement): void {
   keysEl.addEventListener("contextmenu", (e) => e.preventDefault());
   window.addEventListener("keydown", onKeyDown);
   window.addEventListener("keyup", onKeyUp);
-  window.addEventListener("blur", releaseAll);
+  window.addEventListener("blur", silenceAll);
   document.addEventListener("visibilitychange", onHidden);
   buildKeys();
   syncTake();
@@ -183,14 +183,22 @@ export function unmountPiano(): void {
   for (const v of s.voices.values()) v.kill();
   window.removeEventListener("keydown", onKeyDown);
   window.removeEventListener("keyup", onKeyUp);
-  window.removeEventListener("blur", releaseAll);
+  window.removeEventListener("blur", silenceAll);
   document.removeEventListener("visibilitychange", onHidden);
   void s.ctx?.close().catch(() => undefined);
   s = null;
 }
 
 function onHidden(): void {
-  if (document.hidden) releaseAll();
+  if (document.hidden) silenceAll();
+}
+
+/** Leaving the window or tab: let go of every key and stop every note, Sustain or not (an organ would drone on). */
+function silenceAll(): void {
+  if (!s) return;
+  releaseAll();
+  for (const midi of [...s.voices.keys()]) stopVoice(midi);
+  s.pedalled.clear();
 }
 
 function buildKeys(): void {
@@ -474,8 +482,20 @@ function onControl(e: KeyboardEvent): boolean {
   return !!(e.target as HTMLElement | null)?.closest?.("button, input, select, textarea, a, [contenteditable]");
 }
 
+/** Lets go of every note a computer key holds. */
+function releaseKeys(): void {
+  if (!s) return;
+  for (const [midi, holders] of s.holders) for (const src of [...holders]) if (src.startsWith("k")) release(midi, src);
+}
+
 function onKeyDown(e: KeyboardEvent): void {
-  if (!s || e.ctrlKey || e.metaKey || e.altKey || typing(e)) return;
+  if (!s) return;
+  // macOS sends no keyup for keys let go while Cmd is down, so a shortcut releases the keys it could strand.
+  if (e.metaKey || e.ctrlKey || e.altKey) {
+    releaseKeys();
+    return;
+  }
+  if (typing(e)) return;
   if (e.code === "Space") {
     // A focused button, checkbox or link keeps Space for itself (keyboard users press them with it).
     if (onControl(e)) return;
