@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { describeCron } from "../../shared/cron";
 import { debounce } from "../session";
 
@@ -24,7 +23,6 @@ export function mountCron(host: HTMLElement): void {
   outEl = h("p", { class: "timestamp-out", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("cron.back")),
       h("h1", null, t("cron.title")),
       h("p", { class: "lede" }, t("cron.privacyNote")),
     ),

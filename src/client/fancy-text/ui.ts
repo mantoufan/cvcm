@@ -1,8 +1,7 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
+import { t } from "../i18n";
 import { debounce } from "../session";
-import { appHref } from "../../shared/path";
 import { FANCY_STYLES, MAX_FANCY, fancy } from "../../shared/fancy-text";
 
 let inputEl: HTMLTextAreaElement | null = null;
@@ -24,7 +23,6 @@ export function mountFancyText(host: HTMLElement): void {
   listEl = h("div", { class: "fancy-list", "data-out": "styles" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("fancyText.back")),
       h("h1", null, t("fancyText.title")),
       h("p", { class: "lede" }, t("fancyText.privacyNote")),
     ),

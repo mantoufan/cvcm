@@ -1,7 +1,6 @@
 import { armAudio, resumeIfPaused } from "../audio";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { FADE_OUT_S, NOISE_COLORS, TIMER_MINUTES, isNoiseColor, noiseLoop, timerText, type NoiseColor } from "../../shared/noise";
 
 /** Fade in on play, and the crossfade when switching colour, in seconds. */
@@ -40,7 +39,6 @@ export function mountWhiteNoise(host: HTMLElement): void {
   aboutEl = h("p", { class: "hint", "data-out": "about" }, t("whiteNoise.about_white"));
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("whiteNoise.back")),
       h("h1", null, t("whiteNoise.title")),
       h("p", { class: "lede" }, t("whiteNoise.privacyNote")),
     ),

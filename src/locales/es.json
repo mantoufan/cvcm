@@ -635,6 +635,8 @@
   },
   "brand": "cv.cm",
   "nav": {
+    "home": "Inicio",
+    "breadcrumb": "Ruta de navegación",
     "tools": "Herramientas",
     "privacy": "En el dispositivo",
     "share": "Compartir",
@@ -1345,7 +1347,6 @@
   },
   "watermark": {
     "title": "Añadir marca de agua a fotos",
-    "back": "Todas las herramientas",
     "dropTitle": "Suelta imágenes aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
     "dropTypes": "PNG, JPEG, WebP, GIF",
@@ -1438,7 +1439,6 @@
   },
   "collage": {
     "title": "Creador de collages de fotos",
-    "back": "Todas las herramientas",
     "dropTitle": "Suelta fotos aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
     "dropTypes": "PNG, JPEG, WebP, GIF",
@@ -1483,7 +1483,6 @@
   },
   "clip": {
     "title": "Portapapeles en línea",
-    "back": "Todas las herramientas",
     "privacyNote": "Texto en D1, archivos en S3. Se borra a las 10 vistas o a las 24 horas. Sin cuenta.",
     "bodyLabel": "Texto",
     "placeholder": "Pega texto o HTML, o suelta archivos aquí…",
@@ -1552,7 +1551,6 @@
   },
   "convert": {
     "title": "Convertir HEIC, WebP, JPG, PNG",
-    "back": "Todas las herramientas",
     "dropTitle": "Suelta imágenes aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
     "dropTypes": "HEIC, PNG, JPEG, WebP, GIF, SVG, BMP, ICO, AVIF",
@@ -1614,7 +1612,6 @@
   },
   "imagePdf": {
     "title": "JPG / PNG a PDF",
-    "back": "Todas las herramientas",
     "dropTitle": "Suelta imágenes aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
     "dropTypes": "PNG, JPEG, WebP, GIF, HEIC",
@@ -1640,7 +1637,6 @@
   },
   "audio": {
     "title": "Convertir MP3 a WAV",
-    "back": "Todas las herramientas",
     "privacyNote": "El audio se decodifica en esta pestaña y se guarda como WAV. Nada se sube.",
     "dropTitle": "Suelta audio aquí",
     "dropHint": "o haz clic para elegir",
@@ -1662,7 +1658,6 @@
   },
   "data": {
     "title": "Formateador JSON",
-    "back": "Todas las herramientas",
     "privacyNote": "JSON, CSV, Base64 y Markdown se quedan en esta pestaña.",
     "mode": "Conversión",
     "input": "Entrada",
@@ -5262,7 +5257,6 @@
   },
   "qr": {
     "title": "Generador de códigos QR gratis",
-    "back": "Todas las herramientas",
     "privacyNote": "El QR se dibuja en esta pestaña. Nada se sube.",
     "input": "Texto o URL",
     "placeholder": "https://cv.cm",
@@ -5280,7 +5274,6 @@
   },
   "password": {
     "title": "Generador de contraseñas",
-    "back": "Todas las herramientas",
     "privacyNote": "Web Crypto las genera en esta pestaña. Nada se sube.",
     "options": "Opciones",
     "length": "Longitud",
@@ -5297,7 +5290,6 @@
   },
   "wordCount": {
     "title": "Contador de palabras",
-    "back": "Todas las herramientas",
     "privacyNote": "El recuento queda en esta pestaña. Nada se sube.",
     "input": "Texto",
     "placeholder": "Pega o escribe…",
@@ -5314,7 +5306,6 @@
   },
   "resize": {
     "title": "Redimensionar imagen",
-    "back": "Todas las herramientas",
     "privacyNote": "El cambio de tamaño y la compresión quedan en esta pestaña. Nada se sube.",
     "dropTitle": "Suelta una imagen aquí",
     "dropHint": "o haz clic · pega con Ctrl/⌘ V",
@@ -5343,7 +5334,6 @@
   },
   "crop": {
     "title": "Recortar imagen",
-    "back": "Todas las herramientas",
     "privacyNote": "El recorte queda en esta pestaña. Nada se sube.",
     "dropTitle": "Suelta una foto aquí",
     "dropHint": "o haz clic · pega con Ctrl/⌘ V",
@@ -5361,7 +5351,6 @@
   },
   "color": {
     "title": "Selector de color",
-    "back": "Todas las herramientas",
     "privacyNote": "Los colores quedan en esta pestaña. Nada se sube.",
     "values": "Valores",
     "hex": "Hex",
@@ -5378,7 +5367,6 @@
   },
   "pdfJpg": {
     "title": "PDF a JPG",
-    "back": "Todas las herramientas",
     "privacyNote": "Las páginas se dibujan en esta pestaña. Nada se sube.",
     "dropTitle": "Suelta un PDF aquí",
     "dropHint": "o haz clic para elegir",
@@ -5401,7 +5389,6 @@
   },
   "mergePdf": {
     "title": "Unir archivos PDF",
-    "back": "Todas las herramientas",
     "privacyNote": "La unión queda en esta pestaña. Nada se sube.",
     "dropTitle": "Suelta PDFs aquí",
     "dropHint": "o elige varios archivos",
@@ -5421,7 +5408,6 @@
     "working": "Uniendo…"
   },
   "learn": {
-    "back": "Todas las lecciones",
     "minutes": "{n} min",
     "resultLabel": "Resultado de hoy",
     "practiceLabel": "Ficha de práctica",
@@ -8214,7 +8200,6 @@
   },
   "compressPdf": {
     "title": "Comprimir PDF",
-    "back": "Todas las herramientas",
     "privacyNote": "Las páginas se recodifican en esta pestaña. Nada se sube.",
     "dropTitle": "Suelta un PDF aquí",
     "dropHint": "o haz clic para elegir",
@@ -8236,7 +8221,6 @@
   },
   "splitPdf": {
     "title": "Dividir PDF",
-    "back": "Todas las herramientas",
     "privacyNote": "La división queda en esta pestaña. Nada se sube.",
     "dropTitle": "Suelta un PDF aquí",
     "dropHint": "o haz clic para elegir",
@@ -8257,7 +8241,6 @@
   },
   "names": {
     "title": "Generador de nombres y usuarios",
-    "back": "Todas las herramientas",
     "privacyNote": "Los nombres se eligen al azar aquí. No son identidades reales.",
     "options": "Opciones",
     "kind": "Tipo",
@@ -8271,7 +8254,6 @@
   },
   "timezone": {
     "title": "Conversor de zonas horarias",
-    "back": "Todas las herramientas",
     "privacyNote": "La conversión usa zonas IANA en esta pestaña. Nada se sube.",
     "options": "Opciones",
     "from": "Desde",
@@ -8287,7 +8269,6 @@
   },
   "lorem": {
     "title": "Generador de lorem ipsum",
-    "back": "Todas las herramientas",
     "privacyNote": "El texto de relleno se arma en esta pestaña. Nada se sube.",
     "options": "Opciones",
     "kind": "Tipo",
@@ -8302,7 +8283,6 @@
   },
   "units": {
     "title": "Conversor de unidades",
-    "back": "Todas las herramientas",
     "privacyNote": "La conversión usa factores SI en esta pestaña. Nada se sube.",
     "options": "Opciones",
     "kindLabel": "Tipo",
@@ -8325,7 +8305,6 @@
   },
   "barcode": {
     "title": "Generador de códigos de barras gratis",
-    "back": "Todas las herramientas",
     "privacyNote": "El código se dibuja en esta pestaña. Nada se sube.",
     "input": "Texto o dígitos",
     "placeholder": "CVCM",
@@ -8346,7 +8325,6 @@
   },
   "meme": {
     "title": "Generador de memes",
-    "back": "Todas las herramientas",
     "privacyNote": "Los textos se dibujan en esta pestaña. Nada se sube.",
     "dropTitle": "Suelta una foto aquí",
     "dropHint": "o haz clic para elegir · pega con Ctrl/⌘ V",
@@ -8367,7 +8345,6 @@
   },
   "tts": {
     "title": "Texto a voz",
-    "back": "Todas las herramientas",
     "privacyNote": "La reproducción usa voces de este dispositivo. Nada se sube.",
     "input": "Texto",
     "placeholder": "Pega o escribe texto para oírlo…",
@@ -8389,7 +8366,6 @@
   },
   "invoice": {
     "title": "Generador de facturas",
-    "back": "Todas las herramientas",
     "privacyNote": "El PDF se arma en esta pestaña. Nada se sube. No es un formulario fiscal.",
     "hint": "La vista previa cambia al escribir. Descarga un PDF A4.",
     "download": "Descargar PDF",
@@ -8423,7 +8399,6 @@
   },
   "signature": {
     "title": "Generador de firmas",
-    "back": "Todas las herramientas",
     "privacyNote": "El dibujo queda en esta pestaña. Nada se sube. No es una e-sign legal.",
     "pad": "Bloc",
     "hint": "Dibuja con ratón, lápiz o dedo. Descarga un PNG.",
@@ -8437,7 +8412,6 @@
   },
   "diff": {
     "title": "Comparador de textos",
-    "back": "Todas las herramientas",
     "privacyNote": "La comparación queda en esta pestaña. Nada se sube.",
     "left": "Original",
     "right": "Cambiado",
@@ -8453,7 +8427,6 @@
   },
   "uuid": {
     "title": "Generador de UUID",
-    "back": "Todas las herramientas",
     "privacyNote": "Los UUID se eligen al azar aquí con Web Crypto. Nada se sube.",
     "options": "Opciones",
     "count": "Cantidad",
@@ -8466,7 +8439,6 @@
   },
   "regex": {
     "title": "Probador de regex",
-    "back": "Todas las herramientas",
     "privacyNote": "El probador corre en esta pestaña. Nada se sube.",
     "options": "Patrón",
     "pattern": "Expresión regular",
@@ -8487,7 +8459,6 @@
   },
   "favicon": {
     "title": "Generador de favicon",
-    "back": "Todas las herramientas",
     "privacyNote": "La foto se queda en esta pestaña. Nada se sube.",
     "filesTitle": "Foto",
     "dropTitle": "Suelta una foto",
@@ -8508,7 +8479,6 @@
   },
   "audioCutter": {
     "title": "Cortador de audio",
-    "back": "Todas las herramientas",
     "privacyNote": "El archivo se queda en esta pestaña. Nada se sube.",
     "filesTitle": "Audio",
     "dropTitle": "Suelta el audio aquí",
@@ -8529,7 +8499,6 @@
   },
   "timestamp": {
     "title": "Convertidor de timestamp",
-    "back": "Todas las herramientas",
     "privacyNote": "La conversión queda en esta pestaña. Nada se sube.",
     "options": "Entrada",
     "input": "Timestamp o fecha",
@@ -8550,7 +8519,6 @@
   },
   "rotateTool": {
     "title": "Rotar imagen",
-    "back": "Todas las herramientas",
     "privacyNote": "La foto se queda en esta pestaña. Nada se sube.",
     "filesTitle": "Foto",
     "dropTitle": "Suelta una foto",
@@ -8575,7 +8543,6 @@
   },
   "exif": {
     "title": "Quitar EXIF",
-    "back": "Todas las herramientas",
     "privacyNote": "La foto se queda en esta pestaña. Nada se sube.",
     "filesTitle": "Foto",
     "dropTitle": "Suelta una foto",
@@ -8595,7 +8562,6 @@
   },
   "audioJoiner": {
     "title": "Unir audio",
-    "back": "Todas las herramientas",
     "privacyNote": "Los archivos se quedan en esta pestaña. Nada se sube.",
     "filesTitle": "Clips",
     "dropTitle": "Suelta el audio aquí",
@@ -8615,7 +8581,6 @@
   },
   "hexRgb": {
     "title": "HEX a RGB",
-    "back": "Todas las herramientas",
     "privacyNote": "La conversión queda en esta pestaña. Nada se sube.",
     "options": "Color",
     "input": "HEX, RGB o HSL",
@@ -8631,7 +8596,6 @@
   },
   "xmlJson": {
     "title": "XML a JSON",
-    "back": "Todas las herramientas",
     "privacyNote": "La conversión queda en esta pestaña. Nada se sube.",
     "options": "Dirección",
     "xmlJson": "XML → JSON",
@@ -8646,7 +8610,6 @@
   },
   "hash": {
     "title": "Generador de hash",
-    "back": "Todas las herramientas",
     "privacyNote": "El hash queda en esta pestaña. Nada se sube.",
     "options": "Algoritmo",
     "algo": "Hash",
@@ -8662,7 +8625,6 @@
   },
   "yamlJson": {
     "title": "YAML a JSON",
-    "back": "Todas las herramientas",
     "privacyNote": "La conversión queda en esta pestaña. Nada se sube.",
     "options": "Dirección",
     "yamlJson": "YAML → JSON",
@@ -8677,7 +8639,6 @@
   },
   "caseTool": {
     "title": "Convertidor de mayúsculas",
-    "back": "Todas las herramientas",
     "privacyNote": "La conversión queda en esta pestaña. Nada se sube.",
     "options": "Mayúsculas",
     "input": "Entrada",
@@ -8696,7 +8657,6 @@
   },
   "jwt": {
     "title": "Decodificador JWT",
-    "back": "Todas las herramientas",
     "privacyNote": "La decodificación queda en esta pestaña. No se verifica la firma.",
     "options": "Token",
     "note": "Solo decodifica. No comprueba firmas ni confía en el emisor.",
@@ -8714,7 +8674,6 @@
   },
   "screenshot": {
     "title": "Editor de captura",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "filesTitle": "Foto",
     "dropTitle": "Suelta una captura",
@@ -8736,7 +8695,6 @@
   },
   "percent": {
     "title": "Calculadora de porcentaje",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Valores",
     "a": "A",
@@ -8753,7 +8711,6 @@
   },
   "random": {
     "title": "Generador de números aleatorios",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Rango",
     "min": "Mín.",
@@ -8766,7 +8723,6 @@
   },
   "html": {
     "title": "Codificar HTML",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Dirección",
     "encode": "Codificar",
@@ -8779,7 +8735,6 @@
   },
   "cron": {
     "title": "Explicador de cron",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Expresión",
     "input": "Cron",
@@ -8793,7 +8748,6 @@
   },
   "slug": {
     "title": "Generador de slug",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "input": "Título",
     "output": "Slug",
@@ -8803,7 +8757,6 @@
   },
   "portraitSim": {
     "title": "Simulador de retrato",
-    "back": "Todas las herramientas",
     "privacyNote": "Las placas son de cv.cm. Nada se sube. Las descargas se quedan en tu dispositivo.",
     "lede": "Cambia persona, pose y escena. Ajusta diafragma, obturador e ISO como en una cámara.",
     "people": "Persona",
@@ -8896,7 +8849,6 @@
   },
   "age": {
     "title": "Calculadora de edad",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Fechas",
     "birth": "Fecha de nacimiento",
@@ -8913,7 +8865,6 @@
   },
   "bmi": {
     "title": "Calculadora de IMC",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Cuerpo",
     "kg": "Kilogramos",
@@ -8931,7 +8882,6 @@
   },
   "binary": {
     "title": "Convertidor binario",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Dirección",
     "to": "Texto → binario",
@@ -8945,7 +8895,6 @@
   },
   "tip": {
     "title": "Calculadora de propina",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Cuenta",
     "bill": "Cuenta",
@@ -8961,7 +8910,6 @@
   },
   "morse": {
     "title": "Código Morse",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Dirección",
     "to": "Texto → Morse",
@@ -8975,7 +8923,6 @@
   },
   "roman": {
     "title": "Números romanos",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Dirección",
     "to": "Número → romano",
@@ -8990,7 +8937,6 @@
   },
   "discount": {
     "title": "Calculadora de descuento",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Precio",
     "price": "Original",
@@ -9004,7 +8950,6 @@
   },
   "countdown": {
     "title": "Cuenta atrás",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Duración",
     "hours": "Horas",
@@ -9017,7 +8962,6 @@
   },
   "loan": {
     "title": "Calculadora de préstamo",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Préstamo",
     "principal": "Capital",
@@ -9033,7 +8977,6 @@
   },
   "stopwatch": {
     "title": "Cronómetro",
-    "back": "Todas las herramientas",
     "privacyNote": "El cronómetro queda en esta pestaña. Nada se sube.",
     "options": "Controles",
     "result": "Transcurrido",
@@ -9043,7 +8986,6 @@
   },
   "compound": {
     "title": "Interés compuesto",
-    "back": "Todas las herramientas",
     "privacyNote": "Las cuentas quedan en esta pestaña. Nada se sube.",
     "options": "Datos",
     "principal": "Capital",
@@ -9063,7 +9005,6 @@
   },
   "vat": {
     "title": "Calculadora de IVA",
-    "back": "Todas las herramientas",
     "privacyNote": "Las cuentas quedan en esta pestaña. Nada se sube.",
     "options": "Importe",
     "amount": "Importe",
@@ -9080,7 +9021,6 @@
     "invalid": "Escribe un importe de 0 o más y un tipo de 0 o más."
   },
   "games": {
-    "back": "Todos los juegos",
     "play": "Jugar",
     "loadRom": "Elegir ROM",
     "loadRomHint": "El archivo se queda en esta pestaña. Una ROM en S3 arranca sola si existe.",
@@ -9186,7 +9126,6 @@
   },
   "reverse": {
     "title": "Invertir texto",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Invertir",
     "input": "Texto",
@@ -9199,7 +9138,6 @@
   },
   "url-encode": {
     "title": "URL encode",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Dirección",
     "to": "Codificar",
@@ -9213,7 +9151,6 @@
   },
   "text-hex": {
     "title": "Texto a hex",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Dirección",
     "to": "Texto → hex",
@@ -9227,7 +9164,6 @@
   },
   "json": {
     "title": "Formateador JSON",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Formato",
     "pretty": "Embellecer",
@@ -9241,7 +9177,6 @@
   },
   "base64": {
     "title": "Base64",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Dirección",
     "to": "Codificar",
@@ -9255,7 +9190,6 @@
   },
   "days": {
     "title": "Días entre fechas",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Fechas",
     "from": "Desde",
@@ -9270,7 +9204,6 @@
   },
   "sort": {
     "title": "Ordenar líneas",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Orden",
     "az": "A → Z",
@@ -9284,7 +9217,6 @@
   },
   "replace": {
     "title": "Buscar y reemplazar",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Buscar",
     "find": "Buscar",
@@ -9299,7 +9231,6 @@
   },
   "words": {
     "title": "Número a palabras",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Número",
     "number": "Entero",
@@ -9310,7 +9241,6 @@
   },
   "add-days": {
     "title": "Sumar días",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Fecha",
     "date": "Fecha de inicio",
@@ -9323,7 +9253,6 @@
   },
   "week": {
     "title": "Número de semana",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Fecha",
     "date": "Fecha",
@@ -9345,7 +9274,6 @@
   },
   "aspect": {
     "title": "Relación de aspecto",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Tamaño",
     "width": "Ancho",
@@ -9359,7 +9287,6 @@
   },
   "workdays": {
     "title": "Días laborables",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Fechas",
     "from": "Fecha inicial",
@@ -9373,7 +9300,6 @@
   },
   "fraction": {
     "title": "Fracciones",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Fracción",
     "mode": "Modo",
@@ -9391,7 +9317,6 @@
   },
   "hourly": {
     "title": "De hora a anual",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube. Solo sueldo bruto, sin impuestos.",
     "options": "Sueldo",
     "mode": "Modo",
@@ -9410,7 +9335,6 @@
   },
   "margin": {
     "title": "Margen de beneficio",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Importes",
     "cost": "Coste",
@@ -9426,7 +9350,6 @@
   },
   "radix": {
     "title": "Conversor de bases",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Número",
     "value": "Entero",
@@ -9440,7 +9363,6 @@
   },
   "duration": {
     "title": "Duración",
-    "back": "Todas las herramientas",
     "privacyNote": "Queda en esta pestaña. Nada se sube.",
     "options": "Duraciones",
     "a": "Primera (H:MM:SS)",
@@ -9457,7 +9379,6 @@
   },
   "tdee": {
     "title": "Calculadora de TDEE",
-    "back": "Todas las herramientas",
     "privacyNote": "Los números se quedan en esta pestaña. No se sube ni se guarda nada.",
     "options": "Tus datos",
     "units": "Unidades",
@@ -9495,7 +9416,6 @@
   },
   "cidr": {
     "title": "Calculadora de subredes",
-    "back": "Todas las herramientas",
     "privacyNote": "Las direcciones se calculan en esta pestaña. No se envía nada.",
     "subnet": "Subred IPv4",
     "input": "Dirección / prefijo",
@@ -9520,7 +9440,6 @@
   },
   "chmod": {
     "title": "Calculadora chmod",
-    "back": "Todas las herramientas",
     "privacyNote": "Funciona en esta pestaña. No se sube nada ni se cambia ningún archivo.",
     "permissions": "Permisos",
     "special": "Bits especiales",
@@ -9552,7 +9471,6 @@
   },
   "typing": {
     "title": "Test de velocidad de escritura",
-    "back": "Todas las herramientas",
     "privacyNote": "Lo que escribes y tu puntuación se quedan en esta página. No se sube ni se guarda nada.",
     "duration": "Tiempo",
     "seconds": "{n} s",
@@ -9574,7 +9492,6 @@
   },
   "image-colors": {
     "title": "Paleta de colores de imagen",
-    "back": "Todas las herramientas",
     "privacyNote": "La imagen se lee en esta pestaña. No se sube nada.",
     "filesTitle": "Imagen",
     "dropTitle": "Suelta una imagen",
@@ -9594,7 +9511,6 @@
     "errorDecode": "No se pudo leer esa imagen."
   },
   "gold": {
-    "back": "Todas las herramientas",
     "title": "Oro",
     "privacyNote": "La cuenta se queda en esta pestaña. No se sube nada y no se consulta un precio.",
     "options": "Peso",
@@ -9624,7 +9540,6 @@
     "toPalladium": "Paladio"
   },
   "silver": {
-    "back": "Todas las herramientas",
     "title": "Plata",
     "privacyNote": "La cuenta se queda en esta pestaña. No se sube nada y no se consulta un precio.",
     "options": "Peso",
@@ -9654,7 +9569,6 @@
     "toPalladium": "Paladio"
   },
   "platinum": {
-    "back": "Todas las herramientas",
     "title": "Platino",
     "privacyNote": "La cuenta se queda en esta pestaña. No se sube nada y no se consulta un precio.",
     "options": "Peso",
@@ -9684,7 +9598,6 @@
     "toPalladium": "Paladio"
   },
   "palladium": {
-    "back": "Todas las herramientas",
     "title": "Paladio",
     "privacyNote": "La cuenta se queda en esta pestaña. No se sube nada y no se consulta un precio.",
     "options": "Peso",
@@ -9714,7 +9627,6 @@
     "toPalladium": "Paladio"
   },
   "oil": {
-    "back": "Todas las herramientas",
     "title": "Cuántos litros tiene un barril de crudo",
     "options": "Volumen",
     "amount": "Cantidad",
@@ -9731,7 +9643,6 @@
     "privacyNote": "La conversión se queda en esta pestaña. No se sube nada y no se consulta un precio."
   },
   "stocks": {
-    "back": "Todas las herramientas",
     "title": "Calcular capitalización y PER",
     "options": "Cifras",
     "price": "Precio",
@@ -10841,7 +10752,6 @@
   },
   "dice": {
     "title": "Tirar dados",
-    "back": "Todas las herramientas",
     "privacyNote": "Las tiradas ocurren en esta pestaña. No se sube nada.",
     "options": "Dados",
     "count": "Número de dados",
@@ -10865,7 +10775,6 @@
   },
   "gpa": {
     "title": "Calculadora de GPA",
-    "back": "Todas las herramientas",
     "privacyNote": "El cálculo se queda en esta pestaña. No se sube nada.",
     "options": "Asignaturas",
     "grade": "Nota",
@@ -10884,7 +10793,6 @@
   },
   "pomodoro": {
     "title": "Temporizador Pomodoro",
-    "back": "Todas las herramientas",
     "privacyNote": "El temporizador corre en esta pestaña. No se sube nada.",
     "options": "Duraciones",
     "focus": "Enfoque (minutos)",
@@ -10905,7 +10813,6 @@
   },
   "sleep": {
     "title": "Calculadora de sueño",
-    "back": "Todas las herramientas",
     "privacyNote": "Las horas se quedan en esta pestaña. No se sube nada.",
     "options": "Tu hora",
     "mode": "Sé mi",
@@ -10925,7 +10832,6 @@
   },
   "bodyFat": {
     "title": "Calculadora de grasa corporal",
-    "back": "Todas las herramientas",
     "privacyNote": "Las medidas se quedan en esta pestaña. No se sube ni se guarda nada.",
     "options": "Medidas",
     "units": "Unidades",
@@ -10962,7 +10868,6 @@
   },
   "contrast": {
     "title": "Comprobador de contraste de color",
-    "back": "Todas las herramientas",
     "privacyNote": "La relación se calcula en esta pestaña. No se sube nada.",
     "options": "Colores",
     "fg": "Color del texto",
@@ -10988,7 +10893,6 @@
   },
   "pace": {
     "title": "Calculadora de ritmo de carrera",
-    "back": "Todas las herramientas",
     "privacyNote": "El cálculo se hace en esta pestaña. No se sube nada.",
     "options": "Carrera",
     "solve": "Calcular",
@@ -11018,7 +10922,6 @@
   },
   "grade": {
     "title": "Calculadora de nota del examen final",
-    "back": "Todas las herramientas",
     "privacyNote": "Los números se quedan en esta pestaña. No se sube nada.",
     "options": "Tus notas",
     "current": "Nota actual (%)",
@@ -11038,7 +10941,6 @@
   },
   "dueDate": {
     "title": "Calculadora de fecha de parto",
-    "back": "Todas las herramientas",
     "privacyNote": "Las fechas se quedan en esta pestaña. No se sube nada.",
     "options": "Tus fechas",
     "mode": "Conozco mi",
@@ -11067,7 +10969,6 @@
   },
   "idealWeight": {
     "title": "Calculadora de peso ideal",
-    "back": "Todas las herramientas",
     "privacyNote": "Los números se quedan en esta pestaña. No se sube nada.",
     "options": "Sobre ti",
     "units": "Unidades",
@@ -11098,7 +10999,6 @@
   },
   "waterIntake": {
     "title": "Calculadora de consumo de agua",
-    "back": "Todas las herramientas",
     "privacyNote": "Los números se quedan en esta pestaña. No se sube nada.",
     "options": "Sobre ti",
     "units": "Unidad de peso",
@@ -11127,7 +11027,6 @@
   },
   "fuelCost": {
     "title": "Calculadora de gasto de combustible",
-    "back": "Todas las herramientas",
     "privacyNote": "El cálculo se hace en esta pestaña. No se sube nada.",
     "options": "Viaje",
     "distance": "Distancia",
@@ -11160,7 +11059,6 @@
   },
   "readingTime": {
     "title": "Calculadora de tiempo de lectura",
-    "back": "Todas las herramientas",
     "privacyNote": "El texto se queda en esta pestaña. No se sube nada.",
     "options": "Texto",
     "text": "Pega tu texto",
@@ -11188,7 +11086,6 @@
   },
   "timeCard": {
     "title": "Calculadora de horas trabajadas",
-    "back": "Todas las herramientas",
     "privacyNote": "Las horas se quedan en esta pestaña. No se sube nada.",
     "options": "Turnos",
     "start": "Entrada",
@@ -11218,7 +11115,6 @@
   },
   "electricity": {
     "title": "Calculadora de consumo eléctrico",
-    "back": "Todas las herramientas",
     "privacyNote": "El cálculo se hace en esta pestaña. No se sube nada.",
     "options": "Aparato",
     "preset": "Aparato",
@@ -11249,7 +11145,6 @@
   },
   "ovulation": {
     "title": "Calculadora de ovulación",
-    "back": "Todas las herramientas",
     "privacyNote": "Las fechas se quedan en esta pestaña. No se sube nada.",
     "options": "Tu ciclo",
     "lastPeriod": "Primer día de la última regla",
@@ -11270,7 +11165,6 @@
   },
   "macro": {
     "title": "Calculadora de macros",
-    "back": "Todas las herramientas",
     "privacyNote": "Los números se quedan en esta pestaña. No se sube nada.",
     "options": "Tu objetivo",
     "kcal": "Calorías de mantenimiento (kcal/día)",
@@ -11302,7 +11196,6 @@
   },
   "caloriesBurned": {
     "title": "Calculadora de calorías quemadas",
-    "back": "Todas las herramientas",
     "privacyNote": "El cálculo se hace en esta pestaña. No se sube nada.",
     "options": "Actividad",
     "activity": "Actividad",
@@ -11350,7 +11243,6 @@
     "errorRun": "Falló el proceso. Recarga la página e inténtalo de nuevo, o usa un archivo más pequeño."
   },
   "removeBg": {
-    "back": "Todas las herramientas",
     "title": "Quitar fondo",
     "privacyNote": "La IA funciona en esta pestaña. Tus fotos nunca se suben.",
     "filesTitle": "Fotos",
@@ -11378,7 +11270,6 @@
     "errorDecode": "No se pudo leer esa imagen."
   },
   "upscaler": {
-    "back": "Todas las herramientas",
     "title": "Ampliar imagen con IA",
     "privacyNote": "La IA funciona en esta pestaña. Tu imagen nunca se sube.",
     "filesTitle": "Imagen",
@@ -11403,7 +11294,6 @@
     "errorDecode": "No se pudo leer esa imagen."
   },
   "stt": {
-    "back": "Todas las herramientas",
     "title": "Voz a texto",
     "privacyNote": "Whisper IA funciona en esta pestaña. Tu audio nunca se sube.",
     "filesTitle": "Audio o vídeo",
@@ -11440,7 +11330,6 @@
     "errorMic": "El micrófono no está disponible. Permítelo en el navegador o suelta un archivo."
   },
   "depthMap": {
-    "back": "Todas las herramientas",
     "title": "Mapa de profundidad",
     "privacyNote": "La IA funciona en esta pestaña. Tu foto nunca se sube.",
     "filesTitle": "Foto",
@@ -11461,7 +11350,6 @@
   },
   "wheel": {
     "title": "Ruleta aleatoria",
-    "back": "Todas las herramientas",
     "privacyNote": "El sorteo ocurre en esta pestaña con Web Crypto. No se sube nada.",
     "entries": "Entradas, una por línea",
     "sample": "Tacos\nEmpanadas\nArepas\nPizza\nCeviche\nTamales",
@@ -11481,7 +11369,6 @@
   },
   "average": {
     "title": "Calculadora de promedio",
-    "back": "Todas las herramientas",
     "privacyNote": "Las cuentas se hacen en esta pestaña. No se sube nada.",
     "numbers": "Números",
     "decimal": "Separador decimal",
@@ -11511,7 +11398,6 @@
   },
   "metronome": {
     "title": "Metrónomo",
-    "back": "Todas las herramientas",
     "privacyNote": "Los clics se generan en tu navegador. No se sube nada.",
     "options": "Tempo",
     "bpm": "Pulsaciones por minuto (BPM)",
@@ -11530,7 +11416,6 @@
   },
   "keyboardTest": {
     "title": "Test de teclado",
-    "back": "Todas las herramientas",
     "privacyNote": "Las pulsaciones solo se muestran en esta pestaña. No se registra ni se sube nada.",
     "focusHint": "Haz clic en el teclado y pulsa teclas. Haz clic fuera para parar.",
     "board": "Mapa del teclado. Pulsa teclas para probarlas.",
@@ -11550,7 +11435,6 @@
   },
   "zodiac": {
     "title": "Signo zodiacal y horóscopo chino",
-    "back": "Todas las herramientas",
     "privacyNote": "Se calcula en esta pestaña. No se sube nada.",
     "options": "Cumpleaños",
     "birthday": "Fecha de nacimiento",
@@ -11610,7 +11494,6 @@
   },
   "clickTest": {
     "title": "Test de CPS",
-    "back": "Todas las herramientas",
     "privacyNote": "Cuenta los clics en esta pestaña. No se sube nada.",
     "options": "Prueba",
     "duration": "Duración",
@@ -11635,7 +11518,6 @@
   },
   "reactionTime": {
     "title": "Test de tiempo de reacción",
-    "back": "Todas las herramientas",
     "privacyNote": "Los tiempos se miden en esta pestaña. No se sube nada.",
     "startTitle": "Haz clic para empezar",
     "startSub": "Espera al verde y haz clic lo más rápido que puedas.",
@@ -11664,7 +11546,6 @@
   },
   "toneGenerator": {
     "title": "Generador de tonos",
-    "back": "Todas las herramientas",
     "privacyNote": "El tono se genera en tu navegador. No se sube nada.",
     "options": "Tono",
     "frequency": "Frecuencia (Hz)",
@@ -11686,7 +11567,6 @@
   },
   "tallyCounter": {
     "title": "Contador de clics",
-    "back": "Todas las herramientas",
     "privacyNote": "Las cuentas se guardan en este navegador. No se sube nada.",
     "options": "Ajustes",
     "step": "Paso",
@@ -11708,7 +11588,6 @@
   },
   "micTest": {
     "title": "Test de micrófono",
-    "back": "Todas las herramientas",
     "privacyNote": "El sonido se queda en esta pestaña. No se sube nada.",
     "options": "Micrófono",
     "device": "Dispositivo de entrada",
@@ -11744,7 +11623,6 @@
   },
   "webcamTest": {
     "title": "Test de webcam",
-    "back": "Todas las herramientas",
     "privacyNote": "El vídeo se queda en esta pestaña. No se sube nada.",
     "options": "Cámara",
     "device": "Cámara",
@@ -11787,7 +11665,6 @@
   },
   "gamepadTest": {
     "title": "Test de mando",
-    "back": "Todas las herramientas",
     "privacyNote": "El mando se lee en esta pestaña. No se sube nada.",
     "options": "Mando",
     "pad": "Mando",
@@ -11814,7 +11691,6 @@
   },
   "deadPixel": {
     "title": "Test de píxeles muertos",
-    "back": "Todas las herramientas",
     "privacyNote": "Funciona en esta pestaña. No se sube nada.",
     "options": "Colores",
     "colors": "Color de prueba",
@@ -11837,7 +11713,6 @@
   },
   "refreshRate": {
     "title": "Test de frecuencia de actualización",
-    "back": "Todas las herramientas",
     "privacyNote": "Se mide en esta pestaña. No se sube nada.",
     "measuring": "Midiendo… deja esta pestaña delante.",
     "near": "Tu pantalla funciona a unos {n} Hz.",
@@ -11858,7 +11733,6 @@
   },
   "touchTest": {
     "title": "Test de pantalla táctil",
-    "back": "Todas las herramientas",
     "privacyNote": "Los toques se dibujan en esta pestaña. No se sube nada.",
     "pad": "Panel de prueba táctil",
     "start": "Toca y dibuja aquí con uno o más dedos",
@@ -11877,7 +11751,6 @@
     "hint": "Desliza por todo el panel: las celdas que quedan vacías marcan una zona muerta. Esc sale de la pantalla completa."
   },
   "v": {
-    "back": "Todas las herramientas",
     "title": "IA de foto a video",
     "privacyNote": "La profundidad con IA y la codificación del video se hacen en esta pestaña. Tu foto nunca se sube.",
     "filesTitle": "Foto",
@@ -11918,7 +11791,6 @@
     "errorGpuReset": "La tarjeta gráfica se reinició durante la exportación. Vuelve a intentarlo."
   },
   "imageGen": {
-    "back": "Todas las herramientas",
     "title": "Generador de imágenes con IA",
     "privacyNote": "La IA funciona con tu tarjeta gráfica en esta pestaña. Tu texto y tus imágenes nunca se suben.",
     "promptLabel": "Describe la imagen",
@@ -11955,7 +11827,6 @@
     "errorRun": "No se pudo dibujar. Recarga la página y vuelve a intentarlo."
   },
   "musicGen": {
-    "back": "Todas las herramientas",
     "title": "Generador de música con IA",
     "privacyNote": "La IA compone en esta pestaña. No se sube nada y la música es tuya.",
     "styleTitle": "Estilo",
@@ -11988,7 +11859,6 @@
   },
   "coinFlip": {
     "title": "Cara o cruz",
-    "back": "Todas las herramientas",
     "privacyNote": "Cada lanzamiento usa un bit aleatorio seguro de tu navegador. No se sube nada.",
     "tapToFlip": "Toca para lanzar",
     "flip": "Lanzar",
@@ -12019,7 +11889,6 @@
   },
   "guitarTuner": {
     "title": "Afinador de guitarra",
-    "back": "Todas las herramientas",
     "privacyNote": "Escucha con tu micrófono en esta pestaña. No se graba ni se sube nada.",
     "options": "Afinador",
     "instrument": "Instrumento",
@@ -12064,7 +11933,6 @@
   },
   "factors": {
     "title": "Divisores de un número",
-    "back": "Todas las herramientas",
     "privacyNote": "Cálculo exacto con números enteros en esta pestaña. No se sube nada.",
     "options": "Número",
     "number": "Número entero (hasta {n} dígitos)",
@@ -12093,7 +11961,6 @@
   },
   "lcmGcf": {
     "title": "Calculadora de mcm y MCD",
-    "back": "Todas las herramientas",
     "privacyNote": "Cálculo exacto con números enteros en esta pestaña. No se sube nada.",
     "options": "Números",
     "numbers": "De 2 a {n} números enteros, separados por comas o espacios",
@@ -12120,7 +11987,6 @@
   },
   "calculator": {
     "title": "Calculadora científica",
-    "back": "Todas las herramientas",
     "privacyNote": "Funciona en esta pestaña. No se sube nada.",
     "expression": "Expresión",
     "keypad": "Teclas de la calculadora",
@@ -12150,7 +12016,6 @@
   },
   "notepad": {
     "title": "Bloc de notas online",
-    "back": "Todas las herramientas",
     "privacyNote": "Se guarda en este navegador mientras escribes. No se sube nada.",
     "placeholder": "Empieza a escribir…",
     "copy": "Copiar todo",
@@ -12173,7 +12038,6 @@
   },
   "markdown": {
     "title": "Vista previa de Markdown",
-    "back": "Todas las herramientas",
     "privacyNote": "Se renderiza en esta pestaña y se guarda en este navegador. No se sube nada.",
     "input": "Markdown",
     "preview": "Vista previa",
@@ -12194,7 +12058,6 @@
   },
   "gradient": {
     "title": "Generador de degradados CSS",
-    "back": "Todas las herramientas",
     "privacyNote": "Funciona en esta pestaña. No se sube nada.",
     "options": "Degradado",
     "type": "Tipo",
@@ -12225,7 +12088,6 @@
   },
   "fancyText": {
     "title": "Generador de letras bonitas",
-    "back": "Todas las herramientas",
     "privacyNote": "Funciona en esta pestaña. No se sube nada.",
     "input": "Tu texto",
     "placeholder": "Escribe algo…",
@@ -12281,7 +12143,6 @@
   },
   "romEmulator": {
     "title": "Emulador online",
-    "back": "Todas las herramientas",
     "privacyNote": "Abre tu ROM y juega en esta pestaña. La consola se detecta a partir del archivo. No se sube nada.",
     "auto": "Detectar del archivo",
     "console": "Consola",
@@ -12296,13 +12157,11 @@
   },
   "flashPlayer": {
     "title": "Flash Player",
-    "back": "Todas las herramientas",
     "privacyNote": "Abre un archivo .swf en esta pestaña con Ruffle. Sin plugin de Flash. No se sube nada.",
     "games": "Juegos Flash gratis"
   },
   "tierList": {
     "title": "Creador de tier list online (ranking)",
-    "back": "Todas las herramientas",
     "privacyNote": "Las imágenes se quedan en esta página y el PNG se crea en tu navegador. No se sube nada.",
     "titleField": "Título del gráfico",
     "titlePlaceholder": "Por ejemplo: mejores snacks",
@@ -12422,7 +12281,6 @@
   },
   "mortgage": {
     "title": "Calculadora de hipoteca",
-    "back": "Todas las herramientas",
     "privacyNote": "Se calcula en esta pestaña. No se sube nada.",
     "options": "Préstamo",
     "price": "Precio de la vivienda",
@@ -12456,7 +12314,6 @@
   },
   "quadratic": {
     "title": "Calculadora de ecuaciones cuadráticas",
-    "back": "Todas las herramientas",
     "privacyNote": "Se resuelve en esta pestaña. No se sube nada.",
     "options": "Coeficientes",
     "copy": "Copiar resultado",
@@ -12487,7 +12344,6 @@
   },
   "teamGenerator": {
     "title": "Generador de equipos aleatorios",
-    "back": "Todas las herramientas",
     "privacyNote": "Se sortea en esta pestaña con Web Crypto. No se sube nada.",
     "options": "Nombres",
     "names": "Nombres, uno por línea o separados por comas (hasta {n})",
@@ -12515,7 +12371,6 @@
   },
   "screenResolution": {
     "title": "¿Cuál es mi resolución de pantalla?",
-    "back": "Todas las herramientas",
     "privacyNote": "Lo lee tu navegador en esta pestaña. No se envía nada.",
     "yours": "Tu resolución de pantalla",
     "physical": "Resolución de pantalla (píxeles reales)",
@@ -12536,7 +12391,6 @@
   },
   "alarm": {
     "title": "Alarma online",
-    "back": "Todas las herramientas",
     "privacyNote": "Funciona en esta pestaña. No se sube nada.",
     "options": "Alarma",
     "time": "Hora de la alarma",
@@ -12563,7 +12417,6 @@
   },
   "whiteNoise": {
     "title": "Generador de ruido blanco",
-    "back": "Todas las herramientas",
     "privacyNote": "El ruido se genera en esta pestaña. No se sube nada.",
     "options": "Sonido",
     "color": "Color del ruido",
@@ -12591,7 +12444,6 @@
   },
   "decibelMeter": {
     "title": "Decibelímetro",
-    "back": "Todas las herramientas",
     "privacyNote": "Se mide en esta pestaña. No se graba ni se sube nada.",
     "options": "Medidor",
     "weighting": "Ponderación de frecuencia",
@@ -12642,7 +12494,6 @@
   },
   "voiceRecorder": {
     "title": "Grabadora de voz",
-    "back": "Todas las herramientas",
     "privacyNote": "Se graba en esta pestaña. No se sube nada.",
     "options": "Grabación",
     "device": "Micrófono",
@@ -12679,7 +12530,6 @@
   },
   "screenRecorder": {
     "title": "Grabador de pantalla",
-    "back": "Todas las herramientas",
     "privacyNote": "Se graba en esta pestaña. No se sube nada y no hay marca de agua.",
     "options": "Grabación",
     "format": "Formato",
@@ -12718,7 +12568,6 @@
   },
   "triangle": {
     "title": "Calculadora de triángulos",
-    "back": "Todas las herramientas",
     "privacyNote": "Se resuelve en tu navegador. No se sube nada.",
     "options": "Valores conocidos",
     "right": "Triángulo rectángulo (C = 90°)",
@@ -12779,7 +12628,6 @@
   },
   "gifMaker": {
     "title": "Creador de GIF",
-    "back": "Todas las herramientas",
     "privacyNote": "Crea un GIF animado con imágenes o con un video corto. Todo ocurre en esta pestaña; no se sube nada.",
     "filesTitle": "Fotogramas",
     "clear": "Borrar",
@@ -12824,7 +12672,6 @@
   },
   "imageSplitter": {
     "title": "Divisor de imágenes",
-    "back": "Todas las herramientas",
     "privacyNote": "Corta una imagen en una cuadrícula de piezas para una cuadrícula o un carrusel de Instagram, o para imprimir. No se sube nada.",
     "filesTitle": "Imagen",
     "dropTitle": "Suelta una imagen",
@@ -12864,7 +12711,6 @@
   },
   "area": {
     "title": "Calculadora de área",
-    "back": "Todas las herramientas",
     "privacyNote": "Área y perímetro de 12 figuras, con la fórmula, el desarrollo y todas las unidades habituales.",
     "options": "Figura",
     "shape": "Figura",
@@ -12930,7 +12776,6 @@
   },
   "volume": {
     "title": "Calculadora de volumen",
-    "back": "Todas las herramientas",
     "privacyNote": "Volumen y área de la superficie de 12 cuerpos, con el desarrollo, litros, galones y unidades cúbicas.",
     "options": "Cuerpo",
     "shape": "Cuerpo",
@@ -12991,7 +12836,6 @@
   },
   "randomLetter": {
     "title": "Generador de letras aleatorias",
-    "back": "Todas las herramientas",
     "privacyNote": "Saca letras al azar para juegos de palabras, clases y concursos. Todas las letras tienen la misma probabilidad.",
     "options": "Opciones",
     "alphabet": "Alfabeto",
@@ -13031,7 +12875,6 @@
   },
   "wordUnscrambler": {
     "title": "Formar palabras en inglés",
-    "back": "Todas las herramientas",
     "privacyNote": "Escribe tus letras y verás todas las palabras en inglés que forman, para juegos de palabras, crucigramas y anagramas.",
     "letters": "Tus letras",
     "lettersPlaceholder": "p. ej. tesrlan o ca?t",
@@ -13065,7 +12908,6 @@
   },
   "concrete": {
     "title": "Calculadora de concreto",
-    "back": "Todas las herramientas",
     "privacyNote": "Cuánto concreto necesita una losa, una zapata, un muro, una columna o una escalera, y cuántos sacos comprar.",
     "options": "Medidas",
     "shape": "¿Qué vas a verter?",
@@ -13115,7 +12957,6 @@
   },
   "graphingCalculator": {
     "title": "Calculadora gráfica",
-    "back": "Todas las herramientas",
     "privacyNote": "Grafica funciones de x, desplázate y haz zoom, y lee los ceros, los cortes con los ejes y dónde se cruzan las curvas.",
     "functions": "Funciones",
     "expr": "Función de x",
@@ -13140,7 +12981,6 @@
   },
   "piano": {
     "title": "Piano virtual",
-    "back": "Todas las herramientas",
     "privacyNote": "Toca con el teclado de la computadora, el mouse o los dedos. Pulsa una tecla para activar el sonido.",
     "keysLabel": "Teclas del piano",
     "octaveDown": "Bajar una octava",
@@ -13173,7 +13013,6 @@
   },
   "slope": {
     "title": "Calculadora de pendiente",
-    "back": "Todas las herramientas",
     "privacyNote": "Escribe dos puntos para obtener la pendiente, la ecuación de la recta, la distancia y el punto medio, con el desarrollo.",
     "points": "Dos puntos",
     "point1": "Punto 1",

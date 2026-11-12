@@ -2,8 +2,7 @@ import { armAudio } from "../audio";
 import { downloadBlob, h } from "../dom";
 import { setLeaveGuard, syncLeaveGuard } from "../leave-guard";
 import { fixInfiniteDuration } from "../media-duration";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { formatBytes } from "../../shared/resize";
 import { encodeWav } from "../../shared/wav";
 import { rms, toDbfs, meterPercent } from "../../shared/mic";
@@ -52,7 +51,6 @@ export function mountVoiceRecorder(host: HTMLElement): void {
   listEl = h("ol", { class: "rec-list", "data-out": "takes" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("voiceRecorder.back")),
       h("h1", null, t("voiceRecorder.title")),
       h("p", { class: "lede" }, t("voiceRecorder.privacyNote")),
     ),

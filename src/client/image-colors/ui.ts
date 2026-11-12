@@ -1,8 +1,7 @@
 import { copyWithFlash } from "../copy";
 import { decodeImage, drawToCanvas } from "../decode";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { MAX_COLORS, MIN_COLORS, extractPalette, sampleSize, type PaletteColor } from "../../shared/image-colors";
 
 const state = {
@@ -35,7 +34,6 @@ export function mountImageColors(host: HTMLElement): void {
   resetState();
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("image-colors.back")),
       h("h1", null, t("image-colors.title")),
       h("p", { class: "lede" }, t("image-colors.privacyNote")),
     ),

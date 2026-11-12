@@ -1,7 +1,6 @@
 import { convertData, extForMode, type DataMode } from "../../shared/data-convert";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { debounce } from "../session";
 
 const MODES: DataMode[] = [
@@ -52,7 +51,6 @@ export function mountData(host: HTMLElement): void {
   });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("data.back")),
       h("h1", null, t("data.title")),
       h("p", { class: "lede" }, t("data.privacyNote")),
     ),

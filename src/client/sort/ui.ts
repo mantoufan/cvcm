@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { sortLines, type SortMode } from "../../shared/sort";
 import { debounce } from "../session";
 
@@ -26,7 +25,6 @@ export function mountSort(host: HTMLElement): void {
   });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("sort.back")),
       h("h1", null, t("sort.title")),
       h("p", { class: "lede" }, t("sort.privacyNote")),
     ),

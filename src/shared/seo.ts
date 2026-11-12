@@ -868,22 +868,13 @@ export function flashHubSoftwareJsonLd(locale: Locale): Record<string, unknown> 
 export function marketBreadcrumbJsonLd(locale: Locale, id: MarketId | null): Record<string, unknown> {
   const hub = marketHub(locale);
   const items = [
-    { name: "cv.cm", url: pageCanonical(locale, { tool: null }) },
+    { name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) },
     { name: hub.name, url: pageCanonical(locale, { markets: true }) },
   ];
   if (id) {
     items.push({ name: marketCopy(locale, id).name, url: pageCanonical(locale, { markets: true, market: id }) });
   }
-  return {
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: item.name,
-      item: item.url,
-    })),
-  };
+  return breadcrumbList(items);
 }
 
 export function faqJsonLd(
@@ -1026,21 +1017,44 @@ export function toolSoftwareJsonLd(locale: Locale, tool: ToolId): Record<string,
   };
 }
 
-export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<string, unknown> {
-  const items = [
-    { name: "cv.cm", url: pageCanonical(locale, { tool: null }) },
-    { name: lookup(locale, `tools.${tool}.name`), url: pageCanonical(locale, tool) },
-  ];
+function breadcrumbList(items: Array<{ name: string; url: string }>): Record<string, unknown> {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
-    itemListElement: items.map((item, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: item.name,
-      item: item.url,
-    })),
+    itemListElement: items.map((item, i) => ({ "@type": "ListItem", position: i + 1, name: item.name, item: item.url })),
   };
+}
+
+/** Home / Tutorials (/ this tutorial; null is the hub): the trail shown above the heading. */
+export function tutorialBreadcrumbJsonLd(locale: Locale, tutorial: TutorialId | null): Record<string, unknown> {
+  const items = [
+    { name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) },
+    { name: lookup(locale, "nav.learn"), url: pageCanonical(locale, { learn: true }) },
+  ];
+  if (tutorial) items.push({ name: lookup(locale, `learn.${tutorial}.name`), url: pageCanonical(locale, { learn: true, tutorial }) });
+  return breadcrumbList(items);
+}
+
+/** Home / Games (/ console (/ game)): the trail shown above the games hub, a console hub or a game page. */
+export function gameBreadcrumbJsonLd(locale: Locale, consoleId: GameConsoleId | null, id: GameId | null = null): Record<string, unknown> {
+  const items = [
+    { name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) },
+    { name: lookup(locale, "nav.games"), url: pageCanonical(locale, { games: true }) },
+  ];
+  if (consoleId) items.push({ name: lookup(locale, `games.consoles.${consoleId}`), url: pageCanonical(locale, { games: true, console: consoleId }) });
+  if (consoleId && id) items.push({ name: gameCopy(locale, id).name, url: pageCanonical(locale, { games: true, console: consoleId, game: id }) });
+  return breadcrumbList(items);
+}
+
+/**
+ * Home / this tool. The visible trail also shows "Tools", but that is an anchor on the home page, not a page of its
+ * own, so it is left out of the structured data (a BreadcrumbList item should be a distinct URL).
+ */
+export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<string, unknown> {
+  return breadcrumbList([
+    { name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) },
+    { name: lookup(locale, `tools.${tool}.name`), url: pageCanonical(locale, tool) },
+  ]);
 }
 
 function ogImage(seo: SeoInput): string | null {
@@ -1176,6 +1190,15 @@ export function applyHtmlSeo(
   } else if (seo.markets) {
     tags.push(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(marketBreadcrumbJsonLd(locale, seo.market ?? null)).replace(/</g, "\\u003c")}</script>`,
+    );
+  } else if (seo.learn) {
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(tutorialBreadcrumbJsonLd(locale, seo.tutorial ?? null)).replace(/</g, "\\u003c")}</script>`,
+    );
+  } else if (seo.games) {
+    const consoleId = seo.game ? gameById(seo.game)?.console ?? null : seo.console ?? null;
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(gameBreadcrumbJsonLd(locale, consoleId, seo.game ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
   if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang) {

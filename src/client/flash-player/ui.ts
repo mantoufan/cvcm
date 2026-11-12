@@ -1,13 +1,12 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { player } from "../games/player";
-import { appHref, gamesHref } from "../../shared/path";
+import { gamesHref } from "../../shared/path";
 
 export function mountFlashPlayer(host: HTMLElement): void {
   const loc = locale();
   host.append(
     h("header", { class: "tool-head game-head" },
-      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("flashPlayer.back")),
       h("h1", null, t("flashPlayer.title")),
       h("p", { class: "lede" }, t("flashPlayer.privacyNote")),
     ),

@@ -1,7 +1,7 @@
 import { canvasToBlob } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref, withSearch } from "../../shared/path";
+import { t } from "../i18n";
+import { withSearch } from "../../shared/path";
 import { outputFilename } from "../../shared/filename";
 import {
   APERTURES,
@@ -476,7 +476,6 @@ export async function mountPortraitSim(host: HTMLElement): Promise<void> {
   state = loadInitial();
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("portraitSim.back")),
       h("h1", null, t("portraitSim.title")),
       h("p", { class: "lede" }, t("portraitSim.lede")),
       h("p", { class: "muted" }, t("portraitSim.privacyNote")),

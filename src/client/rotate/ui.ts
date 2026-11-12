@@ -3,8 +3,7 @@ import { formatBytes } from "../../shared/resize";
 import { normalizeDegrees, rotatedSize } from "../../shared/rotate";
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 
 type Item = { file: File; url: string; width: number; height: number; bitmap: ImageBitmap };
 
@@ -28,7 +27,6 @@ let qualityField: HTMLElement | null = null;
 export async function mountRotate(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("rotateTool.back")),
       h("h1", null, t("rotateTool.title")),
       h("p", { class: "lede" }, t("rotateTool.privacyNote")),
     ),

@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { MAX_ENTRIES, canSpin, distinctEntries, normalizeEntry, parseEntries, pickIndex, spinTarget } from "../../shared/wheel";
 import { randomInt } from "../../shared/random";
 
@@ -44,7 +43,6 @@ export function mountWheel(host: HTMLElement): void {
   historyEl = h("ol", { class: "wheel-history" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("wheel.back")),
       h("h1", null, t("wheel.title")),
       h("p", { class: "lede" }, t("wheel.privacyNote")),
     ),

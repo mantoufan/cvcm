@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { CYCLE_MIN, FALL_ASLEEP_MIN, bedtimesFor, formatClock, hoursOf, parseClock, wakeTimesFor } from "../../shared/sleep";
 
 type Mode = "wake" | "bed";
@@ -26,7 +25,6 @@ export function mountSleep(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("sleep.back")),
       h("h1", null, t("sleep.title")),
       h("p", { class: "lede" }, t("sleep.privacyNote")),
     ),

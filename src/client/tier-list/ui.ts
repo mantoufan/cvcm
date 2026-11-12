@@ -2,7 +2,6 @@ import { copyWithFlash } from "../copy";
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import {
   MAX_ITEMS,
   MAX_LABEL,
@@ -567,7 +566,6 @@ export function mountTierList(host: HTMLElement): void {
   const pngBtn: HTMLButtonElement = h("button", { type: "button", class: "btn", "data-action": "png", onClick: () => void exportPng(pngBtn) }, t("tierList.download"));
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("tierList.back")),
       h("h1", null, t("tierList.title")),
       h("p", { class: "lede" }, t("tierList.privacyNote")),
     ),

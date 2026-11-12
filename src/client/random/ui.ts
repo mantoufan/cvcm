@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { randomInts } from "../../shared/random";
 
 let minEl: HTMLInputElement | null = null;
@@ -16,7 +15,6 @@ export function mountRandom(host: HTMLElement): void {
   outEl = h("textarea", { class: "clip-input", readonly: true, "data-volatile": "", spellcheck: "false", "aria-label": t("random.result") });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("random.back")),
       h("h1", null, t("random.title")),
       h("p", { class: "lede" }, t("random.privacyNote")),
     ),

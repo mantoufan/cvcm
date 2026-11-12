@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { ALL_CODES, EXTRA_CODES, EXTRA_ROW, LOCATIONS, MAIN_ROWS, NAV_ROWS, NUMPAD_ROWS, type Key } from "../../shared/keyboard";
 
 let boardEl: HTMLElement | null = null;
@@ -36,7 +35,6 @@ export function mountKeyboardTest(host: HTMLElement): void {
   logEl = h("ol", { class: "wheel-history kbt-log" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("keyboardTest.back")),
       h("h1", null, t("keyboardTest.title")),
       h("p", { class: "lede" }, t("keyboardTest.privacyNote")),
     ),

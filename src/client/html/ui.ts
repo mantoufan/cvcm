@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { decodeHtml, encodeHtml } from "../../shared/html";
 import { debounce } from "../session";
 
@@ -28,7 +27,6 @@ export function mountHtml(host: HTMLElement): void {
   });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("html.back")),
       h("h1", null, t("html.title")),
       h("p", { class: "lede" }, t("html.privacyNote")),
     ),

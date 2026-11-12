@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { chmodCommand, parseOctal, parseSymbolic, safeRecursiveCommand, toOctal, toSymbolic } from "../../shared/chmod";
 
 const WHO = ["owner", "group", "others"] as const;
@@ -69,7 +68,6 @@ export function mountChmod(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("chmod.back")),
       h("h1", null, t("chmod.title")),
       h("p", { class: "lede" }, t("chmod.privacyNote")),
     ),

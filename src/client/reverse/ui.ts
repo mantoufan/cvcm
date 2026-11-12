@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { isPalindrome, reverseText } from "../../shared/reverse";
 import { debounce } from "../session";
 
@@ -27,7 +26,6 @@ export function mountReverse(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("reverse.back")),
       h("h1", null, t("reverse.title")),
       h("p", { class: "lede" }, t("reverse.privacyNote")),
     ),

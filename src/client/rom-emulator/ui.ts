@@ -1,7 +1,7 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { controls, gameEmpty, gameFrame } from "../games/player";
-import { appHref, gamesHref } from "../../shared/path";
+import { gamesHref } from "../../shared/path";
 import { MAX_ROM_BYTES, ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, type RomConsoleId } from "../../shared/rom-detect";
 
 const AUTO = "auto";
@@ -97,7 +97,6 @@ export function mountRomEmulator(host: HTMLElement): void {
 
   host.append(
     h("header", { class: "tool-head game-head" },
-      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("romEmulator.back")),
       h("h1", null, name),
       h("p", { class: "lede" }, t("romEmulator.privacyNote")),
     ),

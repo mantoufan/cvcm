@@ -2,7 +2,6 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { formatter } from "../shape-calc";
-import { appHref } from "../../shared/path";
 import { formatQ, isZero, mul, parseCoord, q, solveSlope, toNumber, type Q } from "../../shared/slope";
 
 const SVG = "http://www.w3.org/2000/svg";
@@ -122,7 +121,6 @@ export function mountSlope(host: HTMLElement): void {
 
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("slope.back")),
       h("h1", null, t("slope.title")),
       h("p", { class: "lede" }, t("slope.privacyNote")),
     ),

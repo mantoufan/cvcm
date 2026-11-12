@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h, keepShortcutsOnClick, onScreen } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { MAX_COUNTERS, MAX_NAME, MAX_STEP, bump, clampStep, parseTally, total, type TallyState } from "../../shared/tally";
 
 const STORE_KEY = "cvcm.tally.v1";
@@ -37,7 +36,6 @@ export function mountTallyCounter(host: HTMLElement): void {
   totalEl = h("p", { class: "hint", "data-out": "total" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("tallyCounter.back")),
       h("h1", null, t("tallyCounter.title")),
       h("p", { class: "lede" }, t("tallyCounter.privacyNote")),
     ),

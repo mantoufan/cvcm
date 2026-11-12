@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h, keepShortcutsOnClick, onScreen } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { FLIP_COUNTS, HISTORY_MAX, extendStreaks, flipFairCoins, percentText, type CoinFace, type Streaks } from "../../shared/coin";
 
 /** Length of the spin; a reduced-motion setting skips it. */
@@ -48,7 +47,6 @@ export function mountCoinFlip(host: HTMLElement): void {
   stripEl = h("p", { class: "coin-strip", "data-out": "history" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("coinFlip.back")),
       h("h1", null, t("coinFlip.title")),
       h("p", { class: "lede" }, t("coinFlip.privacyNote")),
     ),

@@ -136,7 +136,6 @@ export async function mountWatermark(host: HTMLElement, toolMode: WmMode = "wate
   root = host;
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("watermark.back")),
       h("p", { class: "wm-brand" },
         h("img", { src: "/brand/safemark.svg", alt: "", width: "28", height: "28" }),
         h("strong", null, t("watermark.brand")),

@@ -1,11 +1,10 @@
 import { outputFilename } from "../../shared/filename";
-import { appHref } from "../../shared/path";
 import { AiClient } from "../ai/client";
 import { chipGroup, deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
 import type { AiResponse } from "../ai/protocol";
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
+import { t } from "../i18n";
 
 /** Output cap: Safari will not draw or encode a canvas over 16.7 MP. */
 export const MAX_OUTPUT_PIXELS = 16_777_216;
@@ -48,7 +47,6 @@ export async function mountImageUpscaler(host: HTMLElement): Promise<void> {
   status = statusPanel("Real-ESRGAN", model());
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("upscaler.back")),
       h("h1", null, t("upscaler.title")),
       h("p", { class: "lede" }, t("upscaler.privacyNote")),
     ),

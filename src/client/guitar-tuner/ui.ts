@@ -1,7 +1,6 @@
 import { armAudio, newAudioContext, resumeIfPaused } from "../audio";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import {
   DEFAULT_A4, IN_TUNE_CENTS, MAX_A4, MIN_A4, TUNINGS, TUNING_IDS, centsOff, centsText, clampA4, detectPitch, median,
   midiToFreq, nearestTarget, noteName, searchRange, type Notation, type TuningId,
@@ -83,7 +82,6 @@ export function mountGuitarTuner(host: HTMLElement): void {
   stringsEl = h("div", { class: "chip-row tuner-strings", "data-out": "strings" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("guitarTuner.back")),
       h("h1", null, t("guitarTuner.title")),
       h("p", { class: "lede" }, t("guitarTuner.privacyNote")),
     ),

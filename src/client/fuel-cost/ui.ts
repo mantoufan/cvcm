@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { KM_PER_MI, L_PER_US_GAL, fuelCost, toL100km, type EconomyUnit } from "../../shared/fuel-cost";
 
 let distanceEl: HTMLInputElement | null = null;
@@ -56,7 +55,6 @@ export function mountFuelCost(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("fuelCost.back")),
       h("h1", null, t("fuelCost.title")),
       h("p", { class: "lede" }, t("fuelCost.privacyNote")),
     ),

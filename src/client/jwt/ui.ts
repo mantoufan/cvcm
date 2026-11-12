@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { decodeJwt } from "../../shared/jwt";
 import { debounce } from "../session";
 
@@ -24,7 +23,6 @@ export function mountJwt(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("jwt.back")),
       h("h1", null, t("jwt.title")),
       h("p", { class: "lede" }, t("jwt.privacyNote")),
     ),

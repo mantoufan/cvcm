@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { loanPayment } from "../../shared/loan";
 import { money } from "../../shared/discount";
 
@@ -18,7 +17,6 @@ export function mountLoan(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("loan.back")),
       h("h1", null, t("loan.title")),
       h("p", { class: "lede" }, t("loan.privacyNote")),
     ),

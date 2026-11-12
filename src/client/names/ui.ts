@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { generateNames, type NameKind } from "../../shared/names";
 
 const state = {
@@ -16,7 +15,6 @@ export function mountNames(host: HTMLElement): void {
   listEl = h("ol", { class: "name-list", "data-volatile": "" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("names.back")),
       h("h1", null, t("names.title")),
       h("p", { class: "lede" }, t("names.privacyNote")),
     ),

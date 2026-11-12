@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import {
   MAX_DIGITS, MAX_LISTED_DIVISORS, divisorCount, divisorSum, divisors, factorPairs, factorText, factorTextExpanded,
   factorize, nextPrime, parseWhole, previousPrime, thousandsMarkFor,
@@ -24,7 +23,6 @@ export function mountFactors(host: HTMLElement): void {
   pairsEl = h("p", { class: "factor-list", "data-out": "pairs" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("factors.back")),
       h("h1", null, t("factors.title")),
       h("p", { class: "lede" }, t("factors.privacyNote")),
     ),

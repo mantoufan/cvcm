@@ -1,11 +1,10 @@
 import { outputFilename } from "../../shared/filename";
-import { appHref } from "../../shared/path";
 import { AiClient } from "../ai/client";
 import { deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
 import type { AiResponse } from "../ai/protocol";
 import { canvasToBlob, decodeImage } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
+import { t } from "../i18n";
 
 type Palette = "gray" | "turbo" | "magma";
 
@@ -42,7 +41,6 @@ export async function mountDepthMap(host: HTMLElement): Promise<void> {
   status = statusPanel("Depth Anything V2", "depth");
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("depthMap.back")),
       h("h1", null, t("depthMap.title")),
       h("p", { class: "lede" }, t("depthMap.privacyNote")),
     ),

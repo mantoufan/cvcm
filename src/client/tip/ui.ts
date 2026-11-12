@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { money, tipSplit } from "../../shared/tip";
 
 let billEl: HTMLInputElement | null = null;
@@ -17,7 +16,6 @@ export function mountTip(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("tip.back")),
       h("h1", null, t("tip.title")),
       h("p", { class: "lede" }, t("tip.privacyNote")),
     ),

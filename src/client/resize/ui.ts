@@ -35,7 +35,6 @@ export async function mountResize(host: HTMLElement): Promise<void> {
   const loc = locale();
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("resize.back")),
       h("h1", null, job ? t(`resize.jobs.${job}.title`) : t("resize.title")),
       h("p", { class: "lede" }, job ? t(`resize.jobs.${job}.lede`) : t("resize.privacyNote")),
       jobNav(loc, job),

@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { decodeUrl, encodeUrl } from "../../shared/url-encode";
 import { debounce } from "../session";
 
@@ -30,7 +29,6 @@ export function mountUrlEncode(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("url-encode.back")),
       h("h1", null, t("url-encode.title")),
       h("p", { class: "lede" }, t("url-encode.privacyNote")),
     ),

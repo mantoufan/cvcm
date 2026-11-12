@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { CLICK_DURATIONS, DEFAULT_CLICK_DURATION, clicksPerSecond, cpsBand } from "../../shared/click-test";
 
 /** After a run ends, clicks are ignored this long so a last fast click does not start a new run. */
@@ -36,7 +35,6 @@ export function mountClickTest(host: HTMLElement): void {
   bestEl = h("p", { class: "hint", "data-out": "best" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("clickTest.back")),
       h("h1", null, t("clickTest.title")),
       h("p", { class: "lede" }, t("clickTest.privacyNote")),
     ),

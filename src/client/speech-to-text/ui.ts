@@ -1,6 +1,5 @@
 import { formatMb, modelBytes } from "../../shared/ai-models";
 import { stemAndExt } from "../../shared/filename";
-import { appHref } from "../../shared/path";
 import { shortClock, toSrt, toText, toVtt, type Segment } from "../../shared/subtitles";
 import { AiClient, guessBackend } from "../ai/client";
 import { deviceLabel, dropZone, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
@@ -55,7 +54,6 @@ export async function mountSpeechToText(host: HTMLElement): Promise<void> {
   state.script = locale() === "zh-TW" ? "hant" : locale() === "zh-CN" ? "hans" : "auto";
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("stt.back")),
       h("h1", null, t("stt.title")),
       h("p", { class: "lede" }, t("stt.privacyNote")),
     ),

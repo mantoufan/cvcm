@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { decodeBase64, encodeBase64 } from "../../shared/base64";
 import { debounce } from "../session";
 
@@ -30,7 +29,6 @@ export function mountBase64(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("base64.back")),
       h("h1", null, t("base64.title")),
       h("p", { class: "lede" }, t("base64.privacyNote")),
     ),

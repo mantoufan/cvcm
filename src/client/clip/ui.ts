@@ -45,7 +45,6 @@ export async function mountClip(host: HTMLElement, clipId: string | null): Promi
   busy = false;
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("clip.back")),
       h("h1", null, t("clip.title")),
       h("p", { class: "lede" }, t("clip.privacyNote")),
     ),

@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { todayIso } from "../../shared/age";
 import { addDays } from "../../shared/add-days";
 
@@ -16,7 +15,6 @@ export function mountAddDays(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("add-days.back")),
       h("h1", null, t("add-days.title")),
       h("p", { class: "lede" }, t("add-days.privacyNote")),
     ),

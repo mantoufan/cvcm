@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { axisText, buttonLabel, restVerdict, stickDistance } from "../../shared/gamepad";
 
 type ButtonView = { el: HTMLElement; fill: HTMLElement; pressed: boolean; value: number };
@@ -28,7 +27,6 @@ export function mountGamepadTest(host: HTMLElement): void {
   boardEl = h("div", { class: "gp-board", "data-out": "board" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("gamepadTest.back")),
       h("h1", null, t("gamepadTest.title")),
       h("p", { class: "lede" }, t("gamepadTest.privacyNote")),
     ),

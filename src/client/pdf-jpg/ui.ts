@@ -3,8 +3,7 @@ import { zipStore } from "../../shared/zip";
 import { blobFromBytes } from "../../shared/image-encode";
 import { canvasToBlob } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { openPdf, renderPdfPage } from "../pdfjs";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 
@@ -26,7 +25,6 @@ let pageEl: HTMLInputElement | null = null;
 export async function mountPdfJpg(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("pdfJpg.back")),
       h("h1", null, t("pdfJpg.title")),
       h("p", { class: "lede" }, t("pdfJpg.privacyNote")),
     ),

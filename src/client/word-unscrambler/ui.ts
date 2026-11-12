@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { MAX_BLANKS, MAX_LETTERS, byLength, parseRack, parseWordList, unscramble, type Found } from "../../shared/word-unscramble";
 
 /** ENABLE word list, a static file (public/words/). */
@@ -119,7 +118,6 @@ export function mountWordUnscrambler(host: HTMLElement): void {
 
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("wordUnscrambler.back")),
       h("h1", null, t("wordUnscrambler.title")),
       h("p", { class: "lede" }, t("wordUnscrambler.privacyNote")),
     ),

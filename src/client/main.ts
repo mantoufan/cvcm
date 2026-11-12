@@ -45,6 +45,7 @@ import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, page
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
 import { TOOL_LOADERS } from "./tools";
+import { crumbNav, homeCrumb } from "./crumb";
 import { analyticsActive, gateAnalytics, trackPageView } from "./analytics";
 import { isTrackedPath } from "../shared/analytics";
 import "./styles.css";
@@ -670,7 +671,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub);
 
   const root = appEl();
   const gen = pageGen;
@@ -931,11 +932,27 @@ function toolDirectory(loc: Locale): HTMLElement {
   );
 }
 
+/**
+ * Home / Tools / this tool, above the tool's heading like the column pages' trail. "Tools" is the home page's tool wall.
+ * A shared clip is a page inside the clipboard, so there the tool's name links back to the clipboard itself.
+ */
+function toolCrumb(loc: Locale, id: ToolId, clip: string | null): HTMLElement {
+  return crumbNav([
+    homeCrumb(loc),
+    { label: t("nav.tools"), href: `${appHref(loc, null)}#tools`, nav: "tools" },
+    id === "clip" && clip
+      ? { label: t(`tools.${id}.name`), href: appHref(loc, id), nav: id }
+      : { label: t(`tools.${id}.name`) },
+  ]);
+}
+
 async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
   const gen = pageGen;
   const alive = (): boolean => gen === pageGen;
   if (tool) {
     const mounted = tool;
+    // Drawn before the tool so it is there while the tool loads, and stays if the tool fails to mount.
+    main.append(toolCrumb(loc, mounted, clipId));
     const unmount = await TOOL_LOADERS[mounted](main, { clipId, alive });
     if (!alive()) {
       // The user left while this tool was mounting: release its window listeners once the newer page has mounted,

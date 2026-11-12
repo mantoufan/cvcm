@@ -3,8 +3,7 @@ import { pdfFromJpegs } from "../../shared/pdf";
 import { formatBytes } from "../../shared/resize";
 import { canvasToBlob } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { openPdf, renderPdfPage } from "../pdfjs";
 import type { PDFDocumentProxy } from "pdfjs-dist";
 
@@ -25,7 +24,6 @@ let sizeEl: HTMLElement | null = null;
 export async function mountCompressPdf(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("compressPdf.back")),
       h("h1", null, t("compressPdf.title")),
       h("p", { class: "lede" }, t("compressPdf.privacyNote")),
     ),

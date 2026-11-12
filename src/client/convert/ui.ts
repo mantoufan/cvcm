@@ -79,7 +79,6 @@ export async function mountConvert(host: HTMLElement): Promise<void> {
   const loc = locale();
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("convert.back")),
       h("h1", null, job ? t(`convert.jobs.${job}.title`) : t("convert.title")),
       h("p", { class: "lede" }, job ? t(`convert.jobs.${job}.lede`) : t("convert.privacyNote")),
       jobNav(loc, job),

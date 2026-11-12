@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { ANIMALS, ANIMAL_EMOJI, SIGNS, SIGN_ELEMENT, SIGN_START, SIGN_SYMBOL, lunarYear, zodiacFor, type Sign } from "../../shared/zodiac";
 
 let dateEl: HTMLInputElement | null = null;
@@ -16,7 +15,6 @@ export function mountZodiac(host: HTMLElement): void {
   noteEl = h("p", { class: "hint" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("zodiac.back")),
       h("h1", null, t("zodiac.title")),
       h("p", { class: "lede" }, t("zodiac.privacyNote")),
     ),

@@ -10,7 +10,6 @@ import {
   type ImageSize,
   type ImageStyle,
 } from "../../shared/image-gen";
-import { appHref } from "../../shared/path";
 import { AiClient, guessBackend } from "../ai/client";
 import { chipGroup, deviceLabel, formatSeconds, prewarm, runJob, statusPanel, type Status } from "../ai/kit";
 import type { AiResponse } from "../ai/protocol";
@@ -60,7 +59,6 @@ export async function mountImageGenerator(host: HTMLElement): Promise<void> {
   status = statusPanel("Janus-Pro-1B", "janus");
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("imageGen.back")),
       h("h1", null, t("imageGen.title")),
       h("p", { class: "lede" }, t("imageGen.privacyNote")),
     ),

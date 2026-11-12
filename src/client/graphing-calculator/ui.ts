@@ -2,7 +2,6 @@ import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
 import { formatter } from "../shape-calc";
 import { decimalMarkOf } from "../../shared/calculator";
-import { appHref } from "../../shared/path";
 import { findZeros, niceStep, parseExpr, sampleCurve, type Compiled, type Viewport } from "../../shared/graph-expr";
 
 const COLORS = ["#d6336c", "#2563eb", "#16a34a", "#d97706", "#7c3aed", "#0891b2"] as const;
@@ -106,7 +105,6 @@ export function mountGraphingCalculator(host: HTMLElement): void {
     h("button", { type: "button", class: "chip", "data-action": action, "aria-label": aria, onClick: () => zoom(k) }, label);
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("graphingCalculator.back")),
       h("h1", null, t("graphingCalculator.title")),
       h("p", { class: "lede" }, t("graphingCalculator.privacyNote")),
     ),

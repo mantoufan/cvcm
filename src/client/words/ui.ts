@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { numberToWords } from "../../shared/words";
 
 let numEl: HTMLInputElement | null = null;
@@ -13,7 +12,6 @@ export function mountWords(host: HTMLElement): void {
   outEl = h("p", { class: "timestamp-out", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("words.back")),
       h("h1", null, t("words.title")),
       h("p", { class: "lede" }, t("words.privacyNote")),
     ),

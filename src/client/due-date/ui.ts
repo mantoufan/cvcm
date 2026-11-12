@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { todayIso } from "../../shared/age";
 import { DEFAULT_CYCLE, MAX_CYCLE, MIN_CYCLE, dueDate, isoOf, type DueDateMode } from "../../shared/due-date";
 
@@ -30,7 +29,6 @@ export function mountDueDate(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("dueDate.back")),
       h("h1", null, t("dueDate.title")),
       h("p", { class: "lede" }, t("dueDate.privacyNote")),
     ),

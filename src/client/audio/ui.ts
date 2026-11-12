@@ -3,8 +3,7 @@ import { blobFromBytes } from "../../shared/image-encode";
 import { encodeWav, resampleChannels } from "../../shared/wav";
 import { zipStore } from "../../shared/zip";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 
 type Item = {
   id: string;
@@ -34,7 +33,6 @@ let player: HTMLAudioElement | null = null;
 export async function mountAudio(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("audio.back")),
       h("h1", null, t("audio.title")),
       h("p", { class: "lede" }, t("audio.privacyNote")),
     ),

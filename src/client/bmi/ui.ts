@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { bmiBand, bmiFrom } from "../../shared/bmi";
 
 let kgEl: HTMLInputElement | null = null;
@@ -15,7 +14,6 @@ export function mountBmi(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("bmi.back")),
       h("h1", null, t("bmi.title")),
       h("p", { class: "lede" }, t("bmi.privacyNote")),
     ),

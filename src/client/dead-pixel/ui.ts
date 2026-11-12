@@ -1,7 +1,6 @@
 import { h } from "../dom";
 import { enterFullscreen, exitFullscreen, fullscreenElement } from "../fullscreen";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { AUTO_ADVANCE, SCREEN_COLORS, labelInk, stepColor } from "../../shared/dead-pixel";
 
 /** The colour name and exit button on the test screen fade after this long without input. */
@@ -50,7 +49,6 @@ export function mountDeadPixel(host: HTMLElement): void {
   );
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("deadPixel.back")),
       h("h1", null, t("deadPixel.title")),
       h("p", { class: "lede" }, t("deadPixel.privacyNote")),
     ),

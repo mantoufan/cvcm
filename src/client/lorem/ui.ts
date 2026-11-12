@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { generateLorem, type LoremKind } from "../../shared/lorem";
 
 const state = {
@@ -21,7 +20,6 @@ export function mountLorem(host: HTMLElement): void {
   });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("lorem.back")),
       h("h1", null, t("lorem.title")),
       h("p", { class: "lede" }, t("lorem.privacyNote")),
     ),

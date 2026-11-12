@@ -1,7 +1,6 @@
 import { armAudio } from "../audio";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { BEATS, MAX_BPM, MIN_BPM, TAP_RESET_MS, clampBpm, clickInterval, tapBpm, tempoName } from "../../shared/metronome";
 
 const LOOKAHEAD_MS = 25;
@@ -51,7 +50,6 @@ export function mountMetronome(host: HTMLElement): void {
   const nudge = (d: number) => h("button", { type: "button", class: "chip", "data-action": d > 0 ? "faster" : "slower", "aria-label": `${d > 0 ? "+" : "−"}${Math.abs(d)} BPM`, onClick: () => setBpm(bpm() + d) }, d > 0 ? `+${d}` : `−${-d}`);
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("metronome.back")),
       h("h1", null, t("metronome.title")),
       h("p", { class: "lede" }, t("metronome.privacyNote")),
     ),

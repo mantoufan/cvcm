@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { GRADES, MAX_CREDITS, gpaOf, isGrade, type Grade, type GpaRow } from "../../shared/gpa";
 
 type RowEls = { wrap: HTMLElement; grade: HTMLSelectElement; credits: HTMLInputElement };
@@ -25,7 +24,6 @@ export function mountGpa(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("gpa.back")),
       h("h1", null, t("gpa.title")),
       h("p", { class: "lede" }, t("gpa.privacyNote")),
     ),

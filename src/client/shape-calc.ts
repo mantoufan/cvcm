@@ -4,7 +4,6 @@ import { h } from "./dom";
 import { locale, t } from "./i18n";
 import { LENGTH_UNITS, type Formatter, type LengthUnit, type ShapeField } from "../shared/area";
 import { parseDecimalInput } from "../shared/decimal-input";
-import { appHref } from "../shared/path";
 
 export type ShapeAnswer =
   | { ok: true; main: number; second: number | null; secondApprox: boolean; working: string[] }
@@ -118,7 +117,6 @@ export function mountShapeCalc<S extends string>(host: HTMLElement, cfg: ShapeCa
 
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t(`${ns}.back`)),
       h("h1", null, t(`${ns}.title`)),
       h("p", { class: "lede" }, t(`${ns}.privacyNote`)),
     ),

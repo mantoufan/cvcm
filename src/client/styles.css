@@ -133,6 +133,10 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
 
 /* Games */
 .page.is-game .tool-head { padding: 0.6rem 0 0.4rem; }
+/* The trail took the place of the header's 2rem back link; keep it to one line under that so the player height still
+   fits: no wrapping, and a long game name is cut with an ellipsis. */
+.page.is-game .device-crumb, .device-crumb:has(+ .game-head) { margin: 0.4rem 0 0; flex-wrap: nowrap; white-space: nowrap; }
+.page.is-game .device-crumb > :last-child, .device-crumb:has(+ .game-head) > :last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .page.is-game .tool-head h1 { font-size: clamp(1.15rem, 4vw, 1.5rem); margin: 0; }
 .game-chip { display: inline-flex; align-items: center; min-height: 34px; padding: 0.25rem 0.75rem; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; font-size: 0.86rem; }
 .game-chip.on, .game-chip:hover { border-color: var(--pink-deep); background: var(--pink-soft); color: var(--pink-deep); }

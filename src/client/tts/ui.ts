@@ -1,6 +1,5 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { pickVoice, splitUtterances, type VoicePick } from "../../shared/tts";
 
 let inputEl: HTMLTextAreaElement | null = null;
@@ -30,7 +29,6 @@ export function mountTts(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("tts.back")),
       h("h1", null, t("tts.title")),
       h("p", { class: "lede" }, t("tts.privacyNote")),
     ),

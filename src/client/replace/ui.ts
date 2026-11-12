@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { replaceText } from "../../shared/replace";
 import { debounce } from "../session";
 
@@ -30,7 +29,6 @@ export function mountReplace(host: HTMLElement): void {
   });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("replace.back")),
       h("h1", null, t("replace.title")),
       h("p", { class: "lede" }, t("replace.privacyNote")),
     ),

@@ -635,6 +635,8 @@
   },
   "brand": "cv.cm",
   "nav": {
+    "home": "首頁",
+    "breadcrumb": "麵包屑導覽",
     "tools": "工具",
     "privacy": "本機處理",
     "share": "分享",
@@ -1345,7 +1347,6 @@
   },
   "watermark": {
     "title": "替身分證、證件照加浮水印，防盜用",
-    "back": "全部工具",
     "dropTitle": "把圖片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
     "dropTypes": "PNG、JPEG、WebP、GIF",
@@ -1438,7 +1439,6 @@
   },
   "collage": {
     "title": "圖片拼圖",
-    "back": "全部工具",
     "dropTitle": "把照片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
     "dropTypes": "PNG、JPEG、WebP、GIF",
@@ -1483,7 +1483,6 @@
   },
   "clip": {
     "title": "線上剪貼簿",
-    "back": "全部工具",
     "privacyNote": "文字在 D1，檔案在 S3。查看 10 次或 24 小時後刪除。無需登入。",
     "bodyLabel": "文字",
     "placeholder": "貼上文字、HTML，或拖放檔案到這裡…",
@@ -1552,7 +1551,6 @@
   },
   "convert": {
     "title": "HEIC、WebP、JPG、PNG 互轉",
-    "back": "全部工具",
     "dropTitle": "把圖片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
     "dropTypes": "HEIC、PNG、JPEG、WebP、GIF、SVG、BMP、ICO、AVIF",
@@ -1614,7 +1612,6 @@
   },
   "imagePdf": {
     "title": "JPG / PNG 轉 PDF",
-    "back": "全部工具",
     "dropTitle": "把圖片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
     "dropTypes": "PNG、JPEG、WebP、GIF、HEIC",
@@ -1640,7 +1637,6 @@
   },
   "audio": {
     "title": "MP3 轉 WAV",
-    "back": "全部工具",
     "privacyNote": "音訊在這個分頁解碼，存成 WAV。不上傳。",
     "dropTitle": "把音訊拖到這裡",
     "dropHint": "或點擊選擇",
@@ -1662,7 +1658,6 @@
   },
   "data": {
     "title": "JSON 格式化",
-    "back": "全部工具",
     "privacyNote": "JSON、CSV、Base64、Markdown 只在這個分頁處理。",
     "mode": "轉換",
     "input": "輸入",
@@ -5262,7 +5257,6 @@
   },
   "qr": {
     "title": "免費 QR 碼產生器",
-    "back": "全部工具",
     "privacyNote": "QR 碼在目前分頁繪製，不會上傳。",
     "input": "文字或網址",
     "placeholder": "https://cv.cm",
@@ -5280,7 +5274,6 @@
   },
   "password": {
     "title": "密碼產生器",
-    "back": "全部工具",
     "privacyNote": "用 Web Crypto 在目前分頁產生，不會上傳。",
     "options": "選項",
     "length": "長度",
@@ -5297,7 +5290,6 @@
   },
   "wordCount": {
     "title": "字數統計",
-    "back": "全部工具",
     "privacyNote": "統計只在目前分頁進行，不會上傳。",
     "input": "文本",
     "placeholder": "貼上或輸入文字…",
@@ -5314,7 +5306,6 @@
   },
   "resize": {
     "title": "調整圖片大小",
-    "back": "全部工具",
     "privacyNote": "縮放和壓縮只在目前分頁，不會上傳。",
     "dropTitle": "把圖片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
@@ -5343,7 +5334,6 @@
   },
   "crop": {
     "title": "裁剪圖片",
-    "back": "全部工具",
     "privacyNote": "裁剪只在目前分頁，不會上傳。",
     "dropTitle": "把照片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
@@ -5361,7 +5351,6 @@
   },
   "color": {
     "title": "取色器",
-    "back": "全部工具",
     "privacyNote": "顏色只留在目前分頁，不會上傳。",
     "values": "數值",
     "hex": "Hex",
@@ -5378,7 +5367,6 @@
   },
   "pdfJpg": {
     "title": "PDF 轉 JPG",
-    "back": "全部工具",
     "privacyNote": "頁面在目前分頁繪製，不會上傳。",
     "dropTitle": "把 PDF 拖到這裡",
     "dropHint": "或点击选择",
@@ -5401,7 +5389,6 @@
   },
   "mergePdf": {
     "title": "合併 PDF",
-    "back": "全部工具",
     "privacyNote": "合併只在目前分頁，不會上傳。",
     "dropTitle": "把 PDF 拖到這裡",
     "dropHint": "或點擊選擇多個檔案",
@@ -5421,7 +5408,6 @@
     "working": "正在合併…"
   },
   "learn": {
-    "back": "全部教程",
     "minutes": "約 {n} 分鐘閱讀",
     "resultLabel": "今天的結果",
     "practiceLabel": "要點",
@@ -8214,7 +8200,6 @@
   },
   "compressPdf": {
     "title": "壓縮 PDF",
-    "back": "全部工具",
     "privacyNote": "頁面在目前分頁重編碼，不會上傳。",
     "dropTitle": "把 PDF 拖到這裡",
     "dropHint": "或点击选择",
@@ -8236,7 +8221,6 @@
   },
   "splitPdf": {
     "title": "拆分 PDF",
-    "back": "全部工具",
     "privacyNote": "拆分只在目前分頁，不會上傳。",
     "dropTitle": "把 PDF 拖到這裡",
     "dropHint": "或点击选择",
@@ -8257,7 +8241,6 @@
   },
   "names": {
     "title": "名字與使用者名稱產生器",
-    "back": "全部工具",
     "privacyNote": "名字在目前分頁隨機產生，不是真實身分。",
     "options": "選項",
     "kind": "類型",
@@ -8271,7 +8254,6 @@
   },
   "timezone": {
     "title": "時區轉換",
-    "back": "全部工具",
     "privacyNote": "用目前分頁的 IANA 時區換算。不上傳。",
     "options": "選項",
     "from": "從",
@@ -8287,7 +8269,6 @@
   },
   "lorem": {
     "title": "Lorem ipsum 產生器",
-    "back": "全部工具",
     "privacyNote": "佔位文字在目前分頁產生。不上傳。",
     "options": "選項",
     "kind": "類型",
@@ -8302,7 +8283,6 @@
   },
   "units": {
     "title": "單位換算",
-    "back": "全部工具",
     "privacyNote": "用目前分頁的 SI 換算係數。不上傳。",
     "options": "選項",
     "kindLabel": "類型",
@@ -8325,7 +8305,6 @@
   },
   "barcode": {
     "title": "免費條碼產生器",
-    "back": "全部工具",
     "privacyNote": "條碼在目前分頁繪製。不上傳。",
     "input": "文字或數字",
     "placeholder": "CVCM",
@@ -8346,7 +8325,6 @@
   },
   "meme": {
     "title": "迷因產生器",
-    "back": "全部工具",
     "privacyNote": "文字在目前分頁畫到照片上。不上傳。",
     "dropTitle": "把照片拖到這裡",
     "dropHint": "或點擊選擇 · Ctrl/⌘ V 貼上",
@@ -8367,7 +8345,6 @@
   },
   "tts": {
     "title": "文字轉語音",
-    "back": "全部工具",
     "privacyNote": "用這台裝置上的語音播放。不上傳。",
     "input": "文字",
     "placeholder": "貼上或輸入要聽的文字…",
@@ -8389,7 +8366,6 @@
   },
   "invoice": {
     "title": "發票產生器",
-    "back": "全部工具",
     "privacyNote": "發票 PDF 在目前分頁產生。不上傳。不是稅務發票。",
     "hint": "邊填邊預覽。下載 A4 PDF。",
     "download": "下載 PDF",
@@ -8423,7 +8399,6 @@
   },
   "signature": {
     "title": "簽名產生器",
-    "back": "全部工具",
     "privacyNote": "筆跡留在目前分頁。不上傳。不是合法電子簽。",
     "pad": "畫板",
     "hint": "用滑鼠、觸控筆或手指寫。下載 PNG。",
@@ -8437,7 +8412,6 @@
   },
   "diff": {
     "title": "文字對比",
-    "back": "全部工具",
     "privacyNote": "對比留在目前分頁。不上傳。",
     "left": "原文",
     "right": "改後",
@@ -8453,7 +8427,6 @@
   },
   "uuid": {
     "title": "UUID 產生器",
-    "back": "全部工具",
     "privacyNote": "UUID 用本機 Web Crypto 隨機產生。不上傳。",
     "options": "選項",
     "count": "數量",
@@ -8466,7 +8439,6 @@
   },
   "regex": {
     "title": "正規測試",
-    "back": "全部工具",
     "privacyNote": "測試在目前分頁進行。不上傳。",
     "options": "模式",
     "pattern": "正規表示式",
@@ -8487,7 +8459,6 @@
   },
   "favicon": {
     "title": "Favicon 產生器",
-    "back": "全部工具",
     "privacyNote": "照片留在目前分頁。不上傳。",
     "filesTitle": "照片",
     "dropTitle": "放入照片",
@@ -8508,7 +8479,6 @@
   },
   "audioCutter": {
     "title": "音訊剪輯",
-    "back": "全部工具",
     "privacyNote": "檔案留在目前分頁。不上傳。",
     "filesTitle": "音訊",
     "dropTitle": "放入音訊",
@@ -8529,7 +8499,6 @@
   },
   "timestamp": {
     "title": "時間戳轉換",
-    "back": "全部工具",
     "privacyNote": "轉換在目前分頁進行。不上傳。",
     "options": "輸入",
     "input": "時間戳或日期",
@@ -8550,7 +8519,6 @@
   },
   "rotateTool": {
     "title": "旋轉圖片",
-    "back": "全部工具",
     "privacyNote": "照片留在目前分頁。不上傳。",
     "filesTitle": "照片",
     "dropTitle": "放入照片",
@@ -8575,7 +8543,6 @@
   },
   "exif": {
     "title": "清除 EXIF",
-    "back": "全部工具",
     "privacyNote": "照片留在目前分頁。不上傳。",
     "filesTitle": "照片",
     "dropTitle": "放入照片",
@@ -8595,7 +8562,6 @@
   },
   "audioJoiner": {
     "title": "音訊拼接",
-    "back": "全部工具",
     "privacyNote": "檔案留在目前分頁。不上傳。",
     "filesTitle": "片段",
     "dropTitle": "放入音訊",
@@ -8615,7 +8581,6 @@
   },
   "hexRgb": {
     "title": "HEX 轉 RGB",
-    "back": "全部工具",
     "privacyNote": "轉換在目前分頁進行。不上傳。",
     "options": "顏色",
     "input": "HEX、RGB 或 HSL",
@@ -8631,7 +8596,6 @@
   },
   "xmlJson": {
     "title": "XML 轉 JSON",
-    "back": "全部工具",
     "privacyNote": "轉換在目前分頁進行。不上傳。",
     "options": "方向",
     "xmlJson": "XML → JSON",
@@ -8646,7 +8610,6 @@
   },
   "hash": {
     "title": "雜湊產生",
-    "back": "全部工具",
     "privacyNote": "雜湊在目前分頁進行。不上傳。",
     "options": "演算法",
     "algo": "雜湊",
@@ -8662,7 +8625,6 @@
   },
   "yamlJson": {
     "title": "YAML 轉 JSON",
-    "back": "全部工具",
     "privacyNote": "轉換在目前分頁進行。不上傳。",
     "options": "方向",
     "yamlJson": "YAML → JSON",
@@ -8677,7 +8639,6 @@
   },
   "caseTool": {
     "title": "大小寫轉換",
-    "back": "全部工具",
     "privacyNote": "轉換在目前分頁進行。不上傳。",
     "options": "大小寫",
     "input": "輸入",
@@ -8696,7 +8657,6 @@
   },
   "jwt": {
     "title": "JWT 解碼",
-    "back": "全部工具",
     "privacyNote": "解碼在目前分頁進行。不校驗簽名。",
     "options": "權杖",
     "note": "僅供解碼。不檢查簽名，也不信任簽發者。",
@@ -8714,7 +8674,6 @@
   },
   "screenshot": {
     "title": "截圖標註",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "filesTitle": "照片",
     "dropTitle": "拖入截圖",
@@ -8736,7 +8695,6 @@
   },
   "percent": {
     "title": "百分比計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "數值",
     "a": "A",
@@ -8753,7 +8711,6 @@
   },
   "random": {
     "title": "隨機數",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "範圍",
     "min": "最小值",
@@ -8766,7 +8723,6 @@
   },
   "html": {
     "title": "HTML 跳脫",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "方向",
     "encode": "跳脫",
@@ -8779,7 +8735,6 @@
   },
   "cron": {
     "title": "Cron 說明",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "運算式",
     "input": "Cron",
@@ -8793,7 +8748,6 @@
   },
   "slug": {
     "title": "Slug 產生",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "input": "標題",
     "output": "Slug",
@@ -8803,7 +8757,6 @@
   },
   "portraitSim": {
     "title": "人像相機模擬",
-    "back": "全部工具",
     "privacyNote": "底板屬於 cv.cm，不上傳。匯出的照片留在你的裝置。",
     "lede": "更換人物、姿勢與場景。像相機一樣調光圈、快門與 ISO。攝影課以後可能回來；這裡是練習台。",
     "people": "人物",
@@ -8896,7 +8849,6 @@
   },
   "age": {
     "title": "年齡計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "日期",
     "birth": "出生日期",
@@ -8913,7 +8865,6 @@
   },
   "bmi": {
     "title": "BMI 計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "身體",
     "kg": "公斤",
@@ -8931,7 +8882,6 @@
   },
   "binary": {
     "title": "二進位轉換",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "方向",
     "to": "文字 → 二進位",
@@ -8945,7 +8895,6 @@
   },
   "tip": {
     "title": "小費計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "帳單",
     "bill": "帳單",
@@ -8961,7 +8910,6 @@
   },
   "morse": {
     "title": "摩斯電碼",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "方向",
     "to": "文字 → 摩斯",
@@ -8975,7 +8923,6 @@
   },
   "roman": {
     "title": "羅馬數字",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "方向",
     "to": "數字 → 羅馬數字",
@@ -8990,7 +8937,6 @@
   },
   "discount": {
     "title": "折扣計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "價格",
     "price": "原價",
@@ -9004,7 +8950,6 @@
   },
   "countdown": {
     "title": "倒數計時",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "時長",
     "hours": "時",
@@ -9017,7 +8962,6 @@
   },
   "loan": {
     "title": "貸款計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "貸款",
     "principal": "本金",
@@ -9033,7 +8977,6 @@
   },
   "stopwatch": {
     "title": "碼錶",
-    "back": "全部工具",
     "privacyNote": "計時留在目前分頁。不上傳。",
     "options": "控制",
     "result": "經過時間",
@@ -9043,7 +8986,6 @@
   },
   "compound": {
     "title": "複利計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "輸入",
     "principal": "本金",
@@ -9063,7 +9005,6 @@
   },
   "vat": {
     "title": "增值稅計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "金額",
     "amount": "金額",
@@ -9080,7 +9021,6 @@
     "invalid": "請輸入 0 以上的金額和 0 以上的稅率。"
   },
   "games": {
-    "back": "全部遊戲",
     "play": "開始玩",
     "loadRom": "選擇 ROM",
     "loadRomHint": "檔案留在當前分頁。S3 上有託管 ROM 時會自動開始。",
@@ -9186,7 +9126,6 @@
   },
   "reverse": {
     "title": "文字倒序",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "倒序",
     "input": "文字",
@@ -9199,7 +9138,6 @@
   },
   "url-encode": {
     "title": "URL 編碼",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "方向",
     "to": "編碼",
@@ -9213,7 +9151,6 @@
   },
   "text-hex": {
     "title": "文字轉十六進位",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "方向",
     "to": "文字 → 十六進位",
@@ -9227,7 +9164,6 @@
   },
   "json": {
     "title": "JSON 格式化",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "格式",
     "pretty": "美化",
@@ -9241,7 +9177,6 @@
   },
   "base64": {
     "title": "Base64 編碼",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "方向",
     "to": "編碼",
@@ -9255,7 +9190,6 @@
   },
   "days": {
     "title": "日期間隔",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "日期",
     "from": "從",
@@ -9270,7 +9204,6 @@
   },
   "sort": {
     "title": "行排序",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "順序",
     "az": "A → Z",
@@ -9284,7 +9217,6 @@
   },
   "replace": {
     "title": "尋找取代",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "尋找",
     "find": "尋找",
@@ -9299,7 +9231,6 @@
   },
   "words": {
     "title": "數字轉英文",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "數字",
     "number": "整數",
@@ -9310,7 +9241,6 @@
   },
   "add-days": {
     "title": "日期加減",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "日期",
     "date": "起始日期",
@@ -9323,7 +9253,6 @@
   },
   "week": {
     "title": "週數",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "日期",
     "date": "日期",
@@ -9345,7 +9274,6 @@
   },
   "aspect": {
     "title": "寬高比",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "尺寸",
     "width": "寬",
@@ -9359,7 +9287,6 @@
   },
   "workdays": {
     "title": "工作日",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "日期",
     "from": "開始日期",
@@ -9373,7 +9300,6 @@
   },
   "fraction": {
     "title": "分數計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "分數",
     "mode": "方式",
@@ -9391,7 +9317,6 @@
   },
   "hourly": {
     "title": "時薪換年薪",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。只算稅前，不含稅。",
     "options": "薪資",
     "mode": "方式",
@@ -9410,7 +9335,6 @@
   },
   "margin": {
     "title": "利潤率",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "金額",
     "cost": "成本",
@@ -9426,7 +9350,6 @@
   },
   "radix": {
     "title": "進制轉換",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "數字",
     "value": "整數",
@@ -9440,7 +9363,6 @@
   },
   "duration": {
     "title": "時長計算",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "時長",
     "a": "第一段（時:分:秒）",
@@ -9457,7 +9379,6 @@
   },
   "tdee": {
     "title": "TDEE 熱量計算機",
-    "back": "全部工具",
     "privacyNote": "數字只在目前分頁中計算，不會上傳也不會儲存。",
     "options": "你的資料",
     "units": "單位",
@@ -9495,7 +9416,6 @@
   },
   "cidr": {
     "title": "子網路計算機",
-    "back": "全部工具",
     "privacyNote": "位址只在目前分頁中計算，不會傳送。",
     "subnet": "IPv4 子網路",
     "input": "位址 / 前綴",
@@ -9520,7 +9440,6 @@
   },
   "chmod": {
     "title": "chmod 權限計算機",
-    "back": "全部工具",
     "privacyNote": "在目前分頁中計算，不會上傳，也不會更動任何檔案。",
     "permissions": "權限",
     "special": "特殊權限位元",
@@ -9552,7 +9471,6 @@
   },
   "typing": {
     "title": "打字速度測驗",
-    "back": "全部工具",
     "privacyNote": "你輸入的內容和成績只留在這個頁面，不會上傳也不會儲存。",
     "duration": "時間",
     "seconds": "{n} 秒",
@@ -9574,7 +9492,6 @@
   },
   "image-colors": {
     "title": "圖片取色器",
-    "back": "全部工具",
     "privacyNote": "圖片只在目前分頁中讀取，不會上傳。",
     "filesTitle": "圖片",
     "dropTitle": "拖入圖片",
@@ -9594,7 +9511,6 @@
     "errorDecode": "無法讀取這張圖片。"
   },
   "gold": {
-    "back": "全部工具",
     "title": "黃金",
     "privacyNote": "計算留在這個頁面裡。不會上傳，也不會去查詢價格。",
     "options": "重量",
@@ -9624,7 +9540,6 @@
     "toPalladium": "鈀金"
   },
   "silver": {
-    "back": "全部工具",
     "title": "白銀",
     "privacyNote": "計算留在這個頁面裡。不會上傳，也不會去查詢價格。",
     "options": "重量",
@@ -9654,7 +9569,6 @@
     "toPalladium": "鈀金"
   },
   "platinum": {
-    "back": "全部工具",
     "title": "鉑金",
     "privacyNote": "計算留在這個頁面裡。不會上傳，也不會去查詢價格。",
     "options": "重量",
@@ -9684,7 +9598,6 @@
     "toPalladium": "鈀金"
   },
   "palladium": {
-    "back": "全部工具",
     "title": "鈀金",
     "privacyNote": "計算留在這個頁面裡。不會上傳，也不會去查詢價格。",
     "options": "重量",
@@ -9714,7 +9627,6 @@
     "toPalladium": "鈀金"
   },
   "oil": {
-    "back": "全部工具",
     "title": "原油一桶等於多少升",
     "options": "體積",
     "amount": "數量",
@@ -9731,7 +9643,6 @@
     "privacyNote": "換算留在這個頁面裡。不會上傳，也不會去查詢油價。"
   },
   "stocks": {
-    "back": "全部工具",
     "title": "計算公司市值和本益比",
     "options": "數字",
     "price": "价格",
@@ -10841,7 +10752,6 @@
   },
   "dice": {
     "title": "擲骰子",
-    "back": "全部工具",
     "privacyNote": "擲骰在目前分頁進行。不上傳。",
     "options": "骰子",
     "count": "骰子數量",
@@ -10865,7 +10775,6 @@
   },
   "gpa": {
     "title": "GPA 計算器",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "課程",
     "grade": "等第",
@@ -10884,7 +10793,6 @@
   },
   "pomodoro": {
     "title": "番茄鐘",
-    "back": "全部工具",
     "privacyNote": "計時器在目前分頁執行。不上傳。",
     "options": "時長",
     "focus": "專注（分鐘）",
@@ -10905,7 +10813,6 @@
   },
   "sleep": {
     "title": "睡眠計算機",
-    "back": "全部工具",
     "privacyNote": "時間留在目前分頁。不上傳。",
     "options": "你的時間",
     "mode": "我知道的是",
@@ -10925,7 +10832,6 @@
   },
   "bodyFat": {
     "title": "體脂率計算機",
-    "back": "全部工具",
     "privacyNote": "尺寸留在目前分頁。不會上傳也不會儲存。",
     "options": "身體尺寸",
     "units": "單位",
@@ -10962,7 +10868,6 @@
   },
   "contrast": {
     "title": "顏色對比度檢查",
-    "back": "全部工具",
     "privacyNote": "對比度在目前分頁裡計算。不上傳。",
     "options": "顏色",
     "fg": "文字色",
@@ -10988,7 +10893,6 @@
   },
   "pace": {
     "title": "跑步配速計算機",
-    "back": "全部工具",
     "privacyNote": "計算在目前分頁裡完成。不上傳。",
     "options": "跑步",
     "solve": "要算的是",
@@ -11018,7 +10922,6 @@
   },
   "grade": {
     "title": "期末成績計算機",
-    "back": "全部工具",
     "privacyNote": "數字留在目前分頁。不上傳。",
     "options": "你的成績",
     "current": "目前成績（%）",
@@ -11038,7 +10941,6 @@
   },
   "dueDate": {
     "title": "預產期計算機",
-    "back": "全部工具",
     "privacyNote": "日期留在目前分頁。不上傳。",
     "options": "你的日期",
     "mode": "我知道的是",
@@ -11067,7 +10969,6 @@
   },
   "idealWeight": {
     "title": "理想體重計算機",
-    "back": "全部工具",
     "privacyNote": "數字留在目前分頁。不上傳。",
     "options": "關於你",
     "units": "單位",
@@ -11098,7 +10999,6 @@
   },
   "waterIntake": {
     "title": "每日飲水量計算機",
-    "back": "全部工具",
     "privacyNote": "數字留在目前分頁。不上傳。",
     "options": "關於你",
     "units": "體重單位",
@@ -11127,7 +11027,6 @@
   },
   "fuelCost": {
     "title": "油錢計算機",
-    "back": "全部工具",
     "privacyNote": "計算留在目前分頁。不上傳。",
     "options": "行程",
     "distance": "里程",
@@ -11160,7 +11059,6 @@
   },
   "readingTime": {
     "title": "閱讀時間計算機",
-    "back": "全部工具",
     "privacyNote": "文字留在目前分頁。不上傳。",
     "options": "文字",
     "text": "貼上文字",
@@ -11188,7 +11086,6 @@
   },
   "timeCard": {
     "title": "工時計算機",
-    "back": "全部工具",
     "privacyNote": "時間留在目前分頁。不上傳。",
     "options": "班次",
     "start": "上班",
@@ -11218,7 +11115,6 @@
   },
   "electricity": {
     "title": "電費計算機",
-    "back": "全部工具",
     "privacyNote": "計算留在目前分頁。不上傳。",
     "options": "電器",
     "preset": "電器",
@@ -11249,7 +11145,6 @@
   },
   "ovulation": {
     "title": "排卵期計算機",
-    "back": "全部工具",
     "privacyNote": "日期留在目前分頁。不上傳。",
     "options": "你的週期",
     "lastPeriod": "最後一次月經第一天",
@@ -11270,7 +11165,6 @@
   },
   "macro": {
     "title": "巨量營養素計算機",
-    "back": "全部工具",
     "privacyNote": "數字留在目前分頁。不上傳。",
     "options": "你的目標",
     "kcal": "維持熱量（kcal/天）",
@@ -11302,7 +11196,6 @@
   },
   "caloriesBurned": {
     "title": "運動消耗熱量計算機",
-    "back": "全部工具",
     "privacyNote": "計算留在目前分頁。不上傳。",
     "options": "運動",
     "activity": "運動項目",
@@ -11350,7 +11243,6 @@
     "errorRun": "處理失敗。請重新整理頁面再試，或改用較小的檔案。"
   },
   "removeBg": {
-    "back": "所有工具",
     "title": "AI 去背",
     "privacyNote": "AI 在本頁執行，照片不會上傳。",
     "filesTitle": "照片",
@@ -11378,7 +11270,6 @@
     "errorDecode": "無法讀取這張圖片。"
   },
   "upscaler": {
-    "back": "所有工具",
     "title": "AI 圖片放大",
     "privacyNote": "AI 在本頁執行，圖片不會上傳。",
     "filesTitle": "圖片",
@@ -11403,7 +11294,6 @@
     "errorDecode": "無法讀取這張圖片。"
   },
   "stt": {
-    "back": "所有工具",
     "title": "語音轉文字",
     "privacyNote": "Whisper AI 在本頁執行，音訊不會上傳。",
     "filesTitle": "音訊或影片",
@@ -11440,7 +11330,6 @@
     "errorMic": "無法使用麥克風。請在瀏覽器允許麥克風，或改為拖入檔案。"
   },
   "depthMap": {
-    "back": "所有工具",
     "title": "深度圖產生器",
     "privacyNote": "AI 在本頁執行，照片不會上傳。",
     "filesTitle": "照片",
@@ -11461,7 +11350,6 @@
   },
   "wheel": {
     "title": "轉盤抽籤",
-    "back": "全部工具",
     "privacyNote": "抽籤用 Web Crypto 在目前分頁進行。不上傳。",
     "entries": "選項，每行一個",
     "sample": "滷肉飯\n牛肉麵\n雞排\n鹹酥雞\n便當\n小火鍋",
@@ -11481,7 +11369,6 @@
   },
   "average": {
     "title": "平均數計算機",
-    "back": "全部工具",
     "privacyNote": "計算在目前分頁進行。不上傳。",
     "numbers": "數字",
     "decimal": "小數點符號",
@@ -11511,7 +11398,6 @@
   },
   "metronome": {
     "title": "節拍器",
-    "back": "全部工具",
     "privacyNote": "節拍聲在瀏覽器裡產生。不上傳。",
     "options": "速度",
     "bpm": "每分鐘拍數（BPM）",
@@ -11530,7 +11416,6 @@
   },
   "keyboardTest": {
     "title": "鍵盤測試",
-    "back": "全部工具",
     "privacyNote": "按鍵只在目前分頁顯示。不記錄，不上傳。",
     "focusHint": "點一下鍵盤，然後按鍵。點其他地方即停止。",
     "board": "鍵盤圖。按下按鍵來測試。",
@@ -11550,7 +11435,6 @@
   },
   "zodiac": {
     "title": "星座與生肖查詢",
-    "back": "全部工具",
     "privacyNote": "在目前分頁計算。不上傳。",
     "options": "生日",
     "birthday": "出生日期",
@@ -11610,7 +11494,6 @@
   },
   "clickTest": {
     "title": "CPS 測試",
-    "back": "全部工具",
     "privacyNote": "點擊在目前分頁計數。不上傳。",
     "options": "測試",
     "duration": "時長",
@@ -11635,7 +11518,6 @@
   },
   "reactionTime": {
     "title": "反應速度測試",
-    "back": "全部工具",
     "privacyNote": "時間在目前分頁測量。不上傳。",
     "startTitle": "點擊開始",
     "startSub": "等變綠，然後盡快點擊。",
@@ -11664,7 +11546,6 @@
   },
   "toneGenerator": {
     "title": "頻率產生器",
-    "back": "全部工具",
     "privacyNote": "聲音在瀏覽器裡產生。不上傳。",
     "options": "聲音",
     "frequency": "頻率（Hz）",
@@ -11686,7 +11567,6 @@
   },
   "tallyCounter": {
     "title": "計數器",
-    "back": "全部工具",
     "privacyNote": "計數儲存在這個瀏覽器裡。不上傳。",
     "options": "設定",
     "step": "間隔",
@@ -11708,7 +11588,6 @@
   },
   "micTest": {
     "title": "麥克風測試",
-    "back": "全部工具",
     "privacyNote": "聲音只留在目前分頁。不上傳。",
     "options": "麥克風",
     "device": "輸入裝置",
@@ -11744,7 +11623,6 @@
   },
   "webcamTest": {
     "title": "視訊鏡頭測試",
-    "back": "全部工具",
     "privacyNote": "影像只留在這個分頁。不上傳。",
     "options": "相機",
     "device": "相機",
@@ -11787,7 +11665,6 @@
   },
   "gamepadTest": {
     "title": "手把測試",
-    "back": "全部工具",
     "privacyNote": "手把在這個分頁讀取。不上傳。",
     "options": "手把",
     "pad": "手把",
@@ -11814,7 +11691,6 @@
   },
   "deadPixel": {
     "title": "壞點檢測",
-    "back": "全部工具",
     "privacyNote": "在這個分頁執行。不上傳。",
     "options": "顏色",
     "colors": "測試顏色",
@@ -11837,7 +11713,6 @@
   },
   "refreshRate": {
     "title": "更新率測試",
-    "back": "全部工具",
     "privacyNote": "在這個分頁測量。不上傳。",
     "measuring": "測量中…請讓這個分頁保持在前景。",
     "near": "你的螢幕大約是 {n} Hz。",
@@ -11858,7 +11733,6 @@
   },
   "touchTest": {
     "title": "觸控螢幕測試",
-    "back": "全部工具",
     "privacyNote": "觸控在這個分頁畫出。不上傳。",
     "pad": "觸控測試板",
     "start": "用一根或多根手指在這裡觸控、畫畫",
@@ -11877,7 +11751,6 @@
     "hint": "劃過整個觸控板：一直空著的格子就是死角。按 Esc 離開全螢幕。"
   },
   "v": {
-    "back": "所有工具",
     "title": "AI 照片轉影片",
     "privacyNote": "AI 深度與影片編碼都在本頁執行，照片不會上傳。",
     "filesTitle": "照片",
@@ -11918,7 +11791,6 @@
     "errorGpuReset": "匯出時顯示卡被重設了，請再試一次。"
   },
   "imageGen": {
-    "back": "所有工具",
     "title": "AI 繪圖產生器",
     "privacyNote": "AI 在本頁用你的顯示卡執行，你的文字和圖片都不會上傳。",
     "promptLabel": "描述你想要的畫面",
@@ -11955,7 +11827,6 @@
     "errorRun": "繪製失敗。請重新整理頁面後再試。"
   },
   "musicGen": {
-    "back": "所有工具",
     "title": "AI 音樂產生器",
     "privacyNote": "AI 在本頁作曲，不上傳任何內容，產生的音樂歸你使用。",
     "styleTitle": "風格",
@@ -11988,7 +11859,6 @@
   },
   "coinFlip": {
     "title": "擲硬幣",
-    "back": "全部工具",
     "privacyNote": "每次擲硬幣都使用瀏覽器產生的一個安全隨機位元。不上傳。",
     "tapToFlip": "點一下來丟",
     "flip": "丟硬幣",
@@ -12019,7 +11889,6 @@
   },
   "guitarTuner": {
     "title": "吉他調音器",
-    "back": "全部工具",
     "privacyNote": "在這個分頁透過麥克風收音。不錄音、不上傳。",
     "options": "調音器",
     "instrument": "樂器",
@@ -12064,7 +11933,6 @@
   },
   "factors": {
     "title": "因數分解計算機",
-    "back": "全部工具",
     "privacyNote": "在這個分頁精確計算整數。不上傳。",
     "options": "數字",
     "number": "正整數（最多 {n} 位數）",
@@ -12093,7 +11961,6 @@
   },
   "lcmGcf": {
     "title": "最大公因數與最小公倍數",
-    "back": "全部工具",
     "privacyNote": "在這個分頁精確計算整數。不上傳。",
     "options": "數字",
     "numbers": "2 到 {n} 個正整數，用逗號或空格分開",
@@ -12120,7 +11987,6 @@
   },
   "calculator": {
     "title": "科學計算機",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "expression": "算式",
     "keypad": "計算機按鍵",
@@ -12150,7 +12016,6 @@
   },
   "notepad": {
     "title": "線上記事本",
-    "back": "全部工具",
     "privacyNote": "邊打字邊儲存在這個瀏覽器裡。不上傳。",
     "placeholder": "開始打字…",
     "copy": "全部複製",
@@ -12173,7 +12038,6 @@
   },
   "markdown": {
     "title": "Markdown 預覽",
-    "back": "全部工具",
     "privacyNote": "在目前分頁渲染並保存在這個瀏覽器裡。不上傳。",
     "input": "Markdown",
     "preview": "預覽",
@@ -12194,7 +12058,6 @@
   },
   "gradient": {
     "title": "CSS 漸層產生器",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "options": "漸層",
     "type": "類型",
@@ -12225,7 +12088,6 @@
   },
   "fancyText": {
     "title": "特殊字體產生器",
-    "back": "全部工具",
     "privacyNote": "都在目前分頁進行。不上傳。",
     "input": "你的文字",
     "placeholder": "輸入一些文字…",
@@ -12281,7 +12143,6 @@
   },
   "romEmulator": {
     "title": "遊戲模擬器",
-    "back": "全部工具",
     "privacyNote": "開啟你自己的 ROM，在這個分頁裡玩，自動辨識主機。檔案不上傳。",
     "auto": "根據檔案辨識",
     "console": "主機",
@@ -12296,13 +12157,11 @@
   },
   "flashPlayer": {
     "title": "Flash 播放器",
-    "back": "全部工具",
     "privacyNote": "用 Ruffle 在這個分頁開啟 .swf 檔案，不用 Flash 外掛。檔案不上傳。",
     "games": "免費 Flash 遊戲"
   },
   "tierList": {
     "title": "從夯到拉排行榜產生器（Tier List）",
-    "back": "全部工具",
     "privacyNote": "圖片只留在目前的頁面，PNG 在瀏覽器裡產生，不會上傳任何內容。",
     "titleField": "排行榜標題",
     "titlePlaceholder": "例如：零食排行榜",
@@ -12422,7 +12281,6 @@
   },
   "mortgage": {
     "title": "房貸計算機",
-    "back": "全部工具",
     "privacyNote": "在這個分頁計算，資料不上傳。",
     "options": "貸款",
     "price": "房屋總價",
@@ -12456,7 +12314,6 @@
   },
   "quadratic": {
     "title": "一元二次方程式計算機",
-    "back": "全部工具",
     "privacyNote": "在這個分頁求解，資料不上傳。",
     "options": "係數",
     "copy": "複製結果",
@@ -12487,7 +12344,6 @@
   },
   "teamGenerator": {
     "title": "隨機分組產生器",
-    "back": "全部工具",
     "privacyNote": "在這個分頁用 Web Crypto 洗牌，資料不上傳。",
     "options": "名單",
     "names": "名字，一行一個或用逗號分隔（最多 {n} 個）",
@@ -12515,7 +12371,6 @@
   },
   "screenResolution": {
     "title": "我的螢幕解析度是多少？",
-    "back": "全部工具",
     "privacyNote": "由瀏覽器在這個分頁讀取，不傳送任何資料。",
     "yours": "你的螢幕解析度",
     "physical": "螢幕解析度（實際像素）",
@@ -12536,7 +12391,6 @@
   },
   "alarm": {
     "title": "線上鬧鐘",
-    "back": "全部工具",
     "privacyNote": "在這個分頁執行，資料不上傳。",
     "options": "鬧鐘",
     "time": "鬧鐘時間",
@@ -12563,7 +12417,6 @@
   },
   "whiteNoise": {
     "title": "白噪音產生器",
-    "back": "全部工具",
     "privacyNote": "噪音在這個分頁產生，資料不上傳。",
     "options": "聲音",
     "color": "噪音顏色",
@@ -12591,7 +12444,6 @@
   },
   "decibelMeter": {
     "title": "分貝計",
-    "back": "全部工具",
     "privacyNote": "在這個分頁測量，不錄音也不上傳。",
     "options": "測量",
     "weighting": "頻率加權",
@@ -12642,7 +12494,6 @@
   },
   "voiceRecorder": {
     "title": "線上錄音機",
-    "back": "全部工具",
     "privacyNote": "在這個分頁錄音，資料不上傳。",
     "options": "錄音",
     "device": "麥克風",
@@ -12679,7 +12530,6 @@
   },
   "screenRecorder": {
     "title": "螢幕錄影",
-    "back": "全部工具",
     "privacyNote": "在這個分頁錄影，資料不上傳，沒有浮水印。",
     "options": "錄影",
     "format": "格式",
@@ -12718,7 +12568,6 @@
   },
   "triangle": {
     "title": "三角形計算機",
-    "back": "全部工具",
     "privacyNote": "在瀏覽器裡求解，資料不上傳。",
     "options": "已知數值",
     "right": "直角三角形（C = 90°）",
@@ -12779,7 +12628,6 @@
   },
   "gifMaker": {
     "title": "GIF 製作",
-    "back": "全部工具",
     "privacyNote": "用圖片或短影片製作 GIF 動圖。全部在這個分頁完成，檔案不上傳。",
     "filesTitle": "影格",
     "clear": "清除",
@@ -12824,7 +12672,6 @@
   },
   "imageSplitter": {
     "title": "圖片切割",
-    "back": "全部工具",
     "privacyNote": "把一張圖切成網格圖塊，用於 IG 九宮格、輪播貼文或列印。檔案不上傳。",
     "filesTitle": "圖片",
     "dropTitle": "拖入一張圖片",
@@ -12864,7 +12711,6 @@
   },
   "area": {
     "title": "面積計算機",
-    "back": "全部工具",
     "privacyNote": "12 種圖形的面積和周長，附公式、計算過程和所有常用單位。",
     "options": "圖形",
     "shape": "圖形",
@@ -12930,7 +12776,6 @@
   },
   "volume": {
     "title": "體積計算機",
-    "back": "全部工具",
     "privacyNote": "12 種立體的體積和表面積，附計算過程，以及公升、加侖和立方單位。",
     "options": "立體",
     "shape": "立體",
@@ -12991,7 +12836,6 @@
   },
   "randomLetter": {
     "title": "隨機字母產生器",
-    "back": "全部工具",
     "privacyNote": "為文字遊戲、課堂和測驗隨機抽字母。每個字母的機率都相同。",
     "options": "選項",
     "alphabet": "字母表",
@@ -13031,7 +12875,6 @@
   },
   "wordUnscrambler": {
     "title": "單字重組",
-    "back": "全部工具",
     "privacyNote": "輸入字母，看看能拼出哪些英文單字，適合文字遊戲、填字遊戲和字謎。",
     "letters": "你的字母",
     "lettersPlaceholder": "例如 tesrlan 或 ca?t",
@@ -13065,7 +12908,6 @@
   },
   "concrete": {
     "title": "混凝土計算機",
-    "back": "全部工具",
     "privacyNote": "算出樓板、基腳、牆、柱子或樓梯需要多少混凝土，以及要買幾包。",
     "options": "尺寸",
     "shape": "要灌什麼？",
@@ -13115,7 +12957,6 @@
   },
   "graphingCalculator": {
     "title": "函數圖形計算機",
-    "back": "全部工具",
     "privacyNote": "畫出 x 的函數圖形，移動和縮放，並讀出零點、截距和曲線的交點。",
     "functions": "函數",
     "expr": "x 的函數",
@@ -13140,7 +12981,6 @@
   },
   "piano": {
     "title": "線上鋼琴",
-    "back": "全部工具",
     "privacyNote": "用電腦鍵盤、滑鼠或手指彈奏。按下任一琴鍵就會開始發聲。",
     "keysLabel": "鋼琴琴鍵",
     "octaveDown": "降一個八度",
@@ -13173,7 +13013,6 @@
   },
   "slope": {
     "title": "斜率計算機",
-    "back": "全部工具",
     "privacyNote": "輸入兩點，得到斜率、直線方程式、距離和中點，附計算過程。",
     "points": "兩個點",
     "point1": "第 1 點",

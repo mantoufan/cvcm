@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { jsonToXml, xmlToJson } from "../../shared/xml-json";
 import { debounce } from "../session";
 
@@ -30,7 +29,6 @@ export function mountXmlJson(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("xmlJson.back")),
       h("h1", null, t("xmlJson.title")),
       h("p", { class: "lede" }, t("xmlJson.privacyNote")),
     ),

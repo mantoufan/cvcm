@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { MAX_NAMES, makeTeams, parseNames, planTeams, type TeamPlan } from "../../shared/teams";
 
 let namesEl: HTMLTextAreaElement | null = null;
@@ -28,7 +27,6 @@ export function mountTeamGenerator(host: HTMLElement): void {
   outEl = h("ol", { class: "team-list", "aria-live": "polite", "data-out": "teams" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("teamGenerator.back")),
       h("h1", null, t("teamGenerator.title")),
       h("p", { class: "lede" }, t("teamGenerator.privacyNote")),
     ),

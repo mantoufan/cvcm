@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { fromRoman, toRoman } from "../../shared/roman";
 import { debounce } from "../session";
 
@@ -32,7 +31,6 @@ export function mountRoman(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("roman.back")),
       h("h1", null, t("roman.title")),
       h("p", { class: "lede" }, t("roman.privacyNote")),
     ),

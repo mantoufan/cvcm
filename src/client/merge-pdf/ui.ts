@@ -1,8 +1,7 @@
 import { outputFilename } from "../../shared/filename";
 import { mergePdfBuffers, pdfPageCount } from "../../shared/pdf-ops";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 
 type Item = { id: string; file: File; pages: number; error: string | null };
 
@@ -14,7 +13,6 @@ let statusEl: HTMLElement | null = null;
 export async function mountMergePdf(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("mergePdf.back")),
       h("h1", null, t("mergePdf.title")),
       h("p", { class: "lede" }, t("mergePdf.privacyNote")),
     ),

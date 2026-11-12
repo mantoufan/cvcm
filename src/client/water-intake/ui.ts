@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { GLASS_ML, HOT_EXTRA_ML, MAX_EXERCISE_MIN, ML_PER_EXERCISE_MIN, ML_PER_KG, waterIntake, type Climate } from "../../shared/water-intake";
 import { LB_PER_KG, lbToKg } from "../../shared/tdee";
 
@@ -33,7 +32,6 @@ export function mountWaterIntake(host: HTMLElement): void {
   outEl = h("dl", { class: "stats-grid timestamp-out" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("waterIntake.back")),
       h("h1", null, t("waterIntake.title")),
       h("p", { class: "lede" }, t("waterIntake.privacyNote")),
     ),

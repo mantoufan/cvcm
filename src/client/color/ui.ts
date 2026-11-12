@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import {
   contrastRatio,
   formatHsl,
@@ -38,7 +37,6 @@ export function mountColor(host: HTMLElement): void {
   contrastEl = h("p", { class: "hint" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("color.back")),
       h("h1", null, t("color.title")),
       h("p", { class: "lede" }, t("color.privacyNote")),
     ),

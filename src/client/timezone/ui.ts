@@ -1,6 +1,5 @@
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import {
   COMMON_ZONES,
   convertWallTime,
@@ -35,7 +34,6 @@ export function mountTimezone(host: HTMLElement): void {
   isoEl = h("p", { class: "muted", "data-volatile": "" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("timezone.back")),
       h("h1", null, t("timezone.title")),
       h("p", { class: "lede" }, t("timezone.privacyNote")),
     ),

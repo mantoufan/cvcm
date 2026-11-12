@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { equationText, num, solveQuadratic, type QuadraticResult } from "../../shared/quadratic";
 
 const SVG = "http://www.w3.org/2000/svg";
@@ -31,7 +30,6 @@ export function mountQuadratic(host: HTMLElement): void {
   graphEl = h("div", { class: "quad-graph", "data-out": "graph" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("quadratic.back")),
       h("h1", null, t("quadratic.title")),
       h("p", { class: "lede" }, t("quadratic.privacyNote")),
     ),

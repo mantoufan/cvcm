@@ -3,8 +3,7 @@ import { blobFromBytes } from "../../shared/image-encode";
 import { extractPdfPages, parsePageRanges, pdfPageCount, splitPdfEachPage } from "../../shared/pdf-ops";
 import { zipStore } from "../../shared/zip";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 
 type Mode = "each" | "range";
 
@@ -23,7 +22,6 @@ let rangeInput: HTMLInputElement | null = null;
 export async function mountSplitPdf(host: HTMLElement): Promise<void> {
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("splitPdf.back")),
       h("h1", null, t("splitPdf.title")),
       h("p", { class: "lede" }, t("splitPdf.privacyNote")),
     ),

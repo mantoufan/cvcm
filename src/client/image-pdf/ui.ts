@@ -2,8 +2,7 @@ import { outputFilename } from "../../shared/filename";
 import { pdfFromJpegs, type PdfPageMode } from "../../shared/pdf";
 import { canvasToBlob, decodeImage, drawToCanvas } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { clearDraft, debounce, loadDraft, markSession, saveDraft, sessionLive } from "../session";
 
 type Item = {
@@ -43,7 +42,6 @@ export async function mountImagePdf(host: HTMLElement): Promise<void> {
   restoring = false;
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("imagePdf.back")),
       h("h1", null, t("imagePdf.title")),
       h("p", { class: "lede" }, t("imagePdf.privacyNote")),
     ),

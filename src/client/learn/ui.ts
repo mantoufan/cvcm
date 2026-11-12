@@ -1,5 +1,6 @@
 import { LEARN_FIG, localizedTutorialSrc } from "../covers";
 import { linkList, type LinkItem } from "../links";
+import { crumbNav, homeCrumb } from "../crumb";
 import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
@@ -11,6 +12,7 @@ import { appHref, isConvertJobId, kbHref, learnHref, TUTORIAL_GROUPS, type ToolI
 export function mountLearnHub(host: HTMLElement): void {
   const loc = locale();
   host.append(
+    crumbNav([homeCrumb(loc), { label: t("nav.learn") }]),
     h("header", { class: "tool-head" },
       h("h1", null, t("learn.hub.title")),
       h("p", { class: "lede" }, t("learn.hub.lead")),
@@ -59,8 +61,12 @@ export function mountLearn(host: HTMLElement, id: TutorialId): void {
   const tool = meta.related[0];
   const openAt = meta.openAt ?? 2;
   host.append(
+    crumbNav([
+      homeCrumb(loc),
+      { label: t("nav.learn"), href: learnHref(loc, null), nav: "learn" },
+      { label: t(`learn.${id}.name`) },
+    ]),
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: learnHref(loc, null), "data-nav": "learn" }, t("learn.back")),
       h("p", { class: "kicker" }, t(`learn.groups.${groupOf(id)}`)),
       h("h1", null, t(`learn.${id}.title`)),
       h("p", { class: "lede" }, t(`learn.${id}.lead`)),

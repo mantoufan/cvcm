@@ -2,7 +2,6 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { formatter } from "../shape-calc";
-import { appHref } from "../../shared/path";
 import { parseDecimalInput } from "../../shared/decimal-input";
 import { decimalMarkOf } from "../../shared/calculator";
 import {
@@ -175,7 +174,6 @@ export function mountConcrete(host: HTMLElement): void {
 
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(loc, null), "data-nav": "home" }, t("concrete.back")),
       h("h1", null, t("concrete.title")),
       h("p", { class: "lede" }, t("concrete.privacyNote")),
     ),

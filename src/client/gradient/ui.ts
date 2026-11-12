@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import {
   MAX_STOPS,
   MIN_STOPS,
@@ -61,7 +60,6 @@ export function mountGradient(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("gradient.back")),
       h("h1", null, t("gradient.title")),
       h("p", { class: "lede" }, t("gradient.privacyNote")),
     ),

@@ -1,7 +1,6 @@
 import { canvasToBlob } from "../decode";
 import { downloadBlob, h } from "../dom";
-import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
+import { t } from "../i18n";
 import { clampBounds, hasInk, strokeBounds, type Point, type Stroke } from "../../shared/signature";
 
 const W = 900;
@@ -28,7 +27,6 @@ export function mountSignature(host: HTMLElement): void {
   statusEl = h("p", { class: "status", "aria-live": "polite" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("signature.back")),
       h("h1", null, t("signature.title")),
       h("p", { class: "lede" }, t("signature.privacyNote")),
     ),

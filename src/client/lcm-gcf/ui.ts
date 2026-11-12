@@ -1,7 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { appHref } from "../../shared/path";
 import { MAX_DIGITS, MAX_NUMBERS, euclidSteps, factorText, factorize, gcd, gcfLcmByPrimes, lcm, parseWhole, splitNumbers, thousandsMarkFor, commaLooksLikeANumber } from "../../shared/factors";
 
 let inputEl: HTMLTextAreaElement | null = null;
@@ -24,7 +23,6 @@ export function mountLcmGcf(host: HTMLElement): void {
   stepsEl = h("ol", { class: "factor-steps", "data-out": "euclid" });
   host.append(
     h("header", { class: "tool-head" },
-      h("a", { class: "back", href: appHref(locale(), null), "data-nav": "home" }, t("lcmGcf.back")),
       h("h1", null, t("lcmGcf.title")),
       h("p", { class: "lede" }, t("lcmGcf.privacyNote")),
     ),
