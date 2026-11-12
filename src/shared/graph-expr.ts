@@ -94,7 +94,7 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
       continue;
     }
     // log10(100) is the common log; "log" alone is already base 10.
-    const log10 = /^log10(?=\s*\()/i.exec(s.slice(i));
+    const log10 = /^log10/i.exec(s.slice(i));
     if (log10) {
       out.push({ k: "fn", v: "log" });
       i += log10[0].length;
@@ -174,6 +174,22 @@ class Parser {
     return f;
   }
 
+  /** Inside brackets no |…| is open yet, so "|(2|x|)|" can start a new one. */
+  private inBrackets<T>(f: () => T): T {
+    const bars = this.bars;
+    this.bars = 0;
+    try {
+      return f();
+    } finally {
+      this.bars = bars;
+    }
+  }
+
+  private isBarAt(i: number): boolean {
+    const t = this.toks[i];
+    return t?.k === "op" && t.v === "|";
+  }
+
   private peek(): Tok | undefined {
     return this.toks[this.i];
   }
@@ -200,12 +216,18 @@ class Parser {
     return left;
   }
 
-  /** A token that starts a factor, so "2x", "x(x+1)" and "2|x|" multiply; inside |…| a bar closes instead. */
+  /** A token that starts a factor, so "2x", "x(x+1)" and "2|x|" multiply. */
   private startsFactor(): boolean {
     const t = this.peek();
     if (!t) return false;
     if (t.k !== "op") return true;
-    return t.v === "(" || (t.v === "|" && this.bars === 0);
+    if (t.v === "(") return true;
+    if (t.v !== "|") return false;
+    // Outside bars a bar opens. Inside, a bar followed by something that starts a value opens a nested one
+    // (|2|x|-1| is |2·|x| − 1|, as written by hand); otherwise it closes the open one.
+    if (this.bars === 0) return true;
+    const after = this.toks[this.i + 1];
+    return !!after && (after.k !== "op" || after.v === "(");
   }
 
   private product(): Compiled {
@@ -218,7 +240,21 @@ class Parser {
         left = op === "*" ? (x) => a(x) * b(x) : (x) => a(x) / b(x);
       } else if (this.startsFactor()) {
         const a = left;
-        const b = this.power();
+        // Inside bars a "|" read as a nested opening may be a closing after all (|x|x is |x|·x): if the nested
+        // reading fails, step back and let the bar close.
+        const at = this.i;
+        const bars = this.bars;
+        const depth = this.depth;
+        let b: Compiled;
+        try {
+          b = this.power();
+        } catch (e) {
+          if (!(e instanceof Fail) || !this.isBarAt(at) || bars === 0) throw e;
+          this.i = at;
+          this.bars = bars;
+          this.depth = depth;
+          break;
+        }
         left = (x) => a(x) * b(x);
       } else break;
     }
@@ -277,7 +313,7 @@ class Parser {
       let arg: Compiled;
       if (this.isOp("(")) {
         this.i++;
-        arg = this.sum();
+        arg = this.inBrackets(() => this.sum());
         if (!this.isOp(")")) throw new Fail();
         this.i++;
         // sin(x)^2 squares the sine.
@@ -296,7 +332,7 @@ class Parser {
       return (x) => f(arg(x));
     }
     if (t.v === "(") {
-      const inner = this.sum();
+      const inner = this.inBrackets(() => this.sum());
       if (!this.isOp(")")) throw new Fail();
       this.i++;
       return inner;
@@ -373,22 +409,25 @@ export function sampleCurve(f: Compiled, view: Viewport, widthPx: number): Array
   return runs;
 }
 
-/** A step taller than the view whose middle is not between its ends is a break in the curve, not a steep stretch. */
+/**
+ * Whether the curve breaks between two samples. A visible step is narrowed by bisection: a steep but continuous
+ * stretch flattens out as the interval shrinks, while a pole or a step (tan, 1/x, floor) keeps its jump however
+ * narrow it gets.
+ */
 function isJump(at: (x: number) => number, x0: number, y0: number, x1: number, y1: number, ySpan: number): boolean {
-  if (Math.abs(y1 - y0) < ySpan) return false;
+  const jump = Math.abs(y1 - y0);
+  // Under about a pixel nothing shows either way.
+  if (jump < ySpan / 200) return false;
   let a = x0;
   let b = x1;
   let ya = y0;
   let yb = y1;
-  // A steep but continuous stretch flattens out as the interval narrows; a pole keeps jumping however narrow it gets.
-  for (let k = 0; k < 20; k++) {
+  for (let k = 0; k < 24; k++) {
     const m = (a + b) / 2;
+    if (m === a || m === b) break;
     const ym = at(m);
     if (Number.isNaN(ym)) return true;
-    const lo = Math.min(ya, yb);
-    const hi = Math.max(ya, yb);
-    if (ym < lo - ySpan || ym > hi + ySpan) return true;
-    // Keep the half with the larger change; a real asymptote keeps jumping as the interval shrinks.
+    // Keep the half with the larger change; that is where a break would be.
     if (Math.abs(ym - ya) > Math.abs(yb - ym)) {
       b = m;
       yb = ym;
@@ -397,31 +436,58 @@ function isJump(at: (x: number) => number, x0: number, y0: number, x1: number, y
       ya = ym;
     }
   }
-  return Math.abs(yb - ya) > ySpan;
+  return Math.abs(yb - ya) > Math.max(jump / 2, ySpan / 200);
 }
 
-/** Zeros of f in [a, b]: sign changes (and touching zeros) between samples, refined by bisection. Jumps are not zeros. */
+/**
+ * Zeros of f in [a, b]: sign changes between samples refined by bisection (poles are rejected), and touching zeros
+ * such as the vertex of (x − 1)² found as a dip of |f| to zero. A stretch where f is 0 at several samples in a row
+ * (two identical curves) has no single zero and is left out.
+ */
 export function findZeros(f: Compiled, a: number, b: number, samples = 800, max = 20): number[] {
   const out: number[] = [];
   const dx = (b - a) / samples;
-  let x0 = a;
-  let y0 = f(x0);
-  for (let i = 1; i <= samples && out.length < max; i++) {
-    const x1 = a + i * dx;
-    const y1 = f(x1);
-    if (Number.isFinite(y0) && Number.isFinite(y1)) {
-      if (y0 === 0) push(out, x0, dx);
-      else if (Math.sign(y0) !== Math.sign(y1) && y1 !== 0) {
-        const z = bisect(f, x0, x1, y0);
-        // A sign change across a pole (1/x at 0) leaves a huge value at the "root": not a zero.
-        if (z !== null) push(out, z, dx);
-      }
+  const xs = Array.from({ length: samples + 1 }, (_, i) => a + i * dx);
+  const ys = xs.map((x) => f(x));
+  for (let i = 0; i <= samples && out.length < max; i++) {
+    const y0 = ys[i];
+    if (!Number.isFinite(y0)) continue;
+    if (y0 === 0) {
+      const flat = ys[i - 1] === 0 || ys[i + 1] === 0;
+      if (!flat) push(out, xs[i], dx);
+      continue;
     }
-    x0 = x1;
-    y0 = y1;
+    const y1 = ys[i + 1];
+    if (i < samples && Number.isFinite(y1) && y1 !== 0 && Math.sign(y0) !== Math.sign(y1)) {
+      const z = bisect(f, xs[i], xs[i + 1], y0);
+      if (z !== null) push(out, z, dx);
+      continue;
+    }
+    // A dip toward zero without a sign change: look for the bottom between the neighbours.
+    const yp = ys[i - 1];
+    if (i > 0 && i < samples && Number.isFinite(yp) && Number.isFinite(y1) && Math.sign(yp) === Math.sign(y0) && Math.sign(y1) === Math.sign(y0)
+      && Math.abs(y0) <= Math.abs(yp) && Math.abs(y0) < Math.abs(y1)) {
+      const z = touching(f, xs[i - 1], xs[i + 1], Math.max(1, Math.abs(yp), Math.abs(y1)));
+      if (z !== null) push(out, z, dx);
+    }
   }
-  if (out.length < max && f(b) === 0) push(out, b, dx);
   return out;
+}
+
+/** The bottom of |f| on [a, b] by golden-section search, when it reaches zero (to rounding). */
+function touching(f: Compiled, a: number, b: number, scale: number): number | null {
+  const g = (Math.sqrt(5) - 1) / 2;
+  let lo = a;
+  let hi = b;
+  for (let k = 0; k < 80; k++) {
+    const c = hi - g * (hi - lo);
+    const d = lo + g * (hi - lo);
+    if (Math.abs(f(c)) < Math.abs(f(d))) hi = d;
+    else lo = c;
+  }
+  const x = (lo + hi) / 2;
+  const y = f(x);
+  return Number.isFinite(y) && Math.abs(y) <= 1e-9 * scale ? x : null;
 }
 
 function push(out: number[], x: number, dx: number): void {

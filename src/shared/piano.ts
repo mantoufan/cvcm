@@ -37,10 +37,12 @@ export const KEY_CAP: Readonly<Record<string, string>> = Object.fromEntries(
   ]),
 );
 
-/** For each note above the base C, the first key cap that plays it (the Q row wins over the Z row's top). */
+/** For each note above the base C, the key cap that plays it (the upper rows win over the Z row's top). */
 export function capsFor(base: number): Map<number, string> {
   const out = new Map<number, string>();
-  const codes = Object.keys(KEY_MAP).sort((a, b) => Number(b.startsWith("Key") && "QWERTYUIOP".includes(b.slice(3))) - Number(a.startsWith("Key") && "QWERTYUIOP".includes(a.slice(3))));
+  // The Q row and the number row above it are the upper octave; they win over the Z row's overlap (, L . ; /).
+  const upper = (code: string) => (code.startsWith("Key") && "QWERTYUIOP".includes(code.slice(3))) || code.startsWith("Digit") || code.startsWith("Bracket") || code === "Equal";
+  const codes = Object.keys(KEY_MAP).sort((a, b) => Number(upper(b)) - Number(upper(a)));
   for (const code of codes) {
     const midi = base + KEY_MAP[code];
     if (!out.has(midi)) out.set(midi, KEY_CAP[code]);

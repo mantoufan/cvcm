@@ -56,9 +56,10 @@ export function parseCoord(raw: string, locale: string): Q | null | undefined {
   const one = (s: string): Q | null => {
     const v = parseDecimalInput(s, locale);
     if (v === undefined || Number.isNaN(v)) return null;
-    // parseDecimalInput settles the decimal mark and thousands; String() of the result is the plain decimal back.
-    const plain = String(v);
-    return /e/i.test(plain) ? null : decimalToQ(plain);
+    // parseDecimalInput settles the decimal mark and thousands; this writes the result back as a plain decimal
+    // (String() would give "5e-7" for 0.0000005).
+    const plain = v.toLocaleString("en-US", { useGrouping: false, maximumFractionDigits: 20 });
+    return decimalToQ(plain);
   };
   const mixed = /^(-?)(\d+)\s+(\d+)\s*\/\s*(\d+)$/.exec(text);
   if (mixed) {

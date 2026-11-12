@@ -10,7 +10,7 @@ const LABELS = ["letters", "solfege", "keys", "none"] as const;
 type LabelMode = (typeof LABELS)[number];
 const OCTAVE_CHOICES = [1, 2, 3, 4] as const;
 
-type Voice = { release: (at: number) => void; kill: () => void };
+type Voice = { release: (at: number) => void; /** Fades out now, even a note scheduled ahead or already given a release time. */ cut: () => void; kill: () => void };
 
 type State = {
   ctx: AudioContext | null;
@@ -322,6 +322,14 @@ function voice(ctx: AudioContext, out: AudioNode, sound: Sound, midi: number, at
       env.gain.setTargetAtTime(0, from, releaseTime / 4);
       stopAll(from + releaseTime * 2);
     },
+    cut() {
+      done = true;
+      const now = ctx.currentTime;
+      env.gain.cancelScheduledValues(0);
+      env.gain.setValueAtTime(env.gain.value, now);
+      env.gain.linearRampToValueAtTime(0, now + 0.03);
+      stopAll(now + 0.05);
+    },
     kill() {
       done = true;
       stopAll(ctx.currentTime);
@@ -481,6 +489,10 @@ function toggleRecord(): void {
   syncTake();
 }
 
+/** How far ahead playback puts notes on the audio clock, and how often it tops up. */
+const PLAY_AHEAD = 1.5;
+const PLAY_TICK_MS = 250;
+
 function togglePlay(): void {
   if (!s) return;
   if (s.playTimers.length) {
@@ -493,31 +505,48 @@ function togglePlay(): void {
   if (!ctx || !s.master || !s.take.length) return;
   const st = s;
   const start = ctx.currentTime + 0.1;
-  const open = new Map<number, Voice>();
-  // Notes are scheduled on the audio clock; timers only light the keys and end playback.
   const take = [...st.take];
-  for (const e of take) {
-    if (e.on) {
-      open.get(e.midi)?.release(start + e.t);
-      const v = voice(ctx, st.master!, st.sound, e.midi, start + e.t);
-      open.set(e.midi, v);
-      st.playVoices.push(v);
-    } else {
-      open.get(e.midi)?.release(start + e.t);
-      open.delete(e.midi);
+  const open = new Map<number, Voice>();
+  let next = 0;
+  // A look-ahead scheduler: only the next PLAY_AHEAD seconds of notes exist as audio nodes, so a long take does not
+  // build thousands of voices at once. Notes go on the audio clock; timers only light the keys.
+  const tick = () => {
+    if (!s || s !== st || !st.master) return;
+    const horizon = ctx.currentTime + PLAY_AHEAD;
+    while (next < take.length && start + take[next].t < horizon) {
+      const e = take[next++];
+      const at = start + e.t;
+      open.get(e.midi)?.release(at);
+      if (e.on) {
+        const v = voice(ctx, st.master, st.sound, e.midi, at);
+        open.set(e.midi, v);
+        st.playVoices.push(v);
+      } else open.delete(e.midi);
+      st.playTimers.push(window.setTimeout(() => st.keyEls.get(e.midi)?.classList.toggle("playing", e.on), Math.max(0, (at - ctx.currentTime) * 1000)));
     }
-    st.playTimers.push(window.setTimeout(() => st.keyEls.get(e.midi)?.classList.toggle("playing", e.on), (e.t + 0.1) * 1000));
-  }
-  const end = take[take.length - 1].t;
-  st.playTimers.push(window.setTimeout(() => { stopPlayback(true); syncTake(); }, (end + 0.6) * 1000));
+    // Voices that have finished are dropped from the list Stop has to cut.
+    if (st.playVoices.length > 256) st.playVoices = st.playVoices.slice(-256);
+    if (next >= take.length) {
+      clearInterval(timer);
+      st.playTimers.push(window.setTimeout(() => { stopPlayback(true); syncTake(); }, Math.max(0, (start + take[take.length - 1].t - ctx.currentTime + 0.5) * 1000)));
+    }
+  };
+  const timer = window.setInterval(tick, PLAY_TICK_MS);
+  // Kept with the timeouts: clearTimeout and clearInterval share one id space.
+  st.playTimers.push(timer);
+  tick();
   syncTake();
 }
 
 function stopPlayback(finished = false): void {
   if (!s) return;
-  for (const id of s.playTimers) clearTimeout(id);
+  for (const id of s.playTimers) {
+    clearTimeout(id);
+    clearInterval(id);
+  }
   s.playTimers = [];
-  if (!finished && s.ctx) for (const v of s.playVoices) v.release(s.ctx.currentTime);
+  // Cut notes already scheduled ahead, even those whose release time is set.
+  if (!finished) for (const v of s.playVoices) v.cut();
   s.playVoices = [];
   for (const el of s.keyEls.values()) el.classList.remove("playing");
 }

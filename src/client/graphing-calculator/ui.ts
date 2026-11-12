@@ -31,6 +31,8 @@ type State = {
   frame: number;
   pointsTimer: number;
   ro: ResizeObserver | null;
+  /** The canvas bitmap has been sized once (a fresh canvas is 300 × 150, not unsized). */
+  sized: boolean;
 };
 
 let s: State | null = null;
@@ -62,6 +64,7 @@ export function mountGraphingCalculator(host: HTMLElement): void {
     frame: 0,
     pointsTimer: 0,
     ro: null,
+    sized: false,
   };
   const zoomBtn = (action: string, label: string, aria: string, k: number) =>
     h("button", { type: "button", class: "chip", "data-action": action, "aria-label": aria, onClick: () => zoom(k) }, label);
@@ -161,7 +164,7 @@ function resize(): void {
   if (!s) return;
   const w = Math.max(240, Math.round(s.wrap.clientWidth || 640));
   const hgt = Math.round(w * HEIGHT_RATIO);
-  if (w === s.w && hgt === s.hgt && s.canvas.width) {
+  if (w === s.w && hgt === s.hgt && s.sized) {
     redraw();
     return;
   }
@@ -171,6 +174,7 @@ function resize(): void {
   const unit = (v.xMax - v.xMin) / w;
   s.w = w;
   s.hgt = hgt;
+  s.sized = true;
   s.view = { ...v, yMin: cy - (unit * hgt) / 2, yMax: cy + (unit * hgt) / 2 };
   const dpr = Math.min(3, window.devicePixelRatio || 1);
   s.canvas.width = Math.round(w * dpr);

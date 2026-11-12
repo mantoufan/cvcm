@@ -166,6 +166,34 @@ describe("graph expressions", () => {
     expect(parseExpr("(".repeat(200) + "x" + ")".repeat(200)).ok).toBe(false);
   });
 
+  it("reads nested bars and log10 without brackets", () => {
+    expect(f("|(2|x|)|", -3)).toBe(6);
+    expect(f("|2|x|-1|", 3)).toBe(5);
+    expect(f("|x|x", -2)).toBe(-4);
+    expect(f("|x|sin(x)", -Math.PI / 2)).toBeCloseTo(-Math.PI / 2, 12);
+    expect(f("log10 x", 1000)).toBeCloseTo(3, 12);
+  });
+
+  it("finds touching zeros and ignores curves that coincide", () => {
+    const sq = parseExpr("(x-1)^2");
+    if (!sq.ok) throw new Error();
+    const z = findZeros(sq.fn, -9.7, 10.3);
+    expect(z).toHaveLength(1);
+    expect(z[0]).toBeCloseTo(1, 6);
+    const near = parseExpr("x^2 + 0.001");
+    if (!near.ok) throw new Error();
+    expect(findZeros(near.fn, -9.7, 10.3)).toEqual([]);
+    expect(findZeros(() => 0, -10, 10)).toEqual([]);
+    expect(findZeros((x) => Math.abs(x) - x, -10, 10)).toEqual([]);
+  });
+
+  it("breaks step functions at each step", () => {
+    const floor = parseExpr("floor(x)");
+    if (!floor.ok) throw new Error();
+    // floor steps at −4 … 4 inside (−4.5, 4.5): nine flat pieces, no vertical risers.
+    expect(sampleCurve(floor.fn, { xMin: -4.5, xMax: 4.5, yMin: -7, yMax: 7 }, 900)).toHaveLength(10);
+  });
+
   it("finds zeros and skips poles", () => {
     const sq = parseExpr("x^2 - 2");
     if (!sq.ok) throw new Error();
@@ -230,6 +258,8 @@ describe("piano", () => {
     expect(caps.get(49)).toBe("S");
     expect(caps.get(60)).toBe("Q");
     expect(caps.get(72)).toBe("I");
+    expect(caps.get(61)).toBe("2");
+    expect(caps.get(63)).toBe("3");
   });
 
   it("closes notes still held when a take ends", () => {
@@ -251,6 +281,7 @@ describe("slope", () => {
     expect(P("-3/4")).toEqual(q(-3n, 4n));
     expect(P("1 1/2")).toEqual(q(3n, 2n));
     expect(P("−2")).toEqual(q(-2n));
+    expect(P("0.0000005")).toEqual(q(1n, 2_000_000n));
     expect(parseCoord("2,5", "es")).toEqual(q(5n, 2n));
     expect(parseCoord("", "en")).toBeUndefined();
     expect(parseCoord("1/0", "en")).toBeNull();
