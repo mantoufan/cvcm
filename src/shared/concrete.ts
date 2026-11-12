@@ -3,6 +3,7 @@
  * in cubic metres, cubic yards and cubic feet, and the number of premix bags.
  */
 import { METRES, type LengthUnit } from "./area";
+import { CUBIC_METRES } from "./volume";
 
 export const CONCRETE_SHAPES = ["slab", "footing", "wall", "column", "tube", "stairs"] as const;
 export type ConcreteShape = (typeof CONCRETE_SHAPES)[number];
@@ -33,18 +34,20 @@ export const OPTIONAL_FIELDS: ReadonlySet<string> = new Set(["quantity", "platfo
  * Premix bags by weight. Bagged concrete yields about 0.60 ft³ per 80 lb (0.45 per 60 lb, 0.30 per 40 lb on the bag),
  * which is a mixed density of 133⅓ lb/ft³ (2,136 kg/m³); metric bags are worked out at the same density.
  */
-export const BAG_DENSITY_KG_M3 = (80 * 0.45359237) / (0.6 * 0.3048 ** 3);
+const LB = 0.45359237;
+export const BAG_DENSITY_KG_M3 = (80 * LB) / (0.6 * CUBIC_METRES.ft3);
 export const BAGS = [
-  { id: "lb80", kg: 80 * 0.45359237, label: "80 lb" },
-  { id: "lb60", kg: 60 * 0.45359237, label: "60 lb" },
-  { id: "lb40", kg: 40 * 0.45359237, label: "40 lb" },
+  { id: "lb80", kg: 80 * LB, label: "80 lb" },
+  { id: "lb60", kg: 60 * LB, label: "60 lb" },
+  { id: "lb40", kg: 40 * LB, label: "40 lb" },
   { id: "kg40", kg: 40, label: "40 kg" },
   { id: "kg25", kg: 25, label: "25 kg" },
   { id: "kg20", kg: 20, label: "20 kg" },
 ] as const;
 
-export const CUBIC_YARD = 0.9144 ** 3;
-export const CUBIC_FOOT = 0.3048 ** 3;
+/** Cubic metres per cubic yard and foot, from the volume calculator's table. */
+export const CUBIC_YARD = CUBIC_METRES.yd3;
+export const CUBIC_FOOT = CUBIC_METRES.ft3;
 
 export type ConcreteInput = {
   shape: ConcreteShape;
@@ -54,7 +57,7 @@ export type ConcreteInput = {
   waste: number;
 };
 
-export type ConcreteError = "missing" | "invalid" | "inner" | "count" | "waste";
+export type ConcreteError = "missing" | "invalid" | "negative" | "inner" | "count" | "waste";
 
 export type ConcreteResult =
   | { ok: true; /** One piece, m³. */ each: number; /** All pieces, m³. */ net: number; /** With waste, m³. */ total: number; bags: Array<{ id: string; label: string; count: number }> }
@@ -78,8 +81,14 @@ export function solveConcrete(input: ConcreteInput): ConcreteResult {
       }
       return { ok: false, error: "missing", field: field.id };
     }
-    if (!Number.isFinite(raw) || raw < 0 || (raw === 0 && !OPTIONAL_FIELDS.has(field.id))) return { ok: false, error: "invalid", field: field.id };
-    if (field.kind === "count" && (!Number.isInteger(raw) || raw < 1 || raw > 10_000)) return { ok: false, error: "count", field: field.id };
+    // Counts have their own rule (whole, 1 to 10,000); an optional size may be 0 but not negative.
+    if (field.kind === "count") {
+      if (!Number.isInteger(raw) || raw < 1 || raw > 10_000) return { ok: false, error: "count", field: field.id };
+    } else if (!Number.isFinite(raw) || raw < 0) {
+      return { ok: false, error: OPTIONAL_FIELDS.has(field.id) ? "negative" : "invalid", field: field.id };
+    } else if (raw === 0 && !OPTIONAL_FIELDS.has(field.id)) {
+      return { ok: false, error: "invalid", field: field.id };
+    }
     v[field.id] = raw;
   }
   let each: number;

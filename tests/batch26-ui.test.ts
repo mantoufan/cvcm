@@ -47,6 +47,11 @@ describe("concrete ui", () => {
     expect(q<HTMLInputElement>("[data-field=thickness]").value).toBe("10.16");
     expect(q<HTMLSelectElement>("[data-unit=thickness]").value).toBe("cm");
     expect(q("[data-out=main]").textContent).toBe("1.0382844 m³");
+    // Straight back restores what was typed, not a rounded conversion.
+    set("[data-field=length]", "12.345678");
+    set("[data-field=system]", "imperial", "change");
+    set("[data-field=system]", "metric", "change");
+    expect(q<HTMLInputElement>("[data-field=length]").value).toBe("12.345678");
     set("[data-field=shape]", "tube", "change");
     // Every shape starts with a worked example.
     expect(q("[data-out=error]").textContent).toBe("");
@@ -58,6 +63,13 @@ describe("concrete ui", () => {
     expect(q("[data-out=error]").textContent).toBe("The inner diameter must be smaller than the outer one.");
     set("[data-field=inner]", "20");
     expect(q("[data-out=error]").textContent).toBe("");
+    set("[data-field=shape]", "stairs", "change");
+    set("[data-field=platform]", "-5");
+    expect(q("[data-out=error]").textContent).toBe("Top platform depth cannot be negative.");
+    set("[data-field=platform]", "");
+    set("[data-field=steps]", "0");
+    expect(q("[data-out=error]").textContent).toBe("Number of steps must be a whole number from 1 to 10,000.");
+    set("[data-field=steps]", "4");
     set("[data-field=waste]", "abc");
     expect(q("[data-out=error]").textContent).toBe("Waste must be a percentage from 0 to 100.");
   });

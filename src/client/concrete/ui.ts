@@ -53,6 +53,8 @@ export function mountConcrete(host: HTMLElement): void {
   // number carried across shapes would silently change meaning.
   const typed = Object.fromEntries(CONCRETE_SHAPES.map((sh) => [sh, { ...START[system][sh] }])) as Record<ConcreteShape, Record<string, string>>;
   const units = Object.fromEntries(CONCRETE_SHAPES.map((sh) => [sh, {}])) as Record<ConcreteShape, Record<string, ConcreteUnit>>;
+  /** What the last Units switch replaced, to put back if the user switches straight back without editing. */
+  let undo: { to: System; typed: Record<ConcreteShape, Record<string, string>>; units: Record<ConcreteShape, Record<string, ConcreteUnit>>; after: string } | null = null;
   let last = "";
   let copyBtn: HTMLButtonElement | null = null;
 
@@ -68,17 +70,30 @@ export function mountConcrete(host: HTMLElement): void {
     "data-field": "system",
     onChange: () => {
       // A new system moves every size to that system's usual unit, converting what was typed (10 ft becomes 3.048 m).
+      // Switching straight back restores exactly what was typed, so going back and forth never rounds a value.
       const next = systemSel.value as System;
-      for (const sh of CONCRETE_SHAPES) {
-        for (const field of CONCRETE_FIELDS[sh]) {
-          if (field.kind !== "length") continue;
-          const from = unitOf(field.id, sh);
-          const to = (next === "metric" ? field.metric : field.imperial) ?? "m";
-          const v = parseDecimalInput(typed[sh][field.id] ?? "", loc);
-          // Written back in the page's decimal mark (9,84252 in es/id/vi), like every other number on it.
-          if (v !== undefined && !Number.isNaN(v)) typed[sh][field.id] = String(Number((toMetres(v, from) / toMetres(1, to)).toPrecision(6))).replace(".", decimalMarkOf(loc));
+      const snapshot = JSON.stringify(typed);
+      // Only an untouched switch is undone: any typed value or unit changed since keeps the converted numbers.
+      if (undo && undo.to === next && undo.after === JSON.stringify([typed, units])) {
+        for (const sh of CONCRETE_SHAPES) {
+          typed[sh] = { ...undo.typed[sh] };
+          units[sh] = { ...undo.units[sh] };
         }
-        units[sh] = {};
+        undo = null;
+      } else {
+        const before = { to: next === "metric" ? "imperial" as System : "metric" as System, typed: JSON.parse(snapshot) as typeof typed, units: JSON.parse(JSON.stringify(units)) as typeof units };
+        for (const sh of CONCRETE_SHAPES) {
+          for (const field of CONCRETE_FIELDS[sh]) {
+            if (field.kind !== "length") continue;
+            const from = unitOf(field.id, sh);
+            const to = (next === "metric" ? field.metric : field.imperial) ?? "m";
+            const v = parseDecimalInput(typed[sh][field.id] ?? "", loc);
+            // Written back in the page's decimal mark (9,84252 in es/id/vi), like every other number on it.
+            if (v !== undefined && !Number.isNaN(v)) typed[sh][field.id] = String(Number((toMetres(v, from) / toMetres(1, to)).toPrecision(6))).replace(".", decimalMarkOf(loc));
+          }
+          units[sh] = {};
+        }
+        undo = { ...before, after: JSON.stringify([typed, units]) };
       }
       system = next;
       buildFields();

@@ -284,6 +284,8 @@ function onUp(e: PointerEvent): void {
   if (!s) return;
   s.drag.delete(e.pointerId);
   if (s.drag.size < 2) s.pinch = null;
+  // Redraw at full detail once the last pointer lifts.
+  if (!s.drag.size) redraw();
 }
 
 function onLeave(e: PointerEvent): void {
@@ -402,8 +404,10 @@ function draw(target?: HTMLCanvasElement): void {
   for (const row of visible()) {
     ctx.strokeStyle = row.color;
     ctx.beginPath();
-    const key = `${viewKey()}|${row.input.value}`;
-    if (row.runs?.key !== key) row.runs = { key, runs: sampleCurve(row.fn!, v, w * 2) };
+    // One sample per pixel while dragging keeps panning smooth; two once the pointer is up.
+    const per = s.drag.size ? 1 : 2;
+    const key = `${viewKey()}|${per}|${row.input.value}`;
+    if (row.runs?.key !== key) row.runs = { key, runs: sampleCurve(row.fn!, v, w * per) };
     for (const run of row.runs.runs) {
       run.forEach(([x, y], i) => {
         // Clamp far-off points so the path stays drawable; the jump detector already split real breaks.

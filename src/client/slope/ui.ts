@@ -79,7 +79,9 @@ export function mountSlope(host: HTMLElement): void {
       main = `m = ${show(m)}`;
       equation = isZero(m) ? `y = ${formatQ(b)}` : `y = ${coef(m)}x${term(b)}`;
       rows.push([t("slope.equation"), equation]);
-      rows.push([t("slope.pointSlope"), isZero(m) ? `y${term(q(-vals.y1.n, vals.y1.d))} = 0` : `y${term(q(-vals.y1.n, vals.y1.d))} = ${coef(m)}(x${term(q(-vals.x1.n, vals.x1.d))})`]);
+      // x − 0 is just x: no brackets then ("y − 2 = 2x", not "2(x)").
+      const xPart = isZero(vals.x1) ? `${coef(m)}x` : `${coef(m)}(x${term(q(-vals.x1.n, vals.x1.d))})`;
+      rows.push([t("slope.pointSlope"), isZero(m) ? `y${term(q(-vals.y1.n, vals.y1.d))} = 0` : `y${term(q(-vals.y1.n, vals.y1.d))} = ${xPart}`]);
       rows.push([t("slope.yIntercept"), pt(q(0n), b)]);
     }
     rows.push([t("slope.standard"), standardForm(r.standard.a, r.standard.b, r.standard.c)]);

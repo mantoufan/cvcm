@@ -1,4 +1,4 @@
-import { ambiguousGroup, normalize } from "./calculator";
+import { normalize, readGroups } from "./calculator";
 
 /**
  * Graphing calculator expressions: y = f(x) typed the way people write it, compiled once into a function of x (no eval).
@@ -74,10 +74,12 @@ export function normalizeExpr(src: string): string {
 
 function tokenize(src: string, decimal: "." | ","): Tok[] {
   let s = src;
-  if (decimal === ",") {
-    // As in the calculator: "1.250" could be 1250 or 1.25, so it is refused, not guessed.
-    if (ambiguousGroup(s)) throw new Fail();
-    s = s.replace(/(\d),(\d)/g, "$1.$2");
+  // Thousands groups and the decimal mark exactly as the scientific calculator reads them (1.234,5 in es/id/vi;
+  // an ambiguous 1.250 is refused).
+  try {
+    s = readGroups(s, decimal);
+  } catch {
+    throw new Fail();
   }
   const out: Tok[] = [];
   let i = 0;
@@ -105,7 +107,8 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
     }
     // log10 and log2 name their base when no further digit follows ("log100" is log of 100, "log25" log of 25);
     // "log" alone is already base 10.
-    const based = /^log(10|2)(?!\d)/i.exec(s.slice(i));
+    // The base must be followed by an argument, and not by more of a number ("log2.5" is log of 2.5).
+    const based = /^log(10|2)(?![\d.])(?=\s*\S)/i.exec(s.slice(i));
     if (based) {
       out.push({ k: "fn", v: based[1] === "2" ? "log2" : "log" });
       i += based[0].length;
@@ -126,7 +129,7 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
         used += name.length;
         // "xlog2x": a base right after a log at the end of a run of letters belongs to it, as in "log2x".
         if (name === "log" && !w) {
-          const base = /^(10|2)(?!\d)/.exec(s.slice(i + used));
+          const base = /^(10|2)(?![\d.])(?=\s*\S)/.exec(s.slice(i + used));
           if (base) {
             out[out.length - 1] = { k: "fn", v: base[1] === "2" ? "log2" : "log" };
             used += base[0].length;

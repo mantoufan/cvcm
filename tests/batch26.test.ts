@@ -178,8 +178,11 @@ describe("graph expressions", () => {
     expect(f("log100", 0)).toBeCloseTo(2, 12);
     expect(f("log2 8", 0)).toBe(3);
     expect(f("2e + 1", 0)).toBeCloseTo(2 * Math.E + 1, 12);
-    for (const bad of ["2e+1", "1e3", "2.5.3", "1.234,5"]) expect(parseExpr(bad, ",").ok, bad).toBe(false);
+    for (const bad of ["2e+1", "1e3", "2.5.3", "1.250"]) expect(parseExpr(bad, ",").ok, bad).toBe(false);
     expect(f("xlog2x", 8)).toBeCloseTo(24, 12);
+    expect(f("log2.5", 0)).toBeCloseTo(Math.log10(2.5), 12);
+    expect(f("x + log10", 0)).toBe(1);
+    expect(f("1.234,5x", 1, ",")).toBeCloseTo(1234.5, 9);
     expect(f("sin^-1 x", 0.5)).toBeCloseTo(Math.PI / 6, 12);
     expect(f("cos^(-1)(x)", 0)).toBeCloseTo(Math.PI / 2, 12);
     expect(f("sin^2 x + cos^2 x", 0.7)).toBeCloseTo(1, 12);
