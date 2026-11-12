@@ -68,6 +68,8 @@ describe("word unscrambler", () => {
     const res = unscramble(DICT, r.rack);
     expect(res.total).toBeGreaterThan(MAX_SHOWN);
     expect(res.words).toHaveLength(MAX_SHOWN);
+    // Per-length counts cover every match, not just the shown ones.
+    expect([...res.counts.values()].reduce((a, b) => a + b, 0)).toBe(res.total);
     const groups = byLength(res.words);
     expect(groups[0].length).toBe(10);
     expect(groups.map((g) => g.length)).toEqual([...groups.map((g) => g.length)].sort((a, b) => b - a));
@@ -182,6 +184,13 @@ describe("graph expressions", () => {
     expect(f("xlog2x", 8)).toBeCloseTo(24, 12);
     expect(f("log2.5", 0)).toBeCloseTo(Math.log10(2.5), 12);
     expect(f("x + log10", 0)).toBe(1);
+    expect(f("log2 + x", 1)).toBeCloseTo(Math.log10(2) + 1, 12);
+    expect(f("(log2)x", 1)).toBeCloseTo(Math.log10(2), 12);
+    expect(f("sin -x", Math.PI / 2)).toBeCloseTo(-1, 12);
+    expect(f("ℯ^x", 1)).toBeCloseTo(Math.E, 12);
+    expect(f("x⁴", 2)).toBe(16);
+    expect(f("x⁻¹", 4)).toBe(0.25);
+    for (const bad of ["2 3", "1 000"]) expect(parseExpr(bad, ",").ok, bad).toBe(false);
     expect(f("1.234,5x", 1, ",")).toBeCloseTo(1234.5, 9);
     expect(f("sin^-1 x", 0.5)).toBeCloseTo(Math.PI / 6, 12);
     expect(f("cos^(-1)(x)", 0)).toBeCloseTo(Math.PI / 2, 12);

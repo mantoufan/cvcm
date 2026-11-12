@@ -467,9 +467,15 @@ function typing(e: KeyboardEvent): boolean {
   return !!el && (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName)) && !(el instanceof HTMLInputElement && (el.type === "range" || el.type === "checkbox"));
 }
 
+function onControl(e: KeyboardEvent): boolean {
+  return !!(e.target as HTMLElement | null)?.closest?.("button, input, select, textarea, a, [contenteditable]");
+}
+
 function onKeyDown(e: KeyboardEvent): void {
   if (!s || e.ctrlKey || e.metaKey || e.altKey || typing(e)) return;
   if (e.code === "Space") {
+    // A focused button, checkbox or link keeps Space for itself (keyboard users press them with it).
+    if (onControl(e)) return;
     // Space is the sustain pedal while held (and must not scroll the page or press a focused button).
     e.preventDefault();
     s.pedal = true;
@@ -488,8 +494,7 @@ function onKeyDown(e: KeyboardEvent): void {
 function onKeyUp(e: KeyboardEvent): void {
   if (!s) return;
   if (e.code === "Space") {
-    // The pedal's keyup must not click a focused button either.
-    if (!typing(e)) e.preventDefault();
+    if (onControl(e)) return;
     s.pedal = false;
     liftPedal();
     return;

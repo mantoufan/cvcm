@@ -485,7 +485,7 @@ function listPoints(): void {
     ...(shown.length
       ? shown.map((it) => h("li", null, h("span", { class: "graph-swatch", style: { background: it.color }, "aria-hidden": "true" }), it.text))
       : [h("li", { class: "hint" }, t("graphingCalculator.noPoints"))]),
-    ...(items.length > MAX_POINTS ? [h("li", { class: "hint", "data-out": "more-points" }, t("graphingCalculator.morePoints", { n: items.length - MAX_POINTS }))] : []),
+    ...(items.length > MAX_POINTS ? [h("li", { class: "hint", "data-out": "more-points" }, t("graphingCalculator.morePoints"))] : []),
   );
 }
 

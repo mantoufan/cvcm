@@ -107,10 +107,10 @@ export function mountWordUnscrambler(host: HTMLElement): void {
     const full = parsed.rack.length;
     const groups = byLength(res.words);
     out.append(...groups.map((g) => h("section", { class: "unscramble-group", "data-length": String(g.length) },
-      h("h2", null, t("wordUnscrambler.groupTitle", { n: g.length, count: nf.format(g.words.length) }), g.length === full ? h("span", { class: "chip-note" }, t("wordUnscrambler.allLetters")) : null),
+      h("h2", null, t("wordUnscrambler.groupTitle", { n: g.length, count: nf.format(res.counts.get(g.length) ?? g.words.length) }), g.length === full ? h("span", { class: "chip-note" }, t("wordUnscrambler.allLetters")) : null),
       h("ul", { class: "unscramble-words" }, ...g.words.map((w) => h("li", null, wordEl(w)))),
     )));
-    last = groups.map((g) => `${t("wordUnscrambler.groupTitle", { n: g.length, count: g.words.length })}\n${g.words.map((w) => w.word).join(", ")}`).join("\n\n");
+    last = groups.map((g) => `${t("wordUnscrambler.groupTitle", { n: g.length, count: nf.format(res.counts.get(g.length) ?? g.words.length) })}\n${g.words.map((w) => w.word).join(", ")}`).join("\n\n");
   }
 
   host.append(

@@ -66,6 +66,8 @@ export type SearchResult = {
   words: Found[];
   /** Every match, shown or not. */
   total: number;
+  /** Every match per word length, shown or not. */
+  counts: Map<number, number>;
 };
 
 /**
@@ -79,36 +81,58 @@ export function unscramble(dict: readonly string[], rack: Rack, filters: Filters
   const ends = filters.endsWith ? plainLetters(filters.endsWith) : "";
   const contains = filters.contains ? plainLetters(filters.contains) : "";
   const found: Found[] = [];
+  const counts = new Map<number, number>();
+  let total = 0;
   const left = new Int8Array(26);
-  for (const word of dict) {
-    const n = word.length;
-    if (n < min || n > max) continue;
-    if (starts && !word.startsWith(starts)) continue;
-    if (ends && !word.endsWith(ends)) continue;
-    if (contains && !word.includes(contains)) continue;
-    left.set(rack.counts);
-    let blanks = rack.blanks;
-    let used: number[] | null = null;
-    let ok = true;
-    for (let i = 0; i < n; i++) {
-      const c = word.charCodeAt(i) - A;
-      if (c < 0 || c >= 26) {
-        ok = false;
-        break;
+  const buckets = bucketsOf(dict);
+  // Longest first; each bucket keeps the list's A–Z order, so nothing needs sorting. Past MAX_SHOWN, words are only
+  // counted.
+  for (let n = max; n >= min; n--) {
+    for (const word of buckets[n] ?? []) {
+      if (starts && !word.startsWith(starts)) continue;
+      if (ends && !word.endsWith(ends)) continue;
+      if (contains && !word.includes(contains)) continue;
+      left.set(rack.counts);
+      let blanks = rack.blanks;
+      let used: number[] | null = null;
+      let ok = true;
+      for (let i = 0; i < n; i++) {
+        const c = word.charCodeAt(i) - A;
+        if (c < 0 || c >= 26) {
+          ok = false;
+          break;
+        }
+        if (left[c] > 0) left[c]--;
+        else if (blanks > 0) {
+          blanks--;
+          (used ??= []).push(i);
+        } else {
+          ok = false;
+          break;
+        }
       }
-      if (left[c] > 0) left[c]--;
-      else if (blanks > 0) {
-        blanks--;
-        (used ??= []).push(i);
-      } else {
-        ok = false;
-        break;
-      }
+      if (!ok) continue;
+      total++;
+      counts.set(n, (counts.get(n) ?? 0) + 1);
+      if (found.length < MAX_SHOWN) found.push({ word, blanks: used ?? [] });
     }
-    if (ok) found.push({ word, blanks: used ?? [] });
   }
-  found.sort((a, b) => b.word.length - a.word.length || (a.word < b.word ? -1 : a.word > b.word ? 1 : 0));
-  return { words: found.length > MAX_SHOWN ? found.slice(0, MAX_SHOWN) : found, total: found.length };
+  return { words: found, total, counts };
+}
+
+const BUCKETS = new WeakMap<readonly string[], string[][]>();
+
+/** The list split by word length once, in its own (A–Z) order. */
+function bucketsOf(dict: readonly string[]): string[][] {
+  let b = BUCKETS.get(dict);
+  if (!b) {
+    b = [];
+    for (const w of dict) (b[w.length] ??= []).push(w);
+    // ENABLE is sorted; a list that is not still shows A–Z within each length.
+    for (const list of b) if (list) list.sort();
+    BUCKETS.set(dict, b);
+  }
+  return b;
 }
 
 /** Words grouped by length, longest group first. */

@@ -62,10 +62,13 @@ class TooHard extends Error {}
 const MAX_BAR_RETRIES = 200;
 
 /** The calculator's operator spellings (full-width, × ÷ −, ** …), then superscript powers, √, π and a leading "y =" or "f(x) =". */
+const SUPERSCRIPT: Record<string, string> = { "⁻": "-", "⁰": "0", "¹": "1", "²": "2", "³": "3", "⁴": "4", "⁵": "5", "⁶": "6", "⁷": "7", "⁸": "8", "⁹": "9" };
+
 export function normalizeExpr(src: string): string {
   return normalize(src)
-    .replace(/²/g, "^2")
-    .replace(/³/g, "^3")
+    // Superscript powers (x², x⁴, x⁻¹) and the calculator's ℯ key.
+    .replace(/[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+/g, (m) => `^(${[...m].map((c) => SUPERSCRIPT[c]).join("")})`)
+    .replace(/ℯ/g, "e")
     .replace(/√/g, "sqrt")
     .replace(/π/g, "pi")
     .replace(/^\s*(?:y|[a-z]\s*\(\s*x\s*\))\s*=\s*/i, "")
@@ -83,12 +86,16 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
   }
   const out: Tok[] = [];
   let i = 0;
+  /** The last token was digits typed by the user (not pi or e). */
+  let lastDigits = false;
   while (i < s.length) {
     const c = s[i];
     if (/\s/.test(c)) {
       i++;
       continue;
     }
+    const wasDigits = lastDigits;
+    lastDigits = false;
     // No exponent notation: e is Euler's number here, and "1e3" or "2e+1" (1000 or 1·e·3? 20 or 2e + 1?) is refused below.
     const num = /^(?:\d+(?:\.\d*)?|\.\d+)/.exec(s.slice(i));
     if (num) {
@@ -96,7 +103,10 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
       // "2.5.3" or "1.234,5" read as "1.234.5" is a typo or a grouped number, not two numbers to multiply; "1e3" could be
       // 1000 or 1·e·3. Both are refused rather than guessed.
       if (/^[.\d]/.test(rest) || /^[eE][+-]?\d/.test(rest)) throw new Fail();
+      // "2 3" or "1 000" (a space as a thousands group) is not 2·3: two typed numbers in a row are refused.
+      if (wasDigits) throw new Fail();
       out.push({ k: "num", v: Number(num[0]) });
+      lastDigits = true;
       i += num[0].length;
       continue;
     }
@@ -108,7 +118,7 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
     // log10 and log2 name their base when no further digit follows ("log100" is log of 100, "log25" log of 25);
     // "log" alone is already base 10.
     // The base must be followed by an argument, and not by more of a number ("log2.5" is log of 2.5).
-    const based = /^log(10|2)(?![\d.])(?=\s*\S)/i.exec(s.slice(i));
+    const based = /^log(10|2)(?![\d.])(?=\s*[a-zA-Z\d.(|])/i.exec(s.slice(i));
     if (based) {
       out.push({ k: "fn", v: based[1] === "2" ? "log2" : "log" });
       i += based[0].length;
@@ -129,7 +139,7 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
         used += name.length;
         // "xlog2x": a base right after a log at the end of a run of letters belongs to it, as in "log2x".
         if (name === "log" && !w) {
-          const base = /^(10|2)(?![\d.])(?=\s*\S)/.exec(s.slice(i + used));
+          const base = /^(10|2)(?![\d.])(?=\s*[a-zA-Z\d.(|])/.exec(s.slice(i + used));
           if (base) {
             out[out.length - 1] = { k: "fn", v: base[1] === "2" ? "log2" : "log" };
             used += base[0].length;
@@ -372,7 +382,8 @@ class Parser {
         this.depth--;
         return call(arg);
       }
-      arg = this.power();
+      // "sin -x" works like "sin(-x)".
+      arg = this.unary();
       // "sin 2x": numbers and x straight after the function belong to its argument; another function starts a new
       // factor, so "sin x cos x" is sin(x)·cos(x).
       while (this.peek()?.k === "num" || this.peek()?.k === "x") {

@@ -201,7 +201,7 @@ describe("graphing calculator ui", () => {
     exprs[0].value = "sin(20x)";
     exprs[0].dispatchEvent(new Event("input"));
     vi.advanceTimersByTime(300);
-    expect(q("[data-out=more-points]").textContent).toMatch(/more in this view/);
+    expect(q("[data-out=more-points]").textContent).toBe("More points in this view: zoom in to see them.");
   });
 });
 
@@ -269,6 +269,15 @@ describe("piano ui", () => {
     window.dispatchEvent(new KeyboardEvent("keyup", { code: "Space" }));
     q<HTMLButtonElement>("[data-action=record]").click();
     expect(q("[data-out=status]").textContent).toMatch(/^1 notes recorded/);
+  });
+
+  it("leaves Space to a focused button", () => {
+    vi.stubGlobal("AudioContext", FakeContext);
+    mountPiano(host);
+    const btn = q<HTMLButtonElement>("[data-action=record]");
+    const down = new KeyboardEvent("keydown", { code: "Space", bubbles: true, cancelable: true });
+    btn.dispatchEvent(down);
+    expect(down.defaultPrevented).toBe(false);
   });
 
   it("moves the keyboard by octaves and labels keys", () => {
