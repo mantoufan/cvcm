@@ -1009,7 +1009,7 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .piano-bar { display: flex; align-items: center; justify-content: center; gap: 0.6rem; margin: 0 0 0.5rem; }
 .piano-range { min-width: 7rem; text-align: center; font-weight: 700; color: var(--pink-deep); font-variant-numeric: tabular-nums; }
 .piano-scroll { overflow-x: auto; margin: 0 0 1.25rem; padding-bottom: 0.25rem; }
-.piano-keys { --piano-black: min(4.2%, 2.2rem); position: relative; height: clamp(9rem, 28vw, 14rem); min-width: 100%; user-select: none; -webkit-user-select: none; touch-action: none; -webkit-touch-callout: none; }
+.piano-keys { --piano-black: calc(100% / var(--piano-whites, 15) * 0.6); position: relative; height: clamp(9rem, 28vw, 14rem); min-width: max(100%, calc(var(--piano-whites, 15) * 2.4rem)); user-select: none; -webkit-user-select: none; touch-action: none; -webkit-touch-callout: none; }
 .piano-key { position: absolute; top: 0; box-sizing: border-box; display: flex; align-items: flex-end; justify-content: center; cursor: pointer; }
 .piano-key.white { height: 100%; border: 1px solid #e3cdd8; border-radius: 0 0 8px 8px; background: #fff; z-index: 1; }
 .piano-key.black { width: var(--piano-black); height: 62%; border-radius: 0 0 6px 6px; background: #3a2b33; z-index: 2; }

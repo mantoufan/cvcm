@@ -177,13 +177,16 @@ describe("graph expressions", () => {
     expect(f("log20", 0)).toBeCloseTo(Math.log10(20), 12);
     expect(f("log100", 0)).toBeCloseTo(2, 12);
     expect(f("log2 8", 0)).toBe(3);
-    expect(f("2e+1", 0)).toBeCloseTo(2 * Math.E + 1, 12);
+    expect(f("2e + 1", 0)).toBeCloseTo(2 * Math.E + 1, 12);
+    for (const bad of ["2e+1", "1e3", "2.5.3", "1.234,5"]) expect(parseExpr(bad, ",").ok, bad).toBe(false);
+    expect(f("xlog2x", 8)).toBeCloseTo(24, 12);
+    expect(f("sin^-1 x", 0.5)).toBeCloseTo(Math.PI / 6, 12);
+    expect(f("cos^(-1)(x)", 0)).toBeCloseTo(Math.PI / 2, 12);
     expect(f("sin^2 x + cos^2 x", 0.7)).toBeCloseTo(1, 12);
     expect(f("sin^2(x)", Math.PI / 2)).toBeCloseTo(1, 12);
     expect(f("8∶x", 2)).toBe(4);
     expect(parseExpr("1.250x", ",").ok).toBe(false);
     expect(f("1.25x", 2, ",")).toBe(2.5);
-    expect(f("2e-1", 0)).toBeCloseTo(2 * Math.E - 1, 12);
   });
 
   it("gives up quickly on bars that cannot be read", () => {

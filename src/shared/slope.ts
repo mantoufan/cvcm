@@ -4,6 +4,7 @@
  */
 import { parseDecimalInput } from "./decimal-input";
 import { gcd, lcm } from "./factors";
+import { simplifySqrt } from "./quadratic";
 
 /** An exact fraction n/d with d > 0, in lowest terms. */
 export type Q = { n: bigint; d: bigint };
@@ -106,7 +107,8 @@ export function solveSlope(x1: Q, y1: Q, x2: Q, y2: Q): { ok: true; r: SlopeResu
   const midpoint: [Q, Q] = [div(add(x1, x2), q(2n)), div(add(y1, y2), q(2n))];
   const sq = add(mul(dx, dx), mul(dy, dy));
   const distance = Math.hypot(toNumber(dx), toNumber(dy));
-  const radical = sq.d === 1n ? simplifyRoot(sq.n) : null;
+  // Exact roots only for sums a page can show; huge ones would cost a long trial division per keystroke.
+  const radical = sq.d === 1n && sq.n <= 10n ** 12n ? simplifyRoot(sq.n) : null;
   // Standard form from (y2 − y1)x − (x2 − x1)y = (y2 − y1)x1 − (x2 − x1)y1, cleared of fractions.
   const a0 = dy;
   const b0 = q(-dx.n, dx.d);
@@ -134,20 +136,12 @@ export function solveSlope(x1: Q, y1: Q, x2: Q, y2: Q): { ok: true; r: SlopeResu
   return { ok: true, r: { dx, dy, line: { kind: "sloped", m, b: bIntercept }, angle, distance, radical, midpoint, xIntercept, standard: { a, b, c } } };
 }
 
-/** √n as k√r with r square-free, for whole n up to about 10^12 (bigger ones keep r = n). */
+/** √n as k√r with r square-free (quadratic.ts's simplifySqrt); past 2^53 it is left as √n. */
 export function simplifyRoot(n: bigint): { k: bigint; r: bigint } {
   if (n <= 0n) return { k: 0n, r: 1n };
-  let k = 1n;
-  let r = n;
-  if (n > 10n ** 12n) return { k, r };
-  // 2, then odd numbers only.
-  for (let f = 2n; f * f <= r; f += f === 2n ? 1n : 2n) {
-    while (r % (f * f) === 0n) {
-      r /= f * f;
-      k *= f;
-    }
-  }
-  return { k, r };
+  if (n > BigInt(Number.MAX_SAFE_INTEGER)) return { k: 1n, r: n };
+  const { k, m } = simplifySqrt(Number(n));
+  return { k: BigInt(k), r: BigInt(m) };
 }
 
 /** "3/4", "-2", "1/3" — with a minus sign that reads well (U+2212). */

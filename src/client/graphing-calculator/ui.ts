@@ -443,7 +443,7 @@ function listPoints(): void {
   for (const r of rows) {
     const y0 = r.fn!(0);
     if (v.xMin <= 0 && v.xMax >= 0 && Number.isFinite(y0) && inY(y0)) items.push({ text: t("graphingCalculator.yIntercept", { f: name(r), x: f(0), y: f(y0) }), color: r.color });
-    for (const x of findZeros(r.fn!, v.xMin, v.xMax)) items.push({ text: t("graphingCalculator.zero", { f: name(r), x: f(x), y: f(0) }), color: r.color });
+    if (inY(0)) for (const x of findZeros(r.fn!, v.xMin, v.xMax)) items.push({ text: t("graphingCalculator.zero", { f: name(r), x: f(x), y: f(0) }), color: r.color });
   }
   for (let i = 0; i < rows.length; i++) {
     for (let j = i + 1; j < rows.length; j++) {

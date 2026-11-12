@@ -83,7 +83,9 @@ export function mountSlope(host: HTMLElement): void {
       rows.push([t("slope.yIntercept"), pt(q(0n), b)]);
     }
     rows.push([t("slope.standard"), standardForm(r.standard.a, r.standard.b, r.standard.c)]);
-    rows.push([t("slope.xIntercept"), r.xIntercept ? pt(r.xIntercept, q(0n)) : t("slope.noXIntercept")]);
+    // A horizontal line has no x-intercept, unless it is y = 0, the x-axis itself, where every point is one.
+    const onAxis = r.line.kind === "sloped" && isZero(r.line.m) && isZero(r.line.b);
+    rows.push([t("slope.xIntercept"), r.xIntercept ? pt(r.xIntercept, q(0n)) : onAxis ? t("slope.allXIntercepts") : t("slope.noXIntercept")]);
     rows.push([t("slope.angle"), `${f(r.angle)}°`]);
     if (r.line.kind === "sloped") rows.push([t("slope.grade"), `${f(toNumber(r.line.m) * 100)}%`]);
     rows.push([t("slope.distance"), r.radical && r.radical.r !== 1n ? `${r.radical.k === 1n ? "" : r.radical.k}√${r.radical.r} ≈ ${f(r.distance)}` : f(r.distance)]);

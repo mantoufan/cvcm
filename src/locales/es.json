@@ -3354,7 +3354,7 @@
         "q3": "¿Para qué sirve el pedal de sustain?",
         "a3": "Mantiene las notas sonando después de soltar las teclas, para que se mezclen. Levántelo (suelte la barra espaciadora) para detenerlas.",
         "q4": "¿Puedo tocar en el teléfono?",
-        "a4": "Sí, con varios dedos a la vez. En una pantalla estrecha se muestra una octava para que las teclas sean lo bastante anchas; use ◀ ▶ para moverla.",
+        "a4": "Sí, con varios dedos a la vez. En una pantalla estrecha las teclas mantienen el ancho de un dedo, así que el teclado se abre en la octava del do central y el resto queda a un lado; ◀ ▶ lo mueven una octava.",
         "q5": "¿Se guarda la toma?",
         "a5": "Se queda en la página hasta que la borre o salga. No se sube ni se guarda en ningún sitio."
       },
@@ -13202,6 +13202,7 @@
     "verticalStep": "Δx = 0, así que la recta es vertical y su pendiente es indefinida.",
     "err_missing": "Rellena las dos coordenadas de ambos puntos.",
     "err_invalid": "{field} debe ser un número o una fracción como 3/4.",
-    "err_same": "Los dos puntos son iguales. Mueve uno de ellos para formar una recta."
+    "err_same": "Los dos puntos son iguales. Mueve uno de ellos para formar una recta.",
+    "allXIntercepts": "Todos los puntos (la recta es el eje x)"
   }
 }

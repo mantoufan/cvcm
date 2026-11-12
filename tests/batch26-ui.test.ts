@@ -108,6 +108,10 @@ describe("slope ui", () => {
     expect(q("[data-out=rows]").textContent).toContain("x = 0");
     set("[data-field=y2]", "0.5");
     expect(q("[data-out=error]").textContent).toBe("The two points are the same. Move one of them to make a line.");
+    set("[data-field=y1]", "0");
+    set("[data-field=y2]", "0");
+    set("[data-field=x2]", "3");
+    expect(q("[data-out=rows]").textContent).toContain("Every point (the line is the x-axis)");
     set("[data-field=y2]", "x");
     expect(q("[data-out=error]").textContent).toBe("y₂ must be a number or a fraction such as 3/4.");
   });
@@ -207,8 +211,8 @@ describe("piano ui", () => {
   it("plays notes from the computer keyboard and records a take", () => {
     vi.stubGlobal("AudioContext", FakeContext);
     mountPiano(host);
-    expect(host.querySelectorAll(".piano-key.white")).toHaveLength(22);
-    expect(q("[data-out=range]").textContent).toBe("C3 – C6");
+    expect(host.querySelectorAll(".piano-key.white")).toHaveLength(15);
+    expect(q("[data-out=range]").textContent).toBe("C3 – C5");
     q<HTMLButtonElement>("[data-action=record]").click();
     window.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyQ" }));
     expect(q('[data-midi="60"]').classList.contains("down")).toBe(true);
@@ -240,13 +244,13 @@ describe("piano ui", () => {
     vi.stubGlobal("AudioContext", FakeContext);
     mountPiano(host);
     q<HTMLButtonElement>("[data-action=octave-up]").click();
-    expect(q("[data-out=range]").textContent).toBe("C4 – C7");
+    expect(q("[data-out=range]").textContent).toBe("C4 – C6");
     for (let i = 0; i < 8; i++) q<HTMLButtonElement>("[data-action=octave-down]").click();
     // The 88-key piano starts at A0.
-    expect(q("[data-out=range]").textContent).toBe("A0 – C3");
+    expect(q("[data-out=range]").textContent).toBe("A0 – C2");
     for (let i = 0; i < 4; i++) q<HTMLButtonElement>("[data-action=octave-up]").click();
     set("[data-field=labels]", "keys", "change");
-    expect(q("[data-out=range]").textContent).toBe("C4 – C7");
+    expect(q("[data-out=range]").textContent).toBe("C4 – C6");
     expect(q('[data-midi="60"]').textContent).toBe("Z");
     expect(q('[data-midi="72"]').textContent).toBe("Q");
   });

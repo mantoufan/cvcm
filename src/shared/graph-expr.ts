@@ -48,6 +48,8 @@ const FUNCS: Record<string, (v: number) => number> = {
   round: Math.round,
   sign: Math.sign,
 };
+/** What f^-1 means for the functions that have a named inverse. */
+const INVERSE: Record<string, string> = { sin: "asin", cos: "acos", tan: "atan", arcsin: "sin", arccos: "cos", arctan: "tan" };
 /** Longest first, so "sinh" is not read as "sin" "h" and "log2" not as "log" times 2. */
 const FUNC_NAMES = Object.keys(FUNCS).sort((a, b) => b.length - a.length);
 const WORDS = [...FUNC_NAMES, "pi", "x", "e"].sort((a, b) => b.length - a.length);
@@ -88,6 +90,10 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
     // No exponent notation: e is Euler's number here, so 2e+1 is 2·e + 1 however it is spaced.
     const num = /^(?:\d+(?:\.\d*)?|\.\d+)/.exec(s.slice(i));
     if (num) {
+      const rest = s.slice(i + num[0].length);
+      // "2.5.3" or "1.234,5" read as "1.234.5" is a typo or a grouped number, not two numbers to multiply; "1e3" could be
+      // 1000 or 1·e·3. Both are refused rather than guessed.
+      if (/^[.\d]/.test(rest) || /^[eE][+-]?\d/.test(rest)) throw new Fail();
       out.push({ k: "num", v: Number(num[0]) });
       i += num[0].length;
       continue;
@@ -118,6 +124,14 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
         else out.push({ k: "fn", v: name });
         w = w.slice(name.length);
         used += name.length;
+        // "xlog2x": a base right after a log at the end of a run of letters belongs to it, as in "log2x".
+        if (name === "log" && !w) {
+          const base = /^(10|2)(?!\d)/.exec(s.slice(i + used));
+          if (base) {
+            out[out.length - 1] = { k: "fn", v: base[1] === "2" ? "log2" : "log" };
+            used += base[0].length;
+          }
+        }
       }
       i += used;
       continue;
@@ -187,6 +201,22 @@ class Parser {
     } finally {
       this.bars = bars;
     }
+  }
+
+  /** Consumes "-1" or "(-1)" after a function's "^". */
+  private inverseMark(): boolean {
+    const at = (k: number) => this.toks[this.i + k];
+    const isOp = (k: number, v: string) => at(k)?.k === "op" && (at(k) as { v: string }).v === v;
+    const isOne = (k: number) => at(k)?.k === "num" && (at(k) as { v: number }).v === 1;
+    if (isOp(0, "-") && isOne(1)) {
+      this.i += 2;
+      return true;
+    }
+    if (isOp(0, "(") && isOp(1, "-") && isOne(2) && isOp(3, ")")) {
+      this.i += 4;
+      return true;
+    }
+    return false;
   }
 
   private isBarAt(i: number): boolean {
@@ -314,14 +344,20 @@ class Parser {
     if (t.k === "fn") {
       const base = FUNCS[t.v];
       this.enter();
-      // sin^2 x and sin^2(x) mean (sin x)², as in textbooks; the power is a single number or bracket.
+      // sin^2 x and sin^2(x) mean (sin x)², as in textbooks; the power is a single number or bracket. sin^-1 and
+      // sin^(-1) are the inverse function (arcsin), as on calculator keys.
+      let fn = base;
       let exp: Compiled | null = null;
       if (this.isOp("^")) {
         this.i++;
-        exp = this.atom();
+        if (this.inverseMark()) {
+          const inv = INVERSE[t.v];
+          if (!inv) throw new Fail();
+          fn = FUNCS[inv];
+        } else exp = this.atom();
       }
       const e = exp;
-      const call = (arg: Compiled): Compiled => (e ? (x) => power(base(arg(x)), e(x)) : (x) => base(arg(x)));
+      const call = (arg: Compiled): Compiled => (e ? (x) => power(fn(arg(x)), e(x)) : (x) => fn(arg(x)));
       // sin(x) or sin x / sin 2x (the argument runs to the next + or -, as people read "sin 2x").
       let arg: Compiled;
       if (this.isOp("(")) {

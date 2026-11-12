@@ -49,7 +49,6 @@ const MAX_START = 7;
 
 export function mountPiano(host: HTMLElement): void {
   unmountPiano();
-  const narrow = typeof window !== "undefined" && window.matchMedia?.("(max-width: 640px)").matches;
   const keysEl = h("div", { class: "piano-keys", role: "group", "aria-label": t("piano.keysLabel"), "data-out": "keys" });
   const status = h("p", { class: "hint", "aria-live": "polite", "data-out": "status" });
   const btn = (action: string, label: string, onClick: () => void) => h("button", { type: "button", class: "btn ghost", "data-action": action, onClick }, label);
@@ -66,9 +65,10 @@ export function mountPiano(host: HTMLElement): void {
     volume: 0.7,
     sustain: false,
     pedal: false,
-    startOctave: narrow ? 4 : 3,
-    // A phone shows one octave (keys wide enough for fingers); the ◀ ▶ buttons move it.
-    octaves: narrow ? 1 : 3,
+    // The same keyboard everywhere (the prerendered page must match the mount): two octaves from C3, the Q key on
+    // middle C. Keys never get narrower than a finger (CSS); a narrow screen scrolls to middle C instead.
+    startOctave: 3,
+    octaves: 2,
     // Spanish and Vietnamese schools name notes Do Re Mi; the others mostly read C D E on a keyboard.
     labels: locale() === "es" || locale() === "vi" ? "solfege" : "letters",
     voices: new Map(),
@@ -154,6 +154,15 @@ export function mountPiano(host: HTMLElement): void {
   document.addEventListener("visibilitychange", onHidden);
   buildKeys();
   syncTake();
+  requestAnimationFrame(() => showMiddleC());
+}
+
+/** On a screen too narrow for the whole keyboard, scroll so the octave from middle C is in view. */
+function showMiddleC(): void {
+  const scroller = s?.keysEl.parentElement;
+  const c4 = s?.keyEls.get(60);
+  if (!scroller || !c4 || scroller.scrollWidth <= scroller.clientWidth) return;
+  scroller.scrollLeft = c4.offsetLeft;
 }
 
 export function unmountPiano(): void {
