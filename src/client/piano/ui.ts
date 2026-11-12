@@ -34,7 +34,8 @@ type State = {
   recording: boolean;
   recStart: number;
   take: TakeEvent[];
-  playTimers: number[];
+  /** Pending playback timers (the scheduler interval and key lights); each removes itself when it fires. */
+  playTimers: Set<number>;
   playVoices: Voice[];
   status: HTMLElement;
   buttons: Record<"record" | "play" | "clear", HTMLButtonElement>;
@@ -80,7 +81,7 @@ export function mountPiano(host: HTMLElement): void {
     recording: false,
     recStart: 0,
     take: [],
-    playTimers: [],
+    playTimers: new Set(),
     playVoices: [],
     status,
     buttons,
@@ -430,6 +431,8 @@ function onPointerDown(e: PointerEvent): void {
   const key = (e.target as HTMLElement).closest<HTMLElement>(".piano-key");
   if (!key) return;
   e.preventDefault();
+  // preventDefault keeps focus where it was: leave a menu, or its letters would pick options instead of notes.
+  (document.activeElement as HTMLElement | null)?.blur?.();
   // Capture so the release arrives even off the keys; moves are hit-tested by position, so a slide still glides.
   try {
     s.keysEl.setPointerCapture(e.pointerId);
@@ -494,7 +497,7 @@ function onKeyDown(e: KeyboardEvent): void {
 function onKeyUp(e: KeyboardEvent): void {
   if (!s) return;
   if (e.code === "Space") {
-    if (onControl(e)) return;
+    // The pedal always lifts, even if focus moved to a button while Space was held.
     s.pedal = false;
     liftPedal();
     return;
@@ -523,7 +526,8 @@ function toggleRecord(): void {
     s.recording = true;
     s.recStart = performance.now() / 1000;
     // Notes already down when recording starts are in the take from its first moment.
-    for (const [midi, holders] of s.holders) if (holders.size) s.take.push({ t: 0, midi, on: true });
+    // So do notes the pedal or Sustain keeps ringing: the take starts with what is heard.
+    for (const midi of s.voices.keys()) s.take.push({ t: 0, midi, on: true });
   }
   syncTake();
 }
@@ -534,7 +538,7 @@ const PLAY_TICK_MS = 250;
 
 function togglePlay(): void {
   if (!s) return;
-  if (s.playTimers.length) {
+  if (s.playTimers.size) {
     stopPlayback();
     syncTake();
     return;
@@ -561,18 +565,23 @@ function togglePlay(): void {
         open.set(e.midi, v);
         st.playVoices.push(v);
       } else open.delete(e.midi);
-      st.playTimers.push(window.setTimeout(() => st.keyEls.get(e.midi)?.classList.toggle("playing", e.on), Math.max(0, (at - ctx.currentTime) * 1000)));
+      const id = window.setTimeout(() => {
+        st.playTimers.delete(id);
+        st.keyEls.get(e.midi)?.classList.toggle("playing", e.on);
+      }, Math.max(0, (at - ctx.currentTime) * 1000));
+      st.playTimers.add(id);
     }
     // Voices that have finished are dropped from the list Stop has to cut; held ones stay however many came after.
     st.playVoices = st.playVoices.filter((v) => v.endsAt > ctx.currentTime);
     if (next >= take.length) {
       clearInterval(timer);
-      st.playTimers.push(window.setTimeout(() => { stopPlayback(true); syncTake(); }, Math.max(0, (start + take[take.length - 1].t - ctx.currentTime + 0.5) * 1000)));
+      st.playTimers.delete(timer);
+      st.playTimers.add(window.setTimeout(() => { stopPlayback(true); syncTake(); }, Math.max(0, (start + take[take.length - 1].t - ctx.currentTime + 0.5) * 1000)));
     }
   };
   const timer = window.setInterval(tick, PLAY_TICK_MS);
   // Kept with the timeouts: clearTimeout and clearInterval share one id space.
-  st.playTimers.push(timer);
+  st.playTimers.add(timer);
   tick();
   syncTake();
 }
@@ -583,7 +592,7 @@ function stopPlayback(finished = false): void {
     clearTimeout(id);
     clearInterval(id);
   }
-  s.playTimers = [];
+  s.playTimers.clear();
   // Cut notes already scheduled ahead, even those whose release time is set.
   if (!finished) for (const v of s.playVoices) v.cut();
   s.playVoices = [];
@@ -600,7 +609,7 @@ function clearTake(): void {
 
 function syncTake(): void {
   if (!s) return;
-  const playing = s.playTimers.length > 0;
+  const playing = s.playTimers.size > 0;
   const notes = s.take.filter((e) => e.on).length;
   s.buttons.record.textContent = s.recording ? t("piano.stopRecording") : t("piano.record");
   s.buttons.record.classList.toggle("on", s.recording);

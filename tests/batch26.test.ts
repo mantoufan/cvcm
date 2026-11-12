@@ -190,7 +190,7 @@ describe("graph expressions", () => {
     expect(f("ℯ^x", 1)).toBeCloseTo(Math.E, 12);
     expect(f("x⁴", 2)).toBe(16);
     expect(f("x⁻¹", 4)).toBe(0.25);
-    for (const bad of ["2 3", "1 000"]) expect(parseExpr(bad, ",").ok, bad).toBe(false);
+    for (const bad of ["2 3", "1 000", "x.5", "5.x"]) expect(parseExpr(bad, ",").ok, bad).toBe(false);
     expect(f("1.234,5x", 1, ",")).toBeCloseTo(1234.5, 9);
     expect(f("sin^-1 x", 0.5)).toBeCloseTo(Math.PI / 6, 12);
     expect(f("cos^(-1)(x)", 0)).toBeCloseTo(Math.PI / 2, 12);

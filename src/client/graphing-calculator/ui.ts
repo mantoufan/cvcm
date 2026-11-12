@@ -164,7 +164,7 @@ function addRow(expr: string): void {
   const el = h("div", { class: "graph-func" },
     h("span", { class: "graph-swatch", style: { background: color }, "aria-hidden": "true" }),
     show,
-    h("span", { class: "graph-y" }, "y ="),
+    h("span", { class: "graph-y", "data-out": "name" }, "y ="),
     input,
     remove,
     error,
@@ -177,8 +177,14 @@ function addRow(expr: string): void {
   redraw();
 }
 
+/** Rows are named y1, y2 … by position, as the trace and the points list call them; removing one renames the rest. */
 function syncAdd(): void {
-  if (s) s.addBtn.disabled = s.rows.length >= MAX_FUNCS;
+  if (!s) return;
+  s.addBtn.disabled = s.rows.length >= MAX_FUNCS;
+  s.rows.forEach((r, i) => {
+    const label = r.el.querySelector<HTMLElement>("[data-out=name]");
+    if (label) label.textContent = `y${i + 1} =`;
+  });
 }
 
 function compile(row: Row): void {
@@ -244,7 +250,8 @@ function local(e: PointerEvent | WheelEvent): [number, number] {
 }
 
 function onDown(e: PointerEvent): void {
-  if (!s) return;
+  // Only the main button pans: a right click opens the menu (Save image) and leaves the view alone.
+  if (!s || (e.pointerType === "mouse" && e.button !== 0)) return;
   s.canvas.setPointerCapture?.(e.pointerId);
   s.drag.set(e.pointerId, { x: e.clientX, y: e.clientY });
   if (s.drag.size === 2) {

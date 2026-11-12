@@ -103,6 +103,8 @@ function tokenize(src: string, decimal: "." | ","): Tok[] {
       // "2.5.3" or "1.234,5" read as "1.234.5" is a typo or a grouped number, not two numbers to multiply; "1e3" could be
       // 1000 or 1·e·3. Both are refused rather than guessed.
       if (/^[.\d]/.test(rest) || /^[eE][+-]?\d/.test(rest)) throw new Fail();
+      // A stray point beside a letter ("x.5", "5.x") is a typo for x^.5 or 5.5x, not a product.
+      if ((num[0].startsWith(".") && out.length && out[out.length - 1].k !== "op") || (num[0].endsWith(".") && /^[a-zA-Z]/.test(rest))) throw new Fail();
       // "2 3" or "1 000" (a space as a thousands group) is not 2·3: two typed numbers in a row are refused.
       if (wasDigits) throw new Fail();
       out.push({ k: "num", v: Number(num[0]) });

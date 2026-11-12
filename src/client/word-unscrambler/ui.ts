@@ -145,6 +145,8 @@ export function mountWordUnscrambler(host: HTMLElement): void {
     cleanup: () => {
       alive = false;
       clearTimeout(timer);
+      // Several MB of words: let them go when the page closes (the file stays in the HTTP cache for next time).
+      words = null;
       copyBtn = null;
     },
   };

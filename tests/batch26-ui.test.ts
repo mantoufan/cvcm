@@ -198,6 +198,7 @@ describe("graphing calculator ui", () => {
     host.querySelectorAll<HTMLButtonElement>("[data-action=remove]")[1].click();
     vi.advanceTimersByTime(300);
     expect(q("[data-out=points]").textContent).toContain("y1 and y2 cross");
+    expect([...host.querySelectorAll("[data-out=name]")].map((e) => e.textContent)).toEqual(["y1 =", "y2 ="]);
     exprs[0].value = "sin(20x)";
     exprs[0].dispatchEvent(new Event("input"));
     vi.advanceTimersByTime(300);
