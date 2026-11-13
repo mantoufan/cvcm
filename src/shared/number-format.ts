@@ -21,12 +21,14 @@ export function plain(locale: Locale, value: number, digits = 0): string {
   return numberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
 }
 
-/** A US dollar amount: cents from $1 up, four significant digits below (meme coins trade at $0.00000008394), compact form for market caps. */
+/**
+ * A US dollar amount: cents from $1 up, up to 8 decimals below ($0.50, $0.99996), and four significant digits under a
+ * tenth of a cent, where 8 decimals would lose them (meme coins trade at $0.00000008394). Compact form for market caps.
+ */
 export function usd(locale: Locale, value: number, compactForm = false): string {
   if (compactForm) return numberFormat(locale, { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 2 }).format(value);
-  return numberFormat(locale, value >= 1 || value === 0
-    ? { style: "currency", currency: "USD", maximumFractionDigits: 2 }
-    : { style: "currency", currency: "USD", maximumSignificantDigits: 4 }).format(value);
+  if (value > 0 && value < 0.001) return numberFormat(locale, { style: "currency", currency: "USD", maximumSignificantDigits: 4 }).format(value);
+  return numberFormat(locale, { style: "currency", currency: "USD", maximumFractionDigits: value >= 1 ? 2 : 8 }).format(value);
 }
 
 /** A percentage change with an explicit sign: +1.2%, −3.4%. */

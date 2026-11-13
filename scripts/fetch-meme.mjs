@@ -56,10 +56,7 @@ async function lastPublishedSunday() {
   return probe?.items?.length ? sunday : new Date(sunday.getTime() - 7 * 86_400_000);
 }
 
-/**
- * WEEKS full weeks (Monday to Sunday, UTC) of views ending on `end`, oldest first, and a direction: "up" when the last
- * four weeks are a quarter above the four before, "down" when a fifth below, else "flat".
- */
+/** WEEKS full weeks (Monday to Sunday, UTC) of views ending on `end`, oldest first (the page derives the direction). */
 async function trendOf(wiki, end) {
   const [lang, ...rest] = wiki.split(":");
   const title = encodeURIComponent(rest.join(":").replaceAll(" ", "_"));
@@ -73,10 +70,7 @@ async function trendOf(wiki, end) {
     for (let d = 0; d < 7; d += 1) sum += byDay.get(compact(new Date(start.getTime() + (w * 7 + d) * 86_400_000))) ?? 0;
     return sum;
   });
-  const recent = weeks.slice(-4).reduce((a, b) => a + b, 0);
-  const before = weeks.slice(-8, -4).reduce((a, b) => a + b, 0);
-  const dir = before === 0 ? (recent > 0 ? "up" : "flat") : recent >= before * 1.25 ? "up" : recent <= before * 0.8 ? "down" : "flat";
-  return { w: weeks, dir, to: day(end) };
+  return { w: weeks, to: day(end) };
 }
 
 const trend = {};
@@ -84,16 +78,21 @@ const end = await lastPublishedSunday().catch((error) => {
   failures.push(`meme trend: ${error.message}`);
   return null;
 });
-for (const [id, src] of Object.entries(SOURCES)) {
-  if (!src.wiki) continue;
-  try {
-    if (!end) throw new Error("pageviews unavailable");
-    trend[id] = await trendOf(src.wiki, end);
-  } catch (error) {
-    failures.push(`meme trend ${id}: ${error.message}`);
-    if (old.trend?.[id]) trend[id] = old.trend[id];
-  }
+// A few articles at a time: quicker than one by one, gentle enough for Wikimedia's rate limit.
+const wikis = Object.entries(SOURCES).filter(([, src]) => src.wiki);
+for (let i = 0; i < wikis.length; i += 5) {
+  await Promise.all(wikis.slice(i, i + 5).map(async ([id, src]) => {
+    try {
+      if (!end) throw new Error("pageviews unavailable");
+      trend[id] = await trendOf(src.wiki, end);
+    } catch (error) {
+      failures.push(`meme trend ${id}: ${error.message}`);
+      if (old.trend?.[id]) trend[id] = old.trend[id];
+    }
+  }));
 }
+// Same key order every run, whichever request finished first.
+const sortedTrend = Object.fromEntries(Object.keys(trend).sort().map((id) => [id, trend[id]]));
 
 let coins = old.coins ?? {};
 let coinsAsOf = old.coinsAsOf ?? null;
@@ -105,14 +104,16 @@ if (!key) {
   try {
     const ids = [...new Set(coinIds.map(([, coin]) => coin))].join(",");
     const body = await getJson(`https://pro-api.coinmarketcap.com/v2/cryptocurrency/quotes/latest?id=${ids}&convert=USD`, { "X-CMC_PRO_API_KEY": key });
-    if (body?.status?.error_code) throw new Error(body.status.error_message);
+    if (!body?.data) throw new Error(body?.status?.error_message ?? "no quote data (endpoint moved?)");
+    if (body.status?.error_code) throw new Error(body.status.error_message);
     const next = {};
     const now = Date.now();
     for (const [id, coin] of coinIds) {
       const c = body.data?.[String(coin)];
       const usd = c?.quote?.USD;
-      if (!c || !usd) continue;
+      if (!c || !usd || !c.date_added) continue;
       const age = (now - Date.parse(c.date_added)) / 86_400_000;
+      if (!Number.isFinite(age)) continue;
       if (!(usd.market_cap >= COIN_MIN_CAP) || age < COIN_MIN_AGE_DAYS) continue;
       if (![usd.price, usd.percent_change_24h, usd.percent_change_7d].every(Number.isFinite)) continue;
       next[id] = {
@@ -139,7 +140,7 @@ if (!key) {
 }
 
 // No run date in the files: unchanged figures leave them byte-identical, so the workflow commits and deploys only real changes.
-writeFileSync(TRENDS, `${JSON.stringify({ trend }, null, 1)}\n`);
+writeFileSync(TRENDS, `${JSON.stringify({ trend: sortedTrend }, null, 1)}\n`);
 writeFileSync(COINS, `${JSON.stringify({ coins, coinsAsOf }, null, 1)}\n`);
 console.log(`meme: ${Object.keys(trend).length} trends, ${Object.keys(coins).length} coins`);
 if (failures.length) {

@@ -166,7 +166,7 @@ async function loadRefEntry(next: Locale, id: RefId): Promise<void> {
   registerRefEntry(next, id, m.default);
 }
 
-// Slang hub copy plus entry names (`npm run slang:sync`), only for /slang/ pages.
+// Slang hub copy plus entry names (`npm run slang:sync`), only for /memes/ pages.
 const SLANG_PACKS: Record<Locale, () => Promise<{ default: SlangMessages }>> = {
   en: () => import("../locales/packs/slang-en"),
   "zh-CN": () => import("../locales/packs/slang-zh-CN"),
