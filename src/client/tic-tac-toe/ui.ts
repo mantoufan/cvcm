@@ -25,16 +25,22 @@ export function mountTicTacToe(host: HTMLElement): void {
       ...values.map((v) => h("option", { value: v, selected: v === value }, label(v))));
     return el;
   };
-  const modeSel = select("mode", MODES, mode, (m) => t(`ticTacToe.m_${m}`), (m) => { mode = m; sync(); reset(); });
+  // The score is kept per mark, so it starts again whenever the mark stops meaning the same player.
+  const clearScore = () => {
+    score.X = 0;
+    score.O = 0;
+    score.draw = 0;
+  };
+  const modeSel = select("mode", MODES, mode, (m) => t(`ticTacToe.m_${m}`), (m) => { mode = m; clearScore(); sync(); reset(); });
   const levelSel = select("level", LEVELS, level, (l) => t(`ticTacToe.l_${l}`), (l) => { level = l; reset(); });
-  const sideSel = select("side", ["X", "O"] as const, human, (s) => t(s === "X" ? "ticTacToe.playX" : "ticTacToe.playO"), (s) => { human = s; reset(); });
+  const sideSel = select("side", ["X", "O"] as const, human, (s) => t(s === "X" ? "ticTacToe.playX" : "ticTacToe.playO"), (s) => { human = s; clearScore(); reset(); });
   const levelField = h("label", { class: "field" }, h("span", null, t("ticTacToe.level")), levelSel);
   const sideField = h("label", { class: "field" }, h("span", null, t("ticTacToe.side")), sideSel);
   const statusEl = h("p", { class: "ttt-status", "aria-live": "polite", "data-out": "status" });
   const scoreEl = h("dl", { class: "stats-grid ttt-score", "data-out": "score" });
   const cellEls = Array.from({ length: 9 }, (_, i) =>
     h("button", { type: "button", class: "ttt-cell", "data-cell": i, onClick: () => play(i) }));
-  const boardEl = h("div", { class: "ttt-board", role: "grid", "aria-label": t("ticTacToe.board"), "data-out": "board" },
+  const boardEl = h("div", { class: "ttt-board", role: "grid", tabindex: -1, "aria-label": t("ticTacToe.board"), "data-out": "board" },
     ...[0, 1, 2].map((r) => h("div", { class: "ttt-row", role: "row" }, ...cellEls.slice(r * 3, r * 3 + 3).map((c) => {
       c.setAttribute("role", "gridcell");
       return c;
@@ -75,7 +81,15 @@ export function mountTicTacToe(host: HTMLElement): void {
     finish();
   };
 
-  const queueComputer = () => {
+  /** Puts focus back on the board after a move disables the cell that had it (keyboard play). */
+  const refocus = (had: boolean) => {
+    const active = document.activeElement;
+    if (!had || (active instanceof HTMLButtonElement && cellEls.includes(active) && !active.disabled)) return;
+    const next = cellEls.find((el) => !el.disabled) ?? cellEls[0];
+    next?.focus();
+  };
+
+  const queueComputer = (had: boolean) => {
     if (!computerTurn()) return;
     thinking = window.setTimeout(() => {
       thinking = 0;
@@ -83,17 +97,20 @@ export function mountTicTacToe(host: HTMLElement): void {
       const i = computerMove(board, turn, level, (n) => randomBelow(n));
       if (i >= 0) place(i);
       paint();
-      // Focus stays on the board, on the first free cell, for keyboard players.
-      const next = cellEls.find((el) => !el.disabled);
-      if (next && boardEl.contains(document.activeElement)) next.focus();
+      // Focus goes back to the board, on the first free cell, for keyboard players.
+      refocus(had);
     }, THINK_MS);
   };
 
   const play = (i: number) => {
     if (board[i] || outcome(board) || computerTurn()) return;
+    const had = boardEl.contains(document.activeElement);
     place(i);
     paint();
-    queueComputer();
+    // While the computer thinks every cell is disabled, so keep focus on the board itself until it moves.
+    if (had && computerTurn()) boardEl.focus();
+    else refocus(had);
+    queueComputer(had);
   };
 
   const reset = () => {
@@ -102,7 +119,7 @@ export function mountTicTacToe(host: HTMLElement): void {
     board = new Array<Cell>(9).fill("");
     turn = "X";
     paint();
-    queueComputer();
+    queueComputer(false);
   };
 
   const sync = () => {
@@ -122,7 +139,7 @@ export function mountTicTacToe(host: HTMLElement): void {
         sideField,
         h("div", { class: "stage-actions" },
           h("button", { type: "button", class: "btn", "data-action": "new", onClick: () => reset() }, t("ticTacToe.newGame")),
-          h("button", { type: "button", class: "btn ghost", "data-action": "clear-score", onClick: () => { score.X = 0; score.O = 0; score.draw = 0; paint(); } }, t("ticTacToe.clearScore")),
+          h("button", { type: "button", class: "btn ghost", "data-action": "clear-score", onClick: () => { clearScore(); paint(); } }, t("ticTacToe.clearScore")),
         ),
         h("p", { class: "hint" }, t("ticTacToe.hint")),
       ),

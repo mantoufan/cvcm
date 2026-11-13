@@ -8,6 +8,7 @@
  * Cone responses use the Viénot, Brettel & Mollon (1999) matrix from linear sRGB.
  */
 import { seeded } from "./random";
+import { shuffle } from "./teams";
 
 export const PLATE_KINDS = ["protan", "deutan", "tritan"] as const;
 export type PlateKind = (typeof PLATE_KINDS)[number];
@@ -82,12 +83,13 @@ const CONE: Record<PlateKind, number> = { protan: 0, deutan: 1, tritan: 2 };
 
 /**
  * Background and figure colour (as LMS) for a plate: the figure is the background with one cone's response moved by
- * `strength` (up or down by `sign`). Falls back to the other sign, then to a smaller step, to stay in gamut.
+ * `strength` (up or down by `sign`). To stay in gamut it tries the other sign at full strength first, and only then
+ * smaller steps.
  */
 export function plateColours(kind: PlateKind, strength: number, sign: 1 | -1): { bg: number[]; fig: number[] } {
   const bg = rgbToLms(BASE[kind]);
-  for (const s of [sign, -sign]) {
-    for (let k = strength; k > strength / 4; k *= 0.9) {
+  for (let k = strength; k > strength / 4; k *= 0.9) {
+    for (const s of [sign, -sign]) {
       const fig = bg.slice();
       fig[CONE[kind]] = bg[CONE[kind]]! * (1 + s * k);
       // Room for the brightness spread too.
@@ -221,11 +223,7 @@ export const PLATE_COUNT = 1 + PLATE_KINDS.length * 4;
 export function makeTest(seed: number): Plate[] {
   const rand = seeded(seed * 2_654_435_761);
   const numbers = pickNumbers(PLATE_COUNT, rand);
-  const specs: Array<{ kind: PlateKind; level: number }> = PLATE_KINDS.flatMap((kind) => [0, 1, 2, 3].map((level) => ({ kind, level })));
-  for (let i = specs.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [specs[i], specs[j]] = [specs[j]!, specs[i]!];
-  }
+  const specs = shuffle(PLATE_KINDS.flatMap((kind) => [0, 1, 2, 3].map((level) => ({ kind, level }))), (n) => Math.floor(rand() * n));
   return [makePlate("demo", 0, numbers[0]!, rand), ...specs.map((s, i) => makePlate(s.kind, s.level, numbers[i + 1]!, rand))];
 }
 

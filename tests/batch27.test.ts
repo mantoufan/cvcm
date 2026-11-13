@@ -23,7 +23,8 @@ describe("sudoku", () => {
     for (const seed of [5, 6, 7]) {
       expect(solveBySingles(generate(seed, "easy").clues, true).every(Boolean)).toBe(true);
       expect(solveBySingles(generate(seed, "medium").clues).every(Boolean)).toBe(true);
-      expect(solveBySingles(generate(seed, "hard").clues, true).every(Boolean)).toBe(false);
+      expect(solveBySingles(generate(seed, "medium").clues, true).every(Boolean)).toBe(false);
+      expect(solveBySingles(generate(seed, "hard").clues).every(Boolean)).toBe(false);
       expect(solveBySingles(generate(seed, "expert").clues).every(Boolean)).toBe(false);
     }
     const count = (level: (typeof LEVELS)[number]) => generate(11, level).clues.filter(Boolean).length;
@@ -115,7 +116,7 @@ describe("military time", () => {
     expect(colon24(t)).toBe(h24);
   });
 
-  it.each(["", "abc", "25:00", "12:60", "13 pm", "0 am", "2460"])("refuses %j", (input) => {
+  it.each(["", "abc", "25:00", "12:60", "13 pm", "2460"])("refuses %j", (input) => {
     expect(parseTime(input)).toBeNull();
   });
 
@@ -186,6 +187,18 @@ describe("colour vision plates", () => {
     }
   });
 
+  it("keeps full strength by flipping the sign before it shrinks the step", () => {
+    for (const kind of PLATE_KINDS) {
+      const i = { protan: 0, deutan: 1, tritan: 2 }[kind];
+      const full = STRENGTH[kind][0]!;
+      const best = Math.max(...([1, -1] as const).map((sign) => {
+        const { bg, fig } = plateColours(kind, full, sign);
+        return Math.abs(fig[i]! / bg[i]! - 1);
+      }));
+      expect(best).toBeCloseTo(full, 6);
+    }
+  });
+
   it("builds the same 13 plates for a seed: the check plate, then four levels of each kind", () => {
     const test = makeTest(1);
     expect(test).toHaveLength(PLATE_COUNT);
@@ -243,7 +256,12 @@ describe("colour vision plates", () => {
 });
 
 describe("military time in other languages", () => {
-  it.each([["1430 horas", "1430"], ["0800 jam", "0800"], ["1905 giờ", "1905"], ["1800시", "1800"]])("reads %s", (input, mil) => {
+  it.each([
+    ["1430 horas", "1430"], ["0800 jam", "0800"], ["1905 giờ", "1905"], ["1800시", "1800"],
+    ["晚上12点", "0000"], ["晚上8点", "2000"], ["下午2点半", "1430"], ["凌晨12点", "0000"], ["中午12点", "1200"],
+    ["午前0時", "0000"], ["午後0時", "1200"], ["午前0時30分", "0030"],
+    ["14 giờ 30", "1430"], ["2 giờ 30 chiều", "1430"], ["8:00 sáng", "0800"], ["12 giờ đêm", "0000"], ["오후 2시 반", "1430"],
+  ])("reads %s", (input, mil) => {
     expect(military(parseTime(input)!)).toBe(mil);
   });
 });

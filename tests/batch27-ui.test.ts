@@ -5,7 +5,7 @@ import { mountTicTacToe, unmountTicTacToe } from "../src/client/tic-tac-toe/ui";
 import { mountColorBlindnessTest, unmountColorBlindnessTest } from "../src/client/color-blindness-test/ui";
 import { mountMilitaryTime, unmountMilitaryTime } from "../src/client/military-time/ui";
 import { mountHeight, unmountHeight } from "../src/client/height-calculator/ui";
-import { generate } from "../src/shared/sudoku";
+import { candidates, generate } from "../src/shared/sudoku";
 import { makeTest } from "../src/shared/color-vision";
 
 let host: HTMLElement;
@@ -112,6 +112,30 @@ describe("sudoku ui", () => {
     expect(clock(3725)).toBe("1:02:05");
   });
 
+  it("starts over with a fresh clock and hint count", () => {
+    const p = generate(2027, "medium");
+    window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 2027, level: "medium", cells: p.clues, notes: new Array(81).fill(0), elapsed: 600, hints: 2 }));
+    mountSudoku(host);
+    expect(q("[data-out=time]").textContent).toBe("10:00");
+    const empty = p.clues.findIndex((d) => !d);
+    q<HTMLButtonElement>(`[data-cell="${empty}"]`).click();
+    q<HTMLButtonElement>(`[data-digit="${p.solution[empty]}"]`).click();
+    q<HTMLButtonElement>("[data-action=restart]").click();
+    expect(q("[data-out=time]").textContent).toBe("0:00");
+    expect(JSON.parse(window.localStorage.getItem("cvcm.sudoku.v1")!)).toMatchObject({ elapsed: 0, hints: 0 });
+  });
+
+  it("gives a hint in the empty cell with the fewest options when nothing is selected", () => {
+    mountSudoku(host);
+    const p = generate(2027, "medium");
+    const cand = candidates(p.clues);
+    const count = (m: number) => m.toString(2).replace(/0/g, "").length;
+    const fewest = Math.min(...p.clues.map((d, i) => (d ? 10 : count(cand[i]!))));
+    q<HTMLButtonElement>("[data-action=hint]").click();
+    const filled = p.clues.findIndex((d, i) => !d && q(`[data-cell="${i}"]`).textContent !== "");
+    expect(count(cand[filled]!)).toBe(fewest);
+  });
+
   it("starts a new puzzle of the chosen level", () => {
     mountSudoku(host);
     set("[data-field=level]", "easy", "change");
@@ -146,6 +170,27 @@ describe("tic-tac-toe ui", () => {
     q<HTMLButtonElement>("[data-action=new]").click();
     expect(q('[data-cell="0"]').textContent).toBe("");
     expect(q("[data-out=score]").textContent).toContain("X (X)1");
+  });
+
+  it("starts the score again when you change sides or players", () => {
+    mountTicTacToe(host);
+    set("[data-field=mode]", "friend", "change");
+    for (const i of [0, 3, 1, 4, 2]) q<HTMLButtonElement>(`[data-cell="${i}"]`).click();
+    expect(q("[data-out=score]").textContent).toContain("X (X)1");
+    set("[data-field=mode]", "computer", "change");
+    expect(q("[data-out=score]").textContent).toContain("You (X)0");
+  });
+
+  it("keeps keyboard focus on the board after a move", () => {
+    vi.useFakeTimers();
+    mountTicTacToe(host);
+    const cell = q<HTMLButtonElement>('[data-cell="0"]');
+    cell.focus();
+    cell.click();
+    expect(host.querySelector(".ttt-board")!.contains(document.activeElement)).toBe(true);
+    vi.advanceTimersByTime(400);
+    expect((document.activeElement as HTMLElement).classList.contains("ttt-cell")).toBe(true);
+    expect((document.activeElement as HTMLButtonElement).disabled).toBe(false);
   });
 
   it("lets the computer start when you play O", () => {

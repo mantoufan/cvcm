@@ -2,31 +2,48 @@
 
 export type ClockTime = { h: number; m: number; s: number | null; /** Typed as 2400: the end of the day, the same instant as 0000 the next day. */ endOfDay: boolean };
 
-const AM = /^(am|a\.m\.?|a|上午|早上|凌晨|午前|오전|sa|s\.a\.?)$/i;
-const PM = /^(pm|p\.m\.?|p|下午|中午|晚上|傍晚|午後|오후|ch|c\.h\.?)$/i;
+const AM = /^(am|a\.m\.?|a|上午|早上|早晨|凌晨|午前|오전|sa|s\.a\.?|sáng)$/i;
+const PM = /^(pm|p\.m\.?|p|下午|中午|傍晚|午後|오후|ch|c\.h\.?|chiều|trưa)$/i;
+/** Evening words: PM, except that 12 in the evening is midnight (晚上12点, 12 giờ đêm). */
+const NIGHT = /^(晚上|夜里|夜裡|夜晚|夜|밤|tối|đêm)$/i;
+const MARKERS = String.raw`[ap]\.?\s?m\.?|[ap]|s\.?a\.?|c\.?h\.?|sáng|chiều|trưa|tối|đêm|上午|早上|早晨|凌晨|下午|中午|傍晚|晚上|夜里|夜裡|夜晚|午前|午後|오전|오후|밤`;
+const TAIL = new RegExp(`^(.*?)\\s*(${MARKERS})$`, "i");
+const HEAD = new RegExp(`^(${MARKERS.replace(String.raw`[ap]\.?\s?m\.?|[ap]|`, "")})\\s*(.*)$`, "i");
+
+type Meridiem = "am" | "pm" | "night";
 
 /** Splits a leading or trailing AM/PM marker (Latin, Chinese, Japanese, Korean, Vietnamese) from the clock part. */
-function splitMeridiem(text: string): { clock: string; mer: "am" | "pm" | null } | null {
+function splitMeridiem(text: string): { clock: string; mer: Meridiem | null } | null {
   const compact = text.replace(/\s+/g, " ").trim();
-  const tail = /^(.*?)[\s]*([ap]\.?\s?m\.?|[ap]|s\.?a\.?|c\.?h\.?|上午|早上|凌晨|下午|中午|晚上|傍晚|午前|午後|오전|오후)$/i.exec(compact);
-  const head = /^(上午|早上|凌晨|下午|中午|晚上|傍晚|午前|午後|오전|오후|s\.?a\.?|c\.?h\.?)\s*(.*)$/i.exec(compact);
   const pick = (marker: string, clock: string) => {
     const m = marker.replace(/\s/g, "");
     if (AM.test(m)) return { clock: clock.trim(), mer: "am" as const };
     if (PM.test(m)) return { clock: clock.trim(), mer: "pm" as const };
+    if (NIGHT.test(m)) return { clock: clock.trim(), mer: "night" as const };
     return null;
   };
+  const head = HEAD.exec(compact);
   if (head && head[2]) return pick(head[1]!, head[2]);
+  const tail = TAIL.exec(compact);
   if (tail && tail[1] && /\d$/.test(tail[1].trim())) return pick(tail[2]!, tail[1]);
   return { clock: compact, mer: null };
 }
 
 /**
- * Reads a time: "1430", "14:30", "0830 hours", "14:30:15", "2:30 pm", "2 PM", "下午2:30", "오후 2시 30분",
- * "14h30". Returns null when it is not a time.
+ * Reads a time: "1430", "14:30", "0830 hours", "14:30:15", "2:30 pm", "2 PM", "下午2:30", "下午2点半", "晚上12点",
+ * "午前0時", "오후 2시 30분", "14 giờ 30", "2 giờ 30 chiều", "14h30". Returns null when it is not a time.
  */
 export function parseTime(raw: string): ClockTime | null {
-  let text = raw.trim().replace(/[：]/g, ":").replace(/\s*(hours?|hrs?|horas?|jam|giờ)\.?$/i, "").replace(/(\d)\s*h$/i, "$1").replace(/[时時시点點]\s*(\d)/g, ":$1").replace(/[分분秒초]|[时時시点點]$/g, "").trim();
+  let text = raw.trim()
+    .replace(/[：]/g, ":")
+    .replace(/\s*(hours?|hrs?|horas?|jam)\.?$/i, "")
+    .replace(/(\d)\s*h$/i, "$1")
+    // Hour words between the hour and the minutes are a colon ("2点30", "2시 30분", "14 giờ 30"); 半 is half past.
+    .replace(/\s*(?:[时時시点點]|giờ)\s*[半반]/gi, ":30")
+    .replace(/\s*(?:[时時시点點]|giờ)\s*(\d)/gi, ":$1")
+    .replace(/[分분秒초]/g, "")
+    .replace(/\s*(?:[时時시点點]|giờ)(?=\s*\D*$)/gi, "")
+    .trim();
   if (!text) return null;
   text = text.replace(/(\d)h(\d)/i, "$1:$2");
   const split = splitMeridiem(text);
@@ -41,15 +58,17 @@ export function parseTime(raw: string): ClockTime | null {
     h = Number(d.slice(0, 2));
     m = Number(d.slice(2));
   } else if (colon) {
+    // One or two digits alone are an hour: "7" is 07:00, "14" is 14:00.
     h = Number(colon[1]);
     m = colon[2] ? Number(colon[2]) : 0;
     s = colon[3] ? Number(colon[3]) : null;
-    // One or two digits alone are an hour: "7" is 07:00, "14" is 14:00.
   } else return null;
   if (m > 59 || (s !== null && s > 59)) return null;
   if (mer) {
-    if (h < 1 || h > 12) return null;
-    h = (h % 12) + (mer === "pm" ? 12 : 0);
+    // 0–12 with a marker; 0 is how Japan writes the hour after midnight or noon (午前0時, 午後0時).
+    if (h > 12) return null;
+    if (mer === "night") h = h === 12 ? 0 : (h % 12) + 12;
+    else h = (h % 12) + (mer === "pm" ? 12 : 0);
     return { h, m, s, endOfDay: false };
   }
   if (h === 24 && m === 0 && !s) return { h: 0, m: 0, s, endOfDay: true };

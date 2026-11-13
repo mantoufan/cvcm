@@ -3,6 +3,7 @@
  * Cells are numbers 0–80 read row by row; 0 is an empty cell, 1–9 a digit.
  */
 import { seeded } from "./random";
+import { shuffle } from "./teams";
 
 export const LEVELS = ["easy", "medium", "hard", "expert"] as const;
 export type Level = (typeof LEVELS)[number];
@@ -38,13 +39,8 @@ export const rowOf = ROW;
 export const colOf = COL;
 export const boxOf = BOX;
 
-function shuffle<T>(list: T[], rand: () => number): T[] {
-  for (let i = list.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [list[i], list[j]] = [list[j]!, list[i]!];
-  }
-  return list;
-}
+/** Fisher–Yates with the seeded generator (teams.ts shuffle, fed a seeded draw instead of Web Crypto). */
+const shuffled = <T>(list: readonly T[], rand: () => number): T[] => shuffle(list, (n) => Math.floor(rand() * n));
 
 const bitCount = (m: number) => {
   let n = 0;
@@ -110,9 +106,9 @@ export function countSolutions(grid: readonly number[], limit = 2, rand?: () => 
       onSolution?.(g.slice());
       return found >= limit;
     }
-    const digits: number[] = [];
+    let digits: number[] = [];
     for (let d = 1; d <= 9; d++) if (bestMask & (1 << (d - 1))) digits.push(d);
-    if (rand) shuffle(digits, rand);
+    if (rand) digits = shuffled(digits, rand);
     const r = ROW(best), c = COL(best), b = BOX(best);
     for (const d of digits) {
       const bit = 1 << (d - 1);
@@ -194,7 +190,8 @@ const TARGET: Record<Level, number> = { easy: 40, medium: 33, hard: 28, expert: 
 /**
  * Puzzle `seed` at `level`: a random full grid, then clues taken away in pairs symmetric about the centre while the
  * puzzle stays solvable the level's way: easy by naked singles, medium by singles, hard and expert just uniquely.
- * Hard and expert are rejected (and the next attempt tried) when singles alone would solve them.
+ * A medium puzzle that naked singles alone solve, or a hard or expert one that singles solve, is rejected and the
+ * next attempt tried (after 40 attempts the last one is kept).
  */
 export function generate(seed: number, level: Level): Puzzle {
   const s = Math.min(MAX_SEED, Math.max(1, Math.floor(seed) || 1));
@@ -207,7 +204,7 @@ export function generate(seed: number, level: Level): Puzzle {
       solution = g;
     });
     const clues = solution.slice();
-    const order = shuffle(Array.from({ length: 41 }, (_, i) => i), rand);
+    const order = shuffled(Array.from({ length: 41 }, (_, i) => i), rand);
     const ok = (g: number[]) =>
       level === "easy" ? filled(solveBySingles(g, true)) : level === "medium" ? filled(solveBySingles(g)) : countSolutions(g, 2) === 1;
     let count = 81;
@@ -221,7 +218,7 @@ export function generate(seed: number, level: Level): Puzzle {
       else [clues[i], clues[j]] = saved;
     }
     // Pairs can get stuck above the target; single cells can often still go.
-    for (const i of shuffle(Array.from({ length: 81 }, (_, k) => k), rand)) {
+    for (const i of shuffled(Array.from({ length: 81 }, (_, k) => k), rand)) {
       if (count <= TARGET[level]) break;
       if (!clues[i]) continue;
       const saved = clues[i]!;
@@ -230,8 +227,9 @@ export function generate(seed: number, level: Level): Puzzle {
       else clues[i] = saved;
     }
     last = { seed: s, level, clues, solution };
-    if (level === "hard" && filled(solveBySingles(clues, true))) continue;
-    if (level === "expert" && filled(solveBySingles(clues))) continue;
+    // Each level must need its own technique: medium a hidden single, hard and expert more than singles.
+    if (level === "medium" && filled(solveBySingles(clues, true))) continue;
+    if ((level === "hard" || level === "expert") && filled(solveBySingles(clues))) continue;
     return last;
   }
   return last!;

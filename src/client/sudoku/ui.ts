@@ -2,7 +2,8 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { t } from "../i18n";
 import { randomBelow } from "../../shared/random";
-import { LEVELS, MAX_SEED, PEERS, boxOf, colOf, conflicts, generate, rowOf, toLine, type Level, type Puzzle } from "../../shared/sudoku";
+import { shortClock } from "../../shared/subtitles";
+import { LEVELS, MAX_SEED, PEERS, boxOf, candidates, colOf, conflicts, generate, rowOf, toLine, type Level, type Puzzle } from "../../shared/sudoku";
 
 const STORE_KEY = "cvcm.sudoku.v1";
 /** The puzzle a first visit (and the prerendered page) starts on, so the page is the same before and after mount. */
@@ -14,14 +15,8 @@ type Snapshot = { cells: number[]; notes: number[] };
 
 let mounted: { cleanup: () => void } | null = null;
 
-/** "4:05" or "1:02:05". */
-export function clock(seconds: number): string {
-  const s = Math.max(0, Math.floor(seconds));
-  const hh = Math.floor(s / 3600);
-  const mm = Math.floor((s % 3600) / 60);
-  const ss = String(s % 60).padStart(2, "0");
-  return hh ? `${hh}:${String(mm).padStart(2, "0")}:${ss}` : `${mm}:${ss}`;
-}
+/** "4:05" or "1:02:05" (the subtitle tools' clock). */
+export const clock = shortClock;
 
 function readSaved(): Saved | null {
   try {
@@ -39,7 +34,9 @@ function readSaved(): Saved | null {
 
 export function mountSudoku(host: HTMLElement): void {
   unmountSudoku();
-  let puzzle: Puzzle = generate(START.seed, START.level);
+  // A saved game is generated once; the start puzzle only when there is none.
+  const saved = readSaved();
+  let puzzle: Puzzle = saved ? generate(saved.seed, saved.level) : generate(START.seed, START.level);
   let cells: number[] = puzzle.clues.slice();
   let notes: number[] = new Array<number>(81).fill(0);
   let undo: Snapshot[] = [];
@@ -52,7 +49,7 @@ export function mountSudoku(host: HTMLElement): void {
   let timer = 0;
 
   const levelSel = h("select", { "data-field": "level", onChange: () => newGame() },
-    ...LEVELS.map((l) => h("option", { value: l, selected: l === START.level }, t(`sudoku.l_${l}`))),
+    ...LEVELS.map((l) => h("option", { value: l, selected: l === puzzle.level }, t(`sudoku.l_${l}`))),
   );
   const numberEl = h("span", { class: "sudoku-number", "data-out": "number" });
   const timeEl = h("span", { class: "sudoku-time", "data-out": "time", "data-volatile": "" }, clock(0));
@@ -143,9 +140,23 @@ export function mountSudoku(host: HTMLElement): void {
 
   const hint = () => {
     if (solved) return;
-    // The selected cell when it is empty or wrong, else the empty cell with the fewest options.
+    // The selected cell when it is empty or wrong; else a wrong digit; else the empty cell with the fewest options
+    // (counted with wrong digits taken out), the one a solver would fill next.
     let i = selected >= 0 && !isClue(selected) && cells[selected] !== puzzle.solution[selected] ? selected : -1;
-    if (i < 0) i = cells.findIndex((d, k) => d !== puzzle.solution[k]);
+    if (i < 0) i = cells.findIndex((d, k) => d !== 0 && d !== puzzle.solution[k]);
+    if (i < 0) {
+      const cand = candidates(cells);
+      let best = 10;
+      cells.forEach((d, k) => {
+        if (d) return;
+        let n = 0;
+        for (let m = cand[k]!; m; m &= m - 1) n++;
+        if (n < best) {
+          best = n;
+          i = k;
+        }
+      });
+    }
     if (i < 0) return;
     snapshot();
     const d = puzzle.solution[i]!;
@@ -202,6 +213,11 @@ export function mountSudoku(host: HTMLElement): void {
     cells = puzzle.clues.slice();
     notes = new Array<number>(81).fill(0);
     solved = false;
+    // A fresh attempt: the clock and the hint count start again too.
+    elapsed = 0;
+    hints = 0;
+    timeEl.textContent = clock(0);
+    stopTimer();
     save();
     paint();
     startTimer();
@@ -357,8 +373,7 @@ export function mountSudoku(host: HTMLElement): void {
     ),
   );
 
-  const saved = readSaved();
-  if (saved) load(generate(saved.seed, saved.level), saved);
+  if (saved) load(puzzle, saved);
   else paint();
   board.addEventListener("keydown", onKey);
   // The clock starts with the first touch of the board, not when the page opens.
