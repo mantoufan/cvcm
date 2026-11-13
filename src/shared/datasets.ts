@@ -114,6 +114,7 @@ export const DATASET_TOOLS: Partial<Record<DatasetId, readonly ToolId[]>> = {
   "gini-index": ["percent"],
   "poverty-rate": ["percent"],
   "homicide-rate": ["percent"],
+  // suicide-rate has no tools on purpose: a calculator card under a crisis-line note reads wrong.
   "literacy-rate": ["percent", "reading-time"],
   "alcohol-consumption": ["units", "percent"],
   "tobacco-use": ["percent"],

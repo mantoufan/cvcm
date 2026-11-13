@@ -41,11 +41,11 @@ await esbuild.build({
   }],
 });
 
-// Each page leaks 1 to 2.5 MB of happy-dom state that a process never frees; one process ran out of an 8 GB heap at
-// about 7,400 pages. Split the pages over processes run one after another, each with this process's heap flag,
-// sized from that heap at 3 MB a page so the split grows with the site and with a smaller heap.
+// Each page leaves about 2.4 MB in the heap (measured: 5.9 GB for 2,470 pages) that a process never frees; one
+// process ran out of an 8 GB heap at about 7,400 pages. Split the pages over processes run one after another, each
+// with this process's heap flag, sized from that heap at 4 MB a page for headroom, so the split grows with the site.
 // PRERENDER_SHARDS overrides the count.
-const PAGES_PER_PROCESS = Math.max(200, Math.floor(getHeapStatistics().heap_size_limit / (3 << 20)));
+const PAGES_PER_PROCESS = Math.max(200, Math.floor(getHeapStatistics().heap_size_limit / (4 << 20)));
 const run = (env, opts = {}) => execFileSync(process.execPath, [...process.execArgv, outfile], { ...opts, env: { ...process.env, ...env } });
 try {
   const pages = Number(/^PAGES (\d+)$/m.exec(run({ PRERENDER_COUNT: "1" }, { encoding: "utf8" }))?.[1]);
@@ -53,7 +53,7 @@ try {
   const shards = process.env.PRERENDER_SHARDS === undefined ? Math.ceil(pages / PAGES_PER_PROCESS) : Number(process.env.PRERENDER_SHARDS);
   if (!(Number.isInteger(shards) && shards >= 1 && shards <= pages)) throw new Error(`PRERENDER_SHARDS must be a whole number from 1 to ${pages}, got ${JSON.stringify(process.env.PRERENDER_SHARDS)}`);
   console.log(`prerender: ${pages} pages in ${shards} processes`);
-  for (let i = 0; i < shards; i++) run({ PRERENDER_SHARD: `${i}/${shards}` }, { stdio: "inherit" });
+  for (let i = 0; i < shards; i++) run({ PRERENDER_SHARD: `${i}/${shards}`, PRERENDER_COUNT: "" }, { stdio: "inherit" });
 } finally {
   rmSync(outfile, { force: true });
 }

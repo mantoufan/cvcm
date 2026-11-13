@@ -137,7 +137,7 @@ describe("data pages: tables", () => {
         expect(table.columns.every((c) => c.label), `${locale} ${id}`).toBe(true);
       }
     }
-  });
+  }, 30_000); // 59 tables × 8 locales, every cell through Intl: slow on a cold run.
 
   it("ranks indicators and shows shares that add up to under 100%", () => {
     const table = datasetTable("en", "population", rows("population"));

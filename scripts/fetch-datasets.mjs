@@ -30,7 +30,10 @@ async function fetchRetry(url, read) {
   for (let attempt = 1; ; attempt++) {
     try {
       const res = await fetch(url, { signal: AbortSignal.timeout(120_000) });
-      if (!res.ok) throw Object.assign(new Error(`${res.status} ${url}`), { final: res.status < 500 && res.status !== 408 && res.status !== 429 });
+      if (!res.ok) {
+        await res.body?.cancel().catch(() => {});
+        throw Object.assign(new Error(`${res.status} ${url}`), { final: res.status < 500 && res.status !== 408 && res.status !== 429 });
+      }
       return await read(res);
     } catch (err) {
       if (err.final || attempt >= 6) throw err;

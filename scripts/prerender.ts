@@ -65,7 +65,7 @@ let written = 0;
 const failed: string[] = [];
 const started = Date.now();
 await whenRendered();
-// `PRERENDER_SHARD=i/n` renders every n-th page from the i-th: each page leaks about 1 MB of happy-dom state,
+// `PRERENDER_SHARD=i/n` renders every n-th page from the i-th: each page leaves about 2.4 MB of happy-dom state,
 // so prerender.mjs runs the pages in several processes instead of one that outgrows its heap.
 const [shard, shards] = (process.env.PRERENDER_SHARD ?? "0/1").split("/").map(Number);
 if (!(Number.isInteger(shards) && shards >= 1 && Number.isInteger(shard) && shard >= 0 && shard < shards)) {
