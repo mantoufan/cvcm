@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { t } from "../i18n";
 import { randomBelow } from "../../shared/random";
 import { shortClock } from "../../shared/subtitles";
-import { LEVELS, MAX_SEED, PEERS, bitCount, boxOf, candidates, colOf, conflicts, generate, rowOf, solve, toLine, type Level, type Puzzle } from "../../shared/sudoku";
+import { LEVELS, MAX_SEED, PEERS, bitCount, candidates, colOf, conflicts, generate, rowOf, solve, toLine, type Level, type Puzzle } from "../../shared/sudoku";
 
 const STORE_KEY = "cvcm.sudoku.v1";
 /** The puzzle a first visit (and the prerendered page) starts on, so the page is the same before and after mount. */
@@ -299,6 +299,7 @@ export function mountSudoku(host: HTMLElement): void {
     numberEl.textContent = t("sudoku.puzzle", { n: puzzle.seed });
     const clash = conflicts(cells);
     const sel = selected;
+    const peers = new Set<number>(sel >= 0 ? PEERS[sel] : []);
     const selDigit = sel >= 0 ? cells[sel] : 0;
     const counts = new Array<number>(10).fill(0);
     for (const d of cells) counts[d]!++;
@@ -311,7 +312,7 @@ export function mountSudoku(host: HTMLElement): void {
         for (let k = 1; k <= 9; k++) grid.append(h("span", null, notes[i]! & (1 << (k - 1)) ? String(k) : ""));
         el.append(grid);
       }
-      const peer = sel >= 0 && i !== sel && (rowOf(i) === rowOf(sel) || colOf(i) === colOf(sel) || boxOf(i) === boxOf(sel));
+      const peer = peers.has(i);
       el.classList.toggle("given", isClue(i));
       el.classList.toggle("sel", i === sel);
       el.classList.toggle("peer", peer);
@@ -357,9 +358,12 @@ export function mountSudoku(host: HTMLElement): void {
       }
       return;
     }
-    const at = selected >= 0 ? selected : 0;
+    // With nothing selected yet, the cell that has focus is where keys start (the first arrow selects it).
+    const focused = cellEls.indexOf(e.target as HTMLButtonElement);
+    const at = selected >= 0 ? selected : Math.max(0, focused);
     const move = (dr: number, dc: number) => {
       e.preventDefault();
+      if (selected < 0) return select(at);
       select(((rowOf(at) + dr + 9) % 9) * 9 + ((colOf(at) + dc + 9) % 9));
     };
     if (e.key === "ArrowUp") return move(-1, 0);

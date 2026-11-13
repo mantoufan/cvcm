@@ -87,6 +87,9 @@ describe("sudoku ui", () => {
   it("moves with the arrow keys and fills a cell with Hint", () => {
     mountSudoku(host);
     const p = generate(2027, "medium");
+    // The first arrow on a focused board selects the focused cell itself.
+    key(q('[data-cell="5"]'), "ArrowRight");
+    expect(q('[data-cell="5"]').classList.contains("sel")).toBe(true);
     q<HTMLButtonElement>('[data-cell="0"]').click();
     key(q('[data-cell="0"]'), "ArrowRight");
     expect(q('[data-cell="1"]').classList.contains("sel")).toBe(true);

@@ -1,7 +1,7 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { CHART_HOURS, colon24, military, parseTime, spoken, type ClockTime } from "../../shared/military-time";
+import { colon24, military, parseTime, spoken, type ClockTime } from "../../shared/military-time";
 
 let mounted: { cleanup: () => void } | null = null;
 
@@ -80,7 +80,8 @@ export function mountMilitaryTime(host: HTMLElement): void {
       h("th", { scope: "col" }, t("militaryTime.h12")),
       h("th", { scope: "col" }, t("militaryTime.military")),
     )),
-    h("tbody", null, ...CHART_HOURS.slice(0, 12).map((hr) => {
+    // Two columns of twelve: 0000–1100 beside 1200–2300.
+    h("tbody", null, ...Array.from({ length: 12 }, (_, hr) => hr).map((hr) => {
       const am: ClockTime = { h: hr, m: 0, s: null, endOfDay: false };
       const pm: ClockTime = { h: hr + 12, m: 0, s: null, endOfDay: false };
       return h("tr", null,

@@ -82,9 +82,8 @@ export function parseTime(raw: string): ClockTime | null {
   // Full-width digits and colon from a CJK input method count as ASCII; "noon" and "midnight" alone are 12.
   let text = halfWidth(raw.trim()).replace(/^(noon|midnight)$/i, "12 $1")
     // A trailing Z is Zulu (UTC), as the page itself writes it: "1430Z".
-    .replace(/\s*(z|zulu)$/i, "")
-    .replace(/\s*(hours?|hrs?|horas?|hs|jam)\.?$/i, "")
-    .replace(/\s*(z|zulu)$/i, "")
+    // Trailing Zulu and "hours" words, in either order ("1430Z hours", "1430 hrs Z").
+    .replace(/(?:\s*(?:z|zulu|hours?|hrs?|horas?|hs|jam)\.?)+$/i, "")
     // Indonesian writes the hour word first: "jam 14.30", "pukul 7".
     .replace(/^(jam|pukul)\s*/i, "")
     // "14h30", "14 h 30", "9h sáng": h after an hour is a colon or nothing.
@@ -120,6 +119,9 @@ export function parseTime(raw: string): ClockTime | null {
   if (part) {
     // 0–12 with a part of the day; 0 is how Japan writes the hour after midnight or noon (午前0時, 午後0時).
     if (h > 12) return null;
+    // Japan's official usage: 午前12時 is noon and 午後12時 is midnight (most people write 午前0時 / 午後0時 instead).
+    if (h === 12 && /午前/.test(raw)) return { h: 12, m, s, endOfDay: false };
+    if (h === 12 && /午後/.test(raw)) return { h: 0, m, s, endOfDay: false };
     return { h: toHour24(h, part), m, s, endOfDay: false };
   }
   if (h === 24 && m === 0 && !s) return { h: 0, m: 0, s: null, endOfDay: true };
@@ -157,6 +159,3 @@ export function spoken(t: ClockTime): string {
   const min = t.m === 0 ? "hundred" : spokenPair(t.m, true);
   return `${hour} ${min} hours`;
 }
-
-/** The hour-by-hour chart: 0000 … 2300 with the 12-hour time. */
-export const CHART_HOURS = Array.from({ length: 24 }, (_, h) => h);
