@@ -3,6 +3,7 @@
 import * as esbuild from "esbuild";
 import { execFileSync } from "node:child_process";
 import { rmSync } from "node:fs";
+import { getHeapStatistics } from "node:v8";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./game-names.mjs";
@@ -41,15 +42,16 @@ await esbuild.build({
 });
 
 // Each page leaks 1 to 2.5 MB of happy-dom state that a process never frees; one process ran out of an 8 GB heap at
-// about 7,400 pages. Split the pages over processes run one after another, each with this process's heap flag:
-// one per PAGES_PER_PROCESS pages, so the count grows with the site. PRERENDER_SHARDS overrides it.
-const PAGES_PER_PROCESS = 2500;
+// about 7,400 pages. Split the pages over processes run one after another, each with this process's heap flag,
+// sized from that heap at 3 MB a page so the split grows with the site and with a smaller heap.
+// PRERENDER_SHARDS overrides the count.
+const PAGES_PER_PROCESS = Math.max(200, Math.floor(getHeapStatistics().heap_size_limit / (3 << 20)));
 const run = (env, opts = {}) => execFileSync(process.execPath, [...process.execArgv, outfile], { ...opts, env: { ...process.env, ...env } });
 try {
   const pages = Number(/^PAGES (\d+)$/m.exec(run({ PRERENDER_COUNT: "1" }, { encoding: "utf8" }))?.[1]);
   if (!(pages > 0)) throw new Error("prerender: could not count the sitemap pages");
   const shards = process.env.PRERENDER_SHARDS === undefined ? Math.ceil(pages / PAGES_PER_PROCESS) : Number(process.env.PRERENDER_SHARDS);
-  if (!(Number.isInteger(shards) && shards >= 1)) throw new Error(`PRERENDER_SHARDS must be a whole number >= 1, got ${JSON.stringify(process.env.PRERENDER_SHARDS)}`);
+  if (!(Number.isInteger(shards) && shards >= 1 && shards <= pages)) throw new Error(`PRERENDER_SHARDS must be a whole number from 1 to ${pages}, got ${JSON.stringify(process.env.PRERENDER_SHARDS)}`);
   console.log(`prerender: ${pages} pages in ${shards} processes`);
   for (let i = 0; i < shards; i++) run({ PRERENDER_SHARD: `${i}/${shards}` }, { stdio: "inherit" });
 } finally {

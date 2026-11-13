@@ -25,13 +25,12 @@ const oldMeta = JSON.parse(committed("meta.json") ?? '{"sets":{}}');
 const written = new Map();
 
 // The World Bank API often answers 502 or stalls for minutes: give each try a deadline (body included) and back
-// off longer. A timeout, a network error, a cut-off body or a 5xx is retried; a 4xx (a mistyped indicator code)
-// fails at once.
+// off longer. A timeout, a network error, a cut-off body, a 408, a 429 or a 5xx is retried; any other 4xx fails at once.
 async function fetchRetry(url, read) {
   for (let attempt = 1; ; attempt++) {
     try {
       const res = await fetch(url, { signal: AbortSignal.timeout(120_000) });
-      if (!res.ok) throw Object.assign(new Error(`${res.status} ${url}`), { final: res.status < 500 });
+      if (!res.ok) throw Object.assign(new Error(`${res.status} ${url}`), { final: res.status < 500 && res.status !== 408 && res.status !== 429 });
       return await read(res);
     } catch (err) {
       if (err.final || attempt >= 6) throw err;
@@ -88,6 +87,8 @@ for (const [id, spec] of Object.entries(WB)) {
   // economy's latest non-empty value. Values older than 15 years are dropped below anyway.
   const thisYear = new Date().getUTCFullYear();
   const [info, all] = await getJson(`https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&date=${thisYear - 20}:${thisYear}&per_page=20000`);
+  // A mistyped code is not a 4xx: the API answers 200 with [{ message: [...] }].
+  if (info.message) throw new Error(`${id}: World Bank rejected ${code}: ${JSON.stringify(info.message)}`);
   if (info.pages !== 1) throw new Error(`${code}: ${info.total} rows over ${info.pages} pages; raise per_page`);
   const latestBy = new Map();
   for (const r of all) {
