@@ -2,7 +2,7 @@
   "crumbHome": "Inicio",
   "hub": {
     "title": "Datos públicos gratis: población, PIB, códigos de país | cv.cm",
-    "description": "Tablas de datos abiertos para buscar, ordenar y descargar en CSV: población, PIB, INB, exportaciones, inflación, desempleo, gasto militar, reservas internacionales, gasto en I+D, esperanza de vida, médicos, natalidad y mortalidad, migrantes, superficie y bosques, emisiones de CO2, consumo de electricidad, energía renovable, uso de internet, telefonía móvil y banda ancha, códigos ISO de país y moneda, prefijos telefónicos, husos horarios, tamaños de papel y ASCII.",
+    "description": "Tablas de datos abiertos para buscar, ordenar y descargar en CSV: población, PIB y PIB (PPA), INB, exportaciones, inflación, desempleo, pobreza y desigualdad de ingresos (Gini), gasto militar, reservas internacionales, esperanza de vida, médicos, alfabetización, tasas de homicidio y de suicidio, consumo de alcohol y tabaco, natalidad y mortalidad, migrantes, superficie y bosques, emisiones de CO2, contaminación del aire, electricidad, uso de internet, telefonía móvil y banda ancha, códigos ISO de país y moneda, prefijos telefónicos, husos horarios, tamaños de papel y ASCII.",
     "h1": "Datos públicos",
     "lede": "Tablas sencillas con datos públicos del Banco Mundial, ISO e IANA. Se pueden buscar, ordenar por cualquier columna o descargar en CSV. Cada tabla indica su fuente y su licencia.",
     "groups": {
@@ -1028,6 +1028,203 @@
         { "q": "¿Qué país tiene más suscripciones de banda ancha por persona?", "a": "{top1}, con {v1} por cada 100 habitantes en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
         { "q": "¿Cuántas líneas de banda ancha fija hay en el mundo?", "a": "{world} por cada 100 habitantes en {worldYear}." },
         { "q": "¿La banda ancha incluye el internet móvil?", "a": "No. Aquí se cuentan líneas fijas como fibra, cable y DSL; los planes de datos móviles se cuentan aparte." }
+      ]
+    },
+    "gdp-ppp": {
+      "name": "PIB (PPA) por país",
+      "title": "PIB (PPA) por país {to}: mayores economías por poder adquisitivo | cv.cm",
+      "description": "PIB en paridad de poder adquisitivo de {rows} economías en dólares internacionales corrientes, en orden, con su porcentaje del total mundial. Mundo: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "PIB (PPA) por país, {to} (dólares internacionales corrientes)",
+      "lede": "Producto interno bruto en paridad de poder adquisitivo de {rows} economías, en dólares internacionales corrientes, en orden, con el porcentaje del total mundial de cada una. Fuente: Banco Mundial, con datos del Programa de Comparación Internacional.",
+      "value": "PIB, PPA ($ int.)",
+      "facts": [
+        "PIB mundial (PPA): {world} ({worldYear}).",
+        "Las mayores economías por poder adquisitivo: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La menor de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Un dólar internacional compra en cada país la misma cesta de bienes y servicios que un dólar estadounidense en Estados Unidos. Al convertir el PIB de esta forma se eliminan las diferencias de precios, por lo que los países con un coste de vida bajo quedan más arriba que con los tipos de cambio de mercado.",
+        "La PPA mide mejor cuánto produce y consume realmente una economía; el PIB a tipos de cambio mide mejor lo que puede comprar en el exterior."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene el mayor PIB en PPA?", "a": "{top1}, con {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Qué diferencia hay entre el PIB (PPA) y el PIB nominal?", "a": "El PIB nominal convierte cada economía con los tipos de cambio de mercado. El PIB (PPA) usa tipos que igualan el precio de los mismos bienes en todas partes, así que compara el volumen de la producción, no su valor en dólares." },
+        { "q": "¿Cuál es el PIB mundial en PPA?", "a": "{world} en {worldYear}, en dólares internacionales corrientes." }
+      ]
+    },
+    "gini-index": {
+      "name": "Coeficiente de Gini por país",
+      "title": "Coeficiente de Gini por país {to}: desigualdad de ingresos en {rows} países | cv.cm",
+      "description": "Índice de Gini de desigualdad de ingresos o de consumo en {rows} países, del más al menos desigual. El más alto: {top1} ({v1}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Coeficiente de Gini por país (desigualdad de ingresos), {to}",
+      "lede": "Índice de Gini de la última encuesta de hogares en {rows} países, del más al menos desigual. 0 significa que todos tienen los mismos ingresos; 100, que una sola persona los tiene todos. Fuente: Plataforma de Pobreza y Desigualdad del Banco Mundial.",
+      "value": "Índice de Gini",
+      "facts": [
+        "Los más desiguales: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "El menos desigual de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Algunos países miden los ingresos y otros el consumo, que se reparte de forma más uniforme que los ingresos. La mayor parte de Asia y África mide el consumo, por lo que sus valores de Gini parecen más bajos de lo que serían con los ingresos; conviene comparar países que usan la misma medida.",
+        "Las encuestas se hacen cada pocos años, así que cada fila muestra la última dentro de los diez últimos años. El Banco Mundial no publica un índice de Gini mundial."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la mayor desigualdad de ingresos?", "a": "{top1}, con un índice de Gini de {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Qué país tiene el coeficiente de Gini más bajo?", "a": "En esta lista, {last}, con {vlast}." },
+        { "q": "¿Qué es un buen coeficiente de Gini?", "a": "No hay un valor objetivo. La mayoría de los países europeos están aproximadamente entre 25 y 35; los valores por encima de 40 suelen considerarse de desigualdad alta, y por encima de 50, muy alta." }
+      ]
+    },
+    "poverty-rate": {
+      "name": "Tasa de pobreza por país",
+      "title": "Tasa de pobreza por país {to}: países más pobres del mundo ($3.00 al día) | cv.cm",
+      "description": "Porcentaje de personas que viven con menos de $3.00 al día (PPA de 2021) en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de pobreza extrema por país, {to} (% por debajo de $3.00 al día)",
+      "lede": "Porcentaje de la población que vive con menos de $3.00 al día a precios de 2021, ajustados por poder adquisitivo, según la última encuesta de hogares de {rows} países, de mayor a menor. Fuente: Plataforma de Pobreza y Desigualdad del Banco Mundial.",
+      "value": "Por debajo de $3.00 al día (%)",
+      "facts": [
+        "Mundo: el {world}% de las personas vive con menos de $3.00 al día ({worldYear}).",
+        "Las tasas de pobreza más altas: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "La más baja de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "$3.00 al día es la línea internacional de pobreza del Banco Mundial desde 2025: la línea de pobreza típica de los países más pobres, convertida con la paridad de poder adquisitivo de 2021. Sustituyó a la línea de $2.15; las líneas de pobreza nacionales suelen ser más altas.",
+        "Las encuestas se hacen cada pocos años, así que cada fila muestra la última dentro de los diez últimos años. Muchos países de ingreso alto no se miden con esta línea y no aparecen en la lista. Un 0,0 significa que la encuesta casi no encontró a nadie por debajo de la línea."
+      ],
+      "faq": [
+        { "q": "¿Cuáles son los países más pobres del mundo?", "a": "Por porcentaje de personas por debajo de $3.00 al día: {top1} ({v1}% en {year1}), {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Cuántas personas viven en pobreza extrema en el mundo?", "a": "El {world}% de la población mundial vivía con menos de $3.00 al día en {worldYear}." },
+        { "q": "¿Qué es la línea internacional de pobreza?", "a": "$3.00 al día por persona en paridad de poder adquisitivo de 2021, fijada por el Banco Mundial en 2025." }
+      ]
+    },
+    "literacy-rate": {
+      "name": "Tasa de alfabetización por país",
+      "title": "Tasa de alfabetización por país {to}: adultos de 15 años o más en {rows} países | cv.cm",
+      "description": "Tasa de alfabetización de adultos, % de personas de 15 años o más, en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos de la UNESCO a través del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de alfabetización por país, {to} (% de adultos de 15 años o más)",
+      "lede": "Porcentaje de personas de 15 años o más que saben leer y escribir una frase breve y sencilla sobre su vida cotidiana, en {rows} países y territorios, de mayor a menor. Fuente: Banco Mundial, con datos del Instituto de Estadística de la UNESCO.",
+      "value": "Tasa de alfabetización (%)",
+      "facts": [
+        "Mundo: el {world}% de los adultos sabe leer y escribir ({worldYear}).",
+        "Las más altas: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "La más baja de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "La mayoría de los países de ingreso alto dejaron de medir la alfabetización básica hace décadas, porque casi todo el mundo ha ido a la escuela; Estados Unidos, Japón, Alemania, el Reino Unido, Francia y Corea no aparecen en la lista por ese motivo, no porque sus tasas sean bajas.",
+        "Las cifras proceden de censos y encuestas que se hacen cada varios años, así que cada fila muestra la última dentro de los diez últimos años. La alfabetización suele ser autodeclarada, por lo que las diferencias pequeñas cerca del 100% dicen poco."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de alfabetización más alta?", "a": "{top1}, con un {v1}% en {year1}, seguido de {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Qué país tiene la tasa de alfabetización más baja?", "a": "En esta lista, {last}, donde el {vlast}% de los adultos sabe leer y escribir." },
+        { "q": "¿Cuál es la tasa de alfabetización mundial?", "a": "El {world}% de las personas de 15 años o más en {worldYear}." }
+      ]
+    },
+    "homicide-rate": {
+      "name": "Tasa de homicidios por país",
+      "title": "Tasa de homicidios por país {to}: por cada 100.000 habitantes, países más seguros y más peligrosos | cv.cm",
+      "description": "Homicidios intencionales por cada 100.000 habitantes en {rows} países, de mayor a menor. Mundo: {world} ({worldYear}). Datos de la UNODC a través del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de homicidios por país, {to} (homicidios intencionales por cada 100.000 habitantes)",
+      "lede": "Homicidios intencionales por cada 100.000 habitantes en {rows} países y territorios, del más al menos violento. Fuente: Banco Mundial, con datos de la Oficina de las Naciones Unidas contra la Droga y el Delito (UNODC).",
+      "value": "Homicidios por cada 100.000",
+      "facts": [
+        "Mundo: {world} homicidios por cada 100.000 habitantes ({worldYear}).",
+        "Las tasas de homicidios más altas: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Un homicidio intencional es una muerte causada deliberadamente por otra persona, incluidos los asesinatos por violencia de pandillas y violencia doméstica. No se cuentan las muertes en guerras y otros conflictos armados, por lo que algunos países en guerra parecen más seguros de lo que son.",
+        "La tasa de homicidios es el dato delictivo más comparable entre países, porque un cadáver es difícil de pasar por alto; la mayoría de los demás delitos dependen de lo que la gente denuncia a la policía. Las islas pequeñas pueden quedar muy arriba con apenas unos pocos casos."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de homicidios más alta?", "a": "{top1}, con {v1} homicidios por cada 100.000 habitantes en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Qué países tienen la tasa de homicidios más baja?", "a": "En esta lista, {last}, con {vlast} homicidios por cada 100.000 habitantes." },
+        { "q": "¿Cuál es la tasa de homicidios mundial?", "a": "{world} homicidios intencionales por cada 100.000 habitantes en {worldYear}." }
+      ]
+    },
+    "suicide-rate": {
+      "name": "Tasa de suicidio por país",
+      "title": "Tasa de suicidio por país {to}: muertes por cada 100.000 habitantes en {rows} países | cv.cm",
+      "description": "Muertes por suicidio por cada 100.000 habitantes en {rows} países, de mayor a menor. Mundo: {world} ({worldYear}). Datos de la OMS a través del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de suicidio por país, {to} (muertes por cada 100.000 habitantes)",
+      "lede": "Muertes por suicidio en un año por cada 100.000 habitantes en {rows} países, de mayor a menor. Fuente: Banco Mundial, con las Estimaciones Mundiales de Salud de la Organización Mundial de la Salud.",
+      "value": "Suicidios por cada 100.000",
+      "facts": [
+        "Mundo: {world} muertes por suicidio por cada 100.000 habitantes ({worldYear}).",
+        "Las más altas: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "La más baja de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Son estimaciones de la OMS, no registros de defunción en bruto: muchos países no registran todas las causas de muerte, y el suicidio suele declararse menos donde está estigmatizado o castigado por la ley. Las cifras bajas de algunos países reflejan en parte eso.",
+        "Si tú o alguien que conoces está pasando por un momento difícil, contacta con una línea de atención en crisis o un servicio de emergencias de tu país. Hay ayuda disponible, y hablar con alguien puede marcar la diferencia."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la tasa de suicidio más alta?", "a": "{top1}, con {v1} muertes por suicidio por cada 100.000 habitantes en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuál es la tasa de suicidio mundial?", "a": "{world} muertes por cada 100.000 habitantes en {worldYear}." },
+        { "q": "¿Por qué la tasa de suicidio de un país puede estar subestimada?", "a": "Donde el suicidio está estigmatizado o es delito, las muertes suelen registrarse con otras causas. La OMS lo corrige, pero las cifras más bajas son las menos seguras." }
+      ]
+    },
+    "alcohol-consumption": {
+      "name": "Consumo de alcohol por país",
+      "title": "Consumo de alcohol por país {to}: litros por persona al año | cv.cm",
+      "description": "Litros de alcohol puro por persona de 15 años o más al año en {rows} países, en orden. Mundo: {world} litros ({worldYear}). Datos de la OMS a través del Banco Mundial, descarga en CSV.",
+      "h1": "Consumo de alcohol por país, {to} (litros de alcohol puro por persona de 15 años o más)",
+      "lede": "Alcohol total consumido al año por persona de 15 años o más, en litros de alcohol puro, registrado y no registrado, en {rows} países, de mayor a menor. Fuente: Banco Mundial, con datos de la Organización Mundial de la Salud.",
+      "value": "Litros por persona",
+      "facts": [
+        "Mundo: {world} litros de alcohol puro por persona de 15 años o más ({worldYear}).",
+        "Los más altos: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "El más bajo de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Un litro de alcohol puro equivale a unas 60 latas de cerveza (330 ml al 5%) o 10 botellas de vino (750 ml al 13%). La cifra incluye el alcohol casero y de contrabando, que estima la OMS, y lo que beben los turistas, lo que eleva a los pequeños destinos turísticos.",
+        "Son proyecciones de la OMS; el último año es el que publica el Banco Mundial. Se excluyen los países que prohíben el alcohol y declaran exactamente cero, porque ese cero es una estimación que falta, no una medición."
+      ],
+      "faq": [
+        { "q": "¿Qué país consume más alcohol?", "a": "{top1}, con {v1} litros de alcohol puro por persona de 15 años o más en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Cuánto alcohol bebe una persona media?", "a": "{world} litros de alcohol puro por persona de 15 años o más en todo el mundo en {worldYear}. Un litro equivale a unas 60 latas de cerveza, así que serían unos cientos de latas al año si todo fuera cerveza." },
+        { "q": "¿Qué país consume menos alcohol?", "a": "En esta lista, {last}, con {vlast} litros por persona." }
+      ]
+    },
+    "tobacco-use": {
+      "name": "Tasa de tabaquismo por país",
+      "title": "Tasa de tabaquismo por país {to}: consumo de tabaco en adultos de {rows} países | cv.cm",
+      "description": "Porcentaje de adultos de 15 años o más que consumen tabaco actualmente en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos de la OMS a través del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de tabaquismo por país, {to} (% de adultos que consumen tabaco)",
+      "lede": "Porcentaje de personas de 15 años o más que actualmente fuman o consumen cualquier otro producto de tabaco, a diario o no, en {rows} países, de mayor a menor. Fuente: Banco Mundial, con estimaciones de la OMS estandarizadas por edad.",
+      "value": "Consumo de tabaco (% de adultos)",
+      "facts": [
+        "Mundo: el {world}% de los adultos consume tabaco ({worldYear}).",
+        "Las más altas: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "La más baja de la lista: {last} ({vlast}%)."
+      ],
+      "about": [
+        "El consumo de tabaco incluye cigarrillos, puros, pipas, pipas de agua y tabaco sin humo, como el tabaco de mascar y el snus. No se cuentan los cigarrillos electrónicos sin tabaco.",
+        "La OMS estandariza las tasas por edad, para que un país con una población joven se compare de forma justa con uno más envejecido. En la mayoría de los países, los hombres consumen mucho más tabaco que las mujeres."
+      ],
+      "faq": [
+        { "q": "¿Qué país fuma más?", "a": "{top1}, donde el {v1}% de los adultos consumía tabaco en {year1}, seguido de {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Qué porcentaje de los adultos del mundo fuma?", "a": "El {world}% de las personas de 15 años o más consumía tabaco en {worldYear}." },
+        { "q": "¿Qué país tiene la tasa de tabaquismo más baja?", "a": "En esta lista, {last}, con un {vlast}% de los adultos." }
+      ]
+    },
+    "air-pollution": {
+      "name": "Contaminación del aire (PM2.5) por país",
+      "title": "Países más contaminados {to}: contaminación del aire PM2.5 por país | cv.cm",
+      "description": "Exposición media anual a partículas finas (PM2.5), en µg/m³, en {rows} países, del más al menos contaminado. Mundo: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Contaminación del aire por país, {to} (PM2.5, µg/m³)",
+      "lede": "Concentración media anual de partículas finas (PM2.5) en el aire que respira la población, ponderada según dónde vive la gente, en {rows} países y territorios, del más al menos contaminado. Fuente: Banco Mundial, con datos del estudio de la Carga Mundial de Enfermedades.",
+      "value": "PM2.5 (µg/m³)",
+      "facts": [
+        "Mundo: {world} µg/m³ ({worldYear}).",
+        "Los más contaminados: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "El aire más limpio de la lista: {last} ({vlast})."
+      ],
+      "about": [
+        "Las PM2.5 son partículas de 2,5 micrómetros o menos, lo bastante pequeñas para llegar al fondo de los pulmones. La guía de la OMS es una media anual de 5 µg/m³; casi todos los países la superan.",
+        "Los valores se modelan a partir de satélites y estaciones de medición en tierra y se ponderan por población, así que describen lo que respira el residente medio, no la peor ciudad. El polvo del desierto también cuenta, por eso los países del Golfo y del Sahel quedan arriba."
+      ],
+      "faq": [
+        { "q": "¿Qué país tiene la peor contaminación del aire?", "a": "{top1}, con una exposición media a PM2.5 de {v1} µg/m³ en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Qué país tiene el aire más limpio?", "a": "En esta lista, {last}, con {vlast} µg/m³." },
+        { "q": "¿Qué nivel de PM2.5 es seguro?", "a": "La guía de la OMS de 2021 es una media anual de 5 µg/m³. La media mundial fue de {world} µg/m³ en {worldYear}." }
       ]
     },
     "country-codes": {

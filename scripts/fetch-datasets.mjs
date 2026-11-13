@@ -27,12 +27,13 @@ const written = new Map();
 async function getJson(url) {
   for (let attempt = 1; ; attempt++) {
     try {
-      const res = await fetch(url);
+      // The World Bank API often answers 502 or stalls for minutes; give each try a deadline and back off longer.
+      const res = await fetch(url, { signal: AbortSignal.timeout(120_000) });
       if (!res.ok) throw new Error(`${res.status} ${url}`);
       return await res.json();
     } catch (err) {
-      if (attempt >= 3) throw err;
-      await new Promise((r) => setTimeout(r, 1500 * attempt));
+      if (attempt >= 6) throw err;
+      await new Promise((r) => setTimeout(r, 5000 * attempt));
     }
   }
 }

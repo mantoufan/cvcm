@@ -163,10 +163,15 @@ describe("data pages: tables", () => {
     expect(formatIndicator("en", "gdp", 1.5e12)).toBe("$1.50T");
   });
 
+  it("shows GDP at PPP in international dollars without a US dollar sign", () => {
+    expect(formatIndicator("en", "gdp-ppp", 41259823532528)).toBe("41.26T");
+    expect(formatIndicator("zh-CN", "gdp-ppp", 41259823532528)).not.toMatch(/\$|US/);
+  });
+
   it("gives every indicator a known format, a row file and a reason for each data filter", () => {
     for (const id of INDICATORS) {
       const spec = INDICATOR_SPEC[id];
-      expect([undefined, "usd", "usd-compact"], id).toContain(spec.format);
+      expect([undefined, "usd", "usd-compact", "compact"], id).toContain(spec.format);
       expect(Number.isInteger(spec.decimals), id).toBe(true);
       if (spec.maxAge !== undefined || spec.floor !== undefined || spec.skip) expect(spec.why, id).toBeTruthy();
     }

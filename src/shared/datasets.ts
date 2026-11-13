@@ -10,9 +10,9 @@ import type { ToolId } from "./path";
 export const DATASET_SEGMENT = "datasets";
 
 export const DATASET_GROUPS = [
-  { id: "economy", sets: ["gdp", "gdp-per-capita", "gdp-ppp-per-capita", "gni-per-capita", "gdp-growth", "inflation", "unemployment", "youth-unemployment", "female-labor-force", "exports", "imports", "remittances", "foreign-reserves", "military-spending", "military-spending-gdp", "rd-spending"] },
-  { id: "people", sets: ["population", "population-growth", "population-density", "urban-population", "aged-0-14", "aged-65-plus", "international-migrants", "life-expectancy", "life-expectancy-female", "life-expectancy-male", "fertility-rate", "birth-rate", "death-rate", "infant-mortality", "maternal-mortality", "physicians", "health-spending-per-capita", "education-spending"] },
-  { id: "planet", sets: ["land-area", "forest-area", "co2-emissions", "co2-per-capita", "renewable-energy", "electricity-access", "electricity-consumption", "internet-users", "mobile-subscriptions", "broadband-subscriptions"] },
+  { id: "economy", sets: ["gdp", "gdp-ppp", "gdp-per-capita", "gdp-ppp-per-capita", "gni-per-capita", "gdp-growth", "inflation", "unemployment", "youth-unemployment", "female-labor-force", "exports", "imports", "remittances", "foreign-reserves", "military-spending", "military-spending-gdp", "rd-spending", "gini-index", "poverty-rate"] },
+  { id: "people", sets: ["population", "population-growth", "population-density", "urban-population", "aged-0-14", "aged-65-plus", "international-migrants", "life-expectancy", "life-expectancy-female", "life-expectancy-male", "fertility-rate", "birth-rate", "death-rate", "infant-mortality", "maternal-mortality", "physicians", "health-spending-per-capita", "education-spending", "literacy-rate", "homicide-rate", "suicide-rate", "alcohol-consumption", "tobacco-use"] },
+  { id: "planet", sets: ["land-area", "forest-area", "co2-emissions", "co2-per-capita", "air-pollution", "renewable-energy", "electricity-access", "electricity-consumption", "internet-users", "mobile-subscriptions", "broadband-subscriptions"] },
   { id: "codes", sets: ["country-codes", "calling-codes", "currency-codes", "time-zones"] },
   { id: "reference", sets: ["paper-sizes", "ascii"] },
 ] as const;
@@ -32,9 +32,9 @@ export function datasetGroupOf(id: DatasetId): DatasetGroupId {
 /**
  * World Bank indicators: one value per country, ranked. `indicators.json` is the one list: the fetch script
  * reads the same file. `decimals` is both the stored and the shown precision; `total` adds a share-of-world
- * column; `format` "usd" / "usd-compact" shows US dollars.
+ * column; `format` "usd" / "usd-compact" shows US dollars; "compact" a large number without a currency sign.
  */
-export type IndicatorSpec = { code: string; decimals: number; format?: "usd" | "usd-compact"; total?: boolean; maxAge?: number; floor?: number; skip?: string[]; why?: string };
+export type IndicatorSpec = { code: string; decimals: number; format?: "usd" | "usd-compact" | "compact"; total?: boolean; maxAge?: number; floor?: number; skip?: string[]; why?: string };
 export const INDICATOR_SPEC = indicatorSpec as Record<keyof typeof indicatorSpec, IndicatorSpec>;
 export type IndicatorId = keyof typeof indicatorSpec;
 export const INDICATORS = Object.keys(INDICATOR_SPEC) as IndicatorId[];
@@ -110,6 +110,15 @@ export const DATASET_TOOLS: Partial<Record<DatasetId, readonly ToolId[]>> = {
   "electricity-consumption": ["electricity", "units"],
   "mobile-subscriptions": ["percent"],
   "broadband-subscriptions": ["percent"],
+  "gdp-ppp": ["percent", "compound"],
+  "gini-index": ["percent", "hourly"],
+  "poverty-rate": ["percent", "hourly"],
+  "homicide-rate": ["percent"],
+  "suicide-rate": ["percent", "age"],
+  "literacy-rate": ["percent", "reading-time"],
+  "alcohol-consumption": ["units", "percent"],
+  "tobacco-use": ["percent", "age"],
+  "air-pollution": ["percent"],
   "country-codes": ["data", "json"],
   "calling-codes": ["qr"],
   "currency-codes": ["vat", "margin"],
