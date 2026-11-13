@@ -49,6 +49,12 @@ if (process.env.PRERENDER_COUNT) {
   await win.happyDOM.abort();
   process.exit(0);
 }
+// `PRERENDER_SHARD=i/n` renders every n-th page from the i-th: each page leaves about 2.4 MB of happy-dom state,
+// so prerender.mjs runs the pages in several processes instead of one that outgrows its heap.
+const [shard, shards] = (process.env.PRERENDER_SHARD ?? "0/1").split("/").map(Number);
+if (!(Number.isInteger(shards) && shards >= 1 && Number.isInteger(shard) && shard >= 0 && shard < shards)) {
+  throw new Error(`PRERENDER_SHARD must be i/n with 0 <= i < n, got ${JSON.stringify(process.env.PRERENDER_SHARD)}`);
+}
 const { render, whenRendered } = await import("../src/client/main");
 
 const MARKER = "<!--ssr-->";
@@ -65,12 +71,6 @@ let written = 0;
 const failed: string[] = [];
 const started = Date.now();
 await whenRendered();
-// `PRERENDER_SHARD=i/n` renders every n-th page from the i-th: each page leaves about 2.4 MB of happy-dom state,
-// so prerender.mjs runs the pages in several processes instead of one that outgrows its heap.
-const [shard, shards] = (process.env.PRERENDER_SHARD ?? "0/1").split("/").map(Number);
-if (!(Number.isInteger(shards) && shards >= 1 && Number.isInteger(shard) && shard >= 0 && shard < shards)) {
-  throw new Error(`PRERENDER_SHARD must be i/n with 0 <= i < n, got ${JSON.stringify(process.env.PRERENDER_SHARD)}`);
-}
 for (const [index, page] of sitemapPages().entries()) {
   if (index % shards !== shard) continue;
   const path = new URL(pageUrl(page)).pathname;
@@ -130,6 +130,7 @@ if (failed.length) {
   console.log(`prerender: skipped (the Worker serves its text copy): ${failed.slice(0, 20).join(" ")}${failed.length > 20 ? " …" : ""}`);
   console.log(`prerender: first errors:\n  ${[...new Set(errors)].slice(0, 8).join("\n  ")}`);
 }
+// prerender.mjs adds the shards up and fails a build that wrote no page at all.
+if (process.env.PRERENDER_RESULT) writeFileSync(process.env.PRERENDER_RESULT, JSON.stringify({ written, failed }));
 await win.happyDOM.abort();
-// A shard that wrote nothing would ship pages without their first paint while the build looks green.
-process.exit(written > 0 ? 0 : 1);
+process.exit(0);

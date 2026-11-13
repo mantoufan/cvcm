@@ -6,7 +6,7 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, DATASET_FILES, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { DATASETS, DATASET_FILES, DATASET_SENSITIVE, DATASET_TOOLS, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
 import { ROW_FILES } from "../src/client/datasets/rows";
 import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, formatIndicator, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { applyHtmlSeo, pageCanonical } from "../src/shared/seo";
@@ -161,6 +161,18 @@ describe("data pages: tables", () => {
     expect(formatIndicator("en", "military-spending", 0)).toBe("$0");
     expect(formatIndicator("en", "military-spending", 954387000000)).toBe("$954.39B");
     expect(formatIndicator("en", "gdp", 1.5e12)).toBe("$1.50T");
+  });
+
+  it("shows the tests' crisis helplines on self-harm tables, word for word, and no tool links there", async () => {
+    for (const locale of LOCALES) {
+      const quiz = (await import(`../src/locales/quiz/${locale}.json`)).default.ui;
+      expect(datasetMessages(locale).ui.crisis, locale).toEqual({ title: quiz.crisisTitle, body: quiz.crisisBody, lines: quiz.crisisLines });
+    }
+    for (const id of DATASET_SENSITIVE) {
+      expect(DATASET_TOOLS[id], id).toBeUndefined();
+      expect(datasetStaticHtml("en", id)).toContain('class="quiz-crisis"');
+    }
+    expect(datasetStaticHtml("en", "gdp")).not.toContain("quiz-crisis");
   });
 
   it("shows GDP at PPP in international dollars without a US dollar sign", () => {

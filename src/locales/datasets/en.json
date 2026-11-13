@@ -23,6 +23,7 @@
     ]
   },
   "ui": {
+    "crisis": {"title": "If you are thinking about hurting yourself", "body": "You deserve support right now. If you might act on these thoughts, call your local emergency number or go to the nearest emergency room. You can also reach a free, confidential crisis line: findahelpline.com lists lines in every country.", "lines": "United States: call or text 988. United Kingdom and Ireland: Samaritans 116 123."},
     "all": "All data",
     "search": "Filter rows",
     "searchPlaceholder": "Type a country, code or value",
@@ -1152,8 +1153,7 @@
         "Lowest in the list: {last} ({vlast})."
       ],
       "about": [
-        "These are WHO estimates, not raw death registrations: many countries do not record every cause of death, and suicide is often under-reported where it carries stigma or legal penalties. Low figures in some countries partly reflect that.",
-        "If you or someone you know is struggling, please contact a local crisis line or emergency service. Help is available, and talking to someone can make a difference."
+        "These are WHO estimates, not raw death registrations: many countries do not record every cause of death, and suicide is often under-reported where it carries stigma or legal penalties. Low figures in some countries partly reflect that."
       ],
       "faq": [
         { "q": "Which country has the highest suicide rate?", "a": "{top1}, with {v1} suicide deaths per 100,000 people in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },

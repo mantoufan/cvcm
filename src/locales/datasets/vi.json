@@ -23,6 +23,7 @@
     ]
   },
   "ui": {
+    "crisis": {"title": "Nếu bạn đang nghĩ đến việc làm hại bản thân", "body": "Bạn xứng đáng được hỗ trợ ngay lúc này. Nếu bạn có thể hành động theo những suy nghĩ đó, hãy gọi số cấp cứu tại địa phương hoặc đến phòng cấp cứu gần nhất. Bạn cũng có thể liên hệ đường dây hỗ trợ khủng hoảng miễn phí và bảo mật: findahelpline.com liệt kê các đường dây ở mọi quốc gia.", "lines": "Việt Nam: gọi cấp cứu 115 khi khẩn cấp. Tìm đường dây hỗ trợ miễn phí tại findahelpline.com."},
     "all": "Tất cả dữ liệu",
     "search": "Lọc dòng",
     "searchPlaceholder": "Nhập tên nước, mã hoặc giá trị",
@@ -1076,23 +1077,23 @@
     "poverty-rate": {
       "name": "Tỷ lệ nghèo các nước",
       "title": "Tỷ lệ nghèo các nước năm {to}: nước nghèo nhất thế giới (3,00 USD/ngày) | cv.cm",
-      "description": "Tỷ lệ người sống dưới $3.00 mỗi ngày (PPP 2021) tại {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
-      "h1": "Tỷ lệ nghèo cùng cực các nước năm {to} (% dưới $3.00 mỗi ngày)",
-      "lede": "Tỷ lệ dân số sống dưới $3.00 mỗi ngày theo giá năm 2021, đã điều chỉnh theo sức mua, từ cuộc khảo sát hộ gia đình mới nhất của {rows} quốc gia, xếp từ cao đến thấp. Nguồn: Nền tảng Nghèo đói và Bất bình đẳng của Ngân hàng Thế giới.",
-      "value": "Dưới $3.00 mỗi ngày (%)",
+      "description": "Tỷ lệ người sống dưới 3,00 USD mỗi ngày (PPP 2021) tại {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ nghèo cùng cực các nước năm {to} (% dưới 3,00 USD mỗi ngày)",
+      "lede": "Tỷ lệ dân số sống dưới 3,00 USD mỗi ngày theo giá năm 2021, đã điều chỉnh theo sức mua, từ cuộc khảo sát hộ gia đình mới nhất của {rows} quốc gia, xếp từ cao đến thấp. Nguồn: Nền tảng Nghèo đói và Bất bình đẳng của Ngân hàng Thế giới.",
+      "value": "Dưới 3,00 USD mỗi ngày (%)",
       "facts": [
-        "Thế giới: {world}% dân số sống dưới $3.00 mỗi ngày ({worldYear}).",
+        "Thế giới: {world}% dân số sống dưới 3,00 USD mỗi ngày ({worldYear}).",
         "Tỷ lệ nghèo cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
         "Thấp nhất trong danh sách: {last} ({vlast}%)."
       ],
       "about": [
-        "$3.00 mỗi ngày là chuẩn nghèo quốc tế của Ngân hàng Thế giới từ năm 2025, tức chuẩn nghèo điển hình của các nước nghèo nhất, quy đổi theo sức mua tương đương năm 2021. Chuẩn này thay thế mức $2.15; chuẩn nghèo quốc gia thường cao hơn.",
+        "3,00 USD mỗi ngày là chuẩn nghèo quốc tế của Ngân hàng Thế giới từ năm 2025, tức chuẩn nghèo điển hình của các nước nghèo nhất, quy đổi theo sức mua tương đương năm 2021. Chuẩn này thay thế mức 2,15 USD; chuẩn nghèo quốc gia thường cao hơn.",
         "Khảo sát được tiến hành vài năm một lần, nên mỗi dòng hiển thị khảo sát mới nhất trong vòng mười năm. Nhiều nước thu nhập cao không được khảo sát theo chuẩn này và không có trong danh sách. Giá trị 0.0 nghĩa là khảo sát gần như không thấy ai dưới chuẩn."
       ],
       "faq": [
-        { "q": "Những nước nào nghèo nhất thế giới?", "a": "Theo tỷ lệ người sống dưới $3.00 mỗi ngày: {top1} ({v1}% vào năm {year1}), {top2} ({v2}%) và {top3} ({v3}%)." },
-        { "q": "Bao nhiêu người trên thế giới sống trong nghèo cùng cực?", "a": "{world}% dân số thế giới sống dưới $3.00 mỗi ngày vào năm {worldYear}." },
-        { "q": "Chuẩn nghèo quốc tế là bao nhiêu?", "a": "$3.00 mỗi người mỗi ngày theo sức mua tương đương năm 2021, do Ngân hàng Thế giới đặt ra năm 2025." }
+        { "q": "Những nước nào nghèo nhất thế giới?", "a": "Theo tỷ lệ người sống dưới 3,00 USD mỗi ngày: {top1} ({v1}% vào năm {year1}), {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Bao nhiêu người trên thế giới sống trong nghèo cùng cực?", "a": "{world}% dân số thế giới sống dưới 3,00 USD mỗi ngày vào năm {worldYear}." },
+        { "q": "Chuẩn nghèo quốc tế là bao nhiêu?", "a": "3,00 USD mỗi người mỗi ngày theo sức mua tương đương năm 2021, do Ngân hàng Thế giới đặt ra năm 2025." }
       ]
     },
     "literacy-rate": {
@@ -1152,8 +1153,7 @@
         "Thấp nhất trong danh sách: {last} ({vlast})."
       ],
       "about": [
-        "Đây là ước tính của WHO, không phải số đăng ký tử vong gốc: nhiều nước không ghi nhận mọi nguyên nhân tử vong, và tự tử thường bị báo cáo thiếu ở những nơi nó bị kỳ thị hoặc chịu chế tài pháp lý. Số liệu thấp ở một số nước phần nào phản ánh điều đó.",
-        "Nếu bạn hoặc người bạn quen đang gặp khó khăn, hãy liên hệ đường dây hỗ trợ khủng hoảng hoặc dịch vụ cấp cứu tại địa phương. Luôn có sự giúp đỡ, và trò chuyện với ai đó có thể tạo nên khác biệt."
+        "Đây là ước tính của WHO, không phải số đăng ký tử vong gốc: nhiều nước không ghi nhận mọi nguyên nhân tử vong, và tự tử thường bị báo cáo thiếu ở những nơi nó bị kỳ thị hoặc chịu chế tài pháp lý. Số liệu thấp ở một số nước phần nào phản ánh điều đó."
       ],
       "faq": [
         { "q": "Nước nào có tỷ lệ tự tử cao nhất?", "a": "{top1}, với {v1} ca tử vong do tự tử trên 100.000 dân vào năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },

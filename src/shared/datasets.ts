@@ -64,7 +64,10 @@ export const DATASET_SOURCE: Record<DatasetId, DatasetSource> = {
   ascii: { name: "ANSI X3.4-1986 (US-ASCII)", url: "https://www.rfc-editor.org/rfc/rfc20", license: "Public domain", licenseUrl: PUBLIC_DOMAIN },
 };
 
-/** Tools a reader of the table may want next. */
+/** Tables about self-harm: they show the crisis helpline box (the personality tests' copy) and no tool links. */
+export const DATASET_SENSITIVE: ReadonlySet<DatasetId> = new Set<DatasetId>(["suicide-rate"]);
+
+/** Tools a reader of the table may want next (none for `DATASET_SENSITIVE`). */
 export const DATASET_TOOLS: Partial<Record<DatasetId, readonly ToolId[]>> = {
   population: ["percent"],
   gdp: ["percent", "compound"],
@@ -114,7 +117,6 @@ export const DATASET_TOOLS: Partial<Record<DatasetId, readonly ToolId[]>> = {
   "gini-index": ["percent"],
   "poverty-rate": ["percent"],
   "homicide-rate": ["percent"],
-  // suicide-rate has no tools on purpose: a calculator card under a crisis-line note reads wrong.
   "literacy-rate": ["percent", "reading-time"],
   "alcohol-consumption": ["units", "percent"],
   "tobacco-use": ["percent"],

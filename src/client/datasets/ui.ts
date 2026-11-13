@@ -5,6 +5,7 @@ import type { Locale } from "../../shared/locale";
 import { appHref, datasetHref } from "../../shared/path";
 import {
   DATASET_GROUPS,
+  DATASET_SENSITIVE,
   datasetUpdated,
   DATASET_SOURCE,
   DATASET_FILES,
@@ -158,11 +159,12 @@ export async function mountDataset(host: HTMLElement, locale: Locale, id: Datase
   const source = DATASET_SOURCE[id];
   const group = DATASET_GROUPS.find((g) => g.id === datasetGroupOf(id))!;
   const related = [...group.sets.filter((set) => set !== id), ...DATASET_GROUPS.filter((g) => g !== group).map((g) => g.sets[0])];
-  const tools = DATASET_TOOLS[id] ?? [];
+  const tools = DATASET_SENSITIVE.has(id) ? [] : DATASET_TOOLS[id] ?? [];
   host.append(
     crumb(locale, id),
     h("h1", null, copy.h1),
     h("p", { class: "lede" }, copy.lede),
+    ...(DATASET_SENSITIVE.has(id) ? [h("div", { class: "quiz-crisis", role: "note" }, h("strong", null, ui.crisis.title), h("p", null, ui.crisis.body), h("p", null, ui.crisis.lines))] : []),
     h("section", { class: "data-facts", "aria-labelledby": "facts-title" },
       h("h2", { id: "facts-title" }, ui.facts),
       h("ul", null, ...copy.facts.map((fact) => h("li", null, fact))),

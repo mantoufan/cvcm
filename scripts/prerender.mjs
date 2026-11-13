@@ -2,7 +2,7 @@
 // Bundled first because happy-dom's globals break a live transformer such as vite-node.
 import * as esbuild from "esbuild";
 import { execFileSync } from "node:child_process";
-import { rmSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
 import { getHeapStatistics } from "node:v8";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -53,7 +53,19 @@ try {
   const shards = process.env.PRERENDER_SHARDS === undefined ? Math.ceil(pages / PAGES_PER_PROCESS) : Number(process.env.PRERENDER_SHARDS);
   if (!(Number.isInteger(shards) && shards >= 1 && shards <= pages)) throw new Error(`PRERENDER_SHARDS must be a whole number from 1 to ${pages}, got ${JSON.stringify(process.env.PRERENDER_SHARDS)}`);
   console.log(`prerender: ${pages} pages in ${shards} processes`);
-  for (let i = 0; i < shards; i++) run({ PRERENDER_SHARD: `${i}/${shards}`, PRERENDER_COUNT: "" }, { stdio: "inherit" });
+  let written = 0;
+  const failed = [];
+  for (let i = 0; i < shards; i++) {
+    const result = `${outfile}.${i}.json`;
+    run({ PRERENDER_SHARD: `${i}/${shards}`, PRERENDER_COUNT: "", PRERENDER_RESULT: result }, { stdio: "inherit" });
+    const shard = JSON.parse(readFileSync(result, "utf8"));
+    rmSync(result, { force: true });
+    written += shard.written;
+    failed.push(...shard.failed);
+  }
+  console.log(`prerender total: ${written} of ${pages} pages written, ${failed.length} skipped${failed.length ? `: ${failed.slice(0, 40).join(" ")}${failed.length > 40 ? " …" : ""}` : ""}`);
+  // Every page skipped (a broken client, say) would ship a site without first paints while the build looks green.
+  if (written === 0) throw new Error("prerender: no page was written");
 } finally {
   rmSync(outfile, { force: true });
 }

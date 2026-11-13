@@ -23,6 +23,7 @@
     ]
   },
   "ui": {
+    "crisis": {"title": "Si estás pensando en hacerte daño", "body": "Mereces apoyo ahora mismo. Si crees que podrías actuar según estos pensamientos, llama al número de emergencias local o acude al servicio de urgencias más cercano. También puedes contactar con una línea de crisis gratuita y confidencial: findahelpline.com recoge líneas de todos los países.", "lines": "España: Línea 024 (atención a la conducta suicida, 24 h). México: Línea de la Vida 800 911 2000. En una emergencia, llama al 112 o al 911."},
     "all": "Todos los datos",
     "search": "Filtrar filas",
     "searchPlaceholder": "Escriba un país, código o valor",
@@ -1075,24 +1076,24 @@
     },
     "poverty-rate": {
       "name": "Tasa de pobreza por país",
-      "title": "Tasa de pobreza por país {to}: países más pobres del mundo ($3.00 al día) | cv.cm",
-      "description": "Porcentaje de personas que viven con menos de $3.00 al día (PPA de 2021) en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
-      "h1": "Tasa de pobreza extrema por país, {to} (% por debajo de $3.00 al día)",
-      "lede": "Porcentaje de la población que vive con menos de $3.00 al día a precios de 2021, ajustados por poder adquisitivo, según la última encuesta de hogares de {rows} países, de mayor a menor. Fuente: Plataforma de Pobreza y Desigualdad del Banco Mundial.",
-      "value": "Por debajo de $3.00 al día (%)",
+      "title": "Tasa de pobreza por país {to}: países más pobres del mundo (3,00 US$ al día) | cv.cm",
+      "description": "Porcentaje de personas que viven con menos de 3,00 US$ al día (PPA de 2021) en {rows} países, en orden. Mundo: {world}% ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "h1": "Tasa de pobreza extrema por país, {to} (% por debajo de 3,00 US$ al día)",
+      "lede": "Porcentaje de la población que vive con menos de 3,00 US$ al día a precios de 2021, ajustados por poder adquisitivo, según la última encuesta de hogares de {rows} países, de mayor a menor. Fuente: Plataforma de Pobreza y Desigualdad del Banco Mundial.",
+      "value": "Por debajo de 3,00 US$ al día (%)",
       "facts": [
-        "Mundo: el {world}% de las personas vive con menos de $3.00 al día ({worldYear}).",
+        "Mundo: el {world}% de las personas vive con menos de 3,00 US$ al día ({worldYear}).",
         "Las tasas de pobreza más altas: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
         "La más baja de la lista: {last} ({vlast}%)."
       ],
       "about": [
-        "$3.00 al día es la línea internacional de pobreza del Banco Mundial desde 2025: la línea de pobreza típica de los países más pobres, convertida con la paridad de poder adquisitivo de 2021. Sustituyó a la línea de $2.15; las líneas de pobreza nacionales suelen ser más altas.",
+        "3,00 US$ al día es la línea internacional de pobreza del Banco Mundial desde 2025: la línea de pobreza típica de los países más pobres, convertida con la paridad de poder adquisitivo de 2021. Sustituyó a la línea de 2,15 US$; las líneas de pobreza nacionales suelen ser más altas.",
         "Las encuestas se hacen cada pocos años, así que cada fila muestra la última dentro de los diez últimos años. Muchos países de ingreso alto no se miden con esta línea y no aparecen en la lista. Un 0,0 significa que la encuesta casi no encontró a nadie por debajo de la línea."
       ],
       "faq": [
-        { "q": "¿Cuáles son los países más pobres del mundo?", "a": "Por porcentaje de personas por debajo de $3.00 al día: {top1} ({v1}% en {year1}), {top2} ({v2}%) y {top3} ({v3}%)." },
-        { "q": "¿Cuántas personas viven en pobreza extrema en el mundo?", "a": "El {world}% de la población mundial vivía con menos de $3.00 al día en {worldYear}." },
-        { "q": "¿Qué es la línea internacional de pobreza?", "a": "$3.00 al día por persona en paridad de poder adquisitivo de 2021, fijada por el Banco Mundial en 2025." }
+        { "q": "¿Cuáles son los países más pobres del mundo?", "a": "Por porcentaje de personas por debajo de 3,00 US$ al día: {top1} ({v1}% en {year1}), {top2} ({v2}%) y {top3} ({v3}%)." },
+        { "q": "¿Cuántas personas viven en pobreza extrema en el mundo?", "a": "El {world}% de la población mundial vivía con menos de 3,00 US$ al día en {worldYear}." },
+        { "q": "¿Qué es la línea internacional de pobreza?", "a": "3,00 US$ al día por persona en paridad de poder adquisitivo de 2021, fijada por el Banco Mundial en 2025." }
       ]
     },
     "literacy-rate": {
@@ -1152,8 +1153,7 @@
         "La más baja de la lista: {last} ({vlast})."
       ],
       "about": [
-        "Son estimaciones de la OMS, no registros de defunción en bruto: muchos países no registran todas las causas de muerte, y el suicidio suele declararse menos donde está estigmatizado o castigado por la ley. Las cifras bajas de algunos países reflejan en parte eso.",
-        "Si tú o alguien que conoces está pasando por un momento difícil, contacta con una línea de atención en crisis o un servicio de emergencias de tu país. Hay ayuda disponible, y hablar con alguien puede marcar la diferencia."
+        "Son estimaciones de la OMS, no registros de defunción en bruto: muchos países no registran todas las causas de muerte, y el suicidio suele declararse menos donde está estigmatizado o castigado por la ley. Las cifras bajas de algunos países reflejan en parte eso."
       ],
       "faq": [
         { "q": "¿Qué país tiene la tasa de suicidio más alta?", "a": "{top1}, con {v1} muertes por suicidio por cada 100.000 habitantes en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },

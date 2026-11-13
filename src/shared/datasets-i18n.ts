@@ -1,6 +1,7 @@
 import { escapeHtml } from "./device-i18n";
 import {
   DATASET_GROUPS,
+  DATASET_SENSITIVE,
   datasetUpdated,
   DATASET_SOURCE,
   DATASETS,
@@ -438,6 +439,7 @@ export function datasetStaticHtml(locale: Locale, id: DatasetId | null): string 
     `<nav class="device-crumb">${home} <span aria-hidden="true">/</span> <a href="${escapeHtml(datasetHref(locale))}">${escapeHtml(hub.h1)}</a> <span aria-hidden="true">/</span> <span>${escapeHtml(datasetName(locale, id).name)}</span></nav>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
     `<p class="lede">${escapeHtml(copy.lede)}</p>`,
+    DATASET_SENSITIVE.has(id) ? `<div class="quiz-crisis" role="note"><strong>${escapeHtml(ui.crisis.title)}</strong><p>${escapeHtml(ui.crisis.body)}</p><p>${escapeHtml(ui.crisis.lines)}</p></div>` : "",
     `<h2>${escapeHtml(ui.facts)}</h2><ul>${copy.facts.map((f) => `<li>${escapeHtml(f)}</li>`).join("")}</ul>`,
     `<p><a href="${escapeHtml(csvHref(id))}">${escapeHtml(ui.download)}</a> · ${escapeHtml(ui.source)}: <a href="${escapeHtml(source.url)}" rel="noopener">${escapeHtml(source.name)}</a> · ${escapeHtml(ui.license)}: ${escapeHtml(source.license)}</p>`,
     `<section><h2>${escapeHtml(ui.about)}</h2>${copy.about.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}</section>`,
