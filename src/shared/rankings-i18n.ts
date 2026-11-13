@@ -11,13 +11,17 @@ import {
   RANKING_SOURCE,
   rankingCsvHref,
   rankingKind,
-  rankingGroupOf,
+  isPlaceRanking,
   rankingMeta,
   toFeet,
   toMiles,
   toSqMiles,
   type ArenaRow,
+  type BuildingRow,
+  type CityRow,
   type CountryRef,
+  type DesertRow,
+  type StadiumRow,
   type IslandRow,
   type LakeRow,
   type RiverRow,
@@ -111,7 +115,7 @@ function displayName(locale: Locale, id: RankingId, name: string): string {
   const kind = rankingKind(id);
   if (kind === "commodity") return commodityName(locale, name);
   if (kind === "fx") return `${currencyName(locale, name)} (${name})`;
-  if (rankingGroupOf(id) === "geography") return placeName(locale, name.startsWith("#") ? "" : name, rankingMeta(id).names?.[name]) || name;
+  if (isPlaceRanking(id)) return placeName(locale, name.startsWith("#") ? "" : name, rankingMeta(id).names?.[name]) || name;
   return name;
 }
 
@@ -138,7 +142,7 @@ function vars(locale: Locale, id: RankingId): Record<string, string | number> {
   const meta = rankingMeta(id);
   const out: Record<string, string | number> = { rows: meta.rows, date: rankingDate(locale, meta.asOf), year: meta.asOf.slice(0, 4) };
   const kind = rankingKind(id);
-  const shown = (value: number) => (kind === "mountain" ? metres(locale, value) : kind === "river" ? `${plain(locale, value)} km` : kind === "lake" || kind === "island" ? `${plain(locale, value)} km²` : kind === "arena" ? plain(locale, value) : kind === "crypto" ? usd(locale, value, true) : kind === "commodity" || kind === "fx" ? signed(locale, value) : percent(locale, value));
+  const shown = (value: number) => (kind === "mountain" || kind === "building" ? metres(locale, value) : kind === "river" ? `${plain(locale, value)} km` : kind === "lake" || kind === "island" || kind === "desert" ? `${plain(locale, value)} km²` : kind === "arena" || kind === "city" || kind === "stadium" ? plain(locale, value) : kind === "crypto" ? usd(locale, value, true) : kind === "commodity" || kind === "fx" ? signed(locale, value) : percent(locale, value));
   meta.top.forEach(([name, value], index) => {
     out[`top${index + 1}`] = displayName(locale, id, name);
     out[`v${index + 1}`] = shown(value);
@@ -147,13 +151,15 @@ function vars(locale: Locale, id: RankingId): Record<string, string | number> {
     out[`low${index + 1}`] = displayName(locale, id, name);
     out[`lv${index + 1}`] = shown(value);
   });
-  if (kind === "mountain") {
+  if (kind === "mountain" || kind === "building") {
     out.ft1 = plain(locale, toFeet(meta.top[0][1]));
     out.over8000 = meta.over8000 ?? 0;
   }
   if (kind === "river") out.alt1 = plain(locale, toMiles(meta.top[0][1]));
-  if (kind === "lake" || kind === "island") out.alt1 = plain(locale, toSqMiles(meta.top[0][1]));
-  if (rankingGroupOf(id) === "geography") {
+  if (kind === "lake" || kind === "island" || kind === "desert") out.alt1 = plain(locale, toSqMiles(meta.top[0][1]));
+  // People and seats in the copy's own words: "41.9 million" reads better in a sentence than eight digits.
+  if (kind === "city") meta.top.forEach(([, value], index) => (out[`m${index + 1}`] = compact(locale, value)));
+  if (isPlaceRanking(id)) {
     out.lowRank = meta.lowRank ?? meta.rows;
     out.countryLead = listFormat(locale).format((meta.countryLead ?? []).map((code) => regionName(locale, code)));
     out.countryCount = meta.countryCount ?? 0;
@@ -259,6 +265,33 @@ export function rankingTable(locale: Locale, id: RankingId, rows: unknown[]): Da
     return {
       columns: [{ label: ui.rank, num: true }, { label: ui.island, head: true }, { label: ui.areaKm2, num: true }, { label: ui.areaSqMi, num: true }, { label: ui.countries }],
       rows: (rows as IslandRow[]).map(([place, qid, names, km2, countries]) => [rank(place), text(placeName(locale, qid, names)), num(plain(locale, km2), km2), num(plain(locale, toSqMiles(km2)), km2), text(countryList(locale, countries))]),
+    };
+  }
+  if (kind === "desert") {
+    return {
+      columns: [{ label: ui.rank, num: true }, { label: ui.desert, head: true }, { label: ui.areaKm2, num: true }, { label: ui.areaSqMi, num: true }, { label: ui.desertType }, { label: ui.countries }],
+      rows: (rows as DesertRow[]).map(([place, , names, km2, countries, type]) => [rank(place), text(localName(locale, names)), num(plain(locale, km2), km2), num(plain(locale, toSqMiles(km2)), km2), text(type ? ui.deserts[type] : ""), text(countryList(locale, countries))]),
+    };
+  }
+  if (kind === "building") {
+    return {
+      columns: [{ label: ui.rank, num: true }, { label: ui.building, head: true }, { label: ui.height, num: true }, { label: ui.heightFt, num: true }, { label: ui.floors, num: true }, { label: ui.city }, { label: ui.countries }, { label: ui.completed, num: true }],
+      rows: (rows as BuildingRow[]).map(([place, qid, names, height, countries, floors, city, year]) => {
+        const feet = toFeet(height);
+        return [rank(place), text(placeName(locale, qid, names)), num(metres(locale, height), height), num(plain(locale, feet), feet), maybe(floors, (v) => plain(locale, v)), text(localName(locale, city)), text(countryList(locale, countries)), maybe(year, String)];
+      }),
+    };
+  }
+  if (kind === "city") {
+    return {
+      columns: [{ label: ui.rank, num: true }, { label: ui.city, head: true }, { label: ui.population, num: true }, { label: ui.countries }],
+      rows: (rows as CityRow[]).map(([place, , names, people, countries]) => [rank(place), text(localName(locale, names)), num(plain(locale, people), people), text(countryList(locale, countries))]),
+    };
+  }
+  if (kind === "stadium") {
+    return {
+      columns: [{ label: ui.rank, num: true }, { label: ui.stadium, head: true }, { label: ui.capacity, num: true }, { label: ui.city }, { label: ui.countries }],
+      rows: (rows as StadiumRow[]).map(([place, , names, seats, countries, city]) => [rank(place), text(localName(locale, names)), num(plain(locale, seats), seats), text(localName(locale, city)), text(countryList(locale, countries))]),
     };
   }
   if (kind === "mountain") {

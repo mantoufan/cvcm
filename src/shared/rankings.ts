@@ -10,7 +10,8 @@ export const RANKING_GROUPS = [
   { id: "ai", sets: ["ai-models", "ai-coding-models", "ai-image-models", "ai-video-models", "ai-usage", "ai-companies"] },
   { id: "share", sets: ["browser-market-share", "os-market-share", "search-engine-market-share", "phone-market-share", "social-media-market-share"] },
   { id: "markets", sets: ["crypto-market-cap", "commodity-prices", "currency-strength"] },
-  { id: "geography", sets: ["tallest-mountains", "longest-rivers", "largest-lakes", "largest-islands"] },
+  { id: "geography", sets: ["tallest-mountains", "longest-rivers", "largest-lakes", "largest-islands", "largest-deserts"] },
+  { id: "cities", sets: ["tallest-buildings", "largest-cities", "largest-stadiums"] },
 ] as const;
 
 export type RankingGroupId = (typeof RANKING_GROUPS)[number]["id"];
@@ -25,12 +26,20 @@ export function rankingGroupOf(id: RankingId): RankingGroupId {
   return RANKING_GROUPS.find((group) => (group.sets as readonly string[]).includes(id))!.id;
 }
 
-/** The rows chunk a ranking page preloads: each geography table (names in eight languages) is its own; the rest share one. */
-export function rankingRowsChunk(id: RankingId): string {
-  return rankingGroupOf(id) === "geography" ? `rows-ranking-${id}` : "rows-rankings";
+/** Groups whose rows are places named in eight languages (Wikidata ids, names in the rows and the summary). */
+const PLACE_GROUPS: readonly RankingGroupId[] = ["geography", "cities"];
+
+/** Places: geography, and cities and buildings. Each is its own rows file (src/shared/rankings-geo/) and chunk. */
+export function isPlaceRanking(id: RankingId): boolean {
+  return PLACE_GROUPS.includes(rankingGroupOf(id));
 }
 
-export type RankingKind = "arena" | "usage" | "companies" | "share" | "crypto" | "commodity" | "fx" | "mountain" | "river" | "lake" | "island";
+/** The rows chunk a ranking page preloads: each place table (names in eight languages) is its own; the rest share one. */
+export function rankingRowsChunk(id: RankingId): string {
+  return isPlaceRanking(id) ? `rows-ranking-${id}` : "rows-rankings";
+}
+
+export type RankingKind = "arena" | "usage" | "companies" | "share" | "crypto" | "commodity" | "fx" | "mountain" | "river" | "lake" | "island" | "desert" | "building" | "city" | "stadium";
 
 export function rankingKind(id: RankingId): RankingKind {
   if (id === "ai-usage") return "usage";
@@ -42,6 +51,10 @@ export function rankingKind(id: RankingId): RankingKind {
   if (id === "longest-rivers") return "river";
   if (id === "largest-lakes") return "lake";
   if (id === "largest-islands") return "island";
+  if (id === "largest-deserts") return "desert";
+  if (id === "tallest-buildings") return "building";
+  if (id === "largest-cities") return "city";
+  if (id === "largest-stadiums") return "stadium";
   return rankingGroupOf(id) === "ai" ? "arena" : "share";
 }
 
@@ -70,6 +83,11 @@ export const RANKING_SOURCE: Record<RankingId, RankingSource> = {
   "longest-rivers": wikipediaList("List_of_river_systems_by_length"),
   "largest-lakes": wikipediaList("List_of_lakes_by_area"),
   "largest-islands": wikipediaList("List_of_islands_by_area"),
+  "largest-deserts": wikipediaList("List_of_deserts_by_area"),
+  "tallest-buildings": wikipediaList("List_of_tallest_buildings"),
+  // The list's ranking column is the UN's World Urbanization Prospects 2025 estimate.
+  "largest-cities": wikipediaList("List_of_largest_cities"),
+  "largest-stadiums": wikipediaList("List_of_stadiums_by_capacity"),
   "tallest-mountains": { name: "Wikidata", url: "https://www.wikidata.org/", license: "CC0 1.0", licenseUrl: "https://creativecommons.org/publicdomain/zero/1.0/" },
   "currency-strength": { name: "ECB euro foreign exchange reference rates", url: "https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/index.en.html", license: "Reuse with source named", licenseUrl: "https://www.ecb.europa.eu/services/disclaimer/html/index.en.html" },
 };
@@ -168,5 +186,14 @@ export type RiverRow = [number, string, LocaleNames, number, CountryRef[], strin
 export type LakeRow = [number, string, LocaleNames, number, CountryRef[], number | null, "fresh" | "saline" | "variable" | null];
 /** [rank, Wikidata id ("" for an island the list does not link), names, area km², countries] */
 export type IslandRow = [number, string, LocaleNames, number, CountryRef[]];
+export type DesertType = "polar" | "subtropical" | "tropical" | "cold" | "coastal";
+/** [rank, Wikidata id, names, area km², countries, the list's desert type (null if unlisted)] */
+export type DesertRow = [number, string, LocaleNames, number, CountryRef[], DesertType | null];
+/** [rank, Wikidata id ("" for a tower with no article yet), names, height m, countries, floors above ground, city names, year completed] */
+export type BuildingRow = [number, string, LocaleNames, number, CountryRef[], number | null, LocaleNames | null, number | null];
+/** [rank, Wikidata id, names, population (UN World Urbanization Prospects 2025), countries] */
+export type CityRow = [number, string, LocaleNames, number, CountryRef[]];
+/** [rank, Wikidata id, names, seats, countries, city names] */
+export type StadiumRow = [number, string, LocaleNames, number, CountryRef[], LocaleNames | null];
 /** [rank, ISO 4217 code, units per US dollar, change vs USD over 1 month %, over 1 year %] */
 export type FxRow = [number, string, number, number, number];

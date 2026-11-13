@@ -7,7 +7,8 @@
 //   World Bank Pink Sheet monthly commodity prices (CC BY 4.0): worldbank.org/en/research/commodity-markets
 //   ECB euro foreign exchange reference rates (free reuse with the source named): ecb.europa.eu
 //   Wikidata (CC0): the tallest mountains, query.wikidata.org
-//   English Wikipedia lists (CC BY-SA 4.0): longest rivers, largest lakes, largest islands; names from Wikidata
+//   English Wikipedia lists (CC BY-SA 4.0): longest rivers, largest lakes, largest islands, largest deserts, tallest buildings,
+//   largest cities, largest stadiums; names from Wikidata
 import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { inflateRawSync } from "node:zlib";
@@ -74,12 +75,15 @@ function unzip(buffer) {
 
 async function get(url, headers = {}, timeout = 40_000, init = {}) {
   for (let attempt = 0; ; attempt += 1) {
-    const res = await fetch(url, { ...init, headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(timeout) }).catch((error) => {
-      if (attempt === 3) throw error;
-      return null;
-    });
-    if (res?.ok) return res.text();
-    if (attempt === 3) throw new Error(`${res?.status} ${url}`);
+    // The timeout covers the body too: a stalled body is retried like a stalled answer, and either names the request.
+    const text = await fetch(url, { ...init, headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(timeout) })
+      .then(async (res) => ({ ok: res.ok, status: res.status, body: res.ok ? await res.text() : "" }))
+      .catch((error) => {
+        if (attempt === 3) throw new Error(`${error.message}: ${url.slice(0, 160)}`);
+        return null;
+      });
+    if (text?.ok) return text.body;
+    if (attempt === 3) throw new Error(`${text?.status} ${url}`);
     await new Promise((r) => setTimeout(r, 2000 * (attempt + 1)));
   }
 }
@@ -373,6 +377,10 @@ function csvOf(id, table, set) {
     const countryCsv = (countries) => countries.map((c) => (typeof c === "string" ? c : c.en)).join("; ");
     if (id === "longest-rivers") return toCsv(["rank", "wikidata_id", "name", "length_km", "length_mi", "countries_in_basin", "river_system"], table.map(([rank, qid, names, km, countries, system]) => [rank, qid, names.en, km, Math.round(km / KM_PER_MILE), countryCsv(countries), system ?? ""]), cite);
     if (id === "largest-lakes") return toCsv(["rank", "wikidata_id", "name", "area_km2", "area_sq_mi", "countries", "max_depth_m", "water"], table.map(([rank, qid, names, km2, countries, depth, water]) => [rank, qid, names.en, km2, Math.round(km2 / KM2_PER_SQ_MI), countryCsv(countries), depth, water]), cite);
+    if (id === "largest-deserts") return toCsv(["rank", "wikidata_id", "name", "area_km2", "area_sq_mi", "countries", "type"], table.map(([rank, qid, names, km2, countries, type]) => [rank, qid, names.en, km2, Math.round(km2 / KM2_PER_SQ_MI), countryCsv(countries), type]), cite);
+    if (id === "tallest-buildings") return toCsv(["rank", "wikidata_id", "name", "height_m", "height_ft", "floors", "city", "countries", "completed"], table.map(([rank, qid, names, metres, countries, floors, city, year]) => [rank, qid, names.en, metres, Math.round(metres / METRES_PER_FOOT), floors, city?.en ?? "", countryCsv(countries), year]), cite);
+    if (id === "largest-cities") return toCsv(["rank", "wikidata_id", "name", "population_un_2025", "countries"], table.map(([rank, qid, names, people, countries]) => [rank, qid, names.en, people, countryCsv(countries)]), cite);
+    if (id === "largest-stadiums") return toCsv(["rank", "wikidata_id", "name", "capacity", "city", "countries"], table.map(([rank, qid, names, seats, countries, city]) => [rank, qid, names.en, seats, city?.en ?? "", countryCsv(countries)]), cite);
     return toCsv(["rank", "wikidata_id", "name", "area_km2", "area_sq_mi", "countries"], table.map(([rank, qid, names, km2, countries]) => [rank, qid, names.en, km2, Math.round(km2 / KM2_PER_SQ_MI), countryCsv(countries)]), cite);
   }
   return toCsv(["rank", "name", `world_${set.yearAgo}`, ...REGIONS.map((r) => (r === "ww" ? `world_${set.asOf}` : r))], table, SOURCES.statcounter);
@@ -535,12 +543,26 @@ const ISLAND_NAMES = {
   Q1462: { "zh-CN": "撒丁岛", ja: "サルデーニャ島" },
 };
 
-/** Each table: its English Wikipedia list, which of the page's wikitables, the columns read, and checks on the result. */
+/** The desert table only: the list links the Antarctic Desert by Antarctica's geography article, whose item is the continent. */
+const DESERT_NAMES = {
+  Q51: { en: "Antarctic Desert", "zh-CN": "南极沙漠", "zh-TW": "南極沙漠", ja: "南極砂漠", ko: "남극 사막", vi: "Sa mạc Nam Cực", id: "Gurun Antarktika", es: "Desierto antártico" },
+  // Wikidata's Chinese label for the Arctic desert was the German word for "Chinese".
+  Q398398: { en: "Arctic Desert", "zh-CN": "北极沙漠", "zh-TW": "北極沙漠", ja: "北極砂漠", ko: "북극 사막", vi: "Sa mạc Bắc Cực", id: "Gurun Arktik", es: "Desierto ártico" },
+};
+
+/** Each table: its English Wikipedia list, which of the page's wikitables (`tables`: several read as one, the stadium list is split
+ * by capacity), the columns read, and checks on the result. `spans`: the table merges cells, read as a grid. */
 const WP_LISTS = {
   "longest-rivers": { page: "List of river systems by length", table: 1, name: 1, value: 2, countries: 7, rows: 100, first: "Q3392" },
   "largest-lakes": { page: "List of lakes by area", table: 1, name: 2, value: 5, countries: 3, depth: 7, type: 4, rows: 40, first: "Q5484" },
-  "largest-islands": { page: "List of islands by area", table: 1, name: 1, value: 2, countries: 4, rows: 100, first: "Q223" },
+  "largest-islands": { page: "List of islands by area", table: 1, name: 1, value: 2, countries: 4, rows: 100, first: "Q223", unlinked: 3 },
+  "largest-deserts": { page: "List of deserts by area", table: 0, name: 1, value: 4, countries: 7, desert: 2, rows: 30, first: "Q51", names: DESERT_NAMES },
+  "tallest-buildings": { page: "List of tallest buildings", table: 1, spans: true, name: 1, value: 2, countries: 7, city: 6, floors: 4, year: 8, rows: 90, first: "Q12495", unlinked: 6 },
+  "largest-cities": { page: "List of largest cities", table: 0, name: 0, value: 2, countries: 1, rows: 80, first: "Q3630" },
+  "largest-stadiums": { page: "List of stadiums by capacity", tables: [0, 1, 2, 3, 4, 5], name: 0, value: 1, countries: 3, city: 2, rows: 100, first: "Q3531421" },
 };
+/** The tables a list is read from, in order. */
+const tablesOf = (spec) => spec.tables ?? [spec.table];
 const WIKI = "https://en.wikipedia.org/w/api.php";
 const KM_PER_MILE = 1.609344;
 const KM2_PER_SQ_MI = 2.589988110336;
@@ -555,19 +577,53 @@ function firstNumber(text) {
   return found ? Number(found[0].replace(/,/g, "")) : null;
 }
 
-/** The data rows of one wikitable as cells of HTML. */
-function wikitable(html, index) {
+/** The data rows of one wikitable as cells of HTML. With `spans`, a merged cell is copied into every row and column it covers
+ * (the building list merges a country shared by the rows below it); without, a table with one is refused. */
+function wikitable(html, index, spans = false) {
   const table = [...html.matchAll(/<table class="[^"]*wikitable[^"]*".*?<\/table>/gs)][index]?.[0];
   if (!table) throw new Error(`wikipedia: no table ${index}`);
   // A table inside a cell would end this one at its own </table> and pair the wrong row and cell tags.
   if (/<table/.test(table.slice(1))) throw new Error(`wikipedia: table ${index} has a table inside it`);
-  // A merged cell in a data row (one with <td>) shifts every later cell in the rows it spans: rather than read the wrong column,
-  // the table is not published. Header rows (all <th>) may span.
-  for (const row of table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)) {
-    if (/<td/.test(row[1]) && /<t[hd][^>]*\b(rowspan|colspan)="?([2-9]|\d\d)/.test(row[1])) throw new Error(`wikipedia: table ${index} has merged cells`);
-  }
+  const span = (attrs, name) => Math.min(Number(attrs.match(new RegExp(`\\b${name}="?(\\d+)`))?.[1] ?? 1) || 1, 200);
   // Header rows (no <td>, repeated down long tables) are left out: "Area (km2)" would read as the number 2.
-  return [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].filter((row) => /<td/.test(row[1])).map((row) => [...row[1].matchAll(/<t[hd][^>]*>(.*?)<\/t[hd]>/gs)].map((cell) => cell[1]));
+  const dataRows = [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].filter((row) => /<td/.test(row[1])).map((row) => [...row[1].matchAll(/<t[hd]([^>]*)>(.*?)<\/t[hd]>/gs)].map((cell) => ({ attrs: cell[1], html: cell[2] })));
+  if (!spans) {
+    // A merged cell in a data row shifts every later cell in the rows it spans: rather than read the wrong column,
+    // the table is not published. Header rows (all <th>) may span.
+    if (dataRows.some((row) => row.some((cell) => span(cell.attrs, "rowspan") > 1 || span(cell.attrs, "colspan") > 1))) throw new Error(`wikipedia: table ${index} has merged cells`);
+    return dataRows.map((row) => row.map((cell) => cell.html));
+  }
+  // The grid as a reader sees it: a cell carried down from a row above fills its column before the row's own cells are placed.
+  const carried = [];
+  return dataRows.map((row) => {
+    const out = [];
+    let col = 0;
+    const fillCarried = () => {
+      while (carried[col]?.left > 0) {
+        out[col] = carried[col].html;
+        carried[col].left -= 1;
+        col += 1;
+      }
+    };
+    for (const cell of row) {
+      fillCarried();
+      const [down, across] = [span(cell.attrs, "rowspan"), span(cell.attrs, "colspan")];
+      for (let i = 0; i < across; i += 1) {
+        out[col] = cell.html;
+        if (down > 1) carried[col] = { html: cell.html, left: down - 1 };
+        col += 1;
+      }
+    }
+    fillCarried();
+    // A span reaching past the row's last own cell still fills its column.
+    for (let c = col; c < carried.length; c += 1) {
+      if (carried[c]?.left > 0) {
+        out[c] = carried[c].html;
+        carried[c].left -= 1;
+      }
+    }
+    return Array.from(out, (cell) => cell ?? "");
+  });
 }
 
 /** Wikidata ids for English Wikipedia titles, following redirects. */
@@ -625,6 +681,17 @@ function countryTitles(html) {
   return [...new Set([...linkTitles(html), ...names])];
 }
 
+/** The list's desert types: polar, subtropical, tropical ("Tropical/subtropical" too), cold winter, coastal (cool or mild);
+ * anything else is no type. */
+function desertOf(text) {
+  if (/polar/i.test(text)) return "polar";
+  if (/cold/i.test(text)) return "cold";
+  if (/coast/i.test(text)) return "coastal";
+  if (/^\s*tropic/i.test(text)) return "tropical";
+  if (/subtropic/i.test(text)) return "subtropical";
+  return null;
+}
+
 /** "Fresh", "Saline 1.2%", "Salt", "Brackish"; a cell naming both (fresh in one part, salt in another) or "Variable" varies. */
 function waterOf(text) {
   const fresh = /fresh/i.test(text);
@@ -659,8 +726,8 @@ async function wikipediaList(id) {
   const q = new URLSearchParams({ action: "parse", page: spec.page, prop: "text|revid", redirects: "1", format: "json", formatversion: "2" });
   const page = JSON.parse(await get(`${WIKI}?${q}`));
   if (page.error) throw new Error(`wikipedia ${spec.page}: ${page.error.info}`);
-  const cells = wikitable(page.parse.text, spec.table);
-  const needs = Math.max(spec.name, spec.value, spec.countries, spec.depth ?? 0, spec.type ?? 0) + 1;
+  const cells = tablesOf(spec).flatMap((index) => wikitable(page.parse.text, index, spec.spans));
+  const needs = Math.max(spec.name, spec.value, spec.countries, spec.depth ?? 0, spec.type ?? 0, spec.desert ?? 0, spec.city ?? 0, spec.floors ?? 0, spec.year ?? 0) + 1;
   const parsed = [];
   for (const row of cells) {
     if (row.length < needs) continue;
@@ -686,8 +753,19 @@ async function wikipediaList(id) {
       countries: countryTitles(row[spec.countries]),
       depth: spec.depth === undefined ? undefined : firstNumber(cellText(row[spec.depth])),
       type: spec.type === undefined ? undefined : waterOf(cellText(row[spec.type])),
+      desert: spec.desert === undefined ? undefined : desertOf(cellText(row[spec.desert])),
+      // The city a building or stadium stands in: the cell's first link ("Ann Arbor, Michigan" → Ann Arbor), and its text, as
+      // the list links a city once and writes it plain in the rows after.
+      city: spec.city === undefined ? undefined : linkTitles(row[spec.city])[0] ?? null,
+      cityText: spec.city === undefined ? undefined : cellText(row[spec.city]).split(/[,\n]/)[0].trim(),
+      // "163 (+ 2 below ground)": floors above ground.
+      floors: spec.floors === undefined ? undefined : firstNumber(cellText(row[spec.floors])),
+      year: spec.year === undefined ? undefined : firstNumber(cellText(row[spec.year])),
     });
   }
+  // A city written plain is the one linked under the same text in another row; one never linked has no city.
+  const cityTitles = new Map(parsed.filter((row) => row.city).map((row) => [row.cityText, row.city]));
+  for (const row of parsed) if (spec.city !== undefined && !row.city) row.city = cityTitles.get(row.cityText) ?? null;
   // Each row's item first (to drop repeats and cut the list), then names and countries for the kept rows only.
   // Only rows near the top can make the list (a repeat dropped below moves at most a few up): the rest are not looked up.
   parsed.sort((a, b) => b.value - a.value);
@@ -705,7 +783,10 @@ async function wikipediaList(id) {
   const countryIds = [...new Set(Object.values(countryOf))];
   const codes = await countryCodes(countryIds);
   const keptIds = [...new Set(kept.map((row) => row.item).filter(Boolean))];
-  const info = await labels([...new Set([...keptIds, ...countryIds.filter((c) => codes[c] === true)])]);
+  const cityOf = spec.city === undefined ? {} : await titleIds(kept.map((row) => row.city).filter(Boolean));
+  const info = await labels([...new Set([...keptIds, ...Object.values(cityOf), ...countryIds.filter((c) => codes[c] === true)])]);
+  // A list's own name fixes (the Antarctic Desert, linked by its continent), on the row's item only.
+  for (const [c, fix] of Object.entries(spec.names ?? {})) if (info[c] && keptIds.includes(c)) info[c] = { ...info[c], own: { ...info[c].own, ...fix }, names: localeNames({ ...info[c].own, ...fix }) };
   // Islands: a row the list links by its state or country takes the island's own item, and its names where the island has them
   // ("中華民國" gives way to "臺灣島"); the state's names fill the rest, and an island-name fix on the state still wins.
   if (id === "largest-islands") {
@@ -731,9 +812,10 @@ async function wikipediaList(id) {
   while (cut < kept.length && kept[cut].value === kept[cut - 1].value) cut += 1;
   kept.splice(cut);
   if (kept.length < spec.rows) throw new Error(`wikipedia ${spec.page}: only ${kept.length} rows`);
-  // Unlinked rows: an unnamed or unlinked island is real, a few of them; elsewhere, or many, the name column was misread.
+  // Unlinked rows: an unnamed island or a new tower with no article yet is real, a few of them (`unlinked`); elsewhere, or more,
+  // the name column was misread.
   const unlinked = kept.filter((row) => !row.item);
-  if (unlinked.length && (id !== "largest-islands" || unlinked.length > 3)) throw new Error(`wikipedia ${spec.page}: ${unlinked.map((row) => row.name).join(", ")} has no linked name`);
+  if (unlinked.length > (spec.unlinked ?? 0)) throw new Error(`wikipedia ${spec.page}: ${unlinked.map((row) => row.name).join(", ")} has no linked name`);
   const rows = kept.map((row) => {
     const item = row.item;
     if (item && !info[item]) throw new Error(`wikidata ${item} (${row.title}): no English name`);
@@ -743,9 +825,23 @@ async function wikipediaList(id) {
     const base = [place, item, item ? info[item].names : { en: row.name }, row.value, countries];
     if (id === "longest-rivers") return [...base, row.system];
     if (id === "largest-lakes") return [...base, row.depth ?? null, row.type];
+    if (id === "largest-deserts") return [...base, row.desert];
+    // A city with no item or no English name shows a dash rather than a raw title.
+    const city = row.city && cityOf[row.city] ? cityNames(info[cityOf[row.city]]?.own) : null;
+    if (id === "tallest-buildings") return [...base, row.floors ?? null, city, row.year ?? null];
+    if (id === "largest-stadiums") return [...base, city];
     return base;
   });
   return { rows, revision: page.parse.revid };
+}
+
+/** A city's names without the qualifier some labels carry ("科利奇镇区 (宾夕法尼亚州森特县)", "Columbus, Ohio"); a comma the
+ * English name has too is part of the name ("Washington, D.C."). */
+function cityNames(own) {
+  if (!own) return null;
+  const comma = /,\s/.test(own.en ?? "");
+  const bare = Object.fromEntries(Object.entries(own).map(([locale, name]) => [locale, (comma ? name : name.replace(/,\s.*$/, "")).replace(/\s*[(（][^()（）]*[)）]\s*$/, "")]));
+  return localeNames(bare);
 }
 
 /** The country, or countries tied (all named), with the most rows; ISO codes only (a named realm is not counted).

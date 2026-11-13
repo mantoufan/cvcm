@@ -72,12 +72,28 @@
     "largest-islands": {
       "name": "Những hòn đảo lớn nhất thế giới",
       "blurb": "Các hòn đảo lớn nhất theo diện tích và quốc gia sở hữu."
+    },
+    "largest-deserts": {
+      "name": "Sa mạc lớn nhất thế giới",
+      "blurb": "Các sa mạc lớn nhất theo diện tích, kể cả vùng cực, và các nước chúng trải qua."
+    },
+    "tallest-buildings": {
+      "name": "Tòa nhà cao nhất thế giới",
+      "blurb": "Nhà chọc trời đã hoàn thành cao từ 350 m, kèm số tầng, thành phố và năm."
+    },
+    "largest-cities": {
+      "name": "Thành phố đông dân nhất thế giới",
+      "blurb": "Các thành phố đông dân nhất theo ước tính năm 2025 của Liên Hợp Quốc."
+    },
+    "largest-stadiums": {
+      "name": "Sân vận động lớn nhất thế giới",
+      "blurb": "Các sân vận động nhiều chỗ ngồi nhất, kèm thành phố và quốc gia."
     }
   },
   "rankings": {
     "hub": {
       "title": "Bảng xếp hạng: AI, thị phần và hơn nữa, có nguồn | cv.cm",
-      "description": "Bảng xếp hạng có nguồn, sắp xếp và tải về được: mô hình AI tốt nhất, AI được dùng nhiều nhất, thị phần trình duyệt, hệ điều hành, công cụ tìm kiếm, điện thoại, mạng xã hội, cùng những ngọn núi cao nhất, con sông dài nhất, hồ và đảo lớn nhất thế giới.",
+      "description": "Bảng xếp hạng có nguồn, sắp xếp và tải về được: mô hình AI tốt nhất, AI được dùng nhiều nhất, thị phần trình duyệt, hệ điều hành, công cụ tìm kiếm, điện thoại và mạng xã hội, núi và tòa nhà cao nhất, thành phố đông dân nhất, sa mạc và sân vận động lớn nhất, và hơn thế nữa.",
       "h1": "Bảng xếp hạng",
       "lede": "Các bảng xếp hạng xây dựng từ dữ liệu mở, mỗi bảng đều ghi nguồn, giấy phép và ngày. Bạn có thể sắp xếp theo cột bất kỳ, lọc hàng hoặc tải CSV.",
       "groups": {
@@ -85,7 +101,8 @@
         "share": "Thị phần",
         "countries": "Quốc gia",
         "markets": "Thị trường",
-        "geography": "Địa lý"
+        "geography": "Địa lý",
+        "cities": "Thành phố và công trình"
       },
       "makeYourOwn": "Tự tạo bảng xếp hạng",
       "about": [
@@ -95,15 +112,15 @@
       "faq": [
         {
           "q": "Dữ liệu đến từ đâu?",
-          "a": "Chất lượng AI lấy từ bảng xếp hạng Arena, mức sử dụng AI từ OpenRouter, thị phần từ StatCounter Global Stats, độ cao núi từ Wikidata, còn sông, hồ và đảo lấy từ các danh sách trên Wikipedia. Mỗi trang đều ghi nguồn và giấy phép."
+          "a": "Chất lượng AI lấy từ bảng xếp hạng Arena, mức sử dụng AI từ OpenRouter, thị phần từ StatCounter Global Stats, độ cao núi từ Wikidata, còn sông, hồ, đảo, sa mạc, tòa nhà, thành phố và sân vận động từ các danh sách của Wikipedia. Mỗi trang đều ghi nguồn và giấy phép."
         },
         {
           "q": "Bảng xếp hạng được cập nhật bao lâu một lần?",
-          "a": "Chúng được cập nhật tự động mỗi ngày một lần và mỗi trang hiển thị ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, núi, sông, hồ và đảo được kiểm tra hằng tháng, các bảng AI thay đổi thường xuyên hơn."
+          "a": "Dữ liệu được làm mới tự động mỗi ngày một lần và mỗi trang ghi ngày của dữ liệu. Các nguồn công bố với tốc độ khác nhau: thị phần theo tháng, các danh sách địa lý, thành phố và tòa nhà được kiểm tra hằng tháng, bảng AI thay đổi thường xuyên hơn."
         },
         {
           "q": "Tôi có thể dùng lại các bảng này không?",
-          "a": "Có, theo giấy phép của nguồn ghi trên từng trang: CC BY 4.0 cho các bảng AI, CC BY-SA 3.0 cho thị phần, CC0 (không điều kiện) cho núi và CC BY-SA 4.0 cho sông, hồ và đảo. Hãy ghi nguồn. Hầu hết các bảng đều tải được CSV."
+          "a": "Có, theo giấy phép của nguồn ghi trên từng trang: CC BY 4.0 cho các bảng AI, CC BY-SA 3.0 cho thị phần, CC0 (không điều kiện) cho núi và CC BY-SA 4.0 cho các bảng lấy từ danh sách Wikipedia. Hãy ghi nguồn. Hầu hết các bảng có file CSV để tải."
         }
       ]
     },
@@ -208,7 +225,25 @@
         "saline": "Mặn",
         "variable": "Thay đổi"
       },
-      "unnamedIsland": "Đảo chưa đặt tên"
+      "unnamedIsland": "Đảo chưa đặt tên",
+      "desert": "Sa mạc",
+      "desertType": "Loại",
+      "deserts": {
+        "polar": "Vùng cực",
+        "subtropical": "Cận nhiệt đới",
+        "tropical": "Nhiệt đới",
+        "cold": "Mùa đông lạnh",
+        "coastal": "Ven biển"
+      },
+      "building": "Tòa nhà",
+      "height": "Chiều cao",
+      "heightFt": "Chiều cao (ft)",
+      "floors": "Số tầng",
+      "city": "Thành phố",
+      "completed": "Hoàn thành",
+      "population": "Dân số",
+      "stadium": "Sân vận động",
+      "capacity": "Sức chứa"
     },
     "sets": {
       "ai-models": {
@@ -731,6 +766,122 @@
           {
             "q": "Quốc gia nào có nhiều đảo lớn nhất?",
             "a": "{countryLead}: {countryCount} trong số {rows} hòn đảo của danh sách này thuộc về quốc gia này."
+          }
+        ]
+      },
+      "largest-deserts": {
+        "title": "Sa mạc lớn nhất thế giới: top {rows} theo diện tích | cv.cm",
+        "description": "{rows} sa mạc lớn nhất Trái Đất: {top1} {v1}, {top2} {v2}, {top3} {v3}. Diện tích theo km² và dặm vuông, loại sa mạc và các nước mà sa mạc trải qua.",
+        "h1": "{rows} sa mạc lớn nhất thế giới",
+        "lede": "{rows} sa mạc lớn nhất Trái Đất theo diện tích, kể cả sa mạc vùng cực, kèm diện tích theo kilômét vuông và dặm vuông, loại sa mạc và các nước mà nó trải qua. Lấy từ danh sách sa mạc theo diện tích của Wikipedia.",
+        "facts": [
+          "Lớn nhất: {top1} với {v1} ({alt1} dặm vuông), tiếp theo là {top2} ({v2}) và {top3} ({v3}), sa mạc nóng lớn nhất.",
+          "Nước có nhiều sa mạc nhất trong danh sách: {countryLead}, với {countryCount}. Sa mạc trải qua nhiều nước được tính cho mỗi nước.",
+          "Hạng {lowRank} là {low1} với {lv1}."
+        ],
+        "about": [
+          "Sa mạc được xác định bởi lượng mưa hoặc tuyết rất ít, thường dưới 250 mm mỗi năm, chứ không phải bởi cái nóng hay cát. Vì vậy băng ở Nam Cực và Bắc Cực là hai sa mạc lớn nhất. Trong các sa mạc nóng, Sahara lớn hơn hẳn.",
+          "Mỗi nguồn vẽ ranh giới sa mạc một khác, nên diện tích được làm tròn và khác nhau giữa các danh sách. Diện tích, loại và quốc gia lấy từ danh sách Wikipedia tiếng Anh (CC BY-SA 4.0); tên theo từng ngôn ngữ lấy từ Wikidata (CC0). Châu Nam Cực không thuộc quốc gia nào nên hiển thị dấu gạch."
+        ],
+        "faq": [
+          {
+            "q": "Sa mạc lớn nhất thế giới là gì?",
+            "a": "{top1}, rộng khoảng {v1} ({alt1} dặm vuông). Sa mạc là nơi có rất ít mưa tuyết, và Nam Cực nhận ít mưa tuyết hơn hầu hết mọi nơi khác."
+          },
+          {
+            "q": "Sa mạc nóng lớn nhất là gì?",
+            "a": "Sahara ở Bắc Phi, rộng khoảng 9,2 triệu km². Đây là sa mạc lớn thứ ba sau hai sa mạc vùng cực ở Nam Cực và Bắc Cực."
+          },
+          {
+            "q": "Nước nào có nhiều sa mạc lớn nhất?",
+            "a": "{countryLead}: {countryCount} trong {rows} sa mạc của danh sách này nằm ở đó."
+          }
+        ]
+      },
+      "tallest-buildings": {
+        "title": "Tòa nhà cao nhất thế giới: top {rows} nhà chọc trời | cv.cm",
+        "description": "{rows} tòa nhà cao nhất Trái Đất: {top1} {v1}, {top2} {v2}, {top3} {v3}. Chiều cao theo mét và feet, số tầng, thành phố, quốc gia và năm hoàn thành.",
+        "h1": "{rows} tòa nhà cao nhất thế giới",
+        "lede": "{rows} tòa nhà đã hoàn thành cao nhất Trái Đất, đo đến đỉnh kiến trúc, kèm chiều cao theo mét và feet, số tầng nổi, thành phố, quốc gia và năm hoàn thành. Lấy từ danh sách tòa nhà cao nhất của Wikipedia.",
+        "facts": [
+          "Cao nhất: {top1} với {v1} ({ft1} ft), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Nước có nhiều tòa nhà nhất trong danh sách: {countryLead}, với {countryCount} trên {rows}.",
+          "Hạng {lowRank} là {low1} với {lv1}. Mọi tòa nhà ở đây đều cao ít nhất 350 m."
+        ],
+        "about": [
+          "Chiều cao được đo từ lối vào chính thấp nhất đến đỉnh kiến trúc, tính cả chóp nhọn, không tính ăng-ten và cột cờ. Chỉ tính các tòa nhà có tầng sử dụng được, nên các tháp truyền hình như Tokyo Skytree không có trong danh sách, và tòa nhà đang xây chỉ được thêm vào khi hoàn thành.",
+          "Chiều cao, số tầng, thành phố, quốc gia và năm lấy từ danh sách Wikipedia tiếng Anh (CC BY-SA 4.0); tên theo từng ngôn ngữ lấy từ Wikidata (CC0). Vài tòa tháp mới chưa có bài Wikipedia nên giữ tên tiếng Anh."
+        ],
+        "faq": [
+          {
+            "q": "Tòa nhà cao nhất thế giới là gì?",
+            "a": "{top1} ở Dubai, cao {v1} ({ft1} ft). Tòa nhà này cao nhất thế giới từ khi khai trương năm 2010."
+          },
+          {
+            "q": "Tòa nhà cao thứ hai thế giới là gì?",
+            "a": "{top2}, cao {v2}. {top3} đứng thứ ba với {v3}."
+          },
+          {
+            "q": "Nước nào có nhiều tòa nhà siêu cao nhất?",
+            "a": "{countryLead}: {countryCount} trong {rows} tòa nhà của danh sách này nằm ở đó."
+          }
+        ]
+      },
+      "largest-cities": {
+        "title": "Thành phố đông dân nhất thế giới: top {rows} (LHQ 2025) | cv.cm",
+        "description": "{rows} thành phố đông dân nhất: {top1} {v1}, {top2} {v2}, {top3} {v3}. Dân số theo Triển vọng Đô thị hóa Thế giới 2025 của Liên Hợp Quốc, kèm quốc gia.",
+        "h1": "{rows} thành phố đông dân nhất thế giới",
+        "lede": "{rows} thành phố đông dân nhất Trái Đất, xếp theo ước tính của Liên Hợp Quốc trong Triển vọng Đô thị hóa Thế giới (World Urbanization Prospects) 2025 cho từng vùng đô thị, kèm quốc gia. Lấy từ danh sách thành phố lớn nhất của Wikipedia.",
+        "facts": [
+          "Đông dân nhất: {top1} với {m1} người, tiếp theo là {top2} ({m2}) và {top3} ({m3}).",
+          "Nước có nhiều thành phố nhất trong danh sách: {countryLead}, với {countryCount} trên {rows}.",
+          "Hạng {lowRank} là {low1} với {lv1} người."
+        ],
+        "about": [
+          "Một thành phố lớn đến đâu tùy vào việc vẽ ranh giới ở đâu. Thành phố hành chính dừng ở ranh giới chính thức, vùng đô thị theo phần đất đã xây liền mạch, còn vùng đô thị mở rộng thêm các thị trấn của người đi làm. Bảng này dùng ước tính năm 2025 của Liên Hợp Quốc, đo mọi thành phố theo cùng một cách là vùng xây dựng liền mạch. Theo cách đo này, Jakarta đã vượt Tokyo, thành phố vẫn đứng đầu các danh sách dùng phương pháp cũ của Liên Hợp Quốc.",
+          "Dân số và quốc gia lấy từ danh sách Wikipedia tiếng Anh (CC BY-SA 4.0), vốn dẫn số liệu của Liên Hợp Quốc; tên theo từng ngôn ngữ lấy từ Wikidata (CC0). Các ước tính được làm tròn và thay đổi sau mỗi lần Liên Hợp Quốc cập nhật."
+        ],
+        "faq": [
+          {
+            "q": "Thành phố đông dân nhất thế giới là gì?",
+            "a": "{top1}, với khoảng {m1} người theo ước tính năm 2025 của Liên Hợp Quốc. Các danh sách dùng ranh giới hành chính hoặc phương pháp cũ của Liên Hợp Quốc thường xếp Tokyo đứng đầu."
+          },
+          {
+            "q": "Vì sao các danh sách thành phố lớn nhất lại khác nhau?",
+            "a": "Chúng vẽ ranh giới thành phố ở những chỗ khác nhau: trong ranh giới hành chính, quanh vùng xây dựng, hoặc quanh cả vành đai đi làm. Mỗi cách cho ra con số và thứ tự khác nhau."
+          },
+          {
+            "q": "Nước nào có nhiều thành phố lớn nhất?",
+            "a": "{countryLead}: {countryCount} trong {rows} thành phố của danh sách này nằm ở đó."
+          }
+        ]
+      },
+      "largest-stadiums": {
+        "title": "Sân vận động lớn nhất thế giới: top {rows} theo sức chứa | cv.cm",
+        "description": "{rows} sân vận động lớn nhất theo sức chứa: {top1} {v1}, {top2} {v2}, {top3} {v3}. Số chỗ, thành phố và quốc gia của từng sân.",
+        "h1": "{rows} sân vận động lớn nhất thế giới",
+        "lede": "{rows} sân vận động thể thao lớn nhất Trái Đất theo sức chứa, tức số khán giả thường chứa được, kèm thành phố và quốc gia. Lấy từ danh sách sân vận động theo sức chứa của Wikipedia.",
+        "facts": [
+          "Lớn nhất: {top1} với {v1} chỗ, tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
+          "Nước có nhiều sân nhất trong danh sách: {countryLead}, với {countryCount} trên {rows}, phần lớn là sân bóng bầu dục đại học.",
+          "Hạng {lowRank} là {low1} với {lv1} chỗ."
+        ],
+        "about": [
+          "Sức chứa là số khán giả mà sân thường chứa được, không tính ghế tạm. Trường đua mô tô, ô tô có thể chứa nhiều người hơn nhưng không phải sân vận động nên không có trong danh sách. Sức chứa thay đổi khi sân được xây lại, và danh sách cập nhật theo.",
+          "Sức chứa, thành phố và quốc gia lấy từ danh sách Wikipedia tiếng Anh (CC BY-SA 4.0); tên theo từng ngôn ngữ lấy từ Wikidata (CC0)."
+        ],
+        "faq": [
+          {
+            "q": "Sân vận động lớn nhất thế giới là gì?",
+            "a": "{top1} ở Ahmedabad, Ấn Độ, một sân cricket chứa được {v1} khán giả."
+          },
+          {
+            "q": "Sân bóng đá lớn nhất thế giới là gì?",
+            "a": "{top2} ở Bình Nhưỡng chứa được {v2} người. Trong các sân dùng cho bóng bầu dục Mỹ, lớn nhất là {top3} với {v3} chỗ."
+          },
+          {
+            "q": "Nước nào có nhiều sân vận động lớn nhất?",
+            "a": "{countryLead}: {countryCount} trong {rows} sân của danh sách này, phần lớn là sân bóng bầu dục đại học."
           }
         ]
       }
