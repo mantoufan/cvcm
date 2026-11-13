@@ -309,7 +309,13 @@ describe("slang: page HTML and SEO", () => {
     expect(slangPageHtml("zh-CN", null)).not.toContain("meme-coins");
     const trending = trendingIds("en", 10);
     expect(trending.length).toBeLessThanOrEqual(10);
-    for (const id of trending) expect(recentViews(memeTrend("en", id)!), id).toBeGreaterThanOrEqual(500);
+    for (const { id, trend } of trending) {
+      expect(recentViews(trend), id).toBeGreaterThanOrEqual(500);
+      expect(trend, id).toEqual(memeTrend("en", id));
+    }
+    // The zh-CN pack carries no quotes at all, not just unrendered ones.
+    expect(slangMessages("zh-CN").memes.coins).toEqual({});
+    expect(Object.keys(slangMessages("en").memes.coins).length).toBeGreaterThan(0);
   });
 
   it("has the nav label in every core pack", () => {

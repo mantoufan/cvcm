@@ -65,15 +65,19 @@ export function slangSyncFiles(read: (path: string) => string | null): { files: 
       "",
     ].join("\n");
     files[`src/locales/packs/slang-${locale}.ts`] = [
-      `${header} Slang hub copy, entry names and blurbs, loaded only on /slang/ pages.`,
+      `${header} Slang hub copy, entry names and blurbs, loaded only on /memes/ pages.`,
       `import hub from "../slang/${sourceLocale(locale, null)}.json";`,
       `import list from "../slang/index/${locale}.json";`,
-      // The daily trend and coin snapshot rides in the slang pack, so it never lands in (or re-hashes) the main bundle.
-      'import memes from "../../shared/meme-data.json";',
+      // The daily snapshot rides in the slang pack, not the main bundle. zh-CN never shows coin data, so its pack does not
+      // even carry the quotes (see showsCoins).
+      'import trends from "../../shared/meme-trends.json";',
+      ...(locale === "zh-CN" ? [] : ['import coins from "../../shared/meme-coins.json";']),
       'import type { SlangMessages } from "../../shared/messages";',
       'import type { MemeData } from "../../shared/slang-i18n";',
       "",
-      "export default { ...hub, list, memes: memes as MemeData } satisfies SlangMessages;",
+      locale === "zh-CN"
+        ? "export default { ...hub, list, memes: { ...trends, coins: {}, coinsAsOf: null } as MemeData } satisfies SlangMessages;"
+        : "export default { ...hub, list, memes: { ...trends, ...coins } as MemeData } satisfies SlangMessages;",
       "",
     ].join("\n");
   }

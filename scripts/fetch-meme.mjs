@@ -1,4 +1,5 @@
-// Snapshots the live data behind /{locale}/memes/ pages into src/shared/meme-data.json.
+// Snapshots the live data behind /{locale}/memes/ pages into src/shared/meme-trends.json and meme-coins.json (two files,
+// so the zh-CN pack can leave the coin quotes out entirely).
 // Run daily by .github/workflows/refresh-rankings.yml, or by hand (`node scripts/fetch-meme.mjs`). Pages never call these sources.
 //   Wikimedia pageviews (CC0): weekly views of each meme's Wikipedia article, the "how hot is it now" curve
 //   CoinMarketCap API (free Basic plan, needs COINMARKETCAP_API_KEY; no redistribution, so no CSV): coins named after a meme
@@ -13,19 +14,21 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES_FILE = process.env.RANKINGS_FAILURES_FILE ?? join(tmpdir(), "rankings-failures.txt");
 const UA = "cv.cm meme snapshot (https://cv.cm/)";
 const SOURCES = JSON.parse(readFileSync(join(root, "src/shared/meme-sources.json"), "utf8"));
-const OUT = join(root, "src/shared/meme-data.json");
+const TRENDS = join(root, "src/shared/meme-trends.json");
+const COINS = join(root, "src/shared/meme-coins.json");
 const WEEKS = 13;
 /** A coin is shown only when it is this big and this old: new or tiny tokens are where most rug pulls are. */
 const COIN_MIN_CAP = 10_000_000;
 const COIN_MIN_AGE_DAYS = 30;
 
-const old = (() => {
+const readOr = (path, fallback) => {
   try {
-    return JSON.parse(readFileSync(OUT, "utf8"));
+    return JSON.parse(readFileSync(path, "utf8"));
   } catch {
-    return { trend: {}, coins: {}, coinsAsOf: null };
+    return fallback;
   }
-})();
+};
+const old = { ...readOr(TRENDS, { trend: {} }), ...readOr(COINS, { coins: {}, coinsAsOf: null }) };
 const failures = [];
 
 async function getJson(url, headers = {}) {
@@ -125,16 +128,19 @@ if (!key) {
         rank: c.cmc_rank ?? null,
       };
     }
-    coins = next;
-    coinsAsOf = new Date().toISOString().slice(0, 16) + "Z";
+    // The quote time moves only with the quotes, so an unchanged snapshot leaves the file byte-identical.
+    if (JSON.stringify(next) !== JSON.stringify(coins)) {
+      coins = next;
+      coinsAsOf = new Date().toISOString().slice(0, 16) + "Z";
+    }
   } catch (error) {
     failures.push(`meme coins: ${error.message}`);
   }
 }
 
-// No run date in the file: unchanged figures leave it byte-identical, so the workflow commits and deploys only real changes.
-const data = { trend, coins, coinsAsOf };
-writeFileSync(OUT, `${JSON.stringify(data, null, 1)}\n`);
+// No run date in the files: unchanged figures leave them byte-identical, so the workflow commits and deploys only real changes.
+writeFileSync(TRENDS, `${JSON.stringify({ trend }, null, 1)}\n`);
+writeFileSync(COINS, `${JSON.stringify({ coins, coinsAsOf }, null, 1)}\n`);
 console.log(`meme: ${Object.keys(trend).length} trends, ${Object.keys(coins).length} coins`);
 if (failures.length) {
   appendFileSync(FAILURES_FILE, `${failures.join("\n")}\n`);

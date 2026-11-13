@@ -789,7 +789,8 @@ rmSync(FAILURES_FILE, { force: true });
 let attempts = 0;
 let failures = 0;
 /** RANKINGS_ONLY=id,id refreshes just those tables (skipping their monthly wait) and keeps the rest as they are, for a new or fixed table. */
-const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter(Boolean);
+// "memes" belongs to scripts/fetch-meme.mjs (same workflow input), not to a table here.
+const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter((id) => id && id !== "memes");
 // Set but empty (an unfilled input) means every table, not none.
 const only = listed?.length ? listed : undefined;
 /** One source failing keeps its last good tables, so it cannot hold back the others. With no earlier data there is nothing to keep. */

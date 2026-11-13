@@ -87,6 +87,11 @@ export function recentViews(trend: MemeTrend): number {
   return trend.w.slice(-4).reduce((a, b) => a + b, 0);
 }
 
+/** Views over the four weeks before those. */
+function priorViews(trend: MemeTrend): number {
+  return trend.w.slice(-8, -4).reduce((a, b) => a + b, 0);
+}
+
 export function memeCoin(locale: Locale, id: SlangId): MemeCoin | null {
   return showsCoins(locale) ? memeData(locale).coins[id] ?? null : null;
 }
@@ -95,17 +100,16 @@ export function memeCoin(locale: Locale, id: SlangId): MemeCoin | null {
 const TRENDING_FLOOR = 500;
 
 /**
- * Entries whose views grew most: last four weeks over the four before. Growth, not raw views, so memes measured on a
- * smaller Wikipedia (zh) compete fairly with English ones.
+ * Entries whose views are growing, fastest first: last four weeks over the four before. Growth, not raw views, so memes
+ * measured on a smaller Wikipedia (zh) compete fairly with English ones; an entry that is not growing is not listed.
  */
-export function trendingIds(locale: Locale, limit: number): SlangId[] {
-  const score = (t: MemeTrend) => recentViews(t) / Math.max(1, t.w.slice(-8, -4).reduce((a, b) => a + b, 0));
+export function trendingIds(locale: Locale, limit: number): { id: SlangId; trend: MemeTrend }[] {
+  const growth = (t: MemeTrend) => recentViews(t) / Math.max(1, priorViews(t));
   return SLANG_ENTRIES
-    .map((id) => ({ id, t: memeTrend(locale, id) }))
-    .filter((x): x is { id: SlangId; t: MemeTrend } => x.t !== null && recentViews(x.t) >= TRENDING_FLOOR)
-    .sort((a, b) => score(b.t) - score(a.t) || recentViews(b.t) - recentViews(a.t))
-    .slice(0, limit)
-    .map((x) => x.id);
+    .map((id) => ({ id, trend: memeTrend(locale, id) }))
+    .filter((x): x is { id: SlangId; trend: MemeTrend } => x.trend !== null && recentViews(x.trend) >= TRENDING_FLOOR && growth(x.trend) > 1)
+    .sort((a, b) => growth(b.trend) - growth(a.trend) || recentViews(b.trend) - recentViews(a.trend))
+    .slice(0, limit);
 }
 
 /** "2025-03" or "2025" as a month or a year in the reader's language. */
@@ -177,13 +181,12 @@ function coinHtml(locale: Locale, id: SlangId): string {
 }
 
 function hubTrendingHtml(locale: Locale): string {
-  const ids = trendingIds(locale, 10);
-  if (!ids.length) return "";
+  const list = trendingIds(locale, 10);
+  if (!list.length) return "";
   const ui = slangUi(locale);
-  const items = ids.map((id) => {
-    const t = memeTrend(locale, id)!;
+  const items = list.map(({ id, trend }) => {
     const { name, blurb } = slangName(locale, id);
-    return `<li><a href="${escapeHtml(slangHref(locale, id))}" data-nav="slang-${id}"><strong>${escapeHtml(name)}</strong>${dirBadge(locale, t.dir)}<span>${escapeHtml(blurb)}</span></a></li>`;
+    return `<li><a href="${escapeHtml(slangHref(locale, id))}" data-nav="slang-${id}"><strong>${escapeHtml(name)}</strong>${dirBadge(locale, trend.dir)}<span>${escapeHtml(blurb)}</span></a></li>`;
   }).join("");
   return `<section class="wall meme-trending" id="trending"><h2>${escapeHtml(ui.trending)}</h2><ol class="links">${items}</ol><p class="meme-note">${escapeHtml(ui.trendingNote)}</p></section>`;
 }
