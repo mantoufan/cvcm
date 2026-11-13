@@ -23,6 +23,9 @@ export function outcome(b: Board): Outcome {
   return b.every((v) => v) ? { winner: "draw" } : null;
 }
 
+/** The corners and the centre: the openings that give the other side the most ways to go wrong. */
+const OPENINGS = [0, 2, 4, 6, 8] as const;
+
 export const other = (m: Mark): Mark => (m === "X" ? "O" : "X");
 export const emptyCells = (b: Board) => b.flatMap((v, i) => (v ? [] : [i]));
 
@@ -81,6 +84,8 @@ export function computerMove(board: Board, me: Mark, level: Level, pick: (n: num
   if (!empty.length) return -1;
   if (level === "easy") return empty[pick(empty.length)]!;
   if (level === "medium") return winOrBlock(board, me) ?? empty[pick(empty.length)]!;
+  // Every opening draws with perfect play; a corner or the centre (the strongest openings) skips the full search.
+  if (empty.length === 9) return OPENINGS[pick(OPENINGS.length)]!;
   const best = bestMoves(board, me);
   return best[pick(best.length)]!;
 }

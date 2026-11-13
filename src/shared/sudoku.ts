@@ -42,7 +42,8 @@ export const boxOf = BOX;
 /** Fisher–Yates with the seeded generator (teams.ts shuffle, fed a seeded draw instead of Web Crypto). */
 const shuffled = <T>(list: readonly T[], rand: () => number): T[] => shuffle(list, (n) => Math.floor(rand() * n));
 
-const bitCount = (m: number) => {
+/** How many digits a candidate mask allows. */
+export const bitCount = (m: number) => {
   let n = 0;
   for (let x = m; x; x &= x - 1) n++;
   return n;

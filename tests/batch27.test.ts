@@ -4,7 +4,7 @@ import { bestMoves, computerMove, emptyCells, other, outcome, winOrBlock, type C
 import { colon24, military, parseTime, spoken } from "../src/shared/military-time";
 import { STATURE_BOYS, STATURE_GIRLS } from "../src/shared/height-cdc";
 import { heightAtZ, lmsAt, midParental, normalCdf, percentileProjection, toFeetInches, zScore } from "../src/shared/height";
-import { PLATE_COUNT, PLATE_KINDS, STRENGTH, makeTest, plateColours, rgbToLms, score } from "../src/shared/color-vision";
+import { PLATE_COUNT, PLATE_KINDS, STRENGTH, makeTest, planTest, plateColours, rgbToLms, score } from "../src/shared/color-vision";
 
 describe("sudoku", () => {
   it("makes puzzles with exactly one solution that agree with their clues, the same for the same seed", () => {
@@ -87,6 +87,8 @@ describe("tic-tac-toe", () => {
     expect(computerMove(b("OO.XX...."), "O", "medium", () => 0)).toBe(2);
     expect(computerMove(b("XX..O...."), "O", "medium", () => 0)).toBe(2);
     expect(computerMove(b("X........"), "O", "easy", () => 3)).toBe(4);
+    // Hard opens in a corner or the centre without searching every game.
+    for (let k = 0; k < 5; k++) expect([0, 2, 4, 6, 8]).toContain(computerMove(b("........."), "X", "hard", () => k));
   });
 });
 
@@ -217,6 +219,17 @@ describe("colour vision plates", () => {
       expect(colours.size).toBeGreaterThan(50);
     }
     expect(makeTest(1)).toEqual(test);
+    // No two numbers are each other reversed or upside down.
+    const nums = test.map((p) => p.number);
+    for (const n of nums) {
+      const rev = Number(String(n).split("").reverse().join(""));
+      if (rev !== n) expect(nums).not.toContain(rev);
+    }
+    for (let seed = 1; seed <= 200; seed++) {
+      const ns = planTest(seed).map((p) => p.number);
+      expect(ns.includes(69) && ns.includes(96)).toBe(false);
+      expect(ns.includes(68) && ns.includes(89)).toBe(false);
+    }
     expect(makeTest(2).map((p) => p.number)).not.toEqual(test.map((p) => p.number));
   });
 
@@ -261,6 +274,8 @@ describe("military time in other languages", () => {
     ["晚上12点", "0000"], ["晚上8点", "2000"], ["下午2点半", "1430"], ["凌晨12点", "0000"], ["中午12点", "1200"],
     ["午前0時", "0000"], ["午後0時", "1200"], ["午前0時30分", "0030"],
     ["14 giờ 30", "1430"], ["2 giờ 30 chiều", "1430"], ["8:00 sáng", "0800"], ["12 giờ đêm", "0000"], ["오후 2시 반", "1430"],
+    ["夜里2点", "0200"], ["2 giờ đêm", "0200"], ["밤 2시", "0200"], ["밤 9시", "2100"], ["새벽 4시", "0400"],
+    ["jam 14.30", "1430"], ["pukul 7", "0700"], ["2 siang", "1400"], ["11 siang", "1100"], ["8 malam", "2000"], ["6 pagi", "0600"],
   ])("reads %s", (input, mil) => {
     expect(military(parseTime(input)!)).toBe(mil);
   });

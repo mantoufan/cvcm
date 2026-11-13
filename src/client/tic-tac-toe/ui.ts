@@ -46,6 +46,7 @@ export function mountTicTacToe(host: HTMLElement): void {
       return c;
     }))));
 
+  const newBtn = h("button", { type: "button", class: "btn", "data-action": "new", onClick: () => reset() }, t("ticTacToe.newGame"));
   const computerTurn = () => mode === "computer" && turn !== human && !outcome(board);
 
   const paint = () => {
@@ -85,8 +86,8 @@ export function mountTicTacToe(host: HTMLElement): void {
   const refocus = (had: boolean) => {
     const active = document.activeElement;
     if (!had || (active instanceof HTMLButtonElement && cellEls.includes(active) && !active.disabled)) return;
-    const next = cellEls.find((el) => !el.disabled) ?? cellEls[0];
-    next?.focus();
+    // When the game is over no cell is playable: New game is the next thing to press.
+    (cellEls.find((el) => !el.disabled) ?? newBtn).focus();
   };
 
   const queueComputer = (had: boolean) => {
@@ -138,7 +139,7 @@ export function mountTicTacToe(host: HTMLElement): void {
         levelField,
         sideField,
         h("div", { class: "stage-actions" },
-          h("button", { type: "button", class: "btn", "data-action": "new", onClick: () => reset() }, t("ticTacToe.newGame")),
+          newBtn,
           h("button", { type: "button", class: "btn ghost", "data-action": "clear-score", onClick: () => { clearScore(); paint(); } }, t("ticTacToe.clearScore")),
         ),
         h("p", { class: "hint" }, t("ticTacToe.hint")),

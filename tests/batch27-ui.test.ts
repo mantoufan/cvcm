@@ -136,6 +136,43 @@ describe("sudoku ui", () => {
     expect(count(cand[filled]!)).toBe(fewest);
   });
 
+  it("keeps a game in progress when the level changes until New puzzle is pressed", () => {
+    mountSudoku(host);
+    const p = generate(2027, "medium");
+    const empty = p.clues.findIndex((d) => !d);
+    q<HTMLButtonElement>(`[data-cell="${empty}"]`).click();
+    q<HTMLButtonElement>('[data-digit="1"]').click();
+    set("[data-field=level]", "hard", "change");
+    expect(q("[data-out=number]").textContent).toBe("Puzzle #2027");
+    expect(q("[data-out=status]").textContent).toBe("Your game is kept. Tap New puzzle to start a Hard puzzle.");
+    q<HTMLButtonElement>("[data-action=new]").click();
+    const n = Number(q("[data-out=number]").textContent!.replace(/\D/g, ""));
+    expect(JSON.parse(window.localStorage.getItem("cvcm.sudoku.v1")!)).toMatchObject({ seed: n, level: "hard" });
+  });
+
+  it("undoes Start over on a solved grid back to solved, and Hint starts the clock", () => {
+    vi.useFakeTimers();
+    const p = generate(2027, "medium");
+    const cells = p.solution.slice();
+    const last = p.clues.findIndex((d) => !d);
+    cells[last] = 0;
+    window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 2027, level: "medium", cells, notes: new Array(81).fill(0), elapsed: 90, hints: 1 }));
+    mountSudoku(host);
+    q<HTMLButtonElement>("[data-action=hint]").click();
+    expect(q("[data-out=status]").textContent).toBe("Solved in 1:30 with 2 hints.");
+    q<HTMLButtonElement>("[data-action=restart]").click();
+    expect(q("[data-out=time]").textContent).toBe("0:00");
+    q<HTMLButtonElement>("[data-action=undo]").click();
+    expect(q("[data-out=status]").textContent).toBe("Solved in 1:30 with 2 hints.");
+    unmountSudoku();
+    host.replaceChildren();
+    window.localStorage.clear();
+    mountSudoku(host);
+    q<HTMLButtonElement>("[data-action=hint]").click();
+    vi.advanceTimersByTime(3000);
+    expect(q("[data-out=time]").textContent).toBe("0:03");
+  });
+
   it("starts a new puzzle of the chosen level", () => {
     mountSudoku(host);
     set("[data-field=level]", "easy", "change");
@@ -191,6 +228,16 @@ describe("tic-tac-toe ui", () => {
     vi.advanceTimersByTime(400);
     expect((document.activeElement as HTMLElement).classList.contains("ttt-cell")).toBe(true);
     expect((document.activeElement as HTMLButtonElement).disabled).toBe(false);
+  });
+
+  it("moves focus to New game when the game ends", () => {
+    mountTicTacToe(host);
+    set("[data-field=mode]", "friend", "change");
+    for (const i of [0, 3, 1, 4]) q<HTMLButtonElement>(`[data-cell="${i}"]`).click();
+    const win = q<HTMLButtonElement>('[data-cell="2"]');
+    win.focus();
+    win.click();
+    expect(document.activeElement).toBe(q("[data-action=new]"));
   });
 
   it("lets the computer start when you play O", () => {

@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { t } from "../i18n";
 import { randomBelow } from "../../shared/random";
 import { shortClock } from "../../shared/subtitles";
-import { LEVELS, MAX_SEED, PEERS, boxOf, candidates, colOf, conflicts, generate, rowOf, toLine, type Level, type Puzzle } from "../../shared/sudoku";
+import { LEVELS, MAX_SEED, PEERS, bitCount, boxOf, candidates, colOf, conflicts, generate, rowOf, toLine, type Level, type Puzzle } from "../../shared/sudoku";
 
 const STORE_KEY = "cvcm.sudoku.v1";
 /** The puzzle a first visit (and the prerendered page) starts on, so the page is the same before and after mount. */
@@ -11,7 +11,7 @@ const START = { seed: 2027, level: "medium" as Level };
 const UNDO_LIMIT = 300;
 
 type Saved = { seed: number; level: Level; cells: number[]; notes: number[]; elapsed: number; hints: number };
-type Snapshot = { cells: number[]; notes: number[] };
+type Snapshot = { cells: number[]; notes: number[]; elapsed: number; hints: number };
 
 let mounted: { cleanup: () => void } | null = null;
 
@@ -48,7 +48,15 @@ export function mountSudoku(host: HTMLElement): void {
   let solved = false;
   let timer = 0;
 
-  const levelSel = h("select", { "data-field": "level", onChange: () => newGame() },
+  // A new level starts a new puzzle at once only when there is nothing to lose; otherwise New puzzle does it.
+  const levelSel = h("select", { "data-field": "level", onChange: () => {
+    const started = cells.some((d, i) => d !== puzzle.clues[i]) || notes.some(Boolean);
+    if (started && !solved) {
+      statusEl.textContent = t("sudoku.levelPending", { level: t(`sudoku.l_${levelSel.value}`) });
+      return;
+    }
+    newGame();
+  } },
     ...LEVELS.map((l) => h("option", { value: l, selected: l === puzzle.level }, t(`sudoku.l_${l}`))),
   );
   const numberEl = h("span", { class: "sudoku-number", "data-out": "number" });
@@ -93,9 +101,11 @@ export function mountSudoku(host: HTMLElement): void {
     }
   };
 
+  /** Saves the state for Undo; every change goes through here, so it also starts the clock (Hint and the pad too). */
   const snapshot = () => {
-    undo.push({ cells: cells.slice(), notes: notes.slice() });
+    undo.push({ cells: cells.slice(), notes: notes.slice(), elapsed, hints });
     if (undo.length > UNDO_LIMIT) undo.shift();
+    startTimer();
   };
 
   const isClue = (i: number) => puzzle.clues[i] !== 0;
@@ -149,8 +159,7 @@ export function mountSudoku(host: HTMLElement): void {
       let best = 10;
       cells.forEach((d, k) => {
         if (d) return;
-        let n = 0;
-        for (let m = cand[k]!; m; m &= m - 1) n++;
+        const n = bitCount(cand[k]!);
         if (n < best) {
           best = n;
           i = k;
@@ -228,10 +237,17 @@ export function mountSudoku(host: HTMLElement): void {
     if (!prev) return;
     cells = prev.cells;
     notes = prev.notes;
+    // Undoing Start over brings back that attempt's clock and hints, and a finished grid is finished again.
+    if (prev.elapsed > elapsed || prev.hints > hints) {
+      elapsed = prev.elapsed;
+      hints = prev.hints;
+      timeEl.textContent = clock(elapsed);
+    }
     solved = false;
+    checkSolved();
     save();
     paint();
-    startTimer();
+    if (!solved) startTimer();
   };
 
   const paint = () => {

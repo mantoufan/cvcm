@@ -202,7 +202,18 @@ export function makePlate(kind: PlateKind | "demo", level: number, number: numbe
   return { kind, level, number, dots };
 }
 
-/** Two-digit numbers for the plates, never repeating within a test and never a mirrored or easily misread pair. */
+/** The number with its digits swapped (69 → 96) and read upside down (69 → 69, 68 → 89): the likely misreadings. */
+function lookalikes(n: number): number[] {
+  const s = String(n);
+  const flip: Record<string, string> = { "6": "9", "9": "6", "0": "0", "1": "1", "8": "8" };
+  const upside = [...s].reverse().every((d) => flip[d]) ? Number([...s].reverse().map((d) => flip[d]).join("")) : n;
+  return [Number([...s].reverse().join("")), upside];
+}
+
+/**
+ * Two-digit numbers for the plates, never repeating within a test, without 0s or twin digits, and never two that
+ * are each other reversed or upside down (12 and 21, 69 and 96), so a misread plate is not scored as another's number.
+ */
 function pickNumbers(count: number, rand: () => number): number[] {
   const pool: number[] = [];
   for (let n = 12; n <= 98; n++) if (n % 10 !== 0 && n % 11 !== 0) pool.push(n);
@@ -210,21 +221,39 @@ function pickNumbers(count: number, rand: () => number): number[] {
   while (out.length < count) {
     const n = pool.splice(Math.floor(rand() * pool.length), 1)[0]!;
     out.push(n);
+    for (const twin of lookalikes(n)) {
+      const at = pool.indexOf(twin);
+      if (at >= 0) pool.splice(at, 1);
+    }
   }
   return out;
 }
 
 export const PLATE_COUNT = 1 + PLATE_KINDS.length * 4;
 
+/** What a plate shows, before its dots are drawn. */
+export type PlateSpec = { kind: PlateKind | "demo"; level: number; number: number; seed: number };
+
 /**
  * A whole test for `seed`: the demo plate first, then four plates of each kind (strongest to subtlest) in a shuffled
- * order. Same seed, same test.
+ * order. Same seed, same test. Each plate has its own seed, so the page draws one plate at a time (`buildPlate`).
  */
-export function makeTest(seed: number): Plate[] {
+export function planTest(seed: number): PlateSpec[] {
   const rand = seeded(seed * 2_654_435_761);
   const numbers = pickNumbers(PLATE_COUNT, rand);
   const specs = shuffle(PLATE_KINDS.flatMap((kind) => [0, 1, 2, 3].map((level) => ({ kind, level }))), (n) => Math.floor(rand() * n));
-  return [makePlate("demo", 0, numbers[0]!, rand), ...specs.map((s, i) => makePlate(s.kind, s.level, numbers[i + 1]!, rand))];
+  const plateSeed = () => Math.floor(rand() * 0x1_0000_0000);
+  return [
+    { kind: "demo" as const, level: 0, number: numbers[0]!, seed: plateSeed() },
+    ...specs.map((s, i) => ({ ...s, number: numbers[i + 1]!, seed: plateSeed() })),
+  ];
+}
+
+export const buildPlate = (spec: PlateSpec): Plate => makePlate(spec.kind, spec.level, spec.number, seeded(spec.seed));
+
+/** Every plate of a test, drawn. */
+export function makeTest(seed: number): Plate[] {
+  return planTest(seed).map(buildPlate);
 }
 
 export type Verdict = { kind: PlateKind; correct: number; total: number; grade: "normal" | "mild" | "strong" };
@@ -233,7 +262,7 @@ export type Verdict = { kind: PlateKind; correct: number; total: number; grade: 
  * Per kind: plates read right out of four. Missing only the subtlest is normal on most screens; missing two is a
  * sign of a mild deficiency, three or four of a strong one.
  */
-export function score(plates: readonly Plate[], answers: readonly (number | null)[]): Verdict[] {
+export function score(plates: readonly Pick<PlateSpec, "kind" | "number">[], answers: readonly (number | null)[]): Verdict[] {
   return PLATE_KINDS.map((kind) => {
     let correct = 0, total = 0;
     plates.forEach((p, i) => {

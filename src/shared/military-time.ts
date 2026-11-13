@@ -2,11 +2,11 @@
 
 export type ClockTime = { h: number; m: number; s: number | null; /** Typed as 2400: the end of the day, the same instant as 0000 the next day. */ endOfDay: boolean };
 
-const AM = /^(am|a\.m\.?|a|上午|早上|早晨|凌晨|午前|오전|sa|s\.a\.?|sáng)$/i;
-const PM = /^(pm|p\.m\.?|p|下午|中午|傍晚|午後|오후|ch|c\.h\.?|chiều|trưa)$/i;
-/** Evening words: PM, except that 12 in the evening is midnight (晚上12点, 12 giờ đêm). */
-const NIGHT = /^(晚上|夜里|夜裡|夜晚|夜|밤|tối|đêm)$/i;
-const MARKERS = String.raw`[ap]\.?\s?m\.?|[ap]|s\.?a\.?|c\.?h\.?|sáng|chiều|trưa|tối|đêm|上午|早上|早晨|凌晨|下午|中午|傍晚|晚上|夜里|夜裡|夜晚|午前|午後|오전|오후|밤`;
+const AM = /^(am|a\.m\.?|a|上午|早上|早晨|凌晨|午前|오전|새벽|sa|s\.a\.?|sáng|pagi)$/i;
+const PM = /^(pm|p\.m\.?|p|下午|中午|傍晚|午後|오후|ch|c\.h\.?|chiều|trưa|siang|sore)$/i;
+/** Night words: 6–11 are evening (PM), 12 is midnight and 1–5 the small hours (夜里2点, 2 giờ đêm, 밤 2시). */
+const NIGHT = /^(晚上|夜里|夜裡|夜晚|夜|밤|tối|đêm|malam)$/i;
+const MARKERS = String.raw`[ap]\.?\s?m\.?|[ap]|s\.?a\.?|c\.?h\.?|sáng|chiều|trưa|tối|đêm|pagi|siang|sore|malam|上午|早上|早晨|凌晨|下午|中午|傍晚|晚上|夜里|夜裡|夜晚|午前|午後|오전|오후|새벽|밤`;
 const TAIL = new RegExp(`^(.*?)\\s*(${MARKERS})$`, "i");
 const HEAD = new RegExp(`^(${MARKERS.replace(String.raw`[ap]\.?\s?m\.?|[ap]|`, "")})\\s*(.*)$`, "i");
 
@@ -37,6 +37,8 @@ export function parseTime(raw: string): ClockTime | null {
   let text = raw.trim()
     .replace(/[：]/g, ":")
     .replace(/\s*(hours?|hrs?|horas?|jam)\.?$/i, "")
+    // Indonesian writes the hour word first: "jam 14.30", "pukul 7".
+    .replace(/^(jam|pukul)\s*/i, "")
     .replace(/(\d)\s*h$/i, "$1")
     // Hour words between the hour and the minutes are a colon ("2点30", "2시 30분", "14 giờ 30"); 半 is half past.
     .replace(/\s*(?:[时時시点點]|giờ)\s*[半반]/gi, ":30")
@@ -67,7 +69,9 @@ export function parseTime(raw: string): ClockTime | null {
   if (mer) {
     // 0–12 with a marker; 0 is how Japan writes the hour after midnight or noon (午前0時, 午後0時).
     if (h > 12) return null;
-    if (mer === "night") h = h === 12 ? 0 : (h % 12) + 12;
+    if (mer === "night") h = h === 12 ? 0 : h < 6 ? h : h + 12;
+    // Indonesian siang runs from about 11 to 3: "11 siang" is still morning.
+    else if (mer === "pm" && h === 11 && /siang/i.test(raw)) h = 11;
     else h = (h % 12) + (mer === "pm" ? 12 : 0);
     return { h, m, s, endOfDay: false };
   }

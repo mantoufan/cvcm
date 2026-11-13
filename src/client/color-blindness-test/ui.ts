@@ -1,7 +1,7 @@
 import { h } from "../dom";
 import { t } from "../i18n";
 import { randomBelow } from "../../shared/random";
-import { PLATE_COUNT, makeTest, score, type Plate } from "../../shared/color-vision";
+import { PLATE_COUNT, buildPlate, planTest, score, type Plate, type PlateSpec } from "../../shared/color-vision";
 
 const SVG = "http://www.w3.org/2000/svg";
 /** The test a first visit (and the prerendered page) shows, so the page is the same before and after mount. */
@@ -31,7 +31,8 @@ export function plateSvg(plate: Plate, label: string): SVGSVGElement {
 
 export function mountColorBlindnessTest(host: HTMLElement): void {
   unmountColorBlindnessTest();
-  let plates = makeTest(START_SEED);
+  // Plates are drawn when shown (each one is a few thousand dart throws), not all at once.
+  let plates: PlateSpec[] = planTest(START_SEED);
   let answers: (number | null)[] = [];
   let index = 0;
 
@@ -64,7 +65,7 @@ export function mountColorBlindnessTest(host: HTMLElement): void {
   result.hidden = true;
 
   const showPlate = () => {
-    const plate = plates[index]!;
+    const plate = buildPlate(plates[index]!);
     stage.replaceChildren(plateSvg(plate, t("colorBlindnessTest.plateLabel", { n: index + 1 })));
     progress.textContent = t("colorBlindnessTest.progress", { n: index + 1, total: PLATE_COUNT });
     answer.value = "";
@@ -137,7 +138,7 @@ export function mountColorBlindnessTest(host: HTMLElement): void {
   };
 
   const restart = (seed: number) => {
-    plates = makeTest(seed);
+    plates = planTest(seed);
     answers = [];
     index = 0;
     result.hidden = true;
