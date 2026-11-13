@@ -69,11 +69,15 @@ try {
   const { total } = child("the page count", { PRERENDER_COUNT_ONLY: "1" });
   const shards = Math.max(1, Math.ceil(total / PAGES_PER_PROCESS));
   for (let shard = 0; shard < shards; shard++) {
+    const shardStarted = Date.now();
     const part = child(`shard ${shard + 1}/${shards}`, { PRERENDER_SHARD: `${shard}/${shards}` });
+    console.log(`prerender: shard ${shard + 1}/${shards}: ${part.written} pages, ${part.failed.length} skipped in ${((Date.now() - shardStarted) / 1000).toFixed(1)}s`);
     written += part.written;
     failed.push(...part.failed);
     for (const error of part.errors) errors.add(error);
   }
+  // Every page is either written or skipped by exactly one shard; anything else means the shards missed pages.
+  if (written + failed.length !== total) throw new Error(`prerender: shards covered ${written + failed.length} of ${total} pages`);
 } finally {
   rmSync(outfile, { force: true });
   rmSync(report, { force: true });
