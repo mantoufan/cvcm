@@ -1,6 +1,6 @@
 /**
- * Internet slang dictionary under `/{locale}/slang/{id}/`: what a Chinese or English internet word means, where it
- * came from and how people use it, written for "what does X mean" searches. Entries were chosen from Google Ads
+ * The Memes channel under `/{locale}/memes/{id}/` (the slang dictionary until 2026-11-13; `/slang/` 301s here): what a
+ * meme or an internet word means, where and when it started and how people use it, written for "what is X" searches. Entries were chosen from Google Ads
  * Keyword Planner volume (2026-11), plus 334424044, a Cantonese song lyric people ask about.
  */
 export const SLANG_SEGMENT = "memes";
@@ -49,10 +49,20 @@ export type SlangMeta = {
 
 export const SLANG_PUBLISHED = "2026-11-10";
 
-/** Entries added after the first batch, with their publish date (the meme channel, 2026-11-13). */
-export const SLANG_ADDED: Partial<Record<SlangId, string>> = Object.fromEntries(
-  (["brainrot", "classic", "viral", "gen-alpha", "zh-memes"] as const).flatMap((group) => SLANG_GROUPS.find((g) => g.id === group)!.entries.map((id) => [id, "2026-11-13"])),
-);
+/** Entries added after the first batch, by id, with the day each went live (set by hand when adding entries). */
+export const SLANG_ADDED: Partial<Record<SlangId, string>> = {
+  "italian-brainrot": "2026-11-13", "tung-tung-tung-sahur": "2026-11-13", "tralalero-tralala": "2026-11-13",
+  "ballerina-cappuccina": "2026-11-13", "brr-brr-patapim": "2026-11-13", "cappuccino-assassino": "2026-11-13",
+  "skibidi-toilet": "2026-11-13", "john-pork": "2026-11-13", "smurf-cat": "2026-11-13", pepe: "2026-11-13",
+  doge: "2026-11-13", wojak: "2026-11-13", gigachad: "2026-11-13", trollface: "2026-11-13", rickroll: "2026-11-13",
+  "nyan-cat": "2026-11-13", harambe: "2026-11-13", "this-is-fine": "2026-11-13", stonks: "2026-11-13",
+  "chill-guy": "2026-11-13", "moo-deng": "2026-11-13", popcat: "2026-11-13", "huh-cat": "2026-11-13",
+  "banana-cat": "2026-11-13", "grimace-shake": "2026-11-13", aura: "2026-11-13", mewing: "2026-11-13",
+  sigma: "2026-11-13", bussin: "2026-11-13", unc: "2026-11-13", mog: "2026-11-13", brainrot: "2026-11-13",
+  sus: "2026-11-13", chopped: "2026-11-13", ohio: "2026-11-13", "fanum-tax": "2026-11-13", aoligei: "2026-11-13",
+  huaji: "2026-11-13", goutou: "2026-11-13", xiaochou: "2026-11-13", jinitaimei: "2026-11-13",
+  "yaoyao-lingxian": "2026-11-13", songchigan: "2026-11-13", xianyanbao: "2026-11-13", juejuezi: "2026-11-13",
+};
 
 /** When an entry went live. */
 export function slangPublished(id: SlangId): string {

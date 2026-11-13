@@ -36,7 +36,9 @@ async function getJson(url, headers = {}) {
     const res = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(60_000) }).catch((error) => ({ ok: false, status: 0, error }));
     if (res.ok) return res.json();
     if (res.status === 404) return null;
-    if (attempt >= 3) throw new Error(`${res.status || res.error?.message} ${url}`);
+    // A client error (bad id, bad key) will not fix itself: report the body instead of spending two more calls.
+    const final = attempt >= 3 || (res.status >= 400 && res.status < 500 && res.status !== 429);
+    if (final) throw new Error(`${res.status || res.error?.message} ${url}${res.text ? `: ${(await res.text()).slice(0, 300)}` : ""}`);
     await new Promise((r) => setTimeout(r, 2000 * attempt));
   }
 }
@@ -71,6 +73,13 @@ async function trendOf(wiki, end) {
     return sum;
   });
   return { w: weeks, to: day(end) };
+}
+
+/** RANKINGS_ONLY (the workflow's `only` input) limits a manual run; this script runs when it is empty or lists "memes". */
+const only = (process.env.RANKINGS_ONLY ?? "").split(",").map((id) => id.trim()).filter(Boolean);
+if (only.length && !only.includes("memes")) {
+  console.log(`meme: skipped (RANKINGS_ONLY=${process.env.RANKINGS_ONLY})`);
+  process.exit(0);
 }
 
 const trend = {};
@@ -129,6 +138,7 @@ if (!key) {
         rank: c.cmc_rank ?? null,
       };
     }
+    if (!Object.keys(next).length) throw new Error("no coin passed the checks (response shape changed?); keeping the last quotes");
     // The quote time moves only with the quotes, so an unchanged snapshot leaves the file byte-identical.
     if (JSON.stringify(next) !== JSON.stringify(coins)) {
       coins = next;

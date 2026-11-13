@@ -793,7 +793,7 @@ let failures = 0;
 const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter((id) => id && id !== "memes");
 // Set but empty (an unfilled input) means every table, not none.
 const only = listed?.length ? listed : undefined;
-if (process.env.RANKINGS_ONLY?.trim() && !listed.length) {
+if (!listed.length && process.env.RANKINGS_ONLY?.split(",").some((id) => id.trim() === "memes")) {
   // Only "memes" was asked for: that is scripts/fetch-meme.mjs's job, so leave every table as it is.
   console.log("RANKINGS_ONLY names no rankings table; nothing to refresh here.");
   process.exit(0);

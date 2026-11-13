@@ -3,6 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import enHub from "../src/locales/slang/en.json";
+import coinsSnapshot from "../src/shared/meme-coins.json";
 import worker from "../src/worker";
 import { LOCALES, type Locale } from "../src/shared/locale";
 import { preloadLocalePack } from "../src/shared/locale-preload";
@@ -315,7 +316,7 @@ describe("slang: page HTML and SEO", () => {
     }
     // The zh-CN pack carries no quotes at all, not just unrendered ones.
     expect(slangMessages("zh-CN").memes.coins).toEqual({});
-    expect(Object.keys(slangMessages("en").memes.coins).length).toBeGreaterThan(0);
+    expect(slangMessages("en").memes.coins).toEqual(coinsSnapshot.coins);
   });
 
   it("has the nav label in every core pack", () => {

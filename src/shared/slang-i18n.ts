@@ -97,7 +97,8 @@ function priorViews(trend: MemeTrend): number {
 export function memeDir(trend: MemeTrend): MemeDir {
   const recent = recentViews(trend);
   const before = priorViews(trend);
-  if (before === 0) return recent > 0 ? "up" : "flat";
+  // No views before (a new or renamed article): nothing to compare with, so not "rising".
+  if (before === 0) return "flat";
   return recent >= before * 1.25 ? "up" : recent <= before * 0.8 ? "down" : "flat";
 }
 
@@ -113,13 +114,20 @@ const TRENDING_FLOOR = 500;
  * Growth, not raw views, so memes measured on a smaller Wikipedia (zh) compete fairly with English ones; each keeps its
  * own rising/steady badge, so the list never claims a steady meme is rising.
  */
-export function trendingIds(locale: Locale, limit: number): { id: SlangId; trend: MemeTrend }[] {
-  const growth = (t: MemeTrend) => recentViews(t) / Math.max(1, priorViews(t));
+export function trendingIds(locale: Locale, limit: number): { id: SlangId; trend: MemeTrend; dir: MemeDir }[] {
   return SLANG_ENTRIES
-    .map((id) => ({ id, trend: memeTrend(locale, id) }))
-    .filter((x): x is { id: SlangId; trend: MemeTrend } => x.trend !== null && recentViews(x.trend) >= TRENDING_FLOOR && memeDir(x.trend) !== "down")
-    .sort((a, b) => growth(b.trend) - growth(a.trend) || recentViews(b.trend) - recentViews(a.trend))
-    .slice(0, limit);
+    .flatMap((id) => {
+      const trend = memeTrend(locale, id);
+      if (!trend) return [];
+      const recent = recentViews(trend);
+      const prior = priorViews(trend);
+      const dir = memeDir(trend);
+      // Both windows need real traffic: a tiny or brand-new article's jump is not news.
+      return recent >= TRENDING_FLOOR && prior >= TRENDING_FLOOR / 5 && dir !== "down" ? [{ id, trend, dir, recent, growth: recent / prior }] : [];
+    })
+    .sort((a, b) => b.growth - a.growth || b.recent - a.recent)
+    .slice(0, limit)
+    .map(({ id, trend, dir }) => ({ id, trend, dir }));
 }
 
 /** "2025-03" or "2025" as a month or a year in the reader's language. */
@@ -194,9 +202,9 @@ function hubTrendingHtml(locale: Locale): string {
   const list = trendingIds(locale, 10);
   if (!list.length) return "";
   const ui = slangUi(locale);
-  const items = list.map(({ id, trend }) => {
+  const items = list.map(({ id, dir }) => {
     const { name, blurb } = slangName(locale, id);
-    return `<li><a href="${escapeHtml(slangHref(locale, id))}" data-nav="slang-${id}"><strong>${escapeHtml(name)}</strong>${dirBadge(locale, memeDir(trend))}<span>${escapeHtml(blurb)}</span></a></li>`;
+    return `<li><a href="${escapeHtml(slangHref(locale, id))}" data-nav="slang-${id}"><strong>${escapeHtml(name)}</strong>${dirBadge(locale, dir)}<span>${escapeHtml(blurb)}</span></a></li>`;
   }).join("");
   return `<section class="wall meme-trending" id="trending"><h2>${escapeHtml(ui.trending)}</h2><ol class="links">${items}</ol><p class="meme-note">${escapeHtml(ui.trendingNote)}</p></section>`;
 }

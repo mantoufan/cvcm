@@ -36,18 +36,13 @@ jobs:
           COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
           RANKINGS_FAILURES_FILE: ${{ runner.temp }}/rankings-failures.txt
           RANKINGS_ONLY: ${{ inputs.only }}
-      # A manual run limited to some tables skips this unless "memes" is listed.
+      # Skips itself on a manual run whose `only` does not list "memes".
       - name: Fetch meme trends and coins
-        run: |
-          if [ -z "$ONLY" ] || echo ",$ONLY," | tr -d ' ' | grep -q ',memes,'; then
-            node scripts/fetch-meme.mjs
-          else
-            echo "Skipped: only=$ONLY"
-          fi
+        run: node scripts/fetch-meme.mjs
         env:
           COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
           RANKINGS_FAILURES_FILE: ${{ runner.temp }}/rankings-failures.txt
-          ONLY: ${{ inputs.only }}
+          RANKINGS_ONLY: ${{ inputs.only }}
       - run: node scripts/write-sitemap.mjs
       # The same checks as the deploy, so data that would break it never reaches main.
       - run: npm test
