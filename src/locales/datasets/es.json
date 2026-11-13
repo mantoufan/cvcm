@@ -1203,7 +1203,7 @@
   "rankings": {
     "hub": {
       "title": "Rankings: mejores IA, cuota de mercado y más, con fuentes | cv.cm",
-      "description": "Rankings con fuente que puedes ordenar y descargar: los mejores modelos de IA, la IA más usada, cuota de mercado de navegadores, sistemas operativos, buscadores, móviles y redes sociales, y las montañas más altas, los ríos más largos y los lagos e islas más grandes del mundo.",
+      "description": "Rankings con fuentes que puedes ordenar y descargar: los mejores modelos de IA, la IA más usada, cuota de mercado de navegadores, sistemas operativos, buscadores, móviles y redes sociales, las montañas y edificios más altos, las ciudades más grandes, los mayores desiertos y estadios, y más.",
       "h1": "Rankings",
       "lede": "Rankings elaborados con datos abiertos, cada uno con su fuente, licencia y fecha. Ordena cualquier columna, filtra filas o descarga el CSV.",
       "groups": {
@@ -1211,7 +1211,8 @@
         "share": "Cuota de mercado",
         "countries": "Países",
         "markets": "Mercados",
-        "geography": "Geografía"
+        "geography": "Geografía",
+        "cities": "Ciudades y edificios"
       },
       "makeYourOwn": "Crea tu propio ranking",
       "about": [
@@ -1221,15 +1222,15 @@
       "faq": [
         {
           "q": "¿De dónde proceden los datos?",
-          "a": "La calidad de la IA viene del ranking de Arena, el uso de IA de OpenRouter, la cuota de mercado de StatCounter Global Stats, la altitud de las montañas de Wikidata, y los ríos, lagos e islas de las listas de Wikipedia. Cada página enlaza su fuente y licencia."
+          "a": "La calidad de la IA viene de la clasificación de Arena, el uso de la IA de OpenRouter, la cuota de mercado de StatCounter Global Stats, la altura de las montañas de Wikidata, y los ríos, lagos, islas, desiertos, edificios, ciudades y estadios de las listas de Wikipedia. Cada página enlaza su fuente y su licencia."
         },
         {
           "q": "¿Con qué frecuencia se actualizan los rankings?",
-          "a": "Se actualizan automáticamente una vez al día y cada página muestra la fecha de sus datos. Las fuentes publican a distinto ritmo: la cuota de mercado es mensual, las montañas, ríos, lagos e islas se revisan cada mes y las tablas de IA cambian más a menudo."
+          "a": "Se actualizan automáticamente una vez al día y cada página muestra la fecha de sus datos. Las fuentes publican a ritmos distintos: la cuota de mercado es mensual, las listas de geografía, ciudades y edificios se revisan cada mes y las tablas de IA cambian más a menudo."
         },
         {
           "q": "¿Puedo reutilizar estas tablas?",
-          "a": "Sí, con la licencia de la fuente que indica cada página: CC BY 4.0 para las tablas de IA, CC BY-SA 3.0 para la cuota de mercado, CC0 (sin condiciones) para las montañas y CC BY-SA 4.0 para los ríos, lagos e islas. Cita la fuente. La mayoría de las tablas se pueden descargar en CSV."
+          "a": "Sí, con la licencia de la fuente que indica cada página: CC BY 4.0 para las tablas de IA, CC BY-SA 3.0 para la cuota de mercado, CC0 (sin condiciones) para las montañas y CC BY-SA 4.0 para las tablas sacadas de listas de Wikipedia. Cita la fuente. La mayoría de las tablas se pueden descargar en CSV."
         }
       ]
     },
@@ -1334,7 +1335,25 @@
         "saline": "Salada",
         "variable": "Variable"
       },
-      "unnamedIsland": "Isla sin nombre"
+      "unnamedIsland": "Isla sin nombre",
+      "desert": "Desierto",
+      "desertType": "Tipo",
+      "deserts": {
+        "polar": "Polar",
+        "subtropical": "Subtropical",
+        "tropical": "Tropical",
+        "cold": "Invierno frío",
+        "coastal": "Costero"
+      },
+      "building": "Edificio",
+      "height": "Altura",
+      "heightFt": "Altura (ft)",
+      "floors": "Pisos",
+      "city": "Ciudad",
+      "completed": "Terminado",
+      "population": "Población",
+      "stadium": "Estadio",
+      "capacity": "Capacidad"
     },
     "sets": {
       "ai-models": {
@@ -1857,6 +1876,122 @@
           {
             "q": "¿Qué país tiene más islas grandes?",
             "a": "{countryLead}: {countryCount} de las {rows} islas de esta lista le pertenecen."
+          }
+        ]
+      },
+      "largest-deserts": {
+        "title": "Desiertos más grandes del mundo: los {rows} mayores por superficie | cv.cm",
+        "description": "Los {rows} desiertos más grandes de la Tierra: {top1} {v1}, {top2} {v2}, {top3} {v3}. Superficie en km² y millas cuadradas, tipo de desierto y países que cruza.",
+        "h1": "Los {rows} desiertos más grandes del mundo",
+        "lede": "Los {rows} desiertos más grandes de la Tierra por superficie, incluidos los polares, con su superficie en kilómetros y millas cuadradas, el tipo de desierto y los países que cruza. De la lista de desiertos por superficie de Wikipedia.",
+        "facts": [
+          "El mayor: {top1}, con {v1} ({alt1} mi²), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "Más desiertos en la lista: {countryLead}, con {countryCount}. Un desierto que cruza varios países cuenta para cada uno.",
+          "El número {lowRank} es {low1}, con {lv1}."
+        ],
+        "about": [
+          "Un desierto se define por lo poco que llueve o nieva, normalmente menos de 250 mm al año, no por el calor ni por la arena. Por eso el hielo de la Antártida y del Ártico son los dos mayores desiertos. Entre los desiertos cálidos, el Sahara es con mucho el más grande.",
+          "Cada fuente traza los límites de un desierto a su manera, así que las superficies están redondeadas y varían entre listas. Las superficies, los tipos y los países proceden de la lista de la Wikipedia en inglés (CC BY-SA 4.0); los nombres en cada idioma, de Wikidata (CC0). La Antártida no pertenece a ningún país y muestra un guion."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el desierto más grande del mundo?",
+            "a": "{top1}, con unos {v1} ({alt1} mi²). Un desierto es un lugar con muy pocas precipitaciones, y la Antártida recibe menos que casi cualquier otro sitio."
+          },
+          {
+            "q": "¿Cuál es el desierto cálido más grande?",
+            "a": "El Sahara, en el norte de África, con unos 9,2 millones de km². Es el tercer desierto más grande, después de los desiertos polares de la Antártida y del Ártico."
+          },
+          {
+            "q": "¿Qué país tiene más desiertos grandes?",
+            "a": "{countryLead}: {countryCount} de los {rows} desiertos de esta lista están allí."
+          }
+        ]
+      },
+      "tallest-buildings": {
+        "title": "Edificios más altos del mundo: los {rows} mayores rascacielos | cv.cm",
+        "description": "Los {rows} edificios más altos de la Tierra: {top1} {v1}, {top2} {v2}, {top3} {v3}. Altura en metros y pies, pisos, ciudad, país y año de terminación.",
+        "h1": "Los {rows} edificios más altos del mundo",
+        "lede": "Los {rows} edificios terminados más altos de la Tierra, medidos hasta su remate arquitectónico, con la altura en metros y pies, los pisos sobre el suelo, la ciudad, el país y el año en que se terminaron. De la lista de los edificios más altos de Wikipedia.",
+        "facts": [
+          "El más alto: {top1}, con {v1} ({ft1} ft), seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "Más edificios en la lista: {countryLead}, con {countryCount} de {rows}.",
+          "El número {lowRank} es {low1}, con {lv1}."
+        ],
+        "about": [
+          "La altura se mide desde la entrada principal más baja hasta el remate arquitectónico, con las agujas y sin antenas ni mástiles. Solo cuentan los edificios con pisos utilizables, así que las torres de televisión y radio como la Tokyo Skytree no están en la lista, y los edificios en construcción no entran hasta que se terminan.",
+          "Las alturas, los pisos, las ciudades, los países y los años proceden de la lista de la Wikipedia en inglés (CC BY-SA 4.0); los nombres en cada idioma, de Wikidata (CC0). Algunas torres nuevas aún no tienen artículo en Wikipedia y conservan su nombre en inglés."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el edificio más alto del mundo?",
+            "a": "{top1}, en Dubái, con {v1} ({ft1} ft). Es el más alto desde su inauguración en 2010."
+          },
+          {
+            "q": "¿Cuál es el segundo edificio más alto del mundo?",
+            "a": "{top2}, con {v2}. {top3} es el tercero, con {v3}."
+          },
+          {
+            "q": "¿Qué país tiene más rascacielos superaltos?",
+            "a": "{countryLead}: {countryCount} de los {rows} edificios de esta lista están allí."
+          }
+        ]
+      },
+      "largest-cities": {
+        "title": "Ciudades más grandes del mundo por población: las {rows} mayores (ONU 2025) | cv.cm",
+        "description": "Las {rows} ciudades más pobladas: {top1} {v1}, {top2} {v2}, {top3} {v3}. Población según World Urbanization Prospects 2025 de la ONU, con el país.",
+        "h1": "Las {rows} ciudades más grandes del mundo",
+        "lede": "Las {rows} ciudades más pobladas de la Tierra, ordenadas según las estimaciones de World Urbanization Prospects 2025 de las Naciones Unidas para cada área urbana, con su país. De la lista de las ciudades más grandes de Wikipedia.",
+        "facts": [
+          "La mayor: {top1}, con {m1} habitantes, seguida de {top2} ({m2}) y {top3} ({m3}).",
+          "Más ciudades en la lista: {countryLead}, con {countryCount} de {rows}.",
+          "El número {lowRank} es {low1}, con {lv1} habitantes."
+        ],
+        "about": [
+          "El tamaño de una ciudad depende de dónde se trace su límite. La ciudad propiamente dicha acaba en su límite oficial, el área urbana sigue el suelo edificado y el área metropolitana suma las localidades de donde llega la gente a trabajar. Esta tabla usa las estimaciones de la ONU de 2025, que miden todas las ciudades del mismo modo, por su área edificada continua. Con esa medida, Yakarta ha superado a Tokio, que sigue en cabeza en las listas que usan los métodos antiguos de la ONU.",
+          "La población y los países proceden de la lista de la Wikipedia en inglés (CC BY-SA 4.0), que cita las cifras de la ONU; los nombres en cada idioma, de Wikidata (CC0). Las estimaciones están redondeadas y cambian con cada revisión de la ONU."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es la ciudad más grande del mundo?",
+            "a": "{top1}, con unos {m1} habitantes según la estimación de la ONU de 2025. Las listas que usan límites administrativos o los métodos antiguos de la ONU suelen poner primero a Tokio."
+          },
+          {
+            "q": "¿Por qué no coinciden las listas de las ciudades más grandes?",
+            "a": "Trazan el límite de la ciudad en lugares distintos: dentro del límite oficial, alrededor del área edificada o alrededor de toda la zona de desplazamientos diarios. Cada una da cifras y un orden diferentes."
+          },
+          {
+            "q": "¿Qué país tiene más ciudades grandes?",
+            "a": "{countryLead}: {countryCount} de las {rows} ciudades de esta lista están allí."
+          }
+        ]
+      },
+      "largest-stadiums": {
+        "title": "Estadios más grandes del mundo: los {rows} mayores por capacidad | cv.cm",
+        "description": "Los {rows} estadios más grandes por capacidad: {top1} {v1}, {top2} {v2}, {top3} {v3}. Asientos, ciudad y país de cada estadio.",
+        "h1": "Los {rows} estadios más grandes del mundo",
+        "lede": "Los {rows} estadios deportivos más grandes de la Tierra por capacidad, el número de espectadores que caben normalmente, con su ciudad y país. De la lista de estadios por capacidad de Wikipedia.",
+        "facts": [
+          "El mayor: {top1}, con {v1} asientos, seguido de {top2} ({v2}) y {top3} ({v3}).",
+          "Más estadios en la lista: {countryLead}, con {countryCount} de {rows}.",
+          "El número {lowRank} es {low1}, con {lv1} asientos."
+        ],
+        "about": [
+          "La capacidad es el número de espectadores que caben normalmente en un estadio, sin gradas temporales. Los circuitos de carreras, donde caben más personas, no son estadios y no están en la lista. La capacidad cambia cuando un estadio se reforma, y la lista sigue cada cambio.",
+          "Las capacidades, las ciudades y los países proceden de la lista de la Wikipedia en inglés (CC BY-SA 4.0); los nombres en cada idioma, de Wikidata (CC0)."
+        ],
+        "faq": [
+          {
+            "q": "¿Cuál es el estadio más grande del mundo?",
+            "a": "{top1}, en Ahmedabad (India), un estadio de críquet con capacidad para {v1} espectadores."
+          },
+          {
+            "q": "¿La capacidad incluye localidades de pie o gradas temporales?",
+            "a": "No. La capacidad es el número de espectadores que caben normalmente en el estadio; las gradas montadas para un solo evento no cuentan y los circuitos de carreras no se consideran estadios."
+          },
+          {
+            "q": "¿Qué país tiene más estadios grandes?",
+            "a": "{countryLead}: {countryCount} de los {rows} estadios de esta lista están allí."
           }
         ]
       }

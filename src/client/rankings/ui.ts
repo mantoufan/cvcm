@@ -11,12 +11,16 @@ import { dataTable } from "../datasets/ui";
 import type { DatasetId } from "../../shared/datasets";
 import { datasetLinkMeta, datasetName } from "../../shared/datasets-i18n";
 
-/** Geography rows, one chunk per table: literal imports, so Vite splits them (import.meta.glob breaks the prerender). */
+/** Place rows (geography, cities and buildings), one chunk per table: literal imports, so Vite splits them (import.meta.glob breaks the prerender). */
 const GEO_ROWS: Partial<Record<RankingId, () => Promise<{ default: unknown }>>> = {
   "tallest-mountains": () => import("../../shared/rankings-geo/tallest-mountains.json"),
   "longest-rivers": () => import("../../shared/rankings-geo/longest-rivers.json"),
   "largest-lakes": () => import("../../shared/rankings-geo/largest-lakes.json"),
   "largest-islands": () => import("../../shared/rankings-geo/largest-islands.json"),
+  "largest-deserts": () => import("../../shared/rankings-geo/largest-deserts.json"),
+  "tallest-buildings": () => import("../../shared/rankings-geo/tallest-buildings.json"),
+  "largest-cities": () => import("../../shared/rankings-geo/largest-cities.json"),
+  "largest-stadiums": () => import("../../shared/rankings-geo/largest-stadiums.json"),
 };
 
 /** Country tables that are rankings too: the hub links them rather than repeating them. */

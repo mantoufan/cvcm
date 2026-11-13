@@ -5,13 +5,28 @@ import mountainRows from "../src/shared/rankings-geo/tallest-mountains.json";
 import riverRows from "../src/shared/rankings-geo/longest-rivers.json";
 import lakeRows from "../src/shared/rankings-geo/largest-lakes.json";
 import islandRows from "../src/shared/rankings-geo/largest-islands.json";
+import desertRows from "../src/shared/rankings-geo/largest-deserts.json";
+import buildingRows from "../src/shared/rankings-geo/tallest-buildings.json";
+import cityRows from "../src/shared/rankings-geo/largest-cities.json";
+import stadiumRows from "../src/shared/rankings-geo/largest-stadiums.json";
 import { LOCALES } from "../src/shared/locale";
 import { appHref, parseAppPath, rankingHref } from "../src/shared/path";
-import { RANKINGS, RANKING_REGIONS, RANKING_SOURCE, rankingCsvHref, rankingKind, rankingMeta, type IslandRow, type LakeRow, type MountainRow, type RiverRow, rankingGroupOf, rankingRowsChunk } from "../src/shared/rankings";
+import { RANKINGS, RANKING_REGIONS, RANKING_SOURCE, rankingCsvHref, rankingKind, rankingMeta, type BuildingRow, type IslandRow, type LakeRow, type MountainRow, type RiverRow, isPlaceRanking, rankingGroupOf, rankingRowsChunk } from "../src/shared/rankings";
 import { rankingFaqItems, rankingHub, rankingJsonLd, rankingName, rankingPageCopy, rankingStaticHtml, rankingTable, rankingTitle } from "../src/shared/rankings-i18n";
 import { applyHtmlSeo } from "../src/shared/seo";
 
-const geoRows: Record<string, unknown[]> = { "tallest-mountains": mountainRows, "longest-rivers": riverRows, "largest-lakes": lakeRows, "largest-islands": islandRows };
+const geoRows: Record<string, unknown[]> = {
+  "tallest-mountains": mountainRows,
+  "longest-rivers": riverRows,
+  "largest-lakes": lakeRows,
+  "largest-islands": islandRows,
+  "largest-deserts": desertRows,
+  "tallest-buildings": buildingRows,
+  "largest-cities": cityRows,
+  "largest-stadiums": stadiumRows,
+};
+/** Tables read from a Wikipedia list (every place table but the mountains). */
+const WIKIPEDIA_LISTS = ["longest-rivers", "largest-lakes", "largest-islands", "largest-deserts", "tallest-buildings", "largest-cities", "largest-stadiums"];
 const rows = { ...baseRows, ...geoRows };
 
 describe("ranking routes", () => {
@@ -169,26 +184,28 @@ describe("tallest mountains", () => {
   });
 });
 
-describe("rivers, lakes and islands", () => {
+describe("places from Wikipedia lists", () => {
   // Shape only: the refresh workflow runs these tests on live Wikipedia data.
   const geo = rows as unknown as Record<string, (RiverRow | LakeRow | IslandRow)[]>;
-  it("keeps geography rows in their own file, one entry per place, largest first", () => {
-    for (const id of RANKINGS) expect(id in geoRows, id).toBe(rankingGroupOf(id) === "geography");
-    for (const id of RANKINGS) expect(rankingRowsChunk(id), id).toBe(rankingGroupOf(id) === "geography" ? `rows-ranking-${id}` : "rows-rankings");
-    for (const id of RANKINGS) expect(id in baseRows, id).toBe(rankingGroupOf(id) !== "geography");
-    // The fetch script's own list of geography tables (GEO_IDS) writes these files: one per table of the group, no more.
+  it("keeps place rows in their own file, one entry per place, largest first", () => {
+    expect(RANKINGS.filter(isPlaceRanking)).toEqual(RANKINGS.filter((id) => ["geography", "cities"].includes(rankingGroupOf(id))));
+    for (const id of RANKINGS) expect(id in geoRows, id).toBe(isPlaceRanking(id));
+    for (const id of RANKINGS) expect(rankingRowsChunk(id), id).toBe(isPlaceRanking(id) ? `rows-ranking-${id}` : "rows-rankings");
+    for (const id of RANKINGS) expect(id in baseRows, id).toBe(!isPlaceRanking(id));
+    // The fetch script's own list of place tables (GEO_IDS) writes these files: one per table, no more.
     // The page's loaders (GEO_ROWS in src/client/rankings/ui.ts, literal imports) cover the same tables.
     const loaders = [...readFileSync("src/client/rankings/ui.ts", "utf8").matchAll(/"([a-z-]+)": \(\) => import\("\.\.\/\.\.\/shared\/rankings-geo\/\1\.json"\)/g)].map((m) => m[1]).sort();
-    expect(loaders).toEqual(RANKINGS.filter((id) => rankingGroupOf(id) === "geography").sort());
-    expect(readdirSync("src/shared/rankings-geo").sort()).toEqual(RANKINGS.filter((id) => rankingGroupOf(id) === "geography").map((id) => `${id}.json`).sort());
-    for (const id of ["longest-rivers", "largest-lakes", "largest-islands"]) {
+    expect(loaders).toEqual(RANKINGS.filter(isPlaceRanking).sort());
+    expect(readdirSync("src/shared/rankings-geo").sort()).toEqual(RANKINGS.filter(isPlaceRanking).map((id) => `${id}.json`).sort());
+    expect(WIKIPEDIA_LISTS.sort()).toEqual(RANKINGS.filter((id) => isPlaceRanking(id) && id !== "tallest-mountains").sort());
+    for (const id of WIKIPEDIA_LISTS) {
       const table = geo[id];
       const values = table.map((row) => row[3]);
       expect(values, id).toEqual([...values].sort((a, b) => b - a));
       expect(new Set(table.map((row) => row[1]).filter(Boolean)).size, id).toBe(table.filter((row) => row[1]).length);
       for (const row of table) {
-        // An island the list does not link (an unnamed one) has no item.
-        expect(row[1], id).toMatch(id === "largest-islands" ? /^(Q\d+)?$/ : /^Q\d+$/);
+        // An island the list does not link (an unnamed one), or a new tower with no article yet, has no item.
+        expect(row[1], id).toMatch(id === "largest-islands" || id === "tallest-buildings" ? /^(Q\d+)?$/ : /^Q\d+$/);
         for (const c of row[4]) if (typeof c === "string") expect(c, row[2].en).toMatch(/^[A-Z]{2}$/);
         else expect(c.en, row[2].en).toBeTruthy();
       }
@@ -212,5 +229,17 @@ describe("rivers, lakes and islands", () => {
     const island = rankingTable("en", "largest-islands", [[1, "Q1", { en: "I" }, 2108459.47, []]]);
     expect(island.rows[0][2].text).toBe("2,108,459");
     expect(island.rows[0][4].text).toBe("—");
+  });
+  it("shows deserts, buildings, cities and stadiums with their own columns", () => {
+    const desert = rankingTable("zh-CN", "largest-deserts", [[1, "Q1", { en: "D", "zh-CN": "沙" }, 9200000, ["DZ", "EG"], "subtropical"]]);
+    expect(desert.rows[0].map((cell) => cell.text)).toEqual(["1", "沙", "9,200,000", "3,552,140", "副热带", "阿尔及利亚、埃及"]);
+    expect(rankingTable("en", "largest-deserts", [[1, "Q1", { en: "D" }, 1, [], null]]).rows[0][4].text).toBe("—");
+    const tower: BuildingRow = [1, "Q1", { en: "Tower" }, 828, ["AE"], 163, { en: "Dubai", ja: "ドバイ" }, 2010];
+    expect(rankingTable("ja", "tallest-buildings", [tower]).rows[0].map((cell) => cell.text)).toEqual(["1", "Tower", "828 m", "2,717", "163", "ドバイ", "アラブ首長国連邦", "2010"]);
+    // A tower with no article yet keeps its English name; a missing city, floor count or year shows a dash.
+    const bare = rankingTable("en", "tallest-buildings", [[1, "", { en: "New Tower" }, 400, ["CN"], null, null, null]]).rows[0];
+    expect([bare[1].text, bare[4].text, bare[5].text, bare[7].text]).toEqual(["New Tower", "—", "—", "—"]);
+    expect(rankingTable("en", "largest-cities", [[1, "Q1", { en: "Jakarta" }, 41913860, ["ID"]]]).rows[0].map((cell) => cell.text)).toEqual(["1", "Jakarta", "41,913,860", "Indonesia"]);
+    expect(rankingTable("es", "largest-stadiums", [[1, "Q1", { en: "S" }, 132000, ["IN"], { en: "Ahmedabad" }]]).rows[0].map((cell) => cell.text)).toEqual(["1", "S", "132.000", "Ahmedabad", "India"]);
   });
 });
