@@ -74,7 +74,9 @@ export function parseTime(raw: string): ClockTime | null {
     .replace(/\s*(hours?|hrs?|horas?|jam)\.?$/i, "")
     // Indonesian writes the hour word first: "jam 14.30", "pukul 7".
     .replace(/^(jam|pukul)\s*/i, "")
-    .replace(/(\d)\s*h$/i, "$1")
+    // "14h30", "14 h 30", "9h sáng": h after an hour is a colon or nothing.
+    .replace(/(\d)\s*h\s*(?=\d)/gi, "$1:")
+    .replace(/(\d)\s*h(?=\s*[^\d:]*$)/i, "$1")
     // Hour words between the hour and the minutes are a colon ("2点30", "2시 30분", "14 giờ 30"); 半 is half past.
     .replace(/\s*(?:[时時시点點]|giờ)\s*[半반]/gi, ":30")
     .replace(/\s*(?:[时時시点點]|giờ)\s*(\d)/gi, ":$1")

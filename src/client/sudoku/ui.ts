@@ -10,7 +10,8 @@ const STORE_KEY = "cvcm.sudoku.v1";
 const START = { seed: 2027, level: "medium" as Level };
 const UNDO_LIMIT = 300;
 
-type Saved = { seed: number; level: Level; cells: number[]; notes: number[]; elapsed: number; hints: number };
+/** `clues` is the puzzle as saved, so a save from an older generator is dropped instead of laid over new clues. */
+type Saved = { seed: number; level: Level; clues: string; cells: number[]; notes: number[]; elapsed: number; hints: number };
 /** `restart` marks the state saved by Start over, the only one Undo brings the clock and hints back from. */
 type Snapshot = { cells: number[]; notes: number[]; elapsed: number; hints: number; restart?: boolean };
 
@@ -27,7 +28,8 @@ function readSaved(): Saved | null {
     const notes = raw.notes;
     const okList = (l: unknown, max: number) => Array.isArray(l) && l.length === 81 && l.every((v) => Number.isInteger(v) && v >= 0 && v <= max);
     if (!okList(cells, 9) || !okList(notes, 0x1ff)) return null;
-    return { seed: raw.seed!, level: raw.level as Level, cells: cells!, notes: notes!, elapsed: Math.max(0, Number(raw.elapsed) || 0), hints: Math.max(0, Number(raw.hints) || 0) };
+    if (typeof raw.clues !== "string" || !/^\d{81}$/.test(raw.clues)) return null;
+    return { seed: raw.seed!, level: raw.level as Level, clues: raw.clues, cells: cells!, notes: notes!, elapsed: Math.max(0, Number(raw.elapsed) || 0), hints: Math.max(0, Number(raw.hints) || 0) };
   } catch {
     return null;
   }
@@ -36,8 +38,10 @@ function readSaved(): Saved | null {
 export function mountSudoku(host: HTMLElement): void {
   unmountSudoku();
   // A saved game is generated once; the start puzzle only when there is none.
-  const saved = readSaved();
-  let puzzle: Puzzle = saved ? generate(saved.seed, saved.level) : generate(START.seed, START.level);
+  let saved = readSaved();
+  const savedPuzzle = saved ? generate(saved.seed, saved.level) : null;
+  if (saved && savedPuzzle && toLine(savedPuzzle.clues) !== saved.clues) saved = null;
+  let puzzle: Puzzle = saved && savedPuzzle ? savedPuzzle : generate(START.seed, START.level);
   let cells: number[] = puzzle.clues.slice();
   let notes: number[] = new Array<number>(81).fill(0);
   let undo: Snapshot[] = [];
@@ -95,7 +99,7 @@ export function mountSudoku(host: HTMLElement): void {
 
   const save = () => {
     try {
-      const data: Saved = { seed: puzzle.seed, level: puzzle.level, cells, notes, elapsed, hints };
+      const data: Saved = { seed: puzzle.seed, level: puzzle.level, clues: toLine(puzzle.clues), cells, notes, elapsed, hints };
       window.localStorage.setItem(STORE_KEY, JSON.stringify(data));
     } catch {
       /* private mode: progress just is not kept */
@@ -235,7 +239,6 @@ export function mountSudoku(host: HTMLElement): void {
     cells = puzzle.clues.slice();
     notes = new Array<number>(81).fill(0);
     solved = false;
-    levelSel.value = puzzle.level;
     // A fresh attempt: the clock and the hint count start again too.
     elapsed = 0;
     hints = 0;
@@ -251,7 +254,6 @@ export function mountSudoku(host: HTMLElement): void {
     if (!prev) return;
     cells = prev.cells;
     notes = prev.notes;
-    levelSel.value = puzzle.level;
     // Undoing Start over brings back that attempt's clock and hints, and a finished grid is finished again.
     if (prev.restart) {
       elapsed = prev.elapsed;

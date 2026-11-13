@@ -217,17 +217,19 @@ function lookalikes(n: number): number[] {
  * Two-digit numbers for the plates, never repeating within a test, without 0s or twin digits, and never two that
  * are each other reversed or upside down (12 and 21, 69 and 96), so a misread plate is not scored as another's number.
  */
-function pickNumbers(count: number, rand: () => number): number[] {
-  const pool: number[] = [];
+function pickNumbers(count: number, rand: () => number, taken: readonly number[] = []): number[] {
+  let pool: number[] = [];
   for (let n = 12; n <= 98; n++) if (n % 10 !== 0 && n % 11 !== 0) pool.push(n);
+  const drop = (n: number) => {
+    const gone = new Set([n, ...lookalikes(n)]);
+    pool = pool.filter((x) => !gone.has(x));
+  };
+  taken.forEach(drop);
   const out: number[] = [];
   while (out.length < count) {
-    const n = pool.splice(Math.floor(rand() * pool.length), 1)[0]!;
+    const n = pool[Math.floor(rand() * pool.length)]!;
     out.push(n);
-    for (const twin of lookalikes(n)) {
-      const at = pool.indexOf(twin);
-      if (at >= 0) pool.splice(at, 1);
-    }
+    drop(n);
   }
   return out;
 }
@@ -241,13 +243,15 @@ export type PlateSpec = { kind: PlateKind | "demo"; level: number; number: numbe
  * A whole test for `seed`: the demo plate first, then four plates of each kind (strongest to subtlest) in a shuffled
  * order. Same seed, same test. Each plate has its own seed, so the page draws one plate at a time (`buildPlate`).
  */
-export function planTest(seed: number): PlateSpec[] {
+export function planTest(seed: number, demo?: PlateSpec): PlateSpec[] {
   const rand = seeded(seed * 2_654_435_761);
-  const numbers = pickNumbers(PLATE_COUNT, rand);
+  // With a check plate already shown, keep it and keep its number (and its twins) out of the rest.
+  const numbers = demo ? [demo.number, ...pickNumbers(PLATE_COUNT - 1, rand, [demo.number])] : pickNumbers(PLATE_COUNT, rand);
   const specs = shuffle(PLATE_KINDS.flatMap((kind) => [0, 1, 2, 3].map((level) => ({ kind, level }))), (n) => Math.floor(rand() * n));
   const plateSeed = () => Math.floor(rand() * 0x1_0000_0000);
+  const first = { kind: "demo" as const, level: 0, number: numbers[0]!, seed: plateSeed() };
   return [
-    { kind: "demo" as const, level: 0, number: numbers[0]!, seed: plateSeed() },
+    demo ?? first,
     ...specs.map((s, i) => ({ ...s, number: numbers[i + 1]!, seed: plateSeed() })),
   ];
 }

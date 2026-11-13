@@ -11,6 +11,9 @@ const VIEW = 400;
 
 let mounted: { cleanup: () => void } | null = null;
 
+/** A random test (never the start seed). */
+const freshSeed = () => randomBelow(1_000_000) + 2;
+
 /** One plate as an SVG of circles (whole-pixel coordinates on a 400 × 400 view to keep the markup small). */
 export function plateSvg(plate: Plate, label: string): SVGSVGElement {
   const svg = document.createElementNS(SVG, "svg");
@@ -91,11 +94,7 @@ export function mountColorBlindnessTest(host: HTMLElement): void {
     // The page always opens on the same plan (prerender, rule 8); after the check plate the rest is drawn fresh,
     // so the numbers cannot be learned from another visit.
     if (index === 0 && plateSeed === START_SEED) {
-      const demo = plates[0]!;
-      let next: PlateSpec[];
-      do next = planTest(randomBelow(1_000_000) + 2);
-      while (next.slice(1).some((p) => p.number === demo.number));
-      plates = [demo, ...next.slice(1)];
+      plates = planTest(freshSeed(), plates[0]);
       plateSeed = -1;
     }
     index++;
@@ -144,7 +143,7 @@ export function mountColorBlindnessTest(host: HTMLElement): void {
       ),
       h("p", { class: "hint" }, t("colorBlindnessTest.disclaimer")),
       h("div", { class: "stage-actions" },
-        h("button", { type: "button", class: "btn", "data-action": "retake", onClick: () => restart(randomBelow(1_000_000) + 2) }, t("colorBlindnessTest.retake")),
+        h("button", { type: "button", class: "btn", "data-action": "retake", onClick: () => restart(freshSeed()) }, t("colorBlindnessTest.retake")),
       ),
     );
     result.hidden = false;

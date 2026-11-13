@@ -173,7 +173,8 @@ export function mountHeight(host: HTMLElement): void {
       const ageMonths = (y ?? NaN) * 12 + m;
       if (Number.isNaN(child)) fail(t("heightCalculator.err_number", { field: t("heightCalculator.child") }));
       else if (child < CHILD_CM[0] || child > CHILD_CM[1]) fail(t("heightCalculator.err_range", { field: t("heightCalculator.child"), min: fmtCm(CHILD_CM[0]), max: fmtCm(CHILD_CM[1]) }));
-      else if (!Number.isFinite(ageMonths) || !Number.isInteger(m) || m < 0 || m > 11) fail(t("heightCalculator.err_age"));
+      // Completed years and months, both whole, as a birthday count gives them.
+      else if (!Number.isFinite(ageMonths) || !Number.isInteger(y) || !Number.isInteger(m) || m < 0 || m > 11) fail(t("heightCalculator.err_age"));
       else if (ageMonths < MIN_AGE_MONTHS || ageMonths > MAX_AGE_MONTHS) fail(t("heightCalculator.err_age"));
       else {
         // CDC rows are for the middle of a month of age: completed months + 0.5.

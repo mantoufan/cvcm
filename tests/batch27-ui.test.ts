@@ -5,7 +5,7 @@ import { mountTicTacToe, unmountTicTacToe } from "../src/client/tic-tac-toe/ui";
 import { mountColorBlindnessTest, unmountColorBlindnessTest } from "../src/client/color-blindness-test/ui";
 import { mountMilitaryTime, unmountMilitaryTime } from "../src/client/military-time/ui";
 import { mountHeight, unmountHeight } from "../src/client/height-calculator/ui";
-import { candidates, generate } from "../src/shared/sudoku";
+import { candidates, generate, toLine } from "../src/shared/sudoku";
 import { buildPlate, planTest } from "../src/shared/color-vision";
 
 let host: HTMLElement;
@@ -103,7 +103,7 @@ describe("sudoku ui", () => {
     const cells = p.solution.slice();
     const last = p.clues.findIndex((d) => !d);
     cells[last] = 0;
-    window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 2027, level: "medium", cells, notes: new Array(81).fill(0), elapsed: 65, hints: 0 }));
+    window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 2027, level: "medium", clues: toLine(p.clues), cells, notes: new Array(81).fill(0), elapsed: 65, hints: 0 }));
     mountSudoku(host);
     expect(q("[data-out=time]").textContent).toBe("1:05");
     q<HTMLButtonElement>(`[data-cell="${last}"]`).click();
@@ -114,7 +114,7 @@ describe("sudoku ui", () => {
 
   it("starts over with a fresh clock and hint count", () => {
     const p = generate(2027, "medium");
-    window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 2027, level: "medium", cells: p.clues, notes: new Array(81).fill(0), elapsed: 600, hints: 2 }));
+    window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 2027, level: "medium", clues: toLine(p.clues), cells: p.clues, notes: new Array(81).fill(0), elapsed: 600, hints: 2 }));
     mountSudoku(host);
     expect(q("[data-out=time]").textContent).toBe("10:00");
     const empty = p.clues.findIndex((d) => !d);
@@ -145,9 +145,10 @@ describe("sudoku ui", () => {
     set("[data-field=level]", "hard", "change");
     expect(q("[data-out=number]").textContent).toBe("Puzzle #2027");
     expect(q("[data-out=status]").textContent).toBe("Your game is kept. Tap New puzzle to start a Hard puzzle.");
+    // Start over keeps the level that is waiting.
     q<HTMLButtonElement>("[data-action=restart]").click();
-    expect(q<HTMLSelectElement>("[data-field=level]").value).toBe("medium");
-    set("[data-field=level]", "hard", "change");
+    expect(q<HTMLSelectElement>("[data-field=level]").value).toBe("hard");
+    expect(q("[data-out=status]").textContent).toBe("Your game is kept. Tap New puzzle to start a Hard puzzle.");
     q<HTMLButtonElement>("[data-action=new]").click();
     const n = Number(q("[data-out=number]").textContent!.replace(/\D/g, ""));
     expect(JSON.parse(window.localStorage.getItem("cvcm.sudoku.v1")!)).toMatchObject({ seed: n, level: "hard" });
@@ -159,7 +160,7 @@ describe("sudoku ui", () => {
     const cells = p.solution.slice();
     const last = p.clues.findIndex((d) => !d);
     cells[last] = 0;
-    window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 2027, level: "medium", cells, notes: new Array(81).fill(0), elapsed: 90, hints: 1 }));
+    window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 2027, level: "medium", clues: toLine(p.clues), cells, notes: new Array(81).fill(0), elapsed: 90, hints: 1 }));
     mountSudoku(host);
     q<HTMLButtonElement>("[data-action=hint]").click();
     expect(q("[data-out=status]").textContent).toBe("Solved in 1:30 with 2 hints.");
@@ -261,14 +262,9 @@ describe("tic-tac-toe ui", () => {
 describe("colour blindness test ui", () => {
   it("shows the check plate first and walks through all 13", () => {
     // randomBelow draws 0, so the plates after the check plate come from seed 2.
-    vi.spyOn(crypto, "getRandomValues").mockImplementation(<T extends ArrayBufferView | null>(buf: T) => {
-      if (buf) new Uint32Array((buf as unknown as Uint32Array).buffer).fill(0);
-      return buf;
-    });
+    vi.spyOn(crypto, "getRandomValues").mockImplementation(((buf: Uint32Array) => buf.fill(0)) as unknown as typeof crypto.getRandomValues);
     mountColorBlindnessTest(host);
-    const first = planTest(1);
-    const test = [first[0]!, ...planTest(2).slice(1)].map(buildPlate);
-    expect(planTest(2).slice(1).map((p) => p.number)).not.toContain(first[0]!.number);
+    const test = planTest(2, planTest(1)[0]).map(buildPlate);
     expect(q("[data-out=progress]").textContent).toBe("Plate 1 of 13");
     expect(host.querySelectorAll(".cv-plate circle")).toHaveLength(test[0]!.dots.length);
     q<HTMLButtonElement>("[data-action=next]").click();
