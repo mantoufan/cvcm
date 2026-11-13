@@ -119,7 +119,7 @@ export function mountColorBlindnessTest(host: HTMLElement): void {
           ? t("colorBlindnessTest.r_all")
           : weak.map((v) => t(`colorBlindnessTest.r_${v.kind}_${v.grade}`)).join(" ");
     result.replaceChildren(
-      h("p", { class: "shape-main", "data-out": "summary" }, summary),
+      h("p", { class: "shape-main", "data-out": "summary", tabindex: -1 }, summary),
       h("dl", { class: "stats-grid", "data-out": "scores" }, ...verdicts.flatMap((v) => [
         h("dt", null, t(`colorBlindnessTest.k_${v.kind}`)),
         h("dd", null, t("colorBlindnessTest.score", { correct: v.correct, total: v.total })),
@@ -147,6 +147,8 @@ export function mountColorBlindnessTest(host: HTMLElement): void {
       ),
     );
     result.hidden = false;
+    // The answer field just went away with the form: put focus on the result.
+    result.querySelector<HTMLElement>("[data-out=summary]")?.focus();
   };
 
   const restart = (seed: number) => {

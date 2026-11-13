@@ -75,6 +75,9 @@ export function lmsToRgb(lms: readonly number[]): [number, number, number] | nul
 }
 
 
+/** Brightness spread applied to every dot (a factor on all three cone responses). */
+const BRIGHT = [0.72, 1.12] as const;
+
 const CONE: Record<PlateKind, number> = { protan: 0, deutan: 1, tritan: 2 };
 
 /**
@@ -88,7 +91,6 @@ export function plateColours(kind: PlateKind, strength: number, sign: 1 | -1): {
     for (const s of [sign, -sign]) {
       const fig = bg.slice();
       fig[CONE[kind]] = bg[CONE[kind]]! * (1 + s * k);
-      // Room for the brightness spread too.
       // Brightest dots are the gamut limit (darker ones scale toward black, inside it).
       if (lmsToRgb(fig.map((v) => v * BRIGHT[1])) && lmsToRgb(bg.map((v) => v * BRIGHT[1]))) return { bg, fig };
     }
@@ -96,8 +98,6 @@ export function plateColours(kind: PlateKind, strength: number, sign: 1 | -1): {
   return { bg, fig: bg.slice() };
 }
 
-/** Brightness spread applied to every dot (a factor on all three cone responses). */
-const BRIGHT = [0.72, 1.12] as const;
 
 /** Digit strokes on a 0–1 × 0–1 box (y down), as polylines; drawn with a thick round pen. */
 const GLYPHS: Record<number, readonly (readonly [number, number])[][]> = {
@@ -145,7 +145,7 @@ export function inNumber(strokes: ReadonlyArray<readonly [number, number, number
   return strokes.some(([ax, ay, bx, by]) => segDist(x, y, ax, ay, bx, by) <= PEN);
 }
 
-/** Dots packed in the unit disc by dart throwing (seeded), large first; about 700 for a plate. */
+/** Dots packed in the unit disc by dart throwing (seeded), large first; about 480 for a plate. */
 export function packDots(rand: () => number): Array<{ x: number; y: number; r: number }> {
   const dots: Array<{ x: number; y: number; r: number }> = [];
   // A cell at least as wide as the largest spacing tested (two 0.05 dots + 0.006), so neighbours are enough.

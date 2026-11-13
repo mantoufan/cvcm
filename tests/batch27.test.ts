@@ -170,7 +170,11 @@ describe("height calculator", () => {
   });
 
   it("caps extreme z-scores so a typo is not projected", () => {
-    expect(percentileProjection("girl", 60, 400).z).toBe(3);
+    const far = percentileProjection("girl", 60, 400);
+    expect(far.capped).toBe(true);
+    expect(far.z).toBeGreaterThan(3);
+    expect(far.adultCm).toBeCloseTo(percentileProjection("girl", 60, 400).adultCm, 9);
+    expect(percentileProjection("girl", 60, 110).capped).toBe(false);
   });
 });
 
@@ -288,7 +292,7 @@ describe("military time in other languages", () => {
     ["jam 14.30", "1430"], ["pukul 7", "0700"], ["2 siang", "1400"], ["11 siang", "1100"], ["8 malam", "2000"], ["6 pagi", "0600"],
     ["夜9時", "2100"], ["夜12時", "0000"], ["中午11点", "1100"], ["11 giờ trưa", "1100"], ["中午1点", "1300"],
     ["晚上5点", "1700"], ["5 giờ tối", "1700"], ["１４３０", "1430"], ["下午２:３０", "1430"], ["1430Z", "1430"], ["0900 Zulu", "0900"], ["2 pm.", "1400"], ["晚上1点", "0100"], ["1 malam", "0100"], ["tối 1 giờ", "0100"], ["14点30分15秒", "1430"],
-    ["12 noon", "1200"], ["9h sáng", "0900"], ["저녁 7시", "1900"], ["낮 2시", "1400"], ["아침 7시", "0700"], ["朝7時", "0700"], ["夕方6時", "1800"], ["昼12時", "1200"], ["午夜12点", "0000"], ["晚8点", "2000"], ["早8点", "0800"], ["2h chiều", "1400"], ["14 h 30", "1430"], ["noon", "1200"], ["midnight", "0000"], ["12 midnight", "0000"], ["2시 30분 15초", "0230"], ["9:05 sa.", "0905"], ["9:05 ch.", "2105"],
+    ["12 noon", "1200"], ["9h sáng", "0900"], ["저녁 7시", "1900"], ["2:30 de la tarde", "1430"], ["8 de la noche", "2000"], ["9 de la mañana", "0900"], ["12 del mediodía", "1200"], ["14:30 hs", "1430"], ["14g30", "1430"], ["1430Z hours", "1430"], ["1430 hrs Z", "1430"], ["낮 2시", "1400"], ["아침 7시", "0700"], ["朝7時", "0700"], ["夕方6時", "1800"], ["昼12時", "1200"], ["午夜12点", "0000"], ["晚8点", "2000"], ["早8点", "0800"], ["2h chiều", "1400"], ["14 h 30", "1430"], ["noon", "1200"], ["midnight", "0000"], ["12 midnight", "0000"], ["2시 30분 15초", "0230"], ["9:05 sa.", "0905"], ["9:05 ch.", "2105"],
   ])("reads %s", (input, mil) => {
     expect(military(parseTime(input)!)).toBe(mil);
   });

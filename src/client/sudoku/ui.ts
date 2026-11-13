@@ -367,7 +367,8 @@ export function mountSudoku(host: HTMLElement): void {
     if (e.key === "ArrowLeft") return move(0, -1);
     if (e.key === "ArrowRight") return move(0, 1);
     // Digits by physical key too, so a number row typed with Shift or a numpad still counts.
-    const m = /^(?:Digit|Numpad)([0-9])$/.exec(e.code);
+    // Not Numpad codes: with NumLock off those keys are arrows, Home, End and so on.
+    const m = /^Digit([0-9])$/.exec(e.code);
     const digit = /^[0-9]$/.test(e.key) ? Number(e.key) : m ? Number(m[1]) : -1;
     if (digit >= 0) {
       e.preventDefault();

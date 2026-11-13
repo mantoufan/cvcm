@@ -56,11 +56,13 @@ export function normalCdf(z: number): number {
 
 /**
  * The child's percentile today and the height at age 20 on the same percentile: the CDC growth-chart projection.
- * z is capped at ±3 so a typo does not project a 3-metre adult.
+ * The projection caps z at ±3 so a typo does not project a 3-metre adult; `z` is the child's real score and
+ * `capped` says when the projection used the cap.
  */
-export function percentileProjection(sex: Sex, months: number, cm: number): { z: number; percentile: number; adultCm: number } {
-  const z = Math.max(-3, Math.min(3, zScore(cm, lmsAt(sex, months))));
-  return { z, percentile: normalCdf(z) * 100, adultCm: heightAtZ(z, lmsAt(sex, MAX_AGE_MONTHS)) };
+export function percentileProjection(sex: Sex, months: number, cm: number): { z: number; capped: boolean; percentile: number; adultCm: number } {
+  const raw = zScore(cm, lmsAt(sex, months));
+  const z = Math.max(-3, Math.min(3, raw));
+  return { z: raw, capped: z !== raw, percentile: normalCdf(raw) * 100, adultCm: heightAtZ(z, lmsAt(sex, MAX_AGE_MONTHS)) };
 }
 
 /** Feet and inches as the other height tools show them (ideal weight, TDEE): one converter for the site. */

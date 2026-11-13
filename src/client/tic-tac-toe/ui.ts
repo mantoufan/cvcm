@@ -18,7 +18,7 @@ export function mountTicTacToe(host: HTMLElement): void {
   let level: Level = "hard";
   let human: Mark = "X";
   let thinking = 0;
-  let pendingLevel: Level | null = null;
+  let uncounted = false;
   const score = { X: 0, O: 0, draw: 0 };
 
   const select = <T extends string>(field: string, values: readonly T[], value: T, label: (v: T) => string, onChange: (v: T) => void) => {
@@ -34,9 +34,11 @@ export function mountTicTacToe(host: HTMLElement): void {
   };
   const modeSel = select("mode", MODES, mode, (m) => t(`ticTacToe.m_${m}`), (m) => { mode = m; clearScore(); sync(); reset(); });
   const levelSel = select("level", LEVELS, level, (l) => t(`ticTacToe.l_${l}`), (l) => {
-    // A new level starts with the next game (or now, on an empty or finished board), with a fresh tally.
-    pendingLevel = l;
-    if (board.every((c) => !c) || outcome(board)) reset();
+    // The new level plays from the next move with a fresh tally; a game that changed level mid-way is not counted.
+    level = l;
+    clearScore();
+    if (board.some(Boolean) && !outcome(board)) uncounted = true;
+    paint();
   });
   const sideSel = select("side", ["X", "O"] as const, human, (s) => t(s === "X" ? "ticTacToe.playX" : "ticTacToe.playO"), (s) => { human = s; clearScore(); reset(); });
   const levelField = h("label", { class: "field" }, h("span", null, t("ticTacToe.level")), levelSel);
@@ -79,7 +81,7 @@ export function mountTicTacToe(host: HTMLElement): void {
 
   const finish = () => {
     const o = outcome(board);
-    if (o) score[o.winner]++;
+    if (o && !uncounted) score[o.winner]++;
   };
 
   const place = (i: number) => {
@@ -92,6 +94,8 @@ export function mountTicTacToe(host: HTMLElement): void {
   const refocus = (had: boolean) => {
     const active = document.activeElement;
     if (!had || (active instanceof HTMLButtonElement && cellEls.includes(active) && !active.disabled)) return;
+    // Only when focus is still on the board (or was dropped to the body), not after the user moved it elsewhere.
+    if (active && active !== document.body && !boardEl.contains(active)) return;
     // When the game is over no cell is playable: New game is the next thing to press.
     (cellEls.find((el) => !el.disabled) ?? newBtn).focus();
   };
@@ -123,9 +127,7 @@ export function mountTicTacToe(host: HTMLElement): void {
   const reset = () => {
     if (thinking) window.clearTimeout(thinking);
     thinking = 0;
-    if (pendingLevel && pendingLevel !== level) clearScore();
-    if (pendingLevel) level = pendingLevel;
-    pendingLevel = null;
+    uncounted = false;
     board = new Array<Cell>(9).fill("");
     turn = "X";
     paint();

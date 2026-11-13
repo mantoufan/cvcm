@@ -1,5 +1,6 @@
 /** Military (24-hour) time ↔ 12-hour time: parsing what people type, the four-digit form and how it is spoken. */
 import { halfWidth } from "./factors";
+import { numberToWords } from "./words";
 
 export type ClockTime = { h: number; m: number; s: number | null; /** Typed as 2400: the end of the day, the same instant as 0000 the next day. */ endOfDay: boolean };
 
@@ -9,12 +10,12 @@ export type ClockTime = { h: number; m: number; s: number | null; /** Typed as 2
  */
 type Part = "am" | "pm" | "noon" | "evening" | "night";
 const PARTS: Record<Part, readonly string[]> = {
-  am: ["上午", "早上", "早晨", "凌晨", "早", "午前", "朝", "오전", "새벽", "아침", "sáng", "pagi"],
-  pm: ["下午", "傍晚", "午後", "夕方", "오후", "chiều", "sore"],
+  am: ["上午", "早上", "早晨", "凌晨", "早", "午前", "朝", "오전", "새벽", "아침", "sáng", "pagi", "de la mañana", "de la madrugada"],
+  pm: ["下午", "傍晚", "午後", "夕方", "오후", "chiều", "sore", "de la tarde"],
   /** Around midday: 11 is still morning, 12 is noon, 1–4 afternoon. */
-  noon: ["中午", "昼", "낮", "trưa", "siang", "noon"],
+  noon: ["中午", "昼", "낮", "trưa", "siang", "noon", "del mediodía"],
   /** Evening: 12 is midnight, 1–4 the small hours, 5–11 PM (晚上5点 is 17:00, 1 malam is 01:00). */
-  evening: ["晚上", "晚", "저녁", "tối", "malam"],
+  evening: ["晚上", "晚", "저녁", "tối", "malam", "de la noche"],
   /** Night: 12 is midnight, 1–5 the small hours, 6–11 PM (夜里2点 02:00, 夜9時 21:00, 밤 9시 21:00). */
   night: ["夜里", "夜裡", "深夜", "午夜", "夜晚", "夜", "밤", "đêm", "midnight"],
 };
@@ -40,7 +41,7 @@ const HEAD = new RegExp(String.raw`^(${WORDS}|${VI})\s*(.*)$`, "i");
 function partOf(marker: string): Part | null {
   const m = marker.replace(/\s/g, "").toLowerCase();
   for (const [part, words] of Object.entries(PARTS) as [Part, readonly string[]][]) {
-    if (words.some((w) => w.toLowerCase() === m)) return part;
+    if (words.some((w) => w.replace(/\s/g, "").toLowerCase() === m)) return part;
   }
   if (LATIN.am.test(m)) return "am";
   if (LATIN.pm.test(m)) return "pm";
@@ -82,11 +83,12 @@ export function parseTime(raw: string): ClockTime | null {
   let text = halfWidth(raw.trim()).replace(/^(noon|midnight)$/i, "12 $1")
     // A trailing Z is Zulu (UTC), as the page itself writes it: "1430Z".
     .replace(/\s*(z|zulu)$/i, "")
-    .replace(/\s*(hours?|hrs?|horas?|jam)\.?$/i, "")
+    .replace(/\s*(hours?|hrs?|horas?|hs|jam)\.?$/i, "")
+    .replace(/\s*(z|zulu)$/i, "")
     // Indonesian writes the hour word first: "jam 14.30", "pukul 7".
     .replace(/^(jam|pukul)\s*/i, "")
     // "14h30", "14 h 30", "9h sáng": h after an hour is a colon or nothing.
-    .replace(/(\d)\s*h\s*(?=\d)/gi, "$1:")
+    .replace(/(\d)\s*[hg]\s*(?=\d)/gi, "$1:")
     .replace(/(\d)\s*h(?=\s*[^\d:]*$)/i, "$1")
     // Hour words between the hour and the minutes are a colon ("2点30", "2시 30분", "14 giờ 30"); 半 is half past.
     .replace(/\s*(?:[时時시点點]|giờ)\s*[半반]/gi, ":30")
@@ -138,14 +140,10 @@ export function colon24(t: ClockTime): string {
   return `${two(t.h)}:${two(t.m)}${t.s !== null ? `:${two(t.s)}` : ""}`;
 }
 
-const ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
-const TENS = ["", "", "twenty", "thirty", "forty", "fifty"];
-
+/** 0–59 in words (the number-to-words tool's), with a spoken leading zero below 10: 5 → "zero five". */
 function spokenPair(n: number, leadingZero: boolean): string {
-  if (n < 10) return leadingZero ? `zero ${ONES[n]}` : ONES[n]!;
-  if (n < 20) return ONES[n]!;
-  const tens = TENS[Math.floor(n / 10)]!;
-  return n % 10 ? `${tens}-${ONES[n % 10]}` : tens;
+  const w = numberToWords(n)!;
+  return n < 10 && leadingZero ? `zero ${w}` : w;
 }
 
 /**

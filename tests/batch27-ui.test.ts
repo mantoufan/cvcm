@@ -257,6 +257,8 @@ describe("tic-tac-toe ui", () => {
     q<HTMLButtonElement>('[data-cell="0"]').click();
     set("[data-field=level]", "easy", "change");
     expect(q('[data-cell="0"]').textContent).toBe("X");
+    // That game does not count on the new tally, whoever wins it.
+    expect(q("[data-out=score]").textContent).toContain("You (X)0");
   });
 
   it("keeps keyboard focus on the board after a move", () => {

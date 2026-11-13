@@ -186,7 +186,8 @@ export function mountHeight(host: HTMLElement): void {
         );
         working.push(t("heightCalculator.stepPercentile", { pct, z: nf2.format(p.z), result: nf1.format(round1(p.adultCm)) }));
         main = t("heightCalculator.mainBoth", { parents: fmtCm(mp.cm), chart: fmtCm(p.adultCm) });
-        if (p.adultCm < mp.low || p.adultCm > mp.high) working.push(t("heightCalculator.outside"));
+        if (p.capped) working.push(t("heightCalculator.extreme"));
+        else if (p.adultCm < mp.low || p.adultCm > mp.high) working.push(t("heightCalculator.outside"));
       }
     }
     mainEl.textContent = main;
