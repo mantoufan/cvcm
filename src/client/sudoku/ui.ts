@@ -170,8 +170,8 @@ export function mountSudoku(host: HTMLElement): void {
 
   const hint = () => {
     if (solved) return;
-    // The selected cell when it is empty or wrong; else a wrong digit; else the empty cell with the fewest options
-    // (counted with wrong digits taken out), the one a solver would fill next.
+    // The selected cell when it is empty or wrong; else a wrong digit; else (every placed digit now being right) the
+    // empty cell with the fewest options, the one a solver would fill next.
     let i = selected >= 0 && !isClue(selected) && cells[selected] !== puzzle.solution[selected] ? selected : -1;
     if (i < 0) i = cells.findIndex((d, k) => d !== 0 && d !== puzzle.solution[k]);
     if (i < 0) {

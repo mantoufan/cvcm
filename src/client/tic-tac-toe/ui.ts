@@ -32,7 +32,7 @@ export function mountTicTacToe(host: HTMLElement): void {
     score.draw = 0;
   };
   const modeSel = select("mode", MODES, mode, (m) => t(`ticTacToe.m_${m}`), (m) => { mode = m; clearScore(); sync(); reset(); });
-  const levelSel = select("level", LEVELS, level, (l) => t(`ticTacToe.l_${l}`), (l) => { level = l; reset(); });
+  const levelSel = select("level", LEVELS, level, (l) => t(`ticTacToe.l_${l}`), (l) => { level = l; clearScore(); paint(); });
   const sideSel = select("side", ["X", "O"] as const, human, (s) => t(s === "X" ? "ticTacToe.playX" : "ticTacToe.playO"), (s) => { human = s; clearScore(); reset(); });
   const levelField = h("label", { class: "field" }, h("span", null, t("ticTacToe.level")), levelSel);
   const sideField = h("label", { class: "field" }, h("span", null, t("ticTacToe.side")), sideSel);

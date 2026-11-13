@@ -185,7 +185,7 @@ export function solveBySingles(grid: readonly number[], nakedOnly = false): numb
 
 const filled = (g: readonly number[]) => g.every((d) => d !== 0);
 
-/** Clue count each level aims for; removal also stops when no more clues can go. */
+/** Clue count each level aims for, a floor: removal stops sooner when no more clues can go (expert usually lands at 23–27). */
 const TARGET: Record<Level, number> = { easy: 40, medium: 33, hard: 28, expert: 22 };
 
 /**

@@ -226,6 +226,11 @@ describe("tic-tac-toe ui", () => {
     expect(q("[data-out=score]").textContent).toContain("X1");
     set("[data-field=mode]", "computer", "change");
     expect(q("[data-out=score]").textContent).toContain("You (X)0");
+    // A new level keeps the game on the board and starts a new tally.
+    vi.useFakeTimers();
+    q<HTMLButtonElement>('[data-cell="0"]').click();
+    set("[data-field=level]", "easy", "change");
+    expect(q('[data-cell="0"]').textContent).toBe("X");
   });
 
   it("keeps keyboard focus on the board after a move", () => {

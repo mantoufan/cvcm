@@ -9,14 +9,14 @@ export type ClockTime = { h: number; m: number; s: number | null; /** Typed as 2
  */
 type Part = "am" | "pm" | "noon" | "evening" | "night";
 const PARTS: Record<Part, readonly string[]> = {
-  am: ["上午", "早上", "早晨", "凌晨", "午前", "오전", "새벽", "sáng", "pagi"],
-  pm: ["下午", "傍晚", "午後", "오후", "chiều", "sore"],
+  am: ["上午", "早上", "早晨", "凌晨", "早", "午前", "朝", "오전", "새벽", "아침", "sáng", "pagi"],
+  pm: ["下午", "傍晚", "午後", "夕方", "오후", "chiều", "sore"],
   /** Around midday: 11 is still morning, 12 is noon, 1–4 afternoon. */
-  noon: ["中午", "trưa", "siang", "noon"],
+  noon: ["中午", "昼", "낮", "trưa", "siang", "noon"],
   /** Evening: 12 is midnight, 1–4 the small hours, 5–11 PM (晚上5点 is 17:00, 1 malam is 01:00). */
-  evening: ["晚上", "tối", "malam"],
+  evening: ["晚上", "晚", "저녁", "tối", "malam"],
   /** Night: 12 is midnight, 1–5 the small hours, 6–11 PM (夜里2点 02:00, 夜9時 21:00, 밤 9시 21:00). */
-  night: ["夜里", "夜裡", "深夜", "夜晚", "夜", "밤", "đêm", "midnight"],
+  night: ["夜里", "夜裡", "深夜", "午夜", "夜晚", "夜", "밤", "đêm", "midnight"],
 };
 /**
  * Abbreviations, as regex sources: English (a.m., pm, a) only after the time ("2 pm"); Vietnamese SA/CH either side
