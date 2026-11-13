@@ -11,7 +11,8 @@ const START = { seed: 2027, level: "medium" as Level };
 const UNDO_LIMIT = 300;
 
 type Saved = { seed: number; level: Level; cells: number[]; notes: number[]; elapsed: number; hints: number };
-type Snapshot = { cells: number[]; notes: number[]; elapsed: number; hints: number };
+/** `restart` marks the state saved by Start over, the only one Undo brings the clock and hints back from. */
+type Snapshot = { cells: number[]; notes: number[]; elapsed: number; hints: number; restart?: boolean };
 
 let mounted: { cleanup: () => void } | null = null;
 
@@ -102,8 +103,8 @@ export function mountSudoku(host: HTMLElement): void {
   };
 
   /** Saves the state for Undo; every change goes through here, so it also starts the clock (Hint and the pad too). */
-  const snapshot = () => {
-    undo.push({ cells: cells.slice(), notes: notes.slice(), elapsed, hints });
+  const snapshot = (restart = false) => {
+    undo.push({ cells: cells.slice(), notes: notes.slice(), elapsed, hints, restart });
     if (undo.length > UNDO_LIMIT) undo.shift();
     startTimer();
   };
@@ -223,14 +224,14 @@ export function mountSudoku(host: HTMLElement): void {
 
   function newGame() {
     const level = levelSel.value as Level;
+    // The clock waits for the first move, as on a first visit.
     load(generate(randomBelow(MAX_SEED) + 1, level));
     save();
-    startTimer();
   }
 
   const restart = () => {
     if (cells.every((d, i) => d === puzzle.clues[i]) && notes.every((m) => !m)) return;
-    snapshot();
+    snapshot(true);
     cells = puzzle.clues.slice();
     notes = new Array<number>(81).fill(0);
     solved = false;
@@ -239,10 +240,10 @@ export function mountSudoku(host: HTMLElement): void {
     elapsed = 0;
     hints = 0;
     timeEl.textContent = clock(0);
+    // snapshot() started the clock; a fresh attempt waits for its first move.
     stopTimer();
     save();
     paint();
-    startTimer();
   };
 
   const back = () => {
@@ -252,7 +253,7 @@ export function mountSudoku(host: HTMLElement): void {
     notes = prev.notes;
     levelSel.value = puzzle.level;
     // Undoing Start over brings back that attempt's clock and hints, and a finished grid is finished again.
-    if (prev.elapsed > elapsed || prev.hints > hints) {
+    if (prev.restart) {
       elapsed = prev.elapsed;
       hints = prev.hints;
       timeEl.textContent = clock(elapsed);
@@ -335,7 +336,7 @@ export function mountSudoku(host: HTMLElement): void {
     const digit = /^[0-9]$/.test(e.key) ? Number(e.key) : m ? Number(m[1]) : -1;
     if (digit >= 0) {
       e.preventDefault();
-      if (selected < 0) selected = at;
+      if (selected < 0) select(at);
       if (digit === 0) erase();
       else enter(digit);
       return;

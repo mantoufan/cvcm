@@ -47,7 +47,8 @@ export function mountColorBlindnessTest(host: HTMLElement): void {
     "data-field": "answer",
     "aria-label": t("colorBlindnessTest.answer"),
     onKeydown: (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
+      // Not the Enter that confirms an input-method composition (full-width digits).
+      if (e.key === "Enter" && !e.isComposing) {
         e.preventDefault();
         submit(false);
       }

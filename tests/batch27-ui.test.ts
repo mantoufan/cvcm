@@ -165,6 +165,12 @@ describe("sudoku ui", () => {
     expect(q("[data-out=status]").textContent).toBe("Solved in 1:30 with 2 hints.");
     q<HTMLButtonElement>("[data-action=restart]").click();
     expect(q("[data-out=time]").textContent).toBe("0:00");
+    // The new attempt runs longer than the old one; Undo still brings back the old clock.
+    q<HTMLButtonElement>(`[data-cell="${last}"]`).click();
+    q<HTMLButtonElement>('[data-digit="1"]').click();
+    vi.advanceTimersByTime(200_000);
+    expect(q("[data-out=time]").textContent).toBe("3:20");
+    q<HTMLButtonElement>("[data-action=undo]").click();
     q<HTMLButtonElement>("[data-action=undo]").click();
     expect(q("[data-out=status]").textContent).toBe("Solved in 1:30 with 2 hints.");
     unmountSudoku();
@@ -206,17 +212,17 @@ describe("tic-tac-toe ui", () => {
     for (const i of [0, 3, 1, 4, 2]) q<HTMLButtonElement>(`[data-cell="${i}"]`).click();
     expect(q("[data-out=status]").textContent).toBe("X wins!");
     expect([...host.querySelectorAll(".ttt-cell.win")].map((c) => c.getAttribute("data-cell"))).toEqual(["0", "1", "2"]);
-    expect(q("[data-out=score]").textContent).toContain("X (X)1");
+    expect(q("[data-out=score]").textContent).toContain("X1");
     q<HTMLButtonElement>("[data-action=new]").click();
     expect(q('[data-cell="0"]').textContent).toBe("");
-    expect(q("[data-out=score]").textContent).toContain("X (X)1");
+    expect(q("[data-out=score]").textContent).toContain("X1");
   });
 
   it("starts the score again when you change sides or players", () => {
     mountTicTacToe(host);
     set("[data-field=mode]", "friend", "change");
     for (const i of [0, 3, 1, 4, 2]) q<HTMLButtonElement>(`[data-cell="${i}"]`).click();
-    expect(q("[data-out=score]").textContent).toContain("X (X)1");
+    expect(q("[data-out=score]").textContent).toContain("X1");
     set("[data-field=mode]", "computer", "change");
     expect(q("[data-out=score]").textContent).toContain("You (X)0");
   });

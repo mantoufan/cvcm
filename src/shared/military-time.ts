@@ -19,7 +19,7 @@ const PARTS: Record<Part, readonly string[]> = {
   night: ["夜里", "夜裡", "深夜", "夜晚", "夜", "밤", "đêm"],
 };
 /** Latin and Vietnamese abbreviations, only after the time ("2 pm", "9:05 SA"). */
-const LATIN: Record<"am" | "pm", RegExp> = { am: /^(am|a\.m\.?|a|sa|s\.a\.?)$/i, pm: /^(pm|p\.m\.?|p|ch|c\.h\.?)$/i };
+const LATIN: Record<"am" | "pm", RegExp> = { am: /^(a\.?m\.?|a|s\.?a\.?)$/i, pm: /^(p\.?m\.?|p|c\.?h\.?)$/i };
 const esc = (w: string) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 // Longest first, so 夜里 wins over 夜.
 const WORDS = Object.values(PARTS).flat().sort((x, y) => y.length - x.length).map(esc).join("|");
@@ -106,7 +106,7 @@ export function parseTime(raw: string): ClockTime | null {
     if (h > 12) return null;
     return { h: toHour24(h, part), m, s, endOfDay: false };
   }
-  if (h === 24 && m === 0 && !s) return { h: 0, m: 0, s, endOfDay: true };
+  if (h === 24 && m === 0 && !s) return { h: 0, m: 0, s: null, endOfDay: true };
   if (h > 23) return null;
   return { h, m, s, endOfDay: false };
 }

@@ -169,7 +169,8 @@ export function mountHeight(host: HTMLElement): void {
       else if (!Number.isFinite(ageMonths) || !Number.isInteger(m) || m < 0 || m > 11) fail(t("heightCalculator.err_age"));
       else if (ageMonths < MIN_AGE_MONTHS || ageMonths > MAX_AGE_MONTHS) fail(t("heightCalculator.err_age"));
       else {
-        const p = percentileProjection(sex, ageMonths, child);
+        // CDC rows are for the middle of a month of age: completed months + 0.5.
+        const p = percentileProjection(sex, ageMonths + 0.5, child);
         const pct = p.percentile < 1 ? "<1" : p.percentile > 99 ? ">99" : nf0.format(Math.round(p.percentile));
         rows.push(
           [t("heightCalculator.percentile"), t("heightCalculator.pctValue", { pct, z: nf2.format(p.z) })],

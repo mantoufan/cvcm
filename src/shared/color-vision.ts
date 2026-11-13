@@ -174,7 +174,10 @@ export function packDots(rand: () => number): Array<{ x: number; y: number; r: n
         }
       }
       if (!free) continue;
-      grid.set(key(gx, gy), [...(grid.get(key(gx, gy)) ?? []), dots.length]);
+      const k = key(gx, gy);
+      const cellDots = grid.get(k);
+      if (cellDots) cellDots.push(dots.length);
+      else grid.set(k, [dots.length]);
       dots.push({ x, y, r });
     }
   }

@@ -15,6 +15,7 @@
  * - Only a smooth luma residual is added back to the full-resolution pixels.
  *   Embedding is closed-loop: it re-measures and corrects until the frame decodes.
  */
+import { seeded } from "../../shared/random";
 
 export interface Pixels {
   data: Uint8ClampedArray;
@@ -219,26 +220,15 @@ function crc32(bytes: Uint8Array): number {
   return (c ^ 0xffffffff) >>> 0;
 }
 
-function rng(seed: number): () => number {
-  let a = seed >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = a;
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
 const WHITEN = (() => {
-  const r = rng(0x63766d01);
+  const r = seeded(0x63766d01);
   return Uint8Array.from({ length: Math.max(FRAME_MAX_BITS, LEGACY_BITS) }, () => (r() < 0.5 ? 1 : 0));
 })();
 
 /** Shuffled block order; block i carries frame bit PERM[i] % frameBits, so short frames repeat more. */
 const PERM = (() => {
   const perm = Int32Array.from({ length: BLOCKS }, (_, i) => i);
-  const r = rng(0x63766d02);
+  const r = seeded(0x63766d02);
   for (let i = BLOCKS - 1; i > 0; i--) {
     const j = Math.floor(r() * (i + 1));
     [perm[i], perm[j]] = [perm[j], perm[i]];

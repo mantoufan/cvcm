@@ -60,13 +60,14 @@ export function mountTicTacToe(host: HTMLElement): void {
       el.disabled = !!board[i] || !!o || computerTurn();
       el.setAttribute("aria-label", t("ticTacToe.cell", { row: Math.floor(i / 3) + 1, col: (i % 3) + 1, value: board[i] || t("ticTacToe.empty") }));
     });
-    const name = (m: Mark) => (mode === "computer" ? (m === human ? t("ticTacToe.you") : t("ticTacToe.computer")) : m);
+    // "You (X)" against the computer; just "X" between two players.
+    const label = (m: Mark) => (mode === "computer" ? `${m === human ? t("ticTacToe.you") : t("ticTacToe.computer")} (${m})` : m);
     if (o) {
       statusEl.textContent = o.winner === "draw" ? t("ticTacToe.draw") : mode === "computer" ? (o.winner === human ? t("ticTacToe.youWin") : t("ticTacToe.computerWins")) : t("ticTacToe.wins", { mark: o.winner });
     } else statusEl.textContent = computerTurn() ? t("ticTacToe.thinking") : mode === "computer" ? t("ticTacToe.yourTurn", { mark: turn }) : t("ticTacToe.turn", { mark: turn });
     scoreEl.replaceChildren(
-      h("dt", null, `${name("X")} (X)`), h("dd", null, String(score.X)),
-      h("dt", null, `${name("O")} (O)`), h("dd", null, String(score.O)),
+      h("dt", null, label("X")), h("dd", null, String(score.X)),
+      h("dt", null, label("O")), h("dd", null, String(score.O)),
       h("dt", null, t("ticTacToe.draws")), h("dd", null, String(score.draw)),
     );
   };
