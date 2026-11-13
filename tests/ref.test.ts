@@ -94,12 +94,15 @@ describe("reference: mannequins and footer entries", () => {
     for (const id of Object.keys(REF_MANNEQUINS) as RefId[]) expect(REF_UPDATED[id], id).toBeDefined();
   });
 
-  it("keeps the footer's entry names equal to each entry's name", () => {
+  it("keeps the footer's and home's entry names and blurbs equal to each entry's", () => {
     for (const locale of LOCALES) {
-      const names = (readJson(`src/locales/${locale}.json`) as { refFocus: Record<string, string> }).refFocus;
-      expect(Object.keys(names).sort()).toEqual([...REF_FOCUS].sort());
+      const core = readJson(`src/locales/${locale}.json`) as { refFocus: Record<string, string>; refFocusBlurb: Record<string, string> };
+      expect(Object.keys(core.refFocus).sort()).toEqual([...REF_FOCUS].sort());
+      expect(Object.keys(core.refFocusBlurb).sort()).toEqual([...REF_FOCUS].sort());
       for (const id of REF_FOCUS) {
-        expect(names[id]).toBe((readJson(`src/locales/ref/${locale}/${id}.json`) as { name: string }).name);
+        const entry = readJson(`src/locales/ref/${locale}/${id}.json`) as { name: string; blurb: string };
+        expect(core.refFocus[id]).toBe(entry.name);
+        expect(core.refFocusBlurb[id]).toBe(entry.blurb);
       }
     }
   });

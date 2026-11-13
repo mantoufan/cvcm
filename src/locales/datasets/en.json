@@ -1400,7 +1400,7 @@
   "rankings": {
     "hub": {
       "title": "Rankings: AI Models, Market Share and More, with Sources | cv.cm",
-      "description": "Sourced rankings you can sort and download: best AI models, most used AI, browser, operating system, search engine, phone and social media market share, and the tallest mountains, longest rivers, largest lakes and islands.",
+      "description": "Sourced rankings you can sort and download: best AI models, most used AI, browser, operating system, search engine, phone and social media market share, the tallest mountains and buildings, the largest cities, deserts and stadiums, and more.",
       "h1": "Rankings",
       "lede": "Rankings built from open data, each with its source, licence and date. Sort any column, filter rows or download the CSV.",
       "groups": {
@@ -1408,7 +1408,8 @@
         "share": "Market share",
         "countries": "Countries",
         "markets": "Markets",
-        "geography": "Geography"
+        "geography": "Geography",
+        "cities": "Cities and buildings"
       },
       "makeYourOwn": "Make your own ranking",
       "about": [
@@ -1418,15 +1419,15 @@
       "faq": [
         {
           "q": "Where does the data come from?",
-          "a": "AI quality comes from the Arena leaderboard, AI usage from OpenRouter, market share from StatCounter Global Stats, mountain heights from Wikidata, and rivers, lakes and islands from Wikipedia's lists. Each page links to its source and licence."
+          "a": "AI quality comes from the Arena leaderboard, AI usage from OpenRouter, market share from StatCounter Global Stats, mountain heights from Wikidata, and rivers, lakes, islands, deserts, buildings, cities and stadiums from Wikipedia's lists. Each page links to its source and licence."
         },
         {
           "q": "How often are the rankings updated?",
-          "a": "They are refreshed automatically once a day and each page shows its data date. Sources publish at different speeds: market share is monthly, mountains, rivers, lakes and islands are checked monthly, AI tables change more often."
+          "a": "They are refreshed automatically once a day and each page shows its data date. Sources publish at different speeds: market share is monthly, the geography, city and building lists are checked monthly, AI tables change more often."
         },
         {
           "q": "Can I reuse these tables?",
-          "a": "Yes, under the source's licence shown on each page: CC BY 4.0 for the AI tables, CC BY-SA 3.0 for market share, CC0 (no conditions) for mountains and CC BY-SA 4.0 for rivers, lakes and islands. Credit the source. Most tables have a CSV download."
+          "a": "Yes, under the source's licence shown on each page: CC BY 4.0 for the AI tables, CC BY-SA 3.0 for market share, CC0 (no conditions) for mountains and CC BY-SA 4.0 for the Wikipedia lists. Credit the source. Most tables have a CSV download."
         }
       ]
     },
@@ -1531,7 +1532,25 @@
         "saline": "Salt",
         "variable": "Varies"
       },
-      "unnamedIsland": "Unnamed island"
+      "unnamedIsland": "Unnamed island",
+      "desert": "Desert",
+      "desertType": "Type",
+      "deserts": {
+        "polar": "Polar",
+        "subtropical": "Subtropical",
+        "tropical": "Tropical",
+        "cold": "Cold winter",
+        "coastal": "Coastal"
+      },
+      "building": "Building",
+      "height": "Height",
+      "heightFt": "Height (ft)",
+      "floors": "Floors",
+      "city": "City",
+      "completed": "Completed",
+      "population": "Population",
+      "stadium": "Stadium",
+      "capacity": "Capacity"
     },
     "sets": {
       "ai-models": {
@@ -2054,6 +2073,122 @@
           {
             "q": "Which country has the most large islands?",
             "a": "{countryLead}: {countryCount} of the {rows} islands on this list belong to it."
+          }
+        ]
+      },
+      "largest-deserts": {
+        "title": "Largest Deserts in the World: Top {rows} by Area | cv.cm",
+        "description": "The {rows} largest deserts on Earth: {top1} {v1}, {top2} {v2}, {top3} {v3}. Area in km² and sq mi, desert type and the countries each one crosses.",
+        "h1": "The {rows} largest deserts in the world",
+        "lede": "The {rows} largest deserts on Earth by area, polar deserts included, with area in square kilometres and square miles, the type of desert and the countries it crosses. From Wikipedia's list of deserts by area.",
+        "facts": [
+          "Largest: {top1} at {v1} ({alt1} sq mi), then {top2} ({v2}) and {top3} ({v3}).",
+          "Most deserts on the list: {countryLead}, with {countryCount}. A desert that crosses several countries counts for each.",
+          "Number {lowRank} is {low1} at {lv1}."
+        ],
+        "about": [
+          "A desert is defined by how little rain or snow it gets, usually under 250 mm a year, not by heat or sand. That is why the ice of Antarctica and the Arctic are the two largest deserts. Among hot deserts, the Sahara is by far the largest.",
+          "Desert edges are drawn differently by different sources, so areas are rounded and vary between lists. Areas, types and countries come from the English Wikipedia list (CC BY-SA 4.0); names in each language come from Wikidata (CC0). Antarctica belongs to no country and shows a dash."
+        ],
+        "faq": [
+          {
+            "q": "What is the largest desert in the world?",
+            "a": "{top1}, at about {v1} ({alt1} sq mi). A desert is a place with very little precipitation, and Antarctica gets less than almost anywhere else."
+          },
+          {
+            "q": "What is the largest hot desert?",
+            "a": "The Sahara in northern Africa, at about 9.2 million km². It is the third-largest desert after the Antarctic and Arctic polar deserts."
+          },
+          {
+            "q": "Which country has the most large deserts?",
+            "a": "{countryLead}: {countryCount} of the {rows} deserts on this list are in it."
+          }
+        ]
+      },
+      "tallest-buildings": {
+        "title": "Tallest Buildings in the World: Top {rows} Skyscrapers by Height | cv.cm",
+        "description": "The {rows} tallest buildings on Earth: {top1} {v1}, {top2} {v2}, {top3} {v3}. Height in metres and feet, floors, city, country and year completed.",
+        "h1": "The {rows} tallest buildings in the world",
+        "lede": "The {rows} tallest completed buildings on Earth, measured to their architectural top, with height in metres and feet, floors above ground, city, country and the year each was finished. From Wikipedia's list of tallest buildings.",
+        "facts": [
+          "Tallest: {top1} at {v1} ({ft1} ft), then {top2} ({v2}) and {top3} ({v3}).",
+          "Most buildings on the list: {countryLead}, with {countryCount} of the {rows}.",
+          "Number {lowRank} is {low1} at {lv1}."
+        ],
+        "about": [
+          "Height is measured from the lowest main entrance to the architectural top, spires included, antennas and flagpoles not. Only buildings with floors people can use count, so TV and radio towers such as the Tokyo Skytree are not on the list, and buildings still under construction are left out until they are finished.",
+          "Heights, floors, cities, countries and years come from the English Wikipedia list (CC BY-SA 4.0); names in each language come from Wikidata (CC0). A few new towers have no Wikipedia article yet and keep their English name."
+        ],
+        "faq": [
+          {
+            "q": "What is the tallest building in the world?",
+            "a": "{top1} in Dubai, at {v1} ({ft1} ft). It has been the tallest since it opened in 2010."
+          },
+          {
+            "q": "What is the second-tallest building in the world?",
+            "a": "{top2}, at {v2}. {top3} is third at {v3}."
+          },
+          {
+            "q": "Which country has the most supertall buildings?",
+            "a": "{countryLead}: {countryCount} of the {rows} buildings on this list are there."
+          }
+        ]
+      },
+      "largest-cities": {
+        "title": "Largest Cities in the World by Population: Top {rows} (UN 2025) | cv.cm",
+        "description": "The {rows} most populous cities: {top1} {v1}, {top2} {v2}, {top3} {v3}. Population from the UN's World Urbanization Prospects 2025, with the country.",
+        "h1": "The {rows} largest cities in the world",
+        "lede": "The {rows} largest cities on Earth by population, ranked by the United Nations' World Urbanization Prospects 2025 estimates of each urban area, with the country. From Wikipedia's list of largest cities.",
+        "facts": [
+          "Largest: {top1} with {m1} people, then {top2} ({m2}) and {top3} ({m3}).",
+          "Most cities on the list: {countryLead}, with {countryCount} of the {rows}.",
+          "Number {lowRank} is {low1} with {lv1} people."
+        ],
+        "about": [
+          "How big a city is depends on where its edge is drawn. The city proper stops at the official boundary, the urban area follows the built-up land, and the metropolitan area adds commuter towns. This table uses the UN's 2025 estimates, which measure every city the same way, by its continuous built-up area. On that measure Jakarta has overtaken Tokyo, which tops lists that use older UN methods.",
+          "Populations and countries come from the English Wikipedia list (CC BY-SA 4.0), which cites the UN figures; names in each language come from Wikidata (CC0). Estimates are rounded and change with each UN revision."
+        ],
+        "faq": [
+          {
+            "q": "What is the largest city in the world?",
+            "a": "{top1}, with about {m1} people by the UN's 2025 estimate. Lists using administrative boundaries or older UN methods often put Tokyo first instead."
+          },
+          {
+            "q": "Why do lists of the largest cities disagree?",
+            "a": "They draw the city's edge in different places: inside the official boundary, around the built-up area or around the whole commuter belt. Each gives a different number and order."
+          },
+          {
+            "q": "Which country has the most large cities?",
+            "a": "{countryLead}: {countryCount} of the {rows} cities on this list are there."
+          }
+        ]
+      },
+      "largest-stadiums": {
+        "title": "Largest Stadiums in the World: Top {rows} by Capacity | cv.cm",
+        "description": "The {rows} largest stadiums by capacity: {top1} {v1}, {top2} {v2}, {top3} {v3}. Seats, city and country for each sports stadium.",
+        "h1": "The {rows} largest stadiums in the world",
+        "lede": "The {rows} largest sports stadiums on Earth by capacity, the number of spectators they normally hold, with city and country. From Wikipedia's list of stadiums by capacity.",
+        "facts": [
+          "Largest: {top1} with {v1} seats, then {top2} ({v2}) and {top3} ({v3}).",
+          "Most stadiums on the list: {countryLead}, with {countryCount} of the {rows}.",
+          "Number {lowRank} is {low1} with {lv1} seats."
+        ],
+        "about": [
+          "Capacity is the number of spectators a stadium normally holds, without temporary seating. Motor racing circuits, which can hold more people, are not stadiums and are not listed. Capacities change when stadiums are rebuilt, so the list follows each change.",
+          "Capacities, cities and countries come from the English Wikipedia list (CC BY-SA 4.0); names in each language come from Wikidata (CC0)."
+        ],
+        "faq": [
+          {
+            "q": "What is the largest stadium in the world?",
+            "a": "{top1} in Ahmedabad, India, a cricket ground that holds {v1} spectators."
+          },
+          {
+            "q": "Does capacity include standing room or temporary seats?",
+            "a": "No. Capacity is the number of spectators a stadium normally holds. Temporary stands added for one event are not counted, and racing circuits are not listed as stadiums."
+          },
+          {
+            "q": "Which country has the most large stadiums?",
+            "a": "{countryLead}: {countryCount} of the {rows} stadiums on this list are there."
           }
         ]
       }

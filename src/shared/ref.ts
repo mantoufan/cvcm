@@ -41,7 +41,7 @@ export const REF_UPDATED: Partial<Record<RefId, string>> = {
   "kneeling-pose": "2026-11-07",
 };
 
-/** Entries the site footer links directly, chosen from Keyword Planner volume; their names are core-pack `refFocus.*`. */
+/** Entries the site footer links directly, chosen from Keyword Planner volume; their names and blurbs are core-pack `refFocus.*` / `refFocusBlurb.*` (home lists both), kept equal to the entry copy by tests/ref.test.ts. */
 export const REF_FOCUS = [
   "sitting-pose",
   "standing-pose",

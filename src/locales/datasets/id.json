@@ -1400,7 +1400,7 @@
   "rankings": {
     "hub": {
       "title": "Peringkat: AI Terbaik, Pangsa Pasar, dan Lainnya | cv.cm",
-      "description": "Peringkat bersumber yang bisa diurutkan dan diunduh: model AI terbaik, AI yang paling banyak dipakai, pangsa pasar browser, sistem operasi, mesin pencari, ponsel dan media sosial, serta gunung tertinggi, sungai terpanjang, dan danau serta pulau terbesar di dunia.",
+      "description": "Peringkat bersumber yang bisa diurutkan dan diunduh: model AI terbaik, AI paling banyak dipakai, pangsa pasar peramban, sistem operasi, mesin pencari, ponsel dan media sosial, gunung dan gedung tertinggi, kota terbesar, gurun dan stadion terbesar, dan lainnya.",
       "h1": "Peringkat",
       "lede": "Peringkat yang disusun dari data terbuka, masing-masing dengan sumber, lisensi, dan tanggalnya. Urutkan kolom mana pun, saring baris, atau unduh CSV.",
       "groups": {
@@ -1408,7 +1408,8 @@
         "share": "Pangsa pasar",
         "countries": "Negara",
         "markets": "Pasar",
-        "geography": "Geografi"
+        "geography": "Geografi",
+        "cities": "Kota dan bangunan"
       },
       "makeYourOwn": "Buat peringkat sendiri",
       "about": [
@@ -1418,15 +1419,15 @@
       "faq": [
         {
           "q": "Dari mana datanya berasal?",
-          "a": "Kualitas AI berasal dari papan peringkat Arena, penggunaan AI dari OpenRouter, pangsa pasar dari StatCounter Global Stats, ketinggian gunung dari Wikidata, dan sungai, danau, serta pulau dari daftar di Wikipedia. Setiap halaman mencantumkan sumber dan lisensinya."
+          "a": "Kualitas AI dari papan peringkat Arena, pemakaian AI dari OpenRouter, pangsa pasar dari StatCounter Global Stats, ketinggian gunung dari Wikidata, serta sungai, danau, pulau, gurun, gedung, kota, dan stadion dari daftar Wikipedia. Setiap halaman mencantumkan sumber dan lisensinya."
         },
         {
           "q": "Seberapa sering peringkat diperbarui?",
-          "a": "Peringkat diperbarui otomatis sekali sehari dan setiap halaman menampilkan tanggal datanya. Kecepatan terbit tiap sumber berbeda: pangsa pasar bulanan, gunung, sungai, danau, dan pulau diperiksa tiap bulan, tabel AI lebih sering berubah."
+          "a": "Diperbarui otomatis sekali sehari dan setiap halaman menampilkan tanggal datanya. Sumber terbit dengan kecepatan berbeda: pangsa pasar bulanan, daftar geografi, kota, dan gedung diperiksa bulanan, tabel AI berubah lebih sering."
         },
         {
           "q": "Bolehkah saya memakai ulang tabel ini?",
-          "a": "Ya, sesuai lisensi sumber yang tertera di setiap halaman: CC BY 4.0 untuk tabel AI, CC BY-SA 3.0 untuk pangsa pasar, CC0 (tanpa syarat) untuk gunung, dan CC BY-SA 4.0 untuk sungai, danau, dan pulau. Cantumkan sumbernya. Sebagian besar tabel bisa diunduh sebagai CSV."
+          "a": "Ya, sesuai lisensi sumber yang tertera di setiap halaman: CC BY 4.0 untuk tabel AI, CC BY-SA 3.0 untuk pangsa pasar, CC0 (tanpa syarat) untuk gunung, dan CC BY-SA 4.0 untuk tabel dari daftar Wikipedia. Sebutkan sumbernya. Sebagian besar tabel bisa diunduh sebagai CSV."
         }
       ]
     },
@@ -1531,7 +1532,25 @@
         "saline": "Asin",
         "variable": "Berubah-ubah"
       },
-      "unnamedIsland": "Pulau tanpa nama"
+      "unnamedIsland": "Pulau tanpa nama",
+      "desert": "Gurun",
+      "desertType": "Jenis",
+      "deserts": {
+        "polar": "Kutub",
+        "subtropical": "Subtropis",
+        "tropical": "Tropis",
+        "cold": "Musim dingin",
+        "coastal": "Pesisir"
+      },
+      "building": "Gedung",
+      "height": "Tinggi",
+      "heightFt": "Tinggi (ft)",
+      "floors": "Lantai",
+      "city": "Kota",
+      "completed": "Rampung",
+      "population": "Penduduk",
+      "stadium": "Stadion",
+      "capacity": "Kapasitas"
     },
     "sets": {
       "ai-models": {
@@ -2054,6 +2073,122 @@
           {
             "q": "Negara mana yang punya pulau besar terbanyak?",
             "a": "{countryLead}: {countryCount} dari {rows} pulau di daftar ini adalah miliknya."
+          }
+        ]
+      },
+      "largest-deserts": {
+        "title": "Gurun Terbesar di Dunia: {rows} Teratas menurut Luas | cv.cm",
+        "description": "{rows} gurun terbesar di Bumi: {top1} {v1}, {top2} {v2}, {top3} {v3}. Luas dalam km² dan mil persegi, jenis gurun, dan negara yang dilintasinya.",
+        "h1": "{rows} gurun terbesar di dunia",
+        "lede": "{rows} gurun terbesar di Bumi menurut luas, termasuk gurun kutub, dengan luas dalam kilometer persegi dan mil persegi, jenis gurun, dan negara yang dilintasinya. Dari daftar gurun menurut luas di Wikipedia.",
+        "facts": [
+          "Terbesar: {top1} seluas {v1} ({alt1} mil persegi), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Negara dengan gurun terbanyak dalam daftar: {countryLead}, sebanyak {countryCount}. Gurun yang melintasi beberapa negara dihitung untuk masing-masing.",
+          "Peringkat {lowRank} adalah {low1} seluas {lv1}."
+        ],
+        "about": [
+          "Gurun ditentukan oleh sedikitnya hujan atau salju, biasanya di bawah 250 mm per tahun, bukan oleh panas atau pasir. Karena itu es Antarktika dan Arktik adalah dua gurun terbesar. Di antara gurun panas, Sahara jauh yang terbesar.",
+          "Setiap sumber menarik batas gurun dengan cara berbeda, jadi luasnya dibulatkan dan berbeda antardaftar. Luas, jenis, dan negara berasal dari daftar Wikipedia bahasa Inggris (CC BY-SA 4.0); nama dalam tiap bahasa dari Wikidata (CC0). Antarktika bukan milik negara mana pun dan ditampilkan dengan tanda pisah."
+        ],
+        "faq": [
+          {
+            "q": "Apa gurun terbesar di dunia?",
+            "a": "{top1}, seluas sekitar {v1} ({alt1} mil persegi). Gurun adalah tempat dengan curah hujan sangat sedikit, dan Antarktika menerima lebih sedikit daripada hampir semua tempat lain."
+          },
+          {
+            "q": "Apa gurun panas terbesar?",
+            "a": "Sahara di Afrika utara, sekitar 9,2 juta km². Sahara adalah gurun terbesar ketiga setelah gurun kutub Antarktika dan Arktik."
+          },
+          {
+            "q": "Negara mana yang punya gurun besar terbanyak?",
+            "a": "{countryLead}: {countryCount} dari {rows} gurun dalam daftar ini ada di sana."
+          }
+        ]
+      },
+      "tallest-buildings": {
+        "title": "Gedung Tertinggi di Dunia: {rows} Pencakar Langit Teratas | cv.cm",
+        "description": "{rows} gedung tertinggi di Bumi: {top1} {v1}, {top2} {v2}, {top3} {v3}. Tinggi dalam meter dan kaki, lantai, kota, negara, dan tahun rampung.",
+        "h1": "{rows} gedung tertinggi di dunia",
+        "lede": "{rows} gedung rampung tertinggi di Bumi, diukur sampai puncak arsitekturnya, dengan tinggi dalam meter dan kaki, jumlah lantai di atas tanah, kota, negara, dan tahun selesai. Dari daftar gedung tertinggi di Wikipedia.",
+        "facts": [
+          "Tertinggi: {top1} setinggi {v1} ({ft1} kaki), lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Negara dengan gedung terbanyak dalam daftar: {countryLead}, {countryCount} dari {rows}.",
+          "Peringkat {lowRank} adalah {low1} setinggi {lv1}."
+        ],
+        "about": [
+          "Tinggi diukur dari pintu masuk utama terendah sampai puncak arsitektur, termasuk menara runcing, tanpa antena dan tiang bendera. Hanya gedung dengan lantai yang bisa dipakai yang dihitung, jadi menara TV dan radio seperti Tokyo Skytree tidak masuk, dan gedung yang masih dibangun baru dimasukkan setelah rampung.",
+          "Tinggi, lantai, kota, negara, dan tahun berasal dari daftar Wikipedia bahasa Inggris (CC BY-SA 4.0); nama dalam tiap bahasa dari Wikidata (CC0). Beberapa menara baru belum punya artikel Wikipedia dan memakai nama bahasa Inggris."
+        ],
+        "faq": [
+          {
+            "q": "Apa gedung tertinggi di dunia?",
+            "a": "{top1} di Dubai, setinggi {v1} ({ft1} kaki). Gedung ini menjadi yang tertinggi sejak dibuka pada 2010."
+          },
+          {
+            "q": "Apa gedung tertinggi kedua di dunia?",
+            "a": "{top2}, setinggi {v2}. {top3} di urutan ketiga dengan {v3}."
+          },
+          {
+            "q": "Negara mana yang punya gedung supertinggi terbanyak?",
+            "a": "{countryLead}: {countryCount} dari {rows} gedung dalam daftar ini ada di sana."
+          }
+        ]
+      },
+      "largest-cities": {
+        "title": "Kota Terbesar di Dunia menurut Penduduk: {rows} Teratas (PBB 2025) | cv.cm",
+        "description": "{rows} kota berpenduduk terbanyak: {top1} {v1}, {top2} {v2}, {top3} {v3}. Penduduk dari World Urbanization Prospects 2025 PBB, beserta negaranya.",
+        "h1": "{rows} kota terbesar di dunia",
+        "lede": "{rows} kota terbesar di Bumi menurut jumlah penduduk, diurutkan berdasarkan perkiraan World Urbanization Prospects 2025 PBB untuk tiap kawasan perkotaan, beserta negaranya. Dari daftar kota terbesar di Wikipedia.",
+        "facts": [
+          "Terbesar: {top1} dengan {m1} jiwa, lalu {top2} ({m2}) dan {top3} ({m3}).",
+          "Negara dengan kota terbanyak dalam daftar: {countryLead}, {countryCount} dari {rows}.",
+          "Peringkat {lowRank} adalah {low1} dengan {lv1} jiwa."
+        ],
+        "about": [
+          "Besar kecilnya kota bergantung pada di mana batasnya ditarik. Kota administratif berhenti di batas resmi, kawasan perkotaan mengikuti lahan terbangun, dan wilayah metropolitan menambahkan kota-kota penglaju. Tabel ini memakai perkiraan PBB 2025, yang mengukur semua kota dengan cara sama, yaitu kawasan terbangun yang menyambung. Dengan ukuran itu Jakarta telah melampaui Tokyo, yang masih teratas di daftar yang memakai metode lama PBB.",
+          "Penduduk dan negara berasal dari daftar Wikipedia bahasa Inggris (CC BY-SA 4.0) yang mengutip angka PBB; nama dalam tiap bahasa dari Wikidata (CC0). Perkiraan dibulatkan dan berubah setiap revisi PBB."
+        ],
+        "faq": [
+          {
+            "q": "Apa kota terbesar di dunia?",
+            "a": "{top1}, dengan sekitar {m1} jiwa menurut perkiraan PBB 2025. Daftar yang memakai batas administratif atau metode lama PBB sering menempatkan Tokyo di urutan pertama."
+          },
+          {
+            "q": "Mengapa daftar kota terbesar berbeda-beda?",
+            "a": "Daftar-daftar itu menarik batas kota di tempat berbeda: di dalam batas resmi, di sekitar kawasan terbangun, atau di sekitar seluruh wilayah penglaju. Masing-masing memberi angka dan urutan berbeda."
+          },
+          {
+            "q": "Negara mana yang punya kota besar terbanyak?",
+            "a": "{countryLead}: {countryCount} dari {rows} kota dalam daftar ini ada di sana."
+          }
+        ]
+      },
+      "largest-stadiums": {
+        "title": "Stadion Terbesar di Dunia: {rows} Teratas menurut Kapasitas | cv.cm",
+        "description": "{rows} stadion terbesar menurut kapasitas: {top1} {v1}, {top2} {v2}, {top3} {v3}. Kursi, kota, dan negara untuk setiap stadion.",
+        "h1": "{rows} stadion terbesar di dunia",
+        "lede": "{rows} stadion olahraga terbesar di Bumi menurut kapasitas, yaitu jumlah penonton yang biasanya bisa ditampung, beserta kota dan negaranya. Dari daftar stadion menurut kapasitas di Wikipedia.",
+        "facts": [
+          "Terbesar: {top1} dengan {v1} kursi, lalu {top2} ({v2}) dan {top3} ({v3}).",
+          "Negara dengan stadion terbanyak dalam daftar: {countryLead}, {countryCount} dari {rows}.",
+          "Peringkat {lowRank} adalah {low1} dengan {lv1} kursi."
+        ],
+        "about": [
+          "Kapasitas adalah jumlah penonton yang biasanya bisa ditampung stadion, tanpa kursi sementara. Sirkuit balap, yang bisa menampung lebih banyak orang, bukan stadion dan tidak dimasukkan. Kapasitas berubah saat stadion dibangun ulang, dan daftar ini ikut berubah.",
+          "Kapasitas, kota, dan negara berasal dari daftar Wikipedia bahasa Inggris (CC BY-SA 4.0); nama dalam tiap bahasa dari Wikidata (CC0)."
+        ],
+        "faq": [
+          {
+            "q": "Apa stadion terbesar di dunia?",
+            "a": "{top1} di Ahmedabad, India, stadion kriket yang menampung {v1} penonton."
+          },
+          {
+            "q": "Apakah kapasitas termasuk tempat berdiri atau kursi sementara?",
+            "a": "Tidak. Kapasitas adalah jumlah penonton yang biasanya bisa ditampung stadion; tribun sementara untuk satu acara tidak dihitung, dan sirkuit balap tidak dianggap stadion."
+          },
+          {
+            "q": "Negara mana yang punya stadion besar terbanyak?",
+            "a": "{countryLead}: {countryCount} dari {rows} stadion dalam daftar ini ada di sana."
           }
         ]
       }

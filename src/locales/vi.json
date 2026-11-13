@@ -10152,6 +10152,38 @@
     "lightsaber-color": {
       "name": "Kiếm ánh sáng của bạn màu gì?",
       "blurb": "Xanh dương, xanh lá, tím, vàng, trắng, đỏ, cam hay đen? 12 câu hỏi, không chính thức, chỉ để cho vui."
+    },
+    "empath": {
+      "name": "Test empath (người thấu cảm)",
+      "blurb": "Bạn có cảm nhận cảm xúc của người khác như của chính mình không? 14 nhận định và điểm trên 56 cho biết bạn bắt sóng người khác mạnh đến đâu."
+    },
+    "crush": {
+      "name": "Crush có thích mình không?",
+      "blurb": "Đếm các dấu hiệu: 12 câu hỏi về cách người ấy nói chuyện, nhắn tin và cư xử khi ở gần bạn, kèm gợi ý nên làm gì tiếp theo."
+    },
+    "patronus": {
+      "name": "Test Thần Hộ Mệnh (Patronus)",
+      "blurb": "Hươu đực, rái cá, phượng hoàng hay sói? 12 câu hỏi tìm Thần Hộ Mệnh Harry Potter của bạn. Không chính thức, chỉ để cho vui."
+    },
+    "hunger-games-district": {
+      "name": "Bạn thuộc quận nào trong Đấu trường sinh tử?",
+      "blurb": "Bạn đến từ quận nào trong mười hai quận của Panem? 12 câu hỏi về kỹ năng và chiến thuật đấu trường. Không chính thức, chỉ để cho vui."
+    },
+    "greek-god": {
+      "name": "Bạn là vị thần Hy Lạp nào?",
+      "blurb": "Zeus, Athena, Apollo hay Aphrodite? 12 câu hỏi ghép bạn với một trong mười hai vị thần Olympus."
+    },
+    "dog-breed": {
+      "name": "Bạn là giống chó gì?",
+      "blurb": "Golden Retriever, Husky, Corgi hay Beagle? 12 câu hỏi tìm giống chó hợp với tính cách của bạn."
+    },
+    "social-anxiety": {
+      "name": "Test lo âu xã hội (sợ giao tiếp)",
+      "blurb": "14 nhận định về gặp gỡ người lạ, lên tiếng và bị người khác nhìn, chấm điểm trên 56. Không phải chẩn đoán."
+    },
+    "ocd": {
+      "name": "Test OCD (rối loạn ám ảnh cưỡng chế)",
+      "blurb": "15 nhận định về suy nghĩ không mong muốn, kiểm tra, lau chùi và nghi thức. Bài không chẩn đoán được OCD, nhưng giúp bạn quyết định có nên đi hỏi chuyên gia hay không."
     }
   },
   "dataset": {
@@ -12447,6 +12479,19 @@
     "hanfu": "Hán phục",
     "qipao": "Sườn xám (qipao)"
   },
+  "refFocusBlurb": {
+    "sitting-pose": "Trên ghế, sàn hay bậc thang: hông, cột sống và chân gập lại ra sao khi ngồi",
+    "standing-pose": "Dồn trọng lượng vào một chân, hông và vai nghiêng: nền tảng của mọi dáng toàn thân",
+    "kneeling-pose": "Seiza, quỳ một gối hay quỳ thẳng bằng hai gối: ba tâm trạng rất khác nhau",
+    "hime-cut": "Tóc dài thẳng, mái ngố và tóc mai cắt ngang má",
+    "ahoge": "Một sợi tóc dựng lên trên đỉnh đầu",
+    "twin-tails": "Hai búi đuôi ngựa buộc cao hoặc thấp ở hai bên đầu",
+    "heart-hands": "Bắn tim bằng ngón tay, hai tay và vòng tay: mọi cách tạo trái tim bằng tay",
+    "hugging-pose": "Ôm thú bông, gối, thú cưng hoặc một người khác: mềm mại, ấm áp và ấm cúng",
+    "hanfu": "Trang phục truyền thống của người Hán: nhu quần, áo quần, bội tử, mã diện quần và cổ chéo",
+    "qipao": "Váy ôm kiểu Trung Hoa, cổ đứng, khuy tết và xẻ tà; còn gọi là cheongsam"
+  },
+  "refAll": "Tất cả tài liệu tham khảo",
   "romEmulator": {
     "title": "Trình giả lập game",
     "privacyNote": "Mở ROM của bạn và chơi trong tab này. Hệ máy được nhận diện từ tệp. Không tải lên.",
@@ -12583,6 +12628,22 @@
     "largest-islands": {
       "name": "Những hòn đảo lớn nhất thế giới",
       "blurb": "Các hòn đảo lớn nhất theo diện tích và quốc gia sở hữu."
+    },
+    "largest-deserts": {
+      "name": "Sa mạc lớn nhất thế giới",
+      "blurb": "Các sa mạc lớn nhất theo diện tích, kể cả vùng cực, và các nước chúng trải qua."
+    },
+    "tallest-buildings": {
+      "name": "Tòa nhà cao nhất thế giới",
+      "blurb": "Những nhà chọc trời đã hoàn thành cao nhất, kèm số tầng, thành phố và năm."
+    },
+    "largest-cities": {
+      "name": "Thành phố đông dân nhất thế giới",
+      "blurb": "Các thành phố đông dân nhất theo ước tính năm 2025 của Liên Hợp Quốc."
+    },
+    "largest-stadiums": {
+      "name": "Sân vận động lớn nhất thế giới",
+      "blurb": "Các sân vận động nhiều chỗ ngồi nhất, kèm thành phố và quốc gia."
     }
   },
   "mortgage": {

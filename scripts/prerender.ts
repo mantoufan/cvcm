@@ -43,18 +43,6 @@ document.write('<!doctype html><html><head></head><body><div id="app"></div></bo
 
 await import("../src/shared/messages-all");
 const { sitemapPages, pageUrl } = await import("../src/shared/sitemap");
-// prerender.mjs asks for the page count first, to choose how many processes to split the pages over.
-if (process.env.PRERENDER_COUNT) {
-  console.log(`PAGES ${sitemapPages().length}`);
-  await win.happyDOM.abort();
-  process.exit(0);
-}
-// `PRERENDER_SHARD=i/n` renders every n-th page from the i-th: each page leaves state in the heap that is never freed,
-// so prerender.mjs runs the pages in several processes instead of one that outgrows its heap.
-const [shard, shards] = (process.env.PRERENDER_SHARD ?? "0/1").split("/").map(Number);
-if (!(Number.isInteger(shards) && shards >= 1 && Number.isInteger(shard) && shard >= 0 && shard < shards)) {
-  throw new Error(`PRERENDER_SHARD must be i/n with 0 <= i < n, got ${JSON.stringify(process.env.PRERENDER_SHARD)}`);
-}
 const { render, whenRendered } = await import("../src/client/main");
 
 const MARKER = "<!--ssr-->";
@@ -71,8 +59,18 @@ let written = 0;
 const failed: string[] = [];
 const started = Date.now();
 await whenRendered();
-for (const [index, page] of sitemapPages().entries()) {
-  if (index % shards !== shard) continue;
+// Rendering leaks memory page by page (about 1 MB each, in happy-dom), so prerender.mjs runs this file in several
+// processes. PRERENDER_SHARD="i/n" takes every n-th page starting at i: spreading each section across the processes
+// keeps them far faster than giving each one a run of neighbouring pages. Each process writes its counts to
+// PRERENDER_REPORT for the parent to add up; PRERENDER_COUNT_ONLY just reports the page count. Without these, one
+// process renders every page and logs its own summary.
+const all = sitemapPages();
+const shardSpec = process.env.PRERENDER_SHARD ?? "0/1";
+const [shard, shards] = shardSpec.split("/").map((part) => (/^\d+$/.test(part) ? Number(part) : NaN));
+if (!(shards >= 1 && shard >= 0 && shard < shards)) throw new Error(`prerender: PRERENDER_SHARD=${shardSpec} is not "i/n" with 0 <= i < n`);
+const pages = process.env.PRERENDER_COUNT_ONLY ? [] : all.filter((_, i) => i % shards === shard);
+const report = process.env.PRERENDER_REPORT;
+for (const page of pages) {
   const path = new URL(pageUrl(page)).pathname;
   pageErrors = 0;
   history.replaceState(null, "", path);
@@ -125,12 +123,14 @@ for (const [index, page] of sitemapPages().entries()) {
 app.replaceChildren();
 render();
 console.error = consoleError;
-console.log(`prerender ${shard + 1}/${shards}: ${written} pages in ${((Date.now() - started) / 1000).toFixed(1)}s, ${failed.length} skipped`);
-if (failed.length) {
-  console.log(`prerender: skipped (the Worker serves its text copy): ${failed.slice(0, 20).join(" ")}${failed.length > 20 ? " …" : ""}`);
-  console.log(`prerender: first errors:\n  ${[...new Set(errors)].slice(0, 8).join("\n  ")}`);
+if (report) {
+  writeFileSync(report, JSON.stringify({ total: all.length, written, failed, errors: [...new Set(errors)].slice(0, 8) }));
+} else {
+  console.log(`prerender: ${written} pages in ${((Date.now() - started) / 1000).toFixed(1)}s, ${failed.length} skipped`);
+  if (failed.length) {
+    console.log(`prerender: skipped (the Worker serves its text copy): ${failed.slice(0, 20).join(" ")}${failed.length > 20 ? " …" : ""}`);
+    console.log(`prerender: first errors:\n  ${[...new Set(errors)].slice(0, 8).join("\n  ")}`);
+  }
 }
-// prerender.mjs adds the shards up and fails a build that wrote no page at all.
-if (process.env.PRERENDER_RESULT) writeFileSync(process.env.PRERENDER_RESULT, JSON.stringify({ written, failed }));
 await win.happyDOM.abort();
 process.exit(0);

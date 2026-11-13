@@ -3,14 +3,14 @@
 // `src/locales/quiz/<locale>.json`, with items in the same order. Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "narcissist", "dark-triad"] },
-  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad"] },
+  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush"] },
   { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
   { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
-  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color"] },
-  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "adhd"] },
+  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed"] },
+  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "adhd"] },
 ] as const;
 
 export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
@@ -187,6 +187,15 @@ const STRESS = likert(Array(7).fill("stress+ stress-").join(" "));
 const LEARNING = likert(Array(4).fill("visual+ auditory+ reading+ kinesthetic+").join(" "));
 /** Written for cv.cm (not the Short Dark Triad): six statements a trait, half of them reversed. */
 const DARK_TRIAD = likert(Array(3).fill("mach+ narc+ psych+ mach- narc- psych-").join(" "));
+/** Written for cv.cm from everyday signs of strong empathy (not any published empath or empathy scale), half reversed. */
+const EMPATH = likert(Array(7).fill("empath+ empath-").join(" "));
+/** Written for cv.cm (not the SPIN, LSAS or any other scale): fear and avoidance of social situations, half reversed. */
+const SOCIAL_ANXIETY = likert(Array(7).fill("social+ social-").join(" "));
+/**
+ * Written for cv.cm from the symptom areas of OCD (contamination, checking and doubt, order and symmetry, unwanted
+ * thoughts, and the time and distress rituals take). Not the Y-BOCS or OCI-R, not clinically validated; the copy says so.
+ */
+const OCD = likert(Array(15).fill("ocd+").join(" "));
 
 /**
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
@@ -629,6 +638,94 @@ const AURA: ChoiceItem[] = [
   { options: [{ orange: 2 }, { blue: 2 }, { green: 2 }, { violet: 2 }] },
 ];
 
+/** Eight Patronus animals, laid out like `GHIBLI`. */
+const PATRONUS: ChoiceItem[] = [
+  { options: [{ stag: 2 }, { otter: 2 }, { wolf: 2 }, { hare: 2 }] },
+  { options: [{ cat: 2 }, { horse: 2 }, { swan: 2 }, { phoenix: 2 }] },
+  { options: [{ swan: 2 }, { stag: 2 }, { cat: 2 }, { wolf: 2 }] },
+  { options: [{ hare: 2 }, { horse: 2 }, { otter: 2 }, { phoenix: 2 }] },
+  { options: [{ phoenix: 2 }, { stag: 2 }, { swan: 2 }, { otter: 2 }] },
+  { options: [{ horse: 2 }, { wolf: 2 }, { hare: 2 }, { cat: 2 }] },
+  { options: [{ cat: 2 }, { phoenix: 2 }, { stag: 2 }, { hare: 2 }] },
+  { options: [{ wolf: 2 }, { swan: 2 }, { horse: 2 }, { otter: 2 }] },
+  { options: [{ horse: 2 }, { cat: 2 }, { otter: 2 }, { stag: 2 }] },
+  { options: [{ swan: 2 }, { hare: 2 }, { phoenix: 2 }, { wolf: 2 }] },
+  { options: [{ wolf: 2 }, { phoenix: 2 }, { stag: 2 }, { horse: 2 }] },
+  { options: [{ otter: 2 }, { cat: 2 }, { hare: 2 }, { swan: 2 }] },
+];
+
+/** Eight dog breeds, laid out like `GHIBLI`. */
+const DOG_BREED: ChoiceItem[] = [
+  { options: [{ golden: 2 }, { collie: 2 }, { shepherd: 2 }, { chihuahua: 2 }] },
+  { options: [{ husky: 2 }, { corgi: 2 }, { poodle: 2 }, { beagle: 2 }] },
+  { options: [{ poodle: 2 }, { golden: 2 }, { husky: 2 }, { shepherd: 2 }] },
+  { options: [{ chihuahua: 2 }, { corgi: 2 }, { collie: 2 }, { beagle: 2 }] },
+  { options: [{ beagle: 2 }, { golden: 2 }, { poodle: 2 }, { collie: 2 }] },
+  { options: [{ corgi: 2 }, { shepherd: 2 }, { chihuahua: 2 }, { husky: 2 }] },
+  { options: [{ husky: 2 }, { beagle: 2 }, { golden: 2 }, { chihuahua: 2 }] },
+  { options: [{ shepherd: 2 }, { poodle: 2 }, { corgi: 2 }, { collie: 2 }] },
+  { options: [{ corgi: 2 }, { husky: 2 }, { collie: 2 }, { golden: 2 }] },
+  { options: [{ poodle: 2 }, { chihuahua: 2 }, { beagle: 2 }, { shepherd: 2 }] },
+  { options: [{ shepherd: 2 }, { beagle: 2 }, { golden: 2 }, { corgi: 2 }] },
+  { options: [{ collie: 2 }, { husky: 2 }, { chihuahua: 2 }, { poodle: 2 }] },
+];
+
+/**
+ * Twelve districts, four a question: each district in four questions, once in each answer position, and no two
+ * districts side by side more than twice.
+ */
+const HUNGER_GAMES: ChoiceItem[] = [
+  { options: [{ d12: 2 }, { d8: 2 }, { d2: 2 }, { d7: 2 }] },
+  { options: [{ d2: 2 }, { d1: 2 }, { d11: 2 }, { d6: 2 }] },
+  { options: [{ d6: 2 }, { d11: 2 }, { d5: 2 }, { d9: 2 }] },
+  { options: [{ d1: 2 }, { d12: 2 }, { d6: 2 }, { d5: 2 }] },
+  { options: [{ d5: 2 }, { d7: 2 }, { d1: 2 }, { d8: 2 }] },
+  { options: [{ d4: 2 }, { d10: 2 }, { d9: 2 }, { d11: 2 }] },
+  { options: [{ d3: 2 }, { d9: 2 }, { d7: 2 }, { d1: 2 }] },
+  { options: [{ d7: 2 }, { d3: 2 }, { d12: 2 }, { d4: 2 }] },
+  { options: [{ d11: 2 }, { d5: 2 }, { d3: 2 }, { d10: 2 }] },
+  { options: [{ d10: 2 }, { d6: 2 }, { d8: 2 }, { d12: 2 }] },
+  { options: [{ d9: 2 }, { d2: 2 }, { d4: 2 }, { d3: 2 }] },
+  { options: [{ d8: 2 }, { d4: 2 }, { d10: 2 }, { d2: 2 }] },
+];
+
+/** Twelve Olympians, laid out the same way as `HUNGER_GAMES` (a different arrangement). */
+const GREEK_GOD: ChoiceItem[] = [
+  { options: [{ apollo: 2 }, { dionysus: 2 }, { ares: 2 }, { aphrodite: 2 }] },
+  { options: [{ poseidon: 2 }, { apollo: 2 }, { hermes: 2 }, { zeus: 2 }] },
+  { options: [{ zeus: 2 }, { artemis: 2 }, { hera: 2 }, { ares: 2 }] },
+  { options: [{ hera: 2 }, { hephaestus: 2 }, { poseidon: 2 }, { demeter: 2 }] },
+  { options: [{ demeter: 2 }, { aphrodite: 2 }, { artemis: 2 }, { apollo: 2 }] },
+  { options: [{ athena: 2 }, { demeter: 2 }, { aphrodite: 2 }, { hermes: 2 }] },
+  { options: [{ dionysus: 2 }, { poseidon: 2 }, { athena: 2 }, { hera: 2 }] },
+  { options: [{ artemis: 2 }, { ares: 2 }, { apollo: 2 }, { athena: 2 }] },
+  { options: [{ ares: 2 }, { zeus: 2 }, { hephaestus: 2 }, { dionysus: 2 }] },
+  { options: [{ aphrodite: 2 }, { athena: 2 }, { zeus: 2 }, { poseidon: 2 }] },
+  { options: [{ hermes: 2 }, { hera: 2 }, { dionysus: 2 }, { hephaestus: 2 }] },
+  { options: [{ hephaestus: 2 }, { hermes: 2 }, { demeter: 2 }, { artemis: 2 }] },
+];
+
+/**
+ * Signs that someone is interested: each answer is worth 0 (no sign) to 3 (a clear sign), 12 questions, total 0–36.
+ * The weights are shuffled so the strongest sign is not always in the same place: every question has each weight
+ * once, each weight sits in each position three times, and the 3-point answer never sits in the same place in two
+ * questions in a row.
+ */
+const CRUSH: ChoiceItem[] = [
+  { options: [{ signs: 0 }, { signs: 1 }, { signs: 2 }, { signs: 3 }] },
+  { options: [{ signs: 2 }, { signs: 0 }, { signs: 3 }, { signs: 1 }] },
+  { options: [{ signs: 3 }, { signs: 1 }, { signs: 2 }, { signs: 0 }] },
+  { options: [{ signs: 0 }, { signs: 3 }, { signs: 2 }, { signs: 1 }] },
+  { options: [{ signs: 1 }, { signs: 2 }, { signs: 3 }, { signs: 0 }] },
+  { options: [{ signs: 0 }, { signs: 2 }, { signs: 1 }, { signs: 3 }] },
+  { options: [{ signs: 3 }, { signs: 0 }, { signs: 1 }, { signs: 2 }] },
+  { options: [{ signs: 2 }, { signs: 3 }, { signs: 0 }, { signs: 1 }] },
+  { options: [{ signs: 1 }, { signs: 0 }, { signs: 3 }, { signs: 2 }] },
+  { options: [{ signs: 2 }, { signs: 1 }, { signs: 0 }, { signs: 3 }] },
+  { options: [{ signs: 3 }, { signs: 2 }, { signs: 1 }, { signs: 0 }] },
+  { options: [{ signs: 1 }, { signs: 3 }, { signs: 0 }, { signs: 2 }] },
+];
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -956,6 +1053,69 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: LIGHTSABER,
     result: { kind: "top", tie: "spread" },
   },
+  empath: {
+    id: "empath",
+    type: "likert",
+    scale: "agree5",
+    dims: ["empath"],
+    items: EMPATH,
+    // Three equal bands around the neutral total of 28, like the sensitivity test. Not research cut-offs.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "mid" }, { max: 56, key: "high" }] },
+  },
+  "social-anxiety": {
+    id: "social-anxiety",
+    type: "likert",
+    scale: "agree5",
+    dims: ["social"],
+    items: SOCIAL_ANXIETY,
+    // Three equal bands around the neutral total of 28. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "moderate" }, { max: 56, key: "high" }] },
+  },
+  ocd: {
+    id: "ocd",
+    type: "likert",
+    scale: "agree5",
+    dims: ["ocd"],
+    items: OCD,
+    // 24 and 39 of 60 are 40% and 65%, as in the ADHD check. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 24, key: "few" }, { max: 39, key: "some" }, { max: 60, key: "many" }] },
+  },
+  crush: {
+    id: "crush",
+    type: "choice",
+    dims: ["signs"],
+    items: CRUSH,
+    // A third and two thirds of 36.
+    result: { kind: "band", bands: [{ max: 12, key: "few" }, { max: 24, key: "mixed" }, { max: 36, key: "many" }] },
+  },
+  patronus: {
+    id: "patronus",
+    type: "choice",
+    dims: ["stag", "otter", "wolf", "hare", "cat", "horse", "swan", "phoenix"],
+    items: PATRONUS,
+    result: { kind: "top", tie: "spread" },
+  },
+  "hunger-games-district": {
+    id: "hunger-games-district",
+    type: "choice",
+    dims: ["d1", "d2", "d3", "d4", "d5", "d6", "d7", "d8", "d9", "d10", "d11", "d12"],
+    items: HUNGER_GAMES,
+    result: { kind: "top", tie: "spread" },
+  },
+  "greek-god": {
+    id: "greek-god",
+    type: "choice",
+    dims: ["zeus", "hera", "poseidon", "demeter", "athena", "apollo", "artemis", "ares", "aphrodite", "hephaestus", "hermes", "dionysus"],
+    items: GREEK_GOD,
+    result: { kind: "top", tie: "spread" },
+  },
+  "dog-breed": {
+    id: "dog-breed",
+    type: "choice",
+    dims: ["golden", "collie", "shepherd", "chihuahua", "husky", "corgi", "poodle", "beagle"],
+    items: DOG_BREED,
+    result: { kind: "top", tie: "spread" },
+  },
   "spirit-animal": {
     id: "spirit-animal",
     type: "choice",
@@ -1006,6 +1166,8 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   anxiety: ["moderate", "severe"],
   burnout: ["high"],
   stress: ["high"],
+  "social-anxiety": ["high"],
+  ocd: ["many"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
@@ -1013,6 +1175,7 @@ export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz:
   "wellbeing-index": { bands: ["low", "reduced"], quiz: "depression" },
   burnout: { bands: ["high"], quiz: "depression" },
   stress: { bands: ["high"], quiz: "anxiety" },
+  "social-anxiety": { bands: ["high"], quiz: "anxiety" },
 };
 
 export function questionCount(id: QuizId): number {
