@@ -32,12 +32,16 @@ async function fetchRetry(url, read) {
       const res = await fetch(url, { signal: AbortSignal.timeout(120_000) });
       if (!res.ok) {
         await res.body?.cancel().catch(() => {});
-        throw Object.assign(new Error(`${res.status} ${url}`), { final: res.status < 500 && res.status !== 408 && res.status !== 429 });
+        throw Object.assign(new Error(`${res.status} ${url}`), {
+          final: res.status < 500 && res.status !== 408 && res.status !== 429,
+          // A 429 says how long to wait; waiting less only spends the remaining tries inside the limit.
+          wait: Number(res.headers.get("retry-after")) * 1000 || 0,
+        });
       }
       return await read(res);
     } catch (err) {
       if (err.final || attempt >= 6) throw err;
-      await new Promise((r) => setTimeout(r, 5000 * attempt));
+      await new Promise((r) => setTimeout(r, Math.max(5000 * attempt, Math.min(err.wait ?? 0, 600_000))));
     }
   }
 }
@@ -92,6 +96,7 @@ for (const [id, spec] of Object.entries(WB)) {
   const [info, all] = await getJson(`https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&date=${thisYear - 20}:${thisYear}&per_page=20000`);
   // A mistyped code is not a 4xx: the API answers 200 with [{ message: [...] }].
   if (info.message) throw new Error(`${id}: World Bank rejected ${code}: ${JSON.stringify(info.message)}`);
+  if (!info.total || !Array.isArray(all)) throw new Error(`${id}: the World Bank has no ${code} values for ${thisYear - 20}-${thisYear}`);
   if (info.pages !== 1) throw new Error(`${code}: ${info.total} rows over ${info.pages} pages; raise per_page`);
   const latestBy = new Map();
   for (const r of all) {
