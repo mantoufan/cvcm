@@ -1031,3 +1031,63 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .slope-run { fill: none; stroke: #8b6f7d; stroke-width: 2; stroke-dasharray: 5 4; }
 .slope-dot { fill: var(--pink-deep); stroke: #fff; stroke-width: 2; }
 .slope-text { fill: var(--ink); font-size: 14px; font-weight: 700; }
+
+/* Sudoku, tic-tac-toe, colour blindness test, military time and height calculators (batch 27). */
+.sudoku-tool { display: grid; grid-template-columns: minmax(0, 32rem) minmax(14rem, 1fr); gap: 1.25rem; align-items: start; }
+@media (max-width: 860px) { .sudoku-tool { grid-template-columns: minmax(0, 1fr); } }
+.sudoku-bar { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.4rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.sudoku-time { font-weight: 700; color: var(--ink); }
+.sudoku-board { display: grid; grid-template-rows: repeat(9, 1fr); aspect-ratio: 1; width: 100%; max-width: 32rem; border: 2px solid var(--ink); border-radius: 6px; overflow: hidden; background: #fff; }
+.sudoku-row { display: grid; grid-template-columns: repeat(9, 1fr); }
+.sudoku-cell { position: relative; display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 0; padding: 0; border: 0; border-right: 1px solid #e3cdd8; border-bottom: 1px solid #e3cdd8; background: #fff; color: var(--pink-deep); font: inherit; font-size: clamp(1.1rem, 5vw, 1.7rem); font-weight: 600; cursor: pointer; }
+.sudoku-row:last-child .sudoku-cell { border-bottom: 0; }
+.sudoku-cell:last-child { border-right: 0; }
+.sudoku-cell.edge-r { border-right: 2px solid var(--ink); }
+.sudoku-cell.edge-b { border-bottom: 2px solid var(--ink); }
+.sudoku-cell.given { color: var(--ink); font-weight: 700; }
+.sudoku-cell.peer { background: var(--pink-soft); }
+.sudoku-cell.same { background: #f7d6e4; }
+.sudoku-cell.sel { background: #f4a9c6; color: var(--ink); }
+.sudoku-cell.clash, .sudoku-cell.wrong { color: #c0262d; text-decoration: underline wavy #c0262d; text-underline-offset: 0.15em; }
+.sudoku-cell:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: -3px; }
+.sudoku-notes { position: absolute; inset: 2px; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); font-size: clamp(0.5rem, 1.7vw, 0.68rem); font-weight: 500; line-height: 1; color: var(--ink-soft); }
+.sudoku-notes span { display: flex; align-items: center; justify-content: center; }
+.sudoku-status { min-height: 1.6em; margin: 0.6rem 0 0; color: var(--ink-soft); }
+.sudoku-status.ok { color: var(--pink-deep); font-weight: 700; }
+.sudoku-pad { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 0.3rem; margin-bottom: 0.75rem; }
+@media (min-width: 861px) { .sudoku-pad { grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 15rem; } }
+.sudoku-key { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 48px; padding: 0.2rem 0; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); font: inherit; font-size: 1.3rem; font-weight: 700; cursor: pointer; }
+.sudoku-key small { min-height: 1em; font-size: 0.65rem; font-weight: 500; color: var(--ink-soft); line-height: 1; }
+.sudoku-key:hover { border-color: var(--pink); background: var(--pink-soft); }
+.sudoku-key.done { color: #c9b5bf; }
+.ttt-board { display: grid; gap: 0; width: min(100%, 20rem); aspect-ratio: 1; margin-bottom: 0.75rem; }
+.ttt-row { display: grid; grid-template-columns: repeat(3, 1fr); }
+.ttt-cell { display: flex; align-items: center; justify-content: center; min-height: 0; padding: 0; border: 0; border-right: 3px solid var(--ink); border-bottom: 3px solid var(--ink); background: #fff; font: inherit; font-size: clamp(2.4rem, 12vw, 4rem); font-weight: 800; line-height: 1; cursor: pointer; }
+.ttt-row .ttt-cell:last-child { border-right: 0; }
+.ttt-row:last-child .ttt-cell { border-bottom: 0; }
+.ttt-cell:disabled { cursor: default; color: inherit; }
+.ttt-cell.x { color: var(--pink-deep); }
+.ttt-cell.o { color: #5b4a8a; }
+.ttt-cell.win { background: var(--pink-soft); }
+.ttt-cell:not(:disabled):hover { background: var(--pink-soft); }
+.ttt-status { min-height: 1.6em; margin: 0 0 0.5rem; font-weight: 700; color: var(--ink); }
+.cv-tool { display: grid; grid-template-columns: minmax(0, 28rem) minmax(14rem, 1fr); gap: 1.25rem; align-items: start; }
+@media (max-width: 860px) { .cv-tool { grid-template-columns: minmax(0, 1fr); } }
+.cv-stage { width: 100%; max-width: 28rem; aspect-ratio: 1; }
+.cv-plate { display: block; width: 100%; height: 100%; }
+.cv-progress { margin: 0 0 0.5rem; font-weight: 700; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.cv-form input { font-size: 1.6rem; letter-spacing: 0.1em; max-width: 8rem; text-align: center; }
+.cv-table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.cv-table th, .cv-table td { padding: 0.3rem 0.5rem; border-bottom: 1px solid var(--line); text-align: left; }
+.cv-table tr.miss td { color: #c0262d; }
+.cv-tips { margin: 1rem 0 0; padding-left: 1.2rem; color: var(--ink-soft); font-size: 0.9rem; }
+.mil-chart { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.mil-chart th, .mil-chart td { padding: 0.3rem 0.6rem; border-bottom: 1px solid var(--line); text-align: left; }
+.mil-chart td:nth-child(2n) { font-weight: 700; color: var(--pink-deep); }
+.mil-now-title { margin: 1.25rem 0 0.4rem; font-size: 1rem; }
+.height-input { display: flex; gap: 0.4rem; }
+.height-unit { display: flex; align-items: center; gap: 0.3rem; flex: 1 1 0; min-width: 0; }
+.height-unit input { min-width: 0; }
+.height-unit small { color: var(--ink-soft); }
+.height-age { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 0.5rem; }
+.table-wrap { overflow-x: auto; }

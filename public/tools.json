@@ -76,7 +76,7 @@
     },
     {
       "id": "games",
-      "name": "Retro games: open your own ROM or SWF"
+      "name": "Games: sudoku, tic-tac-toe, and retro players for your own ROM or SWF"
     },
     {
       "id": "assets",
@@ -1226,6 +1226,22 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "color-blindness-test",
+      "name": "Color blindness test",
+      "description": "Dot plates for red–green and blue–yellow.",
+      "category": "health",
+      "url": "https://cv.cm/en/color-blindness-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "height-calculator",
+      "name": "Height calculator",
+      "description": "How tall your child may grow.",
+      "category": "health",
+      "url": "https://cv.cm/en/height-calculator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
       "id": "timezone",
       "name": "Timezone converter",
       "description": "Convert a clock time between IANA zones. DST and UTC offset.",
@@ -1311,6 +1327,14 @@
       "description": "Years, months, days from a birth date.",
       "category": "time",
       "url": "https://cv.cm/en/age/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "military-time",
+      "name": "Military time converter",
+      "description": "24-hour to 12-hour time and back.",
+      "category": "time",
+      "url": "https://cv.cm/en/military-time/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
@@ -1536,6 +1560,22 @@
       "category": "games",
       "url": "https://cv.cm/en/flash-player/",
       "data_handling": "Processes files in the page. Files are not uploaded."
+    },
+    {
+      "id": "sudoku",
+      "name": "Sudoku",
+      "description": "Free puzzles from easy to expert, with notes.",
+      "category": "games",
+      "url": "https://cv.cm/en/sudoku/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "tic-tac-toe",
+      "name": "Tic-tac-toe",
+      "description": "Play the computer or a friend.",
+      "category": "games",
+      "url": "https://cv.cm/en/tic-tac-toe/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
       "id": "gold",

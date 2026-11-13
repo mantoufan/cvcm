@@ -299,3 +299,13 @@ GPT Image 2.6 Flare image-to-image on kie.ai (Codex at its usage limit until 202
 - `graphing-calculator`: she points a stylus at a glowing translucent graph panel with a pink parabola and a lilac wave crossing at glowing dots; no numbers.
 - `piano`: she plays a small ivory-and-pink toy grand piano; a pastel computer keyboard beside it; notes and hearts float up; blank music sheet.
 - `slope`: she slides a toy car down a pastel ramp on a grid board, a cream right triangle marking rise and run, glowing dots at the ends; a pink set square.
+
+## Sudoku, tic-tac-toe, color blindness test, military time converter, height calculator (2026-11-13)
+
+GPT Image 2.6 Flare image-to-image on kie.ai, refs `dice-sweet.jpg` + `metronome-sweet.jpg`, 16:9 2K, same base prompt as above. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `sudoku`: she holds up a pink clipboard with a nine-box puzzle grid whose cells hold tiny hearts, stars and dots instead of digits; a pink pencil with a heart eraser; a cup of tea.
+- `tic-tac-toe`: she places a plush pink heart on a cream three-by-three wooden tray of heart and star pieces; three hearts in a diagonal glow.
+- `color-blindness-test`: she holds a round plate of olive and sage dots where coral and rose dots form a heart, like a colour vision plate; tiny round pink glasses.
+- `military-time`: a tiny pastel garrison-style cap with a bow; she holds a round cream wall clock with a 24-hour dial of tick marks only; pink wristwatch; small globe.
+- `height-calculator`: beside a flower-stem growth chart with tick marks only, she rests a flat pink book on a plush teddy bear's head to measure it; a potted sapling and a pink tape measure.

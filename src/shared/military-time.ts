@@ -1,0 +1,161 @@
+/** Military (24-hour) time ↔ 12-hour time: parsing what people type, the four-digit form and how it is spoken. */
+import { halfWidth } from "./factors";
+import { numberToWords } from "./words";
+
+export type ClockTime = { h: number; m: number; s: number | null; /** Typed as 2400: the end of the day, the same instant as 0000 the next day. */ endOfDay: boolean };
+
+/**
+ * Words that say which part of the day an hour is in, by how they turn a 12-hour reading (h = 0–12) into 0–23.
+ * One table drives both the parser's patterns and the conversion, so the lists cannot drift apart.
+ */
+type Part = "am" | "pm" | "noon" | "evening" | "night";
+const PARTS: Record<Part, readonly string[]> = {
+  am: ["上午", "早上", "早晨", "凌晨", "早", "午前", "朝", "오전", "새벽", "아침", "sáng", "pagi", "de la mañana", "de la madrugada"],
+  pm: ["下午", "傍晚", "午後", "夕方", "오후", "chiều", "sore", "de la tarde"],
+  /** Around midday: 11 is still morning, 12 is noon, 1–4 afternoon. */
+  noon: ["中午", "昼", "낮", "trưa", "siang", "noon", "del mediodía"],
+  /** Evening: 12 is midnight, 1–4 the small hours, 5–11 PM (晚上5点 is 17:00, 1 malam is 01:00). */
+  evening: ["晚上", "晚", "저녁", "tối", "malam", "de la noche"],
+  /** Night: 12 is midnight, 1–5 the small hours, 6–11 PM (夜里2点 02:00, 夜9時 21:00, 밤 9시 21:00). */
+  night: ["夜里", "夜裡", "深夜", "午夜", "夜晚", "夜", "밤", "đêm", "midnight"],
+};
+/**
+ * Abbreviations, as regex sources: English (a.m., pm, a) only after the time ("2 pm"); Vietnamese SA/CH either side
+ * ("9:05 SA", "SA 9:05"). These sources build the split patterns and the lookup alike.
+ */
+const ABBR = {
+  en: { am: String.raw`a\.?\s?m\.?|a`, pm: String.raw`p\.?\s?m\.?|p` },
+  vi: { am: String.raw`s\.?a\.?`, pm: String.raw`c\.?h\.?` },
+};
+const LATIN: Record<"am" | "pm", RegExp> = {
+  am: new RegExp(`^(${ABBR.en.am}|${ABBR.vi.am})$`, "i"),
+  pm: new RegExp(`^(${ABBR.en.pm}|${ABBR.vi.pm})$`, "i"),
+};
+const esc = (w: string) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// Longest first, so 夜里 wins over 夜.
+const WORDS = Object.values(PARTS).flat().sort((x, y) => y.length - x.length).map(esc).join("|");
+const VI = `${ABBR.vi.am}|${ABBR.vi.pm}`;
+const TAIL = new RegExp(String.raw`^(.*?)\s*(${ABBR.en.am}|${ABBR.en.pm}|${VI}|${WORDS})$`, "i");
+const HEAD = new RegExp(String.raw`^(${WORDS}|${VI})\s*(.*)$`, "i");
+
+function partOf(marker: string): Part | null {
+  const m = marker.replace(/\s/g, "").toLowerCase();
+  for (const [part, words] of Object.entries(PARTS) as [Part, readonly string[]][]) {
+    if (words.some((w) => w.replace(/\s/g, "").toLowerCase() === m)) return part;
+  }
+  if (LATIN.am.test(m)) return "am";
+  if (LATIN.pm.test(m)) return "pm";
+  return null;
+}
+
+/** Splits a leading or trailing part-of-day word (Latin, Chinese, Japanese, Korean, Vietnamese, Indonesian). */
+function splitMeridiem(text: string): { clock: string; part: Part | null } | null {
+  const compact = text.replace(/\s+/g, " ").trim();
+  const pick = (marker: string, clock: string) => {
+    const part = partOf(marker);
+    return part ? { clock: clock.trim(), part } : null;
+  };
+  const head = HEAD.exec(compact);
+  if (head && head[2]) return pick(head[1]!, head[2]);
+  const tail = TAIL.exec(compact);
+  if (tail && tail[1] && /\d$/.test(tail[1].trim())) return pick(tail[2]!, tail[1]);
+  return { clock: compact, part: null };
+}
+
+/** An hour read on a 12-hour clock (0–12) with its part of the day, as 0–23. */
+function toHour24(h: number, part: Part): number {
+  switch (part) {
+    case "am": return h % 12;
+    case "pm": return (h % 12) + 12;
+    case "noon": return h === 11 ? 11 : (h % 12) + 12;
+    case "evening": return h === 12 || h === 0 ? 0 : h < 5 ? h : h + 12;
+    case "night": return h === 12 || h === 0 ? 0 : h < 6 ? h : h + 12;
+  }
+}
+
+/**
+ * Reads a time: "1430", "14:30", "0830 hours", "14:30:15", "2:30 pm", "2 PM", "下午2:30", "下午2点半", "晚上12点",
+ * "午前0時", "夜9時", "오후 2시 30분", "14 giờ 30", "2 giờ 30 chiều", "jam 14.30", "14h30", "1430Z", "１４３０".
+ * Returns null when it is not a time.
+ */
+export function parseTime(raw: string): ClockTime | null {
+  // Full-width digits and colon from a CJK input method count as ASCII; "noon" and "midnight" alone are 12.
+  let text = halfWidth(raw.trim()).replace(/^(noon|midnight)$/i, "12 $1")
+    // A trailing Z is Zulu (UTC), as the page itself writes it: "1430Z".
+    // Trailing Zulu and "hours" words, in either order ("1430Z hours", "1430 hrs Z").
+    .replace(/(?:\s*(?:z|zulu|hours?|hrs?|horas?|hs|jam)\.?)+$/i, "")
+    // Indonesian writes the hour word first: "jam 14.30", "pukul 7".
+    .replace(/^(jam|pukul)\s*/i, "")
+    // "14h30", "14 h 30", "9h sáng": h after an hour is a colon or nothing.
+    .replace(/(\d)\s*[hg]\s*(?=\d)/gi, "$1:")
+    .replace(/(\d)\s*h(?=\s*[^\d:]*$)/i, "$1")
+    // Hour words between the hour and the minutes are a colon ("2点30", "2시 30분", "14 giờ 30"); 半 is half past.
+    .replace(/\s*(?:[时時시点點]|giờ)\s*[半반]/gi, ":30")
+    .replace(/\s*(?:[时時시点點]|giờ)\s*(\d)/gi, ":$1")
+    // Minute words before seconds are a colon too ("14点30分15秒").
+    .replace(/\s*[分분]\s*(\d)/g, ":$1")
+    .replace(/[分분秒초]/g, "")
+    .replace(/\s*(?:[时時시点點]|giờ)(?=\s*\D*$)/gi, "")
+    .trim();
+  if (!text) return null;
+  const split = splitMeridiem(text);
+  if (!split) return null;
+  const { clock, part } = split;
+  let h: number, m: number, s: number | null = null;
+  const colon = /^(\d{1,2})(?:[:.](\d{2}))?(?:[:.](\d{2}))?$/.exec(clock);
+  const digits = /^(\d{3,4})$/.exec(clock);
+  if (digits) {
+    // Three or four digits with no colon: HMM or HHMM, the military way of writing it.
+    const d = digits[1]!.padStart(4, "0");
+    h = Number(d.slice(0, 2));
+    m = Number(d.slice(2));
+  } else if (colon) {
+    // One or two digits alone are an hour: "7" is 07:00, "14" is 14:00.
+    h = Number(colon[1]);
+    m = colon[2] ? Number(colon[2]) : 0;
+    s = colon[3] ? Number(colon[3]) : null;
+  } else return null;
+  if (m > 59 || (s !== null && s > 59)) return null;
+  if (part) {
+    // 0–12 with a part of the day; 0 is how Japan writes the hour after midnight or noon (午前0時, 午後0時).
+    if (h > 12) return null;
+    // Japan's official usage: 午前12時 is noon and 午後12時 is midnight (most people write 午前0時 / 午後0時 instead).
+    if (h === 12 && /午前/.test(raw)) return { h: 12, m, s, endOfDay: false };
+    if (h === 12 && /午後/.test(raw)) return { h: 0, m, s, endOfDay: false };
+    return { h: toHour24(h, part), m, s, endOfDay: false };
+  }
+  if (h === 24 && m === 0 && !s) return { h: 0, m: 0, s: null, endOfDay: true };
+  if (h > 23) return null;
+  return { h, m, s, endOfDay: false };
+}
+
+const two = (n: number) => String(n).padStart(2, "0");
+
+/** "1430", or "2400" for the end of the day; seconds as "143015" are not used in military writing, so they are dropped. */
+export function military(t: ClockTime): string {
+  return t.endOfDay ? "2400" : `${two(t.h)}${two(t.m)}`;
+}
+
+/** "14:30" or "14:30:15" ("24:00" for the end of the day). */
+export function colon24(t: ClockTime): string {
+  if (t.endOfDay) return "24:00";
+  return `${two(t.h)}:${two(t.m)}${t.s !== null ? `:${two(t.s)}` : ""}`;
+}
+
+/** 0–59 in words (the number-to-words tool's), with a spoken leading zero below 10: 5 → "zero five". */
+function spokenPair(n: number, leadingZero: boolean): string {
+  const w = numberToWords(n)!;
+  return n < 10 && leadingZero ? `zero ${w}` : w;
+}
+
+/**
+ * How the time is said in the US military: 0000 "zero hundred hours", 0800 "zero eight hundred hours",
+ * 0805 "zero eight zero five hours", 1430 "fourteen thirty hours", 2400 "twenty-four hundred hours".
+ */
+export function spoken(t: ClockTime): string {
+  if (t.endOfDay) return "twenty-four hundred hours";
+  if (t.h === 0 && t.m === 0) return "zero hundred hours";
+  const hour = t.h === 0 ? "zero zero" : spokenPair(t.h, true);
+  const min = t.m === 0 ? "hundred" : spokenPair(t.m, true);
+  return `${hour} ${min} hours`;
+}

@@ -108,7 +108,8 @@ export function parseColor(input: string): RGB | null {
   return null;
 }
 
-function linear(c: number): number {
+/** An sRGB channel (0–255) as linear light (0–1). */
+export function linear(c: number): number {
   const s = c / 255;
   return s <= 0.04045 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
 }

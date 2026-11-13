@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "titlePlaySudoku": "Cara bermain sudoku: aturan dan tips untuk pemula | cv.cm",
+    "descPlaySudoku": "Belajar sudoku dalam enam langkah: satu aturan, mencari satu-satunya tempat untuk sebuah angka, sel dengan satu pilihan, catatan pensil, dan cara keluar saat buntu. Latihan gratis online, mudah sampai ahli.",
+    "titlePlayTicTacToe": "Cara menang tic tac toe (dan tidak pernah kalah) | cv.cm",
+    "descPlayTicTacToe": "Strategi tic tac toe: langkah pertama terbaik, cara membalas sudut, membuat garpu dengan dua ancaman, dan memblokir lawan. Lalu uji melawan komputer yang tidak pernah kalah.",
+    "titleTestColorBlindness": "Cara tes buta warna online (dan membaca hasilnya) | cv.cm",
+    "descTestColorBlindness": "Tes buta warna di rumah: siapkan layar, baca pelat titik, dan pahami hasil protan, deutan, dan tritan. Apa yang bisa dan tidak bisa diketahui dari sebuah skrining.",
+    "titleConvertMilitaryTime": "Cara konversi waktu militer ke waktu biasa (dengan tabel) | cv.cm",
+    "descConvertMilitaryTime": "Baca dan konversi waktu militer: kurangi 12 setelah tengah hari, tangani tengah malam dan tengah hari, ucapkan waktu seperti 0800 dan 1430 dalam bahasa Inggris, dan kenali waktu Zulu. Dengan tabel dan alat konversi gratis.",
+    "titlePredictChildHeight": "Cara memprediksi tinggi badan anak saat dewasa (dua metode) | cv.cm",
+    "descPredictChildHeight": "Perkirakan seberapa tinggi anak nanti: rumus mid-parental beserta rentangnya, dan metode persentil grafik pertumbuhan. Seberapa akurat masing-masing dan kapan perlu ke dokter."
+  },
+  "lessons": {
+    "play-sudoku": {
+      "copy": {
+        "name": "Cara bermain sudoku",
+        "blurb": "Aturan, memindai, catatan, dan keluar dari buntu.",
+        "title": "Cara bermain sudoku",
+        "lead": "Sudoku tidak butuh matematika, hanya logika. Anda akan mempelajari satu aturannya, dua cara yang dipakai setiap pemula untuk menemukan angka, cara membuat catatan, dan apa yang dilakukan saat buntu, lalu menyelesaikan satu teka-teki penuh.",
+        "result": "Sudoku yang selesai dan cara yang bisa dipakai untuk teka-teki yang lebih sulit.",
+        "note": "Jangan pernah menebak. Sudoku yang dibuat dengan baik punya satu jawaban, dan setiap angka bisa ditemukan dengan logika.",
+        "s1t": "Buka Sudoku di cv.cm",
+        "s1b": "Mulai dengan teka-teki mudah. Angka hitam sudah diberikan; Anda mengisi sel yang kosong. Ketuk sel, lalu angka, atau ketik di keyboard.",
+        "s2t": "Pelajari satu aturannya",
+        "s2b": "Setiap baris, setiap kolom, dan setiap kotak 3 × 3 harus berisi 1 sampai 9 masing-masing tepat sekali. Jadi angka yang sudah ada di satu baris tidak boleh muncul lagi di mana pun di baris itu, begitu juga untuk kolom dan kotak.",
+        "s3t": "Cari satu-satunya sel untuk sebuah angka",
+        "s3b": "Pilih satu angka, misalnya 5, dan kotak yang belum punya 5. Setiap baris dan kolom yang sudah punya 5 mencoret selnya di kotak itu. Jika tinggal satu sel, 5 masuk ke sana.",
+        "s4t": "Cari satu-satunya angka untuk sebuah sel",
+        "s4b": "Lihat satu sel kosong dan coret setiap angka yang ada di baris, kolom, dan kotaknya. Jika tinggal satu angka, tulis angka itu. Baris dan kotak yang sudah banyak terisi adalah tempat terbaik untuk mulai.",
+        "s5t": "Tulis catatan",
+        "s5b": "Di teka-teki sedang dan yang lebih sulit, nyalakan Catatan dan tulis kemungkinan angka dalam ukuran kecil. Setiap kali Anda menaruh angka, alat ini menghapusnya dari catatan yang terkena, sehingga muncul pilihan tunggal yang baru.",
+        "s6t": "Periksa dan keluar dari buntu",
+        "s6b": "Angka yang bentrok di satu baris, kolom, atau kotak diberi garis bawah. Tunjukkan kesalahan mencocokkan angka Anda dengan jawaban, dan Petunjuk mengisi satu sel. Urungkan membatalkan langkah apa pun.",
+        "diagram1": "Aturannya: 1 sampai 9 sekali di setiap baris, kolom, dan kotak.",
+        "diagram2": "Angka 5 di dua baris menyisakan satu sel untuk 5 di kotak itu."
+      },
+      "faq": {
+        "q1": "Apakah sudoku soal matematika?",
+        "a1": "Bukan. Angka-angkanya hanyalah sembilan simbol berbeda; Anda tidak pernah menjumlahkannya. Huruf atau warna pun bisa dipakai dengan cara yang sama.",
+        "q2": "Dari mana pemula sebaiknya mulai?",
+        "a2": "Dari angka yang paling sering muncul di papan. Angka itu menyisakan paling sedikit tempat untuk salinan yang belum ada, jadi paling cepat ditemukan.",
+        "q3": "Apa yang membuat sudoku sulit?",
+        "a3": "Angka awal yang lebih sedikit dan, yang lebih penting, sel yang tidak bisa diisi dengan dua cara sederhana tadi. Teka-teki sulit butuh catatan dan pola, misalnya dua sel yang punya dua pilihan yang sama.",
+        "q4": "Berapa angka awal yang dibutuhkan sudoku?",
+        "a4": "Minimal 17. Tidak ada teka-teki dengan 16 angka awal yang punya satu jawaban; ini dibuktikan lewat pencarian komputer pada 2012.",
+        "q5": "Berapa lama satu teka-teki?",
+        "a5": "Pemula sering butuh 10–20 menit untuk teka-teki mudah dan jauh lebih lama untuk yang sulit. Pengatur waktu hanya berjalan selama halaman terbuka."
+      }
+    },
+    "play-tic-tac-toe": {
+      "copy": {
+        "name": "Cara menang tic tac toe",
+        "blurb": "Langkah pertama terbaik, garpu, dan blokir.",
+        "title": "Cara menang tic tac toe dan tidak pernah kalah",
+        "lead": "Tic tac toe sudah terpecahkan: jika dimainkan sempurna, hasilnya selalu seri. Anda akan mempelajari pembukaan yang memberi lawan paling banyak peluang salah, cara menang dengan garpu, dan cara memastikan Anda tidak pernah kalah.",
+        "result": "Rencana untuk X dan untuk O yang menang melawan permainan lemah dan seri melawan permainan sempurna.",
+        "note": "Melawan komputer level sulit, hasil terbaik adalah seri. Latih garpu di level mudah dan sedang.",
+        "s1t": "Buka Tic tac toe di cv.cm",
+        "s1b": "Pilih Lawan komputer dan Sedang, lalu main sebagai X agar Anda jalan duluan. X selalu memulai.",
+        "s2t": "Buka di sudut",
+        "s2b": "Sudut adalah langkah pertama terkuat. Satu-satunya balasan aman untuk O adalah tengah; balasan di sisi atau sudut mana pun membuat X bisa memaksa kemenangan.",
+        "s3t": "Selalu cek dua hal dulu",
+        "s3b": "Sebelum setiap langkah, tanyakan: bisakah saya membuat tiga berderet sekarang? Jika tidak, bisakah lawan membuat tiga berderet di giliran berikutnya? Menanglah jika bisa, blokir jika harus.",
+        "s4t": "Buat garpu",
+        "s4b": "Garpu adalah langkah yang sekaligus membuat dua garis berisi dua tanda. Lawan hanya bisa memblokir satu, jadi Anda menang lewat yang lain. Dua sudut berseberangan adalah cara klasik untuk menyiapkannya.",
+        "s5t": "Main O dengan aman",
+        "s5b": "Jika X mengambil sudut, ambil tengah. Jika X mengambil tengah, ambil sudut. Jika X punya dua sudut berseberangan dan Anda memegang tengah, main di sisi, bukan sudut, atau X akan membuat garpu.",
+        "s6t": "Uji diri di level sulit",
+        "s6b": "Ganti ke Sulit. Komputer bermain sempurna, jadi setiap permainan seharusnya berakhir seri. Jika Anda kalah, lihat papannya: Anda lupa memblokir atau membiarkan garpu.",
+        "diagram1": "Langkah pertama X, dari terkuat sampai terlemah.",
+        "diagram2": "Garpu: dua garis berisi dua tanda, hanya satu yang bisa diblokir."
+      },
+      "faq": {
+        "q1": "Bisakah selalu menang di tic tac toe?",
+        "a1": "Tidak. Jika kedua pemain tidak membuat kesalahan, setiap permainan berakhir seri. Anda hanya menang saat lawan keliru.",
+        "q2": "Apakah jalan duluan menguntungkan?",
+        "a2": "Ya. X punya lebih banyak cara membuat garpu, dan O harus membalas dengan benar sejak langkah pertama.",
+        "q3": "Mengapa tengah adalah balasan yang bagus?",
+        "a3": "Tengah ada di empat dari delapan garis, lebih banyak dari kotak lain, jadi paling banyak memblokir ancaman.",
+        "q4": "Ada berapa kemungkinan permainan?",
+        "a4": "255.168 permainan berbeda jika permainan berhenti saat ada yang menang. Jika rotasi dan pencerminan dianggap sama, ada 138 bentuk papan yang berbeda saat permainan berakhir.",
+        "q5": "Apa gunanya langkah di sisi?",
+        "a5": "Ini pembukaan terlemah, tetapi bagi O yang menghadapi dua sudut berseberangan, ini satu-satunya balasan aman."
+      }
+    },
+    "test-color-blindness": {
+      "copy": {
+        "name": "Cara tes buta warna",
+        "blurb": "Siapkan layar, baca pelat, pahami jenisnya.",
+        "title": "Cara tes buta warna online",
+        "lead": "Gangguan penglihatan warna cukup umum: sekitar 1 dari 12 pria dan 1 dari 200 wanita punya jenis merah–hijau. Anda akan menyiapkan layar, mengikuti tes pelat titik singkat, dan mempelajari arti hasil protan, deutan, dan tritan.",
+        "result": "Skor untuk setiap jenis pelat dan gambaran apakah perlu membuat janji tes mata yang sebenarnya.",
+        "note": "Tes di layar adalah skrining, bukan diagnosis. Hanya tenaga profesional kesehatan mata yang bisa memastikan jenis dan tingkatnya.",
+        "s1t": "Buka Tes buta warna di cv.cm",
+        "s1b": "Pakai layar komputer, tablet, atau ponsel di ruangan tanpa lampu berwarna. Pakai kacamata yang biasa Anda pakai.",
+        "s2t": "Pahami isi sebuah pelat",
+        "s2b": "Setiap pelat adalah lingkaran titik dengan angka dua digit. Titik angka berbeda dari latar hanya pada perbedaan warna yang dilihat sebagian sel kerucut; kecerahan titiknya dicampur, jadi angka tidak bisa ditemukan dari terang-gelapnya.",
+        "s3t": "Siapkan layar",
+        "s3b": "Naikkan kecerahan dan matikan mode malam, filter cahaya biru, filter warna, dan pewarnaan mode gelap. Semua itu mengubah warna dan bisa menyembunyikan angka.",
+        "s4t": "Baca setiap pelat dengan cepat",
+        "s4b": "Ketik angka yang Anda lihat dalam beberapa detik, atau ketuk Saya tidak melihat angka. Jangan mendekat atau memiringkan layar untuk mencarinya. Pelat pertama adalah pelat cek yang bisa dibaca semua orang.",
+        "s5t": "Baca hasilnya",
+        "s5b": "Anda mendapat skor untuk pelat merah (protan), hijau (deutan), dan biru–kuning (tritan), dari jelas sampai sangat samar. Melewatkan beberapa pelat dari satu jenis menunjukkan jenis itu. Hanya melewatkan pelat yang paling samar itu umum.",
+        "s6t": "Tentukan langkah berikutnya",
+        "s6b": "Jika hasilnya menunjukkan gangguan, ulangi tes di layar lain. Jika hasilnya sama, temui optometris, yang bisa memeriksa Anda dengan pelat cetak dan anomaloskop.",
+        "diagram1": "Angka berbeda dari latar hanya pada rona di satu garis kebingungan.",
+        "diagram2": "Tiga jenis sel kerucut dan gangguan saat salah satunya tidak ada atau lemah."
+      },
+      "faq": {
+        "q1": "Apakah buta warna bisa disembuhkan?",
+        "a1": "Gangguan penglihatan warna bawaan tidak bisa disembuhkan. Kacamata berwarna bisa membuat beberapa warna lebih mudah dibedakan bagi sebagian orang, tetapi tidak mengembalikan penglihatan warna normal.",
+        "q2": "Mengapa pria lebih sering buta warna?",
+        "a2": "Gen untuk sel kerucut merah dan hijau ada di kromosom X. Pria punya satu X, jadi satu gen yang berubah sudah cukup; wanita perlu perubahan di kedua X.",
+        "q3": "Jenis apa yang paling umum?",
+        "a3": "Deutan (lemah hijau), disusul protan (lemah merah). Tritan, jenis biru–kuning, jarang.",
+        "q4": "Bisakah penglihatan warna berubah seiring usia?",
+        "a4": "Bisa. Katarak, beberapa penyakit mata, dan beberapa obat bisa mengubah penglihatan warna. Perubahan baru adalah alasan untuk ke dokter mata.",
+        "q5": "Bisakah tes ini dilakukan di ponsel?",
+        "a5": "Bisa. Naikkan kecerahan dan matikan dulu mode malam atau mode nyaman mata."
+      }
+    },
+    "convert-military-time": {
+      "copy": {
+        "name": "Cara konversi waktu militer",
+        "blurb": "Baca, konversi, dan ucapkan format 24 jam.",
+        "title": "Cara konversi waktu militer ke waktu biasa",
+        "lead": "Waktu militer menghitung jam dalam sehari dari 00 sampai 23, jadi tidak ada AM atau PM. Anda akan mengonversi dua arah, menangani tengah malam dan tengah hari, mengucapkan waktu dalam bahasa Inggris, dan memahami arti waktu Zulu.",
+        "result": "Waktu apa pun dikonversi antara bentuk militer dan 12 jam, dan diucapkan dengan benar.",
+        "note": "Waktu militer ditulis dengan empat digit tanpa titik dua: 0930, bukan 9:30.",
+        "s1t": "Buka Konversi waktu militer di cv.cm",
+        "s1b": "Ketik waktu dalam bentuk mana pun, seperti 1430 atau 2:30 pm. Hasil konversi muncul saat Anda mengetik, dengan tabel di bawahnya.",
+        "s2t": "Konversi waktu siang dan sore",
+        "s2b": "Dari 1300 sampai 2359, kurangi dua digit pertama dengan 12 dan tambahkan PM: 1430 → 14 − 12 = 2 → 2:30 PM. Sebaliknya, tambahkan 12 ke jam PM dari 1 sampai 11: 7:15 PM → 1915.",
+        "s3t": "Tangani tengah malam dan tengah hari",
+        "s3b": "Tengah malam adalah 0000 (12:00 AM) dan tengah hari adalah 1200 (12:00 PM). Jam 0001–0059 adalah 12:01–12:59 AM. Jam pagi tetap dengan digitnya: 0830 adalah 8:30 AM.",
+        "s4t": "Ucapkan dalam bahasa Inggris",
+        "s4b": "Dalam bahasa Inggris (militer AS), digit dibaca sebagai dua pasang lalu ditambah \"hours\": 1430 dibaca \"fourteen thirty hours\". Jam bulat memakai \"hundred\": 0800 dibaca \"zero eight hundred hours\". Nol di depan dibaca \"zero\".",
+        "s5t": "Kenali waktu Zulu",
+        "s5b": "Jadwal militer dan penerbangan sering memakai waktu Zulu, yaitu UTC, ditandai dengan Z: 1430Z. Alat konversi menampilkan waktu Zulu saat ini di samping waktu Anda.",
+        "s6t": "Pakai tabel",
+        "s6b": "Untuk melihat cepat, tabel mencantumkan setiap jam dari 12 AM (0000) sampai 11 PM (2300). Biarkan halaman terbuka saat bertugas sif atau simpan sebagai bookmark.",
+        "diagram1": "Setelah tengah hari, kurangi jamnya dengan 12.",
+        "diagram2": "Cara waktu militer diucapkan dalam bahasa Inggris."
+      },
+      "faq": {
+        "q1": "Mengapa disebut waktu militer?",
+        "a1": "Di Amerika Serikat, jam 24 jam terutama dipakai di angkatan bersenjata, rumah sakit, dan penerbangan. Di kebanyakan negara lain, termasuk Indonesia, ini cara biasa menulis waktu.",
+        "q2": "Apakah 1200 tengah hari atau tengah malam?",
+        "a2": "Tengah hari. Tengah malam adalah 0000.",
+        "q3": "Bagaimana menulis detik?",
+        "a3": "Penulisan militer jarang memakai detik. Dalam format 24 jam, detik ditulis setelah titik dua: 14:30:15.",
+        "q4": "Apakah 1430 dibaca dengan \"hundred hours\"?",
+        "a4": "Tidak. \"Hundred\" hanya untuk jam bulat: 1400 dibaca \"fourteen hundred hours\", 1430 dibaca \"fourteen thirty hours\".",
+        "q5": "Waktu militer memakai zona waktu apa?",
+        "a5": "Ini hanya cara menulis waktu, di zona mana pun. Huruf Z setelah waktu berarti UTC (Zulu); huruf lain menandai zona lain."
+      }
+    },
+    "predict-child-height": {
+      "copy": {
+        "name": "Cara memprediksi tinggi badan anak saat dewasa",
+        "blurb": "Rumus orang tua dan persentil grafik pertumbuhan.",
+        "title": "Cara memprediksi tinggi badan anak saat dewasa",
+        "lead": "Tinggi badan sebagian besar ditentukan gen, jadi tinggi orang tua memberi tebakan awal yang bagus. Anda akan menghitung target mid-parental dan rentangnya, lalu memakai persentil grafik pertumbuhan anak untuk perkiraan kedua, dan melihat seberapa jauh masing-masing bisa dipercaya.",
+        "result": "Dua perkiraan tinggi dewasa dan rentang tempat kebanyakan anak berakhir.",
+        "note": "Ini perkiraan. Gizi, kesehatan, tidur, dan waktu pubertas semuanya menggeser tinggi akhir di dalam rentang itu.",
+        "s1t": "Buka Kalkulator tinggi badan di cv.cm",
+        "s1b": "Pilih sentimeter atau kaki dan inci, apakah anak Anda laki-laki atau perempuan, dan siapkan tinggi kedua orang tua, diukur tanpa sepatu.",
+        "s2t": "Hitung target dari orang tua",
+        "s2b": "Jumlahkan tinggi ayah dan ibu. Untuk anak laki-laki tambahkan 13 cm (5 in), untuk anak perempuan kurangi 13 cm, lalu bagi dua. Ayah 178 cm dan ibu 165 cm memberi anak laki-laki (178 + 165 + 13) ÷ 2 = 178 cm.",
+        "s3t": "Baca rentangnya",
+        "s3b": "Sekitar 95% anak berakhir dalam 8,5 cm (sekitar 3,5 in) dari target, jadi rentang anak laki-laki 178 cm tadi kira-kira 169,5–186,5 cm. Saudara kandung bisa berada di ujung yang berlawanan.",
+        "s4t": "Ukur anak Anda",
+        "s4b": "Minta anak berdiri menempel dinding tanpa sepatu, tumit rapat, lalu tandai puncak kepala dengan benda datar. Masukkan tinggi dan usianya dalam tahun dan bulan.",
+        "s5t": "Pakai persentil grafik pertumbuhan",
+        "s5b": "Kalkulator mencari persentil anak Anda pada grafik pertumbuhan CDC. Anak biasanya bertahan di persentil yang kurang lebih sama, jadi tinggi dewasa pada persentil itu di usia 20 menjadi perkiraan kedua.",
+        "s6t": "Bandingkan dan terus ukur",
+        "s6b": "Jika kedua perkiraan sama, prediksinya lebih bisa diandalkan. Jika berbeda, waktu pubertas sering menjadi penyebabnya. Ukur setiap enam bulan; anak yang turun melewati garis persentil sebaiknya diperiksakan ke dokter.",
+        "diagram1": "Rumus mid-parental untuk anak laki-laki dan perempuan.",
+        "diagram2": "Mengikuti persentil yang sama sampai usia 20."
+      },
+      "faq": {
+        "q1": "Mengapa ditambah atau dikurangi 13 cm?",
+        "a1": "Pria dewasa rata-rata sekitar 13 cm (5 in) lebih tinggi daripada wanita dewasa, jadi rumus ini menyesuaikan tinggi ibu atau ayah dengan jenis kelamin anak sebelum dirata-rata.",
+        "q2": "Apakah metode persentil berlaku untuk balita?",
+        "a2": "Mulai usia 2 tahun. Pada dua tahun pertama anak sering berpindah persentil, jadi perkiraannya lebih kasar daripada di usia sekolah.",
+        "q3": "Kapan anak berhenti tumbuh?",
+        "a3": "Kebanyakan anak perempuan mencapai tinggi dewasa sekitar usia 15 dan kebanyakan anak laki-laki sekitar 17, satu atau dua tahun setelah lonjakan pertumbuhan; sebagian masih tumbuh sedikit setelahnya.",
+        "q4": "Apakah rontgen usia tulang lebih akurat?",
+        "a4": "Ya. Dokter bisa memakai rontgen tangan untuk melihat sisa pertumbuhan, yang membantu saat pubertas datang lebih awal atau terlambat.",
+        "q5": "Apakah grafik ini cocok untuk semua negara?",
+        "a5": "Grafik CDC menggambarkan anak-anak di Amerika Serikat. Tinggi rata-rata berbeda antarnegara, jadi anggap persentilnya sebagai panduan."
+      }
+    }
+  },
+  "svg": {
+    "play-sudoku": {
+      "row": "Baris",
+      "column": "Kolom",
+      "box": "Kotak",
+      "once": "1–9 sekali",
+      "only": "satu tempat 5"
+    },
+    "play-tic-tac-toe": {
+      "corner": "Sudut",
+      "centre": "Tengah",
+      "edge": "Sisi",
+      "best": "terkuat",
+      "weakest": "terlemah",
+      "fork": "dua ancaman",
+      "block": "O blokir satu"
+    },
+    "test-color-blindness": {
+      "background": "Latar",
+      "figure": "Angka",
+      "same": "Campuran terang sama",
+      "red": "Kerucut merah (L)",
+      "green": "Kerucut hijau (M)",
+      "blue": "Kerucut biru (S)",
+      "protan": "Protan",
+      "deutan": "Deutan",
+      "tritan": "Tritan"
+    },
+    "convert-military-time": {
+      "minus": "kurangi 12",
+      "pm": "PM",
+      "say": "Baca",
+      "zero": "zero eight hundred hours",
+      "fourteen": "fourteen thirty hours",
+      "nineteen": "nineteen zero five hours"
+    },
+    "predict-child-height": {
+      "father": "Ayah",
+      "mother": "Ibu",
+      "boy": "Putra",
+      "girl": "Putri",
+      "age": "Usia",
+      "height": "Tinggi",
+      "now": "kini",
+      "adult": "usia 20"
+    }
+  }
+}

@@ -729,6 +729,36 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 1,
     related: ["slope", "graphing-calculator", "triangle"],
   },
+  "play-sudoku": {
+    minutes: 6,
+    steps: 6,
+    openAt: 1,
+    related: ["sudoku", "tic-tac-toe", "pomodoro"],
+  },
+  "play-tic-tac-toe": {
+    minutes: 4,
+    steps: 6,
+    openAt: 1,
+    related: ["tic-tac-toe", "sudoku", "coin-flip"],
+  },
+  "test-color-blindness": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["color-blindness-test", "contrast", "dead-pixel"],
+  },
+  "convert-military-time": {
+    minutes: 4,
+    steps: 6,
+    openAt: 1,
+    related: ["military-time", "timezone", "time-card"],
+  },
+  "predict-child-height": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["height-calculator", "bmi", "ideal-weight"],
+  },
   "electricity-cost": {
     minutes: 6,
     steps: 6,
@@ -1371,6 +1401,26 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "find-slope": [
     { step: 2, src: "/covers/tutorials/find-slope-rise-run.svg" },
     { step: 5, src: "/covers/tutorials/find-slope-forms.svg" },
+  ],
+  "play-sudoku": [
+    { step: 2, src: "/covers/tutorials/play-sudoku-rules.svg" },
+    { step: 4, src: "/covers/tutorials/play-sudoku-scan.svg" },
+  ],
+  "play-tic-tac-toe": [
+    { step: 2, src: "/covers/tutorials/play-tic-tac-toe-opening.svg" },
+    { step: 4, src: "/covers/tutorials/play-tic-tac-toe-fork.svg" },
+  ],
+  "test-color-blindness": [
+    { step: 2, src: "/covers/tutorials/test-color-blindness-plate.svg" },
+    { step: 5, src: "/covers/tutorials/test-color-blindness-types.svg" },
+  ],
+  "convert-military-time": [
+    { step: 2, src: "/covers/tutorials/convert-military-time-pm.svg" },
+    { step: 4, src: "/covers/tutorials/convert-military-time-say.svg" },
+  ],
+  "predict-child-height": [
+    { step: 2, src: "/covers/tutorials/predict-child-height-parents.svg" },
+    { step: 5, src: "/covers/tutorials/predict-child-height-percentile.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },
