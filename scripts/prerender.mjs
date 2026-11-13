@@ -50,14 +50,15 @@ let written = 0;
 const failed = [];
 const errors = new Set();
 
-// Only the heap limit is passed on: debugger or loader flags (--inspect-brk …) would make every child wait or clash.
-const heapFlags = process.execArgv.filter((flag) => flag.startsWith("--max-old-space-size"));
+// Node flags go to the children (the heap limit above all), except debugger flags: with --inspect-brk every child
+// would wait for a debugger, and with --inspect they would clash on the port.
+const childFlags = process.execArgv.filter((flag) => !/^--(inspect|debug)/.test(flag));
 
 function child(label, env) {
   rmSync(report, { force: true });
   // The prerender variables are set here for each child, never inherited from the shell that ran the build.
   const base = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("PRERENDER_")));
-  const run = spawnSync(process.execPath, [...heapFlags, outfile], { stdio: "inherit", env: { ...base, ...env, PRERENDER_REPORT: report } });
+  const run = spawnSync(process.execPath, [...childFlags, outfile], { stdio: "inherit", env: { ...base, ...env, PRERENDER_REPORT: report } });
   if (run.error) throw new Error(`prerender: could not start the process for ${label}: ${run.error.message}`);
   if (run.status !== 0) throw new Error(`prerender: ${label} failed (${run.signal ?? `exit ${run.status}`})`);
   if (!existsSync(report)) throw new Error(`prerender: ${label} exited without writing its report`);

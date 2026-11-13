@@ -707,22 +707,23 @@ const GREEK_GOD: ChoiceItem[] = [
 
 /**
  * Signs that someone is interested: each answer is worth 0 (no sign) to 3 (a clear sign), 12 questions, total 0–36.
- * The weights are shuffled so the strongest sign is not always in the same place: three 4×4 Latin squares, so each
- * weight sits in each position three times.
+ * The weights are shuffled so the strongest sign is not always in the same place: every question has each weight
+ * once, each weight sits in each position three times, and the 3-point answer never sits in the same place in two
+ * questions in a row.
  */
 const CRUSH: ChoiceItem[] = [
   { options: [{ signs: 0 }, { signs: 1 }, { signs: 2 }, { signs: 3 }] },
   { options: [{ signs: 2 }, { signs: 0 }, { signs: 3 }, { signs: 1 }] },
-  { options: [{ signs: 1 }, { signs: 2 }, { signs: 3 }, { signs: 0 }] },
-  { options: [{ signs: 1 }, { signs: 0 }, { signs: 3 }, { signs: 2 }] },
   { options: [{ signs: 3 }, { signs: 1 }, { signs: 2 }, { signs: 0 }] },
   { options: [{ signs: 0 }, { signs: 3 }, { signs: 2 }, { signs: 1 }] },
-  { options: [{ signs: 2 }, { signs: 3 }, { signs: 0 }, { signs: 1 }] },
+  { options: [{ signs: 1 }, { signs: 2 }, { signs: 3 }, { signs: 0 }] },
   { options: [{ signs: 0 }, { signs: 2 }, { signs: 1 }, { signs: 3 }] },
   { options: [{ signs: 3 }, { signs: 0 }, { signs: 1 }, { signs: 2 }] },
+  { options: [{ signs: 2 }, { signs: 3 }, { signs: 0 }, { signs: 1 }] },
+  { options: [{ signs: 1 }, { signs: 0 }, { signs: 3 }, { signs: 2 }] },
+  { options: [{ signs: 2 }, { signs: 1 }, { signs: 0 }, { signs: 3 }] },
   { options: [{ signs: 3 }, { signs: 2 }, { signs: 1 }, { signs: 0 }] },
   { options: [{ signs: 1 }, { signs: 3 }, { signs: 0 }, { signs: 2 }] },
-  { options: [{ signs: 2 }, { signs: 1 }, { signs: 0 }, { signs: 3 }] },
 ];
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {

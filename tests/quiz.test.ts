@@ -416,6 +416,8 @@ describe("test pages: scoring", () => {
         expect(def.items.filter((item) => item.options[position].signs === weight), `${position} ${weight}`).toHaveLength(3);
       }
     }
+    const strongest = def.items.map((item) => item.options.findIndex((o) => o.signs === 3));
+    strongest.slice(1).forEach((at, i) => expect(at, `q${i + 2}`).not.toBe(strongest[i]));
     const answersFor = (points: number): number[] =>
       def.items.map((item, i) => item.options.findIndex((o) => o.signs === Math.max(0, Math.min(3, points - i * 3))));
     expect(scoreQuiz("crush", answersFor(0))).toMatchObject({ total: 0, key: "few" });

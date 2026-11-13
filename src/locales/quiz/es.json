@@ -59,7 +59,7 @@
     },
     "about": [
       "Cada test muestra todas sus preguntas en una sola página. Respóndelas, pulsa el botón y el resultado aparece debajo con una breve explicación y un gráfico de tus puntuaciones.",
-      "La mayoría de las autoevaluaciones de bienestar usan cuestionarios de cribado publicados (WHO-5, Rosenberg, GAD-7, PHQ-9); las de estrés, ansiedad social, TOC, burnout y TDAH en adultos se han escrito para cv.cm y no se han validado clínicamente. El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto. Los tests de videojuegos, anime, libros, cine y series son tests de fans no oficiales, solo por diversión."
+      "Cuatro autoevaluaciones de bienestar usan cuestionarios de cribado publicados (WHO-5, Rosenberg, GAD-7, PHQ-9); las de estrés, ansiedad social, TOC, burnout y TDAH en adultos se han escrito para cv.cm y no se han validado clínicamente. El Big Five y el test de introvertido o extrovertido usan el banco de ítems IPIP, de dominio público. Los demás tests se han escrito para cv.cm a partir de modelos conocidos, y sus resultados son un punto de partida para reflexionar, no un veredicto. Los tests de videojuegos, anime, libros, cine y series son tests de fans no oficiales, solo por diversión."
     ],
     "faq": [
       { "q": "¿Son gratis estos tests?", "a": "Sí. Todos los tests son gratuitos, sin registro, sin correo y sin pagar para ver el resultado." },
@@ -6197,24 +6197,6 @@
           ]
         },
         {
-          "q": "¿Y el contacto visual?",
-          "options": [
-            "Contacto visual normal, nada especial",
-            "A veces le pillo mirándome",
-            "Me sostiene la mirada y luego sonríe o la aparta",
-            "En realidad no me mira"
-          ]
-        },
-        {
-          "q": "¿Recuerda lo que le cuentas?",
-          "options": [
-            "Recuerda lo importante, como dónde trabajo o estudio",
-            "A menudo olvida lo que le dije",
-            "Saca pequeños detalles que mencioné hace semanas",
-            "Recuerda cosas que le dije hace poco"
-          ]
-        },
-        {
           "q": "Cuando estáis en grupo…",
           "options": [
             "Se las arregla para sentarse o ponerse a mi lado",
@@ -6233,12 +6215,12 @@
           ]
         },
         {
-          "q": "¿Cómo te trata?",
+          "q": "¿Y el contacto visual?",
           "options": [
-            "Me toma el pelo de forma juguetona",
-            "Me hace cumplidos sobre mi aspecto o lo que hago",
-            "A veces es desdeñoso o frío conmigo",
-            "Es amable pero neutral"
+            "Contacto visual normal, nada especial",
+            "A veces le pillo mirándome",
+            "Me sostiene la mirada y luego sonríe o la aparta",
+            "En realidad no me mira"
           ]
         },
         {
@@ -6260,6 +6242,33 @@
           ]
         },
         {
+          "q": "¿Cómo te trata?",
+          "options": [
+            "Me toma el pelo de forma juguetona",
+            "Me hace cumplidos sobre mi aspecto o lo que hago",
+            "A veces es desdeñoso o frío conmigo",
+            "Es amable pero neutral"
+          ]
+        },
+        {
+          "q": "¿Recuerda lo que le cuentas?",
+          "options": [
+            "Recuerda lo importante, como dónde trabajo o estudio",
+            "A menudo olvida lo que le dije",
+            "Saca pequeños detalles que mencioné hace semanas",
+            "Recuerda cosas que le dije hace poco"
+          ]
+        },
+        {
+          "q": "Cuando una conversación tiene que terminar…",
+          "options": [
+            "Parece que le da un poco de pena dejarla",
+            "La termina con normalidad",
+            "Suele terminarla primero, y rápido",
+            "Busca motivos para seguir hablando o para veros pronto"
+          ]
+        },
+        {
           "q": "Cuando estás con estrés o triste…",
           "options": [
             "Me pregunta cómo estoy sin que se lo pida",
@@ -6275,15 +6284,6 @@
             "Sonríen o le toman el pelo cuando estoy cerca",
             "No los conozco, y no parecen saber nada de mí",
             "Parecen saber quién soy"
-          ]
-        },
-        {
-          "q": "Cuando una conversación tiene que terminar…",
-          "options": [
-            "Parece que le da un poco de pena dejarla",
-            "La termina con normalidad",
-            "Suele terminarla primero, y rápido",
-            "Busca motivos para seguir hablando o para veros pronto"
           ]
         }
       ],

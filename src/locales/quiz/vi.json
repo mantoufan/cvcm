@@ -59,7 +59,7 @@
     },
     "about": [
       "Mỗi bài trắc nghiệm hiển thị toàn bộ câu hỏi trên một trang. Trả lời xong, nhấn nút, kết quả sẽ hiện ngay bên dưới kèm lời giải thích ngắn và biểu đồ điểm số.",
-      "Phần lớn các bài tự kiểm tra sức khỏe tinh thần dùng bảng hỏi sàng lọc đã được công bố (WHO-5, Rosenberg, GAD-7, PHQ-9); riêng bài stress, bài lo âu xã hội, bài OCD, bài kiệt sức và bài ADHD ở người lớn do cv.cm biên soạn và chưa được kiểm chứng lâm sàng. Bài Big Five và bài hướng nội – hướng ngoại dùng bộ câu hỏi IPIP thuộc phạm vi công cộng. Các bài còn lại được cv.cm biên soạn dựa trên những mô hình nổi tiếng, và kết quả là điểm khởi đầu để suy ngẫm, không phải phán quyết. Các trắc nghiệm game, anime, sách, phim điện ảnh và phim truyền hình là trắc nghiệm fan không chính thức, chỉ để cho vui."
+      "Bốn bài tự kiểm tra sức khỏe tinh thần dùng bảng hỏi sàng lọc đã được công bố (WHO-5, Rosenberg, GAD-7, PHQ-9); riêng bài stress, bài lo âu xã hội, bài OCD, bài kiệt sức và bài ADHD ở người lớn do cv.cm biên soạn và chưa được kiểm chứng lâm sàng. Bài Big Five và bài hướng nội – hướng ngoại dùng bộ câu hỏi IPIP thuộc phạm vi công cộng. Các bài còn lại được cv.cm biên soạn dựa trên những mô hình nổi tiếng, và kết quả là điểm khởi đầu để suy ngẫm, không phải phán quyết. Các trắc nghiệm game, anime, sách, phim điện ảnh và phim truyền hình là trắc nghiệm fan không chính thức, chỉ để cho vui."
     ],
     "faq": [
       { "q": "Các bài trắc nghiệm này có miễn phí không?", "a": "Có. Mọi bài đều miễn phí, không cần đăng ký, không cần email và không phải trả tiền để xem kết quả." },
@@ -6197,24 +6197,6 @@
           ]
         },
         {
-          "q": "Còn ánh mắt thì sao?",
-          "options": [
-            "Nhìn bình thường, không có gì đặc biệt",
-            "Thỉnh thoảng tôi bắt gặp họ đang nhìn về phía mình",
-            "Nhìn thẳng vào mắt tôi, rồi mỉm cười hoặc quay đi",
-            "Họ gần như không nhìn về phía tôi"
-          ]
-        },
-        {
-          "q": "Người ấy có nhớ những gì bạn kể không?",
-          "options": [
-            "Nhớ những chuyện lớn, như tôi làm ở đâu hay học ở đâu",
-            "Thường quên những gì tôi nói",
-            "Nhắc lại cả những chuyện nhỏ tôi kể từ mấy tuần trước",
-            "Nhớ những chuyện tôi mới nói gần đây"
-          ]
-        },
-        {
           "q": "Khi đi cùng nhóm, người ấy…",
           "options": [
             "Tìm cách ngồi hoặc đứng cạnh tôi",
@@ -6233,12 +6215,12 @@
           ]
         },
         {
-          "q": "Người ấy đối xử với bạn thế nào?",
+          "q": "Còn ánh mắt thì sao?",
           "options": [
-            "Hay trêu tôi một cách tinh nghịch",
-            "Khen ngoại hình hoặc những gì tôi làm",
-            "Đôi khi tỏ ra hờ hững hoặc lạnh lùng với tôi",
-            "Tử tế nhưng bình thường"
+            "Nhìn bình thường, không có gì đặc biệt",
+            "Thỉnh thoảng tôi bắt gặp họ đang nhìn về phía mình",
+            "Nhìn thẳng vào mắt tôi, rồi mỉm cười hoặc quay đi",
+            "Họ gần như không nhìn về phía tôi"
           ]
         },
         {
@@ -6260,6 +6242,33 @@
           ]
         },
         {
+          "q": "Người ấy đối xử với bạn thế nào?",
+          "options": [
+            "Hay trêu tôi một cách tinh nghịch",
+            "Khen ngoại hình hoặc những gì tôi làm",
+            "Đôi khi tỏ ra hờ hững hoặc lạnh lùng với tôi",
+            "Tử tế nhưng bình thường"
+          ]
+        },
+        {
+          "q": "Người ấy có nhớ những gì bạn kể không?",
+          "options": [
+            "Nhớ những chuyện lớn, như tôi làm ở đâu hay học ở đâu",
+            "Thường quên những gì tôi nói",
+            "Nhắc lại cả những chuyện nhỏ tôi kể từ mấy tuần trước",
+            "Nhớ những chuyện tôi mới nói gần đây"
+          ]
+        },
+        {
+          "q": "Khi cuộc trò chuyện phải kết thúc, người ấy…",
+          "options": [
+            "Có vẻ hơi tiếc khi phải dừng",
+            "Kết thúc bình thường",
+            "Thường là người kết thúc trước, và rất nhanh",
+            "Tìm cớ để nói tiếp hoặc hẹn sớm gặp lại"
+          ]
+        },
+        {
           "q": "Khi bạn căng thẳng hay buồn, người ấy…",
           "options": [
             "Chủ động hỏi han tôi mà không cần tôi nói",
@@ -6275,15 +6284,6 @@
             "Họ cười cười hoặc trêu người ấy khi có tôi ở đó",
             "Tôi chưa gặp họ, và họ có vẻ không biết đến tôi",
             "Họ có vẻ biết tôi là ai"
-          ]
-        },
-        {
-          "q": "Khi cuộc trò chuyện phải kết thúc, người ấy…",
-          "options": [
-            "Có vẻ hơi tiếc khi phải dừng",
-            "Kết thúc bình thường",
-            "Thường là người kết thúc trước, và rất nhanh",
-            "Tìm cớ để nói tiếp hoặc hẹn sớm gặp lại"
           ]
         }
       ],

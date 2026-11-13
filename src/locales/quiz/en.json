@@ -59,7 +59,7 @@
     },
     "about": [
       "Each test lists all of its questions on one page. Answer them, press the button, and the result appears under the questions with a short explanation and a chart of your scores.",
-      "Most wellbeing checks use published screening questionnaires (WHO-5, Rosenberg, GAD-7, PHQ-9); the stress, social anxiety, OCD, burnout and adult ADHD checks were written for cv.cm and have not been clinically validated. The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game, anime, book, film and TV quizzes are unofficial fan quizzes, just for fun."
+      "Four wellbeing checks use published screening questionnaires (WHO-5, Rosenberg, GAD-7, PHQ-9); the stress, social anxiety, OCD, burnout and adult ADHD checks were written for cv.cm and have not been clinically validated. The Big Five and the introvert–extrovert test use the public-domain IPIP item pool. The other tests are written for cv.cm from well-known models, and their results are a starting point for reflection, not a verdict. The game, anime, book, film and TV quizzes are unofficial fan quizzes, just for fun."
     ],
     "faq": [
       { "q": "Are these tests free?", "a": "Yes. Every test is free, with no sign-up, no email, and no paywall in front of the result." },
@@ -6197,24 +6197,6 @@
           ]
         },
         {
-          "q": "What about eye contact?",
-          "options": [
-            "Normal eye contact, nothing special",
-            "I sometimes catch them looking my way",
-            "They hold my gaze, then smile or glance away",
-            "They don't really look my way"
-          ]
-        },
-        {
-          "q": "Do they remember what you tell them?",
-          "options": [
-            "They remember the big things, like where I work or study",
-            "They often forget what I said",
-            "They bring up small things I mentioned weeks ago",
-            "They remember things I said recently"
-          ]
-        },
-        {
           "q": "When you're in a group, they…",
           "options": [
             "Find a way to sit or stand next to me",
@@ -6233,12 +6215,12 @@
           ]
         },
         {
-          "q": "How do they treat you?",
+          "q": "What about eye contact?",
           "options": [
-            "They tease me in a playful way",
-            "They compliment how I look or what I do",
-            "They're sometimes dismissive or cold with me",
-            "They're kind but neutral"
+            "Normal eye contact, nothing special",
+            "I sometimes catch them looking my way",
+            "They hold my gaze, then smile or glance away",
+            "They don't really look my way"
           ]
         },
         {
@@ -6260,6 +6242,33 @@
           ]
         },
         {
+          "q": "How do they treat you?",
+          "options": [
+            "They tease me in a playful way",
+            "They compliment how I look or what I do",
+            "They're sometimes dismissive or cold with me",
+            "They're kind but neutral"
+          ]
+        },
+        {
+          "q": "Do they remember what you tell them?",
+          "options": [
+            "They remember the big things, like where I work or study",
+            "They often forget what I said",
+            "They bring up small things I mentioned weeks ago",
+            "They remember things I said recently"
+          ]
+        },
+        {
+          "q": "When a conversation has to end, they…",
+          "options": [
+            "Seem a little sorry to stop",
+            "End it normally",
+            "Usually end it first, and quickly",
+            "Find reasons to keep talking or to meet again soon"
+          ]
+        },
+        {
           "q": "When you're stressed or sad, they…",
           "options": [
             "Check in on me without being asked",
@@ -6275,15 +6284,6 @@
             "They grin or tease them when I'm around",
             "I haven't met them, and they don't seem to know about me",
             "They seem to know who I am"
-          ]
-        },
-        {
-          "q": "When a conversation has to end, they…",
-          "options": [
-            "Seem a little sorry to stop",
-            "End it normally",
-            "Usually end it first, and quickly",
-            "Find reasons to keep talking or to meet again soon"
           ]
         }
       ],
