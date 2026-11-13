@@ -2,7 +2,7 @@
 // Bundled first because happy-dom's globals break a live transformer such as vite-node.
 import * as esbuild from "esbuild";
 import { spawnSync } from "node:child_process";
-import { readFileSync, rmSync } from "node:fs";
+import { existsSync, readFileSync, rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./game-names.mjs";
@@ -50,11 +50,17 @@ let written = 0;
 const failed = [];
 const errors = new Set();
 
+// Only the heap limit is passed on: debugger or loader flags (--inspect-brk …) would make every child wait or clash.
+const heapFlags = process.execArgv.filter((flag) => flag.startsWith("--max-old-space-size"));
+
 function child(label, env) {
   rmSync(report, { force: true });
-  const run = spawnSync(process.execPath, [...process.execArgv, outfile], { stdio: "inherit", env: { ...process.env, ...env, PRERENDER_REPORT: report } });
+  // The prerender variables are set here for each child, never inherited from the shell that ran the build.
+  const base = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("PRERENDER_")));
+  const run = spawnSync(process.execPath, [...heapFlags, outfile], { stdio: "inherit", env: { ...base, ...env, PRERENDER_REPORT: report } });
   if (run.error) throw new Error(`prerender: could not start the process for ${label}: ${run.error.message}`);
   if (run.status !== 0) throw new Error(`prerender: ${label} failed (${run.signal ?? `exit ${run.status}`})`);
+  if (!existsSync(report)) throw new Error(`prerender: ${label} exited without writing its report`);
   return JSON.parse(readFileSync(report, "utf8"));
 }
 

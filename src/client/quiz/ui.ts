@@ -34,8 +34,10 @@ import {
 import { messages, quizMessages } from "../../shared/messages";
 import { UNTRACKED_QUIZZES } from "../../shared/analytics";
 
-/** Places a fan quiz gives its own group under "more tests" (of six); the rest go to the other fan groups. */
-const FAN_SAME_GROUP = 4;
+/** Links under "More tests". */
+const MORE_LINKS = 6;
+/** Of those, the places a fan quiz gives its own group; the rest go to the other fan groups. */
+const FAN_SAME_GROUP = MORE_LINKS - 2;
 
 function crumb(locale: Locale, id: QuizId | null): HTMLElement {
   const hub = quizHub(locale);
@@ -204,16 +206,24 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
 
   const group = quizGroupOf(id);
   // Same group first, starting after this test (wrapping around) so a large group links to every member from
-  // somewhere; then the other fan-quiz groups for a fan quiz, then the rest, in catalog order. A fan quiz keeps
-  // FAN_SAME_GROUP places for its own group so the other fan groups always get a link, however big its group grows.
+  // somewhere; then the rest, in catalog order. A fan quiz keeps FAN_SAME_GROUP places for its own group and fills the
+  // others from the other fan groups, starting at a point that moves with the quiz, so every fan quiz is linked from
+  // some fan quiz outside its group rather than every page linking the same first few.
   const fan = FAN_GROUPS.includes(group);
-  const near = new Map(QUIZZES.map((q) => [q, fan && FAN_GROUPS.includes(quizGroupOf(q)) ? 1 : 0]));
   const members: readonly QuizId[] = QUIZ_GROUPS.find((g) => g.id === group)!.quizzes;
   const at = members.indexOf(id);
-  const others = QUIZZES.filter((q) => quizGroupOf(q) !== group).sort((a, b) => near.get(b)! - near.get(a)!);
   const same = [...members.slice(at + 1), ...members.slice(0, at)];
-  const siblings = fan ? [...same.slice(0, FAN_SAME_GROUP), ...others, ...same.slice(FAN_SAME_GROUP)] : [...same, ...others];
-
+  const others = QUIZZES.filter((q) => quizGroupOf(q) !== group);
+  let siblings: QuizId[];
+  if (fan) {
+    const otherFan = others.filter((q) => FAN_GROUPS.includes(quizGroupOf(q)));
+    const fanIndex = QUIZZES.filter((q) => FAN_GROUPS.includes(quizGroupOf(q))).indexOf(id);
+    const start = (fanIndex * (MORE_LINKS - FAN_SAME_GROUP)) % otherFan.length;
+    const rotated = [...otherFan.slice(start), ...otherFan.slice(0, start)];
+    siblings = [...same.slice(0, FAN_SAME_GROUP), ...rotated, ...same.slice(FAN_SAME_GROUP), ...others.filter((q) => !otherFan.includes(q))];
+  } else {
+    siblings = [...same, ...others];
+  }
   host.append(
     crumb(locale, id),
     h("div", { class: "tool-head" },
@@ -227,7 +237,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
     h("section", { class: "wall" },
       h("h2", null, ui.more),
-      testLinks(locale, siblings.slice(0, 6)),
+      testLinks(locale, siblings.slice(0, MORE_LINKS)),
       h("p", { class: "more" }, h("a", { href: quizHref(locale), "data-nav": "tests" }, ui.all)),
     ),
     faq(locale, id),

@@ -2,7 +2,7 @@
 import { describe, expect, it } from "vitest";
 import { mountQuiz, mountQuizHub } from "../src/client/quiz/ui";
 import { LOCALES } from "../src/shared/locale";
-import { QUIZ_DEFS, QUIZ_GROUPS, QUIZZES } from "../src/shared/quiz";
+import { FAN_GROUPS, QUIZ_DEFS, QUIZ_GROUPS, QUIZZES, quizGroupOf, type QuizId } from "../src/shared/quiz";
 import { quizUi } from "../src/shared/quiz-i18n";
 
 function mount(id: Parameters<typeof mountQuiz>[2], locale: Parameters<typeof mountQuiz>[1] = "en"): HTMLElement {
@@ -174,12 +174,22 @@ describe("test page UI", () => {
     expect(result.querySelector('a[href="/en/tests/depression/"]')).toBeNull();
   });
 
-  it("suggests other fan quizzes after a fan quiz, even from a large group", () => {
-    const main = mount("hogwarts");
-    const more = [...main.querySelectorAll<HTMLAnchorElement>('a[href^="/en/tests/"]')].map((a) => a.getAttribute("href"));
-    expect(more).toContain("/en/tests/percy-jackson/");
-    expect(more).toContain("/en/tests/pokemon/");
-    expect(more).not.toContain("/en/tests/mbti/");
+  it("suggests other fan quizzes after a fan quiz, and links every fan quiz from another fan group", () => {
+    const more = (id: QuizId): string[] =>
+      [...mount(id).querySelectorAll<HTMLAnchorElement>(".wall a[href^='/en/tests/']")].map((a) => a.getAttribute("href")!);
+    const fanQuizzes = QUIZ_GROUPS.filter((g) => FAN_GROUPS.includes(g.id)).flatMap((g) => [...g.quizzes]) as QuizId[];
+    const hogwarts = more("hogwarts");
+    expect(hogwarts).toContain("/en/tests/percy-jackson/");
+    expect(hogwarts).not.toContain("/en/tests/mbti/");
+    expect(hogwarts.some((href) => fanQuizzes.some((q) => quizGroupOf(q) !== "books" && href === `/en/tests/${q}/`))).toBe(true);
+    const fromOutside = new Set<string>();
+    for (const id of fanQuizzes) {
+      for (const href of more(id)) {
+        const linked = fanQuizzes.find((q) => href === `/en/tests/${q}/`);
+        if (linked && quizGroupOf(linked) !== quizGroupOf(id)) fromOutside.add(linked);
+      }
+    }
+    for (const id of fanQuizzes) expect(fromOutside.has(id), id).toBe(true);
   });
 
   it("links to every test in a group from at least one of its members", () => {
