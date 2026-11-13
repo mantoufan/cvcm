@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "titlePlaySudoku": "Cách chơi sudoku: luật chơi và mẹo giải cho người mới | cv.cm",
+    "descPlaySudoku": "Học sudoku trong sáu bước: một luật duy nhất, dò tìm chỗ duy nhất cho một số, ô chỉ có một khả năng, ghi chú và cách gỡ khi bí. Luyện tập miễn phí online, từ dễ đến chuyên gia.",
+    "titlePlayTicTacToe": "Cách thắng cờ ca-rô 3x3 (và không bao giờ thua) | cv.cm",
+    "descPlayTicTacToe": "Chiến thuật cờ ca-rô 3x3 (tic-tac-toe): nước đi đầu tốt nhất, cách đáp khi đối thủ chiếm góc, tạo thế đôi với hai đường dọa và chặn đối thủ. Rồi thử sức với máy không bao giờ thua.",
+    "titleTestColorBlindness": "Cách kiểm tra mù màu online (và đọc kết quả) | cv.cm",
+    "descTestColorBlindness": "Kiểm tra mù màu tại nhà: chuẩn bị màn hình, đọc các tấm chấm màu và hiểu kết quả protan, deutan, tritan. Một bài sàng lọc cho bạn biết được gì và không biết được gì.",
+    "titleConvertMilitaryTime": "Cách đổi giờ quân đội (24 giờ) sang giờ thường (kèm bảng) | cv.cm",
+    "descConvertMilitaryTime": "Đọc và đổi giờ quân đội: trừ 12 sau giữa trưa, xử lý nửa đêm và giữa trưa, đọc các giờ như 0800 và 1430 bằng tiếng Anh, và hiểu giờ Zulu. Kèm bảng tra và công cụ đổi miễn phí.",
+    "titlePredictChildHeight": "Cách tính chiều cao dự đoán của con khi trưởng thành (hai cách) | cv.cm",
+    "descPredictChildHeight": "Ước tính con sẽ cao bao nhiêu: công thức trung bình bố mẹ kèm khoảng dao động, và phương pháp bách phân vị trên biểu đồ tăng trưởng. Mỗi cách chính xác đến đâu và khi nào nên hỏi bác sĩ."
+  },
+  "lessons": {
+    "play-sudoku": {
+      "copy": {
+        "name": "Cách chơi sudoku",
+        "blurb": "Luật chơi, cách dò, ghi chú và gỡ khi bí.",
+        "title": "Cách chơi sudoku",
+        "lead": "Sudoku không cần toán, chỉ cần suy luận. Bạn sẽ học một luật duy nhất, hai cách mà người mới nào cũng dùng để tìm số, cách ghi chú và phải làm gì khi bí, rồi giải trọn một câu đố.",
+        "result": "Một câu sudoku đã giải xong và một phương pháp dùng được cho các câu khó hơn.",
+        "note": "Đừng bao giờ đoán. Một câu sudoku chuẩn chỉ có một lời giải, và số nào cũng tìm được bằng suy luận.",
+        "s1t": "Mở Sudoku trên cv.cm",
+        "s1b": "Bắt đầu với một câu dễ. Số màu đen là số cho sẵn; bạn điền vào các ô trống. Chạm một ô rồi chạm một số, hoặc gõ trên bàn phím.",
+        "s2t": "Nắm một luật duy nhất",
+        "s2b": "Mỗi hàng, mỗi cột và mỗi ô 3 × 3 phải có đủ 1 đến 9, mỗi số đúng một lần. Vì vậy, số đã có trong một hàng thì không được xuất hiện lại ở đâu trong hàng đó, cột và ô vuông cũng vậy.",
+        "s3t": "Tìm ô duy nhất cho một số",
+        "s3b": "Chọn một số, ví dụ 5, và một ô vuông chưa có số 5. Mỗi hàng và cột đã có số 5 sẽ loại các ô của nó trong ô vuông đó. Khi chỉ còn một ô, số 5 nằm ở đó.",
+        "s4t": "Tìm số duy nhất cho một ô",
+        "s4b": "Nhìn một ô trống và gạch bỏ mọi số đã có trong hàng, cột và ô vuông của nó. Nếu chỉ còn một số, hãy điền vào. Hàng và ô vuông đã có nhiều số là nơi nên nhìn trước.",
+        "s5t": "Viết ghi chú",
+        "s5b": "Ở câu trung bình trở lên, bật Ghi chú và viết nhỏ các số có thể điền. Mỗi khi bạn điền một số, công cụ xóa số đó khỏi các ghi chú bị loại, nên lại xuất hiện những ô chỉ còn một khả năng.",
+        "s6t": "Kiểm tra và gỡ khi bí",
+        "s6b": "Các số trùng nhau trong một hàng, cột hoặc ô vuông được gạch chân. Hiện lỗi sai so số của bạn với đáp án, còn Gợi ý điền giúp một ô. Hoàn tác lấy lại bất kỳ nước nào.",
+        "diagram1": "Luật chơi: 1 đến 9 mỗi số một lần trong mọi hàng, cột và ô vuông.",
+        "diagram2": "Số 5 ở hai hàng chỉ còn chừa một ô cho số 5 trong ô vuông."
+      },
+      "faq": {
+        "q1": "Sudoku có phải là toán không?",
+        "a1": "Không. Các chữ số chỉ là chín ký hiệu khác nhau; bạn không bao giờ cộng chúng. Dùng chữ cái hay màu sắc cũng y như vậy.",
+        "q2": "Người mới nên bắt đầu từ đâu?",
+        "a2": "Từ số xuất hiện nhiều nhất trên lưới. Nó để lại ít chỗ nhất cho các số còn thiếu, nên tìm nhanh nhất.",
+        "q3": "Điều gì làm sudoku khó?",
+        "a3": "Ít số cho sẵn hơn và, quan trọng hơn, có những ô không điền được bằng hai cách đơn giản. Câu khó cần ghi chú và các mẫu như hai ô có cùng hai khả năng.",
+        "q4": "Sudoku cần ít nhất bao nhiêu số cho sẵn?",
+        "a4": "Ít nhất 17. Không câu đố nào có 16 số cho sẵn mà chỉ có một lời giải; điều này được chứng minh bằng máy tính năm 2012.",
+        "q5": "Giải một câu mất bao lâu?",
+        "a5": "Người mới thường mất 10–20 phút cho câu dễ và lâu hơn nhiều với câu khó. Đồng hồ chỉ chạy khi trang đang mở."
+      }
+    },
+    "play-tic-tac-toe": {
+      "copy": {
+        "name": "Cách thắng cờ ca-rô 3x3",
+        "blurb": "Nước đầu tốt nhất, thế đôi và cách chặn.",
+        "title": "Cách thắng cờ ca-rô 3x3 và không bao giờ thua",
+        "lead": "Cờ ca-rô 3x3 đã được giải: nếu cả hai chơi hoàn hảo thì luôn hòa. Bạn sẽ học nước mở đầu cho đối thủ nhiều cơ hội sai nhất, cách thắng bằng thế đôi và cách bảo đảm không bao giờ thua.",
+        "result": "Một kế hoạch cho X và cho O: thắng khi đối thủ chơi yếu và hòa khi đối thủ chơi hoàn hảo.",
+        "note": "Đấu với máy ở mức khó thì kết quả tốt nhất là hòa. Hãy luyện thế đôi ở mức dễ và trung bình.",
+        "s1t": "Mở Cờ ca-rô 3x3 trên cv.cm",
+        "s1b": "Chọn Chơi với máy và Trung bình, rồi chơi bằng X để đi trước. X luôn đi trước.",
+        "s2t": "Mở đầu ở một góc",
+        "s2b": "Góc là nước đi đầu mạnh nhất. Cách đáp an toàn duy nhất của O là ô giữa; đáp ở cạnh hay góc đều để X ép thắng.",
+        "s3t": "Luôn kiểm tra hai điều trước",
+        "s3b": "Trước mỗi nước, hãy hỏi: mình có xếp được ba dấu thẳng hàng ngay không? Nếu không, đối thủ có xếp được ba dấu ở lượt sau không? Thắng được thì thắng, phải chặn thì chặn.",
+        "s4t": "Tạo thế đôi",
+        "s4b": "Thế đôi là nước tạo cùng lúc hai hàng có hai dấu. Đối thủ chỉ chặn được một, nên bạn thắng bằng hàng còn lại. Hai góc đối nhau là cách kinh điển để tạo thế đôi.",
+        "s5t": "Chơi O an toàn",
+        "s5b": "Nếu X chiếm góc, hãy chiếm ô giữa. Nếu X chiếm ô giữa, hãy chiếm một góc. Nếu X có hai góc đối nhau và bạn giữ ô giữa, hãy đi ô cạnh, đừng đi góc, nếu không X sẽ tạo thế đôi.",
+        "s6t": "Thử sức ở mức khó",
+        "s6b": "Chuyển sang Khó. Máy chơi hoàn hảo, nên ván nào cũng phải hòa. Nếu bạn thua, hãy nhìn lại bàn cờ: bạn đã quên chặn hoặc để đối thủ tạo thế đôi.",
+        "diagram1": "Nước đi đầu của X, từ mạnh nhất đến yếu nhất.",
+        "diagram2": "Thế đôi: hai hàng có hai dấu, chỉ chặn được một."
+      },
+      "faq": {
+        "q1": "Có phải lúc nào cũng thắng được cờ ca-rô 3x3?",
+        "a1": "Không. Nếu cả hai không mắc lỗi, ván nào cũng hòa. Bạn chỉ thắng khi đối thủ sơ suất.",
+        "q2": "Đi trước có lợi không?",
+        "a2": "Có. X có nhiều cách tạo thế đôi hơn, còn O phải đáp đúng ngay từ nước đầu tiên.",
+        "q3": "Vì sao ô giữa là cách đáp tốt?",
+        "a3": "Nó nằm trên bốn trong tám đường, nhiều hơn mọi ô khác, nên chặn được nhiều đường dọa nhất.",
+        "q4": "Có bao nhiêu ván cờ khác nhau?",
+        "a4": "255.168 ván khác nhau nếu dừng khi có người thắng. Nếu coi các phép xoay và lật là giống nhau, có 138 thế cờ khác nhau lúc kết thúc ván.",
+        "q5": "Nước đi ở ô cạnh dùng để làm gì?",
+        "a5": "Đó là nước mở đầu yếu nhất, nhưng khi chơi O gặp hai góc đối nhau thì đó là cách đáp an toàn duy nhất."
+      }
+    },
+    "test-color-blindness": {
+      "copy": {
+        "name": "Cách kiểm tra mù màu",
+        "blurb": "Chuẩn bị màn hình, đọc tấm chấm, hiểu các loại.",
+        "title": "Cách kiểm tra mù màu online",
+        "lead": "Rối loạn sắc giác khá phổ biến: khoảng 1/12 nam giới và 1/200 nữ giới bị loại đỏ – xanh lá. Bạn sẽ chuẩn bị màn hình, làm một bài kiểm tra tấm chấm màu ngắn và hiểu kết quả protan, deutan, tritan nghĩa là gì.",
+        "result": "Điểm cho từng loại tấm và gợi ý có nên đi khám mắt đúng cách hay không.",
+        "note": "Kiểm tra trên màn hình là sàng lọc, không phải chẩn đoán. Chỉ chuyên gia chăm sóc mắt mới xác nhận được loại và mức độ.",
+        "s1t": "Mở Kiểm tra mù màu trên cv.cm",
+        "s1b": "Dùng màn hình máy tính, máy tính bảng hoặc điện thoại trong phòng không có đèn màu. Đeo kính như bình thường.",
+        "s2t": "Hiểu một tấm cho thấy gì",
+        "s2b": "Mỗi tấm là một hình tròn gồm các chấm, có một con số hai chữ số. Chấm của con số khác chấm nền ở một khác biệt màu mà chỉ vài loại tế bào nón nhìn thấy; độ sáng của các chấm được trộn lẫn, nên không thể tìm con số theo độ sáng.",
+        "s3t": "Chuẩn bị màn hình",
+        "s3b": "Tăng độ sáng và tắt chế độ ban đêm, lọc ánh sáng xanh, bộ lọc màu và hiệu ứng ám màu của chế độ tối. Chúng làm đổi màu và có thể che mất con số.",
+        "s4t": "Đọc nhanh từng tấm",
+        "s4b": "Gõ con số bạn thấy trong vài giây, hoặc chạm Tôi không thấy số nào. Đừng ghé sát hay nghiêng màn hình để dò tìm. Tấm đầu tiên là tấm kiểm tra mà ai cũng đọc được.",
+        "s5t": "Đọc kết quả",
+        "s5b": "Bạn nhận điểm cho các tấm đỏ (protan), xanh lá (deutan) và xanh lam – vàng (tritan), từ rõ đến rất mờ. Bỏ lỡ nhiều tấm cùng một loại cho thấy loại đó. Chỉ bỏ lỡ các tấm mờ nhất là chuyện thường gặp.",
+        "s6t": "Quyết định bước tiếp theo",
+        "s6b": "Nếu kết quả cho thấy rối loạn, hãy làm lại trên màn hình khác. Nếu vẫn vậy, hãy đến chuyên viên đo thị lực để được kiểm tra bằng tấm in và máy soi màu (anomaloscope).",
+        "diagram1": "Con số chỉ khác nền ở sắc độ trên một đường nhầm màu.",
+        "diagram2": "Ba loại tế bào nón và rối loạn khi một loại bị thiếu hoặc yếu."
+      },
+      "faq": {
+        "q1": "Mù màu có chữa được không?",
+        "a1": "Rối loạn sắc giác bẩm sinh không chữa được. Kính màu có thể giúp một số người phân biệt vài màu dễ hơn nhưng không khôi phục thị lực màu bình thường.",
+        "q2": "Vì sao nam giới hay bị mù màu hơn?",
+        "a2": "Gen của tế bào nón đỏ và xanh lá nằm trên nhiễm sắc thể X. Nam giới có một X, nên chỉ một gen bị đổi là đủ; nữ giới cần gen đó bị đổi trên cả hai X.",
+        "q3": "Loại nào phổ biến nhất?",
+        "a3": "Deutan (yếu màu xanh lá), tiếp theo là protan (yếu màu đỏ). Tritan, loại xanh lam – vàng, rất hiếm.",
+        "q4": "Thị lực màu có thay đổi theo tuổi không?",
+        "a4": "Có. Đục thủy tinh thể, một số bệnh về mắt và một số loại thuốc có thể làm thay đổi thị lực màu. Thay đổi mới xuất hiện là lý do để đi khám mắt.",
+        "q5": "Có làm bài kiểm tra trên điện thoại được không?",
+        "a5": "Được. Trước hết hãy tăng độ sáng và tắt chế độ ban đêm hoặc chế độ bảo vệ mắt."
+      }
+    },
+    "convert-military-time": {
+      "copy": {
+        "name": "Cách đổi giờ quân đội",
+        "blurb": "Đọc, đổi và nói giờ 24 giờ.",
+        "title": "Cách đổi giờ quân đội sang giờ thường",
+        "lead": "Giờ quân đội đếm các giờ trong ngày từ 00 đến 23, nên không có AM hay PM. Bạn sẽ đổi theo cả hai chiều, xử lý nửa đêm và giữa trưa, biết cách đọc giờ bằng tiếng Anh và hiểu giờ Zulu là gì.",
+        "result": "Đổi được giờ bất kỳ giữa dạng quân đội và dạng 12 giờ, và đọc đúng bằng tiếng Anh.",
+        "note": "Giờ quân đội viết bằng bốn chữ số, không có dấu hai chấm: 0930, không phải 9:30.",
+        "s1t": "Mở Đổi giờ quân đội trên cv.cm",
+        "s1b": "Gõ giờ ở một trong hai dạng, như 1430 hoặc 2:30 pm (nhận cả SA/CH). Kết quả hiện ngay khi bạn gõ, bên dưới có bảng tra.",
+        "s2t": "Đổi giờ buổi chiều",
+        "s2b": "Từ 1300 đến 2359, lấy hai chữ số đầu trừ 12 và thêm PM: 1430 → 14 − 12 = 2 → 2:30 PM. Chiều ngược lại, cộng 12 vào giờ PM từ 1 đến 11: 7:15 PM → 1915.",
+        "s3t": "Xử lý nửa đêm và giữa trưa",
+        "s3b": "Nửa đêm là 0000 (12:00 AM) và giữa trưa là 1200 (12:00 PM). Các giờ 0001–0059 là 12:01–12:59 AM. Giờ buổi sáng giữ nguyên chữ số: 0830 là 8:30 AM.",
+        "s4t": "Đọc thành tiếng",
+        "s4b": "Trong tiếng Anh (quân đội Mỹ), đọc các chữ số thành hai cặp rồi thêm hours: 1430 là \"fourteen thirty hours\". Giờ chẵn dùng hundred: 0800 là \"zero eight hundred hours\". Số 0 ở đầu đọc là zero.",
+        "s5t": "Hiểu giờ Zulu",
+        "s5b": "Lịch quân sự và hàng không thường dùng giờ Zulu, tức UTC, đánh dấu bằng chữ Z: 1430Z. Công cụ hiện giờ Zulu hiện tại bên cạnh giờ của bạn.",
+        "s6t": "Dùng bảng tra",
+        "s6b": "Để tra nhanh, bảng liệt kê mọi giờ từ 12 AM (0000) đến 11 PM (2300). Mở sẵn trang khi làm ca hoặc lưu dấu trang.",
+        "diagram1": "Sau giữa trưa, lấy giờ trừ 12.",
+        "diagram2": "Cách đọc giờ quân đội bằng tiếng Anh."
+      },
+      "faq": {
+        "q1": "Vì sao gọi là giờ quân đội?",
+        "a1": "Ở Mỹ, đồng hồ 24 giờ chủ yếu được dùng trong quân đội, bệnh viện và hàng không. Ở hầu hết các nước khác, kể cả Việt Nam, đó chỉ là cách viết giờ bình thường.",
+        "q2": "1200 là giữa trưa hay nửa đêm?",
+        "a2": "Giữa trưa. Nửa đêm là 0000.",
+        "q3": "Viết giây thế nào?",
+        "a3": "Cách viết quân đội hiếm khi dùng giây. Ở dạng 24 giờ, giây đứng sau dấu hai chấm: 14:30:15.",
+        "q4": "1430 có đọc là \"hundred hours\" không?",
+        "a4": "Không. \"Hundred\" chỉ dùng cho giờ chẵn: 1400 là \"fourteen hundred hours\", 1430 là \"fourteen thirty hours\".",
+        "q5": "Giờ quân đội theo múi giờ nào?",
+        "a5": "Đó chỉ là cách viết giờ, dùng được ở mọi múi giờ. Chữ Z sau giờ nghĩa là UTC (Zulu); các chữ cái khác chỉ các múi giờ khác."
+      }
+    },
+    "predict-child-height": {
+      "copy": {
+        "name": "Cách dự đoán chiều cao trưởng thành của con",
+        "blurb": "Công thức theo bố mẹ và bách phân vị tăng trưởng.",
+        "title": "Cách dự đoán chiều cao trưởng thành của con",
+        "lead": "Chiều cao phụ thuộc chủ yếu vào gen, nên chiều cao của bố mẹ cho một ước đoán ban đầu khá tốt. Bạn sẽ tính mục tiêu theo bố mẹ và khoảng dao động của nó, rồi dùng bách phân vị trên biểu đồ tăng trưởng của con để có ước tính thứ hai, và biết nên tin mỗi cách đến đâu.",
+        "result": "Hai ước tính chiều cao trưởng thành và một khoảng mà phần lớn trẻ nằm trong đó.",
+        "note": "Đây là ước tính. Dinh dưỡng, sức khỏe, giấc ngủ và thời điểm dậy thì đều làm chiều cao cuối cùng xê dịch trong khoảng đó.",
+        "s1t": "Mở Tính chiều cao của con trên cv.cm",
+        "s1b": "Chọn xentimét hoặc feet và inch, con bạn là trai hay gái, và chuẩn bị sẵn chiều cao của cả bố lẫn mẹ, đo khi không đi giày.",
+        "s2t": "Tính mục tiêu theo bố mẹ",
+        "s2b": "Cộng chiều cao của bố và mẹ. Con trai thì cộng thêm 13 cm (5 in), con gái thì trừ 13 cm, rồi chia đôi. Bố 178 cm và mẹ 165 cm cho con trai (178 + 165 + 13) ÷ 2 = 178 cm.",
+        "s3t": "Đọc khoảng dao động",
+        "s3b": "Khoảng 95% trẻ đạt chiều cao trong phạm vi 8,5 cm (khoảng 3,5 in) quanh mục tiêu, nên khoảng của cậu bé 178 cm là chừng 169,5–186,5 cm. Anh chị em ruột có thể ở hai đầu ngược nhau.",
+        "s4t": "Đo chiều cao của con",
+        "s4b": "Cho con đứng sát tường, không đi giày, hai gót chân chạm nhau, rồi đánh dấu đỉnh đầu bằng một vật phẳng. Nhập chiều cao và tuổi của con theo năm và tháng.",
+        "s5t": "Dùng bách phân vị trên biểu đồ tăng trưởng",
+        "s5b": "Công cụ tìm bách phân vị của con trên biểu đồ tăng trưởng CDC. Trẻ thường giữ gần như cùng một bách phân vị, nên chiều cao trưởng thành ở bách phân vị đó lúc 20 tuổi là ước tính thứ hai.",
+        "s6t": "So sánh và tiếp tục đo",
+        "s6b": "Nếu hai ước tính khớp nhau, dự đoán đáng tin hơn. Nếu chúng khác nhau, thời điểm dậy thì là lý do thường gặp. Đo sáu tháng một lần; trẻ tụt qua các đường bách phân vị nên được đi khám bác sĩ.",
+        "diagram1": "Công thức trung bình bố mẹ cho con trai và con gái.",
+        "diagram2": "Đi theo cùng một bách phân vị đến 20 tuổi."
+      },
+      "faq": {
+        "q1": "Vì sao phải cộng hoặc trừ 13 cm?",
+        "a1": "Đàn ông trưởng thành trung bình cao hơn phụ nữ trưởng thành khoảng 13 cm (5 in), nên công thức quy chiều cao của mẹ hoặc bố về giới tính của con trước khi lấy trung bình.",
+        "q2": "Phương pháp bách phân vị có dùng được cho trẻ mới biết đi không?",
+        "a2": "Từ 2 tuổi. Trong hai năm đầu trẻ thường chuyển qua lại giữa các bách phân vị, nên ước tính kém chính xác hơn so với tuổi đi học.",
+        "q3": "Khi nào trẻ ngừng cao?",
+        "a3": "Phần lớn bé gái đạt chiều cao trưởng thành vào khoảng 15 tuổi và phần lớn bé trai vào khoảng 17 tuổi, một hai năm sau giai đoạn tăng vọt; một số trẻ còn cao thêm chút ít sau đó.",
+        "q4": "Chụp X-quang tuổi xương có chính xác hơn không?",
+        "a4": "Có. Bác sĩ có thể chụp X-quang bàn tay để xem còn bao nhiêu khả năng tăng trưởng, rất hữu ích khi dậy thì sớm hoặc muộn.",
+        "q5": "Các biểu đồ này có hợp với mọi quốc gia không?",
+        "a5": "Biểu đồ CDC mô tả trẻ em ở Hoa Kỳ. Chiều cao trung bình khác nhau giữa các nước, nên hãy coi bách phân vị là tham khảo."
+      }
+    }
+  },
+  "svg": {
+    "play-sudoku": {
+      "row": "Hàng",
+      "column": "Cột",
+      "box": "Ô vuông",
+      "once": "1–9 mỗi số một lần",
+      "only": "chỗ duy nhất cho 5"
+    },
+    "play-tic-tac-toe": {
+      "corner": "Góc",
+      "centre": "Giữa",
+      "edge": "Cạnh",
+      "best": "mạnh nhất",
+      "weakest": "yếu nhất",
+      "fork": "hai đường dọa",
+      "block": "O chặn được một"
+    },
+    "test-color-blindness": {
+      "background": "Nền",
+      "figure": "Con số",
+      "same": "Cùng độ sáng",
+      "red": "Nón đỏ (L)",
+      "green": "Nón xanh lá (M)",
+      "blue": "Nón xanh lam (S)",
+      "protan": "Protan",
+      "deutan": "Deutan",
+      "tritan": "Tritan"
+    },
+    "convert-military-time": {
+      "minus": "trừ 12",
+      "pm": "PM",
+      "say": "Đọc",
+      "zero": "zero eight hundred hours",
+      "fourteen": "fourteen thirty hours",
+      "nineteen": "nineteen zero five hours"
+    },
+    "predict-child-height": {
+      "father": "Bố",
+      "mother": "Mẹ",
+      "boy": "Con trai",
+      "girl": "Con gái",
+      "age": "Tuổi",
+      "height": "Chiều cao",
+      "now": "hiện tại",
+      "adult": "lúc 20"
+    }
+  }
+}

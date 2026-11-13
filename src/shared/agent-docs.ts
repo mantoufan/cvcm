@@ -30,7 +30,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   design: "Color and design",
   hardware: "Hardware tests (keyboard, microphone, camera, screen, controllers)",
   fun: "Random and fun",
-  games: "Retro games: open your own ROM or SWF",
+  games: "Games: sudoku, tic-tac-toe, and retro players for your own ROM or SWF",
   assets: "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)",
 };
 

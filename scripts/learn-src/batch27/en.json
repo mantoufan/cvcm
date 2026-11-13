@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "titlePlaySudoku": "How to play sudoku: rules and solving tips for beginners | cv.cm",
+    "descPlaySudoku": "Learn sudoku in six steps: the one rule, scanning for the only place a digit fits, cells with one option, pencil notes and how to get unstuck. Practise free online, easy to expert.",
+    "titlePlayTicTacToe": "How to win at tic-tac-toe (and never lose) | cv.cm",
+    "descPlayTicTacToe": "Tic-tac-toe strategy: the best first move, how to answer a corner, set up a fork with two threats, and block your opponent. Then test it against a computer that never loses.",
+    "titleTestColorBlindness": "How to test for color blindness online (and read the result) | cv.cm",
+    "descTestColorBlindness": "Take a color vision test at home: set up your screen, read the dot plates, and understand protan, deutan and tritan results. What a screening can and cannot tell you.",
+    "titleConvertMilitaryTime": "How to convert military time to standard time (with chart) | cv.cm",
+    "descConvertMilitaryTime": "Read and convert military time: subtract 12 after noon, handle midnight and noon, say times like 0800 and 1430 out loud, and know Zulu time. With a chart and a free converter.",
+    "titlePredictChildHeight": "How to predict your child's adult height (two methods) | cv.cm",
+    "descPredictChildHeight": "Estimate how tall a child will be: the mid-parental formula with its range, and the growth chart percentile method. How accurate each is and when to ask a doctor."
+  },
+  "lessons": {
+    "play-sudoku": {
+      "copy": {
+        "name": "How to play sudoku",
+        "blurb": "The rule, scanning, notes and getting unstuck.",
+        "title": "How to play sudoku",
+        "lead": "Sudoku needs no maths, only logic. You will learn the one rule, the two ways every beginner finds digits, how to keep notes, and what to do when you are stuck, then solve a full puzzle.",
+        "result": "A solved sudoku and a method you can use on harder puzzles.",
+        "note": "Never guess. A well-made sudoku has one solution, and every digit can be found by logic.",
+        "s1t": "Open Sudoku on cv.cm",
+        "s1b": "Start with an easy puzzle. The digits in black are given; you fill the empty cells. Tap a cell, then a number, or type on a keyboard.",
+        "s2t": "Learn the one rule",
+        "s2b": "Each row, each column and each 3 × 3 box must hold 1 to 9 exactly once. So a digit already in a row cannot appear again anywhere in that row, and the same for columns and boxes.",
+        "s3t": "Find the only cell for a digit",
+        "s3b": "Pick a digit, say 5, and a box without one. Every row and column that already has a 5 rules out its cells in that box. When only one cell is left, the 5 goes there.",
+        "s4t": "Find the only digit for a cell",
+        "s4b": "Look at one empty cell and cross off every digit in its row, column and box. If only one digit is left, write it in. Busy rows and boxes are the best place to look.",
+        "s5t": "Pencil in notes",
+        "s5b": "On medium and harder puzzles, turn on Notes and write the possible digits in small. Each time you place a digit, the tool removes it from the notes it rules out, so new single options appear.",
+        "s6t": "Check and get unstuck",
+        "s6b": "Digits that clash in a row, column or box are underlined. Show mistakes compares your digits with the answer, and Hint fills one cell. Undo takes back any move.",
+        "diagram1": "The rule: 1 to 9 once in every row, column and box.",
+        "diagram2": "The 5s in two rows leave one cell for 5 in the box."
+      },
+      "faq": {
+        "q1": "Is sudoku about maths?",
+        "a1": "No. The digits are just nine different symbols; you never add them. Letters or colours would work the same way.",
+        "q2": "Where should a beginner start?",
+        "a2": "With the digit that appears most often in the grid. It leaves the fewest places for the missing copies, so they are quickest to find.",
+        "q3": "What makes a sudoku hard?",
+        "a3": "Fewer given digits and, more importantly, cells you cannot fill with the two simple methods. Hard puzzles need notes and patterns such as two cells that share the same two options.",
+        "q4": "How many givens does a sudoku need?",
+        "a4": "At least 17. No puzzle with 16 givens has a single solution; this was proven by computer search in 2012.",
+        "q5": "How long does a puzzle take?",
+        "a5": "Beginners often take 10–20 minutes on an easy puzzle and much longer on hard ones. The timer runs only while the page is open."
+      }
+    },
+    "play-tic-tac-toe": {
+      "copy": {
+        "name": "How to win at tic-tac-toe",
+        "blurb": "Best first move, forks and blocks.",
+        "title": "How to win at tic-tac-toe and never lose",
+        "lead": "Tic-tac-toe is solved: with perfect play it is always a draw. You will learn the opening that gives your opponent the most chances to slip, how to win with a fork, and how to make sure you never lose.",
+        "result": "A plan for X and for O that wins against weak play and draws against perfect play.",
+        "note": "Against the hard computer the best result is a draw. Practise forks on easy and medium.",
+        "s1t": "Open Tic-tac-toe on cv.cm",
+        "s1b": "Choose Against the computer and Medium, and play as X so you move first. X always starts.",
+        "s2t": "Open in a corner",
+        "s2b": "A corner is the strongest first move. The only safe reply for O is the centre; any edge or corner reply lets X force a win.",
+        "s3t": "Always check two things first",
+        "s3b": "Before every move, ask: can I complete three in a row now? If not, can my opponent complete three next turn? Win if you can, block if you must.",
+        "s4t": "Build a fork",
+        "s4b": "A fork is a move that makes two lines of two at once. Your opponent can block only one, so you win with the other. Opposite corners are the classic way to set one up.",
+        "s5t": "Play O safely",
+        "s5b": "If X takes a corner, take the centre. If X takes the centre, take a corner. If X has opposite corners and you hold the centre, play an edge, not a corner, or X forks you.",
+        "s6t": "Test yourself on hard",
+        "s6b": "Switch to Hard. The computer plays perfectly, so every game should end in a draw. If you lose, look at the board: you missed a block or allowed a fork.",
+        "diagram1": "First moves for X, strongest to weakest.",
+        "diagram2": "A fork: two lines of two, only one can be blocked."
+      },
+      "faq": {
+        "q1": "Can you always win tic-tac-toe?",
+        "a1": "No. If both players make no mistakes, every game is a draw. You win only when the other player slips.",
+        "q2": "Is going first an advantage?",
+        "a2": "Yes. X has more ways to set up a fork, and O has to answer correctly from the very first move.",
+        "q3": "Why is the centre a good reply?",
+        "a3": "It sits on four of the eight lines, more than any other square, so it blocks the most threats.",
+        "q4": "How many possible games are there?",
+        "a4": "255,168 different games if play stops when someone wins. Counting rotations and reflections as the same, there are 138 different ways the board can look when a game ends.",
+        "q5": "What is the edge move good for?",
+        "a5": "It is the weakest opening, but as O against opposite corners it is the only safe reply."
+      }
+    },
+    "test-color-blindness": {
+      "copy": {
+        "name": "How to test for color blindness",
+        "blurb": "Set up the screen, read plates, understand types.",
+        "title": "How to test for color blindness online",
+        "lead": "Colour vision deficiency is common: about 1 in 12 men and 1 in 200 women have the red–green kind. You will set up your screen, take a short dot-plate test and learn what protan, deutan and tritan results mean.",
+        "result": "A score for each kind of plate and an idea of whether to book a proper eye test.",
+        "note": "A screen test is a screening, not a diagnosis. Only an eye-care professional can confirm the type and degree.",
+        "s1t": "Open the Color blindness test on cv.cm",
+        "s1b": "Use a computer, tablet or phone screen in a room without coloured lighting. Wear your usual glasses.",
+        "s2t": "Know what a plate shows",
+        "s2b": "Each plate is a circle of dots with a two-digit number. The number's dots differ from the background in a colour difference only some cones see; the dots' brightness is mixed, so the number cannot be found by lightness.",
+        "s3t": "Set up your screen",
+        "s3b": "Turn brightness up and switch off night mode, blue-light filters, colour filters and dark-mode tinting. These change the colours and can hide numbers.",
+        "s4t": "Read each plate quickly",
+        "s4b": "Type the number you see within a few seconds, or tap I see no number. Do not lean in or tilt the screen to hunt for it. The first plate is a check that everyone can read.",
+        "s5t": "Read your result",
+        "s5b": "You get a score for red (protan), green (deutan) and blue–yellow (tritan) plates, from clear to very faint. Missing several plates of one kind points to that type. Missing only the faintest plates is common.",
+        "s6t": "Decide what to do next",
+        "s6b": "If the result shows a deficiency, take the test again on another screen. If it repeats, see an optometrist, who can test you with printed plates and an anomaloscope.",
+        "diagram1": "The number differs from the background only in hue on one confusion line.",
+        "diagram2": "Three kinds of cones and the deficiency when one is missing or weak."
+      },
+      "faq": {
+        "q1": "Can color blindness be cured?",
+        "a1": "Inherited colour vision deficiency cannot be cured. Tinted glasses can make some colours easier to tell apart for some people but do not restore normal colour vision.",
+        "q2": "Why are men more often color blind?",
+        "a2": "The genes for the red and green cones sit on the X chromosome. Men have one X, so one changed gene is enough; women need it on both.",
+        "q3": "What is the most common type?",
+        "a3": "Deutan (green-weak), followed by protan (red-weak). Tritan, the blue–yellow kind, is rare.",
+        "q4": "Can colour vision change with age?",
+        "a4": "Yes. Cataracts, some eye diseases and some medicines can change colour vision. A new change is a reason to see an eye doctor.",
+        "q5": "Can I take the test on my phone?",
+        "a5": "Yes. Turn brightness up and turn off night or eye-comfort modes first."
+      }
+    },
+    "convert-military-time": {
+      "copy": {
+        "name": "How to convert military time",
+        "blurb": "Read, convert and say 24-hour time.",
+        "title": "How to convert military time to standard time",
+        "lead": "Military time counts the hours of the day from 00 to 23, so there is no AM or PM. You will convert in both directions, handle midnight and noon, say times out loud and know what Zulu time means.",
+        "result": "Any time converted between military and 12-hour form, and said correctly.",
+        "note": "Military time is written with four digits and no colon: 0930, not 9:30.",
+        "s1t": "Open the Military time converter on cv.cm",
+        "s1b": "Type a time in either form, such as 1430 or 2:30 pm. The conversion appears as you type, with a chart below.",
+        "s2t": "Convert afternoon times",
+        "s2b": "From 1300 to 2359, subtract 12 from the first two digits and add PM: 1430 → 14 − 12 = 2 → 2:30 PM. Going the other way, add 12 to any PM hour from 1 to 11: 7:15 PM → 1915.",
+        "s3t": "Handle midnight and noon",
+        "s3b": "Midnight is 0000 (12:00 AM) and noon is 1200 (12:00 PM). Hours 0001–0059 are 12:01–12:59 AM. Morning hours keep their digits: 0830 is 8:30 AM.",
+        "s4t": "Say it out loud",
+        "s4b": "Read the digits as two pairs and add hours: 1430 is \"fourteen thirty hours\". Whole hours use hundred: 0800 is \"zero eight hundred hours\". Leading zeros are said as zero.",
+        "s5t": "Know Zulu time",
+        "s5b": "Military and aviation schedules often use Zulu time, which is UTC, marked with a Z: 1430Z. The converter shows the current Zulu time next to your own.",
+        "s6t": "Use the chart",
+        "s6b": "For quick look-ups, the chart lists every hour from 12 AM (0000) to 11 PM (2300). Keep the page open on shifts or bookmark it.",
+        "diagram1": "After noon, subtract 12 from the hours.",
+        "diagram2": "How military times are spoken."
+      },
+      "faq": {
+        "q1": "Why is it called military time?",
+        "a1": "In the United States the 24-hour clock is mostly met in the armed forces, hospitals and aviation. In most other countries it is simply the normal way to write time.",
+        "q2": "Is 1200 noon or midnight?",
+        "a2": "Noon. Midnight is 0000.",
+        "q3": "How do you write seconds?",
+        "a3": "Military writing rarely uses seconds. In 24-hour form they follow a colon: 14:30:15.",
+        "q4": "Do you say \"hundred hours\" for 1430?",
+        "a4": "No. \"Hundred\" is only for whole hours: 1400 is \"fourteen hundred hours\", 1430 is \"fourteen thirty hours\".",
+        "q5": "What time zone is military time in?",
+        "a5": "It is just a way to write the time, in any zone. A Z after the time means UTC (Zulu); other letters name other zones."
+      }
+    },
+    "predict-child-height": {
+      "copy": {
+        "name": "How to predict your child's adult height",
+        "blurb": "Parents' formula and growth chart percentiles.",
+        "title": "How to predict your child's adult height",
+        "lead": "Height depends mostly on genes, so the parents' heights give a good first guess. You will work out the mid-parental target and its range, then use your child's growth chart percentile for a second estimate, and see how far to trust each.",
+        "result": "Two estimates of adult height and a range most children fall within.",
+        "note": "These are estimates. Nutrition, health, sleep and the timing of puberty all move the final height within the range.",
+        "s1t": "Open the Height calculator on cv.cm",
+        "s1b": "Choose centimetres or feet and inches, whether your child is a boy or a girl, and have both parents' heights ready, measured without shoes.",
+        "s2t": "Work out the parents' target",
+        "s2b": "Add the father's and mother's heights. For a boy add 13 cm (5 in), for a girl subtract 13 cm, then halve it. Father 178 cm and mother 165 cm give a boy (178 + 165 + 13) ÷ 2 = 178 cm.",
+        "s3t": "Read the range",
+        "s3b": "About 95% of children end up within 8.5 cm (about 3.5 in) of the target, so the 178 cm boy's range is roughly 169.5–186.5 cm. Siblings can land at opposite ends.",
+        "s4t": "Measure your child",
+        "s4b": "Stand them against a wall without shoes, heels together, and mark the top of the head with a flat object. Enter the height and their age in years and months.",
+        "s5t": "Use the growth chart percentile",
+        "s5b": "The calculator finds your child's percentile on the CDC growth charts. Children usually keep roughly the same percentile, so the adult height on that percentile at age 20 is a second estimate.",
+        "s6t": "Compare and keep measuring",
+        "s6b": "If both estimates agree, the prediction is more reliable. If they differ, puberty timing is a common reason. Measure every six months; a child who drops across percentile lines should see a doctor.",
+        "diagram1": "The mid-parental formula for a boy and a girl.",
+        "diagram2": "Following the same percentile to age 20."
+      },
+      "faq": {
+        "q1": "Why add or subtract 13 cm?",
+        "a1": "Adult men are on average about 13 cm (5 in) taller than adult women, so the formula moves the mother's or father's height to the child's sex before averaging.",
+        "q2": "Does the percentile method work for toddlers?",
+        "a2": "From age 2. In the first two years children often move between percentiles, so the estimate is rougher than at school age.",
+        "q3": "When do children stop growing?",
+        "a3": "Most girls reach adult height by about 15 and most boys by about 17, a year or two after their growth spurt; some grow a little more after that.",
+        "q4": "Is a bone age X-ray more accurate?",
+        "a4": "Yes. Doctors can use a hand X-ray to see how much growth is left, which helps when puberty is early or late.",
+        "q5": "Do these charts fit every country?",
+        "a5": "The CDC charts describe children in the United States. Average heights differ between countries, so treat the percentile as a guide."
+      }
+    }
+  },
+  "svg": {
+    "play-sudoku": {
+      "row": "Row",
+      "column": "Column",
+      "box": "Box",
+      "once": "1–9 once each",
+      "only": "only place for 5"
+    },
+    "play-tic-tac-toe": {
+      "corner": "Corner",
+      "centre": "Centre",
+      "edge": "Edge",
+      "best": "strongest",
+      "weakest": "weakest",
+      "fork": "two threats",
+      "block": "O can block one"
+    },
+    "test-color-blindness": {
+      "background": "Background",
+      "figure": "Number",
+      "same": "Same brightness mix",
+      "red": "Red cones (L)",
+      "green": "Green cones (M)",
+      "blue": "Blue cones (S)",
+      "protan": "Protan",
+      "deutan": "Deutan",
+      "tritan": "Tritan"
+    },
+    "convert-military-time": {
+      "minus": "subtract 12",
+      "pm": "PM",
+      "say": "Say",
+      "zero": "zero eight hundred hours",
+      "fourteen": "fourteen thirty hours",
+      "nineteen": "nineteen zero five hours"
+    },
+    "predict-child-height": {
+      "father": "Father",
+      "mother": "Mother",
+      "boy": "Boy",
+      "girl": "Girl",
+      "age": "Age",
+      "height": "Height",
+      "now": "now",
+      "adult": "at 20"
+    }
+  }
+}

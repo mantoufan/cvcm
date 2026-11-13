@@ -982,4 +982,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountSlope(host);
     return m.unmountSlope;
   },
+  "sudoku": async (host, ctx) => {
+    const m = await import("./sudoku/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSudoku(host);
+    return m.unmountSudoku;
+  },
+  "tic-tac-toe": async (host, ctx) => {
+    const m = await import("./tic-tac-toe/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTicTacToe(host);
+    return m.unmountTicTacToe;
+  },
+  "color-blindness-test": async (host, ctx) => {
+    const m = await import("./color-blindness-test/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountColorBlindnessTest(host);
+    return m.unmountColorBlindnessTest;
+  },
+  "military-time": async (host, ctx) => {
+    const m = await import("./military-time/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMilitaryTime(host);
+    return m.unmountMilitaryTime;
+  },
+  "height-calculator": async (host, ctx) => {
+    const m = await import("./height-calculator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountHeight(host);
+    return m.unmountHeight;
+  },
 };
