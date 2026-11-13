@@ -23,7 +23,7 @@ const old = (() => {
   try {
     return JSON.parse(readFileSync(OUT, "utf8"));
   } catch {
-    return { asOf: null, trend: {}, coins: {}, coinsAsOf: null };
+    return { trend: {}, coins: {}, coinsAsOf: null };
   }
 })();
 const failures = [];
@@ -42,16 +42,26 @@ const day = (d) => d.toISOString().slice(0, 10);
 const compact = (d) => day(d).replaceAll("-", "");
 
 /**
- * The last WEEKS full weeks (Monday to Sunday, UTC) of views, oldest first, and a direction: "up" when the last four weeks
- * average a quarter more than the four before, "down" when a fifth less, else "flat".
+ * The last day whose pageviews Wikimedia has published: the most recent Sunday, or the one before when that Sunday's
+ * daily figures are not out yet (a Monday-morning run). Checked once on the busiest article, because a quiet article
+ * simply has no row for a day with no views, which must not be read as "not published".
  */
-async function trendOf(wiki) {
+async function lastPublishedSunday() {
+  const now = new Date();
+  const sunday = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - ((now.getUTCDay() + 7) % 7 || 7)));
+  const probe = await getJson(`https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Main_Page/daily/${compact(sunday)}/${compact(sunday)}`);
+  return probe?.items?.length ? sunday : new Date(sunday.getTime() - 7 * 86_400_000);
+}
+
+/**
+ * WEEKS full weeks (Monday to Sunday, UTC) of views ending on `end`, oldest first, and a direction: "up" when the last
+ * four weeks are a quarter above the four before, "down" when a fifth below, else "flat".
+ */
+async function trendOf(wiki, end) {
   const [lang, ...rest] = wiki.split(":");
   const title = encodeURIComponent(rest.join(":").replaceAll(" ", "_"));
-  const now = new Date();
-  const lastSunday = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - ((now.getUTCDay() + 7) % 7 || 7)));
-  const start = new Date(lastSunday.getTime() - (WEEKS * 7 - 1) * 86_400_000);
-  const url = `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/${lang}.wikipedia.org/all-access/user/${title}/daily/${compact(start)}/${compact(lastSunday)}`;
+  const start = new Date(end.getTime() - (WEEKS * 7 - 1) * 86_400_000);
+  const url = `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/${lang}.wikipedia.org/all-access/user/${title}/daily/${compact(start)}/${compact(end)}`;
   const body = await getJson(url);
   if (!body) throw new Error(`no pageviews for ${wiki}`);
   const byDay = new Map(body.items.map((item) => [item.timestamp.slice(0, 8), item.views]));
@@ -63,14 +73,19 @@ async function trendOf(wiki) {
   const recent = weeks.slice(-4).reduce((a, b) => a + b, 0);
   const before = weeks.slice(-8, -4).reduce((a, b) => a + b, 0);
   const dir = before === 0 ? (recent > 0 ? "up" : "flat") : recent >= before * 1.25 ? "up" : recent <= before * 0.8 ? "down" : "flat";
-  return { w: weeks, dir, to: day(lastSunday) };
+  return { w: weeks, dir, to: day(end) };
 }
 
 const trend = {};
+const end = await lastPublishedSunday().catch((error) => {
+  failures.push(`meme trend: ${error.message}`);
+  return null;
+});
 for (const [id, src] of Object.entries(SOURCES)) {
   if (!src.wiki) continue;
   try {
-    trend[id] = await trendOf(src.wiki);
+    if (!end) throw new Error("pageviews unavailable");
+    trend[id] = await trendOf(src.wiki, end);
   } catch (error) {
     failures.push(`meme trend ${id}: ${error.message}`);
     if (old.trend?.[id]) trend[id] = old.trend[id];
@@ -117,7 +132,8 @@ if (!key) {
   }
 }
 
-const data = { asOf: day(new Date()), trend, coins, coinsAsOf };
+// No run date in the file: unchanged figures leave it byte-identical, so the workflow commits and deploys only real changes.
+const data = { trend, coins, coinsAsOf };
 writeFileSync(OUT, `${JSON.stringify(data, null, 1)}\n`);
 console.log(`meme: ${Object.keys(trend).length} trends, ${Object.keys(coins).length} coins`);
 if (failures.length) {

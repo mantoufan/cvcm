@@ -5,7 +5,7 @@ import { PUBLISHER, blockHtml, dateLabel, inline, linkListHtml, type KbBlock } f
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
 import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, slangGroupOf, slangPublished, type SlangId } from "./slang";
-import memeData from "./meme-data.json";
+import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
 
 /** One entry's copy, `src/locales/slang/<locale>/<id>.json`. Blocks are the kb blocks (backticks are the only inline markup). */
@@ -62,8 +62,12 @@ export function slangUpdated(id: SlangId): string {
 /** Daily snapshot from `scripts/fetch-meme.mjs`: weekly Wikipedia views per entry and coins named after a meme. */
 export type MemeTrend = { w: number[]; dir: "up" | "flat" | "down"; to: string };
 export type MemeCoin = { cmc: number; slug: string; symbol: string; name: string; price: number; cap: number; d1: number; d7: number; added: string; rank: number | null };
-export type MemeData = { asOf: string | null; trend: Record<string, MemeTrend>; coins: Record<string, MemeCoin>; coinsAsOf: string | null };
-export const MEME_DATA = memeData as MemeData;
+export type MemeData = { trend: Record<string, MemeTrend>; coins: Record<string, MemeCoin>; coinsAsOf: string | null };
+
+/** The snapshot comes with the slang pack (not the main bundle, which it would re-hash every day). */
+function memeData(locale: Locale): MemeData {
+  return slangMessages(locale).memes;
+}
 
 /**
  * Coin prices are never shown in Simplified Chinese: mainland rules (PBoC et al. 2021 notice) bar commercial display and
@@ -73,19 +77,35 @@ export function showsCoins(locale: Locale): boolean {
   return locale !== "zh-CN";
 }
 
-export function memeTrend(id: SlangId): MemeTrend | null {
-  const t = MEME_DATA.trend[id];
+export function memeTrend(locale: Locale, id: SlangId): MemeTrend | null {
+  const t = memeData(locale).trend[id];
   return t && t.w.length && t.w.some((v) => v > 0) ? t : null;
 }
 
-export function memeCoin(locale: Locale, id: SlangId): MemeCoin | null {
-  return showsCoins(locale) ? MEME_DATA.coins[id] ?? null : null;
+/** Views over the last four weeks of a trend (the figure the page shows and the trending list weighs). */
+export function recentViews(trend: MemeTrend): number {
+  return trend.w.slice(-4).reduce((a, b) => a + b, 0);
 }
 
-/** Entries by Wikipedia views over the last four weeks, busiest first. */
-export function trendingIds(limit: number): SlangId[] {
-  const recent = (id: SlangId) => memeTrend(id)!.w.slice(-4).reduce((a, b) => a + b, 0);
-  return SLANG_ENTRIES.filter((id) => memeTrend(id)).sort((a, b) => recent(b) - recent(a)).slice(0, limit);
+export function memeCoin(locale: Locale, id: SlangId): MemeCoin | null {
+  return showsCoins(locale) ? memeData(locale).coins[id] ?? null : null;
+}
+
+/** An article needs this many views in four weeks to count as trending, so a tiny article's jump is not news. */
+const TRENDING_FLOOR = 500;
+
+/**
+ * Entries whose views grew most: last four weeks over the four before. Growth, not raw views, so memes measured on a
+ * smaller Wikipedia (zh) compete fairly with English ones.
+ */
+export function trendingIds(locale: Locale, limit: number): SlangId[] {
+  const score = (t: MemeTrend) => recentViews(t) / Math.max(1, t.w.slice(-8, -4).reduce((a, b) => a + b, 0));
+  return SLANG_ENTRIES
+    .map((id) => ({ id, t: memeTrend(locale, id) }))
+    .filter((x): x is { id: SlangId; t: MemeTrend } => x.t !== null && recentViews(x.t) >= TRENDING_FLOOR)
+    .sort((a, b) => score(b.t) - score(a.t) || recentViews(b.t) - recentViews(a.t))
+    .slice(0, limit)
+    .map((x) => x.id);
 }
 
 /** "2025-03" or "2025" as a month or a year in the reader's language. */
@@ -99,20 +119,17 @@ function bornLabel(locale: Locale, born: string): string {
   }
 }
 
-function compactNumber(locale: Locale, value: number): string {
-  return new Intl.NumberFormat(HREFLANG[locale], { notation: "compact", maximumFractionDigits: 1 }).format(value);
+function changeHtml(locale: Locale, value: number): string {
+  return `<span class="${value > 0 ? "up" : value < 0 ? "down" : ""}">${escapeHtml(signed(locale, value))}</span>`;
 }
 
-function usd(locale: Locale, value: number, compact = false): string {
-  const digits = value >= 1 ? 2 : Math.min(10, Math.max(2, 1 - Math.floor(Math.log10(value)) + 2));
-  return new Intl.NumberFormat(HREFLANG[locale], compact
-    ? { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 2 }
-    : { style: "currency", currency: "USD", maximumFractionDigits: digits }).format(value);
+/** When the coin quotes were taken, "2026-11-13 05:37" (UTC). */
+function coinsTime(locale: Locale): string {
+  return memeData(locale).coinsAsOf?.replace("T", " ").replace("Z", "") ?? "";
 }
 
-function pct(locale: Locale, value: number): string {
-  const text = new Intl.NumberFormat(HREFLANG[locale], { maximumFractionDigits: 1, signDisplay: "exceptZero" }).format(value);
-  return `<span class="${value > 0 ? "up" : value < 0 ? "down" : ""}">${text}%</span>`;
+function coinSourceHtml(locale: Locale, href: string): string {
+  return `<a href="${escapeHtml(href)}" target="_blank" rel="noopener nofollow">${escapeHtml(fill(slangUi(locale).coinSource, { time: coinsTime(locale) }))}</a>`;
 }
 
 function dirBadge(locale: Locale, dir: MemeTrend["dir"]): string {
@@ -127,18 +144,17 @@ function sparkHtml(locale: Locale, trend: MemeTrend): string {
   const width = 6 * trend.w.length;
   const bars = trend.w.map((v, i) => {
     const h = Math.max(1, Math.round((v / max) * 30));
-    return `<rect x="${i * 6}" y="${32 - h}" width="4" height="${h}" rx="1"><title>${escapeHtml(compactNumber(locale, v))}</title></rect>`;
+    return `<rect x="${i * 6}" y="${32 - h}" width="4" height="${h}" rx="1"><title>${escapeHtml(compact(locale, v))}</title></rect>`;
   }).join("");
   return `<svg class="meme-spark" viewBox="0 0 ${width} 32" width="${width * 2}" height="64" role="img" aria-label="${escapeHtml(slangUi(locale).trend)}">${bars}</svg>`;
 }
 
 function trendHtml(locale: Locale, id: SlangId): string {
-  const trend = memeTrend(id);
+  const trend = memeTrend(locale, id);
   if (!trend) return "";
   const ui = slangUi(locale);
-  const recent = trend.w.slice(-4).reduce((a, b) => a + b, 0);
   return `<section class="meme-trend" aria-labelledby="meme-trend-title"><h2 id="meme-trend-title">${escapeHtml(ui.trend)} ${dirBadge(locale, trend.dir)}</h2>`
-    + `<div class="meme-trend-row">${sparkHtml(locale, trend)}<p><strong>${escapeHtml(compactNumber(locale, recent))}</strong> <span>${escapeHtml(ui.recent)}</span></p></div>`
+    + `<div class="meme-trend-row">${sparkHtml(locale, trend)}<p><strong>${escapeHtml(compact(locale, recentViews(trend)))}</strong> <span>${escapeHtml(ui.recent)}</span></p></div>`
     + `<p class="meme-note">${escapeHtml(fill(ui.trendNote, { n: trend.w.length, date: dateLabel(locale, trend.to) }))}</p></section>`;
 }
 
@@ -149,24 +165,23 @@ function coinHtml(locale: Locale, id: SlangId): string {
   const cells = [
     [ui.coinPrice, escapeHtml(usd(locale, coin.price))],
     [ui.coinCap, escapeHtml(usd(locale, coin.cap, true))],
-    [ui.coinD1, pct(locale, coin.d1)],
-    [ui.coinD7, pct(locale, coin.d7)],
+    [ui.coinD1, changeHtml(locale, coin.d1)],
+    [ui.coinD7, changeHtml(locale, coin.d7)],
     [ui.coinAdded, escapeHtml(dateLabel(locale, coin.added))],
   ].map(([k, v]) => `<div><dt>${escapeHtml(k)}</dt><dd>${v}</dd></div>`).join("");
-  const time = MEME_DATA.coinsAsOf ? MEME_DATA.coinsAsOf.replace("T", " ").replace("Z", "") : "";
   return `<section class="meme-coin" aria-labelledby="meme-coin-title"><h2 id="meme-coin-title">${escapeHtml(ui.coin)}</h2>`
     + `<p class="meme-coin-name"><strong>${escapeHtml(coin.name)}</strong> <span>${escapeHtml(coin.symbol)}</span></p>`
     + `<dl class="meme-coin-grid">${cells}</dl>`
     + `<p class="meme-note">${escapeHtml(ui.coinNote)}</p>`
-    + `<p class="meme-note"><a href="https://coinmarketcap.com/currencies/${escapeHtml(coin.slug)}/" target="_blank" rel="noopener nofollow">${escapeHtml(fill(ui.coinSource, { time }))}</a></p></section>`;
+    + `<p class="meme-note">${coinSourceHtml(locale, `https://coinmarketcap.com/currencies/${coin.slug}/`)}</p></section>`;
 }
 
 function hubTrendingHtml(locale: Locale): string {
-  const ids = trendingIds(10);
+  const ids = trendingIds(locale, 10);
   if (!ids.length) return "";
   const ui = slangUi(locale);
   const items = ids.map((id) => {
-    const t = memeTrend(id)!;
+    const t = memeTrend(locale, id)!;
     const { name, blurb } = slangName(locale, id);
     return `<li><a href="${escapeHtml(slangHref(locale, id))}" data-nav="slang-${id}"><strong>${escapeHtml(name)}</strong>${dirBadge(locale, t.dir)}<span>${escapeHtml(blurb)}</span></a></li>`;
   }).join("");
@@ -175,16 +190,16 @@ function hubTrendingHtml(locale: Locale): string {
 
 function hubCoinsHtml(locale: Locale): string {
   if (!showsCoins(locale)) return "";
-  const ids = SLANG_ENTRIES.filter((id) => memeCoin(locale, id)).sort((a, b) => MEME_DATA.coins[b].cap - MEME_DATA.coins[a].cap);
+  const coins = memeData(locale).coins;
+  const ids = SLANG_ENTRIES.filter((id) => memeCoin(locale, id)).sort((a, b) => coins[b].cap - coins[a].cap);
   if (!ids.length) return "";
   const ui = slangUi(locale);
   const rows = ids.map((id) => {
-    const c = MEME_DATA.coins[id];
-    return `<tr><td><a href="${escapeHtml(slangHref(locale, id))}" data-nav="slang-${id}">${escapeHtml(slangName(locale, id).name)}</a></td><td>${escapeHtml(c.symbol)}</td><td>${escapeHtml(usd(locale, c.cap, true))}</td><td>${pct(locale, c.d7)}</td></tr>`;
+    const c = coins[id];
+    return `<tr><td><a href="${escapeHtml(slangHref(locale, id))}" data-nav="slang-${id}">${escapeHtml(slangName(locale, id).name)}</a></td><td>${escapeHtml(c.symbol)}</td><td>${escapeHtml(usd(locale, c.cap, true))}</td><td>${changeHtml(locale, c.d7)}</td></tr>`;
   }).join("");
-  const time = MEME_DATA.coinsAsOf ? MEME_DATA.coinsAsOf.replace("T", " ").replace("Z", "") : "";
   return `<section class="wall meme-coins" id="coins"><h2>${escapeHtml(ui.coins)}</h2><div class="table-wrap"><table><thead><tr><th>${escapeHtml(ui.coinMeme)}</th><th>${escapeHtml(ui.coinToken)}</th><th>${escapeHtml(ui.coinCap)}</th><th>${escapeHtml(ui.coinD7)}</th></tr></thead><tbody>${rows}</tbody></table></div>`
-    + `<p class="meme-note">${escapeHtml(ui.coinNote)}</p><p class="meme-note">${escapeHtml(fill(ui.coinSource, { time }))}</p></section>`;
+    + `<p class="meme-note">${escapeHtml(ui.coinNote)}</p><p class="meme-note">${coinSourceHtml(locale, "https://coinmarketcap.com/view/memes/")}</p></section>`;
 }
 
 const CJK = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);

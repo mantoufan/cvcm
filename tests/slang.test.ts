@@ -9,7 +9,7 @@ import { preloadLocalePack } from "../src/shared/locale-preload";
 import { messages, slangMessages } from "../src/shared/messages";
 import { parseAppPath, slangHref } from "../src/shared/path";
 import { SLANG_ENTRIES, SLANG_FOCUS, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, isSlangId, slangGroupOf, slangPublished } from "../src/shared/slang";
-import { slangArticleJsonLd, slangCopy, slangPageHtml, slangTitle, type SlangEntryCopy } from "../src/shared/slang-i18n";
+import { memeTrend, recentViews, slangArticleJsonLd, slangCopy, slangPageHtml, slangTitle, trendingIds, type SlangEntryCopy } from "../src/shared/slang-i18n";
 import { slangSyncFiles } from "../src/shared/slang-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
 import { applyHtmlSeo, pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
@@ -282,7 +282,10 @@ describe("slang: page HTML and SEO", () => {
     expect(pageCanonical("zh-CN", { slang: true, slangId: "neijuan" })).toBe("https://cv.cm/zh-cn/memes/neijuan/");
     const ld = slangArticleJsonLd("ko", "rizz") as Record<string, unknown>;
     expect(ld["@type"]).toBe("Article");
-    expect(ld.datePublished).toBe(slangPublished("334424044"));
+    expect(ld.datePublished).toBe("2026-11-10");
+    expect(ld.datePublished).toBe(slangPublished("rizz"));
+    // Meme entries went live with the channel, after the first batch.
+    expect((slangArticleJsonLd("ko", "pepe") as Record<string, unknown>).datePublished).toBe("2026-11-13");
     expect(ld.inLanguage).toBe("ko");
     expect(ld.headline).toBe(slangCopy("ko", "rizz").h1);
     expect(ld.about).toMatchObject({ "@type": "DefinedTerm", name: slangCopy("ko", "rizz").name, inDefinedTermSet: { "@id": "https://cv.cm/ko/memes/#terms" } });
@@ -295,6 +298,18 @@ describe("slang: page HTML and SEO", () => {
     const html = applyHtmlSeo(SHELL, "id", { slang: true, slangId: "yyds" });
     expect(html).toContain('<div id="app"><nav class="device-crumb"');
     expect(html).toContain('<section class="kb-answer"');
+  });
+
+  it("never shows coin data in zh-CN, and ranks trending memes by growth", () => {
+    for (const id of SLANG_ENTRIES) {
+      const html = slangPageHtml("zh-CN", id);
+      expect(html, id).not.toContain("meme-coin");
+      expect(html, id).not.toContain("CoinMarketCap");
+    }
+    expect(slangPageHtml("zh-CN", null)).not.toContain("meme-coins");
+    const trending = trendingIds("en", 10);
+    expect(trending.length).toBeLessThanOrEqual(10);
+    for (const id of trending) expect(recentViews(memeTrend("en", id)!), id).toBeGreaterThanOrEqual(500);
   });
 
   it("has the nav label in every core pack", () => {

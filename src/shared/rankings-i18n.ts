@@ -1,6 +1,7 @@
 import { escapeHtml } from "./device-i18n";
 import { fill, type DatasetTable } from "./datasets-i18n";
 import type { Locale } from "./locale";
+import { compact, numberFormat, plain, signed, usd } from "./number-format";
 import { datasetMessages, messages, type DatasetMessages } from "./messages";
 import { appHref, rankingHref } from "./path";
 import {
@@ -54,13 +55,6 @@ export function rankingName(locale: Locale, id: RankingId): { name: string; blur
   return messages(locale).ui.ranking[id];
 }
 
-function compact(locale: Locale, value: number): string {
-  return numberFormat(locale, { notation: "compact", maximumFractionDigits: 1 }).format(value);
-}
-
-function plain(locale: Locale, value: number, digits = 0): string {
-  return numberFormat(locale, { minimumFractionDigits: digits, maximumFractionDigits: digits }).format(value);
-}
 
 /** "2026-10" as "October 2026" (or the locale's own form); a full date likewise. */
 export function rankingDate(locale: Locale, asOf: string): string {
@@ -93,31 +87,9 @@ function percent(locale: Locale, value: number): string {
   return `${plain(locale, value, 1)}%`;
 }
 
-/** Intl objects are slow to build: one per locale and options, kept for the page's life. */
-const formatters = new Map<string, Intl.NumberFormat>();
-function numberFormat(locale: Locale, options: Intl.NumberFormatOptions): Intl.NumberFormat {
-  const key = `${locale}|${JSON.stringify(options)}`;
-  let format = formatters.get(key);
-  if (!format) {
-    format = new Intl.NumberFormat(locale, options);
-    formatters.set(key, format);
-  }
-  return format;
-}
-
-function usd(locale: Locale, value: number, compactForm = false): string {
-  return numberFormat(locale, { style: "currency", currency: "USD", notation: compactForm ? "compact" : "standard", maximumFractionDigits: compactForm ? 2 : value >= 1 ? 2 : 8 }).format(value);
-}
-
 /** A value that may be missing (a coin too new for a 7-day figure). */
 function maybe(value: number | null, shown: (v: number) => string): { text: string; sort: number } {
   return value === null ? { text: NO_VALUE, sort: NOT_LISTED } : { text: shown(value), sort: value };
-}
-
-function signed(locale: Locale, value: number): string {
-  const rounded = Math.round(value * 10) / 10;
-  const sign = rounded > 0 ? "+" : rounded < 0 ? "−" : "";
-  return `${sign}${plain(locale, Math.abs(rounded), 1)}%`;
 }
 
 const currencyNames = new Map<string, Intl.DisplayNames>();

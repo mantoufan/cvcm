@@ -25,9 +25,11 @@ export type RefMessages = typeof import("../locales/ref/en.json") & {
   photos: Partial<Record<RefId, RefPhoto[]>>;
 };
 
-/** Slang hub copy plus every entry's name and blurb (`list`), from `npm run slang:sync`. */
+/** Slang hub copy plus every entry's name and blurb (`list`) and the meme data snapshot, from `npm run slang:sync`. */
 export type SlangMessages = typeof import("../locales/slang/en.json") & {
   list: Record<SlangId, { name: string; blurb: string }>;
+  /** Daily snapshot from scripts/fetch-meme.mjs (trends and coins). */
+  memes: import("./slang-i18n").MemeData;
 };
 
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */
