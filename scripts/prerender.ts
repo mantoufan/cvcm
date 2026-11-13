@@ -59,7 +59,18 @@ let written = 0;
 const failed: string[] = [];
 const started = Date.now();
 await whenRendered();
-for (const page of sitemapPages()) {
+// Rendering leaks memory page by page (about 1 MB each, in happy-dom), so prerender.mjs runs this file in several
+// processes. PRERENDER_SHARD="i/n" takes every n-th page starting at i: spreading each section across the processes
+// keeps them far faster than giving each one a run of neighbouring pages. Each process writes its counts to
+// PRERENDER_REPORT for the parent to add up; PRERENDER_COUNT_ONLY just reports the page count. Without these, one
+// process renders every page and logs its own summary.
+const all = sitemapPages();
+const shardSpec = process.env.PRERENDER_SHARD ?? "0/1";
+const [shard, shards] = shardSpec.split("/").map((part) => (/^\d+$/.test(part) ? Number(part) : NaN));
+if (!(shards >= 1 && shard >= 0 && shard < shards)) throw new Error(`prerender: PRERENDER_SHARD=${shardSpec} is not "i/n" with 0 <= i < n`);
+const pages = process.env.PRERENDER_COUNT_ONLY ? [] : all.filter((_, i) => i % shards === shard);
+const report = process.env.PRERENDER_REPORT;
+for (const page of pages) {
   const path = new URL(pageUrl(page)).pathname;
   pageErrors = 0;
   history.replaceState(null, "", path);
@@ -112,10 +123,14 @@ for (const page of sitemapPages()) {
 app.replaceChildren();
 render();
 console.error = consoleError;
-console.log(`prerender: ${written} pages in ${((Date.now() - started) / 1000).toFixed(1)}s, ${failed.length} skipped`);
-if (failed.length) {
-  console.log(`prerender: skipped (the Worker serves its text copy): ${failed.slice(0, 20).join(" ")}${failed.length > 20 ? " …" : ""}`);
-  console.log(`prerender: first errors:\n  ${[...new Set(errors)].slice(0, 8).join("\n  ")}`);
+if (report) {
+  writeFileSync(report, JSON.stringify({ total: all.length, written, failed, errors: [...new Set(errors)].slice(0, 8) }));
+} else {
+  console.log(`prerender: ${written} pages in ${((Date.now() - started) / 1000).toFixed(1)}s, ${failed.length} skipped`);
+  if (failed.length) {
+    console.log(`prerender: skipped (the Worker serves its text copy): ${failed.slice(0, 20).join(" ")}${failed.length > 20 ? " …" : ""}`);
+    console.log(`prerender: first errors:\n  ${[...new Set(errors)].slice(0, 8).join("\n  ")}`);
+  }
 }
 await win.happyDOM.abort();
 process.exit(0);
