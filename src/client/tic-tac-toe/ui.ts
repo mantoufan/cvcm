@@ -18,6 +18,7 @@ export function mountTicTacToe(host: HTMLElement): void {
   let level: Level = "hard";
   let human: Mark = "X";
   let thinking = 0;
+  let pendingLevel: Level | null = null;
   const score = { X: 0, O: 0, draw: 0 };
 
   const select = <T extends string>(field: string, values: readonly T[], value: T, label: (v: T) => string, onChange: (v: T) => void) => {
@@ -32,7 +33,11 @@ export function mountTicTacToe(host: HTMLElement): void {
     score.draw = 0;
   };
   const modeSel = select("mode", MODES, mode, (m) => t(`ticTacToe.m_${m}`), (m) => { mode = m; clearScore(); sync(); reset(); });
-  const levelSel = select("level", LEVELS, level, (l) => t(`ticTacToe.l_${l}`), (l) => { level = l; clearScore(); paint(); });
+  const levelSel = select("level", LEVELS, level, (l) => t(`ticTacToe.l_${l}`), (l) => {
+    // A new level starts with the next game (or now, on an empty or finished board), with a fresh tally.
+    pendingLevel = l;
+    if (board.every((c) => !c) || outcome(board)) reset();
+  });
   const sideSel = select("side", ["X", "O"] as const, human, (s) => t(s === "X" ? "ticTacToe.playX" : "ticTacToe.playO"), (s) => { human = s; clearScore(); reset(); });
   const levelField = h("label", { class: "field" }, h("span", null, t("ticTacToe.level")), levelSel);
   const sideField = h("label", { class: "field" }, h("span", null, t("ticTacToe.side")), sideSel);
@@ -118,6 +123,9 @@ export function mountTicTacToe(host: HTMLElement): void {
   const reset = () => {
     if (thinking) window.clearTimeout(thinking);
     thinking = 0;
+    if (pendingLevel && pendingLevel !== level) clearScore();
+    if (pendingLevel) level = pendingLevel;
+    pendingLevel = null;
     board = new Array<Cell>(9).fill("");
     turn = "X";
     paint();

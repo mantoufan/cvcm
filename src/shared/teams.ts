@@ -15,6 +15,7 @@ export function parseNames(text: string): string[] {
   return parts.map((s) => s.trim()).filter(Boolean);
 }
 
+/** Fisher–Yates from the end. Sudoku puzzle numbers and colour plates depend on this exact order of draws. */
 export function shuffle<T>(items: readonly T[], below: (n: number) => number = randomBelow): T[] {
   const out = items.slice();
   for (let i = out.length - 1; i > 0; i--) {

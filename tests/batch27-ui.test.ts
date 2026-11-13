@@ -183,6 +183,32 @@ describe("sudoku ui", () => {
     expect(q("[data-out=time]").textContent).toBe("0:03");
   });
 
+  it("asks once before New puzzle discards a game in progress", () => {
+    mountSudoku(host);
+    const p = generate(2027, "medium");
+    const empty = p.clues.findIndex((d) => !d);
+    q<HTMLButtonElement>(`[data-cell="${empty}"]`).click();
+    q<HTMLButtonElement>(`[data-digit="${p.solution[empty]}"]`).click();
+    q<HTMLButtonElement>("[data-action=new]").click();
+    expect(q("[data-action=new]").textContent).toBe("Discard this game? Tap again");
+    expect(q("[data-out=number]").textContent).toBe("Puzzle #2027");
+    // Any other action calls it off.
+    q<HTMLButtonElement>('[data-cell="0"]').click();
+    expect(q("[data-action=new]").textContent).toBe("New puzzle");
+    q<HTMLButtonElement>("[data-action=new]").click();
+    q<HTMLButtonElement>("[data-action=new]").click();
+    expect(q("[data-out=number]").textContent).not.toBe("Puzzle #2027");
+  });
+
+  it("restores a save from its own clue line", () => {
+    const p = generate(2027, "medium");
+    const cells = p.clues.slice();
+    window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 5, level: "hard", clues: toLine(p.clues), cells, notes: new Array(81).fill(0), elapsed: 0, hints: 0 }));
+    mountSudoku(host);
+    expect(q("[data-out=number]").textContent).toBe("Puzzle #5");
+    expect(q('[data-cell="0"]').textContent).toBe(p.clues[0] ? String(p.clues[0]) : "");
+  });
+
   it("starts a new puzzle of the chosen level", () => {
     mountSudoku(host);
     set("[data-field=level]", "easy", "change");

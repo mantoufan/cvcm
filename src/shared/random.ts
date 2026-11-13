@@ -27,7 +27,11 @@ export function randomBelow(n: number, rand: (buf: Uint32Array) => Uint32Array =
   return buf[0]! % n;
 }
 
-/** mulberry32: a small seeded generator, so the same seed gives the same sudoku or colour plate everywhere. */
+/**
+ * mulberry32: a small seeded generator, so the same seed gives the same sudoku, colour plate or watermark layout
+ * everywhere. Never change its sequence: invisible watermarks already in images decode with it (blind.ts), and
+ * sudoku puzzle numbers name its output.
+ */
 export function seeded(seed: number): () => number {
   let a = seed >>> 0;
   return () => {

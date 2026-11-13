@@ -7,6 +7,7 @@
  * brightness, the same spread for figure and background, so the number cannot be read from lightness alone.
  * Cone responses use the Viénot, Brettel & Mollon (1999) matrix from linear sRGB.
  */
+import { linear, rgbToHex } from "./color";
 import { seeded } from "./random";
 import { shuffle } from "./teams";
 
@@ -57,17 +58,13 @@ function invert3(m: readonly (readonly number[])[]): number[][] {
 const LMS_TO_RGB = invert3(RGB_TO_LMS);
 const mulv = (m: readonly (readonly number[])[], v: readonly number[]) => m.map((row) => row[0]! * v[0]! + row[1]! * v[1]! + row[2]! * v[2]!);
 
-const toLinear = (c: number) => {
-  const v = c / 255;
-  return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
-};
 const toSrgb = (v: number) => {
   const c = v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055;
   return Math.round(Math.min(1, Math.max(0, c)) * 255);
 };
 
 export function rgbToLms(rgb: readonly [number, number, number]): number[] {
-  return mulv(RGB_TO_LMS, rgb.map(toLinear));
+  return mulv(RGB_TO_LMS, rgb.map(linear));
 }
 
 /** LMS back to sRGB; null when it falls outside the screen's gamut. */
@@ -77,7 +74,6 @@ export function lmsToRgb(lms: readonly number[]): [number, number, number] | nul
   return lin.map(toSrgb) as [number, number, number];
 }
 
-const hex = (rgb: readonly number[]) => `#${rgb.map((v) => v.toString(16).padStart(2, "0")).join("")}`;
 
 const CONE: Record<PlateKind, number> = { protan: 0, deutan: 1, tritan: 2 };
 
@@ -93,7 +89,8 @@ export function plateColours(kind: PlateKind, strength: number, sign: 1 | -1): {
       const fig = bg.slice();
       fig[CONE[kind]] = bg[CONE[kind]]! * (1 + s * k);
       // Room for the brightness spread too.
-      if (lmsToRgb(fig.map((v) => v * BRIGHT[1])) && lmsToRgb(fig.map((v) => v * BRIGHT[0])) && lmsToRgb(bg.map((v) => v * BRIGHT[1]))) return { bg, fig };
+      // Brightest dots are the gamut limit (darker ones scale toward black, inside it).
+      if (lmsToRgb(fig.map((v) => v * BRIGHT[1])) && lmsToRgb(bg.map((v) => v * BRIGHT[1]))) return { bg, fig };
     }
   }
   return { bg, fig: bg.slice() };
@@ -201,7 +198,7 @@ export function makePlate(kind: PlateKind | "demo", level: number, number: numbe
     const k = BRIGHT[0] + rand() * (BRIGHT[1] - BRIGHT[0]);
     const base = isFig ? fig : bg;
     const rgb = lmsToRgb(base.map((v) => v * k)) ?? lmsToRgb(base)!;
-    return { ...d, fill: hex(rgb) };
+    return { ...d, fill: rgbToHex({ r: rgb[0], g: rgb[1], b: rgb[2] }) };
   });
   return { kind, level, number, dots };
 }

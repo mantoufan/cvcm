@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { t } from "../i18n";
 import { randomBelow } from "../../shared/random";
 import { shortClock } from "../../shared/subtitles";
-import { LEVELS, MAX_SEED, PEERS, bitCount, boxOf, candidates, colOf, conflicts, generate, rowOf, toLine, type Level, type Puzzle } from "../../shared/sudoku";
+import { LEVELS, MAX_SEED, PEERS, bitCount, boxOf, candidates, colOf, conflicts, generate, rowOf, solve, toLine, type Level, type Puzzle } from "../../shared/sudoku";
 
 const STORE_KEY = "cvcm.sudoku.v1";
 /** The puzzle a first visit (and the prerendered page) starts on, so the page is the same before and after mount. */
@@ -38,10 +38,17 @@ function readSaved(): Saved | null {
 export function mountSudoku(host: HTMLElement): void {
   unmountSudoku();
   // A saved game is generated once; the start puzzle only when there is none.
+  // A save carries its own clues, so one solver pass restores it (no generator run, and a later generator change
+  // cannot swap the puzzle under the player's digits); a save whose clues do not have one solution is dropped.
   let saved = readSaved();
-  const savedPuzzle = saved ? generate(saved.seed, saved.level) : null;
-  if (saved && savedPuzzle && toLine(savedPuzzle.clues) !== saved.clues) saved = null;
-  let puzzle: Puzzle = saved && savedPuzzle ? savedPuzzle : generate(START.seed, START.level);
+  let savedPuzzle: Puzzle | null = null;
+  if (saved) {
+    const clues = [...saved.clues].map(Number);
+    const solution = solve(clues);
+    if (solution) savedPuzzle = { seed: saved.seed, level: saved.level, clues, solution };
+    else saved = null;
+  }
+  let puzzle: Puzzle = savedPuzzle ?? generate(START.seed, START.level);
   let cells: number[] = puzzle.clues.slice();
   let notes: number[] = new Array<number>(81).fill(0);
   let undo: Snapshot[] = [];
@@ -93,6 +100,7 @@ export function mountSudoku(host: HTMLElement): void {
       h("span", null, String(k + 1)),
       h("small", { "data-left": k + 1 }),
     ));
+  const newBtn = h("button", { type: "button", class: "btn", "data-action": "new", onClick: () => askNew() }, t("sudoku.newGame"));
   const notesBtn = h("button", { type: "button", class: "btn ghost", "data-action": "notes", "aria-pressed": "false", onClick: () => toggleNotes() }, t("sudoku.notes"));
   const mistakesBox = h("input", { type: "checkbox", "data-field": "mistakes", onChange: () => { showMistakes = mistakesBox.checked; paint(); } });
   let copyBtn: HTMLButtonElement | null = null;
@@ -226,7 +234,25 @@ export function mountSudoku(host: HTMLElement): void {
     paint();
   };
 
+  /** New puzzle with a game in progress asks once (the button says so) before discarding it. */
+  let confirmNew = false;
+  const askNew = () => {
+    const started = !solved && (cells.some((d, i) => d !== puzzle.clues[i]) || notes.some(Boolean));
+    if (started && !confirmNew) {
+      confirmNew = true;
+      newBtn.textContent = t("sudoku.newConfirm");
+      return;
+    }
+    newGame();
+  };
+  const disarmNew = () => {
+    if (!confirmNew) return;
+    confirmNew = false;
+    newBtn.textContent = t("sudoku.newGame");
+  };
+
   function newGame() {
+    disarmNew();
     const level = levelSel.value as Level;
     // The clock waits for the first move, as on a first visit.
     load(generate(randomBelow(MAX_SEED) + 1, level));
@@ -269,6 +295,7 @@ export function mountSudoku(host: HTMLElement): void {
   };
 
   const paint = () => {
+    disarmNew();
     numberEl.textContent = t("sudoku.puzzle", { n: puzzle.seed });
     const clash = conflicts(cells);
     const sel = selected;
@@ -323,7 +350,8 @@ export function mountSudoku(host: HTMLElement): void {
   const onKey = (e: KeyboardEvent) => {
     if (!(e.target instanceof Node) || !board.contains(e.target)) return;
     if (e.metaKey || e.ctrlKey || e.altKey) {
-      if ((e.metaKey || e.ctrlKey) && !e.altKey && e.key.toLowerCase() === "z") {
+      // Ctrl/Cmd+Z undoes; with Shift it is redo elsewhere, so it does nothing here.
+      if ((e.metaKey || e.ctrlKey) && !e.altKey && !e.shiftKey && e.key.toLowerCase() === "z") {
         e.preventDefault();
         back();
       }
@@ -383,7 +411,7 @@ export function mountSudoku(host: HTMLElement): void {
         h("label", { class: "check" }, mistakesBox, h("span", null, t("sudoku.showMistakes"))),
         h("label", { class: "field" }, h("span", null, t("sudoku.level")), levelSel),
         h("div", { class: "stage-actions" },
-          h("button", { type: "button", class: "btn", "data-action": "new", onClick: () => newGame() }, t("sudoku.newGame")),
+          newBtn,
           h("button", { type: "button", class: "btn ghost", "data-action": "restart", onClick: () => restart() }, t("sudoku.restart")),
           copyBtn = h("button", { type: "button", class: "btn ghost", "data-action": "copy", onClick: () => void copyWithFlash(copyBtn, copyLine(), { done: t("sudoku.copied"), failed: t("sudoku.copyFailed") }) }, t("sudoku.copy")),
         ),
