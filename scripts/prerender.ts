@@ -59,7 +59,11 @@ let written = 0;
 const failed: string[] = [];
 const started = Date.now();
 await whenRendered();
-for (const page of sitemapPages()) {
+// `PRERENDER_SHARD=i/n` renders every n-th page from the i-th: each page leaks about 1 MB of happy-dom state,
+// so prerender.mjs runs the pages in several processes instead of one that outgrows its heap.
+const [shard, shards] = (process.env.PRERENDER_SHARD ?? "0/1").split("/").map(Number);
+for (const [index, page] of sitemapPages().entries()) {
+  if (index % shards !== shard) continue;
   const path = new URL(pageUrl(page)).pathname;
   pageErrors = 0;
   history.replaceState(null, "", path);
@@ -112,7 +116,7 @@ for (const page of sitemapPages()) {
 app.replaceChildren();
 render();
 console.error = consoleError;
-console.log(`prerender: ${written} pages in ${((Date.now() - started) / 1000).toFixed(1)}s, ${failed.length} skipped`);
+console.log(`prerender ${shard + 1}/${shards}: ${written} pages in ${((Date.now() - started) / 1000).toFixed(1)}s, ${failed.length} skipped`);
 if (failed.length) {
   console.log(`prerender: skipped (the Worker serves its text copy): ${failed.slice(0, 20).join(" ")}${failed.length > 20 ? " …" : ""}`);
   console.log(`prerender: first errors:\n  ${[...new Set(errors)].slice(0, 8).join("\n  ")}`);
