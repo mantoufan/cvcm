@@ -174,10 +174,10 @@ describe("test page UI", () => {
     expect(result.querySelector('a[href="/en/tests/depression/"]')).toBeNull();
   });
 
-  it("suggests other fan quizzes after the Hogwarts quiz", () => {
-    const main = mount("hogwarts");
+  it("suggests other fan quizzes after a fan quiz in a small group", () => {
+    const main = mount("pokemon");
     const more = [...main.querySelectorAll<HTMLAnchorElement>('a[href^="/en/tests/"]')].map((a) => a.getAttribute("href"));
-    expect(more).toContain("/en/tests/pokemon/");
+    expect(more).toContain("/en/tests/naruto/");
     expect(more).not.toContain("/en/tests/mbti/");
   });
 
@@ -193,10 +193,11 @@ describe("test page UI", () => {
     }
   });
 
-  it("asks about a set period on the ADHD, burnout and stress tests, and the usual self elsewhere", () => {
+  it("asks about a set period on the ADHD, burnout, stress and OCD tests, and the usual self elsewhere", () => {
     expect(mount("adhd").querySelector(".quiz-hint")?.textContent).toContain("last 6 months");
     expect(mount("burnout").querySelector(".quiz-hint")?.textContent).toContain("last few weeks");
     expect(mount("stress").querySelector(".quiz-hint")?.textContent).toContain("past month");
+    expect(mount("ocd").querySelector(".quiz-hint")?.textContent).toContain("past month");
     expect(mount("disc").querySelector(".quiz-hint")?.textContent).toContain("as you usually are");
   });
 

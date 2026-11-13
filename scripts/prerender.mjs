@@ -1,9 +1,10 @@
 // Bundles scripts/prerender.ts (the client plus happy-dom) for Node, then runs it.
 // Bundled first because happy-dom's globals break a live transformer such as vite-node.
 import * as esbuild from "esbuild";
+import { spawnSync } from "node:child_process";
 import { rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { fileURLToPath } from "node:url";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./game-names.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -39,8 +40,17 @@ await esbuild.build({
   }],
 });
 
+// One process per shard, one after another: memory grows with every page rendered in a process (see prerender.ts),
+// and a fresh process starts from zero. Each child gets this process's heap limit.
+const SHARDS = 4;
 try {
-  await import(pathToFileURL(outfile).href);
+  for (let shard = 0; shard < SHARDS; shard++) {
+    const run = spawnSync(process.execPath, [...process.execArgv, outfile], {
+      stdio: "inherit",
+      env: { ...process.env, PRERENDER_SHARD: `${shard}/${SHARDS}` },
+    });
+    if (run.status !== 0) throw new Error(`prerender shard ${shard + 1}/${SHARDS} failed (${run.signal ?? `exit ${run.status}`})`);
+  }
 } finally {
   rmSync(outfile, { force: true });
 }
