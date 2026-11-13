@@ -97,3 +97,19 @@ Names come from Google Ads Keyword Planner (average monthly searches, language p
 Bare terms (模拟器, エミュレーター, emulador) are larger but mostly mean Android and PlayStation emulators, so they are not the page name. "Flash player" searches lean toward Adobe's download, so the copy says the page is Ruffle and not from Adobe, and titles keep "SWF player" for the exact-intent query.
 
 Tutorial slugs, same source: `open-swf-file` (how to open swf files 720, open swf file 480, swf 檔案開啟 170, como abrir archivos swf 110; how to play flash games 480) and `use-emulator` (how to use emulator 480, エミュレーター 使い方 110; how to use rom emulator 10, how to play roms 70).
+
+## Open-source HTML5 games (2026-11-14)
+
+Google Ads Keyword Planner, `generateKeywordHistoricalMetrics` on MCC `7007031245`, average monthly searches. Markets: en US/UK/CA/AU/SG/PH; zh-TW TW+HK; zh-CN overseas (SG/MY/US/CA/AU); ja JP; ko KR; vi VN; id ID; es MX/ES/AR/CO/CL/PE.
+
+"open source games" is only 1,900 (free open source games 90, open source browser games 70), so each page is named after the game and the source is credited on the page, not in the title.
+
+| Slug | Upstream (licence) | Evidence |
+|---|---|---|
+| `2048` | gabrielecirulli/2048 (MIT) | en 2048 1,000,000; ja 201,000; es 135,000; zh-CN 823,000 (bare "2048", diaspora + other uses); zh-TW 74,000; ko 33,100 |
+| `dinosaur-game` | Chromium T-Rex runner via wayou/t-rex-runner (BSD-3-Clause) | en dinosaur game 1,500,000 (dino game merged), chrome dino 90,500; ja 恐竜ゲーム 301,000; ko 공룡 게임 201,000; id game dinosaurus 165,000; es juego del dinosaurio 165,000; zh-TW 恐龍遊戲 49,500 |
+| `mahjong` | ffalt/mah (MIT); tiles Wikimedia Commons Unicode set (public domain) | en mahjong 1,500,000, mahjong solitaire 246,000, mahjong online 201,000; ja 麻雀 1,000,000 / 上海 90,500; es 550,000; id 368,000; zh-TW 麻將 60,500 |
+| `chess` | chess.js (BSD-2-Clause) + Stockfish.js 19 lite (GPL-3.0); pieces Colin M.L. Burnett (BSD) | en chess 3,350,000, chess online 673,000, play chess against computer 60,500; es ajedrez 550,000; vi cờ vua 301,000; ja チェス 135,000; ko 체스 110,000; id catur 135,000 |
+| `chinese-chess` | XiangQi Wizard Light (GPL-2.0-or-later) | vi cờ tướng 301,000; zh-TW 象棋 33,100 + 暗棋 12,100; zh-CN 象棋 12,100 / 中国象棋 9,900; en chinese chess 33,100, xiangqi 14,800 |
+
+Not done (trademark or game IP): wordle, tetris, pac-man, geometry dash, flappy bird, cookie clicker, slope, crossy road, angry birds; "connect 4" and "othello" are brands (use four in a row / reversi). Next by volume, to be written for cv.cm (existing open-source clones are small or unlicensed): solitaire 16.6M (spider 1.5M, freecell 823k), minesweeper 5M, snake 9.1M, checkers 1M, gomoku (lihongxun945/gobang has no licence), nonogram 110k (HandsomeOne/Nonogram MIT), typing game (ja 201,000).

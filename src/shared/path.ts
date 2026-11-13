@@ -53,7 +53,7 @@ export const CATEGORIES = [
   { id: "design", tools: ["color", "hex-rgb", "contrast", "gradient"] },
   { id: "hardware", tools: ["mic-test", "decibel-meter", "webcam-test", "keyboard-test", "gamepad-test", "touch-test", "dead-pixel", "refresh-rate", "screen-resolution"] },
   { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter"] },
-  { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe"] },
+  { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
 ] as const;
 
@@ -214,6 +214,11 @@ export const TOOLS = [
   "color-blindness-test",
   "military-time",
   "height-calculator",
+  "2048",
+  "dinosaur-game",
+  "mahjong",
+  "chess",
+  "chinese-chess",
   "gold",
   "silver",
   "platinum",
@@ -229,6 +234,9 @@ export const TOOLS = [
   "ai-music-generator",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
+
+/** Browser games built on open-source code, listed on the /games/ hub too (each is a tool page). */
+export const OPEN_SOURCE_GAMES = ["2048", "dinosaur-game", "mahjong", "chess", "chinese-chess"] as const satisfies readonly ToolId[];
 
 /** Exact-match converter URLs. Same engine as `/convert/`, unique title and FAQ. */
 export const CONVERT_JOBS = [

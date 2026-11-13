@@ -76,7 +76,7 @@
     },
     {
       "id": "games",
-      "name": "Games: sudoku, tic-tac-toe, and retro players for your own ROM or SWF"
+      "name": "Games: sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
     },
     {
       "id": "assets",
@@ -1575,6 +1575,46 @@
       "description": "Play the computer or a friend.",
       "category": "games",
       "url": "https://cv.cm/en/tic-tac-toe/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "2048",
+      "name": "2048",
+      "description": "Slide and merge tiles to reach 2048.",
+      "category": "games",
+      "url": "https://cv.cm/en/2048/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "dinosaur-game",
+      "name": "Dinosaur game",
+      "description": "Chrome's T-Rex runner, online.",
+      "category": "games",
+      "url": "https://cv.cm/en/dinosaur-game/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "mahjong",
+      "name": "Mahjong solitaire",
+      "description": "Match pairs of free tiles.",
+      "category": "games",
+      "url": "https://cv.cm/en/mahjong/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "chess",
+      "name": "Chess",
+      "description": "Play the computer or a friend.",
+      "category": "games",
+      "url": "https://cv.cm/en/chess/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "chinese-chess",
+      "name": "Chinese chess",
+      "description": "Xiangqi against the computer.",
+      "category": "games",
+      "url": "https://cv.cm/en/chinese-chess/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
