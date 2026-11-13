@@ -60,7 +60,14 @@ export function mountHeight(host: HTMLElement): void {
     h("option", { value: "girl" }, t("heightCalculator.girl")),
   );
   const systemSel = h("select", { "data-field": "system", onChange: () => {
-    const cms = Object.fromEntries(HEIGHTS.map((id) => [id, readCm(id)])) as Record<HeightId, number | null | undefined>;
+    const cms = Object.fromEntries(HEIGHTS.map((id) => [id, readCm(id)])) as Record<HeightId, number | null>;
+    // A field that is not a number cannot be converted: stay in this unit and say which one, rather than wipe it.
+    const bad = HEIGHTS.find((id) => Number.isNaN(cms[id]));
+    if (bad) {
+      systemSel.value = system;
+      errorEl.textContent = t("heightCalculator.err_number", { field: t(`heightCalculator.${bad}`) });
+      return;
+    }
     system = systemSel.value as System;
     for (const id of HEIGHTS) writeCm(id, typeof cms[id] === "number" ? cms[id] : null);
     layout();

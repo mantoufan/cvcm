@@ -6,10 +6,10 @@ import { CHART_HOURS, colon24, military, parseTime, spoken, type ClockTime } fro
 let mounted: { cleanup: () => void } | null = null;
 
 /** The 12-hour form in the page's language ("2:30 PM", "下午2:30"), from a fixed UTC date so it never shifts. */
-export function twelveHour(loc: string, t: ClockTime): string {
+export function twelveHour(loc: string, time: ClockTime): string {
   const opts: Intl.DateTimeFormatOptions = { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "UTC" };
-  if (t.s !== null) opts.second = "2-digit";
-  return new Intl.DateTimeFormat(loc, opts).format(Date.UTC(2000, 0, 1, t.h, t.m, t.s ?? 0));
+  if (time.s !== null) opts.second = "2-digit";
+  return new Intl.DateTimeFormat(loc, opts).format(Date.UTC(2000, 0, 1, time.h, time.m, time.s ?? 0));
 }
 
 export function mountMilitaryTime(host: HTMLElement): void {

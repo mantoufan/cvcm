@@ -6,7 +6,7 @@ import { mountColorBlindnessTest, unmountColorBlindnessTest } from "../src/clien
 import { mountMilitaryTime, unmountMilitaryTime } from "../src/client/military-time/ui";
 import { mountHeight, unmountHeight } from "../src/client/height-calculator/ui";
 import { candidates, generate } from "../src/shared/sudoku";
-import { makeTest } from "../src/shared/color-vision";
+import { buildPlate, planTest } from "../src/shared/color-vision";
 
 let host: HTMLElement;
 
@@ -141,7 +141,7 @@ describe("sudoku ui", () => {
     const p = generate(2027, "medium");
     const empty = p.clues.findIndex((d) => !d);
     q<HTMLButtonElement>(`[data-cell="${empty}"]`).click();
-    q<HTMLButtonElement>('[data-digit="1"]').click();
+    q<HTMLButtonElement>(`[data-digit="${p.solution[empty]}"]`).click();
     set("[data-field=level]", "hard", "change");
     expect(q("[data-out=number]").textContent).toBe("Puzzle #2027");
     expect(q("[data-out=status]").textContent).toBe("Your game is kept. Tap New puzzle to start a Hard puzzle.");
@@ -260,8 +260,15 @@ describe("tic-tac-toe ui", () => {
 
 describe("colour blindness test ui", () => {
   it("shows the check plate first and walks through all 13", () => {
+    // randomBelow draws 0, so the plates after the check plate come from seed 2.
+    vi.spyOn(crypto, "getRandomValues").mockImplementation(<T extends ArrayBufferView | null>(buf: T) => {
+      if (buf) new Uint32Array((buf as unknown as Uint32Array).buffer).fill(0);
+      return buf;
+    });
     mountColorBlindnessTest(host);
-    const test = makeTest(1);
+    const first = planTest(1);
+    const test = [first[0]!, ...planTest(2).slice(1)].map(buildPlate);
+    expect(planTest(2).slice(1).map((p) => p.number)).not.toContain(first[0]!.number);
     expect(q("[data-out=progress]").textContent).toBe("Plate 1 of 13");
     expect(host.querySelectorAll(".cv-plate circle")).toHaveLength(test[0]!.dots.length);
     q<HTMLButtonElement>("[data-action=next]").click();
@@ -287,6 +294,18 @@ describe("colour blindness test ui", () => {
     mountColorBlindnessTest(host);
     for (let i = 0; i < 13; i++) q<HTMLButtonElement>("[data-action=none]").click();
     expect(q("[data-out=summary]").textContent).toContain("The first plate, which everyone should read, was missed.");
+  });
+});
+
+describe("height calculator units", () => {
+  it("keeps a typo when the units change and says which field it is", () => {
+    mountHeight(host);
+    set("[data-field=system]", "metric", "change");
+    set("[data-field=father-cm]", "17o");
+    set("[data-field=system]", "imperial", "change");
+    expect(q<HTMLSelectElement>("[data-field=system]").value).toBe("metric");
+    expect(q<HTMLInputElement>("[data-field=father-cm]").value).toBe("17o");
+    expect(q("[data-out=error]").textContent).toBe("Father's height must be a number.");
   });
 });
 

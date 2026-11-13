@@ -12,11 +12,11 @@ const PARTS: Record<Part, readonly string[]> = {
   am: ["上午", "早上", "早晨", "凌晨", "午前", "오전", "새벽", "sáng", "pagi"],
   pm: ["下午", "傍晚", "午後", "오후", "chiều", "sore"],
   /** Around midday: 11 is still morning, 12 is noon, 1–4 afternoon. */
-  noon: ["中午", "trưa", "siang"],
-  /** Evening: 12 is midnight, every other hour is PM (晚上5点 is 17:00). */
+  noon: ["中午", "trưa", "siang", "noon"],
+  /** Evening: 12 is midnight, 1–4 the small hours, 5–11 PM (晚上5点 is 17:00, 1 malam is 01:00). */
   evening: ["晚上", "tối", "malam"],
   /** Night: 12 is midnight, 1–5 the small hours, 6–11 PM (夜里2点 02:00, 夜9時 21:00, 밤 9시 21:00). */
-  night: ["夜里", "夜裡", "深夜", "夜晚", "夜", "밤", "đêm"],
+  night: ["夜里", "夜裡", "深夜", "夜晚", "夜", "밤", "đêm", "midnight"],
 };
 /** Latin and Vietnamese abbreviations, only after the time ("2 pm", "9:05 SA"). */
 const LATIN: Record<"am" | "pm", RegExp> = { am: /^(a\.?m\.?|a|s\.?a\.?)$/i, pm: /^(p\.?m\.?|p|c\.?h\.?)$/i };
@@ -56,7 +56,7 @@ function toHour24(h: number, part: Part): number {
     case "am": return h % 12;
     case "pm": return (h % 12) + 12;
     case "noon": return h === 11 ? 11 : (h % 12) + 12;
-    case "evening": return h === 12 || h === 0 ? 0 : h + 12;
+    case "evening": return h === 12 || h === 0 ? 0 : h < 5 ? h : h + 12;
     case "night": return h === 12 || h === 0 ? 0 : h < 6 ? h : h + 12;
   }
 }
@@ -67,8 +67,8 @@ function toHour24(h: number, part: Part): number {
  * Returns null when it is not a time.
  */
 export function parseTime(raw: string): ClockTime | null {
-  // Full-width digits and colon from a CJK input method count as ASCII.
-  let text = halfWidth(raw.trim())
+  // Full-width digits and colon from a CJK input method count as ASCII; "noon" and "midnight" alone are 12.
+  let text = halfWidth(raw.trim()).replace(/^(noon|midnight)$/i, "12 $1")
     // A trailing Z is Zulu (UTC), as the page itself writes it: "1430Z".
     .replace(/\s*(z|zulu)$/i, "")
     .replace(/\s*(hours?|hrs?|horas?|jam)\.?$/i, "")
@@ -78,6 +78,8 @@ export function parseTime(raw: string): ClockTime | null {
     // Hour words between the hour and the minutes are a colon ("2点30", "2시 30분", "14 giờ 30"); 半 is half past.
     .replace(/\s*(?:[时時시点點]|giờ)\s*[半반]/gi, ":30")
     .replace(/\s*(?:[时時시点點]|giờ)\s*(\d)/gi, ":$1")
+    // Minute words before seconds are a colon too ("14点30分15秒").
+    .replace(/\s*[分분]\s*(\d)/g, ":$1")
     .replace(/[分분秒초]/g, "")
     .replace(/\s*(?:[时時시点點]|giờ)(?=\s*\D*$)/gi, "")
     .trim();

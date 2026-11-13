@@ -53,7 +53,7 @@ export function mountSudoku(host: HTMLElement): void {
   const levelSel = h("select", { "data-field": "level", onChange: () => {
     const started = cells.some((d, i) => d !== puzzle.clues[i]) || notes.some(Boolean);
     if (started && !solved) {
-      statusEl.textContent = t("sudoku.levelPending", { level: t(`sudoku.l_${levelSel.value}`) });
+      paint();
       return;
     }
     newGame();
@@ -302,13 +302,17 @@ export function mountSudoku(host: HTMLElement): void {
     notesBtn.classList.toggle("on", notesMode);
     notesBtn.textContent = notesMode ? t("sudoku.notesOn") : t("sudoku.notes");
     const filled = cells.filter(Boolean).length;
+    // A level picked mid-game waits for New puzzle; say so until then, so the menu and the board never disagree silently.
+    const pending = !solved && levelSel.value !== puzzle.level;
     statusEl.textContent = solved
       ? hints
         ? t("sudoku.solvedHints", { time: clock(elapsed), hints })
         : t("sudoku.solved", { time: clock(elapsed) })
       : clash.size
         ? t("sudoku.clash")
-        : t("sudoku.progress", { filled, total: 81 });
+        : pending
+          ? t("sudoku.levelPending", { level: t(`sudoku.l_${levelSel.value}`) })
+          : t("sudoku.progress", { filled, total: 81 });
     statusEl.classList.toggle("ok", solved);
     board.classList.toggle("is-solved", solved);
   };
@@ -388,10 +392,7 @@ export function mountSudoku(host: HTMLElement): void {
   if (saved) load(puzzle, saved);
   else paint();
   board.addEventListener("keydown", onKey);
-  // The clock starts with the first touch of the board, not when the page opens.
-  const firstTouch = () => startTimer();
-  board.addEventListener("pointerdown", firstTouch);
-  board.addEventListener("keydown", firstTouch);
+  // The clock starts with the first move (snapshot()), not when the page opens or focus moves.
   const onHide = () => {
     if (document.hidden) save();
   };
