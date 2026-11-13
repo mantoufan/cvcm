@@ -1,49 +1,76 @@
 {
   "crumbHome": "Home",
   "ui": {
-    "kicker": "Slang dictionary",
+    "kicker": "Meme encyclopedia",
     "answer": "In short",
     "also": "Also written",
     "toc": "On this page",
     "faq": "FAQ",
-    "related": "Related slang",
-    "all": "All slang",
-    "count": "{n} words",
+    "related": "Related memes",
+    "all": "All memes",
+    "count": "{n} entries",
     "sources": "Sources",
     "updated": "Updated {date}",
     "originZh": "Chinese internet slang",
     "originEn": "English internet slang",
-    "originYue": "Cantonese song lyric"
+    "originYue": "Cantonese song lyric",
+    "originWeb": "Global internet meme",
+    "born": "First seen {date}",
+    "trend": "How popular is it now?",
+    "trendNote": "Weekly views of its Wikipedia article, last {n} weeks (to {date}).",
+    "trendUp": "Rising",
+    "trendFlat": "Steady",
+    "trendDown": "Cooling off",
+    "trending": "Popularity now",
+    "trendingNote": "Ranked by how fast Wikipedia article views grew over the last four weeks; memes that are cooling off are left out. Updated weekly.",
+    "coin": "A crypto token named after this meme",
+    "coinNote": "Anyone can create a token with a meme's name. This one has no official link to the meme or its creator unless stated, and its price can swing wildly or go to zero. Shown for information only, not investment advice.",
+    "coinPrice": "Price",
+    "coinCap": "Market cap",
+    "coinD1": "24h",
+    "coinD7": "7 days",
+    "coinAdded": "Listed",
+    "coinSource": "Data: CoinMarketCap, {time} UTC. Only tokens worth over $10M and listed for 30+ days are shown.",
+    "coins": "Memes with a crypto token",
+    "coinMeme": "Meme",
+    "coinToken": "Token",
+    "maker": "Make your own meme with the free meme generator",
+    "recent": "views in the last 4 weeks"
   },
   "hub": {
-    "title": "Slang Dictionary: Chinese and English Internet Slang Meanings",
-    "description": "What does yyds, neijuan, emo, PUA, rizz or 6 7 mean? A slang dictionary of {n} Chinese and English internet words, each with its meaning, origin, real examples and similar words.",
-    "h1": "Internet slang dictionary",
-    "lede": "Short, sourced answers to \"what does it mean?\" for the Chinese and English internet words people search most: number codes, pinyin abbreviations, work and life buzzwords, moods, dating talk and English slang.",
+    "title": "Meme Encyclopedia: Meanings, Origins and Trends of Viral Memes",
+    "description": "What is Tung Tung Tung Sahur, Chill Guy, Pepe, aura or 6 7? {n} viral memes and internet slang explained: what they mean, where and when they started, and how popular they are now.",
+    "h1": "Memes: meanings, origins and trends",
+    "lede": "Viral memes and internet slang, one page each: what it is, where and when it started, how people use it, and whether it is still rising. Italian brainrot, classic memes, viral animals, Gen Alpha slang and Chinese internet memes.",
     "groups": {
       "numbers": "Number slang",
       "abbreviations": "Pinyin abbreviations",
       "society": "Work and life",
       "mood": "Moods and personality",
       "love": "Love and relationships",
-      "english": "English internet slang"
+      "english": "English internet slang",
+      "brainrot": "Italian brainrot and AI characters",
+      "classic": "Classic memes",
+      "viral": "Viral animals and characters",
+      "gen-alpha": "Gen Z and Gen Alpha slang",
+      "zh-memes": "Chinese internet memes"
     },
     "about": [
-      "Every entry answers the question first, then explains where the word came from, shows how people use it in chats and comments, and compares it with words that mean something close.",
-      "Words were picked from what people actually search for, and origins are checked against dictionaries, official word-of-the-year lists and other public sources. Slang moves fast, so each page shows when it was last updated."
+      "Every entry answers the question first, then gives a dated timeline of where the meme came from and how it spread, shows how people use it, and says where it stands now.",
+      "Memes are picked from what people actually search for, and facts are checked against Wikipedia, Know Your Meme, dictionaries and news reports. Popularity curves come from Wikipedia page views and refresh weekly."
     ],
     "faq": [
       {
-        "q": "What is internet slang?",
-        "a": "Words, abbreviations, numbers and memes that spread through chats, comments and short videos, such as yyds in Chinese or rizz in English. Many fade within a year; some, like 内卷 (neijuan), reach newspapers and dictionaries."
+        "q": "What is a meme?",
+        "a": "An image, video, sound, phrase or character that people copy, remix and pass on online, such as Pepe the Frog, Rickroll or Tung Tung Tung Sahur. The word was coined by Richard Dawkins in 1976 for any idea that spreads from person to person."
       },
       {
-        "q": "Why do Chinese netizens use numbers and letters?",
-        "a": "Numbers sound like words (520 sounds like \"I love you\" in Mandarin) and pinyin initials are fast to type (yyds is yong yuan de shen). They are quicker to write and feel like an in-group joke."
+        "q": "What is Italian brainrot?",
+        "a": "A 2025 wave of AI-generated absurd characters with fake-Italian names and text-to-speech voices, such as Tralalero Tralala and Tung Tung Tung Sahur, that spread on TikTok. Each has its own page here."
       },
       {
-        "q": "Is it OK to use these words at work?",
-        "a": "Most are casual. Playful ones like 666 or yyds are fine with friends, while words that judge people, such as 渣男 or simp, can offend. Each entry has a note on tone."
+        "q": "Why do some memes have crypto tokens?",
+        "a": "Anyone can create a token and name it after a famous meme, so most viral memes get one. They are not made by the meme's creator unless stated, and their prices are extremely volatile."
       }
     ]
   }

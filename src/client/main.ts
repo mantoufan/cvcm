@@ -85,7 +85,7 @@ let rankingPage: RankingId | "hub" | null = null;
 let kbPage: KbPage = null;
 /** A reference page: "hub" for /reference/, else the entry id. */
 let refPage: RefPage = null;
-/** A slang dictionary page: "hub" for /slang/, else the entry id. */
+/** A slang dictionary page: "hub" for /memes/, else the entry id. */
 let slangPage: SlangPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;

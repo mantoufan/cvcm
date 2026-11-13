@@ -1,49 +1,76 @@
 {
   "crumbHome": "Trang chủ",
   "ui": {
-    "kicker": "Từ điển tiếng lóng",
+    "kicker": "Từ điển meme",
     "answer": "Nói ngắn gọn",
     "also": "Còn viết là",
     "toc": "Trên trang này",
     "faq": "Câu hỏi thường gặp",
-    "related": "Tiếng lóng liên quan",
-    "all": "Tất cả tiếng lóng",
-    "count": "{n} từ",
+    "related": "Meme liên quan",
+    "all": "Tất cả meme",
+    "count": "{n} mục",
     "sources": "Nguồn tham khảo",
     "updated": "Cập nhật {date}",
     "originZh": "Tiếng lóng mạng Trung Quốc",
     "originEn": "Tiếng lóng mạng tiếng Anh",
-    "originYue": "Lời bài hát tiếng Quảng Đông"
+    "originYue": "Lời bài hát tiếng Quảng Đông",
+    "originWeb": "Meme internet toàn cầu",
+    "born": "Xuất hiện lần đầu {date}",
+    "trend": "Bây giờ còn hot không?",
+    "trendNote": "Lượt xem hằng tuần của bài Wikipedia, {n} tuần gần nhất (đến {date}).",
+    "trendUp": "Đang lên",
+    "trendFlat": "Ổn định",
+    "trendDown": "Đang hạ nhiệt",
+    "trending": "Độ hot hiện nay",
+    "trendingNote": "Xếp theo mức tăng lượt xem bài Wikipedia trong bốn tuần gần nhất; meme đang hạ nhiệt không được liệt kê. Cập nhật hằng tuần.",
+    "coin": "Token tiền mã hóa trùng tên meme này",
+    "coinNote": "Ai cũng có thể tạo token mang tên một meme. Trừ khi có ghi chú, token này không có liên hệ chính thức với meme hay tác giả, giá có thể biến động mạnh hoặc về 0. Chỉ để tham khảo, không phải lời khuyên đầu tư.",
+    "coinPrice": "Giá",
+    "coinCap": "Vốn hóa",
+    "coinD1": "24 giờ",
+    "coinD7": "7 ngày",
+    "coinAdded": "Niêm yết",
+    "coinSource": "Dữ liệu: CoinMarketCap, {time} UTC. Chỉ hiện token vốn hóa trên 10 triệu USD và niêm yết từ 30 ngày.",
+    "coins": "Meme có token trùng tên",
+    "coinMeme": "Meme",
+    "coinToken": "Token",
+    "maker": "Tự làm meme với công cụ tạo meme miễn phí",
+    "recent": "lượt xem trong 4 tuần qua"
   },
   "hub": {
-    "title": "Từ điển tiếng lóng: tiếng lóng mạng Trung Quốc và tiếng Anh là gì",
-    "description": "yyds, nội quyển (内卷), emo, PUA, rizz hay 6 7 là gì? Từ điển {n} tiếng lóng mạng tiếng Trung và tiếng Anh, mỗi từ có nghĩa, nguồn gốc, ví dụ thật và từ gần nghĩa.",
-    "h1": "Từ điển tiếng lóng mạng",
-    "lede": "Câu trả lời ngắn gọn, có nguồn cho câu hỏi \"X là gì?\" về những tiếng lóng mạng tiếng Trung và tiếng Anh được tìm nhiều nhất: mã số, viết tắt pinyin, từ hot về công việc và cuộc sống, tâm trạng, chuyện yêu đương và tiếng lóng tiếng Anh.",
+    "title": "Từ điển meme: ý nghĩa, nguồn gốc và xu hướng meme",
+    "description": "Tung Tung Tung Sahur, Chill Guy, Pepe, aura, 6 7 là gì? {n} meme và tiếng lóng mạng được giải thích: ý nghĩa, bắt đầu khi nào ở đâu, và hiện còn hot không.",
+    "h1": "Meme: ý nghĩa, nguồn gốc và xu hướng",
+    "lede": "Meme viral và tiếng lóng mạng, mỗi thứ một trang: nó là gì, bắt đầu khi nào ở đâu, dùng thế nào và có còn đang lên không. Italian brainrot, meme kinh điển, động vật nổi tiếng, tiếng lóng Gen Alpha và meme mạng Trung Quốc.",
     "groups": {
       "numbers": "Tiếng lóng bằng số",
       "abbreviations": "Viết tắt pinyin",
       "society": "Công việc và cuộc sống",
       "mood": "Tâm trạng và tính cách",
       "love": "Tình yêu và các mối quan hệ",
-      "english": "Tiếng lóng mạng tiếng Anh"
+      "english": "Tiếng lóng mạng tiếng Anh",
+      "brainrot": "Italian brainrot và nhân vật AI",
+      "classic": "Meme kinh điển",
+      "viral": "Động vật và nhân vật viral",
+      "gen-alpha": "Tiếng lóng Gen Z và Gen Alpha",
+      "zh-memes": "Meme mạng Trung Quốc"
     },
     "about": [
-      "Mỗi mục trả lời câu hỏi trước, rồi giải thích từ đó bắt nguồn từ đâu, cho thấy mọi người dùng nó thế nào trong chat và bình luận, và so sánh với những từ có nghĩa gần.",
-      "Các từ được chọn dựa trên những gì mọi người thật sự tìm kiếm, nguồn gốc được đối chiếu với từ điển, danh sách từ của năm chính thức và các nguồn công khai khác. Tiếng lóng thay đổi rất nhanh, nên mỗi trang đều ghi lần cập nhật gần nhất."
+      "Mỗi mục trả lời ngay câu hỏi, sau đó có dòng thời gian ghi ngày về nguồn gốc và cách lan truyền, ví dụ cách dùng và tình trạng hiện tại.",
+      "Meme được chọn theo lượng tìm kiếm thực tế; dữ kiện được đối chiếu với Wikipedia, Know Your Meme, từ điển và báo chí. Biểu đồ độ hot lấy từ lượt xem Wikipedia, cập nhật hằng tuần."
     ],
     "faq": [
       {
-        "q": "Tiếng lóng mạng là gì?",
-        "a": "Là những từ, chữ viết tắt, con số và meme lan truyền qua chat, bình luận và video ngắn, như yyds trong tiếng Trung hay rizz trong tiếng Anh. Nhiều từ phai nhạt trong vòng một năm; một số, như 内卷 (nội quyển), lên cả báo chí và từ điển."
+        "q": "Meme là gì?",
+        "a": "Hình ảnh, video, âm thanh, câu nói hay nhân vật được người dùng bắt chước, chế lại và lan truyền trên mạng, như Pepe the Frog, Rickroll hay Tung Tung Tung Sahur. Từ này do Richard Dawkins đặt ra năm 1976 để chỉ ý tưởng lan từ người sang người."
       },
       {
-        "q": "Vì sao cư dân mạng Trung Quốc dùng số và chữ cái?",
-        "a": "Con số đọc giống chữ (520 trong tiếng Phổ thông nghe như \"anh yêu em\") và chữ cái đầu pinyin gõ rất nhanh (yyds là yong yuan de shen). Chúng viết nhanh hơn và giống một câu đùa riêng trong nhóm."
+        "q": "Italian brainrot là gì?",
+        "a": "Làn sóng nhân vật kỳ quặc do AI tạo ra, tên giả tiếng Ý và giọng đọc máy, lan trên TikTok năm 2025, như Tralalero Tralala và Tung Tung Tung Sahur. Mỗi nhân vật có trang riêng ở đây."
       },
       {
-        "q": "Có nên dùng những từ này ở nơi làm việc không?",
-        "a": "Phần lớn là từ thân mật. Những từ vui như 666 hay yyds dùng với bạn bè thì ổn, còn những từ phán xét người khác như 渣男 hay simp có thể gây mất lòng. Mỗi mục đều có ghi chú về sắc thái."
+        "q": "Vì sao nhiều meme có token tiền mã hóa?",
+        "a": "Ai cũng có thể tạo token và đặt tên theo một meme nổi tiếng, nên hầu hết meme viral đều có token trùng tên. Trừ khi có ghi chú, chúng không do tác giả meme tạo ra và giá biến động cực mạnh."
       }
     ]
   }

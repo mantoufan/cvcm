@@ -9,7 +9,7 @@ import { SLANG_ENTRIES } from "./slang";
  * - `src/locales/slang/index/<locale>.json`: every entry's name and blurb, so hub lists and related links need no entry chunk
  * - `src/locales/slang/all.ts`: every entry in every locale, for the Worker, prerender and tests
  * - `src/locales/slang/loaders/<locale>.ts`: one lazy chunk per entry, for the client
- * - `src/locales/packs/slang-<locale>.ts`: the slang pack (hub copy + list), loaded only on slang pages
+ * - `src/locales/packs/slang-<locale>.ts`: the slang pack (hub copy + list + meme data), loaded only on slang pages
  */
 export function slangSyncFiles(read: (path: string) => string | null): { files: Record<string, string>; missing: string[] } {
   const files: Record<string, string> = {};
@@ -65,12 +65,19 @@ export function slangSyncFiles(read: (path: string) => string | null): { files: 
       "",
     ].join("\n");
     files[`src/locales/packs/slang-${locale}.ts`] = [
-      `${header} Slang hub copy, entry names and blurbs, loaded only on /slang/ pages.`,
+      `${header} Slang hub copy, entry names and blurbs, loaded only on /memes/ pages.`,
       `import hub from "../slang/${sourceLocale(locale, null)}.json";`,
       `import list from "../slang/index/${locale}.json";`,
+      // The daily snapshot rides in the slang pack, not the main bundle. zh-CN never shows coin data, so its pack does not
+      // even carry the quotes (see showsCoins).
+      'import trends from "../../shared/meme-trends.json";',
+      ...(locale === "zh-CN" ? [] : ['import coins from "../../shared/meme-coins.json";']),
       'import type { SlangMessages } from "../../shared/messages";',
+      'import type { MemeData } from "../../shared/slang-i18n";',
       "",
-      "export default { ...hub, list } satisfies SlangMessages;",
+      locale === "zh-CN"
+        ? "export default { ...hub, list, memes: { ...trends, coins: {}, coinsAsOf: null } as MemeData } satisfies SlangMessages;"
+        : "export default { ...hub, list, memes: { ...trends, ...coins } as MemeData } satisfies SlangMessages;",
       "",
     ].join("\n");
   }

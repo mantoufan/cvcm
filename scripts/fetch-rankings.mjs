@@ -789,9 +789,15 @@ rmSync(FAILURES_FILE, { force: true });
 let attempts = 0;
 let failures = 0;
 /** RANKINGS_ONLY=id,id refreshes just those tables (skipping their monthly wait) and keeps the rest as they are, for a new or fixed table. */
-const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter(Boolean);
+// "memes" belongs to scripts/fetch-meme.mjs (same workflow input), not to a table here.
+const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter((id) => id && id !== "memes");
 // Set but empty (an unfilled input) means every table, not none.
 const only = listed?.length ? listed : undefined;
+if (!listed?.length && process.env.RANKINGS_ONLY?.split(",").some((id) => id.trim() === "memes")) {
+  // Only "memes" was asked for: that is scripts/fetch-meme.mjs's job, so leave every table as it is.
+  console.log("RANKINGS_ONLY names no rankings table; nothing to refresh here.");
+  process.exit(0);
+}
 /** One source failing keeps its last good tables, so it cannot hold back the others. With no earlier data there is nothing to keep. */
 async function attempt(ids, fetchTables) {
   if (only && !ids.some((id) => only.includes(id))) {

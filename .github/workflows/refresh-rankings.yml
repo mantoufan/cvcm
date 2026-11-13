@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: "Refresh only these tables (comma-separated ids, e.g. tallest-mountains); empty = all"
+        description: "Refresh only these tables (comma-separated ids, e.g. tallest-mountains; memes = the meme trends and coins); empty = all"
         required: false
         default: ""
 
@@ -36,13 +36,20 @@ jobs:
           COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
           RANKINGS_FAILURES_FILE: ${{ runner.temp }}/rankings-failures.txt
           RANKINGS_ONLY: ${{ inputs.only }}
+      # Skips itself on a manual run whose `only` does not list "memes".
+      - name: Fetch meme trends and coins
+        run: node scripts/fetch-meme.mjs
+        env:
+          COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
+          RANKINGS_FAILURES_FILE: ${{ runner.temp }}/rankings-failures.txt
+          RANKINGS_ONLY: ${{ inputs.only }}
       - run: node scripts/write-sitemap.mjs
       # The same checks as the deploy, so data that would break it never reaches main.
       - run: npm test
       - run: npm run typecheck
       - name: Commit changed data and deploy
         run: |
-          git add src/shared/rankings-rows.json src/shared/rankings-geo src/shared/rankings-meta.json public/rankings public/sitemaps/rankings.xml
+          git add src/shared/meme-trends.json src/shared/meme-coins.json src/shared/rankings-rows.json src/shared/rankings-geo src/shared/rankings-meta.json public/rankings public/sitemaps/rankings.xml
           if git diff --cached --quiet; then
             echo "No new data."
             exit 0

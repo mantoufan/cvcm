@@ -1,49 +1,76 @@
 {
   "crumbHome": "Inicio",
   "ui": {
-    "kicker": "Diccionario de jerga",
+    "kicker": "Enciclopedia de memes",
     "answer": "En resumen",
     "also": "También se escribe",
     "toc": "En esta página",
     "faq": "Preguntas frecuentes",
-    "related": "Jerga relacionada",
-    "all": "Toda la jerga",
-    "count": "{n} palabras",
+    "related": "Memes relacionados",
+    "all": "Todos los memes",
+    "count": "{n} entradas",
     "sources": "Fuentes",
     "updated": "Actualizado el {date}",
     "originZh": "Jerga de internet china",
     "originEn": "Jerga de internet en inglés",
-    "originYue": "Letra de canción cantonesa"
+    "originYue": "Letra de canción cantonesa",
+    "originWeb": "Meme global de internet",
+    "born": "Primera aparición: {date}",
+    "trend": "¿Sigue de moda?",
+    "trendNote": "Visitas semanales de su artículo de Wikipedia, últimas {n} semanas (hasta el {date}).",
+    "trendUp": "En alza",
+    "trendFlat": "Estable",
+    "trendDown": "Perdiendo fuerza",
+    "trending": "Popularidad ahora",
+    "trendingNote": "Ordenados por cuánto crecieron las visitas a su artículo de Wikipedia en las últimas cuatro semanas; no se incluyen los que pierden fuerza. Se actualiza cada semana.",
+    "coin": "Un token cripto con el nombre de este meme",
+    "coinNote": "Cualquiera puede crear un token con el nombre de un meme. Salvo que se indique, este no tiene relación oficial con el meme ni con su autor, y su precio puede oscilar con violencia o llegar a cero. Solo informativo, no es asesoramiento de inversión.",
+    "coinPrice": "Precio",
+    "coinCap": "Capitalización",
+    "coinD1": "24 h",
+    "coinD7": "7 días",
+    "coinAdded": "Listado",
+    "coinSource": "Datos: CoinMarketCap, {time} UTC. Solo se muestran tokens de más de 10 M USD listados hace 30+ días.",
+    "coins": "Memes con token cripto",
+    "coinMeme": "Meme",
+    "coinToken": "Token",
+    "maker": "Crea tu propio meme con el generador de memes gratis",
+    "recent": "visitas en las últimas 4 semanas"
   },
   "hub": {
-    "title": "Diccionario de jerga de internet: slang chino e inglés y su significado",
-    "description": "¿Qué significa yyds, neijuan, emo, PUA, rizz o 6 7? Un diccionario de {n} palabras de internet en chino e inglés, cada una con su significado, origen, ejemplos reales y palabras parecidas.",
-    "h1": "Diccionario de jerga de internet",
-    "lede": "Respuestas breves y con fuentes a «¿qué significa?» para las palabras de internet en chino e inglés que más se buscan: códigos numéricos, abreviaturas en pinyin, trabajo y vida diaria, estados de ánimo, lenguaje del amor y slang en inglés.",
+    "title": "Enciclopedia de memes: significado, origen y tendencia",
+    "description": "¿Qué es Tung Tung Tung Sahur, Chill Guy, Pepe, aura o 6 7? {n} memes virales y jerga de internet explicados: qué significan, dónde y cuándo empezaron y qué tan populares son hoy.",
+    "h1": "Memes: significado, origen y tendencias",
+    "lede": "Memes virales y jerga de internet, una página cada uno: qué es, dónde y cuándo empezó, cómo se usa y si sigue en alza. Italian brainrot, memes clásicos, animales virales, jerga de la generación alfa y memes de internet chino.",
     "groups": {
       "numbers": "Jerga con números",
       "abbreviations": "Abreviaturas en pinyin",
       "society": "Trabajo y vida",
       "mood": "Estados de ánimo y personalidad",
       "love": "Amor y relaciones",
-      "english": "Jerga de internet en inglés"
+      "english": "Jerga de internet en inglés",
+      "brainrot": "Italian brainrot y personajes de IA",
+      "classic": "Memes clásicos",
+      "viral": "Animales y personajes virales",
+      "gen-alpha": "Jerga de la generación Z y alfa",
+      "zh-memes": "Memes de internet chino"
     },
     "about": [
-      "Cada entrada responde primero a la pregunta y luego explica de dónde viene la palabra, cómo se usa en chats y comentarios, y en qué se diferencia de palabras con un sentido parecido.",
-      "Las palabras se eligieron según lo que la gente busca de verdad, y los orígenes se contrastan con diccionarios, listas oficiales de palabras del año y otras fuentes públicas. La jerga cambia rápido, así que cada página indica cuándo se actualizó por última vez."
+      "Cada entrada responde primero, luego da una cronología con fechas de dónde salió el meme y cómo se difundió, muestra cómo se usa y cuenta en qué punto está hoy.",
+      "Los memes se eligen según lo que la gente busca de verdad, y los datos se contrastan con Wikipedia, Know Your Meme, diccionarios y prensa. Las curvas de popularidad salen de las visitas a Wikipedia y se actualizan cada semana."
     ],
     "faq": [
       {
-        "q": "¿Qué es la jerga de internet?",
-        "a": "Palabras, abreviaturas, números y memes que se difunden en chats, comentarios y videos cortos, como yyds en chino o rizz en inglés. Muchas pasan de moda en un año; algunas, como 内卷 (neijuan), llegan a la prensa y a los diccionarios."
+        "q": "¿Qué es un meme?",
+        "a": "Una imagen, video, sonido, frase o personaje que la gente copia, remezcla y comparte en internet, como Pepe the Frog, el Rickroll o Tung Tung Tung Sahur. Richard Dawkins acuñó la palabra en 1976 para cualquier idea que se transmite de persona a persona."
       },
       {
-        "q": "¿Por qué los internautas chinos usan números y letras?",
-        "a": "Los números suenan como palabras (520 suena parecido a «te quiero» en mandarín) y las iniciales en pinyin se escriben rápido (yyds es yong yuan de shen). Son más rápidos de teclear y funcionan como un chiste interno."
+        "q": "¿Qué es el Italian brainrot?",
+        "a": "Una ola de personajes absurdos generados con IA en 2025, con nombres de falso italiano y voces de texto a voz, como Tralalero Tralala y Tung Tung Tung Sahur, que se difundió en TikTok. Cada uno tiene su propia página aquí."
       },
       {
-        "q": "¿Se pueden usar estas palabras en el trabajo?",
-        "a": "La mayoría son informales. Las juguetonas, como 666 o yyds, sirven entre amigos, pero las que juzgan a otras personas, como 渣男 o simp, pueden ofender. Cada entrada incluye una nota sobre el tono."
+        "q": "¿Por qué algunos memes tienen tokens cripto?",
+        "a": "Cualquiera puede crear un token y ponerle el nombre de un meme famoso, así que casi todos los memes virales tienen uno. Salvo que se indique, no los crea el autor del meme y su precio es extremadamente volátil."
       }
     ]
   }
