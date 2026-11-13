@@ -103,7 +103,7 @@ export async function mountRanking(host: HTMLElement, locale: Locale, id: Rankin
       `${ui.source}: `, h("a", { href: source.url, rel: "noopener", target: "_blank" }, source.name),
       ` · ${ui.license}: `, h("a", { href: source.licenseUrl, rel: "noopener license", target: "_blank" }, source.license),
       ` · ${fill(ui.dataAsOf, { date: rankingDate(locale, rankingMeta(id).asOf) })}`,
-      ` · ${fill(ui.snapshot, { date: rankingMeta(id).updated })}`,
+      ` · ${fill(ui.checked, { date: rankingDate(locale, rankingMeta(id).checkedOn ?? rankingMeta(id).updated) })}`,
     ),
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
     faq(locale, id),
