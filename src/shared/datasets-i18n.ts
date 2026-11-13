@@ -1,6 +1,7 @@
 import { escapeHtml } from "./device-i18n";
 import {
   DATASET_GROUPS,
+  DATASET_SENSITIVE,
   datasetUpdated,
   DATASET_SOURCE,
   DATASETS,
@@ -119,8 +120,11 @@ export function utcOffset(minutes: number): string {
 
 export function formatIndicator(locale: Locale, id: IndicatorId, value: number): string {
   const { decimals, format } = INDICATOR_SPEC[id];
-  // A country with no army spends exactly 0: "$0", not the currency default "$0.00".
-  if (format === "usd-compact") return numberFormat(locale, { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 2, ...(value === 0 ? { minimumFractionDigits: 0 } : {}) }).format(value);
+  // Compact totals keep two decimals ("$17.20T") except a real 0 ("$0" for a country with no army, not "$0.00").
+  // International dollars (GDP at PPP, "compact") are not US dollars, so no currency sign; the column heading names the unit.
+  if (format === "compact" || format === "usd-compact") {
+    return numberFormat(locale, { ...(format === "usd-compact" ? { style: "currency", currency: "USD" } : {}), notation: "compact", maximumFractionDigits: 2, minimumFractionDigits: value === 0 ? 0 : 2 }).format(value);
+  }
   if (format === "usd") return numberFormat(locale, { style: "currency", currency: "USD", maximumFractionDigits: decimals }).format(value);
   return numberFormat(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(value);
 }
@@ -435,6 +439,7 @@ export function datasetStaticHtml(locale: Locale, id: DatasetId | null): string 
     `<nav class="device-crumb">${home} <span aria-hidden="true">/</span> <a href="${escapeHtml(datasetHref(locale))}">${escapeHtml(hub.h1)}</a> <span aria-hidden="true">/</span> <span>${escapeHtml(datasetName(locale, id).name)}</span></nav>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
     `<p class="lede">${escapeHtml(copy.lede)}</p>`,
+    DATASET_SENSITIVE.has(id) ? `<div class="quiz-crisis" role="note"><strong>${escapeHtml(ui.crisis.title)}</strong><p>${escapeHtml(ui.crisis.body)}</p><p>${escapeHtml(ui.crisis.lines)}</p></div>` : "",
     `<h2>${escapeHtml(ui.facts)}</h2><ul>${copy.facts.map((f) => `<li>${escapeHtml(f)}</li>`).join("")}</ul>`,
     `<p><a href="${escapeHtml(csvHref(id))}">${escapeHtml(ui.download)}</a> · ${escapeHtml(ui.source)}: <a href="${escapeHtml(source.url)}" rel="noopener">${escapeHtml(source.name)}</a> · ${escapeHtml(ui.license)}: ${escapeHtml(source.license)}</p>`,
     `<section><h2>${escapeHtml(ui.about)}</h2>${copy.about.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}</section>`,

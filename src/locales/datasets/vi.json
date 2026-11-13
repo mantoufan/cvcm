@@ -2,13 +2,13 @@
   "crumbHome": "Trang chủ",
   "hub": {
     "title": "Bảng dữ liệu mở miễn phí: dân số, GDP, mã quốc gia | cv.cm",
-    "description": "Bảng dữ liệu mở có thể tìm kiếm, sắp xếp và tải CSV: dân số, GDP, GNI, xuất khẩu, lạm phát, thất nghiệp, chi tiêu quân sự, dự trữ ngoại hối, chi tiêu R&D, tuổi thọ, bác sĩ, tỷ suất sinh và tỷ suất chết, người di cư, diện tích đất và rừng, phát thải CO2, tiêu thụ điện, năng lượng tái tạo, tỷ lệ dùng internet, điện thoại di động và băng thông rộng, mã quốc gia và mã tiền tệ ISO, mã vùng điện thoại, múi giờ, khổ giấy và bảng mã ASCII.",
+    "description": "Bảng dữ liệu mở có thể tìm kiếm, sắp xếp và tải về dạng CSV: dân số, GDP và GDP (PPP), GNI, xuất khẩu, lạm phát, thất nghiệp, tỷ lệ nghèo và bất bình đẳng thu nhập (hệ số Gini), chi tiêu quân sự, dự trữ ngoại hối, chi tiêu R&D, tuổi thọ, bác sĩ, tỷ lệ biết chữ, tỷ lệ giết người và tự tử, mức tiêu thụ rượu bia và thuốc lá, tỷ suất sinh và tử, người di cư, diện tích đất và rừng, phát thải CO2, ô nhiễm không khí, năng lượng tái tạo, điện, Internet, điện thoại di động và băng thông rộng, mã quốc gia và mã tiền tệ ISO, mã điện thoại quốc tế, múi giờ, khổ giấy và ASCII.",
     "h1": "Dữ liệu mở",
     "lede": "Dữ liệu công khai từ Ngân hàng Thế giới, ISO và IANA, trình bày thành bảng đơn giản. Bạn có thể tìm kiếm, sắp xếp theo cột bất kỳ hoặc tải file CSV. Mỗi bảng đều ghi rõ nguồn và giấy phép.",
     "groups": {
       "economy": "Kinh tế",
       "people": "Dân số và sức khỏe",
-      "planet": "Đất đai, năng lượng và internet",
+      "planet": "Đất đai, môi trường, năng lượng và internet",
       "codes": "Mã và tiêu chuẩn",
       "reference": "Tra cứu nhanh"
     },
@@ -23,6 +23,7 @@
     ]
   },
   "ui": {
+    "crisis": {"title": "Nếu bạn đang nghĩ đến việc làm hại bản thân", "body": "Bạn xứng đáng được hỗ trợ ngay lúc này. Nếu bạn có thể hành động theo những suy nghĩ đó, hãy gọi số cấp cứu tại địa phương hoặc đến phòng cấp cứu gần nhất. Bạn cũng có thể liên hệ đường dây hỗ trợ khủng hoảng miễn phí và bảo mật: findahelpline.com liệt kê các đường dây ở mọi quốc gia.", "lines": "Việt Nam: gọi cấp cứu 115 khi khẩn cấp. Tìm đường dây hỗ trợ miễn phí tại findahelpline.com."},
     "all": "Tất cả dữ liệu",
     "search": "Lọc dòng",
     "searchPlaceholder": "Nhập tên nước, mã hoặc giá trị",
@@ -1028,6 +1029,202 @@
         { "q": "Nước nào có nhiều thuê bao băng thông rộng nhất tính theo đầu người?", "a": "{top1}, với {v1} thuê bao trên 100 dân năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
         { "q": "Thế giới có bao nhiêu đường truyền băng thông rộng cố định?", "a": "{world} trên 100 dân vào năm {worldYear}." },
         { "q": "Băng thông rộng có bao gồm internet di động không?", "a": "Không. Bảng này tính các đường truyền cố định như cáp quang, cáp đồng trục và DSL; các gói dữ liệu di động được tính riêng." }
+      ]
+    },
+    "gdp-ppp": {
+      "name": "GDP (PPP) các nước",
+      "title": "GDP (PPP) các nước năm {to}: nền kinh tế lớn nhất theo sức mua | cv.cm",
+      "description": "GDP theo sức mua tương đương của {rows} nền kinh tế, tính bằng đô la quốc tế hiện hành, xếp hạng, kèm tỷ trọng thế giới. Thế giới {world} đô la quốc tế ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "GDP (PPP) các nước năm {to} (đô la quốc tế hiện hành)",
+      "lede": "Tổng sản phẩm quốc nội theo sức mua tương đương của {rows} nền kinh tế, tính bằng đô la quốc tế hiện hành, xếp hạng, kèm tỷ trọng của từng nước trong tổng thế giới. Nguồn: Ngân hàng Thế giới, từ Chương trình So sánh Quốc tế (ICP).",
+      "value": "GDP, PPP (Int$)",
+      "facts": [
+        "GDP (PPP) thế giới: {world} đô la quốc tế ({worldYear}).",
+        "Nền kinh tế lớn nhất theo sức mua: {top1} ({v1} đô la quốc tế), {top2} ({v2} đô la quốc tế) và {top3} ({v3} đô la quốc tế).",
+        "Nhỏ nhất trong danh sách: {last} ({vlast} đô la quốc tế)."
+      ],
+      "about": [
+        "Một đô la quốc tế mua được cùng một giỏ hàng hóa và dịch vụ ở mọi nước như một đô la Mỹ mua được ở Mỹ. Quy đổi GDP theo cách này loại bỏ chênh lệch giá cả, nên các nước có chi phí sinh hoạt thấp xếp hạng cao hơn so với khi tính theo tỷ giá thị trường.",
+        "PPP phản ánh tốt hơn lượng hàng hóa mà một nền kinh tế thực sự sản xuất và tiêu dùng; GDP theo tỷ giá phản ánh tốt hơn sức mua của nền kinh tế đó ở nước ngoài."
+      ],
+      "faq": [
+        { "q": "Nước nào có GDP (PPP) lớn nhất?", "a": "{top1}, với {v1} đô la quốc tế vào năm {year1}, tiếp theo là {top2} ({v2} đô la quốc tế) và {top3} ({v3} đô la quốc tế)." },
+        { "q": "GDP (PPP) và GDP danh nghĩa khác nhau thế nào?", "a": "GDP danh nghĩa quy đổi mỗi nền kinh tế theo tỷ giá thị trường. GDP (PPP) dùng tỷ giá làm cân bằng giá của cùng một loại hàng hóa ở mọi nơi, nên so sánh khối lượng sản lượng chứ không phải giá trị tính bằng đô la." },
+        { "q": "GDP (PPP) của thế giới là bao nhiêu?", "a": "{world} vào năm {worldYear}, tính bằng đô la quốc tế hiện hành." }
+      ]
+    },
+    "gini-index": {
+      "name": "Hệ số Gini các nước",
+      "title": "Hệ số Gini các nước năm {to}: xếp hạng bất bình đẳng thu nhập {rows} nước | cv.cm",
+      "description": "Chỉ số Gini về bất bình đẳng thu nhập hoặc chi tiêu của {rows} quốc gia, xếp từ bất bình đẳng nhất đến ít nhất. Cao nhất: {top1} ({v1}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Hệ số Gini các nước (bất bình đẳng thu nhập) năm {to}",
+      "lede": "Chỉ số Gini từ cuộc khảo sát hộ gia đình mới nhất của {rows} quốc gia, xếp từ bất bình đẳng nhất đến ít nhất. 0 nghĩa là mọi người có thu nhập như nhau; 100 nghĩa là một người nắm toàn bộ thu nhập. Nguồn: Nền tảng Nghèo đói và Bất bình đẳng của Ngân hàng Thế giới.",
+      "value": "Chỉ số Gini",
+      "facts": [
+        "Bất bình đẳng nhất: {top1} ({v1}, {year1}), {top2} ({v2}, {year2}) và {top3} ({v3}, {year3}).",
+        "Ít bất bình đẳng nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Một số nước đo thu nhập, số khác đo chi tiêu, vốn phân bố đều hơn thu nhập. Phần lớn châu Á và châu Phi khảo sát chi tiêu, nên hệ số Gini của họ trông thấp hơn so với khi đo theo thu nhập; hãy so sánh các nước dùng cùng một thước đo.",
+        "Khảo sát được tiến hành vài năm một lần, nên mỗi dòng hiển thị khảo sát mới nhất trong vòng mười năm. Ngân hàng Thế giới không công bố chỉ số Gini của toàn thế giới."
+      ],
+      "faq": [
+        { "q": "Nước nào có bất bình đẳng thu nhập cao nhất?", "a": "{top1}, với chỉ số Gini {v1} vào năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Nước nào có hệ số Gini thấp nhất?", "a": "Trong danh sách này là {last}, ở mức {vlast}." },
+        { "q": "Hệ số Gini bao nhiêu là tốt?", "a": "Không có giá trị mục tiêu. Phần lớn các nước châu Âu nằm trong khoảng 25 đến 35; trên 40 thường được coi là bất bình đẳng cao, và trên 50 là rất cao." }
+      ]
+    },
+    "poverty-rate": {
+      "name": "Tỷ lệ nghèo các nước",
+      "title": "Tỷ lệ nghèo các nước năm {to}: nước nghèo nhất thế giới (3,00 USD/ngày) | cv.cm",
+      "description": "Tỷ lệ người sống dưới 3,00 USD mỗi ngày (PPP 2021) tại {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ nghèo cùng cực các nước năm {to} (% dưới 3,00 USD mỗi ngày)",
+      "lede": "Tỷ lệ dân số sống dưới 3,00 USD mỗi ngày theo giá năm 2021, đã điều chỉnh theo sức mua, từ cuộc khảo sát hộ gia đình mới nhất của {rows} quốc gia, xếp từ cao đến thấp. Nguồn: Nền tảng Nghèo đói và Bất bình đẳng của Ngân hàng Thế giới.",
+      "value": "Dưới 3,00 USD mỗi ngày (%)",
+      "facts": [
+        "Thế giới: {world}% dân số sống dưới 3,00 USD mỗi ngày ({worldYear}).",
+        "Tỷ lệ nghèo cao nhất: {top1} ({v1}%, {year1}), {top2} ({v2}%, {year2}) và {top3} ({v3}%, {year3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "3,00 USD mỗi ngày là chuẩn nghèo quốc tế của Ngân hàng Thế giới từ năm 2025, tức chuẩn nghèo điển hình của các nước nghèo nhất, quy đổi theo sức mua tương đương năm 2021. Chuẩn này thay thế mức 2,15 USD; chuẩn nghèo quốc gia thường cao hơn.",
+        "Khảo sát được tiến hành vài năm một lần, nên mỗi dòng hiển thị khảo sát mới nhất trong vòng mười năm. Nhiều nước thu nhập cao không được khảo sát theo chuẩn này và không có trong danh sách. Giá trị 0.0 nghĩa là khảo sát gần như không thấy ai dưới chuẩn."
+      ],
+      "faq": [
+        { "q": "Những nước nào nghèo nhất thế giới?", "a": "Theo tỷ lệ người sống dưới 3,00 USD mỗi ngày: {top1} ({v1}% vào năm {year1}), {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Bao nhiêu người trên thế giới sống trong nghèo cùng cực?", "a": "{world}% dân số thế giới sống dưới 3,00 USD mỗi ngày vào năm {worldYear}." },
+        { "q": "Chuẩn nghèo quốc tế là bao nhiêu?", "a": "3,00 USD mỗi người mỗi ngày theo sức mua tương đương năm 2021, do Ngân hàng Thế giới đặt ra năm 2025." }
+      ]
+    },
+    "literacy-rate": {
+      "name": "Tỷ lệ biết chữ các nước",
+      "title": "Tỷ lệ biết chữ các nước năm {to}: người lớn từ 15 tuổi tại {rows} nước | cv.cm",
+      "description": "Tỷ lệ biết chữ ở người lớn, % người từ 15 tuổi trở lên, của {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu UNESCO qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ biết chữ các nước năm {to} (% người lớn từ 15 tuổi)",
+      "lede": "Tỷ lệ người từ 15 tuổi trở lên có thể đọc và viết một câu ngắn, đơn giản về cuộc sống hằng ngày, cho {rows} quốc gia và vùng lãnh thổ, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ Viện Thống kê UNESCO.",
+      "value": "Tỷ lệ biết chữ (%)",
+      "facts": [
+        "Thế giới: {world}% người lớn biết đọc biết viết ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Phần lớn các nước thu nhập cao đã ngừng đo tỷ lệ biết chữ cơ bản từ nhiều thập kỷ trước, vì gần như ai cũng đi học; Hoa Kỳ, Nhật Bản, Đức, Vương quốc Anh, Pháp và Hàn Quốc không có trong danh sách vì lý do đó, không phải vì tỷ lệ của họ thấp.",
+        "Số liệu lấy từ tổng điều tra và khảo sát vài năm một lần, nên mỗi dòng hiển thị số liệu mới nhất trong vòng mười năm. Khả năng biết chữ thường do người dân tự khai, nên chênh lệch nhỏ gần mức 100% không nói lên nhiều."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ biết chữ cao nhất?", "a": "{top1}, ở mức {v1}% vào năm {year1}, tiếp theo là {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Nước nào có tỷ lệ biết chữ thấp nhất?", "a": "Trong danh sách này là {last}, nơi {vlast}% người lớn biết đọc biết viết." },
+        { "q": "Tỷ lệ biết chữ của thế giới là bao nhiêu?", "a": "{world}% người từ 15 tuổi trở lên vào năm {worldYear}." }
+      ]
+    },
+    "homicide-rate": {
+      "name": "Tỷ lệ giết người các nước",
+      "title": "Tỷ lệ giết người các nước năm {to}: số vụ trên 100.000 dân, quốc gia an toàn và nguy hiểm nhất | cv.cm",
+      "description": "Số vụ giết người cố ý trên 100.000 dân tại {rows} quốc gia, xếp từ cao đến thấp. Thế giới {world} ({worldYear}). Dữ liệu UNODC qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ giết người các nước năm {to} (số vụ giết người cố ý trên 100.000 dân)",
+      "lede": "Số vụ giết người cố ý trên mỗi 100.000 dân tại {rows} quốc gia và vùng lãnh thổ, xếp từ bạo lực nhất đến ít bạo lực nhất. Nguồn: Ngân hàng Thế giới, từ Văn phòng Liên Hợp Quốc về Ma túy và Tội phạm (UNODC).",
+      "value": "Số vụ trên 100.000 dân",
+      "facts": [
+        "Thế giới: {world} vụ giết người trên 100.000 dân ({worldYear}).",
+        "Tỷ lệ giết người cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Giết người cố ý là cái chết do người khác cố tình gây ra, kể cả các vụ giết người trong bạo lực băng đảng và bạo lực gia đình. Tử vong trong chiến tranh và các cuộc xung đột vũ trang khác không được tính, nên một số nước đang có chiến tranh trông an toàn hơn thực tế.",
+        "Tỷ lệ giết người là số liệu tội phạm dễ so sánh nhất giữa các nước, vì một thi thể khó bị bỏ sót; hầu hết các loại tội phạm khác phụ thuộc vào việc người dân có trình báo cảnh sát hay không. Các đảo nhỏ có thể xếp hạng cao chỉ vì một vài vụ."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ giết người cao nhất?", "a": "{top1}, với {v1} vụ giết người trên 100.000 dân vào năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Những nước nào có tỷ lệ giết người thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast} vụ giết người trên 100.000 dân." },
+        { "q": "Tỷ lệ giết người của thế giới là bao nhiêu?", "a": "{world} vụ giết người cố ý trên 100.000 dân vào năm {worldYear}." }
+      ]
+    },
+    "suicide-rate": {
+      "name": "Tỷ lệ tự tử các nước",
+      "title": "Tỷ lệ tự tử các nước năm {to}: số ca tử vong trên 100.000 dân tại {rows} nước | cv.cm",
+      "description": "Số ca tử vong do tự tử trên 100.000 dân tại {rows} quốc gia, xếp từ cao đến thấp. Thế giới {world} ({worldYear}). Dữ liệu WHO qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ tự tử các nước năm {to} (số ca tử vong trên 100.000 dân)",
+      "lede": "Số ca tử vong do tự tử trong một năm trên mỗi 100.000 dân tại {rows} quốc gia, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ Ước tính Sức khỏe Toàn cầu của Tổ chức Y tế Thế giới.",
+      "value": "Số ca tự tử trên 100.000 dân",
+      "facts": [
+        "Thế giới: {world} ca tử vong do tự tử trên 100.000 dân ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Đây là ước tính của WHO, không phải số đăng ký tử vong gốc: nhiều nước không ghi nhận mọi nguyên nhân tử vong, và tự tử thường bị báo cáo thiếu ở những nơi nó bị kỳ thị hoặc chịu chế tài pháp lý. Số liệu thấp ở một số nước phần nào phản ánh điều đó."
+      ],
+      "faq": [
+        { "q": "Nước nào có tỷ lệ tự tử cao nhất?", "a": "{top1}, với {v1} ca tử vong do tự tử trên 100.000 dân vào năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Tỷ lệ tự tử của thế giới là bao nhiêu?", "a": "{world} ca tử vong trên 100.000 dân vào năm {worldYear}." },
+        { "q": "Vì sao tỷ lệ tự tử của một nước có thể bị đếm thiếu?", "a": "Ở những nơi tự tử bị kỳ thị hoặc bị coi là tội phạm, các ca tử vong thường được ghi dưới nguyên nhân khác. WHO có điều chỉnh cho điều này, nhưng các số liệu thấp nhất là kém chắc chắn nhất." }
+      ]
+    },
+    "alcohol-consumption": {
+      "name": "Mức tiêu thụ rượu bia các nước",
+      "title": "Mức tiêu thụ rượu bia các nước năm {to}: số lít mỗi người mỗi năm | cv.cm",
+      "description": "Số lít cồn nguyên chất mỗi người từ 15 tuổi trở lên mỗi năm tại {rows} quốc gia, xếp hạng. Thế giới {world} lít ({worldYear}). Dữ liệu WHO qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Mức tiêu thụ rượu bia các nước năm {to} (lít cồn nguyên chất mỗi người từ 15 tuổi)",
+      "lede": "Tổng lượng rượu bia mỗi người từ 15 tuổi trở lên uống trong một năm, tính bằng lít cồn nguyên chất, gồm cả phần được ghi nhận và không được ghi nhận, cho {rows} quốc gia, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ Tổ chức Y tế Thế giới.",
+      "value": "Lít mỗi người",
+      "facts": [
+        "Thế giới: {world} lít cồn nguyên chất mỗi người từ 15 tuổi ({worldYear}).",
+        "Cao nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Thấp nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "Một lít cồn nguyên chất tương đương khoảng 60 lon bia (330 ml, 5%) hoặc 10 chai rượu vang (750 ml, 13%). Số liệu bao gồm rượu tự nấu và rượu nhập lậu, do WHO ước tính, cùng lượng rượu bia khách du lịch uống, điều này làm tăng số liệu của các điểm du lịch nhỏ.",
+        "Đây là dự báo của WHO; năm mới nhất là năm Ngân hàng Thế giới công bố. Các nước cấm rượu và báo cáo đúng bằng không bị loại ra, vì số không đó là ước tính bị thiếu, không phải số đo thực tế."
+      ],
+      "faq": [
+        { "q": "Nước nào uống nhiều rượu bia nhất?", "a": "{top1}, với {v1} lít cồn nguyên chất mỗi người từ 15 tuổi vào năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Trung bình mỗi người uống bao nhiêu rượu bia?", "a": "{world} lít cồn nguyên chất mỗi người từ 15 tuổi trên toàn thế giới vào năm {worldYear}. Một lít tương đương khoảng 60 lon bia, nên nếu tất cả là bia thì vào khoảng vài trăm lon mỗi năm." },
+        { "q": "Nước nào uống ít rượu bia nhất?", "a": "Trong danh sách này là {last}, với {vlast} lít mỗi người." }
+      ]
+    },
+    "tobacco-use": {
+      "name": "Tỷ lệ hút thuốc các nước",
+      "title": "Tỷ lệ hút thuốc lá các nước năm {to}: người lớn dùng thuốc lá tại {rows} nước | cv.cm",
+      "description": "Tỷ lệ người lớn từ 15 tuổi hiện đang dùng thuốc lá tại {rows} quốc gia, xếp hạng. Thế giới {world}% ({worldYear}). Dữ liệu WHO qua Ngân hàng Thế giới, tải CSV.",
+      "h1": "Tỷ lệ hút thuốc các nước năm {to} (% người lớn dùng thuốc lá)",
+      "lede": "Tỷ lệ người từ 15 tuổi trở lên hiện đang hút thuốc hoặc dùng bất kỳ sản phẩm thuốc lá nào khác, hằng ngày hay không, tại {rows} quốc gia, xếp từ cao đến thấp. Nguồn: Ngân hàng Thế giới, từ ước tính chuẩn hóa theo tuổi của WHO.",
+      "value": "Dùng thuốc lá (% người lớn)",
+      "facts": [
+        "Thế giới: {world}% người lớn dùng thuốc lá ({worldYear}).",
+        "Cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Thấp nhất trong danh sách: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Dùng thuốc lá bao gồm thuốc lá điếu, xì gà, tẩu, ống điếu nước (shisha, thuốc lào) và thuốc lá không khói như thuốc lá nhai và snus. Thuốc lá điện tử không chứa thuốc lá không được tính.",
+        "WHO chuẩn hóa tỷ lệ theo tuổi, nên một nước có dân số trẻ được so sánh công bằng với một nước có dân số già hơn. Ở hầu hết các nước, nam giới dùng thuốc lá nhiều hơn nữ giới rất nhiều."
+      ],
+      "faq": [
+        { "q": "Nước nào hút thuốc nhiều nhất?", "a": "{top1}, nơi {v1}% người lớn dùng thuốc lá vào năm {year1}, tiếp theo là {top2} ({v2}%) và {top3} ({v3}%)." },
+        { "q": "Bao nhiêu phần trăm người lớn trên thế giới hút thuốc?", "a": "{world}% người từ 15 tuổi trở lên dùng thuốc lá vào năm {worldYear}." },
+        { "q": "Nước nào có tỷ lệ hút thuốc thấp nhất?", "a": "Trong danh sách này là {last}, với {vlast}% người lớn." }
+      ]
+    },
+    "air-pollution": {
+      "name": "Ô nhiễm không khí (PM2.5) các nước",
+      "title": "Các nước ô nhiễm nhất năm {to}: ô nhiễm không khí PM2.5 các nước | cv.cm",
+      "description": "Mức phơi nhiễm trung bình năm với bụi mịn PM2.5, µg/m³, của {rows} quốc gia, xếp từ ô nhiễm nhất đến ít ô nhiễm nhất. Thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "h1": "Ô nhiễm không khí các nước năm {to} (PM2.5, µg/m³)",
+      "lede": "Nồng độ trung bình năm của bụi mịn (PM2.5) trong không khí người dân hít thở, có trọng số theo nơi dân cư sinh sống, cho {rows} quốc gia và vùng lãnh thổ, xếp từ ô nhiễm nhất đến ít ô nhiễm nhất. Nguồn: Ngân hàng Thế giới, từ nghiên cứu Gánh nặng Bệnh tật Toàn cầu (GBD).",
+      "value": "PM2.5 (µg/m³)",
+      "facts": [
+        "Thế giới: {world} µg/m³ ({worldYear}).",
+        "Ô nhiễm nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Không khí sạch nhất trong danh sách: {last} ({vlast})."
+      ],
+      "about": [
+        "PM2.5 là các hạt có đường kính từ 2,5 micromet trở xuống, đủ nhỏ để đi sâu vào phổi. Hướng dẫn của WHO là trung bình năm 5 µg/m³; hầu như mọi quốc gia đều vượt mức này.",
+        "Số liệu được mô hình hóa từ vệ tinh và trạm quan trắc mặt đất, có trọng số theo dân số, nên mô tả không khí mà một cư dân trung bình hít thở, không phải thành phố tệ nhất. Bụi sa mạc cũng được tính, vì vậy các nước vùng Vịnh và vùng Sahel xếp hạng cao."
+      ],
+      "faq": [
+        { "q": "Nước nào ô nhiễm không khí nặng nhất?", "a": "{top1}, với mức phơi nhiễm PM2.5 trung bình {v1} µg/m³ vào năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Nước nào có không khí sạch nhất?", "a": "Trong danh sách này là {last}, với {vlast} µg/m³." },
+        { "q": "Mức PM2.5 bao nhiêu là an toàn?", "a": "Hướng dẫn năm 2021 của WHO là trung bình năm 5 µg/m³. Trung bình thế giới là {world} µg/m³ vào năm {worldYear}." }
       ]
     },
     "country-codes": {

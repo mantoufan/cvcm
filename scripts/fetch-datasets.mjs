@@ -24,24 +24,30 @@ const committed = (file) => {
 const oldMeta = JSON.parse(committed("meta.json") ?? '{"sets":{}}');
 const written = new Map();
 
-async function getJson(url) {
+// The World Bank API often answers 502 or stalls for minutes: give each try a deadline (body included) and back
+// off longer. A timeout, a network error, a cut-off body, a 408, a 429 or a 5xx is retried; any other 4xx fails at once.
+async function fetchRetry(url, read) {
   for (let attempt = 1; ; attempt++) {
     try {
-      const res = await fetch(url);
-      if (!res.ok) throw new Error(`${res.status} ${url}`);
-      return await res.json();
+      const res = await fetch(url, { signal: AbortSignal.timeout(120_000) });
+      if (!res.ok) {
+        await res.body?.cancel().catch(() => {});
+        throw Object.assign(new Error(`${res.status} ${url}`), {
+          final: res.status < 500 && res.status !== 408 && res.status !== 429,
+          // A 429 says how long to wait; waiting less only spends the remaining tries inside the limit.
+          wait: Number(res.headers.get("retry-after")) * 1000 || 0,
+        });
+      }
+      return await read(res);
     } catch (err) {
-      if (attempt >= 3) throw err;
-      await new Promise((r) => setTimeout(r, 1500 * attempt));
+      if (err.final || attempt >= 6) throw err;
+      await new Promise((r) => setTimeout(r, Math.max(5000 * attempt, Math.min(err.wait ?? 0, 600_000))));
     }
   }
 }
 
-async function getText(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${res.status} ${url}`);
-  return res.text();
-}
+const getJson = (url) => fetchRetry(url, (res) => res.json());
+const getText = (url) => fetchRetry(url, (res) => res.text());
 
 function parseCsv(text) {
   const rows = [];
@@ -88,6 +94,9 @@ for (const [id, spec] of Object.entries(WB)) {
   // economy's latest non-empty value. Values older than 15 years are dropped below anyway.
   const thisYear = new Date().getUTCFullYear();
   const [info, all] = await getJson(`https://api.worldbank.org/v2/country/all/indicator/${code}?format=json&date=${thisYear - 20}:${thisYear}&per_page=20000`);
+  // A mistyped code is not a 4xx: the API answers 200 with [{ message: [...] }].
+  if (info.message) throw new Error(`${id}: World Bank rejected ${code}: ${JSON.stringify(info.message)}`);
+  if (!info.total || !Array.isArray(all)) throw new Error(`${id}: the World Bank has no ${code} values for ${thisYear - 20}-${thisYear}`);
   if (info.pages !== 1) throw new Error(`${code}: ${info.total} rows over ${info.pages} pages; raise per_page`);
   const latestBy = new Map();
   for (const r of all) {

@@ -2,13 +2,13 @@
   "crumbHome": "Home",
   "hub": {
     "title": "Free Public Data Tables: Population, GDP, Country Codes and More | cv.cm",
-    "description": "Open data tables you can search, sort and download as CSV: population, GDP, GNI, exports, inflation, unemployment, military spending, foreign reserves, R&D spending, life expectancy, doctors, birth and death rates, migrants, land and forest area, CO2 emissions, electricity use, renewable energy, internet, mobile and broadband use, ISO country and currency codes, calling codes, time zones, paper sizes and ASCII.",
+    "description": "Open data tables you can search, sort and download as CSV: population, GDP and GDP (PPP), GNI, exports, inflation, unemployment, poverty and income inequality (Gini), military spending, foreign reserves, R&D spending, life expectancy, doctors, literacy, murder and suicide rates, alcohol and tobacco use, birth and death rates, migrants, land and forest area, CO2 emissions, air pollution, renewable energy, electricity, internet, mobile and broadband use, ISO country and currency codes, calling codes, time zones, paper sizes and ASCII.",
     "h1": "Public data",
     "lede": "Plain tables of public data from the World Bank, ISO and IANA. Search, sort by any column, or download the CSV. Every table names its source and licence.",
     "groups": {
       "economy": "Economy",
       "people": "People and health",
-      "planet": "Land, energy and the internet",
+      "planet": "Land, environment, energy and the internet",
       "codes": "Codes and standards",
       "reference": "Quick reference"
     },
@@ -23,6 +23,7 @@
     ]
   },
   "ui": {
+    "crisis": {"title": "If you are thinking about hurting yourself", "body": "You deserve support right now. If you might act on these thoughts, call your local emergency number or go to the nearest emergency room. You can also reach a free, confidential crisis line: findahelpline.com lists lines in every country.", "lines": "United States: call or text 988. United Kingdom and Ireland: Samaritans 116 123."},
     "all": "All data",
     "search": "Filter rows",
     "searchPlaceholder": "Type a country, code or value",
@@ -1028,6 +1029,202 @@
         { "q": "Which country has the most broadband subscriptions per person?", "a": "{top1}, with {v1} per 100 people in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
         { "q": "How many fixed broadband lines does the world have?", "a": "{world} per 100 people in {worldYear}." },
         { "q": "Does broadband include mobile internet?", "a": "No. This counts fixed lines such as fibre, cable and DSL; mobile data plans are counted separately." }
+      ]
+    },
+    "gdp-ppp": {
+      "name": "GDP (PPP) by country",
+      "title": "GDP (PPP) by Country {to}: Largest Economies by Purchasing Power | cv.cm",
+      "description": "GDP at purchasing power parity for {rows} economies in current international dollars, ranked, with share of the world. World {world} int. $ ({worldYear}). World Bank data, CSV download.",
+      "h1": "GDP (PPP) by country, {to} (current international $)",
+      "lede": "Gross domestic product at purchasing power parity for {rows} economies, in current international dollars, ranked, with each one's share of the world total. Source: World Bank, from the International Comparison Program.",
+      "value": "GDP, PPP (int. $)",
+      "facts": [
+        "World GDP (PPP): {world} int. $ ({worldYear}).",
+        "Largest economies by purchasing power: {top1} ({v1} int. $), {top2} ({v2} int. $) and {top3} ({v3} int. $).",
+        "Smallest in the list: {last} ({vlast} int. $)."
+      ],
+      "about": [
+        "An international dollar buys the same basket of goods and services in every country as a US dollar buys in the United States. Converting GDP this way removes price differences, so countries where living costs are low rank higher than they do at market exchange rates.",
+        "PPP is the better measure of how much an economy actually produces and consumes; GDP at exchange rates is the better measure of what it can buy abroad."
+      ],
+      "faq": [
+        { "q": "Which country has the largest GDP by PPP?", "a": "{top1}, with {v1} int. $ in {year1}, followed by {top2} ({v2} int. $) and {top3} ({v3} int. $)." },
+        { "q": "What is the difference between GDP (PPP) and nominal GDP?", "a": "Nominal GDP converts each economy at market exchange rates. GDP (PPP) uses rates that equalise the price of the same goods everywhere, so it compares the volume of output, not its value in dollars." },
+        { "q": "What is world GDP at PPP?", "a": "{world} in {worldYear}, in current international dollars." }
+      ]
+    },
+    "gini-index": {
+      "name": "Gini coefficient by country",
+      "title": "Gini Coefficient by Country {to}: Income Inequality Ranking of {rows} Countries | cv.cm",
+      "description": "Gini index of income or consumption inequality for {rows} countries, ranked from most to least unequal. Highest: {top1} ({v1}). World Bank data, CSV download.",
+      "h1": "Gini coefficient by country (income inequality), {to}",
+      "lede": "Gini index from the latest household survey of {rows} countries, ranked from most to least unequal. 0 means everyone has the same income; 100 means one person has all of it. Source: World Bank Poverty and Inequality Platform.",
+      "value": "Gini index",
+      "facts": [
+        "Most unequal: {top1} ({v1}, {year1}), {top2} ({v2}, {year2}) and {top3} ({v3}, {year3}).",
+        "Least unequal in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "Some countries measure income and others measure consumption, which is spread more evenly than income. Most of Asia and Africa survey consumption, so their Gini values look lower than they would on income; compare countries that use the same measure.",
+        "Surveys are run every few years, so each row shows the latest one within ten years. The World Bank does not publish a world Gini index."
+      ],
+      "faq": [
+        { "q": "Which country has the highest income inequality?", "a": "{top1}, with a Gini index of {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "Which country has the lowest Gini coefficient?", "a": "In this list, {last}, at {vlast}." },
+        { "q": "What is a good Gini coefficient?", "a": "There is no target value. Most European countries are between about 25 and 35; values above 40 are usually called high inequality, and above 50 very high." }
+      ]
+    },
+    "poverty-rate": {
+      "name": "Poverty rate by country",
+      "title": "Poverty Rate by Country {to}: Poorest Countries in the World ($3.00 a Day) | cv.cm",
+      "description": "Share of people living on less than $3.00 a day (2021 PPP) in {rows} countries, ranked. World {world}% ({worldYear}). World Bank data, CSV download.",
+      "h1": "Extreme poverty rate by country, {to} (% below $3.00 a day)",
+      "lede": "Share of the population living on less than $3.00 a day at 2021 prices, adjusted for purchasing power, from the latest household survey of {rows} countries, ranked from highest to lowest. Source: World Bank Poverty and Inequality Platform.",
+      "value": "Below $3.00 a day (%)",
+      "facts": [
+        "World: {world}% of people live on less than $3.00 a day ({worldYear}).",
+        "Highest poverty rates: {top1} ({v1}%, {year1}), {top2} ({v2}%, {year2}) and {top3} ({v3}%, {year3}).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "$3.00 a day is the World Bank's international poverty line since 2025, the typical poverty line of the poorest countries, converted at 2021 purchasing power parity. It replaced the $2.15 line; national poverty lines are usually higher.",
+        "Surveys are run every few years, so each row shows the latest one within ten years. Many high-income countries are not surveyed against this line and are not in the list. A 0.0 means the survey found almost no one below the line."
+      ],
+      "faq": [
+        { "q": "What are the poorest countries in the world?", "a": "By share of people below $3.00 a day: {top1} ({v1}% in {year1}), {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "How many people in the world live in extreme poverty?", "a": "{world}% of the world's population lived on less than $3.00 a day in {worldYear}." },
+        { "q": "What is the international poverty line?", "a": "$3.00 a day per person at 2021 purchasing power parity, set by the World Bank in 2025." }
+      ]
+    },
+    "literacy-rate": {
+      "name": "Literacy rate by country",
+      "title": "Literacy Rate by Country {to}: Adult Literacy (Ages 15+) in {rows} Countries | cv.cm",
+      "description": "Adult literacy rate, % of people aged 15 and over, for {rows} countries, ranked. World {world}% ({worldYear}). UNESCO data via the World Bank, CSV download.",
+      "h1": "Literacy rate by country, {to} (% of adults aged 15+)",
+      "lede": "Share of people aged 15 and over who can read and write a short simple statement about their everyday life, for {rows} countries and areas, ranked from highest to lowest. Source: World Bank, from the UNESCO Institute for Statistics.",
+      "value": "Literacy rate (%)",
+      "facts": [
+        "World: {world}% of adults can read and write ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Most high-income countries stopped measuring basic literacy decades ago, because nearly everyone has gone to school; the United States, Japan, Germany, the United Kingdom, France and Korea are not in the list for that reason, not because their rates are low.",
+        "Figures come from censuses and surveys every several years, so each row shows the latest within ten years. Literacy is usually self-reported, so small differences near 100% say little."
+      ],
+      "faq": [
+        { "q": "Which country has the highest literacy rate?", "a": "{top1}, at {v1}% in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "Which country has the lowest literacy rate?", "a": "In this list, {last}, where {vlast}% of adults can read and write." },
+        { "q": "What is the world literacy rate?", "a": "{world}% of people aged 15 and over in {worldYear}." }
+      ]
+    },
+    "homicide-rate": {
+      "name": "Murder rate by country",
+      "title": "Murder Rate by Country {to}: Homicides per 100,000, Safest and Most Dangerous | cv.cm",
+      "description": "Intentional homicides per 100,000 people in {rows} countries, ranked from highest to lowest. World {world} ({worldYear}). UNODC data via the World Bank, CSV download.",
+      "h1": "Murder rate by country, {to} (intentional homicides per 100,000 people)",
+      "lede": "Intentional homicides for every 100,000 people in {rows} countries and areas, ranked from the most to the least violent. Source: World Bank, from the UN Office on Drugs and Crime (UNODC).",
+      "value": "Homicides per 100,000",
+      "facts": [
+        "World: {world} homicides per 100,000 people ({worldYear}).",
+        "Highest murder rates: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "An intentional homicide is a death deliberately caused by another person, including killings in gang violence and domestic violence. Deaths in wars and other armed conflicts are not counted, so some countries at war look safer than they are.",
+        "The murder rate is the most comparable crime figure between countries, because a body is hard to miss; most other crimes depend on what people report to the police. Small islands can rank high on a handful of cases."
+      ],
+      "faq": [
+        { "q": "Which country has the highest murder rate?", "a": "{top1}, with {v1} homicides per 100,000 people in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "Which countries have the lowest murder rate?", "a": "In this list, {last}, with {vlast} homicides per 100,000 people." },
+        { "q": "What is the world murder rate?", "a": "{world} intentional homicides per 100,000 people in {worldYear}." }
+      ]
+    },
+    "suicide-rate": {
+      "name": "Suicide rate by country",
+      "title": "Suicide Rate by Country {to}: Deaths per 100,000 in {rows} Countries | cv.cm",
+      "description": "Suicide deaths per 100,000 people in {rows} countries, ranked from highest to lowest. World {world} ({worldYear}). WHO data via the World Bank, CSV download.",
+      "h1": "Suicide rate by country, {to} (deaths per 100,000 people)",
+      "lede": "Suicide deaths in a year for every 100,000 people in {rows} countries, ranked from highest to lowest. Source: World Bank, from the World Health Organization Global Health Estimates.",
+      "value": "Suicides per 100,000",
+      "facts": [
+        "World: {world} suicide deaths per 100,000 people ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "These are WHO estimates, not raw death registrations: many countries do not record every cause of death, and suicide is often under-reported where it carries stigma or legal penalties. Low figures in some countries partly reflect that."
+      ],
+      "faq": [
+        { "q": "Which country has the highest suicide rate?", "a": "{top1}, with {v1} suicide deaths per 100,000 people in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "What is the world suicide rate?", "a": "{world} deaths per 100,000 people in {worldYear}." },
+        { "q": "Why might a country's suicide rate be undercounted?", "a": "Where suicide carries stigma or is a crime, deaths are often recorded under other causes. The WHO adjusts for this, but the lowest figures are the least certain." }
+      ]
+    },
+    "alcohol-consumption": {
+      "name": "Alcohol consumption by country",
+      "title": "Alcohol Consumption by Country {to}: Litres per Person per Year | cv.cm",
+      "description": "Litres of pure alcohol per person aged 15+ per year in {rows} countries, ranked. World {world} litres ({worldYear}). WHO data via the World Bank, CSV download.",
+      "h1": "Alcohol consumption by country, {to} (litres of pure alcohol per person aged 15+)",
+      "lede": "Total alcohol drunk per person aged 15 and over in a year, in litres of pure alcohol, recorded and unrecorded together, for {rows} countries, ranked from highest to lowest. Source: World Bank, from the World Health Organization.",
+      "value": "Litres per person",
+      "facts": [
+        "World: {world} litres of pure alcohol per person aged 15+ ({worldYear}).",
+        "Highest: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Lowest in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "One litre of pure alcohol is about 60 cans of beer (330 ml at 5%) or 10 bottles of wine (750 ml at 13%). The figure includes home-made and smuggled alcohol, which the WHO estimates, and drinking by tourists, which raises small tourist destinations.",
+        "These are WHO projections; the latest year is the one the World Bank publishes. Countries that ban alcohol and report exactly zero are left out, because the zero is a missing estimate, not a measurement."
+      ],
+      "faq": [
+        { "q": "Which country drinks the most alcohol?", "a": "{top1}, with {v1} litres of pure alcohol per person aged 15+ in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "How much alcohol does the average person drink?", "a": "{world} litres of pure alcohol per person aged 15+ worldwide in {worldYear}. One litre is about 60 cans of beer, so that is a few hundred cans a year if it were all beer." },
+        { "q": "Which country drinks the least alcohol?", "a": "In this list, {last}, at {vlast} litres per person." }
+      ]
+    },
+    "tobacco-use": {
+      "name": "Smoking rate by country",
+      "title": "Smoking Rates by Country {to}: Tobacco Use Among Adults in {rows} Countries | cv.cm",
+      "description": "Share of adults aged 15+ who currently use tobacco in {rows} countries, ranked. World {world}% ({worldYear}). WHO data via the World Bank, CSV download.",
+      "h1": "Smoking rate by country, {to} (% of adults who use tobacco)",
+      "lede": "Share of people aged 15 and over who currently smoke or use any other tobacco product, daily or not, in {rows} countries, ranked from highest to lowest. Source: World Bank, from WHO age-standardised estimates.",
+      "value": "Tobacco use (% of adults)",
+      "facts": [
+        "World: {world}% of adults use tobacco ({worldYear}).",
+        "Highest: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Lowest in the list: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Tobacco use covers cigarettes, cigars, pipes, water pipes, and smokeless tobacco such as chewing tobacco and snus. E-cigarettes without tobacco are not counted.",
+        "The WHO age-standardises the rates, so a country with a young population is compared fairly with an older one. Men use tobacco far more than women in most countries."
+      ],
+      "faq": [
+        { "q": "Which country smokes the most?", "a": "{top1}, where {v1}% of adults used tobacco in {year1}, followed by {top2} ({v2}%) and {top3} ({v3}%)." },
+        { "q": "What share of the world's adults smoke?", "a": "{world}% of people aged 15 and over used tobacco in {worldYear}." },
+        { "q": "Which country has the lowest smoking rate?", "a": "In this list, {last}, at {vlast}% of adults." }
+      ]
+    },
+    "air-pollution": {
+      "name": "Air pollution (PM2.5) by country",
+      "title": "Most Polluted Countries {to}: PM2.5 Air Pollution by Country | cv.cm",
+      "description": "Average yearly exposure to fine particulate matter (PM2.5), µg/m³, for {rows} countries, ranked from most to least polluted. World {world} ({worldYear}). World Bank data, CSV download.",
+      "h1": "Air pollution by country, {to} (PM2.5, µg/m³)",
+      "lede": "Average yearly concentration of fine particles (PM2.5) in the air people breathe, weighted by where people live, for {rows} countries and areas, ranked from most to least polluted. Source: World Bank, from the Global Burden of Disease study.",
+      "value": "PM2.5 (µg/m³)",
+      "facts": [
+        "World: {world} µg/m³ ({worldYear}).",
+        "Most polluted: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Cleanest air in the list: {last} ({vlast})."
+      ],
+      "about": [
+        "PM2.5 are particles 2.5 micrometres or smaller, small enough to reach deep into the lungs. The WHO guideline is an annual average of 5 µg/m³; almost every country is above it.",
+        "These are modelled from satellites and ground monitors and weighted by population, so they describe what the average resident breathes, not the worst city. Desert dust counts too, which is why Gulf and Sahel countries rank high."
+      ],
+      "faq": [
+        { "q": "Which country has the worst air pollution?", "a": "{top1}, with an average PM2.5 exposure of {v1} µg/m³ in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "Which country has the cleanest air?", "a": "In this list, {last}, at {vlast} µg/m³." },
+        { "q": "What is a safe level of PM2.5?", "a": "The WHO's 2021 guideline is an annual average of 5 µg/m³. The world average was {world} µg/m³ in {worldYear}." }
       ]
     },
     "country-codes": {

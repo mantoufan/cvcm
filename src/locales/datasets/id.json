@@ -2,13 +2,13 @@
   "crumbHome": "Beranda",
   "hub": {
     "title": "Tabel Data Publik Gratis: Penduduk, PDB, Kode Negara | cv.cm",
-    "description": "Tabel data terbuka yang bisa dicari, diurutkan, dan diunduh sebagai CSV: jumlah penduduk, PDB, GNI, ekspor, inflasi, pengangguran, belanja militer, cadangan devisa, belanja R&D, angka harapan hidup, dokter, angka kelahiran dan kematian, migran, luas daratan dan hutan, emisi CO2, konsumsi listrik, energi terbarukan, penggunaan internet, ponsel, dan broadband, kode negara dan mata uang ISO, kode telepon, zona waktu, ukuran kertas, dan ASCII.",
+    "description": "Tabel data terbuka yang bisa dicari, diurutkan, dan diunduh sebagai CSV: penduduk, PDB dan PDB (PPP), PNB, ekspor, inflasi, pengangguran, kemiskinan dan ketimpangan pendapatan (Gini), belanja militer, cadangan devisa, belanja R&D, angka harapan hidup, dokter, melek huruf, tingkat pembunuhan dan bunuh diri, konsumsi alkohol dan tembakau, angka kelahiran dan kematian, migran, luas daratan dan hutan, emisi CO2, polusi udara, energi terbarukan, listrik, internet, ponsel dan broadband, kode negara dan mata uang ISO, kode telepon, zona waktu, ukuran kertas, dan ASCII.",
     "h1": "Data publik",
     "lede": "Tabel sederhana berisi data publik dari Bank Dunia, ISO, dan IANA. Cari, urutkan berdasarkan kolom apa pun, atau unduh CSV-nya. Setiap tabel mencantumkan sumber dan lisensinya.",
     "groups": {
       "economy": "Ekonomi",
       "people": "Penduduk dan kesehatan",
-      "planet": "Lahan, energi, dan internet",
+      "planet": "Lahan, lingkungan, energi, dan internet",
       "codes": "Kode dan standar",
       "reference": "Referensi cepat"
     },
@@ -23,6 +23,7 @@
     ]
   },
   "ui": {
+    "crisis": {"title": "Jika kamu berpikir untuk menyakiti diri sendiri", "body": "Kamu layak mendapat dukungan sekarang juga. Jika kamu mungkin bertindak berdasarkan pikiran ini, hubungi nomor darurat setempat atau pergi ke IGD terdekat. Kamu juga bisa menghubungi layanan krisis gratis dan rahasia: findahelpline.com mencantumkan layanan di setiap negara.", "lines": "Indonesia: layanan SEJIWA 119 ekstensi 8; dalam keadaan darurat hubungi 112."},
     "all": "Semua data",
     "search": "Saring baris",
     "searchPlaceholder": "Ketik negara, kode, atau nilai",
@@ -1028,6 +1029,202 @@
         { "q": "Negara mana yang langganan broadband per orangnya paling banyak?", "a": "{top1}, dengan {v1} per 100 penduduk pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
         { "q": "Berapa jumlah sambungan broadband tetap di dunia?", "a": "{world} per 100 penduduk pada {worldYear}." },
         { "q": "Apakah broadband termasuk internet seluler?", "a": "Tidak. Tabel ini menghitung sambungan tetap seperti fiber, kabel, dan DSL; paket data seluler dihitung terpisah." }
+      ]
+    },
+    "gdp-ppp": {
+      "name": "PDB (PPP) per negara",
+      "title": "PDB (PPP) per Negara {to}: Ekonomi Terbesar Menurut Daya Beli | cv.cm",
+      "description": "PDB berdasarkan paritas daya beli untuk {rows} perekonomian dalam dolar internasional berlaku, diurutkan, beserta pangsa dunia. Dunia {world} dolar int. ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "PDB (PPP) per negara, {to} (dolar internasional berlaku)",
+      "lede": "Produk domestik bruto berdasarkan paritas daya beli untuk {rows} perekonomian, dalam dolar internasional berlaku, diurutkan, beserta pangsa masing-masing terhadap total dunia. Sumber: Bank Dunia, dari International Comparison Program.",
+      "value": "PDB, PPP (Int$)",
+      "facts": [
+        "PDB dunia (PPP): {world} dolar int. ({worldYear}).",
+        "Ekonomi terbesar menurut daya beli: {top1} ({v1} dolar int.), {top2} ({v2} dolar int.) dan {top3} ({v3} dolar int.).",
+        "Terkecil dalam daftar: {last} ({vlast} dolar int.)."
+      ],
+      "about": [
+        "Satu dolar internasional membeli sekeranjang barang dan jasa yang sama di setiap negara seperti satu dolar AS di Amerika Serikat. Mengonversi PDB dengan cara ini menghilangkan perbedaan harga, sehingga negara dengan biaya hidup rendah berperingkat lebih tinggi daripada jika memakai kurs pasar.",
+        "PPP adalah ukuran yang lebih baik untuk seberapa banyak sebuah perekonomian benar-benar berproduksi dan berkonsumsi; PDB dengan kurs pasar lebih baik untuk mengukur apa yang bisa dibelinya di luar negeri."
+      ],
+      "faq": [
+        { "q": "Negara mana yang PDB PPP-nya terbesar?", "a": "{top1}, dengan {v1} dolar int. pada {year1}, disusul {top2} ({v2} dolar int.) dan {top3} ({v3} dolar int.)." },
+        { "q": "Apa bedanya PDB (PPP) dan PDB nominal?", "a": "PDB nominal mengonversi setiap perekonomian dengan kurs pasar. PDB (PPP) memakai kurs yang menyamakan harga barang yang sama di mana pun, sehingga yang dibandingkan adalah volume output, bukan nilainya dalam dolar." },
+        { "q": "Berapa PDB dunia berdasarkan PPP?", "a": "{world} pada {worldYear}, dalam dolar internasional berlaku." }
+      ]
+    },
+    "gini-index": {
+      "name": "Koefisien Gini per negara",
+      "title": "Koefisien Gini per Negara {to}: Peringkat Ketimpangan Pendapatan {rows} Negara | cv.cm",
+      "description": "Indeks Gini ketimpangan pendapatan atau konsumsi untuk {rows} negara, diurutkan dari yang paling timpang hingga paling merata. Tertinggi: {top1} ({v1}). Data Bank Dunia, unduh CSV.",
+      "h1": "Koefisien Gini per negara (ketimpangan pendapatan), {to}",
+      "lede": "Indeks Gini dari survei rumah tangga terbaru di {rows} negara, diurutkan dari yang paling timpang hingga paling merata. 0 berarti semua orang berpendapatan sama; 100 berarti satu orang memiliki seluruhnya. Sumber: Poverty and Inequality Platform Bank Dunia.",
+      "value": "Indeks Gini",
+      "facts": [
+        "Paling timpang: {top1} ({v1}, {year1}), {top2} ({v2}, {year2}) dan {top3} ({v3}, {year3}).",
+        "Paling merata dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Sebagian negara mengukur pendapatan dan sebagian lain mengukur konsumsi, yang tersebar lebih merata daripada pendapatan. Sebagian besar negara Asia dan Afrika menyurvei konsumsi, sehingga nilai Gini-nya tampak lebih rendah daripada jika diukur dari pendapatan; bandingkan negara yang memakai ukuran yang sama.",
+        "Survei dilakukan setiap beberapa tahun, jadi setiap baris menampilkan survei terbaru dalam sepuluh tahun terakhir. Bank Dunia tidak menerbitkan indeks Gini dunia."
+      ],
+      "faq": [
+        { "q": "Negara mana yang ketimpangan pendapatannya tertinggi?", "a": "{top1}, dengan indeks Gini {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Negara mana yang koefisien Gini-nya terendah?", "a": "Dalam daftar ini, {last}, sebesar {vlast}." },
+        { "q": "Berapa koefisien Gini yang baik?", "a": "Tidak ada nilai target. Sebagian besar negara Eropa berada di kisaran 25 hingga 35; nilai di atas 40 biasanya disebut ketimpangan tinggi, dan di atas 50 sangat tinggi." }
+      ]
+    },
+    "poverty-rate": {
+      "name": "Tingkat kemiskinan per negara",
+      "title": "Tingkat Kemiskinan per Negara {to}: Negara Termiskin di Dunia (US$3,00 per Hari) | cv.cm",
+      "description": "Persentase penduduk yang hidup dengan kurang dari US$3,00 per hari (PPP 2021) di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Tingkat kemiskinan ekstrem per negara, {to} (% di bawah US$3,00 per hari)",
+      "lede": "Persentase penduduk yang hidup dengan kurang dari US$3,00 per hari pada harga 2021, disesuaikan dengan daya beli, dari survei rumah tangga terbaru di {rows} negara, diurutkan dari tertinggi ke terendah. Sumber: Poverty and Inequality Platform Bank Dunia.",
+      "value": "Di bawah US$3,00 per hari (%)",
+      "facts": [
+        "Dunia: {world}% penduduk hidup dengan kurang dari US$3,00 per hari ({worldYear}).",
+        "Tingkat kemiskinan tertinggi: {top1} ({v1}%, {year1}), {top2} ({v2}%, {year2}) dan {top3} ({v3}%, {year3}).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "US$3,00 per hari adalah garis kemiskinan internasional Bank Dunia sejak 2025, yakni garis kemiskinan khas negara-negara termiskin, dikonversi dengan paritas daya beli 2021. Garis ini menggantikan garis US$2,15; garis kemiskinan nasional biasanya lebih tinggi.",
+        "Survei dilakukan setiap beberapa tahun, jadi setiap baris menampilkan survei terbaru dalam sepuluh tahun terakhir. Banyak negara berpendapatan tinggi tidak disurvei dengan garis ini dan tidak ada dalam daftar. Nilai 0.0 berarti survei hampir tidak menemukan orang di bawah garis tersebut."
+      ],
+      "faq": [
+        { "q": "Negara mana yang termiskin di dunia?", "a": "Berdasarkan persentase penduduk di bawah US$3,00 per hari: {top1} ({v1}% pada {year1}), {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Berapa banyak penduduk dunia yang hidup dalam kemiskinan ekstrem?", "a": "{world}% penduduk dunia hidup dengan kurang dari US$3,00 per hari pada {worldYear}." },
+        { "q": "Apa itu garis kemiskinan internasional?", "a": "US$3,00 per orang per hari pada paritas daya beli 2021, ditetapkan oleh Bank Dunia pada 2025." }
+      ]
+    },
+    "literacy-rate": {
+      "name": "Tingkat melek huruf per negara",
+      "title": "Tingkat Melek Huruf per Negara {to}: Melek Huruf Dewasa (15+) di {rows} Negara | cv.cm",
+      "description": "Tingkat melek huruf dewasa, % penduduk berusia 15 tahun ke atas, untuk {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data UNESCO melalui Bank Dunia, unduh CSV.",
+      "h1": "Tingkat melek huruf per negara, {to} (% penduduk dewasa 15+)",
+      "lede": "Persentase penduduk berusia 15 tahun ke atas yang dapat membaca dan menulis kalimat pendek sederhana tentang kehidupan sehari-hari, untuk {rows} negara dan wilayah, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari UNESCO Institute for Statistics.",
+      "value": "Tingkat melek huruf (%)",
+      "facts": [
+        "Dunia: {world}% penduduk dewasa dapat membaca dan menulis ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Sebagian besar negara berpendapatan tinggi sudah berhenti mengukur melek huruf dasar puluhan tahun lalu karena hampir semua orang pernah bersekolah; Amerika Serikat, Jepang, Jerman, Inggris, Prancis, dan Korea tidak ada dalam daftar karena alasan itu, bukan karena tingkatnya rendah.",
+        "Angka berasal dari sensus dan survei setiap beberapa tahun, jadi setiap baris menampilkan data terbaru dalam sepuluh tahun terakhir. Melek huruf biasanya dilaporkan sendiri, sehingga selisih kecil di dekat 100% tidak banyak artinya."
+      ],
+      "faq": [
+        { "q": "Negara mana yang tingkat melek hurufnya tertinggi?", "a": "{top1}, sebesar {v1}% pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Negara mana yang tingkat melek hurufnya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast}% penduduk dewasa dapat membaca dan menulis." },
+        { "q": "Berapa tingkat melek huruf dunia?", "a": "{world}% penduduk berusia 15 tahun ke atas pada {worldYear}." }
+      ]
+    },
+    "homicide-rate": {
+      "name": "Tingkat pembunuhan per negara",
+      "title": "Tingkat Pembunuhan per Negara {to}: Per 100.000 Penduduk, Negara Teraman dan Paling Berbahaya | cv.cm",
+      "description": "Pembunuhan disengaja per 100.000 penduduk di {rows} negara, diurutkan dari tertinggi ke terendah. Dunia {world} ({worldYear}). Data UNODC melalui Bank Dunia, unduh CSV.",
+      "h1": "Tingkat pembunuhan per negara, {to} (pembunuhan disengaja per 100.000 penduduk)",
+      "lede": "Jumlah pembunuhan disengaja untuk setiap 100.000 penduduk di {rows} negara dan wilayah, diurutkan dari yang paling rawan kekerasan hingga paling aman. Sumber: Bank Dunia, dari Kantor PBB untuk Narkoba dan Kejahatan (UNODC).",
+      "value": "Pembunuhan per 100.000",
+      "facts": [
+        "Dunia: {world} pembunuhan per 100.000 penduduk ({worldYear}).",
+        "Tingkat pembunuhan tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Pembunuhan disengaja adalah kematian yang sengaja disebabkan oleh orang lain, termasuk pembunuhan dalam kekerasan geng dan kekerasan dalam rumah tangga. Kematian dalam perang dan konflik bersenjata lain tidak dihitung, sehingga sebagian negara yang sedang berperang tampak lebih aman daripada kenyataannya.",
+        "Tingkat pembunuhan adalah angka kejahatan yang paling bisa dibandingkan antarnegara, karena jenazah sulit luput dari catatan; sebagian besar kejahatan lain bergantung pada apa yang dilaporkan warga ke polisi. Pulau kecil bisa berperingkat tinggi hanya karena segelintir kasus."
+      ],
+      "faq": [
+        { "q": "Negara mana yang tingkat pembunuhannya tertinggi?", "a": "{top1}, dengan {v1} pembunuhan per 100.000 penduduk pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Negara mana yang tingkat pembunuhannya terendah?", "a": "Dalam daftar ini, {last}, dengan {vlast} pembunuhan per 100.000 penduduk." },
+        { "q": "Berapa tingkat pembunuhan dunia?", "a": "{world} pembunuhan disengaja per 100.000 penduduk pada {worldYear}." }
+      ]
+    },
+    "suicide-rate": {
+      "name": "Tingkat bunuh diri per negara",
+      "title": "Tingkat Bunuh Diri per Negara {to}: Kematian per 100.000 Penduduk di {rows} Negara | cv.cm",
+      "description": "Kematian akibat bunuh diri per 100.000 penduduk di {rows} negara, diurutkan dari tertinggi ke terendah. Dunia {world} ({worldYear}). Data WHO melalui Bank Dunia, unduh CSV.",
+      "h1": "Tingkat bunuh diri per negara, {to} (kematian per 100.000 penduduk)",
+      "lede": "Kematian akibat bunuh diri dalam setahun untuk setiap 100.000 penduduk di {rows} negara, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari Global Health Estimates Organisasi Kesehatan Dunia (WHO).",
+      "value": "Bunuh diri per 100.000",
+      "facts": [
+        "Dunia: {world} kematian akibat bunuh diri per 100.000 penduduk ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Ini adalah estimasi WHO, bukan data mentah pencatatan kematian: banyak negara tidak mencatat setiap penyebab kematian, dan bunuh diri sering kurang dilaporkan di tempat yang memberinya stigma atau sanksi hukum. Angka yang rendah di sebagian negara sebagian mencerminkan hal itu."
+      ],
+      "faq": [
+        { "q": "Negara mana yang tingkat bunuh dirinya tertinggi?", "a": "{top1}, dengan {v1} kematian akibat bunuh diri per 100.000 penduduk pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Berapa tingkat bunuh diri dunia?", "a": "{world} kematian per 100.000 penduduk pada {worldYear}." },
+        { "q": "Mengapa tingkat bunuh diri suatu negara bisa kurang terhitung?", "a": "Di tempat bunuh diri dianggap aib atau tindak pidana, kematian sering dicatat dengan penyebab lain. WHO melakukan penyesuaian untuk hal ini, tetapi angka terendah adalah yang paling tidak pasti." }
+      ]
+    },
+    "alcohol-consumption": {
+      "name": "Konsumsi alkohol per negara",
+      "title": "Konsumsi Alkohol per Negara {to}: Liter per Orang per Tahun | cv.cm",
+      "description": "Liter alkohol murni per orang berusia 15+ per tahun di {rows} negara, diurutkan. Dunia {world} liter ({worldYear}). Data WHO melalui Bank Dunia, unduh CSV.",
+      "h1": "Konsumsi alkohol per negara, {to} (liter alkohol murni per orang berusia 15+)",
+      "lede": "Total alkohol yang diminum per orang berusia 15 tahun ke atas dalam setahun, dalam liter alkohol murni, tercatat dan tidak tercatat digabung, untuk {rows} negara, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari Organisasi Kesehatan Dunia (WHO).",
+      "value": "Liter per orang",
+      "facts": [
+        "Dunia: {world} liter alkohol murni per orang berusia 15+ ({worldYear}).",
+        "Tertinggi: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Terendah dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "Satu liter alkohol murni setara dengan sekitar 60 kaleng bir (330 ml, 5%) atau 10 botol anggur (750 ml, 13%). Angka ini mencakup alkohol buatan rumah dan selundupan, yang diestimasi oleh WHO, serta konsumsi oleh wisatawan, yang menaikkan angka destinasi wisata kecil.",
+        "Ini adalah proyeksi WHO; tahun terbaru adalah tahun yang diterbitkan Bank Dunia. Negara yang melarang alkohol dan melaporkan tepat nol tidak dimasukkan, karena nol itu berarti estimasi yang tidak tersedia, bukan hasil pengukuran."
+      ],
+      "faq": [
+        { "q": "Negara mana yang paling banyak minum alkohol?", "a": "{top1}, dengan {v1} liter alkohol murni per orang berusia 15+ pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Berapa banyak alkohol yang diminum rata-rata orang?", "a": "{world} liter alkohol murni per orang berusia 15+ di seluruh dunia pada {worldYear}. Satu liter setara sekitar 60 kaleng bir, jadi jika semuanya bir, itu beberapa ratus kaleng per tahun." },
+        { "q": "Negara mana yang paling sedikit minum alkohol?", "a": "Dalam daftar ini, {last}, sebesar {vlast} liter per orang." }
+      ]
+    },
+    "tobacco-use": {
+      "name": "Tingkat merokok per negara",
+      "title": "Tingkat Merokok per Negara {to}: Penggunaan Tembakau Orang Dewasa di {rows} Negara | cv.cm",
+      "description": "Persentase orang dewasa berusia 15+ yang saat ini menggunakan tembakau di {rows} negara, diurutkan. Dunia {world}% ({worldYear}). Data WHO melalui Bank Dunia, unduh CSV.",
+      "h1": "Tingkat merokok per negara, {to} (% orang dewasa yang menggunakan tembakau)",
+      "lede": "Persentase penduduk berusia 15 tahun ke atas yang saat ini merokok atau menggunakan produk tembakau lain, setiap hari atau tidak, di {rows} negara, diurutkan dari tertinggi ke terendah. Sumber: Bank Dunia, dari estimasi WHO yang distandardisasi menurut umur.",
+      "value": "Pengguna tembakau (% dewasa)",
+      "facts": [
+        "Dunia: {world}% orang dewasa menggunakan tembakau ({worldYear}).",
+        "Tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Terendah dalam daftar: {last} ({vlast}%)."
+      ],
+      "about": [
+        "Penggunaan tembakau mencakup rokok, cerutu, pipa, shisha, dan tembakau tanpa asap seperti tembakau kunyah dan snus. Rokok elektrik tanpa tembakau tidak dihitung.",
+        "WHO menstandardisasi angka menurut umur, sehingga negara dengan penduduk muda dibandingkan secara adil dengan negara yang penduduknya lebih tua. Di sebagian besar negara, laki-laki jauh lebih banyak menggunakan tembakau daripada perempuan."
+      ],
+      "faq": [
+        { "q": "Negara mana yang paling banyak perokoknya?", "a": "{top1}, dengan {v1}% orang dewasa menggunakan tembakau pada {year1}, disusul {top2} ({v2}%) dan {top3} ({v3}%)." },
+        { "q": "Berapa persen orang dewasa di dunia yang merokok?", "a": "{world}% penduduk berusia 15 tahun ke atas menggunakan tembakau pada {worldYear}." },
+        { "q": "Negara mana yang tingkat merokoknya terendah?", "a": "Dalam daftar ini, {last}, sebesar {vlast}% orang dewasa." }
+      ]
+    },
+    "air-pollution": {
+      "name": "Polusi udara (PM2.5) per negara",
+      "title": "Negara Paling Tercemar {to}: Polusi Udara PM2.5 per Negara | cv.cm",
+      "description": "Rata-rata paparan tahunan partikel halus (PM2.5), µg/m³, untuk {rows} negara, diurutkan dari yang paling tercemar hingga paling bersih. Dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "h1": "Polusi udara per negara, {to} (PM2.5, µg/m³)",
+      "lede": "Rata-rata konsentrasi tahunan partikel halus (PM2.5) di udara yang dihirup penduduk, dibobot menurut tempat tinggal penduduk, untuk {rows} negara dan wilayah, diurutkan dari yang paling tercemar hingga paling bersih. Sumber: Bank Dunia, dari studi Global Burden of Disease.",
+      "value": "PM2.5 (µg/m³)",
+      "facts": [
+        "Dunia: {world} µg/m³ ({worldYear}).",
+        "Paling tercemar: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Udara paling bersih dalam daftar: {last} ({vlast})."
+      ],
+      "about": [
+        "PM2.5 adalah partikel berukuran 2,5 mikrometer atau lebih kecil, cukup kecil untuk masuk jauh ke dalam paru-paru. Pedoman WHO adalah rata-rata tahunan 5 µg/m³; hampir semua negara berada di atasnya.",
+        "Angka ini dimodelkan dari satelit dan alat pemantau di darat serta dibobot menurut jumlah penduduk, sehingga menggambarkan udara yang dihirup rata-rata penduduk, bukan kota terburuk. Debu gurun juga dihitung, itulah sebabnya negara-negara Teluk dan Sahel berperingkat tinggi."
+      ],
+      "faq": [
+        { "q": "Negara mana yang polusi udaranya terburuk?", "a": "{top1}, dengan rata-rata paparan PM2.5 sebesar {v1} µg/m³ pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Negara mana yang udaranya paling bersih?", "a": "Dalam daftar ini, {last}, sebesar {vlast} µg/m³." },
+        { "q": "Berapa tingkat PM2.5 yang aman?", "a": "Pedoman WHO tahun 2021 adalah rata-rata tahunan 5 µg/m³. Rata-rata dunia adalah {world} µg/m³ pada {worldYear}." }
       ]
     },
     "country-codes": {

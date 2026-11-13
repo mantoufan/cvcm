@@ -6,7 +6,7 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, DATASET_FILES, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { DATASETS, DATASET_FILES, DATASET_SENSITIVE, DATASET_TOOLS, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
 import { ROW_FILES } from "../src/client/datasets/rows";
 import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, formatIndicator, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { applyHtmlSeo, pageCanonical } from "../src/shared/seo";
@@ -137,7 +137,7 @@ describe("data pages: tables", () => {
         expect(table.columns.every((c) => c.label), `${locale} ${id}`).toBe(true);
       }
     }
-  });
+  }, 30_000); // 59 tables × 8 locales, every cell through Intl: slow on a cold run.
 
   it("ranks indicators and shows shares that add up to under 100%", () => {
     const table = datasetTable("en", "population", rows("population"));
@@ -163,10 +163,27 @@ describe("data pages: tables", () => {
     expect(formatIndicator("en", "gdp", 1.5e12)).toBe("$1.50T");
   });
 
+  it("shows the tests' crisis helplines on self-harm tables, word for word, and no tool links there", async () => {
+    for (const locale of LOCALES) {
+      const quiz = (await import(`../src/locales/quiz/${locale}.json`)).default.ui;
+      expect(datasetMessages(locale).ui.crisis, locale).toEqual({ title: quiz.crisisTitle, body: quiz.crisisBody, lines: quiz.crisisLines });
+    }
+    for (const id of DATASET_SENSITIVE) {
+      expect(DATASET_TOOLS[id], id).toBeUndefined();
+      expect(datasetStaticHtml("en", id)).toContain('class="quiz-crisis"');
+    }
+    expect(datasetStaticHtml("en", "gdp")).not.toContain("quiz-crisis");
+  });
+
+  it("shows GDP at PPP in international dollars without a US dollar sign", () => {
+    expect(formatIndicator("en", "gdp-ppp", 41259823532528)).toBe("41.26T");
+    expect(formatIndicator("zh-CN", "gdp-ppp", 41259823532528)).not.toMatch(/\$|US/);
+  });
+
   it("gives every indicator a known format, a row file and a reason for each data filter", () => {
     for (const id of INDICATORS) {
       const spec = INDICATOR_SPEC[id];
-      expect([undefined, "usd", "usd-compact"], id).toContain(spec.format);
+      expect([undefined, "usd", "usd-compact", "compact"], id).toContain(spec.format);
       expect(Number.isInteger(spec.decimals), id).toBe(true);
       if (spec.maxAge !== undefined || spec.floor !== undefined || spec.skip) expect(spec.why, id).toBeTruthy();
     }
