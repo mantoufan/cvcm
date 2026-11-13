@@ -151,9 +151,10 @@ export function inNumber(strokes: ReadonlyArray<readonly [number, number, number
 /** Dots packed in the unit disc by dart throwing (seeded), large first; about 700 for a plate. */
 export function packDots(rand: () => number): Array<{ x: number; y: number; r: number }> {
   const dots: Array<{ x: number; y: number; r: number }> = [];
-  const cell = 0.1;
-  const grid = new Map<string, number[]>();
-  const key = (gx: number, gy: number) => `${gx},${gy}`;
+  // A cell at least as wide as the largest spacing tested (two 0.05 dots + 0.006), so neighbours are enough.
+  const cell = 0.11;
+  const grid = new Map<number, number[]>();
+  const key = (gx: number, gy: number) => (gx + 16) * 64 + (gy + 16);
   for (const [rMax, tries] of [[0.05, 1400], [0.036, 2600], [0.026, 4200], [0.018, 5200]] as const) {
     for (let k = 0; k < tries; k++) {
       const r = rMax * (0.8 + rand() * 0.2);

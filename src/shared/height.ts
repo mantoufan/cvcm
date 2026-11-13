@@ -6,7 +6,6 @@ import { STATURE_BOYS, STATURE_GIRLS, type LmsRow } from "./height-cdc";
 
 export type Sex = "boy" | "girl";
 
-export const CM_PER_INCH = 2.54;
 /** Tanner's mid-parental target: the parents' mean ± 6.5 cm for the child's sex. */
 export const SEX_OFFSET_CM = 6.5;
 /** Tanner's target range: about two standard deviations, ±8.5 cm. */
@@ -64,10 +63,5 @@ export function percentileProjection(sex: Sex, months: number, cm: number): { z:
   return { z, percentile: normalCdf(z) * 100, adultCm: heightAtZ(z, lmsAt(sex, MAX_AGE_MONTHS)) };
 }
 
-/** Centimetres → whole feet and inches to one decimal (5 ft 9.3 in), carrying 12 in to the next foot. */
-export function toFeetInches(cm: number): { ft: number; inch: number } {
-  const totalTenths = Math.round((cm / CM_PER_INCH) * 10);
-  return { ft: Math.floor(totalTenths / 120), inch: (totalTenths % 120) / 10 };
-}
-
-export const fromFeetInches = (ft: number, inch: number) => (ft * 12 + inch) * CM_PER_INCH;
+/** Feet and inches as the other height tools show them (ideal weight, TDEE): one converter for the site. */
+export { cmToFeetInches as toFeetInches, feetInchesToCm as fromFeetInches } from "./tdee";

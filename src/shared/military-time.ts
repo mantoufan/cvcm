@@ -18,13 +18,24 @@ const PARTS: Record<Part, readonly string[]> = {
   /** Night: 12 is midnight, 1–5 the small hours, 6–11 PM (夜里2点 02:00, 夜9時 21:00, 밤 9시 21:00). */
   night: ["夜里", "夜裡", "深夜", "夜晚", "夜", "밤", "đêm", "midnight"],
 };
-/** Latin and Vietnamese abbreviations, only after the time ("2 pm", "9:05 SA"). */
-const LATIN: Record<"am" | "pm", RegExp> = { am: /^(a\.?m\.?|a|s\.?a\.?)$/i, pm: /^(p\.?m\.?|p|c\.?h\.?)$/i };
+/**
+ * Abbreviations, as regex sources: English (a.m., pm, a) only after the time ("2 pm"); Vietnamese SA/CH either side
+ * ("9:05 SA", "SA 9:05"). These sources build the split patterns and the lookup alike.
+ */
+const ABBR = {
+  en: { am: String.raw`a\.?\s?m\.?|a`, pm: String.raw`p\.?\s?m\.?|p` },
+  vi: { am: String.raw`s\.?a\.?`, pm: String.raw`c\.?h\.?` },
+};
+const LATIN: Record<"am" | "pm", RegExp> = {
+  am: new RegExp(`^(${ABBR.en.am}|${ABBR.vi.am})$`, "i"),
+  pm: new RegExp(`^(${ABBR.en.pm}|${ABBR.vi.pm})$`, "i"),
+};
 const esc = (w: string) => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 // Longest first, so 夜里 wins over 夜.
 const WORDS = Object.values(PARTS).flat().sort((x, y) => y.length - x.length).map(esc).join("|");
-const TAIL = new RegExp(String.raw`^(.*?)\s*([ap]\.?\s?m\.?|[ap]|s\.?a\.?|c\.?h\.?|${WORDS})$`, "i");
-const HEAD = new RegExp(String.raw`^(${WORDS}|s\.?a\.?|c\.?h\.?)\s*(.*)$`, "i");
+const VI = `${ABBR.vi.am}|${ABBR.vi.pm}`;
+const TAIL = new RegExp(String.raw`^(.*?)\s*(${ABBR.en.am}|${ABBR.en.pm}|${VI}|${WORDS})$`, "i");
+const HEAD = new RegExp(String.raw`^(${WORDS}|${VI})\s*(.*)$`, "i");
 
 function partOf(marker: string): Part | null {
   const m = marker.replace(/\s/g, "").toLowerCase();
@@ -86,7 +97,6 @@ export function parseTime(raw: string): ClockTime | null {
     .replace(/\s*(?:[时時시点點]|giờ)(?=\s*\D*$)/gi, "")
     .trim();
   if (!text) return null;
-  text = text.replace(/(\d)h(\d)/i, "$1:$2");
   const split = splitMeridiem(text);
   if (!split) return null;
   const { clock, part } = split;
@@ -126,11 +136,6 @@ export function military(t: ClockTime): string {
 export function colon24(t: ClockTime): string {
   if (t.endOfDay) return "24:00";
   return `${two(t.h)}:${two(t.m)}${t.s !== null ? `:${two(t.s)}` : ""}`;
-}
-
-/** 12-hour parts: hour 1–12, minutes, seconds and whether it is PM. */
-export function twelve(t: ClockTime): { h: number; m: number; s: number | null; pm: boolean } {
-  return { h: t.h % 12 || 12, m: t.m, s: t.s, pm: t.h >= 12 };
 }
 
 const ONES = ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];

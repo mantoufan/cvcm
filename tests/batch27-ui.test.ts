@@ -163,7 +163,7 @@ describe("sudoku ui", () => {
     window.localStorage.setItem("cvcm.sudoku.v1", JSON.stringify({ seed: 2027, level: "medium", clues: toLine(p.clues), cells, notes: new Array(81).fill(0), elapsed: 90, hints: 1 }));
     mountSudoku(host);
     q<HTMLButtonElement>("[data-action=hint]").click();
-    expect(q("[data-out=status]").textContent).toBe("Solved in 1:30 with 2 hints.");
+    expect(q("[data-out=status]").textContent).toBe("Solved in 1:30. Hints used: 2.");
     q<HTMLButtonElement>("[data-action=restart]").click();
     expect(q("[data-out=time]").textContent).toBe("0:00");
     // The new attempt runs longer than the old one; Undo still brings back the old clock.
@@ -173,7 +173,7 @@ describe("sudoku ui", () => {
     expect(q("[data-out=time]").textContent).toBe("3:20");
     q<HTMLButtonElement>("[data-action=undo]").click();
     q<HTMLButtonElement>("[data-action=undo]").click();
-    expect(q("[data-out=status]").textContent).toBe("Solved in 1:30 with 2 hints.");
+    expect(q("[data-out=status]").textContent).toBe("Solved in 1:30. Hints used: 2.");
     unmountSudoku();
     host.replaceChildren();
     window.localStorage.clear();

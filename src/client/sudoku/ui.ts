@@ -255,9 +255,10 @@ export function mountSudoku(host: HTMLElement): void {
     cells = prev.cells;
     notes = prev.notes;
     // Undoing Start over brings back that attempt's clock and hints, and a finished grid is finished again.
+    // An undone hint no longer counts; the clock only goes back across Start over.
+    hints = prev.hints;
     if (prev.restart) {
       elapsed = prev.elapsed;
-      hints = prev.hints;
       timeEl.textContent = clock(elapsed);
     }
     solved = false;

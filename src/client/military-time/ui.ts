@@ -6,10 +6,18 @@ import { CHART_HOURS, colon24, military, parseTime, spoken, type ClockTime } fro
 let mounted: { cleanup: () => void } | null = null;
 
 /** The 12-hour form in the page's language ("2:30 PM", "下午2:30"), from a fixed UTC date so it never shifts. */
+const formats = new Map<string, Intl.DateTimeFormat>();
+
 export function twelveHour(loc: string, time: ClockTime): string {
-  const opts: Intl.DateTimeFormatOptions = { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "UTC" };
-  if (time.s !== null) opts.second = "2-digit";
-  return new Intl.DateTimeFormat(loc, opts).format(Date.UTC(2000, 0, 1, time.h, time.m, time.s ?? 0));
+  const key = `${loc}|${time.s !== null}`;
+  let fmt = formats.get(key);
+  if (!fmt) {
+    const opts: Intl.DateTimeFormatOptions = { hour: "numeric", minute: "2-digit", hour12: true, timeZone: "UTC" };
+    if (time.s !== null) opts.second = "2-digit";
+    fmt = new Intl.DateTimeFormat(loc, opts);
+    formats.set(key, fmt);
+  }
+  return fmt.format(Date.UTC(2000, 0, 1, time.h, time.m, time.s ?? 0));
 }
 
 export function mountMilitaryTime(host: HTMLElement): void {
@@ -20,7 +28,7 @@ export function mountMilitaryTime(host: HTMLElement): void {
   const input = h("input", {
     type: "text",
     autocomplete: "off",
-    spellcheck: false,
+    spellcheck: "false",
     "data-field": "time",
     value: "1430",
     "aria-label": t("militaryTime.input"),
