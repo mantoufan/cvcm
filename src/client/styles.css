@@ -612,6 +612,30 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .kb-about { margin-top: 2rem; color: var(--ink-soft); }
 /* Slang hub: a plain text jump list to the groups. */
 .slang-jump { margin: 0.25rem 0 1rem; color: var(--ink-soft); font-size: 0.9rem; line-height: 1.8; }
+/* Meme pages: weekly popularity bars, a direction badge, and (outside zh-CN) a coin panel with a risk note. */
+.meme-trend, .meme-coin { margin: 1.25rem 0 0; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius); }
+.meme-trend h2, .meme-coin h2 { margin: 0 0 0.5rem; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.meme-trend-row { display: flex; align-items: flex-end; gap: 1rem; flex-wrap: wrap; }
+.meme-trend-row p { margin: 0; color: var(--ink-soft); }
+.meme-trend-row strong { color: var(--ink); font-size: 1.3rem; }
+.meme-spark { max-width: 100%; height: auto; fill: var(--pink-deep); }
+.meme-dir { display: inline-block; padding: 0.05rem 0.45rem; border-radius: 999px; font-size: 0.75rem; font-weight: 600; border: 1px solid var(--line); color: var(--ink-soft); }
+.meme-dir-up { color: #0a7a3d; border-color: currentColor; }
+.meme-dir-down { color: #9a4a00; border-color: currentColor; }
+.meme-note { margin: 0.5rem 0 0; color: var(--ink-soft); font-size: 0.82rem; }
+.meme-coin-name { margin: 0; }
+.meme-coin-name span { color: var(--ink-soft); }
+.meme-coin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); gap: 0.5rem; margin: 0.6rem 0 0; }
+.meme-coin-grid dt { color: var(--ink-soft); font-size: 0.8rem; }
+.meme-coin-grid dd { margin: 0; font-weight: 600; }
+.meme-coin .up, .meme-coins .up { color: #0a7a3d; }
+.meme-coin .down, .meme-coins .down { color: #b42318; }
+.meme-trending .links strong { display: inline; margin-right: 0.4rem; }
+.meme-trending .links .meme-dir { display: inline-block; width: auto; margin: 0; vertical-align: 0.1em; }
+.meme-trending .links span:last-child { display: block; }
+.meme-coins .table-wrap { overflow-x: auto; }
+.meme-coins table { border-collapse: collapse; width: 100%; font-size: 0.92rem; }
+.meme-coins th, .meme-coins td { padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--line); text-align: left; }
 
 /* Reference pages: photos are content (hotlinked from s1.mtf6.com), plain grid, no shadows. */
 .ref-aka { margin: 0.3rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }

@@ -8,7 +8,7 @@ import { LOCALES, type Locale } from "../src/shared/locale";
 import { preloadLocalePack } from "../src/shared/locale-preload";
 import { messages, slangMessages } from "../src/shared/messages";
 import { parseAppPath, slangHref } from "../src/shared/path";
-import { SLANG_ENTRIES, SLANG_FOCUS, SLANG_GROUPS, SLANG_META, SLANG_PUBLISHED, SLANG_UPDATED, isSlangId, slangGroupOf } from "../src/shared/slang";
+import { SLANG_ENTRIES, SLANG_FOCUS, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, isSlangId, slangGroupOf, slangPublished } from "../src/shared/slang";
 import { slangArticleJsonLd, slangCopy, slangPageHtml, slangTitle, type SlangEntryCopy } from "../src/shared/slang-i18n";
 import { slangSyncFiles } from "../src/shared/slang-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
@@ -90,8 +90,8 @@ describe("slang: content", () => {
         const path = `src/locales/slang/${locale}/${id}.json`;
         expect(existsSync(join(root, path)), path).toBe(true);
         const copy = readJson(path) as SlangEntryCopy;
-        // Chinese-origin entries are mastered in zh-CN, English ones in en: translations keep the master's sections and block kinds.
-        const master = readJson(`src/locales/slang/${SLANG_META[id].origin === "en" ? "en" : "zh-CN"}/${id}.json`) as SlangEntryCopy;
+        // Chinese-origin entries are mastered in zh-CN, English and worldwide memes in en: translations keep the master's sections and block kinds.
+        const master = readJson(`src/locales/slang/${SLANG_META[id].origin === "zh" || SLANG_META[id].origin === "yue" ? "zh-CN" : "en"}/${id}.json`) as SlangEntryCopy;
         expect(Object.keys(copy).sort(), path).toEqual(Object.keys(master).sort());
         // en and zh-CN were both written from sources (the other is not a translation of the master), so only the six translated locales must match.
         if (locale !== "en" && locale !== "zh-CN") expect(structure(copy), path).toEqual(structure(master));
@@ -129,9 +129,10 @@ describe("slang: content", () => {
   }, 30_000);
 
   it("puts the searched phrase at the start of each Chinese title", () => {
+    // Words are searched as "X是什么意思", memes as "X是什么梗".
     for (const id of SLANG_ENTRIES) {
-      expect(slangCopy("zh-CN", id).title, id).toMatch(/是什么意思/);
-      expect(slangCopy("zh-TW", id).title, id).toMatch(/是什麼意思/);
+      expect(slangCopy("zh-CN", id).title, id).toMatch(/是什么(意思|梗)/);
+      expect(slangCopy("zh-TW", id).title, id).toMatch(/是什麼(意思|梗)/);
     }
   });
 
@@ -181,15 +182,15 @@ describe("slang: slang:sync (run `npm run slang:sync` after editing entries)", (
 
 describe("slang: routes", () => {
   it("parses and round-trips locale and bare paths", () => {
-    expect(parseAppPath("/en/slang/")).toEqual({ kind: "slang", locale: "en", entry: null });
-    expect(parseAppPath("/zh-cn/slang/334424044/")).toEqual({ kind: "slang", locale: "zh-CN", entry: "334424044" });
-    expect(parseAppPath("/slang/")).toEqual({ kind: "bare-slang", entry: null });
-    expect(parseAppPath("/slang/yyds")).toEqual({ kind: "bare-slang", entry: "yyds" });
-    expect(parseAppPath("/en/slang/nope/")).toEqual({ kind: "unknown" });
-    expect(parseAppPath("/en/slang/yyds/x/")).toEqual({ kind: "unknown" });
-    expect(parseAppPath("/en/slang/FOMO/")).toEqual({ kind: "slang", locale: "en", entry: "fomo" });
-    expect(slangHref("zh-TW")).toBe("/zh-tw/slang/");
-    expect(slangHref("ja", "67")).toBe("/ja/slang/67/");
+    expect(parseAppPath("/en/memes/")).toEqual({ kind: "slang", locale: "en", entry: null });
+    expect(parseAppPath("/zh-cn/memes/334424044/")).toEqual({ kind: "slang", locale: "zh-CN", entry: "334424044" });
+    expect(parseAppPath("/memes/")).toEqual({ kind: "bare-slang", entry: null });
+    expect(parseAppPath("/memes/yyds")).toEqual({ kind: "bare-slang", entry: "yyds" });
+    expect(parseAppPath("/en/memes/nope/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/memes/yyds/x/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/memes/FOMO/")).toEqual({ kind: "slang", locale: "en", entry: "fomo" });
+    expect(slangHref("zh-TW")).toBe("/zh-tw/memes/");
+    expect(slangHref("ja", "67")).toBe("/ja/memes/67/");
     for (const locale of LOCALES) {
       expect(parseAppPath(slangHref(locale))).toEqual({ kind: "slang", locale, entry: null });
       for (const id of SLANG_ENTRIES) expect(parseAppPath(slangHref(locale, id))).toEqual({ kind: "slang", locale, entry: id });
@@ -198,28 +199,35 @@ describe("slang: routes", () => {
 
   it("redirects bare paths, adds the slash, 404s unknown entries and serves the page", async () => {
     const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
-    const bare = await worker.fetch(new Request("https://cv.cm/slang/yyds/", { headers: { "Accept-Language": "zh-CN" } }), { ASSETS: assets });
+    const bare = await worker.fetch(new Request("https://cv.cm/memes/yyds/", { headers: { "Accept-Language": "zh-CN" } }), { ASSETS: assets });
     expect(bare.status).toBe(302);
-    expect(bare.headers.get("Location")).toBe("https://cv.cm/zh-cn/slang/yyds/");
-    const slash = await worker.fetch(new Request("https://cv.cm/en/slang/yyds"), { ASSETS: assets });
+    expect(bare.headers.get("Location")).toBe("https://cv.cm/zh-cn/memes/yyds/");
+    const slash = await worker.fetch(new Request("https://cv.cm/en/memes/yyds"), { ASSETS: assets });
     expect(slash.status).toBe(301);
-    expect(slash.headers.get("Location")).toBe("https://cv.cm/en/slang/yyds/");
-    const upper = await worker.fetch(new Request("https://cv.cm/en/slang/FOMO/"), { ASSETS: assets });
+    expect(slash.headers.get("Location")).toBe("https://cv.cm/en/memes/yyds/");
+    const upper = await worker.fetch(new Request("https://cv.cm/en/memes/FOMO/"), { ASSETS: assets });
     expect(upper.status).toBe(301);
-    expect(upper.headers.get("Location")).toBe("https://cv.cm/en/slang/fomo/");
-    const unknown = await worker.fetch(new Request("https://cv.cm/en/slang/nope/"), { ASSETS: assets });
+    expect(upper.headers.get("Location")).toBe("https://cv.cm/en/memes/fomo/");
+    // The column launched at /slang/ (2026-11-10): old links 301 to /memes/.
+    const legacy = await worker.fetch(new Request("https://cv.cm/ja/slang/yyds/"), { ASSETS: assets });
+    expect(legacy.status).toBe(301);
+    expect(legacy.headers.get("Location")).toBe("https://cv.cm/ja/memes/yyds/");
+    const legacyHub = await worker.fetch(new Request("https://cv.cm/en/slang/"), { ASSETS: assets });
+    expect(legacyHub.status).toBe(301);
+    expect(legacyHub.headers.get("Location")).toBe("https://cv.cm/en/memes/");
+    const unknown = await worker.fetch(new Request("https://cv.cm/en/memes/nope/"), { ASSETS: assets });
     expect(unknown.status).toBe(404);
-    const hub = await worker.fetch(new Request("https://cv.cm/es/slang/"), { ASSETS: assets });
+    const hub = await worker.fetch(new Request("https://cv.cm/es/memes/"), { ASSETS: assets });
     expect(hub.status).toBe(200);
     const hubHtml = await hub.text();
     expect(hubHtml).toContain(`<title>${pageTitle("es", { slang: true }).replace(/&/g, "&amp;")}</title>`);
     expect(hubHtml).toContain('<meta property="og:type" content="website" />');
-    const page = await worker.fetch(new Request("https://cv.cm/zh-cn/slang/334424044/"), { ASSETS: assets });
+    const page = await worker.fetch(new Request("https://cv.cm/zh-cn/memes/334424044/"), { ASSETS: assets });
     expect(page.status).toBe(200);
     const html = await page.text();
-    expect(html).toContain('<link rel="canonical" href="https://cv.cm/zh-cn/slang/334424044/"');
+    expect(html).toContain('<link rel="canonical" href="https://cv.cm/zh-cn/memes/334424044/"');
     expect(html).toContain('<meta property="og:type" content="article" />');
-    expect(html).toContain('hreflang="x-default" href="https://cv.cm/en/slang/334424044/"');
+    expect(html).toContain('hreflang="x-default" href="https://cv.cm/en/memes/334424044/"');
     expect(html).toContain("334424044是什么意思");
     for (const id of ["breadcrumb-jsonld", "faq-jsonld", "article-jsonld"]) expect(html).toContain(`id="${id}"`);
     expect(html).not.toContain('id="howto-jsonld"');
@@ -231,11 +239,11 @@ describe("slang: routes", () => {
     const xml = buildSitemapXml(pages);
     expect(xml.match(/<url>/g)?.length).toBe(LOCALES.length * (SLANG_ENTRIES.length + 1));
     expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (SLANG_ENTRIES.length + 1));
-    expect(xml).toContain(`<loc>https://cv.cm/vi/slang/yyds/</loc>\n    <lastmod>${SLANG_UPDATED.yyds ?? SLANG_PUBLISHED}</lastmod>`);
-    expect(xml).toContain('hreflang="zh-TW" href="https://cv.cm/zh-tw/slang/rizz/"');
+    expect(xml).toContain(`<loc>https://cv.cm/vi/memes/yyds/</loc>\n    <lastmod>${SLANG_UPDATED.yyds ?? slangPublished("yyds")}</lastmod>`);
+    expect(xml).toContain('hreflang="zh-TW" href="https://cv.cm/zh-tw/memes/rizz/"');
     expect(readFileSync(join(root, "public/sitemaps/slang.xml"), "utf8")).toBe(xml);
     expect(readFileSync(join(root, "public/sitemap.xml"), "utf8")).toContain("https://cv.cm/sitemaps/slang.xml");
-    expect(isTrackedPath("/en/slang/yyds/")).toBe(true);
+    expect(isTrackedPath("/en/memes/yyds/")).toBe(true);
   });
 });
 
@@ -266,23 +274,23 @@ describe("slang: page HTML and SEO", () => {
       expect(slangTitle(locale, "yyds")).toBe(`${slangCopy(locale, "yyds").title} — cv.cm`);
       expect(pageTitle(locale, { slang: true })).toBe(`${slangMessages(locale).hub.title} — cv.cm`);
     }
-    expect(pageCanonical("en", { slang: true })).toBe("https://cv.cm/en/slang/");
+    expect(pageCanonical("en", { slang: true })).toBe("https://cv.cm/en/memes/");
     for (const locale of LOCALES) {
       expect(pageDescription(locale, { slang: true }), locale).toContain(String(SLANG_ENTRIES.length));
       expect(pageDescription(locale, { slang: true }), locale).not.toContain("{n}");
     }
-    expect(pageCanonical("zh-CN", { slang: true, slangId: "neijuan" })).toBe("https://cv.cm/zh-cn/slang/neijuan/");
+    expect(pageCanonical("zh-CN", { slang: true, slangId: "neijuan" })).toBe("https://cv.cm/zh-cn/memes/neijuan/");
     const ld = slangArticleJsonLd("ko", "rizz") as Record<string, unknown>;
     expect(ld["@type"]).toBe("Article");
-    expect(ld.datePublished).toBe(SLANG_PUBLISHED);
+    expect(ld.datePublished).toBe(slangPublished("334424044"));
     expect(ld.inLanguage).toBe("ko");
     expect(ld.headline).toBe(slangCopy("ko", "rizz").h1);
-    expect(ld.about).toMatchObject({ "@type": "DefinedTerm", name: slangCopy("ko", "rizz").name, inDefinedTermSet: { "@id": "https://cv.cm/ko/slang/#terms" } });
+    expect(ld.about).toMatchObject({ "@type": "DefinedTerm", name: slangCopy("ko", "rizz").name, inDefinedTermSet: { "@id": "https://cv.cm/ko/memes/#terms" } });
     expect(ld.articleSection).toBe(slangMessages("ko").hub.groups[slangGroupOf("rizz")]);
     const hub = slangArticleJsonLd("en", null) as { "@type": string; mainEntity: { "@type": string; "@id": string; hasDefinedTerm: unknown[] } };
     expect(hub["@type"]).toBe("CollectionPage");
     expect(hub.mainEntity["@type"]).toBe("DefinedTermSet");
-    expect(hub.mainEntity["@id"]).toBe("https://cv.cm/en/slang/#terms");
+    expect(hub.mainEntity["@id"]).toBe("https://cv.cm/en/memes/#terms");
     expect(hub.mainEntity.hasDefinedTerm.length).toBe(SLANG_ENTRIES.length);
     const html = applyHtmlSeo(SHELL, "id", { slang: true, slangId: "yyds" });
     expect(html).toContain('<div id="app"><nav class="device-crumb"');
@@ -290,7 +298,7 @@ describe("slang: page HTML and SEO", () => {
   });
 
   it("has the nav label in every core pack", () => {
-    const expected: Record<Locale, string> = { en: "Slang", "zh-CN": "流行语", "zh-TW": "流行語", ja: "スラング", ko: "신조어", vi: "Tiếng lóng", id: "Bahasa gaul", es: "Jerga" };
+    const expected: Record<Locale, string> = { en: "Memes", "zh-CN": "热梗", "zh-TW": "迷因", ja: "ミーム", ko: "밈", vi: "Meme", id: "Meme", es: "Memes" };
     for (const locale of LOCALES) expect((messages(locale).ui.nav as Record<string, string>).slang).toBe(expected[locale]);
   });
 });

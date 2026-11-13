@@ -231,7 +231,7 @@ export function buildLlmsTxt(): string {
     `- [Datasets](${SITE_ORIGIN}${datasetHref("en", null)}): ${DATASETS.length} public reference tables, each also a CSV (for example ${SITE_ORIGIN}${csvHref(DATASETS[0])}).`,
     `- [Rankings](${SITE_ORIGIN}${rankingHref("en", null)}): ${RANKINGS.length} sourced rankings: AI models, market share of browsers, operating systems, search engines, phones and social media, the top 100 cryptocurrencies, commodity prices, currencies against the US dollar, and the tallest mountains, longest rivers, largest lakes and largest islands. Most are also a CSV (for example ${SITE_ORIGIN}${rankingCsvHref(RANKINGS[0])}).`,
     `- [Pose & style reference](${SITE_ORIGIN}${refHref("en", null)}): ${REF_ENTRIES.length} entries on hairstyles, hair colours, expressions, hand gestures, outfits, poses and camera angles, with credited photos linked from mfan8.com and English prompt keywords.`,
-    `- [Slang dictionary](${SITE_ORIGIN}${slangHref("en", null)}): ${SLANG_ENTRIES.length} Chinese and English internet slang words (yyds, neijuan, PUA, rizz, 6 7…): meaning, origin, examples and similar words, in eight languages.`,
+    `- [Memes](${SITE_ORIGIN}${slangHref("en", null)}): ${SLANG_ENTRIES.length} viral memes and internet slang words (Tung Tung Tung Sahur, Pepe, Chill Guy, aura, yyds, neijuan, 6 7…): meaning, dated origin timeline, usage and current popularity from Wikipedia page views, in eight languages.`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,
     `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): free homebrew games playable in the browser.`,
     `- [Sitemap](${SITE_ORIGIN}/sitemap.xml)`,

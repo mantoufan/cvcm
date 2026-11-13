@@ -6,7 +6,7 @@ import { KB_ARTICLES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type 
 import { DATASET_SNAPSHOT, DATASETS, datasetUpdated, type DatasetId } from "./datasets";
 import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
-import { SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, type SlangId } from "./slang";
+import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublished, type SlangId } from "./slang";
 import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
@@ -157,8 +157,8 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "ranking") return page.ranking ? rankingMeta(page.ranking).updated : RANKING_SNAPSHOT;
   if (page.kind === "ref" && page.entry) return REF_UPDATED[page.entry] ?? null;
   if (page.kind === "slang") {
-    if (page.entry) return SLANG_UPDATED[page.entry] ?? SLANG_PUBLISHED;
-    return [SLANG_PUBLISHED, ...Object.values(SLANG_UPDATED)].sort().at(-1) ?? SLANG_PUBLISHED;
+    if (page.entry) return SLANG_UPDATED[page.entry] ?? slangPublished(page.entry);
+    return [SLANG_PUBLISHED, ...Object.values(SLANG_ADDED), ...Object.values(SLANG_UPDATED)].sort().at(-1) ?? SLANG_PUBLISHED;
   }
   return null;
 }

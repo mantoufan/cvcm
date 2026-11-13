@@ -4,7 +4,8 @@ import { fill } from "./fill";
 import { PUBLISHER, blockHtml, dateLabel, inline, linkListHtml, type KbBlock } from "./kb-i18n";
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
-import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, SLANG_PUBLISHED, SLANG_UPDATED, slangGroupOf, type SlangId } from "./slang";
+import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, slangGroupOf, slangPublished, type SlangId } from "./slang";
+import memeData from "./meme-data.json";
 import { HREFLANG } from "./sitemap";
 
 /** One entry's copy, `src/locales/slang/<locale>/<id>.json`. Blocks are the kb blocks (backticks are the only inline markup). */
@@ -55,7 +56,135 @@ export function slangFaqItems(locale: Locale, id: SlangId | null): { q: string; 
 }
 
 export function slangUpdated(id: SlangId): string {
-  return SLANG_UPDATED[id] ?? SLANG_PUBLISHED;
+  return SLANG_UPDATED[id] ?? slangPublished(id);
+}
+
+/** Daily snapshot from `scripts/fetch-meme.mjs`: weekly Wikipedia views per entry and coins named after a meme. */
+export type MemeTrend = { w: number[]; dir: "up" | "flat" | "down"; to: string };
+export type MemeCoin = { cmc: number; slug: string; symbol: string; name: string; price: number; cap: number; d1: number; d7: number; added: string; rank: number | null };
+export type MemeData = { asOf: string | null; trend: Record<string, MemeTrend>; coins: Record<string, MemeCoin>; coinsAsOf: string | null };
+export const MEME_DATA = memeData as MemeData;
+
+/**
+ * Coin prices are never shown in Simplified Chinese: mainland rules (PBoC et al. 2021 notice) bar commercial display and
+ * promotion of virtual currencies, and most zh-CN readers are in the mainland.
+ */
+export function showsCoins(locale: Locale): boolean {
+  return locale !== "zh-CN";
+}
+
+export function memeTrend(id: SlangId): MemeTrend | null {
+  const t = MEME_DATA.trend[id];
+  return t && t.w.length && t.w.some((v) => v > 0) ? t : null;
+}
+
+export function memeCoin(locale: Locale, id: SlangId): MemeCoin | null {
+  return showsCoins(locale) ? MEME_DATA.coins[id] ?? null : null;
+}
+
+/** Entries by Wikipedia views over the last four weeks, busiest first. */
+export function trendingIds(limit: number): SlangId[] {
+  const recent = (id: SlangId) => memeTrend(id)!.w.slice(-4).reduce((a, b) => a + b, 0);
+  return SLANG_ENTRIES.filter((id) => memeTrend(id)).sort((a, b) => recent(b) - recent(a)).slice(0, limit);
+}
+
+/** "2025-03" or "2025" as a month or a year in the reader's language. */
+function bornLabel(locale: Locale, born: string): string {
+  try {
+    const [year, month] = born.split("-").map(Number);
+    if (!month) return new Intl.DateTimeFormat(HREFLANG[locale], { year: "numeric", timeZone: "UTC" }).format(new Date(Date.UTC(year, 0, 1)));
+    return new Intl.DateTimeFormat(HREFLANG[locale], { year: "numeric", month: "long", timeZone: "UTC" }).format(new Date(Date.UTC(year, month - 1, 1)));
+  } catch {
+    return born;
+  }
+}
+
+function compactNumber(locale: Locale, value: number): string {
+  return new Intl.NumberFormat(HREFLANG[locale], { notation: "compact", maximumFractionDigits: 1 }).format(value);
+}
+
+function usd(locale: Locale, value: number, compact = false): string {
+  const digits = value >= 1 ? 2 : Math.min(10, Math.max(2, 1 - Math.floor(Math.log10(value)) + 2));
+  return new Intl.NumberFormat(HREFLANG[locale], compact
+    ? { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 2 }
+    : { style: "currency", currency: "USD", maximumFractionDigits: digits }).format(value);
+}
+
+function pct(locale: Locale, value: number): string {
+  const text = new Intl.NumberFormat(HREFLANG[locale], { maximumFractionDigits: 1, signDisplay: "exceptZero" }).format(value);
+  return `<span class="${value > 0 ? "up" : value < 0 ? "down" : ""}">${text}%</span>`;
+}
+
+function dirBadge(locale: Locale, dir: MemeTrend["dir"]): string {
+  const ui = slangUi(locale);
+  const label = { up: ui.trendUp, flat: ui.trendFlat, down: ui.trendDown }[dir];
+  return `<span class="meme-dir meme-dir-${dir}">${escapeHtml(label)}</span>`;
+}
+
+/** Weekly views as an inline bar chart (no script, works in the crawler HTML too). */
+function sparkHtml(locale: Locale, trend: MemeTrend): string {
+  const max = Math.max(...trend.w, 1);
+  const width = 6 * trend.w.length;
+  const bars = trend.w.map((v, i) => {
+    const h = Math.max(1, Math.round((v / max) * 30));
+    return `<rect x="${i * 6}" y="${32 - h}" width="4" height="${h}" rx="1"><title>${escapeHtml(compactNumber(locale, v))}</title></rect>`;
+  }).join("");
+  return `<svg class="meme-spark" viewBox="0 0 ${width} 32" width="${width * 2}" height="64" role="img" aria-label="${escapeHtml(slangUi(locale).trend)}">${bars}</svg>`;
+}
+
+function trendHtml(locale: Locale, id: SlangId): string {
+  const trend = memeTrend(id);
+  if (!trend) return "";
+  const ui = slangUi(locale);
+  const recent = trend.w.slice(-4).reduce((a, b) => a + b, 0);
+  return `<section class="meme-trend" aria-labelledby="meme-trend-title"><h2 id="meme-trend-title">${escapeHtml(ui.trend)} ${dirBadge(locale, trend.dir)}</h2>`
+    + `<div class="meme-trend-row">${sparkHtml(locale, trend)}<p><strong>${escapeHtml(compactNumber(locale, recent))}</strong> <span>${escapeHtml(ui.recent)}</span></p></div>`
+    + `<p class="meme-note">${escapeHtml(fill(ui.trendNote, { n: trend.w.length, date: dateLabel(locale, trend.to) }))}</p></section>`;
+}
+
+function coinHtml(locale: Locale, id: SlangId): string {
+  const coin = memeCoin(locale, id);
+  if (!coin) return "";
+  const ui = slangUi(locale);
+  const cells = [
+    [ui.coinPrice, escapeHtml(usd(locale, coin.price))],
+    [ui.coinCap, escapeHtml(usd(locale, coin.cap, true))],
+    [ui.coinD1, pct(locale, coin.d1)],
+    [ui.coinD7, pct(locale, coin.d7)],
+    [ui.coinAdded, escapeHtml(dateLabel(locale, coin.added))],
+  ].map(([k, v]) => `<div><dt>${escapeHtml(k)}</dt><dd>${v}</dd></div>`).join("");
+  const time = MEME_DATA.coinsAsOf ? MEME_DATA.coinsAsOf.replace("T", " ").replace("Z", "") : "";
+  return `<section class="meme-coin" aria-labelledby="meme-coin-title"><h2 id="meme-coin-title">${escapeHtml(ui.coin)}</h2>`
+    + `<p class="meme-coin-name"><strong>${escapeHtml(coin.name)}</strong> <span>${escapeHtml(coin.symbol)}</span></p>`
+    + `<dl class="meme-coin-grid">${cells}</dl>`
+    + `<p class="meme-note">${escapeHtml(ui.coinNote)}</p>`
+    + `<p class="meme-note"><a href="https://coinmarketcap.com/currencies/${escapeHtml(coin.slug)}/" target="_blank" rel="noopener nofollow">${escapeHtml(fill(ui.coinSource, { time }))}</a></p></section>`;
+}
+
+function hubTrendingHtml(locale: Locale): string {
+  const ids = trendingIds(10);
+  if (!ids.length) return "";
+  const ui = slangUi(locale);
+  const items = ids.map((id) => {
+    const t = memeTrend(id)!;
+    const { name, blurb } = slangName(locale, id);
+    return `<li><a href="${escapeHtml(slangHref(locale, id))}" data-nav="slang-${id}"><strong>${escapeHtml(name)}</strong>${dirBadge(locale, t.dir)}<span>${escapeHtml(blurb)}</span></a></li>`;
+  }).join("");
+  return `<section class="wall meme-trending" id="trending"><h2>${escapeHtml(ui.trending)}</h2><ol class="links">${items}</ol><p class="meme-note">${escapeHtml(ui.trendingNote)}</p></section>`;
+}
+
+function hubCoinsHtml(locale: Locale): string {
+  if (!showsCoins(locale)) return "";
+  const ids = SLANG_ENTRIES.filter((id) => memeCoin(locale, id)).sort((a, b) => MEME_DATA.coins[b].cap - MEME_DATA.coins[a].cap);
+  if (!ids.length) return "";
+  const ui = slangUi(locale);
+  const rows = ids.map((id) => {
+    const c = MEME_DATA.coins[id];
+    return `<tr><td><a href="${escapeHtml(slangHref(locale, id))}" data-nav="slang-${id}">${escapeHtml(slangName(locale, id).name)}</a></td><td>${escapeHtml(c.symbol)}</td><td>${escapeHtml(usd(locale, c.cap, true))}</td><td>${pct(locale, c.d7)}</td></tr>`;
+  }).join("");
+  const time = MEME_DATA.coinsAsOf ? MEME_DATA.coinsAsOf.replace("T", " ").replace("Z", "") : "";
+  return `<section class="wall meme-coins" id="coins"><h2>${escapeHtml(ui.coins)}</h2><div class="table-wrap"><table><thead><tr><th>${escapeHtml(ui.coinMeme)}</th><th>${escapeHtml(ui.coinToken)}</th><th>${escapeHtml(ui.coinCap)}</th><th>${escapeHtml(ui.coinD7)}</th></tr></thead><tbody>${rows}</tbody></table></div>`
+    + `<p class="meme-note">${escapeHtml(ui.coinNote)}</p><p class="meme-note">${escapeHtml(fill(ui.coinSource, { time }))}</p></section>`;
 }
 
 const CJK = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
@@ -106,7 +235,10 @@ export function slangPageHtml(locale: Locale, id: SlangId | null): string {
       crumbHtml(locale, null),
       `<header class="tool-head"><h1>${escapeHtml(hub.h1)}</h1><p class="lede">${escapeHtml(hub.lede)}</p></header>`,
       `<p class="slang-jump">${jump}</p>`,
+      `<p class="slang-jump"><a href="${escapeHtml(appHref(locale, "meme"))}">${escapeHtml(ui.maker)}</a></p>`,
+      hubTrendingHtml(locale),
       groups,
+      hubCoinsHtml(locale),
       `<section class="kb-about">${hub.about.map((p) => `<p>${inline(p)}</p>`).join("")}</section>`,
       faqHtml(locale, null),
     ].join("");
@@ -118,18 +250,20 @@ export function slangPageHtml(locale: Locale, id: SlangId | null): string {
   const sections = copy.sections.map((s, i) => (
     `<section class="kb-section" id="slang-${i + 1}"><h2>${inline(s.h)}</h2>${s.body.map(blockHtml).join("")}</section>`
   )).join("");
-  const origin = { zh: ui.originZh, en: ui.originEn, yue: ui.originYue }[meta.origin];
+  const origin = { zh: ui.originZh, en: ui.originEn, yue: ui.originYue, web: ui.originWeb }[meta.origin];
   return [
     crumbHtml(locale, id),
     `<article class="kb slang">`,
     `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(groupLabels[slangGroupOf(id)])} · ${escapeHtml(origin)}</p>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
-    `<p class="kb-meta"><time datetime="${slangUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, slangUpdated(id)) }))}</time></p>`,
+    `<p class="kb-meta">${meta.born ? `<span class="meme-born">${escapeHtml(fill(ui.born, { date: bornLabel(locale, meta.born) }))}</span> · ` : ""}<time datetime="${slangUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, slangUpdated(id)) }))}</time></p>`,
     copy.aka.length ? `<p class="ref-aka">${escapeHtml(ui.also)}${cjk ? "：" : ": "}${escapeHtml(copy.aka.join(cjk ? "、" : ", "))}</p>` : "",
     `</header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p></section>`,
+    trendHtml(locale, id),
     `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
     sections,
+    coinHtml(locale, id),
     faqHtml(locale, id),
     sourcesHtml(locale, id),
     meta.related.length ? `<section class="learn-related"><h2>${escapeHtml(ui.related)}</h2>${linkListHtml(slangLinkItems(locale, meta.related))}</section>` : "",
@@ -202,7 +336,7 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
     url,
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     inLanguage: HREFLANG[locale],
-    datePublished: SLANG_PUBLISHED,
+    datePublished: slangPublished(id),
     dateModified: slangUpdated(id),
     author: PUBLISHER,
     publisher: PUBLISHER,

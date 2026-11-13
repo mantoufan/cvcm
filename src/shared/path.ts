@@ -13,7 +13,7 @@ import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
 import { RANKING_SEGMENT, isRankingId, type RankingId } from "./rankings";
 import { KB_SHELVES, isKbId, kbArticleOf, kbShelfOf, kbShelfOfPage, type KbHub, type KbId, type KbPage, type KbShelf } from "./kb";
 import { REF_SEGMENT, isRefId, type RefId } from "./ref";
-import { SLANG_SEGMENT, isSlangId, type SlangId } from "./slang";
+import { LEGACY_SLANG_SEGMENTS, SLANG_SEGMENT, isSlangId, type SlangId } from "./slang";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
@@ -655,10 +655,11 @@ export function parseAppPath(pathname: string): AppPath {
       if (isRefId(third)) return { kind: "ref", locale, entry: third };
       return { kind: "unknown" };
     }
-    if (second === SLANG_SEGMENT) {
+    // /slang/ was the column's first URL (2026-11-10): it parses as the channel so the Worker 301s to /memes/.
+    if (second === SLANG_SEGMENT || LEGACY_SLANG_SEGMENTS.includes(second)) {
       if (rest.length > 0) return { kind: "unknown" };
       if (!third) return { kind: "slang", locale, entry: null };
-      // Acronyms are often typed in capitals (/slang/FOMO/): parse them as the lowercase id so the Worker 301s.
+      // Acronyms are often typed in capitals (/memes/FOMO/): parse them as the lowercase id so the Worker 301s.
       if (isSlangId(third.toLowerCase())) return { kind: "slang", locale, entry: third.toLowerCase() as SlangId };
       return { kind: "unknown" };
     }
@@ -731,7 +732,7 @@ export function parseAppPath(pathname: string): AppPath {
     if (isRefId(second) && !third) return { kind: "bare-ref", entry: second };
     return { kind: "unknown" };
   }
-  if (first === SLANG_SEGMENT) {
+  if (first === SLANG_SEGMENT || LEGACY_SLANG_SEGMENTS.includes(first)) {
     if (!second) return { kind: "bare-slang", entry: null };
     if (isSlangId(second.toLowerCase()) && !third) return { kind: "bare-slang", entry: second.toLowerCase() as SlangId };
     return { kind: "unknown" };
@@ -797,7 +798,7 @@ export function refHref(locale: Locale, entry: RefId | null = null): string {
   return entry ? `${base}/${entry}/` : `${base}/`;
 }
 
-/** The internet slang dictionary: `/{locale}/slang/` (hub) and `/{locale}/slang/{id}/`. */
+/** The meme channel (formerly the slang dictionary): `/{locale}/memes/` (hub) and `/{locale}/memes/{id}/`. */
 export function slangHref(locale: Locale, entry: SlangId | null = null): string {
   const base = `/${localePath(locale)}/${SLANG_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
