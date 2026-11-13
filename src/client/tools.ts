@@ -1012,4 +1012,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountHeight(host);
     return m.unmountHeight;
   },
+  "2048": async (host, ctx) => {
+    const m = await import("./game-2048/ui");
+    if (!ctx.alive()) return undefined;
+    m.mount2048(host);
+    return m.unmount2048;
+  },
+  "dinosaur-game": async (host, ctx) => {
+    const m = await import("./dinosaur-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDinosaurGame(host);
+    return m.unmountDinosaurGame;
+  },
+  "mahjong": async (host, ctx) => {
+    const m = await import("./mahjong/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMahjong(host);
+    return m.unmountMahjong;
+  },
+  "chess": async (host, ctx) => {
+    const m = await import("./chess/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountChess(host);
+    return m.unmountChess;
+  },
+  "chinese-chess": async (host, ctx) => {
+    const m = await import("./chinese-chess/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountChineseChess(host);
+    return m.unmountChineseChess;
+  },
 };

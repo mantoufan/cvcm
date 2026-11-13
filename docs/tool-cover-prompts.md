@@ -309,3 +309,13 @@ GPT Image 2.6 Flare image-to-image on kie.ai, refs `dice-sweet.jpg` + `metronome
 - `color-blindness-test`: she holds a round plate of olive and sage dots where coral and rose dots form a heart, like a colour vision plate; tiny round pink glasses.
 - `military-time`: a tiny pastel garrison-style cap with a bow; she holds a round cream wall clock with a 24-hour dial of tick marks only; pink wristwatch; small globe.
 - `height-calculator`: beside a flower-stem growth chart with tick marks only, she rests a flat pink book on a plush teddy bear's head to measure it; a potted sapling and a pink tape measure.
+
+## 2048, dinosaur game, mahjong solitaire, chess, Chinese chess (2026-11-14)
+
+GPT Image 2.6 Flare image-to-image on kie.ai, refs `dice-sweet.jpg` + `metronome-sweet.jpg`, 16:9 2K, same base prompt as above. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `2048`: she slides chunky glossy cream-and-pink tiles with no numbers (tiny hearts only) on a four-by-four pastel tray; two tiles merging glow with a heart; little stars pop.
+- `dinosaur-game`: she jumps over a little pastel cactus on a cream desert strip with a cute plush grey pixel-style dinosaur toy running beside her; tiny puffy clouds.
+- `mahjong`: she lifts a matching pair of two identical ivory mahjong-style tiles with the same pink blossom (no characters) from a small stacked turtle-shaped tile pyramid. Ask for full-bleed art: one try came back with a black bar along the bottom, and another held two different tiles.
+- `chess`: she moves a pink knight on a cream-and-pink chessboard; a little pink chess clock with blank faces; a cute toy robot opponent across the board.
+- `chinese-chess`: she places a round wooden xiangqi-style disc with a small heart (no characters) on a cream board with a pale blue river band across the middle; a cup of tea.

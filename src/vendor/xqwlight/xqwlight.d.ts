@@ -1,0 +1,17 @@
+export const Position: any;
+export const Search: any;
+export const LIMIT_DEPTH: number;
+export const MATE_VALUE: number;
+export const WIN_VALUE: number;
+export const BAN_VALUE: number;
+export const PIECE_KING: number;
+export const FILE_LEFT: number;
+export const RANK_TOP: number;
+export function SRC(mv: number): number;
+export function DST(mv: number): number;
+export function MOVE(src: number, dst: number): number;
+export function FILE_X(sq: number): number;
+export function RANK_Y(sq: number): number;
+export function COORD_XY(x: number, y: number): number;
+export function IN_BOARD(sq: number): boolean;
+export function SIDE_TAG(sd: number): number;

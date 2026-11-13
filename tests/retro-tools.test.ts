@@ -114,7 +114,7 @@ describe("detectRomConsole", () => {
 
 describe("registration", () => {
   it("lists both tools under the games group and keeps them out of analytics", () => {
-    expect(CATEGORIES.find((c) => c.id === "games")?.tools).toEqual(["rom-emulator", "flash-player", "sudoku", "tic-tac-toe"]);
+    expect(CATEGORIES.find((c) => c.id === "games")?.tools).toEqual(["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess"]);
     for (const id of ["rom-emulator", "flash-player"] as const) {
       expect(TOOLS).toContain(id);
       expect(parseAppPath(`/en/${id}/`)).toMatchObject({ kind: "app", tool: id });
