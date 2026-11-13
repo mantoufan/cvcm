@@ -151,10 +151,8 @@ function vars(locale: Locale, id: RankingId): Record<string, string | number> {
     out[`low${index + 1}`] = displayName(locale, id, name);
     out[`lv${index + 1}`] = shown(value);
   });
-  if (kind === "mountain" || kind === "building") {
-    out.ft1 = plain(locale, toFeet(meta.top[0][1]));
-    out.over8000 = meta.over8000 ?? 0;
-  }
+  if (kind === "mountain" || kind === "building") out.ft1 = plain(locale, toFeet(meta.top[0][1]));
+  if (kind === "mountain") out.over8000 = meta.over8000 ?? 0;
   if (kind === "river") out.alt1 = plain(locale, toMiles(meta.top[0][1]));
   if (kind === "lake" || kind === "island" || kind === "desert") out.alt1 = plain(locale, toSqMiles(meta.top[0][1]));
   // People and seats in the copy's own words: "41.9 million" reads better in a sentence than eight digits.

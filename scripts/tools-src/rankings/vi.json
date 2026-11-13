@@ -79,7 +79,7 @@
     },
     "tallest-buildings": {
       "name": "Tòa nhà cao nhất thế giới",
-      "blurb": "Nhà chọc trời đã hoàn thành cao từ 350 m, kèm số tầng, thành phố và năm."
+      "blurb": "Những nhà chọc trời đã hoàn thành cao nhất, kèm số tầng, thành phố và năm."
     },
     "largest-cities": {
       "name": "Thành phố đông dân nhất thế giới",
@@ -775,7 +775,7 @@
         "h1": "{rows} sa mạc lớn nhất thế giới",
         "lede": "{rows} sa mạc lớn nhất Trái Đất theo diện tích, kể cả sa mạc vùng cực, kèm diện tích theo kilômét vuông và dặm vuông, loại sa mạc và các nước mà nó trải qua. Lấy từ danh sách sa mạc theo diện tích của Wikipedia.",
         "facts": [
-          "Lớn nhất: {top1} với {v1} ({alt1} dặm vuông), tiếp theo là {top2} ({v2}) và {top3} ({v3}), sa mạc nóng lớn nhất.",
+          "Lớn nhất: {top1} với {v1} ({alt1} dặm vuông), tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
           "Nước có nhiều sa mạc nhất trong danh sách: {countryLead}, với {countryCount}. Sa mạc trải qua nhiều nước được tính cho mỗi nước.",
           "Hạng {lowRank} là {low1} với {lv1}."
         ],
@@ -863,7 +863,7 @@
         "lede": "{rows} sân vận động thể thao lớn nhất Trái Đất theo sức chứa, tức số khán giả thường chứa được, kèm thành phố và quốc gia. Lấy từ danh sách sân vận động theo sức chứa của Wikipedia.",
         "facts": [
           "Lớn nhất: {top1} với {v1} chỗ, tiếp theo là {top2} ({v2}) và {top3} ({v3}).",
-          "Nước có nhiều sân nhất trong danh sách: {countryLead}, với {countryCount} trên {rows}, phần lớn là sân bóng bầu dục đại học.",
+          "Nước có nhiều sân nhất trong danh sách: {countryLead}, với {countryCount} trên {rows}.",
           "Hạng {lowRank} là {low1} với {lv1} chỗ."
         ],
         "about": [
@@ -876,12 +876,12 @@
             "a": "{top1} ở Ahmedabad, Ấn Độ, một sân cricket chứa được {v1} khán giả."
           },
           {
-            "q": "Sân bóng đá lớn nhất thế giới là gì?",
-            "a": "{top2} ở Bình Nhưỡng chứa được {v2} người. Trong các sân dùng cho bóng bầu dục Mỹ, lớn nhất là {top3} với {v3} chỗ."
+            "q": "Sức chứa có tính chỗ đứng hay ghế tạm không?",
+            "a": "Không. Sức chứa là số khán giả sân thường chứa được; khán đài tạm dựng cho một sự kiện không được tính, và trường đua không được xem là sân vận động."
           },
           {
             "q": "Nước nào có nhiều sân vận động lớn nhất?",
-            "a": "{countryLead}: {countryCount} trong {rows} sân của danh sách này, phần lớn là sân bóng bầu dục đại học."
+            "a": "{countryLead}: {countryCount} trong {rows} sân của danh sách này nằm ở đó."
           }
         ]
       }

@@ -79,7 +79,7 @@
     },
     "tallest-buildings": {
       "name": "Gedung tertinggi di dunia",
-      "blurb": "Pencakar langit rampung setinggi 350 m ke atas, dengan lantai, kota, dan tahun."
+      "blurb": "Pencakar langit rampung tertinggi, dengan lantai, kota, dan tahun."
     },
     "largest-cities": {
       "name": "Kota terbesar di dunia",
@@ -775,7 +775,7 @@
         "h1": "{rows} gurun terbesar di dunia",
         "lede": "{rows} gurun terbesar di Bumi menurut luas, termasuk gurun kutub, dengan luas dalam kilometer persegi dan mil persegi, jenis gurun, dan negara yang dilintasinya. Dari daftar gurun menurut luas di Wikipedia.",
         "facts": [
-          "Terbesar: {top1} seluas {v1} ({alt1} mil persegi), lalu {top2} ({v2}) dan {top3} ({v3}), gurun panas terbesar.",
+          "Terbesar: {top1} seluas {v1} ({alt1} mil persegi), lalu {top2} ({v2}) dan {top3} ({v3}).",
           "Negara dengan gurun terbanyak dalam daftar: {countryLead}, sebanyak {countryCount}. Gurun yang melintasi beberapa negara dihitung untuk masing-masing.",
           "Peringkat {lowRank} adalah {low1} seluas {lv1}."
         ],
@@ -863,7 +863,7 @@
         "lede": "{rows} stadion olahraga terbesar di Bumi menurut kapasitas, yaitu jumlah penonton yang biasanya bisa ditampung, beserta kota dan negaranya. Dari daftar stadion menurut kapasitas di Wikipedia.",
         "facts": [
           "Terbesar: {top1} dengan {v1} kursi, lalu {top2} ({v2}) dan {top3} ({v3}).",
-          "Negara dengan stadion terbanyak dalam daftar: {countryLead}, {countryCount} dari {rows}, kebanyakan stadion football kampus.",
+          "Negara dengan stadion terbanyak dalam daftar: {countryLead}, {countryCount} dari {rows}.",
           "Peringkat {lowRank} adalah {low1} dengan {lv1} kursi."
         ],
         "about": [
@@ -876,12 +876,12 @@
             "a": "{top1} di Ahmedabad, India, stadion kriket yang menampung {v1} penonton."
           },
           {
-            "q": "Apa stadion sepak bola terbesar di dunia?",
-            "a": "{top2} di Pyongyang menampung {v2} orang. Di antara stadion untuk American football, yang terbesar adalah {top3} dengan {v3} kursi."
+            "q": "Apakah kapasitas termasuk tempat berdiri atau kursi sementara?",
+            "a": "Tidak. Kapasitas adalah jumlah penonton yang biasanya bisa ditampung stadion; tribun sementara untuk satu acara tidak dihitung, dan sirkuit balap tidak dianggap stadion."
           },
           {
             "q": "Negara mana yang punya stadion besar terbanyak?",
-            "a": "{countryLead}: {countryCount} dari {rows} stadion dalam daftar ini, kebanyakan stadion football kampus."
+            "a": "{countryLead}: {countryCount} dari {rows} stadion dalam daftar ini ada di sana."
           }
         ]
       }

@@ -556,7 +556,7 @@ const WP_LISTS = {
   "longest-rivers": { page: "List of river systems by length", table: 1, name: 1, value: 2, countries: 7, rows: 100, first: "Q3392" },
   "largest-lakes": { page: "List of lakes by area", table: 1, name: 2, value: 5, countries: 3, depth: 7, type: 4, rows: 40, first: "Q5484" },
   "largest-islands": { page: "List of islands by area", table: 1, name: 1, value: 2, countries: 4, rows: 100, first: "Q223", unlinked: 3 },
-  "largest-deserts": { page: "List of deserts by area", table: 0, name: 1, value: 4, countries: 7, desert: 2, rows: 30, first: "Q51", names: DESERT_NAMES },
+  "largest-deserts": { page: "List of deserts by area", table: 0, name: 1, value: 4, countries: 7, desert: 2, rows: 30, first: "Q51", names: DESERT_NAMES, skip: ["Q783129"] },
   "tallest-buildings": { page: "List of tallest buildings", table: 1, spans: true, name: 1, value: 2, countries: 7, city: 6, floors: 4, year: 8, rows: 90, first: "Q12495", unlinked: 6 },
   "largest-cities": { page: "List of largest cities", table: 0, name: 0, value: 2, countries: 1, rows: 80, first: "Q3630" },
   "largest-stadiums": { page: "List of stadiums by capacity", tables: [0, 1, 2, 3, 4, 5], name: 0, value: 1, countries: 3, city: 2, rows: 100, first: "Q3531421" },
@@ -577,25 +577,30 @@ function firstNumber(text) {
   return found ? Number(found[0].replace(/,/g, "")) : null;
 }
 
-/** The data rows of one wikitable as cells of HTML. With `spans`, a merged cell is copied into every row and column it covers
- * (the building list merges a country shared by the rows below it); without, a table with one is refused. */
-function wikitable(html, index, spans = false) {
-  const table = [...html.matchAll(/<table class="[^"]*wikitable[^"]*".*?<\/table>/gs)][index]?.[0];
+/** A page's wikitables, found once (the stadium list reads six of them). */
+const wikitables = (html) => [...html.matchAll(/<table class="[^"]*wikitable[^"]*".*?<\/table>/gs)].map((m) => m[0]);
+
+/** The data rows of one of a page's wikitables as cells of HTML. With `spans`, a merged cell is copied into every row and column
+ * it covers (the building list merges a country shared by the rows below it); without, a table with one is refused. */
+function wikitable(tables, index, spans = false) {
+  const table = tables[index];
   if (!table) throw new Error(`wikipedia: no table ${index}`);
   // A table inside a cell would end this one at its own </table> and pair the wrong row and cell tags.
   if (/<table/.test(table.slice(1))) throw new Error(`wikipedia: table ${index} has a table inside it`);
   const span = (attrs, name) => Math.min(Number(attrs.match(new RegExp(`\\b${name}="?(\\d+)`))?.[1] ?? 1) || 1, 200);
+  const allRows = [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].map((row) => ({ data: /<td/.test(row[1]), cells: [...row[1].matchAll(/<t[hd]([^>]*)>(.*?)<\/t[hd]>/gs)].map((cell) => ({ attrs: cell[1], html: cell[2] })) }));
   // Header rows (no <td>, repeated down long tables) are left out: "Area (km2)" would read as the number 2.
-  const dataRows = [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].filter((row) => /<td/.test(row[1])).map((row) => [...row[1].matchAll(/<t[hd]([^>]*)>(.*?)<\/t[hd]>/gs)].map((cell) => ({ attrs: cell[1], html: cell[2] })));
   if (!spans) {
+    const dataRows = allRows.filter((row) => row.data).map((row) => row.cells);
     // A merged cell in a data row shifts every later cell in the rows it spans: rather than read the wrong column,
     // the table is not published. Header rows (all <th>) may span.
     if (dataRows.some((row) => row.some((cell) => span(cell.attrs, "rowspan") > 1 || span(cell.attrs, "colspan") > 1))) throw new Error(`wikipedia: table ${index} has merged cells`);
     return dataRows.map((row) => row.map((cell) => cell.html));
   }
   // The grid as a reader sees it: a cell carried down from a row above fills its column before the row's own cells are placed.
+  // Every row takes part, header rows too, so a merged cell that runs across a repeated header row is counted down there as well.
   const carried = [];
-  return dataRows.map((row) => {
+  const grid = allRows.map((row) => {
     const out = [];
     let col = 0;
     const fillCarried = () => {
@@ -605,7 +610,7 @@ function wikitable(html, index, spans = false) {
         col += 1;
       }
     };
-    for (const cell of row) {
+    for (const cell of row.cells) {
       fillCarried();
       const [down, across] = [span(cell.attrs, "rowspan"), span(cell.attrs, "colspan")];
       for (let i = 0; i < across; i += 1) {
@@ -622,8 +627,9 @@ function wikitable(html, index, spans = false) {
         carried[c].left -= 1;
       }
     }
-    return Array.from(out, (cell) => cell ?? "");
+    return { data: row.data, cells: Array.from(out, (cell) => cell ?? "") };
   });
+  return grid.filter((row) => row.data).map((row) => row.cells);
 }
 
 /** Wikidata ids for English Wikipedia titles, following redirects. */
@@ -681,6 +687,15 @@ function countryTitles(html) {
   return [...new Set([...linkTitles(html), ...names])];
 }
 
+/** A city cell's first part and the page its link names, when the link starts with that part ("Ann Arbor, Michigan"). */
+function cityOfCell(html) {
+  const cityText = cellText(html).split(/[,\n]/)[0].trim();
+  const links = [...html.matchAll(/<a [^>]*href="\/wiki\/([^"#?]+)"[^>]*>(.*?)<\/a>/gs)].filter((m) => !/^(File|Help|Wikipedia|Template):/.test(decodeURIComponent(m[1])));
+  // The link's own first part: a link can cover the whole "Ann Arbor, Michigan", or the state alone.
+  const own = links.find((m) => cellText(m[2]).split(/[,\n]/)[0].trim() === cityText);
+  return { city: own ? decodeURIComponent(own[1]).replace(/_/g, " ") : null, cityText };
+}
+
 /** The list's desert types: polar, subtropical, tropical ("Tropical/subtropical" too), cold winter, coastal (cool or mild);
  * anything else is no type. */
 function desertOf(text) {
@@ -726,7 +741,8 @@ async function wikipediaList(id) {
   const q = new URLSearchParams({ action: "parse", page: spec.page, prop: "text|revid", redirects: "1", format: "json", formatversion: "2" });
   const page = JSON.parse(await get(`${WIKI}?${q}`));
   if (page.error) throw new Error(`wikipedia ${spec.page}: ${page.error.info}`);
-  const cells = tablesOf(spec).flatMap((index) => wikitable(page.parse.text, index, spec.spans));
+  const tables = wikitables(page.parse.text);
+  const cells = tablesOf(spec).flatMap((index) => wikitable(tables, index, spec.spans));
   const needs = Math.max(spec.name, spec.value, spec.countries, spec.depth ?? 0, spec.type ?? 0, spec.desert ?? 0, spec.city ?? 0, spec.floors ?? 0, spec.year ?? 0) + 1;
   const parsed = [];
   for (const row of cells) {
@@ -754,18 +770,22 @@ async function wikipediaList(id) {
       depth: spec.depth === undefined ? undefined : firstNumber(cellText(row[spec.depth])),
       type: spec.type === undefined ? undefined : waterOf(cellText(row[spec.type])),
       desert: spec.desert === undefined ? undefined : desertOf(cellText(row[spec.desert])),
-      // The city a building or stadium stands in: the cell's first link ("Ann Arbor, Michigan" → Ann Arbor), and its text, as
-      // the list links a city once and writes it plain in the rows after.
-      city: spec.city === undefined ? undefined : linkTitles(row[spec.city])[0] ?? null,
-      cityText: spec.city === undefined ? undefined : cellText(row[spec.city]).split(/[,\n]/)[0].trim(),
+      // The city a building or stadium stands in: the cell's first part ("Ann Arbor, Michigan" → Ann Arbor), by the link written
+      // on that part only, as a cell can link just its state ("Ann Arbor, [Michigan]"). The list links a city once and writes it
+      // plain in the rows after: those are filled in below.
+      ...(spec.city === undefined ? {} : cityOfCell(row[spec.city])),
+      countryText: cellText(row[spec.countries]),
       // "163 (+ 2 below ground)": floors above ground.
       floors: spec.floors === undefined ? undefined : firstNumber(cellText(row[spec.floors])),
       year: spec.year === undefined ? undefined : firstNumber(cellText(row[spec.year])),
     });
   }
-  // A city written plain is the one linked under the same text in another row; one never linked has no city.
-  const cityTitles = new Map(parsed.filter((row) => row.city).map((row) => [row.cityText, row.city]));
-  for (const row of parsed) if (spec.city !== undefined && !row.city) row.city = cityTitles.get(row.cityText) ?? null;
+  // A city written plain is the one linked under the same text in a row of the same country (Athens, Georgia is not Athens,
+  // Greece); one never linked there has no city.
+  const cityKey = (row) => `${row.cityText}\u0000${row.countryText}`;
+  const cityTitles = new Map(parsed.filter((row) => row.city).map((row) => [cityKey(row), row.city]));
+  for (const row of parsed) if (spec.city !== undefined && !row.city) row.city = cityTitles.get(cityKey(row)) ?? null;
+
   // Each row's item first (to drop repeats and cut the list), then names and countries for the kept rows only.
   // Only rows near the top can make the list (a repeat dropped below moves at most a few up): the rest are not looked up.
   parsed.sort((a, b) => b.value - a.value);
@@ -773,6 +793,8 @@ async function wikipediaList(id) {
   const itemOf = await titleIds(parsed.map((row) => row.title).filter(Boolean));
   // A linked page with no Wikidata item (a new article) has no id: like an unlinked row, refused below only if it makes the list.
   for (const row of parsed) row.item = (row.title && itemOf[row.title]) || "";
+  // A list's aggregate rows (all of Australia's deserts as one) would count their parts twice.
+  if (spec.skip) parsed.splice(0, parsed.length, ...parsed.filter((row) => !spec.skip.includes(row.item)));
   // A river listed twice (its whole system and an upper course, say) keeps its longest entry.
   const seen = new Set();
   const sorted = parsed.filter((row) => !row.item || (!seen.has(row.item) && seen.add(row.item)));
@@ -859,8 +881,8 @@ function countryLeaders(rows, column) {
 const rows = {};
 const meta = { updated: today.toISOString().slice(0, 10), sets: {} };
 const rowsPath = join(root, "src/shared/rankings-rows.json");
-/** Geography rows (names in eight languages) are most of the bytes: one file per table, so a page loads only its own.
- * The ids must match the geography group in src/shared/rankings.ts (tests/rankings.test.ts checks). */
+/** Place rows (names in eight languages) are most of the bytes: one file per table, so a page loads only its own.
+ * The ids must match the place tables in src/shared/rankings.ts, isPlaceRanking: the geography and cities groups (tests/rankings.test.ts checks). */
 const geoDir = join(root, "src/shared/rankings-geo");
 const GEO_IDS = new Set(["tallest-mountains", ...Object.keys(WP_LISTS)]);
 const metaPath = join(root, "src/shared/rankings-meta.json");
@@ -955,7 +977,7 @@ else {
   });
 }
 
-// Heights change only with a new survey: asked once a month (until a check succeeds). FORCE_MOUNTAINS=1 (or FORCE_GEO=1, every geography table) asks again.
+// Heights change only with a new survey: asked once a month (until a check succeeds). FORCE_MOUNTAINS=1 (or FORCE_GEO=1, every place table: geography, cities and buildings) asks again.
 // asOf is the month the rows last changed; checked is the month they were last asked for.
 const thisMonth = today.toISOString().slice(0, 7);
 if (!process.env.FORCE_MOUNTAINS && !process.env.FORCE_GEO && !only?.includes("tallest-mountains") && oldMeta.sets["tallest-mountains"]?.checked === thisMonth && oldRows["tallest-mountains"]) keep("tallest-mountains");

@@ -1885,7 +1885,7 @@
         "h1": "The {rows} largest deserts in the world",
         "lede": "The {rows} largest deserts on Earth by area, polar deserts included, with area in square kilometres and square miles, the type of desert and the countries it crosses. From Wikipedia's list of deserts by area.",
         "facts": [
-          "Largest: {top1} at {v1} ({alt1} sq mi), then {top2} ({v2}) and {top3} ({v3}), the largest hot desert.",
+          "Largest: {top1} at {v1} ({alt1} sq mi), then {top2} ({v2}) and {top3} ({v3}).",
           "Most deserts on the list: {countryLead}, with {countryCount}. A desert that crosses several countries counts for each.",
           "Number {lowRank} is {low1} at {lv1}."
         ],
@@ -1973,7 +1973,7 @@
         "lede": "The {rows} largest sports stadiums on Earth by capacity, the number of spectators they normally hold, with city and country. From Wikipedia's list of stadiums by capacity.",
         "facts": [
           "Largest: {top1} with {v1} seats, then {top2} ({v2}) and {top3} ({v3}).",
-          "Most stadiums on the list: {countryLead}, with {countryCount} of the {rows}, most of them college football grounds.",
+          "Most stadiums on the list: {countryLead}, with {countryCount} of the {rows}.",
           "Number {lowRank} is {low1} with {lv1} seats."
         ],
         "about": [
@@ -1986,12 +1986,12 @@
             "a": "{top1} in Ahmedabad, India, a cricket ground that holds {v1} spectators."
           },
           {
-            "q": "What is the largest football stadium in the world?",
-            "a": "{top2} in Pyongyang holds {v2}. Among the largest stadiums used for American football, the biggest is {top3} with {v3} seats."
+            "q": "Does capacity include standing room or temporary seats?",
+            "a": "No. Capacity is the number of spectators a stadium normally holds. Temporary stands added for one event are not counted, and racing circuits are not listed as stadiums."
           },
           {
             "q": "Which country has the most large stadiums?",
-            "a": "{countryLead}: {countryCount} of the {rows} stadiums on this list, mostly university football stadiums."
+            "a": "{countryLead}: {countryCount} of the {rows} stadiums on this list are there."
           }
         ]
       }

@@ -1885,7 +1885,7 @@
         "h1": "Los {rows} desiertos más grandes del mundo",
         "lede": "Los {rows} desiertos más grandes de la Tierra por superficie, incluidos los polares, con su superficie en kilómetros y millas cuadradas, el tipo de desierto y los países que cruza. De la lista de desiertos por superficie de Wikipedia.",
         "facts": [
-          "El mayor: {top1}, con {v1} ({alt1} mi²), seguido de {top2} ({v2}) y {top3} ({v3}), el mayor desierto cálido.",
+          "El mayor: {top1}, con {v1} ({alt1} mi²), seguido de {top2} ({v2}) y {top3} ({v3}).",
           "Más desiertos en la lista: {countryLead}, con {countryCount}. Un desierto que cruza varios países cuenta para cada uno.",
           "El número {lowRank} es {low1}, con {lv1}."
         ],
@@ -1973,7 +1973,7 @@
         "lede": "Los {rows} estadios deportivos más grandes de la Tierra por capacidad, el número de espectadores que caben normalmente, con su ciudad y país. De la lista de estadios por capacidad de Wikipedia.",
         "facts": [
           "El mayor: {top1}, con {v1} asientos, seguido de {top2} ({v2}) y {top3} ({v3}).",
-          "Más estadios en la lista: {countryLead}, con {countryCount} de {rows}, la mayoría de fútbol americano universitario.",
+          "Más estadios en la lista: {countryLead}, con {countryCount} de {rows}.",
           "El número {lowRank} es {low1}, con {lv1} asientos."
         ],
         "about": [
@@ -1986,12 +1986,12 @@
             "a": "{top1}, en Ahmedabad (India), un estadio de críquet con capacidad para {v1} espectadores."
           },
           {
-            "q": "¿Cuál es el estadio de fútbol más grande del mundo?",
-            "a": "{top2}, en Pionyang, con capacidad para {v2}. Entre los estadios de fútbol americano, el mayor es {top3}, con {v3} asientos."
+            "q": "¿La capacidad incluye localidades de pie o gradas temporales?",
+            "a": "No. La capacidad es el número de espectadores que caben normalmente en el estadio; las gradas montadas para un solo evento no cuentan y los circuitos de carreras no se consideran estadios."
           },
           {
             "q": "¿Qué país tiene más estadios grandes?",
-            "a": "{countryLead}: {countryCount} de los {rows} estadios de esta lista, sobre todo de fútbol americano universitario."
+            "a": "{countryLead}: {countryCount} de los {rows} estadios de esta lista están allí."
           }
         ]
       }
