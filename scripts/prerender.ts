@@ -43,6 +43,12 @@ document.write('<!doctype html><html><head></head><body><div id="app"></div></bo
 
 await import("../src/shared/messages-all");
 const { sitemapPages, pageUrl } = await import("../src/shared/sitemap");
+// prerender.mjs asks for the page count first, to choose how many processes to split the pages over.
+if (process.env.PRERENDER_COUNT) {
+  console.log(`PAGES ${sitemapPages().length}`);
+  await win.happyDOM.abort();
+  process.exit(0);
+}
 const { render, whenRendered } = await import("../src/client/main");
 
 const MARKER = "<!--ssr-->";
@@ -62,6 +68,9 @@ await whenRendered();
 // `PRERENDER_SHARD=i/n` renders every n-th page from the i-th: each page leaks about 1 MB of happy-dom state,
 // so prerender.mjs runs the pages in several processes instead of one that outgrows its heap.
 const [shard, shards] = (process.env.PRERENDER_SHARD ?? "0/1").split("/").map(Number);
+if (!(Number.isInteger(shards) && shards >= 1 && Number.isInteger(shard) && shard >= 0 && shard < shards)) {
+  throw new Error(`PRERENDER_SHARD must be i/n with 0 <= i < n, got ${JSON.stringify(process.env.PRERENDER_SHARD)}`);
+}
 for (const [index, page] of sitemapPages().entries()) {
   if (index % shards !== shard) continue;
   const path = new URL(pageUrl(page)).pathname;
@@ -122,4 +131,5 @@ if (failed.length) {
   console.log(`prerender: first errors:\n  ${[...new Set(errors)].slice(0, 8).join("\n  ")}`);
 }
 await win.happyDOM.abort();
-process.exit(0);
+// A shard that wrote nothing would ship pages without their first paint while the build looks green.
+process.exit(written > 0 ? 0 : 1);

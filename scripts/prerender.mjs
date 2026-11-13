@@ -40,14 +40,18 @@ await esbuild.build({
   }],
 });
 
-// Each page leaks about 1 MB of happy-dom state that a single process never frees; with 6,000+ pages one
-// process outgrew an 8 GB heap. Split the pages over processes run one after another, each with this
-// process's heap flag, so peak memory stays a fraction of the total.
-const SHARDS = Number(process.env.PRERENDER_SHARDS ?? 3);
+// Each page leaks 1 to 2.5 MB of happy-dom state that a process never frees; one process ran out of an 8 GB heap at
+// about 7,400 pages. Split the pages over processes run one after another, each with this process's heap flag:
+// one per PAGES_PER_PROCESS pages, so the count grows with the site. PRERENDER_SHARDS overrides it.
+const PAGES_PER_PROCESS = 2500;
+const run = (env, opts = {}) => execFileSync(process.execPath, [...process.execArgv, outfile], { ...opts, env: { ...process.env, ...env } });
 try {
-  for (let i = 0; i < SHARDS; i++) {
-    execFileSync(process.execPath, [...process.execArgv, outfile], { stdio: "inherit", env: { ...process.env, PRERENDER_SHARD: `${i}/${SHARDS}` } });
-  }
+  const pages = Number(/^PAGES (\d+)$/m.exec(run({ PRERENDER_COUNT: "1" }, { encoding: "utf8" }))?.[1]);
+  if (!(pages > 0)) throw new Error("prerender: could not count the sitemap pages");
+  const shards = process.env.PRERENDER_SHARDS === undefined ? Math.ceil(pages / PAGES_PER_PROCESS) : Number(process.env.PRERENDER_SHARDS);
+  if (!(Number.isInteger(shards) && shards >= 1)) throw new Error(`PRERENDER_SHARDS must be a whole number >= 1, got ${JSON.stringify(process.env.PRERENDER_SHARDS)}`);
+  console.log(`prerender: ${pages} pages in ${shards} processes`);
+  for (let i = 0; i < shards; i++) run({ PRERENDER_SHARD: `${i}/${shards}` }, { stdio: "inherit" });
 } finally {
   rmSync(outfile, { force: true });
 }

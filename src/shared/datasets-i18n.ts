@@ -119,9 +119,10 @@ export function utcOffset(minutes: number): string {
 
 export function formatIndicator(locale: Locale, id: IndicatorId, value: number): string {
   const { decimals, format } = INDICATOR_SPEC[id];
-  // A country with no army spends exactly 0: "$0", not the currency default "$0.00".
   // International dollars (GDP at PPP) are not US dollars, so no currency sign; the column heading names the unit.
-  if (format === "compact") return numberFormat(locale, { notation: "compact", maximumFractionDigits: 2 }).format(value);
+  // Two decimals, as on the nominal GDP table, so the column lines up ("17.20T", not "17.2T").
+  if (format === "compact") return numberFormat(locale, { notation: "compact", maximumFractionDigits: 2, minimumFractionDigits: value === 0 ? 0 : 2 }).format(value);
+  // A country with no army spends exactly 0: "$0", not the currency default "$0.00".
   if (format === "usd-compact") return numberFormat(locale, { style: "currency", currency: "USD", notation: "compact", maximumFractionDigits: 2, ...(value === 0 ? { minimumFractionDigits: 0 } : {}) }).format(value);
   if (format === "usd") return numberFormat(locale, { style: "currency", currency: "USD", maximumFractionDigits: decimals }).format(value);
   return numberFormat(locale, { minimumFractionDigits: decimals, maximumFractionDigits: decimals }).format(value);

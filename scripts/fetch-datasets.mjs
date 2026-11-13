@@ -24,25 +24,24 @@ const committed = (file) => {
 const oldMeta = JSON.parse(committed("meta.json") ?? '{"sets":{}}');
 const written = new Map();
 
-async function getJson(url) {
+// The World Bank API often answers 502 or stalls for minutes: give each try a deadline (body included) and back
+// off longer. A timeout, a network error, a cut-off body or a 5xx is retried; a 4xx (a mistyped indicator code)
+// fails at once.
+async function fetchRetry(url, read) {
   for (let attempt = 1; ; attempt++) {
     try {
-      // The World Bank API often answers 502 or stalls for minutes; give each try a deadline and back off longer.
       const res = await fetch(url, { signal: AbortSignal.timeout(120_000) });
-      if (!res.ok) throw new Error(`${res.status} ${url}`);
-      return await res.json();
+      if (!res.ok) throw Object.assign(new Error(`${res.status} ${url}`), { final: res.status < 500 });
+      return await read(res);
     } catch (err) {
-      if (attempt >= 6) throw err;
+      if (err.final || attempt >= 6) throw err;
       await new Promise((r) => setTimeout(r, 5000 * attempt));
     }
   }
 }
 
-async function getText(url) {
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`${res.status} ${url}`);
-  return res.text();
-}
+const getJson = (url) => fetchRetry(url, (res) => res.json());
+const getText = (url) => fetchRetry(url, (res) => res.text());
 
 function parseCsv(text) {
   const rows = [];
