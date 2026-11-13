@@ -82,6 +82,7 @@ export async function mountRanking(host: HTMLElement, locale: Locale, id: Rankin
   const ui = rankingUi(locale);
   const copy = rankingPageCopy(locale, id);
   const source = RANKING_SOURCE[id];
+  const meta = rankingMeta(id);
   const group = RANKING_GROUPS.find((g) => g.id === rankingGroupOf(id))!;
   const related = [...group.sets.filter((set) => set !== id), ...RANKING_GROUPS.filter((g) => g !== group).map((g) => g.sets[0])];
   host.append(
@@ -102,8 +103,8 @@ export async function mountRanking(host: HTMLElement, locale: Locale, id: Rankin
     h("p", { class: "data-source muted" },
       `${ui.source}: `, h("a", { href: source.url, rel: "noopener", target: "_blank" }, source.name),
       ` · ${ui.license}: `, h("a", { href: source.licenseUrl, rel: "noopener license", target: "_blank" }, source.license),
-      ` · ${fill(ui.dataAsOf, { date: rankingDate(locale, rankingMeta(id).asOf) })}`,
-      ` · ${fill(ui.checked, { date: rankingDate(locale, rankingMeta(id).checkedOn ?? rankingMeta(id).updated) })}`,
+      ` · ${fill(ui.dataAsOf, { date: rankingDate(locale, meta.asOf) })}`,
+      ` · ${fill(ui.checked, { date: rankingDate(locale, meta.checkedOn ?? meta.updated) })}`,
     ),
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
     faq(locale, id),

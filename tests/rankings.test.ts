@@ -33,6 +33,12 @@ describe("ranking data", () => {
       expect(rankingMeta(id).rows, id).toBe(table.length);
       expect(rankingMeta(id).asOf, id).toMatch(/^\d{4}-\d{2}(-\d{2})?$/);
       expect(rankingMeta(id).updated, id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+      // Asked and answered on or after the rows last changed; missing only before the first run that set it.
+      const checkedOn = rankingMeta(id).checkedOn;
+      if (checkedOn) {
+        expect(checkedOn, id).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+        expect(checkedOn >= rankingMeta(id).updated, id).toBe(true);
+      }
       expect(RANKING_SOURCE[id].licenseUrl, id).toMatch(/^https:\/\//);
       const href = rankingCsvHref(id);
       if (!href) {
