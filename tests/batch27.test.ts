@@ -39,7 +39,7 @@ describe("sudoku", () => {
     g[40] = 5;
     expect([...conflicts(g)].sort((a, b) => a - b)).toEqual([0, 8]);
     expect(toLine(g)).toHaveLength(81);
-    expect(toLine(g).startsWith("5.......5")).toBe(true);
+    expect(toLine(g).startsWith("500000005")).toBe(true);
     expect(countSolutions(g, 2)).toBe(0);
   });
 });
@@ -276,6 +276,8 @@ describe("military time in other languages", () => {
     ["14 giờ 30", "1430"], ["2 giờ 30 chiều", "1430"], ["8:00 sáng", "0800"], ["12 giờ đêm", "0000"], ["오후 2시 반", "1430"],
     ["夜里2点", "0200"], ["2 giờ đêm", "0200"], ["밤 2시", "0200"], ["밤 9시", "2100"], ["새벽 4시", "0400"],
     ["jam 14.30", "1430"], ["pukul 7", "0700"], ["2 siang", "1400"], ["11 siang", "1100"], ["8 malam", "2000"], ["6 pagi", "0600"],
+    ["夜9時", "2100"], ["夜12時", "0000"], ["中午11点", "1100"], ["11 giờ trưa", "1100"], ["中午1点", "1300"],
+    ["晚上5点", "1700"], ["5 giờ tối", "1700"], ["１４３０", "1430"], ["下午２:３０", "1430"], ["1430Z", "1430"], ["0900 Zulu", "0900"],
   ])("reads %s", (input, mil) => {
     expect(military(parseTime(input)!)).toBe(mil);
   });

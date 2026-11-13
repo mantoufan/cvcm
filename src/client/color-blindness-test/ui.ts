@@ -1,5 +1,6 @@
 import { h } from "../dom";
 import { t } from "../i18n";
+import { halfWidth } from "../../shared/factors";
 import { randomBelow } from "../../shared/random";
 import { PLATE_COUNT, buildPlate, planTest, score, type Plate, type PlateSpec } from "../../shared/color-vision";
 
@@ -76,7 +77,7 @@ export function mountColorBlindnessTest(host: HTMLElement): void {
     if (index >= plates.length) return;
     let value: number | null = null;
     if (!none) {
-      const raw = answer.value.trim().replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0));
+      const raw = halfWidth(answer.value.trim());
       if (!/^\d{1,2}$/.test(raw)) {
         errorEl.textContent = t("colorBlindnessTest.err_answer");
         answer.focus();

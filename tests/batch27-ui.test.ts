@@ -145,6 +145,9 @@ describe("sudoku ui", () => {
     set("[data-field=level]", "hard", "change");
     expect(q("[data-out=number]").textContent).toBe("Puzzle #2027");
     expect(q("[data-out=status]").textContent).toBe("Your game is kept. Tap New puzzle to start a Hard puzzle.");
+    q<HTMLButtonElement>("[data-action=restart]").click();
+    expect(q<HTMLSelectElement>("[data-field=level]").value).toBe("medium");
+    set("[data-field=level]", "hard", "change");
     q<HTMLButtonElement>("[data-action=new]").click();
     const n = Number(q("[data-out=number]").textContent!.replace(/\D/g, ""));
     expect(JSON.parse(window.localStorage.getItem("cvcm.sudoku.v1")!)).toMatchObject({ seed: n, level: "hard" });

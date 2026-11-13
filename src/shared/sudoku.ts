@@ -252,7 +252,7 @@ export function conflicts(grid: readonly number[]): Set<number> {
   return out;
 }
 
-/** A puzzle as one 81-character line, dots for empty cells (the usual text form other apps can read). */
+/** A puzzle as one line of 81 digits, 0 for empty cells (the usual text form other sudoku apps read). */
 export function toLine(grid: readonly number[]): string {
-  return grid.map((d) => (d ? String(d) : ".")).join("");
+  return grid.map((d) => String(d)).join("");
 }

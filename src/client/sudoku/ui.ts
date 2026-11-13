@@ -110,6 +110,24 @@ export function mountSudoku(host: HTMLElement): void {
 
   const isClue = (i: number) => puzzle.clues[i] !== 0;
 
+  /** Writes digit d (0 clears) and takes it out of the notes of its row, column and box. */
+  const put = (i: number, d: number) => {
+    cells[i] = d;
+    notes[i] = 0;
+    if (d) for (const j of PEERS[i]!) notes[j] = notes[j]! & ~(1 << (d - 1));
+  };
+
+  /** Erase on the selected cell: its digit, or else its notes. */
+  const erase = () => {
+    if (selected < 0 || isClue(selected)) return;
+    if (cells[selected]) return enter(0);
+    if (!notes[selected]) return;
+    snapshot();
+    notes[selected] = 0;
+    save();
+    paint();
+  };
+
   const checkSolved = () => {
     if (solved || cells.some((d, i) => d !== puzzle.solution[i])) return;
     solved = true;
@@ -133,10 +151,7 @@ export function mountSudoku(host: HTMLElement): void {
     } else {
       if (cells[i] === d) return;
       snapshot();
-      cells[i] = d;
-      notes[i] = 0;
-      // A placed digit is no longer a candidate for its row, column and box.
-      if (d) for (const j of PEERS[i]!) notes[j] = notes[j]! & ~(1 << (d - 1));
+      put(i, d);
       checkSolved();
     }
     save();
@@ -168,10 +183,7 @@ export function mountSudoku(host: HTMLElement): void {
     }
     if (i < 0) return;
     snapshot();
-    const d = puzzle.solution[i]!;
-    cells[i] = d;
-    notes[i] = 0;
-    for (const j of PEERS[i]!) notes[j] = notes[j]! & ~(1 << (d - 1));
+    put(i, puzzle.solution[i]!);
     hints++;
     selected = i;
     checkSolved();
@@ -222,6 +234,7 @@ export function mountSudoku(host: HTMLElement): void {
     cells = puzzle.clues.slice();
     notes = new Array<number>(81).fill(0);
     solved = false;
+    levelSel.value = puzzle.level;
     // A fresh attempt: the clock and the hint count start again too.
     elapsed = 0;
     hints = 0;
@@ -237,6 +250,7 @@ export function mountSudoku(host: HTMLElement): void {
     if (!prev) return;
     cells = prev.cells;
     notes = prev.notes;
+    levelSel.value = puzzle.level;
     // Undoing Start over brings back that attempt's clock and hints, and a finished grid is finished again.
     if (prev.elapsed > elapsed || prev.hints > hints) {
       elapsed = prev.elapsed;
@@ -322,27 +336,13 @@ export function mountSudoku(host: HTMLElement): void {
     if (digit >= 0) {
       e.preventDefault();
       if (selected < 0) selected = at;
-      if (digit === 0) {
-        if (!notesMode) enter(0);
-        else if (selected >= 0 && !isClue(selected) && notes[selected]) {
-          snapshot();
-          notes[selected] = 0;
-          save();
-          paint();
-        }
-      } else enter(digit);
+      if (digit === 0) erase();
+      else enter(digit);
       return;
     }
     if (e.key === "Backspace" || e.key === "Delete") {
       e.preventDefault();
-      if (selected < 0) return;
-      if (cells[selected] && !isClue(selected)) enter(0);
-      else if (notes[selected] && !isClue(selected)) {
-        snapshot();
-        notes[selected] = 0;
-        save();
-        paint();
-      }
+      erase();
       return;
     }
     if (e.key === "n" || e.key === "N") {
@@ -368,12 +368,7 @@ export function mountSudoku(host: HTMLElement): void {
         h("div", { class: "sudoku-pad", "data-out": "pad" }, ...padBtns),
         h("div", { class: "stage-actions" },
           notesBtn,
-          h("button", { type: "button", class: "btn ghost", "data-action": "erase", onClick: () => {
-            if (selected >= 0 && !isClue(selected)) {
-              if (cells[selected]) enter(0);
-              else if (notes[selected]) { snapshot(); notes[selected] = 0; save(); paint(); }
-            }
-          } }, t("sudoku.erase")),
+          h("button", { type: "button", class: "btn ghost", "data-action": "erase", onClick: () => erase() }, t("sudoku.erase")),
           h("button", { type: "button", class: "btn ghost", "data-action": "undo", onClick: () => back() }, t("sudoku.undo")),
           h("button", { type: "button", class: "btn ghost", "data-action": "hint", onClick: () => hint() }, t("sudoku.hint")),
         ),
