@@ -2,7 +2,7 @@
 // Bundled first because happy-dom's globals break a live transformer such as vite-node.
 import * as esbuild from "esbuild";
 import { spawnSync } from "node:child_process";
-import { rmSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./game-names.mjs";
@@ -40,17 +40,39 @@ await esbuild.build({
   }],
 });
 
-// One process per shard, one after another: memory grows with every page rendered in a process (see prerender.ts),
-// and a fresh process starts from zero. Each child gets this process's heap limit.
-const SHARDS = 4;
+// Fresh processes, one after another: memory grows with every page a process renders (see prerender.ts), so no
+// process takes more than about PAGES_PER_PROCESS, however large the sitemap grows. Each child gets this process's
+// heap limit; the counts are added up here into one summary.
+const PAGES_PER_PROCESS = 2000;
+const report = join(root, "node_modules/.cache", `cvcm-prerender-${process.pid}.json`);
+const started = Date.now();
+let written = 0;
+const failed = [];
+const errors = new Set();
+
+function child(label, env) {
+  rmSync(report, { force: true });
+  const run = spawnSync(process.execPath, [...process.execArgv, outfile], { stdio: "inherit", env: { ...process.env, ...env, PRERENDER_REPORT: report } });
+  if (run.error) throw new Error(`prerender: could not start the process for ${label}: ${run.error.message}`);
+  if (run.status !== 0) throw new Error(`prerender: ${label} failed (${run.signal ?? `exit ${run.status}`})`);
+  return JSON.parse(readFileSync(report, "utf8"));
+}
+
 try {
-  for (let shard = 0; shard < SHARDS; shard++) {
-    const run = spawnSync(process.execPath, [...process.execArgv, outfile], {
-      stdio: "inherit",
-      env: { ...process.env, PRERENDER_SHARD: `${shard}/${SHARDS}` },
-    });
-    if (run.status !== 0) throw new Error(`prerender shard ${shard + 1}/${SHARDS} failed (${run.signal ?? `exit ${run.status}`})`);
+  const { total } = child("the page count", { PRERENDER_COUNT_ONLY: "1" });
+  const shards = Math.max(1, Math.ceil(total / PAGES_PER_PROCESS));
+  for (let shard = 0; shard < shards; shard++) {
+    const part = child(`shard ${shard + 1}/${shards}`, { PRERENDER_SHARD: `${shard}/${shards}` });
+    written += part.written;
+    failed.push(...part.failed);
+    for (const error of part.errors) errors.add(error);
   }
 } finally {
   rmSync(outfile, { force: true });
+  rmSync(report, { force: true });
+}
+console.log(`prerender: ${written} pages in ${((Date.now() - started) / 1000).toFixed(1)}s, ${failed.length} skipped`);
+if (failed.length) {
+  console.log(`prerender: skipped (the Worker serves its text copy): ${failed.slice(0, 20).join(" ")}${failed.length > 20 ? " …" : ""}`);
+  console.log(`prerender: first errors:\n  ${[...errors].slice(0, 8).join("\n  ")}`);
 }

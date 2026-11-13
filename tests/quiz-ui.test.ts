@@ -174,10 +174,11 @@ describe("test page UI", () => {
     expect(result.querySelector('a[href="/en/tests/depression/"]')).toBeNull();
   });
 
-  it("suggests other fan quizzes after a fan quiz in a small group", () => {
-    const main = mount("pokemon");
+  it("suggests other fan quizzes after a fan quiz, even from a large group", () => {
+    const main = mount("hogwarts");
     const more = [...main.querySelectorAll<HTMLAnchorElement>('a[href^="/en/tests/"]')].map((a) => a.getAttribute("href"));
-    expect(more).toContain("/en/tests/naruto/");
+    expect(more).toContain("/en/tests/percy-jackson/");
+    expect(more).toContain("/en/tests/pokemon/");
     expect(more).not.toContain("/en/tests/mbti/");
   });
 

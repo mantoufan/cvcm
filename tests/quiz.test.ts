@@ -386,7 +386,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("stress", QUIZ_DEFS.stress.items.map((_, i) => (i % 2 === 0 ? 4 : 0))).safety).toBe(false);
   });
 
-  it("bands the OCD self-check from few to many signs, with help and the anxiety check at many and no crisis box", () => {
+  it("bands the OCD self-check from few to many signs, with help at many and no crisis box", () => {
     expect(maxTotal("ocd")).toBe(60);
     expect(QUIZ_DEFS.ocd.items.some((item) => "rev" in item)).toBe(false);
     expect(scoreQuiz("ocd", all("ocd", 0))).toMatchObject({ total: 0, key: "few" });
@@ -397,7 +397,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("ocd", answersFor(39)).key).toBe("some");
     expect(scoreQuiz("ocd", answersFor(40)).key).toBe("many");
     expect(SUPPORT.ocd).toEqual(["many"]);
-    expect(FOLLOW_UP.ocd).toEqual({ bands: ["many"], quiz: "anxiety" });
+    expect(FOLLOW_UP.ocd).toBeUndefined();
   });
 
   it("offers help at the high social anxiety band, links the anxiety check and never shows a crisis box", () => {
@@ -668,7 +668,8 @@ describe("test pages: scoring", () => {
       expect(new Set(best).size, id).toBe(1);
     }
     // How often each result sits in each answer position: six results, four a question (each in eight questions);
-    // eight results, four a question (each in six); four results, all in every question.
+    // eight results, four a question (each in six); four results, all in every question; twelve results, four a
+    // question (each in four, once in each position).
     const positions = [
       { ids: ["friend-role", "avengers"], min: 2, max: 2 },
       { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed"], min: 1, max: 2 },

@@ -34,6 +34,9 @@ import {
 import { messages, quizMessages } from "../../shared/messages";
 import { UNTRACKED_QUIZZES } from "../../shared/analytics";
 
+/** Places a fan quiz gives its own group under "more tests" (of six); the rest go to the other fan groups. */
+const FAN_SAME_GROUP = 4;
+
 function crumb(locale: Locale, id: QuizId | null): HTMLElement {
   const hub = quizHub(locale);
   const home = h("a", { href: appHref(locale, null), "data-nav": "home" }, quizMessages(locale).crumbHome);
@@ -201,13 +204,15 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
 
   const group = quizGroupOf(id);
   // Same group first, starting after this test (wrapping around) so a large group links to every member from
-  // somewhere; then the other fan-quiz groups for a fan quiz, then the rest, in catalog order.
+  // somewhere; then the other fan-quiz groups for a fan quiz, then the rest, in catalog order. A fan quiz keeps
+  // FAN_SAME_GROUP places for its own group so the other fan groups always get a link, however big its group grows.
   const fan = FAN_GROUPS.includes(group);
   const near = new Map(QUIZZES.map((q) => [q, fan && FAN_GROUPS.includes(quizGroupOf(q)) ? 1 : 0]));
   const members: readonly QuizId[] = QUIZ_GROUPS.find((g) => g.id === group)!.quizzes;
   const at = members.indexOf(id);
   const others = QUIZZES.filter((q) => quizGroupOf(q) !== group).sort((a, b) => near.get(b)! - near.get(a)!);
-  const siblings = [...members.slice(at + 1), ...members.slice(0, at), ...others];
+  const same = [...members.slice(at + 1), ...members.slice(0, at)];
+  const siblings = fan ? [...same.slice(0, FAN_SAME_GROUP), ...others, ...same.slice(FAN_SAME_GROUP)] : [...same, ...others];
 
   host.append(
     crumb(locale, id),
