@@ -590,6 +590,10 @@ function wikitable(tables, index, spans = false) {
   const span = (attrs, name) => Math.min(Number(attrs.match(new RegExp(`\\b${name}="?(\\d+)`))?.[1] ?? 1) || 1, 200);
   const allRows = [...table.matchAll(/<tr[^>]*>(.*?)<\/tr>/gs)].map((row) => ({ data: /<td/.test(row[1]), cells: [...row[1].matchAll(/<t[hd]([^>]*)>(.*?)<\/t[hd]>/gs)].map((cell) => ({ attrs: cell[1], html: cell[2] })) }));
   // Header rows (no <td>, repeated down long tables) are left out: "Area (km2)" would read as the number 2.
+  if (spans && (/rowspan="?0\b/.test(table) || (table.match(/<tbody/g) ?? []).length > 1)) {
+    // A span to the end of a section, or several sections, would need the grid reset at each: not read rather than misread.
+    throw new Error(`wikipedia: table ${index} has sections the span reader does not handle`);
+  }
   if (!spans) {
     const dataRows = allRows.filter((row) => row.data).map((row) => row.cells);
     // A merged cell in a data row shifts every later cell in the rows it spans: rather than read the wrong column,
@@ -687,13 +691,17 @@ function countryTitles(html) {
   return [...new Set([...linkTitles(html), ...names])];
 }
 
-/** A city cell's first part and the page its link names, when the link starts with that part ("Ann Arbor, Michigan"). */
+/** A city cell's first part, its whole text, and the page its link names when the link is on that first part: a link can cover
+ * "Ann Arbor, Michigan", or a word of it ("[Shenzhen] (Futian)", "Downtown [Dubai]"), but not the state alone ("Ann Arbor, [Michigan]"). */
 function cityOfCell(html) {
-  const cityText = cellText(html).split(/[,\n]/)[0].trim();
-  const links = [...html.matchAll(/<a [^>]*href="\/wiki\/([^"#?]+)"[^>]*>(.*?)<\/a>/gs)].filter((m) => !/^(File|Help|Wikipedia|Template):/.test(decodeURIComponent(m[1])));
-  // The link's own first part: a link can cover the whole "Ann Arbor, Michigan", or the state alone.
-  const own = links.find((m) => cellText(m[2]).split(/[,\n]/)[0].trim() === cityText);
-  return { city: own ? decodeURIComponent(own[1]).replace(/_/g, " ") : null, cityText };
+  const cellWhole = cellText(html);
+  const cityText = cellWhole.split(/[,\n]/)[0].trim();
+  const links = [...html.matchAll(/<a [^>]*href="\/wiki\/([^"#?]+)"[^>]*>(.*?)<\/a>/gs)].filter((m) => !/^(File|Image|Help|Wikipedia|Template|Special):/.test(decodeURIComponent(m[1])));
+  const own = links.find((m) => {
+    const text = cellText(m[2]).split(/[,\n]/)[0].trim();
+    return text && (text === cityText || cityText.includes(text));
+  });
+  return { city: own ? decodeURIComponent(own[1]).replace(/_/g, " ") : null, cityText, cellWhole };
 }
 
 /** The list's desert types: polar, subtropical, tropical ("Tropical/subtropical" too), cold winter, coastal (cool or mild);
@@ -773,16 +781,15 @@ async function wikipediaList(id) {
       // The city a building or stadium stands in: the cell's first part ("Ann Arbor, Michigan" → Ann Arbor), by the link written
       // on that part only, as a cell can link just its state ("Ann Arbor, [Michigan]"). The list links a city once and writes it
       // plain in the rows after: those are filled in below.
-      ...(spec.city === undefined ? {} : cityOfCell(row[spec.city])),
-      countryText: cellText(row[spec.countries]),
+      ...(spec.city === undefined ? {} : { ...cityOfCell(row[spec.city]), countryText: cellText(row[spec.countries]) }),
       // "163 (+ 2 below ground)": floors above ground.
       floors: spec.floors === undefined ? undefined : firstNumber(cellText(row[spec.floors])),
       year: spec.year === undefined ? undefined : firstNumber(cellText(row[spec.year])),
     });
   }
-  // A city written plain is the one linked under the same text in a row of the same country (Athens, Georgia is not Athens,
-  // Greece); one never linked there has no city.
-  const cityKey = (row) => `${row.cityText}\u0000${row.countryText}`;
+  // A city written plain is the one linked under the same whole cell text ("Columbia, Missouri" is not "Columbia, South
+  // Carolina") in a row of the same country (Athens, Georgia is not Athens, Greece); one never linked there has no city.
+  const cityKey = (row) => `${row.cellWhole}\u0000${row.countryText}`;
   const cityTitles = new Map(parsed.filter((row) => row.city).map((row) => [cityKey(row), row.city]));
   for (const row of parsed) if (spec.city !== undefined && !row.city) row.city = cityTitles.get(cityKey(row)) ?? null;
 
@@ -793,11 +800,12 @@ async function wikipediaList(id) {
   const itemOf = await titleIds(parsed.map((row) => row.title).filter(Boolean));
   // A linked page with no Wikidata item (a new article) has no id: like an unlinked row, refused below only if it makes the list.
   for (const row of parsed) row.item = (row.title && itemOf[row.title]) || "";
-  // A list's aggregate rows (all of Australia's deserts as one) would count their parts twice.
-  if (spec.skip) parsed.splice(0, parsed.length, ...parsed.filter((row) => !spec.skip.includes(row.item)));
+  // A list's aggregate rows (all of Australia's deserts as one) would count their parts twice. One no longer found means the
+  // list changed how it links it: the table is refused rather than let the aggregate back in unnoticed.
+  for (const skipped of spec.skip ?? []) if (!parsed.some((row) => row.item === skipped)) throw new Error(`wikipedia ${spec.page}: skipped row ${skipped} not found`);
   // A river listed twice (its whole system and an upper course, say) keeps its longest entry.
   const seen = new Set();
-  const sorted = parsed.filter((row) => !row.item || (!seen.has(row.item) && seen.add(row.item)));
+  const sorted = parsed.filter((row) => !spec.skip?.includes(row.item) && (!row.item || (!seen.has(row.item) && seen.add(row.item))));
   if (sorted[0]?.item !== spec.first) throw new Error(`wikipedia ${spec.page}: ${sorted[0]?.name} first`);
   // A pool a little past the cut: an island remap below can merge two rows, and the next one then moves up.
   const kept = sorted.slice(0, spec.rows + 10);
