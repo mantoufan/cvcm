@@ -1034,21 +1034,21 @@
     "gdp-ppp": {
       "name": "GDP (PPP) by country",
       "title": "GDP (PPP) by Country {to}: Largest Economies by Purchasing Power | cv.cm",
-      "description": "GDP at purchasing power parity for {rows} economies in current international dollars, ranked, with share of the world. World {world} ({worldYear}). World Bank data, CSV download.",
+      "description": "GDP at purchasing power parity for {rows} economies in current international dollars, ranked, with share of the world. World {world} int. $ ({worldYear}). World Bank data, CSV download.",
       "h1": "GDP (PPP) by country, {to} (current international $)",
       "lede": "Gross domestic product at purchasing power parity for {rows} economies, in current international dollars, ranked, with each one's share of the world total. Source: World Bank, from the International Comparison Program.",
       "value": "GDP, PPP (int. $)",
       "facts": [
-        "World GDP (PPP): {world} ({worldYear}).",
-        "Largest economies by purchasing power: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
-        "Smallest in the list: {last} ({vlast})."
+        "World GDP (PPP): {world} int. $ ({worldYear}).",
+        "Largest economies by purchasing power: {top1} ({v1} int. $), {top2} ({v2} int. $) and {top3} ({v3} int. $).",
+        "Smallest in the list: {last} ({vlast} int. $)."
       ],
       "about": [
         "An international dollar buys the same basket of goods and services in every country as a US dollar buys in the United States. Converting GDP this way removes price differences, so countries where living costs are low rank higher than they do at market exchange rates.",
         "PPP is the better measure of how much an economy actually produces and consumes; GDP at exchange rates is the better measure of what it can buy abroad."
       ],
       "faq": [
-        { "q": "Which country has the largest GDP by PPP?", "a": "{top1}, with {v1} in {year1}, followed by {top2} ({v2}) and {top3} ({v3})." },
+        { "q": "Which country has the largest GDP by PPP?", "a": "{top1}, with {v1} int. $ in {year1}, followed by {top2} ({v2} int. $) and {top3} ({v3} int. $)." },
         { "q": "What is the difference between GDP (PPP) and nominal GDP?", "a": "Nominal GDP converts each economy at market exchange rates. GDP (PPP) uses rates that equalise the price of the same goods everywhere, so it compares the volume of output, not its value in dollars." },
         { "q": "What is world GDP at PPP?", "a": "{world} in {worldYear}, in current international dollars." }
       ]
@@ -1061,7 +1061,7 @@
       "lede": "Gini index from the latest household survey of {rows} countries, ranked from most to least unequal. 0 means everyone has the same income; 100 means one person has all of it. Source: World Bank Poverty and Inequality Platform.",
       "value": "Gini index",
       "facts": [
-        "Most unequal: {top1} ({v1}), {top2} ({v2}) and {top3} ({v3}).",
+        "Most unequal: {top1} ({v1}, {year1}), {top2} ({v2}, {year2}) and {top3} ({v3}, {year3}).",
         "Least unequal in the list: {last} ({vlast})."
       ],
       "about": [
@@ -1083,7 +1083,7 @@
       "value": "Below $3.00 a day (%)",
       "facts": [
         "World: {world}% of people live on less than $3.00 a day ({worldYear}).",
-        "Highest poverty rates: {top1} ({v1}%), {top2} ({v2}%) and {top3} ({v3}%).",
+        "Highest poverty rates: {top1} ({v1}%, {year1}), {top2} ({v2}%, {year2}) and {top3} ({v3}%, {year3}).",
         "Lowest in the list: {last} ({vlast}%)."
       ],
       "about": [

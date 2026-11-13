@@ -1034,21 +1034,21 @@
     "gdp-ppp": {
       "name": "GDP (PPP) các nước",
       "title": "GDP (PPP) các nước năm {to}: nền kinh tế lớn nhất theo sức mua | cv.cm",
-      "description": "GDP theo sức mua tương đương của {rows} nền kinh tế, tính bằng đô la quốc tế hiện hành, xếp hạng, kèm tỷ trọng thế giới. Thế giới {world} ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
+      "description": "GDP theo sức mua tương đương của {rows} nền kinh tế, tính bằng đô la quốc tế hiện hành, xếp hạng, kèm tỷ trọng thế giới. Thế giới {world} đô la quốc tế ({worldYear}). Dữ liệu Ngân hàng Thế giới, tải CSV.",
       "h1": "GDP (PPP) các nước năm {to} (đô la quốc tế hiện hành)",
       "lede": "Tổng sản phẩm quốc nội theo sức mua tương đương của {rows} nền kinh tế, tính bằng đô la quốc tế hiện hành, xếp hạng, kèm tỷ trọng của từng nước trong tổng thế giới. Nguồn: Ngân hàng Thế giới, từ Chương trình So sánh Quốc tế (ICP).",
       "value": "GDP, PPP (Int$)",
       "facts": [
-        "GDP (PPP) thế giới: {world} ({worldYear}).",
-        "Nền kinh tế lớn nhất theo sức mua: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
-        "Nhỏ nhất trong danh sách: {last} ({vlast})."
+        "GDP (PPP) thế giới: {world} đô la quốc tế ({worldYear}).",
+        "Nền kinh tế lớn nhất theo sức mua: {top1} ({v1} đô la quốc tế), {top2} ({v2} đô la quốc tế) và {top3} ({v3} đô la quốc tế).",
+        "Nhỏ nhất trong danh sách: {last} ({vlast} đô la quốc tế)."
       ],
       "about": [
         "Một đô la quốc tế mua được cùng một giỏ hàng hóa và dịch vụ ở mọi nước như một đô la Mỹ mua được ở Mỹ. Quy đổi GDP theo cách này loại bỏ chênh lệch giá cả, nên các nước có chi phí sinh hoạt thấp xếp hạng cao hơn so với khi tính theo tỷ giá thị trường.",
         "PPP phản ánh tốt hơn lượng hàng hóa mà một nền kinh tế thực sự sản xuất và tiêu dùng; GDP theo tỷ giá phản ánh tốt hơn sức mua của nền kinh tế đó ở nước ngoài."
       ],
       "faq": [
-        { "q": "Nước nào có GDP (PPP) lớn nhất?", "a": "{top1}, với {v1} vào năm {year1}, tiếp theo là {top2} ({v2}) và {top3} ({v3})." },
+        { "q": "Nước nào có GDP (PPP) lớn nhất?", "a": "{top1}, với {v1} đô la quốc tế vào năm {year1}, tiếp theo là {top2} ({v2} đô la quốc tế) và {top3} ({v3} đô la quốc tế)." },
         { "q": "GDP (PPP) và GDP danh nghĩa khác nhau thế nào?", "a": "GDP danh nghĩa quy đổi mỗi nền kinh tế theo tỷ giá thị trường. GDP (PPP) dùng tỷ giá làm cân bằng giá của cùng một loại hàng hóa ở mọi nơi, nên so sánh khối lượng sản lượng chứ không phải giá trị tính bằng đô la." },
         { "q": "GDP (PPP) của thế giới là bao nhiêu?", "a": "{world} vào năm {worldYear}, tính bằng đô la quốc tế hiện hành." }
       ]
@@ -1061,7 +1061,7 @@
       "lede": "Chỉ số Gini từ cuộc khảo sát hộ gia đình mới nhất của {rows} quốc gia, xếp từ bất bình đẳng nhất đến ít nhất. 0 nghĩa là mọi người có thu nhập như nhau; 100 nghĩa là một người nắm toàn bộ thu nhập. Nguồn: Nền tảng Nghèo đói và Bất bình đẳng của Ngân hàng Thế giới.",
       "value": "Chỉ số Gini",
       "facts": [
-        "Bất bình đẳng nhất: {top1} ({v1}), {top2} ({v2}) và {top3} ({v3}).",
+        "Bất bình đẳng nhất: {top1} ({v1}, {year1}), {top2} ({v2}, {year2}) và {top3} ({v3}, {year3}).",
         "Ít bất bình đẳng nhất trong danh sách: {last} ({vlast})."
       ],
       "about": [
@@ -1083,7 +1083,7 @@
       "value": "Dưới 3,00 USD mỗi ngày (%)",
       "facts": [
         "Thế giới: {world}% dân số sống dưới 3,00 USD mỗi ngày ({worldYear}).",
-        "Tỷ lệ nghèo cao nhất: {top1} ({v1}%), {top2} ({v2}%) và {top3} ({v3}%).",
+        "Tỷ lệ nghèo cao nhất: {top1} ({v1}%, {year1}), {top2} ({v2}%, {year2}) và {top3} ({v3}%, {year3}).",
         "Thấp nhất trong danh sách: {last} ({vlast}%)."
       ],
       "about": [

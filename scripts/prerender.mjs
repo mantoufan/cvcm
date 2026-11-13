@@ -41,9 +41,11 @@ await esbuild.build({
   }],
 });
 
-// Each page leaves about 2.4 MB in the heap (measured: 5.9 GB for 2,470 pages) that a process never frees; one
-// process ran out of an 8 GB heap at about 7,400 pages. Split the pages over processes run one after another, each
-// with this process's heap flag, sized from that heap at 4 MB a page for headroom, so the split grows with the site.
+// Each page leaves state in the heap that a process never frees: one process with an 8 GB heap ran out at about
+// 7,400 pages (about 1.1 MB a page of heap), and a process rendering 2,470 pages peaked at 5.9 GB resident (about
+// 2.4 MB a page, with the code, buffers and baseline). Split the pages over processes run one after another, each
+// with this process's heap flag, sized from that heap at 4 MB a page, so peak memory stays well under the limit
+// as the site grows.
 // PRERENDER_SHARDS overrides the count.
 const PAGES_PER_PROCESS = Math.max(200, Math.floor(getHeapStatistics().heap_size_limit / (4 << 20)));
 const run = (env, opts = {}) => execFileSync(process.execPath, [...process.execArgv, outfile], { ...opts, env: { ...process.env, ...env } });

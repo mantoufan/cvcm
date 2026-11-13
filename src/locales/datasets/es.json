@@ -1034,21 +1034,21 @@
     "gdp-ppp": {
       "name": "PIB (PPA) por país",
       "title": "PIB (PPA) por país {to}: mayores economías por poder adquisitivo | cv.cm",
-      "description": "PIB en paridad de poder adquisitivo de {rows} economías en dólares internacionales corrientes, en orden, con su porcentaje del total mundial. Mundo: {world} ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
+      "description": "PIB en paridad de poder adquisitivo de {rows} economías en dólares internacionales corrientes, en orden, con su porcentaje del total mundial. Mundo: {world} $ int. ({worldYear}). Datos del Banco Mundial, descarga en CSV.",
       "h1": "PIB (PPA) por país, {to} (dólares internacionales corrientes)",
       "lede": "Producto interno bruto en paridad de poder adquisitivo de {rows} economías, en dólares internacionales corrientes, en orden, con el porcentaje del total mundial de cada una. Fuente: Banco Mundial, con datos del Programa de Comparación Internacional.",
       "value": "PIB, PPA ($ int.)",
       "facts": [
-        "PIB mundial (PPA): {world} ({worldYear}).",
-        "Las mayores economías por poder adquisitivo: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
-        "La menor de la lista: {last} ({vlast})."
+        "PIB mundial (PPA): {world} $ int. ({worldYear}).",
+        "Las mayores economías por poder adquisitivo: {top1} ({v1} $ int.), {top2} ({v2} $ int.) y {top3} ({v3} $ int.).",
+        "La menor de la lista: {last} ({vlast} $ int.)."
       ],
       "about": [
         "Un dólar internacional compra en cada país la misma cesta de bienes y servicios que un dólar estadounidense en Estados Unidos. Al convertir el PIB de esta forma se eliminan las diferencias de precios, por lo que los países con un coste de vida bajo quedan más arriba que con los tipos de cambio de mercado.",
         "La PPA mide mejor cuánto produce y consume realmente una economía; el PIB a tipos de cambio mide mejor lo que puede comprar en el exterior."
       ],
       "faq": [
-        { "q": "¿Qué país tiene el mayor PIB en PPA?", "a": "{top1}, con {v1} en {year1}, seguido de {top2} ({v2}) y {top3} ({v3})." },
+        { "q": "¿Qué país tiene el mayor PIB en PPA?", "a": "{top1}, con {v1} $ int. en {year1}, seguido de {top2} ({v2} $ int.) y {top3} ({v3} $ int.)." },
         { "q": "¿Qué diferencia hay entre el PIB (PPA) y el PIB nominal?", "a": "El PIB nominal convierte cada economía con los tipos de cambio de mercado. El PIB (PPA) usa tipos que igualan el precio de los mismos bienes en todas partes, así que compara el volumen de la producción, no su valor en dólares." },
         { "q": "¿Cuál es el PIB mundial en PPA?", "a": "{world} en {worldYear}, en dólares internacionales corrientes." }
       ]
@@ -1061,7 +1061,7 @@
       "lede": "Índice de Gini de la última encuesta de hogares en {rows} países, del más al menos desigual. 0 significa que todos tienen los mismos ingresos; 100, que una sola persona los tiene todos. Fuente: Plataforma de Pobreza y Desigualdad del Banco Mundial.",
       "value": "Índice de Gini",
       "facts": [
-        "Los más desiguales: {top1} ({v1}), {top2} ({v2}) y {top3} ({v3}).",
+        "Los más desiguales: {top1} ({v1}, {year1}), {top2} ({v2}, {year2}) y {top3} ({v3}, {year3}).",
         "El menos desigual de la lista: {last} ({vlast})."
       ],
       "about": [
@@ -1083,7 +1083,7 @@
       "value": "Por debajo de 3,00 US$ al día (%)",
       "facts": [
         "Mundo: el {world}% de las personas vive con menos de 3,00 US$ al día ({worldYear}).",
-        "Las tasas de pobreza más altas: {top1} ({v1}%), {top2} ({v2}%) y {top3} ({v3}%).",
+        "Las tasas de pobreza más altas: {top1} ({v1}%, {year1}), {top2} ({v2}%, {year2}) y {top3} ({v3}%, {year3}).",
         "La más baja de la lista: {last} ({vlast}%)."
       ],
       "about": [

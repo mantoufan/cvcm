@@ -159,7 +159,7 @@ export async function mountDataset(host: HTMLElement, locale: Locale, id: Datase
   const source = DATASET_SOURCE[id];
   const group = DATASET_GROUPS.find((g) => g.id === datasetGroupOf(id))!;
   const related = [...group.sets.filter((set) => set !== id), ...DATASET_GROUPS.filter((g) => g !== group).map((g) => g.sets[0])];
-  const tools = DATASET_SENSITIVE.has(id) ? [] : DATASET_TOOLS[id] ?? [];
+  const tools = DATASET_TOOLS[id] ?? [];
   host.append(
     crumb(locale, id),
     h("h1", null, copy.h1),

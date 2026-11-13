@@ -1034,21 +1034,21 @@
     "gdp-ppp": {
       "name": "PDB (PPP) per negara",
       "title": "PDB (PPP) per Negara {to}: Ekonomi Terbesar Menurut Daya Beli | cv.cm",
-      "description": "PDB berdasarkan paritas daya beli untuk {rows} perekonomian dalam dolar internasional berlaku, diurutkan, beserta pangsa dunia. Dunia {world} ({worldYear}). Data Bank Dunia, unduh CSV.",
+      "description": "PDB berdasarkan paritas daya beli untuk {rows} perekonomian dalam dolar internasional berlaku, diurutkan, beserta pangsa dunia. Dunia {world} dolar int. ({worldYear}). Data Bank Dunia, unduh CSV.",
       "h1": "PDB (PPP) per negara, {to} (dolar internasional berlaku)",
       "lede": "Produk domestik bruto berdasarkan paritas daya beli untuk {rows} perekonomian, dalam dolar internasional berlaku, diurutkan, beserta pangsa masing-masing terhadap total dunia. Sumber: Bank Dunia, dari International Comparison Program.",
       "value": "PDB, PPP (Int$)",
       "facts": [
-        "PDB dunia (PPP): {world} ({worldYear}).",
-        "Ekonomi terbesar menurut daya beli: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
-        "Terkecil dalam daftar: {last} ({vlast})."
+        "PDB dunia (PPP): {world} dolar int. ({worldYear}).",
+        "Ekonomi terbesar menurut daya beli: {top1} ({v1} dolar int.), {top2} ({v2} dolar int.) dan {top3} ({v3} dolar int.).",
+        "Terkecil dalam daftar: {last} ({vlast} dolar int.)."
       ],
       "about": [
         "Satu dolar internasional membeli sekeranjang barang dan jasa yang sama di setiap negara seperti satu dolar AS di Amerika Serikat. Mengonversi PDB dengan cara ini menghilangkan perbedaan harga, sehingga negara dengan biaya hidup rendah berperingkat lebih tinggi daripada jika memakai kurs pasar.",
         "PPP adalah ukuran yang lebih baik untuk seberapa banyak sebuah perekonomian benar-benar berproduksi dan berkonsumsi; PDB dengan kurs pasar lebih baik untuk mengukur apa yang bisa dibelinya di luar negeri."
       ],
       "faq": [
-        { "q": "Negara mana yang PDB PPP-nya terbesar?", "a": "{top1}, dengan {v1} pada {year1}, disusul {top2} ({v2}) dan {top3} ({v3})." },
+        { "q": "Negara mana yang PDB PPP-nya terbesar?", "a": "{top1}, dengan {v1} dolar int. pada {year1}, disusul {top2} ({v2} dolar int.) dan {top3} ({v3} dolar int.)." },
         { "q": "Apa bedanya PDB (PPP) dan PDB nominal?", "a": "PDB nominal mengonversi setiap perekonomian dengan kurs pasar. PDB (PPP) memakai kurs yang menyamakan harga barang yang sama di mana pun, sehingga yang dibandingkan adalah volume output, bukan nilainya dalam dolar." },
         { "q": "Berapa PDB dunia berdasarkan PPP?", "a": "{world} pada {worldYear}, dalam dolar internasional berlaku." }
       ]
@@ -1061,7 +1061,7 @@
       "lede": "Indeks Gini dari survei rumah tangga terbaru di {rows} negara, diurutkan dari yang paling timpang hingga paling merata. 0 berarti semua orang berpendapatan sama; 100 berarti satu orang memiliki seluruhnya. Sumber: Poverty and Inequality Platform Bank Dunia.",
       "value": "Indeks Gini",
       "facts": [
-        "Paling timpang: {top1} ({v1}), {top2} ({v2}) dan {top3} ({v3}).",
+        "Paling timpang: {top1} ({v1}, {year1}), {top2} ({v2}, {year2}) dan {top3} ({v3}, {year3}).",
         "Paling merata dalam daftar: {last} ({vlast})."
       ],
       "about": [
@@ -1083,7 +1083,7 @@
       "value": "Di bawah US$3,00 per hari (%)",
       "facts": [
         "Dunia: {world}% penduduk hidup dengan kurang dari US$3,00 per hari ({worldYear}).",
-        "Tingkat kemiskinan tertinggi: {top1} ({v1}%), {top2} ({v2}%) dan {top3} ({v3}%).",
+        "Tingkat kemiskinan tertinggi: {top1} ({v1}%, {year1}), {top2} ({v2}%, {year2}) dan {top3} ({v3}%, {year3}).",
         "Terendah dalam daftar: {last} ({vlast}%)."
       ],
       "about": [
