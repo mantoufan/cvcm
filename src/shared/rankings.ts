@@ -90,6 +90,8 @@ export type RankingMeta = {
   asOf: string;
   /** The last date this table's rows changed. */
   updated: string;
+  /** The last date the source was asked and answered, whether or not the rows changed. Missing before the first such run. */
+  checkedOn?: string;
   rows: number;
   /** [name, value] of the first three rows. */
   top: [string, number][];

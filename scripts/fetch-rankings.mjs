@@ -803,6 +803,8 @@ async function attempt(ids, fetchTables) {
   attempts += 1;
   try {
     await fetchTables();
+    // The day the source was last asked and answered. A kept table (failed, or not due) keeps its old day.
+    for (const id of ids) if (meta.sets[id]) meta.sets[id].checkedOn = meta.updated;
   } catch (error) {
     if (ids.some((id) => !oldRows[id])) throw error;
     failures += 1;
