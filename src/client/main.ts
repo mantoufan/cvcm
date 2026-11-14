@@ -23,6 +23,7 @@ import {
   rankingHref,
   refHref,
   slangHref,
+  ideasHref,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -41,6 +42,7 @@ import { RANKINGS, type RankingId } from "../shared/rankings";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
 import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
 import { SLANG_FOCUS, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
+import { IDEAS_FOCUS, isIdeaId, type IdeaId, type IdeaPage } from "../shared/ideas";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -87,6 +89,8 @@ let kbPage: KbPage = null;
 let refPage: RefPage = null;
 /** A slang dictionary page: "hub" for /memes/, else the entry id. */
 let slangPage: SlangPage = null;
+/** An ideas page: "hub" for /ideas/, else the idea id. */
+let ideasPage: IdeaPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -248,6 +252,18 @@ export function boot(): void {
     setLocale(loc);
     applySlang(parsed.entry);
     history.replaceState(null, "", withSearch(slangHref(loc, parsed.entry), location.search));
+  } else if (parsed.kind === "ideas") {
+    setLocale(parsed.locale);
+    applyIdeas(parsed.entry);
+    const canonical = ideasHref(parsed.locale, parsed.entry);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-ideas") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyIdeas(parsed.entry);
+    history.replaceState(null, "", withSearch(ideasHref(loc, parsed.entry), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -308,6 +324,12 @@ function prefetchGamePack(e: Event): void {
     const id = nav.startsWith("slang-") ? nav.slice(6) : "";
     const page: SlangPage = isSlangId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, null, page)) loadPageMessages(loc, false, false, false, false, null, null, page).catch(() => {});
+  } else if (target?.closest?.('a[data-nav^="ideas-"], a[data-nav="ideas"]')) {
+    // data-nav is "ideas-<idea id>" on an idea link, "ideas" on a hub link.
+    const nav = target.closest('a[data-nav^="ideas-"], a[data-nav="ideas"]')?.getAttribute("data-nav") ?? "";
+    const id = nav.startsWith("ideas-") ? nav.slice(6) : "";
+    const page: IdeaPage = isIdeaId(id) ? id : "hub";
+    if (!hasPageMessages(loc, false, false, false, false, null, null, null, page)) loadPageMessages(loc, false, false, false, false, null, null, null, page).catch(() => {});
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) return;
@@ -360,6 +382,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   kbPage = null;
   refPage = null;
   slangPage = null;
+  ideasPage = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -380,6 +403,7 @@ function applyLearn(next: TutorialId | null): void {
   kbPage = null;
   refPage = null;
   slangPage = null;
+  ideasPage = null;
 }
 
 function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
@@ -400,6 +424,7 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   kbPage = null;
   refPage = null;
   slangPage = null;
+  ideasPage = null;
 }
 
 function applyDevice(page: DevicePageId): void {
@@ -420,6 +445,7 @@ function applyDevice(page: DevicePageId): void {
   kbPage = null;
   refPage = null;
   slangPage = null;
+  ideasPage = null;
 }
 
 function applyLegal(page: LegalPageId): void {
@@ -440,6 +466,7 @@ function applyLegal(page: LegalPageId): void {
   kbPage = null;
   refPage = null;
   slangPage = null;
+  ideasPage = null;
 }
 
 function applyQuiz(id: QuizId | null): void {
@@ -460,6 +487,7 @@ function applyQuiz(id: QuizId | null): void {
   kbPage = null;
   refPage = null;
   slangPage = null;
+  ideasPage = null;
 }
 
 function applyDataset(id: DatasetId | null): void {
@@ -480,6 +508,7 @@ function applyDataset(id: DatasetId | null): void {
   kbPage = null;
   refPage = null;
   slangPage = null;
+  ideasPage = null;
 }
 
 function applyRanking(id: RankingId | null): void {
@@ -502,6 +531,11 @@ function applySlang(id: SlangId | null): void {
   slangPage = id ?? "hub";
 }
 
+function applyIdeas(id: IdeaId | null): void {
+  applyTool(null, null);
+  ideasPage = id ?? "hub";
+}
+
 function unmountTools(): void {
   const unmount = unmountCurrent;
   unmountCurrent = noop;
@@ -510,7 +544,7 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
@@ -522,9 +556,10 @@ export function render(): void {
   const kb: KbPage = parsed.kind === "kb" || parsed.kind === "bare-kb" ? parsed.article ?? "hub" : null;
   const ref: RefPage = parsed.kind === "ref" || parsed.kind === "bare-ref" ? parsed.entry ?? "hub" : null;
   const slang: SlangPage = parsed.kind === "slang" || parsed.kind === "bare-slang" ? parsed.entry ?? "hub" : null;
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang)) {
+  const ideas: IdeaPage = parsed.kind === "ideas" || parsed.kind === "bare-ideas" ? parsed.entry ?? "hub" : null;
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, ideas)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, ideas).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -612,13 +647,20 @@ export function render(): void {
     applySlang(parsed.entry);
   } else if (parsed.kind === "bare-slang") {
     applySlang(parsed.entry);
+  } else if (parsed.kind === "ideas") {
+    setLocale(parsed.locale);
+    applyIdeas(parsed.entry);
+  } else if (parsed.kind === "bare-ideas") {
+    applyIdeas(parsed.entry);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
     applyTool(null, null);
   }
 
-  const seo = slangPage
+  const seo = ideasPage
+    ? { ideas: true as const, ideaId: ideasPage === "hub" ? null : ideasPage }
+    : slangPage
     ? { slang: true as const, slangId: slangPage === "hub" ? null : slangPage }
     : refPage
     ? { ref: true as const, refId: refPage === "hub" ? null : refPage }
@@ -653,7 +695,7 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub")) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub")) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
@@ -671,7 +713,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -805,7 +847,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage);
   const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
   const gamesOn = gamesHub || Boolean(gameId);
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
@@ -814,6 +856,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const rankingsOn = Boolean(rankingPage);
   const refOn = Boolean(refPage);
   const slangOn = Boolean(slangPage);
+  const ideasOn = Boolean(ideasPage);
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
@@ -824,6 +867,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(datasetHref(loc), t("nav.data"), dataOn, "datasets"),
         navLink(refHref(loc), t("nav.reference"), refOn, "reference"),
         navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
+        navLink(ideasHref(loc), t("nav.ideas"), ideasOn, "ideas"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
@@ -902,6 +946,16 @@ function toolDirectory(loc: Locale): HTMLElement {
       h("p", null,
         ...SLANG_FOCUS.map((id) =>
           h("a", { href: slangHref(loc, id), "data-nav": `slang-${id}`, "aria-current": slangPage === id ? "page" : undefined }, t(`slangFocus.${id}`)),
+        ),
+      ),
+    ),
+    // Idea names live in the ideas pack (ideas pages only), so the footer links the hub and only the IDEAS_FOCUS ideas,
+    // whose names are also in the core pack (ideasFocus.*).
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: ideasHref(loc), "data-nav": "ideas", "aria-current": ideasPage === "hub" ? "page" : undefined }, t("nav.ideas"))),
+      h("p", null,
+        ...IDEAS_FOCUS.map((id) =>
+          h("a", { href: ideasHref(loc, id), "data-nav": `ideas-${id}`, "aria-current": ideasPage === id ? "page" : undefined }, t(`ideasFocus.${id}`)),
         ),
       ),
     ),
@@ -1008,6 +1062,10 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./slang/ui");
     if (!alive()) return;
     m.mountSlang(main, loc, slangPage === "hub" ? null : slangPage);
+  } else if (ideasPage) {
+    const m = await import("./ideas/ui");
+    if (!alive()) return;
+    m.mountIdeas(main, loc, ideasPage === "hub" ? null : ideasPage);
   } else if (legalPage) {
     main.innerHTML = legalStaticHtml(loc, legalPage);
   } else if (marketId || marketsHub) {
@@ -1112,6 +1170,8 @@ function localePath(next: Locale): string {
     ? refHref(next, refPage === "hub" ? null : refPage)
     : slangPage
     ? slangHref(next, slangPage === "hub" ? null : slangPage)
+    : ideasPage
+    ? ideasHref(next, ideasPage === "hub" ? null : ideasPage)
     : legalPage
     ? legalHref(next, legalPage)
     : learnHub || tutorial

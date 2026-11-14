@@ -1,0 +1,101 @@
+{
+  "crumbHome": "Inicio",
+  "ui": {
+    "kicker": "Ideas de negocio",
+    "answer": "En resumen",
+    "toc": "En esta página",
+    "faq": "Preguntas frecuentes",
+    "related": "Ideas similares",
+    "all": "Todas las ideas de negocio",
+    "count": "{n} ideas",
+    "sources": "Fuentes",
+    "updated": "Actualizado el {date}",
+    "online": "En línea",
+    "local": "Local",
+    "startup": "Inversión inicial",
+    "startup1": "Baja",
+    "startup2": "Media",
+    "startup3": "Alta",
+    "panel": "¿Vale la pena? Valoración según datos de búsqueda",
+    "score": "Puntuación de perspectivas",
+    "scoreOf": "de 100",
+    "parts": "De qué se compone la puntuación",
+    "partDemand": "Demanda",
+    "partMomentum": "Impulso",
+    "partValue": "Valor",
+    "partOpenness": "Apertura",
+    "demand": "Búsquedas mensuales",
+    "demandBands": ["Menos de 100", "100–1 mil", "1 mil–10 mil", "10 mil–100 mil", "100 mil–1 M", "Más de 1 M"],
+    "yoy": "Últimos 12 meses frente a los 12 anteriores",
+    "fourYear": "Ahora frente a hace 4 años",
+    "times": "{n}×",
+    "next12": "Previsión para los próximos 12 meses",
+    "cpc": "Lo que pagan los anunciantes por clic",
+    "cpcBands": ["Menos de $0.50", "$0.50–$1", "$1–$3", "$3–$10", "Más de $10"],
+    "value": "Valor del tráfico de búsqueda",
+    "valueBands": ["Menos de $1 mil / mes", "$1 mil–$10 mil / mes", "$10 mil–$100 mil / mes", "$100 mil–$1 M / mes", "Más de $1 M / mes"],
+    "competition": "Competencia entre anunciantes",
+    "compLow": "Baja",
+    "compMedium": "Media",
+    "compHigh": "Alta",
+    "outlookUp": "En crecimiento",
+    "outlookFlat": "Estable",
+    "outlookDown": "En descenso",
+    "chart": "Interés de búsqueda {from} – {to} (máximo = 100) y previsión a 12 meses",
+    "chartHistory": "Búsquedas",
+    "chartForecast": "Previsión",
+    "chartBand": "Rango probable",
+    "langs": "Búsquedas mensuales por idioma",
+    "dataNote": "Datos: Planificador de palabras clave de Google Ads, {from} – {to}, búsquedas en {n} idiomas combinadas; se actualizan cada mes. Los volúmenes son estimaciones redondeadas de Google y solo cubren Google (no Baidu, Naver ni redes sociales).",
+    "disclaimer": "El interés de búsqueda no es ganancia. Esta valoración muestra cuántas personas investigan una idea y cuánto pagan los anunciantes por llegar a ellas; no es asesoramiento financiero ni una promesa de ingresos.",
+    "method": "Cómo funciona la puntuación",
+    "ranking": "Todas las ideas por puntuación de perspectivas",
+    "colIdea": "Idea",
+    "colScore": "Puntuación",
+    "colDemand": "Búsquedas / mes",
+    "colYoy": "Cambio en 12 meses",
+    "colOutlook": "Perspectiva",
+    "top": "Las mejores puntuaciones"
+  },
+  "hub": {
+    "title": "Ideas de negocio 2026: 40 negocios rentables según Google",
+    "description": "{n} ideas de negocio y emprendimiento, valoradas con cuatro años de búsquedas en Google en ocho idiomas: demanda, impulso, valor por clic y previsión a 12 meses.",
+    "h1": "Ideas de negocio y emprendimiento, valoradas con datos de búsqueda",
+    "lede": "Las listas de ideas de negocio casi nunca te dicen si alguien las está buscando. Aquí cada idea recibe una puntuación de perspectivas basada en cuatro años de búsquedas en Google en ocho idiomas, lo que pagan los anunciantes por esas búsquedas y una previsión a 12 meses, además de una guía honesta de lo que hace falta para emprender.",
+    "groups": {
+      "ai": "IA y servicios en línea",
+      "ecommerce": "Vender por internet",
+      "services": "Servicios locales",
+      "shops": "Tiendas, máquinas y comida",
+      "maker": "Fabricar y vender"
+    },
+    "method": {
+      "h": "Cómo funciona la puntuación",
+      "items": [
+        "Demanda (35%): promedio de búsquedas mensuales en Google durante los últimos 12 meses de las frases que usa la gente para informarse sobre cómo empezar la idea, en inglés, chino, japonés, coreano, vietnamita, indonesio y español. 100 búsquedas puntúan 0 y un millón puntúa 100, en escala logarítmica.",
+        "Impulso (35%): comparación de los últimos 12 meses con los 12 anteriores, combinada con la previsión para los próximos 12. Sin cambios puntúa 50, el doble puntúa 100 y la mitad puntúa 0.",
+        "Valor (20%): la puja media por la parte superior de la página que pagan los anunciantes por estas búsquedas, una señal de cuánto vale un cliente en este sector. $0.10 puntúa 0 y $20 puntúa 100.",
+        "Apertura (10%): 100 menos el índice de competencia de anunciantes de Google, de modo que las subastas de anuncios más saturadas puntúan menos.",
+        "La previsión ajusta un patrón estacional por mes del año y una tendencia amortiguada a los dos últimos años de búsquedas; la franja sombreada es un rango aproximado del 80%. Los picos de un solo mes en una palabra clave se suavizan antes de puntuar."
+      ]
+    },
+    "about": [
+      "Cada página de idea tiene dos partes: las cifras, actualizadas cada mes desde el Planificador de palabras clave de Google Ads, y una guía escrita sobre cómo gana dinero la idea, qué necesitas, a quién le conviene, los riesgos y cómo probarla con poco dinero antes de invertir.",
+      "Una puntuación alta significa que mucha gente está investigando la idea, que el interés crece y que los clientes son valiosos. No significa que la idea sea fácil ni adecuada para ti: las ideas populares atraen competencia, y un negocio local con puntuación baja puede funcionar bien en la ciudad adecuada."
+    ],
+    "faq": [
+      {
+        "q": "¿Cuál es el mejor negocio para emprender en 2026?",
+        "a": "No hay uno solo. La clasificación de esta página muestra qué ideas atraen más interés de búsqueda y crecimiento ahora mismo, pero la idea correcta depende de tu dinero, tus habilidades y tu tiempo. Usa la puntuación para comparar la demanda y luego lee los riesgos y la prueba barata de cada página."
+      },
+      {
+        "q": "¿De dónde salen las cifras?",
+        "a": "Del Planificador de palabras clave de Google Ads: estimaciones mensuales de búsquedas de los últimos cuatro años, pujas de anunciantes y competencia, para las frases que la gente busca sobre cada idea en ocho idiomas. Mostramos rangos y un índice en lugar de cifras exactas, y los actualizamos cada mes."
+      },
+      {
+        "q": "¿Una puntuación alta significa que voy a ganar dinero?",
+        "a": "No. La puntuación mide el interés y el valor de los clientes, no la rentabilidad. Que mucha gente busque una idea también significa que mucha gente puede ponerla en marcha, así que prueba siempre la demanda en tu propio mercado antes de gastar dinero de verdad."
+      }
+    ]
+  }
+}

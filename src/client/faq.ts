@@ -35,6 +35,8 @@ import { refArticleJsonLd, refBreadcrumbJsonLd, refFaqJsonLd } from "../shared/r
 import type { RefPage } from "../shared/ref";
 import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangFaqJsonLd } from "../shared/slang-i18n";
 import type { SlangPage } from "../shared/slang";
+import { ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd } from "../shared/ideas-i18n";
+import type { IdeaPage } from "../shared/ideas";
 import type { DevicePageId } from "../shared/device";
 import { legalBreadcrumbJsonLd } from "../shared/legal";
 import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
@@ -96,10 +98,12 @@ export function syncPageJsonLd(
   rankingPage: RankingId | "hub" | null = null,
   slangPage: SlangPage = null,
   learnHub = false,
+  ideasPage: IdeaPage = null,
 ): void {
   const refId = refPage === "hub" ? null : refPage;
   const slangId = slangPage === "hub" ? null : slangPage;
-  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : slangPage ? slangArticleJsonLd(locale, slangId) : null);
+  const ideaId = ideasPage === "hub" ? null : ideasPage;
+  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : slangPage ? slangArticleJsonLd(locale, slangId) : ideasPage ? ideasArticleJsonLd(locale, ideaId) : null);
   if (datasetPage) {
     const id = datasetPage === "hub" ? null : datasetPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
@@ -117,6 +121,12 @@ export function syncPageJsonLd(
     return;
   }
   writeJsonLd("dataset-jsonld", null);
+  if (ideasPage) {
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("faq-jsonld", ideasFaqJsonLd(locale, ideaId));
+    writeJsonLd("breadcrumb-jsonld", ideasBreadcrumbJsonLd(locale, ideaId));
+    return;
+  }
   if (slangPage) {
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", slangFaqJsonLd(locale, slangId));

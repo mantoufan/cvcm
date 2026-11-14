@@ -8,9 +8,9 @@ const LOCALE_PACKS: Record<string, string[]> = typeof __LOCALE_PACKS__ === "unde
 
 /**
  * Fetch the page's strings (plus the game, quiz, dataset, kb or ref pack on those pages; `kb` is "hub", "code", "ai" or the
- * article id, `ref` and `slang` "hub" or the entry id) in parallel with the entry script instead of after it runs.
+ * article id, `ref`, `slang` and `idea` "hub" or the entry id) in parallel with the entry script instead of after it runs.
  */
-export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null): string {
+export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, idea: string | null = null): string {
   const files = [...new Set([
     ...(packs[locale] ?? []),
     ...(game ? packs[`games-${locale}`] ?? [] : []),
@@ -22,6 +22,8 @@ export function preloadLocalePack(html: string, locale: Locale, game = false, pa
     ...(ref && ref !== "hub" ? [...(packs[`ref-${locale}/loaders`] ?? []), ...(packs[`ref-${locale}/${ref}`] ?? [])] : []),
     ...(slang ? packs[`slang-${locale}`] ?? [] : []),
     ...(slang && slang !== "hub" ? [...(packs[`slang-${locale}/loaders`] ?? []), ...(packs[`slang-${locale}/${slang}`] ?? [])] : []),
+    ...(idea ? packs[`ideas-${locale}`] ?? [] : []),
+    ...(idea && idea !== "hub" ? [...(packs[`ideas-${locale}/loaders`] ?? []), ...(packs[`ideas-${locale}/${idea}`] ?? [])] : []),
   ])];
   if (!files.length) return html;
   const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");

@@ -1,0 +1,116 @@
+{
+  "name": "Micro SaaS",
+  "blurb": "Software pequeño por suscripción para un nicho, gestionado por una o pocas personas",
+  "title": "Micro SaaS: qué es, cómo funciona, qué hace falta y riesgos",
+  "description": "Qué es un micro SaaS, cómo gana dinero, qué necesitas para crearlo, a quién le conviene, los riesgos reales y cómo validar la idea antes de programar.",
+  "h1": "Cómo crear un micro SaaS",
+  "answer": "Un micro SaaS es un pequeño producto de software como servicio que resuelve un problema concreto para un grupo reducido de usuarios, como un complemento de reservas para una plataforma de comercio electrónico, y cobra una suscripción mensual o anual. Puede gestionarlo una persona o un equipo diminuto. El problema es que construirlo es la parte fácil: encontrar clientes, atender el soporte y seguir el ritmo de las plataformas de las que dependes se lleva la mayor parte del tiempo, y muchos productos nunca llegan a tener suficientes usuarios de pago.",
+  "sections": [
+    {
+      "h": "Cómo gana dinero un micro SaaS",
+      "body": [
+        "Los clientes pagan una suscripción recurrente, normalmente por niveles según uso o funciones, y a veces un plan anual con descuento. Algunos productos se venden a través del marketplace de apps de una plataforma (de tiendas, contabilidad o webs), que trae usuarios pero se queda una comisión y pone las reglas.",
+        "Los costes son sobre todo alojamiento, servicios de terceros, comisiones de pago, comisiones del marketplace y tu tiempo de soporte. El asesino silencioso del margen son las bajas: los clientes que cancelan cada mes tienen que ser reemplazados antes de que los ingresos puedan crecer."
+      ]
+    },
+    {
+      "h": "Qué necesitas para empezar",
+      "body": [
+        {
+          "ul": [
+            "Saber programar, o dominar un conjunto de herramientas no-code, además de nociones básicas de alojamiento, copias de seguridad y seguridad.",
+            "Un problema concreto y doloroso que hayas visto de primera mano, a ser posible en un nicho demasiado pequeño para que le interese a las grandes empresas de software.",
+            "Una forma de llegar a ese nicho: una comunidad, una ficha en un marketplace, contenido o contacto directo.",
+            "Pagos y facturación de suscripciones a través de un proveedor de pagos, con el impuesto sobre ventas o el IVA de los servicios digitales gestionado según exijan los países de tus clientes.",
+            "Términos de servicio, una política de privacidad y lo básico de protección de datos (por ejemplo, el RGPD si tienes usuarios en la UE).",
+            "Meses de tardes o fines de semana, porque el crecimiento inicial suele ser lento."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "A quién le conviene (y a quién no)",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Le conviene a",
+              "No es para"
+            ],
+            "rows": [
+              [
+                "Desarrolladores que también disfrutan hablando con usuarios",
+                "Quien solo quiere programar y nunca vender"
+              ],
+              [
+                "Alguien que conoce un nicho desde dentro",
+                "Quien necesita ingresos estables en pocas semanas"
+              ],
+              [
+                "Constructores pacientes capaces de mantener un producto durante años",
+                "Quien abandona los proyectos cuando dejan de ser novedad"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Riesgos y qué vigilar",
+      "body": [
+        {
+          "ul": [
+            "Construir antes de validar: el fallo más común es un producto terminado que nadie pidió.",
+            "Riesgo de plataforma: si vives dentro de un marketplace o una API, un cambio de política, de comisión o de funciones puede acabar con el negocio.",
+            "Bajas y carga de soporte: los clientes pequeños cancelan a menudo y aun así esperan respuestas rápidas.",
+            "Imitadores: una idea de nicho que funciona es fácil de clonar; tu ventaja es el servicio, el conocimiento del nicho y la distribución.",
+            "Vendedores de listas de ideas y plantillas de código: comprar una lista de \"ideas SaaS rentables\" o un kit de inicio no te da clientes."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cómo probarlo con poco dinero",
+      "body": [
+        {
+          "ol": [
+            "Escribe el problema con las palabras de los propios usuarios, sacadas de foros, reseñas o entrevistas.",
+            "Habla con diez usuarios potenciales y pregúntales cómo lo resuelven hoy y cuánto les cuesta.",
+            "Publica una página de aterrizaje con un precio y un botón de acceso anticipado o reserva.",
+            "Resuelve primero el problema a mano o con una hoja de cálculo para dos o tres usuarios.",
+            "Empieza a construir solo cuando algunas personas hayan pagado o se hayan comprometido por escrito."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Tus primeros 30 días",
+      "body": [
+        {
+          "ol": [
+            "Define la única función principal y deja todo lo demás fuera.",
+            "Constrúyela y lánzala a tus primeros usuarios, con el cobro funcionando desde el inicio.",
+            "Configura el seguimiento de errores, las copias de seguridad y un buzón de soporte sencillo.",
+            "Mide cada semana los registros, las conversiones a pago y las cancelaciones.",
+            "Pregunta a cada cliente que cancela por qué se fue.",
+            "Dedica al menos tanto tiempo a buscar usuarios como a crear funciones nuevas."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿En qué se diferencia un micro SaaS de una startup normal?",
+      "a": "Un micro SaaS busca ser pequeño, enfocado y normalmente autofinanciado, gestionado por una o unas pocas personas. Una startup con capital riesgo busca un crecimiento rápido y grande, y levanta dinero para conseguirlo."
+    },
+    {
+      "q": "¿Puedo crear un micro SaaS sin programar?",
+      "a": "Sí, algunos fundadores usan herramientas no-code, sobre todo para herramientas de tipo interno y flujos sencillos. Puede que te topes con límites de rendimiento, coste o personalización a medida que creces."
+    },
+    {
+      "q": "¿De dónde salen las buenas ideas de micro SaaS?",
+      "a": "Normalmente de problemas repetitivos que has visto en un trabajo o una afición, de quejas en foros de nicho y de huecos en los marketplaces de apps de plataformas populares. Venga de donde venga, valídala antes de construir."
+    }
+  ]
+}

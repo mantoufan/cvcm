@@ -1,0 +1,104 @@
+{
+  "name": "Micro SaaS",
+  "blurb": "Phần mềm thuê bao nhỏ cho một ngách hẹp, do một người hoặc nhóm rất nhỏ vận hành",
+  "title": "Micro SaaS là gì: cách kiếm tiền, cần gì và rủi ro",
+  "description": "Micro SaaS là gì, sản phẩm SaaS nhỏ kiếm tiền ra sao, cần gì để xây, ai phù hợp, rủi ro thật và cách kiểm chứng ý tưởng SaaS trước khi viết code.",
+  "h1": "Cách bắt đầu một micro SaaS",
+  "answer": "Micro SaaS là một sản phẩm phần mềm dạng dịch vụ nhỏ, giải quyết một vấn đề cụ thể cho một nhóm người dùng hẹp, ví dụ tiện ích đặt lịch cho một nền tảng thương mại điện tử, và thu phí thuê bao theo tháng hoặc năm. Một người hoặc nhóm rất nhỏ có thể vận hành. Điểm khó là xây sản phẩm mới là phần dễ: tìm khách, hỗ trợ và theo kịp các nền tảng mà bạn phụ thuộc chiếm phần lớn thời gian, và nhiều sản phẩm không bao giờ có đủ người dùng trả tiền.",
+  "sections": [
+    {
+      "h": "Micro SaaS kiếm tiền như thế nào",
+      "body": [
+        "Khách trả thuê bao định kỳ, thường chia gói theo mức dùng hoặc tính năng, đôi khi có gói năm giảm giá. Một số sản phẩm bán qua chợ ứng dụng (của nền tảng bán hàng, kế toán hay website), nơi mang lại người dùng nhưng lấy hoa hồng và đặt luật chơi.",
+        "Chi phí chủ yếu là hosting, dịch vụ bên thứ ba, phí thanh toán, hoa hồng chợ ứng dụng và thời gian hỗ trợ của bạn. Kẻ giết biên lợi nhuận thầm lặng là churn: khách hủy mỗi tháng phải được thay thế trước khi doanh thu có thể tăng."
+      ]
+    },
+    {
+      "h": "Cần gì để bắt đầu",
+      "body": [
+        {
+          "ul": [
+            "Kỹ năng lập trình, hoặc một bộ công cụ no-code bạn rành, cùng thói quen cơ bản về hosting, sao lưu và bảo mật.",
+            "Một vấn đề hẹp, gây khó chịu thật mà bạn tận mắt thấy, lý tưởng là trong ngách quá nhỏ để các công ty phần mềm lớn bận tâm.",
+            "Một cách tiếp cận ngách đó: cộng đồng, trang trên chợ ứng dụng, nội dung hoặc chủ động liên hệ.",
+            "Thanh toán và thu phí thuê bao qua một nhà cung cấp thanh toán, xử lý thuế bán hàng hoặc VAT cho dịch vụ số theo yêu cầu của nước khách hàng.",
+            "Điều khoản dịch vụ, chính sách quyền riêng tư và các nguyên tắc bảo vệ dữ liệu cơ bản (ví dụ GDPR nếu có người dùng ở EU).",
+            "Nhiều tháng tranh thủ buổi tối hoặc cuối tuần, vì giai đoạn đầu thường tăng trưởng chậm."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ai phù hợp (và ai không)",
+      "body": [
+        {
+          "table": {
+            "head": ["Phù hợp", "Không phù hợp"],
+            "rows": [
+              ["Lập trình viên cũng thích nói chuyện với người dùng", "Người chỉ muốn code, không bao giờ bán"],
+              ["Người có hiểu biết từ bên trong một ngách", "Người cần thu nhập đều đặn trong vài tuần"],
+              ["Người kiên nhẫn, chịu duy trì sản phẩm nhiều năm", "Người bỏ dự án ngay khi hết thấy mới mẻ"]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Rủi ro và điều cần để ý",
+      "body": [
+        {
+          "ul": [
+            "Xây trước khi kiểm chứng: thất bại phổ biến nhất là một sản phẩm hoàn chỉnh mà không ai cần.",
+            "Rủi ro nền tảng: nếu bạn sống nhờ một chợ ứng dụng hay một API, một thay đổi chính sách, phí hoặc tính năng có thể chấm dứt cả mô hình.",
+            "Churn và gánh nặng hỗ trợ: khách nhỏ hay hủy nhưng vẫn mong được trả lời nhanh.",
+            "Bị sao chép: một ý tưởng hẹp mà chạy tốt thì dễ bị nhái; lợi thế của bạn là dịch vụ, hiểu biết ngách và kênh phân phối.",
+            "Người bán danh sách ý tưởng và bộ code mẫu: mua danh sách “ý tưởng SaaS sinh lời” hay một starter kit không mang lại khách hàng cho bạn."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cách thử nghiệm với chi phí thấp",
+      "body": [
+        {
+          "ol": [
+            "Viết ra vấn đề bằng chính lời của người dùng, lấy từ diễn đàn, đánh giá hoặc phỏng vấn.",
+            "Nói chuyện với mười người dùng tiềm năng, hỏi hiện họ giải quyết thế nào và tốn bao nhiêu.",
+            "Làm một landing page có giá và nút đăng ký dùng sớm hoặc đặt trước.",
+            "Giải quyết vấn đề thủ công hoặc bằng bảng tính cho hai ba người dùng trước.",
+            "Chỉ bắt đầu xây khi đã có vài người trả tiền hoặc cam kết bằng văn bản."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "30 ngày đầu tiên",
+      "body": [
+        {
+          "ol": [
+            "Xác định một tính năng cốt lõi và bỏ hết phần còn lại.",
+            "Xây và ra mắt cho nhóm người dùng đầu tiên, có thanh toán chạy ngay từ đầu.",
+            "Thiết lập theo dõi lỗi, sao lưu và một hộp thư hỗ trợ đơn giản.",
+            "Theo dõi lượt đăng ký, tỷ lệ chuyển sang trả phí và lượt hủy mỗi tuần.",
+            "Hỏi từng khách hủy lý do họ rời đi.",
+            "Dành ít nhất ngang thời gian cho việc tìm người dùng như cho tính năng mới."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Micro SaaS khác một startup thông thường thế nào?",
+      "a": "Micro SaaS hướng tới quy mô nhỏ, tập trung và thường tự bỏ vốn, do một hoặc vài người vận hành. Startup có vốn đầu tư mạo hiểm hướng tới tăng trưởng nhanh, lớn và gọi vốn để đạt được điều đó."
+    },
+    {
+      "q": "Có thể làm micro SaaS mà không biết code không?",
+      "a": "Có, một số nhà sáng lập dùng công cụ no-code, nhất là cho công cụ kiểu nội bộ và quy trình đơn giản. Khi lớn lên, bạn có thể gặp giới hạn về hiệu năng, chi phí hoặc khả năng tùy biến."
+    },
+    {
+      "q": "Ý tưởng micro SaaS tốt đến từ đâu?",
+      "a": "Thường từ những vấn đề lặp lại bạn gặp trong công việc hay sở thích, lời phàn nàn trong các diễn đàn ngách, và khoảng trống trong chợ ứng dụng của các nền tảng phổ biến. Dù nguồn nào, hãy kiểm chứng trước khi xây."
+    }
+  ]
+}

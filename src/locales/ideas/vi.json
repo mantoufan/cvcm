@@ -1,0 +1,101 @@
+{
+  "crumbHome": "Trang chủ",
+  "ui": {
+    "kicker": "Ý tưởng kinh doanh",
+    "answer": "Tóm tắt",
+    "toc": "Trong trang này",
+    "faq": "Câu hỏi thường gặp",
+    "related": "Ý tưởng tương tự",
+    "all": "Tất cả ý tưởng kinh doanh",
+    "count": "{n} ý tưởng",
+    "sources": "Nguồn",
+    "updated": "Cập nhật {date}",
+    "online": "Online",
+    "local": "Tại địa phương",
+    "startup": "Vốn khởi nghiệp",
+    "startup1": "Thấp",
+    "startup2": "Trung bình",
+    "startup3": "Cao",
+    "panel": "Có đáng làm không? Định giá bằng dữ liệu tìm kiếm",
+    "score": "Điểm triển vọng",
+    "scoreOf": "trên 100",
+    "parts": "Điểm được tính từ đâu",
+    "partDemand": "Nhu cầu",
+    "partMomentum": "Đà tăng trưởng",
+    "partValue": "Giá trị",
+    "partOpenness": "Độ mở",
+    "demand": "Lượt tìm kiếm mỗi tháng",
+    "demandBands": ["Dưới 100", "100–1 nghìn", "1 nghìn–10 nghìn", "10 nghìn–100 nghìn", "100 nghìn–1 triệu", "Trên 1 triệu"],
+    "yoy": "12 tháng gần nhất so với 12 tháng trước đó",
+    "fourYear": "Hiện tại so với 4 năm trước",
+    "times": "{n}×",
+    "next12": "Dự báo 12 tháng tới",
+    "cpc": "Nhà quảng cáo trả cho mỗi lượt nhấp",
+    "cpcBands": ["Dưới $0.50", "$0.50–$1", "$1–$3", "$3–$10", "Trên $10"],
+    "value": "Giá trị lưu lượng tìm kiếm",
+    "valueBands": ["Dưới $1 nghìn / tháng", "$1 nghìn–$10 nghìn / tháng", "$10 nghìn–$100 nghìn / tháng", "$100 nghìn–$1 triệu / tháng", "Trên $1 triệu / tháng"],
+    "competition": "Mức cạnh tranh quảng cáo",
+    "compLow": "Thấp",
+    "compMedium": "Trung bình",
+    "compHigh": "Cao",
+    "outlookUp": "Đang tăng",
+    "outlookFlat": "Ổn định",
+    "outlookDown": "Đang giảm",
+    "chart": "Mức quan tâm tìm kiếm {from} – {to} (đỉnh = 100) và dự báo 12 tháng",
+    "chartHistory": "Lượt tìm kiếm",
+    "chartForecast": "Dự báo",
+    "chartBand": "Khoảng dao động khả dĩ",
+    "langs": "Lượt tìm kiếm mỗi tháng theo ngôn ngữ",
+    "dataNote": "Dữ liệu: Google Ads Keyword Planner, {from} – {to}, gộp lượt tìm kiếm ở {n} ngôn ngữ; cập nhật hằng tháng. Số liệu là ước tính đã làm tròn của Google và chỉ tính Google (không gồm Baidu, Naver hay các ứng dụng mạng xã hội).",
+    "disclaimer": "Mức quan tâm tìm kiếm không phải là lợi nhuận. Phần định giá này cho thấy bao nhiêu người tìm hiểu một ý tưởng và nhà quảng cáo trả bao nhiêu để tiếp cận họ; đây không phải lời khuyên tài chính hay cam kết thu nhập.",
+    "method": "Cách tính điểm",
+    "ranking": "Tất cả ý tưởng theo điểm triển vọng",
+    "colIdea": "Ý tưởng",
+    "colScore": "Điểm",
+    "colDemand": "Lượt tìm / tháng",
+    "colYoy": "Thay đổi 12 tháng",
+    "colOutlook": "Triển vọng",
+    "top": "Điểm triển vọng cao nhất"
+  },
+  "hub": {
+    "title": "Ý tưởng kinh doanh 2026: 40 ý tưởng định giá bằng dữ liệu",
+    "description": "{n} ý tưởng kinh doanh và làm thêm, mỗi ý tưởng được định giá bằng 4 năm dữ liệu tìm kiếm Google ở 8 ngôn ngữ: nhu cầu, đà tăng, giá trị nhấp và dự báo 12 tháng.",
+    "h1": "Ý tưởng kinh doanh: nên kinh doanh gì? Định giá bằng dữ liệu tìm kiếm",
+    "lede": "Các danh sách ý tưởng kinh doanh hiếm khi cho bạn biết có ai thực sự quan tâm hay không. Mỗi ý tưởng ở đây có một điểm triển vọng dựa trên 4 năm lượt tìm kiếm Google ở 8 ngôn ngữ, mức nhà quảng cáo trả cho các lượt tìm đó và dự báo 12 tháng, kèm hướng dẫn thẳng thắn về những gì cần có.",
+    "groups": {
+      "ai": "AI và dịch vụ online",
+      "ecommerce": "Bán hàng online",
+      "services": "Dịch vụ tại địa phương",
+      "shops": "Cửa hàng, máy bán hàng và đồ ăn",
+      "maker": "Tự làm và bán"
+    },
+    "method": {
+      "h": "Cách tính điểm",
+      "items": [
+        "Nhu cầu (35%): lượt tìm kiếm Google trung bình mỗi tháng trong 12 tháng qua cho các cụm từ người ta dùng khi tìm cách bắt đầu ý tưởng, bằng tiếng Anh, tiếng Trung, tiếng Nhật, tiếng Hàn, tiếng Việt, tiếng Indonesia và tiếng Tây Ban Nha. 100 lượt tìm được 0 điểm và một triệu lượt được 100 điểm, theo thang logarit.",
+        "Đà tăng trưởng (35%): so sánh 12 tháng gần nhất với 12 tháng trước đó, kết hợp với dự báo 12 tháng tới. Đi ngang được 50 điểm, tăng gấp đôi được 100 điểm và giảm một nửa được 0 điểm.",
+        "Giá trị (20%): mức giá thầu đầu trang trung bình mà nhà quảng cáo trả cho các lượt tìm này, cho thấy một khách hàng trong lĩnh vực này đáng giá bao nhiêu. $0.10 được 0 điểm và $20 được 100 điểm.",
+        "Độ mở (10%): 100 trừ đi chỉ số cạnh tranh quảng cáo của Google, nên các phiên đấu giá quảng cáo đông đúc sẽ có điểm thấp hơn.",
+        "Dự báo khớp một mô hình mùa vụ theo tháng dương lịch và một xu hướng đã giảm chấn với lượt tìm kiếm của hai năm gần nhất; vùng tô màu là khoảng 80% ước lượng thô. Các đợt tăng đột biến trong một tháng của từ khóa được làm mượt trước khi tính điểm."
+      ]
+    },
+    "about": [
+      "Mỗi trang ý tưởng có hai phần: các con số, cập nhật hằng tháng từ Google Ads Keyword Planner, và một bài hướng dẫn về cách ý tưởng kiếm tiền, bạn cần gì, ai phù hợp, rủi ro và cách thử nghiệm với chi phí thấp trước khi bỏ tiền thật.",
+      "Điểm cao nghĩa là nhiều người đang tìm hiểu ý tưởng, mức quan tâm đang tăng và khách hàng có giá trị. Điều đó không có nghĩa ý tưởng dễ làm hay hợp với bạn: ý tưởng phổ biến thu hút cạnh tranh, và một mô hình kinh doanh địa phương điểm thấp vẫn có thể làm tốt ở đúng nơi."
+    ],
+    "faq": [
+      {
+        "q": "Năm 2026 nên kinh doanh gì?",
+        "a": "Không có một ý tưởng tốt nhất duy nhất. Bảng xếp hạng trên trang này cho thấy ý tưởng nào đang thu hút nhiều lượt tìm kiếm và tăng trưởng nhất lúc này, nhưng ý tưởng phù hợp phụ thuộc vào vốn, kỹ năng và thời gian của bạn. Hãy dùng điểm số để so sánh nhu cầu, rồi đọc phần rủi ro và cách thử nghiệm rẻ ở từng trang."
+      },
+      {
+        "q": "Các con số lấy từ đâu?",
+        "a": "Từ Google Ads Keyword Planner: ước tính lượt tìm kiếm hằng tháng trong 4 năm qua, giá thầu và mức cạnh tranh của nhà quảng cáo, cho các cụm từ người ta tìm về từng ý tưởng ở 8 ngôn ngữ. Chúng tôi hiển thị theo khoảng và chỉ số thay vì số liệu thô, và cập nhật mỗi tháng."
+      },
+      {
+        "q": "Điểm triển vọng cao có nghĩa là tôi sẽ kiếm được tiền?",
+        "a": "Không. Điểm số đo mức quan tâm và giá trị khách hàng, không phải lợi nhuận. Nhiều người tìm một ý tưởng cũng có nghĩa nhiều người có thể bắt đầu làm nó, vì vậy luôn thử nghiệm nhu cầu ở thị trường của bạn trước khi bỏ tiền thật."
+      }
+    ]
+  }
+}

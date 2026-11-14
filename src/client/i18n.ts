@@ -37,6 +37,11 @@ import {
   hasSlangMessages,
   registerSlangEntry,
   registerSlangMessages,
+  type IdeasMessages,
+  hasIdeaEntry,
+  hasIdeasMessages,
+  registerIdeaEntry,
+  registerIdeasMessages,
 } from "../shared/messages";
 import type { KbArticleCopy } from "../shared/kb-i18n";
 import { kbArticleOf, type KbId, type KbPage } from "../shared/kb";
@@ -44,6 +49,8 @@ import type { RefEntryCopy } from "../shared/ref-i18n";
 import type { RefId, RefPage } from "../shared/ref";
 import type { SlangEntryCopy } from "../shared/slang-i18n";
 import type { SlangId, SlangPage } from "../shared/slang";
+import type { IdeaEntryCopy } from "../shared/ideas-i18n";
+import type { IdeaId, IdeaPage } from "../shared/ideas";
 
 // One chunk per locale, so a page downloads only the strings it shows.
 const PACKS: Record<Locale, () => Promise<{ default: LocaleMessages }>> = {
@@ -196,21 +203,54 @@ async function loadSlangEntry(next: Locale, id: SlangId): Promise<void> {
   registerSlangEntry(next, id, m.default);
 }
 
+// Ideas hub copy, idea names and the search-data snapshot (`npm run ideas:sync`), only for /ideas/ pages.
+const IDEAS_PACKS: Record<Locale, () => Promise<{ default: IdeasMessages }>> = {
+  en: () => import("../locales/packs/ideas-en"),
+  "zh-CN": () => import("../locales/packs/ideas-zh-CN"),
+  "zh-TW": () => import("../locales/packs/ideas-zh-TW"),
+  ja: () => import("../locales/packs/ideas-ja"),
+  ko: () => import("../locales/packs/ideas-ko"),
+  vi: () => import("../locales/packs/ideas-vi"),
+  id: () => import("../locales/packs/ideas-id"),
+  es: () => import("../locales/packs/ideas-es"),
+};
+
+// One chunk per idea and locale, through that locale's generated loader table.
+const IDEA_LOADER_TABLES: Record<Locale, () => Promise<{ IDEA_LOADERS: Record<IdeaId, () => Promise<unknown>> }>> = {
+  en: () => import("../locales/ideas/loaders/en"),
+  "zh-CN": () => import("../locales/ideas/loaders/zh-CN"),
+  "zh-TW": () => import("../locales/ideas/loaders/zh-TW"),
+  ja: () => import("../locales/ideas/loaders/ja"),
+  ko: () => import("../locales/ideas/loaders/ko"),
+  vi: () => import("../locales/ideas/loaders/vi"),
+  id: () => import("../locales/ideas/loaders/id"),
+  es: () => import("../locales/ideas/loaders/es"),
+};
+
+async function loadIdeaEntry(next: Locale, id: IdeaId): Promise<void> {
+  const { IDEA_LOADERS } = await IDEA_LOADER_TABLES[next]();
+  const m = (await IDEA_LOADERS[id]()) as { default: IdeaEntryCopy };
+  registerIdeaEntry(next, id, m.default);
+}
+
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, ideas: IdeaPage = null): boolean {
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
+  const idea = ideas && ideas !== "hub" ? ideas : null;
   return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
     && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
     && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))))
-    && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))));
+    && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))))
+    && (!ideas || (hasIdeasMessages(next) && (!idea || hasIdeaEntry(next, idea))));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, ideas: IdeaPage = null): Promise<void> {
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
+  const idea = ideas && ideas !== "hub" ? ideas : null;
   await Promise.all([
     hasMessages(next) ? null : PACKS[next]().then((m) => registerMessages(next, m.default)),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
@@ -223,6 +263,8 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !entry || hasRefEntry(next, entry) ? null : loadRefEntry(next, entry),
     !slang || hasSlangMessages(next) ? null : SLANG_PACKS[next]().then((m) => registerSlangMessages(next, m.default)),
     !term || hasSlangEntry(next, term) ? null : loadSlangEntry(next, term),
+    !ideas || hasIdeasMessages(next) ? null : IDEAS_PACKS[next]().then((m) => registerIdeasMessages(next, m.default)),
+    !idea || hasIdeaEntry(next, idea) ? null : loadIdeaEntry(next, idea),
   ]);
 }
 

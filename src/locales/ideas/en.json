@@ -1,0 +1,101 @@
+{
+  "crumbHome": "Home",
+  "ui": {
+    "kicker": "Business ideas",
+    "answer": "In short",
+    "toc": "On this page",
+    "faq": "FAQ",
+    "related": "Similar ideas",
+    "all": "All business ideas",
+    "count": "{n} ideas",
+    "sources": "Sources",
+    "updated": "Updated {date}",
+    "online": "Online",
+    "local": "Local",
+    "startup": "Startup cost",
+    "startup1": "Low",
+    "startup2": "Medium",
+    "startup3": "High",
+    "panel": "Is it worth it? The search-data valuation",
+    "score": "Outlook score",
+    "scoreOf": "out of 100",
+    "parts": "What the score is made of",
+    "partDemand": "Demand",
+    "partMomentum": "Momentum",
+    "partValue": "Value",
+    "partOpenness": "Openness",
+    "demand": "Monthly searches",
+    "demandBands": ["Under 100", "100–1K", "1K–10K", "10K–100K", "100K–1M", "Over 1M"],
+    "yoy": "Last 12 months vs the 12 before",
+    "fourYear": "Now vs 4 years ago",
+    "times": "{n}×",
+    "next12": "Forecast for the next 12 months",
+    "cpc": "What advertisers pay per click",
+    "cpcBands": ["Under $0.50", "$0.50–$1", "$1–$3", "$3–$10", "Over $10"],
+    "value": "Search traffic value",
+    "valueBands": ["Under $1K / month", "$1K–$10K / month", "$10K–$100K / month", "$100K–$1M / month", "Over $1M / month"],
+    "competition": "Advertiser competition",
+    "compLow": "Low",
+    "compMedium": "Medium",
+    "compHigh": "High",
+    "outlookUp": "Growing",
+    "outlookFlat": "Steady",
+    "outlookDown": "Shrinking",
+    "chart": "Search interest {from} – {to} (peak = 100) and the 12-month forecast",
+    "chartHistory": "Searches",
+    "chartForecast": "Forecast",
+    "chartBand": "Likely range",
+    "langs": "Monthly searches by language",
+    "dataNote": "Data: Google Ads Keyword Planner, {from} – {to}, searches in {n} languages combined; refreshed monthly. Volumes are Google's rounded estimates and cover Google only (not Baidu, Naver or social apps).",
+    "disclaimer": "Search interest is not profit. This valuation shows how many people look into an idea and what advertisers pay to reach them; it is not financial advice or a promise of income.",
+    "method": "How the score works",
+    "ranking": "All ideas by outlook score",
+    "colIdea": "Idea",
+    "colScore": "Score",
+    "colDemand": "Searches / month",
+    "colYoy": "12-month change",
+    "colOutlook": "Outlook",
+    "top": "Highest outlook scores"
+  },
+  "hub": {
+    "title": "Business Ideas 2026: 40 Ideas Valued With Search Data",
+    "description": "{n} business and side-hustle ideas, each valued with four years of Google search data in eight languages: demand, momentum, click value and a 12-month forecast.",
+    "h1": "Business ideas, valued with search data",
+    "lede": "Lists of business ideas rarely tell you whether anyone is looking. Each idea here gets an outlook score built from four years of Google searches in eight languages, what advertisers pay for those searches and a 12-month forecast, plus an honest guide to what it takes.",
+    "groups": {
+      "ai": "AI and online services",
+      "ecommerce": "Selling online",
+      "services": "Local services",
+      "shops": "Shops, machines and food",
+      "maker": "Making and selling"
+    },
+    "method": {
+      "h": "How the score works",
+      "items": [
+        "Demand (35%): average monthly Google searches over the last 12 months for the phrases people use about starting the idea, in English, Chinese, Japanese, Korean, Vietnamese, Indonesian and Spanish. 100 searches scores 0 and a million scores 100, on a log scale.",
+        "Momentum (35%): how the last 12 months compare with the 12 before, combined with the forecast for the next 12. Flat scores 50, doubling scores 100 and halving scores 0.",
+        "Value (20%): the average top-of-page bid advertisers pay for these searches, a sign of how much a customer in this space is worth. $0.10 scores 0 and $20 scores 100.",
+        "Openness (10%): 100 minus Google's advertiser competition index, so crowded ad auctions score lower.",
+        "The forecast fits a calendar-month seasonal pattern and a dampened trend to the last two years of searches; the shaded band is a rough 80% range. One-month spikes in a keyword are smoothed before scoring."
+      ]
+    },
+    "about": [
+      "Every idea page has two parts: the numbers, refreshed monthly from Google Ads Keyword Planner, and a written guide on how the idea makes money, what you need, who it suits, the risks and how to test it cheaply before spending money.",
+      "A high score means many people are researching the idea, interest is growing and the customers are valuable. It does not mean the idea is easy or right for you: popular ideas attract competition, and a low-scoring local business can still do well in the right town."
+    ],
+    "faq": [
+      {
+        "q": "What is the best business idea to start in 2026?",
+        "a": "There is no single best one. The ranking on this page shows which ideas draw the most search interest and growth right now, but the right idea depends on your money, skills and time. Use the score to compare demand, then read the risks and the cheap test on each page."
+      },
+      {
+        "q": "Where do the numbers come from?",
+        "a": "From Google Ads Keyword Planner: monthly search estimates for the last four years, advertiser bids and competition, for the phrases people search about each idea in eight languages. We show bands and an index rather than raw figures, and refresh them every month."
+      },
+      {
+        "q": "Does a high outlook score mean I will make money?",
+        "a": "No. The score measures interest and the value of customers, not profit. Many people searching an idea also means many people may start it, so always test demand in your own market before you spend real money."
+      }
+    ]
+  }
+}
