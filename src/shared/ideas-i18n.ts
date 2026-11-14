@@ -91,15 +91,20 @@ export function ideaData(locale: Locale, id: IdeaId): IdeaData | null {
 }
 
 export function ideaTitle(locale: Locale, id: IdeaId | null): string {
-  return `${id ? ideaCopy(locale, id).title : fill(ideasHub(locale).title, { n: IDEA_ENTRIES.length })} — cv.cm`;
+  return `${id ? ideaCopy(locale, id).title : fill(ideasHub(locale).title, hubVars(locale))} — cv.cm`;
 }
 
 export function ideaDescription(locale: Locale, id: IdeaId | null): string {
-  return id ? ideaCopy(locale, id).description : fill(ideasHub(locale).description, { n: IDEA_ENTRIES.length });
+  return id ? ideaCopy(locale, id).description : fill(ideasHub(locale).description, hubVars(locale));
+}
+
+/** Hub placeholders: the idea count and the year of the data snapshot ("business ideas 2027" after a January refresh). */
+function hubVars(locale: Locale): { n: number; year: string } {
+  return { n: IDEA_ENTRIES.length, year: ideasData(locale).fetched.slice(0, 4) };
 }
 
 export function ideaFaqItems(locale: Locale, id: IdeaId | null): { q: string; a: string }[] {
-  return id ? ideaCopy(locale, id).faq : ideasHub(locale).faq;
+  return id ? ideaCopy(locale, id).faq : ideasHub(locale).faq.map((item) => ({ q: fill(item.q, hubVars(locale)), a: fill(item.a, hubVars(locale)) }));
 }
 
 /** When the copy was last edited. */
@@ -314,6 +319,7 @@ function sourcesHtml(locale: Locale, id: IdeaId): string {
 
 function rankingHtml(locale: Locale): string {
   const ui = ideasUi(locale);
+  const data = ideasData(locale);
   const rows = rankedIdeas(locale).map(({ id, data }, index) => (
     `<tr><td>${index + 1}</td><td><a href="${escapeHtml(ideasHref(locale, id))}" data-nav="ideas-${id}">${escapeHtml(ideaName(locale, id).name)}</a></td>`
     + `<td><span class="idea-pill idea-tier-${scoreTier(data.scores.total)}">${data.scores.total}</span></td>`
@@ -321,7 +327,7 @@ function rankingHtml(locale: Locale): string {
   )).join("");
   if (!rows) return "";
   return `<section class="wall idea-ranking" id="ranking"><h2>${escapeHtml(ui.ranking)}</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>${escapeHtml(ui.colIdea)}</th><th>${escapeHtml(ui.colScore)}</th><th>${escapeHtml(ui.colDemand)}</th><th>${escapeHtml(ui.colYoy)}</th><th>${escapeHtml(ui.colOutlook)}</th></tr></thead><tbody>${rows}</tbody></table></div>`
-    + `<p class="idea-note">${escapeHtml(fill(ui.dataNote, { from: monthLabel(locale, ideasData(locale).from), to: monthLabel(locale, ideasData(locale).to), n: LOCALES.length }))}</p></section>`;
+    + `<p class="idea-note">${escapeHtml(fill(ui.dataNote, { from: monthLabel(locale, data.from), to: monthLabel(locale, data.to), n: LOCALES.length }))}</p></section>`;
 }
 
 /** The ideas hub or one idea as HTML: the client mounts it as is, and the Worker serves it to crawlers. */
@@ -408,6 +414,7 @@ export function ideasFaqJsonLd(locale: Locale, id: IdeaId | null): Record<string
 export function ideasArticleJsonLd(locale: Locale, id: IdeaId | null): Record<string, unknown> {
   if (!id) {
     const hub = ideasHub(locale);
+    const ranked = rankedIdeas(locale);
     return {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
@@ -418,8 +425,8 @@ export function ideasArticleJsonLd(locale: Locale, id: IdeaId | null): Record<st
       mainEntity: {
         "@type": "ItemList",
         itemListOrder: "https://schema.org/ItemListOrderDescending",
-        numberOfItems: rankedIdeas(locale).length,
-        itemListElement: rankedIdeas(locale).map(({ id: entry }, index) => ({
+        numberOfItems: ranked.length,
+        itemListElement: ranked.map(({ id: entry }, index) => ({
           "@type": "ListItem",
           position: index + 1,
           name: ideaName(locale, entry).name,

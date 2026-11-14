@@ -124,7 +124,8 @@ def despike(series):
     Planner sometimes reports a single month far off a keyword's level (e.g. 8,100 between months of ~100). A rise that
     lasts several months raises the median too, so it stays."""
     out = list(series)
-    for t, v in enumerate(series):
+    # The last 3 months have no later months to compare with: a jump there may be a real breakout, so it stays.
+    for t, v in enumerate(series[:-3]):
         window = sorted(series[max(0, t - 6):t] + series[t + 1:t + 7])
         med = window[len(window) // 2]
         if v > 3 * med and v - med > 100:
@@ -186,11 +187,15 @@ def derive(raw):
                 # A searched phrase and its close variants come back as one result, and the same CJK spelling can be
                 # searched in several languages (副業 in ja and zh-TW): count each underlying keyword once.
                 key = (row.get("key") or w.lower()).replace(" ", "")
+                # Keyword Planner does not split a phrase by language: "amazon fba" or 副業 returns the same worldwide
+                # figure whether asked in en, ja or es. A phrase listed under several locales is counted once, for the
+                # first locale that lists it, so a language row never shows another language's searches.
                 if key in seen:
                     continue
                 seen.add(key)
                 series = despike(row["h"])
                 loc_series = [a + b for a, b in zip(loc_series, series)]
+                total = [a + b for a, b in zip(total, series)]
                 avg12 = sum(series[-12:]) / 12
                 mid_cny = (row["lo"] + row["hi"]) / 2
                 if mid_cny > 0:
@@ -199,7 +204,6 @@ def derive(raw):
                 if row.get("ci") is not None:
                     ci_sum += row["ci"] * avg12
                     ci_weight += avg12
-            total = [a + b for a, b in zip(total, loc_series)]
             last12 = sum(loc_series[-12:]) / 12
             prev12 = sum(loc_series[-24:-12]) / 12
             if last12 >= 10:

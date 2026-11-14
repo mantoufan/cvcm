@@ -677,7 +677,7 @@ export function parseAppPath(pathname: string): AppPath {
     if (second === IDEAS_SEGMENT) {
       if (rest.length > 0) return { kind: "unknown" };
       if (!third) return { kind: "ideas", locale, entry: null };
-      if (isIdeaId(third.toLowerCase())) return { kind: "ideas", locale, entry: third.toLowerCase() as IdeaId };
+      if (isIdeaId(third)) return { kind: "ideas", locale, entry: third };
       return { kind: "unknown" };
     }
     if (isLegalPageId(second)) {
@@ -756,7 +756,7 @@ export function parseAppPath(pathname: string): AppPath {
   }
   if (first === IDEAS_SEGMENT) {
     if (!second) return { kind: "bare-ideas", entry: null };
-    if (isIdeaId(second.toLowerCase()) && !third) return { kind: "bare-ideas", entry: second.toLowerCase() as IdeaId };
+    if (isIdeaId(second) && !third) return { kind: "bare-ideas", entry: second };
     return { kind: "unknown" };
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };

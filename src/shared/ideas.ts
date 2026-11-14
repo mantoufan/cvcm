@@ -52,7 +52,7 @@ export function ideaPublished(id: IdeaId): string {
   return IDEAS_ADDED[id] ?? IDEAS_PUBLISHED;
 }
 
-/** Ideas the site footer links directly (highest Keyword Planner volume); their names are core-pack `ideasFocus.*`. */
+/** Ideas the site footer links directly (picked by hand: high search demand, spread across the groups); their names are core-pack `ideasFocus.*`. */
 export const IDEAS_FOCUS = [
   "amazon-fba",
   "tiktok-shop",
