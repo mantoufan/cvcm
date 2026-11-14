@@ -13,7 +13,7 @@ import {
 } from "../src/shared/search";
 import { buildAllSearchIndexes } from "../src/shared/search-index";
 import { sitemapPages } from "../src/shared/sitemap";
-import { d1SearchStore, handleSearchApi, SEARCH_EMAIL_RATE_MAX, SEARCH_MISS_MAX, SEARCH_REQUESTS_PER_EMAIL, type SearchStore } from "../src/search-api";
+import { d1SearchStore, handleSearchApi, resetSearchApiCache, SEARCH_EMAIL_RATE_MAX, SEARCH_MISS_MAX, SEARCH_REQUESTS_PER_EMAIL, type SearchStore } from "../src/search-api";
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
 import worker from "../src/worker";
@@ -69,6 +69,12 @@ describe("searchEntries", () => {
     expect(names(searchEntries(en, "ps")).some((n) => /cps/i.test(n))).toBe(false);
     expect(names(searchEntries(en, "cps")).some((n) => /cps/i.test(n))).toBe(true);
     expect(searchEntries(en, "json").length).toBeGreaterThan(0);
+  });
+
+  it("treats terms starting with an Ext-B Han character or ー as CJK", () => {
+    const entries: SearchEntry[] = [["tool", "/ja/x/", "テストツール", ""], ["tool", "/zh-cn/y/", "吉𠮷野家", ""]];
+    expect(searchEntries(entries, "ール").length).toBe(1);
+    expect(searchEntries(entries, "𠮷野").length).toBe(1);
   });
 
   it("folds width, case and accents", () => {
@@ -134,7 +140,11 @@ function memoryStore() {
       misses.set(`${locale}|${q}`, row);
     },
     async addRequest(q, locale, email) {
-      if ([...requests].filter((r) => r.endsWith(`|${email}`)).length < SEARCH_REQUESTS_PER_EMAIL) requests.add(`${locale}|${q}|${email}`);
+      const key = `${locale}|${q}|${email}`;
+      if (requests.has(key)) return "ok" as const;
+      if ([...requests].filter((r) => r.endsWith(`|${email}`)).length >= SEARCH_REQUESTS_PER_EMAIL) return "limit" as const;
+      requests.add(key);
+      return "ok" as const;
     },
     async daySalt(day) {
       return `salt-${day}`;
@@ -188,6 +198,7 @@ function sqliteStore(): { store: SearchStore; db: DatabaseSync } {
 
 describe("search API on the D1 schema", () => {
   it("stores no IP, counts visitors per day, caps requests per address and sweeps after two days", async () => {
+    resetSearchApiCache();
     const { store, db } = sqliteStore();
     const day1 = Date.UTC(2026, 10, 14, 8);
     for (const ip of ["203.0.113.9", "203.0.113.9", "198.51.100.1"]) {
@@ -196,15 +207,27 @@ describe("search API on the D1 schema", () => {
     expect(db.prepare("SELECT count, visitors FROM search_misses").get()).toEqual({ count: 3, visitors: 2 });
     const dump = JSON.stringify([db.prepare("SELECT * FROM search_votes").all(), db.prepare("SELECT * FROM search_rate").all()]);
     expect(dump).not.toContain("203.0.113.9");
+    const statuses: number[] = [];
     for (let i = 0; i < SEARCH_REQUESTS_PER_EMAIL + 2; i++) {
-      await handleSearchApi(post("/api/search/notify", { q: `topic ${i}`, locale: "en", email: "a@b.co" }, { "CF-Connecting-IP": `192.0.2.${i}` }), { store, now: day1 });
+      const res = await handleSearchApi(post("/api/search/notify", { q: `topic ${i}`, locale: "en", email: "a@b.co" }, { "CF-Connecting-IP": `192.0.2.${i}` }), { store, now: day1 });
+      statuses.push(res!.status);
     }
+    expect(statuses).toEqual([200, 200, 200, 409, 409]);
+    // Asking again for a request already stored is fine, even at the cap.
+    expect((await handleSearchApi(post("/api/search/notify", { q: "topic 0", locale: "en", email: "a@b.co" }), { store, now: day1 }))?.status).toBe(200);
     expect(db.prepare("SELECT COUNT(*) AS n FROM search_requests").get()).toEqual({ n: SEARCH_REQUESTS_PER_EMAIL });
+    // The real store's rate limit is one atomic upsert: concurrent requests cannot slip past the cap.
+    const burst = await Promise.all(
+      Array.from({ length: SEARCH_MISS_MAX + 10 }, (_, i) =>
+        handleSearchApi(post("/api/search/miss", { q: `burst ${i}`, locale: "en" }, { "CF-Connecting-IP": "198.51.100.77" }), { store, now: day1 }),
+      ),
+    );
+    expect(burst.filter((r) => r!.status === 204).length).toBe(SEARCH_MISS_MAX);
     await store.cleanup(day1 + 3 * 86_400_000);
     for (const table of ["search_votes", "search_salts", "search_rate"]) {
       expect(db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get(), table).toEqual({ n: 0 });
     }
-    expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 1 });
+    expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 1 + SEARCH_MISS_MAX });
   });
 });
 

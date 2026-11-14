@@ -51,7 +51,7 @@ export function foldText(text: string): string {
 }
 
 /** Letters that are written without spaces between words: a query term is matched inside them as a substring. */
-const UNSPACED = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\p{Script=Thai}]/u;
+const UNSPACED = /^[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\p{Script=Thai}ー]/u;
 
 /**
  * Query terms. A term that mixes CJK and other letters ("合并pdf") is split into runs, so it still finds
@@ -78,7 +78,7 @@ type Term = { text: string; start: RegExp | null };
  * finds "合并pdf"); CJK, kana and Hangul match anywhere.
  */
 function compile(text: string): Term {
-  if (UNSPACED.test(text[0])) return { text, start: null };
+  if (UNSPACED.test(text)) return { text, start: null };
   return { text, start: new RegExp(`(^|[^\\p{Script=Latin}\\p{Script=Cyrillic}\\p{Script=Greek}\\p{N}])${escapeRegExp(text)}`, "u") };
 }
 

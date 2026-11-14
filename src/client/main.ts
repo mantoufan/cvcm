@@ -801,6 +801,8 @@ function restoreRendered(): void {
 }
 
 function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
+  // A new page replaces the header: an open search panel closes first (and records its pending miss).
+  searchModule?.closeSearch();
   const main = h("main", { id: "main" });
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
@@ -1050,9 +1052,16 @@ function syncHreflang(seo: Parameters<typeof hreflangAlternates>[0]): void {
   }
 }
 
+/** The search chunk once loaded: render() closes an open panel before it replaces the header. */
+let searchModule: typeof import("./search") | null = null;
+
+function loadSearch(): Promise<typeof import("./search")> {
+  return import("./search").then((m) => (searchModule = m));
+}
+
 /** Opens the site search under the header; the panel and its index are a separate chunk loaded on first use. */
 function searchButton(): HTMLElement {
-  const load = () => import("./search");
+  const load = loadSearch;
   const button: HTMLButtonElement = h("button", {
     type: "button",
     class: "search-btn",
@@ -1065,9 +1074,13 @@ function searchButton(): HTMLElement {
     onClick: () => {
       const header = button.closest("header");
       if (!header) return;
-      void load().then((m) => {
+      load().then((m) => {
         if (button.getAttribute("aria-expanded") === "true") m.closeSearch();
         else m.openSearch(header, button);
+      }).catch((err: unknown) => {
+        // Usually a tab still on an older deploy's chunk names: one full reload picks up the new ones.
+        console.error(err);
+        reloadOnce();
       });
     },
   });

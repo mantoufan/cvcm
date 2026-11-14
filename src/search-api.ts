@@ -23,11 +23,11 @@ const BODY_MAX = 2048;
 export interface SearchStore {
   /** Count one hit; `visitor` is a per-day key, counted into `visitors` the first time it is seen. */
   recordMiss(q: string, locale: Locale, visitor: string, now: number): Promise<void>;
-  /** Adds the request unless the address already has SEARCH_REQUESTS_PER_EMAIL pending. */
-  addRequest(q: string, locale: Locale, email: string, now: number): Promise<void>;
+  /** Adds the request unless the address already has SEARCH_REQUESTS_PER_EMAIL pending ("limit"). */
+  addRequest(q: string, locale: Locale, email: string, now: number): Promise<"ok" | "limit">;
   /** The random salt of a UTC day, created on first use. */
   daySalt(day: string, now: number): Promise<string>;
-  /** Bumps the counter if under `max` and returns true; false when the limit is reached. */
+  /** Counts one request in a single atomic upsert; false once the window's count is over `max`. */
   bumpRate(ipHash: string, kind: "misses" | "emails", max: number, now: number): Promise<boolean>;
   cleanup(now: number): Promise<void>;
 }
@@ -49,13 +49,20 @@ export function d1SearchStore(db: D1Database): SearchStore {
         .run();
     },
     async addRequest(q, locale, email, now) {
-      await db
+      const added = await db
         .prepare(
           `INSERT OR IGNORE INTO search_requests (q, locale, email, created_at)
            SELECT ?, ?, ?, ? WHERE (SELECT COUNT(*) FROM search_requests WHERE email = ?) < ?`,
         )
         .bind(q, locale, email, now, email, SEARCH_REQUESTS_PER_EMAIL)
         .run();
+      if (added.meta.changes > 0) return "ok";
+      // Nothing inserted: either this exact request is already there (fine) or the address is at its cap.
+      const same = await db
+        .prepare("SELECT 1 AS hit FROM search_requests WHERE q = ? AND locale = ? AND email = ?")
+        .bind(q, locale, email)
+        .first();
+      return same ? "ok" : "limit";
     },
     async daySalt(day, now) {
       const fresh = [...crypto.getRandomValues(new Uint8Array(32))].map((b) => b.toString(16).padStart(2, "0")).join("");
@@ -65,22 +72,20 @@ export function d1SearchStore(db: D1Database): SearchStore {
       return row.salt;
     },
     async bumpRate(ipHash, kind, max, now) {
+      // One statement, so concurrent requests cannot both read the old count. SET expressions see the old row.
+      const fresh = `excluded.window_start - search_rate.window_start >= ${SEARCH_RATE_WINDOW_MS}`;
       const row = await db
-        .prepare("SELECT window_start, misses, emails FROM search_rate WHERE ip_hash = ?")
-        .bind(ipHash)
-        .first<{ window_start: number; misses: number; emails: number }>();
-      const inWindow = row && now - row.window_start < SEARCH_RATE_WINDOW_MS;
-      const misses = inWindow ? row.misses : 0;
-      const emails = inWindow ? row.emails : 0;
-      if ((kind === "misses" ? misses : emails) >= max) return false;
-      await db
         .prepare(
           `INSERT INTO search_rate (ip_hash, window_start, misses, emails) VALUES (?, ?, ?, ?)
-           ON CONFLICT (ip_hash) DO UPDATE SET window_start = excluded.window_start, misses = excluded.misses, emails = excluded.emails`,
+           ON CONFLICT (ip_hash) DO UPDATE SET
+             window_start = CASE WHEN ${fresh} THEN excluded.window_start ELSE search_rate.window_start END,
+             misses = CASE WHEN ${fresh} THEN excluded.misses ELSE search_rate.misses + excluded.misses END,
+             emails = CASE WHEN ${fresh} THEN excluded.emails ELSE search_rate.emails + excluded.emails END
+           RETURNING misses, emails`,
         )
-        .bind(ipHash, inWindow ? row.window_start : now, misses + (kind === "misses" ? 1 : 0), emails + (kind === "emails" ? 1 : 0))
-        .run();
-      return true;
+        .bind(ipHash, now, kind === "misses" ? 1 : 0, kind === "emails" ? 1 : 0)
+        .first<{ misses: number; emails: number }>();
+      return Boolean(row) && row![kind] <= max;
     },
     async cleanup(now) {
       await db.prepare("DELETE FROM search_votes WHERE created_at < ?").bind(now - VOTE_TTL_MS).run();
@@ -108,6 +113,17 @@ function noContent(): Response {
 }
 
 export type SearchApiOpts = { store: SearchStore | null; now?: number };
+
+/** Per isolate: the salt of the current day (saves two D1 calls per request) and the last sweep time. */
+let saltCache: { day: string; salt: string } | null = null;
+let lastSweep = 0;
+const SWEEP_EVERY_MS = 60 * 60 * 1000;
+
+/** Tests reset the per-isolate caches. */
+export function resetSearchApiCache(): void {
+  saltCache = null;
+  lastSweep = 0;
+}
 
 /** Only the site's own pages may post: a form on another site cannot add queries or emails. */
 function sameOrigin(request: Request, url: URL): boolean {
@@ -158,9 +174,16 @@ export async function handleSearchApi(request: Request, opts: SearchApiOpts): Pr
   const ip = clientIp(request);
 
   try {
-    // Every request sweeps what is past its two days (the daily cron does it when nobody searches).
-    await store.cleanup(now);
-    const salt = await store.daySalt(new Date(now).toISOString().slice(0, 10), now);
+    // Sweep what is past its two days at most hourly per isolate; the daily cron covers days nobody searches.
+    if (now - lastSweep >= SWEEP_EVERY_MS) {
+      lastSweep = now;
+      await store.cleanup(now);
+    }
+    const day = new Date(now).toISOString().slice(0, 10);
+    if (saltCache?.day !== day) saltCache = { day, salt: await store.daySalt(day, now) };
+    const salt = saltCache.salt;
+    // Keyed by the day's salt so no stable IP identifier is kept. Trade-off: an IP's hourly window restarts at
+    // 00:00 UTC, so the boundary hour allows up to twice the cap.
     const ipHash = await keyed(salt, `rate|${ip}`);
     if (path === "/api/search/miss") {
       if (!(await store.bumpRate(ipHash, "misses", SEARCH_MISS_MAX, now))) return json(429, { error: "rate" });
@@ -170,7 +193,7 @@ export async function handleSearchApi(request: Request, opts: SearchApiOpts): Pr
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
     if (email.length > SEARCH_EMAIL_MAX || !isValidEmail(email)) return json(400, { error: "email" });
     if (!(await store.bumpRate(ipHash, "emails", SEARCH_EMAIL_RATE_MAX, now))) return json(429, { error: "rate" });
-    await store.addRequest(q, locale, email, now);
+    if ((await store.addRequest(q, locale, email, now)) === "limit") return json(409, { error: "limit" });
     return json(200, { ok: true });
   } catch (err) {
     console.error("search api", err);

@@ -210,11 +210,12 @@ class Smtp {
     });
   }
 
-  async expect(code: number, line?: string): Promise<string> {
+  /** `step` names the command in errors; the line itself (credentials, the message) is never printed. */
+  async expect(code: number, step: string, line?: string): Promise<string> {
     if (line !== undefined) this.socket.write(`${line}\r\n`);
     const reply = await this.reply();
     const got = Number(reply.trim().split("\r\n").pop()!.slice(0, 3));
-    if (got !== code) throw new Error(`SMTP ${line?.startsWith("AUTH") ? "AUTH" : line ?? "greeting"}: ${reply.trim()}`);
+    if (got !== code) throw new Error(`SMTP ${step}: ${reply.trim().slice(0, 200)}`);
     return reply;
   }
 
@@ -226,17 +227,17 @@ class Smtp {
 async function sendMail(to: string, message: string, from: string, user: string, pass: string, host: string, port: number): Promise<void> {
   const smtp = await Smtp.open(host, port);
   try {
-    await smtp.expect(220);
-    await smtp.expect(250, "EHLO cv.cm");
-    await smtp.expect(334, "AUTH LOGIN");
-    await smtp.expect(334, Buffer.from(user).toString("base64"));
-    await smtp.expect(235, Buffer.from(pass).toString("base64"));
-    await smtp.expect(250, `MAIL FROM:<${from}>`);
-    await smtp.expect(250, `RCPT TO:<${to}>`);
-    await smtp.expect(354, "DATA");
+    await smtp.expect(220, "greeting");
+    await smtp.expect(250, "EHLO", "EHLO cv.cm");
+    await smtp.expect(334, "AUTH LOGIN", "AUTH LOGIN");
+    await smtp.expect(334, "AUTH user", Buffer.from(user).toString("base64"));
+    await smtp.expect(235, "AUTH password", Buffer.from(pass).toString("base64"));
+    await smtp.expect(250, "MAIL FROM", `MAIL FROM:<${from}>`);
+    await smtp.expect(250, "RCPT TO", `RCPT TO:<${to}>`);
+    await smtp.expect(354, "DATA", "DATA");
     // Dot-stuffing: a line that starts with "." gets another one.
-    await smtp.expect(250, `${message.replace(/\r\n\./g, "\r\n..")}\r\n.`);
-    await smtp.expect(221, "QUIT").catch(() => undefined);
+    await smtp.expect(250, "message", `${message.replace(/\r\n\./g, "\r\n..")}\r\n.`);
+    await smtp.expect(221, "QUIT", "QUIT").catch(() => undefined);
   } finally {
     smtp.close();
   }

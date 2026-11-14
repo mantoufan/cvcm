@@ -58,7 +58,12 @@ function recordMiss(q: string, loc: Locale): void {
   const key = `${loc}|${q}`;
   if (recorded.has(key)) return;
   recorded.add(key);
-  void post("/api/search/miss", { q, locale: loc }).catch(() => undefined);
+  // A miss that did not arrive (offline, 429, 503) may be sent again later from this tab.
+  post("/api/search/miss", { q, locale: loc })
+    .then((res) => {
+      if (!res.ok) recorded.delete(key);
+    })
+    .catch(() => recorded.delete(key));
 }
 
 /** Single letters of a spaced script are still being typed; one CJK character can be a real query (梗). */
@@ -170,7 +175,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
             return;
           }
           const data = (await res.json().catch(() => ({}))) as { error?: string };
-          note.textContent = t(data.error === "rate" ? "search.rate" : data.error === "email" ? "search.badEmail" : "search.failed");
+          note.textContent = t(data.error === "rate" ? "search.rate" : data.error === "email" ? "search.badEmail" : data.error === "limit" ? "search.limit" : "search.failed");
         } catch {
           note.textContent = t("search.failed");
         }
@@ -249,6 +254,11 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
   });
 
   function onOutside(e: Event): void {
+    // The header was replaced (navigation, language switch) while the panel was open.
+    if (!el.isConnected) {
+      close();
+      return;
+    }
     const target = e.target as Node | null;
     if (target && (el.contains(target) || button.contains(target))) return;
     close();
