@@ -116,6 +116,15 @@ describe("ideas: data snapshot", () => {
     for (const key of ['"avg"', '"lo"', '"hi"', '"ci"', '"h"']) expect(text).not.toContain(key);
   });
 
+  it("has a label for every band the data can hold, in every locale", () => {
+    for (const locale of LOCALES) {
+      const ui = ideasMessages(locale).ui;
+      expect(ui.demandBands.length, locale).toBe(snapshot.bands.demand.length + 1);
+      expect(ui.cpcBands.length, locale).toBe(snapshot.bands.cpc.length + 1);
+      expect(ui.valueBands.length, locale).toBe(snapshot.bands.value.length + 1);
+    }
+  });
+
   it("ranks by outlook score and labels the outlook from momentum", () => {
     const ranked = rankedIdeas("en");
     expect(ranked.length).toBe(IDEA_ENTRIES.length);

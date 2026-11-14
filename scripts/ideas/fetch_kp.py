@@ -119,9 +119,9 @@ def cny_to_usd():
     try:
         with urllib.request.urlopen("https://api.frankfurter.app/latest?from=CNY&to=USD", timeout=20) as r:
             return json.load(r)["rates"]["USD"]
-    except Exception as e:  # noqa: BLE001 - a stale rate is better than no refresh
-        print(f"FX fetch failed ({e}); using 0.14", file=sys.stderr)
-        return 0.14
+    except Exception as e:  # noqa: BLE001
+        # A guessed rate would silently move click-value bands and scores: stop instead (re-run with --derive later).
+        raise SystemExit(f"CNY->USD rate fetch failed ({e}); nothing written")
 
 
 def despike(series):
@@ -129,7 +129,14 @@ def despike(series):
     Planner sometimes reports a single month far off a keyword's level (e.g. 8,100 between months of ~100). A rise that
     lasts several months raises the median too, so it stays."""
     out = list(series)
-    # The last 3 months have no later months to compare with: a jump there may be a real breakout, so it stays.
+    n = len(series)
+    # Two of the last three months still have a month after them: one far above both neighbours (amazon fba: 368K,
+    # 1M, 450K) is a one-off and becomes their mean. The last month has no later month to compare with, and a rise that
+    # holds is a real breakout, so those stay.
+    for t in (n - 3, n - 2):
+        before, v, after = series[t - 1], series[t], series[t + 1]
+        if v > 2.5 * max(before, after) and v - max(before, after) > 100:
+            out[t] = round((before + after) / 2)
     for t, v in enumerate(series[:-3]):
         window = sorted(series[max(0, t - 6):t] + series[t + 1:t + 7])
         med = window[len(window) // 2]
@@ -177,6 +184,7 @@ def derive(raw):
     kw = json.loads(KEYWORDS.read_text())
     fx = cny_to_usd()
     ideas = {}
+    unmatched = []
     for idea_id, by_locale in kw.items():
         seen = set()
         total = [0] * MONTHS
@@ -187,6 +195,8 @@ def derive(raw):
             loc_series = [0] * MONTHS
             for w in words:
                 row = raw["langs"].get(locale, {}).get(w.lower())
+                if row is None:
+                    unmatched.append(f"{locale}:{w}")
                 if not row or len(row["h"]) != MONTHS or not any(row["h"]):
                     continue
                 # A searched phrase and its close variants come back as one result, and the same CJK spelling can be
@@ -250,7 +260,7 @@ def derive(raw):
             "fcHi": [round(100 * v / peak) for v in hi],
             "demand": band(last12, DEMAND_BANDS),
             "yoy": round(100 * (yoy - 1)) if yoy is not None else None,
-            "fourYear": round(last12 / first12, 1) if first12 else None,
+            "fourYear": round(last12 / first12, 1) if first12 >= 10 else None,
             "next12": round(100 * (fc - 1)),
             "cpc": band(cpc, CPC_BANDS) if cpc else None,
             "value": band(value_usd, VALUE_BANDS) if value_usd else None,
@@ -258,6 +268,9 @@ def derive(raw):
             "scores": scores,
             "langs": lang_rows,
         }
+    if unmatched:
+        # Keyword Planner may answer with a respelled phrase (spacing in mixed CJK/Latin): fix keywords.json.
+        print(f"warning: {len(unmatched)} keywords had no result row: {unmatched[:10]}", file=sys.stderr)
     data = {
         "from": raw["from"],
         "to": raw["to"],
