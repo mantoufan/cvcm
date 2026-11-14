@@ -5,6 +5,7 @@ import { PUBLISHER, blockHtml, dateLabel, inline, linkListHtml, type KbBlock } f
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
 import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, slangGroupOf, slangPublished, type SlangId } from "./slang";
+import { memeImage, memeImagePath } from "./meme-images";
 import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
 
@@ -57,6 +58,42 @@ export function slangFaqItems(locale: Locale, id: SlangId | null): { q: string; 
 
 export function slangUpdated(id: SlangId): string {
   return SLANG_UPDATED[id] ?? slangPublished(id);
+}
+
+/**
+ * The picture right under the answer, near the top of the page: loaded eagerly as the likely LCP element, with its size
+ * fixed (no layout shift), alt in the reader's language and a credit linking the Commons file and the license.
+ */
+function imageHtml(locale: Locale, id: SlangId): string {
+  const image = memeImage(id);
+  if (!image) return "";
+  const ui = slangUi(locale);
+  const name = slangName(locale, id).name;
+  const credit = image.author ? fill(ui.imageCredit, { author: image.author }) : ui.imageCreditAnon;
+  return `<figure class="meme-figure"><img src="${escapeHtml(memeImagePath(id)!)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(fill(ui.imageAlt, { name }))}" fetchpriority="high" decoding="async">`
+    + `<figcaption><a href="${escapeHtml(image.page)}" target="_blank" rel="noopener">${escapeHtml(credit)}</a> · <a href="${escapeHtml(image.licenseUrl)}" target="_blank" rel="noopener license">${escapeHtml(image.license)}</a></figcaption></figure>`;
+}
+
+/** ImageObject with the license fields Google Images reads (license, acquireLicensePage, creditText, creator). */
+function imageJsonLd(locale: Locale, id: SlangId): Record<string, unknown> | null {
+  const image = memeImage(id);
+  if (!image) return null;
+  const name = slangName(locale, id).name;
+  const url = `${ORIGIN}${memeImagePath(id)}`;
+  const by = image.author ? `${image.author} / ` : "";
+  return {
+    "@type": "ImageObject",
+    contentUrl: url,
+    url,
+    width: image.width,
+    height: image.height,
+    caption: fill(slangUi(locale).imageAlt, { name }),
+    ...(image.author && image.creatorType ? { creator: { "@type": image.creatorType, name: image.author } } : {}),
+    creditText: `${by}${image.license} / Wikimedia Commons`,
+    copyrightNotice: `${by}${image.license}`,
+    license: image.licenseUrl,
+    acquireLicensePage: image.page,
+  };
 }
 
 /** Daily snapshot from `scripts/fetch-meme.mjs`: weekly Wikipedia views per entry and coins named after a meme. */
@@ -296,6 +333,7 @@ export function slangPageHtml(locale: Locale, id: SlangId | null): string {
     copy.aka.length ? `<p class="ref-aka">${escapeHtml(ui.also)}${cjk ? "：" : ": "}${escapeHtml(copy.aka.join(cjk ? "、" : ", "))}</p>` : "",
     `</header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p></section>`,
+    imageHtml(locale, id),
     trendHtml(locale, id),
     `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
     sections,
@@ -363,6 +401,7 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
   const copy = slangCopy(locale, id);
   const url = `${ORIGIN}${slangHref(locale, id)}`;
   const answer = copy.answer.replaceAll("`", "");
+  const image = imageJsonLd(locale, id);
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -378,6 +417,7 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
     publisher: PUBLISHER,
     isAccessibleForFree: true,
     articleSection: (slangHub(locale).groups as Record<string, string>)[slangGroupOf(id)],
+    ...(image ? { image } : {}),
     about: {
       "@type": "DefinedTerm",
       name: copy.name,

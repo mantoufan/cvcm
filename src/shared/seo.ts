@@ -18,6 +18,7 @@ import { refArticleJsonLd, refBreadcrumbJsonLd, refDescription, refFaqJsonLd, re
 import type { RefId } from "./ref";
 import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangDescription, slangFaqJsonLd, slangPageHtml, slangTitle } from "./slang-i18n";
 import type { SlangId } from "./slang";
+import { memeImagePath } from "./meme-images";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
@@ -1088,6 +1089,10 @@ export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<strin
 }
 
 function ogImage(seo: SeoInput): string | null {
+  if (seo.slang && seo.slangId) {
+    const path = memeImagePath(seo.slangId);
+    return path ? `https://cv.cm${path}` : null;
+  }
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
   if (seo.games && seo.game) return coverUrl(GAME_COVER[seo.game]);
   if (seo.markets && seo.market) return coverUrl(MARKET_COVER[seo.market]);
