@@ -14,8 +14,8 @@ export type CarCondition = (typeof CAR_CONDITIONS)[number];
 const SEGMENT_RATE: Record<CarSegment, number> = { average: 1, luxury: 1.2, electric: 1.3, truck: 0.8 };
 const CONDITION: Record<CarCondition, number> = { excellent: 1.05, good: 1, fair: 0.9, poor: 0.78 };
 
-/** Average yearly distance the rule assumes: about 12,000 miles or 20,000 km. */
-export const AVERAGE_YEARLY = { mi: 12_000, km: 20_000 } as const;
+/** Average yearly distance the rule assumes: 12,000 miles (19,312 km). */
+export const AVERAGE_YEARLY = { mi: 12_000, km: 19_312 } as const;
 
 /** The usual share lost in year n (1-based). */
 export function yearLoss(year: number): number {
@@ -35,11 +35,15 @@ export function retained(years: number, segment: CarSegment): number {
   return left;
 }
 
-/** Distance adjustment: each 10% above the average takes 2% off, each 10% below adds 2%, capped at ±20%. */
-export function mileageFactor(yearlyDistance: number, unit: "mi" | "km"): number {
+/**
+ * Distance adjustment: each 10% above the average takes 2% off, each 10% below adds 2%, capped at ±20%. It grows in
+ * over the first three years, as the distance driven adds up: a new car has none.
+ */
+export function mileageFactor(yearlyDistance: number, unit: "mi" | "km", years = 3): number {
   if (!Number.isFinite(yearlyDistance) || yearlyDistance < 0) return 1;
   const over = yearlyDistance / AVERAGE_YEARLY[unit] - 1;
-  return 1 - Math.max(-0.2, Math.min(0.2, over * 0.2));
+  const weight = Math.min(1, Math.max(0, years) / 3);
+  return 1 - Math.max(-0.2, Math.min(0.2, over * 0.2)) * weight;
 }
 
 export type CarInput = {
@@ -62,7 +66,7 @@ export type CarResult = {
 export function carValue(input: CarInput): CarResult | null {
   const { price, years } = input;
   if (!Number.isFinite(price) || price <= 0 || !Number.isFinite(years) || years < 0 || years > 40) return null;
-  const value = price * retained(years, input.segment) * mileageFactor(input.yearlyDistance, input.unit) * CONDITION[input.condition];
+  const value = price * retained(years, input.segment) * mileageFactor(input.yearlyDistance, input.unit, years) * CONDITION[input.condition];
   const capped = Math.min(price, value);
   const schedule = Array.from({ length: 11 }, (_, year) => {
     const v = price * retained(year, input.segment);

@@ -85,7 +85,7 @@
       "q2": "Which cars lose value fastest?",
       "a2": "Luxury cars and electric cars usually lose value faster than average; pickups and many SUVs hold value better. Pick the type that fits your car.",
       "q3": "How do miles or kilometres change the value?",
-      "a3": "The calculator assumes about 12,000 miles (20,000 km) a year. Each 10% more takes about 2% off the value, each 10% less adds about 2%, up to 20% either way.",
+      "a3": "The calculator assumes about 12,000 miles (19,300 km) a year. Each 10% more takes about 2% off the value, each 10% less adds about 2%, up to 20% either way.",
       "q4": "Is this my car's trade-in value?",
       "a4": "No. It is an estimate from typical depreciation. Model, local demand, service history and accidents matter; check local listings or a dealer quote for a price.",
       "q5": "What currency does it use?",
@@ -342,7 +342,13 @@
       "band_55to64": "Head of household 55–64",
       "band_65to74": "Head of household 65–74",
       "band_75plus": "Head of household 75 or older",
-      "source": "U.S. figures: Federal Reserve, 2022 Survey of Consumer Finances, in 2022 U.S. dollars. Add your age to compare."
+      "source": "U.S. figures: Federal Reserve, 2022 Survey of Consumer Finances, in 2022 U.S. dollars. Add your age to compare.",
+      "currency": "Your amounts are in",
+      "cur_usd": "US dollars",
+      "cur_other": "Another currency",
+      "rate": "1 US dollar equals (in your currency)",
+      "needRate": "Enter the exchange rate to compare with U.S. households.",
+      "inUsd": "Your net worth in US dollars"
     },
     "businessValuation": {
       "title": "Business valuation calculator",

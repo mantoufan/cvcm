@@ -20,7 +20,17 @@ export function mountCarDepreciation(host: HTMLElement): void {
   const price = numField("price", "30000", () => paint());
   const years = numField("years", "5", () => paint());
   const distance = numField("distance", unit0 === "mi" ? "12000" : "20000", () => paint());
-  const unitSel = h("select", { "data-field": "unit", onChange: () => paint() },
+  let unit: "mi" | "km" = unit0;
+  // Switching units converts the typed distance, so the car itself does not change.
+  const unitSel = h("select", { "data-field": "unit", onChange: () => {
+    const next = unitSel.value as "mi" | "km";
+    const d = parseDecimalInput(distance.value, loc);
+    if (d !== undefined && Number.isFinite(d) && next !== unit) {
+      distance.value = String(Math.round((next === "km" ? d * 1.609344 : d / 1.609344) / 10) * 10);
+    }
+    unit = next;
+    paint();
+  } },
     h("option", { value: "mi", selected: unit0 === "mi" }, t("carDepreciation.mi")),
     h("option", { value: "km", selected: unit0 === "km" }, t("carDepreciation.km")),
   );

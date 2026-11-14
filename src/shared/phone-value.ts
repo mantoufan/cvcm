@@ -19,11 +19,11 @@ export const PHONE_CURRENCY: Record<PhoneMarket, string> = { cn: "CNY", vn: "VND
 const LADDER: Record<PhoneMarket, ReadonlyArray<readonly [number, number]>> = {
   cn: [[10, 80], [80, 600], [600, 5_000], [5_000, 40_000], [40_000, 300_000], [300_000, 2_000_000], [2_000_000, 10_000_000]],
   vn: [[100_000, 500_000], [500_000, 3_000_000], [3_000_000, 20_000_000], [20_000_000, 150_000_000], [150_000_000, 1_000_000_000], [1_000_000_000, 8_000_000_000], [8_000_000_000, 40_000_000_000]],
-  intl: [[0, 10], [10, 60], [60, 400], [400, 3_000], [3_000, 20_000], [20_000, 120_000], [120_000, 600_000]],
+  intl: [[1, 10], [10, 60], [60, 400], [400, 3_000], [3_000, 20_000], [20_000, 120_000], [120_000, 600_000]],
 };
 
 /** Endings that sell on their own in Vietnam: lộc phát 68/86, thần tài 39/79, ông địa 38/78, and doubled lucky digits. */
-const VN_LUCKY_TAILS = new Set(["68", "86", "39", "79", "38", "78", "88", "66", "99"]);
+export const VN_LUCKY_TAILS: ReadonlySet<string> = new Set(["68", "86", "39", "79", "38", "78", "88", "66", "99"]);
 const CN_LUCKY_TAILS = new Set(["88", "66", "99", "68", "86", "168", "518", "888", "666", "999", "1314", "520"]);
 
 /** The 81 numbers (数理) read as lucky in the folk method that takes the last four digits mod 80. */
@@ -74,12 +74,25 @@ export function isValidPhone(digits: string, market: PhoneMarket): boolean {
   return /^\d{6,15}$/.test(digits);
 }
 
-/** The market a number most likely belongs to, for the default choice: an 11-digit 1… is Chinese, a 10-digit 0… Vietnamese. */
-export function guessMarket(raw: string, fallback: PhoneMarket): PhoneMarket {
-  const plain = halfWidth(raw).replace(/\D/g, "");
-  if (/^(?:0086|86)?1[3-9]\d{9}$/.test(plain)) return "cn";
-  if (/^(?:0084|84)[35789]\d{8}$|^0[35789]\d{8}$/.test(plain)) return "vn";
-  return fallback;
+/**
+ * The market a number most likely belongs to, for the default choice. A country code decides (+86 China, +84
+ * Vietnam, any other + or 00 code elsewhere). Without one, a number valid in the current market stays there (a
+ * Taiwanese 09… is a valid "other" number, not a Vietnamese one); otherwise an 11-digit 1… is Chinese and a
+ * 10-digit 0[35789]… Vietnamese.
+ */
+export function guessMarket(raw: string, current: PhoneMarket): PhoneMarket {
+  const text = halfWidth(raw).trim();
+  const plain = text.replace(/\D/g, "");
+  if (/^(?:\+|00)/.test(text)) {
+    const code = plain.replace(/^00/, "");
+    if (/^861[3-9]\d{9}$/.test(code)) return "cn";
+    if (/^84[35789]\d{8}$/.test(code)) return "vn";
+    return "intl";
+  }
+  if (isValidPhone(phoneDigits(raw, current), current)) return current;
+  if (/^1[3-9]\d{9}$/.test(plain)) return "cn";
+  if (/^0[35789]\d{8}$/.test(plain)) return "vn";
+  return current;
 }
 
 export function phoneNumerology(digits: string): { n: number; good: boolean } {

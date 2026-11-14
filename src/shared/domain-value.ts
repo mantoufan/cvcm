@@ -1,3 +1,5 @@
+import { roundEstimate } from "./number-pattern";
+
 /**
  * Domain name valuation from the name itself: the extension, the length, whether it is a common English word or two,
  * a short number or acronym, or pronounceable. The bands follow public aftermarket sales (short .com names,
@@ -110,12 +112,17 @@ export function pronounceable(s: string): boolean {
   return !/[^aeiouy]{4,}|[aeiou]{3,}/.test(s);
 }
 
+/** A common word of two letters or more: "a" alone would let beta.com count as bet + a. */
+function isPartWord(s: string): boolean {
+  return s.length >= 2 && WORDS.has(s);
+}
+
 /** The name split into two common words, if it splits ("cloudkitchen" → cloud + kitchen). */
 export function twoWords(s: string): [string, string] | null {
   for (let i = 2; i <= s.length - 2; i++) {
     const a = s.slice(0, i);
     const b = s.slice(i);
-    if (WORDS.has(a) && WORDS.has(b)) return [a, b];
+    if (isPartWord(a) && isPartWord(b)) return [a, b];
   }
   return null;
 }
@@ -126,7 +133,7 @@ function baseValue(sld: string): { kind: DomainKind; value: number; features: Do
   const name = sld.replace(/-/g, "");
   const n = name.length;
   if (/^\d+$/.test(name)) {
-    const v = [0, 0, 250_000, 40_000, 5_000, 700, 150, 40][n] ?? 15;
+    const v = [0, 500_000, 250_000, 40_000, 5_000, 700, 150, 40][n] ?? 15;
     let value = v;
     if (n === 4 || n === 5) {
       // Chinese buyers drive the number market: no 4, and 8s, 6s and 9s, add value.
@@ -195,8 +202,8 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
   const plainName = sld.replace(/-/g, "");
   const hot = [...HOT].find((w) =>
     plainName === w ||
-    (plainName.startsWith(w) && WORDS.has(plainName.slice(w.length))) ||
-    (plainName.endsWith(w) && WORDS.has(plainName.slice(0, -w.length))));
+    (plainName.startsWith(w) && isPartWord(plainName.slice(w.length))) ||
+    (plainName.endsWith(w) && isPartWord(plainName.slice(0, -w.length))));
   if (hot && base.kind !== "numeric") {
     features.push({ key: "hot", word: hot });
     value *= 1.6;
@@ -215,8 +222,7 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
   return { ok: true, value: { domain: `${sld}.${tld}`, sld, tld, kind: base.kind, estimate, low, high, score, features } };
 }
 
+/** To $5 under $100, else two significant figures. */
 function roundTo(n: number): number {
-  if (n < 100) return Math.round(n / 5) * 5;
-  const p = Math.pow(10, Math.floor(Math.log10(n)) - 1);
-  return Math.round(n / p) * p;
+  return n < 100 ? Math.round(n / 5) * 5 : roundEstimate(n);
 }

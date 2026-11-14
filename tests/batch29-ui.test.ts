@@ -130,3 +130,30 @@ describe("business valuation ui", () => {
     expect(q("[data-out=range]").textContent).not.toBe("");
   });
 });
+
+describe("review fixes (ui)", () => {
+  it("keeps a typed plate when the country is picked", () => {
+    mountPlateValue(host);
+    set("[data-field=plate]", "29B1-8888");
+    set("[data-field=market]", "vn", "change");
+    expect(q<HTMLInputElement>("[data-field=plate]").value).toBe("29B1-8888");
+  });
+
+  it("converts the distance when the unit changes", () => {
+    mountCarDepreciation(host);
+    const before = q("[data-out=value]").textContent;
+    set("[data-field=unit]", "km", "change");
+    expect(q<HTMLInputElement>("[data-field=distance]").value).toBe("19310");
+    expect(q("[data-out=value]").textContent).toBe(before);
+  });
+
+  it("compares net worth with U.S. households only in dollars", () => {
+    mountNetWorth(host);
+    set("[data-field=age]", "40");
+    set("[data-field=currency]", "other", "change");
+    expect(q("[data-out=need-rate]").textContent).toContain("exchange rate");
+    set("[data-field=rate]", "25000");
+    expect(q("[data-out=compare]").textContent).toContain("$9");
+    expect(q("[data-out=compare]").textContent).toContain("below the median");
+  });
+});

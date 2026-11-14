@@ -85,7 +85,7 @@
       "q2": "Xe nào mất giá nhanh nhất?",
       "a2": "Xe sang và xe điện thường mất giá nhanh hơn mức trung bình; xe bán tải và nhiều mẫu SUV giữ giá tốt hơn. Hãy chọn loại phù hợp với xe của bạn.",
       "q3": "Số km hoặc dặm đi được ảnh hưởng giá thế nào?",
-      "a3": "Công cụ giả định khoảng 20.000 km (12.000 dặm) mỗi năm. Cứ đi nhiều hơn 10% thì giá giảm khoảng 2%, ít hơn 10% thì tăng khoảng 2%, tối đa 20% mỗi chiều.",
+      "a3": "Công cụ giả định khoảng 19.300 km (12.000 dặm) mỗi năm. Cứ đi nhiều hơn 10% thì giá giảm khoảng 2%, ít hơn 10% thì tăng khoảng 2%, tối đa 20% mỗi chiều.",
       "q4": "Đây có phải giá thu xe cũ của tôi không?",
       "a4": "Không. Đây là ước tính theo mức khấu hao điển hình. Mẫu xe, nhu cầu tại địa phương, lịch sử bảo dưỡng và tai nạn đều ảnh hưởng; hãy xem tin rao trong khu vực hoặc hỏi giá đại lý.",
       "q5": "Công cụ dùng đơn vị tiền nào?",
@@ -342,7 +342,13 @@
       "band_55to64": "Chủ hộ 55–64 tuổi",
       "band_65to74": "Chủ hộ 65–74 tuổi",
       "band_75plus": "Chủ hộ từ 75 tuổi trở lên",
-      "source": "Số liệu Mỹ (U.S.): Cục Dự trữ Liên bang, 2022 Survey of Consumer Finances, tính bằng đô la Mỹ năm 2022. Nhập tuổi để so sánh."
+      "source": "Số liệu Mỹ (U.S.): Cục Dự trữ Liên bang, 2022 Survey of Consumer Finances, tính bằng đô la Mỹ năm 2022. Nhập tuổi để so sánh.",
+      "currency": "Đơn vị tiền",
+      "cur_usd": "Đô la Mỹ",
+      "cur_other": "Tiền tệ khác",
+      "rate": "1 đô la Mỹ bằng (theo tiền của bạn)",
+      "needRate": "Nhập tỷ giá để so sánh với các hộ gia đình Mỹ.",
+      "inUsd": "Tài sản ròng quy ra đô la Mỹ"
     },
     "businessValuation": {
       "title": "Định giá doanh nghiệp",

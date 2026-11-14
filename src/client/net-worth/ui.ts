@@ -1,7 +1,7 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { labeled, numField } from "../valuation/common";
+import { currency, labeled, numField } from "../valuation/common";
 import { ASSET_FIELDS, DEBT_FIELDS, SCF_2022, ageBand, netWorth, type AssetField, type DebtField } from "../../shared/net-worth";
 import { parseDecimalInput } from "../../shared/decimal-input";
 import { plain } from "../../shared/number-format";
@@ -27,6 +27,15 @@ export function mountNetWorth(host: HTMLElement): void {
   };
   const age = numField("age", "", () => paint());
   age.inputMode = "numeric";
+  // The U.S. figures are in dollars: other currencies are compared through a rate the user types.
+  const curSel = h("select", { "data-field": "currency", onChange: () => { rateField.hidden = curSel.value === "usd"; paint(); } },
+    h("option", { value: "usd", selected: loc === "en" }, t("netWorth.cur_usd")),
+    h("option", { value: "other", selected: loc !== "en" }, t("netWorth.cur_other")),
+  );
+  curSel.value = loc === "en" ? "usd" : "other";
+  const rate = numField("rate", "", () => paint());
+  const rateField = labeled(t("netWorth.rate"), rate);
+  rateField.hidden = curSel.value === "usd";
   const errorEl = h("p", { class: "hint", "aria-live": "polite", "data-out": "error" });
   const mainEl = h("p", { class: "shape-main", "data-out": "net" });
   const rows = h("dl", { class: "stats-grid", "data-out": "rows" });
@@ -70,13 +79,18 @@ export function mountNetWorth(host: HTMLElement): void {
     last = list.map(([k, v]) => `${k}: ${v}`).join("\n");
     const ageNum = parseDecimalInput(age.value, loc);
     const band = ageNum === undefined ? null : ageBand(ageNum);
-    if (band) {
+    const perUsd = curSel.value === "usd" ? 1 : parseDecimalInput(rate.value, loc);
+    if (band && (perUsd === undefined || !Number.isFinite(perUsd) || perUsd <= 0)) {
+      compare.append(h("p", { class: "hint", "data-out": "need-rate" }, t("netWorth.needRate")));
+    } else if (band && perUsd !== undefined) {
       const ref = SCF_2022[band];
+      const usd = (n: number) => currency(loc, "USD", n);
       const cmp: Array<[string, string]> = [
-        [t("netWorth.median"), `$${money(ref.median)}`],
-        [t("netWorth.mean"), `$${money(ref.mean)}`],
-        [t("netWorth.vsMedian"), r.netWorth >= ref.median ? t("netWorth.above") : t("netWorth.below")],
+        [t("netWorth.median"), usd(ref.median)],
+        [t("netWorth.mean"), usd(ref.mean)],
       ];
+      if (perUsd !== 1) cmp.push([t("netWorth.inUsd"), usd(r.netWorth / perUsd)]);
+      cmp.push([t("netWorth.vsMedian"), r.netWorth / perUsd >= ref.median ? t("netWorth.above") : t("netWorth.below")]);
       compare.append(h("dt", { class: "hint" }, t(`netWorth.band_${band}`)), h("dd", null, ""), ...cmp.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
       last += `\n${t(`netWorth.band_${band}`)}\n${cmp.map(([k, v]) => `${k}: ${v}`).join("\n")}`;
     }
@@ -92,6 +106,8 @@ export function mountNetWorth(host: HTMLElement): void {
         h("fieldset", null, h("legend", null, t("netWorth.assets")), ...ASSET_FIELDS.map(field)),
         h("fieldset", null, h("legend", null, t("netWorth.debts")), ...DEBT_FIELDS.map(field)),
         labeled(t("netWorth.age"), age),
+        labeled(t("netWorth.currency"), curSel),
+        rateField,
         h("div", { class: "stage-actions" },
           h("button", { type: "button", class: "btn ghost", "data-action": "clear", onClick: () => { for (const el of fields.values()) el.value = ""; paint(); } }, t("netWorth.clear")),
           copyBtn = h("button", { type: "button", class: "btn ghost", "data-action": "copy", onClick: () => void copyWithFlash(copyBtn, last, { done: t("valuation.copied"), failed: t("valuation.copyFailed") }) }, t("valuation.copy")),

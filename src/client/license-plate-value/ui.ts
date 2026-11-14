@@ -41,8 +41,10 @@ export function mountPlateValue(host: HTMLElement): void {
   });
   const marketSel = h("select", { "data-field": "market", onChange: () => {
     picked = true;
+    const before = market;
     market = marketSel.value as PlateMarket;
-    input.value = EXAMPLE[market];
+    // Keep a plate the user typed; swap only an empty field or the last country's example.
+    if (!input.value.trim() || input.value === EXAMPLE[before]) input.value = EXAMPLE[market];
     paintPresets();
     paint();
   } }, ...PLATE_MARKETS.map((m) => h("option", { value: m, selected: m === market }, t(`plateValue.m_${m}`))));

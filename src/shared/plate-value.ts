@@ -12,6 +12,7 @@
  */
 import { distinctDigits, logBetween, roundEstimate, tailRun, tailShape, tailStraight, type TailShape } from "./number-pattern";
 import { halfWidth } from "./factors";
+import { VN_LUCKY_TAILS } from "./phone-value";
 
 export const PLATE_MARKETS = ["uk", "vn", "cn"] as const;
 export type PlateMarket = (typeof PLATE_MARKETS)[number];
@@ -52,7 +53,6 @@ const CN_RE = new RegExp(`^([${CN_PROVINCES}])?([A-HJ-NP-Z])([A-HJ-NP-Z0-9]{5,6}
 const VN_RE = /^(\d{2})([A-Z]{1,2})(\d{4,6})$/;
 /** Hanoi (29, 30…) and Ho Chi Minh City (50–59) plates draw the most bidders. */
 const VN_BIG = /^(29|30|31|32|33|40|50|51|52|53|54|55|56|57|58|59)$/;
-const VN_LUCKY_TAILS = new Set(["68", "86", "39", "79", "38", "78", "88", "99", "66"]);
 
 /** Upper case, with spaces, dots, hyphens and middle dots taken out (and full-width forms from CJK input). */
 export function normalizePlate(raw: string): string {
@@ -122,7 +122,7 @@ function scoreUk(p: string, format: UkFormat): { band: readonly [number, number]
 }
 
 /** Patterns in the serial number of a Vietnamese or Chinese plate. */
-function scoreSerial(serial: string, lucky: Set<string> | null): Scored {
+function scoreSerial(serial: string, lucky: ReadonlySet<string> | null): Scored {
   const features: PlateFeature[] = [];
   let tier = 0;
   let tierDigit = "";
@@ -200,7 +200,11 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
   } else if (market === "vn") {
     const m = VN_RE.exec(p);
     if (!m) return { ok: false, error: "invalid" };
-    const serial = m[3]!.length === 6 ? m[3]!.slice(1) : m[3]!;
+    // A separator after a series digit marks where the serial starts (29B1-8888 is series B1, serial 8888);
+    // without one, six digits are a series digit and a 5-digit serial and fewer are all serial.
+    const split = /^\d{2}[\s.\-·]*[A-Z]{1,2}(\d)[\s.\-·]+[\d.\s]+$/.exec(halfWidth(raw).toUpperCase().trim());
+    const serial = split ? m[3]!.slice(1) : m[3]!.length === 6 ? m[3]!.slice(1) : m[3]!;
+    if (serial.length < 4) return { ok: false, error: "invalid" };
     const s = scoreSerial(serial, VN_LUCKY_TAILS);
     ({ tier, f, features } = s);
     // A four-digit serial (older plates) is not auctioned the same way: one tier lower.

@@ -12,7 +12,7 @@ const EXAMPLE: Record<PhoneMarket, string> = { cn: "138 8888 6688", vn: "0903 68
 export function mountPhoneValue(host: HTMLElement): void {
   unmountPhoneValue();
   const loc = locale();
-  let market: PhoneMarket = loc === "zh-CN" || loc === "zh-TW" ? "cn" : loc === "vi" ? "vn" : "intl";
+  let market: PhoneMarket = loc === "zh-CN" ? "cn" : loc === "vi" ? "vn" : "intl";
   let last = "";
   let copyBtn: HTMLButtonElement | null = null;
   // The market follows the number until it is picked by hand.

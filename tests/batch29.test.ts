@@ -55,7 +55,7 @@ describe("phone number value", () => {
     expect(phoneDigits("+86 138-8888-6688", "cn")).toBe("13888886688");
     expect(phoneDigits("+84 903 686 868", "vn")).toBe("0903686868");
     expect(phoneDigits("１３８８８８８６６８８", "cn")).toBe("13888886688");
-    expect(guessMarket("0903 686868", "intl")).toBe("vn");
+    expect(guessMarket("0903 686868", "cn")).toBe("vn");
     expect(guessMarket("+86 13912345678", "intl")).toBe("cn");
     expect(guessMarket("212 555 0000", "cn")).toBe("cn");
   });
@@ -218,6 +218,7 @@ describe("car depreciation", () => {
     expect(mileageFactor(12_000, "mi")).toBe(1);
     expect(mileageFactor(24_000, "mi")).toBeCloseTo(0.8);
     expect(mileageFactor(100_000, "km")).toBeCloseTo(0.8);
+    expect(mileageFactor(19_312, "km")).toBe(1);
     expect(mileageFactor(0, "km")).toBeCloseTo(1.2);
   });
 
@@ -263,5 +264,39 @@ describe("business valuation", () => {
     expect(multipleRange(100_000, [2, 3])).toEqual([200_000, 300_000]);
     expect(multipleRange(100_000, [3, 2])).toBeNull();
     expect(multipleRange(0, [2, 3])).toBeNull();
+  });
+});
+
+describe("review fixes", () => {
+  it("does not take a +1 number for a Chinese one, nor a valid local number for another market", () => {
+    expect(guessMarket("+1 415 555 1234", "intl")).toBe("intl");
+    expect(guessMarket("+1 415 555 1234", "cn")).toBe("intl");
+    expect(guessMarket("0086 13912345678", "intl")).toBe("cn");
+    expect(guessMarket("0912 345 678", "intl")).toBe("intl");
+    expect(guessMarket("13912345678", "intl")).toBe("intl");
+    expect(guessMarket("13912345678", "vn")).toBe("cn");
+  });
+
+  it("never shows $0 at the bottom of a phone range", () => {
+    expect(phone("+1 212 555 3917", "intl").low).toBeGreaterThan(0);
+  });
+
+  it("reads a Vietnamese series digit before a 4-digit serial when the plate is written with a separator", () => {
+    const old = plate("29B1-8888", "vn");
+    expect(old.features).toContainEqual({ key: "tailRun", n: 4, digit: "8" });
+    expect(old.tier).toBe(plate("51K-888.88", "vn").tier - 2);
+  });
+
+  it("values one-digit domains and ignores hot words with a single extra letter", () => {
+    expect(domain("8.com").estimate).toBeGreaterThan(domain("88.com").estimate);
+    expect(domain("beta.com").features.some((f) => f.key === "hot")).toBe(false);
+    expect(domain("abet.com").features.some((f) => f.key === "hot")).toBe(false);
+  });
+
+  it("lets distance count only as it adds up", () => {
+    expect(mileageFactor(24_000, "mi", 0)).toBe(1);
+    expect(mileageFactor(24_000, "mi", 1.5)).toBeCloseTo(0.9);
+    const fresh = carValue({ price: 30_000, years: 0, segment: "average", condition: "good", yearlyDistance: 24_000, unit: "mi" })!;
+    expect(fresh.value).toBe(30_000);
   });
 });
