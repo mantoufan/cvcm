@@ -28,7 +28,7 @@ export function mountPhoneValue(host: HTMLElement): void {
     "aria-label": t("phoneValue.input"),
     onInput: () => {
       if (!picked) {
-        market = guessMarket(input.value, market);
+        market = guessMarket(input.value, market, loc === "zh-TW");
         marketSel.value = market;
       }
       paint();
@@ -61,7 +61,7 @@ export function mountPhoneValue(host: HTMLElement): void {
       currency: v.currency,
       score: v.score,
       tierLabel: t("valuation.tierLine", { tier: t(`valuation.tier_${v.tier}`) }),
-      lines: v.features.map((f) => featureText(f as never)),
+      lines: v.features.map(featureText),
     });
     if (v.numerology) {
       const reading = t(v.numerology.good ? "phoneValue.lucky" : "phoneValue.unlucky");

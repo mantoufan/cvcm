@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { labeled } from "../valuation/common";
 import { featureText, paintEstimate } from "../valuation/result";
-import { PLATE_MARKETS, guessPlateMarket, valuePlate, type PlateMarket } from "../../shared/plate-value";
+import { PLATE_MARKETS, guessPlateMarket, normalizePlate, valuePlate, type PlateMarket } from "../../shared/plate-value";
 
 let mounted: { cleanup: () => void } | null = null;
 
@@ -31,10 +31,15 @@ export function mountPlateValue(host: HTMLElement): void {
     value: EXAMPLE[market],
     "aria-label": t("plateValue.input"),
     onInput: () => {
-      if (!picked) {
-        market = guessPlateMarket(input.value, market);
-        marketSel.value = market;
-        paintPresets();
+      // Switch only when the current country cannot read a plate that looks complete and the guess can, so a
+      // half-typed 30K… is not taken for a UK mark on the way.
+      if (!picked && normalizePlate(input.value).length >= 6 && !valuePlate(input.value, market).ok) {
+        const guess = guessPlateMarket(input.value, market);
+        if (guess !== market && valuePlate(input.value, guess).ok) {
+          market = guess;
+          marketSel.value = market;
+          paintPresets();
+        }
       }
       paint();
     },
@@ -79,7 +84,7 @@ export function mountPlateValue(host: HTMLElement): void {
       score: v.score,
       tierLabel: t("valuation.tierLine", { tier: t(`valuation.tier_${Math.min(6, v.tier)}`) }),
       lines: v.features.map((f) =>
-        f.key === "ukFormat" ? t("valuation.f_ukFormat", { format: t(`plateValue.uk_${f.format}`), length: f.length }) : featureText(f as never)),
+        f.key === "ukFormat" ? t("valuation.f_ukFormat", { format: t(`plateValue.uk_${f.format}`), length: f.length }) : featureText(f)),
     });
   };
 

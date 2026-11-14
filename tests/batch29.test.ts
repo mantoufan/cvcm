@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { longestRun, roundEstimate, tailRun, tailShape, tailStraight } from "../src/shared/number-pattern";
 import { guessMarket, phoneDigits, phoneNumerology, phoneNut, valuePhone } from "../src/shared/phone-value";
 import { guessPlateMarket, normalizePlate, ukFormat, valuePlate } from "../src/shared/plate-value";
-import { parseDomain, pronounceable, twoWords, valueDomain } from "../src/shared/domain-value";
+import { decodeIdn, parseDomain, pronounceable, twoWords, valueDomain } from "../src/shared/domain-value";
 import { carValue, mileageFactor, retained } from "../src/shared/car-depreciation";
 import { ageBand, netWorth } from "../src/shared/net-worth";
 import { dcf, multipleRange } from "../src/shared/business-valuation";
@@ -218,7 +218,7 @@ describe("car depreciation", () => {
     expect(mileageFactor(12_000, "mi")).toBe(1);
     expect(mileageFactor(24_000, "mi")).toBeCloseTo(0.8);
     expect(mileageFactor(100_000, "km")).toBeCloseTo(0.8);
-    expect(mileageFactor(19_312, "km")).toBe(1);
+    expect(mileageFactor(12_000 * 1.609344, "km")).toBe(1);
     expect(mileageFactor(0, "km")).toBeCloseTo(1.2);
   });
 
@@ -236,8 +236,10 @@ describe("car depreciation", () => {
 
 describe("net worth", () => {
   it("adds assets, subtracts debts and reads bands", () => {
-    const r = netWorth({ cash: 10_000, home: 300_000 }, { mortgage: 250_000, cards: -2_000 });
+    const r = netWorth({ cash: 10_000, home: 300_000 }, { mortgage: 250_000, cards: 2_000 });
     expect(r).toEqual({ assets: 310_000, debts: 252_000, netWorth: 58_000, debtToAsset: 252_000 / 310_000 });
+    // Signs are kept: an underwater investment lowers assets, a card in credit lowers debts.
+    expect(netWorth({ cash: 10_000, investments: -5_000 }, { cards: -200 }).netWorth).toBe(5_200);
     expect(netWorth({}, { studentLoans: 30_000 }).netWorth).toBe(-30_000);
     expect(netWorth({}, {}).debtToAsset).toBeNull();
     expect(ageBand(34)).toBe("under35");
@@ -272,8 +274,9 @@ describe("review fixes", () => {
     expect(guessMarket("+1 415 555 1234", "intl")).toBe("intl");
     expect(guessMarket("+1 415 555 1234", "cn")).toBe("intl");
     expect(guessMarket("0086 13912345678", "intl")).toBe("cn");
-    expect(guessMarket("0912 345 678", "intl")).toBe("intl");
-    expect(guessMarket("13912345678", "intl")).toBe("intl");
+    expect(guessMarket("13912345678", "intl")).toBe("cn");
+    expect(guessMarket("0903686868", "intl")).toBe("vn");
+    expect(guessMarket("0912345678", "intl", true)).toBe("intl");
     expect(guessMarket("13912345678", "vn")).toBe("cn");
   });
 
@@ -291,6 +294,20 @@ describe("review fixes", () => {
     expect(domain("8.com").estimate).toBeGreaterThan(domain("88.com").estimate);
     expect(domain("beta.com").features.some((f) => f.key === "hot")).toBe(false);
     expect(domain("abet.com").features.some((f) => f.key === "hot")).toBe(false);
+  });
+
+  it("reads internationalised domains and second-level extensions", () => {
+    const idn = domain("例子.com");
+    expect(idn.kind).toBe("idn");
+    expect(idn.features.some((f) => f.key === "hyphen")).toBe(false);
+    expect(domain("tên.vn").sld.startsWith("xn--")).toBe(true);
+    expect(decodeIdn("xn--fsqu00a")).toBe("例子");
+    expect(domain("example.co.jp").estimate).toBeGreaterThan(domain("example.zz").estimate);
+  });
+
+  it("splits a Vietnamese series digit after any separator", () => {
+    expect(plate("29B1_8888", "vn").tier).toBe(plate("29B1-8888", "vn").tier);
+    expect(plate("29B1・8888", "vn").tier).toBe(plate("29B1-8888", "vn").tier);
   });
 
   it("lets distance count only as it adds up", () => {

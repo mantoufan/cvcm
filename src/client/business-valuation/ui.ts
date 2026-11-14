@@ -61,12 +61,12 @@ export function mountBusinessValuation(host: HTMLElement): void {
     if (earn) list.push([t("businessValuation.byEarnings"), span(earn)]);
     if (rev) list.push([t("businessValuation.byRevenue"), span(rev)]);
     if (d.ok) list.push([t("businessValuation.byDcf"), num(d.result.value)]);
-    errorEl.textContent = d.ok ? "" : t(`businessValuation.err_${d.error}`);
+    errorEl.textContent = d.ok ? "" : t(d.error === "invalid" ? "businessValuation.err_dcfInvalid" : `businessValuation.err_${d.error}`);
     const points = [...(earn ?? []), ...(rev ?? []), ...(d.ok ? [d.result.value] : [])].filter((x) => x > 0);
     if (!points.length) {
       mainEl.textContent = "";
       last = "";
-      if (!errorEl.textContent) errorEl.textContent = t("businessValuation.err_invalid");
+      errorEl.textContent = t("businessValuation.err_invalid");
       return;
     }
     // The middle half of the methods' figures: the earnings range is usually the one buyers use for small firms.

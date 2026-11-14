@@ -276,7 +276,8 @@
       "k_numeric": "Número de {n} dígitos",
       "k_letters": "Letras que no forman una palabra",
       "k_mixed": "Letras y dígitos mezclados",
-      "disclaimer": "Una estimación basada en reglas a partir solo del nombre, no una tasación. El tráfico, las marcas y los compradores mueven los precios reales; compara ventas recientes de nombres parecidos."
+      "disclaimer": "Una estimación basada en reglas a partir solo del nombre, no una tasación. El tráfico, las marcas y los compradores mueven los precios reales; compara ventas recientes de nombres parecidos.",
+      "k_idn": "Nombre con caracteres no latinos o acentos ({n} caracteres)"
     },
     "carDepreciation": {
       "title": "Calculadora de depreciación de auto",
@@ -384,7 +385,8 @@
       "pv": "Valor presente",
       "err_discountBelowGrowth": "La tasa de descuento debe ser mayor que el crecimiento tras la previsión.",
       "err_invalid": "Introduce ingresos, beneficio o flujo de caja mayores que 0.",
-      "disclaimer": "Una estimación para planificar, no una valoración formal. Los múltiplos por sector son rangos típicos aproximados para pequeños negocios."
+      "disclaimer": "Una estimación para planificar, no una valoración formal. Los múltiplos por sector son rangos típicos aproximados para pequeños negocios.",
+      "err_dcfInvalid": "Introduce el flujo de caja libre, las tasas y de 1 a 30 años de previsión para el DCF."
     }
   }
 }

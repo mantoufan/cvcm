@@ -54,9 +54,12 @@ const VN_RE = /^(\d{2})([A-Z]{1,2})(\d{4,6})$/;
 /** Hanoi (29, 30…) and Ho Chi Minh City (50–59) plates draw the most bidders. */
 const VN_BIG = /^(29|30|31|32|33|40|50|51|52|53|54|55|56|57|58|59)$/;
 
-/** Upper case, with spaces, dots, hyphens and middle dots taken out (and full-width forms from CJK input). */
+/** What people put between parts of a plate: spaces, dots, hyphens, middle dots, underscores. */
+const SEP = "\\s.\\-·•・_";
+
+/** Upper case, with the separators taken out (and full-width forms from CJK input). */
 export function normalizePlate(raw: string): string {
-  return halfWidth(raw).toUpperCase().replace(/[\s.\-·•・_]/g, "");
+  return halfWidth(raw).toUpperCase().replace(new RegExp(`[${SEP}]`, "g"), "");
 }
 
 export function ukFormat(p: string): UkFormat | null {
@@ -202,7 +205,7 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
     if (!m) return { ok: false, error: "invalid" };
     // A separator after a series digit marks where the serial starts (29B1-8888 is series B1, serial 8888);
     // without one, six digits are a series digit and a 5-digit serial and fewer are all serial.
-    const split = /^\d{2}[\s.\-·]*[A-Z]{1,2}(\d)[\s.\-·]+[\d.\s]+$/.exec(halfWidth(raw).toUpperCase().trim());
+    const split = new RegExp(`^\\d{2}[${SEP}]*[A-Z]{1,2}\\d[${SEP}]+[\\d${SEP}]+$`).exec(halfWidth(raw).toUpperCase().trim());
     const serial = split ? m[3]!.slice(1) : m[3]!.length === 6 ? m[3]!.slice(1) : m[3]!;
     if (serial.length < 4) return { ok: false, error: "invalid" };
     const s = scoreSerial(serial, VN_LUCKY_TAILS);

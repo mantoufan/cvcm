@@ -143,8 +143,24 @@ describe("review fixes (ui)", () => {
     mountCarDepreciation(host);
     const before = q("[data-out=value]").textContent;
     set("[data-field=unit]", "km", "change");
-    expect(q<HTMLInputElement>("[data-field=distance]").value).toBe("19310");
+    expect(q<HTMLInputElement>("[data-field=distance]").value).toBe("19312");
     expect(q("[data-out=value]").textContent).toBe(before);
+  });
+
+  it("does not switch a half-typed plate to another country", () => {
+    mountPlateValue(host);
+    set("[data-field=market]", "vn", "change");
+    for (const typed of ["30K", "30K6", "30K68", "30K686", "30K6868"]) {
+      set("[data-field=plate]", typed);
+      expect(q<HTMLSelectElement>("[data-field=market]").value).toBe("vn");
+    }
+  });
+
+  it("shows the DCF's own error when only the DCF inputs are wrong", () => {
+    mountBusinessValuation(host);
+    set("[data-field=cashFlow]", "");
+    expect(q("[data-out=error]").textContent).toContain("forecast years");
+    expect(q("[data-out=range]").textContent).not.toBe("");
   });
 
   it("compares net worth with U.S. households only in dollars", () => {

@@ -276,7 +276,8 @@
       "k_numeric": "{n}-digit number",
       "k_letters": "Letters that do not form a word",
       "k_mixed": "Letters and digits mixed",
-      "disclaimer": "A rule-based estimate from the name alone, not an appraisal. Traffic, trademarks and buyers move real prices; compare recent sales of similar names."
+      "disclaimer": "A rule-based estimate from the name alone, not an appraisal. Traffic, trademarks and buyers move real prices; compare recent sales of similar names.",
+      "k_idn": "Name in another script ({n} characters)"
     },
     "carDepreciation": {
       "title": "Car depreciation calculator",
@@ -384,7 +385,8 @@
       "pv": "Present value",
       "err_discountBelowGrowth": "The discount rate must be above the growth after the forecast.",
       "err_invalid": "Enter revenue, profit or cash flow above 0.",
-      "disclaimer": "An estimate for planning, not a formal valuation. Industry multiples are rough typical ranges for small businesses."
+      "disclaimer": "An estimate for planning, not a formal valuation. Industry multiples are rough typical ranges for small businesses.",
+      "err_dcfInvalid": "Enter free cash flow, rates and 1 to 30 forecast years for the DCF."
     }
   }
 }

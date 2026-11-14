@@ -14,8 +14,8 @@ export type CarCondition = (typeof CAR_CONDITIONS)[number];
 const SEGMENT_RATE: Record<CarSegment, number> = { average: 1, luxury: 1.2, electric: 1.3, truck: 0.8 };
 const CONDITION: Record<CarCondition, number> = { excellent: 1.05, good: 1, fair: 0.9, poor: 0.78 };
 
-/** Average yearly distance the rule assumes: 12,000 miles (19,312 km). */
-export const AVERAGE_YEARLY = { mi: 12_000, km: 19_312 } as const;
+/** Average yearly distance the rule assumes: 12,000 miles (about 19,300 km). */
+export const AVERAGE_YEARLY = { mi: 12_000, km: 12_000 * 1.609344 } as const;
 
 /** The usual share lost in year n (1-based). */
 export function yearLoss(year: number): number {

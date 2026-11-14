@@ -2,9 +2,11 @@ import { h } from "../dom";
 import { t } from "../i18n";
 import type { Locale } from "../../shared/locale";
 import { compactCurrency, currency, gauge } from "./common";
+import type { PhoneFeature } from "../../shared/phone-value";
+import type { PlateFeature } from "../../shared/plate-value";
 
-/** Feature lines shared by the phone, plate and domain valuers, as message keys under `valuation.f_*`. */
-export type FeatureLine = { key: string } & Record<string, string | number>;
+/** Feature lines shared by the phone and plate valuers, as message keys under `valuation.f_*`. */
+export type FeatureLine = PhoneFeature | Exclude<PlateFeature, { key: "ukFormat" }>;
 
 export function featureText(f: FeatureLine): string {
   const vars: Record<string, string | number> = {};

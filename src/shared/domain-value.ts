@@ -45,6 +45,7 @@ export type TldTier = { tld: string; factor: number };
 /** What the same name is worth under each extension, relative to .com. */
 const TLD_FACTOR: Record<string, number> = {
   com: 1, ai: 0.55, io: 0.18, net: 0.14, org: 0.14, co: 0.12, app: 0.1, dev: 0.08, me: 0.06, cn: 0.1, "com.cn": 0.06,
+  "org.uk": 0.06, "net.cn": 0.03, "co.jp": 0.05, "co.kr": 0.03, "com.br": 0.04, "com.tw": 0.04, "com.hk": 0.04, br: 0.04, tw: 0.04, hk: 0.04,
   de: 0.14, "co.uk": 0.12, uk: 0.08, us: 0.05, ca: 0.08, au: 0.05, "com.au": 0.08, fr: 0.06, jp: 0.06, kr: 0.04, vn: 0.05,
   "com.vn": 0.04, in: 0.04, xyz: 0.02, info: 0.03, biz: 0.02, store: 0.03, shop: 0.04, tech: 0.03, online: 0.02, site: 0.02,
 };
@@ -59,7 +60,8 @@ export type DomainKind =
   | "brandable"
   | "numeric"
   | "letters"
-  | "mixed";
+  | "mixed"
+  | "idn";
 
 export type DomainFeature =
   | { key: "tld"; tld: string; factor: number }
@@ -93,6 +95,14 @@ export function parseDomain(raw: string): { ok: true; sld: string; tld: string }
   let s = raw.trim().toLowerCase();
   if (!s) return { ok: false, error: "empty" };
   s = s.replace(/^[a-z][a-z0-9+.-]*:\/\//, "").replace(/[/?#].*$/, "").replace(/:\d+$/, "").replace(/\.$/, "").replace(/^www\./, "");
+  // Names in other scripts (例子.com, tên.vn) are read in their punycode form (xn--…), as registries store them.
+  if (/[^\x00-\x7f]/.test(s)) {
+    try {
+      s = new URL(`http://${s}`).hostname;
+    } catch {
+      return { ok: false, error: "invalid" };
+    }
+  }
   const labels = s.split(".");
   if (labels.length < 2) return { ok: false, error: "noTld" };
   if (labels.some((l) => !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(l))) return { ok: false, error: "invalid" };
@@ -130,6 +140,12 @@ export function twoWords(s: string): [string, string] | null {
 /** .com value of the name before the extension, in US dollars, with its kind. */
 function baseValue(sld: string): { kind: DomainKind; value: number; features: DomainFeature[] } {
   const features: DomainFeature[] = [];
+  // Internationalised names sell for far less than ASCII ones; the shortest still find buyers.
+  if (sld.startsWith("xn--")) {
+    const chars = [...(decodeIdn(sld) ?? sld)].length;
+    features.push({ key: "kind", kind: "idn", digits: chars });
+    return { kind: "idn", value: chars <= 2 ? 2_000 : chars <= 4 ? 300 : 40, features };
+  }
   const name = sld.replace(/-/g, "");
   const n = name.length;
   if (/^\d+$/.test(name)) {
@@ -194,7 +210,7 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
   const base = baseValue(sld);
   const features: DomainFeature[] = [...base.features];
   let value = base.value;
-  if (sld.includes("-")) {
+  if (sld.includes("-") && base.kind !== "idn") {
     features.push({ key: "hyphen" });
     value *= 0.15;
   }
@@ -220,6 +236,48 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
   const high = Math.max(FLOOR, roundTo(value * 2.5));
   const score = Math.round(Math.min(100, Math.max(0, (Math.log10(estimate) - 1) * 20)));
   return { ok: true, value: { domain: `${sld}.${tld}`, sld, tld, kind: base.kind, estimate, low, high, score, features } };
+}
+
+/** The Unicode form of a punycode label, or null if it is not valid punycode. */
+export function decodeIdn(label: string): string | null {
+  return label.startsWith("xn--") ? punyDecode(label.slice(4)) : null;
+}
+
+/** RFC 3492 punycode decoder (the part after "xn--"). */
+function punyDecode(input: string): string | null {
+  const base = 36, tMin = 1, tMax = 26, skew = 38, damp = 700;
+  let n = 128, i = 0, bias = 72;
+  const out: number[] = [];
+  const b = input.lastIndexOf("-");
+  for (let j = 0; j < Math.max(0, b); j++) out.push(input.charCodeAt(j));
+  const adapt = (delta: number, points: number, first: boolean) => {
+    delta = first ? Math.floor(delta / damp) : delta >> 1;
+    delta += Math.floor(delta / points);
+    let k = 0;
+    while (delta > ((base - tMin) * tMax) >> 1) {
+      delta = Math.floor(delta / (base - tMin));
+      k += base;
+    }
+    return k + Math.floor(((base - tMin + 1) * delta) / (delta + skew));
+  };
+  for (let idx = b > 0 ? b + 1 : 0; idx < input.length;) {
+    const old = i;
+    for (let w = 1, k = base; ; k += base) {
+      if (idx >= input.length) return null;
+      const c = input.charCodeAt(idx++);
+      const digit = c - 48 < 10 ? c - 22 : c - 65 < 26 ? c - 65 : c - 97 < 26 ? c - 97 : base;
+      if (digit >= base) return null;
+      i += digit * w;
+      const t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+      if (digit < t) break;
+      w *= base - t;
+    }
+    bias = adapt(i - old, out.length + 1, old === 0);
+    n += Math.floor(i / (out.length + 1));
+    i %= out.length + 1;
+    out.splice(i++, 0, n);
+  }
+  return String.fromCodePoint(...out);
 }
 
 /** To $5 under $100, else two significant figures. */

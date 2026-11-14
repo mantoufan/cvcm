@@ -31,10 +31,10 @@ export function ageBand(age: number): AgeBand | null {
 
 export type NetWorth = { assets: number; debts: number; netWorth: number; debtToAsset: number | null };
 
-/** Blank fields count as 0; negative entries are read as their size (a debt is typed as a positive amount). */
+/** Blank fields count as 0. Entries keep their sign: an underwater investment lowers assets, a card in credit lowers debts. */
 export function netWorth(assets: Partial<Record<AssetField, number>>, debts: Partial<Record<DebtField, number>>): NetWorth {
   const sum = (o: Record<string, number | undefined>) =>
-    Object.values(o).reduce<number>((s, v) => s + (typeof v === "number" && Number.isFinite(v) ? Math.abs(v) : 0), 0);
+    Object.values(o).reduce<number>((s, v) => s + (typeof v === "number" && Number.isFinite(v) ? v : 0), 0);
   const a = sum(assets);
   const d = sum(debts);
   return { assets: a, debts: d, netWorth: a - d, debtToAsset: a > 0 ? d / a : null };

@@ -26,8 +26,8 @@ const LADDER: Record<PhoneMarket, ReadonlyArray<readonly [number, number]>> = {
 export const VN_LUCKY_TAILS: ReadonlySet<string> = new Set(["68", "86", "39", "79", "38", "78", "88", "66", "99"]);
 const CN_LUCKY_TAILS = new Set(["88", "66", "99", "68", "86", "168", "518", "888", "666", "999", "1314", "520"]);
 
-/** The 81 numbers (数理) read as lucky in the folk method that takes the last four digits mod 80. */
-const NUMEROLOGY_GOOD = new Set([1, 3, 5, 6, 7, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 29, 31, 32, 33, 35, 37, 39, 41, 45, 47, 48, 52, 57, 61, 63, 65, 67, 68, 81]);
+/** The 81 numbers (数理) read as lucky in the folk method that takes the last four digits mod 80 (0 reads as 80). */
+const NUMEROLOGY_GOOD = new Set([1, 3, 5, 6, 7, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 29, 31, 32, 33, 35, 37, 39, 41, 45, 47, 48, 52, 57, 61, 63, 65, 67, 68]);
 
 export type PhoneFeature =
   | { key: "tailRun"; n: number; digit: string }
@@ -76,11 +76,11 @@ export function isValidPhone(digits: string, market: PhoneMarket): boolean {
 
 /**
  * The market a number most likely belongs to, for the default choice. A country code decides (+86 China, +84
- * Vietnam, any other + or 00 code elsewhere). Without one, a number valid in the current market stays there (a
- * Taiwanese 09… is a valid "other" number, not a Vietnamese one); otherwise an 11-digit 1… is Chinese and a
- * 10-digit 0[35789]… Vietnamese.
+ * Vietnam, any other + or 00 code elsewhere). Without one, a number valid in China or Vietnam stays there;
+ * otherwise an 11-digit 1… is Chinese and a 10-digit 0[35789]… Vietnamese, unless `noVietnam` (Taiwanese pages,
+ * where 09… is a local mobile).
  */
-export function guessMarket(raw: string, current: PhoneMarket): PhoneMarket {
+export function guessMarket(raw: string, current: PhoneMarket, noVietnam = false): PhoneMarket {
   const text = halfWidth(raw).trim();
   const plain = text.replace(/\D/g, "");
   if (/^(?:\+|00)/.test(text)) {
@@ -89,9 +89,9 @@ export function guessMarket(raw: string, current: PhoneMarket): PhoneMarket {
     if (/^84[35789]\d{8}$/.test(code)) return "vn";
     return "intl";
   }
-  if (isValidPhone(phoneDigits(raw, current), current)) return current;
+  if (current !== "intl" && isValidPhone(phoneDigits(raw, current), current)) return current;
   if (/^1[3-9]\d{9}$/.test(plain)) return "cn";
-  if (/^0[35789]\d{8}$/.test(plain)) return "vn";
+  if (!noVietnam && /^0[35789]\d{8}$/.test(plain)) return "vn";
   return current;
 }
 

@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { labeled, numField } from "../valuation/common";
-import { CAR_CONDITIONS, CAR_SEGMENTS, carValue, type CarCondition, type CarSegment } from "../../shared/car-depreciation";
+import { AVERAGE_YEARLY, CAR_CONDITIONS, CAR_SEGMENTS, carValue, type CarCondition, type CarSegment } from "../../shared/car-depreciation";
 import { parseDecimalInput } from "../../shared/decimal-input";
 import { plain } from "../../shared/number-format";
 
@@ -19,14 +19,14 @@ export function mountCarDepreciation(host: HTMLElement): void {
 
   const price = numField("price", "30000", () => paint());
   const years = numField("years", "5", () => paint());
-  const distance = numField("distance", unit0 === "mi" ? "12000" : "20000", () => paint());
+  const distance = numField("distance", String(Math.round(AVERAGE_YEARLY[unit0])), () => paint());
   let unit: "mi" | "km" = unit0;
   // Switching units converts the typed distance, so the car itself does not change.
   const unitSel = h("select", { "data-field": "unit", onChange: () => {
     const next = unitSel.value as "mi" | "km";
     const d = parseDecimalInput(distance.value, loc);
     if (d !== undefined && Number.isFinite(d) && next !== unit) {
-      distance.value = String(Math.round((next === "km" ? d * 1.609344 : d / 1.609344) / 10) * 10);
+      distance.value = String(Math.round(next === "km" ? d * 1.609344 : d / 1.609344));
     }
     unit = next;
     paint();
