@@ -2,7 +2,7 @@ import { crumbNav, homeCrumb, type Crumb } from "../crumb";
 import { h } from "../dom";
 import { linkList, type LinkItem } from "../links";
 import { locale, t } from "../i18n";
-import { OPEN_SOURCE_GAMES } from "../../shared/path";
+import { BROWSER_GAMES } from "../../shared/path";
 import {
   GAME_CONSOLES,
   GAME_GENRES,
@@ -89,7 +89,7 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
     ...(consoleId ? [] : [h("section", { class: "wall", "aria-labelledby": "open-games-title" },
       h("h2", { id: "open-games-title" }, t("games.openSource.title")),
       h("p", { class: "lede" }, t("games.openSource.lead")),
-      linkList(OPEN_SOURCE_GAMES.map((id) => ({ href: appHref(loc, id), name: t(`tools.${id}.name`), blurb: t(`tools.${id}.blurb`), nav: id }))),
+      linkList(BROWSER_GAMES.map((id) => ({ href: appHref(loc, id), name: t(`tools.${id}.name`), blurb: t(`tools.${id}.blurb`), nav: id }))),
     )]),
     gamesFaq(loc, consoleId),
   );

@@ -661,7 +661,17 @@
     "titleChess": "Cờ vua online — chơi cờ vua với máy — cv.cm",
     "descChess": "Chơi cờ vua online với máy ở năm mức độ, chạy bằng engine Stockfish ngay trong trình duyệt, hoặc chơi với bạn trên cùng một màn hình. Hiện nước đi hợp lệ, có hoàn tác, danh sách nước đi và lưu ván.",
     "titleChineseChess": "Cờ tướng online — chơi cờ tướng với máy — cv.cm",
-    "descChineseChess": "Chơi cờ tướng online với máy ở bốn mức độ hoặc với bạn trên cùng một màn hình. Hiện nước đi hợp lệ, có luật chiếu tướng và luật lặp nước, hoàn tác, lưu ván. Miễn phí, ngay trong trình duyệt."
+    "descChineseChess": "Chơi cờ tướng online với máy ở bốn mức độ hoặc với bạn trên cùng một màn hình. Hiện nước đi hợp lệ, có luật chiếu tướng và luật lặp nước, hoàn tác, lưu ván. Miễn phí, ngay trong trình duyệt.",
+    "titleSolitaire": "Solitaire (Xếp bài) — chơi xếp bài Klondike online miễn phí — cv.cm",
+    "descSolitaire": "Chơi xếp bài Klondike kinh điển online miễn phí: rút 1 hoặc 3 lá, kéo hoặc chạm để di chuyển lá bài, nhấp đúp để đưa lá bài lên hàng đích, hoàn tác không giới hạn và có gợi ý. Ván bài được đánh số và lưu trong trình duyệt của bạn.",
+    "titleSpiderSolitaire": "Xếp bài nhện (Spider) — chơi online miễn phí, 1, 2 hoặc 4 chất — cv.cm",
+    "descSpiderSolitaire": "Chơi xếp bài nhện online miễn phí với một, hai hoặc bốn chất. Xếp dãy từ Già xuống Át, chia thêm một hàng từ nọc bài, có hoàn tác và gợi ý. Ván chơi được lưu trong trình duyệt này.",
+    "titleFreecell": "FreeCell — xếp bài online miễn phí với ván bài đánh số — cv.cm",
+    "descFreecell": "Chơi xếp bài FreeCell online miễn phí với các ván bài đánh số kinh điển từ 1 đến 1.000.000. Bốn ô tự do, di chuyển nhiều lá cùng lúc, tự động đưa lá an toàn lên hàng đích, có hoàn tác và gợi ý.",
+    "titleMinesweeper": "Dò mìn — chơi game dò mìn online miễn phí — cv.cm",
+    "descMinesweeper": "Chơi dò mìn online miễn phí: mức dễ, trung bình, khó hoặc bàn tự chọn. Lần nhấp đầu tiên luôn an toàn, có cắm cờ, mở nhanh, đồng hồ và lưu thời gian tốt nhất trong trình duyệt này.",
+    "titleSnakeGame": "Rắn săn mồi — chơi game rắn săn mồi kinh điển online — cv.cm",
+    "descSnakeGame": "Chơi game rắn săn mồi kinh điển online: ăn mồi, dài ra và đừng đâm vào tường hay đuôi mình. Ba tốc độ, bật hoặc tắt tường, dùng phím mũi tên, vuốt hoặc nút trên màn hình, lưu điểm cao nhất."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1413,6 +1423,26 @@
     "chinese-chess": {
       "name": "Cờ tướng",
       "blurb": "Đánh cờ tướng với máy."
+    },
+    "solitaire": {
+      "name": "Xếp bài Solitaire",
+      "blurb": "Klondike kinh điển, rút 1 hoặc 3 lá."
+    },
+    "spider-solitaire": {
+      "name": "Xếp bài nhện (Spider)",
+      "blurb": "1, 2 hoặc 4 chất, từ Già xuống Át."
+    },
+    "freecell": {
+      "name": "FreeCell",
+      "blurb": "Ván bài đánh số, bốn ô tự do."
+    },
+    "minesweeper": {
+      "name": "Dò mìn",
+      "blurb": "Dọn sạch bãi mà không đạp phải mìn."
+    },
+    "snake-game": {
+      "name": "Rắn săn mồi",
+      "blurb": "Ăn, dài ra và đừng cắn đuôi mình."
     }
   },
   "watermark": {
@@ -5503,6 +5533,66 @@
       "a4": "Bên liên tục chiếu tướng để lặp lại thế cờ sẽ bị xử thua. Các trường hợp lặp lại khác là hòa.",
       "q5": "Máy chơi mạnh cỡ nào?",
       "a5": "Có bốn mức, từ Mới chơi đến Cao thủ. Engine là XiangQi Wizard Light, chạy trong trình duyệt của bạn."
+    },
+    "solitaire": {
+      "q1": "Chơi xếp bài Solitaire như thế nào?",
+      "a1": "Đưa cả 52 lá lên bốn hàng đích, mỗi hàng một chất, từ Át đến Già. Ở bảy cột, bạn xếp lá nhỏ dần và xen kẽ màu (6 đỏ đặt lên 7 đen), và chỉ lá Già mới được đặt vào cột trống. Chạm vào nọc bài để lật lá mới.",
+      "q2": "Rút 1 lá và rút 3 lá khác nhau thế nào?",
+      "a2": "Rút 1 lật từng lá một và dễ hơn. Rút 3 lật ba lá và chỉ cho đánh lá trên cùng, đây là cách chơi kinh điển và khó hơn.",
+      "q3": "Ván nào cũng thắng được không?",
+      "a3": "Không. Có những ván Klondike không thể giải dù bạn chơi thế nào. Nếu bị kẹt, hãy hoàn tác vài nước hoặc chia ván mới.",
+      "q4": "Làm sao di chuyển lá bài nhanh?",
+      "a4": "Nhấp đúp vào lá bài, hoặc chạm hai lần, để đưa nó tới chỗ tốt nhất: lên hàng đích nếu vừa, nếu không thì sang một cột. Khi mọi lá đã ngửa và nọc bài đã hết, ván bài sẽ tự hoàn thành.",
+      "q5": "Có chơi lại một ván được không?",
+      "a5": "Được. Mỗi ván đều có số. Nút Chơi lại sẽ chia lại đúng ván đó, và bạn có thể nhập số để chơi một ván cụ thể. Ván đang chơi được lưu trong trình duyệt này."
+    },
+    "spider-solitaire": {
+      "q1": "Chơi xếp bài nhện như thế nào?",
+      "a1": "Xếp các dãy cùng chất từ Già xuống Át. Dãy hoàn chỉnh sẽ rời khỏi bàn; dọn đủ tám dãy là thắng. Bạn có thể đặt bất kỳ lá nào lên lá lớn hơn một bậc, nhưng chỉ dãy cùng chất mới di chuyển được cả nhóm.",
+      "q2": "Nên chọn mức nào?",
+      "a2": "Một chất là dễ nhất và phần lớn ván đều thắng được. Hai chất là thử thách thật sự, còn bốn chất thì khó ngay cả với người chơi lâu năm.",
+      "q3": "Khi nào được chia bài từ nọc?",
+      "a3": "Chạm vào nọc bài để chia một lá lên mỗi cột trong mười cột. Bạn có năm lượt chia, và cột nào cũng phải có ít nhất một lá trước khi chia.",
+      "q4": "Có hoàn tác không?",
+      "a4": "Có, bao nhiêu lần cũng được, kể cả sau khi chia bài.",
+      "q5": "Ván chơi có được lưu không?",
+      "a5": "Có. Đóng trang rồi quay lại sau, bạn vẫn có đúng ván đó, số nước đi và thời gian. Không có gì được gửi tới cv.cm."
+    },
+    "freecell": {
+      "q1": "Chơi FreeCell như thế nào?",
+      "a1": "Mọi lá bài được chia ngửa vào tám cột. Đưa chúng lên bốn hàng đích theo chất, từ Át đến Già. Xếp cột nhỏ dần và xen kẽ màu, và dùng bốn ô tự do để gửi tạm mỗi ô một lá.",
+      "q2": "Mỗi lần di chuyển được bao nhiêu lá?",
+      "a2": "Tùy chỗ trống: nhiều hơn số ô tự do còn trống một lá, và nhân đôi với mỗi cột trống. Trang sẽ hiển thị con số hiện tại.",
+      "q3": "Ván nào cũng giải được không?",
+      "a3": "Gần như vậy. Trong 32.000 ván kinh điển đầu tiên, chỉ ván số 11982 là không có lời giải.",
+      "q4": "Số ván có giống các game FreeCell khác không?",
+      "a4": "Có. Các ván được tạo bằng công thức đánh số truyền thống, nên ván 1 ở đây chính là ván 1 quen thuộc trong các chương trình FreeCell khác.",
+      "q5": "Sao có lá bài tự di chuyển?",
+      "a5": "Những lá không còn cần ở các cột sẽ tự động lên hàng đích, giống phần lớn chương trình FreeCell. Hoàn tác sẽ đưa chúng trở lại."
+    },
+    "minesweeper": {
+      "q1": "Chơi dò mìn như thế nào?",
+      "a1": "Mở từng ô một. Con số cho biết có bao nhiêu quả mìn chạm vào ô đó, kể cả theo đường chéo. Dựa vào các con số để suy ra mìn nằm ở đâu, cắm cờ đánh dấu, và mở hết các ô không có mìn để thắng.",
+      "q2": "Lần nhấp đầu tiên có an toàn không?",
+      "a2": "Có. Mìn chỉ được đặt sau lần nhấp đầu tiên, và không bao giờ nằm ở ô đó hay tám ô xung quanh, nên lần nhấp đầu luôn mở ra một vùng.",
+      "q3": "Cắm cờ trên điện thoại thế nào?",
+      "a3": "Nhấn giữ một ô, hoặc bật Chế độ cắm cờ để mỗi lần chạm sẽ cắm hoặc gỡ cờ. Trên máy tính, nhấp chuột phải.",
+      "q4": "Mở nhanh (chording) là gì?",
+      "a4": "Khi quanh một con số đã có đủ số cờ tương ứng, nhấp vào con số đó để mở tất cả các ô lân cận còn lại cùng lúc. Nếu cắm cờ sai, mìn sẽ nổ.",
+      "q5": "Có những kích thước bàn nào?",
+      "a5": "Mức dễ là 9 × 9 với 10 quả mìn, trung bình 16 × 16 với 40 quả, và khó 30 × 16 với 99 quả. Bàn tự chọn tối đa 30 hàng và 40 cột."
+    },
+    "snake-game": {
+      "q1": "Chơi rắn săn mồi như thế nào?",
+      "a1": "Điều khiển rắn tới chỗ mồi. Mỗi miếng mồi làm rắn dài thêm một ô. Trò chơi kết thúc khi rắn đâm vào tường hoặc vào chính đuôi mình.",
+      "q2": "Điều khiển thế nào?",
+      "a2": "Dùng phím mũi tên hoặc W A S D, vuốt trên bàn chơi, hoặc chạm vào các nút mũi tên. Phím Space hoặc P để tạm dừng.",
+      "q3": "Tắt tường thì sao?",
+      "a3": "Khi không có tường, rắn đi ra khỏi một cạnh bàn sẽ xuất hiện lại ở cạnh đối diện. Chỉ có đuôi của chính nó mới làm kết thúc trò chơi.",
+      "q4": "Sao rắn không rẽ theo ý tôi?",
+      "a4": "Rắn không thể quay ngược thẳng vào thân mình. Tối đa hai lần rẽ nhanh được ghi nhớ, nên bạn có thể rẽ hai lần giữa hai bước đi.",
+      "q5": "Điểm cao nhất có được lưu không?",
+      "a5": "Có, chỉ trong trình duyệt này, với điểm cao nhất riêng cho từng tốc độ và cài đặt tường."
     }
   },
   "qr": {
@@ -9484,8 +9574,8 @@
       }
     },
     "openSource": {
-      "title": "Game mã nguồn mở",
-      "lead": "Các game trình duyệt kinh điển xây dựng trên mã nguồn mở, có ghi nguồn trên từng trang. Miễn phí, không cần tải về, lưu trong trình duyệt của bạn."
+      "title": "Game trên trình duyệt",
+      "lead": "Game miễn phí chơi ngay trên trang, không cần tải về. Game dựa trên dự án khác đều ghi nguồn ở trang riêng."
     }
   },
   "reverse": {
@@ -13855,5 +13945,125 @@
     "hint": "Chạm vào một quân, rồi chạm vào giao điểm được đánh dấu. Phím mũi tên để chuyển giao điểm; Enter để chọn.",
     "credit": "Engine và luật: {name} của Morning Yellow (GPL-2.0-or-later).",
     "sourceLink": "Mã nguồn engine"
+  },
+  "cards": {
+    "card": "{rank} {suit}",
+    "r1": "Át",
+    "r11": "Bồi",
+    "r12": "Đầm",
+    "r13": "Già",
+    "s0": "bích",
+    "s1": "cơ",
+    "s2": "rô",
+    "s3": "chuồn",
+    "faceDown": "Lá bài úp",
+    "stock": "Nọc bài, {n} lá",
+    "stockEmpty": "Nọc bài (trống)",
+    "waste": "Chồng bài lật",
+    "foundation": "Hàng đích",
+    "tableau": "Cột {n}",
+    "cell": "Ô tự do",
+    "moves": "Nước đi",
+    "time": "Thời gian",
+    "gameNo": "Ván",
+    "undo": "Hoàn tác",
+    "hint": "Gợi ý",
+    "newGame": "Ván mới",
+    "confirmNew": "Chạm lần nữa để chơi ván mới",
+    "restart": "Chơi lại",
+    "dealLabel": "Số ván",
+    "playDeal": "Chơi ván này",
+    "badDeal": "Nhập số ván từ 1 đến {max}.",
+    "won": "Bạn đã thắng trong {time} với {moves} nước đi!",
+    "stuck": "Hết nước đi. Hãy hoàn tác hoặc chơi ván mới.",
+    "noHint": "Hết nước đi.",
+    "hintStock": "Chạm vào nọc bài để lấy lá mới.",
+    "cannot": "Không thể đặt lá bài đó vào đây.",
+    "optionNext": "Cài đặt mới áp dụng từ ván sau. Chạm Ván mới."
+  },
+  "solitaire": {
+    "title": "Solitaire (Xếp bài)",
+    "privacyNote": "Klondike kinh điển: đưa mọi lá bài lên hàng đích, từ Át đến Già.",
+    "board": "Bàn xếp bài",
+    "option": "Rút",
+    "draw1": "Rút 1 lá",
+    "draw3": "Rút 3 lá",
+    "help": "Kéo lá bài, hoặc chạm vào lá rồi chạm vào chỗ cần đặt. Nhấp đúp hoặc chạm hai lần để đưa lá tới chỗ tốt nhất. Ctrl+Z để hoàn tác."
+  },
+  "spiderSolitaire": {
+    "title": "Xếp bài nhện (Spider)",
+    "privacyNote": "Xếp tám dãy cùng chất từ Già đến Át để dọn sạch bàn.",
+    "board": "Bàn xếp bài nhện",
+    "option": "Chất",
+    "suits1": "1 chất (dễ)",
+    "suits2": "2 chất (vừa)",
+    "suits4": "4 chất (khó)",
+    "dealsLeft": "Lượt chia còn lại",
+    "completed": "Dãy đã xong",
+    "fillPiles": "Cột nào cũng cần có lá bài trước khi chia.",
+    "noDeals": "Nọc bài đã hết lượt chia.",
+    "help": "Kéo một lá hoặc một dãy cùng chất, hoặc chạm vào rồi chạm vào chỗ cần đặt. Chạm vào nọc bài để chia mười lá mới. Ctrl+Z để hoàn tác."
+  },
+  "freecell": {
+    "title": "FreeCell",
+    "privacyNote": "Mọi lá bài đều ngửa: đưa chúng lên hàng đích nhờ bốn ô tự do.",
+    "board": "Bàn FreeCell",
+    "option": "Luật",
+    "standard": "Chuẩn",
+    "canMove": "Có thể di chuyển",
+    "tooMany": "Không đủ chỗ trống: ở đây bạn chỉ di chuyển được {n} lá cùng lúc.",
+    "help": "Kéo lá bài hoặc chạm vào lá rồi chạm vào chỗ cần đặt. Nhấp đúp để đưa lá đến chỗ phù hợp nhất: hàng đích, một cột hoặc ô tự do. Số lá có thể di chuyển cùng lúc hiển thị ở trên. Ctrl+Z để hoàn tác."
+  },
+  "minesweeper": {
+    "title": "Dò mìn",
+    "privacyNote": "Tìm mọi quả mìn mà không làm nổ quả nào.",
+    "board": "Bãi mìn",
+    "level": "Mức chơi",
+    "l_beginner": "Dễ (9 × 9, 10 mìn)",
+    "l_intermediate": "Trung bình (16 × 16, 40 mìn)",
+    "l_expert": "Khó (30 × 16, 99 mìn)",
+    "l_custom": "Tự chọn",
+    "rows": "Hàng",
+    "cols": "Cột",
+    "mines": "Mìn",
+    "minesLeft": "Mìn còn lại",
+    "time": "Thời gian",
+    "best": "Thời gian tốt nhất",
+    "newGame": "Ván mới",
+    "flagModeOff": "Chế độ cắm cờ: tắt",
+    "flagModeOn": "Chế độ cắm cờ: bật",
+    "ready": "Nhấp vào ô bất kỳ để bắt đầu. Lần nhấp đầu luôn an toàn.",
+    "won": "Dọn sạch trong {time}!",
+    "lost": "Bùm! Bạn đã đạp phải mìn.",
+    "cell": "Hàng {row}, cột {col}: {value}",
+    "cellHidden": "chưa mở",
+    "cellFlag": "đã cắm cờ",
+    "cellMine": "mìn",
+    "cellEmpty": "trống",
+    "hint": "Nhấp để mở, nhấp chuột phải hoặc nhấn giữ để cắm cờ. Nhấp vào con số đã đủ cờ để mở các ô xung quanh. Phím mũi tên để di chuyển, Enter để mở, F để cắm cờ."
+  },
+  "snakeGame": {
+    "title": "Rắn săn mồi",
+    "privacyNote": "Ăn mồi và lớn lên mà không đâm vào tường hay đuôi mình.",
+    "stage": "Bàn chơi rắn săn mồi",
+    "pressStart": "Nhấn Bắt đầu hoặc Space để chơi",
+    "score": "Điểm",
+    "best": "Cao nhất",
+    "start": "Bắt đầu",
+    "pause": "Tạm dừng",
+    "resume": "Tiếp tục",
+    "paused": "Đã tạm dừng.",
+    "over": "Kết thúc. Điểm: {score}.",
+    "speed": "Tốc độ",
+    "s_slow": "Chậm",
+    "s_normal": "Vừa",
+    "s_fast": "Nhanh",
+    "walls": "Tường (tắt: đi xuyên qua cạnh)",
+    "pad": "Điều khiển rắn",
+    "d_up": "Lên",
+    "d_right": "Phải",
+    "d_down": "Xuống",
+    "d_left": "Trái",
+    "hint": "Phím mũi tên hoặc W A S D để điều khiển, Space hoặc P để tạm dừng. Trên điện thoại, vuốt trên bàn chơi hoặc dùng các nút."
   }
 }
