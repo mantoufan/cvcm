@@ -27,6 +27,7 @@ import {
   registerRefMessages,
   type GameMessages,
   type LegalMessages,
+  type CopyLoaders,
   type LocaleMessages,
   type KbMessages,
   type QuizMessages,
@@ -44,8 +45,12 @@ import type { RefEntryCopy } from "../shared/ref-i18n";
 import type { RefId, RefPage } from "../shared/ref";
 import type { SlangEntryCopy } from "../shared/slang-i18n";
 import type { SlangId, SlangPage } from "../shared/slang";
+import { copyBucket, hasToolCopy, hasTutorialCopy, mergeToolCopy, mergeTutorialCopy, type PageCopy } from "../shared/page-copy";
 
-// One chunk per locale, so a page downloads only the strings it shows.
+export type { PageCopy };
+
+// One chunk per locale, so a page downloads only the strings it shows. A pack leaves out the copy only one page
+// shows (a tool's FAQ and how-to, a tutorial's text): that is in bucket chunks, found through COPY_LOADERS.
 const PACKS: Record<Locale, () => Promise<{ default: LocaleMessages }>> = {
   en: () => import("../locales/packs/en"),
   "zh-CN": () => import("../locales/packs/zh-CN"),
@@ -55,6 +60,18 @@ const PACKS: Record<Locale, () => Promise<{ default: LocaleMessages }>> = {
   vi: () => import("../locales/packs/vi"),
   id: () => import("../locales/packs/id"),
   es: () => import("../locales/packs/es"),
+};
+
+// A locale's page-copy bucket loaders (a small lazy chunk, kept out of the entry and out of the pack).
+const COPY_LOADERS: Record<Locale, () => Promise<{ copy: CopyLoaders }>> = {
+  en: () => import("virtual:page-copy/loaders/en"),
+  "zh-CN": () => import("virtual:page-copy/loaders/zh-CN"),
+  "zh-TW": () => import("virtual:page-copy/loaders/zh-TW"),
+  ja: () => import("virtual:page-copy/loaders/ja"),
+  ko: () => import("virtual:page-copy/loaders/ko"),
+  vi: () => import("virtual:page-copy/loaders/vi"),
+  id: () => import("virtual:page-copy/loaders/id"),
+  es: () => import("virtual:page-copy/loaders/es"),
 };
 
 // Full game copy and walkthroughs, only for game pages.
@@ -196,23 +213,74 @@ async function loadSlangEntry(next: Locale, id: SlangId): Promise<void> {
   registerSlangEntry(next, id, m.default);
 }
 
-/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null): boolean {
+// Buckets merged into a locale's pack ("<locale>/tools/<n>"). Once a bucket is in, its ids are settled even if
+// one of them has no copy there (an id without a how-to): the page then renders as it would with the full pack.
+const mergedBuckets = new Set<string>();
+// Bucket downloads under way, so a hover prefetch and the page's own load share one request and one merge.
+const bucketLoads = new Map<string, Promise<void>>();
+
+function hasPageCopy(next: Locale, copy: PageCopy): boolean {
+  if (!copy.tool && !copy.tutorial) return true;
+  if (!hasMessages(next)) return false;
+  const pack = messages(next);
+  return (!copy.tool || hasToolCopy(pack, copy.tool) || mergedBuckets.has(`${next}/tools/${copyBucket(copy.tool)}`))
+    && (!copy.tutorial || hasTutorialCopy(pack, copy.tutorial) || mergedBuckets.has(`${next}/tutorials/${copyBucket(copy.tutorial)}`));
+}
+
+function loadBucket(next: Locale, kind: "tools" | "tutorials", id: string, core: Promise<void> | null): Promise<void> {
+  const key = `${next}/${kind}/${copyBucket(id)}`;
+  let load = bucketLoads.get(key);
+  if (!load) {
+    const bucket = copyBucket(id);
+    // The pack and the bucket download side by side; the bucket is merged once the pack is registered.
+    const merged = kind === "tools"
+      ? Promise.all([COPY_LOADERS[next]().then((m) => m.copy.tools[bucket]()), core]).then(([m]) => mergeToolCopy(messages(next), m.default))
+      : Promise.all([COPY_LOADERS[next]().then((m) => m.copy.tutorials[bucket]()), core]).then(([m]) => mergeTutorialCopy(messages(next), m.default));
+    load = merged.then(() => {
+      mergedBuckets.add(key);
+    }).finally(() => bucketLoads.delete(key));
+    bucketLoads.set(key, load);
+  }
+  return load;
+}
+
+const coreLoads = new Map<Locale, Promise<void>>();
+
+/** Loads the core pack if needed, and with it the buckets for this page's tool and tutorial, merged into the pack. */
+async function loadCore(next: Locale, copy: PageCopy): Promise<void> {
+  let core = hasMessages(next) ? null : coreLoads.get(next) ?? null;
+  if (!core && !hasMessages(next)) {
+    core = PACKS[next]().then((m) => {
+      // Never re-register: a registered pack may already hold merged buckets.
+      if (!hasMessages(next)) registerMessages(next, m.default);
+    }).finally(() => coreLoads.delete(next));
+    coreLoads.set(next, core);
+  }
+  const { tool, tutorial } = copy;
+  await Promise.all([
+    core,
+    tool && !hasPageCopy(next, { tool }) ? loadBucket(next, "tools", tool, core) : null,
+    tutorial && !hasPageCopy(next, { tutorial }) ? loadBucket(next, "tutorials", tutorial, core) : null,
+  ]);
+}
+
+/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}): boolean {
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
-  return hasMessages(next) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
+  return hasMessages(next) && hasPageCopy(next, copy) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
     && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
     && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))))
     && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}): Promise<void> {
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
   await Promise.all([
-    hasMessages(next) ? null : PACKS[next]().then((m) => registerMessages(next, m.default)),
+    hasMessages(next) && hasPageCopy(next, copy) ? null : loadCore(next, copy),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
     !legal || hasLegalMessages(next) ? null : LEGAL_PACKS[next]().then((m) => registerLegalMessages(next, m.default)),
     !quiz || hasQuizMessages(next) ? null : QUIZ_PACKS[next]().then((m) => registerQuizMessages(next, m.default)),

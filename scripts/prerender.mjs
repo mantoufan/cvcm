@@ -37,6 +37,14 @@ await esbuild.build({
       }));
       build.onLoad({ filter: /.*/, namespace: "game-names" }, (args) => ({ contents: gameNamesSource(args.path), loader: "json" }));
     },
+  }, {
+    // The browser's core packs and copy buckets (vite.config.ts builds them). The prerender never loads them: it
+    // registers the full packs and cuts each page's client pack from those (clientPack in src/shared/page-copy.ts).
+    name: "page-copy-stub",
+    setup(build) {
+      build.onResolve({ filter: /^virtual:page-copy\// }, (args) => ({ path: args.path, namespace: "page-copy-stub" }));
+      build.onLoad({ filter: /.*/, namespace: "page-copy-stub" }, () => ({ contents: "export default {}; export const copy = { tools: [], tutorials: [] };", loader: "js" }));
+    },
   }],
 });
 
