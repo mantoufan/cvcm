@@ -667,7 +667,7 @@ export function render(): void {
         : tool
           ? COVER[tool]
           : slangPage && slangPage !== "hub"
-            ? slangImagePath(loc, slangPage)
+            ? slangImagePath(slangPage)
             : null;
   upsertMeta("property", "og:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   upsertMeta("name", "twitter:title", pageTitle(loc, seo));

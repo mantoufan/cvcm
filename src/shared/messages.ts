@@ -30,8 +30,6 @@ export type SlangMessages = typeof import("../locales/slang/en.json") & {
   list: Record<SlangId, { name: string; blurb: string }>;
   /** Daily snapshot from scripts/fetch-meme.mjs (trends and coins). */
   memes: import("./slang-i18n").MemeData;
-  /** Freely licensed meme pictures (src/shared/meme-images.json), served from /covers/. */
-  images: import("./slang-i18n").MemeImages;
 };
 
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */

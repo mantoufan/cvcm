@@ -1087,9 +1087,9 @@ export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<strin
   ]);
 }
 
-function ogImage(seo: SeoInput, locale: Locale): string | null {
+function ogImage(seo: SeoInput): string | null {
   if (seo.slang && seo.slangId) {
-    const path = slangImagePath(locale, seo.slangId);
+    const path = slangImagePath(seo.slangId);
     return path ? `https://cv.cm${path}` : null;
   }
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
@@ -1120,7 +1120,7 @@ export function applyHtmlSeo(
   const title = pageTitle(locale, seo);
   const description = pageDescription(locale, seo);
   const canonical = pageCanonical(locale, seo);
-  const image = ogImage(seo, locale);
+  const image = ogImage(seo);
   let out = html.replace(/<html\b[^>]*>/i, `<html lang="${escapeHtml(locale)}">`);
   out = out.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(title)}</title>`);
   out = out.replace(

@@ -6,7 +6,7 @@ import { KB_ARTICLES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type 
 import { DATASET_SNAPSHOT, DATASETS, datasetUpdated, type DatasetId } from "./datasets";
 import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
-import MEME_IMAGES from "./meme-images.json";
+import { memeImagePath } from "./meme-images";
 import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublished, type SlangId } from "./slang";
 import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
@@ -164,14 +164,13 @@ function pageLastmod(page: SitemapPage): string | null {
   return null;
 }
 
-/** A `<urlset>` of the given pages (default: every page). */
 /** A page's own picture for the image sitemap: a meme entry's freely licensed image. */
 function pageImage(page: SitemapPage): string | null {
-  if (page.kind !== "slang" || !page.entry) return null;
-  const image = (MEME_IMAGES as Record<string, { src: string } | undefined>)[page.entry];
-  return image ? `${SITE_ORIGIN}/covers/${image.src}` : null;
+  const path = page.kind === "slang" ? memeImagePath(page.entry) : null;
+  return path ? `${SITE_ORIGIN}${path}` : null;
 }
 
+/** A `<urlset>` of the given pages (default: every page). */
 export function buildSitemapXml(pages: SitemapPage[] = sitemapPages()): string {
   const blocks = pages.map((page) => {
     const loc = xmlAttr(pageUrl(page));

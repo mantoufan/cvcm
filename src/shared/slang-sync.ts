@@ -71,14 +71,13 @@ export function slangSyncFiles(read: (path: string) => string | null): { files: 
       // The daily snapshot rides in the slang pack, not the main bundle. zh-CN never shows coin data, so its pack does not
       // even carry the quotes (see showsCoins).
       'import trends from "../../shared/meme-trends.json";',
-      'import images from "../../shared/meme-images.json";',
       ...(locale === "zh-CN" ? [] : ['import coins from "../../shared/meme-coins.json";']),
       'import type { SlangMessages } from "../../shared/messages";',
-      'import type { MemeData, MemeImages } from "../../shared/slang-i18n";',
+      'import type { MemeData } from "../../shared/slang-i18n";',
       "",
       locale === "zh-CN"
-        ? "export default { ...hub, list, memes: { ...trends, coins: {}, coinsAsOf: null } as MemeData, images: images as MemeImages } satisfies SlangMessages;"
-        : "export default { ...hub, list, memes: { ...trends, ...coins } as MemeData, images: images as MemeImages } satisfies SlangMessages;",
+        ? "export default { ...hub, list, memes: { ...trends, coins: {}, coinsAsOf: null } as MemeData } satisfies SlangMessages;"
+        : "export default { ...hub, list, memes: { ...trends, ...coins } as MemeData } satisfies SlangMessages;",
       "",
     ].join("\n");
   }

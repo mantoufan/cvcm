@@ -330,11 +330,14 @@ describe("slang: page HTML and SEO", () => {
       expect(image.licenseUrl, id).toMatch(/^https:\/\/creativecommons\.org\//);
       expect(image.page, id).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
       expect(Math.max(image.width, image.height), id).toBeLessThanOrEqual(640);
+      expect([null, "Person", "Organization"], id).toContain(image.creatorType);
+      expect(image.creatorType === null, id).toBe(image.author === null);
       for (const locale of LOCALES) {
         const html = slangPageHtml(locale, id as SlangId);
         expect(html, `${locale} ${id}`).toContain(`src="/covers/${image.src}" width="${image.width}" height="${image.height}"`);
         expect(html, `${locale} ${id}`).toContain(image.licenseUrl);
-        const ld = slangArticleJsonLd(locale, id as SlangId) as { image?: { license: string; acquireLicensePage: string } };
+        const ld = slangArticleJsonLd(locale, id as SlangId) as { image?: { license: string; acquireLicensePage: string; creator?: { "@type": string } } };
+        if (!image.author) expect(ld.image?.creator, `${locale} ${id}`).toBeUndefined();
         expect(ld.image?.license, `${locale} ${id}`).toBe(image.licenseUrl);
         expect(ld.image?.acquireLicensePage, `${locale} ${id}`).toBe(image.page);
       }

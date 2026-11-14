@@ -5,6 +5,7 @@ import { PUBLISHER, blockHtml, dateLabel, inline, linkListHtml, type KbBlock } f
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
 import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, slangGroupOf, slangPublished, type SlangId } from "./slang";
+import { memeImage, memeImagePath } from "./meme-images";
 import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
 
@@ -59,53 +60,42 @@ export function slangUpdated(id: SlangId): string {
   return SLANG_UPDATED[id] ?? slangPublished(id);
 }
 
-/**
- * A meme's picture: a freely licensed Wikimedia Commons file (public domain, CC0, CC BY or CC BY-SA, never fair use),
- * resized to fit 640 px and saved as WebP at `/covers/<src>` (s3.cv.cm files/covers/, copy in public/covers/).
- */
-export type MemeImage = { src: string; width: number; height: number; author: string; license: string; licenseUrl: string; page: string };
-export type MemeImages = Partial<Record<string, MemeImage>>;
-
-export function memeImage(locale: Locale, id: SlangId): MemeImage | null {
-  return slangMessages(locale).images[id] ?? null;
-}
-
 /** The entry's picture path for og:image, or null. */
-export function slangImagePath(locale: Locale, id: SlangId | null): string | null {
-  const image = id ? memeImage(locale, id) : null;
-  return image ? memeImageUrl(image) : null;
+export function slangImagePath(id: SlangId | null): string | null {
+  return memeImagePath(id);
 }
 
-function memeImageUrl(image: MemeImage): string {
-  return `/covers/${image.src}`;
-}
-
-/** The image under the answer: width/height fixed (no layout shift), lazy, alt in the reader's language, credit with links. */
+/**
+ * The picture right under the answer, near the top of the page: loaded eagerly as the likely LCP element, with its size
+ * fixed (no layout shift), alt in the reader's language and a credit linking the Commons file and the license.
+ */
 function imageHtml(locale: Locale, id: SlangId): string {
-  const image = memeImage(locale, id);
+  const image = memeImage(id);
   if (!image) return "";
   const ui = slangUi(locale);
   const name = slangName(locale, id).name;
-  const credit = fill(ui.imageCredit, { author: image.author });
-  return `<figure class="meme-figure"><img src="${escapeHtml(memeImageUrl(image))}" width="${image.width}" height="${image.height}" alt="${escapeHtml(fill(ui.imageAlt, { name }))}" loading="lazy" decoding="async">`
+  const credit = image.author ? fill(ui.imageCredit, { author: image.author }) : ui.imageCreditAnon;
+  return `<figure class="meme-figure"><img src="${escapeHtml(memeImagePath(id)!)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(fill(ui.imageAlt, { name }))}" fetchpriority="high" decoding="async">`
     + `<figcaption><a href="${escapeHtml(image.page)}" target="_blank" rel="noopener">${escapeHtml(credit)}</a> · <a href="${escapeHtml(image.licenseUrl)}" target="_blank" rel="noopener license">${escapeHtml(image.license)}</a></figcaption></figure>`;
 }
 
 /** ImageObject with the license fields Google Images reads (license, acquireLicensePage, creditText, creator). */
 function imageJsonLd(locale: Locale, id: SlangId): Record<string, unknown> | null {
-  const image = memeImage(locale, id);
+  const image = memeImage(id);
   if (!image) return null;
   const name = slangName(locale, id).name;
+  const url = `${ORIGIN}${memeImagePath(id)}`;
+  const by = image.author ? `${image.author} / ` : "";
   return {
     "@type": "ImageObject",
-    contentUrl: `${ORIGIN}${memeImageUrl(image)}`,
-    url: `${ORIGIN}${memeImageUrl(image)}`,
+    contentUrl: url,
+    url,
     width: image.width,
     height: image.height,
     caption: fill(slangUi(locale).imageAlt, { name }),
-    creator: { "@type": "Person", name: image.author },
-    creditText: `${image.author} / ${image.license} / Wikimedia Commons`,
-    copyrightNotice: `${image.author}, ${image.license}`,
+    ...(image.author && image.creatorType ? { creator: { "@type": image.creatorType, name: image.author } } : {}),
+    creditText: `${by}${image.license} / Wikimedia Commons`,
+    copyrightNotice: `${by}${image.license}`,
     license: image.licenseUrl,
     acquireLicensePage: image.page,
   };
@@ -416,6 +406,7 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
   const copy = slangCopy(locale, id);
   const url = `${ORIGIN}${slangHref(locale, id)}`;
   const answer = copy.answer.replaceAll("`", "");
+  const image = imageJsonLd(locale, id);
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -431,7 +422,7 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
     publisher: PUBLISHER,
     isAccessibleForFree: true,
     articleSection: (slangHub(locale).groups as Record<string, string>)[slangGroupOf(id)],
-    ...(imageJsonLd(locale, id) ? { image: imageJsonLd(locale, id) } : {}),
+    ...(image ? { image } : {}),
     about: {
       "@type": "DefinedTerm",
       name: copy.name,
