@@ -45,7 +45,8 @@ export type IdeaData = {
   cpc: number | null;
   /** Index into `bands.value` (searches × bid, USD per month). */
   value: number | null;
-  competition: "low" | "medium" | "high";
+  /** Google's advertiser competition, null when no phrase had an index (then openness is a neutral 50). */
+  competition: "low" | "medium" | "high" | null;
   scores: IdeaScores;
   /** Per language (as a site locale): demand band and change, for languages with at least 10 searches a month. */
   langs: Partial<Record<Locale, { demand: number; yoy: number | null }>>;
@@ -90,7 +91,7 @@ export function ideaData(locale: Locale, id: IdeaId): IdeaData | null {
 }
 
 export function ideaTitle(locale: Locale, id: IdeaId | null): string {
-  return `${id ? ideaCopy(locale, id).title : ideasHub(locale).title} — cv.cm`;
+  return `${id ? ideaCopy(locale, id).title : fill(ideasHub(locale).title, { n: IDEA_ENTRIES.length })} — cv.cm`;
 }
 
 export function ideaDescription(locale: Locale, id: IdeaId | null): string {
@@ -185,9 +186,11 @@ export function ideaChartSvg(locale: Locale, data: IdeaData, from: string): stri
   const right = 8;
   const top = 10;
   const bottom = 26;
-  const yMax = Math.max(100, ...data.fcHi);
+  // A fast-growing idea's band can reach 2x the peak: cap the axis so the history keeps most of the height, and pin
+  // anything above it to the top edge.
+  const yMax = Math.min(150, Math.max(100, ...data.fcHi));
   const x = (i: number): number => left + (i * (W - left - right)) / (months - 1);
-  const y = (v: number): number => top + (1 - v / yMax) * (H - top - bottom);
+  const y = (v: number): number => top + (1 - Math.min(v, yMax) / yMax) * (H - top - bottom);
   const pt = (i: number, v: number): string => `${x(i).toFixed(1)},${y(v).toFixed(1)}`;
   const last = history.length - 1;
   const line = history.map((v, i) => pt(i, v)).join(" ");
@@ -231,17 +234,17 @@ function panelHtml(locale: Locale, id: IdeaId): string {
     [ui.demand, escapeHtml(ui.demandBands[data.demand] ?? "")],
     [ui.yoy, changeHtml(locale, data.yoy)],
     ...(data.fourYear !== null ? [[ui.fourYear, escapeHtml(fill(ui.times, { n: plain(locale, data.fourYear, 1) }))] as [string, string]] : []),
-    [ui.next12, `${changeHtml(locale, data.next12)} ${outlookBadge(locale, ideaOutlook(data))}`],
+    [ui.next12, changeHtml(locale, data.next12)],
     ...(data.cpc !== null ? [[ui.cpc, escapeHtml(ui.cpcBands[data.cpc] ?? "")] as [string, string]] : []),
     ...(data.value !== null ? [[ui.value, escapeHtml(ui.valueBands[data.value] ?? "")] as [string, string]] : []),
-    [ui.competition, escapeHtml({ low: ui.compLow, medium: ui.compMedium, high: ui.compHigh }[data.competition])],
+    ...(data.competition ? [[ui.competition, escapeHtml({ low: ui.compLow, medium: ui.compMedium, high: ui.compHigh }[data.competition])] as [string, string]] : []),
   ];
   const langs = (Object.entries(data.langs) as [Locale, { demand: number; yoy: number | null }][])
     .sort((a, b) => b[1].demand - a[1].demand)
     .map(([lang, row]) => `<li><span>${escapeHtml(languageName(locale, lang))}</span><strong>${escapeHtml(ui.demandBands[row.demand] ?? "")}</strong>${row.yoy !== null ? changeHtml(locale, row.yoy) : ""}</li>`)
     .join("");
   return `<section class="idea-panel" aria-labelledby="idea-panel-title"><h2 id="idea-panel-title">${escapeHtml(ui.panel)}</h2>`
-    + `<div class="idea-head"><p class="idea-score idea-tier-${scoreTier(s.total)}"><strong>${s.total}</strong><span>${escapeHtml(ui.scoreOf)}</span><small>${escapeHtml(ui.score)}</small></p>`
+    + `<div class="idea-head"><p class="idea-score idea-tier-${scoreTier(s.total)}"><strong>${s.total}</strong><span>${escapeHtml(ui.scoreOf)}</span><small>${escapeHtml(ui.score)}</small>${outlookBadge(locale, ideaOutlook(data))}</p>`
     + `<dl class="idea-parts" aria-label="${escapeHtml(ui.parts)}">${partHtml(ui.partDemand, s.demand)}${partHtml(ui.partMomentum, s.momentum)}${partHtml(ui.partValue, s.value)}${partHtml(ui.partOpenness, s.openness)}</dl></div>`
     + `<dl class="idea-facts">${facts.map(([k, v]) => `<div><dt>${escapeHtml(k)}</dt><dd>${v}</dd></div>`).join("")}</dl>`
     + ideaChartSvg(locale, data, all.from)
@@ -393,7 +396,7 @@ export function ideasArticleJsonLd(locale: Locale, id: IdeaId | null): Record<st
       mainEntity: {
         "@type": "ItemList",
         itemListOrder: "https://schema.org/ItemListOrderDescending",
-        numberOfItems: IDEA_ENTRIES.length,
+        numberOfItems: rankedIdeas(locale).length,
         itemListElement: rankedIdeas(locale).map(({ id: entry }, index) => ({
           "@type": "ListItem",
           position: index + 1,

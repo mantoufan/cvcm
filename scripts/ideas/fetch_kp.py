@@ -84,6 +84,7 @@ def fetch():
             m = r.keyword_metrics
             series = [x.monthly_searches for x in m.monthly_search_volumes]
             row = {
+                "key": r.text.lower(),
                 "avg": m.avg_monthly_searches,
                 "ci": m.competition_index,
                 "lo": m.low_top_of_page_bid_micros / 1e6,
@@ -128,14 +129,13 @@ def forecast(series):
     """Seasonal (calendar-month) profile + damped linear trend on log searches, 12 months ahead, with an ~80% band."""
     y = [math.log(v + 1) for v in series]
     n = len(y)
-    years = n // 12
-    seas = [0.0] * 12
-    for k in range(12):
-        diffs = []
-        for yr in range(years):
-            block = y[yr * 12:(yr + 1) * 12]
-            diffs.append(y[yr * 12 + k] - sum(block) / 12)
-        seas[k] = sum(diffs) / len(diffs)
+    # Seasonality from the series minus its centred 12-month (2x12) moving average, so a trend or a level change within
+    # a year is not mistaken for a seasonal pattern.
+    diffs = [[] for _ in range(12)]
+    for t in range(6, n - 6):
+        ma = (0.5 * y[t - 6] + sum(y[t - 5:t + 6]) + 0.5 * y[t + 6]) / 12
+        diffs[t % 12].append(y[t] - ma)
+    seas = [sum(d) / len(d) if d else 0.0 for d in diffs]
     mean_s = sum(seas) / 12
     seas = [s - mean_s for s in seas]
     d = [y[t] - seas[t % 12] for t in range(n)]
@@ -168,7 +168,7 @@ def derive(raw):
         seen = set()
         total = [0] * MONTHS
         lang_rows = {}
-        bid_weight = bid_sum = ci_sum = ci_weight = 0.0
+        bid_weight = ci_sum = ci_weight = 0.0
         value_usd = 0.0
         for locale, words in by_locale.items():
             loc_series = [0] * MONTHS
@@ -176,9 +176,9 @@ def derive(raw):
                 row = raw["langs"].get(locale, {}).get(w.lower())
                 if not row or len(row["h"]) != MONTHS or not any(row["h"]):
                     continue
-                # Close variants and the same CJK spelling in several languages come back as one identical series:
-                # count it once.
-                key = tuple(row["h"])
+                # A searched phrase and its close variants come back as one result, and the same CJK spelling can be
+                # searched in several languages (副業 in ja and zh-TW): count each underlying keyword once.
+                key = (row.get("key") or w.lower()).replace(" ", "")
                 if key in seen:
                     continue
                 seen.add(key)
@@ -187,7 +187,6 @@ def derive(raw):
                 avg12 = sum(series[-12:]) / 12
                 mid_cny = (row["lo"] + row["hi"]) / 2
                 if mid_cny > 0:
-                    bid_sum += mid_cny * fx * avg12
                     bid_weight += avg12
                     value_usd += avg12 * mid_cny * fx
                 if row["ci"]:
@@ -210,14 +209,15 @@ def derive(raw):
         next12 = sum(mid) / 12
         yoy = last12 / prev12 if prev12 else 1.0
         fc = next12 / last12
-        cpc = bid_sum / bid_weight if bid_weight else 0.0
-        ci = ci_sum / ci_weight if ci_weight else 0.0
+        cpc = value_usd / bid_weight if bid_weight else 0.0
+        # No competition index for any phrase means unknown, not "no competition".
+        ci = ci_sum / ci_weight if ci_weight else None
         momentum = math.sqrt(max(yoy, 1e-3) * max(fc, 1e-3))
         scores = {
             "demand": round(clamp(100 * (math.log10(last12) - 2) / 4)),
             "momentum": round(clamp(50 + 72.13 * math.log(momentum))),
             "value": round(clamp(100 * math.log10(max(cpc, 0.1) / 0.1) / math.log10(200))) if cpc else 0,
-            "openness": round(100 - ci),
+            "openness": round(100 - ci) if ci is not None else 50,
         }
         scores["total"] = round(0.35 * scores["demand"] + 0.35 * scores["momentum"] + 0.2 * scores["value"] + 0.1 * scores["openness"])
         peak = max(total)
@@ -232,7 +232,7 @@ def derive(raw):
             "next12": round(100 * (fc - 1)),
             "cpc": band(cpc, CPC_BANDS) if cpc else None,
             "value": band(value_usd, VALUE_BANDS) if value_usd else None,
-            "competition": "low" if ci < 34 else "medium" if ci < 67 else "high",
+            "competition": None if ci is None else "low" if ci < 34 else "medium" if ci < 67 else "high",
             "scores": scores,
             "langs": lang_rows,
         }

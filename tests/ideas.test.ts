@@ -312,7 +312,8 @@ describe("ideas: page HTML and SEO", () => {
   it("titles, canonicals and JSON-LD", () => {
     for (const locale of LOCALES) {
       expect(ideaTitle(locale, "laundromat")).toBe(`${ideaCopy(locale, "laundromat").title} — cv.cm`);
-      expect(pageTitle(locale, { ideas: true })).toBe(`${ideasMessages(locale).hub.title} — cv.cm`);
+      expect(pageTitle(locale, { ideas: true })).toBe(`${ideasMessages(locale).hub.title.replace("{n}", String(IDEA_ENTRIES.length))} — cv.cm`);
+      expect(pageTitle(locale, { ideas: true }), locale).toContain(String(IDEA_ENTRIES.length));
       expect(pageDescription(locale, { ideas: true }), locale).toContain(String(IDEA_ENTRIES.length));
       expect(pageDescription(locale, { ideas: true }), locale).not.toContain("{n}");
     }
