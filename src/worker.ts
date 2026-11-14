@@ -90,6 +90,10 @@ function s3Config(env: Env): S3Config | null {
 }
 
 export default {
+  /** Daily cron (wrangler.jsonc): sweep search hashes, salts and rate rows past their two days even when nobody searches. */
+  async scheduled(_event: unknown, env: Env): Promise<void> {
+    if (env.DB) await d1SearchStore(env.DB).cleanup(Date.now());
+  },
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     // CORS preflight for the agent discovery files, before the www redirect: browsers reject redirected preflights.

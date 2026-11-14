@@ -97,6 +97,28 @@ describe("search panel", () => {
     expect(header.querySelector(".search-done")?.textContent).toContain("me@example.com");
   });
 
+  it("records a shown miss when the panel closes before the pause ends", async () => {
+    input().value = "video downloader";
+    input().dispatchEvent(new Event("input"));
+    await vi.advanceTimersByTimeAsync(100);
+    expect(fetchMock).not.toHaveBeenCalled();
+    closeSearch();
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("waits for an IME to commit before searching, and ignores Enter while composing", async () => {
+    input().value = "shui'yin";
+    input().dispatchEvent(new InputEvent("input", { isComposing: true }));
+    input().dispatchEvent(new KeyboardEvent("keydown", { key: "Enter", isComposing: true }));
+    await vi.runAllTimersAsync();
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect(header.querySelector(".search-empty")?.hasAttribute("hidden")).toBe(true);
+    input().value = "pdf";
+    input().dispatchEvent(new Event("compositionend"));
+    await vi.runAllTimersAsync();
+    expect(header.querySelectorAll(".search-hit").length).toBe(2);
+  });
+
   it("closes on Escape and gives focus back to the button", async () => {
     input().dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     expect(header.querySelector(".search-pop")).toBeNull();

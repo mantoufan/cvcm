@@ -13,7 +13,9 @@ import {
 } from "../src/shared/search";
 import { buildAllSearchIndexes } from "../src/shared/search-index";
 import { sitemapPages } from "../src/shared/sitemap";
-import { handleSearchApi, SEARCH_EMAIL_RATE_MAX, SEARCH_MISS_MAX, type SearchStore } from "../src/search-api";
+import { d1SearchStore, handleSearchApi, SEARCH_EMAIL_RATE_MAX, SEARCH_MISS_MAX, SEARCH_REQUESTS_PER_EMAIL, type SearchStore } from "../src/search-api";
+import { DatabaseSync } from "node:sqlite";
+import { readFileSync } from "node:fs";
 import worker from "../src/worker";
 
 const indexes = buildAllSearchIndexes();
@@ -93,7 +95,9 @@ describe("query rules", () => {
 
   it("does not record links, emails, long numbers or punctuation", () => {
     expect(isRecordableQuery("去水印")).toBe(true);
-    expect(isRecordableQuery("334424044")).toBe(true);
+    expect(isRecordableQuery("520 meaning")).toBe(true);
+    expect(isRecordableQuery("(415) 555-0199")).toBe(false);
+    expect(isRecordableQuery("555 123 4567")).toBe(false);
     expect(isRecordableQuery("https://example.com")).toBe(false);
     expect(isRecordableQuery("me@example.com")).toBe(false);
     expect(isRecordableQuery("138 0013 8000")).toBe(false);
@@ -130,7 +134,10 @@ function memoryStore() {
       misses.set(`${locale}|${q}`, row);
     },
     async addRequest(q, locale, email) {
-      requests.add(`${locale}|${q}|${email}`);
+      if ([...requests].filter((r) => r.endsWith(`|${email}`)).length < SEARCH_REQUESTS_PER_EMAIL) requests.add(`${locale}|${q}|${email}`);
+    },
+    async daySalt(day) {
+      return `salt-${day}`;
     },
     async bumpRate(ip, kind, max, now) {
       const row = rates.get(ip);
@@ -159,10 +166,52 @@ function post(path: string, body: unknown, headers: Record<string, string> = {})
   });
 }
 
+/** The real D1 store over node:sqlite with the real migration. */
+function sqliteStore(): { store: SearchStore; db: DatabaseSync } {
+  const db = new DatabaseSync(":memory:");
+  db.exec(readFileSync("migrations/0002_search.sql", "utf8"));
+  const d1 = {
+    prepare(sql: string) {
+      const st = db.prepare(sql);
+      let args: unknown[] = [];
+      const p = {
+        bind(...a: unknown[]) { args = a; return p; },
+        async first<T>() { return (st.get(...(args as never[])) ?? null) as T | null; },
+        async run() { return { meta: { changes: Number(st.run(...(args as never[])).changes) } }; },
+        async all<T>() { return { results: st.all(...(args as never[])) as T[] }; },
+      };
+      return p;
+    },
+  };
+  return { store: d1SearchStore(d1), db };
+}
+
+describe("search API on the D1 schema", () => {
+  it("stores no IP, counts visitors per day, caps requests per address and sweeps after two days", async () => {
+    const { store, db } = sqliteStore();
+    const day1 = Date.UTC(2026, 10, 14, 8);
+    for (const ip of ["203.0.113.9", "203.0.113.9", "198.51.100.1"]) {
+      await handleSearchApi(post("/api/search/miss", { q: "去水印", locale: "zh-CN" }, { "CF-Connecting-IP": ip }), { store, now: day1 });
+    }
+    expect(db.prepare("SELECT count, visitors FROM search_misses").get()).toEqual({ count: 3, visitors: 2 });
+    const dump = JSON.stringify([db.prepare("SELECT * FROM search_votes").all(), db.prepare("SELECT * FROM search_rate").all()]);
+    expect(dump).not.toContain("203.0.113.9");
+    for (let i = 0; i < SEARCH_REQUESTS_PER_EMAIL + 2; i++) {
+      await handleSearchApi(post("/api/search/notify", { q: `topic ${i}`, locale: "en", email: "a@b.co" }, { "CF-Connecting-IP": `192.0.2.${i}` }), { store, now: day1 });
+    }
+    expect(db.prepare("SELECT COUNT(*) AS n FROM search_requests").get()).toEqual({ n: SEARCH_REQUESTS_PER_EMAIL });
+    await store.cleanup(day1 + 3 * 86_400_000);
+    for (const table of ["search_votes", "search_salts", "search_rate"]) {
+      expect(db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get(), table).toEqual({ n: 0 });
+    }
+    expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 1 });
+  });
+});
+
 describe("search API", () => {
   it("records a miss under the normalised query and counts a visitor once a day", async () => {
     const { store, misses } = memoryStore();
-    const opts = { store, now: Date.UTC(2026, 10, 14, 8), random: () => 1 };
+    const opts = { store, now: Date.UTC(2026, 10, 14, 8) };
     expect((await handleSearchApi(post("/api/search/miss", { q: " 去水印 ", locale: "zh-CN" }), opts))?.status).toBe(204);
     expect((await handleSearchApi(post("/api/search/miss", { q: "去水印", locale: "zh-CN" }), opts))?.status).toBe(204);
     expect(misses.get("zh-CN|去水印")).toEqual({ count: 2, visitors: 1 });

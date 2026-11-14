@@ -86,6 +86,8 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
   let active = -1;
   let hits: SearchEntry[] = [];
   let missTimer = 0;
+  /** The "nothing found" query on screen, recorded after the pause, on Enter, or when the panel closes. */
+  let pendingMiss = "";
   let seq = 0;
 
   const input = h("input", {
@@ -184,6 +186,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
     const q = normalizeQuery(input.value);
     const mine = ++seq;
     window.clearTimeout(missTimer);
+    pendingMiss = "";
     if (!q) {
       hits = [];
       renderHits(q);
@@ -206,11 +209,20 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
       return;
     }
     renderEmpty(q);
-    if (worthRecording(q)) missTimer = window.setTimeout(() => recordMiss(q, loc), MISS_DELAY_MS);
+    if (worthRecording(q)) {
+      pendingMiss = q;
+      missTimer = window.setTimeout(flushMiss, MISS_DELAY_MS);
+    }
   }
 
-  input.addEventListener("input", () => void update());
+  // While an IME composes (pinyin, kana, Hangul jamo) the text is not final: search when it is committed.
+  input.addEventListener("input", (e) => {
+    if ((e as InputEvent).isComposing) return;
+    void update();
+  });
+  input.addEventListener("compositionend", () => void update());
   input.addEventListener("keydown", (e) => {
+    if (e.isComposing || e.keyCode === 229) return;
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
       setActive(active + (e.key === "ArrowDown" ? 1 : -1));
@@ -220,8 +232,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
       const link = list.querySelectorAll<HTMLAnchorElement>("a.search-hit")[Math.max(active, 0)];
       if (link) link.click();
       else if (q && !hits.length && worthRecording(q)) {
-        window.clearTimeout(missTimer);
-        recordMiss(q, loc);
+        flushMiss();
         empty.querySelector<HTMLInputElement>(".search-email")?.focus();
       }
     } else if (e.key === "Escape") {
@@ -243,8 +254,14 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
     close();
   }
 
-  function close(): void {
+  function flushMiss(): void {
     window.clearTimeout(missTimer);
+    if (pendingMiss) recordMiss(pendingMiss, loc);
+    pendingMiss = "";
+  }
+
+  function close(): void {
+    flushMiss();
     document.removeEventListener("pointerdown", onOutside, true);
     el.remove();
     button.setAttribute("aria-expanded", "false");

@@ -22,6 +22,8 @@
     { "pattern": "cv.cm/*", "zone_name": "cv.cm" },
     { "pattern": "www.cv.cm/*", "zone_name": "cv.cm" }
   ],
+  // Daily sweep of site-search hashes and salts older than two days (src/search-api.ts cleanup).
+  "triggers": { "crons": ["23 3 * * *"] },
   "d1_databases": [
     {
       "binding": "DB",

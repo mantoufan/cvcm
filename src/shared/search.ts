@@ -103,6 +103,18 @@ export function shortBlurb(text: string, max = SEARCH_BLURB_MAX): string {
   return clean.slice(0, max - 1).trimEnd() + "…";
 }
 
+/** Folded name, English name and blurb of every entry, computed once per index array. */
+const folded = new WeakMap<readonly SearchEntry[], Array<[name: string, alt: string, blurb: string]>>();
+
+function foldedOf(entries: readonly SearchEntry[]): Array<[string, string, string]> {
+  let table = folded.get(entries);
+  if (!table) {
+    table = entries.map((e) => [foldText(e[2]), e[4] ? foldText(e[4]) : "", foldText(e[3])]);
+    folded.set(entries, table);
+  }
+  return table;
+}
+
 type Scored = { entry: SearchEntry; score: number; order: number };
 
 /**
@@ -114,10 +126,9 @@ export function searchEntries(entries: readonly SearchEntry[], query: string, li
   const words = terms(whole).map(compile);
   if (words.length === 0) return [];
   const scored: Scored[] = [];
+  const table = foldedOf(entries);
   entries.forEach((entry, order) => {
-    const name = foldText(entry[2]);
-    const alt = entry[4] ? foldText(entry[4]) : "";
-    const blurb = foldText(entry[3]);
+    const [name, alt, blurb] = table[order];
     let score = 0;
     for (const word of words) {
       const inName = hit(name, word);
@@ -154,7 +165,9 @@ export function isRecordableQuery(query: string): boolean {
   if (query.length < 1 || query.length > SEARCH_QUERY_MAX) return false;
   if (!/[\p{L}\p{N}]/u.test(query)) return false;
   if (/@|https?:|www\.|:\/\//i.test(query)) return false;
-  if (/\d{11,}/.test(query.replace(/[\s-]/g, ""))) return false;
+  // Phone, ID and card numbers: 7+ digits once separators are gone. Known number slang (520, 334424044) has a page,
+  // so it never reaches this check as a miss.
+  if (/\d{7,}/.test(query.replace(/[\s\-().+/]/g, ""))) return false;
   return true;
 }
 

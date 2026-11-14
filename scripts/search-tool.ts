@@ -13,7 +13,7 @@
  * Reads and writes the remote D1 database through `wrangler d1 execute` (needs CLOUDFLARE_API_TOKEN or wrangler login).
  */
 import { execFileSync } from "node:child_process";
-import { writeFileSync } from "node:fs";
+import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { connect, type TLSSocket } from "node:tls";
 import { randomUUID } from "node:crypto";
 import "../src/shared/messages-all";
@@ -162,18 +162,29 @@ function buildMessage(from: string, to: string, locale: Locale, q: string, hits:
 /** A small SMTP client over implicit TLS (port 465): EHLO, AUTH LOGIN, one message per session. */
 class Smtp {
   private buffer = "";
-  private waiters: Array<(line: string) => void> = [];
+  private waiters: Array<{ resolve: (line: string) => void; reject: (err: Error) => void }> = [];
+  private failure: Error | null = null;
   private constructor(private socket: TLSSocket) {
     socket.setEncoding("utf8");
     socket.on("data", (chunk: string) => {
       this.buffer += chunk;
       this.flush();
     });
+    // A dropped connection or the timeout fails every pending and later reply instead of hanging.
+    const fail = (err: Error) => {
+      this.failure ??= err;
+      for (const w of this.waiters.splice(0)) w.reject(this.failure);
+    };
+    socket.on("error", fail);
+    socket.on("close", () => fail(new Error("SMTP connection closed")));
   }
 
   static open(host: string, port: number): Promise<Smtp> {
     return new Promise((resolve, reject) => {
-      const socket = connect({ host, port, servername: host }, () => resolve(new Smtp(socket)));
+      const socket = connect({ host, port, servername: host }, () => {
+        socket.off("error", reject);
+        resolve(new Smtp(socket));
+      });
       socket.once("error", reject);
       socket.setTimeout(30_000, () => socket.destroy(new Error("SMTP timeout")));
     });
@@ -187,13 +198,14 @@ class Smtp {
       const end = match.index + match[0].length;
       const reply = this.buffer.slice(0, end);
       this.buffer = this.buffer.slice(end);
-      this.waiters.shift()!(reply);
+      this.waiters.shift()!.resolve(reply);
     }
   }
 
   private reply(): Promise<string> {
-    return new Promise((resolve) => {
-      this.waiters.push(resolve);
+    if (this.failure) return Promise.reject(this.failure);
+    return new Promise((resolve, reject) => {
+      this.waiters.push({ resolve, reject });
       this.flush();
     });
   }
@@ -230,10 +242,41 @@ async function sendMail(to: string, message: string, from: string, user: string,
   }
 }
 
+/**
+ * Rows already mailed but whose DELETE failed: the next run must not mail them again. Local file, one JSON row per
+ * line; delete an entry once its row is gone from D1.
+ */
+const SENT_LEDGER = "tmp-verify/search-notified.jsonl";
+
+function ledgerKey(r: { q: string; locale: string; email: string }): string {
+  return `${r.locale}|${r.q}|${r.email}`;
+}
+
+function readLedger(): Set<string> {
+  if (!existsSync(SENT_LEDGER)) return new Set();
+  return new Set(
+    readFileSync(SENT_LEDGER, "utf8")
+      .split("\n")
+      .filter(Boolean)
+      .map((line) => ledgerKey(JSON.parse(line) as RequestRow)),
+  );
+}
+
 async function notify(): Promise<void> {
   const send = flag("send");
+  const sent = readLedger();
   const pending = d1<RequestRow>("SELECT q, locale, email, created_at FROM search_requests ORDER BY created_at");
+  for (const r of pending.filter((p) => sent.has(ledgerKey(p)))) {
+    // Mailed earlier, row left behind by a failed DELETE: delete it now, never mail it twice.
+    try {
+      d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)}`);
+      console.log(`deleted already-mailed row: [${r.locale}] ${r.q} <${r.email}>`);
+    } catch (err) {
+      console.error(`still cannot delete already-mailed row [${r.locale}] ${r.q}: ${(err as Error).message}`);
+    }
+  }
   const ready = pending
+    .filter((r) => !sent.has(ledgerKey(r)))
     .filter((r): r is RequestRow & { locale: Locale } => isLocale(r.locale))
     .map((r) => ({ ...r, hits: hitsFor(r.q, r.locale) }))
     .filter((r) => r.hits.length > 0);
@@ -249,13 +292,21 @@ async function notify(): Promise<void> {
   const port = Number(process.env.SMTP_PORT ?? "465");
   const from = process.env.SMTP_FROM ?? user;
   if (!pass) throw new Error("Set SMTP_PASS (and SMTP_USER if not m@cv.cm) to send.");
+  mkdirSync("tmp-verify", { recursive: true });
   for (const r of ready) {
     try {
       await sendMail(r.email, buildMessage(from, r.email, r.locale, r.q, r.hits), from, user, pass, host, port);
+    } catch (err) {
+      console.error(`not sent: [${r.locale}] ${r.q} <${r.email}>: ${(err as Error).message}`);
+      continue;
+    }
+    // Recorded before the DELETE, so a failed DELETE cannot lead to a second email.
+    appendFileSync(SENT_LEDGER, JSON.stringify({ q: r.q, locale: r.locale, email: r.email }) + "\n");
+    try {
       d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)}`);
       console.log(`sent and deleted: [${r.locale}] ${r.q} <${r.email}>`);
     } catch (err) {
-      console.error(`failed: [${r.locale}] ${r.q} <${r.email}>: ${(err as Error).message}`);
+      console.error(`SENT but row not deleted (the next run deletes it, without mailing): [${r.locale}] ${r.q}: ${(err as Error).message}`);
     }
   }
 }
