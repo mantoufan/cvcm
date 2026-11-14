@@ -16,8 +16,9 @@ import { kbArticleJsonLd, kbBreadcrumbJsonLd, kbDescription, kbFaqJsonLd, kbPage
 import { kbArticleOf, type KbPage } from "./kb";
 import { refArticleJsonLd, refBreadcrumbJsonLd, refDescription, refFaqJsonLd, refPageHtml, refTitle } from "./ref-i18n";
 import type { RefId } from "./ref";
-import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangDescription, slangFaqJsonLd, slangImagePath, slangPageHtml, slangTitle } from "./slang-i18n";
+import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangDescription, slangFaqJsonLd, slangPageHtml, slangTitle } from "./slang-i18n";
 import type { SlangId } from "./slang";
+import { memeImagePath } from "./meme-images";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
@@ -1089,7 +1090,7 @@ export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<strin
 
 function ogImage(seo: SeoInput): string | null {
   if (seo.slang && seo.slangId) {
-    const path = slangImagePath(seo.slangId);
+    const path = memeImagePath(seo.slangId);
     return path ? `https://cv.cm${path}` : null;
   }
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);

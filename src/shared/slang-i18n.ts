@@ -60,11 +60,6 @@ export function slangUpdated(id: SlangId): string {
   return SLANG_UPDATED[id] ?? slangPublished(id);
 }
 
-/** The entry's picture path for og:image, or null. */
-export function slangImagePath(id: SlangId | null): string | null {
-  return memeImagePath(id);
-}
-
 /**
  * The picture right under the answer, near the top of the page: loaded eagerly as the likely LCP element, with its size
  * fixed (no layout shift), alt in the reader's language and a credit linking the Commons file and the license.
