@@ -34,7 +34,7 @@
       "Más de 1 M"
     ],
     "yoy": "Últimos 12 meses frente a los 12 anteriores",
-    "fourYear": "Ahora frente a hace 4 años",
+    "fourYear": "Ahora frente a hace 3 años",
     "times": "{n}×",
     "next12": "Previsión para los próximos 12 meses",
     "cpc": "Lo que pagan los anunciantes por clic",
@@ -90,11 +90,11 @@
     "method": {
       "h": "Cómo funciona la puntuación",
       "items": [
-        "Demanda (35%): promedio de búsquedas mensuales en Google durante los últimos 12 meses de las frases que usa la gente para informarse sobre cómo empezar la idea, en inglés, chino, japonés, coreano, vietnamita, indonesio y español. 100 búsquedas puntúan 0 y un millón puntúa 100, en escala logarítmica.",
+        "Demanda (35%): promedio de búsquedas mensuales en Google durante los últimos 12 meses de las frases que usa la gente para informarse sobre cómo empezar la idea, en inglés, chino simplificado, chino tradicional, japonés, coreano, vietnamita, indonesio y español. 100 búsquedas puntúan 0 y un millón puntúa 100, en escala logarítmica.",
         "Impulso (35%): comparación de los últimos 12 meses con los 12 anteriores, combinada con la previsión para los próximos 12. Sin cambios puntúa 50, el doble puntúa 100 y la mitad puntúa 0.",
         "Valor (20%): la puja media por la parte superior de la página que pagan los anunciantes por estas búsquedas, una señal de cuánto vale un cliente en este sector. $0.10 puntúa 0 y $20 puntúa 100.",
         "Apertura (10%): 100 menos el índice de competencia de anunciantes de Google, de modo que las subastas de anuncios más saturadas puntúan menos.",
-        "La previsión ajusta un patrón estacional por mes del año y una tendencia amortiguada a los dos últimos años de búsquedas; la franja sombreada es un rango aproximado del 80%. Los picos de un solo mes en una palabra clave se suavizan antes de puntuar."
+        "La previsión ajusta un patrón estacional por mes del año y una tendencia amortiguada a los dos últimos años de búsquedas; la franja sombreada es un rango aproximado del 80%. Los picos de un solo mes en una palabra clave se suavizan antes de puntuar, salvo en el último mes, que aún no tiene un mes posterior que lo confirme."
       ]
     },
     "about": [

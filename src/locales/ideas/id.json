@@ -34,7 +34,7 @@
       "Di atas 1 jt"
     ],
     "yoy": "12 bulan terakhir dibanding 12 bulan sebelumnya",
-    "fourYear": "Sekarang dibanding 4 tahun lalu",
+    "fourYear": "Sekarang dibanding 3 tahun lalu",
     "times": "{n}×",
     "next12": "Perkiraan 12 bulan ke depan",
     "cpc": "Biaya per klik yang dibayar pengiklan",
@@ -90,11 +90,11 @@
     "method": {
       "h": "Cara kerja skor",
       "items": [
-        "Permintaan (35%): rata-rata pencarian Google per bulan selama 12 bulan terakhir untuk frasa yang dipakai orang saat ingin memulai ide tersebut, dalam bahasa Inggris, Mandarin, Jepang, Korea, Vietnam, Indonesia, dan Spanyol. 100 pencarian bernilai 0 dan satu juta bernilai 100, pada skala logaritmik.",
+        "Permintaan (35%): rata-rata pencarian Google per bulan selama 12 bulan terakhir untuk frasa yang dipakai orang saat ingin memulai ide tersebut, dalam bahasa Inggris, Mandarin Sederhana, Mandarin Tradisional, Jepang, Korea, Vietnam, Indonesia, dan Spanyol. 100 pencarian bernilai 0 dan satu juta bernilai 100, pada skala logaritmik.",
         "Momentum (35%): perbandingan 12 bulan terakhir dengan 12 bulan sebelumnya, digabung dengan perkiraan 12 bulan ke depan. Datar bernilai 50, dua kali lipat bernilai 100, dan turun setengah bernilai 0.",
         "Nilai (20%): rata-rata tawaran teratas halaman yang dibayar pengiklan untuk pencarian ini, tanda seberapa berharga seorang pelanggan di bidang ini. $0,10 bernilai 0 dan $20 bernilai 100.",
         "Keterbukaan (10%): 100 dikurangi indeks persaingan pengiklan dari Google, sehingga lelang iklan yang padat mendapat skor lebih rendah.",
-        "Perkiraan disusun dari pola musiman per bulan kalender dan tren yang diredam, berdasarkan data pencarian dua tahun terakhir; pita berbayang adalah rentang kasar 80%. Lonjakan sesaat satu bulan pada sebuah kata kunci dihaluskan sebelum dinilai."
+        "Perkiraan disusun dari pola musiman per bulan kalender dan tren yang diredam, berdasarkan data pencarian dua tahun terakhir; pita berbayang adalah rentang kasar 80%. Lonjakan sesaat satu bulan pada sebuah kata kunci dihaluskan sebelum dinilai, kecuali pada bulan terbaru karena belum ada bulan berikutnya untuk memastikannya."
       ]
     },
     "about": [

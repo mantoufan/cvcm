@@ -34,7 +34,7 @@
       "Over 1M"
     ],
     "yoy": "Last 12 months vs the 12 before",
-    "fourYear": "Now vs 4 years ago",
+    "fourYear": "Now vs 3 years earlier",
     "times": "{n}×",
     "next12": "Forecast for the next 12 months",
     "cpc": "What advertisers pay per click",
@@ -90,11 +90,11 @@
     "method": {
       "h": "How the score works",
       "items": [
-        "Demand (35%): average monthly Google searches over the last 12 months for the phrases people use about starting the idea, in English, Chinese, Japanese, Korean, Vietnamese, Indonesian and Spanish. 100 searches scores 0 and a million scores 100, on a log scale.",
+        "Demand (35%): average monthly Google searches over the last 12 months for the phrases people use about starting the idea, in English, Simplified and Traditional Chinese, Japanese, Korean, Vietnamese, Indonesian and Spanish. 100 searches scores 0 and a million scores 100, on a log scale.",
         "Momentum (35%): how the last 12 months compare with the 12 before, combined with the forecast for the next 12. Flat scores 50, doubling scores 100 and halving scores 0.",
         "Value (20%): the average top-of-page bid advertisers pay for these searches, a sign of how much a customer in this space is worth. $0.10 scores 0 and $20 scores 100.",
         "Openness (10%): 100 minus Google's advertiser competition index, so crowded ad auctions score lower.",
-        "The forecast fits a calendar-month seasonal pattern and a dampened trend to the last two years of searches; the shaded band is a rough 80% range. One-month spikes in a keyword are smoothed before scoring."
+        "The forecast fits a calendar-month seasonal pattern and a dampened trend to the last two years of searches; the shaded band is a rough 80% range. One-month spikes in a keyword are smoothed before scoring, except in the latest month, which has no later month to confirm it."
       ]
     },
     "about": [

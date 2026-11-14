@@ -37,7 +37,7 @@ export type IdeaData = {
   demand: number;
   /** Last 12 months vs the 12 before, in percent; null when the year before had no searches (a new idea). */
   yoy: number | null;
-  /** Last 12 months over the first 12 of the window (a multiple), when the first year had searches. */
+  /** Last 12 months over the first 12 of the 48-month window, three years earlier (a multiple), when that year had 10+ searches a month. */
   fourYear: number | null;
   /** Forecast for the next 12 months vs the last 12, in percent. */
   next12: number;
@@ -227,8 +227,11 @@ export function ideaChartSvg(locale: Locale, data: IdeaData, from: string): stri
     ...data.fcHi.map((v, i) => pt(last + 1 + i, v)),
     ...data.fcLo.map((v, i) => pt(last + 1 + i, v)).reverse(),
   ].join(" ");
-  const grid = [0, 50, 100]
-    .map((v) => `<line class="idea-grid" x1="${left}" x2="${W - right}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="idea-axis" x="${left - 6}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${v}</text>`)
+  // When the band was cut at the top, the top label says so ("150+").
+  const capped = Math.max(...data.fcHi, ...data.fc) > yMax;
+  const ticks: [number, string][] = [[0, "0"], [50, "50"], [100, "100"], ...(yMax > 100 ? [[yMax, capped ? `${yMax}+` : String(yMax)] as [number, string]] : [])];
+  const grid = ticks
+    .map(([v, label]) => `<line class="idea-grid" x1="${left}" x2="${W - right}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="idea-axis" x="${left - 6}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${escapeHtml(label)}</text>`)
     .join("");
   // A label under every January.
   const years = Array.from({ length: months }, (_, i) => i)

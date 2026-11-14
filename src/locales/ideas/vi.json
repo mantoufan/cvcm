@@ -34,7 +34,7 @@
       "Trên 1 triệu"
     ],
     "yoy": "12 tháng gần nhất so với 12 tháng trước đó",
-    "fourYear": "Hiện tại so với 4 năm trước",
+    "fourYear": "Hiện tại so với 3 năm trước",
     "times": "{n}×",
     "next12": "Dự báo 12 tháng tới",
     "cpc": "Nhà quảng cáo trả cho mỗi lượt nhấp",
@@ -90,11 +90,11 @@
     "method": {
       "h": "Cách tính điểm",
       "items": [
-        "Nhu cầu (35%): lượt tìm kiếm Google trung bình mỗi tháng trong 12 tháng qua cho các cụm từ người ta dùng khi tìm cách bắt đầu ý tưởng, bằng tiếng Anh, tiếng Trung, tiếng Nhật, tiếng Hàn, tiếng Việt, tiếng Indonesia và tiếng Tây Ban Nha. 100 lượt tìm được 0 điểm và một triệu lượt được 100 điểm, theo thang logarit.",
+        "Nhu cầu (35%): lượt tìm kiếm Google trung bình mỗi tháng trong 12 tháng qua cho các cụm từ người ta dùng khi tìm cách bắt đầu ý tưởng, bằng tiếng Anh, tiếng Trung giản thể, tiếng Trung phồn thể, tiếng Nhật, tiếng Hàn, tiếng Việt, tiếng Indonesia và tiếng Tây Ban Nha. 100 lượt tìm được 0 điểm và một triệu lượt được 100 điểm, theo thang logarit.",
         "Đà tăng trưởng (35%): so sánh 12 tháng gần nhất với 12 tháng trước đó, kết hợp với dự báo 12 tháng tới. Đi ngang được 50 điểm, tăng gấp đôi được 100 điểm và giảm một nửa được 0 điểm.",
         "Giá trị (20%): mức giá thầu đầu trang trung bình mà nhà quảng cáo trả cho các lượt tìm này, cho thấy một khách hàng trong lĩnh vực này đáng giá bao nhiêu. $0.10 được 0 điểm và $20 được 100 điểm.",
         "Độ mở (10%): 100 trừ đi chỉ số cạnh tranh quảng cáo của Google, nên các phiên đấu giá quảng cáo đông đúc sẽ có điểm thấp hơn.",
-        "Dự báo khớp một mô hình mùa vụ theo tháng dương lịch và một xu hướng đã giảm chấn với lượt tìm kiếm của hai năm gần nhất; vùng tô màu là khoảng 80% ước lượng thô. Các đợt tăng đột biến trong một tháng của từ khóa được làm mượt trước khi tính điểm."
+        "Dự báo khớp một mô hình mùa vụ theo tháng dương lịch và một xu hướng đã giảm chấn với lượt tìm kiếm của hai năm gần nhất; vùng tô màu là khoảng 80% ước lượng thô. Các đợt tăng đột biến trong một tháng của từ khóa được làm mượt trước khi tính điểm, trừ tháng gần nhất vì chưa có tháng sau để xác nhận."
       ]
     },
     "about": [

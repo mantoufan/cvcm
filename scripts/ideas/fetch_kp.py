@@ -106,12 +106,13 @@ def fetch():
             problems.append(f"{locale}: {len(short)} keywords lack {MONTHS} months of history, e.g. {short[:3]}")
         print(f"{locale}: {len(words)} keywords, {len(res.results)} results", file=sys.stderr)
     CACHE.mkdir(parents=True, exist_ok=True)
-    path = CACHE / f"raw-{raw['to']}.json"
+    # An incomplete fetch is kept under another name, so --derive (which reads the newest raw-*.json) never uses it.
+    path = CACHE / (f"raw-{raw['to']}.json" if not problems else f"partial-{raw['to']}.json")
     path.write_text(json.dumps(raw, ensure_ascii=False))
     print(f"raw cache: {path}", file=sys.stderr)
     if problems:
         # Usually last month is not published yet: run again after the first week of the month.
-        raise SystemExit("\n".join(problems) + f"\nKeyword Planner may not have published {ey}-{em:02d} yet; the raw cache was kept")
+        raise SystemExit("\n".join(problems) + f"\nKeyword Planner may not have published {ey}-{em:02d} yet; kept as {path.name}, which --derive ignores")
     return raw
 
 
