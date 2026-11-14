@@ -1211,3 +1211,62 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .xq-pt.target::after { content: ""; position: absolute; width: 30%; height: 30%; border-radius: 50%; background: rgba(70, 40, 20, 0.4); }
 .xq-pt:has(.xq-piece).target::after { width: 96%; height: 96%; background: none; border: 3px solid rgba(70, 40, 20, 0.5); box-sizing: border-box; }
 .g2048-overlay[hidden], .chess-promo[hidden] { display: none; }
+
+/* Minesweeper and snake (batch 30). */
+.ms-tool, .snake-tool { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem); gap: 1.25rem; align-items: start; }
+@media (max-width: 860px) { .ms-tool, .snake-tool { grid-template-columns: minmax(0, 1fr); } }
+.ms-stats, .snake-score { margin-bottom: 0.6rem; }
+.ms-wrap { max-width: 100%; overflow-x: auto; padding-bottom: 0.25rem; }
+.ms-grid { --cols: 9; --size: clamp(1.7rem, calc((100vw - 2.5rem) / var(--cols)), 2.2rem); display: inline-grid; border: 2px solid #8b5a6b; border-radius: 4px; background: #8b5a6b; gap: 1px; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.ms-row { display: grid; grid-template-columns: repeat(var(--cols), var(--size)); gap: 1px; }
+.ms-cell { width: var(--size); height: var(--size); padding: 0; border: 0; background: #f7d3e2; color: var(--ink); font: inherit; font-size: calc(var(--size) * 0.55); font-weight: 800; line-height: 1; cursor: pointer; touch-action: manipulation; }
+.ms-cell:not(.open):hover { background: #f2bdd2; }
+.ms-cell.open { background: #fff; cursor: default; }
+.ms-cell.flag { color: var(--pink-deep); }
+.ms-cell.mine { background: #fde2e2; color: #2e2229; }
+.ms-cell.hit { background: #e0453b; color: #fff; }
+.ms-cell.wrong { background: #fff3b0; text-decoration: line-through; }
+.ms-cell.n1 { color: #2f5bd3; } .ms-cell.n2 { color: #1f8a3a; } .ms-cell.n3 { color: #d33b2f; } .ms-cell.n4 { color: #23338f; }
+.ms-cell.n5 { color: #8a2f1f; } .ms-cell.n6 { color: #1f7f86; } .ms-cell.n7 { color: #2e2229; } .ms-cell.n8 { color: #77606c; }
+.ms-cell:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: -2px; position: relative; z-index: 1; }
+.ms-custom[hidden] { display: none; }
+.ms-status, .snake-status { min-height: 1.6em; margin: 0.5rem 0 0; font-weight: 600; }
+
+.snake-stage { position: relative; width: 100%; max-width: 30rem; aspect-ratio: 1; touch-action: none; user-select: none; border-radius: 6px; overflow: hidden; background: #fdf7fa; border: 1px solid var(--line); }
+.snake-canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+.snake-start { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; color: var(--ink-soft); font-weight: 700; background: #fdf7fa; }
+.snake-start[hidden] { display: none; }
+.snake-pad { display: grid; grid-template-columns: repeat(3, 3rem); grid-template-areas: ". up ." "left down right"; gap: 0.35rem; margin: 0.75rem 0; }
+.snake-pad .btn { min-height: 3rem; padding: 0; font-size: 1.2rem; }
+.snake-up { grid-area: up; } .snake-left { grid-area: left; } .snake-down { grid-area: down; } .snake-right { grid-area: right; }
+
+/* Card games (batch 30): solitaire, spider solitaire, FreeCell on the shared card table (src/client/card-table.ts). */
+.cd-tool { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 17rem); gap: 1.25rem; align-items: start; }
+@media (max-width: 960px) { .cd-tool { grid-template-columns: minmax(0, 1fr); } }
+.cd-stats { margin-bottom: 0.6rem; }
+.cd-wrap { border-radius: 10px; background: #e8f3ea; padding: 0.5rem; }
+.cd-table { --gap: 0.4rem; container-type: inline-size; user-select: none; -webkit-user-select: none; }
+.cd-row { display: grid; grid-template-columns: repeat(var(--cols), minmax(0, 1fr)); gap: var(--gap); }
+.cd-top { margin-bottom: 0.7rem; }
+.cd-pile { --cw: calc((100cqw - (var(--cols) - 1) * var(--gap)) / var(--cols)); --depth: 0; position: relative; height: calc(var(--cw) * 1.4); }
+.cd-tab .cd-pile { height: calc(var(--cw) * (1.4 + var(--depth)) + 0.5rem); min-height: calc(var(--cw) * 1.4); }
+.cd-base { position: absolute; left: 0; top: 0; width: 100%; height: calc(var(--cw) * 1.4); padding: 0; border: 1.5px dashed #a9c7ae; border-radius: 6px; background: transparent; color: #6f9277; font-size: calc(var(--cw) * 0.4); cursor: pointer; }
+.cd-pile[data-kind="tableau"] .cd-base { height: 100%; border-color: transparent; }
+.cd-pile[data-kind="tableau"]:not(:has(.cd-card)) .cd-base { height: calc(var(--cw) * 1.4); border-color: #a9c7ae; }
+.cd-pile.hint .cd-base, .cd-pile.hint[data-kind="tableau"] .cd-base { border: 2px solid #c9a400; }
+.cd-card { --y: 0; --x: 0; position: absolute; left: calc(var(--x) * var(--cw)); top: calc(var(--y) * var(--cw)); width: var(--cw); height: calc(var(--cw) * 1.4); padding: 0; border: 1px solid #b9a9b0; border-radius: 6px; background: #fff; font-family: var(--sans); cursor: pointer; touch-action: none; }
+.cd-card.red { color: #c2253b; }
+.cd-card.black { color: #222; }
+.cd-card.down { background: var(--pink); border-color: var(--pink-deep); cursor: default; }
+.cd-card.down::after { content: ""; position: absolute; inset: 12%; border: 1.5px solid rgba(255, 255, 255, 0.7); border-radius: 4px; }
+.cd-corner { position: absolute; left: 7%; top: 3%; display: flex; flex-direction: column; align-items: center; font-weight: 700; font-size: calc(var(--cw) * 0.24); line-height: 1.05; }
+.cd-pip { position: absolute; right: 8%; bottom: 4%; font-size: calc(var(--cw) * 0.46); line-height: 1; }
+.cd-card.sel { outline: 3px solid var(--pink-deep); outline-offset: -1px; z-index: 1; }
+.cd-card.hint { outline: 3px solid #c9a400; outline-offset: -1px; }
+.cd-card.drag { z-index: 10; pointer-events: none; opacity: 0.92; }
+.cd-card:focus-visible { outline: 3px solid var(--pink-deep); outline-offset: 1px; z-index: 2; }
+.cd-status { min-height: 1.6em; margin: 0.5rem 0 0; font-weight: 600; }
+.cd-deal-row { display: flex; align-items: flex-end; gap: 0.5rem; margin-top: 0.75rem; }
+.cd-deal-row .field { flex: 1; margin: 0; }
+.cd-deal { width: 100%; }
+@media (max-width: 520px) { .cd-table { --gap: 0.2rem; } .cd-wrap { padding: 0.3rem; } .cd-card { border-radius: 4px; } }

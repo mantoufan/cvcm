@@ -1560,6 +1560,51 @@
       "s2b": "Toca una pieza y luego un punto marcado. Las rojas mueven primero.",
       "s3t": "Da mate al general",
       "s3b": "Gana dejando al general rival sin escapatoria. Usa Deshacer para volver atrás una jugada."
+    },
+    "solitaire": {
+      "lead": "Juega al solitario Klondike en tres pasos.",
+      "s1t": "Elige cómo robar",
+      "s1b": "Elige robar 1 (más fácil) o robar 3 (clásico) y toca Nueva partida.",
+      "s2t": "Forma las columnas",
+      "s2b": "Arrastra o toca las cartas para apilarlas en orden descendente alternando colores. Toca el mazo para sacar cartas nuevas.",
+      "s3t": "Completa las bases",
+      "s3b": "Sube cada palo a su base del as al rey. Haz doble clic en una carta para llevarla al mejor sitio."
+    },
+    "spider-solitaire": {
+      "lead": "Juega al Solitario Spider en tres pasos.",
+      "s1t": "Elige los palos",
+      "s1b": "Un palo es lo más fácil; dos y cuatro palos son más difíciles.",
+      "s2t": "Apila hacia abajo",
+      "s2b": "Pon cartas sobre otra de un valor más alto y mueve juntas las escaleras del mismo palo.",
+      "s3t": "Completa ocho escaleras",
+      "s3b": "Una escalera del rey al as de un mismo palo sale de la mesa. Toca el mazo para repartir cuando necesites cartas nuevas."
+    },
+    "freecell": {
+      "lead": "Juega a Carta blanca (FreeCell) en tres pasos.",
+      "s1t": "Elige una partida",
+      "s1b": "Toca Nueva partida, o escribe un número de partida y toca Jugar partida.",
+      "s2t": "Usa las celdas libres",
+      "s2b": "Deja cartas sueltas en las cuatro celdas y apila las columnas en orden descendente alternando colores.",
+      "s3t": "Sube a las bases",
+      "s3b": "Lleva cada palo a las bases del as al rey. Las cartas seguras suben solas."
+    },
+    "minesweeper": {
+      "lead": "Juega al Buscaminas en tres pasos.",
+      "s1t": "Abre una casilla",
+      "s1b": "Elige un nivel y haz clic en cualquier casilla. El primer clic siempre abre una zona segura.",
+      "s2t": "Lee los números",
+      "s2b": "Cada número cuenta las minas que lo rodean. Marca las minas con clic derecho, una pulsación larga o el modo bandera.",
+      "s3t": "Despeja el campo",
+      "s3b": "Abre todas las casillas sin mina para ganar. Haz clic en un número con todas sus banderas puestas para abrir el resto."
+    },
+    "snake-game": {
+      "lead": "Juega al juego de la serpiente en tres pasos.",
+      "s1t": "Empieza",
+      "s1b": "Toca Empezar o pulsa Espacio. Elige una velocidad y si hay paredes.",
+      "s2t": "Come y crece",
+      "s2b": "Dirige con las flechas, deslizando el dedo o con los botones. Cada bocado suma un punto y una casilla.",
+      "s3t": "Evita las paredes y tu cola",
+      "s3b": "Chocar con una pared o con tu propio cuerpo termina la partida. Tu mejor puntuación se guarda."
     }
   }
 }

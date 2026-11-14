@@ -319,3 +319,13 @@ GPT Image 2.6 Flare image-to-image on kie.ai, refs `dice-sweet.jpg` + `metronome
 - `mahjong`: she lifts a matching pair of two identical ivory mahjong-style tiles with the same pink blossom (no characters) from a small stacked turtle-shaped tile pyramid. Ask for full-bleed art: one try came back with a black bar along the bottom, and another held two different tiles.
 - `chess`: she moves a pink knight on a cream-and-pink chessboard; a little pink chess clock with blank faces; a cute toy robot opponent across the board.
 - `chinese-chess`: she places a round wooden xiangqi-style disc with a small heart (no characters) on a cream board with a pale blue river band across the middle; a cup of tea.
+
+## Solitaire, Spider Solitaire, FreeCell, Minesweeper, Snake (2026-11-14)
+
+Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`), refs `2048-sweet.jpg` + `chess-sweet.jpg`, 16:9 landscape, same base prompt as above (style references only, same chibi girl and room, full-bleed, no words, letters, digits, card ranks or indices, logo or watermark). Card faces show only hearts, stars or flowers. Save `public/covers/<id>-sweet.jpg`, `sips -s format jpeg` then `sips -z 720 1280`. All five came out on the first try.
+
+- `solitaire`: she lays a row of pastel playing cards cascading down a cream table into neat overlapping columns, one card mid-flip in her hand; a small deck beside her; pink lace card backs.
+- `spider-solitaire`: she arranges cards in long overlapping columns; a cute plush spider with a pink bow sits by the deck; one finished stack glows.
+- `freecell`: she slides a card into one of four little pink tray slots at the top of the layout; neat columns below.
+- `minesweeper`: a pastel grid of cream and pink tiles on a tray, some opened to soft dots and hearts (no numbers); she plants a tiny pink flag on one; one open tile holds a smiling round cartoon bomb with a heart-shaped fuse.
+- `snake-game`: a plush pink snake of round cushion segments curls across a pink-and-cream checkered mat toward a big strawberry; she cheers.

@@ -1,0 +1,267 @@
+{
+  "meta": {
+    "titleSolitaire": "Solitaire — main solitaire Klondike online gratis — cv.cm",
+    "descSolitaire": "Main solitaire Klondike klasik online gratis: ambil satu atau tiga kartu, seret atau ketuk kartu, klik dua kali untuk mengirim kartu ke fondasi, urungkan tanpa batas, dan petunjuk. Permainan bernomor dan tersimpan di browser Anda.",
+    "titleSpiderSolitaire": "Spider Solitaire — main online gratis, 1, 2, atau 4 jenis kartu — cv.cm",
+    "descSpiderSolitaire": "Main Spider Solitaire online gratis dengan satu, dua, atau empat jenis kartu. Susun deret dari King sampai As, bagikan baris baru dari stok, dengan urungkan dan petunjuk. Permainan Anda tetap tersimpan di browser ini.",
+    "titleFreecell": "FreeCell — solitaire online gratis dengan permainan bernomor — cv.cm",
+    "descFreecell": "Main solitaire FreeCell online gratis dengan permainan bernomor klasik 1 sampai 1.000.000. Empat sel bebas, pindahkan banyak kartu sekaligus, kartu aman otomatis naik ke fondasi, dengan urungkan dan petunjuk.",
+    "titleMinesweeper": "Minesweeper — main Minesweeper online gratis — cv.cm",
+    "descMinesweeper": "Main Minesweeper online gratis: pemula, menengah, ahli, atau papan kustom. Klik pertama selalu aman, dengan bendera, buka cepat, pengatur waktu, dan waktu terbaik Anda tersimpan di browser ini.",
+    "titleSnakeGame": "Game ular — main game ular klasik online — cv.cm",
+    "descSnakeGame": "Main game ular klasik online: makan makanannya, tumbuh lebih panjang, dan jangan menabrak dinding atau ekor sendiri. Tiga kecepatan, dinding aktif atau nonaktif, tombol panah, usapan, atau tombol di layar, skor terbaik tersimpan."
+  },
+  "tools": {
+    "solitaire": {
+      "name": "Solitaire",
+      "blurb": "Klondike klasik, ambil 1 atau 3 kartu."
+    },
+    "spider-solitaire": {
+      "name": "Spider Solitaire",
+      "blurb": "1, 2, atau 4 jenis, dari King ke As."
+    },
+    "freecell": {
+      "name": "FreeCell",
+      "blurb": "Permainan bernomor, empat sel bebas."
+    },
+    "minesweeper": {
+      "name": "Minesweeper",
+      "blurb": "Bersihkan ladang tanpa kena ranjau."
+    },
+    "snake-game": {
+      "name": "Game ular",
+      "blurb": "Makan, tumbuh, jangan gigit ekor sendiri."
+    }
+  },
+  "faq": {
+    "solitaire": {
+      "q1": "Bagaimana cara main solitaire?",
+      "a1": "Pindahkan ke-52 kartu ke empat fondasi, masing-masing satu jenis dari As sampai King. Di tujuh tumpukan, Anda menyusun kartu menurun dengan warna berselang-seling (6 merah di atas 7 hitam), dan hanya King yang boleh mengisi tumpukan kosong. Ketuk stok untuk membuka kartu baru.",
+      "q2": "Apa bedanya ambil 1 dan ambil 3?",
+      "a2": "Ambil 1 membuka satu kartu setiap kali dan lebih mudah. Ambil 3 membuka tiga kartu dan hanya kartu teratas yang bisa dimainkan; inilah permainan klasik yang lebih sulit.",
+      "q3": "Apakah setiap permainan bisa dimenangkan?",
+      "a3": "Tidak. Beberapa permainan Klondike memang tidak bisa diselesaikan bagaimanapun Anda bermain. Jika buntu, urungkan beberapa langkah atau mulai permainan baru.",
+      "q4": "Bagaimana memindahkan kartu dengan cepat?",
+      "a4": "Klik dua kali kartu, atau ketuk dua kali, untuk mengirimnya ke tempat terbaik: fondasi jika cocok, jika tidak ke salah satu tumpukan. Setelah semua kartu terbuka dan stok habis, permainan selesai dengan sendirinya.",
+      "q5": "Bisakah saya mengulang sebuah permainan?",
+      "a5": "Bisa. Setiap permainan punya nomor. Ulangi memainkan permainan yang sama lagi, dan Anda bisa mengetik nomor untuk memainkan permainan tertentu. Permainan yang sedang berjalan disimpan di browser ini."
+    },
+    "spider-solitaire": {
+      "q1": "Bagaimana cara main Spider Solitaire?",
+      "a1": "Susun deret satu jenis dari King turun sampai As. Deret yang lengkap keluar dari meja; bersihkan kedelapannya untuk menang. Anda boleh menaruh kartu apa pun di atas kartu yang satu tingkat lebih tinggi, tetapi hanya deret satu jenis yang bisa dipindahkan bersama.",
+      "q2": "Tingkat mana yang sebaiknya saya pilih?",
+      "a2": "Satu jenis paling mudah dan sebagian besar permainan bisa dimenangkan. Dua jenis cukup menantang, dan empat jenis sulit bahkan bagi pemain berpengalaman.",
+      "q3": "Kapan saya bisa membagikan kartu dari stok?",
+      "a3": "Ketuk stok untuk membagikan satu kartu ke setiap dari sepuluh tumpukan. Anda punya lima kali pembagian, dan setiap tumpukan harus berisi minimal satu kartu sebelum membagikan.",
+      "q4": "Apakah ada urungkan?",
+      "a4": "Ada, sebanyak yang Anda mau, termasuk setelah membagikan kartu.",
+      "q5": "Apakah permainan saya tersimpan?",
+      "a5": "Ya. Tutup halaman dan kembali nanti ke permainan, langkah, dan waktu yang sama. Tidak ada yang dikirim ke cv.cm."
+    },
+    "freecell": {
+      "q1": "Bagaimana cara main FreeCell?",
+      "a1": "Semua kartu dibagikan terbuka ke delapan kolom. Pindahkan ke empat fondasi sesuai jenis dari As sampai King. Susun kolom menurun dengan warna berselang-seling, dan gunakan empat sel bebas untuk menaruh masing-masing satu kartu.",
+      "q2": "Berapa kartu yang bisa saya pindahkan sekaligus?",
+      "a2": "Sebanyak yang dimungkinkan ruang kosong: satu lebih banyak dari jumlah sel bebas yang kosong, dikalikan dua untuk setiap kolom kosong. Halaman menampilkan angka saat ini.",
+      "q3": "Apakah setiap permainan bisa diselesaikan?",
+      "a3": "Hampir. Dari 32.000 permainan klasik pertama, hanya nomor 11982 yang tidak punya solusi.",
+      "q4": "Apakah nomornya sama dengan game FreeCell lain?",
+      "a4": "Ya. Permainan dibuat dengan rumus penomoran tradisional, jadi permainan 1 di sini sama dengan permainan 1 yang dikenal dari program FreeCell lain.",
+      "q5": "Mengapa ada kartu yang bergerak sendiri?",
+      "a5": "Kartu yang tidak lagi dibutuhkan di kolom otomatis naik ke fondasi, seperti di kebanyakan program FreeCell. Urungkan akan mengembalikannya."
+    },
+    "minesweeper": {
+      "q1": "Bagaimana cara main Minesweeper?",
+      "a1": "Buka kotak satu per satu. Angka menunjukkan berapa ranjau yang menyentuh kotak itu, termasuk secara diagonal. Gunakan angka untuk menebak letak ranjau, tandai dengan bendera, dan buka semua kotak tanpa ranjau untuk menang.",
+      "q2": "Apakah klik pertama aman?",
+      "a2": "Ya. Ranjau dipasang setelah klik pertama Anda, dan tidak pernah di kotak itu atau delapan kotak di sekitarnya, jadi klik pertama selalu membuka sebuah area.",
+      "q3": "Bagaimana memasang bendera di ponsel?",
+      "a3": "Tekan lama sebuah kotak, atau aktifkan Mode bendera agar setiap ketukan memasang atau melepas bendera. Di komputer, klik kanan.",
+      "q4": "Apa itu buka cepat (chording)?",
+      "a4": "Jika di sekitar sebuah angka sudah ada bendera sebanyak angka itu, klik angkanya untuk membuka semua kotak tetangga lainnya sekaligus. Jika ada bendera yang salah, ranjau akan meledak.",
+      "q5": "Ada ukuran papan apa saja?",
+      "a5": "Pemula 9 × 9 dengan 10 ranjau, menengah 16 × 16 dengan 40, dan ahli 30 × 16 dengan 99. Papan kustom hingga 30 baris dan 40 kolom."
+    },
+    "snake-game": {
+      "q1": "Bagaimana cara main game ular?",
+      "a1": "Arahkan ular ke makanan. Setiap potong makanan membuatnya satu kotak lebih panjang. Permainan berakhir saat ular menabrak dinding atau ekornya sendiri.",
+      "q2": "Bagaimana cara mengarahkan ular?",
+      "a2": "Gunakan tombol panah atau W A S D, usap di papan, atau ketuk tombol panah. Spasi atau P untuk jeda.",
+      "q3": "Apa gunanya menonaktifkan dinding?",
+      "a3": "Tanpa dinding, ular yang keluar dari satu sisi papan akan muncul lagi di sisi seberangnya. Hanya ekornya sendiri yang bisa mengakhiri permainan.",
+      "q4": "Mengapa belokan saya tidak terjadi?",
+      "a4": "Ular tidak bisa berbalik langsung ke tubuhnya sendiri. Hingga dua belokan cepat diingat, jadi Anda bisa berbelok dua kali di antara langkah.",
+      "q5": "Apakah skor terbaik saya tersimpan?",
+      "a5": "Ya, hanya di browser ini, dengan skor terbaik terpisah untuk setiap kecepatan dan pengaturan dinding."
+    }
+  },
+  "guides": {
+    "solitaire": {
+      "lead": "Main solitaire Klondike dalam tiga langkah.",
+      "s1t": "Pilih cara ambil",
+      "s1b": "Pilih ambil 1 (lebih mudah) atau ambil 3 (klasik), lalu ketuk Permainan baru.",
+      "s2t": "Susun tumpukan",
+      "s2b": "Seret atau ketuk kartu untuk menyusunnya menurun dengan warna berselang-seling. Ketuk stok untuk kartu baru.",
+      "s3t": "Isi fondasi",
+      "s3b": "Kirim setiap jenis ke fondasi dari As sampai King. Klik dua kali kartu untuk memindahkannya ke tempat terbaik."
+    },
+    "spider-solitaire": {
+      "lead": "Main Spider Solitaire dalam tiga langkah.",
+      "s1t": "Pilih jumlah jenis",
+      "s1b": "Satu jenis paling mudah; dua dan empat jenis lebih sulit.",
+      "s2t": "Susun menurun",
+      "s2b": "Taruh kartu di atas kartu yang satu tingkat lebih tinggi dan pindahkan deret satu jenis bersama-sama.",
+      "s3t": "Bersihkan delapan deret",
+      "s3b": "Deret satu jenis dari King sampai As keluar dari meja. Ketuk stok untuk membagikan saat Anda butuh kartu baru."
+    },
+    "freecell": {
+      "lead": "Main FreeCell dalam tiga langkah.",
+      "s1t": "Pilih permainan",
+      "s1b": "Ketuk Permainan baru, atau ketik nomor permainan lalu ketuk Mainkan nomor ini.",
+      "s2t": "Gunakan sel bebas",
+      "s2b": "Taruh kartu satu per satu di empat sel dan susun kolom menurun dengan warna berselang-seling.",
+      "s3t": "Naik ke fondasi",
+      "s3b": "Pindahkan setiap jenis ke fondasi dari As sampai King. Kartu yang aman naik dengan sendirinya."
+    },
+    "minesweeper": {
+      "lead": "Main Minesweeper dalam tiga langkah.",
+      "s1t": "Buka sebuah kotak",
+      "s1b": "Pilih tingkat dan klik kotak mana saja. Klik pertama selalu membuka area yang aman.",
+      "s2t": "Baca angkanya",
+      "s2b": "Setiap angka menghitung ranjau di sekitarnya. Tandai ranjau dengan klik kanan, tekan lama, atau Mode bendera.",
+      "s3t": "Bersihkan ladang",
+      "s3b": "Buka semua kotak tanpa ranjau untuk menang. Klik angka yang benderanya sudah lengkap untuk membuka sisanya."
+    },
+    "snake-game": {
+      "lead": "Main game ular dalam tiga langkah.",
+      "s1t": "Mulai",
+      "s1b": "Ketuk Mulai atau tekan Spasi. Pilih kecepatan dan apakah dinding aktif.",
+      "s2t": "Makan dan tumbuh",
+      "s2b": "Arahkan dengan tombol panah, usapan, atau tombol. Setiap makanan menambah satu poin dan satu kotak.",
+      "s3t": "Hindari dinding dan ekor",
+      "s3b": "Menabrak dinding atau tubuh sendiri mengakhiri permainan. Skor terbaik Anda disimpan."
+    }
+  },
+  "ui": {
+    "cards": {
+      "card": "{rank} {suit}",
+      "r1": "As",
+      "r11": "Jack",
+      "r12": "Queen",
+      "r13": "King",
+      "s0": "sekop",
+      "s1": "hati",
+      "s2": "wajik",
+      "s3": "keriting",
+      "faceDown": "Kartu tertutup",
+      "stock": "Stok, {n} kartu",
+      "stockEmpty": "Stok (kosong)",
+      "waste": "Tumpukan buangan",
+      "foundation": "Fondasi",
+      "tableau": "Tumpukan {n}",
+      "cell": "Sel bebas",
+      "moves": "Langkah",
+      "time": "Waktu",
+      "gameNo": "Permainan",
+      "undo": "Urungkan",
+      "hint": "Petunjuk",
+      "newGame": "Permainan baru",
+      "confirmNew": "Ketuk lagi untuk permainan baru",
+      "restart": "Ulangi",
+      "dealLabel": "Nomor permainan",
+      "playDeal": "Mainkan nomor ini",
+      "badDeal": "Ketik nomor permainan dari 1 sampai {max}.",
+      "won": "Anda menang dalam {time} dengan {moves} langkah!",
+      "stuck": "Tidak ada langkah lagi. Urungkan atau mulai permainan baru.",
+      "noHint": "Tidak ada langkah lagi.",
+      "hintStock": "Ketuk stok untuk kartu baru.",
+      "cannot": "Kartu itu tidak bisa ditaruh di sana.",
+      "optionNext": "Pengaturan baru berlaku mulai permainan berikutnya. Ketuk Permainan baru."
+    },
+    "solitaire": {
+      "title": "Solitaire",
+      "privacyNote": "Klondike klasik: pindahkan semua kartu ke fondasi, dari As sampai King.",
+      "board": "Meja solitaire",
+      "option": "Ambil",
+      "draw1": "Ambil 1 kartu",
+      "draw3": "Ambil 3 kartu",
+      "help": "Seret kartu, atau ketuk kartu lalu ketuk tujuannya. Klik dua kali atau ketuk dua kali untuk mengirimnya ke tempat terbaik. Ctrl+Z untuk mengurungkan."
+    },
+    "spiderSolitaire": {
+      "title": "Spider Solitaire",
+      "privacyNote": "Susun delapan deret satu jenis dari King sampai As untuk membersihkan meja.",
+      "board": "Meja Spider Solitaire",
+      "option": "Jenis",
+      "suits1": "1 jenis (mudah)",
+      "suits2": "2 jenis (sedang)",
+      "suits4": "4 jenis (sulit)",
+      "dealsLeft": "Sisa pembagian",
+      "completed": "Deret selesai",
+      "fillPiles": "Setiap tumpukan harus berisi kartu sebelum membagikan.",
+      "noDeals": "Stok tidak punya pembagian lagi.",
+      "help": "Seret kartu atau deret satu jenis, atau ketuk lalu ketuk tujuannya. Ketuk stok untuk membagikan sepuluh kartu baru. Ctrl+Z untuk mengurungkan."
+    },
+    "freecell": {
+      "title": "FreeCell",
+      "privacyNote": "Semua kartu terbuka: pindahkan ke fondasi dengan bantuan empat sel bebas.",
+      "board": "Meja FreeCell",
+      "option": "Aturan",
+      "standard": "Standar",
+      "canMove": "Bisa dipindah",
+      "tooMany": "Ruang kosong tidak cukup: di sini Anda bisa memindahkan {n} kartu sekaligus.",
+      "help": "Seret kartu atau ketuk kartu lalu tujuannya. Klik dua kali mengirim kartu ke tempat terbaiknya: fondasi, tumpukan, atau sel bebas. Jumlah kartu yang bisa dipindahkan sekaligus ditampilkan di atas. Ctrl+Z untuk mengurungkan."
+    },
+    "minesweeper": {
+      "title": "Minesweeper",
+      "privacyNote": "Temukan semua ranjau tanpa meledakkannya.",
+      "board": "Ladang ranjau",
+      "level": "Tingkat",
+      "l_beginner": "Pemula (9 × 9, 10 ranjau)",
+      "l_intermediate": "Menengah (16 × 16, 40 ranjau)",
+      "l_expert": "Ahli (30 × 16, 99 ranjau)",
+      "l_custom": "Kustom",
+      "rows": "Baris",
+      "cols": "Kolom",
+      "mines": "Ranjau",
+      "minesLeft": "Sisa ranjau",
+      "time": "Waktu",
+      "best": "Waktu terbaik",
+      "newGame": "Permainan baru",
+      "flagModeOff": "Mode bendera: nonaktif",
+      "flagModeOn": "Mode bendera: aktif",
+      "ready": "Klik kotak mana saja untuk mulai. Klik pertama selalu aman.",
+      "won": "Bersih dalam {time}!",
+      "lost": "Duar! Anda kena ranjau.",
+      "cell": "Baris {row}, kolom {col}: {value}",
+      "cellHidden": "tertutup",
+      "cellFlag": "berbendera",
+      "cellMine": "ranjau",
+      "cellEmpty": "kosong",
+      "hint": "Klik untuk membuka, klik kanan atau tekan lama untuk memasang bendera. Klik angka yang benderanya lengkap untuk membuka tetangganya. Tombol panah untuk bergerak, Enter untuk membuka, F untuk bendera."
+    },
+    "snakeGame": {
+      "title": "Game ular",
+      "privacyNote": "Makan makanannya dan tumbuh tanpa menabrak dinding atau ekor sendiri.",
+      "stage": "Papan game ular",
+      "pressStart": "Tekan Mulai atau Spasi untuk bermain",
+      "score": "Skor",
+      "best": "Terbaik",
+      "start": "Mulai",
+      "pause": "Jeda",
+      "resume": "Lanjutkan",
+      "paused": "Dijeda.",
+      "over": "Permainan selesai. Skor: {score}.",
+      "speed": "Kecepatan",
+      "s_slow": "Lambat",
+      "s_normal": "Sedang",
+      "s_fast": "Cepat",
+      "walls": "Dinding (nonaktif: tembus tepi papan)",
+      "pad": "Arahkan ular",
+      "d_up": "Atas",
+      "d_right": "Kanan",
+      "d_down": "Bawah",
+      "d_left": "Kiri",
+      "hint": "Tombol panah atau W A S D untuk mengarahkan, Spasi atau P untuk jeda. Di ponsel, usap di papan atau gunakan tombol."
+    }
+  }
+}
