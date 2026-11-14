@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { expect, it } from "vitest";
-import { INDEXNOW_KEY, changedUrls, indexNowBody, sitemapUrls } from "../scripts/indexnow.mjs";
+import { INDEXNOW_KEY, changedUrls, indexNowBody, pageSignature, sitemapUrls } from "../scripts/indexnow.mjs";
 
 it("reads every loc of a sitemap", () => {
   const xml = `<urlset><url><loc>https://cv.cm/en/</loc><xhtml:link rel="alternate" hreflang="ja" href="https://cv.cm/ja/"/></url><url><loc> https://cv.cm/en/json/ </loc></url></urlset>`;
@@ -22,4 +22,14 @@ it("names the key file the site serves", () => {
   expect(body.host).toBe("cv.cm");
   expect(body.keyLocation).toBe(`https://cv.cm/${INDEXNOW_KEY}.txt`);
   expect(existsSync(resolve(__dirname, "../public", `${INDEXNOW_KEY}.txt`))).toBe(true);
+});
+
+it("signs what a search engine reads, not the build or the site-wide footer", () => {
+  const page = (title: string, main: string, asset: string, footer: string): string =>
+    `<html><head><title>${title}</title><meta\n name="description"\n content="d" /><link rel="canonical" href="https://cv.cm/en/json/" /><script type="module" src="/assets/index-${asset}.js"></script><script type="application/ld+json" id="faq-jsonld">{"a":1}</script></head><body><div id="app"><header class="top">nav</header><main id="main"><h1>${main}</h1><img src="/assets/pic-${asset}.svg"></main><footer class="foot">${footer}</footer></div></body></html>`;
+  const base = pageSignature(page("JSON", "Format", "aaa", "170 tools"));
+  // A new build (asset names) or a new tool in the footer directory is not a change to this page.
+  expect(pageSignature(page("JSON", "Format", "bbb", "171 tools"))).toBe(base);
+  expect(pageSignature(page("JSON formatter", "Format", "aaa", "170 tools"))).not.toBe(base);
+  expect(pageSignature(page("JSON", "Format JSON", "aaa", "170 tools"))).not.toBe(base);
 });

@@ -20,3 +20,7 @@ declare module "virtual:page-copy/tutorials/*" {
   const copy: import("./shared/page-copy").TutorialCopy;
   export default copy;
 }
+
+declare module "virtual:page-copy/loaders/*" {
+  export const copy: import("./shared/messages").CopyLoaders;
+}

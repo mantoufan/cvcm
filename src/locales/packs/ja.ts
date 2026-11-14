@@ -1,5 +1,5 @@
 // The browser's core pack for this locale: every string except the copy only one page shows. A tool's FAQ and how-to
-// and a tutorial's text come in bucket chunks (copy-ja.ts, src/shared/page-copy.ts; full/ja.ts has everything).
+// and a tutorial's text come in bucket chunks (src/shared/page-copy.ts; full/ja.ts has everything).
 // Data only, no dynamic imports: the chunk's name then changes only when the copy does, so it stays cached across deploys.
 import ui from "virtual:page-copy/ui/ja";
 import guides from "virtual:page-copy/guides/ja";

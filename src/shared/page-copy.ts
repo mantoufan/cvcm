@@ -2,6 +2,7 @@
 // core locale pack and shipped in small bucket chunks instead (vite.config.ts builds them from the same JSON files).
 // The Worker and the tests register the full packs (messages-all), so nothing here applies to them.
 import type { LocaleMessages } from "./messages";
+import type { parseAppPath } from "./path";
 
 type Strings = Record<string, string>;
 type Tree = Record<string, unknown>;
@@ -23,6 +24,21 @@ export function copyBucket(id: string): number {
     hash = Math.imul(hash, 0x01000193);
   }
   return (hash >>> 0) % COPY_BUCKETS;
+}
+
+/** The tool or tutorial whose own copy a page shows. */
+export type PageCopy = { tool?: string | null; tutorial?: string | null };
+
+/**
+ * The copy a path shows, for the client (what to load), the prerender (what the client will have) and the Worker
+ * (what to preload). A tool path covers a shared clip note too: its page writes the clipboard's HowTo JSON-LD.
+ */
+export function pageCopyOf(parsed: ReturnType<typeof parseAppPath>): PageCopy {
+  if (parsed.kind === "app" || parsed.kind === "bare") return { tool: parsed.tool };
+  if (parsed.kind === "clip") return { tool: "clip" };
+  if (parsed.kind === "markets" || parsed.kind === "bare-markets") return { tool: parsed.market };
+  if (parsed.kind === "learn" || parsed.kind === "bare-learn") return { tutorial: parsed.tutorial };
+  return {};
 }
 
 /** Tutorial fields the core pack keeps: lists and breadcrumbs on other pages show them. */
@@ -137,7 +153,15 @@ export function pageCopyModule(part: string, ui: Tree, guides: Tree, bucket: num
   throw new Error(`page-copy: unknown part ${part}`);
 }
 
-/** Key of a bucket's chunk in the Worker's preload table (scripts/build-worker.mjs). */
-export function copyChunkKey(kind: CopyKind, locale: string, id: string): string {
-  return `copy-${locale}/${kind}-${copyBucket(id)}`;
+/** Key of the bucket chunk a page's copy is in, in the Worker's preload table (scripts/build-worker.mjs), or null. */
+export function copyChunkKey(locale: string, copy: PageCopy): string | null {
+  if (copy.tool) return `copy-${locale}/tools-${copyBucket(copy.tool)}`;
+  if (copy.tutorial) return `copy-${locale}/tutorials-${copyBucket(copy.tutorial)}`;
+  return null;
+}
+
+/** Source of `virtual:page-copy/loaders/<locale>`: one dynamic import per bucket, so the count follows COPY_BUCKETS. */
+export function copyLoadersSource(locale: string): string {
+  const list = (kind: CopyKind): string => Array.from({ length: COPY_BUCKETS }, (_, n) => `() => import("virtual:page-copy/${kind}/${locale}/${n}")`).join(", ");
+  return `export const copy = { tools: [${list("tools")}], tutorials: [${list("tutorials")}] };`;
 }

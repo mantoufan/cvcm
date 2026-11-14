@@ -43,7 +43,7 @@ await esbuild.build({
     name: "page-copy-stub",
     setup(build) {
       build.onResolve({ filter: /^virtual:page-copy\// }, (args) => ({ path: args.path, namespace: "page-copy-stub" }));
-      build.onLoad({ filter: /.*/, namespace: "page-copy-stub" }, () => ({ contents: "export default {};", loader: "js" }));
+      build.onLoad({ filter: /.*/, namespace: "page-copy-stub" }, () => ({ contents: "export default {}; export const copy = { tools: [], tutorials: [] };", loader: "js" }));
     },
   }],
 });

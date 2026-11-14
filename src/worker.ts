@@ -9,7 +9,7 @@ import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analyt
 import { thumbOriginal } from "./shared/covers";
 import { aiContentType, upstreamUrl } from "./shared/ai-models";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
-import { copyChunkKey } from "./shared/page-copy";
+import { copyChunkKey, pageCopyOf } from "./shared/page-copy";
 import { DATASET_FILES } from "./shared/datasets";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
@@ -350,9 +350,7 @@ export default {
         : parsed.kind === "legal" ? null
         : "home";
       // The browser's core pack leaves out the copy only this page shows; preload the bucket that holds it.
-      const copy = parsed.kind === "app" && parsed.tool ? copyChunkKey("tools", locale, parsed.tool)
-        : parsed.kind === "learn" && parsed.tutorial ? copyChunkKey("tutorials", locale, parsed.tutorial)
-        : null;
+      const copy = copyChunkKey(locale, pageCopyOf(parsed));
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
       out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy);
       out = preloadPageChunk(out, chunk);

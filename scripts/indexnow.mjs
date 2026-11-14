@@ -4,14 +4,17 @@
 //   node scripts/indexnow.mjs            submit and remember what was submitted
 //   node scripts/indexnow.mjs --dry-run  only print the counts
 //
-// A page counts as changed when its prerendered body (dist/_ssr/<path>/index.html) differs from the one submitted
-// last time; the hashes are kept in .indexnow/pages.json, which CI carries from run to run in the Actions cache.
+// A page counts as changed when what a search engine reads of it differs from what was submitted last time: its
+// title, description and structured data, and its <main> content, taken from the HTML the built Worker answers with
+// (dist/_worker.js over dist/). The site header and footer (the tool directory is on every page) and asset file
+// names are left out, so a new tool or a new build does not resubmit the whole site. The signatures are kept in
+// .indexnow/pages.json, which CI carries from run to run in the Actions cache.
 // With no state (the first run, or an evicted cache) every sitemap page is submitted once. A failed submission
 // never fails the deploy: the state is left alone and the same pages go out with the next one.
 import { createHash } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { dirname, extname, join, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 export const INDEXNOW_HOST = "cv.cm";
 /** Public by design: search engines read it at https://cv.cm/<key>.txt (public/, STATIC_FILE in path.ts). */
@@ -24,14 +27,47 @@ export function sitemapUrls(xml) {
   return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1].trim());
 }
 
-/** URL -> hash of its prerendered body, for every page in dist/sitemaps/*.xml ("-" for a page the prerender skipped). */
-export function pageHashes(dist) {
+/** What a search engine reads of a page: title, description, canonical, robots, structured data and <main>. */
+export function pageSignature(html) {
+  const head = [
+    /<title>[^<]*<\/title>/.exec(html)?.[0] ?? "",
+    ...[...html.matchAll(/<meta\s+name="(?:description|robots)"[^>]*>/g)].map((m) => m[0].replace(/\s+/g, " ")),
+    /<link rel="canonical"[^>]*>/.exec(html)?.[0] ?? "",
+    ...[...html.matchAll(/<script type="application\/ld\+json"[^>]*>[\s\S]*?<\/script>/g)].map((m) => m[0]),
+  ];
+  const start = html.indexOf("<main");
+  const end = html.lastIndexOf("</main>");
+  const main = start >= 0 && end > start ? html.slice(start, end) : "";
+  // Hashed asset names change with every build.
+  const text = [...head, main].join("\n").replace(/\/assets\/[A-Za-z0-9_.-]+/g, "/assets/");
+  return createHash("sha256").update(text).digest("hex").slice(0, 16);
+}
+
+const TYPES = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".json": "application/json", ".xml": "application/xml", ".txt": "text/plain", ".svg": "image/svg+xml" };
+
+/** dist/ standing in for the Worker's ASSETS binding. */
+function distAssets(dist) {
+  return {
+    async fetch(input) {
+      const path = decodeURIComponent(new URL(typeof input === "string" ? input : input.url).pathname);
+      const file = join(dist, path.endsWith("/") ? `${path}index.html` : path);
+      if (path.includes("..") || !existsSync(file) || statSync(file).isDirectory()) return new Response("Not Found", { status: 404 });
+      return new Response(readFileSync(file), { headers: { "Content-Type": TYPES[extname(file)] ?? "application/octet-stream" } });
+    },
+  };
+}
+
+/** URL -> signature of the page the built Worker serves, for every page in dist/sitemaps/*.xml. */
+export async function pageSignatures(dist) {
+  const worker = (await import(pathToFileURL(join(dist, "_worker.js")).href)).default;
+  const env = { ASSETS: distAssets(dist) };
   const pages = {};
   const dir = join(dist, "sitemaps");
   for (const file of readdirSync(dir).filter((name) => name.endsWith(".xml")).sort()) {
     for (const url of sitemapUrls(readFileSync(join(dir, file), "utf8"))) {
-      const body = join(dist, "_ssr", new URL(url).pathname, "index.html");
-      pages[url] = existsSync(body) ? createHash("sha256").update(readFileSync(body)).digest("hex").slice(0, 16) : "-";
+      const res = await worker.fetch(new Request(url), env);
+      if (res.status !== 200) throw new Error(`indexnow: ${url} is in the sitemap but answers ${res.status}`);
+      pages[url] = pageSignature(await res.text());
     }
   }
   return pages;
@@ -68,8 +104,8 @@ async function main() {
   const dist = join(root, "dist");
   const stateFile = join(root, ".indexnow", "pages.json");
   const dryRun = process.argv.includes("--dry-run");
-  if (!existsSync(join(dist, "_ssr"))) throw new Error("indexnow: dist/_ssr missing, run `npm run build` first");
-  const next = pageHashes(dist);
+  if (!existsSync(join(dist, "_worker.js"))) throw new Error("indexnow: dist/_worker.js missing, run `npm run build` first");
+  const next = await pageSignatures(dist);
   let previous = null;
   try {
     previous = JSON.parse(readFileSync(stateFile, "utf8"));

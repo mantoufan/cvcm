@@ -3,7 +3,8 @@ import { h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
 import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
-import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale, type PageCopy } from "./i18n";
+import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
+import { pageCopyOf, type PageCopy } from "../shared/page-copy";
 import { negotiateLocale } from "../shared/locale";
 import {
   CATEGORIES,
@@ -313,10 +314,7 @@ function prefetchGamePack(e: Event): void {
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {
-      // A tool link's data-nav is the tool id, a tutorial link's "learn-<id>": fetch that page's own copy bucket.
-      const nav = target?.closest?.("a[data-nav]")?.getAttribute("data-nav") ?? "";
-      const copy: PageCopy | null = isToolId(nav) ? { tool: nav } : nav.startsWith("learn-") && isTutorialId(nav.slice(6)) ? { tutorial: nav.slice(6) } : null;
-      if (copy && !hasPageMessages(loc, false, false, false, false, null, null, null, copy)) loadPageMessages(loc, false, false, false, false, null, null, null, copy).catch(() => {});
+      prefetchCopy(target, loc);
       return;
     }
     // data-nav is "kb-<article id>" on an article link, a shelf's hub nav (KB_SHELVES) on a hub link.
@@ -325,6 +323,22 @@ function prefetchGamePack(e: Event): void {
     const page: KbPage = isKbId(id) ? id : kbHubOfNav(nav) ?? "hub";
     if (!hasPageMessages(loc, false, false, false, false, page)) loadPageMessages(loc, false, false, false, false, page).catch(() => {});
   }
+}
+
+let copyPrefetch = 0;
+
+/**
+ * A tool link's data-nav is the tool id, a tutorial link's "learn-<id>": fetch that page's own copy bucket. Only once
+ * the pointer has rested on the link for a moment, so sweeping across a list of links downloads nothing.
+ */
+function prefetchCopy(target: Element | null, loc: Locale): void {
+  clearTimeout(copyPrefetch);
+  const nav = target?.closest?.("a[data-nav]")?.getAttribute("data-nav") ?? "";
+  const copy: PageCopy | null = isToolId(nav) ? { tool: nav } : nav.startsWith("learn-") && isTutorialId(nav.slice(6)) ? { tutorial: nav.slice(6) } : null;
+  if (!copy || hasPageMessages(loc, false, false, false, false, null, null, null, copy)) return;
+  copyPrefetch = window.setTimeout(() => {
+    loadPageMessages(loc, false, false, false, false, null, null, null, copy).catch(() => {});
+  }, 120);
 }
 
 function onClick(e: MouseEvent): void {
@@ -514,15 +528,6 @@ function unmountTools(): void {
   const unmount = unmountCurrent;
   unmountCurrent = noop;
   unmount();
-}
-
-/** The tool or tutorial a path shows: its FAQ, how-to or text is in a bucket chunk, not in the core pack (page-copy.ts). */
-function pageCopyOf(parsed: ReturnType<typeof parseAppPath>): PageCopy {
-  if (parsed.kind === "app" || parsed.kind === "bare") return { tool: parsed.tool };
-  if (parsed.kind === "clip") return { tool: "clip" };
-  if (parsed.kind === "markets" || parsed.kind === "bare-markets") return { tool: parsed.market };
-  if (parsed.kind === "learn" || parsed.kind === "bare-learn") return { tutorial: parsed.tutorial };
-  return {};
 }
 
 export function render(): void {

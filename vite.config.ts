@@ -3,7 +3,7 @@ import { dirname, resolve } from "node:path";
 import type { Plugin } from "vite";
 import { defineConfig } from "vitest/config";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./scripts/game-names.mjs";
-import { pageCopyModule } from "./src/shared/page-copy";
+import { COPY_BUCKETS, copyLoadersSource, pageCopyModule } from "./src/shared/page-copy";
 
 // Virtual id without a .json ending, so Vite's JSON plugin leaves the generated module alone.
 const NAMES_ID = "\0game-names:";
@@ -46,6 +46,8 @@ const pageCopy: Plugin = {
   load(id) {
     if (!id.startsWith(COPY_ID)) return null;
     const [part, locale, bucket] = id.slice(COPY_ID.length).split("/");
+    // The locale's loader table: its own small chunk, so the packs stay data only.
+    if (part === "loaders") return copyLoadersSource(locale);
     const files = [resolve(`src/locales/${locale}.json`), resolve(`src/locales/guides/${locale}.json`)];
     for (const file of files) this.addWatchFile(file);
     const data = pageCopyModule(part, copySource(files[0]), copySource(files[1]), Number(bucket));
@@ -62,9 +64,10 @@ const pageCopy: Plugin = {
     for (const chunk of Object.values(bundle)) {
       if (chunk.type !== "chunk" || !chunk.facadeModuleId?.startsWith(COPY_ID)) continue;
       const [part, locale, bucket] = chunk.facadeModuleId.slice(COPY_ID.length).split("/");
-      if (bucket !== undefined) chunks[`copy-${locale}/${part}-${bucket}`] = `/${chunk.fileName}`;
+      if (part === "loaders") chunks[`copy-${locale}`] = `/${chunk.fileName}`;
+      else if (bucket !== undefined) chunks[`copy-${locale}/${part}-${bucket}`] = `/${chunk.fileName}`;
     }
-    if (Object.keys(chunks).length) this.emitFile({ type: "asset", fileName: ".vite/page-copy.json", source: JSON.stringify(chunks) });
+    if (Object.keys(chunks).length) this.emitFile({ type: "asset", fileName: ".vite/page-copy.json", source: JSON.stringify({ buckets: COPY_BUCKETS, chunks }) });
   },
 };
 
@@ -111,7 +114,7 @@ export default defineConfig({
           const id = chunk.facadeModuleId;
           if (!id?.startsWith(COPY_ID)) return "assets/[name]-[hash].js";
           const [part, locale, bucket] = id.slice(COPY_ID.length).split("/");
-          return `assets/copy-${part}-${locale}-${bucket}-[hash].js`;
+          return part === "loaders" ? `assets/copy-${locale}-[hash].js` : `assets/copy-${part}-${locale}-${bucket}-[hash].js`;
         },
       },
     },

@@ -40,11 +40,17 @@ for (const [src, chunk] of Object.entries(manifest)) {
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
 // Page-copy buckets (a tool's FAQ and how-to, a tutorial's text): "copy-<locale>/<tools|tutorials>-<bucket>", written
 // by the page-copy plugin in vite.config.ts because virtual modules have no usable manifest key.
-const copyChunks = JSON.parse(readFileSync(resolve(manifestDir, "page-copy.json"), "utf8"));
-// 16 buckets (COPY_BUCKETS in src/shared/page-copy.ts) of tools and of tutorials for every locale.
-const copyExpected = readdirSync(resolve(root, "src/locales/packs/full")).length * 2 * 16;
-if (Object.keys(copyChunks).length !== copyExpected) throw new Error(`build-worker: ${Object.keys(copyChunks).length} page-copy chunks, expected ${copyExpected}`);
-for (const [key, file] of Object.entries(copyChunks)) localePacks[key] = [file];
+const { buckets: copyBuckets, chunks: copyChunks } = JSON.parse(readFileSync(resolve(manifestDir, "page-copy.json"), "utf8"));
+// Per locale: the loader table ("copy-<locale>") and every bucket of tools and of tutorials.
+for (const file of readdirSync(resolve(root, "src/locales/packs/full"))) {
+  const locale = file.replace(/\.ts$/, "");
+  const keys = [`copy-${locale}`];
+  for (const kind of ["tools", "tutorials"]) for (let n = 0; n < copyBuckets; n++) keys.push(`copy-${locale}/${kind}-${n}`);
+  for (const key of keys) {
+    if (!copyChunks[key]) throw new Error(`build-worker: no chunk for ${key} (page-copy plugin, vite.config.ts)`);
+    localePacks[key] = [copyChunks[key]];
+  }
+}
 
 // Each page's lazy chunk plus the shared chunks it imports (the entry is already loading, so it is left out).
 function chunkFiles(key, seen = new Set()) {

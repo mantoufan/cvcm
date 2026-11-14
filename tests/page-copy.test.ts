@@ -2,12 +2,14 @@ import { describe, expect, it } from "vitest";
 import { LOCALES } from "../src/shared/locale";
 import { messages } from "../src/shared/messages";
 import { preloadLocalePack } from "../src/shared/locale-preload";
-import { TOOLS, TUTORIALS, isPublishedTutorial } from "../src/shared/path";
+import { TOOLS, TUTORIALS, isPublishedTutorial, parseAppPath } from "../src/shared/path";
 import {
   COPY_BUCKETS,
   clientPack,
   copyBucket,
   copyChunkKey,
+  copyLoadersSource,
+  pageCopyOf,
   copyToolIds,
   copyTutorialIds,
   hasToolCopy,
@@ -107,13 +109,30 @@ describe("page copy buckets", () => {
   });
 
   it("preloads the page's bucket chunk", () => {
-    const key = copyChunkKey("tools", "ja", "json");
+    const key = copyChunkKey("ja", pageCopyOf(parseAppPath("/ja/json/")));
     expect(key).toBe(`copy-ja/tools-${copyBucket("json")}`);
-    const packs = { ja: ["/assets/ja-1.js"], "copy-ja": ["/assets/copy-ja-t.js"], [key]: ["/assets/copy-tools-ja-x.js"] };
+    expect(copyChunkKey("ja", pageCopyOf(parseAppPath("/ja/learn/make-qr/")))).toBe(`copy-ja/tutorials-${copyBucket("make-qr")}`);
+    for (const path of ["/ja/", "/ja/learn/", "/ja/tests/", "/ja/games/"]) expect(copyChunkKey("ja", pageCopyOf(parseAppPath(path))), path).toBeNull();
+    const packs = { ja: ["/assets/ja-1.js"], "copy-ja": ["/assets/copy-ja-t.js"], [key!]: ["/assets/copy-tools-ja-x.js"] };
     const page = preloadLocalePack("<head></head>", "ja", false, packs, false, false, null, null, null, key);
     expect(page).toContain('href="/assets/ja-1.js"');
     expect(page).toContain('href="/assets/copy-ja-t.js"');
     expect(page).toContain('href="/assets/copy-tools-ja-x.js"');
     expect(preloadLocalePack("<head></head>", "ja", false, packs)).not.toContain("copy-");
+  });
+
+  it("generates one loader per bucket", () => {
+    const source = copyLoadersSource("zh-CN");
+    expect(source.match(/virtual:page-copy\/tools\/zh-CN\/\d+/g)).toHaveLength(COPY_BUCKETS);
+    expect(source.match(/virtual:page-copy\/tutorials\/zh-CN\/\d+/g)).toHaveLength(COPY_BUCKETS);
+  });
+
+  // An id in the path tables with copy in no bucket would leave its page waiting for copy that never comes.
+  it("every tool and published tutorial has its copy in a bucket, in every locale", () => {
+    for (const locale of LOCALES) {
+      const full = messages(locale);
+      for (const id of TOOLS) expect(hasToolCopy(clientPack(full, id, null), id), `${locale} ${id}`).toBe(true);
+      for (const id of TUTORIALS) expect(hasTutorialCopy(clientPack(full, null, id), id), `${locale} ${id}`).toBe(true);
+    }
   });
 });
