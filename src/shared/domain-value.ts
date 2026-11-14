@@ -107,6 +107,8 @@ export function parseDomain(raw: string): { ok: true; sld: string; tld: string }
   if (labels.length < 2) return { ok: false, error: "noTld" };
   if (labels.some((l) => !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(l))) return { ok: false, error: "invalid" };
   const two = labels.slice(-2).join(".");
+  // co.uk or com.cn alone is a registry suffix, not a name anyone can own.
+  if (labels.length === 2 && SECOND_LEVEL.has(two)) return { ok: false, error: "invalid" };
   const tldLabels = SECOND_LEVEL.has(two) && labels.length >= 3 ? 2 : 1;
   const tld = labels.slice(-tldLabels).join(".");
   const sld = labels[labels.length - tldLabels - 1]!;
@@ -138,14 +140,14 @@ export function twoWords(s: string): [string, string] | null {
 }
 
 /** .com value of the name before the extension, in US dollars, with its kind. */
-function baseValue(sld: string): { kind: DomainKind; value: number; features: DomainFeature[] } {
+function baseValue(sld: string): { kind: DomainKind; value: number; features: DomainFeature[]; chars?: number } {
   const features: DomainFeature[] = [];
   // Internationalised names sell for far less than ASCII ones; the shortest still find buyers.
   const decoded = decodeIdn(sld);
   if (decoded) {
     const chars = [...decoded].length;
     features.push({ key: "kind", kind: "idn", digits: chars });
-    return { kind: "idn", value: chars <= 2 ? 2_000 : chars <= 4 ? 300 : 40, features };
+    return { kind: "idn", value: chars <= 2 ? 2_000 : chars <= 4 ? 300 : 40, features, chars };
   }
   const name = sld.replace(/-/g, "");
   const n = name.length;
@@ -227,7 +229,7 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
   }
   // Every letter past ten costs: long names are hard to type and remember. A name in another script counts its
   // own characters, not its punycode.
-  const n = base.kind === "idn" ? [...(decodeIdn(sld) ?? sld)].length : plainName.length;
+  const n = base.chars ?? plainName.length;
   if (n > 10) value *= Math.pow(0.8, n - 10);
   features.push({ key: "length", n });
   const factor = TLD_FACTOR[tld] ?? OTHER_TLD;

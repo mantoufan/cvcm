@@ -28,7 +28,7 @@ export function mountPhoneValue(host: HTMLElement): void {
     "aria-label": t("phoneValue.input"),
     onInput: () => {
       if (!picked) {
-        market = guessMarket(input.value, market, loc === "zh-TW");
+        market = guessMarket(input.value, market);
         marketSel.value = market;
       }
       paint();

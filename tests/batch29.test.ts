@@ -274,9 +274,10 @@ describe("review fixes", () => {
     expect(guessMarket("+1 415 555 1234", "intl")).toBe("intl");
     expect(guessMarket("+1 415 555 1234", "cn")).toBe("intl");
     expect(guessMarket("0086 13912345678", "intl")).toBe("cn");
-    expect(guessMarket("13912345678", "intl")).toBe("cn");
-    expect(guessMarket("0903686868", "intl")).toBe("vn");
-    expect(guessMarket("0912345678", "intl", true)).toBe("intl");
+    // Without a country code, Other stays Other: 1 312… is a US number, 03-… a Tokyo landline.
+    expect(guessMarket("1 (312) 555-1234", "intl")).toBe("intl");
+    expect(guessMarket("03-1234-5678", "intl")).toBe("intl");
+    expect(guessMarket("13912345678", "intl")).toBe("intl");
     expect(guessMarket("13912345678", "vn")).toBe("cn");
   });
 
@@ -325,6 +326,12 @@ describe("review fixes", () => {
     expect(valuePlate("ABC-1234", "cn")).toEqual({ ok: false, error: "invalid" });
     expect(plate("粤B·D12345", "cn").plate).toBe("粤BD12345");
     expect(plate("粤B·12345F", "cn").tier).toBeGreaterThanOrEqual(0);
+  });
+
+  it("leaves the country code out of patterns, rejects bare suffixes and counts HCMC 41", () => {
+    expect(phone("+1 111 555 2468", "intl").features.some((f) => f.key === "midRun")).toBe(false);
+    expect(valueDomain("co.uk")).toEqual({ ok: false, error: "invalid" });
+    expect(plate("41A-123.45", "vn").features).toContainEqual({ key: "bigCity" });
   });
 
   it("takes whole forecast years only", () => {

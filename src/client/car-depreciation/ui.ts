@@ -65,6 +65,12 @@ export function mountCarDepreciation(host: HTMLElement): void {
     rows.replaceChildren();
     table.replaceChildren();
     chart.replaceChildren();
+    if (r && (d === undefined || Number.isNaN(d) || d < 0)) {
+      mainEl.textContent = "";
+      last = "";
+      errorEl.textContent = t("carDepreciation.err_distance");
+      return;
+    }
     if (!r) {
       mainEl.textContent = "";
       last = "";

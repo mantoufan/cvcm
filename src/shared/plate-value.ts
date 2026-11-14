@@ -12,7 +12,7 @@
  */
 import { distinctDigits, logBetween, roundEstimate, tailRun, tailShape, tailStraight, type TailShape } from "./number-pattern";
 import { halfWidth } from "./factors";
-import { VN_LUCKY_TAILS } from "./phone-value";
+import { CN_LUCKY_TAILS, VN_LUCKY_TAILS } from "./phone-value";
 
 export const PLATE_MARKETS = ["uk", "vn", "cn"] as const;
 export type PlateMarket = (typeof PLATE_MARKETS)[number];
@@ -52,8 +52,8 @@ const CN_PROVINCES = "京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘�
 const CN_RE = new RegExp(`^([${CN_PROVINCES}])?([A-HJ-NP-Z])([A-HJ-NP-Z0-9]{5}|[DF][A-HJ-NP-Z0-9]\\d{4}|\\d{5}[DF])$`);
 /** Province code, series letters, then 4–6 digits: six is a series digit + the 5-digit serial (29-B1 123.45). */
 const VN_RE = /^(\d{2})([A-Z]{1,2})(\d{4,6})$/;
-/** Hanoi (29, 30…) and Ho Chi Minh City (50–59) plates draw the most bidders. */
-const VN_BIG = /^(29|30|31|32|33|40|50|51|52|53|54|55|56|57|58|59)$/;
+/** Hanoi (29–33, 40) and Ho Chi Minh City (41, 50–59) plates draw the most bidders. */
+const VN_BIG = /^(29|30|31|32|33|40|41|50|51|52|53|54|55|56|57|58|59)$/;
 
 /** What people put between parts of a plate: spaces, dots, hyphens, middle dots, underscores. */
 const SEP = "\\s.\\-·•・_";
@@ -61,7 +61,6 @@ const SEP = "\\s.\\-·•・_";
 const SEP_RE = new RegExp(`[${SEP}]`, "g");
 /** A Vietnamese plate with a separator after the series digit (29B1-8888): the serial starts after it. */
 const VN_SPLIT_RE = new RegExp(`^\\d{2}[${SEP}]*[A-Z]{1,2}\\d[${SEP}]+[\\d${SEP}]+$`);
-const CN_LUCKY_TAILS: ReadonlySet<string> = new Set(["88", "66", "99", "68", "86"]);
 
 /** Upper case, with the separators taken out (and full-width forms from CJK input). */
 export function normalizePlate(raw: string): string {

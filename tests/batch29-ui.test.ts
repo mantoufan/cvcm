@@ -174,6 +174,18 @@ describe("review fixes (ui)", () => {
     expect(q("[data-out=error]").textContent).toBe("Your age (optional) is not a number.");
   });
 
+  it("names a distance that is not a number and an age out of range", () => {
+    mountCarDepreciation(host);
+    set("[data-field=distance]", "12k");
+    expect(q("[data-out=error]").textContent).toContain("distance per year");
+    expect(q("[data-out=value]").textContent).toBe("");
+    unmountCarDepreciation();
+    host.replaceChildren();
+    mountNetWorth(host);
+    set("[data-field=age]", "12");
+    expect(q("[data-out=compare]").textContent).toContain("15 to 120");
+  });
+
   it("shows the DCF's own error when only the DCF inputs are wrong", () => {
     mountBusinessValuation(host);
     set("[data-field=cashFlow]", "");

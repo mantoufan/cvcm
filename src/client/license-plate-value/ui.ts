@@ -36,15 +36,18 @@ export function mountPlateValue(host: HTMLElement): void {
     onInput: () => {
       // Switch only when the current country cannot read a plate that looks complete and the guess can, so a
       // half-typed 30K… is not taken for a UK mark on the way.
-      if (!picked && normalizePlate(input.value).length >= 6 && !valuePlate(input.value, market).ok) {
+      let result = valuePlate(input.value, market);
+      if (!picked && !result.ok && normalizePlate(input.value).length >= 6) {
         const guess = guessPlateMarket(input.value, market);
-        if (guess !== market && valuePlate(input.value, guess).ok) {
+        const other = guess === market ? result : valuePlate(input.value, guess);
+        if (other.ok) {
           market = guess;
           marketSel.value = market;
           paintPresets();
+          result = other;
         }
       }
-      paint();
+      paint(result);
     },
   });
   const marketSel = h("select", { "data-field": "market", onChange: () => {
@@ -67,9 +70,8 @@ export function mountPlateValue(host: HTMLElement): void {
       h("button", { type: "button", class: "btn ghost", "data-preset": p, onClick: () => { input.value = p; paint(); } }, p)));
   };
 
-  const paint = () => {
+  const paint = (r = valuePlate(input.value, market)) => {
     note.textContent = t(`plateValue.note_${market}`);
-    const r = valuePlate(input.value, market);
     if (!r.ok) {
       out.replaceChildren();
       last = "";

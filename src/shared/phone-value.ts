@@ -24,7 +24,7 @@ const LADDER: Record<PhoneMarket, ReadonlyArray<readonly [number, number]>> = {
 
 /** Endings that sell on their own in Vietnam: lộc phát 68/86, thần tài 39/79, ông địa 38/78, and doubled lucky digits. */
 export const VN_LUCKY_TAILS: ReadonlySet<string> = new Set(["68", "86", "39", "79", "38", "78", "88", "66", "99"]);
-const CN_LUCKY_TAILS = new Set(["88", "66", "99", "68", "86", "168", "518", "888", "666", "999", "1314", "520"]);
+export const CN_LUCKY_TAILS: ReadonlySet<string> = new Set(["88", "66", "99", "68", "86", "168", "518", "888", "666", "999", "1314", "520"]);
 
 /** The 81 numbers (数理) read as lucky in the folk method that takes the last four digits mod 80 (0 reads as 80). */
 const NUMEROLOGY_GOOD = new Set([1, 3, 5, 6, 7, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 29, 31, 32, 33, 35, 37, 39, 41, 45, 47, 48, 52, 57, 61, 63, 65, 67, 68]);
@@ -77,11 +77,10 @@ export function isValidPhone(digits: string, market: PhoneMarket): boolean {
 
 /**
  * The market a number most likely belongs to, for the default choice. A country code decides (+86 China, +84
- * Vietnam, any other + or 00 code elsewhere). Without one, a number valid in China or Vietnam stays there;
- * otherwise an 11-digit 1… is Chinese and a 10-digit 0[35789]… Vietnamese, unless `noVietnam` (Taiwanese pages,
- * where 09… is a local mobile).
+ * Vietnam, any other + or 00 code elsewhere). Without one, Other stays Other (1 312… is a US number, 03-… a Tokyo
+ * landline), and China or Vietnam move to the other only for a number they cannot read and it can.
  */
-export function guessMarket(raw: string, current: PhoneMarket, noVietnam = false): PhoneMarket {
+export function guessMarket(raw: string, current: PhoneMarket): PhoneMarket {
   const text = halfWidth(raw).trim();
   const plain = text.replace(/\D/g, "");
   if (/^(?:\+|00)/.test(text)) {
@@ -90,9 +89,9 @@ export function guessMarket(raw: string, current: PhoneMarket, noVietnam = false
     if (/^840?[35789]\d{8}$/.test(code)) return "vn";
     return "intl";
   }
-  if (current !== "intl" && isValidPhone(phoneDigits(raw, current), current)) return current;
+  if (current === "intl" || isValidPhone(phoneDigits(raw, current), current)) return current;
   if (/^1[3-9]\d{9}$/.test(plain)) return "cn";
-  if (!noVietnam && /^0[35789]\d{8}$/.test(plain)) return "vn";
+  if (/^0[35789]\d{8}$/.test(plain)) return "vn";
   return current;
 }
 
@@ -111,8 +110,9 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
   const digits = phoneDigits(raw, market);
   if (!isValidPhone(digits, market)) return { ok: false, error: "invalid" };
 
-  // The part a buyer looks at: past the carrier prefix (3 digits in China and Vietnam).
-  const body = market === "intl" ? digits : digits.slice(3);
+  // The part a buyer looks at: past the carrier prefix (3 digits in China and Vietnam); elsewhere the last ten
+  // digits, so a country code does not count towards runs or digit variety.
+  const body = market === "intl" ? digits.slice(-10) : digits.slice(3);
   const features: PhoneFeature[] = [];
   let tier = 0;
   let tierDigit = "";
@@ -173,7 +173,7 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
 
   const lucky = market === "intl" ? 0 : [...body].filter((c) => c === "6" || c === "8" || c === "9").length / body.length;
   const luckyLead = market !== "intl" && (tierDigit === "8" || tierDigit === "9" || tierDigit === "6") ? 0.25 : 0;
-  let f = 0.3 + 0.35 * lucky + 0.3 * (1 - (few - 1) / 9) + luckyLead - (run === 2 ? 0 : 0.05);
+  let f = 0.3 + 0.35 * lucky + 0.3 * (1 - (few - 1) / 9) + luckyLead;
   if (market === "cn") f -= 0.12 * fours;
   // Classic China Mobile 13x prefixes carry a little more.
   if (market === "cn" && digits.startsWith("13")) f += 0.08;

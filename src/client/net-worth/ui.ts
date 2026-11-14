@@ -81,6 +81,7 @@ export function mountNetWorth(host: HTMLElement): void {
     rows.append(...list.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
     last = list.map(([k, v]) => `${k}: ${v}`).join("\n");
     const band = ageRaw === undefined ? null : ageBand(ageRaw);
+    if (ageRaw !== undefined && !band) compare.append(h("dt", null, t("netWorth.ageRange")), h("dd", null, ""));
     const perUsd = curSel.value === "usd" ? 1 : parseDecimalInput(rate.value, loc);
     if (band && (perUsd === undefined || !Number.isFinite(perUsd) || perUsd <= 0)) {
       rateHint.hidden = false;
