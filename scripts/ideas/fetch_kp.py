@@ -67,7 +67,7 @@ def fetch():
     names = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"]
     (sy, sm), (ey, em) = month_range()
     kw = json.loads(KEYWORDS.read_text())
-    raw = {"from": f"{sy}-{sm:02d}", "to": f"{ey}-{em:02d}", "langs": {}}
+    raw = {"from": f"{sy}-{sm:02d}", "to": f"{ey}-{em:02d}", "fetched": date.today().isoformat(), "langs": {}}
     for locale, lang_id in LANG.items():
         words = sorted({w for idea in kw.values() for w in idea.get(locale, [])})
         req = client.get_type("GenerateKeywordHistoricalMetricsRequest")
@@ -80,13 +80,17 @@ def fetch():
         rng.end.year, rng.end.month = ey, getattr(month_enum, names[em - 1])
         res = svc.generate_keyword_historical_metrics(request=req)
         out = {}
+        short = []
         for r in res.results:
             m = r.keyword_metrics
             series = [x.monthly_searches for x in m.monthly_search_volumes]
+            if 0 < len(series) != MONTHS:  # no history at all is just a phrase nobody searches
+                short.append(f"{r.text} ({len(series)})")
             row = {
                 "key": r.text.lower(),
                 "avg": m.avg_monthly_searches,
-                "ci": m.competition_index,
+                # competition_index is 0 both for "no competition" and "unknown": keep it only when Google rated it.
+                "ci": m.competition_index if m.competition.name in ("LOW", "MEDIUM", "HIGH") else None,
                 "lo": m.low_top_of_page_bid_micros / 1e6,
                 "hi": m.high_top_of_page_bid_micros / 1e6,
                 "h": series,
@@ -95,6 +99,9 @@ def fetch():
             for text in [r.text, *r.close_variants]:
                 out[text.lower()] = row
         raw["langs"][locale] = out
+        if short:
+            # Usually last month is not published yet (run after the first week of the month).
+            raise SystemExit(f"{locale}: {len(short)} keywords lack {MONTHS} months of history, e.g. {short[:3]}; Keyword Planner may not have published {ey}-{em:02d} yet")
         print(f"{locale}: {len(words)} keywords, {len(res.results)} results", file=sys.stderr)
     CACHE.mkdir(parents=True, exist_ok=True)
     path = CACHE / f"raw-{raw['to']}.json"
@@ -189,7 +196,7 @@ def derive(raw):
                 if mid_cny > 0:
                     bid_weight += avg12
                     value_usd += avg12 * mid_cny * fx
-                if row["ci"]:
+                if row.get("ci") is not None:
                     ci_sum += row["ci"] * avg12
                     ci_weight += avg12
             total = [a + b for a, b in zip(total, loc_series)]
@@ -239,7 +246,8 @@ def derive(raw):
     data = {
         "from": raw["from"],
         "to": raw["to"],
-        "fetched": date.today().isoformat(),
+        # When the searches were fetched, not when they were re-derived (--derive keeps the cache's date).
+        "fetched": raw.get("fetched") or date.today().isoformat(),
         "bands": {"demand": DEMAND_BANDS, "cpc": CPC_BANDS, "value": VALUE_BANDS},
         "ideas": ideas,
     }

@@ -102,8 +102,16 @@ export function ideaFaqItems(locale: Locale, id: IdeaId | null): { q: string; a:
   return id ? ideaCopy(locale, id).faq : ideasHub(locale).faq;
 }
 
+/** When the copy was last edited. */
 export function ideaUpdated(id: IdeaId): string {
   return IDEAS_UPDATED[id] ?? ideaPublished(id);
+}
+
+/** When the page last changed: its copy or the monthly data snapshot it shows, whichever is later (shown, and dateModified). */
+export function ideaModified(locale: Locale, id: IdeaId): string {
+  const fetched = ideasData(locale).fetched;
+  const updated = ideaUpdated(id);
+  return fetched > updated ? fetched : updated;
 }
 
 export type IdeaOutlook = "up" | "flat" | "down";
@@ -144,12 +152,20 @@ function scoreTier(score: number): "high" | "mid" | "low" {
   return score >= 65 ? "high" : score >= 45 ? "mid" : "low";
 }
 
+/** Intl objects are slow to build: one per locale and kind, kept for the process's life. */
+const intlCache = new Map<string, Intl.DateTimeFormat | Intl.DisplayNames>();
+
 /** "2022-11" as a short month and year in the reader's language. */
 function monthLabel(locale: Locale, ym: string, style: "short" | "year" = "short"): string {
   const [year, month] = ym.split("-").map(Number);
   try {
-    const options: Intl.DateTimeFormatOptions = style === "year" ? { year: "numeric", timeZone: "UTC" } : { year: "numeric", month: "short", timeZone: "UTC" };
-    return new Intl.DateTimeFormat(HREFLANG[locale], options).format(new Date(Date.UTC(year, month - 1, 1)));
+    const key = `date|${locale}|${style}`;
+    let format = intlCache.get(key) as Intl.DateTimeFormat | undefined;
+    if (!format) {
+      format = new Intl.DateTimeFormat(HREFLANG[locale], style === "year" ? { year: "numeric", timeZone: "UTC" } : { year: "numeric", month: "short", timeZone: "UTC" });
+      intlCache.set(key, format);
+    }
+    return format.format(new Date(Date.UTC(year, month - 1, 1)));
   } catch {
     return ym;
   }
@@ -166,7 +182,13 @@ function addMonths(ym: string, offset: number): string {
 function languageName(reader: Locale, language: Locale): string {
   const code = language === "zh-CN" ? "zh-Hans" : language === "zh-TW" ? "zh-Hant" : language;
   try {
-    return new Intl.DisplayNames([HREFLANG[reader]], { type: "language" }).of(code) ?? language;
+    const key = `lang|${reader}`;
+    let names = intlCache.get(key) as Intl.DisplayNames | undefined;
+    if (!names) {
+      names = new Intl.DisplayNames([HREFLANG[reader]], { type: "language" });
+      intlCache.set(key, names);
+    }
+    return names.of(code) ?? language;
   } catch {
     return language;
   }
@@ -342,7 +364,7 @@ export function ideasPageHtml(locale: Locale, id: IdeaId | null): string {
     `<article class="kb idea">`,
     `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(groupLabels[ideaGroupOf(id)])} · ${escapeHtml(where)}</p>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
-    `<p class="kb-meta"><span>${escapeHtml(ui.startup)}${colon}${escapeHtml(startup)}</span> · <time datetime="${ideaUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, ideaUpdated(id)) }))}</time></p>`,
+    `<p class="kb-meta"><span>${escapeHtml(ui.startup)}${colon}${escapeHtml(startup)}</span> · <time datetime="${ideaModified(locale, id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, ideaModified(locale, id)) }))}</time></p>`,
     `</header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p></section>`,
     panelHtml(locale, id),
@@ -408,9 +430,6 @@ export function ideasArticleJsonLd(locale: Locale, id: IdeaId | null): Record<st
   }
   const copy = ideaCopy(locale, id);
   const url = `${ORIGIN}${ideasHref(locale, id)}`;
-  // The page shows the latest monthly snapshot, so it is modified at least as recently as that.
-  const fetched = ideasData(locale).fetched;
-  const updated = ideaUpdated(id);
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -421,7 +440,7 @@ export function ideasArticleJsonLd(locale: Locale, id: IdeaId | null): Record<st
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     inLanguage: HREFLANG[locale],
     datePublished: ideaPublished(id),
-    dateModified: fetched > updated ? fetched : updated,
+    dateModified: ideaModified(locale, id),
     author: PUBLISHER,
     publisher: PUBLISHER,
     isAccessibleForFree: true,
