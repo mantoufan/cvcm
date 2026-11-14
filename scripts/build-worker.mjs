@@ -18,7 +18,8 @@ try {
 const localePacks = {};
 for (const [src, chunk] of Object.entries(manifest)) {
   const m = /^src\/locales\/packs\/(.+)\.ts$/.exec(src);
-  if (m) localePacks[m[1]] = [chunk.file, ...(chunk.imports ?? []).map((key) => manifest[key].file)].map((f) => `/${f}`);
+  // Not the entry: the page loads it itself (a chunk with dynamic imports takes Vite's preload helper from it).
+  if (m) localePacks[m[1]] = [chunk.file, ...(chunk.imports ?? []).filter((key) => !manifest[key].isEntry).map((key) => manifest[key].file)].map((f) => `/${f}`);
   // One knowledge article in one locale: preloaded as "kb-<locale>/<id>".
   const article = /^src\/locales\/kb\/([^/]+)\/([a-z0-9-]+)\.json$/.exec(src);
   if (article) localePacks[`kb-${article[1]}/${article[2]}`] = [`/${chunk.file}`];
@@ -37,6 +38,13 @@ for (const [src, chunk] of Object.entries(manifest)) {
   if (slangLoaders) localePacks[`slang-${slangLoaders[1]}/loaders`] = [`/${chunk.file}`];
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
+// Page-copy buckets (a tool's FAQ and how-to, a tutorial's text): "copy-<locale>/<tools|tutorials>-<bucket>", written
+// by the page-copy plugin in vite.config.ts because virtual modules have no usable manifest key.
+const copyChunks = JSON.parse(readFileSync(resolve(manifestDir, "page-copy.json"), "utf8"));
+// 16 buckets (COPY_BUCKETS in src/shared/page-copy.ts) of tools and of tutorials for every locale.
+const copyExpected = readdirSync(resolve(root, "src/locales/packs/full")).length * 2 * 16;
+if (Object.keys(copyChunks).length !== copyExpected) throw new Error(`build-worker: ${Object.keys(copyChunks).length} page-copy chunks, expected ${copyExpected}`);
+for (const [key, file] of Object.entries(copyChunks)) localePacks[key] = [file];
 
 // Each page's lazy chunk plus the shared chunks it imports (the entry is already loading, so it is left out).
 function chunkFiles(key, seen = new Set()) {

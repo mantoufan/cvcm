@@ -3,7 +3,7 @@ import { h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
 import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
-import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
+import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale, type PageCopy } from "./i18n";
 import { negotiateLocale } from "../shared/locale";
 import {
   CATEGORIES,
@@ -12,6 +12,8 @@ import {
   isAiToolPath,
   devicePolicyOf,
   isPublishedTutorial,
+  isToolId,
+  isTutorialId,
   kbHref,
   learnHref,
   legalHref,
@@ -310,7 +312,13 @@ function prefetchGamePack(e: Event): void {
     if (!hasPageMessages(loc, false, false, false, false, null, null, page)) loadPageMessages(loc, false, false, false, false, null, null, page).catch(() => {});
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
-    if (!link) return;
+    if (!link) {
+      // A tool link's data-nav is the tool id, a tutorial link's "learn-<id>": fetch that page's own copy bucket.
+      const nav = target?.closest?.("a[data-nav]")?.getAttribute("data-nav") ?? "";
+      const copy: PageCopy | null = isToolId(nav) ? { tool: nav } : nav.startsWith("learn-") && isTutorialId(nav.slice(6)) ? { tutorial: nav.slice(6) } : null;
+      if (copy && !hasPageMessages(loc, false, false, false, false, null, null, null, copy)) loadPageMessages(loc, false, false, false, false, null, null, null, copy).catch(() => {});
+      return;
+    }
     // data-nav is "kb-<article id>" on an article link, a shelf's hub nav (KB_SHELVES) on a hub link.
     const nav = link.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("kb-") ? nav.slice(3) : "";
@@ -508,6 +516,15 @@ function unmountTools(): void {
   unmount();
 }
 
+/** The tool or tutorial a path shows: its FAQ, how-to or text is in a bucket chunk, not in the core pack (page-copy.ts). */
+function pageCopyOf(parsed: ReturnType<typeof parseAppPath>): PageCopy {
+  if (parsed.kind === "app" || parsed.kind === "bare") return { tool: parsed.tool };
+  if (parsed.kind === "clip") return { tool: "clip" };
+  if (parsed.kind === "markets" || parsed.kind === "bare-markets") return { tool: parsed.market };
+  if (parsed.kind === "learn" || parsed.kind === "bare-learn") return { tutorial: parsed.tutorial };
+  return {};
+}
+
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
   const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang"
@@ -522,9 +539,10 @@ export function render(): void {
   const kb: KbPage = parsed.kind === "kb" || parsed.kind === "bare-kb" ? parsed.article ?? "hub" : null;
   const ref: RefPage = parsed.kind === "ref" || parsed.kind === "bare-ref" ? parsed.entry ?? "hub" : null;
   const slang: SlangPage = parsed.kind === "slang" || parsed.kind === "bare-slang" ? parsed.entry ?? "hub" : null;
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang)) {
+  const copy = pageCopyOf(parsed);
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);

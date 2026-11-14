@@ -8,6 +8,7 @@ import type { RefId } from "./ref";
 import type { RefEntryCopy, RefPhoto } from "./ref-i18n";
 import type { SlangId } from "./slang";
 import type { SlangEntryCopy } from "./slang-i18n";
+import type { ToolCopy, TutorialCopy } from "./page-copy";
 
 export type UiMessages = typeof import("../locales/en.json");
 export type GuideMessages = typeof import("../locales/guides/en.json");
@@ -39,6 +40,12 @@ export type LocaleMessages = {
   guides: GuideMessages;
   device: DeviceMessages;
   markets: MarketMessages;
+};
+
+/** A core pack's page-copy chunks, one loader per bucket (src/shared/page-copy.ts). */
+export type CopyLoaders = {
+  tools: Array<() => Promise<{ default: ToolCopy }>>;
+  tutorials: Array<() => Promise<{ default: TutorialCopy }>>;
 };
 
 /** Full game copy and walkthroughs. The client loads these only on a game page. */

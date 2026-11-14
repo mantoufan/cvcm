@@ -42,7 +42,28 @@ process.on("unhandledRejection", () => {});
 document.write('<!doctype html><html><head></head><body><div id="app"></div></body></html>');
 
 await import("../src/shared/messages-all");
+const { messages, registerMessages } = await import("../src/shared/messages");
+const { LOCALES } = await import("../src/shared/locale");
+const { parseAppPath } = await import("../src/shared/path");
+const { clientPack, copyBucket } = await import("../src/shared/page-copy");
 const { sitemapPages, pageUrl } = await import("../src/shared/sitemap");
+// The browser holds the core pack plus the page's own copy bucket, not the full pack (src/shared/page-copy.ts).
+// Each page is rendered with exactly that, so copy a page reads from another tool's or tutorial's bucket shows up
+// here as a bare key (and stops the build below) instead of only in the browser.
+const fullPacks = new Map(LOCALES.map((locale) => [locale, messages(locale)]));
+const clientPacks = new Map<string, ReturnType<typeof messages>>();
+function useClientPack(path: string): void {
+  const parsed = parseAppPath(path);
+  if (!("locale" in parsed)) return;
+  const tool = parsed.kind === "app" ? parsed.tool : null;
+  const tutorial = parsed.kind === "learn" ? parsed.tutorial : null;
+  const key = `${parsed.locale}/${tool ? copyBucket(tool) : "-"}/${tutorial ? copyBucket(tutorial) : "-"}`;
+  let pack = clientPacks.get(key);
+  if (!pack) clientPacks.set(key, pack = clientPack(fullPacks.get(parsed.locale)!, tool, tutorial));
+  registerMessages(parsed.locale, pack);
+}
+// A string the pack does not have renders as its key: "faq.json.q1", "learn.make-qr.title", "tools.json.lead".
+const BARE_KEY = />(?:faq|learn|tools)\.[a-z0-9-]+(?:\.[a-z0-9-]+)?\.(?:[qa]\d|s\d[tb]|lead|title|name|blurb|result|note)</;
 const { render, whenRendered } = await import("../src/client/main");
 
 const MARKER = "<!--ssr-->";
@@ -73,6 +94,7 @@ const report = process.env.PRERENDER_REPORT;
 for (const page of pages) {
   const path = new URL(pageUrl(page)).pathname;
   pageErrors = 0;
+  useClientPack(path);
   history.replaceState(null, "", path);
   app.replaceChildren();
   render();
@@ -115,6 +137,7 @@ for (const page of pages) {
   // Controls without a handler yet: CSS keeps buttons and file pickers from taking clicks until the app swaps in.
   app.querySelector(".page")?.classList.add("ssr");
   const html = MARKER + app.innerHTML;
+  if (BARE_KEY.test(html)) throw new Error(`prerender: ${path} shows a string key (${BARE_KEY.exec(html)![0]}): copy missing from the client pack, see src/shared/page-copy.ts`);
   const file = resolve(outDir, `.${path}`, "index.html");
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, html);

@@ -219,6 +219,7 @@ Browser toolkit on a Cloudflare Worker with static assets (`wrangler deploy`; th
 - `src/shared/md.ts` — markdown/html render + highlight
 - `src/s3-sign.ts` — SigV4 presign for s3.cv.cm
 - `src/locales/` — `en` first, then `zh-CN` `zh-TW` `ja` `ko` `vi` `id` `es` (tool how-tos in `guides/`)
+- `src/shared/page-copy.ts` + the `page-copy` plugin in `vite.config.ts` — the browser's core pack (`src/locales/packs/<locale>.ts`) leaves out the copy only one page shows: a tool's FAQ (`faq.<tool>`) and how-to (`guides.tools.<tool>`), and a tutorial's text and FAQ (`learn.<id>` keeps `name` and `blurb`, the fields lists show). That copy ships in 16 bucket chunks per kind and locale (`copyBucket(id)`), found through `packs/copy-<locale>.ts`, fetched by `loadPageMessages` (`PageCopy` in `src/client/i18n.ts`) and merged into the pack before the page renders; the Worker preloads the page's bucket. All of it is cut at build time from the same `src/locales/<locale>.json` and `guides/<locale>.json`, which stay the only files to edit; the Worker and tests register the whole files (`packs/full/<locale>.ts`, `messages-all`). A page may read tool FAQ / how-to / tutorial text only for its own tool or tutorial: anything a second page needs (as `name` and `blurb` are) must stay in the core pack (`LIST_FIELDS`). The prerender renders each page with exactly the client's pack and stops the build if a page shows a bare string key. Keep the packs data only (no dynamic imports), so their file names change only with the copy.
 - `src/shared/` — locale, path, zip, filenames (used by Worker and tests)
 - `public/sitemap.xml` — index of `public/sitemaps/{pages,learn,games,tests,datasets,rankings,reference,slang}.xml` (from `src/shared/sitemap.ts`; `npm run build` regenerates them). `<lastmod>` only where a real edit date exists (knowledge pages, data tables, reference pages, slang pages). Sections are `SITEMAP_SECTIONS` in `path.ts`
 
@@ -231,6 +232,8 @@ npm run build
 npx wrangler d1 migrations apply cvcm --remote
 npx wrangler deploy
 ```
+
+After the deploy, CI runs `node scripts/indexnow.mjs`: it submits to IndexNow (Bing, Yandex, Naver, Seznam, Yep) the sitemap pages whose prerendered body changed since the last submission, plus removed ones (`--dry-run` only counts). The hashes of what was submitted live in `.indexnow/pages.json`, carried between runs in the Actions cache; with no state every page goes out once. It never fails the deploy. The key file is `public/4972981e4cdf3fdd13b674ad85304c11.txt`. Google does not use IndexNow.
 
 From a slow uplink the asset upload and the 25 MiB script upload can time out; let CI deploy instead.
 

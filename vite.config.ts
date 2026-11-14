@@ -1,7 +1,9 @@
+import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import type { Plugin } from "vite";
 import { defineConfig } from "vitest/config";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./scripts/game-names.mjs";
+import { pageCopyModule } from "./src/shared/page-copy";
 
 // Virtual id without a .json ending, so Vite's JSON plugin leaves the generated module alone.
 const NAMES_ID = "\0game-names:";
@@ -23,8 +25,51 @@ const seedrandomNoEval: Plugin = {
   },
 };
 
+// `virtual:page-copy/<part>/<locale>[/<bucket>]`: the browser's core `ui` and `guides` for a locale, and the bucket
+// chunks with each tool's FAQ and how-to and each tutorial's text (src/shared/page-copy.ts), all cut from the same
+// src/locales/<locale>.json and guides/<locale>.json the Worker bundles whole.
+const COPY_PREFIX = "virtual:page-copy/";
+const COPY_ID = "\0page-copy/";
+const copySources = new Map<string, Record<string, unknown>>();
+
+function copySource(file: string): Record<string, unknown> {
+  let data = copySources.get(file);
+  if (!data) copySources.set(file, data = JSON.parse(readFileSync(file, "utf8")) as Record<string, unknown>);
+  return data;
+}
+
+const pageCopy: Plugin = {
+  name: "page-copy",
+  resolveId(source) {
+    return source.startsWith(COPY_PREFIX) ? COPY_ID + source.slice(COPY_PREFIX.length) : null;
+  },
+  load(id) {
+    if (!id.startsWith(COPY_ID)) return null;
+    const [part, locale, bucket] = id.slice(COPY_ID.length).split("/");
+    const files = [resolve(`src/locales/${locale}.json`), resolve(`src/locales/guides/${locale}.json`)];
+    for (const file of files) this.addWatchFile(file);
+    const data = pageCopyModule(part, copySource(files[0]), copySource(files[1]), Number(bucket));
+    // JSON.parse of one string, as Vite does for large JSON files: far quicker to start than an object literal.
+    return `export default JSON.parse(${JSON.stringify(JSON.stringify(data))});`;
+  },
+  // A dev server keeps running while the copy is edited.
+  watchChange(file) {
+    copySources.delete(file);
+  },
+  // Bucket -> hashed chunk, for scripts/build-worker.mjs to preload (virtual modules have no usable manifest key).
+  generateBundle(_options, bundle) {
+    const chunks: Record<string, string> = {};
+    for (const chunk of Object.values(bundle)) {
+      if (chunk.type !== "chunk" || !chunk.facadeModuleId?.startsWith(COPY_ID)) continue;
+      const [part, locale, bucket] = chunk.facadeModuleId.slice(COPY_ID.length).split("/");
+      if (bucket !== undefined) chunks[`copy-${locale}/${part}-${bucket}`] = `/${chunk.fileName}`;
+    }
+    if (Object.keys(chunks).length) this.emitFile({ type: "asset", fileName: ".vite/page-copy.json", source: JSON.stringify(chunks) });
+  },
+};
+
 export default defineConfig({
-  plugins: [{
+  plugins: [pageCopy, {
     name: "game-names",
     enforce: "pre",
     resolveId(source, importer) {
@@ -61,6 +106,13 @@ export default defineConfig({
         // The music generator's page and its lazy model / synth chunks share this module. Left to Rollup it is
         // folded into the page chunk, which then loses its own manifest entry (build-worker needs it to preload).
         manualChunks: (id) => (id.endsWith("/src/shared/music-gen.ts") ? "music-gen" : undefined),
+        // A page-copy bucket would otherwise be named after its last path segment ("3-<hash>.js").
+        chunkFileNames: (chunk) => {
+          const id = chunk.facadeModuleId;
+          if (!id?.startsWith(COPY_ID)) return "assets/[name]-[hash].js";
+          const [part, locale, bucket] = id.slice(COPY_ID.length).split("/");
+          return `assets/copy-${part}-${locale}-${bucket}-[hash].js`;
+        },
       },
     },
   },
