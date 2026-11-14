@@ -15,6 +15,7 @@
     "kb:sync": "node scripts/kb-sync.mjs",
     "ref:sync": "node scripts/ref-sync.mjs",
     "slang:sync": "node scripts/slang-sync.mjs",
+    "ideas:sync": "node scripts/ideas-sync.mjs",
     "test": "vitest run",
     "deploy": "npm run build && wrangler deploy"
   },

@@ -1,0 +1,116 @@
+{
+  "name": "Micro SaaS",
+  "blurb": "Produk software langganan kecil untuk niche sempit, dijalankan satu orang atau tim mungil",
+  "title": "Ide Micro SaaS: Cara Kerja, Apa yang Dibutuhkan, dan Risikonya",
+  "description": "Apa itu micro SaaS, cara produk SaaS kecil menghasilkan uang, apa yang dibutuhkan, cocok untuk siapa, risikonya, dan cara memvalidasi ide sebelum coding.",
+  "h1": "Cara memulai micro SaaS",
+  "answer": "Micro SaaS adalah produk software-as-a-service kecil yang menyelesaikan satu masalah spesifik untuk kelompok pengguna yang sempit, misalnya add-on pemesanan untuk satu platform e-commerce, dan memungut langganan bulanan atau tahunan. Satu orang atau tim mungil bisa menjalankannya. Masalahnya, membangun justru bagian yang mudah: mencari pelanggan, menangani dukungan, dan mengikuti perubahan platform yang Anda andalkan menyita sebagian besar waktu, dan banyak produk tidak pernah mencapai jumlah pengguna berbayar yang cukup.",
+  "sections": [
+    {
+      "h": "Cara micro SaaS menghasilkan uang",
+      "body": [
+        "Pelanggan membayar langganan berulang, biasanya bertingkat menurut pemakaian atau fitur, kadang dengan paket tahunan yang lebih murah. Sebagian produk dijual lewat marketplace aplikasi (platform toko online, akuntansi, atau situs web), yang membawa pengguna tetapi mengambil komisi dan menentukan aturannya.",
+        "Biaya utamanya hosting, layanan pihak ketiga, biaya pembayaran, komisi marketplace, dan waktu Anda untuk dukungan. Pembunuh margin yang diam-diam adalah churn: pelanggan yang berhenti setiap bulan harus digantikan dulu sebelum pendapatan bisa tumbuh."
+      ]
+    },
+    {
+      "h": "Apa yang dibutuhkan untuk mulai",
+      "body": [
+        {
+          "ul": [
+            "Kemampuan pemrograman, atau stack no-code yang Anda kuasai, ditambah kebiasaan dasar soal hosting, backup, dan keamanan.",
+            "Masalah sempit dan menyakitkan yang Anda lihat sendiri, idealnya di niche yang terlalu kecil untuk dilirik perusahaan software besar.",
+            "Cara menjangkau niche itu: komunitas, listing di marketplace, konten, atau menghubungi langsung.",
+            "Pembayaran dan penagihan langganan lewat penyedia pembayaran, dengan pajak penjualan atau PPN atas layanan digital diurus sesuai aturan negara pelanggan.",
+            "Syarat dan ketentuan, kebijakan privasi, dan dasar perlindungan data (misalnya GDPR jika punya pengguna di Uni Eropa).",
+            "Berbulan-bulan malam atau akhir pekan, karena pertumbuhan awal biasanya lambat."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cocok untuk siapa (dan tidak cocok untuk siapa)",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Cocok",
+              "Tidak cocok"
+            ],
+            "rows": [
+              [
+                "Developer yang juga senang mengobrol dengan pengguna",
+                "Yang hanya mau coding dan tidak pernah berjualan"
+              ],
+              [
+                "Orang yang paham seluk-beluk satu niche dari dalam",
+                "Yang butuh penghasilan tetap dalam hitungan minggu"
+              ],
+              [
+                "Pembangun sabar yang sanggup merawat produk bertahun-tahun",
+                "Yang meninggalkan proyek begitu tidak terasa baru lagi"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Risiko dan hal yang perlu diwaspadai",
+      "body": [
+        {
+          "ul": [
+            "Membangun sebelum memvalidasi: kegagalan paling umum adalah produk jadi yang tidak diminta siapa pun.",
+            "Risiko platform: jika Anda bergantung pada satu marketplace atau API, perubahan kebijakan, biaya, atau fitur bisa mengakhiri bisnis.",
+            "Churn dan beban dukungan: pelanggan kecil sering berhenti dan tetap berharap jawaban cepat.",
+            "Peniru: ide sempit yang berhasil mudah ditiru; keunggulan Anda ada di layanan, pemahaman niche, dan jalur distribusi.",
+            "Penjual daftar ide dan boilerplate: membeli daftar \"ide SaaS yang menguntungkan\" atau starter kit tidak memberi Anda pelanggan."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cara menguji dengan murah dulu",
+      "body": [
+        {
+          "ol": [
+            "Tuliskan masalahnya dengan kata-kata pengguna sendiri, diambil dari forum, ulasan, atau wawancara.",
+            "Bicaralah dengan sepuluh calon pengguna dan tanyakan bagaimana mereka mengatasinya sekarang dan berapa biayanya bagi mereka.",
+            "Pasang landing page dengan harga dan tombol akses awal atau pre-order.",
+            "Selesaikan masalahnya secara manual atau dengan spreadsheet untuk dua atau tiga pengguna dulu.",
+            "Mulailah membangun hanya setelah beberapa orang membayar atau berkomitmen secara tertulis."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "30 hari pertama",
+      "body": [
+        {
+          "ol": [
+            "Tentukan satu fitur inti dan tinggalkan yang lain.",
+            "Bangun dan luncurkan ke pengguna awal, dengan penagihan sudah berjalan sejak awal.",
+            "Pasang pelacakan error, backup, dan kotak masuk dukungan sederhana.",
+            "Pantau pendaftaran, konversi ke berbayar, dan pembatalan setiap minggu.",
+            "Tanyakan alasan setiap pelanggan yang berhenti.",
+            "Habiskan waktu untuk mencari pengguna setidaknya sebanyak waktu untuk fitur baru."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apa bedanya micro SaaS dengan startup biasa?",
+      "a": "Micro SaaS bertujuan tetap kecil, fokus, dan biasanya didanai sendiri, dijalankan satu atau beberapa orang. Startup yang didanai investor mengejar pertumbuhan cepat dan besar, lalu menggalang dana untuk mencapainya."
+    },
+    {
+      "q": "Bisakah membangun micro SaaS tanpa coding?",
+      "a": "Bisa, sebagian pendiri memakai alat no-code, terutama untuk alat semacam aplikasi internal dan alur kerja sederhana. Saat tumbuh, Anda mungkin menemui batas dari sisi performa, biaya, atau kustomisasi."
+    },
+    {
+      "q": "Dari mana ide micro SaaS yang bagus berasal?",
+      "a": "Biasanya dari masalah berulang yang Anda lihat di pekerjaan atau hobi, keluhan di forum niche, dan celah di marketplace aplikasi platform populer. Apa pun sumbernya, validasi dulu sebelum membangun."
+    }
+  ]
+}

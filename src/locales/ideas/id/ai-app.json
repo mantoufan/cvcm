@@ -1,0 +1,95 @@
+{
+  "name": "Aplikasi AI (AI wrapper)",
+  "blurb": "Bikin aplikasi AI di atas API model, lalu tarik biaya langganan atau per pemakaian",
+  "title": "Bikin Aplikasi AI (AI Wrapper): Cara Cari Uang dan Risikonya",
+  "description": "Cara aplikasi AI di atas API model (\"AI wrapper\") menghasilkan uang, apa yang dibutuhkan, cocok untuk siapa, risiko platform, dan cara menguji ide SaaS AI.",
+  "h1": "Apakah bikin aplikasi AI atau AI wrapper bisnis yang bagus?",
+  "answer": "Aplikasi AI, sering disebut \"AI wrapper\", adalah produk yang mengirim masukan pengguna ke model AI lewat API dan menambahkan antarmuka, prompt, data, atau alur kerjanya sendiri untuk satu tugas, misalnya menyusun draf surat hukum atau memberi tag pada foto produk. Penghasilannya dari langganan, kredit, atau pembelian sekali bayar. Masalahnya, setiap pemakaian memakan biaya API, dan jika penyedia model atau pesaing yang lebih besar menambahkan fitur yang sama, produk Anda bisa kehilangan alasan untuk ada.",
+  "sections": [
+    {
+      "h": "Cara aplikasi AI menghasilkan uang",
+      "body": [
+        "Kebanyakan aplikasi AI menjual langganan bulanan, kredit prabayar, atau paket berbasis pemakaian; sebagian menjual ke perusahaan per pengguna. Berbeda dengan kebanyakan perangkat lunak, setiap permintaan punya biaya langsung: penyedia model menagih Anda per token, gambar, atau menit, sehingga pengguna berat bisa menelan biaya lebih besar daripada yang mereka bayar.",
+        "Margin datang dari apa yang Anda tambahkan: alur kerja yang benar-benar menghemat waktu, data pribadi atau khusus, integrasi dengan alat yang sudah dipakai pengguna, dan niche yang tidak dilayani dengan baik oleh aplikasi chat umum."
+      ]
+    },
+    {
+      "h": "Apa yang dibutuhkan untuk mulai",
+      "body": [
+        {
+          "ul": [
+            "Kemampuan pemrograman dasar, atau alat low-code plus kemauan belajar, dan akun API di setidaknya satu penyedia model.",
+            "Masalah sempit di bidang yang Anda kuasai, supaya Anda tahu kapan hasilnya cukup bagus untuk dibayar.",
+            "Batas pemakaian, penagihan, dan peringatan biaya sejak hari pertama supaya lonjakan viral tidak berubah jadi tagihan besar.",
+            "Syarat dan ketentuan, kebijakan privasi, dan pengecekan bahwa penggunaan Anda sesuai kebijakan penggunaan penyedia model.",
+            "Rencana menangani kesalahan: hasil AI bisa salah, jadi tentukan apa yang Anda periksa, apa yang perlu diperingatkan ke pengguna, dan apa yang Anda tolak kerjakan.",
+            "Pendaftaran usaha dan pengurusan pajak penjualan atau PPN untuk penjualan digital di negara pelanggan Anda; cek aturan setempat atau pakai penyedia pembayaran yang mengurusnya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cocok untuk siapa (dan tidak cocok untuk siapa)",
+      "body": [
+        "Cocok untuk developer atau pendiri dengan latar teknis yang paham satu industri dengan baik, senang merilis produk dengan cepat, dan bisa hidup dengan ketidakpastian soal apa yang akan diluncurkan penyedia model besar berikutnya. Tidak cocok untuk yang berharap satu prompt cerdas saja sudah jadi bisnis, atau siapa pun yang tidak sanggup menanggung tagihan API selama mencari pengguna berbayar."
+      ]
+    },
+    {
+      "h": "Risiko dan hal yang perlu diwaspadai",
+      "body": [
+        {
+          "ul": [
+            "Fitur diambil alih: penyedia model dan platform besar terus menambah fitur; wrapper yang tipis bisa mereka tiru dalam semalam.",
+            "Hitungan per pelanggan: uji coba gratis dan pengguna berat bisa membuat setiap pelanggan merugi. Pasang harga di atas biaya nyata per pemakaian.",
+            "Ketergantungan pada penyedia: perubahan harga, model yang dipensiunkan, batas laju, atau penangguhan akun di penyedia API langsung berdampak ke Anda.",
+            "Akurasi dan klaim: melebih-lebihkan kemampuan AI Anda adalah risiko hukum; Federal Trade Commission di AS menyatakan tidak ada pengecualian AI dari hukum perlindungan konsumen.",
+            "Penyalahgunaan: alat teks atau gambar yang terbuka menarik spam dan penyalahgunaan, yang bisa membuat akun API Anda diblokir. Tambahkan moderasi."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cara menguji dengan murah dulu",
+      "body": [
+        {
+          "ol": [
+            "Selesaikan masalahnya secara manual dengan aplikasi chat umum untuk tiga orang nyata, lalu lihat apakah mereka kembali minta lagi.",
+            "Buat landing page yang menjelaskan hasilnya, lengkap dengan harga, dan kumpulkan pendaftaran atau pre-order.",
+            "Bangun versi terkecil yang menyelesaikan satu tugas dari awal sampai akhir.",
+            "Ukur biaya API untuk setiap pemakaian dan bandingkan dengan harga Anda.",
+            "Tanyakan apakah aplikasi chat umum sudah bisa melakukannya dalam dua prompt; jika ya, temukan apa yang Anda tambahkan yang tidak bisa dilakukannya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "30 hari pertama",
+      "body": [
+        {
+          "ol": [
+            "Pilih satu tipe pengguna dan satu pekerjaan yang ingin diselesaikan.",
+            "Rilis versi yang berfungsi ke kelompok kecil dan amati cara mereka memakainya.",
+            "Pasang batas pengeluaran, batas laju, dan pencatatan log sebelum membuka pendaftaran.",
+            "Tambahkan pembayaran sejak awal supaya Anda tahu siapa yang benar-benar mau membayar.",
+            "Letakkan model di balik lapisan tipis supaya Anda bisa berganti penyedia jika perlu.",
+            "Ajak bicara setiap pengguna awal dan buang fitur yang tidak dipakai siapa pun."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah \"AI wrapper\" itu sebutan merendahkan?",
+      "a": "Sering dipakai begitu, padahal sebagian besar perangkat lunak dibangun di atas layanan perusahaan lain. Wrapper lemah kalau tidak menambahkan apa-apa selain prompt, dan kuat kalau memiliki alur kerja, data, atau audiens yang tidak dimiliki penyedia model."
+    },
+    {
+      "q": "Bagaimana cara mengendalikan biaya API?",
+      "a": "Batasi pemakaian per paket, simpan cache hasil yang berulang, pakai model yang lebih kecil untuk langkah sederhana, dan pantau biaya per pengguna aktif setiap minggu. Tentukan harga dari data pemakaian nyata, bukan tebakan."
+    },
+    {
+      "q": "Apa bedanya aplikasi AI dengan micro-SaaS?",
+      "a": "Micro-SaaS adalah produk perangkat lunak kecil dan fokus yang dijalankan satu orang atau tim mungil. Aplikasi AI adalah salah satu jenisnya, dengan tambahan biaya dan risiko karena bergantung pada penyedia model AI."
+    }
+  ]
+}

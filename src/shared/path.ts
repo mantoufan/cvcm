@@ -14,10 +14,11 @@ import { RANKING_SEGMENT, isRankingId, type RankingId } from "./rankings";
 import { KB_SHELVES, isKbId, kbArticleOf, kbShelfOf, kbShelfOfPage, type KbHub, type KbId, type KbPage, type KbShelf } from "./kb";
 import { REF_SEGMENT, isRefId, type RefId } from "./ref";
 import { LEGACY_SLANG_SEGMENTS, SLANG_SEGMENT, isSlangId, type SlangId } from "./slang";
+import { IDEAS_SEGMENT, isIdeaId, type IdeaId } from "./ideas";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -540,6 +541,7 @@ export type AppPath =
   | { kind: "bare-kb"; article: KbArticlePath }
   | { kind: "bare-ref"; entry: RefId | null }
   | { kind: "bare-slang"; entry: SlangId | null }
+  | { kind: "bare-ideas"; entry: IdeaId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -552,6 +554,7 @@ export type AppPath =
   | { kind: "kb"; locale: Locale; article: KbArticlePath }
   | { kind: "ref"; locale: Locale; entry: RefId | null }
   | { kind: "slang"; locale: Locale; entry: SlangId | null }
+  | { kind: "ideas"; locale: Locale; entry: IdeaId | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -676,6 +679,12 @@ export function parseAppPath(pathname: string): AppPath {
       if (isSlangId(third.toLowerCase())) return { kind: "slang", locale, entry: third.toLowerCase() as SlangId };
       return { kind: "unknown" };
     }
+    if (second === IDEAS_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "ideas", locale, entry: null };
+      if (isIdeaId(third)) return { kind: "ideas", locale, entry: third };
+      return { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -750,6 +759,11 @@ export function parseAppPath(pathname: string): AppPath {
     if (isSlangId(second.toLowerCase()) && !third) return { kind: "bare-slang", entry: second.toLowerCase() as SlangId };
     return { kind: "unknown" };
   }
+  if (first === IDEAS_SEGMENT) {
+    if (!second) return { kind: "bare-ideas", entry: null };
+    if (isIdeaId(second) && !third) return { kind: "bare-ideas", entry: second };
+    return { kind: "unknown" };
+  }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "v" && second && LEGACY_V_PAGES.has(second) && rest.length === 0) return { kind: "bare", tool: "v" };
@@ -814,6 +828,12 @@ export function refHref(locale: Locale, entry: RefId | null = null): string {
 /** The meme channel (formerly the slang dictionary): `/{locale}/memes/` (hub) and `/{locale}/memes/{id}/`. */
 export function slangHref(locale: Locale, entry: SlangId | null = null): string {
   const base = `/${localePath(locale)}/${SLANG_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The ideas channel: `/{locale}/ideas/` (hub) and `/{locale}/ideas/{id}/`. */
+export function ideasHref(locale: Locale, entry: IdeaId | null = null): string {
+  const base = `/${localePath(locale)}/${IDEAS_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
 }
 
