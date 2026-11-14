@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { currency, labeled, numField } from "../valuation/common";
 import { ASSET_FIELDS, DEBT_FIELDS, SCF_2022, ageBand, netWorth, type AssetField, type DebtField } from "../../shared/net-worth";
-import { parseDecimalInput } from "../../shared/decimal-input";
+import { parseDecimalInput, parseMoneyInput } from "../../shared/decimal-input";
 import { plain } from "../../shared/number-format";
 
 let mounted: { cleanup: () => void } | null = null;
@@ -48,7 +48,7 @@ export function mountNetWorth(host: HTMLElement): void {
       const o: Partial<Record<K, number>> = {};
       const bad: K[] = [];
       for (const id of ids) {
-        const v = parseDecimalInput(fields.get(id)!.value, loc);
+        const v = parseMoneyInput(fields.get(id)!.value, loc);
         if (v === undefined) continue;
         if (Number.isNaN(v)) bad.push(id);
         else o[id] = v;
@@ -82,7 +82,7 @@ export function mountNetWorth(host: HTMLElement): void {
     last = list.map(([k, v]) => `${k}: ${v}`).join("\n");
     const band = ageRaw === undefined ? null : ageBand(ageRaw);
     if (ageRaw !== undefined && !band) compare.append(h("dt", null, t("netWorth.ageRange")), h("dd", null, ""));
-    const perUsd = curSel.value === "usd" ? 1 : parseDecimalInput(rate.value, loc);
+    const perUsd = curSel.value === "usd" ? 1 : parseMoneyInput(rate.value, loc);
     if (band && (perUsd === undefined || !Number.isFinite(perUsd) || perUsd <= 0)) {
       rateHint.hidden = false;
     } else if (band && perUsd !== undefined) {

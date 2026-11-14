@@ -7,8 +7,10 @@
  * The tier comes from the strongest pattern; the place inside the tier from lucky digits, how few digits are used, and
  * (China) the number 4.
  */
-import { distinctDigits, logBetween, longestRun, roundEstimate, tailRun, tailShape, tailStraight, type TailShape } from "./number-pattern";
+import { CN_LUCKY_TAILS, VN_LUCKY_TAILS, distinctDigits, logBetween, longestRun, luckyTail, roundEstimate, tailRun, tailShape, tailStraight, type TailShape } from "./number-pattern";
 import { halfWidth } from "./factors";
+
+export { CN_LUCKY_TAILS, VN_LUCKY_TAILS };
 
 export const PHONE_MARKETS = ["cn", "vn", "intl"] as const;
 export type PhoneMarket = (typeof PHONE_MARKETS)[number];
@@ -22,9 +24,6 @@ const LADDER: Record<PhoneMarket, ReadonlyArray<readonly [number, number]>> = {
   intl: [[1, 10], [10, 60], [60, 400], [400, 3_000], [3_000, 20_000], [20_000, 120_000], [120_000, 600_000]],
 };
 
-/** Endings that sell on their own in Vietnam: lộc phát 68/86, thần tài 39/79, ông địa 38/78, and doubled lucky digits. */
-export const VN_LUCKY_TAILS: ReadonlySet<string> = new Set(["68", "86", "39", "79", "38", "78", "88", "66", "99"]);
-export const CN_LUCKY_TAILS: ReadonlySet<string> = new Set(["88", "66", "99", "68", "86", "168", "518", "888", "666", "999", "1314", "520"]);
 
 /** The 81 numbers (数理) read as lucky in the folk method that takes the last four digits mod 80 (0 reads as 80). */
 const NUMEROLOGY_GOOD = new Set([1, 3, 5, 6, 7, 8, 11, 13, 15, 16, 17, 18, 21, 23, 24, 25, 29, 31, 32, 33, 35, 37, 39, 41, 45, 47, 48, 52, 57, 61, 63, 65, 67, 68]);
@@ -151,7 +150,7 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
   }
   const luckyTails = market === "vn" ? VN_LUCKY_TAILS : market === "cn" ? CN_LUCKY_TAILS : null;
   if (luckyTails) {
-    const tail = [4, 3, 2].map((n) => body.slice(-n)).find((t) => luckyTails.has(t));
+    const tail = luckyTail(body, luckyTails);
     if (tail && run < 3) {
       features.push({ key: "luckyTail", tail });
       lift(1);

@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { labeled, numField } from "../valuation/common";
 import { AVERAGE_YEARLY, CAR_CONDITIONS, CAR_SEGMENTS, carValue, type CarCondition, type CarSegment } from "../../shared/car-depreciation";
-import { parseDecimalInput } from "../../shared/decimal-input";
+import { parseDecimalInput, parseMoneyInput } from "../../shared/decimal-input";
 import { plain } from "../../shared/number-format";
 
 let mounted: { cleanup: () => void } | null = null;
@@ -24,7 +24,7 @@ export function mountCarDepreciation(host: HTMLElement): void {
   // Switching units converts the typed distance, so the car itself does not change.
   const unitSel = h("select", { "data-field": "unit", onChange: () => {
     const next = unitSel.value as "mi" | "km";
-    const d = parseDecimalInput(distance.value, loc);
+    const d = parseMoneyInput(distance.value, loc);
     if (d !== undefined && Number.isFinite(d) && next !== unit) {
       distance.value = String(Math.round(next === "km" ? d * 1.609344 : d / 1.609344));
     }
@@ -51,9 +51,9 @@ export function mountCarDepreciation(host: HTMLElement): void {
   const pct = (n: number) => `${plain(loc, n, 1)}%`;
 
   const paint = () => {
-    const p = parseDecimalInput(price.value, loc);
+    const p = parseMoneyInput(price.value, loc);
     const y = parseDecimalInput(years.value, loc);
-    const d = parseDecimalInput(distance.value, loc);
+    const d = parseMoneyInput(distance.value, loc);
     const r = carValue({
       price: p ?? NaN,
       years: y ?? NaN,

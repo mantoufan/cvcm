@@ -29,3 +29,16 @@ export function parseDecimalInput(raw: string, locale: string): number | undefin
   if (!/^-?(\d+\.?\d*|\.\d+)(e[+-]?\d+)?$/i.test(plain)) return NaN;
   return Number(plain);
 }
+
+/**
+ * An amount of money typed in a text field. Like parseDecimalInput, except that in the decimal-comma locales
+ * (es, id, vi) dots in thousands groups ("25.400", "2.500.000.000", "1.250,50") group thousands: amounts are written
+ * that way there, and reading "25.400" đồng per dollar as 25.4 would be 1,000 times off.
+ */
+export function parseMoneyInput(raw: string, locale: string): number | undefined {
+  const text = raw.trim();
+  if (decimalMarkOf(locale) === "," && /^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(text)) {
+    return Number(text.replace(/\./g, "").replace(",", "."));
+  }
+  return parseDecimalInput(raw, locale);
+}

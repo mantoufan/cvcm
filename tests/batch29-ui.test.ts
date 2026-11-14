@@ -174,6 +174,14 @@ describe("review fixes (ui)", () => {
     expect(q("[data-out=error]").textContent).toBe("Your age (optional) is not a number.");
   });
 
+  it("swaps a clicked preset of the last country when the country changes", () => {
+    mountPlateValue(host);
+    set("[data-field=market]", "vn", "change");
+    q<HTMLButtonElement>("[data-preset='51K-888.88']").click();
+    set("[data-field=market]", "uk", "change");
+    expect(q<HTMLInputElement>("[data-field=plate]").value).toBe("AB 1");
+  });
+
   it("names a distance that is not a number and an age out of range", () => {
     mountCarDepreciation(host);
     set("[data-field=distance]", "12k");

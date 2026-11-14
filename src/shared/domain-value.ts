@@ -88,13 +88,19 @@ export type DomainValue = {
 
 export type DomainError = "empty" | "invalid" | "noTld";
 
-const SECOND_LEVEL = new Set(["co.uk", "org.uk", "com.cn", "net.cn", "com.au", "com.vn", "co.jp", "co.kr", "com.br", "com.tw", "com.hk"]);
+/**
+ * Two-part extensions: a generic second level (co, com, net, org, edu, gov, ac, or, go, ne, gen, biz, info, web,
+ * ltd, plc, sch, mil, nom) under a two-letter country code, as in co.uk, com.cn, co.id, net.vn, co.in, com.sg.
+ */
+function isTwoPartSuffix(second: string, top: string): boolean {
+  return /^[a-z]{2}$/.test(top) && /^(co|com|net|org|edu|gov|ac|or|go|ne|gen|biz|info|web|ltd|plc|sch|mil|nom)$/.test(second);
+}
 
 /** The registrable name and its extension from whatever was pasted (a URL, www., upper case, a trailing dot). */
 export function parseDomain(raw: string): { ok: true; sld: string; tld: string } | { ok: false; error: DomainError } {
   let s = raw.trim().toLowerCase();
   if (!s) return { ok: false, error: "empty" };
-  s = s.replace(/^[a-z][a-z0-9+.-]*:\/\//, "").replace(/[/?#].*$/, "").replace(/:\d+$/, "").replace(/\.$/, "").replace(/^www\./, "");
+  s = s.replace(/^[a-z][a-z0-9+.-]*:\/\//, "").replace(/[/?#].*$/, "").replace(/:\d+$/, "").replace(/\.$/, "");
   // Names in other scripts (例子.com, tên.vn) are read in their punycode form (xn--…), as registries store them.
   if (/[^\x00-\x7f]/.test(s)) {
     try {
@@ -103,13 +109,15 @@ export function parseDomain(raw: string): { ok: true; sld: string; tld: string }
       return { ok: false, error: "invalid" };
     }
   }
-  const labels = s.split(".");
+  let labels = s.split(".");
   if (labels.length < 2) return { ok: false, error: "noTld" };
+  // www. in front of a name is the site, not the name; www.com itself is a name.
+  if (labels[0] === "www" && labels.length > 2) labels = labels.slice(1);
   if (labels.some((l) => !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(l))) return { ok: false, error: "invalid" };
-  const two = labels.slice(-2).join(".");
+  const twoPart = isTwoPartSuffix(labels[labels.length - 2]!, labels[labels.length - 1]!);
   // co.uk or com.cn alone is a registry suffix, not a name anyone can own.
-  if (labels.length === 2 && SECOND_LEVEL.has(two)) return { ok: false, error: "invalid" };
-  const tldLabels = SECOND_LEVEL.has(two) && labels.length >= 3 ? 2 : 1;
+  if (labels.length === 2 && twoPart) return { ok: false, error: "invalid" };
+  const tldLabels = twoPart ? 2 : 1;
   const tld = labels.slice(-tldLabels).join(".");
   const sld = labels[labels.length - tldLabels - 1]!;
   if (/^\d+$/.test(tld)) return { ok: false, error: "invalid" };
@@ -269,7 +277,7 @@ function punyDecode(input: string): string | null {
     for (let w = 1, k = base; ; k += base) {
       if (idx >= input.length) return null;
       const c = input.charCodeAt(idx++);
-      const digit = c - 48 < 10 ? c - 22 : c - 65 < 26 ? c - 65 : c - 97 < 26 ? c - 97 : base;
+      const digit = c >= 48 && c < 58 ? c - 22 : c >= 65 && c < 91 ? c - 65 : c >= 97 && c < 123 ? c - 97 : base;
       if (digit >= base) return null;
       i += digit * w;
       const t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;

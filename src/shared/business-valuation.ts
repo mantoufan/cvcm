@@ -45,7 +45,7 @@ export type DcfError = "discountBelowGrowth" | "invalid";
 
 export function dcf(input: DcfInput): { ok: true; result: DcfResult } | { ok: false; error: DcfError } {
   const { cashFlow, growth, discount, terminalGrowth, years } = input;
-  if (![cashFlow, growth, discount, terminalGrowth, years].every(Number.isFinite) || !Number.isInteger(years) || years < 1 || years > 30 || discount <= -1 || growth <= -1) {
+  if (![cashFlow, growth, discount, terminalGrowth, years].every(Number.isFinite) || !Number.isInteger(years) || years < 1 || years > 30 || discount <= -1 || growth <= -1 || terminalGrowth <= -1) {
     return { ok: false, error: "invalid" };
   }
   if (discount <= terminalGrowth) return { ok: false, error: "discountBelowGrowth" };

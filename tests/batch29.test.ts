@@ -6,6 +6,7 @@ import { decodeIdn, parseDomain, pronounceable, twoWords, valueDomain } from "..
 import { carValue, mileageFactor, retained } from "../src/shared/car-depreciation";
 import { ageBand, netWorth } from "../src/shared/net-worth";
 import { dcf, multipleRange } from "../src/shared/business-valuation";
+import { parseMoneyInput } from "../src/shared/decimal-input";
 
 const phone = (n: string, m: "cn" | "vn" | "intl") => {
   const r = valuePhone(n, m);
@@ -332,6 +333,26 @@ describe("review fixes", () => {
     expect(phone("+1 111 555 2468", "intl").features.some((f) => f.key === "midRun")).toBe(false);
     expect(valueDomain("co.uk")).toEqual({ ok: false, error: "invalid" });
     expect(plate("41A-123.45", "vn").features).toContainEqual({ key: "bigCity" });
+  });
+
+  it("reads any two-part country suffix, www.com, new-energy D/F plates and longer lucky endings", () => {
+    expect(parseDomain("tokopedia.co.id")).toEqual({ ok: true, sld: "tokopedia", tld: "co.id" });
+    expect(parseDomain("example.net.vn")).toEqual({ ok: true, sld: "example", tld: "net.vn" });
+    expect(parseDomain("www.com")).toEqual({ ok: true, sld: "www", tld: "com" });
+    expect(parseDomain("www.example.com")).toEqual({ ok: true, sld: "example", tld: "com" });
+    expect(valueDomain("co.id")).toEqual({ ok: false, error: "invalid" });
+    expect(decodeIdn("xn---abc")).toBeNull();
+    expect(plate("京A88888D", "cn").tier).toBe(4);
+    expect(plate("沪A·01314", "cn").features).toContainEqual({ key: "luckyTail", tail: "1314" });
+    expect(dcf({ cashFlow: 100, growth: 0, discount: 0.18, terminalGrowth: -2, years: 5 })).toEqual({ ok: false, error: "invalid" });
+  });
+
+  it("reads dot-grouped money in decimal-comma locales", () => {
+    expect(parseMoneyInput("25.400", "vi")).toBe(25_400);
+    expect(parseMoneyInput("2.500.000.000", "id")).toBe(2_500_000_000);
+    expect(parseMoneyInput("1.250,50", "es")).toBe(1_250.5);
+    expect(parseMoneyInput("25.4", "vi")).toBe(25.4);
+    expect(parseMoneyInput("25.400", "en")).toBe(25.4);
   });
 
   it("takes whole forecast years only", () => {

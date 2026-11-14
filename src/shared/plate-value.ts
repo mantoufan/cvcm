@@ -10,9 +10,8 @@
  * A rule-based estimate, not an appraisal: names and words spelt by a UK mark, a buyer's own initials, and auction day
  * moves real prices more than any rule can.
  */
-import { distinctDigits, logBetween, roundEstimate, tailRun, tailShape, tailStraight, type TailShape } from "./number-pattern";
+import { CN_LUCKY_TAILS, VN_LUCKY_TAILS, distinctDigits, logBetween, luckyTail, roundEstimate, tailRun, tailShape, tailStraight, type TailShape } from "./number-pattern";
 import { halfWidth } from "./factors";
-import { CN_LUCKY_TAILS, VN_LUCKY_TAILS } from "./phone-value";
 
 export const PLATE_MARKETS = ["uk", "vn", "cn"] as const;
 export type PlateMarket = (typeof PLATE_MARKETS)[number];
@@ -159,8 +158,8 @@ function scoreSerial(serial: string, lucky: ReadonlySet<string> | null): Scored 
     lift(2);
   }
   if (lucky && run < 3) {
-    const tail = serial.slice(-2);
-    if (lucky.has(tail)) {
+    const tail = luckyTail(serial, lucky);
+    if (tail) {
       features.push({ key: "luckyTail", tail });
       lift(1);
     }
@@ -225,7 +224,8 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
   } else {
     const m = CN_RE.exec(p);
     if (!m) return { ok: false, error: "invalid" };
-    const s = scoreSerial(m[3]!, CN_LUCKY_TAILS);
+    // A large new-energy plate ends in D or F after five digits: the digits carry the pattern.
+    const s = scoreSerial(m[3]!.replace(/^(\d{5})[DF]$/, "$1"), CN_LUCKY_TAILS);
     ({ tier, f, features } = s);
     band = CN_LADDER[tier]!;
   }

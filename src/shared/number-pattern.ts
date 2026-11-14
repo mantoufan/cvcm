@@ -80,3 +80,12 @@ export function roundEstimate(n: number): number {
   const p = Math.pow(10, Math.max(0, Math.floor(Math.log10(n)) - 1));
   return Math.round(n / p) * p;
 }
+
+/** Endings that sell on their own in Vietnam (phone numbers and plates): lộc phát 68/86, thần tài 39/79, ông địa 38/78, and doubled lucky digits. */
+export const VN_LUCKY_TAILS: ReadonlySet<string> = new Set(["68", "86", "39", "79", "38", "78", "88", "66", "99"]);
+export const CN_LUCKY_TAILS: ReadonlySet<string> = new Set(["88", "66", "99", "68", "86", "168", "518", "888", "666", "999", "1314", "520"]);
+
+/** The ending (four, three or two characters) found in a list of lucky endings, longest first. */
+export function luckyTail(s: string, tails: ReadonlySet<string>): string | undefined {
+  return [4, 3, 2].map((n) => s.slice(-n)).find((t) => tails.has(t));
+}

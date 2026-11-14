@@ -3,7 +3,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { labeled, numField } from "../valuation/common";
 import { INDUSTRIES, INDUSTRY_MULTIPLES, dcf, multipleRange, type Industry } from "../../shared/business-valuation";
-import { parseDecimalInput } from "../../shared/decimal-input";
+import { parseDecimalInput, parseMoneyInput } from "../../shared/decimal-input";
 import { plain } from "../../shared/number-format";
 
 let mounted: { cleanup: () => void } | null = null;
@@ -29,6 +29,8 @@ export function mountBusinessValuation(host: HTMLElement): void {
   const discount = numField("discount", "18", () => paint());
   const terminal = numField("terminalGrowth", "2", () => paint());
   const years = numField("years", "5", () => paint());
+  /** Amounts (thousands may be dot-grouped in es/id/vi); multiples and rates are plain decimals. */
+  const MONEY = new Set([revenue, profit, cash]);
 
   function applyPreset(): void {
     const id = industry.value as Industry;
@@ -50,7 +52,7 @@ export function mountBusinessValuation(host: HTMLElement): void {
   const dcfRows = h("tbody", null);
 
   const paint = () => {
-    const v = (el: HTMLInputElement) => parseDecimalInput(el.value, loc) ?? NaN;
+    const v = (el: HTMLInputElement) => (MONEY.has(el) ? parseMoneyInput(el.value, loc) : parseDecimalInput(el.value, loc)) ?? NaN;
     const earn = multipleRange(v(profit), [v(eLo), v(eHi)]);
     const rev = multipleRange(v(revenue), [v(rLo), v(rHi)]);
     const d = dcf({ cashFlow: v(cash), growth: v(growth) / 100, discount: v(discount) / 100, terminalGrowth: v(terminal) / 100, years: v(years) });
