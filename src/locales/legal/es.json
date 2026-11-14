@@ -45,6 +45,14 @@
           ]
         },
         {
+          "h": "Búsqueda en el sitio",
+          "p": [
+            "El buscador encuentra páginas en tu navegador a partir de una lista de nombres de páginas de cv.cm; lo que escribes no se envía mientras buscas.",
+            "Cuando una búsqueda no encuentra nada, el texto buscado y el idioma de la página se envían a nuestra base de datos en Cloudflare D1 para saber qué echan en falta los usuarios. No se registran búsquedas que parezcan enlaces, direcciones de correo o números largos. Para contar a cada visitante una vez al día, el servidor guarda durante dos días un hash de la fecha, tu dirección IP y la búsqueda; no guarda la dirección IP.",
+            "Si dejas tu correo para que te avisemos cuando se añada un tema que falta, lo guardamos junto a esa búsqueda, enviamos un único correo cuando esté disponible y después borramos la dirección. No la usamos para nada más. Para borrarla antes, escribe a m@cv.cm."
+          ]
+        },
+        {
           "h": "Alojamiento y registros del servidor",
           "p": [
             "cv.cm se sirve a través de Cloudflare. Para entregar y proteger el sitio, Cloudflare procesa datos de las solicitudes, como la dirección IP, el agente de usuario del navegador y la URL solicitada, conforme a su propia política de privacidad. Nuestro servidor de almacenamiento en s3.cv.cm conserva registros estándar de servidor web (dirección IP, hora y ruta solicitada) por motivos de seguridad y resolución de problemas. No usamos estos registros para elaborar perfiles."

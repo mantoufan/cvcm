@@ -8,13 +8,15 @@
     "node": ">=20"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "node scripts/write-sitemap.mjs && vite",
     "build": "node scripts/write-sitemap.mjs && vite build && node --max-old-space-size=8192 scripts/prerender.mjs && node scripts/build-worker.mjs",
     "preview": "vite preview --port 4173 --strictPort",
     "typecheck": "tsc --noEmit",
     "kb:sync": "node scripts/kb-sync.mjs",
     "ref:sync": "node scripts/ref-sync.mjs",
     "slang:sync": "node scripts/slang-sync.mjs",
+    "search:demand": "node scripts/search-tool.mjs demand",
+    "search:notify": "node scripts/search-tool.mjs notify",
     "test": "vitest run",
     "deploy": "npm run build && wrangler deploy"
   },

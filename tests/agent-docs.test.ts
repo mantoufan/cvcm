@@ -119,12 +119,14 @@ describe("agent discovery files", () => {
       "src/client/decode.ts": "decodes a local image with new Image()",
       "src/client/word-unscrambler/ui.ts": "downloads the static ENABLE word list (/words/enable.txt)",
       "src/client/analytics.ts": "loads Google Analytics on tracked pages (src/shared/analytics.ts)",
+      "src/client/search.ts": "site search: posts a query only when it found nothing, and an email only when the visitor asks to be notified",
     };
     const files = [...sourceFiles(join(root, "src/client")), ...sourceFiles(join(root, "src/shared"))]
       .map((file) => file.slice(root.length + 1).split("\\").join("/"))
       .filter((file) => network.test(readFileSync(join(root, file), "utf8")));
     expect(files.sort()).toEqual(Object.keys(reviewed).sort());
-    for (const file of files.filter((f) => f !== "src/client/clip/ui.ts")) {
+    // The clipboard and site search send what the visitor typed there on purpose (privacy policy, "Site search").
+    for (const file of files.filter((f) => f !== "src/client/clip/ui.ts" && f !== "src/client/search.ts")) {
       const code = readFileSync(join(root, file), "utf8");
       expect(code, file).not.toMatch(/method:(?!\s*["'`](get|head)["'`])|fetch\([^)]*\$\{/i);
     }

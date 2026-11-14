@@ -45,6 +45,14 @@
           ]
         },
         {
+          "h": "Site search",
+          "p": [
+            "The search box looks up pages in your browser from a list of cv.cm page names; what you type is not sent while you search.",
+            "When a search finds nothing, the query text and the page language are sent to our database on Cloudflare D1 so we can see what people are missing. Queries that look like links, email addresses or long numbers are not recorded. To count each visitor once a day, the server keeps a hash of the date, your IP address and the query for two days; it does not store the IP address.",
+            "If you leave an email address to hear when a missing topic is added, we keep the address with that query, send one email when it is added, and then delete the address. We do not use it for anything else. To have it removed sooner, email m@cv.cm."
+          ]
+        },
+        {
           "h": "Hosting and server logs",
           "p": [
             "cv.cm is served by Cloudflare. To deliver and protect the site, Cloudflare processes request data such as IP address, browser user agent, and requested URL under its own privacy policy. Our storage server at s3.cv.cm keeps standard web server logs (IP address, time, requested path) for security and troubleshooting. We do not use these logs to build profiles."

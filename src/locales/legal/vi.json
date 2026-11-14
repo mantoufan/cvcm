@@ -45,6 +45,14 @@
           ]
         },
         {
+          "h": "Tìm kiếm trên trang",
+          "p": [
+            "Ô tìm kiếm tìm trang ngay trong trình duyệt của bạn, dựa trên danh sách tên trang của cv.cm; nội dung bạn gõ không được gửi đi khi đang tìm.",
+            "Khi một lượt tìm không có kết quả nào, từ khóa và ngôn ngữ của trang được gửi tới cơ sở dữ liệu của chúng tôi trên Cloudflare D1 để biết mọi người còn cần gì. Từ khóa trông giống đường link, địa chỉ email hoặc dãy số dài sẽ không được ghi lại. Để mỗi người chỉ được tính một lần mỗi ngày, máy chủ giữ một giá trị băm của ngày, địa chỉ IP và từ khóa trong hai ngày; địa chỉ IP không được lưu.",
+            "Nếu bạn để lại email để được báo khi nội dung còn thiếu được thêm, chúng tôi lưu email cùng từ khóa đó, gửi một email khi có, rồi xóa địa chỉ. Chúng tôi không dùng nó vào việc khác. Muốn xóa sớm hơn, hãy gửi email tới m@cv.cm."
+          ]
+        },
+        {
           "h": "Lưu trữ và nhật ký máy chủ",
           "p": [
             "cv.cm được phân phối qua Cloudflare. Để cung cấp và bảo vệ trang web, Cloudflare xử lý dữ liệu yêu cầu như địa chỉ IP, user agent của trình duyệt và URL được yêu cầu theo chính sách quyền riêng tư riêng của Cloudflare. Máy chủ lưu trữ của chúng tôi tại s3.cv.cm giữ nhật ký máy chủ web tiêu chuẩn (địa chỉ IP, thời gian, đường dẫn được yêu cầu) phục vụ bảo mật và khắc phục sự cố. Chúng tôi không dùng các nhật ký này để lập hồ sơ người dùng."

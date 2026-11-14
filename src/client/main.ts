@@ -827,6 +827,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
+      searchButton(),
       langSwitch(loc),
     ),
     main,
@@ -1047,6 +1048,50 @@ function syncHreflang(seo: Parameters<typeof hreflangAlternates>[0]): void {
     link.href = alt.href;
     document.head.append(link);
   }
+}
+
+/** Opens the site search under the header; the panel and its index are a separate chunk loaded on first use. */
+function searchButton(): HTMLElement {
+  const load = () => import("./search");
+  const button: HTMLButtonElement = h("button", {
+    type: "button",
+    class: "search-btn",
+    "aria-label": t("search.open"),
+    title: t("search.open"),
+    "aria-haspopup": "listbox",
+    "aria-expanded": "false",
+    onPointerenter: () => void load().then((m) => m.prefetchSearch()).catch(() => undefined),
+    onFocus: () => void load().then((m) => m.prefetchSearch()).catch(() => undefined),
+    onClick: () => {
+      const header = button.closest("header");
+      if (!header) return;
+      void load().then((m) => {
+        if (button.getAttribute("aria-expanded") === "true") m.closeSearch();
+        else m.openSearch(header, button);
+      });
+    },
+  });
+  // Magnifier drawn in SVG (no icon font, no image request).
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("width", "18");
+  svg.setAttribute("height", "18");
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", "10.5");
+  circle.setAttribute("cy", "10.5");
+  circle.setAttribute("r", "6.5");
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  line.setAttribute("d", "M15.5 15.5 21 21");
+  for (const part of [circle, line]) {
+    part.setAttribute("fill", "none");
+    part.setAttribute("stroke", "currentColor");
+    part.setAttribute("stroke-width", "2");
+    part.setAttribute("stroke-linecap", "round");
+    svg.append(part);
+  }
+  button.append(svg, h("span", { class: "search-btn-text" }, t("search.short")));
+  return button;
 }
 
 function langSwitch(current: Locale): HTMLElement {

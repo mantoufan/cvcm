@@ -45,6 +45,14 @@
           ]
         },
         {
+          "h": "Pencarian situs",
+          "p": [
+            "Kotak pencarian mencari halaman di browser Anda dari daftar nama halaman cv.cm; yang Anda ketik tidak dikirim selama mencari.",
+            "Jika pencarian tidak menemukan apa pun, teks pencarian dan bahasa halaman dikirim ke database kami di Cloudflare D1 agar kami tahu apa yang masih dicari orang. Pencarian yang tampak seperti tautan, alamat email, atau deretan angka panjang tidak dicatat. Agar setiap pengunjung dihitung sekali sehari, server menyimpan hash dari tanggal, alamat IP, dan teks pencarian selama dua hari; alamat IP-nya sendiri tidak disimpan.",
+            "Jika Anda meninggalkan alamat email agar dikabari saat topik yang belum ada ditambahkan, kami menyimpan alamat itu bersama teks pencariannya, mengirim satu email saat sudah ada, lalu menghapus alamatnya. Kami tidak memakainya untuk hal lain. Untuk menghapusnya lebih cepat, kirim email ke m@cv.cm."
+          ]
+        },
+        {
           "h": "Hosting dan log server",
           "p": [
             "cv.cm dilayani oleh Cloudflare. Untuk menyajikan dan melindungi situs, Cloudflare memproses data permintaan seperti alamat IP, user agent browser, dan URL yang diminta berdasarkan kebijakan privasinya sendiri. Server penyimpanan kami di s3.cv.cm menyimpan log server web standar (alamat IP, waktu, jalur yang diminta) untuk keamanan dan pemecahan masalah. Kami tidak menggunakan log ini untuk membuat profil."
