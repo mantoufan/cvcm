@@ -244,14 +244,18 @@ function loadBucket(next: Locale, kind: "tools" | "tutorials", id: string, core:
   return load;
 }
 
-let coreLoads: Partial<Record<Locale, Promise<void>>> = {};
+const coreLoads = new Map<Locale, Promise<void>>();
 
 /** Loads the core pack if needed, and with it the buckets for this page's tool and tutorial, merged into the pack. */
 async function loadCore(next: Locale, copy: PageCopy): Promise<void> {
-  const core = hasMessages(next) ? null : coreLoads[next] ??= PACKS[next]().then((m) => {
-    // Never re-register: a registered pack may already hold merged buckets.
-    if (!hasMessages(next)) registerMessages(next, m.default);
-  }).finally(() => { coreLoads = { ...coreLoads, [next]: undefined }; });
+  let core = hasMessages(next) ? null : coreLoads.get(next) ?? null;
+  if (!core && !hasMessages(next)) {
+    core = PACKS[next]().then((m) => {
+      // Never re-register: a registered pack may already hold merged buckets.
+      if (!hasMessages(next)) registerMessages(next, m.default);
+    }).finally(() => coreLoads.delete(next));
+    coreLoads.set(next, core);
+  }
   const { tool, tutorial } = copy;
   await Promise.all([
     core,

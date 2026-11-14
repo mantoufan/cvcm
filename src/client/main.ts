@@ -297,6 +297,8 @@ export function boot(): void {
 function prefetchGamePack(e: Event): void {
   const target = e.target as Element | null;
   const loc = locale();
+  // The pointer moved on: a copy prefetch still waiting belongs to the link it left.
+  clearTimeout(copyPrefetch);
   if (target?.closest?.('a[data-nav^="game-"]')) {
     if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="ref-"], a[data-nav="reference"]')) {
@@ -314,7 +316,7 @@ function prefetchGamePack(e: Event): void {
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {
-      prefetchCopy(target, loc);
+      prefetchCopy(target, loc, e.type === "pointerover");
       return;
     }
     // data-nav is "kb-<article id>" on an article link, a shelf's hub nav (KB_SHELVES) on a hub link.
@@ -328,17 +330,19 @@ function prefetchGamePack(e: Event): void {
 let copyPrefetch = 0;
 
 /**
- * A tool link's data-nav is the tool id, a tutorial link's "learn-<id>": fetch that page's own copy bucket. Only once
- * the pointer has rested on the link for a moment, so sweeping across a list of links downloads nothing.
+ * A tool link's data-nav is the tool id, a tutorial link's "learn-<id>": fetch that page's own copy bucket. Under a
+ * pointer only once it has rested on the link for a moment, so sweeping across a list of links downloads nothing;
+ * a touch or keyboard focus starts it at once.
  */
-function prefetchCopy(target: Element | null, loc: Locale): void {
-  clearTimeout(copyPrefetch);
+function prefetchCopy(target: Element | null, loc: Locale, hover: boolean): void {
   const nav = target?.closest?.("a[data-nav]")?.getAttribute("data-nav") ?? "";
   const copy: PageCopy | null = isToolId(nav) ? { tool: nav } : nav.startsWith("learn-") && isTutorialId(nav.slice(6)) ? { tutorial: nav.slice(6) } : null;
   if (!copy || hasPageMessages(loc, false, false, false, false, null, null, null, copy)) return;
-  copyPrefetch = window.setTimeout(() => {
+  const load = (): void => {
     loadPageMessages(loc, false, false, false, false, null, null, null, copy).catch(() => {});
-  }, 120);
+  };
+  if (hover) copyPrefetch = window.setTimeout(load, 120);
+  else load();
 }
 
 function onClick(e: MouseEvent): void {

@@ -112,6 +112,12 @@ async function main() {
   } catch {
     /* no state yet */
   }
+  // A build that lost most of its sitemap is broken, not a site that deleted its pages: submit nothing, keep the state.
+  const known = previous ? Object.keys(previous).length : 0;
+  if (!Object.keys(next).length || Object.keys(next).length < known / 2) {
+    console.warn(`indexnow: ${Object.keys(next).length} pages in dist/sitemaps against ${known} submitted before; nothing submitted`);
+    return;
+  }
   const urls = changedUrls(previous, next);
   console.log(`indexnow: ${Object.keys(next).length} pages, ${urls.length} to submit${previous ? "" : " (no earlier state: all of them)"}`);
   if (dryRun) return;

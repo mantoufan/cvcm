@@ -1,5 +1,6 @@
 import { readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
 import { defineConfig } from "vitest/config";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./scripts/game-names.mjs";
@@ -30,7 +31,14 @@ const seedrandomNoEval: Plugin = {
 // src/locales/<locale>.json and guides/<locale>.json the Worker bundles whole.
 const COPY_PREFIX = "virtual:page-copy/";
 const COPY_ID = "\0page-copy/";
+const COPY_ROOT = dirname(fileURLToPath(import.meta.url));
 const copySources = new Map<string, Record<string, unknown>>();
+
+/** A page-copy module id: "<part>/<locale>[/<bucket>]". */
+function copyParts(id: string): { part: string; locale: string; bucket: string | undefined } {
+  const [part, locale, bucket] = id.slice(COPY_ID.length).split("/");
+  return { part, locale, bucket };
+}
 
 function copySource(file: string): Record<string, unknown> {
   let data = copySources.get(file);
@@ -45,10 +53,10 @@ const pageCopy: Plugin = {
   },
   load(id) {
     if (!id.startsWith(COPY_ID)) return null;
-    const [part, locale, bucket] = id.slice(COPY_ID.length).split("/");
+    const { part, locale, bucket } = copyParts(id);
     // The locale's loader table: its own small chunk, so the packs stay data only.
     if (part === "loaders") return copyLoadersSource(locale);
-    const files = [resolve(`src/locales/${locale}.json`), resolve(`src/locales/guides/${locale}.json`)];
+    const files = [resolve(COPY_ROOT, `src/locales/${locale}.json`), resolve(COPY_ROOT, `src/locales/guides/${locale}.json`)];
     for (const file of files) this.addWatchFile(file);
     const data = pageCopyModule(part, copySource(files[0]), copySource(files[1]), Number(bucket));
     // JSON.parse of one string, as Vite does for large JSON files: far quicker to start than an object literal.
@@ -63,7 +71,7 @@ const pageCopy: Plugin = {
     const chunks: Record<string, string> = {};
     for (const chunk of Object.values(bundle)) {
       if (chunk.type !== "chunk" || !chunk.facadeModuleId?.startsWith(COPY_ID)) continue;
-      const [part, locale, bucket] = chunk.facadeModuleId.slice(COPY_ID.length).split("/");
+      const { part, locale, bucket } = copyParts(chunk.facadeModuleId);
       if (part === "loaders") chunks[`copy-${locale}`] = `/${chunk.fileName}`;
       else if (bucket !== undefined) chunks[`copy-${locale}/${part}-${bucket}`] = `/${chunk.fileName}`;
     }
@@ -113,7 +121,7 @@ export default defineConfig({
         chunkFileNames: (chunk) => {
           const id = chunk.facadeModuleId;
           if (!id?.startsWith(COPY_ID)) return "assets/[name]-[hash].js";
-          const [part, locale, bucket] = id.slice(COPY_ID.length).split("/");
+          const { part, locale, bucket } = copyParts(id);
           return part === "loaders" ? `assets/copy-${locale}-[hash].js` : `assets/copy-${part}-${locale}-${bucket}-[hash].js`;
         },
       },

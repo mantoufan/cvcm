@@ -42,7 +42,7 @@ if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite m
 // by the page-copy plugin in vite.config.ts because virtual modules have no usable manifest key.
 const { buckets: copyBuckets, chunks: copyChunks } = JSON.parse(readFileSync(resolve(manifestDir, "page-copy.json"), "utf8"));
 // Per locale: the loader table ("copy-<locale>") and every bucket of tools and of tutorials.
-for (const file of readdirSync(resolve(root, "src/locales/packs/full"))) {
+for (const file of readdirSync(resolve(root, "src/locales/packs/full")).filter((name) => name.endsWith(".ts"))) {
   const locale = file.replace(/\.ts$/, "");
   const keys = [`copy-${locale}`];
   for (const kind of ["tools", "tutorials"]) for (let n = 0; n < copyBuckets; n++) keys.push(`copy-${locale}/${kind}-${n}`);
