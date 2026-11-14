@@ -2,7 +2,7 @@ import { LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { PUBLISHER, blockHtml, dateLabel, inline, linkListHtml, type KbBlock } from "./kb-i18n";
-import { ideaEntryMessages, ideasMessages, type IdeasMessages } from "./messages";
+import { ideaEntryMessages, ideasMessages, messages, type IdeasMessages } from "./messages";
 import { appHref, ideasHref } from "./path";
 import { IDEA_ENTRIES, IDEA_GROUPS, IDEA_META, IDEAS_UPDATED, ideaGroupOf, ideaPublished, type IdeaId } from "./ideas";
 import { plain } from "./number-format";
@@ -229,7 +229,7 @@ export function ideaChartSvg(locale: Locale, data: IdeaData, from: string): stri
   ].join(" ");
   // When the band was cut at the top, the top label says so ("150+").
   const capped = Math.max(...data.fcHi, ...data.fc) > yMax;
-  const ticks: [number, string][] = [[0, "0"], [50, "50"], [100, "100"], ...(yMax > 100 ? [[yMax, capped ? `${yMax}+` : String(yMax)] as [number, string]] : [])];
+  const ticks: [number, string][] = [[0, "0"], [50, "50"], [100, "100"], ...(yMax >= 115 ? [[yMax, capped ? `${yMax}+` : String(yMax)] as [number, string]] : [])];
   const grid = ticks
     .map(([v, label]) => `<line class="idea-grid" x1="${left}" x2="${W - right}" y1="${y(v).toFixed(1)}" y2="${y(v).toFixed(1)}"/><text class="idea-axis" x="${left - 6}" y="${(y(v) + 4).toFixed(1)}" text-anchor="end">${escapeHtml(label)}</text>`)
     .join("");
@@ -295,7 +295,7 @@ function crumbHtml(locale: Locale, id: IdeaId | null): string {
       : `<span>${escapeHtml(m.hub.h1)}</span>`,
   ];
   if (id) parts.push(`<span>${escapeHtml(ideaName(locale, id).name)}</span>`);
-  return `<nav class="device-crumb" aria-label="${escapeHtml(m.hub.h1)}">${parts.join(sep)}</nav>`;
+  return `<nav class="device-crumb" aria-label="${escapeHtml(messages(locale).ui.nav.breadcrumb)}">${parts.join(sep)}</nav>`;
 }
 
 function faqHtml(locale: Locale, id: IdeaId | null): string {

@@ -126,23 +126,25 @@ def cny_to_usd():
 
 
 def despike(series):
-    """Replace one-off spikes (a month over 3x the median of the 6 months either side) with that median: Keyword
-    Planner sometimes reports a single month far off a keyword's level (e.g. 8,100 between months of ~100). A rise that
-    lasts several months raises the median too, so it stays."""
+    """Replace one-off spikes with a typical level: Keyword Planner sometimes reports a single month far off a keyword's
+    level (e.g. 8,100 between months of ~100). A month counts as a spike only when it is over 3x the median of the
+    months before it AND of the months after it, so the start of a rise that lasts (a real breakout) stays."""
     out = list(series)
     n = len(series)
-    # Two of the last three months still have a month after them: one far above both neighbours (amazon fba: 368K,
-    # 1M, 450K) is a one-off and becomes their mean. The last month has no later month to compare with, and a rise that
-    # holds is a real breakout, so those stay.
+    med = lambda xs: sorted(xs)[len(xs) // 2]
+    for t in range(n - 3):
+        before, after = series[max(0, t - 6):t], series[t + 1:t + 7]
+        if not before:
+            before = after
+        level = max(med(before), med(after))
+        if series[t] > 3 * level and series[t] - level > 100:
+            out[t] = med(before + after)
+    # Two of the last three months have only one or two months after them: a month far above both neighbours
+    # (e.g. 300, 1,000, 300) is a one-off and becomes their mean. The last month has nothing after it, so it stays.
     for t in (n - 3, n - 2):
-        before, v, after = series[t - 1], series[t], series[t + 1]
-        if v > 2.5 * max(before, after) and v - max(before, after) > 100:
-            out[t] = round((before + after) / 2)
-    for t, v in enumerate(series[:-3]):
-        window = sorted(series[max(0, t - 6):t] + series[t + 1:t + 7])
-        med = window[len(window) // 2]
-        if v > 3 * med and v - med > 100:
-            out[t] = med
+        prev, nxt = series[t - 1], series[t + 1]
+        if series[t] > 2.5 * max(prev, nxt) and series[t] - max(prev, nxt) > 100:
+            out[t] = round((prev + nxt) / 2)
     return out
 
 
