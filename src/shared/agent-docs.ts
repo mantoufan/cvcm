@@ -32,6 +32,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   fun: "Random and fun",
   games: "Games: sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF",
   assets: "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)",
+  valuation: "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)",
 };
 
 /**

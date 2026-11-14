@@ -233,6 +233,12 @@ const TITLE: Record<ToolId, string> = {
   "mahjong": "meta.titleMahjong",
   "chess": "meta.titleChess",
   "chinese-chess": "meta.titleChineseChess",
+  "phone-number-value": "meta.titlePhoneNumberValue",
+  "license-plate-value": "meta.titleLicensePlateValue",
+  "domain-value": "meta.titleDomainValue",
+  "car-depreciation": "meta.titleCarDepreciation",
+  "net-worth": "meta.titleNetWorth",
+  "business-valuation": "meta.titleBusinessValuation",
   gold: "meta.titleGold",
   silver: "meta.titleSilver",
   platinum: "meta.titlePlatinum",
@@ -435,6 +441,12 @@ const DESC: Record<ToolId, string> = {
   "mahjong": "meta.descMahjong",
   "chess": "meta.descChess",
   "chinese-chess": "meta.descChineseChess",
+  "phone-number-value": "meta.descPhoneNumberValue",
+  "license-plate-value": "meta.descLicensePlateValue",
+  "domain-value": "meta.descDomainValue",
+  "car-depreciation": "meta.descCarDepreciation",
+  "net-worth": "meta.descNetWorth",
+  "business-valuation": "meta.descBusinessValuation",
   gold: "meta.descGold",
   silver: "meta.descSilver",
   platinum: "meta.descPlatinum",
@@ -1021,6 +1033,7 @@ const APP_CATEGORY: Partial<Record<CategoryId, string>> = {
   design: "DesignApplication",
   games: "GameApplication",
   fun: "EntertainmentApplication",
+  valuation: "FinanceApplication",
 };
 /** Tools sold under their own name (watermark + mosaic share the ID Watermark & Redact brand). */
 export const BRANDED_TOOLS = new Set<ToolId>(["watermark", "mosaic"]);
