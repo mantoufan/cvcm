@@ -161,8 +161,11 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
     features.push({ key: "yearTail", year: body.slice(-4) });
     lift(1);
   }
-  // In Chinese 4 sounds like "death": a pattern built on 4 sells a tier lower.
-  if (market === "cn" && tierDigit === "4" && tier > 0) tier -= 1;
+  // In Chinese 4 sounds like "death": a pattern that is half or more 4s sells a tier lower (8888 4444 and
+  // 4444 8888 alike, a 4455 ending too).
+  const span = shape === "AAAABBBB" || shape === "ABCDABCD" ? 8 : Math.max(4, run);
+  const patternFours = [...body.slice(-span)].filter((c) => c === "4").length;
+  if (market === "cn" && tier > 0 && (tierDigit === "4" || patternFours * 2 >= span)) tier -= 1;
 
   const fours = [...body].filter((c) => c === "4").length;
   if (market === "cn" && fours >= 2) features.push({ key: "fours", n: fours });

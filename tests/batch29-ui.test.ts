@@ -40,9 +40,13 @@ describe("phone number value ui", () => {
     expect(q("[data-out=estimate]").textContent).toMatch(/CN¥|¥/);
     expect(q("[data-out=numerology]").textContent).toBe("8 · lucky");
     expect(q("[data-out=features]").textContent).toContain("Ends in 4 × 8");
+    // Without a code the page's own market (Other here) is kept; +84 switches.
     set("[data-field=number]", "0903 686868");
+    expect(q<HTMLSelectElement>("[data-field=market]").value).toBe("intl");
+    set("[data-field=number]", "+84 903 686 868");
     expect(q<HTMLSelectElement>("[data-field=market]").value).toBe("vn");
     expect(q("[data-out=nut]").textContent).toBe("4 nút");
+    set("[data-field=market]", "vn", "change");
     set("[data-field=number]", "123");
     expect(q("[data-out=error]").textContent).toContain("10 digits");
     expect(q("[data-out=result]").textContent).toBe("");
@@ -180,6 +184,27 @@ describe("review fixes (ui)", () => {
     q<HTMLButtonElement>("[data-preset='51K-888.88']").click();
     set("[data-field=market]", "uk", "change");
     expect(q<HTMLInputElement>("[data-field=plate]").value).toBe("AB 1");
+  });
+
+  it("switches to UK for a short mark with a space, names a dropped method and clears age and rate", () => {
+    mountPlateValue(host);
+    set("[data-field=market]", "cn", "change");
+    host.replaceChildren();
+    unmountPlateValue();
+    mountPlateValue(host);
+    set("[data-field=plate]", "ABC 1");
+    expect(q<HTMLSelectElement>("[data-field=market]").value).toBe("uk");
+    unmountPlateValue();
+    host.replaceChildren();
+    mountBusinessValuation(host);
+    set("[data-field=profit]", "-50000");
+    expect(q("[data-out=rows]").textContent).toContain("Needs a figure above 0");
+    unmountBusinessValuation();
+    host.replaceChildren();
+    mountNetWorth(host);
+    set("[data-field=age]", "40");
+    q<HTMLButtonElement>("[data-action=clear]").click();
+    expect(q<HTMLInputElement>("[data-field=age]").value).toBe("");
   });
 
   it("names a distance that is not a number and an age out of range", () => {

@@ -112,7 +112,7 @@ export function mountNetWorth(host: HTMLElement): void {
         labeled(t("netWorth.currency"), curSel),
         rateField,
         h("div", { class: "stage-actions" },
-          h("button", { type: "button", class: "btn ghost", "data-action": "clear", onClick: () => { for (const el of fields.values()) el.value = ""; paint(); } }, t("netWorth.clear")),
+          h("button", { type: "button", class: "btn ghost", "data-action": "clear", onClick: () => { for (const el of [...fields.values(), age, rate]) el.value = ""; paint(); } }, t("netWorth.clear")),
           copyBtn = h("button", { type: "button", class: "btn ghost", "data-action": "copy", onClick: () => void copyWithFlash(copyBtn, last, { done: t("valuation.copied"), failed: t("valuation.copyFailed") }) }, t("valuation.copy")),
         ),
       ),

@@ -60,14 +60,16 @@ export function mountBusinessValuation(host: HTMLElement): void {
     dcfRows.replaceChildren();
     const list: Array<[string, string]> = [];
     const span = (r: [number, number]) => `${num(r[0])} – ${num(r[1])}`;
-    if (earn) list.push([t("businessValuation.byEarnings"), span(earn)]);
-    if (rev) list.push([t("businessValuation.byRevenue"), span(rev)]);
-    if (d.ok) list.push([t("businessValuation.byDcf"), num(d.result.value)]);
+    const none = t("businessValuation.notApplicable");
+    list.push([t("businessValuation.byEarnings"), earn ? span(earn) : none]);
+    list.push([t("businessValuation.byRevenue"), rev ? span(rev) : none]);
+    if (d.ok) list.push([t("businessValuation.byDcf"), d.result.value > 0 ? num(d.result.value) : none]);
     const backwards = (lo: HTMLInputElement, hi: HTMLInputElement) => v(lo) > v(hi);
     errorEl.textContent = backwards(eLo, eHi) || backwards(rLo, rHi)
       ? t("businessValuation.err_multiples")
       : d.ok ? "" : t(d.error === "invalid" ? "businessValuation.err_dcfInvalid" : `businessValuation.err_${d.error}`);
-    const points = [...(earn ?? []), ...(rev ?? []), ...(d.ok ? [d.result.value] : [])].filter((x) => x > 0);
+    // One figure per method (the middle of a range), so the two multiples do not outvote the DCF.
+    const points = [...(earn ? [(earn[0] + earn[1]) / 2] : []), ...(rev ? [(rev[0] + rev[1]) / 2] : []), ...(d.ok ? [d.result.value] : [])].filter((x) => x > 0);
     if (!points.length) {
       mainEl.textContent = "";
       last = "";
@@ -75,7 +77,7 @@ export function mountBusinessValuation(host: HTMLElement): void {
       if (!errorEl.textContent || errorEl.textContent === t("businessValuation.err_dcfInvalid")) errorEl.textContent = t("businessValuation.err_invalid");
       return;
     }
-    // The middle half of the methods' figures: the earnings range is usually the one buyers use for small firms.
+    // The median of the methods' figures.
     const sorted = [...points].sort((a, b) => a - b);
     const mid = (sorted[Math.floor((sorted.length - 1) / 2)]! + sorted[Math.ceil((sorted.length - 1) / 2)]!) / 2;
     mainEl.textContent = num(mid);

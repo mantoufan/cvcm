@@ -37,7 +37,9 @@ export function mountPlateValue(host: HTMLElement): void {
       // Switch only when the current country cannot read a plate that looks complete and the guess can, so a
       // half-typed 30K… is not taken for a UK mark on the way.
       let result = valuePlate(input.value, market);
-      if (!picked && !result.ok && normalizePlate(input.value).length >= 6) {
+      // A short mark switches only when written the UK way, with a space ("1 A", "ABC 1").
+      const complete = normalizePlate(input.value).length >= 6 || /^\s*[A-Z0-9]{1,4}\s+[A-Z0-9]{1,4}\s*$/i.test(input.value);
+      if (!picked && !result.ok && complete) {
         const guess = guessPlateMarket(input.value, market);
         const other = guess === market ? result : valuePlate(input.value, guess);
         if (other.ok) {

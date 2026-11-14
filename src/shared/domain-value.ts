@@ -88,12 +88,19 @@ export type DomainValue = {
 
 export type DomainError = "empty" | "invalid" | "noTld";
 
-/**
- * Two-part extensions: a generic second level (co, com, net, org, edu, gov, ac, or, go, ne, gen, biz, info, web,
- * ltd, plc, sch, mil, nom) under a two-letter country code, as in co.uk, com.cn, co.id, net.vn, co.in, com.sg.
- */
+/** Two-part extensions sold to the public (a list, not a rule: web.de and info.me are names, not suffixes). */
+const TWO_PART = new Set(
+  (
+    "co.uk org.uk me.uk ltd.uk plc.uk ac.uk gov.uk com.cn net.cn org.cn gov.cn edu.cn com.au net.au org.au edu.au " +
+    "com.vn net.vn org.vn edu.vn gov.vn co.id or.id ac.id web.id my.id go.id co.jp ne.jp or.jp ac.jp co.kr or.kr ne.kr " +
+    "com.br net.br org.br com.tw org.tw net.tw idv.tw com.hk org.hk net.hk co.in net.in org.in com.sg edu.sg org.sg " +
+    "com.my net.my org.my com.mx org.mx co.za org.za co.nz org.nz net.nz com.ph net.ph org.ph co.th in.th ac.th com.tr " +
+    "com.ar com.co com.pe co.il com.pk com.ng com.eg com.sa com.ua co.ke com.bd com.np"
+  ).split(" "),
+);
+
 function isTwoPartSuffix(second: string, top: string): boolean {
-  return /^[a-z]{2}$/.test(top) && /^(co|com|net|org|edu|gov|ac|or|go|ne|gen|biz|info|web|ltd|plc|sch|mil|nom)$/.test(second);
+  return TWO_PART.has(`${second}.${top}`);
 }
 
 /** The registrable name and its extension from whatever was pasted (a URL, www., upper case, a trailing dot). */

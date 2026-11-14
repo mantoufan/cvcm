@@ -15,8 +15,10 @@ export function mountPhoneValue(host: HTMLElement): void {
   let market: PhoneMarket = loc === "zh-CN" ? "cn" : loc === "vi" ? "vn" : "intl";
   let last = "";
   let copyBtn: HTMLButtonElement | null = null;
-  // The market follows the number until it is picked by hand.
+  // The market follows the number until it is picked by hand, guessed afresh from the page's own market each time
+  // (a + typed and deleted does not leave the page stuck on Other).
   let picked = false;
+  const home = market;
 
   const input = h("input", {
     type: "text",
@@ -28,7 +30,7 @@ export function mountPhoneValue(host: HTMLElement): void {
     "aria-label": t("phoneValue.input"),
     onInput: () => {
       if (!picked) {
-        market = guessMarket(input.value, market);
+        market = guessMarket(input.value, home);
         marketSel.value = market;
       }
       paint();

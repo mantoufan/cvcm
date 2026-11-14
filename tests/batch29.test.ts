@@ -92,7 +92,11 @@ describe("phone number value", () => {
 
   it("values a run of 4s lower in China, and two runs of four above one", () => {
     expect(phone("13912864444", "cn").tier).toBe(phone("13912868888", "cn").tier - 1);
-    expect(phone("13544448888", "cn").tier).toBe(4);
+    // Half fours drops a tier whichever half they are in.
+    expect(phone("13544448888", "cn").tier).toBe(3);
+    expect(phone("13588884444", "cn").tier).toBe(3);
+    expect(phone("13566668888", "cn").tier).toBe(4);
+    expect(phone("13512124455", "cn").tier).toBe(1);
     expect(phone("15012341234", "cn").features).toContainEqual({ key: "shape", shape: "ABCDABCD" });
   });
 
@@ -353,6 +357,16 @@ describe("review fixes", () => {
     expect(parseMoneyInput("1.250,50", "es")).toBe(1_250.5);
     expect(parseMoneyInput("25.4", "vi")).toBe(25.4);
     expect(parseMoneyInput("25.400", "en")).toBe(25.4);
+  });
+
+  it("keeps decimal rates and signs, and real names under generic words", () => {
+    expect(parseMoneyInput("0,925", "es")).toBe(0.925);
+    expect(parseMoneyInput("0.925", "es")).toBe(0.925);
+    expect(parseMoneyInput("−25.000", "vi")).toBe(-25_000);
+    expect(parseMoneyInput("+1.000", "vi")).toBe(1_000);
+    expect(parseDomain("web.de")).toEqual({ ok: true, sld: "web", tld: "de" });
+    expect(parseDomain("info.me")).toEqual({ ok: true, sld: "info", tld: "me" });
+    expect(parseDomain("mail.web.de")).toEqual({ ok: true, sld: "web", tld: "de" });
   });
 
   it("takes whole forecast years only", () => {

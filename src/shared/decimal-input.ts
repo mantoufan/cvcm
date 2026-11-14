@@ -36,8 +36,9 @@ export function parseDecimalInput(raw: string, locale: string): number | undefin
  * that way there, and reading "25.400" đồng per dollar as 25.4 would be 1,000 times off.
  */
 export function parseMoneyInput(raw: string, locale: string): number | undefined {
-  const text = raw.trim();
-  if (decimalMarkOf(locale) === "," && /^-?\d{1,3}(\.\d{3})+(,\d+)?$/.test(text)) {
+  const text = raw.trim().replace(/^−/, "-").replace(/^\+/, "");
+  // A first group starting with 0 (0.925) is a decimal, never thousands.
+  if (decimalMarkOf(locale) === "," && /^-?[1-9]\d{0,2}(\.\d{3})+(,\d+)?$/.test(text)) {
     return Number(text.replace(/\./g, "").replace(",", "."));
   }
   return parseDecimalInput(raw, locale);
