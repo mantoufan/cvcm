@@ -4,12 +4,13 @@ import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import enHub from "../src/locales/slang/en.json";
 import coinsSnapshot from "../src/shared/meme-coins.json";
+import memeImagesJson from "../src/shared/meme-images.json";
 import worker from "../src/worker";
 import { LOCALES, type Locale } from "../src/shared/locale";
 import { preloadLocalePack } from "../src/shared/locale-preload";
 import { messages, slangMessages } from "../src/shared/messages";
 import { parseAppPath, slangHref } from "../src/shared/path";
-import { SLANG_ENTRIES, SLANG_FOCUS, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, isSlangId, slangGroupOf, slangPublished } from "../src/shared/slang";
+import { SLANG_ENTRIES, SLANG_FOCUS, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, isSlangId, slangGroupOf, slangPublished, type SlangId } from "../src/shared/slang";
 import { memeTrend, recentViews, slangArticleJsonLd, slangCopy, slangPageHtml, slangTitle, trendingIds, type SlangEntryCopy } from "../src/shared/slang-i18n";
 import { slangSyncFiles } from "../src/shared/slang-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
@@ -317,6 +318,29 @@ describe("slang: page HTML and SEO", () => {
     // The zh-CN pack carries no quotes at all, not just unrendered ones.
     expect(slangMessages("zh-CN").memes.coins).toEqual({});
     expect(slangMessages("en").memes.coins).toEqual(coinsSnapshot.coins);
+  });
+
+  it("shows each meme picture with size, alt, credit and license, also in JSON-LD and og:image", () => {
+    const images = Object.entries(memeImagesJson);
+    expect(images.length).toBeGreaterThan(0);
+    for (const [id, image] of images) {
+      expect(isSlangId(id), id).toBe(true);
+      expect(image.src, id).toBe(`memes/${id}-meme.webp`);
+      expect(existsSync(join(root, "public/covers", image.src)), id).toBe(true);
+      expect(image.licenseUrl, id).toMatch(/^https:\/\/creativecommons\.org\//);
+      expect(image.page, id).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
+      expect(Math.max(image.width, image.height), id).toBeLessThanOrEqual(640);
+      for (const locale of LOCALES) {
+        const html = slangPageHtml(locale, id as SlangId);
+        expect(html, `${locale} ${id}`).toContain(`src="/covers/${image.src}" width="${image.width}" height="${image.height}"`);
+        expect(html, `${locale} ${id}`).toContain(image.licenseUrl);
+        const ld = slangArticleJsonLd(locale, id as SlangId) as { image?: { license: string; acquireLicensePage: string } };
+        expect(ld.image?.license, `${locale} ${id}`).toBe(image.licenseUrl);
+        expect(ld.image?.acquireLicensePage, `${locale} ${id}`).toBe(image.page);
+      }
+    }
+    expect(slangPageHtml("en", "yyds")).not.toContain("meme-figure");
+    expect(buildSitemapXml(sitemapPages().filter((p) => p.kind === "slang"))).toContain("<image:loc>https://cv.cm/covers/memes/doge-meme.webp</image:loc>");
   });
 
   it("has the nav label in every core pack", () => {

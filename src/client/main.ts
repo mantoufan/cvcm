@@ -41,6 +41,7 @@ import { RANKINGS, type RankingId } from "../shared/rankings";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
 import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
 import { SLANG_FOCUS, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
+import { slangImagePath } from "../shared/slang-i18n";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -665,7 +666,9 @@ export function render(): void {
         ? MARKET_COVER[marketId]
         : tool
           ? COVER[tool]
-          : null;
+          : slangPage && slangPage !== "hub"
+            ? slangImagePath(loc, slangPage)
+            : null;
   upsertMeta("property", "og:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   upsertMeta("name", "twitter:title", pageTitle(loc, seo));
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));

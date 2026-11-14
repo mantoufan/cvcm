@@ -2,8 +2,9 @@
 import hub from "../slang/zh-TW.json";
 import list from "../slang/index/zh-TW.json";
 import trends from "../../shared/meme-trends.json";
+import images from "../../shared/meme-images.json";
 import coins from "../../shared/meme-coins.json";
 import type { SlangMessages } from "../../shared/messages";
-import type { MemeData } from "../../shared/slang-i18n";
+import type { MemeData, MemeImages } from "../../shared/slang-i18n";
 
-export default { ...hub, list, memes: { ...trends, ...coins } as MemeData } satisfies SlangMessages;
+export default { ...hub, list, memes: { ...trends, ...coins } as MemeData, images: images as MemeImages } satisfies SlangMessages;

@@ -612,6 +612,10 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .kb-about { margin-top: 2rem; color: var(--ink-soft); }
 /* Slang hub: a plain text jump list to the groups. */
 .slang-jump { margin: 0.25rem 0 1rem; color: var(--ink-soft); font-size: 0.9rem; line-height: 1.8; }
+/* Meme pages: a freely licensed picture (fixed size, no layout shift) with its credit. */
+.meme-figure { margin: 1rem 0 0; }
+.meme-figure img { display: block; max-width: min(100%, 320px); height: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+.meme-figure figcaption { margin-top: 0.35rem; color: var(--ink-soft); font-size: 0.78rem; }
 /* Meme pages: weekly popularity bars, a direction badge, and (outside zh-CN) a coin panel with a risk note. */
 .meme-trend, .meme-coin { margin: 1.25rem 0 0; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius); }
 .meme-trend h2, .meme-coin h2 { margin: 0 0 0.5rem; font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }

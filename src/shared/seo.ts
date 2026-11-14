@@ -16,7 +16,7 @@ import { kbArticleJsonLd, kbBreadcrumbJsonLd, kbDescription, kbFaqJsonLd, kbPage
 import { kbArticleOf, type KbPage } from "./kb";
 import { refArticleJsonLd, refBreadcrumbJsonLd, refDescription, refFaqJsonLd, refPageHtml, refTitle } from "./ref-i18n";
 import type { RefId } from "./ref";
-import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangDescription, slangFaqJsonLd, slangPageHtml, slangTitle } from "./slang-i18n";
+import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangDescription, slangFaqJsonLd, slangImagePath, slangPageHtml, slangTitle } from "./slang-i18n";
 import type { SlangId } from "./slang";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
@@ -1087,7 +1087,11 @@ export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<strin
   ]);
 }
 
-function ogImage(seo: SeoInput): string | null {
+function ogImage(seo: SeoInput, locale: Locale): string | null {
+  if (seo.slang && seo.slangId) {
+    const path = slangImagePath(locale, seo.slangId);
+    return path ? `https://cv.cm${path}` : null;
+  }
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
   if (seo.games && seo.game) return coverUrl(GAME_COVER[seo.game]);
   if (seo.markets && seo.market) return coverUrl(MARKET_COVER[seo.market]);
@@ -1116,7 +1120,7 @@ export function applyHtmlSeo(
   const title = pageTitle(locale, seo);
   const description = pageDescription(locale, seo);
   const canonical = pageCanonical(locale, seo);
-  const image = ogImage(seo);
+  const image = ogImage(seo, locale);
   let out = html.replace(/<html\b[^>]*>/i, `<html lang="${escapeHtml(locale)}">`);
   out = out.replace(/<title>[^<]*<\/title>/i, `<title>${escapeHtml(title)}</title>`);
   out = out.replace(
