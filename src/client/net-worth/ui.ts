@@ -40,6 +40,7 @@ export function mountNetWorth(host: HTMLElement): void {
   const mainEl = h("p", { class: "shape-main", "data-out": "net" });
   const rows = h("dl", { class: "stats-grid", "data-out": "rows" });
   const compare = h("dl", { class: "stats-grid", "data-out": "compare" });
+  const rateHint = h("p", { class: "hint", "data-out": "need-rate", hidden: true }, t("netWorth.needRate"));
   const money = (n: number) => plain(loc, Math.round(n));
 
   const paint = () => {
@@ -56,9 +57,11 @@ export function mountNetWorth(host: HTMLElement): void {
     };
     const a = read(ASSET_FIELDS);
     const d = read(DEBT_FIELDS);
-    const bad = [...a.bad, ...d.bad];
+    const ageRaw = parseDecimalInput(age.value, loc);
+    const bad: string[] = [...a.bad, ...d.bad, ...(ageRaw !== undefined && Number.isNaN(ageRaw) ? ["age"] : [])];
     rows.replaceChildren();
     compare.replaceChildren();
+    rateHint.hidden = true;
     if (bad.length) {
       mainEl.textContent = "";
       last = "";
@@ -77,11 +80,10 @@ export function mountNetWorth(host: HTMLElement): void {
     if (r.debtToAsset !== null) list.push([t("netWorth.debtRatio"), `${plain(loc, r.debtToAsset * 100, 1)}%`]);
     rows.append(...list.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
     last = list.map(([k, v]) => `${k}: ${v}`).join("\n");
-    const ageNum = parseDecimalInput(age.value, loc);
-    const band = ageNum === undefined ? null : ageBand(ageNum);
+    const band = ageRaw === undefined ? null : ageBand(ageRaw);
     const perUsd = curSel.value === "usd" ? 1 : parseDecimalInput(rate.value, loc);
     if (band && (perUsd === undefined || !Number.isFinite(perUsd) || perUsd <= 0)) {
-      compare.append(h("p", { class: "hint", "data-out": "need-rate" }, t("netWorth.needRate")));
+      rateHint.hidden = false;
     } else if (band && perUsd !== undefined) {
       const ref = SCF_2022[band];
       const usd = (n: number) => currency(loc, "USD", n);
@@ -120,6 +122,7 @@ export function mountNetWorth(host: HTMLElement): void {
         rows,
         h("h2", null, t("netWorth.compare")),
         compare,
+        rateHint,
         h("p", { class: "hint" }, t("netWorth.source")),
       ),
     ),

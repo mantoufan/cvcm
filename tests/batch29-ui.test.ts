@@ -156,6 +156,24 @@ describe("review fixes (ui)", () => {
     }
   });
 
+  it("grades the top plate as top and names backwards multiples and a bad age", () => {
+    mountPlateValue(host);
+    set("[data-field=market]", "vn", "change");
+    set("[data-field=plate]", "51K-888.88");
+    expect(q("[data-out=tier]").textContent).toBe("Grade: top");
+    unmountPlateValue();
+    host.replaceChildren();
+    mountBusinessValuation(host);
+    set("[data-field=earningsLow]", "4");
+    set("[data-field=earningsHigh]", "3");
+    expect(q("[data-out=error]").textContent).toBe("A high multiple must be at least the low one.");
+    unmountBusinessValuation();
+    host.replaceChildren();
+    mountNetWorth(host);
+    set("[data-field=age]", "abc");
+    expect(q("[data-out=error]").textContent).toBe("Your age (optional) is not a number.");
+  });
+
   it("shows the DCF's own error when only the DCF inputs are wrong", () => {
     mountBusinessValuation(host);
     set("[data-field=cashFlow]", "");
@@ -168,7 +186,9 @@ describe("review fixes (ui)", () => {
     set("[data-field=age]", "40");
     set("[data-field=currency]", "other", "change");
     expect(q("[data-out=need-rate]").textContent).toContain("exchange rate");
+    expect(q("[data-out=compare]").querySelector("p")).toBeNull();
     set("[data-field=rate]", "25000");
+    expect(q("[data-out=need-rate]").hidden).toBe(true);
     expect(q("[data-out=compare]").textContent).toContain("$9");
     expect(q("[data-out=compare]").textContent).toContain("below the median");
   });

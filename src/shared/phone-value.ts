@@ -63,8 +63,9 @@ export type PhoneError = "empty" | "invalid";
 /** Digits only, with a country code (+86, 0086, +84, 0084) turned into the national form. */
 export function phoneDigits(raw: string, market: PhoneMarket): string {
   let d = halfWidth(raw).replace(/\D/g, "");
-  if (market === "cn") d = d.replace(/^(?:0086|86)(?=1\d{10}$)/, "");
-  if (market === "vn") d = d.replace(/^(?:0084|84)(?=[35789]\d{8}$)/, "0");
+  // The country code, and a trunk 0 some people keep after it (+84 0903…).
+  if (market === "cn") d = d.replace(/^(?:0086|86)0?(?=1\d{10}$)/, "");
+  if (market === "vn") d = d.replace(/^(?:0084|84)0?(?=[35789]\d{8}$)/, "0");
   return d;
 }
 
@@ -85,8 +86,8 @@ export function guessMarket(raw: string, current: PhoneMarket, noVietnam = false
   const plain = text.replace(/\D/g, "");
   if (/^(?:\+|00)/.test(text)) {
     const code = plain.replace(/^00/, "");
-    if (/^861[3-9]\d{9}$/.test(code)) return "cn";
-    if (/^84[35789]\d{8}$/.test(code)) return "vn";
+    if (/^860?1[3-9]\d{9}$/.test(code)) return "cn";
+    if (/^840?[35789]\d{8}$/.test(code)) return "vn";
     return "intl";
   }
   if (current !== "intl" && isValidPhone(phoneDigits(raw, current), current)) return current;

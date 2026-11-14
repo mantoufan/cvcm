@@ -7,6 +7,9 @@ import { PLATE_MARKETS, guessPlateMarket, normalizePlate, valuePlate, type Plate
 
 let mounted: { cleanup: () => void } | null = null;
 
+/** Plate tiers run 0–4; the grade words are shared with the phone tool's 0–6 scale, so the top plate reads "top". */
+const PLATE_GRADE = [0, 2, 3, 5, 6] as const;
+
 const EXAMPLE: Record<PlateMarket, string> = { uk: "AB 1", vn: "30K-686.86", cn: "粤B·88866" };
 const PRESETS: Record<PlateMarket, string[]> = {
   uk: ["1 A", "ABC 1", "A1 ABC", "AB12 CDE"],
@@ -82,7 +85,7 @@ export function mountPlateValue(host: HTMLElement): void {
       high: v.high,
       currency: v.currency,
       score: v.score,
-      tierLabel: t("valuation.tierLine", { tier: t(`valuation.tier_${Math.min(6, v.tier)}`) }),
+      tierLabel: t("valuation.tierLine", { tier: t(`valuation.tier_${PLATE_GRADE[Math.min(4, v.tier)]}`) }),
       lines: v.features.map((f) =>
         f.key === "ukFormat" ? t("valuation.f_ukFormat", { format: t(`plateValue.uk_${f.format}`), length: f.length }) : featureText(f)),
     });

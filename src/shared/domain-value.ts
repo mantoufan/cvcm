@@ -141,8 +141,9 @@ export function twoWords(s: string): [string, string] | null {
 function baseValue(sld: string): { kind: DomainKind; value: number; features: DomainFeature[] } {
   const features: DomainFeature[] = [];
   // Internationalised names sell for far less than ASCII ones; the shortest still find buyers.
-  if (sld.startsWith("xn--")) {
-    const chars = [...(decodeIdn(sld) ?? sld)].length;
+  const decoded = decodeIdn(sld);
+  if (decoded) {
+    const chars = [...decoded].length;
     features.push({ key: "kind", kind: "idn", digits: chars });
     return { kind: "idn", value: chars <= 2 ? 2_000 : chars <= 4 ? 300 : 40, features };
   }
@@ -224,8 +225,9 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
     features.push({ key: "hot", word: hot });
     value *= 1.6;
   }
-  // Every letter past ten costs: long names are hard to type and remember.
-  const n = plainName.length;
+  // Every letter past ten costs: long names are hard to type and remember. A name in another script counts its
+  // own characters, not its punycode.
+  const n = base.kind === "idn" ? [...(decodeIdn(sld) ?? sld)].length : plainName.length;
   if (n > 10) value *= Math.pow(0.8, n - 10);
   features.push({ key: "length", n });
   const factor = TLD_FACTOR[tld] ?? OTHER_TLD;
@@ -274,6 +276,8 @@ function punyDecode(input: string): string | null {
     }
     bias = adapt(i - old, out.length + 1, old === 0);
     n += Math.floor(i / (out.length + 1));
+    // Past the last Unicode code point (or a surrogate) is not valid punycode.
+    if (n > 0x10ffff || (n >= 0xd800 && n <= 0xdfff)) return null;
     i %= out.length + 1;
     out.splice(i++, 0, n);
   }

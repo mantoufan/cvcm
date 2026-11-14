@@ -45,21 +45,21 @@ export type DcfError = "discountBelowGrowth" | "invalid";
 
 export function dcf(input: DcfInput): { ok: true; result: DcfResult } | { ok: false; error: DcfError } {
   const { cashFlow, growth, discount, terminalGrowth, years } = input;
-  if (![cashFlow, growth, discount, terminalGrowth, years].every(Number.isFinite) || years < 1 || years > 30 || discount <= -1 || growth <= -1) {
+  if (![cashFlow, growth, discount, terminalGrowth, years].every(Number.isFinite) || !Number.isInteger(years) || years < 1 || years > 30 || discount <= -1 || growth <= -1) {
     return { ok: false, error: "invalid" };
   }
   if (discount <= terminalGrowth) return { ok: false, error: "discountBelowGrowth" };
   const rows: DcfResult["rows"] = [];
   let cf = cashFlow;
   let forecastPv = 0;
-  for (let year = 1; year <= Math.round(years); year++) {
+  for (let year = 1; year <= years; year++) {
     cf *= 1 + growth;
     const pv = cf / Math.pow(1 + discount, year);
     forecastPv += pv;
     rows.push({ year, cashFlow: cf, pv });
   }
   const terminal = (cf * (1 + terminalGrowth)) / (discount - terminalGrowth);
-  const terminalPv = terminal / Math.pow(1 + discount, Math.round(years));
+  const terminalPv = terminal / Math.pow(1 + discount, years);
   return { ok: true, result: { value: forecastPv + terminalPv, forecastPv, terminalPv, rows } };
 }
 

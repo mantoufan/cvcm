@@ -310,6 +310,27 @@ describe("review fixes", () => {
     expect(plate("29B1・8888", "vn").tier).toBe(plate("29B1-8888", "vn").tier);
   });
 
+  it("survives invalid punycode and counts an IDN's own characters", () => {
+    expect(decodeIdn("xn--tm80u")).toBeNull();
+    expect(valueDomain("xn--tm80u.com").ok).toBe(true);
+    const long = domain("中华人民共和国.com");
+    expect(long.features).toContainEqual({ key: "length", n: 7 });
+    expect(long.estimate).toBeGreaterThan(10);
+  });
+
+  it("reads +84 0… and +86 0…, and keeps Taiwanese plates out of the mainland pattern", () => {
+    expect(phoneDigits("+84 0903 686 868", "vn")).toBe("0903686868");
+    expect(guessMarket("+84 0903 686 868", "intl")).toBe("vn");
+    expect(phoneDigits("+86 0139 1286 8888", "cn")).toBe("13912868888");
+    expect(valuePlate("ABC-1234", "cn")).toEqual({ ok: false, error: "invalid" });
+    expect(plate("粤B·D12345", "cn").plate).toBe("粤BD12345");
+    expect(plate("粤B·12345F", "cn").tier).toBeGreaterThanOrEqual(0);
+  });
+
+  it("takes whole forecast years only", () => {
+    expect(dcf({ cashFlow: 100, growth: 0, discount: 0.1, terminalGrowth: 0, years: 1.4 })).toEqual({ ok: false, error: "invalid" });
+  });
+
   it("lets distance count only as it adds up", () => {
     expect(mileageFactor(24_000, "mi", 0)).toBe(1);
     expect(mileageFactor(24_000, "mi", 1.5)).toBeCloseTo(0.9);

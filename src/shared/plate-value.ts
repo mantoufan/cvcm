@@ -48,7 +48,8 @@ export type PlateValue = {
 export type PlateError = "empty" | "invalid";
 
 const CN_PROVINCES = "京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘晋蒙陕吉闽贵粤青藏川宁琼";
-const CN_RE = new RegExp(`^([${CN_PROVINCES}])?([A-HJ-NP-Z])([A-HJ-NP-Z0-9]{5,6})$`);
+/** Province, city letter, then 5 characters, or a new-energy 6: D/F + letter or digit + 4 digits, or 5 digits + D/F. */
+const CN_RE = new RegExp(`^([${CN_PROVINCES}])?([A-HJ-NP-Z])([A-HJ-NP-Z0-9]{5}|[DF][A-HJ-NP-Z0-9]\\d{4}|\\d{5}[DF])$`);
 /** Province code, series letters, then 4–6 digits: six is a series digit + the 5-digit serial (29-B1 123.45). */
 const VN_RE = /^(\d{2})([A-Z]{1,2})(\d{4,6})$/;
 /** Hanoi (29, 30…) and Ho Chi Minh City (50–59) plates draw the most bidders. */
@@ -57,9 +58,14 @@ const VN_BIG = /^(29|30|31|32|33|40|50|51|52|53|54|55|56|57|58|59)$/;
 /** What people put between parts of a plate: spaces, dots, hyphens, middle dots, underscores. */
 const SEP = "\\s.\\-·•・_";
 
+const SEP_RE = new RegExp(`[${SEP}]`, "g");
+/** A Vietnamese plate with a separator after the series digit (29B1-8888): the serial starts after it. */
+const VN_SPLIT_RE = new RegExp(`^\\d{2}[${SEP}]*[A-Z]{1,2}\\d[${SEP}]+[\\d${SEP}]+$`);
+const CN_LUCKY_TAILS: ReadonlySet<string> = new Set(["88", "66", "99", "68", "86"]);
+
 /** Upper case, with the separators taken out (and full-width forms from CJK input). */
 export function normalizePlate(raw: string): string {
-  return halfWidth(raw).toUpperCase().replace(new RegExp(`[${SEP}]`, "g"), "");
+  return halfWidth(raw).toUpperCase().replace(SEP_RE, "");
 }
 
 export function ukFormat(p: string): UkFormat | null {
@@ -205,7 +211,7 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
     if (!m) return { ok: false, error: "invalid" };
     // A separator after a series digit marks where the serial starts (29B1-8888 is series B1, serial 8888);
     // without one, six digits are a series digit and a 5-digit serial and fewer are all serial.
-    const split = new RegExp(`^\\d{2}[${SEP}]*[A-Z]{1,2}\\d[${SEP}]+[\\d${SEP}]+$`).exec(halfWidth(raw).toUpperCase().trim());
+    const split = VN_SPLIT_RE.test(halfWidth(raw).toUpperCase().trim());
     const serial = split ? m[3]!.slice(1) : m[3]!.length === 6 ? m[3]!.slice(1) : m[3]!;
     if (serial.length < 4) return { ok: false, error: "invalid" };
     const s = scoreSerial(serial, VN_LUCKY_TAILS);
@@ -220,7 +226,7 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
   } else {
     const m = CN_RE.exec(p);
     if (!m) return { ok: false, error: "invalid" };
-    const s = scoreSerial(m[3]!, new Set(["88", "66", "99", "68", "86"]));
+    const s = scoreSerial(m[3]!, CN_LUCKY_TAILS);
     ({ tier, f, features } = s);
     band = CN_LADDER[tier]!;
   }
