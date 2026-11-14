@@ -55,6 +55,7 @@ export const CATEGORIES = [
   { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter"] },
   { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
+  { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation"] },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -219,6 +220,12 @@ export const TOOLS = [
   "mahjong",
   "chess",
   "chinese-chess",
+  "phone-number-value",
+  "license-plate-value",
+  "domain-value",
+  "car-depreciation",
+  "net-worth",
+  "business-valuation",
   "gold",
   "silver",
   "platinum",

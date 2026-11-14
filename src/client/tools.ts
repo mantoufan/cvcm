@@ -1042,4 +1042,40 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountChineseChess(host);
     return m.unmountChineseChess;
   },
+  "phone-number-value": async (host, ctx) => {
+    const m = await import("./phone-number-value/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPhoneValue(host);
+    return m.unmountPhoneValue;
+  },
+  "license-plate-value": async (host, ctx) => {
+    const m = await import("./license-plate-value/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPlateValue(host);
+    return m.unmountPlateValue;
+  },
+  "domain-value": async (host, ctx) => {
+    const m = await import("./domain-value/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDomainValue(host);
+    return m.unmountDomainValue;
+  },
+  "car-depreciation": async (host, ctx) => {
+    const m = await import("./car-depreciation/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCarDepreciation(host);
+    return m.unmountCarDepreciation;
+  },
+  "net-worth": async (host, ctx) => {
+    const m = await import("./net-worth/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountNetWorth(host);
+    return m.unmountNetWorth;
+  },
+  "business-valuation": async (host, ctx) => {
+    const m = await import("./business-valuation/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountBusinessValuation(host);
+    return m.unmountBusinessValuation;
+  },
 };

@@ -81,6 +81,10 @@
     {
       "id": "assets",
       "name": "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)"
+    },
+    {
+      "id": "valuation",
+      "name": "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)"
     }
   ],
   "tools": [
@@ -1663,6 +1667,54 @@
       "description": "Market cap, P/E, and dividend yield.",
       "category": "assets",
       "url": "https://cv.cm/en/stocks/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "phone-number-value",
+      "name": "Phone number value",
+      "description": "What a mobile number is worth from its digits.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/phone-number-value/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "license-plate-value",
+      "name": "Number plate valuation",
+      "description": "Estimate a UK, Vietnamese or Chinese plate.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/license-plate-value/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "domain-value",
+      "name": "Domain value",
+      "description": "Appraise a domain name in seconds.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/domain-value/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "car-depreciation",
+      "name": "Car depreciation calculator",
+      "description": "What your car is worth now and later.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/car-depreciation/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "net-worth",
+      "name": "Net worth calculator",
+      "description": "Assets minus debts, compared by age.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/net-worth/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "business-valuation",
+      "name": "Business valuation calculator",
+      "description": "Multiples and DCF for a small business.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/business-valuation/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     }
   ]
