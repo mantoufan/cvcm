@@ -107,7 +107,8 @@ describe("ideas: data snapshot", () => {
       d.fc.forEach((v, i) => expect(d.fcLo[i] <= v && v <= d.fcHi[i], `${id} band ${i}`).toBe(true));
       expect(d.demand >= 0 && d.demand <= snapshot.bands.demand.length, id).toBe(true);
       for (const s of Object.values(d.scores)) expect(Number.isInteger(s) && s >= 0 && s <= 100, id).toBe(true);
-      expect(["low", "medium", "high"], id).toContain(d.competition);
+      expect(["low", "medium", "high", null], id).toContain(d.competition);
+      expect(d.yoy === null || Number.isInteger(d.yoy), id).toBe(true);
       for (const lang of Object.keys(d.langs)) expect(LOCALES as readonly string[], `${id} ${lang}`).toContain(lang);
     }
     // Nothing that looks like a raw Keyword Planner field.

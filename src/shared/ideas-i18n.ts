@@ -35,8 +35,8 @@ export type IdeaData = {
   fcHi: number[];
   /** Index into `bands.demand` (last 12 months' average monthly searches). */
   demand: number;
-  /** Last 12 months vs the 12 before, in percent. */
-  yoy: number;
+  /** Last 12 months vs the 12 before, in percent; null when the year before had no searches (a new idea). */
+  yoy: number | null;
   /** Last 12 months over the first 12 of the window (a multiple), when the first year had searches. */
   fourYear: number | null;
   /** Forecast for the next 12 months vs the last 12, in percent. */
@@ -259,7 +259,7 @@ function panelHtml(locale: Locale, id: IdeaId): string {
   const s = data.scores;
   const facts: [string, string][] = [
     [ui.demand, escapeHtml(ui.demandBands[data.demand] ?? "")],
-    [ui.yoy, changeHtml(locale, data.yoy)],
+    ...(data.yoy !== null ? [[ui.yoy, changeHtml(locale, data.yoy)] as [string, string]] : []),
     ...(data.fourYear !== null ? [[ui.fourYear, escapeHtml(fill(ui.times, { n: plain(locale, data.fourYear, 1) }))] as [string, string]] : []),
     [ui.next12, changeHtml(locale, data.next12)],
     ...(data.cpc !== null ? [[ui.cpc, escapeHtml(ui.cpcBands[data.cpc] ?? "")] as [string, string]] : []),
@@ -323,7 +323,7 @@ function rankingHtml(locale: Locale): string {
   const rows = rankedIdeas(locale).map(({ id, data }, index) => (
     `<tr><td>${index + 1}</td><td><a href="${escapeHtml(ideasHref(locale, id))}" data-nav="ideas-${id}">${escapeHtml(ideaName(locale, id).name)}</a></td>`
     + `<td><span class="idea-pill idea-tier-${scoreTier(data.scores.total)}">${data.scores.total}</span></td>`
-    + `<td>${escapeHtml(ui.demandBands[data.demand] ?? "")}</td><td>${changeHtml(locale, data.yoy)}</td><td>${outlookBadge(locale, ideaOutlook(data))}</td></tr>`
+    + `<td>${escapeHtml(ui.demandBands[data.demand] ?? "")}</td><td>${data.yoy !== null ? changeHtml(locale, data.yoy) : "—"}</td><td>${outlookBadge(locale, ideaOutlook(data))}</td></tr>`
   )).join("");
   if (!rows) return "";
   return `<section class="wall idea-ranking" id="ranking"><h2>${escapeHtml(ui.ranking)}</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>${escapeHtml(ui.colIdea)}</th><th>${escapeHtml(ui.colScore)}</th><th>${escapeHtml(ui.colDemand)}</th><th>${escapeHtml(ui.colYoy)}</th><th>${escapeHtml(ui.colOutlook)}</th></tr></thead><tbody>${rows}</tbody></table></div>`

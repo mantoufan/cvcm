@@ -67,6 +67,7 @@ def fetch():
     names = ["JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE", "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"]
     (sy, sm), (ey, em) = month_range()
     kw = json.loads(KEYWORDS.read_text())
+    problems = []
     raw = {"from": f"{sy}-{sm:02d}", "to": f"{ey}-{em:02d}", "fetched": date.today().isoformat(), "langs": {}}
     for locale, lang_id in LANG.items():
         words = sorted({w for idea in kw.values() for w in idea.get(locale, [])})
@@ -88,6 +89,8 @@ def fetch():
                 short.append(f"{r.text} ({len(series)})")
             row = {
                 "key": r.text.lower(),
+                # The phrase Keyword Planner answered for plus its close variants: one keyword, one search series.
+                "variants": sorted({t.lower().replace(" ", "") for t in [r.text, *r.close_variants]}),
                 "avg": m.avg_monthly_searches,
                 # competition_index is 0 both for "no competition" and "unknown": keep it only when Google rated it.
                 "ci": m.competition_index if m.competition.name in ("LOW", "MEDIUM", "HIGH") else None,
@@ -100,13 +103,15 @@ def fetch():
                 out[text.lower()] = row
         raw["langs"][locale] = out
         if short:
-            # Usually last month is not published yet (run after the first week of the month).
-            raise SystemExit(f"{locale}: {len(short)} keywords lack {MONTHS} months of history, e.g. {short[:3]}; Keyword Planner may not have published {ey}-{em:02d} yet")
+            problems.append(f"{locale}: {len(short)} keywords lack {MONTHS} months of history, e.g. {short[:3]}")
         print(f"{locale}: {len(words)} keywords, {len(res.results)} results", file=sys.stderr)
     CACHE.mkdir(parents=True, exist_ok=True)
     path = CACHE / f"raw-{raw['to']}.json"
     path.write_text(json.dumps(raw, ensure_ascii=False))
     print(f"raw cache: {path}", file=sys.stderr)
+    if problems:
+        # Usually last month is not published yet: run again after the first week of the month.
+        raise SystemExit("\n".join(problems) + f"\nKeyword Planner may not have published {ey}-{em:02d} yet; the raw cache was kept")
     return raw
 
 
@@ -186,13 +191,18 @@ def derive(raw):
                     continue
                 # A searched phrase and its close variants come back as one result, and the same CJK spelling can be
                 # searched in several languages (副業 in ja and zh-TW): count each underlying keyword once.
-                key = (row.get("key") or w.lower()).replace(" ", "")
+                keys = set(row.get("variants") or [(row.get("key") or w.lower()).replace(" ", "")])
+                # Keyword Planner also merges some variants without listing them (dropship / dropshipping return one
+                # series). Identical 48-month series at 1,000+ searches a month are that merge, not coincidence (small
+                # phrases can share rounded buckets by chance, so they are not merged this way).
+                if sum(row["h"][-12:]) / 12 >= 1000:
+                    keys.add(("series", tuple(row["h"])))
                 # Keyword Planner does not split a phrase by language: "amazon fba" or 副業 returns the same worldwide
                 # figure whether asked in en, ja or es. A phrase listed under several locales is counted once, for the
                 # first locale that lists it, so a language row never shows another language's searches.
-                if key in seen:
+                if keys & seen:
                     continue
-                seen.add(key)
+                seen |= keys
                 series = despike(row["h"])
                 loc_series = [a + b for a, b in zip(loc_series, series)]
                 total = [a + b for a, b in zip(total, series)]
@@ -218,12 +228,13 @@ def derive(raw):
             raise SystemExit(f"{idea_id}: no search data in any language")
         mid, lo, hi = forecast(total)
         next12 = sum(mid) / 12
-        yoy = last12 / prev12 if prev12 else 1.0
+        # A year-on-year change needs searches in the year before; a brand-new idea gets none (momentum = forecast).
+        yoy = last12 / prev12 if prev12 >= 10 else None
         fc = next12 / last12
         cpc = value_usd / bid_weight if bid_weight else 0.0
         # No competition index for any phrase means unknown, not "no competition".
         ci = ci_sum / ci_weight if ci_weight else None
-        momentum = math.sqrt(max(yoy, 1e-3) * max(fc, 1e-3))
+        momentum = math.sqrt(max(yoy, 1e-3) * max(fc, 1e-3)) if yoy is not None else max(fc, 1e-3)
         scores = {
             "demand": round(clamp(100 * (math.log10(last12) - 2) / 4)),
             "momentum": round(clamp(50 + 72.13 * math.log(momentum))),
@@ -238,7 +249,7 @@ def derive(raw):
             "fcLo": [round(100 * v / peak) for v in lo],
             "fcHi": [round(100 * v / peak) for v in hi],
             "demand": band(last12, DEMAND_BANDS),
-            "yoy": round(100 * (yoy - 1)),
+            "yoy": round(100 * (yoy - 1)) if yoy is not None else None,
             "fourYear": round(last12 / first12, 1) if first12 else None,
             "next12": round(100 * (fc - 1)),
             "cpc": band(cpc, CPC_BANDS) if cpc else None,
@@ -275,4 +286,4 @@ if __name__ == "__main__":
     rank = sorted(data["ideas"].items(), key=lambda kv: -kv[1]["scores"]["total"])
     for k, v in rank:
         s = v["scores"]
-        print(f'{s["total"]:>3} d{s["demand"]:>3} m{s["momentum"]:>3} v{s["value"]:>3} o{s["openness"]:>3}  yoy{v["yoy"]:>+5}% next{v["next12"]:>+5}% 4y x{v["fourYear"]}  {k}  langs={",".join(v["langs"])}')
+        print(f'{s["total"]:>3} d{s["demand"]:>3} m{s["momentum"]:>3} v{s["value"]:>3} o{s["openness"]:>3}  yoy{v["yoy"] if v["yoy"] is not None else "new":>5}% next{v["next12"]:>+5}% 4y x{v["fourYear"]}  {k}  langs={",".join(v["langs"])}')
