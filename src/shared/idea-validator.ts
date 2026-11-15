@@ -27,8 +27,8 @@ export const OPTION_POINTS: Record<ValidatorQuestion, readonly number[]> = {
   edge: [0, 1, 2, 3, 4],
   // Not sure / paid ads / a marketplace (Amazon, Etsy, TikTok Shop) / local word of mouth or communities / my own audience or customers
   channel: [0, 1, 2, 3, 4],
-  // Shrinking / not sure / steady / growing
-  trend: [0, 2, 2, 4],
+  // Shrinking / not sure (unresearched, so a weak spot) / steady / growing
+  trend: [0, 1, 2, 4],
 };
 
 /** How much each question counts in the readiness score (sums to 100). */
@@ -93,8 +93,9 @@ export function ideaTokens(text: string, locale: Locale | null = null): string[]
     const latin = part.replace(CJK_RUN, " ").normalize("NFD").replace(/\p{M}/gu, "").replace(/đ/g, "d").trim();
     for (let word of latin.split(/\s+/)) {
       if (STOP.has(word) && !keep?.has(word)) continue;
-      // English plurals of 5+ letters: washes → wash, boxes → box, candles → candle (short words like "this" stay).
-      if (word.length > 4 && /(sh|ch|x|ss)es$/.test(word)) word = word.slice(0, -2);
+      // English plurals of 5+ letters: agencies → agency, washes → wash, candles → candle (short words like "this" stay).
+      if (word.length > 4 && word.endsWith("ies")) word = `${word.slice(0, -3)}y`;
+      else if (word.length > 4 && /(sh|ch|x|ss)es$/.test(word)) word = word.slice(0, -2);
       else if (word.length > 4 && word.endsWith("s") && !word.endsWith("ss")) word = word.slice(0, -1);
       if (word.length >= 2 && (!STOP.has(word) || keep?.has(word))) out.push(word);
     }
@@ -104,7 +105,7 @@ export function ideaTokens(text: string, locale: Locale | null = null): string[]
 
 /** Words that say "business", "how to", "online", "I want" and the like in the eight languages (accents removed). */
 const STOP = new Set([
-  "business", "businesse", "companie", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small", "open", "opening", "launch", "handmade", "homemade", "custom", "small", "big", "best", "good", "cheap", "run", "own", "new", "local", "near", "about", "some", "this", "that",
+  "business", "businesse", "companie", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small", "open", "opening", "launch", "handmade", "homemade", "app", "apps", "mobile", "portable", "custom", "small", "big", "best", "good", "cheap", "run", "own", "new", "local", "near", "about", "some", "this", "that",
   "negocio", "de", "la", "el", "lo", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi", "abrir", "montar", "nuevo",
   "bisni", "bisnis", "usaha", "jasa", "di", "cara", "jualan", "jual", "rumah", "saya", "ingin", "mau", "dan", "yang", "toko", "buka", "membuka",
   "kinh", "doanh", "mo", "ban", "va", "cua", "hang", "tren", "mang", "toi", "muon", "nha", "dich", "vu", "cong", "ty", "lam",
@@ -172,7 +173,11 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
   // One shared word is enough in a short text (a name like "Pet services"), or when no other idea shares any word
   // ("open a laundromat near campus"); otherwise ("mobile" in "a mobile app for students") it is too weak a signal.
   const alone = tokens.length <= 2 || !second || second.score === 0;
-  const strong = best.hits.length >= 2 || (best.hits.length === 1 && alone && df.get(only) === 1 && (only.length >= 3 || /[^\x00-\x7f]/.test(only)));
+  const distinct = only !== undefined && (only.length >= 3 || /[^\x00-\x7f]/.test(only));
+  // A word two ideas share counts when the text is just that word and one idea is clearly closer (洗车: car wash over
+  // mobile car wash), as decided by the coverage tie-break above.
+  const sharedButCloser = tokens.length <= 2 && df.get(only) === 2 && second !== undefined && best.score === second.score;
+  const strong = best.hits.length >= 2 || (best.hits.length === 1 && alone && distinct && (df.get(only) === 1 || sharedButCloser));
   return strong ? best.id : null;
 }
 

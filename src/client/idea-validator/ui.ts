@@ -18,6 +18,8 @@ type State = {
    * pick of "Something else" is kept until the box is cleared.
    */
   pinned: boolean;
+  /** The automatic match the reader overrode when pinning: typing only overrides the pick with a different one. */
+  autoAtPin: string;
   /** Idea names in the page's language, for matching. */
   names: Partial<Record<IdeaId, string>>;
   /** What the result area shows (match + answers), so typing does not rebuild it needlessly. */
@@ -53,7 +55,7 @@ export function mountIdeaValidator(host: HTMLElement): void {
     ...OPTION_POINTS[q].map((_, i) => h("option", { value: String(i) }, t(`ideaValidator.${q}.o${i + 1}`))),
   )])) as Record<ValidatorQuestion, HTMLSelectElement>;
   const out = h("div", { class: "iv-out", "aria-live": "polite", "data-out": "result" });
-  state = { idea, match, selects, out, copyBtn: null, pinned: false, names: {}, signature: "", ready: false, last: "" };
+  state = { idea, match, selects, out, copyBtn: null, pinned: false, autoAtPin: NONE, names: {}, signature: "", ready: false, last: "" };
   host.append(
     h("header", { class: "tool-head" },
       h("h1", null, t("ideaValidator.title")),
@@ -123,7 +125,7 @@ function onIdeaInput(): void {
     // clearing the box, replaces it.
     const cleared = !state.idea.value.trim();
     const optedOut = state.pinned && state.match.value === NONE;
-    if (!state.pinned || cleared || (!optedOut && found && found !== state.match.value)) {
+    if (!state.pinned || cleared || (!optedOut && found && found !== state.match.value && found !== state.autoAtPin)) {
       state.match.value = found ?? NONE;
       state.pinned = false;
     }
@@ -134,6 +136,7 @@ function onIdeaInput(): void {
 function onMatchChange(): void {
   if (!state) return;
   state.pinned = true;
+  state.autoAtPin = state.ready ? matchIdea(state.idea.value, state.names, locale()) ?? NONE : NONE;
   paint();
 }
 
@@ -184,8 +187,7 @@ function paint(): void {
     items.length ? h("ul", { "data-out": key }, ...items.map((q) => h("li", null, t(`ideaValidator.${q}.label`)))) : h("p", { class: "hint" }, t("ideaValidator.none")),
   );
   out.append(list(t("ideaValidator.strengths"), result.strengths, "strengths"), list(t("ideaValidator.weaknesses"), result.weaknesses, "weaknesses"));
-  const focus = result.weaknesses[0];
-  const tips = focus ? [1, 2, 3].map((n) => t(`ideaValidator.tip.${tipsFor(focus, answers)}.t${n}`)) : [];
+  const { focus, tips } = nextSteps(result, answers);
   if (focus) {
     out.append(h("section", { class: "iv-list" },
       h("h3", null, t("ideaValidator.next", { item: t(`ideaValidator.${focus}.label`) })),
@@ -198,10 +200,17 @@ function paint(): void {
 }
 
 /** The result as plain text for Copy. */
+/** The weak spot to test first and its three tips; "nobody competes" is tested as proof of demand. */
+function nextSteps(result: NonNullable<ReturnType<typeof validateIdea>>, answers: ValidatorAnswers): { focus: ValidatorQuestion | null; tips: string[] } {
+  const weakest = result.weaknesses[0];
+  if (!weakest) return { focus: null, tips: [] };
+  const focus = tipsFor(weakest, answers);
+  return { focus, tips: [1, 2, 3].map((n) => t(`ideaValidator.tip.${focus}.t${n}`)) };
+}
+
 function summary(result: NonNullable<ReturnType<typeof validateIdea>>, answers: ValidatorAnswers, id: IdeaId | null): string {
   const loc = locale();
-  const focus = result.weaknesses[0];
-  const tips = focus ? [1, 2, 3].map((n) => t(`ideaValidator.tip.${tipsFor(focus, answers)}.t${n}`)) : [];
+  const { focus, tips } = nextSteps(result, answers);
   const text = state?.idea.value.trim() ?? "";
   return [
     `${t("ideaValidator.title")}: ${result.total}/100 (${t(`ideaValidator.grade.${result.grade}`)})`,

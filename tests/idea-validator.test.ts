@@ -49,12 +49,15 @@ describe("idea validator: tips", () => {
     expect(tipsFor("competition", { competition: 4 })).toBe("evidence");
     expect(tipsFor("competition", { competition: 0 })).toBe("competition");
     expect(tipsFor("cost", {})).toBe("cost");
+    // An unresearched market trend is a weak spot.
+    const unsure = validateIdea({ evidence: 4, price: 4, competition: 3, cost: 4, time: 4, edge: 4, channel: 4, trend: 1 }, null)!;
+    expect(unsure.weaknesses).toEqual(["trend"]);
   });
 });
 
 describe("idea validator: matching", () => {
   it("tokenizes Latin words and CJK pairs", () => {
-    expect(ideaTokens("Mobile car-detailing services")).toEqual(["mobile", "car", "detailing"]);
+    expect(ideaTokens("Mobile car-detailing services")).toEqual(["car", "detailing"]);
     expect(ideaTokens("Velas aromáticas")).toEqual(["vela", "aromatica"]);
     expect(ideaTokens("自动售货机")).toEqual(["自动", "动售", "售货", "货机"]);
   });
@@ -94,6 +97,10 @@ describe("idea validator: matching", () => {
     // Language-specific filler: Vietnamese "in" means print.
     expect(matchIdea("Kinh doanh in 3D", names("vi"), "vi")).toBe("3d-printing");
     expect(matchIdea("car washes", names("en"))).toBe("car-wash");
+    expect(matchIdea("AI agencies", names("en"))).toBe("ai-agency");
+    expect(matchIdea("home bakeries", names("en"))).toBe("home-bakery");
+    expect(matchIdea("洗车", names("zh-CN"), "zh-CN")).toBe("car-wash");
+    expect(matchIdea("status app", names("en"))).toBeNull();
     // Plurals and accents.
     expect(matchIdea("pressure washing houses and driveways", names("en"))).toBe("pressure-washing");
     expect(matchIdea("tiệm giặt sấy tự động", names("vi"))).toBe("laundromat");
