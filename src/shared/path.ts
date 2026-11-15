@@ -837,6 +837,16 @@ export function slangHref(locale: Locale, entry: SlangId | null = null): string 
   return entry ? `${base}/${entry}/` : `${base}/`;
 }
 
+/** Tool pages that render with the ideas pack (idea names and outlook scores): the idea validator. */
+export const IDEAS_PACK_TOOLS: readonly ToolId[] = ["idea-validator"];
+
+/** The ideas pack a page needs: the idea (or "hub") on ideas pages, "hub" on IDEAS_PACK_TOOLS pages, else none. */
+export function ideasPackOf(parsed: AppPath): IdeaId | "hub" | null {
+  if (parsed.kind === "ideas" || parsed.kind === "bare-ideas") return parsed.entry ?? "hub";
+  if ((parsed.kind === "app" || parsed.kind === "bare") && parsed.tool && IDEAS_PACK_TOOLS.includes(parsed.tool)) return "hub";
+  return null;
+}
+
 /** The ideas channel: `/{locale}/ideas/` (hub) and `/{locale}/ideas/{id}/`. */
 export function ideasHref(locale: Locale, entry: IdeaId | null = null): string {
   const base = `/${localePath(locale)}/${IDEAS_SEGMENT}`;

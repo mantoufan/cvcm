@@ -4,9 +4,9 @@ import { LOCALES } from "../src/shared/locale";
 import { messages } from "../src/shared/messages";
 import { IDEA_ENTRIES } from "../src/shared/ideas";
 import { ideaName } from "../src/shared/ideas-i18n";
-import { OPTION_POINTS, QUESTION_WEIGHT, VALIDATOR_QUESTIONS, ideaTokens, matchIdea, validateIdea, type ValidatorAnswers } from "../src/shared/idea-validator";
+import { OPTION_POINTS, QUESTION_WEIGHT, VALIDATOR_QUESTIONS, ideaTokens, matchIdea, tipsFor, validateIdea, type ValidatorAnswers } from "../src/shared/idea-validator";
 import { applyHtmlSeo, pageTitle } from "../src/shared/seo";
-import { appHref, parseAppPath } from "../src/shared/path";
+import { appHref, ideasPackOf, parseAppPath } from "../src/shared/path";
 import { ideasPageHtml } from "../src/shared/ideas-i18n";
 
 const all = (i: number): ValidatorAnswers => Object.fromEntries(VALIDATOR_QUESTIONS.map((q) => [q, Math.min(i, OPTION_POINTS[q].length - 1)]));
@@ -44,6 +44,14 @@ describe("idea validator: scoring", () => {
 
 });
 
+describe("idea validator: tips", () => {
+  it("gives proof-of-demand tips when nobody competes, competitor tips otherwise", () => {
+    expect(tipsFor("competition", { competition: 4 })).toBe("evidence");
+    expect(tipsFor("competition", { competition: 0 })).toBe("competition");
+    expect(tipsFor("cost", {})).toBe("cost");
+  });
+});
+
 describe("idea validator: matching", () => {
   it("tokenizes Latin words and CJK pairs", () => {
     expect(ideaTokens("Mobile car-detailing services")).toEqual(["mobile", "car", "detailing"]);
@@ -76,10 +84,13 @@ describe("idea validator: matching", () => {
     expect(ideaTokens("コーヒー")).toEqual(["コー", "ーヒ", "ヒー"]);
     // Generic verbs do not pick an idea; one clear word in a longer text does when no other idea shares a word.
     expect(matchIdea("open a laundromat near campus", names("en"))).toBe("laundromat");
-    expect(matchIdea("abrir una lavandería", names("es"))).not.toBe("coffee-shop");
+    expect(matchIdea("abrir una lavandería", names("es"))).toBe("laundromat");
+    expect(matchIdea("this is my idea", names("en"))).toBeNull();
+    expect(matchIdea("handmade candles", names("en"))).toBe("candle-business");
+    expect(matchIdea("handmade soap", names("en"))).toBeNull();
     expect(matchIdea("open a salon", names("en"))).toBeNull();
     // Two ideas sharing different words equally is ambiguous.
-    expect(matchIdea("t-shirt printing", names("en"))).not.toBe("3d-printing");
+    expect(matchIdea("t-shirt printing", names("en"))).toBeNull();
     // Language-specific filler: Vietnamese "in" means print.
     expect(matchIdea("Kinh doanh in 3D", names("vi"), "vi")).toBe("3d-printing");
     expect(matchIdea("car washes", names("en"))).toBe("car-wash");
@@ -93,6 +104,9 @@ describe("idea validator: matching", () => {
 describe("idea validator: page", () => {
   it("is a tool route with a title, copy in every locale and links from the ideas channel", () => {
     expect(parseAppPath("/en/idea-validator/")).toEqual({ kind: "app", locale: "en", tool: "idea-validator" });
+    expect(ideasPackOf(parseAppPath("/en/idea-validator/"))).toBe("hub");
+    expect(ideasPackOf(parseAppPath("/en/ideas/laundromat/"))).toBe("laundromat");
+    expect(ideasPackOf(parseAppPath("/en/gpa/"))).toBeNull();
     for (const locale of LOCALES) {
       expect(pageTitle(locale, "idea-validator"), locale).toMatch(/ — cv\.cm$/);
       const ui = messages(locale).ui as unknown as { ideaValidator: Record<string, unknown> };

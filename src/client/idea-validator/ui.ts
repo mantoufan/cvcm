@@ -5,7 +5,7 @@ import { hasIdeasMessages } from "../../shared/messages";
 import { IDEA_ENTRIES, isIdeaId, type IdeaId } from "../../shared/ideas";
 import { ideaData, ideaName } from "../../shared/ideas-i18n";
 import { ideasHref } from "../../shared/path";
-import { OPTION_POINTS, VALIDATOR_QUESTIONS, matchIdea, validateIdea, type ValidatorAnswers, type ValidatorQuestion } from "../../shared/idea-validator";
+import { OPTION_POINTS, VALIDATOR_QUESTIONS, matchIdea, tipsFor, validateIdea, type ValidatorAnswers, type ValidatorQuestion } from "../../shared/idea-validator";
 
 type State = {
   idea: HTMLTextAreaElement;
@@ -13,8 +13,11 @@ type State = {
   selects: Record<ValidatorQuestion, HTMLSelectElement>;
   out: HTMLElement;
   copyBtn: HTMLButtonElement | null;
-  /** The text when the match was picked by hand (or preset): until the text changes, typing does not re-match. */
-  pinnedText: string | null;
+  /**
+   * The match was picked by hand (or preset): typing keeps it unless a different idea matches confidently; a hand
+   * pick of "Something else" is kept until the box is cleared.
+   */
+  pinned: boolean;
   /** Idea names in the page's language, for matching. */
   names: Partial<Record<IdeaId, string>>;
   /** What the result area shows (match + answers), so typing does not rebuild it needlessly. */
@@ -50,7 +53,7 @@ export function mountIdeaValidator(host: HTMLElement): void {
     ...OPTION_POINTS[q].map((_, i) => h("option", { value: String(i) }, t(`ideaValidator.${q}.o${i + 1}`))),
   )])) as Record<ValidatorQuestion, HTMLSelectElement>;
   const out = h("div", { class: "iv-out", "aria-live": "polite", "data-out": "result" });
-  state = { idea, match, selects, out, copyBtn: null, pinnedText: null, names: {}, signature: "", ready: false, last: "" };
+  state = { idea, match, selects, out, copyBtn: null, pinned: false, names: {}, signature: "", ready: false, last: "" };
   host.append(
     h("header", { class: "tool-head" },
       h("h1", null, t("ideaValidator.title")),
@@ -96,7 +99,7 @@ function fillIdeas(loc: ReturnType<typeof locale>): void {
   if (isIdeaId(preset)) {
     state.idea.value = state.names[preset] ?? "";
     state.match.value = preset;
-    state.pinnedText = state.idea.value;
+    state.pinned = true;
     paint();
     return;
   }
@@ -118,9 +121,11 @@ function onIdeaInput(): void {
     const found = matchIdea(state.idea.value, state.names, locale());
     // A hand-picked (or preset) match stays through typo fixes and extra words; only a different confident match, or
     // clearing the box, replaces it.
-    if (state.pinnedText === null || (found && found !== state.match.value) || !state.idea.value.trim()) {
+    const cleared = !state.idea.value.trim();
+    const optedOut = state.pinned && state.match.value === NONE;
+    if (!state.pinned || cleared || (!optedOut && found && found !== state.match.value)) {
       state.match.value = found ?? NONE;
-      state.pinnedText = null;
+      state.pinned = false;
     }
   }
   paint();
@@ -128,7 +133,7 @@ function onIdeaInput(): void {
 
 function onMatchChange(): void {
   if (!state) return;
-  state.pinnedText = state.idea.value;
+  state.pinned = true;
   paint();
 }
 
@@ -180,7 +185,7 @@ function paint(): void {
   );
   out.append(list(t("ideaValidator.strengths"), result.strengths, "strengths"), list(t("ideaValidator.weaknesses"), result.weaknesses, "weaknesses"));
   const focus = result.weaknesses[0];
-  const tips = focus ? [1, 2, 3].map((n) => t(`ideaValidator.tip.${focus}.t${n}`)) : [];
+  const tips = focus ? [1, 2, 3].map((n) => t(`ideaValidator.tip.${tipsFor(focus, answers)}.t${n}`)) : [];
   if (focus) {
     out.append(h("section", { class: "iv-list" },
       h("h3", null, t("ideaValidator.next", { item: t(`ideaValidator.${focus}.label`) })),
@@ -196,7 +201,7 @@ function paint(): void {
 function summary(result: NonNullable<ReturnType<typeof validateIdea>>, answers: ValidatorAnswers, id: IdeaId | null): string {
   const loc = locale();
   const focus = result.weaknesses[0];
-  const tips = focus ? [1, 2, 3].map((n) => t(`ideaValidator.tip.${focus}.t${n}`)) : [];
+  const tips = focus ? [1, 2, 3].map((n) => t(`ideaValidator.tip.${tipsFor(focus, answers)}.t${n}`)) : [];
   const text = state?.idea.value.trim() ?? "";
   return [
     `${t("ideaValidator.title")}: ${result.total}/100 (${t(`ideaValidator.grade.${result.grade}`)})`,
