@@ -23,7 +23,34 @@
     "statusDiscontinued": "descatalogado",
     "byDecade": "Recuerdos de {decade}",
     "play": "Vuelve a probarlo en cv.cm",
-    "playConsole": "Juega en el navegador a juegos homebrew de esta consola"
+    "playConsole": "Juega en el navegador a juegos homebrew de esta consola",
+    "vote": {
+      "title": "¿Te suena?",
+      "ask": {
+        "snacks": "¿Lo comiste alguna vez?",
+        "games": "¿Lo jugaste alguna vez?",
+        "gadgets": "¿Usaste uno alguna vez?",
+        "toys": "¿Jugaste con esto alguna vez?",
+        "internet": "¿Lo usaste alguna vez?",
+        "life": "¿Lo recuerdas?"
+      },
+      "yes": {
+        "snacks": "Lo comí",
+        "games": "Lo jugué",
+        "gadgets": "Usé uno",
+        "toys": "Jugué",
+        "internet": "Lo usé",
+        "life": "Lo recuerdo"
+      },
+      "no": "No",
+      "result": "{p}% eligió «{yes}» · respuestas: {n}",
+      "mine": "Tu respuesta: {a}",
+      "sending": "Enviando…",
+      "failed": "No se pudo enviar. Inténtalo más tarde.",
+      "note": "Anónimo: no se guardan direcciones IP y cada red solo puede sumar un número limitado de respuestas por página y día.",
+      "repeat": "Tu red alcanzó hoy el límite de respuestas para esta página, así que esta no se sumó.",
+      "snapshot": "{result} (cuando respondiste)"
+    }
   },
   "hub": {
     "title": "Nostalgia: snacks, consolas y aparatos de los 80, 90 y 2000",

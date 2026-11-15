@@ -23,7 +23,34 @@
     "statusDiscontinued": "discontinued",
     "byDecade": "Remember {decade}",
     "play": "Try it again on cv.cm",
-    "playConsole": "Play homebrew games for this console in your browser"
+    "playConsole": "Play homebrew games for this console in your browser",
+    "vote": {
+      "title": "Does it bring back memories?",
+      "ask": {
+        "snacks": "Did you ever eat this?",
+        "games": "Did you ever play it?",
+        "gadgets": "Did you ever use one?",
+        "toys": "Did you ever play with it?",
+        "internet": "Did you ever use it?",
+        "life": "Do you remember it?"
+      },
+      "yes": {
+        "snacks": "I ate it",
+        "games": "I played it",
+        "gadgets": "I used one",
+        "toys": "I played with it",
+        "internet": "I used it",
+        "life": "I remember it"
+      },
+      "no": "No",
+      "result": "{p}% chose “{yes}” · answers: {n}",
+      "mine": "Your answer: {a}",
+      "sending": "Sending…",
+      "failed": "Could not send your answer. Please try again later.",
+      "note": "Anonymous: no IP addresses are stored, and one network can add only a limited number of answers to a page each day.",
+      "repeat": "Your network has reached today's limit for this page, so this answer was not added.",
+      "snapshot": "{result} (when you answered)"
+    }
   },
   "hub": {
     "title": "Nostalgia: 80s, 90s and 2000s Snacks, Consoles and Gadgets",

@@ -23,7 +23,34 @@
     "statusDiscontinued": "sudah tidak diproduksi",
     "byDecade": "Kenangan {decade}",
     "play": "Coba lagi di cv.cm",
-    "playConsole": "Mainkan game homebrew untuk konsol ini di browser"
+    "playConsole": "Mainkan game homebrew untuk konsol ini di browser",
+    "vote": {
+      "title": "Kamu ingat?",
+      "ask": {
+        "snacks": "Pernah makan ini?",
+        "games": "Pernah memainkannya?",
+        "gadgets": "Pernah memakainya?",
+        "toys": "Pernah memainkannya?",
+        "internet": "Pernah memakainya?",
+        "life": "Masih ingat?"
+      },
+      "yes": {
+        "snacks": "Pernah makan",
+        "games": "Pernah main",
+        "gadgets": "Pernah pakai",
+        "toys": "Pernah main",
+        "internet": "Pernah pakai",
+        "life": "Masih ingat"
+      },
+      "no": "Tidak",
+      "result": "{p}% memilih “{yes}” · {n} jawaban",
+      "mine": "Jawabanmu: {a}",
+      "sending": "Mengirim…",
+      "failed": "Jawaban tidak terkirim. Coba lagi nanti.",
+      "note": "Anonim: alamat IP tidak disimpan, dan satu jaringan hanya bisa menambah jawaban dalam jumlah terbatas per item per hari.",
+      "repeat": "Jaringanmu sudah mencapai batas hari ini untuk item ini, jadi jawaban ini tidak ditambahkan.",
+      "snapshot": "{result} (saat kamu menjawab)"
+    }
   },
   "hub": {
     "title": "Nostalgia: Jajanan, Konsol dan Gadget Tahun 80-an, 90-an, 2000-an",

@@ -170,6 +170,33 @@ function playHtml(locale: Locale, id: NostalgiaId): string {
   return `<section class="learn-related"><h2>${escapeHtml(nostalgiaUi(locale).play)}</h2>${linkListHtml(items)}</section>`;
 }
 
+/**
+ * "Did you have one?": a question and two buttons, hidden until the client wires them (`.ready`, styles.css) and always
+ * in the Worker's prerendered copy (`.page.ssr`), so no reader meets buttons that do nothing. Nothing is fetched at mount; the client
+ * (nostalgia/ui.ts) posts an
+ * answer on click and shows the share that the API returns, or the reader's earlier answer from this browser.
+ */
+function voteHtml(locale: Locale, id: NostalgiaId): string {
+  const vote = nostalgiaUi(locale).vote;
+  const group = nostalgiaGroupOf(id);
+  return `<section class="nostalgia-vote" aria-labelledby="nostalgia-vote-title"><h2 id="nostalgia-vote-title">${escapeHtml(vote.title)}</h2>`
+    + `<p>${escapeHtml(vote.ask[group])}</p>`
+    + `<p class="nostalgia-vote-buttons"><button type="button" class="btn ghost" data-answer="yes">${escapeHtml(vote.yes[group])}</button> `
+    + `<button type="button" class="btn ghost" data-answer="no">${escapeHtml(vote.no)}</button></p>`
+    + `<p class="nostalgia-vote-result" aria-live="polite" hidden></p>`
+    + `<p class="meme-note">${escapeHtml(vote.note)}</p></section>`;
+}
+
+/** The share line after answering: "73% chose “I ate it” · 1,234 answers". */
+export function nostalgiaVoteResult(locale: Locale, id: NostalgiaId, tally: { yes: number; no: number }): string {
+  const vote = nostalgiaUi(locale).vote;
+  const n = tally.yes + tally.no;
+  // Never 0% or 100% while the other answer has votes: a reader who just said "No" must not vanish from the share.
+  const raw = n ? Math.round((tally.yes / n) * 100) : 0;
+  const p = tally.yes && tally.no ? Math.min(99, Math.max(1, raw)) : raw;
+  return fill(vote.result, { p, n: n.toLocaleString(HREFLANG[locale]), yes: vote.yes[nostalgiaGroupOf(id)] });
+}
+
 /** The nostalgia hub or one entry as HTML: the client mounts it as is, and the Worker serves it to crawlers. */
 export function nostalgiaPageHtml(locale: Locale, id: NostalgiaId | null): string {
   const ui = nostalgiaUi(locale);
@@ -230,6 +257,8 @@ export function nostalgiaPageHtml(locale: Locale, id: NostalgiaId | null): strin
     faqHtml(locale, id),
     sourcesHtml(locale, id),
     meta.related.length ? `<section class="learn-related"><h2>${escapeHtml(ui.related)}</h2>${linkListHtml(nostalgiaLinkItems(locale, meta.related))}</section>` : "",
+    // Last in the article: it appears only once the client wires it, so nothing below it moves.
+    voteHtml(locale, id),
     `<p class="more"><a href="${escapeHtml(nostalgiaHref(locale))}" data-nav="nostalgia">${escapeHtml(ui.all)}</a></p>`,
     `</article>`,
   ].join("");
