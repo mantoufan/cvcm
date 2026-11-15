@@ -52,6 +52,20 @@ export function ideaPublished(id: IdeaId): string {
   return IDEAS_ADDED[id] ?? IDEAS_PUBLISHED;
 }
 
+/** When the copy was last edited. */
+export function ideaUpdated(id: IdeaId): string {
+  return IDEAS_UPDATED[id] ?? ideaPublished(id);
+}
+
+/**
+ * When the page last changed: its copy or the monthly data snapshot it shows, whichever is later. One rule for the
+ * visible date, Article dateModified and the sitemap lastmod.
+ */
+export function ideaModified(id: IdeaId): string {
+  const updated = ideaUpdated(id);
+  return IDEAS_DATA_FETCHED > updated ? IDEAS_DATA_FETCHED : updated;
+}
+
 /** Ideas the site footer links directly (picked by hand: high search demand, spread across the groups); their names are core-pack `ideasFocus.*`. */
 export const IDEAS_FOCUS = [
   "amazon-fba",

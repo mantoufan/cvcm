@@ -4,7 +4,7 @@ import { fill } from "./fill";
 import { PUBLISHER, blockHtml, dateLabel, inline, linkListHtml, type KbBlock } from "./kb-i18n";
 import { ideaEntryMessages, ideasMessages, messages, type IdeasMessages } from "./messages";
 import { appHref, ideasHref } from "./path";
-import { IDEA_ENTRIES, IDEA_GROUPS, IDEA_META, IDEAS_UPDATED, ideaGroupOf, ideaPublished, type IdeaId } from "./ideas";
+import { IDEA_ENTRIES, IDEA_GROUPS, IDEA_META, ideaGroupOf, ideaModified, ideaPublished, type IdeaId } from "./ideas";
 import { plain } from "./number-format";
 import { HREFLANG } from "./sitemap";
 
@@ -105,18 +105,6 @@ function hubVars(locale: Locale): { n: number; year: string } {
 
 export function ideaFaqItems(locale: Locale, id: IdeaId | null): { q: string; a: string }[] {
   return id ? ideaCopy(locale, id).faq : ideasHub(locale).faq.map((item) => ({ q: fill(item.q, hubVars(locale)), a: fill(item.a, hubVars(locale)) }));
-}
-
-/** When the copy was last edited. */
-export function ideaUpdated(id: IdeaId): string {
-  return IDEAS_UPDATED[id] ?? ideaPublished(id);
-}
-
-/** When the page last changed: its copy or the monthly data snapshot it shows, whichever is later (shown, and dateModified). */
-export function ideaModified(locale: Locale, id: IdeaId): string {
-  const fetched = ideasData(locale).fetched;
-  const updated = ideaUpdated(id);
-  return fetched > updated ? fetched : updated;
 }
 
 export type IdeaOutlook = "up" | "flat" | "down";
@@ -377,7 +365,7 @@ export function ideasPageHtml(locale: Locale, id: IdeaId | null): string {
     `<article class="kb idea">`,
     `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(groupLabels[ideaGroupOf(id)])} · ${escapeHtml(where)}</p>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
-    `<p class="kb-meta"><span>${escapeHtml(ui.startup)}${colon}${escapeHtml(startup)}</span> · <time datetime="${ideaModified(locale, id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, ideaModified(locale, id)) }))}</time></p>`,
+    `<p class="kb-meta"><span>${escapeHtml(ui.startup)}${colon}${escapeHtml(startup)}</span> · <time datetime="${ideaModified(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, ideaModified(id)) }))}</time></p>`,
     `</header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p></section>`,
     panelHtml(locale, id),
@@ -454,7 +442,7 @@ export function ideasArticleJsonLd(locale: Locale, id: IdeaId | null): Record<st
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     inLanguage: HREFLANG[locale],
     datePublished: ideaPublished(id),
-    dateModified: ideaModified(locale, id),
+    dateModified: ideaModified(id),
     author: PUBLISHER,
     publisher: PUBLISHER,
     isAccessibleForFree: true,

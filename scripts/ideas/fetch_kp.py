@@ -75,7 +75,8 @@ def fetch():
     (sy, sm), (ey, em) = month_range()
     kw = json.loads(KEYWORDS.read_text())
     problems = []
-    raw = {"from": f"{sy}-{sm:02d}", "to": f"{ey}-{em:02d}", "fetched": date.today().isoformat(), "langs": {}}
+    # The CNY->USD rate is taken with the searches, so --derive re-uses it instead of moving bands with today's rate.
+    raw = {"from": f"{sy}-{sm:02d}", "to": f"{ey}-{em:02d}", "fetched": date.today().isoformat(), "fx": cny_to_usd(), "langs": {}}
     for locale, lang_id in LANG.items():
         words = sorted({w for idea in kw.values() for w in idea.get(locale, [])})
         req = client.get_type("GenerateKeywordHistoricalMetricsRequest")
@@ -150,7 +151,10 @@ def despike(series):
     # (e.g. 300, 1,000, 300) is a one-off and becomes their mean. The last month has nothing after it, so it stays.
     for t in (n - 3, n - 2):
         prev, nxt = series[t - 1], series[t + 1]
-        if series[t] > 2 * max(prev, nxt) and series[t] - max(prev, nxt) > 100:
+        # A peak the same calendar month also had a year earlier is seasonal (a September high every year), not a spike.
+        y = t - 12
+        seasonal = y >= 1 and series[y] > 1.5 * max(series[y - 1], series[y + 1])
+        if not seasonal and series[t] > 2 * max(prev, nxt) and series[t] - max(prev, nxt) > 100:
             out[t] = round((prev + nxt) / 2)
     return out
 
@@ -192,7 +196,7 @@ def forecast(series):
 
 def derive(raw):
     kw = json.loads(KEYWORDS.read_text())
-    fx = cny_to_usd()
+    fx = raw.get("fx") or cny_to_usd()
     ideas = {}
     unmatched = []
     for idea_id, by_locale in kw.items():

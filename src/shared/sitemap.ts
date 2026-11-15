@@ -7,7 +7,7 @@ import { DATASET_SNAPSHOT, DATASETS, datasetUpdated, type DatasetId } from "./da
 import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
 import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublished, type SlangId } from "./slang";
-import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaPublished, type IdeaId } from "./ideas";
+import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaModified, type IdeaId } from "./ideas";
 import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
@@ -169,10 +169,8 @@ function pageLastmod(page: SitemapPage): string | null {
   }
   // Ideas pages show the monthly search-data snapshot, so they change at least when it is refreshed.
   if (page.kind === "ideas") {
-    const dates = page.entry
-      ? [IDEAS_UPDATED[page.entry] ?? ideaPublished(page.entry)]
-      : [IDEAS_PUBLISHED, ...Object.values(IDEAS_ADDED), ...Object.values(IDEAS_UPDATED)];
-    return [...dates, IDEAS_DATA_FETCHED].sort().at(-1) ?? IDEAS_PUBLISHED;
+    if (page.entry) return ideaModified(page.entry);
+    return [IDEAS_PUBLISHED, ...Object.values(IDEAS_ADDED), ...Object.values(IDEAS_UPDATED), IDEAS_DATA_FETCHED].sort().at(-1) ?? IDEAS_PUBLISHED;
   }
   return null;
 }
