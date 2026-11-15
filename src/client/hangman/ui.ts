@@ -14,7 +14,7 @@ const RECENT = 12;
 const SVG = "http://www.w3.org/2000/svg";
 
 /** A list game in progress, kept so a reload resumes it instead of dealing a new word (and dodging a loss). */
-type SavedGame = { word: string; guessed: string[]; hints: number; category: Category };
+type SavedGame = { word: string; guessed: string[]; hints: number; category: Category; lang?: WordLang };
 type Saved = { lang: WordLang; category: Category | "all"; won: number; lost: number; streak: number; game?: SavedGame };
 
 let mounted: { cleanup: () => void } | null = null;
@@ -54,17 +54,19 @@ export function mountHangman(host: HTMLElement): void {
   const firstVisit = !stored && storageWorks();
   const recent: string[] = [];
   let game: Game = newGame("");
+  /** The word list the board's word was dealt from (its keyboard), which the menu may have moved on from. */
+  let wordLang: WordLang = "en";
   let wordCategory: Category | null = null;
   /** A word typed by a friend: the category line says so and the score is not counted. */
   let custom = false;
 
   /** A list game set aside for a friend's word: it is kept (and saved) and comes back with New word. */
-  let suspended: { game: Game; category: Category } | null = null;
+  let suspended: { game: Game; category: Category; lang: WordLang } | null = null;
   const listOpen = () => !custom && !!wordCategory && game.guessed.length > 0 && status(game) === "playing";
 
   const persist = () => {
-    const keep = listOpen() ? { game, category: wordCategory! } : custom ? suspended : null;
-    const kept: SavedGame | undefined = keep ? { word: keep.game.word, guessed: [...keep.game.guessed], hints: keep.game.hints, category: keep.category } : undefined;
+    const keep = listOpen() ? { game, category: wordCategory!, lang: wordLang } : custom ? suspended : null;
+    const kept: SavedGame | undefined = keep ? { word: keep.game.word, guessed: [...keep.game.guessed], hints: keep.game.hints, category: keep.category, lang: keep.lang } : undefined;
     writeStore(STORE, { lang, category, ...score, game: kept } satisfies Saved);
   };
 
@@ -108,13 +110,9 @@ export function mountHangman(host: HTMLElement): void {
   let keyEls = new Map<string, HTMLButtonElement>();
 
   /** The keyboard of the word's own list (a resumed English word keeps English keys under a Spanish menu). */
-  const keysLang = (): WordLang =>
-    !custom && wordCategory && !WORDS[lang][wordCategory].includes(game.word)
-      ? WORD_LANGS.find((l) => WORDS[l][wordCategory!].includes(game.word)) ?? lang
-      : lang;
+  const keysLang = (): WordLang => (custom ? lang : wordLang);
   /** Whether the menus now point at another list than the word on the board (their change waits for the next word). */
-  const menuAhead = () =>
-    !custom && !!wordCategory && !(WORDS[lang][wordCategory].includes(game.word) && (category === "all" || category === wordCategory));
+  const menuAhead = () => !custom && !!wordCategory && (lang !== wordLang || (category !== "all" && category !== wordCategory));
 
   const buildKeys = () => {
     const alphabet = ALPHABET[keysLang()];
@@ -129,13 +127,20 @@ export function mountHangman(host: HTMLElement): void {
     const shown = reveal(game, st === "lost");
     const got = new Set(game.guessed);
     const chars = [...game.word];
-    wordEl.replaceChildren(...shown.map((c, i) => {
+    // Letters are grouped per word, so a phrase wraps between words, never inside one.
+    const groups: HTMLElement[] = [];
+    let group: HTMLElement | null = null;
+    shown.forEach((c, i) => {
       const ch = chars[i]!;
-      if (ch === " ") return h("span", { class: "hm-gap" }, " ");
-      if (!letterKey(ch)) return h("span", { class: "hm-sym" }, ch);
-      const missed = st === "lost" && !got.has(letterKey(ch));
-      return h("span", { class: `hm-letter${missed ? " missed" : ""}` }, c ?? " ");
-    }));
+      if (ch === " ") {
+        group = null;
+        return;
+      }
+      if (!group) groups.push(group = h("span", { class: "hm-group" }));
+      if (!letterKey(ch)) group.append(h("span", { class: "hm-sym" }, ch));
+      else group.append(h("span", { class: `hm-letter${st === "lost" && !got.has(letterKey(ch)) ? " missed" : ""}` }, c ?? " "));
+    });
+    wordEl.replaceChildren(...groups);
     // A screen reader reads the pattern, not a row of empty boxes.
     wordEl.setAttribute("aria-label", t("hangman.wordLabel", { word: shown.map((c) => c ?? "_").join(" ") }));
     const n = strikes(game);
@@ -218,11 +223,12 @@ export function mountHangman(host: HTMLElement): void {
   const start = (word: string, cat: Category | null, isCustom: boolean, save = true) => {
     disarmNew();
     // A friend's word sets a started list game aside (New word brings it back); a new list word gives it up.
-    if (isCustom && listOpen()) suspended = { game, category: wordCategory! };
+    if (isCustom && listOpen()) suspended = { game, category: wordCategory!, lang: wordLang };
     else if (!isCustom) abandon();
     pendingEl.hidden = true;
     game = newGame(word);
     wordCategory = cat;
+    wordLang = lang;
     custom = isCustom;
     buildKeys();
     if (save) persist();
@@ -254,6 +260,7 @@ export function mountHangman(host: HTMLElement): void {
       secretMsg.textContent = "";
       game = back.game;
       wordCategory = back.category;
+      wordLang = back.lang;
       custom = false;
       pendingEl.hidden = !menuAhead();
       buildKeys();
@@ -349,6 +356,10 @@ export function mountHangman(host: HTMLElement): void {
     if (status(back) === "playing") {
       game = back;
       wordCategory = g.category;
+      // The list it was dealt from (older saves lack it: the first list holding the word).
+      wordLang = WORD_LANGS.includes(g.lang as WordLang) && WORDS[g.lang!][g.category].includes(g.word)
+        ? g.lang!
+        : WORD_LANGS.find((l) => WORDS[l][g.category].includes(g.word))!;
       recent.push(g.word);
       // The menus already show a language or category picked mid-game: say it starts with the next word.
       pendingEl.hidden = !menuAhead();

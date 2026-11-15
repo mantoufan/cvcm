@@ -9,7 +9,7 @@ import {
 
 type VolUnit = "ml" | "oz";
 /** `ml` is the exact size behind a rounded field (a preset, or a unit switch); null once the size is typed. */
-type Row = { count: HTMLInputElement; size: HTMLInputElement; abv: HTMLInputElement; el: HTMLElement; ml: number | null };
+type Row = { count: HTMLInputElement; size: HTMLInputElement; abv: HTMLInputElement; ml: number | null };
 
 export function mountBac(host: HTMLElement): void {
   // Pounds and US fluid ounces on the English page (its biggest audience is American), metric elsewhere. Keyed on
@@ -48,6 +48,7 @@ export function mountBac(host: HTMLElement): void {
     }
     vol = volSel.value as VolUnit;
     for (const r of rows) if (r.ml !== null) r.size.value = String(round1(toUnit(r.ml)));
+    for (const u of listEl.querySelectorAll<HTMLElement>(".bac-unit")) u.textContent = vol === "oz" ? "oz" : "mL";
     paint();
   } },
     h("option", { value: "ml", selected: vol === "ml" }, "mL"),
@@ -86,7 +87,7 @@ export function mountBac(host: HTMLElement): void {
         paint();
       } }, "×"),
     );
-    const row: Row = { count: countEl, size: sizeEl, abv: abvEl, el, ml: preset.ml };
+    const row: Row = { count: countEl, size: sizeEl, abv: abvEl, ml: preset.ml };
     rows.push(row);
     listEl.append(el);
   };
@@ -97,7 +98,6 @@ export function mountBac(host: HTMLElement): void {
   };
 
   const paint = () => {
-    for (const u of listEl.querySelectorAll<HTMLElement>(".bac-unit")) u.textContent = vol === "oz" ? "oz" : "mL";
     const w = Number(weightEl.value);
     const kg = exactKg ?? (weightUnit.value === "lb" ? lbToKg(w) : w);
     // An empty field is missing input, not 0 hours (which would show the highest estimate).

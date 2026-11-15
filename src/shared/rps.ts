@@ -40,7 +40,7 @@ export type Target = (typeof TARGETS)[number];
 export type Score = { win: number; lose: number; draw: number };
 
 /** "win" or "lose" when someone has reached the target, else null. */
-export function matchOver(score: Score, target: Target): Result | null {
+export function matchOver(score: Score, target: Target): "win" | "lose" | null {
   if (!target) return null;
   if (score.win >= target) return "win";
   if (score.lose >= target) return "lose";

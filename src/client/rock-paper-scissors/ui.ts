@@ -1,4 +1,4 @@
-import { h, onScreen } from "../dom";
+import { h, keepShortcutsOnClick, onScreen } from "../dom";
 import { t } from "../i18n";
 import { randomBelow } from "../../shared/random";
 import { physicalLetter, typingTarget } from "../game-input";
@@ -121,7 +121,7 @@ export function mountRps(host: HTMLElement): void {
     matchRounds++;
     if (rounds.length > HISTORY) rounds = rounds.slice(-HISTORY);
     const done = over();
-    if (done === "win" || done === "lose") matches[done]++;
+    if (done) matches[done]++;
     paint();
   };
 
@@ -170,7 +170,8 @@ export function mountRps(host: HTMLElement): void {
       h("h1", null, t("rps.title")),
       h("p", { class: "lede" }, t("rps.privacyNote")),
     ),
-    h("div", { class: "data-tool" },
+    // A clicked move button must not keep focus, or Enter / Space held down would throw again and again.
+    h("div", { class: "data-tool", onMousedown: (e: MouseEvent) => keepShortcutsOnClick(e) },
       h("div", { class: "rail" },
         h("div", { class: "rps-arena" }, youEl, h("span", { class: "rps-vs" }, t("rps.vs")), cpuEl),
         resultEl,
