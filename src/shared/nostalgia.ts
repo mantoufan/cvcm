@@ -37,7 +37,7 @@ export function nostalgiaGroupOf(id: NostalgiaId): NostalgiaGroupId {
 
 export const NOSTALGIA_PUBLISHED = "2026-11-15";
 
-/** The second batch (American and Western 1990s things), all live on one day. */
+/** The second batch (American and Western childhood things), all live on one day. */
 const BATCH2_DATE = "2026-11-16";
 const BATCH2: readonly NostalgiaId[] = [
   "dunkaroos", "crystal-pepsi", "surge", "pogs", "beanie-babies", "furby", "slap-bracelet", "vhs", "discman",
