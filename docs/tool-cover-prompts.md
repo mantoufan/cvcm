@@ -340,6 +340,9 @@ Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`), refs `sol
 - `nonogram`: she fills squares on pastel grid paper with a pink pen, the filled squares forming a heart; clue strips along the top and left drawn as dots only, never digits.
 - `memory-game`: on a table of face-down cards with pink lace backs she turns over two cards with the same pink star; one pair already face up shows pink hearts.
 
+## Business idea validator (2026-11-15)
+
+Generated with Codex (gpt-6-astra, image tool) using `qr-sweet.jpg`, `watermark-sweet.jpg` and `collage-sweet.jpg` as style references; saved as `public/covers/idea-validator-sweet.jpg` (1280×720 JPEG). Prompt in short: same pink twin-tail chibi, lace bonnet and cream-pink room; she holds a pearlescent pink magnifying glass to a cream idea card with a glowing pastel lightbulb; three small rising pink bars and a rose-gold balance scale (heart on one pan, star on the other) on the desk. No words, letters, numbers, titles, logos, UI or watermark.
 ## Phone number value, number plate valuation, domain value, car depreciation, net worth, business valuation (2026-11-14)
 
 Codex (`codex exec -m gpt-6-astra`, image tool; kie.ai had no credits that day), refs `dice-sweet.jpg` + `metronome-sweet.jpg`, 16:9, same base prompt as above. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.

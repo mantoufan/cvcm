@@ -707,7 +707,9 @@
     "titleTypingGame": "Game mengetik — belajar mengetik gratis dengan kata berjatuhan — cv.cm",
     "descTypingGame": "Game mengetik gratis untuk belajar mengetik: ketik kata yang berjatuhan sebelum mendarat. Tiga tingkat yang makin cepat, skor, akurasi, dan karakter per menit. Bisa dipakai dengan metode input Jepang, Mandarin, dan Korea.",
     "titleChineseCheckers": "Dam Cina (Chinese checkers) — main online melawan komputer — cv.cm",
-    "descChineseCheckers": "Main dam Cina (Chinese checkers) online gratis di papan bintang melawan komputer di tiga tingkat atau bersama teman. Melangkah atau lompat beruntun melintasi papan; semua lubang yang bisa dicapai ditampilkan. Urungkan, permainan tersimpan."
+    "descChineseCheckers": "Main dam Cina (Chinese checkers) online gratis di papan bintang melawan komputer di tiga tingkat atau bersama teman. Melangkah atau lompat beruntun melintasi papan; semua lubang yang bisa dicapai ditampilkan. Urungkan, permainan tersimpan.",
+    "titleIdeaValidator": "Validasi ide bisnis — nilai ide Anda gratis dalam 2 menit — cv.cm",
+    "descIdeaValidator": "Apakah ide bisnis Anda bagus? Jawab 8 pertanyaan untuk skor 0-100, kekuatan dan kelemahan, uji murah yang perlu dicoba, dan data pencarian ide serupa."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1555,6 +1557,10 @@
     "chinese-checkers": {
       "name": "Dam Cina",
       "blurb": "Lompatkan kelereng melintasi bintang."
+    },
+    "idea-validator": {
+      "name": "Validasi ide bisnis",
+      "blurb": "Nilai ide Anda dari 100 dan lihat apa yang perlu diuji dulu."
     }
   },
   "watermark": {
@@ -5922,6 +5928,18 @@
       "a4": "Dua: melawan komputer di tingkat mudah, sedang, atau sulit, atau bersama teman secara bergiliran di satu layar.",
       "q5": "Apakah ini sama dengan Sternhalma atau permainan berlian?",
       "a5": "Ya. Dam Cina adalah versi dari permainan Jerman Sternhalma, dan permainan berlian Jepang adalah kerabat dekatnya."
+    },
+    "idea-validator": {
+      "q1": "Bagaimana cara tahu ide bisnis saya bagus?",
+      "a1": "Periksa dulu bukti permintaan: apakah orang sudah membayar untuk sesuatu yang serupa, atau sudah membayar atau mendaftar untuk produk Anda? Lalu periksa apakah satu penjualan cukup bernilai, seberapa ramai pasarnya, berapa biaya memulainya, dan bagaimana Anda akan menjangkau pelanggan. Alat validasi ini menilai semuanya.",
+      "q2": "Bagaimana skornya dihitung?",
+      "a2": "Skor dihitung dari 8 jawaban: bukti permintaan paling berbobot (20%), lalu keunggulan Anda dan cara menjangkau pelanggan (masing-masing 15%), kemudian harga, persaingan, modal awal, waktu sampai penjualan pertama, dan tren pasar (masing-masing 10%). Jika ide Anda cocok dengan salah satu ide di daftar kami, skor prospek dari data pencariannya ditampilkan di sampingnya sebagai patokan pasar; skor itu tidak mengubah skor Anda.",
+      "q3": "Dari mana tolok ukur pasarnya berasal?",
+      "a3": "Dari kanal ide cv.cm: data pencarian Google Ads Keyword Planner selama empat tahun dalam delapan bahasa untuk 40 ide bisnis, diperbarui setiap bulan. Ketik ide Anda dan yang paling mirip akan dipilih, atau pilih sendiri dari daftar.",
+      "q4": "Apakah ide saya dikirim ke suatu tempat?",
+      "a4": "Tidak. Penilaian dan pencocokan berjalan di tab ini. Apa pun yang Anda ketik tidak diunggah atau disimpan.",
+      "q5": "Apakah skor tinggi berarti bisnis saya akan berhasil?",
+      "a5": "Tidak. Skor tinggi berarti dasarnya tampak kuat. Satu-satunya ujian nyata adalah pelanggan yang membayar, jadi ikuti langkah yang disarankan untuk menguji dengan murah sebelum Anda mengeluarkan uang sungguhan."
     }
   },
   "qr": {
@@ -15072,5 +15090,150 @@
     "computerWins": "Komputer menang.",
     "thinking": "Komputer sedang berpikir…",
     "hint": "Ketuk kelereng, lalu lubang yang ditandai. Tombol panah untuk berpindah antarlubang; Enter untuk memilih."
+  },
+  "ideaValidator": {
+    "title": "Validasi ide bisnis",
+    "lede": "Jawab delapan pertanyaan untuk melihat seberapa kuat ide Anda, apa yang masih lemah, dan apa yang perlu diuji dulu. Ide serupa dibandingkan dengan data pencarian Google. Berjalan di tab ini; tidak ada yang diunggah.",
+    "describe": "Ide Anda",
+    "describePh": "Contoh: cuci mobil panggilan, agensi AI untuk dokter gigi, lilin aromaterapi",
+    "match": "Ide terdekat di data pencarian kami",
+    "matchNone": "Lainnya (tanpa tolok ukur)",
+    "matchHint": "Dipilih dari yang Anda ketik; ubah jika keliru.",
+    "questions": "Delapan pertanyaan",
+    "choose": "Pilih…",
+    "evidence": {
+      "label": "Bukti permintaan",
+      "o1": "Belum ada",
+      "o2": "Orang mengeluhkan masalahnya",
+      "o3": "Sudah ada yang menjual produk serupa",
+      "o4": "Ada yang sudah meminta ke saya",
+      "o5": "Ada yang sudah membayar atau pre-order"
+    },
+    "price": {
+      "label": "Yang dibayar satu pelanggan",
+      "o1": "Di bawah $5, sekali",
+      "o2": "$5–$50, sekali",
+      "o3": "$50–$500, sekali",
+      "o4": "Di atas $500, sekali",
+      "o5": "Langganan atau pesanan berulang"
+    },
+    "competition": {
+      "label": "Persaingan",
+      "o1": "Merek besar menguasai pasar",
+      "o2": "Banyak penjual serupa",
+      "o3": "Beberapa pesaing",
+      "o4": "Ada pesaing, tapi lemah",
+      "o5": "Belum ada yang melakukannya"
+    },
+    "cost": {
+      "label": "Modal awal",
+      "o1": "Lebih dari tabungan saya",
+      "o2": "Sebagian besar tabungan saya",
+      "o3": "Uang lebih beberapa bulan",
+      "o4": "Kurang dari uang lebih sebulan",
+      "o5": "Hampir tanpa biaya"
+    },
+    "time": {
+      "label": "Waktu hingga penjualan pertama",
+      "o1": "Lebih dari setahun",
+      "o2": "6–12 bulan",
+      "o3": "1–6 bulan",
+      "o4": "2–4 minggu",
+      "o5": "Dalam 2 minggu"
+    },
+    "edge": {
+      "label": "Keunggulan Anda",
+      "o1": "Belum ada yang istimewa",
+      "o2": "Saya harus mempelajarinya dulu",
+      "o3": "Saya punya keahlian atau pengalaman",
+      "o4": "Saya punya audiens atau pelanggan",
+      "o5": "Punya keahlian sekaligus audiens"
+    },
+    "channel": {
+      "label": "Cara menjangkau pelanggan",
+      "o1": "Belum tahu",
+      "o2": "Iklan berbayar",
+      "o3": "Marketplace (Amazon, Etsy, TikTok Shop…)",
+      "o4": "Dari mulut ke mulut atau komunitas lokal",
+      "o5": "Audiens atau pelanggan saya sendiri"
+    },
+    "trend": {
+      "label": "Tren pasar",
+      "o1": "Menyusut",
+      "o2": "Tidak yakin",
+      "o3": "Stabil",
+      "o4": "Tumbuh"
+    },
+    "result": "Hasil Anda",
+    "answerAll": "Sisa pertanyaan: {n}. Jawab semuanya untuk melihat skor.",
+    "outOf": "dari 100",
+    "grade": {
+      "strong": "Kuat",
+      "promising": "Menjanjikan",
+      "risky": "Berisiko",
+      "rethink": "Pikirkan ulang"
+    },
+    "verdict": {
+      "strong": "Dasarnya tampak kuat. Uji sekarang dengan pelanggan sungguhan, sebelum Anda memoles apa pun.",
+      "promising": "Layak dikejar jika Anda memperbaiki kelemahan di bawah ini terlebih dulu.",
+      "risky": "Beberapa hal dasar masih kurang. Jalankan uji murah sebelum Anda mengeluarkan uang.",
+      "rethink": "Beberapa dasar masih lemah. Perbaiki bagian yang paling lemah atau uji ide lain sebelum Anda mengeluarkan uang."
+    },
+    "readiness": "Kesiapan (dari jawaban Anda)",
+    "market": "Tolok ukur pasar (data pencarian)",
+    "noMarket": "Tidak ada yang cocok",
+    "strengths": "Kekuatan",
+    "weaknesses": "Kelemahan",
+    "none": "Tidak ada",
+    "next": "Uji ini dulu: {item}",
+    "tip": {
+      "evidence": {
+        "t1": "Tulis penawaran satu halaman lengkap dengan harga dan tunjukkan kepada sepuluh orang yang mengalami masalah itu.",
+        "t2": "Minta uang muka atau pre-order, jangan hanya bertanya \"apakah Anda mau beli?\".",
+        "t3": "Cari orang yang sudah membayar untuk alternatif yang kurang praktis: itulah bukti Anda."
+      },
+      "price": {
+        "t1": "Cari cara menjual lebih banyak per pelanggan: paket bundel, tingkat premium, atau layanan tambahan.",
+        "t2": "Cari kebutuhan berulang yang bisa dijadikan langganan atau pesanan rutin.",
+        "t3": "Uji harga yang lebih tinggi pada beberapa pelanggan berikutnya sebelum menetapkan harga."
+      },
+      "competition": {
+        "t1": "Cari tahu siapa yang menyelesaikan masalah ini sekarang, meski seadanya atau secara manual: itulah pesaing Anda yang sebenarnya.",
+        "t2": "Jika belum ada yang menjualnya, pastikan orang mencarinya atau mau membayar untuk sesuatu yang mirip sebelum Anda membuatnya.",
+        "t3": "Tulis apa yang akan Anda lakukan lebih baik daripada tiga penjual teratas, lalu uji janji itu lebih dulu."
+      },
+      "cost": {
+        "t1": "Mulai dari versi terkecil yang bisa dijual: satu produk, satu layanan, satu mesin.",
+        "t2": "Sewa, pinjam, atau beli bekas sebelum membeli peralatan baru.",
+        "t3": "Jual dengan sistem pre-order dulu dan pakai pesanan itu untuk membayar stok."
+      },
+      "time": {
+        "t1": "Perkecil ide menjadi sesuatu yang bisa Anda jual bulan ini.",
+        "t2": "Jual layanannya secara manual sebelum membangun produk atau aplikasinya.",
+        "t3": "Tetapkan tanggal penjualan pertama dan susun rencana mundur dari situ."
+      },
+      "edge": {
+        "t1": "Kerjakan tiga pekerjaan kecil untuk teman atau dengan diskon untuk melatih keahlian dan mengumpulkan testimoni.",
+        "t2": "Bagikan apa yang Anda pelajari secara terbuka untuk mulai membangun audiens.",
+        "t3": "Bermitra dengan orang yang punya keahlian atau pelanggan yang belum Anda miliki."
+      },
+      "channel": {
+        "t1": "Sebutkan tempat persis sepuluh pelanggan pertama Anda menghabiskan waktu, online atau di sekitar Anda.",
+        "t2": "Coba satu kanal secara manual (unggahan, pesan, selebaran) sebelum membayar iklan.",
+        "t3": "Tanyakan kepada pelanggan pertama di mana mereka akan mencari ini, lalu datangi tempat itu."
+      },
+      "trend": {
+        "t1": "Periksa bagaimana pencarian dan penjualan untuk ide ini bergerak dalam beberapa tahun terakhir.",
+        "t2": "Jika pasarnya menyusut, cari ceruk yang masih tumbuh di dalamnya.",
+        "t3": "Jaga biaya tetap fleksibel dan hindari kontrak jangka panjang sampai trennya jelas."
+      }
+    },
+    "benchmark": "Tolok ukur: {name} punya skor prospek data pencarian {score}.",
+    "seeIdea": "Lihat data dan panduan untuk {name}",
+    "allIdeas": "Jelajahi {n} ide bisnis yang dinilai dengan data pencarian",
+    "copy": "Salin hasil",
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin",
+    "disclaimer": "Ini skor daftar periksa, bukan nasihat keuangan atau perkiraan penghasilan. Uji dengan pelanggan sungguhan sebelum Anda berinvestasi."
   }
 }

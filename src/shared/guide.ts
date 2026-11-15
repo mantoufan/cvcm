@@ -157,6 +157,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "tic-tac-toe": 3,
   "color-blindness-test": 3,
   "military-time": 3,
+  "idea-validator": 3,
   "height-calculator": 3,
   "hangman": 3,
   "rock-paper-scissors": 3,
