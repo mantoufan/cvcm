@@ -14,7 +14,7 @@ import { buildAllSearchIndexes } from "../src/shared/search-index";
 import { sitemapPages } from "../src/shared/sitemap";
 import { d1SearchStore, handleSearchApi, rateSubject, resetSearchApiCache, SEARCH_MISS_MAX, type SearchStore } from "../src/search-api";
 import { DatabaseSync } from "node:sqlite";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import worker from "../src/worker";
 
 const indexes = buildAllSearchIndexes();
@@ -211,7 +211,8 @@ function post(path: string, body: unknown, headers: Record<string, string> = {})
 /** The real D1 store over node:sqlite with the real migration. */
 function sqliteStore(): { store: SearchStore; db: DatabaseSync } {
   const db = new DatabaseSync(":memory:");
-  for (const file of ["0002_search.sql", "0003_search_no_email.sql"]) db.exec(readFileSync(`migrations/${file}`, "utf8"));
+  // Every migration in order, so the test always runs against the schema production has.
+  for (const file of readdirSync("migrations").filter((f) => f.endsWith(".sql")).sort()) db.exec(readFileSync(`migrations/${file}`, "utf8"));
   const d1 = {
     async batch(statements: Array<{ run(): Promise<unknown> }>) {
       db.exec("BEGIN");
@@ -253,7 +254,8 @@ describe("search API on the D1 schema", () => {
     expect(dump).not.toContain("203.0.113.9");
     // No email table and no email column remain after 0003.
     expect(db.prepare("SELECT name FROM sqlite_master WHERE name = 'search_requests'").get()).toBeUndefined();
-    expect(JSON.stringify(db.prepare("PRAGMA table_info(search_rate)").all())).not.toContain("emails");
+    const columns = (db.prepare("PRAGMA table_info(search_rate)").all() as Array<{ name: string }>).map((c) => c.name);
+    expect(columns).toEqual(["ip_hash", "window_start", "misses"]);
     // The real store's rate limit is one atomic upsert: concurrent requests cannot slip past the cap.
     const burst = await Promise.all(
       Array.from({ length: SEARCH_MISS_MAX + 10 }, (_, i) =>
