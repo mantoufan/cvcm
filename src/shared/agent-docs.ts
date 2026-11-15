@@ -32,8 +32,9 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   design: "Color and design",
   hardware: "Hardware tests (keyboard, microphone, camera, screen, controllers)",
   fun: "Random and fun",
-  games: "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, hangman, checkers, reversi, gomoku, nonogram, memory game, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF",
+  games: "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, checkers, reversi, gomoku, nonogram, memory game, Chinese checkers, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF",
   assets: "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)",
+  wordgames: "Word games: word search, hangman, typing game",
   valuation: "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)",
 };
 

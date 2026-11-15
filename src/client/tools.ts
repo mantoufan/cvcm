@@ -1126,6 +1126,24 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountMemoryGame(host);
     return m.unmountMemoryGame;
   },
+  "word-search": async (host, ctx) => {
+    const m = await import("./word-search/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountWordSearch(host);
+    return m.unmountWordSearch;
+  },
+  "typing-game": async (host, ctx) => {
+    const m = await import("./typing-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTypingGame(host);
+    return m.unmountTypingGame;
+  },
+  "chinese-checkers": async (host, ctx) => {
+    const m = await import("./chinese-checkers/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountChineseCheckers(host);
+    return m.unmountChineseCheckers;
+  },
   "phone-number-value": async (host, ctx) => {
     const m = await import("./phone-number-value/ui");
     if (!ctx.alive()) return undefined;

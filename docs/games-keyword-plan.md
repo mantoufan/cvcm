@@ -141,3 +141,14 @@ Keyword Planner, same MCC and markets as above. Written for cv.cm. "跳棋" alon
 | `memory-game` | memory game 74k; es memorama 33.1k; ja 神経衰弱 22.2k | 记忆翻牌 / 神経衰弱 / memorama |
 
 The `games` group now holds 19 tools; `tests/categories.test.ts` caps a group at 20, so the next batch needs a new group (for example word or puzzle games) before it can add more than one.
+
+## Word games and Chinese checkers (2026-11-15, batch 33)
+
+Keyword Planner, same MCC and markets. `games` was full at 20 once hangman (#112) landed there, so a new `wordgames` group ("Word games") now holds word search, the typing game and hangman (moved from `games`); Chinese checkers takes hangman's old `games` slot.
+
+| Slug | Group | Evidence (monthly) | Notes |
+|---|---|---|---|
+| `word-search` | wordgames | word search 550k, word search puzzle 110k; es sopa de letras 301k; id cari kata 1.6k; CJK tiny | Own themed lists per locale; CJK grids hold characters, kana or Hangul |
+| `typing-game` | wordgames | ja タイピング練習 450k, タイピングゲーム 201k; ko 타자 연습 368k, 타자 게임 18.1k; es mecanografía 135k; en typing game 110k; id belajar mengetik 40.5k; zh-TW 打字練習 33.1k | Falling words; separate from the /typing/ speed test; IME-friendly |
+| `chinese-checkers` | games | chinese checkers 49.5k; ja ダイヤモンドゲーム 5.4k; zh-TW 跳棋 2.9k | 121-hole star board |
+| `hangman` (#112) | wordgames | hangman 201k; es ahorcado 49.5k | Moved here from `games` |

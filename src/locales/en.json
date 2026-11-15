@@ -701,7 +701,13 @@
     "titleBacCalculator": "BAC calculator — estimate your blood alcohol content — cv.cm",
     "descBacCalculator": "Free blood alcohol calculator (Widmark formula): add beers, wine, shots or your own drinks, enter weight, sex and hours since the first drink, and see your estimated BAC in %, ‰ and mg/100 mL and how long until it reaches 0.08, 0.05, 0.02 and zero.",
     "titleSimpleInterest": "Simple interest calculator — I = P × r × t — cv.cm",
-    "descSimpleInterest": "Free simple interest calculator: find the interest and total amount, or work back to the principal, rate or time. Time in years, months or days (365 or 360-day year), with a year-by-year table next to compound interest."
+    "descSimpleInterest": "Free simple interest calculator: find the interest and total amount, or work back to the principal, rate or time. Time in years, months or days (365 or 360-day year), with a year-by-year table next to compound interest.",
+    "titleWordSearch": "Word search — free word search puzzles online — cv.cm",
+    "descWordSearch": "Play free word search puzzles online: pick a theme, a grid size and a level, then drag across the letters to find every hidden word. Numbered puzzles, hints, timer and best times.",
+    "titleTypingGame": "Typing game — free falling-words typing practice — cv.cm",
+    "descTypingGame": "Free typing game: type the falling words before they land. Three levels that speed up as you go, score, accuracy and characters per minute. Works with Japanese, Chinese and Korean input methods.",
+    "titleChineseCheckers": "Chinese checkers — play online against the computer — cv.cm",
+    "descChineseCheckers": "Play Chinese checkers free online on the star board against the computer at three levels or with a friend. Step or chain jumps across the board; every reachable hole is shown. Undo, saved game."
   },
   "brand": "cv.cm",
   "nav": {
@@ -734,7 +740,8 @@
     "nostalgia": "Nostalgia",
     "ai": "AI",
     "rankings": "Rankings",
-    "valuation": "Valuation"
+    "valuation": "Valuation",
+    "wordgames": "Word games"
   },
   "lang": {
     "label": "Language",
@@ -4437,6 +4444,18 @@
     "simple-interest": {
       "name": "Simple interest calculator",
       "blurb": "Interest, principal, rate or time."
+    },
+    "word-search": {
+      "name": "Word search",
+      "blurb": "Find the hidden words in a grid."
+    },
+    "typing-game": {
+      "name": "Typing game",
+      "blurb": "Type falling words before they land."
+    },
+    "chinese-checkers": {
+      "name": "Chinese checkers",
+      "blurb": "Hop marbles across the star."
     }
   },
   "watermark": {
@@ -8768,6 +8787,42 @@
       "a4": "Simple interest is paid on the original principal only, so it grows by the same amount every year. Compound interest is also paid on earlier interest, so it grows faster. The table shows both side by side.",
       "q5": "Where is simple interest used?",
       "a5": "Many car loans, short personal loans, bonds' coupon payments and some savings certificates. Mortgages and credit cards usually compound."
+    },
+    "word-search": {
+      "q1": "How do you play word search?",
+      "a1": "Find every word from the list in the grid of letters. Words run in straight lines across, down or diagonally, and on the hard level backwards too. Drag from the first letter to the last, or tap the first letter and then the last.",
+      "q2": "What do the levels change?",
+      "a2": "Easy hides words only left to right and top to bottom. Medium adds diagonals. Hard adds every backwards direction as well.",
+      "q3": "Which words are used?",
+      "a3": "Common, family-friendly words in the language of the page, in eight themes such as animals, food, nature and sports. In Chinese, Japanese and Korean the grid holds whole characters.",
+      "q4": "Can I play the same puzzle again?",
+      "a4": "Yes. Every puzzle has a number. Type it with the same theme, size and level to get the same grid, for example to race a friend.",
+      "q5": "Is my game saved?",
+      "a5": "Yes, in this browser: the words you found, the hints and the time. Your best time for each size and level is kept too."
+    },
+    "typing-game": {
+      "q1": "How do you play?",
+      "a1": "Press Start. Words fall from the top of the field; type a word in the box and press Enter or Space (or just finish typing it) to clear it. A word that reaches the bottom costs a life; after three the game ends.",
+      "q2": "Does it get faster?",
+      "a2": "Yes. Every five words cleared the words fall a little faster, up to a top speed. Choose easy, medium or hard to set the starting speed.",
+      "q3": "Can I type in Japanese, Chinese or Korean?",
+      "a3": "Yes. Use your input method as usual; the word is checked when you finish composing. Japanese words also accept their kana reading or romaji, and Chinese words accept pinyin without tones.",
+      "q4": "Do I need to type accents?",
+      "a4": "No. Spanish and Vietnamese words are accepted with or without accents and tone marks.",
+      "q5": "How is the score counted?",
+      "a5": "One point per character of each word you clear. At the end you see the words cleared, characters per minute and your accuracy. Your best score per level is kept in this browser."
+    },
+    "chinese-checkers": {
+      "q1": "How do you play Chinese checkers?",
+      "a1": "Each side starts with 10 marbles in one point of the star. Take turns moving one marble; the first to fill the opposite point with its marbles wins.",
+      "q2": "How do marbles move?",
+      "a2": "A marble steps to a neighbouring empty hole, or jumps over one neighbouring marble of either colour into the empty hole straight beyond it. Jumps can be chained, and you may stop after any jump.",
+      "q3": "What if my opponent leaves marbles in my target?",
+      "a3": "You still win once the target point is full and at least one of the marbles in it is yours, so marbles left behind cannot block you.",
+      "q4": "How many players can play?",
+      "a4": "Two: against the computer at easy, medium or hard, or with a friend taking turns on one screen.",
+      "q5": "Is this the same as Sternhalma or the diamond game?",
+      "a5": "Yes. Chinese checkers is a version of the German game Sternhalma, and the Japanese diamond game is a close relative."
     }
   },
   "qr": {
@@ -14922,5 +14977,100 @@
     "copy": "Copy result",
     "copied": "Copied",
     "copyFailed": "Copy failed"
+  },
+  "wordSearch": {
+    "title": "Word search",
+    "privacyNote": "Find every hidden word in the grid of letters.",
+    "board": "Word search grid",
+    "wordList": "Words to find",
+    "theme": "Theme",
+    "th_animals": "Animals",
+    "th_food": "Food",
+    "th_nature": "Nature",
+    "th_sports": "Sports",
+    "th_home": "Home",
+    "th_school": "School",
+    "th_body": "Body",
+    "th_jobs": "Jobs",
+    "size": "Size",
+    "sizeOption": "{n} × {n} ({words} words)",
+    "level": "Level",
+    "l_easy": "Easy (across, down)",
+    "l_medium": "Medium (+ diagonal)",
+    "l_hard": "Hard (+ backwards)",
+    "number": "Puzzle number",
+    "play": "Play",
+    "badNumber": "Type a puzzle number from 1 to {max}.",
+    "newGame": "New puzzle",
+    "confirmNew": "Tap again for a new puzzle",
+    "hint": "Hint",
+    "hintShown": "The highlighted letter starts a word.",
+    "found": "Found",
+    "foundCount": "{n} / {total}",
+    "time": "Time",
+    "best": "Best time",
+    "cell": "Row {row}, column {col}: {letter}",
+    "inFound": "part of a found word",
+    "wordFound": "{word}, found",
+    "won": "All words found in {time}!",
+    "straight": "Words run in straight lines only.",
+    "notWord": "No word from the list there.",
+    "foundWord": "Found: {word}",
+    "pickEnd": "Now tap the last letter of the word.",
+    "optionNext": "The new setting starts with the next puzzle. Tap New puzzle.",
+    "help": "Drag from the first letter of a word to the last, or tap both ends. Arrow keys move; Space or Enter marks a letter."
+  },
+  "typingGame": {
+    "title": "Typing game",
+    "privacyNote": "Type each falling word before it lands.",
+    "level": "Level",
+    "l_easy": "Easy",
+    "l_medium": "Medium",
+    "l_hard": "Hard",
+    "score": "Score",
+    "lives": "Lives",
+    "livesLeft": "{n} lives left",
+    "stage": "Stage",
+    "best": "Best",
+    "idle": "Press Start, then type the words as they fall.",
+    "over": "Game over. Score {score}, {words} words, {cpm} characters per minute, {accuracy}% accuracy.",
+    "input": "Type the word here",
+    "placeholder": "Type a word, then Enter",
+    "start": "Start",
+    "pause": "Pause",
+    "resume": "Resume",
+    "again": "Play again",
+    "paused": "Paused.",
+    "newBest": "New best score!",
+    "hint": "Enter or Space submits; a word also clears as soon as it matches. Esc pauses. The game pauses when you leave the tab."
+  },
+  "chineseCheckers": {
+    "title": "Chinese checkers",
+    "privacyNote": "Hop your marbles across the star into the opposite point.",
+    "board": "Chinese checkers board",
+    "mode": "Players",
+    "m_computer": "Against the computer",
+    "m_friend": "Two players",
+    "level": "Computer level",
+    "l_easy": "Easy",
+    "l_medium": "Medium",
+    "l_hard": "Hard",
+    "side": "You play",
+    "playPink": "Pink (moves first)",
+    "playBlue": "Blue",
+    "pink": "Pink",
+    "blue": "Blue",
+    "newGame": "New game",
+    "undo": "Undo",
+    "marblePink": "pink marble",
+    "marbleBlue": "blue marble",
+    "empty": "empty hole",
+    "canMove": "can move here",
+    "toMove": "{side} to move",
+    "wins": "{side} wins!",
+    "youWin": "You win!",
+    "computerWins": "The computer wins.",
+    "thinking": "The computer is thinking…",
+    "hint": "Tap a marble, then a marked hole. Arrow keys move between holes; Enter picks."
   }
 }

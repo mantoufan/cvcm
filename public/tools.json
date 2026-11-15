@@ -76,7 +76,11 @@
     },
     {
       "id": "games",
-      "name": "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, hangman, checkers, reversi, gomoku, nonogram, memory game, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
+      "name": "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, checkers, reversi, gomoku, nonogram, memory game, Chinese checkers, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
+    },
+    {
+      "id": "wordgames",
+      "name": "Word games: word search, hangman, typing game"
     },
     {
       "id": "assets",
@@ -1726,11 +1730,35 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "chinese-checkers",
+      "name": "Chinese checkers",
+      "description": "Hop marbles across the star.",
+      "category": "games",
+      "url": "https://cv.cm/en/chinese-checkers/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "word-search",
+      "name": "Word search",
+      "description": "Find the hidden words in a grid.",
+      "category": "wordgames",
+      "url": "https://cv.cm/en/word-search/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
       "id": "hangman",
       "name": "Hangman",
       "description": "Guess the word letter by letter.",
-      "category": "games",
+      "category": "wordgames",
       "url": "https://cv.cm/en/hangman/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "typing-game",
+      "name": "Typing game",
+      "description": "Type falling words before they land.",
+      "category": "wordgames",
+      "url": "https://cv.cm/en/typing-game/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

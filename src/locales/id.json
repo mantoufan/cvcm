@@ -701,7 +701,13 @@
     "titleBacCalculator": "Kalkulator kadar alkohol dalam darah (BAC) — perkirakan BAC Anda — cv.cm",
     "descBacCalculator": "Kalkulator kadar alkohol dalam darah gratis (rumus Widmark): tambahkan bir, anggur, shot, atau minuman Anda sendiri, masukkan berat badan, jenis kelamin, dan jam sejak minuman pertama, lalu lihat perkiraan BAC dalam %, ‰, dan mg/100 mL serta berapa lama sampai turun ke 0,08, 0,05, 0,02, dan nol.",
     "titleSimpleInterest": "Kalkulator bunga sederhana (bunga tunggal) — I = P × r × t — cv.cm",
-    "descSimpleInterest": "Kalkulator bunga sederhana gratis: hitung bunga dan total, atau cari pokok, suku bunga, atau jangka waktu. Waktu dalam tahun, bulan, atau hari (tahun 365 atau 360 hari), dengan tabel per tahun di samping bunga majemuk."
+    "descSimpleInterest": "Kalkulator bunga sederhana gratis: hitung bunga dan total, atau cari pokok, suku bunga, atau jangka waktu. Waktu dalam tahun, bulan, atau hari (tahun 365 atau 360 hari), dengan tabel per tahun di samping bunga majemuk.",
+    "titleWordSearch": "Cari kata — main teka-teki cari kata online gratis — cv.cm",
+    "descWordSearch": "Main cari kata online gratis: pilih tema, ukuran kotak, dan tingkat, lalu seret di atas huruf untuk menemukan semua kata tersembunyi. Teka-teki bernomor, petunjuk, pengatur waktu, dan waktu terbaik.",
+    "titleTypingGame": "Game mengetik — belajar mengetik gratis dengan kata berjatuhan — cv.cm",
+    "descTypingGame": "Game mengetik gratis untuk belajar mengetik: ketik kata yang berjatuhan sebelum mendarat. Tiga tingkat yang makin cepat, skor, akurasi, dan karakter per menit. Bisa dipakai dengan metode input Jepang, Mandarin, dan Korea.",
+    "titleChineseCheckers": "Dam Cina (Chinese checkers) — main online melawan komputer — cv.cm",
+    "descChineseCheckers": "Main dam Cina (Chinese checkers) online gratis di papan bintang melawan komputer di tiga tingkat atau bersama teman. Melangkah atau lompat beruntun melintasi papan; semua lubang yang bisa dicapai ditampilkan. Urungkan, permainan tersimpan."
   },
   "brand": "cv.cm",
   "nav": {
@@ -734,7 +740,8 @@
     "nostalgia": "Nostalgia",
     "ai": "AI",
     "rankings": "Peringkat",
-    "valuation": "Valuasi"
+    "valuation": "Valuasi",
+    "wordgames": "Permainan kata"
   },
   "lang": {
     "label": "Bahasa",
@@ -1536,6 +1543,18 @@
     "simple-interest": {
       "name": "Kalkulator bunga sederhana",
       "blurb": "Bunga, pokok, suku bunga, atau waktu."
+    },
+    "word-search": {
+      "name": "Cari kata",
+      "blurb": "Temukan kata tersembunyi di kotak huruf."
+    },
+    "typing-game": {
+      "name": "Game mengetik",
+      "blurb": "Ketik kata yang berjatuhan sebelum mendarat."
+    },
+    "chinese-checkers": {
+      "name": "Dam Cina",
+      "blurb": "Lompatkan kelereng melintasi bintang."
     }
   },
   "watermark": {
@@ -5867,6 +5886,42 @@
       "a4": "Bunga sederhana hanya dihitung dari pokok awal, jadi bertambah dengan jumlah yang sama setiap tahun. Bunga majemuk juga dihitung dari bunga sebelumnya, jadi tumbuh lebih cepat. Tabel menampilkan keduanya berdampingan.",
       "q5": "Di mana bunga sederhana dipakai?",
       "a5": "Banyak kredit mobil, pinjaman pribadi jangka pendek, pembayaran kupon obligasi, dan sebagian sertifikat deposito. KPR dan kartu kredit biasanya memakai bunga majemuk."
+    },
+    "word-search": {
+      "q1": "Bagaimana cara main cari kata?",
+      "a1": "Temukan setiap kata dari daftar di kotak huruf. Kata tersusun dalam garis lurus mendatar, menurun, atau diagonal, dan di tingkat sulit juga terbalik. Seret dari huruf pertama ke huruf terakhir, atau ketuk huruf pertama lalu huruf terakhir.",
+      "q2": "Apa bedanya setiap tingkat?",
+      "a2": "Mudah hanya menyembunyikan kata dari kiri ke kanan dan dari atas ke bawah. Sedang menambahkan diagonal. Sulit juga menambahkan semua arah terbalik.",
+      "q3": "Kata apa saja yang dipakai?",
+      "a3": "Kata umum yang ramah keluarga dalam bahasa halaman ini, dalam delapan tema seperti hewan, makanan, alam, dan olahraga. Dalam bahasa Mandarin, Jepang, dan Korea, setiap kotak berisi satu aksara utuh.",
+      "q4": "Bisakah saya memainkan teka-teki yang sama lagi?",
+      "a4": "Bisa. Setiap teka-teki punya nomor. Ketik nomor itu dengan tema, ukuran, dan tingkat yang sama untuk mendapatkan kotak yang sama, misalnya untuk berlomba dengan teman.",
+      "q5": "Apakah permainan saya tersimpan?",
+      "a5": "Ya, di browser ini: kata yang sudah Anda temukan, petunjuk, dan waktu. Waktu terbaik Anda untuk setiap ukuran dan tingkat juga disimpan."
+    },
+    "typing-game": {
+      "q1": "Bagaimana cara mainnya?",
+      "a1": "Tekan Mulai. Kata berjatuhan dari atas arena; ketik kata di kotak lalu tekan Enter atau Spasi (atau cukup selesaikan mengetiknya) untuk menghapusnya. Kata yang mencapai dasar mengurangi satu nyawa; setelah tiga, permainan berakhir.",
+      "q2": "Apakah makin cepat?",
+      "a2": "Ya. Setiap lima kata terhapus, kata jatuh sedikit lebih cepat, hingga kecepatan maksimum. Pilih mudah, sedang, atau sulit untuk mengatur kecepatan awal.",
+      "q3": "Bisakah saya mengetik dalam bahasa Jepang, Mandarin, atau Korea?",
+      "a3": "Bisa. Gunakan metode input Anda seperti biasa; kata diperiksa setelah Anda selesai menyusunnya. Kata bahasa Jepang juga menerima bacaan kana atau romaji, dan kata bahasa Mandarin menerima pinyin tanpa nada.",
+      "q4": "Apakah saya perlu mengetik aksen?",
+      "a4": "Tidak. Kata bahasa Spanyol dan Vietnam diterima dengan atau tanpa aksen dan tanda nada.",
+      "q5": "Bagaimana skor dihitung?",
+      "a5": "Satu poin untuk setiap karakter dari kata yang Anda hapus. Di akhir, Anda melihat jumlah kata yang terhapus, karakter per menit, dan akurasi. Skor terbaik Anda per tingkat disimpan di browser ini."
+    },
+    "chinese-checkers": {
+      "q1": "Bagaimana cara main dam Cina?",
+      "a1": "Setiap pihak memulai dengan 10 kelereng di salah satu ujung bintang. Pemain bergiliran memindahkan satu kelereng; yang pertama mengisi ujung seberang dengan kelerengnya menang.",
+      "q2": "Bagaimana kelereng bergerak?",
+      "a2": "Kelereng melangkah ke lubang kosong di sebelahnya, atau melompati satu kelereng di sebelahnya, warna apa pun, ke lubang kosong tepat di belakangnya. Lompatan bisa beruntun, dan Anda boleh berhenti setelah lompatan mana pun.",
+      "q3": "Bagaimana jika lawan meninggalkan kelereng di ujung tujuan saya?",
+      "a3": "Anda tetap menang begitu ujung tujuan penuh dan setidaknya satu kelereng di dalamnya milik Anda, jadi kelereng yang tertinggal tidak bisa menghalangi Anda.",
+      "q4": "Berapa orang yang bisa bermain?",
+      "a4": "Dua: melawan komputer di tingkat mudah, sedang, atau sulit, atau bersama teman secara bergiliran di satu layar.",
+      "q5": "Apakah ini sama dengan Sternhalma atau permainan berlian?",
+      "a5": "Ya. Dam Cina adalah versi dari permainan Jerman Sternhalma, dan permainan berlian Jepang adalah kerabat dekatnya."
     }
   },
   "qr": {
@@ -14922,5 +14977,100 @@
     "copy": "Salin hasil",
     "copied": "Tersalin",
     "copyFailed": "Gagal menyalin"
+  },
+  "wordSearch": {
+    "title": "Cari kata",
+    "privacyNote": "Temukan semua kata tersembunyi di kotak huruf.",
+    "board": "Kotak cari kata",
+    "wordList": "Kata yang dicari",
+    "theme": "Tema",
+    "th_animals": "Hewan",
+    "th_food": "Makanan",
+    "th_nature": "Alam",
+    "th_sports": "Olahraga",
+    "th_home": "Rumah",
+    "th_school": "Sekolah",
+    "th_body": "Tubuh",
+    "th_jobs": "Pekerjaan",
+    "size": "Ukuran",
+    "sizeOption": "{n} × {n} ({words} kata)",
+    "level": "Tingkat",
+    "l_easy": "Mudah (mendatar, menurun)",
+    "l_medium": "Sedang (+ diagonal)",
+    "l_hard": "Sulit (+ terbalik)",
+    "number": "Nomor teka-teki",
+    "play": "Main",
+    "badNumber": "Ketik nomor teka-teki dari 1 sampai {max}.",
+    "newGame": "Teka-teki baru",
+    "confirmNew": "Ketuk lagi untuk teka-teki baru",
+    "hint": "Petunjuk",
+    "hintShown": "Huruf yang disorot adalah awal sebuah kata.",
+    "found": "Ditemukan",
+    "foundCount": "{n} / {total}",
+    "time": "Waktu",
+    "best": "Waktu terbaik",
+    "cell": "Baris {row}, kolom {col}: {letter}",
+    "inFound": "bagian dari kata yang ditemukan",
+    "wordFound": "{word}, ditemukan",
+    "won": "Semua kata ditemukan dalam {time}!",
+    "straight": "Kata hanya tersusun dalam garis lurus.",
+    "notWord": "Tidak ada kata dari daftar di sana.",
+    "foundWord": "Ditemukan: {word}",
+    "pickEnd": "Sekarang ketuk huruf terakhir kata itu.",
+    "optionNext": "Pengaturan baru berlaku mulai teka-teki berikutnya. Ketuk Teka-teki baru.",
+    "help": "Seret dari huruf pertama sebuah kata ke huruf terakhirnya, atau ketuk kedua ujungnya. Tombol panah untuk bergerak; Spasi atau Enter menandai huruf."
+  },
+  "typingGame": {
+    "title": "Game mengetik",
+    "privacyNote": "Ketik setiap kata yang berjatuhan sebelum mendarat.",
+    "level": "Tingkat",
+    "l_easy": "Mudah",
+    "l_medium": "Sedang",
+    "l_hard": "Sulit",
+    "score": "Skor",
+    "lives": "Nyawa",
+    "livesLeft": "Sisa {n} nyawa",
+    "stage": "Tahap",
+    "best": "Terbaik",
+    "idle": "Tekan Mulai, lalu ketik kata saat berjatuhan.",
+    "over": "Permainan selesai. Skor {score}, {words} kata, {cpm} karakter per menit, akurasi {accuracy}%.",
+    "input": "Ketik kata di sini",
+    "placeholder": "Ketik kata, lalu Enter",
+    "start": "Mulai",
+    "pause": "Jeda",
+    "resume": "Lanjutkan",
+    "again": "Main lagi",
+    "paused": "Dijeda.",
+    "newBest": "Skor terbaik baru!",
+    "hint": "Enter atau Spasi untuk mengirim; kata juga langsung terhapus begitu cocok. Esc untuk jeda. Permainan dijeda saat Anda meninggalkan tab."
+  },
+  "chineseCheckers": {
+    "title": "Dam Cina",
+    "privacyNote": "Lompatkan kelereng Anda melintasi bintang ke ujung seberang.",
+    "board": "Papan dam Cina",
+    "mode": "Pemain",
+    "m_computer": "Melawan komputer",
+    "m_friend": "Dua pemain",
+    "level": "Tingkat komputer",
+    "l_easy": "Mudah",
+    "l_medium": "Sedang",
+    "l_hard": "Sulit",
+    "side": "Anda bermain sebagai",
+    "playPink": "Merah muda (jalan lebih dulu)",
+    "playBlue": "Biru",
+    "pink": "Merah muda",
+    "blue": "Biru",
+    "newGame": "Permainan baru",
+    "undo": "Urungkan",
+    "marblePink": "kelereng merah muda",
+    "marbleBlue": "kelereng biru",
+    "empty": "lubang kosong",
+    "canMove": "bisa ke sini",
+    "toMove": "Giliran {side}",
+    "wins": "{side} menang!",
+    "youWin": "Anda menang!",
+    "computerWins": "Komputer menang.",
+    "thinking": "Komputer sedang berpikir…",
+    "hint": "Ketuk kelereng, lalu lubang yang ditandai. Tombol panah untuk berpindah antarlubang; Enter untuk memilih."
   }
 }
