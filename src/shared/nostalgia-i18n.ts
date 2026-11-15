@@ -191,7 +191,9 @@ function voteHtml(locale: Locale, id: NostalgiaId): string {
 export function nostalgiaVoteResult(locale: Locale, id: NostalgiaId, tally: { yes: number; no: number }): string {
   const vote = nostalgiaUi(locale).vote;
   const n = tally.yes + tally.no;
-  const p = n ? Math.round((tally.yes / n) * 100) : 0;
+  // Never 0% or 100% while the other answer has votes: a reader who just said "No" must not vanish from the share.
+  const raw = n ? Math.round((tally.yes / n) * 100) : 0;
+  const p = tally.yes && tally.no ? Math.min(99, Math.max(1, raw)) : raw;
   return fill(vote.result, { p, n: n.toLocaleString(HREFLANG[locale]), yes: vote.yes[nostalgiaGroupOf(id)] });
 }
 

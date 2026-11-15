@@ -49,6 +49,11 @@ describe("nostalgia vote UI", () => {
     expect(host.querySelector(".nostalgia-vote-result")!.textContent).toContain("Your network has reached today's limit for this page");
     // Not remembered: the reader can answer again another day.
     expect(localStorage.getItem("cvcm.nostalgia.vote.famicom")).toBeNull();
+    // But not again today: a re-mount shows the limit and sends nothing.
+    const again = document.body.appendChild(document.createElement("div"));
+    mountNostalgia(again, "en", "famicom");
+    expect(again.querySelector<HTMLButtonElement>('button[data-answer="yes"]')!.disabled).toBe(true);
+    expect(again.querySelector(".nostalgia-vote-result")!.textContent).toContain("today's limit");
   });
 
   it("a page re-mounted while the answer is on its way waits for it instead of asking again", async () => {

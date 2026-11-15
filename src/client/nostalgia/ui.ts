@@ -6,6 +6,17 @@ import { nostalgiaPageHtml, nostalgiaUi, nostalgiaVoteResult } from "../../share
 type Stored = { a: "yes" | "no"; yes: number; no: number };
 
 const KEY = (id: NostalgiaId): string => `cvcm.nostalgia.vote.${id}`;
+/** UTC day on which this network hit the cap for the entry: no more requests that day (they could not count). */
+const CAPPED = (id: NostalgiaId): string => `cvcm.nostalgia.capped.${id}`;
+const today = (): string => new Date().toISOString().slice(0, 10);
+
+function cappedToday(id: NostalgiaId): boolean {
+  try {
+    return localStorage.getItem(CAPPED(id)) === today();
+  } catch {
+    return false;
+  }
+}
 
 function readStored(id: NostalgiaId): Stored | null {
   try {
@@ -69,8 +80,16 @@ async function send(id: NostalgiaId, answer: "yes" | "no"): Promise<{ value: Sto
     if (!Number.isFinite(tally.yes) || !Number.isFinite(tally.no)) return null;
     const value: Stored = { a: answer, yes: tally.yes, no: tally.no };
     const counted = tally.counted !== false;
-    // Only a counted answer is remembered: a capped one from a shared network must stay answerable another day.
+    // Only a counted answer is remembered: a capped one from a shared network must stay answerable another day, but
+    // not today (it could not count), so that day is noted.
     if (counted) store(id, value);
+    else {
+      try {
+        localStorage.setItem(CAPPED(id), today());
+      } catch {
+        /* private mode */
+      }
+    }
     return { value, counted };
   } catch {
     return null;
@@ -92,6 +111,14 @@ function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
   }
   const result = section.querySelector<HTMLElement>(".nostalgia-vote-result");
   const buttons = [...section.querySelectorAll<HTMLButtonElement>("button[data-answer]")];
+  if (cappedToday(id)) {
+    for (const b of buttons) b.disabled = true;
+    if (result) {
+      result.textContent = nostalgiaUi(locale).vote.repeat;
+      result.hidden = false;
+    }
+    return;
+  }
   const await_ = async (request: Promise<{ value: Stored; counted: boolean } | null>): Promise<void> => {
     const vote = nostalgiaUi(locale).vote;
     for (const b of buttons) b.disabled = true;

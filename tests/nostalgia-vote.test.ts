@@ -78,6 +78,9 @@ describe("nostalgia vote API", () => {
     expect(db.prepare("SELECT COUNT(*) AS n FROM nostalgia_vote_keys").get()).toEqual({ n: 0 });
     expect(db.prepare("SELECT COUNT(*) AS n FROM nostalgia_rate").get()).toEqual({ n: 0 });
     expect(db.prepare("SELECT yes, no FROM nostalgia_votes WHERE id = 'famicom'").get()).toEqual({ yes: 2, no: NOSTALGIA_PER_ADDRESS });
+    // A capped request for an entry nobody answered writes no row.
+    for (let i = 0; i <= NOSTALGIA_PER_ADDRESS; i++) await handleNostalgiaApi(post({ id: "y2k", answer: "yes" }, { "CF-Connecting-IP": "192.0.2.9" }), { store, now: day1 + 5 * 24 * 60 * 60 * 1000 });
+    expect(db.prepare("SELECT yes FROM nostalgia_votes WHERE id = 'y2k'").get()).toEqual({ yes: NOSTALGIA_PER_ADDRESS });
   });
 
   it("rejects other origins, bad bodies, unknown ids, other methods, and rate-limits", async () => {
@@ -117,6 +120,9 @@ describe("nostalgia vote markup", () => {
 
   it("formats the share", () => {
     expect(nostalgiaVoteResult("zh-CN", "white-rabbit", { yes: 3, no: 1 })).toBe("75% 的回答是「吃过」 · 共 4 份回答");
+    // Never 100% or 0% while the other side has votes.
+    expect(nostalgiaVoteResult("en", "famicom", { yes: 199, no: 1 })).toContain("99%");
+    expect(nostalgiaVoteResult("en", "famicom", { yes: 1, no: 199 })).toContain("1%");
     // No "1 answers": the count reads as a label.
     expect(nostalgiaVoteResult("en", "pager", { yes: 1, no: 0 })).toBe("100% chose “I used one” · answers: 1");
     expect(nostalgiaVoteResult("en", "famicom", { yes: 1234, no: 0 })).toContain("answers: 1,234");

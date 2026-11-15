@@ -39,7 +39,7 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
   const search = d1SearchStore(db);
   return {
     async vote(id, answer, key, now) {
-      // Stored times are cut to the UTC day, so a key row cannot be matched to a count update by its millisecond.
+      // Stored times are cut to the UTC day (keys and counts carry no finer timestamp).
       const day = now - (now % (24 * 60 * 60 * 1000));
       // One batch, one transaction: count the address's answers for this entry today, then add to the totals only while
       // that count is within the cap. Both upserts return their rows, so `counted` and the totals are exactly this
@@ -51,20 +51,22 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
            RETURNING answers`,
         )
         .bind(key, day);
-      const within = `CASE WHEN (SELECT answers FROM nostalgia_vote_keys WHERE key = ?) <= ${NOSTALGIA_PER_ADDRESS} THEN 1 ELSE 0 END`;
-      const yes = answer === "yes" ? within : "0";
-      const no = answer === "no" ? within : "0";
+      // Over the cap nothing is written to the counts (no timestamp touch, no empty row): the WHERE skips the insert.
       const count = db
         .prepare(
-          `INSERT INTO nostalgia_votes (id, yes, no, updated_at) VALUES (?, ${yes}, ${no}, ?)
+          `INSERT INTO nostalgia_votes (id, yes, no, updated_at)
+           SELECT ?, ${answer === "yes" ? 1 : 0}, ${answer === "no" ? 1 : 0}, ?
+           WHERE (SELECT answers FROM nostalgia_vote_keys WHERE key = ?) <= ${NOSTALGIA_PER_ADDRESS}
            ON CONFLICT (id) DO UPDATE SET yes = yes + excluded.yes, no = no + excluded.no, updated_at = excluded.updated_at
            RETURNING yes, no`,
         )
-        .bind(id, key, day);
+        .bind(id, day, key);
       const [mark, totals] = (await db.batch([seen, count])) as Array<{ results?: Array<Record<string, number>> }>;
       const answers = Number(mark?.results?.[0]?.answers ?? Infinity);
-      const row = totals?.results?.[0];
-      return { yes: Number(row?.yes ?? 0), no: Number(row?.no ?? 0), counted: answers <= NOSTALGIA_PER_ADDRESS };
+      const counted = answers <= NOSTALGIA_PER_ADDRESS;
+      // A capped answer wrote nothing, so read the totals as they stand.
+      const row = totals?.results?.[0] ?? (await db.prepare("SELECT yes, no FROM nostalgia_votes WHERE id = ?").bind(id).first<NostalgiaTally>());
+      return { yes: Number(row?.yes ?? 0), no: Number(row?.no ?? 0), counted };
     },
     daySalt: (day, now) => search.daySalt(day, now),
     async bumpRate(ipHash, max, now) {
