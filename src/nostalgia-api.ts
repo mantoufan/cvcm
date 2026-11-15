@@ -18,10 +18,12 @@ const KEY_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 
 export type NostalgiaAnswer = "yes" | "no";
 export type NostalgiaTally = { yes: number; no: number };
+/** The totals, and whether this answer was added (false: this address already answered this entry today). */
+export type NostalgiaVoteResult = NostalgiaTally & { counted: boolean };
 
 export interface NostalgiaVoteStore {
   /** Counts the answer unless `key` was seen (same address, entry and day); returns the totals either way. */
-  vote(id: NostalgiaId, answer: NostalgiaAnswer, key: string, now: number): Promise<NostalgiaTally>;
+  vote(id: NostalgiaId, answer: NostalgiaAnswer, key: string, now: number): Promise<NostalgiaVoteResult>;
   daySalt(day: string, now: number): Promise<string>;
   /** Counts one request atomically; false once the window's count is over `max`. */
   bumpRate(ipHash: string, max: number, now: number): Promise<boolean>;
@@ -44,9 +46,11 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
         )
         .bind(id, key, now);
       const mark = db.prepare("INSERT OR IGNORE INTO nostalgia_vote_keys (key, created_at) VALUES (?, ?)").bind(key, now);
-      await db.batch([count, mark]);
+      const results = (await db.batch([count, mark])) as Array<{ meta?: { changes?: number } }>;
+      // The key insert changes a row only when the key is new, which is exactly when the answer was counted.
+      const counted = Number(results[1]?.meta?.changes ?? 0) > 0;
       const row = await db.prepare("SELECT yes, no FROM nostalgia_votes WHERE id = ?").bind(id).first<NostalgiaTally>();
-      return { yes: row?.yes ?? 0, no: row?.no ?? 0 };
+      return { yes: row?.yes ?? 0, no: row?.no ?? 0, counted };
     },
     daySalt: (day, now) => search.daySalt(day, now),
     async bumpRate(ipHash, max, now) {

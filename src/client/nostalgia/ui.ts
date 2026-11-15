@@ -1,3 +1,4 @@
+import { fill } from "../../shared/fill";
 import type { Locale } from "../../shared/locale";
 import { nostalgiaGroupOf, type NostalgiaId } from "../../shared/nostalgia";
 import { nostalgiaPageHtml, nostalgiaUi, nostalgiaVoteResult } from "../../shared/nostalgia-i18n";
@@ -26,13 +27,19 @@ function store(id: NostalgiaId, value: Stored): void {
   }
 }
 
-/** Shows the share and the reader's own answer, and retires the buttons. */
-function showResult(section: HTMLElement, locale: Locale, id: NostalgiaId, value: Stored): void {
+/**
+ * Shows the share and the reader's own answer, and retires the buttons. `fresh` is false for an answer remembered from
+ * an earlier visit (its totals are a snapshot from then); `counted` false when the API did not add it (same network today).
+ */
+function showResult(section: HTMLElement, locale: Locale, id: NostalgiaId, value: Stored, fresh: boolean, counted = true): void {
   const vote = nostalgiaUi(locale).vote;
   const answer = value.a === "yes" ? vote.yes[nostalgiaGroupOf(id)] : vote.no;
   const result = section.querySelector<HTMLElement>(".nostalgia-vote-result");
   if (result) {
-    result.textContent = `${nostalgiaVoteResult(locale, id, value)} · ${vote.mine.replace("{a}", answer)}`;
+    const share = nostalgiaVoteResult(locale, id, value);
+    const parts = [fresh ? share : fill(vote.snapshot, { result: share }), fill(vote.mine, { a: answer })];
+    if (!counted) parts.push(vote.repeat);
+    result.textContent = parts.join(" · ");
     result.hidden = false;
   }
   for (const button of section.querySelectorAll<HTMLButtonElement>("button[data-answer]")) {
@@ -48,11 +55,13 @@ function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
   if (!section) return;
   const earlier = readStored(id);
   if (earlier) {
-    showResult(section, locale, id, earlier);
+    showResult(section, locale, id, earlier, false);
     return;
   }
   const result = section.querySelector<HTMLElement>(".nostalgia-vote-result");
   const buttons = [...section.querySelectorAll<HTMLButtonElement>("button[data-answer]")];
+  // The static page ships them disabled, so a tap before this point is not silently dropped.
+  for (const button of buttons) button.disabled = false;
   for (const button of buttons) {
     button.addEventListener("click", async () => {
       const answer = button.dataset.answer === "yes" ? "yes" : "no";
@@ -69,11 +78,11 @@ function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
           body: JSON.stringify({ id, answer }),
         });
         if (!res.ok) throw new Error(String(res.status));
-        const tally = (await res.json()) as { yes: number; no: number };
+        const tally = (await res.json()) as { yes: number; no: number; counted?: boolean };
         if (!Number.isFinite(tally.yes) || !Number.isFinite(tally.no)) throw new Error("tally");
         const value: Stored = { a: answer, yes: tally.yes, no: tally.no };
         store(id, value);
-        if (section.isConnected) showResult(section, locale, id, value);
+        if (section.isConnected) showResult(section, locale, id, value, true, tally.counted !== false);
       } catch {
         if (!section.isConnected) return;
         for (const b of buttons) b.disabled = false;

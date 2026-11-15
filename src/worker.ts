@@ -94,10 +94,11 @@ function s3Config(env: Env): S3Config | null {
 export default {
   /** Hourly cron (wrangler.jsonc): sweep search hashes, salts and rate rows past their two days even when nobody searches. */
   async scheduled(_event: unknown, env: Env): Promise<void> {
-    if (env.DB) {
-      await d1SearchStore(env.DB).cleanup(Date.now());
-      await d1NostalgiaStore(env.DB).cleanup(Date.now());
-    }
+    if (!env.DB) return;
+    // Independent sweeps: one failing must not keep the other's IP-derived rows past their two days.
+    const now = Date.now();
+    const sweeps = await Promise.allSettled([d1SearchStore(env.DB).cleanup(now), d1NostalgiaStore(env.DB).cleanup(now)]);
+    for (const sweep of sweeps) if (sweep.status === "rejected") console.error("cleanup", sweep.reason);
   },
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);

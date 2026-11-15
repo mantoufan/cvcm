@@ -53,12 +53,14 @@ describe("nostalgia vote API", () => {
     const day1 = Date.UTC(2026, 10, 15, 8);
     const first = await handleNostalgiaApi(post({ id: "famicom", answer: "yes" }), { store, now: day1 });
     expect(first?.status).toBe(200);
-    expect(await first!.json()).toEqual({ yes: 1, no: 0 });
-    // Same address and entry again: not counted twice, even with the other answer.
-    expect(await (await handleNostalgiaApi(post({ id: "famicom", answer: "no" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: 0 });
+    expect(await first!.json()).toEqual({ yes: 1, no: 0, counted: true });
+    // Same address and entry again: not counted twice, even with the other answer, and the reply says so.
+    expect(await (await handleNostalgiaApi(post({ id: "famicom", answer: "no" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: 0, counted: false });
     // Another address counts; another entry from the first address counts on its own.
-    expect(await (await handleNostalgiaApi(post({ id: "famicom", answer: "no" }, { "CF-Connecting-IP": "198.51.100.4" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: 1 });
-    expect(await (await handleNostalgiaApi(post({ id: "pager", answer: "yes" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: 0 });
+    expect(await (await handleNostalgiaApi(post({ id: "famicom", answer: "no" }, { "CF-Connecting-IP": "198.51.100.4" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: 1, counted: true });
+    expect(await (await handleNostalgiaApi(post({ id: "pager", answer: "yes" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: 0, counted: true });
+    // The next day the same address counts again.
+    expect(await (await handleNostalgiaApi(post({ id: "pager", answer: "yes" }), { store, now: day1 + 24 * 60 * 60 * 1000 }))!.json()).toEqual({ yes: 2, no: 0, counted: true });
     const dump = JSON.stringify([
       db.prepare("SELECT * FROM nostalgia_votes").all(),
       db.prepare("SELECT * FROM nostalgia_vote_keys").all(),
@@ -67,7 +69,7 @@ describe("nostalgia vote API", () => {
     expect(dump).not.toContain("203.0.113.9");
     expect(dump).not.toContain("198.51.100.4");
     // Keys and rate rows are swept after two days; the counts stay.
-    await store.cleanup(day1 + 3 * 24 * 60 * 60 * 1000);
+    await store.cleanup(day1 + 4 * 24 * 60 * 60 * 1000);
     expect(db.prepare("SELECT COUNT(*) AS n FROM nostalgia_vote_keys").get()).toEqual({ n: 0 });
     expect(db.prepare("SELECT COUNT(*) AS n FROM nostalgia_rate").get()).toEqual({ n: 0 });
     expect(db.prepare("SELECT yes, no FROM nostalgia_votes WHERE id = 'famicom'").get()).toEqual({ yes: 1, no: 1 });
@@ -101,14 +103,15 @@ describe("nostalgia vote markup", () => {
     const html = nostalgiaPageHtml("zh-CN", "white-rabbit");
     expect(html).toContain('<section class="nostalgia-vote" data-id="white-rabbit"');
     expect(html).toContain("你吃过吗？");
-    expect(html).toContain('data-answer="yes">吃过</button>');
-    expect(html).toContain('data-answer="no">没有</button>');
+    // Disabled in the static page until the client wires them.
+    expect(html).toContain('data-answer="yes" disabled>吃过</button>');
+    expect(html).toContain('data-answer="no" disabled>没有</button>');
     expect(nostalgiaPageHtml("en", "famicom")).toContain("Did you ever play it?");
     expect(nostalgiaPageHtml("en", null)).not.toContain("nostalgia-vote");
   });
 
   it("formats the share", () => {
-    expect(nostalgiaVoteResult("zh-CN", "white-rabbit", { yes: 3, no: 1 })).toBe("75% 的人选了「吃过」 · 共 4 人回答");
+    expect(nostalgiaVoteResult("zh-CN", "white-rabbit", { yes: 3, no: 1 })).toBe("75% 的回答是「吃过」 · 共 4 份回答");
     expect(nostalgiaVoteResult("en", "pager", { yes: 0, no: 0 })).toBe("0% chose “I used one” · 0 answers");
     expect(nostalgiaVoteResult("en", "famicom", { yes: 1234, no: 0 })).toContain("1,234 answers");
   });
