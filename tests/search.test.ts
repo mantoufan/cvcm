@@ -134,6 +134,11 @@ describe("query rules", () => {
     expect(isRecordableQuery("t.me/someuser")).toBe(false);
     expect(isRecordableQuery("example.com/reset?token=abc")).toBe(false);
     expect(isRecordableQuery("node.js")).toBe(true);
+    expect(isRecordableQuery("draw.io")).toBe(true);
+    expect(isRecordableQuery("asp.net tutorial")).toBe(true);
+    expect(isRecordableQuery("1920 1080 wallpaper")).toBe(true);
+    expect(isRecordableQuery("2026-11-15")).toBe(true);
+    expect(isRecordableQuery("𠮷".repeat(40))).toBe(true);
     expect(isRecordableQuery("c.ai")).toBe(true);
   });
 
@@ -164,9 +169,6 @@ function memoryStore() {
       row.count++;
       if (fresh) row.visitors++;
       misses.set(`${locale}|${q}`, row);
-    },
-    async hasVote(visitor) {
-      return votes.has(visitor);
     },
     async addRequest(q, locale, email) {
       const key = `${locale}|${q}|${email}`;
@@ -249,8 +251,10 @@ describe("search API on the D1 schema", () => {
     const dump = JSON.stringify([db.prepare("SELECT * FROM search_votes").all(), db.prepare("SELECT * FROM search_rate").all()]);
     expect(dump).not.toContain("203.0.113.9");
     const statuses: number[] = [];
-    // Without this visitor's own miss for the query today, an email is refused.
-    expect((await handleSearchApi(post("/api/search/notify", { q: "never searched", locale: "en", email: "a@b.co" }), { store, now: day1 }))?.status).toBe(400);
+    // An email request counts as that visitor's miss too, once per day (same vote key as the page's own miss post).
+    await handleSearchApi(post("/api/search/miss", { q: "kite maker", locale: "en" }), { store, now: day1 });
+    await handleSearchApi(post("/api/search/notify", { q: "kite maker", locale: "en", email: "k@b.co" }), { store, now: day1 });
+    expect(db.prepare("SELECT count, visitors FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ count: 2, visitors: 1 });
     for (let i = 0; i < SEARCH_REQUESTS_PER_EMAIL + 2; i++) {
       const from = { "CF-Connecting-IP": `192.0.2.${i}` };
       await handleSearchApi(post("/api/search/miss", { q: `topic ${i}`, locale: "en" }, from), { store, now: day1 });
@@ -259,7 +263,7 @@ describe("search API on the D1 schema", () => {
     }
     // Past the cap the answer is the same (no row is added), so nobody learns what an address has on file.
     expect(statuses).toEqual([200, 200, 200, 200, 200]);
-    expect(db.prepare("SELECT COUNT(*) AS n FROM search_requests").get()).toEqual({ n: SEARCH_REQUESTS_PER_EMAIL });
+    expect(db.prepare("SELECT COUNT(*) AS n FROM search_requests WHERE email = 'a@b.co'").get()).toEqual({ n: SEARCH_REQUESTS_PER_EMAIL });
     // The real store's rate limit is one atomic upsert: concurrent requests cannot slip past the cap.
     const burst = await Promise.all(
       Array.from({ length: SEARCH_MISS_MAX + 10 }, (_, i) =>
@@ -271,7 +275,7 @@ describe("search API on the D1 schema", () => {
     for (const table of ["search_votes", "search_salts", "search_rate"]) {
       expect(db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get(), table).toEqual({ n: 0 });
     }
-    expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 1 + SEARCH_REQUESTS_PER_EMAIL + 2 + SEARCH_MISS_MAX });
+    expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 2 + SEARCH_REQUESTS_PER_EMAIL + 2 + SEARCH_MISS_MAX });
   });
 });
 

@@ -18,7 +18,8 @@ import {
  * and the visitor may leave an email to hear when it gets one (/api/search/notify).
  */
 
-const MISS_DELAY_MS = 1200;
+/** Long enough that a pause mid-word rarely records a fragment; closing the panel records the final query anyway. */
+const MISS_DELAY_MS = 3000;
 const indexes = new Map<Locale, Promise<SearchEntry[]>>();
 /** Queries already recorded in this tab, so retyping one does not post again. */
 const recorded = new Set<string>();

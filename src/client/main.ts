@@ -1094,7 +1094,7 @@ function searchButton(): HTMLElement {
     class: "search-btn",
     "aria-label": t("search.open"),
     title: t("search.open"),
-    "aria-haspopup": "listbox",
+    "aria-haspopup": "dialog",
     "aria-expanded": "false",
     onPointerenter: () => void load().then((m) => m.prefetchSearch()).catch(() => undefined),
     onFocus: () => void load().then((m) => m.prefetchSearch()).catch(() => undefined),

@@ -175,15 +175,18 @@ export function searchEntries(entries: readonly SearchEntry[], query: string, li
  * links, email addresses, long digit runs (phone and ID numbers), and strings with no letter or digit.
  */
 export function isRecordableQuery(query: string): boolean {
-  if (query.length < 1 || query.length > SEARCH_QUERY_MAX) return false;
+  const points = [...query].length;
+  if (points < 1 || points > SEARCH_QUERY_MAX) return false;
   if (!/[\p{L}\p{N}]/u.test(query)) return false;
   if (/@|https?:|www\.|:\/\//i.test(query)) return false;
-  // Bare links (bit.ly/x, t.me/name, example.com/reset?token=…): a host with a common TLD, or any host followed by a path.
-  if (/[a-z0-9-]+\.(?:com|net|org|info|biz|ly|me|io|co|cc|to|gl|gg|tv|xyz|app|dev|link|site|top|cn|hk|tw|jp|kr|vn|id|uk|de|fr|ru|us)\b/i.test(query)) return false;
+  // Bare links: a host followed by a path (example.com/reset?token=…), or a link shortener on its own (bit.ly, t.me).
+  // Plain names with a dot (draw.io, asp.net, node.js) stay: they are real topics.
   if (/[a-z0-9-]+\.[a-z]{2,}\/\S/i.test(query)) return false;
-  // Phone, ID and card numbers: 7+ digits once separators are gone. Known number slang (520, 334424044) has a page,
-  // so it never reaches this check as a miss.
-  if (/\d{7,}/.test(query.replace(/[\s\-().+/]/g, ""))) return false;
+  if (/(^|[^a-z0-9.-])(bit\.ly|t\.me|t\.co|wa\.me|goo\.gl|tinyurl\.com|b23\.tv|dwz\.cn|url\.cn)\b/i.test(query)) return false;
+  // Phone, ID and card numbers: an unbroken run of 7+ digits, or 10+ digits in all (555 123 4567, (415) 555-0199).
+  // Sizes and dates (1920 1080, 2026-11-15) have fewer. Known number slang (520, 334424044) has a page, so it never
+  // reaches this check as a miss.
+  if (/\d{7,}/.test(query) || (query.match(/\d/g)?.length ?? 0) >= 10) return false;
   return true;
 }
 

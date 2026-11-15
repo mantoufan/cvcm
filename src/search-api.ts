@@ -1,4 +1,4 @@
-import type { D1Database, D1Prepared } from "./clip-store";
+import type { D1Database } from "./clip-store";
 import { toHex } from "./shared/hash";
 import { clientIp } from "./shared/clip";
 import { isLocale, type Locale } from "./shared/locale";
@@ -19,6 +19,8 @@ export const SEARCH_RATE_WINDOW_MS = 60 * 60 * 1000;
 export const SEARCH_MISS_MAX = 120;
 export const SEARCH_EMAIL_RATE_MAX = 5;
 const VOTE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
+/** Email requests that were never mailed are deleted after this (the privacy policy says six months). */
+export const REQUEST_TTL_MS = 183 * 24 * 60 * 60 * 1000;
 /** Pending requests per address: enough for a real visitor, a ceiling for someone signing up a stranger. */
 export const SEARCH_REQUESTS_PER_EMAIL = 3;
 const BODY_MAX = 2048;
@@ -26,8 +28,6 @@ const BODY_MAX = 2048;
 export interface SearchStore {
   /** Count one hit; `visitor` is a per-day key, counted into `visitors` the first time it is seen. */
   recordMiss(q: string, locale: Locale, visitor: string, now: number): Promise<void>;
-  /** Whether this visitor key recorded a miss (today's salt): a notify request must follow the visitor's own miss. */
-  hasVote(visitor: string): Promise<boolean>;
   /** Adds the request unless the address already has SEARCH_REQUESTS_PER_EMAIL pending ("limit"). */
   addRequest(q: string, locale: Locale, email: string, now: number): Promise<"ok" | "limit">;
   /** The random salt of a UTC day, created on first use. */
@@ -37,10 +37,7 @@ export interface SearchStore {
   cleanup(now: number): Promise<void>;
 }
 
-/** D1 always has batch(); the search store relies on it for atomic writes. */
-export type D1WithBatch = D1Database & { batch(statements: D1Prepared[]): Promise<unknown[]> };
-
-export function d1SearchStore(db: D1WithBatch): SearchStore {
+export function d1SearchStore(db: D1Database): SearchStore {
   return {
     async recordMiss(q, locale, visitor, now) {
       // The visitor counts if their vote key is new; the vote is written after, in the same transaction, so a failed
@@ -54,9 +51,6 @@ export function d1SearchStore(db: D1WithBatch): SearchStore {
         .bind(q, locale, visitor, now, now);
       const vote = db.prepare("INSERT OR IGNORE INTO search_votes (key, created_at) VALUES (?, ?)").bind(visitor, now);
       await db.batch([miss, vote]);
-    },
-    async hasVote(visitor) {
-      return Boolean(await db.prepare("SELECT 1 AS hit FROM search_votes WHERE key = ?").bind(visitor).first());
     },
     async addRequest(q, locale, email, now) {
       const added = await db
@@ -102,6 +96,8 @@ export function d1SearchStore(db: D1WithBatch): SearchStore {
         db.prepare("DELETE FROM search_votes WHERE created_at < ?").bind(now - VOTE_TTL_MS),
         db.prepare("DELETE FROM search_rate WHERE window_start < ?").bind(now - SEARCH_RATE_WINDOW_MS * 2),
         db.prepare("DELETE FROM search_salts WHERE created_at < ?").bind(now - VOTE_TTL_MS),
+        // A topic that is never added: the address is not kept longer than REQUEST_TTL_MS.
+        db.prepare("DELETE FROM search_requests WHERE created_at < ?").bind(now - REQUEST_TTL_MS),
       ];
       await db.batch(sweeps);
     },
@@ -234,9 +230,9 @@ export async function handleSearchApi(request: Request, opts: SearchApiOpts): Pr
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
     if (!isValidEmail(email)) return json(400, { error: "email" });
     if (!(await store.bumpRate(ipHash, "emails", SEARCH_EMAIL_RATE_MAX, now))) return json(429, { error: "rate" });
-    // Only after this visitor's own recorded miss for this query today: an email cannot be attached to a query that
-    // was never a no-result search from the same connection (the page always posts the miss first).
-    if (!(await store.hasVote(await keyed(salt, `vote|${ip}|${locale}|${q}`)))) return json(400, { error: "query" });
+    // An email is also this visitor's miss (the same per-day vote key, so it is not counted twice): the demand table
+    // then has every query someone asked about, even when the page's own miss post was lost or rate-limited.
+    await store.recordMiss(q, locale, await keyed(salt, `vote|${ip}|${locale}|${q}`), now);
     // The same answer at the per-address cap: a different one would tell anyone whether an address has requests on file.
     await store.addRequest(q, locale, email, now);
     return json(200, { ok: true });
