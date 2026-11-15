@@ -1,6 +1,6 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
-import { loadIdeasPack, locale, t } from "../i18n";
+import { locale, t } from "../i18n";
 import { hasIdeasMessages } from "../../shared/messages";
 import { IDEA_ENTRIES, isIdeaId, type IdeaId } from "../../shared/ideas";
 import { ideaData, ideaName } from "../../shared/ideas-i18n";
@@ -17,6 +17,8 @@ type State = {
   pinnedText: string | null;
   /** Idea names in the page's language, for matching. */
   names: Partial<Record<IdeaId, string>>;
+  /** What the result area shows (match + answers), so typing does not rebuild it needlessly. */
+  signature: string;
   ready: boolean;
   last: string;
 };
@@ -28,7 +30,7 @@ const NONE = "";
 
 export function mountIdeaValidator(host: HTMLElement): void {
   unmountIdeaValidator();
-  const run = ++alive;
+  alive++;
   const loc = locale();
   const idea = h("textarea", {
     "data-field": "idea",
@@ -50,7 +52,7 @@ export function mountIdeaValidator(host: HTMLElement): void {
     ...OPTION_POINTS[q].map((_, i) => h("option", { value: String(i) }, t(`ideaValidator.${q}.o${i + 1}`))),
   )])) as Record<ValidatorQuestion, HTMLSelectElement>;
   const out = h("div", { class: "iv-out", "aria-live": "polite", "data-out": "result" });
-  state = { idea, match, selects, out, copyBtn: null, pinnedText: null, names: {}, ready: false, last: "" };
+  state = { idea, match, selects, out, copyBtn: null, pinnedText: null, names: {}, signature: "", ready: false, last: "" };
   host.append(
     h("header", { class: "tool-head" },
       h("h1", null, t("ideaValidator.title")),
@@ -79,15 +81,10 @@ export function mountIdeaValidator(host: HTMLElement): void {
       ),
     ),
   );
-  // Idea names and the search-data snapshot come with the ideas pack, which the page loads before mounting (it is
-  // requested with the tool's strings); if it is somehow missing, the scorecard works alone until it arrives.
+  // Idea names and the search-data snapshot come with the ideas pack, which the page loads with the tool's strings
+  // (main.ts render). Without it the scorecard still works, with no benchmark.
   if (hasIdeasMessages(loc)) fillIdeas(loc);
-  else {
-    paint();
-    loadIdeasPack(loc).then(() => {
-      if (run === alive && state) fillIdeas(loc);
-    }).catch((err: unknown) => console.error("idea validator: ideas pack", err));
-  }
+  else paint();
 }
 
 function fillIdeas(loc: ReturnType<typeof locale>): void {
@@ -143,6 +140,14 @@ function paint(): void {
   const id = matchedIdea();
   const data = id && state.ready ? ideaData(loc, id) : null;
   const result = validateIdea(answers, data ? data.scores.total : null);
+  // Typing in the description repaints only when the match or the answers change, so the live region is not re-read
+  // on every key; the copied text still follows the description.
+  const signature = `${id ?? ""}|${JSON.stringify(answers)}|${state.ready}`;
+  if (signature === state.signature) {
+    if (result) state.last = summary(result, answers, id);
+    return;
+  }
+  state.signature = signature;
   const out = state.out;
   out.replaceChildren();
   state.last = "";
@@ -181,15 +186,23 @@ function paint(): void {
   }
   if (id && data) out.append(benchmark(id, data.scores.total));
   out.append(h("p", { class: "more" }, h("a", { href: ideasHref(loc), "data-nav": "ideas" }, t("ideaValidator.allIdeas"))));
-  const lines = [
-    `${t("ideaValidator.title")}: ${result.total}/100 (${gradeLabel})`,
-    state.idea.value.trim() ? `${t("ideaValidator.describe")}: ${state.idea.value.trim()}` : "",
+  state.last = summary(result, answers, id);
+}
+
+/** The result as plain text for Copy. */
+function summary(result: NonNullable<ReturnType<typeof validateIdea>>, answers: ValidatorAnswers, id: IdeaId | null): string {
+  const loc = locale();
+  const focus = result.weaknesses[0];
+  const tips = focus ? [1, 2, 3].map((n) => t(`ideaValidator.tip.${focus}.t${n}`)) : [];
+  const text = state?.idea.value.trim() ?? "";
+  return [
+    `${t("ideaValidator.title")}: ${result.total}/100 (${t(`ideaValidator.grade.${result.grade}`)})`,
+    text ? `${t("ideaValidator.describe")}: ${text}` : "",
     `${t("ideaValidator.readiness")}: ${result.readiness}`,
     `${t("ideaValidator.market")}: ${result.market === null ? t("ideaValidator.noMarket") : `${result.market}${id ? ` (${ideaName(loc, id).name})` : ""}`}`,
     ...VALIDATOR_QUESTIONS.map((q) => `${t(`ideaValidator.${q}.label`)}: ${t(`ideaValidator.${q}.o${(answers[q] ?? 0) + 1}`)}`),
-    ...(tips.length ? [`${t("ideaValidator.next", { item: t(`ideaValidator.${focus}.label`) })}:`, ...tips.map((tip, i) => `${i + 1}. ${tip}`)] : []),
-  ];
-  state.last = lines.filter(Boolean).join("\n");
+    ...(focus ? [`${t("ideaValidator.next", { item: t(`ideaValidator.${focus}.label`) })}:`, ...tips.map((tip, i) => `${i + 1}. ${tip}`)] : []),
+  ].filter(Boolean).join("\n");
 }
 
 /** The matched idea's market numbers and a link to its page. */

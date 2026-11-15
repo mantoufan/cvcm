@@ -6,7 +6,7 @@
 import keywords from "../../scripts/ideas/keywords.json";
 import { IDEA_ENTRIES, type IdeaId } from "./ideas";
 
-/** The eight questions, in page order. Each answer is worth 0-4 points; `trend` can also come from the matched idea. */
+/** The eight questions, in page order. Each answer is worth 0-4 points (the reader answers all of them). */
 export const VALIDATOR_QUESTIONS = ["evidence", "price", "competition", "cost", "time", "edge", "channel", "trend"] as const;
 export type ValidatorQuestion = (typeof VALIDATOR_QUESTIONS)[number];
 
@@ -73,7 +73,8 @@ export function validateIdea(answers: ValidatorAnswers, market: number | null): 
   return { readiness, market, total, grade, strengths, weaknesses };
 }
 
-const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+/gu;
+// ー (U+30FC) and its halfwidth form are Script=Common but belong inside katakana words (コーヒー).
+const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\u30fc\uff70]+/gu;
 
 /**
  * Lowercased words with accents removed and an English plural "s" dropped; CJK runs become overlapping two-character
@@ -98,7 +99,7 @@ export function ideaTokens(text: string): string[] {
 
 /** Words that say "business", "how to", "online", "I want" and the like in the eight languages (accents removed). */
 const STOP = new Set([
-  "business", "busines", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small",
+  "business", "businesse", "companie", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small",
   "negocio", "de", "la", "el", "lo", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi",
   "bisni", "bisnis", "usaha", "jasa", "di", "cara", "jualan", "jual", "rumah", "saya", "ingin", "mau", "dan", "yang", "toko",
   "kinh", "doanh", "mo", "ban", "va", "cua", "hang", "tren", "mang", "toi", "muon", "nha", "dich", "vu", "cong", "ty", "lam",
@@ -110,31 +111,41 @@ const IDEA_POOLS: Record<IdeaId, Set<string>> = Object.fromEntries(
   IDEA_ENTRIES.map((id) => [id, new Set(Object.values((keywords as Record<string, Record<string, string[]>>)[id] ?? {}).flat().flatMap(ideaTokens))]),
 ) as Record<IdeaId, Set<string>>;
 
-/** Name tokens per locale's names table, built once per table. */
-const namePools = new WeakMap<object, Record<string, Set<string>>>();
+/** Per names table (one per locale): each idea's merged word pool and how many ideas use each word. */
+const poolCache = new WeakMap<object, { pools: { id: IdeaId; words: Set<string> }[]; df: Map<string, number> }>();
+
+function poolsFor(names: Partial<Record<IdeaId, string>>): { pools: { id: IdeaId; words: Set<string> }[]; df: Map<string, number> } {
+  let entry = poolCache.get(names);
+  if (!entry) {
+    const pools = IDEA_ENTRIES.map((id) => ({ id, words: new Set([...IDEA_POOLS[id], ...ideaTokens(names[id] ?? "")]) }));
+    const df = new Map<string, number>();
+    for (const { words } of pools) for (const w of words) df.set(w, (df.get(w) ?? 0) + 1);
+    entry = { pools, df };
+    poolCache.set(names, entry);
+  }
+  return entry;
+}
 
 /**
  * The idea whose search phrases (and name in the reader's language) best share the text's words, weighted by how few
- * ideas use each word. A match needs two shared words, or one long word only that idea uses, and a clear winner:
- * otherwise null (the reader can still pick one). `names` maps each idea to its name in the page's language.
+ * ideas use each word. A match needs two shared words, or, in a text of at most two words, one word of 3+ letters
+ * (or a CJK piece) only that idea uses.
+ * Equal scores go to the idea whose pool the text covers most (its own name beats a longer name containing it); a
+ * remaining tie is no match. `names` maps each idea to its name in the page's language.
  */
 export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> = {}): IdeaId | null {
   const tokens = [...new Set(ideaTokens(text))];
   if (!tokens.length) return null;
-  let byName = namePools.get(names);
-  if (!byName) {
-    byName = Object.fromEntries(IDEA_ENTRIES.map((id) => [id, new Set(ideaTokens(names[id] ?? ""))]));
-    namePools.set(names, byName);
-  }
-  const pool = (id: IdeaId): Set<string> => new Set([...IDEA_POOLS[id], ...byName![id]]);
-  const pools = IDEA_ENTRIES.map((id) => ({ id, words: pool(id) }));
-  const df = (t: string): number => pools.filter((p) => p.words.has(t)).length;
+  const { pools, df } = poolsFor(names);
   const scored = pools.map(({ id, words }) => {
     const hits = tokens.filter((t) => words.has(t));
-    return { id, hits, score: hits.reduce((sum, t) => sum + Math.log(IDEA_ENTRIES.length / df(t)), 0) };
-  }).sort((a, b) => b.score - a.score);
+    return { id, hits, cover: hits.length / Math.max(1, words.size), score: hits.reduce((sum, t) => sum + Math.log(IDEA_ENTRIES.length / (df.get(t) ?? 1)), 0) };
+  }).sort((a, b) => b.score - a.score || b.cover - a.cover);
   const [best, second] = scored;
-  if (!best || best.score <= 0 || best.score === second?.score) return null;
-  const strong = best.hits.length >= 2 || (best.hits.length === 1 && df(best.hits[0]) === 1 && (best.hits[0].length >= 4 || /[^\x00-\x7f]/.test(best.hits[0])));
+  if (!best || best.score <= 0 || (best.score === second?.score && best.cover === second?.cover)) return null;
+  const only = best.hits[0];
+  // One shared word is enough only when the text is about that short (a name like "Pet services"); in a longer
+  // description one shared word ("mobile" in "a mobile app for students") is too weak a signal.
+  const strong = best.hits.length >= 2 || (best.hits.length === 1 && tokens.length <= 2 && df.get(only) === 1 && (only.length >= 3 || /[^\x00-\x7f]/.test(only)));
   return strong ? best.id : null;
 }

@@ -67,6 +67,13 @@ describe("idea validator: matching", () => {
     expect(matchIdea("jualan online di rumah", names("id"))).toBeNull();
     expect(matchIdea("副業でお金を稼ぎたい", names("ja"))).toBeNull();
     expect(matchIdea("on at in", names("en"))).toBeNull();
+    // An idea's own name matches it even when a longer name contains the same words; katakana long vowels stay in the word.
+    expect(matchIdea("AI agency", names("en"))).toBe("ai-agency");
+    expect(matchIdea("Car wash business", names("en"))).toBe("car-wash");
+    expect(matchIdea("Pet services business", names("en"))).toBe("pet-services");
+    expect(matchIdea("カフェを開きたい", names("ja"))).toBe("coffee-shop");
+    expect(matchIdea("コーチングを始めたい", names("ja"))).toBeNull();
+    expect(ideaTokens("コーヒー")).toEqual(["コー", "ーヒ", "ヒー"]);
     // Plurals and accents.
     expect(matchIdea("pressure washing houses and driveways", names("en"))).toBe("pressure-washing");
     expect(matchIdea("tiệm giặt sấy tự động", names("vi"))).toBe("laundromat");
