@@ -126,7 +126,6 @@ function onIdeaInput(): void {
     const cleared = !state.idea.value.trim();
     const optedOut = state.pinned && state.match.value === NONE;
     if (!state.pinned || cleared || (!optedOut && found && found !== state.match.value && found !== state.autoAtPin)) {
-      if ((found ?? NONE) !== state.match.value) dropPreset();
       state.match.value = found ?? NONE;
       state.pinned = false;
     }
@@ -134,17 +133,8 @@ function onIdeaInput(): void {
   paint();
 }
 
-/** A ?idea= preset no longer describes the page once the reader changes the match: drop it from the URL. */
-function dropPreset(): void {
-  const url = new URL(location.href);
-  if (!url.searchParams.has("idea")) return;
-  url.searchParams.delete("idea");
-  history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
-}
-
 function onMatchChange(): void {
   if (!state) return;
-  dropPreset();
   state.pinned = true;
   state.autoAtPin = state.ready ? matchIdea(state.idea.value, state.names, locale()) ?? NONE : NONE;
   paint();
@@ -209,7 +199,6 @@ function paint(): void {
   state.last = summary(result, answers, id);
 }
 
-/** The result as plain text for Copy. */
 /** The weak spot to test first and its three tips; "nobody competes" is tested as proof of demand. */
 function nextSteps(result: NonNullable<ReturnType<typeof validateIdea>>, answers: ValidatorAnswers): { focus: ValidatorQuestion | null; tips: string[] } {
   const weakest = result.weaknesses[0];
@@ -218,6 +207,7 @@ function nextSteps(result: NonNullable<ReturnType<typeof validateIdea>>, answers
   return { focus, tips: [1, 2, 3].map((n) => t(`ideaValidator.tip.${focus}.t${n}`)) };
 }
 
+/** The result as plain text for Copy. */
 function summary(result: NonNullable<ReturnType<typeof validateIdea>>, answers: ValidatorAnswers, id: IdeaId | null): string {
   const loc = locale();
   const { focus, tips } = nextSteps(result, answers);

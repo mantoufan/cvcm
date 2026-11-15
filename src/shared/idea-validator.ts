@@ -82,27 +82,44 @@ const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=
  * two-character pieces (no spaces to split on), katakana words stay whole and hiragana is dropped.
  */
 export function ideaTokens(text: string, locale: Locale | null = null): string[] {
+  return tokenGroups(text, locale).flat();
+}
+
+/**
+ * The text's tokens grouped by the word they come from: the pieces of one Hangul word (핸드메이드 → 핸드, 드메, 메이,
+ * 이드) form one group, so one word counts once when scoring. Every other token is its own group.
+ */
+export function tokenGroups(text: string, locale: Locale | null = null): string[][] {
   const keep = locale ? KEEP[locale] : undefined;
-  const out: string[] = [];
+  const out: string[][] = [];
   for (const part of text.toLowerCase().normalize("NFKC").split(/[^\p{L}\p{N}]+/u)) {
     if (!part) continue;
     for (const run of part.match(CJK_RUN) ?? []) {
       // Katakana loanwords are whole words (キッチンカー, ペットシッター): pairs of them would match by chance (ネットショップ
       // and ペットシッター share トシ). Han and Hangul become overlapping pairs; hiragana (particles, endings) is dropped.
       for (const seg of run.match(/[\p{Script=Katakana}\u30fc]+|\p{Script=Han}+|\p{Script=Hangul}+|\p{Script=Hiragana}+/gu) ?? []) {
-        if (/^\p{Script=Hiragana}/u.test(seg)) continue;
-        const pieces = /^[\p{Script=Katakana}\u30fc]/u.test(seg) || seg.length === 1 ? [seg] : Array.from({ length: seg.length - 1 }, (_, i) => seg.slice(i, i + 2));
-        for (const piece of pieces) if (!STOP_CJK.has(piece)) out.push(piece);
+        // Hiragana is particles and endings; a lone kanji (開 in 開きたい) is too ambiguous to match on.
+        if (/^\p{Script=Hiragana}/u.test(seg) || (/^\p{Script=Han}$/u.test(seg))) continue;
+        const pieces = (/^[\p{Script=Katakana}\u30fc]/u.test(seg) || seg.length === 1 ? [seg] : Array.from({ length: seg.length - 1 }, (_, i) => seg.slice(i, i + 2))).filter((p) => !STOP_CJK.has(p));
+        if (/^\p{Script=Hangul}/u.test(seg)) {
+          if (pieces.length) out.push(pieces);
+        } else for (const piece of pieces) out.push([piece]);
       }
     }
     const latin = part.replace(CJK_RUN, " ").normalize("NFD").replace(/\p{M}/gu, "").replace(/đ/g, "d").trim();
     for (let word of latin.split(/\s+/)) {
       if (STOP.has(word) && !keep?.has(word)) continue;
-      // English plurals: agencies → agency, washes → wash, cars → car (filler like "this" was dropped above).
-      if (word.length > 4 && word.endsWith("ies")) word = `${word.slice(0, -3)}y`;
-      else if (word.length > 4 && /(sh|ch|x|ss)es$/.test(word)) word = word.slice(0, -2);
-      else if (word.length > 3 && word.endsWith("s") && !/(ss|us|is)$/.test(word)) word = word.slice(0, -1);
-      if (word.length >= 2 && (!STOP.has(word) || keep?.has(word))) out.push(word);
+      // English plurals: agencies → agency, washes → wash, cars → car; the plural of a filler word is filler
+      // ("services"). Words that only look plural stay (news).
+      const folded = word.length > 4 && word.endsWith("ies") ? `${word.slice(0, -3)}y`
+        : word.length > 4 && /(sh|ch|x|ss)es$/.test(word) ? word.slice(0, -2)
+        : word.length > 3 && word.endsWith("s") && !/(ss|us|is)$/.test(word) ? word.slice(0, -1)
+        : word;
+      if (folded !== word && !NOT_PLURAL.has(word)) {
+        if (STOP.has(folded)) continue;
+        word = folded;
+      }
+      if (word.length >= 2) out.push([word]);
     }
   }
   return out;
@@ -111,10 +128,12 @@ export function ideaTokens(text: string, locale: Locale | null = null): string[]
 /** Words that say "business", "how to", "online", "I want" and the like in the eight languages (accents removed). */
 const STOP = new Set([
   "business", "does", "was", "has", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small", "open", "opening", "launch", "handmade", "homemade", "app", "apps", "mobile", "portable", "custom", "big", "best", "good", "cheap", "run", "own", "new", "local", "near", "about", "some", "this", "that",
-  "negocio", "de", "la", "el", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi", "abrir", "montar", "nuevo",
+  "negocio", "de", "la", "el", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi", "abrir", "montar", "nuevo", "artesanal", "artesanale", "aromatica", "casero", "casera",
   "bisni", "bisnis", "usaha", "jasa", "di", "cara", "jualan", "jual", "rumah", "saya", "ingin", "mau", "dan", "yang", "toko", "buka", "membuka",
   "kinh", "doanh", "mo", "ban", "va", "cua", "hang", "tren", "mang", "toi", "muon", "nha", "dich", "vu", "cong", "ty", "lam",
 ]);
+const NOT_PLURAL = new Set(["news", "glass", "gas", "bus", "canvas"]);
+
 /** Filler in one language can be a real word in another: Vietnamese "in" is "print" (in 3D). */
 const KEEP: Partial<Record<Locale, Set<string>>> = { vi: new Set(["in"]) };
 
@@ -127,8 +146,6 @@ const IDEA_POOLS: Record<IdeaId, Set<string>> = Object.fromEntries(
     return [id, new Set(LOCALES.flatMap((loc) => (byLocale[loc] ?? []).flatMap((phrase) => ideaTokens(phrase, loc))))];
   }),
 ) as Record<IdeaId, Set<string>>;
-
-const CJK_ONLY = /^[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\u30fc]+$/u;
 
 const NO_NAMES: Partial<Record<IdeaId, string>> = {};
 
@@ -161,14 +178,17 @@ function poolsFor(names: Partial<Record<IdeaId, string>>, locale: Locale | null)
  * remaining tie is no match. `names` maps each idea to its name in the page's language.
  */
 export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> = NO_NAMES, locale: Locale | null = null): IdeaId | null {
-  const tokens = [...new Set(ideaTokens(text, locale))];
-  if (!tokens.length) return null;
+  const groups = tokenGroups(text, locale);
+  if (!groups.length) return null;
   const { pools, df } = poolsFor(names, locale);
+  const weight = (t: string): number => Math.log(IDEA_ENTRIES.length / (df.get(t) ?? IDEA_ENTRIES.length));
   const scored = pools.map(({ id, words }) => {
-    const hits = tokens.filter((t) => words.has(t));
-    return { id, hits, cover: hits.length / Math.max(1, words.size), score: hits.reduce((sum, t) => sum + Math.log(IDEA_ENTRIES.length / (df.get(t) ?? 1)), 0) };
+    // Each word counts once, by its best piece.
+    const hitGroups = groups.map((g) => g.filter((t) => words.has(t))).filter((g) => g.length);
+    const hits = hitGroups.map((g) => g.reduce((a, b) => (weight(b) > weight(a) ? b : a)));
+    return { id, hits, cover: hits.length / Math.max(1, words.size), score: hits.reduce((sum, t) => sum + weight(t), 0) };
   }).sort((a, b) => b.score - a.score || b.cover - a.cover);
-  const [best, second] = scored;
+  const [best] = scored;
   if (!best || best.score <= 0) return null;
   const tied = scored.filter((s) => s.score === best.score).slice(1);
   for (const other of tied) {
@@ -177,18 +197,17 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
     const same = best.hits.length === other.hits.length && best.hits.every((t) => other.hits.includes(t));
     if (!same || best.cover === other.cover) return null;
   }
+  // Two shared words match. One shared word matches when it is the whole text (a name like "Pet services", 洗车): in
+  // a longer text a single shared word ("coffee" in "selling coffee mugs") is too often a passing mention.
+  if (best.hits.length >= 2) return best.id;
   const only = best.hits[0];
-  // One shared word is enough in a short text (a name like "Pet services"), or when no other idea shares any word
-  // ("open a laundromat near campus"); otherwise ("mobile" in "a mobile app for students") it is too weak a signal.
-  // A lone two-character Han/Hangul piece is only trusted in a short text: in a sentence such pieces match by chance.
-  const cjk = only !== undefined && only.length <= 2 && CJK_ONLY.test(only);
-  const alone = tokens.length <= 2 || ((!second || second.score === 0) && !cjk);
-  const distinct = only !== undefined && (only.length >= 3 || /[^\x00-\x7f]/.test(only));
-  // A word two ideas share counts when the text is just that word and one idea is clearly closer (洗车: car wash over
-  // mobile car wash), as decided by the coverage tie-break above.
-  const sharedButCloser = tokens.length <= 2 && df.get(only) === 2 && second !== undefined && best.score === second.score;
-  const strong = best.hits.length >= 2 || (best.hits.length === 1 && alone && distinct && (df.get(only) === 1 || sharedButCloser));
-  return strong ? best.id : null;
+  const short = groups.length === 1;
+  const distinct = only.length >= 3 || /[^\x00-\x7f]/.test(only);
+  const sharedButCloser = df.get(only) === 2 && tied.length > 0;
+  // In a longer text, one word still matches when it is that specific: only this idea uses it and it is a long word
+  // (laundromat) or a katakana loanword (キッチンカー), not a common word like "coffee" or "truck".
+  const specific = df.get(only) === 1 && (only.length >= 8 || /^[\p{Script=Katakana}\u30fc]{4,}$/u.test(only));
+  return (short && distinct && (df.get(only) === 1 || sharedButCloser)) || specific ? best.id : null;
 }
 
 /**

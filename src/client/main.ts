@@ -331,9 +331,8 @@ function prefetchGamePack(e: Event): void {
     const page: SlangPage = isSlangId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, null, page)) loadPageMessages(loc, false, false, false, false, null, null, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="ideas-"], a[data-nav="ideas"]')) {
-    // data-nav is "ideas-<idea id>" on an idea link, "ideas" on a hub link. (Tool links such as the idea validator
-    // prefetch only their copy, after the hover delay; the ideas pack loads with the page.)
-    const nav = target!.closest("a[data-nav]")?.getAttribute("data-nav") ?? "";
+    // data-nav is "ideas-<idea id>" on an idea link, "ideas" on a hub link.
+    const nav = target.closest('a[data-nav^="ideas-"], a[data-nav="ideas"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("ideas-") ? nav.slice(6) : "";
     const page: IdeaPage = isIdeaId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, null, null, {}, page)) loadPageMessages(loc, false, false, false, false, null, null, null, {}, page).catch(() => {});

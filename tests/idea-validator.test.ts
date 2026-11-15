@@ -3,11 +3,10 @@ import "../src/shared/messages-all";
 import { LOCALES } from "../src/shared/locale";
 import { messages } from "../src/shared/messages";
 import { IDEA_ENTRIES } from "../src/shared/ideas";
-import { ideaName } from "../src/shared/ideas-i18n";
+import { ideaName, ideasPageHtml } from "../src/shared/ideas-i18n";
 import { OPTION_POINTS, QUESTION_WEIGHT, VALIDATOR_QUESTIONS, ideaTokens, matchIdea, tipsFor, validateIdea, type ValidatorAnswers } from "../src/shared/idea-validator";
 import { applyHtmlSeo, pageTitle } from "../src/shared/seo";
 import { appHref, ideasPackOf, parseAppPath } from "../src/shared/path";
-import { ideasPageHtml } from "../src/shared/ideas-i18n";
 
 const all = (i: number): ValidatorAnswers => Object.fromEntries(VALIDATOR_QUESTIONS.map((q) => [q, Math.min(i, OPTION_POINTS[q].length - 1)]));
 
@@ -58,7 +57,7 @@ describe("idea validator: tips", () => {
 describe("idea validator: matching", () => {
   it("tokenizes Latin words and CJK pairs", () => {
     expect(ideaTokens("Mobile car-detailing services")).toEqual(["car", "detailing"]);
-    expect(ideaTokens("Velas aromáticas")).toEqual(["vela", "aromatica"]);
+    expect(ideaTokens("Velas aromáticas")).toEqual(["vela"]);
     expect(ideaTokens("自动售货机")).toEqual(["自动", "动售", "售货", "货机"]);
   });
 
@@ -84,9 +83,14 @@ describe("idea validator: matching", () => {
     expect(matchIdea("Pet services business", names("en"))).toBe("pet-services");
     expect(matchIdea("カフェを開きたい", names("ja"))).toBe("coffee-shop");
     expect(matchIdea("コーチングを始めたい", names("ja"))).toBeNull();
-    expect(ideaTokens("コーヒーショップを開きたい")).toEqual(["コーヒーショップ", "開"]);
+    expect(ideaTokens("コーヒーショップを開きたい")).toEqual(["コーヒーショップ"]);
     // Generic verbs do not pick an idea; one clear word in a longer text does when no other idea shares a word.
     expect(matchIdea("open a laundromat near campus", names("en"))).toBe("laundromat");
+    expect(matchIdea("selling coffee mugs with my designs", names("en"))).toBeNull();
+    expect(matchIdea("a truck rental company", names("en"))).toBeNull();
+    expect(matchIdea("핸드메이드 캔들", names("ko"), "ko")).not.toBe("jewelry-business");
+    expect(matchIdea("캔들 창업", names("ko"), "ko")).toBe("candle-business");
+    expect(matchIdea("newsletter", names("en"))).toBe("newsletter");
     expect(matchIdea("abrir una lavandería", names("es"))).toBe("laundromat");
     expect(matchIdea("this is my idea", names("en"))).toBeNull();
     expect(matchIdea("handmade candles", names("en"))).toBe("candle-business");
