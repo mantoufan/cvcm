@@ -48,8 +48,7 @@
           "h": "Tìm kiếm trên trang",
           "p": [
             "Ô tìm kiếm so khớp trang ngay trong trình duyệt của bạn, dựa trên danh sách tên trang của cv.cm. Chỉ những lượt tìm không có kết quả mới được gửi cho chúng tôi, như mô tả bên dưới.",
-            "Khi một lượt tìm không có kết quả nào, từ khóa và ngôn ngữ của trang được gửi tới cơ sở dữ liệu của chúng tôi trên Cloudflare D1 để biết mọi người còn cần gì. Từ khóa trông giống đường link, địa chỉ email hoặc dãy số dài sẽ không được ghi lại. Để mỗi người chỉ được tính một lần mỗi ngày và giới hạn số lần gửi từ một địa chỉ, máy chủ tạo hai giá trị băm từ địa chỉ IP của bạn (một giá trị kèm từ khóa) bằng một khóa thay đổi mỗi ngày. Khóa và giá trị băm bị xóa sau hai ngày; địa chỉ IP không bao giờ được lưu. Từ khóa bị xóa sau một năm kể từ lần cuối có người tìm.",
-            "Nếu bạn để lại email để được báo khi nội dung còn thiếu được thêm, chúng tôi lưu email cùng từ khóa đó, gửi một email khi có, rồi xóa địa chỉ. Chúng tôi không dùng nó vào việc khác. Yêu cầu cho nội dung không bao giờ được thêm sẽ bị xóa sau sáu tháng. Muốn xóa sớm hơn, hãy gửi email tới m@cv.cm."
+            "Khi một lượt tìm không có kết quả nào, từ khóa và ngôn ngữ của trang được gửi tới cơ sở dữ liệu của chúng tôi trên Cloudflare D1 để biết mọi người còn cần gì. Từ khóa trông giống đường link, địa chỉ email hoặc dãy số dài sẽ không được ghi lại. Để mỗi người chỉ được tính một lần mỗi ngày và giới hạn số lần gửi từ một địa chỉ, máy chủ tạo hai giá trị băm từ địa chỉ IP của bạn (một giá trị kèm từ khóa) bằng một khóa thay đổi mỗi ngày. Khóa và giá trị băm bị xóa sau hai ngày; địa chỉ IP không bao giờ được lưu. Từ khóa bị xóa sau một năm kể từ lần cuối có người tìm."
           ]
         },
         {
@@ -84,7 +83,7 @@
         {
           "h": "Quyền của bạn",
           "p": [
-            "Tùy theo nơi bạn sinh sống, các luật như GDPR, CCPA hoặc Luật Bảo vệ thông tin cá nhân của Trung Quốc (PIPL) có thể trao cho bạn quyền truy cập, chỉnh sửa hoặc xóa dữ liệu cá nhân của mình. Vì cv.cm không có tài khoản, chúng tôi thường không thể liên kết dữ liệu đã lưu với một cá nhân cụ thể. Nếu bạn muốn xóa một ghi chú trước khi nó hết hạn, hãy gửi cho chúng tôi liên kết của ghi chú đó. Với các yêu cầu khác, hãy gửi email đến m@cv.cm và chúng tôi sẽ phản hồi trong vòng 30 ngày. Nếu bạn đã để lại email trong ô tìm kiếm, hãy gửi email tới m@cv.cm và chúng tôi sẽ xóa nó."
+            "Tùy theo nơi bạn sinh sống, các luật như GDPR, CCPA hoặc Luật Bảo vệ thông tin cá nhân của Trung Quốc (PIPL) có thể trao cho bạn quyền truy cập, chỉnh sửa hoặc xóa dữ liệu cá nhân của mình. Vì cv.cm không có tài khoản, chúng tôi thường không thể liên kết dữ liệu đã lưu với một cá nhân cụ thể. Nếu bạn muốn xóa một ghi chú trước khi nó hết hạn, hãy gửi cho chúng tôi liên kết của ghi chú đó. Với các yêu cầu khác, hãy gửi email đến m@cv.cm và chúng tôi sẽ phản hồi trong vòng 30 ngày."
           ]
         },
         {

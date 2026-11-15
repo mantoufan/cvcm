@@ -4,7 +4,6 @@ import "../src/shared/kb-ai-meta";
 import { LOCALES } from "../src/shared/locale";
 import {
   isRecordableQuery,
-  isValidEmail,
   nameFromTitle,
   normalizeQuery,
   searchEntries,
@@ -13,9 +12,9 @@ import {
 } from "../src/shared/search";
 import { buildAllSearchIndexes } from "../src/shared/search-index";
 import { sitemapPages } from "../src/shared/sitemap";
-import { d1SearchStore, handleSearchApi, rateSubject, resetSearchApiCache, SEARCH_EMAIL_RATE_MAX, SEARCH_MISS_MAX, SEARCH_REQUESTS_PER_EMAIL, type SearchStore } from "../src/search-api";
+import { d1SearchStore, handleSearchApi, rateSubject, resetSearchApiCache, SEARCH_MISS_MAX, type SearchStore } from "../src/search-api";
 import { DatabaseSync } from "node:sqlite";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import worker from "../src/worker";
 
 const indexes = buildAllSearchIndexes();
@@ -159,13 +158,6 @@ describe("query rules", () => {
     expect(isRecordableQuery("c.ai")).toBe(true);
   });
 
-  it("checks email shape", () => {
-    expect(isValidEmail("a@b.co")).toBe(true);
-    expect(isValidEmail("a@b")).toBe(false);
-    expect(isValidEmail("a b@c.com")).toBe(false);
-    expect(isValidEmail(`${"a".repeat(250)}@b.com`)).toBe(false);
-  });
-
   it("takes the name part of a title", () => {
     expect(nameFromTitle("Merge PDF | cv.cm")).toBe("Merge PDF");
     expect(nameFromTitle("身份证加水印、暗水印在线工具，证件照防盗用，免费不上传")).toBe("身份证加水印、暗水印在线工具");
@@ -176,8 +168,7 @@ describe("query rules", () => {
 function memoryStore() {
   const misses = new Map<string, { count: number; visitors: number }>();
   const votes = new Set<string>();
-  const requests = new Set<string>();
-  const rates = new Map<string, { start: number; misses: number; emails: number }>();
+  const rates = new Map<string, { start: number; misses: number }>();
   const store: SearchStore = {
     async recordMiss(q, locale, visitor) {
       const fresh = !votes.has(visitor);
@@ -187,27 +178,20 @@ function memoryStore() {
       if (fresh) row.visitors++;
       misses.set(`${locale}|${q}`, row);
     },
-    async addRequest(q, locale, email) {
-      const key = `${locale}|${q}|${email}`;
-      if (requests.has(key)) return "ok" as const;
-      if ([...requests].filter((r) => r.endsWith(`|${email}`)).length >= SEARCH_REQUESTS_PER_EMAIL) return "limit" as const;
-      requests.add(key);
-      return "ok" as const;
-    },
     async daySalt(day) {
       return `salt-${day}`;
     },
-    async bumpRate(ip, kind, max, now) {
+    async bumpRate(ip, max, now) {
       const row = rates.get(ip);
-      const cur = row && now - row.start < 3_600_000 ? row : { start: now, misses: 0, emails: 0 };
-      if (cur[kind] >= max) return false;
-      cur[kind]++;
+      const cur = row && now - row.start < 3_600_000 ? row : { start: now, misses: 0 };
+      if (cur.misses >= max) return false;
+      cur.misses++;
       rates.set(ip, cur);
       return true;
     },
     async cleanup() {},
   };
-  return { store, misses, requests };
+  return { store, misses };
 }
 
 function post(path: string, body: unknown, headers: Record<string, string> = {}): Request {
@@ -227,7 +211,8 @@ function post(path: string, body: unknown, headers: Record<string, string> = {})
 /** The real D1 store over node:sqlite with the real migration. */
 function sqliteStore(): { store: SearchStore; db: DatabaseSync } {
   const db = new DatabaseSync(":memory:");
-  db.exec(readFileSync("migrations/0002_search.sql", "utf8"));
+  // Every migration in order, so the test always runs against the schema production has.
+  for (const file of readdirSync("migrations").filter((f) => f.endsWith(".sql")).sort()) db.exec(readFileSync(`migrations/${file}`, "utf8"));
   const d1 = {
     async batch(statements: Array<{ run(): Promise<unknown> }>) {
       db.exec("BEGIN");
@@ -257,7 +242,7 @@ function sqliteStore(): { store: SearchStore; db: DatabaseSync } {
 }
 
 describe("search API on the D1 schema", () => {
-  it("stores no IP, counts visitors per day, caps requests per address and sweeps after two days", async () => {
+  it("stores no IP or email, counts visitors per day and sweeps after two days", async () => {
     resetSearchApiCache();
     const { store, db } = sqliteStore();
     const day1 = Date.UTC(2026, 10, 14, 8);
@@ -267,26 +252,10 @@ describe("search API on the D1 schema", () => {
     expect(db.prepare("SELECT count, visitors FROM search_misses").get()).toEqual({ count: 3, visitors: 2 });
     const dump = JSON.stringify([db.prepare("SELECT * FROM search_votes").all(), db.prepare("SELECT * FROM search_rate").all()]);
     expect(dump).not.toContain("203.0.113.9");
-    const statuses: number[] = [];
-    // An email request counts as that visitor's miss too, once per day (same vote key as the page's own miss post).
-    await handleSearchApi(post("/api/search/miss", { q: "kite maker", locale: "en" }), { store, now: day1 });
-    await handleSearchApi(post("/api/search/notify", { q: "kite maker", locale: "en", email: "k@b.co" }), { store, now: day1 });
-    expect(db.prepare("SELECT count, visitors, last_at FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ count: 1, visitors: 1, last_at: day1 });
-    // A later email from a visitor already counted today neither counts nor refreshes last_at.
-    await handleSearchApi(post("/api/search/notify", { q: "kite maker", locale: "en", email: "k3@b.co" }), { store, now: day1 + 60_000 });
-    expect(db.prepare("SELECT last_at FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ last_at: day1 });
-    // Without the page's own miss (lost or rate-limited), the email request still counts the search once.
-    await handleSearchApi(post("/api/search/notify", { q: "kite maker", locale: "en", email: "k2@b.co" }, { "CF-Connecting-IP": "198.51.100.200" }), { store, now: day1 });
-    expect(db.prepare("SELECT count, visitors FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ count: 2, visitors: 2 });
-    for (let i = 0; i < SEARCH_REQUESTS_PER_EMAIL + 2; i++) {
-      const from = { "CF-Connecting-IP": `192.0.2.${i}` };
-      await handleSearchApi(post("/api/search/miss", { q: `topic ${i}`, locale: "en" }, from), { store, now: day1 });
-      const res = await handleSearchApi(post("/api/search/notify", { q: `topic ${i}`, locale: "en", email: "a@b.co" }, from), { store, now: day1 });
-      statuses.push(res!.status);
-    }
-    // Past the cap the answer is the same (no row is added), so nobody learns what an address has on file.
-    expect(statuses).toEqual([200, 200, 200, 200, 200]);
-    expect(db.prepare("SELECT COUNT(*) AS n FROM search_requests WHERE email = 'a@b.co'").get()).toEqual({ n: SEARCH_REQUESTS_PER_EMAIL });
+    // No email table and no email column remain after 0003.
+    expect(db.prepare("SELECT name FROM sqlite_master WHERE name = 'search_requests'").get()).toBeUndefined();
+    const columns = (db.prepare("PRAGMA table_info(search_rate)").all() as Array<{ name: string }>).map((c) => c.name);
+    expect(columns).toEqual(["ip_hash", "window_start", "misses"]);
     // The real store's rate limit is one atomic upsert: concurrent requests cannot slip past the cap.
     const burst = await Promise.all(
       Array.from({ length: SEARCH_MISS_MAX + 10 }, (_, i) =>
@@ -298,7 +267,7 @@ describe("search API on the D1 schema", () => {
     for (const table of ["search_votes", "search_salts", "search_rate"]) {
       expect(db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get(), table).toEqual({ n: 0 });
     }
-    expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 2 + SEARCH_REQUESTS_PER_EMAIL + 2 + SEARCH_MISS_MAX });
+    expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 1 + SEARCH_MISS_MAX });
   });
 });
 
@@ -323,22 +292,14 @@ describe("search API", () => {
     expect(misses.get("zh-CN|去水印")).toEqual({ count: 3, visitors: 2 });
   });
 
-  it("stores an email request", async () => {
-    const { store, requests } = memoryStore();
-    await handleSearchApi(post("/api/search/miss", { q: "去水印", locale: "zh-CN" }), { store });
-    const res = await handleSearchApi(post("/api/search/notify", { q: "去水印", locale: "zh-CN", email: " Me@Example.com " }), { store });
-    expect(res?.status).toBe(200);
-    expect([...requests]).toEqual(["zh-CN|去水印|me@example.com"]);
-  });
-
-  it("rejects other sites, bad bodies, bad queries and bad emails", async () => {
+  it("rejects other sites, bad bodies and bad queries, and has no notify endpoint", async () => {
     const { store } = memoryStore();
     const opts = { store };
     expect((await handleSearchApi(post("/api/search/miss", { q: "x y", locale: "en" }, { Origin: "https://evil.example", "Sec-Fetch-Site": "cross-site" }), opts))?.status).toBe(403);
     expect((await handleSearchApi(post("/api/search/miss", "not json"), opts))?.status).toBe(400);
     expect((await handleSearchApi(post("/api/search/miss", { q: "x y", locale: "xx" }), opts))?.status).toBe(400);
     expect((await handleSearchApi(post("/api/search/miss", { q: "https://a.b", locale: "en" }), opts))?.status).toBe(400);
-    expect((await handleSearchApi(post("/api/search/notify", { q: "abc", locale: "en", email: "nope" }), opts))?.status).toBe(400);
+    expect(await handleSearchApi(post("/api/search/notify", { q: "abc", locale: "en", email: "a@b.co" }), opts)).toBeNull();
     expect((await handleSearchApi(new Request("https://cv.cm/api/search/miss"), opts))?.status).toBe(405);
     expect(await handleSearchApi(new Request("https://cv.cm/api/other", { method: "POST" }), opts)).toBeNull();
   });
@@ -357,17 +318,13 @@ describe("search API", () => {
     expect((await handleSearchApi(req, { store }))?.status).toBe(400);
   });
 
-  it("rate-limits misses and emails per IP", async () => {
+  it("rate-limits misses per IP", async () => {
     const { store } = memoryStore();
     const opts = { store, now: 1_000 };
     for (let i = 0; i < SEARCH_MISS_MAX; i++) {
       expect((await handleSearchApi(post("/api/search/miss", { q: `q${i}`, locale: "en" }), opts))?.status).toBe(204);
     }
     expect((await handleSearchApi(post("/api/search/miss", { q: "one more", locale: "en" }), opts))?.status).toBe(429);
-    for (let i = 0; i < SEARCH_EMAIL_RATE_MAX; i++) {
-      expect((await handleSearchApi(post("/api/search/notify", { q: `q${i}`, locale: "en", email: `a${i}@b.co` }), opts))?.status).toBe(200);
-    }
-    expect((await handleSearchApi(post("/api/search/notify", { q: "x1", locale: "en", email: "z@b.co" }), opts))?.status).toBe(429);
   });
 
   it("answers 503 in the Worker when D1 is not bound, and still 405s other POSTs", async () => {
