@@ -1,7 +1,10 @@
-import ui from "../id.json";
+// The browser's core pack for this locale: every string except the copy only one page shows. A tool's FAQ and how-to
+// and a tutorial's text come in bucket chunks (src/shared/page-copy.ts; full/id.ts has everything).
+// Data only, no dynamic imports: the chunk's name then changes only when the copy does, so it stays cached across deploys.
+import ui from "virtual:page-copy/ui/id";
+import guides from "virtual:page-copy/guides/id";
 import device from "../device/id.json";
 import gameNames from "../games/id.json?names";
-import guides from "../guides/id.json";
 import markets from "../markets/id.json";
 import type { LocaleMessages } from "../../shared/messages";
 
