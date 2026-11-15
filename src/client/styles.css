@@ -186,7 +186,7 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
   .brand { font-size: 1.05rem; }
   /* The sections and the language picker do not fit one phone row: the links get their own rows, all in view. */
   .nav { order: 3; flex: 1 0 100%; margin: 0 -0.4rem; }
-  /* Game pages keep one scrolling row: the board or the emulator stays on the first screen. */
+  /* Emulator and Flash game pages keep one scrolling row: the console stays on the first screen. */
   .page.is-game .nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .nav a { padding: 0.35rem 0.4rem; font-size: 0.86rem; }
   .lang { max-width: 7.5rem; font-size: 0.8rem; padding: 0.25rem 0.35rem; }

@@ -925,7 +925,7 @@ function navLink(href: string, label: string, on: boolean, nav: string): HTMLEle
 
 /** Every tool as a plain link, grouped like the home page, so every page links to every tool (folded in the footer). */
 function toolDirectory(loc: Locale): HTMLElement {
-  return h("nav", { class: "dir", "aria-label": t("nav.tools") },
+  return h("nav", { class: "dir", "aria-label": t("footer.directory") },
     ...CATEGORIES.map((cat) =>
       h("div", { class: "dir-group" },
         h("h2", null, t(`nav.${cat.id}`)),
