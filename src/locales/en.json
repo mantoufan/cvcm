@@ -681,7 +681,9 @@
     "titleNonogram": "Nonogram — free picture logic puzzles online — cv.cm",
     "descNonogram": "Play nonograms (griddlers, paint by numbers) free online: 5×5, 10×10 and 15×15 puzzles, each with one solution you can reach by logic alone. Fill, cross out, undo, check mistakes, numbered puzzles and saved progress.",
     "titleMemoryGame": "Memory game — free online card matching — cv.cm",
-    "descMemoryGame": "Play the memory card game free online: turn over two cards and find all the matching pairs on a 4×4, 4×5 or 6×6 board, alone or with a friend. Moves, time and your best result are kept."
+    "descMemoryGame": "Play the memory card game free online: turn over two cards and find all the matching pairs on a 4×4, 4×5 or 6×6 board, alone or with a friend. Moves, time and your best result are kept.",
+    "titleIdeaValidator": "Business idea validator — score your idea free in 2 minutes — cv.cm",
+    "descIdeaValidator": "Is your business idea good? Answer eight questions to get a 0-100 score, your strengths and weak spots, cheap tests to run first, and search-data benchmarks for similar ideas."
   },
   "brand": "cv.cm",
   "nav": {
@@ -4375,6 +4377,10 @@
     "memory-game": {
       "name": "Memory game",
       "blurb": "Find the matching pairs."
+    },
+    "idea-validator": {
+      "name": "Business idea validator",
+      "blurb": "Score your idea out of 100 and see what to test first."
     }
   },
   "watermark": {
@@ -8585,6 +8591,18 @@
       "a4": "Yes. Every picture is a different shape or a solid shape against an outlined one, and the two colours differ strongly in lightness.",
       "q5": "Is this good memory training?",
       "a5": "It is a classic concentration game for children and adults. Start with 4×4 and move to 6×6 when it gets easy."
+    },
+    "idea-validator": {
+      "q1": "How do I know if my business idea is good?",
+      "a1": "Check proof of demand first: are people already paying for something similar, or have they paid or signed up for yours? Then check whether a sale is worth enough, how crowded the market is, what it costs to start and how you will reach customers. The validator scores all of these.",
+      "q2": "How is the score calculated?",
+      "a2": "Eight answers make a readiness score: proof of demand counts most (20%), then your edge and how you reach customers (15% each), then price, competition, startup cost, time to first sale and the market trend (10% each). If your idea matches one in our ideas list, its search-data outlook score counts for a quarter of the total.",
+      "q3": "Where does the market benchmark come from?",
+      "a3": "From the cv.cm ideas channel: four years of Google Ads Keyword Planner searches in eight languages for 40 business ideas, refreshed monthly. Type your idea and the closest one is picked, or choose it from the list.",
+      "q4": "Is my idea sent anywhere?",
+      "a4": "No. The scoring and the matching run in this tab. Nothing you type is uploaded or stored.",
+      "q5": "Does a high score mean my business will succeed?",
+      "a5": "No. It means the basics look sound. The only real test is customers paying, so use the steps it suggests to test cheaply before you spend real money."
     }
   },
   "qr": {
@@ -14331,5 +14349,150 @@
     "sh_moon": "moon",
     "sh_cross": "cross",
     "hint": "Tap or press Enter to turn a card. Arrow keys move between cards. A missed pair turns back on its own or with your next tap."
+  },
+  "ideaValidator": {
+    "title": "Business idea validator",
+    "lede": "Answer eight questions to see how strong your idea is, what is weak, and what to test first. Similar ideas are benchmarked with Google search data. Runs in this tab; nothing is uploaded.",
+    "describe": "Your idea",
+    "describePh": "e.g. a mobile car detailing service, an AI chatbot for dentists, handmade candles",
+    "match": "Closest idea in our search data",
+    "matchNone": "Something else (no benchmark)",
+    "matchHint": "Picked from what you type; change it if it is wrong.",
+    "questions": "Eight questions",
+    "choose": "Choose…",
+    "evidence": {
+      "label": "Proof of demand",
+      "o1": "Nothing yet",
+      "o2": "People complain about the problem",
+      "o3": "Others already sell something similar",
+      "o4": "People have asked me for it",
+      "o5": "People have paid me or pre-ordered"
+    },
+    "price": {
+      "label": "What one customer pays",
+      "o1": "Under $5, once",
+      "o2": "$5–$50, once",
+      "o3": "$50–$500, once",
+      "o4": "Over $500, once",
+      "o5": "A subscription or repeat orders"
+    },
+    "competition": {
+      "label": "Competition",
+      "o1": "Big brands own the market",
+      "o2": "Many similar sellers",
+      "o3": "A few competitors",
+      "o4": "Competitors, but they are weak",
+      "o5": "Nobody does this yet"
+    },
+    "cost": {
+      "label": "Money to start",
+      "o1": "More than my savings",
+      "o2": "Most of my savings",
+      "o3": "A few months of spare cash",
+      "o4": "Less than a month of spare cash",
+      "o5": "Almost nothing"
+    },
+    "time": {
+      "label": "Time to the first sale",
+      "o1": "Over a year",
+      "o2": "6–12 months",
+      "o3": "1–6 months",
+      "o4": "2–4 weeks",
+      "o5": "Within 2 weeks"
+    },
+    "edge": {
+      "label": "Your edge",
+      "o1": "Nothing special yet",
+      "o2": "I would have to learn it",
+      "o3": "I have the skill or experience",
+      "o4": "I have an audience or customers",
+      "o5": "Both the skill and an audience"
+    },
+    "channel": {
+      "label": "How you will reach customers",
+      "o1": "Not sure yet",
+      "o2": "Paid ads",
+      "o3": "A marketplace (Amazon, Etsy, TikTok Shop…)",
+      "o4": "Local word of mouth or communities",
+      "o5": "My own audience or existing customers"
+    },
+    "trend": {
+      "label": "Market trend",
+      "o1": "Shrinking",
+      "o2": "Not sure",
+      "o3": "Steady",
+      "o4": "Growing"
+    },
+    "result": "Your result",
+    "answerAll": "Answer the {n} remaining questions to see the score.",
+    "outOf": "out of 100",
+    "grade": {
+      "strong": "Strong",
+      "promising": "Promising",
+      "risky": "Risky",
+      "rethink": "Rethink"
+    },
+    "verdict": {
+      "strong": "The basics look sound. Test it with real customers now, before you polish anything.",
+      "promising": "Worth pursuing if you fix the weak spots below first.",
+      "risky": "Several basics are missing. Run the cheap tests before you spend money.",
+      "rethink": "As it stands, this idea is likely to cost more than it earns. Change the weakest parts or try another idea."
+    },
+    "readiness": "Readiness (your answers)",
+    "market": "Market benchmark (search data)",
+    "noMarket": "No match",
+    "strengths": "Strengths",
+    "weaknesses": "Weak spots",
+    "none": "None",
+    "next": "Test this first: {item}",
+    "tip": {
+      "evidence": {
+        "t1": "Write a one-page offer with a price and show it to ten people who have the problem.",
+        "t2": "Ask for a deposit or a pre-order, not just \"would you buy it?\".",
+        "t3": "Look for people already paying for a clumsy alternative: that is your proof."
+      },
+      "price": {
+        "t1": "Find a way to sell more per customer: a bundle, a premium tier or a service on top.",
+        "t2": "Look for a repeat need you can turn into a subscription or regular orders.",
+        "t3": "Test a higher price with the next few customers before you settle on one."
+      },
+      "competition": {
+        "t1": "Pick a narrower group the big players ignore (a city, an industry, a style).",
+        "t2": "Read competitors' one- and two-star reviews and build what they miss.",
+        "t3": "If nobody sells it, check that people actually search for it or pay for something close."
+      },
+      "cost": {
+        "t1": "Start with the smallest version you can sell: one product, one service, one machine.",
+        "t2": "Rent, borrow or buy used before you buy new equipment.",
+        "t3": "Pre-sell first and use those orders to pay for stock."
+      },
+      "time": {
+        "t1": "Cut the idea down to something you can sell this month.",
+        "t2": "Sell the service by hand before you build the product or the app.",
+        "t3": "Set a date for your first sale and work back from it."
+      },
+      "edge": {
+        "t1": "Do three small jobs for friends or at a discount to build the skill and testimonials.",
+        "t2": "Share what you learn in public to start building an audience.",
+        "t3": "Partner with someone who has the skill or the customers you lack."
+      },
+      "channel": {
+        "t1": "Name the exact place your first ten customers spend time, online or nearby.",
+        "t2": "Try one channel by hand (posts, messages, a flyer) before paying for ads.",
+        "t3": "Ask your first customers where they would look for this and go there."
+      },
+      "trend": {
+        "t1": "Check how searches and sales for the idea moved over the last few years.",
+        "t2": "Look for a growing niche inside a shrinking market.",
+        "t3": "Plan for a market that gets smaller: keep costs flexible and avoid long contracts."
+      }
+    },
+    "benchmark": "Benchmark: {name} has a search-data outlook score of {score}.",
+    "seeIdea": "See the data and guide for {name}",
+    "allIdeas": "Browse 40 business ideas valued with search data",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "copyFailed": "Could not copy",
+    "disclaimer": "A checklist score, not financial advice or a forecast of income. Test with real customers before you invest."
   }
 }

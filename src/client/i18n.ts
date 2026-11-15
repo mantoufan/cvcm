@@ -244,6 +244,11 @@ const IDEA_LOADER_TABLES: Record<Locale, () => Promise<{ IDEA_LOADERS: Record<Id
   es: () => import("../locales/ideas/loaders/es"),
 };
 
+/** The ideas pack (idea names and the search-data snapshot) for pages outside /ideas/ that use it (the idea validator). */
+export async function loadIdeasPack(next: Locale): Promise<void> {
+  if (!hasIdeasMessages(next)) registerIdeasMessages(next, (await IDEAS_PACKS[next]()).default);
+}
+
 async function loadIdeaEntry(next: Locale, id: IdeaId): Promise<void> {
   const { IDEA_LOADERS } = await IDEA_LOADER_TABLES[next]();
   const m = (await IDEA_LOADERS[id]()) as { default: IdeaEntryCopy };

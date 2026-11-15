@@ -681,7 +681,9 @@
     "titleNonogram": "Nonogram — giải đố tranh logic online miễn phí — cv.cm",
     "descNonogram": "Chơi nonogram (tô ô theo số) online miễn phí: câu đố 5×5, 10×10 và 15×15, mỗi câu chỉ có một lời giải và luôn giải được bằng suy luận. Tô ô, đánh dấu X, hoàn tác, kiểm tra lỗi, câu đố đánh số và lưu tiến độ.",
     "titleMemoryGame": "Lật hình (Memory game) — trò chơi lật thẻ tìm cặp online miễn phí — cv.cm",
-    "descMemoryGame": "Chơi trò lật hình online miễn phí: lật hai thẻ và tìm tất cả các cặp giống nhau trên bàn 4×4, 4×5 hoặc 6×6, chơi một mình hoặc với bạn bè. Lưu số lượt, thời gian và kết quả tốt nhất của bạn."
+    "descMemoryGame": "Chơi trò lật hình online miễn phí: lật hai thẻ và tìm tất cả các cặp giống nhau trên bàn 4×4, 4×5 hoặc 6×6, chơi một mình hoặc với bạn bè. Lưu số lượt, thời gian và kết quả tốt nhất của bạn.",
+    "titleIdeaValidator": "Đánh giá ý tưởng kinh doanh — chấm điểm miễn phí trong 2 phút — cv.cm",
+    "descIdeaValidator": "Ý tưởng kinh doanh của bạn có tốt không? Trả lời 8 câu hỏi để nhận điểm 0-100, điểm mạnh, điểm yếu, cách thử rẻ và số liệu tìm kiếm của ý tưởng tương tự."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1474,6 +1476,10 @@
     "memory-game": {
       "name": "Trò chơi lật hình",
       "blurb": "Tìm các cặp hình giống nhau."
+    },
+    "idea-validator": {
+      "name": "Đánh giá ý tưởng kinh doanh",
+      "blurb": "Chấm ý tưởng trên thang 100 và biết nên thử gì trước."
     }
   },
   "watermark": {
@@ -5684,6 +5690,18 @@
       "a4": "Có. Mỗi hình là một dạng khác nhau, hoặc là hình đặc so với hình chỉ có viền, và hai màu chênh lệch rõ về độ sáng.",
       "q5": "Trò này có giúp luyện trí nhớ không?",
       "a5": "Đây là trò chơi rèn sự tập trung kinh điển cho cả trẻ em và người lớn. Hãy bắt đầu với 4×4 và chuyển lên 6×6 khi đã thấy dễ."
+    },
+    "idea-validator": {
+      "q1": "Làm sao biết ý tưởng kinh doanh của mình có tốt không?",
+      "a1": "Trước hết hãy kiểm tra bằng chứng về nhu cầu: mọi người đã trả tiền cho thứ tương tự chưa, hoặc đã trả tiền hay đăng ký cho sản phẩm của bạn chưa? Sau đó xem mỗi lần bán có đáng giá không, thị trường đông đúc đến đâu, khởi nghiệp tốn bao nhiêu và bạn sẽ tiếp cận khách hàng bằng cách nào. Công cụ chấm điểm tất cả những yếu tố này.",
+      "q2": "Điểm được tính như thế nào?",
+      "a2": "Tám câu trả lời tạo nên điểm sẵn sàng: bằng chứng về nhu cầu chiếm tỷ trọng lớn nhất (20%), tiếp theo là lợi thế của bạn và cách tiếp cận khách hàng (mỗi mục 15%), rồi đến giá, mức cạnh tranh, chi phí khởi đầu, thời gian đến đơn hàng đầu tiên và xu hướng thị trường (mỗi mục 10%). Nếu ý tưởng của bạn khớp với một ý tưởng trong danh sách của chúng tôi, điểm triển vọng theo dữ liệu tìm kiếm của nó chiếm một phần tư tổng điểm.",
+      "q3": "Số liệu đối chiếu thị trường lấy từ đâu?",
+      "a3": "Từ chuyên mục ý tưởng của cv.cm: bốn năm dữ liệu tìm kiếm từ Google Ads Keyword Planner bằng tám ngôn ngữ cho 40 ý tưởng kinh doanh, cập nhật hằng tháng. Nhập ý tưởng của bạn để hệ thống chọn ý tưởng gần nhất, hoặc tự chọn trong danh sách.",
+      "q4": "Ý tưởng của tôi có bị gửi đi đâu không?",
+      "a4": "Không. Việc chấm điểm và đối chiếu đều chạy ngay trong tab này. Những gì bạn nhập không được tải lên hay lưu lại.",
+      "q5": "Điểm cao có nghĩa là việc kinh doanh sẽ thành công không?",
+      "a5": "Không. Điểm cao chỉ cho thấy các yếu tố cơ bản có vẻ ổn. Phép thử thực sự duy nhất là khách hàng trả tiền, vì vậy hãy làm theo các bước gợi ý để thử với chi phí thấp trước khi bỏ ra số tiền lớn."
     }
   },
   "qr": {
@@ -14331,5 +14349,150 @@
     "sh_moon": "mặt trăng",
     "sh_cross": "chữ thập",
     "hint": "Chạm hoặc nhấn Enter để lật thẻ. Phím mũi tên để di chuyển giữa các thẻ. Cặp lật sai sẽ tự úp lại hoặc úp lại khi bạn chạm tiếp."
+  },
+  "ideaValidator": {
+    "title": "Đánh giá ý tưởng kinh doanh",
+    "lede": "Trả lời tám câu hỏi để biết ý tưởng của bạn mạnh đến đâu, chỗ nào còn yếu và nên thử gì trước. Các ý tưởng tương tự được đối chiếu bằng dữ liệu tìm kiếm của Google. Chạy ngay trong tab này; không tải lên gì cả.",
+    "describe": "Ý tưởng của bạn",
+    "describePh": "vd: dịch vụ rửa xe tận nơi, chatbot AI cho nha sĩ, nến thủ công",
+    "match": "Ý tưởng gần nhất trong dữ liệu tìm kiếm",
+    "matchNone": "Ý tưởng khác (không có mốc đối chiếu)",
+    "matchHint": "Chọn dựa trên nội dung bạn nhập; hãy đổi nếu chưa đúng.",
+    "questions": "Tám câu hỏi",
+    "choose": "Chọn…",
+    "evidence": {
+      "label": "Bằng chứng về nhu cầu",
+      "o1": "Chưa có gì",
+      "o2": "Mọi người than phiền về vấn đề này",
+      "o3": "Đã có người bán thứ tương tự",
+      "o4": "Đã có người hỏi mua từ tôi",
+      "o5": "Đã có người trả tiền hoặc đặt trước"
+    },
+    "price": {
+      "label": "Mỗi khách hàng trả",
+      "o1": "Dưới $5, một lần",
+      "o2": "$5–$50, một lần",
+      "o3": "$50–$500, một lần",
+      "o4": "Trên $500, một lần",
+      "o5": "Thuê bao hoặc mua lại nhiều lần"
+    },
+    "competition": {
+      "label": "Cạnh tranh",
+      "o1": "Thương hiệu lớn chiếm lĩnh thị trường",
+      "o2": "Nhiều người bán tương tự",
+      "o3": "Vài đối thủ",
+      "o4": "Có đối thủ nhưng còn yếu",
+      "o5": "Chưa ai làm"
+    },
+    "cost": {
+      "label": "Vốn khởi đầu",
+      "o1": "Nhiều hơn số tiền tiết kiệm",
+      "o2": "Phần lớn tiền tiết kiệm",
+      "o3": "Tiền dư của vài tháng",
+      "o4": "Ít hơn tiền dư một tháng",
+      "o5": "Gần như không tốn gì"
+    },
+    "time": {
+      "label": "Thời gian đến đơn đầu tiên",
+      "o1": "Hơn một năm",
+      "o2": "6–12 tháng",
+      "o3": "1–6 tháng",
+      "o4": "2–4 tuần",
+      "o5": "Trong vòng 2 tuần"
+    },
+    "edge": {
+      "label": "Lợi thế của bạn",
+      "o1": "Chưa có gì đặc biệt",
+      "o2": "Tôi sẽ phải học",
+      "o3": "Tôi có kỹ năng hoặc kinh nghiệm",
+      "o4": "Tôi có người theo dõi hoặc khách hàng",
+      "o5": "Có cả kỹ năng lẫn người theo dõi"
+    },
+    "channel": {
+      "label": "Cách tiếp cận khách hàng",
+      "o1": "Chưa rõ",
+      "o2": "Quảng cáo trả phí",
+      "o3": "Sàn thương mại (Amazon, Etsy, TikTok Shop…)",
+      "o4": "Truyền miệng hoặc cộng đồng tại địa phương",
+      "o5": "Người theo dõi hoặc khách hàng sẵn có"
+    },
+    "trend": {
+      "label": "Xu hướng thị trường",
+      "o1": "Đang thu hẹp",
+      "o2": "Chưa rõ",
+      "o3": "Ổn định",
+      "o4": "Đang tăng trưởng"
+    },
+    "result": "Kết quả của bạn",
+    "answerAll": "Trả lời {n} câu hỏi còn lại để xem điểm.",
+    "outOf": "trên 100",
+    "grade": {
+      "strong": "Mạnh",
+      "promising": "Triển vọng",
+      "risky": "Rủi ro",
+      "rethink": "Cần nghĩ lại"
+    },
+    "verdict": {
+      "strong": "Các yếu tố cơ bản có vẻ ổn. Hãy thử với khách hàng thật ngay, trước khi trau chuốt bất cứ thứ gì.",
+      "promising": "Đáng theo đuổi nếu bạn khắc phục các điểm yếu bên dưới trước.",
+      "risky": "Còn thiếu một số yếu tố cơ bản. Hãy làm các phép thử rẻ trước khi bỏ tiền.",
+      "rethink": "Ở hiện trạng, ý tưởng này nhiều khả năng tốn nhiều hơn số tiền kiếm được. Hãy thay đổi những phần yếu nhất hoặc thử ý tưởng khác."
+    },
+    "readiness": "Mức sẵn sàng (theo câu trả lời)",
+    "market": "Mốc đối chiếu thị trường (dữ liệu tìm kiếm)",
+    "noMarket": "Không khớp",
+    "strengths": "Điểm mạnh",
+    "weaknesses": "Điểm yếu",
+    "none": "Không có",
+    "next": "Thử điều này trước: {item}",
+    "tip": {
+      "evidence": {
+        "t1": "Viết một trang chào bán có giá và đưa cho mười người đang gặp vấn đề này xem.",
+        "t2": "Hãy xin đặt cọc hoặc đặt trước, đừng chỉ hỏi \"bạn có mua không?\".",
+        "t3": "Tìm những người đang trả tiền cho một giải pháp thay thế vụng về: đó chính là bằng chứng của bạn."
+      },
+      "price": {
+        "t1": "Tìm cách bán được nhiều hơn trên mỗi khách: combo, gói cao cấp hoặc thêm dịch vụ đi kèm.",
+        "t2": "Tìm một nhu cầu lặp lại để biến thành thuê bao hoặc đơn hàng định kỳ.",
+        "t3": "Thử mức giá cao hơn với vài khách hàng tiếp theo trước khi chốt giá."
+      },
+      "competition": {
+        "t1": "Chọn một nhóm hẹp hơn mà các ông lớn bỏ qua (một thành phố, một ngành, một phong cách).",
+        "t2": "Đọc các đánh giá một và hai sao của đối thủ và làm ra thứ họ còn thiếu.",
+        "t3": "Nếu chưa ai bán, hãy kiểm tra xem mọi người có thật sự tìm kiếm hoặc trả tiền cho thứ gần giống không."
+      },
+      "cost": {
+        "t1": "Bắt đầu với phiên bản nhỏ nhất có thể bán: một sản phẩm, một dịch vụ, một chiếc máy.",
+        "t2": "Thuê, mượn hoặc mua đồ cũ trước khi mua thiết bị mới.",
+        "t3": "Bán trước, rồi dùng chính các đơn đặt trước đó để trả tiền nhập hàng."
+      },
+      "time": {
+        "t1": "Thu gọn ý tưởng thành thứ bạn có thể bán ngay trong tháng này.",
+        "t2": "Bán dịch vụ làm thủ công trước khi xây dựng sản phẩm hay ứng dụng.",
+        "t3": "Đặt ngày cho đơn hàng đầu tiên rồi lên kế hoạch ngược từ đó."
+      },
+      "edge": {
+        "t1": "Làm ba việc nhỏ cho bạn bè hoặc lấy giá ưu đãi để rèn kỹ năng và có lời chứng thực.",
+        "t2": "Chia sẻ công khai những gì bạn học được để bắt đầu xây dựng người theo dõi.",
+        "t3": "Hợp tác với người có kỹ năng hoặc khách hàng mà bạn còn thiếu."
+      },
+      "channel": {
+        "t1": "Chỉ rõ nơi mười khách hàng đầu tiên của bạn hay lui tới, trên mạng hoặc quanh khu vực.",
+        "t2": "Thử một kênh bằng tay (đăng bài, nhắn tin, phát tờ rơi) trước khi trả tiền quảng cáo.",
+        "t3": "Hỏi những khách hàng đầu tiên họ sẽ tìm thứ này ở đâu và đến đúng chỗ đó."
+      },
+      "trend": {
+        "t1": "Xem lượt tìm kiếm và doanh số của ý tưởng này đã thay đổi thế nào trong vài năm qua.",
+        "t2": "Tìm một ngách đang tăng trưởng bên trong một thị trường đang thu hẹp.",
+        "t3": "Chuẩn bị cho một thị trường nhỏ dần: giữ chi phí linh hoạt và tránh hợp đồng dài hạn."
+      }
+    },
+    "benchmark": "Mốc đối chiếu: {name} có điểm triển vọng theo dữ liệu tìm kiếm là {score}.",
+    "seeIdea": "Xem dữ liệu và hướng dẫn cho {name}",
+    "allIdeas": "Xem 40 ý tưởng kinh doanh được định giá bằng dữ liệu tìm kiếm",
+    "copy": "Sao chép kết quả",
+    "copied": "Đã sao chép",
+    "copyFailed": "Không sao chép được",
+    "disclaimer": "Đây là điểm theo danh sách kiểm tra, không phải tư vấn tài chính hay dự báo thu nhập. Hãy thử với khách hàng thật trước khi đầu tư."
   }
 }
