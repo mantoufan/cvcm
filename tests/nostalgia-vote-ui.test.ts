@@ -51,6 +51,23 @@ describe("nostalgia vote UI", () => {
     expect(localStorage.getItem("cvcm.nostalgia.vote.famicom")).toBeNull();
   });
 
+  it("a page re-mounted while the answer is on its way waits for it instead of asking again", async () => {
+    let release: (r: Response) => void = () => {};
+    const fetchMock = vi.fn(() => new Promise<Response>((r) => { release = r; }));
+    vi.stubGlobal("fetch", fetchMock);
+    const first = document.body.appendChild(document.createElement("div"));
+    mountNostalgia(first, "en", "tamagotchi");
+    first.querySelector<HTMLButtonElement>('button[data-answer="yes"]')!.click();
+    // Locale switch: the page is rebuilt before the reply.
+    first.remove();
+    const again = document.body.appendChild(document.createElement("div"));
+    mountNostalgia(again, "ja", "tamagotchi");
+    expect(again.querySelector<HTMLButtonElement>('button[data-answer="yes"]')!.disabled).toBe(true);
+    release(new Response(JSON.stringify({ yes: 2, no: 0, counted: true }), { status: 200 }));
+    await vi.waitFor(() => expect(again.querySelector(".nostalgia-vote-result")!.textContent).toContain("100%"));
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+
   it("lets the reader try again when the request fails", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => new Response("{}", { status: 503 })));
     const host = document.body.appendChild(document.createElement("div"));

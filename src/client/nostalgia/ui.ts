@@ -49,6 +49,36 @@ function showResult(section: HTMLElement, locale: Locale, id: NostalgiaId, value
   }
 }
 
+/** Answers on their way, by entry: a page re-mounted meanwhile (locale switch) waits for the same request, not a new one. */
+const pending = new Map<NostalgiaId, Promise<{ value: Stored; counted: boolean } | null>>();
+
+async function send(id: NostalgiaId, answer: "yes" | "no"): Promise<{ value: Stored; counted: boolean } | null> {
+  // A stalled request must not leave the buttons locked. AbortController and setTimeout (AbortSignal.timeout is missing
+  // on iOS 15); the timer also covers reading the body.
+  const timeout = new AbortController();
+  const timer = setTimeout(() => timeout.abort(), 10_000);
+  try {
+    const res = await fetch("/api/nostalgia/vote", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, answer }),
+      signal: timeout.signal,
+    });
+    if (!res.ok) return null;
+    const tally = (await res.json()) as { yes: number; no: number; counted?: boolean };
+    if (!Number.isFinite(tally.yes) || !Number.isFinite(tally.no)) return null;
+    const value: Stored = { a: answer, yes: tally.yes, no: tally.no };
+    const counted = tally.counted !== false;
+    // Only a counted answer is remembered: a capped one from a shared network must stay answerable another day.
+    if (counted) store(id, value);
+    return { value, counted };
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 /** Wires the "did you have one?" buttons. No request until a button is pressed. */
 function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
   const section = host.querySelector<HTMLElement>(".nostalgia-vote");
@@ -62,40 +92,32 @@ function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
   }
   const result = section.querySelector<HTMLElement>(".nostalgia-vote-result");
   const buttons = [...section.querySelectorAll<HTMLButtonElement>("button[data-answer]")];
+  const await_ = async (request: Promise<{ value: Stored; counted: boolean } | null>): Promise<void> => {
+    const vote = nostalgiaUi(locale).vote;
+    for (const b of buttons) b.disabled = true;
+    if (result) {
+      result.textContent = vote.sending;
+      result.hidden = false;
+    }
+    const outcome = await request;
+    if (!section.isConnected) return;
+    if (outcome) {
+      showResult(section, locale, id, outcome.value, true, outcome.counted);
+      return;
+    }
+    for (const b of buttons) b.disabled = false;
+    if (result) result.textContent = vote.failed;
+  };
+  const inFlight = pending.get(id);
+  if (inFlight) void await_(inFlight);
   for (const button of buttons) {
-    button.addEventListener("click", async () => {
-      const answer = button.dataset.answer === "yes" ? "yes" : "no";
-      const vote = nostalgiaUi(locale).vote;
-      for (const b of buttons) b.disabled = true;
-      if (result) {
-        result.textContent = vote.sending;
-        result.hidden = false;
-      }
-      const timeout = new AbortController();
-      const timer = setTimeout(() => timeout.abort(), 10_000);
-      try {
-        const res = await fetch("/api/nostalgia/vote", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ id, answer }),
-          // A stalled request must not leave the buttons locked: the catch below re-enables them. AbortController and
-          // setTimeout, not AbortSignal.timeout, which iOS 15 and older WebViews lack.
-          signal: timeout.signal,
-        });
-        clearTimeout(timer);
-        if (!res.ok) throw new Error(String(res.status));
-        const tally = (await res.json()) as { yes: number; no: number; counted?: boolean };
-        if (!Number.isFinite(tally.yes) || !Number.isFinite(tally.no)) throw new Error("tally");
-        const value: Stored = { a: answer, yes: tally.yes, no: tally.no };
-        // Only a counted answer is remembered: a repeat from a shared network today must stay answerable another day.
-        if (tally.counted !== false) store(id, value);
-        if (section.isConnected) showResult(section, locale, id, value, true, tally.counted !== false);
-      } catch {
-        clearTimeout(timer);
-        if (!section.isConnected) return;
-        for (const b of buttons) b.disabled = false;
-        if (result) result.textContent = vote.failed;
-      }
+    button.addEventListener("click", () => {
+      const request = send(id, button.dataset.answer === "yes" ? "yes" : "no");
+      pending.set(id, request);
+      void request.finally(() => {
+        if (pending.get(id) === request) pending.delete(id);
+      });
+      void await_(request);
     });
   }
 }

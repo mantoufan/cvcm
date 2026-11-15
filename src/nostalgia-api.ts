@@ -39,6 +39,8 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
   const search = d1SearchStore(db);
   return {
     async vote(id, answer, key, now) {
+      // Stored times are cut to the UTC day, so a key row cannot be matched to a count update by its millisecond.
+      const day = now - (now % (24 * 60 * 60 * 1000));
       // One batch, one transaction: count the address's answers for this entry today, then add to the totals only while
       // that count is within the cap. Both upserts return their rows, so `counted` and the totals are exactly this
       // request's, not a later read that a concurrent request could have moved.
@@ -48,7 +50,7 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
            ON CONFLICT (key) DO UPDATE SET answers = nostalgia_vote_keys.answers + 1
            RETURNING answers`,
         )
-        .bind(key, now);
+        .bind(key, day);
       const within = `CASE WHEN (SELECT answers FROM nostalgia_vote_keys WHERE key = ?) <= ${NOSTALGIA_PER_ADDRESS} THEN 1 ELSE 0 END`;
       const yes = answer === "yes" ? within : "0";
       const no = answer === "no" ? within : "0";
@@ -58,7 +60,7 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
            ON CONFLICT (id) DO UPDATE SET yes = yes + excluded.yes, no = no + excluded.no, updated_at = excluded.updated_at
            RETURNING yes, no`,
         )
-        .bind(id, key, now);
+        .bind(id, key, day);
       const [mark, totals] = (await db.batch([seen, count])) as Array<{ results?: Array<Record<string, number>> }>;
       const answers = Number(mark?.results?.[0]?.answers ?? Infinity);
       const row = totals?.results?.[0];
