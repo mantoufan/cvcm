@@ -170,6 +170,29 @@ function playHtml(locale: Locale, id: NostalgiaId): string {
   return `<section class="learn-related"><h2>${escapeHtml(nostalgiaUi(locale).play)}</h2>${linkListHtml(items)}</section>`;
 }
 
+/**
+ * "Did you have one?": two buttons in the static page. Nothing is fetched at mount; the client (nostalgia/ui.ts) posts an
+ * answer on click and shows the share that the API returns, or the reader's earlier answer from this browser.
+ */
+function voteHtml(locale: Locale, id: NostalgiaId): string {
+  const vote = nostalgiaUi(locale).vote;
+  const group = nostalgiaGroupOf(id);
+  return `<section class="nostalgia-vote" data-id="${id}" aria-labelledby="nostalgia-vote-title"><h2 id="nostalgia-vote-title">${escapeHtml(vote.title)}</h2>`
+    + `<p>${escapeHtml(vote.ask[group])}</p>`
+    + `<p class="nostalgia-vote-buttons"><button type="button" class="btn ghost" data-answer="yes">${escapeHtml(vote.yes[group])}</button> `
+    + `<button type="button" class="btn ghost" data-answer="no">${escapeHtml(vote.no)}</button></p>`
+    + `<p class="nostalgia-vote-result" aria-live="polite" hidden></p>`
+    + `<p class="meme-note">${escapeHtml(vote.note)}</p></section>`;
+}
+
+/** The share line after answering: "73% chose “I ate it” · 1,234 answers". */
+export function nostalgiaVoteResult(locale: Locale, id: NostalgiaId, tally: { yes: number; no: number }): string {
+  const vote = nostalgiaUi(locale).vote;
+  const n = tally.yes + tally.no;
+  const p = n ? Math.round((tally.yes / n) * 100) : 0;
+  return fill(vote.result, { p, n: n.toLocaleString(HREFLANG[locale]), yes: vote.yes[nostalgiaGroupOf(id)] });
+}
+
 /** The nostalgia hub or one entry as HTML: the client mounts it as is, and the Worker serves it to crawlers. */
 export function nostalgiaPageHtml(locale: Locale, id: NostalgiaId | null): string {
   const ui = nostalgiaUi(locale);
@@ -227,6 +250,7 @@ export function nostalgiaPageHtml(locale: Locale, id: NostalgiaId | null): strin
     `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
     sections,
     playHtml(locale, id),
+    voteHtml(locale, id),
     faqHtml(locale, id),
     sourcesHtml(locale, id),
     meta.related.length ? `<section class="learn-related"><h2>${escapeHtml(ui.related)}</h2>${linkListHtml(nostalgiaLinkItems(locale, meta.related))}</section>` : "",

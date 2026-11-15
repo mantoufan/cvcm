@@ -23,7 +23,32 @@
     "statusDiscontinued": "已停产",
     "byDecade": "{decade}的回忆",
     "play": "在 cv.cm 上重温",
-    "playConsole": "在浏览器里玩这台主机的自制游戏"
+    "playConsole": "在浏览器里玩这台主机的自制游戏",
+    "vote": {
+      "title": "你也有过吗？",
+      "ask": {
+        "snacks": "你吃过吗？",
+        "games": "你玩过吗？",
+        "gadgets": "你用过吗？",
+        "toys": "你玩过吗？",
+        "internet": "你用过吗？",
+        "life": "你见过吗？"
+      },
+      "yes": {
+        "snacks": "吃过",
+        "games": "玩过",
+        "gadgets": "用过",
+        "toys": "玩过",
+        "internet": "用过",
+        "life": "见过"
+      },
+      "no": "没有",
+      "result": "{p}% 的人选了「{yes}」 · 共 {n} 人回答",
+      "mine": "你的回答：{a}",
+      "sending": "提交中…",
+      "failed": "没能提交，请稍后再试。",
+      "note": "匿名统计：不保存 IP 地址，同一网络每天每条只计一次。"
+    }
   },
   "hub": {
     "title": "怀旧百科：80后90后童年零食、游戏机和老物件",

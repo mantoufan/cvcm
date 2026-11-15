@@ -120,13 +120,15 @@ describe("agent discovery files", () => {
       "src/client/word-unscrambler/ui.ts": "downloads the static ENABLE word list (/words/enable.txt)",
       "src/client/analytics.ts": "loads Google Analytics on tracked pages (src/shared/analytics.ts)",
       "src/client/search.ts": "site search: posts a query only when it found nothing (no emails)",
+      "src/client/nostalgia/ui.ts": "nostalgia: posts the page id and a yes/no only when the reader presses an answer",
     };
     const files = [...sourceFiles(join(root, "src/client")), ...sourceFiles(join(root, "src/shared"))]
       .map((file) => file.slice(root.length + 1).split("\\").join("/"))
       .filter((file) => network.test(readFileSync(join(root, file), "utf8")));
     expect(files.sort()).toEqual(Object.keys(reviewed).sort());
-    // The clipboard and site search send what the visitor typed there on purpose (privacy policy, "Site search").
-    for (const file of files.filter((f) => f !== "src/client/clip/ui.ts" && f !== "src/client/search.ts")) {
+    // The clipboard, site search and nostalgia answers send what the visitor chose to send (privacy policy, "Site search").
+    const posting = new Set(["src/client/clip/ui.ts", "src/client/search.ts", "src/client/nostalgia/ui.ts"]);
+    for (const file of files.filter((f) => !posting.has(f))) {
       const code = readFileSync(join(root, file), "utf8");
       expect(code, file).not.toMatch(/method:(?!\s*["'`](get|head)["'`])|fetch\([^)]*\$\{/i);
     }

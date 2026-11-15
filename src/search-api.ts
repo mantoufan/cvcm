@@ -109,14 +109,14 @@ export function resetSearchApiCache(): void {
 }
 
 /** Only the site's own pages may post: a form on another site cannot add queries. */
-function sameOrigin(request: Request, url: URL): boolean {
+export function sameOrigin(request: Request, url: URL): boolean {
   const site = request.headers.get("Sec-Fetch-Site");
   if (site && site !== "same-origin") return false;
   const origin = request.headers.get("Origin");
   return origin === url.origin;
 }
 
-async function readBody(request: Request): Promise<Record<string, unknown> | null> {
+export async function readBody(request: Request): Promise<Record<string, unknown> | null> {
   if (!(request.headers.get("Content-Type") ?? "").toLowerCase().startsWith("application/json")) return null;
   const length = Number(request.headers.get("Content-Length") ?? "0");
   if (length > BODY_MAX || !request.body) return null;
@@ -165,7 +165,7 @@ export function rateSubject(ip: string): string {
 }
 
 /** HMAC-SHA-256 of `text` under the day's salt, first 16 bytes as hex. */
-async function keyed(key: CryptoKey, text: string): Promise<string> {
+export async function keyed(key: CryptoKey, text: string): Promise<string> {
   const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(text));
   return toHex(new Uint8Array(sig).slice(0, 16));
 }

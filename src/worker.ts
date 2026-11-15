@@ -2,6 +2,7 @@ import "./shared/messages-all";
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { d1SearchStore, handleSearchApi } from "./search-api";
+import { d1NostalgiaStore, handleNostalgiaApi } from "./nostalgia-api";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
 import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, STATIC_FILE, toolJob } from "./shared/path";
@@ -93,7 +94,10 @@ function s3Config(env: Env): S3Config | null {
 export default {
   /** Hourly cron (wrangler.jsonc): sweep search hashes, salts and rate rows past their two days even when nobody searches. */
   async scheduled(_event: unknown, env: Env): Promise<void> {
-    if (env.DB) await d1SearchStore(env.DB).cleanup(Date.now());
+    if (env.DB) {
+      await d1SearchStore(env.DB).cleanup(Date.now());
+      await d1NostalgiaStore(env.DB).cleanup(Date.now());
+    }
   },
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -125,6 +129,10 @@ export default {
     if (url.pathname.startsWith("/api/search/")) {
       const search = await handleSearchApi(request, { store: env.DB ? d1SearchStore(env.DB) : null });
       if (search) return search;
+    }
+    if (url.pathname.startsWith("/api/nostalgia/")) {
+      const vote = await handleNostalgiaApi(request, { store: env.DB ? d1NostalgiaStore(env.DB) : null });
+      if (vote) return vote;
     }
 
     if (request.method !== "GET" && request.method !== "HEAD") {
