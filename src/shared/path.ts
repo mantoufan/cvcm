@@ -55,7 +55,8 @@ export const CATEGORIES = [
   { id: "design", tools: ["color", "hex-rgb", "contrast", "gradient"] },
   { id: "hardware", tools: ["mic-test", "decibel-meter", "webcam-test", "keyboard-test", "gamepad-test", "touch-test", "dead-pixel", "refresh-rate", "screen-resolution"] },
   { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter", "rock-paper-scissors"] },
-  { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "hangman"] },
+  { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "chinese-checkers"] },
+  { id: "wordgames", tools: ["word-search", "hangman", "typing-game"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
   { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation"] },
 ] as const;
@@ -236,6 +237,9 @@ export const TOOLS = [
   "gomoku",
   "nonogram",
   "memory-game",
+  "word-search",
+  "typing-game",
+  "chinese-checkers",
   "phone-number-value",
   "license-plate-value",
   "domain-value",
@@ -259,7 +263,7 @@ export const TOOLS = [
 export type ToolId = (typeof TOOLS)[number];
 
 /** Browser games (tool pages) listed on the /games/ hub too, apart from the emulator catalogue. */
-export const BROWSER_GAMES = ["solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "sudoku", "tic-tac-toe", "hangman"] as const satisfies readonly ToolId[];
+export const BROWSER_GAMES = ["solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "sudoku", "tic-tac-toe", "chinese-checkers", "hangman", "word-search", "typing-game"] as const satisfies readonly ToolId[];
 
 /** Exact-match converter URLs. Same engine as `/convert/`, unique title and FAQ. */
 export const CONVERT_JOBS = [
