@@ -902,7 +902,9 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
     ),
     main,
     h("footer", { class: "foot" },
-      home ? null : toolDirectory(loc),
+      // Folded: the links stay in the markup for crawlers and one tap away for readers, and the page ends where
+      // its own content ends instead of under a wall of several hundred links.
+      home ? null : h("details", { class: "dir-fold" }, h("summary", null, t("home.cta")), toolDirectory(loc)),
       h("p", null, t("footer.privacy")),
       h("nav", { class: "foot-links", "aria-label": t("footer.legal") },
         h("a", { href: legalHref(loc, "privacy"), "data-nav": "privacy" }, t("footer.privacyLink")),
