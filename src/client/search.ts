@@ -5,7 +5,8 @@ import {
   isValidEmail,
   normalizeQuery,
   searchEntries,
-  SEARCH_CHANNEL_LABEL,
+  SEARCH_CHANNEL_NAV,
+  SEARCH_EMAIL_MAX,
   SEARCH_QUERY_MAX,
   type SearchEntry,
 } from "../shared/search";
@@ -132,7 +133,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
       ...hits.map(([channel, href, name, blurb], i) =>
         h("li", { id: `search-hit-${i}`, role: "option", "aria-selected": "false" },
           h("a", { class: "search-hit", href, tabindex: "-1", onClick: () => close() },
-            h("span", { class: "search-ch" }, t(SEARCH_CHANNEL_LABEL[channel])),
+            h("span", { class: "search-ch" }, t(`nav.${SEARCH_CHANNEL_NAV[channel]}`)),
             h("span", { class: "search-name" }, name),
             blurb ? h("span", { class: "search-blurb" }, blurb) : null,
           ),
@@ -153,7 +154,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
       "aria-label": t("search.emailLabel"),
       autocomplete: "email",
       required: true,
-      maxlength: 254,
+      maxlength: SEARCH_EMAIL_MAX,
     });
     const send = h("button", { type: "submit", class: "btn" }, t("search.notify"));
     const note = h("p", { class: "search-note" }, t("search.privacy"));
@@ -206,7 +207,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
       if (!indexes.has(loc) && !testIndex) status.textContent = t("search.loading");
       index = await loadIndex(loc);
     } catch {
-      if (mine === seq) status.textContent = t("search.failed");
+      if (mine === seq) status.textContent = t("search.unavailable");
       return;
     }
     if (mine !== seq) return;

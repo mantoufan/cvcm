@@ -4,21 +4,21 @@
  * and the demand / notify scripts, so all of them normalise a query the same way.
  */
 
-/** Channels a result can belong to; the label is a core-pack `nav.*` key. */
+/** Channels a result can belong to; the label is the core-pack key `nav.<SEARCH_CHANNEL_NAV[channel]>`. */
 export const SEARCH_CHANNELS = ["tool", "learn", "kb", "tests", "datasets", "rankings", "reference", "slang", "games"] as const;
 export type SearchChannel = (typeof SEARCH_CHANNELS)[number];
 
-export const SEARCH_CHANNEL_LABEL: Record<SearchChannel, string> = {
-  tool: "nav.tools",
-  learn: "nav.learn",
-  kb: "nav.learn",
-  tests: "nav.tests",
-  datasets: "nav.data",
-  rankings: "nav.rankings",
-  reference: "nav.reference",
-  slang: "nav.slang",
-  games: "nav.games",
-};
+export const SEARCH_CHANNEL_NAV = {
+  tool: "tools",
+  learn: "learn",
+  kb: "learn",
+  tests: "tests",
+  datasets: "data",
+  rankings: "rankings",
+  reference: "reference",
+  slang: "slang",
+  games: "games",
+} as const satisfies Record<SearchChannel, string>;
 
 /** One page in a locale's index: channel, href, name, blurb, and the English name as extra keywords. */
 export type SearchEntry = [channel: SearchChannel, href: string, name: string, blurb: string, alt?: string];

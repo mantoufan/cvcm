@@ -1,7 +1,7 @@
 import type { D1Database } from "./clip-store";
 import { clientIp } from "./shared/clip";
 import { isLocale, type Locale } from "./shared/locale";
-import { isRecordableQuery, isValidEmail, normalizeQuery, SEARCH_EMAIL_MAX } from "./shared/search";
+import { isRecordableQuery, isValidEmail, normalizeQuery } from "./shared/search";
 
 /**
  * POST /api/search/miss   { q, locale }         a search with no result (204)
@@ -13,8 +13,9 @@ import { isRecordableQuery, isValidEmail, normalizeQuery, SEARCH_EMAIL_MAX } fro
  */
 
 export const SEARCH_RATE_WINDOW_MS = 60 * 60 * 1000;
-/** Per IP and hour. A person typing finds a few misses; more is a script. */
-export const SEARCH_MISS_MAX = 40;
+/** Per IPv4 address or IPv6 /64 and hour. A person finds a few misses; a mobile carrier NAT shares one address among
+ * many people, so the miss cap is generous and the email cap stays small. */
+export const SEARCH_MISS_MAX = 120;
 export const SEARCH_EMAIL_RATE_MAX = 5;
 const VOTE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 /** Pending requests per address: enough for a real visitor, a ceiling for someone signing up a stranger. */
@@ -36,18 +37,21 @@ export interface SearchStore {
 export function d1SearchStore(db: D1Database): SearchStore {
   return {
     async recordMiss(q, locale, visitor, now) {
-      const vote = await db
-        .prepare("INSERT OR IGNORE INTO search_votes (key, created_at) VALUES (?, ?)")
-        .bind(visitor, now)
-        .run();
-      const fresh = vote.meta.changes > 0 ? 1 : 0;
-      await db
+      // The visitor counts if their vote key is new; the vote is written after, in the same transaction, so a failed
+      // request leaves neither and its retry still counts the visitor.
+      const miss = db
         .prepare(
-          `INSERT INTO search_misses (q, locale, count, visitors, first_at, last_at) VALUES (?, ?, 1, ?, ?, ?)
+          `INSERT INTO search_misses (q, locale, count, visitors, first_at, last_at)
+           VALUES (?, ?, 1, CASE WHEN EXISTS (SELECT 1 FROM search_votes WHERE key = ?) THEN 0 ELSE 1 END, ?, ?)
            ON CONFLICT (q, locale) DO UPDATE SET count = count + 1, visitors = visitors + excluded.visitors, last_at = excluded.last_at`,
         )
-        .bind(q, locale, fresh, now, now)
-        .run();
+        .bind(q, locale, visitor, now, now);
+      const vote = db.prepare("INSERT OR IGNORE INTO search_votes (key, created_at) VALUES (?, ?)").bind(visitor, now);
+      if (db.batch) await db.batch([miss, vote]);
+      else {
+        await miss.run();
+        await vote.run();
+      }
     },
     async addRequest(q, locale, email, now) {
       const added = await db
@@ -145,6 +149,19 @@ async function readBody(request: Request): Promise<Record<string, unknown> | nul
   }
 }
 
+/**
+ * The address a person controls: IPv4 as is, IPv6 cut to its /64 (one connection rotates through a whole /64,
+ * so counting single IPv6 addresses would let one script look like thousands of visitors).
+ */
+export function rateSubject(ip: string): string {
+  if (!ip.includes(":")) return ip;
+  const [head, tail = ""] = ip.toLowerCase().split("::");
+  const left = head ? head.split(":") : [];
+  const right = tail ? tail.split(":") : [];
+  const groups = [...left, ...Array(Math.max(0, 8 - left.length - right.length)).fill("0"), ...right];
+  return `${groups.slice(0, 4).map((g) => g.replace(/^0+(?=.)/, "")).join(":")}::/64`;
+}
+
 /** HMAC-SHA-256 of `text` under the day's salt, first 16 bytes as hex. */
 async function keyed(salt: string, text: string): Promise<string> {
   const enc = new TextEncoder();
@@ -169,7 +186,7 @@ export async function handleSearchApi(request: Request, opts: SearchApiOpts): Pr
   const store = opts.store;
   if (!store) return json(503, { error: "unavailable" });
   const now = opts.now ?? Date.now();
-  const ip = clientIp(request);
+  const ip = rateSubject(clientIp(request));
 
   try {
     const day = new Date(now).toISOString().slice(0, 10);
@@ -184,7 +201,7 @@ export async function handleSearchApi(request: Request, opts: SearchApiOpts): Pr
       return noContent();
     }
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
-    if (email.length > SEARCH_EMAIL_MAX || !isValidEmail(email)) return json(400, { error: "email" });
+    if (!isValidEmail(email)) return json(400, { error: "email" });
     if (!(await store.bumpRate(ipHash, "emails", SEARCH_EMAIL_RATE_MAX, now))) return json(429, { error: "rate" });
     if ((await store.addRequest(q, locale, email, now)) === "limit") return json(409, { error: "limit" });
     return json(200, { ok: true });

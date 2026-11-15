@@ -1560,6 +1560,51 @@
       "s2b": "Tap a piece, then a marked point. Red moves first.",
       "s3t": "Checkmate the general",
       "s3b": "Win by leaving the other general no escape. Use Undo to take a move back."
+    },
+    "solitaire": {
+      "lead": "Play Klondike solitaire in three steps.",
+      "s1t": "Choose a draw",
+      "s1b": "Pick draw 1 (easier) or draw 3 (classic) and tap New game.",
+      "s2t": "Build the piles",
+      "s2b": "Drag or tap cards to stack them down in alternating colours. Tap the stock for new cards.",
+      "s3t": "Fill the foundations",
+      "s3b": "Send each suit home from ace to king. Double-click a card to move it to its best place."
+    },
+    "spider-solitaire": {
+      "lead": "Play spider solitaire in three steps.",
+      "s1t": "Choose the suits",
+      "s1b": "One suit is the easiest; two and four suits are harder.",
+      "s2t": "Build down",
+      "s2b": "Place cards on a card one rank higher and move same-suit runs together.",
+      "s3t": "Clear eight runs",
+      "s3b": "A king-to-ace run in one suit leaves the table. Tap the stock to deal when you need new cards."
+    },
+    "freecell": {
+      "lead": "Play FreeCell in three steps.",
+      "s1t": "Pick a deal",
+      "s1b": "Tap New game, or type a deal number and tap Play deal.",
+      "s2t": "Use the free cells",
+      "s2b": "Park single cards in the four cells and build columns down in alternating colours.",
+      "s3t": "Go home",
+      "s3b": "Move every suit to the foundations from ace to king. Safe cards go there by themselves."
+    },
+    "minesweeper": {
+      "lead": "Play Minesweeper in three steps.",
+      "s1t": "Open a square",
+      "s1b": "Pick a level and click any square. The first click always opens a safe area.",
+      "s2t": "Read the numbers",
+      "s2b": "Each number counts the mines around it. Flag mines with a right-click, a long press or Flag mode.",
+      "s3t": "Clear the field",
+      "s3b": "Open every square without a mine to win. Click a number with all its flags placed to open the rest."
+    },
+    "snake-game": {
+      "lead": "Play Snake in three steps.",
+      "s1t": "Start",
+      "s1b": "Tap Start or press Space. Choose a speed and whether the walls are on.",
+      "s2t": "Eat and grow",
+      "s2b": "Steer with the arrow keys, a swipe or the buttons. Each piece of food adds a point and one square.",
+      "s3t": "Avoid the walls and your tail",
+      "s3b": "Hitting a wall or your own body ends the game. Your best score is kept."
     }
   }
 }

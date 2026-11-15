@@ -13,7 +13,7 @@ import {
 } from "../src/shared/search";
 import { buildAllSearchIndexes } from "../src/shared/search-index";
 import { sitemapPages } from "../src/shared/sitemap";
-import { d1SearchStore, handleSearchApi, resetSearchApiCache, SEARCH_EMAIL_RATE_MAX, SEARCH_MISS_MAX, SEARCH_REQUESTS_PER_EMAIL, type SearchStore } from "../src/search-api";
+import { d1SearchStore, handleSearchApi, rateSubject, resetSearchApiCache, SEARCH_EMAIL_RATE_MAX, SEARCH_MISS_MAX, SEARCH_REQUESTS_PER_EMAIL, type SearchStore } from "../src/search-api";
 import { DatabaseSync } from "node:sqlite";
 import { readFileSync } from "node:fs";
 import worker from "../src/worker";
@@ -194,6 +194,18 @@ function sqliteStore(): { store: SearchStore; db: DatabaseSync } {
   const db = new DatabaseSync(":memory:");
   db.exec(readFileSync("migrations/0002_search.sql", "utf8"));
   const d1 = {
+    async batch(statements: Array<{ run(): Promise<unknown> }>) {
+      db.exec("BEGIN");
+      try {
+        const out = [];
+        for (const st of statements) out.push(await st.run());
+        db.exec("COMMIT");
+        return out;
+      } catch (err) {
+        db.exec("ROLLBACK");
+        throw err;
+      }
+    },
     prepare(sql: string) {
       const st = db.prepare(sql);
       let args: unknown[] = [];
@@ -241,6 +253,15 @@ describe("search API on the D1 schema", () => {
       expect(db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get(), table).toEqual({ n: 0 });
     }
     expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 1 + SEARCH_MISS_MAX });
+  });
+});
+
+describe("rateSubject", () => {
+  it("keeps IPv4 and cuts IPv6 to its /64", () => {
+    expect(rateSubject("203.0.113.9")).toBe("203.0.113.9");
+    expect(rateSubject("2001:db8:1:2:aaaa::1")).toBe("2001:db8:1:2::/64");
+    expect(rateSubject("2001:DB8:1:2:ffff:1:2:3")).toBe("2001:db8:1:2::/64");
+    expect(rateSubject("2001:db8::1")).toBe("2001:db8:0:0::/64");
   });
 });
 

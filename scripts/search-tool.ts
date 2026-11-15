@@ -118,14 +118,14 @@ function demand(): void {
 }
 
 const MAIL: Record<Locale, { subject: string; intro: string; outro: string }> = {
-  en: { subject: "“{q}” is now on cv.cm", intro: "You asked us to tell you when cv.cm had something for “{q}”. It does now:", outro: "This is the only email about this request. Your address has been deleted." },
-  "zh-CN": { subject: "「{q}」已在 cv.cm 上线", intro: "你曾在 cv.cm 搜索「{q}」并请我们上线后通知你。现在可以用了：", outro: "这是关于此请求的唯一一封邮件，你的邮箱已删除。" },
-  "zh-TW": { subject: "「{q}」已在 cv.cm 上線", intro: "你曾在 cv.cm 搜尋「{q}」並請我們上線後通知你。現在可以用了：", outro: "這是關於此請求的唯一一封信，你的 Email 已刪除。" },
-  ja: { subject: "「{q}」が cv.cm に追加されました", intro: "cv.cm で「{q}」を検索し、追加時の通知をご希望いただきました。ご利用いただけるようになりました：", outro: "このリクエストに関するメールはこれ一通のみです。メールアドレスは削除しました。" },
-  ko: { subject: "“{q}”이(가) cv.cm에 추가되었습니다", intro: "cv.cm에서 “{q}”를 검색하고 추가되면 알려 달라고 하셨습니다. 이제 이용할 수 있습니다:", outro: "이 요청에 관한 메일은 이번 한 통뿐이며, 이메일 주소는 삭제되었습니다." },
-  vi: { subject: "“{q}” đã có trên cv.cm", intro: "Bạn đã nhờ chúng tôi báo khi cv.cm có nội dung cho “{q}”. Giờ đã có:", outro: "Đây là email duy nhất cho yêu cầu này. Địa chỉ của bạn đã được xóa." },
-  id: { subject: "“{q}” sekarang ada di cv.cm", intro: "Anda meminta kami mengabari saat cv.cm punya sesuatu untuk “{q}”. Sekarang sudah ada:", outro: "Ini satu-satunya email untuk permintaan ini. Alamat Anda sudah dihapus." },
-  es: { subject: "“{q}” ya está en cv.cm", intro: "Nos pediste que te avisáramos cuando cv.cm tuviera algo para “{q}”. Ya está disponible:", outro: "Este es el único correo sobre esta solicitud. Tu dirección se ha borrado." },
+  en: { subject: "Something you searched for is now on cv.cm", intro: "You asked us to tell you when cv.cm had something for “{q}”. It does now:", outro: "This is the only email about this request. Your address has been deleted." },
+  "zh-CN": { subject: "你在 cv.cm 搜索过的内容已上线", intro: "你曾在 cv.cm 搜索「{q}」并请我们上线后通知你。现在可以用了：", outro: "这是关于此请求的唯一一封邮件，你的邮箱已删除。" },
+  "zh-TW": { subject: "你在 cv.cm 搜尋過的內容已上線", intro: "你曾在 cv.cm 搜尋「{q}」並請我們上線後通知你。現在可以用了：", outro: "這是關於此請求的唯一一封信，你的 Email 已刪除。" },
+  ja: { subject: "cv.cm で検索された内容が追加されました", intro: "cv.cm で「{q}」を検索し、追加時の通知をご希望いただきました。ご利用いただけるようになりました：", outro: "このリクエストに関するメールはこれ一通のみです。メールアドレスは削除しました。" },
+  ko: { subject: "cv.cm에서 검색하신 내용이 추가되었습니다", intro: "cv.cm에서 “{q}”를 검색하고 추가되면 알려 달라고 하셨습니다. 이제 이용할 수 있습니다:", outro: "이 요청에 관한 메일은 이번 한 통뿐이며, 이메일 주소는 삭제되었습니다." },
+  vi: { subject: "Nội dung bạn tìm trên cv.cm đã có", intro: "Bạn đã nhờ chúng tôi báo khi cv.cm có nội dung cho “{q}”. Giờ đã có:", outro: "Đây là email duy nhất cho yêu cầu này. Địa chỉ của bạn đã được xóa." },
+  id: { subject: "Yang Anda cari di cv.cm kini tersedia", intro: "Anda meminta kami mengabari saat cv.cm punya sesuatu untuk “{q}”. Sekarang sudah ada:", outro: "Ini satu-satunya email untuk permintaan ini. Alamat Anda sudah dihapus." },
+  es: { subject: "Lo que buscaste en cv.cm ya está disponible", intro: "Nos pediste que te avisáramos cuando cv.cm tuviera algo para “{q}”. Ya está disponible:", outro: "Este es el único correo sobre esta solicitud. Tu dirección se ha borrado." },
 };
 
 function fill(text: string, q: string): string {
@@ -267,8 +267,9 @@ async function sendMail(to: string, message: string, from: string, user: string,
  */
 const SENT_LEDGER = "tmp-verify/search-notified.jsonl";
 
-function ledgerKey(r: { q: string; locale: string; email: string }): string {
-  return `${r.locale}|${r.q}|${r.email}`;
+/** created_at is part of the key: a later sign-up for the same query is a new request and gets its own email. */
+function ledgerKey(r: { q: string; locale: string; email: string; created_at: number }): string {
+  return `${r.locale}|${r.q}|${r.email}|${r.created_at}`;
 }
 
 function readLedger(): Set<string> {
@@ -288,7 +289,7 @@ async function notify(): Promise<void> {
   for (const r of pending.filter((p) => sent.has(ledgerKey(p)))) {
     // Mailed earlier, row left behind by a failed DELETE: delete it now, never mail it twice.
     try {
-      d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)}`);
+      d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)} AND created_at = ${Number(r.created_at)}`);
       console.log(`deleted already-mailed row: [${r.locale}] ${r.q} <${r.email}>`);
     } catch (err) {
       console.error(`still cannot delete already-mailed row [${r.locale}] ${r.q}: ${(err as Error).message}`);
@@ -335,9 +336,9 @@ async function notify(): Promise<void> {
       continue;
     }
     // Recorded before the DELETE, so a failed DELETE cannot lead to a second email.
-    appendFileSync(SENT_LEDGER, JSON.stringify({ q: r.q, locale: r.locale, email: r.email }) + "\n");
+    appendFileSync(SENT_LEDGER, JSON.stringify({ q: r.q, locale: r.locale, email: r.email, created_at: r.created_at }) + "\n");
     try {
-      d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)}`);
+      d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)} AND created_at = ${Number(r.created_at)}`);
       console.log(`sent and deleted: [${r.locale}] ${r.q} <${r.email}>`);
     } catch (err) {
       console.error(`SENT but row not deleted (the next run deletes it, without mailing): [${r.locale}] ${r.q}: ${(err as Error).message}`);

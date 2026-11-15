@@ -76,7 +76,7 @@
     },
     {
       "id": "games",
-      "name": "Games: sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
+      "name": "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
     },
     {
       "id": "assets",
@@ -1615,6 +1615,46 @@
       "description": "Xiangqi against the computer.",
       "category": "games",
       "url": "https://cv.cm/en/chinese-chess/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "solitaire",
+      "name": "Solitaire",
+      "description": "Classic Klondike, draw 1 or 3.",
+      "category": "games",
+      "url": "https://cv.cm/en/solitaire/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "spider-solitaire",
+      "name": "Spider solitaire",
+      "description": "1, 2 or 4 suits, king to ace.",
+      "category": "games",
+      "url": "https://cv.cm/en/spider-solitaire/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "freecell",
+      "name": "FreeCell",
+      "description": "Numbered deals, four free cells.",
+      "category": "games",
+      "url": "https://cv.cm/en/freecell/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "minesweeper",
+      "name": "Minesweeper",
+      "description": "Clear the field without hitting a mine.",
+      "category": "games",
+      "url": "https://cv.cm/en/minesweeper/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "snake-game",
+      "name": "Snake game",
+      "description": "Eat, grow and don't bite your tail.",
+      "category": "games",
+      "url": "https://cv.cm/en/snake-game/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

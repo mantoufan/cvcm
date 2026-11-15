@@ -2,7 +2,7 @@ import { LOCALES, type Locale } from "./locale";
 import { pageDescription, pageTitle, type SeoInput } from "./seo";
 import { sitemapPages, SITE_ORIGIN, pageUrl, type SitemapPage } from "./sitemap";
 import { messages } from "./messages";
-import { nameFromTitle, SEARCH_CHANNEL_LABEL, shortBlurb, type SearchChannel, type SearchEntry } from "./search";
+import { nameFromTitle, SEARCH_CHANNEL_NAV, shortBlurb, type SearchChannel, type SearchEntry } from "./search";
 
 /** A channel's front page (/tests/, /rankings/ …): listed under the channel's own name, not its SEO title. */
 function isHub(page: SitemapPage): boolean {
@@ -27,8 +27,7 @@ function isHub(page: SitemapPage): boolean {
 
 function pageName(locale: Locale, page: SitemapPage, channel: SearchChannel, seo: SeoInput): string {
   if (isHub(page)) {
-    const key = SEARCH_CHANNEL_LABEL[channel].split(".")[1] as keyof ReturnType<typeof messages>["ui"]["nav"];
-    const label = messages(locale).ui.nav[key];
+    const label = messages(locale).ui.nav[SEARCH_CHANNEL_NAV[channel]];
     if (typeof label === "string") return label;
   }
   return nameFromTitle(pageTitle(locale, seo));
@@ -70,10 +69,7 @@ function relative(url: string): string {
   return url.startsWith(SITE_ORIGIN) ? url.slice(SITE_ORIGIN.length) || "/" : url;
 }
 
-/**
- * Every sitemap page of one locale as search entries, in sitemap order (tools first). Outside English
- * each entry also carries the English name, so "pdf merge" still finds 合并 PDF.
- */
+/** English names of every page, keyed by the page without its locale: keywords for the other locales. */
 function englishNames(pages: SitemapPage[]): Map<string, string> {
   const english = new Map<string, string>();
   for (const page of pages) {

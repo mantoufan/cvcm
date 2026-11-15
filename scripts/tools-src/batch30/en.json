@@ -1,0 +1,267 @@
+{
+  "meta": {
+    "titleSolitaire": "Solitaire — free Klondike solitaire online — cv.cm",
+    "descSolitaire": "Play classic Klondike solitaire free online: draw one or three, drag or tap cards, double-click to send a card home, unlimited undo and hints. Numbered deals and your game saved in the browser.",
+    "titleSpiderSolitaire": "Spider solitaire — free online, 1, 2 or 4 suits — cv.cm",
+    "descSpiderSolitaire": "Play spider solitaire free online in one, two or four suits. Build runs from king to ace, deal a new row from the stock, undo and hints. Your game stays in this browser.",
+    "titleFreecell": "FreeCell — free online solitaire with numbered deals — cv.cm",
+    "descFreecell": "Play FreeCell solitaire free online with the classic numbered deals 1 to 1,000,000. Four free cells, multi-card moves, automatic safe moves to the foundations, undo and hints.",
+    "titleMinesweeper": "Minesweeper — play Minesweeper online free — cv.cm",
+    "descMinesweeper": "Play Minesweeper online for free: beginner, intermediate, expert or a custom board. The first click is always safe, with flags, chording, a timer and your best times saved in this browser.",
+    "titleSnakeGame": "Snake game — play the classic Snake online — cv.cm",
+    "descSnakeGame": "Play the classic Snake game online: eat the food, grow longer and don't hit the walls or your tail. Three speeds, walls on or off, arrow keys, swipe or on-screen buttons, best score saved."
+  },
+  "tools": {
+    "solitaire": {
+      "name": "Solitaire",
+      "blurb": "Classic Klondike, draw 1 or 3."
+    },
+    "spider-solitaire": {
+      "name": "Spider solitaire",
+      "blurb": "1, 2 or 4 suits, king to ace."
+    },
+    "freecell": {
+      "name": "FreeCell",
+      "blurb": "Numbered deals, four free cells."
+    },
+    "minesweeper": {
+      "name": "Minesweeper",
+      "blurb": "Clear the field without hitting a mine."
+    },
+    "snake-game": {
+      "name": "Snake game",
+      "blurb": "Eat, grow and don't bite your tail."
+    }
+  },
+  "faq": {
+    "solitaire": {
+      "q1": "How do you play solitaire?",
+      "a1": "Move all 52 cards to the four foundations, one suit each from ace to king. In the seven piles you build down in alternating colours (a red 6 on a black 7), and only a king can fill an empty pile. Tap the stock to turn over new cards.",
+      "q2": "What is the difference between draw 1 and draw 3?",
+      "a2": "Draw 1 turns one card at a time and is easier. Draw 3 turns three and lets you play only the top one, which is the classic, harder game.",
+      "q3": "Can every game be won?",
+      "a3": "No. Some Klondike deals cannot be solved however you play. If you are stuck, undo a few moves or start a new deal.",
+      "q4": "How do I move cards quickly?",
+      "a4": "Double-click a card, or tap it twice, to send it to the best place: a foundation if it fits there, otherwise a pile. Once every card is face up and the stock is empty, the game finishes itself.",
+      "q5": "Can I replay a deal?",
+      "a5": "Yes. Every deal has a number. Restart plays the same deal again, and you can type a number to play a particular deal. Your game in progress is kept in this browser."
+    },
+    "spider-solitaire": {
+      "q1": "How do you play spider solitaire?",
+      "a1": "Build runs from king down to ace in one suit. A finished run leaves the table; clear all eight to win. You can place any card on a card one rank higher, but only a run in one suit moves as a group.",
+      "q2": "Which level should I choose?",
+      "a2": "One suit is the easiest and most games can be won. Two suits is a real challenge, and four suits is hard even for experienced players.",
+      "q3": "When can I deal from the stock?",
+      "a3": "Tap the stock to deal one card on each of the ten piles. You have five deals, and every pile must hold at least one card before you deal.",
+      "q4": "Is there undo?",
+      "a4": "Yes, as many times as you like, including after a deal.",
+      "q5": "Is my game saved?",
+      "a5": "Yes. Close the page and come back later to the same game, moves and time. Nothing is sent to cv.cm."
+    },
+    "freecell": {
+      "q1": "How do you play FreeCell?",
+      "a1": "All cards are dealt face up into eight columns. Move them to the four foundations by suit from ace to king. Build columns down in alternating colours, and use the four free cells to park one card each.",
+      "q2": "How many cards can I move at once?",
+      "a2": "As many as the free space allows: one more than the number of empty free cells, doubled for every empty column. The page shows the current number.",
+      "q3": "Is every deal solvable?",
+      "a3": "Almost. Of the first 32,000 classic deals only number 11982 has no solution.",
+      "q4": "Are these the same deal numbers as other FreeCell games?",
+      "a4": "Yes. Deals are made with the traditional numbering formula, so game 1 here is the game 1 known from other FreeCell programs.",
+      "q5": "Why do some cards move by themselves?",
+      "a5": "Cards that can no longer be needed in the columns go to the foundations automatically, as in most FreeCell programs. Undo brings them back."
+    },
+    "minesweeper": {
+      "q1": "How do you play Minesweeper?",
+      "a1": "Open squares one at a time. A number tells how many mines touch that square, including diagonally. Use the numbers to work out where the mines are, flag them, and open every square without a mine to win.",
+      "q2": "Is the first click safe?",
+      "a2": "Yes. The mines are laid after your first click, and never on that square or the eight around it, so the first click always opens an area.",
+      "q3": "How do I place a flag on a phone?",
+      "a3": "Press and hold a square, or turn on Flag mode so that every tap places or removes a flag. On a computer, right-click.",
+      "q4": "What is chording?",
+      "a4": "When a number already has that many flags around it, click the number to open all its other neighbours at once. If a flag is wrong, a mine goes off.",
+      "q5": "What are the board sizes?",
+      "a5": "Beginner is 9 × 9 with 10 mines, intermediate 16 × 16 with 40, and expert 30 × 16 with 99. Custom boards go up to 30 rows and 40 columns."
+    },
+    "snake-game": {
+      "q1": "How do you play Snake?",
+      "a1": "Steer the snake to the food. Each piece makes it one square longer. The game ends when the snake hits a wall or its own tail.",
+      "q2": "How do I steer?",
+      "a2": "Use the arrow keys or W A S D, swipe on the board, or tap the arrow buttons. Space or P pauses.",
+      "q3": "What does turning walls off do?",
+      "a3": "Without walls, the snake leaves one side of the board and comes back on the opposite side. Only its own tail can end the game.",
+      "q4": "Why does my turn not happen?",
+      "a4": "The snake cannot turn straight back into itself. Up to two quick turns are remembered, so you can turn twice between steps.",
+      "q5": "Is my best score saved?",
+      "a5": "Yes, in this browser only, with a separate best for each speed and wall setting."
+    }
+  },
+  "guides": {
+    "solitaire": {
+      "lead": "Play Klondike solitaire in three steps.",
+      "s1t": "Choose a draw",
+      "s1b": "Pick draw 1 (easier) or draw 3 (classic) and tap New game.",
+      "s2t": "Build the piles",
+      "s2b": "Drag or tap cards to stack them down in alternating colours. Tap the stock for new cards.",
+      "s3t": "Fill the foundations",
+      "s3b": "Send each suit home from ace to king. Double-click a card to move it to its best place."
+    },
+    "spider-solitaire": {
+      "lead": "Play spider solitaire in three steps.",
+      "s1t": "Choose the suits",
+      "s1b": "One suit is the easiest; two and four suits are harder.",
+      "s2t": "Build down",
+      "s2b": "Place cards on a card one rank higher and move same-suit runs together.",
+      "s3t": "Clear eight runs",
+      "s3b": "A king-to-ace run in one suit leaves the table. Tap the stock to deal when you need new cards."
+    },
+    "freecell": {
+      "lead": "Play FreeCell in three steps.",
+      "s1t": "Pick a deal",
+      "s1b": "Tap New game, or type a deal number and tap Play deal.",
+      "s2t": "Use the free cells",
+      "s2b": "Park single cards in the four cells and build columns down in alternating colours.",
+      "s3t": "Go home",
+      "s3b": "Move every suit to the foundations from ace to king. Safe cards go there by themselves."
+    },
+    "minesweeper": {
+      "lead": "Play Minesweeper in three steps.",
+      "s1t": "Open a square",
+      "s1b": "Pick a level and click any square. The first click always opens a safe area.",
+      "s2t": "Read the numbers",
+      "s2b": "Each number counts the mines around it. Flag mines with a right-click, a long press or Flag mode.",
+      "s3t": "Clear the field",
+      "s3b": "Open every square without a mine to win. Click a number with all its flags placed to open the rest."
+    },
+    "snake-game": {
+      "lead": "Play Snake in three steps.",
+      "s1t": "Start",
+      "s1b": "Tap Start or press Space. Choose a speed and whether the walls are on.",
+      "s2t": "Eat and grow",
+      "s2b": "Steer with the arrow keys, a swipe or the buttons. Each piece of food adds a point and one square.",
+      "s3t": "Avoid the walls and your tail",
+      "s3b": "Hitting a wall or your own body ends the game. Your best score is kept."
+    }
+  },
+  "ui": {
+    "cards": {
+      "card": "{rank} of {suit}",
+      "r1": "Ace",
+      "r11": "Jack",
+      "r12": "Queen",
+      "r13": "King",
+      "s0": "spades",
+      "s1": "hearts",
+      "s2": "diamonds",
+      "s3": "clubs",
+      "faceDown": "Face-down card",
+      "stock": "Stock, {n} cards",
+      "stockEmpty": "Stock (empty)",
+      "waste": "Waste pile",
+      "foundation": "Foundation",
+      "tableau": "Pile {n}",
+      "cell": "Free cell",
+      "moves": "Moves",
+      "time": "Time",
+      "gameNo": "Game",
+      "undo": "Undo",
+      "hint": "Hint",
+      "newGame": "New game",
+      "confirmNew": "Tap again for a new game",
+      "restart": "Restart",
+      "dealLabel": "Deal number",
+      "playDeal": "Play deal",
+      "badDeal": "Type a deal number from 1 to {max}.",
+      "won": "You won in {time} with {moves} moves!",
+      "stuck": "No moves left. Undo or start a new game.",
+      "noHint": "No moves left.",
+      "hintStock": "Tap the stock for new cards.",
+      "cannot": "That card cannot go there.",
+      "optionNext": "The new setting starts with the next game. Tap New game."
+    },
+    "solitaire": {
+      "title": "Solitaire",
+      "privacyNote": "Classic Klondike: move every card to the foundations, ace to king.",
+      "board": "Solitaire table",
+      "option": "Draw",
+      "draw1": "Draw 1 card",
+      "draw3": "Draw 3 cards",
+      "help": "Drag a card, or tap it and then tap where it goes. Double-click or tap twice to send it to its best place. Ctrl+Z undoes."
+    },
+    "spiderSolitaire": {
+      "title": "Spider solitaire",
+      "privacyNote": "Build eight king-to-ace runs in one suit to clear the table.",
+      "board": "Spider solitaire table",
+      "option": "Suits",
+      "suits1": "1 suit (easy)",
+      "suits2": "2 suits (medium)",
+      "suits4": "4 suits (hard)",
+      "dealsLeft": "Deals left",
+      "completed": "Runs done",
+      "fillPiles": "Every pile needs a card before you deal.",
+      "noDeals": "No deals left in the stock.",
+      "help": "Drag a card or a same-suit run, or tap it and then tap where it goes. Tap the stock to deal ten new cards. Ctrl+Z undoes."
+    },
+    "freecell": {
+      "title": "FreeCell",
+      "privacyNote": "All cards face up: move them to the foundations using four free cells.",
+      "board": "FreeCell table",
+      "option": "Rules",
+      "standard": "Standard",
+      "canMove": "Can move",
+      "tooMany": "Not enough free space: you can move {n} cards at once here.",
+      "help": "Drag cards or tap a card and then where it goes. Double-click sends a card to its best place: home, a column, or a free cell. The number of cards you can move at once is shown above. Ctrl+Z undoes."
+    },
+    "minesweeper": {
+      "title": "Minesweeper",
+      "privacyNote": "Find every mine without setting one off.",
+      "board": "Minefield",
+      "level": "Level",
+      "l_beginner": "Beginner (9 × 9, 10 mines)",
+      "l_intermediate": "Intermediate (16 × 16, 40 mines)",
+      "l_expert": "Expert (30 × 16, 99 mines)",
+      "l_custom": "Custom",
+      "rows": "Rows",
+      "cols": "Columns",
+      "mines": "Mines",
+      "minesLeft": "Mines left",
+      "time": "Time",
+      "best": "Best time",
+      "newGame": "New game",
+      "flagModeOff": "Flag mode: off",
+      "flagModeOn": "Flag mode: on",
+      "ready": "Click any square to start. The first click is always safe.",
+      "won": "Cleared in {time}!",
+      "lost": "Boom! You hit a mine.",
+      "cell": "Row {row}, column {col}: {value}",
+      "cellHidden": "hidden",
+      "cellFlag": "flagged",
+      "cellMine": "mine",
+      "cellEmpty": "empty",
+      "hint": "Click to open, right-click or long-press to flag. Click a number to open its neighbours once its flags are placed. Arrow keys move, Enter opens, F flags."
+    },
+    "snakeGame": {
+      "title": "Snake game",
+      "privacyNote": "Eat the food and grow without hitting a wall or your tail.",
+      "stage": "Snake game board",
+      "pressStart": "Press Start or Space to play",
+      "score": "Score",
+      "best": "Best",
+      "start": "Start",
+      "pause": "Pause",
+      "resume": "Resume",
+      "paused": "Paused.",
+      "over": "Game over. Score: {score}.",
+      "speed": "Speed",
+      "s_slow": "Slow",
+      "s_normal": "Normal",
+      "s_fast": "Fast",
+      "walls": "Walls (off: go through the edges)",
+      "pad": "Steer the snake",
+      "d_up": "Up",
+      "d_right": "Right",
+      "d_down": "Down",
+      "d_left": "Left",
+      "hint": "Arrow keys or W A S D steer, Space or P pauses. On a phone, swipe on the board or use the buttons."
+    }
+  }
+}

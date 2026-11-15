@@ -1,0 +1,267 @@
+{
+  "meta": {
+    "titleSolitaire": "Solitario — juega al solitario Klondike online gratis — cv.cm",
+    "descSolitaire": "Juega gratis al clásico solitario Klondike online: roba de una en una o de tres en tres, arrastra o toca las cartas, haz doble clic para subir una carta a las bases, deshacer ilimitado y pistas. Partidas numeradas y tu juego guardado en el navegador.",
+    "titleSpiderSolitaire": "Solitario Spider — gratis online, 1, 2 o 4 palos — cv.cm",
+    "descSpiderSolitaire": "Juega gratis al Solitario Spider online con uno, dos o cuatro palos. Forma escaleras del rey al as, reparte una nueva fila desde el mazo, con deshacer y pistas. Tu partida se queda en este navegador.",
+    "titleFreecell": "Carta blanca (FreeCell) — solitario online gratis con partidas numeradas — cv.cm",
+    "descFreecell": "Juega gratis al solitario Carta blanca (FreeCell) online con las clásicas partidas numeradas del 1 al 1.000.000. Cuatro celdas libres, movimientos de varias cartas, subida automática de cartas seguras a las bases, deshacer y pistas.",
+    "titleMinesweeper": "Buscaminas — juega al Buscaminas online gratis — cv.cm",
+    "descMinesweeper": "Juega al Buscaminas online gratis: principiante, intermedio, experto o un tablero personalizado. El primer clic siempre es seguro, con banderas, apertura rápida, cronómetro y tus mejores tiempos guardados en este navegador.",
+    "titleSnakeGame": "Juego de la serpiente — juega al Snake clásico online — cv.cm",
+    "descSnakeGame": "Juega al clásico juego de la serpiente online: come, crece y no choques con las paredes ni con tu cola. Tres velocidades, paredes activadas o no, flechas, deslizar o botones en pantalla, y tu mejor puntuación guardada."
+  },
+  "tools": {
+    "solitaire": {
+      "name": "Solitario",
+      "blurb": "Klondike clásico, roba 1 o 3."
+    },
+    "spider-solitaire": {
+      "name": "Solitario Spider",
+      "blurb": "1, 2 o 4 palos, del rey al as."
+    },
+    "freecell": {
+      "name": "Carta Blanca (FreeCell)",
+      "blurb": "Partidas numeradas, cuatro celdas libres."
+    },
+    "minesweeper": {
+      "name": "Buscaminas",
+      "blurb": "Despeja el campo sin pisar una mina."
+    },
+    "snake-game": {
+      "name": "Juego de la serpiente",
+      "blurb": "Come, crece y no te muerdas la cola."
+    }
+  },
+  "faq": {
+    "solitaire": {
+      "q1": "¿Cómo se juega al solitario?",
+      "a1": "Lleva las 52 cartas a las cuatro bases, un palo en cada una, del as al rey. En las siete columnas se apilan en orden descendente y alternando colores (un 6 rojo sobre un 7 negro), y solo un rey puede ocupar una columna vacía. Toca el mazo para descubrir cartas nuevas.",
+      "q2": "¿Qué diferencia hay entre robar 1 y robar 3?",
+      "a2": "Robar 1 descubre una carta cada vez y es más fácil. Robar 3 descubre tres y solo puedes jugar la de arriba: es el juego clásico, más difícil.",
+      "q3": "¿Se pueden ganar todas las partidas?",
+      "a3": "No. Algunas partidas de Klondike no tienen solución juegues como juegues. Si te atascas, deshaz unos movimientos o empieza una partida nueva.",
+      "q4": "¿Cómo muevo las cartas rápido?",
+      "a4": "Haz doble clic en una carta, o tócala dos veces, para enviarla al mejor sitio: a una base si cabe allí, si no a una columna. Cuando todas las cartas están boca arriba y el mazo está vacío, la partida se termina sola.",
+      "q5": "¿Puedo repetir una partida?",
+      "a5": "Sí. Cada partida tiene un número. Reiniciar vuelve a jugar la misma partida, y puedes escribir un número para jugar una partida concreta. Tu partida en curso se guarda en este navegador."
+    },
+    "spider-solitaire": {
+      "q1": "¿Cómo se juega al Solitario Spider?",
+      "a1": "Forma escaleras de un mismo palo del rey al as. Una escalera completa sale de la mesa; despeja las ocho para ganar. Puedes poner cualquier carta sobre otra de un valor más alto, pero solo una escalera de un mismo palo se mueve en bloque.",
+      "q2": "¿Qué nivel elijo?",
+      "a2": "Un palo es lo más fácil y casi todas las partidas se pueden ganar. Dos palos es un auténtico reto, y cuatro palos resulta difícil incluso para jugadores con experiencia.",
+      "q3": "¿Cuándo puedo repartir del mazo?",
+      "a3": "Toca el mazo para repartir una carta en cada una de las diez columnas. Tienes cinco repartos, y cada columna debe tener al menos una carta antes de repartir.",
+      "q4": "¿Se puede deshacer?",
+      "a4": "Sí, tantas veces como quieras, incluso después de repartir.",
+      "q5": "¿Se guarda mi partida?",
+      "a5": "Sí. Cierra la página y vuelve más tarde a la misma partida, con tus movimientos y tu tiempo. No se envía nada a cv.cm."
+    },
+    "freecell": {
+      "q1": "¿Cómo se juega a Carta blanca (FreeCell)?",
+      "a1": "Todas las cartas se reparten boca arriba en ocho columnas. Llévalas a las cuatro bases por palos, del as al rey. Apila las columnas en orden descendente alternando colores, y usa las cuatro celdas libres para dejar una carta en cada una.",
+      "q2": "¿Cuántas cartas puedo mover a la vez?",
+      "a2": "Tantas como permita el espacio libre: una más que el número de celdas libres vacías, multiplicado por dos por cada columna vacía. La página muestra el número actual.",
+      "q3": "¿Todas las partidas tienen solución?",
+      "a3": "Casi. De las primeras 32.000 partidas clásicas, solo la número 11982 no tiene solución.",
+      "q4": "¿Son los mismos números de partida que en otros juegos de FreeCell?",
+      "a4": "Sí. Las partidas se generan con la fórmula de numeración tradicional, así que la partida 1 de aquí es la misma partida 1 de otros programas de FreeCell.",
+      "q5": "¿Por qué algunas cartas se mueven solas?",
+      "a5": "Las cartas que ya no pueden hacer falta en las columnas suben solas a las bases, como en la mayoría de programas de FreeCell. Deshacer las devuelve."
+    },
+    "minesweeper": {
+      "q1": "¿Cómo se juega al Buscaminas?",
+      "a1": "Abre las casillas de una en una. Un número indica cuántas minas tocan esa casilla, también en diagonal. Usa los números para deducir dónde están las minas, márcalas con una bandera y abre todas las casillas sin mina para ganar.",
+      "q2": "¿El primer clic es seguro?",
+      "a2": "Sí. Las minas se colocan después de tu primer clic y nunca en esa casilla ni en las ocho de alrededor, así que el primer clic siempre abre una zona.",
+      "q3": "¿Cómo pongo una bandera en el móvil?",
+      "a3": "Mantén pulsada una casilla, o activa el modo bandera para que cada toque ponga o quite una bandera. En el ordenador, haz clic derecho.",
+      "q4": "¿Qué es la apertura rápida (chording)?",
+      "a4": "Cuando un número ya tiene a su alrededor tantas banderas como indica, haz clic en él para abrir de una vez todas sus demás casillas vecinas. Si alguna bandera está mal, explota una mina.",
+      "q5": "¿Qué tamaños de tablero hay?",
+      "a5": "Principiante es 9 × 9 con 10 minas, intermedio 16 × 16 con 40 y experto 30 × 16 con 99. Los tableros personalizados llegan hasta 30 filas y 40 columnas."
+    },
+    "snake-game": {
+      "q1": "¿Cómo se juega al juego de la serpiente?",
+      "a1": "Guía a la serpiente hasta la comida. Cada bocado la alarga una casilla. La partida termina cuando la serpiente choca con una pared o con su propia cola.",
+      "q2": "¿Cómo la dirijo?",
+      "a2": "Usa las flechas o W A S D, desliza el dedo por el tablero o toca los botones de flecha. Espacio o P pausa la partida.",
+      "q3": "¿Qué pasa si desactivo las paredes?",
+      "a3": "Sin paredes, la serpiente sale por un lado del tablero y vuelve a entrar por el lado opuesto. Solo su propia cola puede terminar la partida.",
+      "q4": "¿Por qué no gira cuando quiero?",
+      "a4": "La serpiente no puede dar media vuelta sobre sí misma. Se recuerdan hasta dos giros rápidos, así que puedes girar dos veces entre un paso y otro.",
+      "q5": "¿Se guarda mi mejor puntuación?",
+      "a5": "Sí, solo en este navegador, con un récord distinto para cada velocidad y ajuste de paredes."
+    }
+  },
+  "guides": {
+    "solitaire": {
+      "lead": "Juega al solitario Klondike en tres pasos.",
+      "s1t": "Elige cómo robar",
+      "s1b": "Elige robar 1 (más fácil) o robar 3 (clásico) y toca Nueva partida.",
+      "s2t": "Forma las columnas",
+      "s2b": "Arrastra o toca las cartas para apilarlas en orden descendente alternando colores. Toca el mazo para sacar cartas nuevas.",
+      "s3t": "Completa las bases",
+      "s3b": "Sube cada palo a su base del as al rey. Haz doble clic en una carta para llevarla al mejor sitio."
+    },
+    "spider-solitaire": {
+      "lead": "Juega al Solitario Spider en tres pasos.",
+      "s1t": "Elige los palos",
+      "s1b": "Un palo es lo más fácil; dos y cuatro palos son más difíciles.",
+      "s2t": "Apila hacia abajo",
+      "s2b": "Pon cartas sobre otra de un valor más alto y mueve juntas las escaleras del mismo palo.",
+      "s3t": "Completa ocho escaleras",
+      "s3b": "Una escalera del rey al as de un mismo palo sale de la mesa. Toca el mazo para repartir cuando necesites cartas nuevas."
+    },
+    "freecell": {
+      "lead": "Juega a Carta blanca (FreeCell) en tres pasos.",
+      "s1t": "Elige una partida",
+      "s1b": "Toca Nueva partida, o escribe un número de partida y toca Jugar partida.",
+      "s2t": "Usa las celdas libres",
+      "s2b": "Deja cartas sueltas en las cuatro celdas y apila las columnas en orden descendente alternando colores.",
+      "s3t": "Sube a las bases",
+      "s3b": "Lleva cada palo a las bases del as al rey. Las cartas seguras suben solas."
+    },
+    "minesweeper": {
+      "lead": "Juega al Buscaminas en tres pasos.",
+      "s1t": "Abre una casilla",
+      "s1b": "Elige un nivel y haz clic en cualquier casilla. El primer clic siempre abre una zona segura.",
+      "s2t": "Lee los números",
+      "s2b": "Cada número cuenta las minas que lo rodean. Marca las minas con clic derecho, una pulsación larga o el modo bandera.",
+      "s3t": "Despeja el campo",
+      "s3b": "Abre todas las casillas sin mina para ganar. Haz clic en un número con todas sus banderas puestas para abrir el resto."
+    },
+    "snake-game": {
+      "lead": "Juega al juego de la serpiente en tres pasos.",
+      "s1t": "Empieza",
+      "s1b": "Toca Empezar o pulsa Espacio. Elige una velocidad y si hay paredes.",
+      "s2t": "Come y crece",
+      "s2b": "Dirige con las flechas, deslizando el dedo o con los botones. Cada bocado suma un punto y una casilla.",
+      "s3t": "Evita las paredes y tu cola",
+      "s3b": "Chocar con una pared o con tu propio cuerpo termina la partida. Tu mejor puntuación se guarda."
+    }
+  },
+  "ui": {
+    "cards": {
+      "card": "{rank} de {suit}",
+      "r1": "As",
+      "r11": "Jota",
+      "r12": "Reina",
+      "r13": "Rey",
+      "s0": "picas",
+      "s1": "corazones",
+      "s2": "diamantes",
+      "s3": "tréboles",
+      "faceDown": "Carta boca abajo",
+      "stock": "Mazo, {n} cartas",
+      "stockEmpty": "Mazo (vacío)",
+      "waste": "Descarte",
+      "foundation": "Base",
+      "tableau": "Columna {n}",
+      "cell": "Celda libre",
+      "moves": "Movimientos",
+      "time": "Tiempo",
+      "gameNo": "Partida",
+      "undo": "Deshacer",
+      "hint": "Pista",
+      "newGame": "Nueva partida",
+      "confirmNew": "Toca otra vez para una nueva partida",
+      "restart": "Reiniciar",
+      "dealLabel": "Número de partida",
+      "playDeal": "Jugar partida",
+      "badDeal": "Escribe un número de partida del 1 al {max}.",
+      "won": "¡Has ganado en {time} con {moves} movimientos!",
+      "stuck": "No quedan movimientos. Deshaz o empieza una nueva partida.",
+      "noHint": "No quedan movimientos.",
+      "hintStock": "Toca el mazo para sacar cartas nuevas.",
+      "cannot": "Esa carta no puede ir ahí.",
+      "optionNext": "El nuevo ajuste se aplica en la próxima partida. Toca Nueva partida."
+    },
+    "solitaire": {
+      "title": "Solitario",
+      "privacyNote": "Klondike clásico: lleva todas las cartas a las bases, del as al rey.",
+      "board": "Mesa de solitario",
+      "option": "Robar",
+      "draw1": "Robar 1 carta",
+      "draw3": "Robar 3 cartas",
+      "help": "Arrastra una carta, o tócala y luego toca dónde va. Haz doble clic o toca dos veces para enviarla al mejor sitio. Ctrl+Z deshace."
+    },
+    "spiderSolitaire": {
+      "title": "Solitario Spider",
+      "privacyNote": "Forma ocho escaleras del rey al as de un mismo palo para despejar la mesa.",
+      "board": "Mesa de Solitario Spider",
+      "option": "Palos",
+      "suits1": "1 palo (fácil)",
+      "suits2": "2 palos (medio)",
+      "suits4": "4 palos (difícil)",
+      "dealsLeft": "Repartos restantes",
+      "completed": "Escaleras hechas",
+      "fillPiles": "Cada columna necesita una carta antes de repartir.",
+      "noDeals": "No quedan repartos en el mazo.",
+      "help": "Arrastra una carta o una escalera del mismo palo, o tócala y luego toca dónde va. Toca el mazo para repartir diez cartas nuevas. Ctrl+Z deshace."
+    },
+    "freecell": {
+      "title": "Carta blanca (FreeCell)",
+      "privacyNote": "Todas las cartas boca arriba: llévalas a las bases con ayuda de cuatro celdas libres.",
+      "board": "Mesa de Carta blanca",
+      "option": "Reglas",
+      "standard": "Estándar",
+      "canMove": "Puedes mover",
+      "tooMany": "No hay espacio libre suficiente: aquí puedes mover {n} cartas a la vez.",
+      "help": "Arrastra cartas o toca una carta y luego dónde va. El doble clic envía una carta a su mejor sitio: la base, una columna o una celda libre. Arriba se muestra cuántas cartas puedes mover a la vez. Ctrl+Z deshace."
+    },
+    "minesweeper": {
+      "title": "Buscaminas",
+      "privacyNote": "Encuentra todas las minas sin hacer explotar ninguna.",
+      "board": "Campo de minas",
+      "level": "Nivel",
+      "l_beginner": "Principiante (9 × 9, 10 minas)",
+      "l_intermediate": "Intermedio (16 × 16, 40 minas)",
+      "l_expert": "Experto (30 × 16, 99 minas)",
+      "l_custom": "Personalizado",
+      "rows": "Filas",
+      "cols": "Columnas",
+      "mines": "Minas",
+      "minesLeft": "Minas restantes",
+      "time": "Tiempo",
+      "best": "Mejor tiempo",
+      "newGame": "Nueva partida",
+      "flagModeOff": "Modo bandera: desactivado",
+      "flagModeOn": "Modo bandera: activado",
+      "ready": "Haz clic en cualquier casilla para empezar. El primer clic siempre es seguro.",
+      "won": "¡Despejado en {time}!",
+      "lost": "¡Bum! Has pisado una mina.",
+      "cell": "Fila {row}, columna {col}: {value}",
+      "cellHidden": "oculta",
+      "cellFlag": "con bandera",
+      "cellMine": "mina",
+      "cellEmpty": "vacía",
+      "hint": "Clic para abrir, clic derecho o pulsación larga para poner bandera. Haz clic en un número con sus banderas puestas para abrir sus vecinas. Las flechas mueven, Intro abre, F pone bandera."
+    },
+    "snakeGame": {
+      "title": "Juego de la serpiente",
+      "privacyNote": "Come y crece sin chocar con una pared ni con tu cola.",
+      "stage": "Tablero del juego de la serpiente",
+      "pressStart": "Pulsa Empezar o Espacio para jugar",
+      "score": "Puntos",
+      "best": "Récord",
+      "start": "Empezar",
+      "pause": "Pausa",
+      "resume": "Continuar",
+      "paused": "En pausa.",
+      "over": "Fin de la partida. Puntos: {score}.",
+      "speed": "Velocidad",
+      "s_slow": "Lenta",
+      "s_normal": "Media",
+      "s_fast": "Rápida",
+      "walls": "Paredes (desactivadas: atraviesa los bordes)",
+      "pad": "Dirige la serpiente",
+      "d_up": "Arriba",
+      "d_right": "Derecha",
+      "d_down": "Abajo",
+      "d_left": "Izquierda",
+      "hint": "Las flechas o W A S D dirigen, Espacio o P pausa. En el móvil, desliza el dedo por el tablero o usa los botones."
+    }
+  }
+}
