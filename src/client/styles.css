@@ -1433,10 +1433,6 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .iv-risky strong, .iv-risky small { color: #9a4a00; }
 .iv-rethink strong, .iv-rethink small { color: #b42318; }
 .iv-verdict { margin: 0; }
-.iv-stats { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.6rem; margin: 0; }
-.iv-stats div { padding: 0.5rem 0.7rem; border: 1px solid var(--line); border-radius: 10px; }
-.iv-stats dt { color: var(--ink-soft); font-size: 0.8rem; }
-.iv-stats dd { margin: 0.15rem 0 0; font-size: 1.3rem; font-weight: 700; }
 .iv-list h3 { margin: 0.4rem 0 0.2rem; font-size: 0.95rem; }
 .iv-list ul, .iv-list ol { margin: 0; padding-left: 1.2rem; }
 .iv-list li { margin: 0.2rem 0; }

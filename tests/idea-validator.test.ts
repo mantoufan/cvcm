@@ -4,7 +4,7 @@ import { LOCALES } from "../src/shared/locale";
 import { messages } from "../src/shared/messages";
 import { IDEA_ENTRIES } from "../src/shared/ideas";
 import { ideaName, ideasPageHtml } from "../src/shared/ideas-i18n";
-import { OPTION_POINTS, QUESTION_WEIGHT, VALIDATOR_QUESTIONS, ideaTokens, matchIdea, tipsFor, validateIdea, type ValidatorAnswers } from "../src/shared/idea-validator";
+import { OPTION_POINTS, QUESTION_WEIGHT, VALIDATOR_QUESTIONS, ideaTokens, matchIdea, validateIdea, type ValidatorAnswers } from "../src/shared/idea-validator";
 import { applyHtmlSeo, pageTitle } from "../src/shared/seo";
 import { appHref, ideasPackOf, parseAppPath } from "../src/shared/path";
 
@@ -50,12 +50,8 @@ describe("idea validator: scoring", () => {
 
 });
 
-describe("idea validator: tips", () => {
-  it("gives each weak spot its own tips", () => {
-    expect(tipsFor("competition", { competition: 4 })).toBe("competition");
-    expect(tipsFor("competition", { competition: 0 })).toBe("competition");
-    expect(tipsFor("cost", {})).toBe("cost");
-    // An unresearched market trend is a weak spot.
+describe("idea validator: weak spots", () => {
+  it("counts an unresearched market trend as a weak spot", () => {
     const unsure = validateIdea({ evidence: 4, price: 4, competition: 3, cost: 4, time: 4, edge: 4, channel: 4, trend: 1 }, null)!;
     expect(unsure.weaknesses).toEqual(["trend"]);
   });
@@ -95,6 +91,10 @@ describe("idea validator: matching", () => {
     expect(matchIdea("open a laundromat near campus", names("en"))).toBe("laundromat");
     expect(matchIdea("selling coffee mugs with my designs", names("en"))).toBeNull();
     expect(matchIdea("coffee mugs and coffee cups", names("en"))).toBeNull();
+    expect(matchIdea("selling cookies", names("en"))).toBe("home-bakery");
+    expect(matchIdea("T恤", names("zh-CN"), "zh-CN")).toBe("t-shirt-business");
+    expect(matchIdea("开一家装修公司", names("zh-CN"), "zh-CN")).toBeNull();
+    expect(matchIdea("máquina de peluche", names("es"), "es")).toBe("claw-machine");
     // Every idea's own name, in every locale, finds that idea.
     for (const loc of LOCALES) for (const id of IDEA_ENTRIES) expect(matchIdea(ideaName(loc, id).name, names(loc), loc), `${loc} ${id}`).toBe(id);
     expect(matchIdea("我想开一家奶茶店，在学校附近", names("zh-CN"), "zh-CN")).toBe("bubble-tea");

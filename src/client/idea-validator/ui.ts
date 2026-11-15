@@ -5,7 +5,7 @@ import { hasIdeasMessages } from "../../shared/messages";
 import { IDEA_ENTRIES, isIdeaId, type IdeaId } from "../../shared/ideas";
 import { ideaData, ideaName } from "../../shared/ideas-i18n";
 import { ideasHref } from "../../shared/path";
-import { OPTION_POINTS, VALIDATOR_QUESTIONS, matchIdea, tipsFor, validateIdea, type ValidatorAnswers, type ValidatorQuestion } from "../../shared/idea-validator";
+import { OPTION_POINTS, VALIDATOR_QUESTIONS, matchIdea, validateIdea, type ValidatorAnswers, type ValidatorQuestion } from "../../shared/idea-validator";
 
 type State = {
   idea: HTMLTextAreaElement;
@@ -184,7 +184,7 @@ function paint(): void {
     items.length ? h("ul", { "data-out": key }, ...items.map((q) => h("li", null, t(`ideaValidator.${q}.label`)))) : h("p", { class: "hint" }, t("ideaValidator.none")),
   );
   out.append(list(t("ideaValidator.strengths"), result.strengths, "strengths"), list(t("ideaValidator.weaknesses"), result.weaknesses, "weaknesses"));
-  const { focus, tips } = nextSteps(result, answers);
+  const { focus, tips } = nextSteps(result);
   if (focus) {
     out.append(h("section", { class: "iv-list" },
       h("h3", null, t("ideaValidator.next", { item: t(`ideaValidator.${focus}.label`) })),
@@ -196,18 +196,16 @@ function paint(): void {
   state.last = summary(result, answers, id);
 }
 
-/** The weak spot to test first and its three tips; "nobody competes" is tested as proof of demand. */
-function nextSteps(result: NonNullable<ReturnType<typeof validateIdea>>, answers: ValidatorAnswers): { focus: ValidatorQuestion | null; tips: string[] } {
-  const weakest = result.weaknesses[0];
-  if (!weakest) return { focus: null, tips: [] };
-  const focus = tipsFor(weakest, answers);
-  return { focus, tips: [1, 2, 3].map((n) => t(`ideaValidator.tip.${focus}.t${n}`)) };
+/** The weak spot to test first (the weakest answer) and its three tips. */
+function nextSteps(result: NonNullable<ReturnType<typeof validateIdea>>): { focus: ValidatorQuestion | null; tips: string[] } {
+  const focus = result.weaknesses[0] ?? null;
+  return { focus, tips: focus ? [1, 2, 3].map((n) => t(`ideaValidator.tip.${focus}.t${n}`)) : [] };
 }
 
 /** The result as plain text for Copy. */
 function summary(result: NonNullable<ReturnType<typeof validateIdea>>, answers: ValidatorAnswers, id: IdeaId | null): string {
   const loc = locale();
-  const { focus, tips } = nextSteps(result, answers);
+  const { focus, tips } = nextSteps(result);
   const text = state?.idea.value.trim() ?? "";
   return [
     `${t("ideaValidator.title")}: ${result.total}/100 (${t(`ideaValidator.grade.${result.grade}`)})`,

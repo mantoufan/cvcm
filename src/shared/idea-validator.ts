@@ -96,6 +96,8 @@ export function tokenGroups(text: string, locale: Locale | null = null): string[
   const out: string[][] = [];
   for (const part of text.toLowerCase().normalize("NFKC").split(/[^\p{L}\p{N}]+/u)) {
     if (!part) continue;
+    // One Latin letter fused to one Han character is a word of its own (t恤 = t-shirt).
+    for (const m of part.matchAll(/(?<![a-z])[a-z]\p{Script=Han}(?!\p{Script=Han})/gu)) out.push([m[0]]);
     for (const run of part.match(CJK_RUN) ?? []) {
       // Katakana loanwords are whole words (キッチンカー, ペットシッター): pairs of them would match by chance (ネットショップ
       // and ペットシッター share トシ). Han and Hangul become overlapping pairs; hiragana (particles, endings) is dropped.
@@ -114,13 +116,17 @@ export function tokenGroups(text: string, locale: Locale | null = null): string[
       if (STOP.has(word) && !keep?.has(word)) continue;
       // English plurals: agencies → agency, washes → wash, cars → car; the plural of a filler word is filler
       // ("services"). Words that only look plural stay (news).
-      const folded = word.length > 4 && word.endsWith("ies") ? `${word.slice(0, -3)}y`
-        : word.length > 4 && /(sh|ch|x|ss)es$/.test(word) ? word.slice(0, -2)
-        : word.length > 3 && word.endsWith("s") && !/(ss|us|is)$/.test(word) ? word.slice(0, -1)
-        : word;
-      if (folded !== word && !NOT_PLURAL.has(word)) {
-        if (STOP.has(folded)) continue;
-        word = folded;
+      // Spanish, Indonesian and Vietnamese plurals only drop "s" (peluches → peluche); English also folds -es and -ies,
+      // and "-ies" keeps both readings (agencies → agency, cookies → cookie).
+      const english = !locale || locale === "en" || !ROMANCE.has(locale);
+      const folds = word.length > 4 && word.endsWith("ies") && english ? [`${word.slice(0, -3)}y`, word.slice(0, -1)]
+        : word.length > 4 && /(sh|ch|x|ss)es$/.test(word) && english ? [word.slice(0, -2)]
+        : word.length > 3 && word.endsWith("s") && !/(ss|us|is)$/.test(word) ? [word.slice(0, -1)]
+        : [];
+      if (folds.length && !NOT_PLURAL.has(word)) {
+        if (folds.some((f) => STOP.has(f))) continue;
+        out.push(folds);
+        continue;
       }
       if (word.length >= 2) out.push([word]);
     }
@@ -136,11 +142,13 @@ const STOP = new Set([
   "kinh", "doanh", "mo", "ban", "va", "cua", "hang", "tren", "mang", "toi", "muon", "nha", "dich", "vu", "cong", "ty", "lam",
 ]);
 const NOT_PLURAL = new Set(["news", "canvas"]);
+/** Locales whose plurals are a plain "s" (no English -es / -ies folding). */
+const ROMANCE = new Set<Locale>(["es", "id", "vi"]);
 
 /** Filler in one language can be a real word in another: Vietnamese "in" is "print" (in 3D). */
 const KEEP: Partial<Record<Locale, Set<string>>> = { vi: new Set(["in"]) };
 
-const STOP_CJK = new Set(["创业", "創業", "开业", "開業", "副业", "副業", "生意", "加盟", "开店", "開店", "网上", "網上", "网店", "賺錢", "赚钱", "我想", "온라", "라인", "창업", "사업", "부업", "쇼핑", "핑몰", "ビジネス", "ショップ", "オンライン", "起業", "開発"]);
+const STOP_CJK = new Set(["公司", "定制", "订制", "訂製", "客製", "手工", "手作", "自制", "自製", "创业", "創業", "开业", "開業", "副业", "副業", "生意", "加盟", "开店", "開店", "网上", "網上", "网店", "賺錢", "赚钱", "我想", "온라", "라인", "창업", "사업", "부업", "쇼핑", "핑몰", "ビジネス", "ショップ", "オンライン", "起業", "開発"]);
 
 /** Every idea's search phrases in every language, tokenized once. */
 const IDEA_POOLS: Record<IdeaId, Set<string>> = Object.fromEntries(
@@ -154,13 +162,10 @@ const NO_NAMES: Partial<Record<IdeaId, string>> = {};
 
 /** Per names table (one per locale): each idea's merged word pool and how many ideas use each word. */
 type Pools = { pools: { id: IdeaId; words: Set<string> }[]; df: Map<string, number> };
-/** Per locale (names are fixed per locale; tests pass their own tables, cached by identity). */
+/** Per names table (the page keeps one per mount) and locale. */
 const poolCache = new WeakMap<object, Map<string, Pools>>();
-const localeCache = new Map<string, Pools>();
 
 function poolsFor(names: Partial<Record<IdeaId, string>>, locale: Locale | null): Pools {
-  const shared = locale && names !== NO_NAMES ? localeCache.get(`${locale}|${Object.values(names).join("|")}`) : undefined;
-  if (shared) return shared;
   let byLocale = poolCache.get(names);
   if (!byLocale) {
     byLocale = new Map();
@@ -173,7 +178,6 @@ function poolsFor(names: Partial<Record<IdeaId, string>>, locale: Locale | null)
     for (const { words } of pools) for (const w of words) df.set(w, (df.get(w) ?? 0) + 1);
     entry = { pools, df };
     byLocale.set(locale ?? "", entry);
-    if (locale && names !== NO_NAMES) localeCache.set(`${locale}|${Object.values(names).join("|")}`, entry);
   }
   return entry;
 }
@@ -223,9 +227,4 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
   // ("coffee", "truck") are too often a passing mention. A wrong suggestion only shows a benchmark the reader can change.
   const specific = df.get(only) === 1 && (only.length >= 8 || /[^\x00-\x7f]/.test(only));
   return (short && distinct && (df.get(only) === 1 || sharedButCloser)) || specific ? best.id : null;
-}
-
-/** Which question's tips to show for the weakest answer (each question's tips fit all of its weak answers). */
-export function tipsFor(question: ValidatorQuestion, _answers: ValidatorAnswers): ValidatorQuestion {
-  return question;
 }
