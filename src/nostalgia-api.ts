@@ -12,8 +12,11 @@ import { d1SearchStore, keyed, rateSubject, readBody, sameOrigin } from "./searc
  */
 
 export const NOSTALGIA_RATE_WINDOW_MS = 60 * 60 * 1000;
-/** Per IPv4 address or IPv6 /64 and hour: one person answers a handful; a shared NAT gets room. */
-export const NOSTALGIA_VOTE_MAX = 120;
+/**
+ * Requests per IPv4 address or IPv6 /64 and clock hour. Generous: a carrier NAT shares it among many readers, and a
+ * single script is held by the per-entry cap below anyway.
+ */
+export const NOSTALGIA_VOTE_MAX = 600;
 /**
  * Answers counted per address, entry and UTC day. Not one: a mobile carrier NAT puts many readers behind one address, and
  * one browser answers once anyway (it remembers its answer). The cap only stops one script from swinging an entry.
@@ -48,6 +51,7 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
         .prepare(
           `INSERT INTO nostalgia_vote_keys (key, answers, created_at) VALUES (?, 1, ?)
            ON CONFLICT (key) DO UPDATE SET answers = nostalgia_vote_keys.answers + 1
+             WHERE nostalgia_vote_keys.answers <= ${NOSTALGIA_PER_ADDRESS}
            RETURNING answers`,
         )
         .bind(key, day);
@@ -62,6 +66,7 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
         )
         .bind(id, day, key);
       const [mark, totals] = (await db.batch([seen, count])) as Array<{ results?: Array<Record<string, number>> }>;
+      // No row back means the key was already past the cap and was left alone.
       const answers = Number(mark?.results?.[0]?.answers ?? Infinity);
       const counted = answers <= NOSTALGIA_PER_ADDRESS;
       // A capped answer wrote nothing, so read the totals as they stand.
@@ -79,7 +84,8 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
              votes = CASE WHEN ${fresh} THEN 1 ELSE nostalgia_rate.votes + 1 END
            RETURNING votes`,
         )
-        .bind(ipHash, now)
+        // Clock-hour windows: the stored start is the hour, never the request's millisecond.
+        .bind(ipHash, now - (now % NOSTALGIA_RATE_WINDOW_MS))
         .first<{ votes: number }>();
       return Boolean(row) && row!.votes <= max;
     },

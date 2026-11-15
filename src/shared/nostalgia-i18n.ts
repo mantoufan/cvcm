@@ -254,10 +254,11 @@ export function nostalgiaPageHtml(locale: Locale, id: NostalgiaId | null): strin
     `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
     sections,
     playHtml(locale, id),
-    voteHtml(locale, id),
     faqHtml(locale, id),
     sourcesHtml(locale, id),
     meta.related.length ? `<section class="learn-related"><h2>${escapeHtml(ui.related)}</h2>${linkListHtml(nostalgiaLinkItems(locale, meta.related))}</section>` : "",
+    // Last in the article: it appears only once the client wires it, so nothing below it moves.
+    voteHtml(locale, id),
     `<p class="more"><a href="${escapeHtml(nostalgiaHref(locale))}" data-nav="nostalgia">${escapeHtml(ui.all)}</a></p>`,
     `</article>`,
   ].join("");
