@@ -1,0 +1,28 @@
+
+/* Minesweeper and snake (batch 30). */
+.ms-tool, .snake-tool { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem); gap: 1.25rem; align-items: start; }
+@media (max-width: 860px) { .ms-tool, .snake-tool { grid-template-columns: minmax(0, 1fr); } }
+.ms-stats, .snake-score { margin-bottom: 0.6rem; }
+.ms-wrap { max-width: 100%; overflow-x: auto; padding-bottom: 0.25rem; }
+.ms-grid { --cols: 9; --size: clamp(1.7rem, calc((100vw - 2.5rem) / var(--cols)), 2.2rem); display: inline-grid; border: 2px solid #8b5a6b; border-radius: 4px; background: #8b5a6b; gap: 1px; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.ms-row { display: grid; grid-template-columns: repeat(var(--cols), var(--size)); gap: 1px; }
+.ms-cell { width: var(--size); height: var(--size); padding: 0; border: 0; background: #f7d3e2; color: var(--ink); font: inherit; font-size: calc(var(--size) * 0.55); font-weight: 800; line-height: 1; cursor: pointer; touch-action: manipulation; }
+.ms-cell:not(.open):hover { background: #f2bdd2; }
+.ms-cell.open { background: #fff; cursor: default; }
+.ms-cell.flag { color: var(--pink-deep); }
+.ms-cell.mine { background: #fde2e2; color: #2e2229; }
+.ms-cell.hit { background: #e0453b; color: #fff; }
+.ms-cell.wrong { background: #fff3b0; text-decoration: line-through; }
+.ms-cell.n1 { color: #2f5bd3; } .ms-cell.n2 { color: #1f8a3a; } .ms-cell.n3 { color: #d33b2f; } .ms-cell.n4 { color: #23338f; }
+.ms-cell.n5 { color: #8a2f1f; } .ms-cell.n6 { color: #1f7f86; } .ms-cell.n7 { color: #2e2229; } .ms-cell.n8 { color: #77606c; }
+.ms-cell:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: -2px; position: relative; z-index: 1; }
+.ms-custom[hidden] { display: none; }
+.ms-status, .snake-status { min-height: 1.6em; margin: 0.5rem 0 0; font-weight: 600; }
+
+.snake-stage { position: relative; width: 100%; max-width: 30rem; aspect-ratio: 1; touch-action: none; user-select: none; border-radius: 6px; overflow: hidden; background: #fdf7fa; border: 1px solid var(--line); }
+.snake-canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; }
+.snake-start { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; margin: 0; color: var(--ink-soft); font-weight: 700; background: #fdf7fa; }
+.snake-start[hidden] { display: none; }
+.snake-pad { display: grid; grid-template-columns: repeat(3, 3rem); grid-template-areas: ". up ." "left down right"; gap: 0.35rem; margin: 0.75rem 0; }
+.snake-pad .btn { min-height: 3rem; padding: 0; font-size: 1.2rem; }
+.snake-up { grid-area: up; } .snake-left { grid-area: left; } .snake-down { grid-area: down; } .snake-right { grid-area: right; }

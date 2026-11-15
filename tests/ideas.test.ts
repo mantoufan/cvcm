@@ -221,10 +221,10 @@ describe("ideas: ideas:sync (run `npm run ideas:sync` after editing ideas)", () 
 
   it("preloads the ideas pack on the hub, plus the loader table and one idea on an idea page", () => {
     const packs = { en: ["/a/en.js"], "ideas-en": ["/a/ideas-en.js"], "ideas-en/loaders": ["/a/loaders.js"], "ideas-en/laundromat": ["/a/laundromat.js"], "ideas-en/car-wash": ["/a/car-wash.js"] };
-    const hub = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, null, "hub");
+    const hub = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, null, null, "hub");
     expect(hub).toContain("/a/ideas-en.js");
     expect(hub).not.toContain("/a/loaders.js");
-    const entry = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, null, "laundromat");
+    const entry = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, null, null, "laundromat");
     expect(entry).toContain("/a/ideas-en.js");
     expect(entry).toContain("/a/loaders.js");
     expect(entry).toContain("/a/laundromat.js");

@@ -1042,4 +1042,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountChineseChess(host);
     return m.unmountChineseChess;
   },
+  "solitaire": async (host, ctx) => {
+    const m = await import("./solitaire/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSolitaire(host);
+    return m.unmountSolitaire;
+  },
+  "spider-solitaire": async (host, ctx) => {
+    const m = await import("./spider-solitaire/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSpiderSolitaire(host);
+    return m.unmountSpiderSolitaire;
+  },
+  "freecell": async (host, ctx) => {
+    const m = await import("./freecell/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFreeCell(host);
+    return m.unmountFreeCell;
+  },
+  "minesweeper": async (host, ctx) => {
+    const m = await import("./minesweeper/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMinesweeper(host);
+    return m.unmountMinesweeper;
+  },
+  "snake-game": async (host, ctx) => {
+    const m = await import("./snake-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSnakeGame(host);
+    return m.unmountSnakeGame;
+  },
 };

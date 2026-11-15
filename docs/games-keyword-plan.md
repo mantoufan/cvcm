@@ -113,3 +113,17 @@ Google Ads Keyword Planner, `generateKeywordHistoricalMetrics` on MCC `700703124
 | `chinese-chess` | XiangQi Wizard Light (GPL-2.0-or-later) | vi cờ tướng 301,000; zh-TW 象棋 33,100 + 暗棋 12,100; zh-CN 象棋 12,100 / 中国象棋 9,900; en chinese chess 33,100, xiangqi 14,800 |
 
 Not done (trademark or game IP): wordle, tetris, pac-man, geometry dash, flappy bird, cookie clicker, slope, crossy road, angry birds; "connect 4" and "othello" are brands (use four in a row / reversi). Next by volume, to be written for cv.cm (existing open-source clones are small or unlicensed): solitaire 16.6M (spider 1.5M, freecell 823k), minesweeper 5M, snake 9.1M, checkers 1M, gomoku (lihongxun945/gobang has no licence), nonogram 110k (HandsomeOne/Nonogram MIT), typing game (ja 201,000).
+
+## Self-written classics (2026-11-14, batch 30)
+
+Same Keyword Planner pull as above. Existing open-source versions were small, old or unlicensed, so these are written for cv.cm.
+
+| Slug | Evidence (monthly) | Page names |
+|---|---|---|
+| `solitaire` | solitaire 16.6M, free solitaire 823k, klondike solitaire 246k; es solitario 1.83M; ja ソリティア 1.83M; ko 솔리테어 74k | 纸牌接龙 / 接龍 / ソリティア |
+| `spider-solitaire` | spider solitaire 1.5M; es solitario spider 823k; ja 246k; zh-CN 蜘蛛纸牌 4.4k | 蜘蛛纸牌 / スパイダーソリティア |
+| `freecell` | freecell 823k; ja フリーセル 301k; es carta blanca 246k; ko 프리셀 22k | 空当接龙 / 新接龍 / フリーセル |
+| `minesweeper` | minesweeper 5M; es buscaminas 823k; ja 823k; ko 지뢰찾기 368k; zh-TW 踩地雷 90.5k; vi dò mìn 74k | 扫雷 / 踩地雷 |
+| `snake-game` | snake game 9.14M; es snake 1.5M; id snake game 90.5k; ko 지렁이 게임 74k; vi rắn săn mồi 60.5k | 贪吃蛇 / 貪食蛇 |
+
+Still open: checkers 1M (checkers online 90.5k), gomoku (ko 오목 74k), nonogram 110k (HandsomeOne/Nonogram MIT), typing game (ja 201k), word search 550k.

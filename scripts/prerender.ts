@@ -42,7 +42,32 @@ process.on("unhandledRejection", () => {});
 document.write('<!doctype html><html><head></head><body><div id="app"></div></body></html>');
 
 await import("../src/shared/messages-all");
+const { messages, registerMessages } = await import("../src/shared/messages");
+const { LOCALES } = await import("../src/shared/locale");
+const { parseAppPath } = await import("../src/shared/path");
+const { clientPack, copyBucket, pageCopyOf } = await import("../src/shared/page-copy");
 const { sitemapPages, pageUrl } = await import("../src/shared/sitemap");
+// The browser holds the core pack plus the page's own copy bucket, not the full pack (src/shared/page-copy.ts).
+// Each page is rendered with exactly that, so copy a page reads from another tool's or tutorial's bucket shows up
+// here as a bare key or a missing FAQ (and stops the build below) instead of only in the browser. The checks cover
+// the page body: the how-to, the FAQ section and the tutorial text, not JSON-LD or attributes.
+const fullPacks = new Map(LOCALES.map((locale) => [locale, messages(locale)]));
+const clientPacks = new Map<string, ReturnType<typeof messages>>();
+function useClientPack(path: string): { faq: boolean } {
+  const parsed = parseAppPath(path);
+  if (!("locale" in parsed)) return { faq: false };
+  const { tool = null, tutorial = null } = pageCopyOf(parsed);
+  const full = fullPacks.get(parsed.locale)!;
+  const key = `${parsed.locale}/${tool ? copyBucket(tool) : "-"}/${tutorial ? copyBucket(tutorial) : "-"}`;
+  let pack = clientPacks.get(key);
+  if (!pack) clientPacks.set(key, pack = clientPack(full, tool, tutorial));
+  registerMessages(parsed.locale, pack);
+  // Whether the full pack has an FAQ for this page: a missing one does not show as a key, the section is just absent.
+  const faq = full.ui.faq as unknown as Record<string, Record<string, unknown> | undefined>;
+  return { faq: Boolean(tool ? faq[tool]?.q1 : tutorial ? (faq.learn as Record<string, Record<string, unknown> | undefined>)[tutorial]?.q1 : false) };
+}
+// A string the pack does not have renders as its key: "faq.json.q1", "learn.make-qr.title", "tools.json.lead".
+const BARE_KEY = />(?:faq|learn|tools)\.[a-z0-9-]+(?:\.[a-z0-9-]+)?\.(?:[qa]\d|s\d[tb]|lead|title|name|blurb|result|note)</;
 const { render, whenRendered } = await import("../src/client/main");
 
 const MARKER = "<!--ssr-->";
@@ -73,6 +98,7 @@ const report = process.env.PRERENDER_REPORT;
 for (const page of pages) {
   const path = new URL(pageUrl(page)).pathname;
   pageErrors = 0;
+  const expects = useClientPack(path);
   history.replaceState(null, "", path);
   app.replaceChildren();
   render();
@@ -115,6 +141,8 @@ for (const page of pages) {
   // Controls without a handler yet: CSS keeps buttons and file pickers from taking clicks until the app swaps in.
   app.querySelector(".page")?.classList.add("ssr");
   const html = MARKER + app.innerHTML;
+  if (expects.faq && !app.querySelector("section.faq summary")) throw new Error(`prerender: ${path} has no FAQ although its copy has one: missing from the client pack, see src/shared/page-copy.ts`);
+  if (BARE_KEY.test(html)) throw new Error(`prerender: ${path} shows a string key (${BARE_KEY.exec(html)![0]}): copy missing from the client pack, see src/shared/page-copy.ts`);
   const file = resolve(outDir, `.${path}`, "index.html");
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, html);
