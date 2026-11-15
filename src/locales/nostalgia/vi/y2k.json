@@ -1,0 +1,67 @@
+{
+  "name": "Sự cố Y2K",
+  "blurb": "Nỗi lo máy tính lưu năm bằng hai chữ số sẽ đọc năm 2000 thành năm 1900",
+  "aka": [
+    "lỗi Y2K",
+    "sự cố năm 2000",
+    "sự cố thiên niên kỷ",
+    "千年虫"
+  ],
+  "title": "Sự cố Y2K là gì? Nguyên nhân, chi phí và chuyện gì xảy ra năm 2000",
+  "description": "Sự cố Y2K là nguy cơ phần mềm lưu năm bằng hai chữ số coi năm 2000 là năm 1900. Việc sửa lỗi cuối thập niên 1990 ước tính tốn 300 tỷ USD trên toàn thế giới.",
+  "h1": "Sự cố Y2K là gì?",
+  "answer": "Sự cố Y2K, hay sự cố năm 2000, là lỗi trong các phần mềm cũ lưu năm bằng hai chữ số, khiến “00” có thể bị hiểu là năm 1900 thay vì 2000 và làm hỏng việc tính ngày, sắp xếp và kiểm tra hạn sử dụng. Chính phủ và doanh nghiệp dành cả cuối thập niên 1990 để rà soát và sửa lỗi, với chi phí ước tính hơn 300 tỷ USD trên toàn thế giới. Khi ngày 1 tháng 1 năm 2000 đến, chỉ có vài trục trặc nhỏ lẻ, và đến giờ người ta vẫn tranh luận đó là nhờ sửa lỗi hiệu quả hay do mối đe dọa bị thổi phồng.",
+  "sections": [
+    {
+      "h": "Lỗi này từ đâu ra",
+      "body": [
+        "Trong thập niên 1960 và 1970, bộ nhớ và lưu trữ rất đắt, nên lập trình viên viết năm 1985 thành “85” để tiết kiệm hai ký tự. Thói quen này tồn tại hàng chục năm trong các hệ thống ngân hàng, viễn thông, giao thông và điện nước. Sau “99” là “00”, và chương trình có thể cho rằng thời gian lùi lại 99 năm: lãi suất tính ra số âm, giấy tờ bị coi là hết hạn từ lâu, dữ liệu sắp theo ngày bị đảo lộn.",
+        "Vấn đề thứ hai, ít được chú ý hơn, là năm nhuận. Năm 2000 là năm nhuận, nhưng một số phần mềm áp dụng quy tắc “năm tròn thế kỷ không nhuận” mà bỏ quên ngoại lệ, có nguy cơ lỗi vào ngày 29 tháng 2 năm 2000."
+      ]
+    },
+    {
+      "h": "Thế giới đã chuẩn bị ra sao",
+      "body": [
+        "Cách sửa có nhiều kiểu, từ viết lại ngày tháng với năm bốn chữ số đến kỹ thuật “cửa sổ” (windowing), tức chương trình mặc định chẳng hạn 00 đến 29 là thập niên 2000. Riêng ở Mỹ, IDC ước tính khoảng 134 tỷ USD cho khâu chuẩn bị và thêm 13 tỷ USD cho các sự cố trong năm 2000 và 2001.",
+        "Trung Quốc coi đây là nhiệm vụ quốc gia. Quốc vụ viện ra chỉ thị năm 1998, Bộ Công nghiệp Thông tin theo dõi 18 ngành trọng điểm, và một chỉ thị năm 1999 đặt hạn chót tháng 9 năm 1999 để hoàn tất kiểm thử và phương án dự phòng trong ngân hàng, thuế, hàng không, đường sắt, điện lực, viễn thông và nhiều ngành khác. Đêm giao thừa, các ngành trọng điểm trực suốt đêm, và theo báo chí, lãnh đạo Air China và China Eastern còn đích thân bay trên các chuyến bay vắt qua nửa đêm để chứng tỏ sự tự tin."
+      ]
+    },
+    {
+      "h": "Rốt cuộc chuyện gì đã xảy ra",
+      "body": [
+        {
+          "ul": [
+            "Một số máy bán vé tàu ở Nhật Bản ngừng hoạt động trong chốc lát",
+            "Máy đo nồng độ cồn của cảnh sát Hồng Kông trục trặc lúc nửa đêm",
+            "Máy tính tiền ở Hy Lạp in hóa đơn đề năm 1900",
+            "Trang web của Đài Quan sát Hải quân Mỹ có lúc hiện năm là “19100”",
+            "Một hệ thống thuế ở Montreal đọc ngày 29 tháng 2 năm 2000 thành ngày 1 tháng 3 năm 1900 và phải tạm tắt"
+          ]
+        },
+        "Không chuyện nào là thảm họa như một số người từng dự đoán. Những người ủng hộ việc khắc phục nói đó chính là mục đích; còn những người phê phán chỉ ra rằng những nơi gần như không chuẩn bị gì cũng thoát được rắc rối nghiêm trọng. Một mốc tương tự vẫn còn ở phía trước: các hệ thống lưu thời gian Unix bằng số nguyên có dấu 32 bit sẽ hết chỗ vào ngày 19 tháng 1 năm 2038."
+      ]
+    },
+    {
+      "h": "Một nghĩa khác của Y2K",
+      "body": [
+        {
+          "note": "Ngày nay “Y2K” còn là một phong cách thời trang và thiết kế vay mượn từ cuối thập niên 1990 và đầu thập niên 2000: vải ánh kim và bóng loáng, quần cạp trễ, nhựa trong suốt và đồ họa máy tính thời đầu. Nó mượn tên từ sự cố máy tính nhưng ngoài ra chẳng liên quan gì."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Sự cố Y2K có phải là virus không?",
+      "a": "Không. Nó không phải mã độc và không lây lan được; đó là một lỗi thiết kế trong cách chương trình lưu ngày tháng."
+    },
+    {
+      "q": "Y2K là viết tắt của gì?",
+      "a": "Y là year (năm), 2K là 2.000, với K nghĩa là nghìn: tức năm 2000."
+    },
+    {
+      "q": "Liệu có một sự cố Y2K khác sắp tới không?",
+      "a": "Gần nhất là sự cố năm 2038: các hệ thống đếm thời gian bằng số giây kể từ năm 1970 dưới dạng số nguyên có dấu 32 bit sẽ bị tràn vào ngày 19 tháng 1 năm 2038, và nhiều hệ thống đang được cập nhật trước."
+    }
+  ]
+}
