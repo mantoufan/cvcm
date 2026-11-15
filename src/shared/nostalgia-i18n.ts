@@ -171,8 +171,9 @@ function playHtml(locale: Locale, id: NostalgiaId): string {
 }
 
 /**
- * "Did you have one?": two buttons in the static page, disabled until the client (nostalgia/ui.ts) wires them so an early
- * tap is never silently lost. Nothing is fetched at mount; the client posts an
+ * "Did you have one?": two buttons in the static page, hidden while the Worker's prerendered copy is on screen
+ * (`.page.ssr` in styles.css) so an early tap or keypress is never silently lost. Nothing is fetched at mount; the client
+ * (nostalgia/ui.ts) posts an
  * answer on click and shows the share that the API returns, or the reader's earlier answer from this browser.
  */
 function voteHtml(locale: Locale, id: NostalgiaId): string {
@@ -180,8 +181,8 @@ function voteHtml(locale: Locale, id: NostalgiaId): string {
   const group = nostalgiaGroupOf(id);
   return `<section class="nostalgia-vote" data-id="${id}" aria-labelledby="nostalgia-vote-title"><h2 id="nostalgia-vote-title">${escapeHtml(vote.title)}</h2>`
     + `<p>${escapeHtml(vote.ask[group])}</p>`
-    + `<p class="nostalgia-vote-buttons"><button type="button" class="btn ghost" data-answer="yes" disabled>${escapeHtml(vote.yes[group])}</button> `
-    + `<button type="button" class="btn ghost" data-answer="no" disabled>${escapeHtml(vote.no)}</button></p>`
+    + `<p class="nostalgia-vote-buttons"><button type="button" class="btn ghost" data-answer="yes">${escapeHtml(vote.yes[group])}</button> `
+    + `<button type="button" class="btn ghost" data-answer="no">${escapeHtml(vote.no)}</button></p>`
     + `<p class="nostalgia-vote-result" aria-live="polite" hidden></p>`
     + `<p class="meme-note">${escapeHtml(vote.note)}</p></section>`;
 }

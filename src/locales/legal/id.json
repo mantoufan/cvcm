@@ -45,11 +45,11 @@
           ]
         },
         {
-          "h": "Pencarian situs",
+          "h": "Pencarian situs dan jawaban Nostalgia",
           "p": [
             "Kotak pencarian mencocokkan halaman di browser Anda dengan daftar nama halaman cv.cm. Hanya pencarian yang tidak menemukan apa pun yang dikirim ke kami, seperti dijelaskan di bawah.",
             "Jika pencarian tidak menemukan apa pun, teks pencarian dan bahasa halaman dikirim ke database kami di Cloudflare D1 agar kami tahu apa yang masih dicari orang. Pencarian yang tampak seperti tautan, alamat email, atau deretan angka panjang tidak dicatat. Agar setiap pengunjung dihitung sekali sehari dan agar jumlah kiriman dari satu alamat dibatasi, server membuat dua hash dari alamat IP Anda (salah satunya bersama teks pencarian) dengan kunci yang berganti setiap hari. Kunci dan hash dihapus setelah dua hari; alamat IP-nya sendiri tidak pernah disimpan. Teks pencarian dihapus satu tahun setelah terakhir kali dicari.",
-            "Halaman Nostalgia menanyakan apakah kamu pernah makan, memainkan, atau memakai hal yang dibahas. Jawaban hanya dikirim saat kamu menekan tombolnya: nama halaman dan jawaban ya atau tidak, yang ditambahkan ke hitungan total. Untuk menghitung satu jawaban per jaringan, halaman, dan hari serta membatasi seberapa sering satu alamat mengirim, server memakai hash dari alamat IP-mu dengan kunci yang berganti setiap hari (salah satunya digabung dengan halaman); hash ini dihapus setelah dua hari dan alamat IP itu sendiri tidak pernah disimpan. Browser-mu mengingat jawabanmu di penyimpanan lokal agar bisa ditampilkan lagi."
+            "Halaman Nostalgia menanyakan apakah kamu pernah makan, memainkan, atau memakai hal yang dibahas. Jawaban hanya dikirim saat kamu menekan tombolnya: nama halaman dan jawaban ya atau tidak, yang ditambahkan ke hitungan total. Untuk menghitung satu jawaban per jaringan, halaman, dan hari serta membatasi seberapa sering satu alamat mengirim, server menyimpan dua hash terpisah dari alamat IP-mu dengan kunci harian yang sama seperti pencarian situs (salah satunya digabung dengan halaman); hash ini dihapus setelah dua hari dan alamat IP itu sendiri tidak pernah disimpan. Browser-mu mengingat jawabanmu di penyimpanan lokal agar bisa ditampilkan lagi."
           ]
         },
         {

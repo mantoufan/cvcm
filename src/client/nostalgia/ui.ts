@@ -60,8 +60,6 @@ function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
   }
   const result = section.querySelector<HTMLElement>(".nostalgia-vote-result");
   const buttons = [...section.querySelectorAll<HTMLButtonElement>("button[data-answer]")];
-  // The static page ships them disabled, so a tap before this point is not silently dropped.
-  for (const button of buttons) button.disabled = false;
   for (const button of buttons) {
     button.addEventListener("click", async () => {
       const answer = button.dataset.answer === "yes" ? "yes" : "no";
@@ -81,7 +79,8 @@ function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
         const tally = (await res.json()) as { yes: number; no: number; counted?: boolean };
         if (!Number.isFinite(tally.yes) || !Number.isFinite(tally.no)) throw new Error("tally");
         const value: Stored = { a: answer, yes: tally.yes, no: tally.no };
-        store(id, value);
+        // Only a counted answer is remembered: a repeat from a shared network today must stay answerable another day.
+        if (tally.counted !== false) store(id, value);
         if (section.isConnected) showResult(section, locale, id, value, true, tally.counted !== false);
       } catch {
         if (!section.isConnected) return;

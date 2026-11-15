@@ -45,6 +45,8 @@ describe("nostalgia vote UI", () => {
     host.querySelector<HTMLButtonElement>('button[data-answer="no"]')!.click();
     await vi.waitFor(() => expect(host.querySelector(".nostalgia-vote-result")!.textContent).toContain("%"));
     expect(host.querySelector(".nostalgia-vote-result")!.textContent).toContain("Your network already answered this today");
+    // Not remembered: the reader can answer again another day.
+    expect(localStorage.getItem("cvcm.nostalgia.vote.famicom")).toBeNull();
   });
 
   it("lets the reader try again when the request fails", async () => {

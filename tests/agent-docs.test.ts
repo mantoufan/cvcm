@@ -126,7 +126,7 @@ describe("agent discovery files", () => {
       .map((file) => file.slice(root.length + 1).split("\\").join("/"))
       .filter((file) => network.test(readFileSync(join(root, file), "utf8")));
     expect(files.sort()).toEqual(Object.keys(reviewed).sort());
-    // The clipboard, site search and nostalgia answers send what the visitor chose to send (privacy policy, "Site search").
+    // The clipboard, site search and nostalgia answers send what the visitor chose to send (privacy policy, "Site search and nostalgia answers").
     const posting = new Set(["src/client/clip/ui.ts", "src/client/search.ts", "src/client/nostalgia/ui.ts"]);
     for (const file of files.filter((f) => !posting.has(f))) {
       const code = readFileSync(join(root, file), "utf8");

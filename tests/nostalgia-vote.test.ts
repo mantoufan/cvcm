@@ -103,9 +103,8 @@ describe("nostalgia vote markup", () => {
     const html = nostalgiaPageHtml("zh-CN", "white-rabbit");
     expect(html).toContain('<section class="nostalgia-vote" data-id="white-rabbit"');
     expect(html).toContain("你吃过吗？");
-    // Disabled in the static page until the client wires them.
-    expect(html).toContain('data-answer="yes" disabled>吃过</button>');
-    expect(html).toContain('data-answer="no" disabled>没有</button>');
+    expect(html).toContain('data-answer="yes">吃过</button>');
+    expect(html).toContain('data-answer="no">没有</button>');
     expect(nostalgiaPageHtml("en", "famicom")).toContain("Did you ever play it?");
     expect(nostalgiaPageHtml("en", null)).not.toContain("nostalgia-vote");
   });
