@@ -770,6 +770,8 @@ export function render(): void {
     rendered = (hydrating ? ready : Promise.race([ready, wait(SWAP_WAIT_MS)])).then(() => {
       if (gen !== pageGen) return;
       const focus = hydrating ? carryInput(old, page) : null;
+      // A directory opened on the server HTML stays open, so the link about to be tapped does not move away.
+      if (hydrating && old.some((el) => el.querySelector("details.dir-fold[open]"))) page.querySelector("details.dir-fold")?.setAttribute("open", "");
       for (const el of old) el.remove();
       page.classList.remove("pending");
       focus?.();
@@ -905,7 +907,9 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
     ),
     main,
     h("footer", { class: "foot" },
-      home ? null : toolDirectory(loc),
+      // Folded: the links stay in the markup for crawlers and one tap away for readers, and the page ends where
+      // its own content ends instead of under a wall of several hundred links.
+      home ? null : h("details", { class: "dir-fold" }, h("summary", null, t("footer.directory")), toolDirectory(loc)),
       h("p", null, t("footer.privacy")),
       h("nav", { class: "foot-links", "aria-label": t("footer.legal") },
         h("a", { href: legalHref(loc, "privacy"), "data-nav": "privacy" }, t("footer.privacyLink")),
@@ -922,9 +926,9 @@ function navLink(href: string, label: string, on: boolean, nav: string): HTMLEle
   return h("a", { class: on ? "on" : null, href, "data-nav": nav, "aria-current": on ? "page" : undefined }, label);
 }
 
-/** Every tool as a plain link, grouped like the home page, so any page is one click from any tool. */
+/** Every tool as a plain link, grouped like the home page, so every page links to every tool (folded in the footer). */
 function toolDirectory(loc: Locale): HTMLElement {
-  return h("nav", { class: "dir", "aria-label": t("nav.tools") },
+  return h("nav", { class: "dir", "aria-label": t("footer.directory") },
     ...CATEGORIES.map((cat) =>
       h("div", { class: "dir-group" },
         h("h2", null, t(`nav.${cat.id}`)),
