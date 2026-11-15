@@ -350,3 +350,11 @@ Codex (`codex exec -m gpt-6-astra`, image tool; kie.ai had no credits that day),
 - `car-depreciation`: beside a pastel pink toy car she holds a pink clipboard with a falling curve of hearts; a little hourglass and a blank cream calendar.
 - `net-worth`: she balances a golden scale, a piggy bank, a little house and coins on the lower pan, feather-light bills with a ribbon on the other.
 - `business-valuation`: she holds a little pink boutique shop-front model; rising cream bars beside it and a golden calculator with blank keys.
+## Hangman, rock paper scissors, BAC calculator, simple interest calculator (2026-11-15)
+
+Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`), refs `2048-sweet.jpg` + `chess-sweet.jpg`, 16:9 landscape, same base prompt as the batch above. Save `public/covers/<id>-sweet.jpg`, `sips -s format jpeg` then `sips -z 720 1280`. All four came out on the first try. (On macOS `find -newermt "@epoch"` does not work; pick the newest file in `~/.codex/generated_images` by `-mmin`.)
+
+- `hangman`: she writes on a small pink chalkboard showing a row of blank dashes with empty cream letter tiles above them (no letters), a friendly stick-figure doodle holding pink heart balloons (no gallows); a little bell and a pink notebook.
+- `rock-paper-scissors`: she throws a playful hand sign toward a cute toy robot across a cream table; plush cushions shaped like a grey rock, a sheet of pink paper and pink scissors; little stars.
+- `bac-calculator`: she holds a glass of pink sparkling juice and looks at a round cream gauge with a soft needle (tick marks only); a glass of water, a pink alarm clock, a pink car key with a heart keyring set aside in a dish.
+- `simple-interest`: she drops a gold coin into a pink piggy bank; even stacks of coins grow in a straight row, each the same step taller; a pink calculator with blank keys and a blank desk calendar.

@@ -1,6 +1,18 @@
 import { h } from "./dom";
 import { t } from "./i18n";
 
+/**
+ * The letter key (A–Z) a game shortcut should read from the physical position, for layouts that type letters outside
+ * the Latin script there (Korean 2-set types ㄱ on R, Russian к). Empty for anything else: a Latin letter is read as
+ * typed, and punctuation that AZERTY, Dvorak or Colemak puts on a letter position (",", ";") is not a letter.
+ */
+export function physicalLetter(e: KeyboardEvent): string {
+  // An IME (Korean or Japanese on Windows) reports "Process" for every key while it is on.
+  const foreign = e.key === "Process" || (/^\p{L}$/u.test(e.key) && !/^\p{Script=Latin}$/u.test(e.key));
+  if (!foreign) return "";
+  return /^Key[A-Z]$/.test(e.code) ? e.code.slice(3) : "";
+}
+
 /** Shared bits of the open-source game pages (2048, dinosaur game, mahjong, chess, Chinese chess). */
 
 export type Swipe = "up" | "right" | "down" | "left";
