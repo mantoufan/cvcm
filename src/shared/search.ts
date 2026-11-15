@@ -35,7 +35,8 @@ export const SEARCH_BLURB_MAX = 110;
  * Used for both matching and the stored key, so "ＰＤＦ  合并" and "pdf 合并" count as one query.
  */
 export function normalizeQuery(raw: string): string {
-  return raw.normalize("NFKC").toLowerCase().replace(/\s+/g, " ").trim().slice(0, SEARCH_QUERY_MAX).trim();
+  // Cut by code points, so an emoji at the limit is not split into a lone surrogate.
+  return [...raw.normalize("NFKC").toLowerCase().replace(/\s+/g, " ").trim()].slice(0, SEARCH_QUERY_MAX).join("").trim();
 }
 
 /** Text compared against queries: normalised, accents removed (so "tieng viet" finds "Tiếng Việt"). */
@@ -170,6 +171,9 @@ export function isRecordableQuery(query: string): boolean {
   if (query.length < 1 || query.length > SEARCH_QUERY_MAX) return false;
   if (!/[\p{L}\p{N}]/u.test(query)) return false;
   if (/@|https?:|www\.|:\/\//i.test(query)) return false;
+  // Bare links (bit.ly/x, t.me/name, example.com/reset?token=…): a host with a common TLD, or any host followed by a path.
+  if (/[a-z0-9-]+\.(?:com|net|org|info|biz|ly|me|io|co|cc|to|gl|gg|tv|xyz|app|dev|link|site|top|cn|hk|tw|jp|kr|vn|id|uk|de|fr|ru|us)\b/i.test(query)) return false;
+  if (/[a-z0-9-]+\.[a-z]{2,}\/\S/i.test(query)) return false;
   // Phone, ID and card numbers: 7+ digits once separators are gone. Known number slang (520, 334424044) has a page,
   // so it never reaches this check as a miss.
   if (/\d{7,}/.test(query.replace(/[\s\-().+/]/g, ""))) return false;

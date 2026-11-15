@@ -207,7 +207,12 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
       if (!indexes.has(loc) && !testIndex) status.textContent = t("search.loading");
       index = await loadIndex(loc);
     } catch {
-      if (mine === seq) status.textContent = t("search.unavailable");
+      if (mine === seq) {
+        hits = [];
+        renderHits(q);
+        empty.hidden = true;
+        status.textContent = t("search.unavailable");
+      }
       return;
     }
     if (mine !== seq) return;

@@ -93,9 +93,13 @@ export function d1SearchStore(db: D1Database): SearchStore {
       return Boolean(row) && row![kind] <= max;
     },
     async cleanup(now) {
-      await db.prepare("DELETE FROM search_votes WHERE created_at < ?").bind(now - VOTE_TTL_MS).run();
-      await db.prepare("DELETE FROM search_rate WHERE window_start < ?").bind(now - SEARCH_RATE_WINDOW_MS * 2).run();
-      await db.prepare("DELETE FROM search_salts WHERE created_at < ?").bind(now - VOTE_TTL_MS).run();
+      const sweeps = [
+        db.prepare("DELETE FROM search_votes WHERE created_at < ?").bind(now - VOTE_TTL_MS),
+        db.prepare("DELETE FROM search_rate WHERE window_start < ?").bind(now - SEARCH_RATE_WINDOW_MS * 2),
+        db.prepare("DELETE FROM search_salts WHERE created_at < ?").bind(now - VOTE_TTL_MS),
+      ];
+      if (db.batch) await db.batch(sweeps);
+      else for (const sweep of sweeps) await sweep.run();
     },
   };
 }
@@ -120,7 +124,7 @@ function noContent(): Response {
 export type SearchApiOpts = { store: SearchStore | null; now?: number };
 
 /** Per isolate: the salt of the current day (saves two D1 calls per request). The sweep is the hourly cron's job. */
-let saltCache: { day: string; salt: string } | null = null;
+let saltCache: { day: string; key: CryptoKey } | null = null;
 
 /** Tests reset the per-isolate caches. */
 export function resetSearchApiCache(): void {
@@ -138,11 +142,29 @@ function sameOrigin(request: Request, url: URL): boolean {
 async function readBody(request: Request): Promise<Record<string, unknown> | null> {
   if (!(request.headers.get("Content-Type") ?? "").toLowerCase().startsWith("application/json")) return null;
   const length = Number(request.headers.get("Content-Length") ?? "0");
-  if (length > BODY_MAX) return null;
+  if (length > BODY_MAX || !request.body) return null;
   try {
-    const text = await request.text();
-    if (text.length > BODY_MAX) return null;
-    const data: unknown = JSON.parse(text);
+    // Read at most BODY_MAX bytes, also for a chunked body without Content-Length.
+    const reader = request.body.getReader();
+    const parts: Uint8Array[] = [];
+    let size = 0;
+    for (;;) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > BODY_MAX) {
+        await reader.cancel();
+        return null;
+      }
+      parts.push(value);
+    }
+    const bytes = new Uint8Array(size);
+    let at = 0;
+    for (const part of parts) {
+      bytes.set(part, at);
+      at += part.byteLength;
+    }
+    const data: unknown = JSON.parse(new TextDecoder().decode(bytes));
     return data && typeof data === "object" && !Array.isArray(data) ? (data as Record<string, unknown>) : null;
   } catch {
     return null;
@@ -155,6 +177,9 @@ async function readBody(request: Request): Promise<Record<string, unknown> | nul
  */
 export function rateSubject(ip: string): string {
   if (!ip.includes(":")) return ip;
+  // IPv4-mapped (::ffff:1.2.3.4) is the IPv4 address.
+  const mapped = ip.match(/^::ffff:(\d{1,3}(?:\.\d{1,3}){3})$/i);
+  if (mapped) return mapped[1];
   const [head, tail = ""] = ip.toLowerCase().split("::");
   const left = head ? head.split(":") : [];
   const right = tail ? tail.split(":") : [];
@@ -163,10 +188,8 @@ export function rateSubject(ip: string): string {
 }
 
 /** HMAC-SHA-256 of `text` under the day's salt, first 16 bytes as hex. */
-async function keyed(salt: string, text: string): Promise<string> {
-  const enc = new TextEncoder();
-  const key = await crypto.subtle.importKey("raw", enc.encode(salt), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(text));
+async function keyed(key: CryptoKey, text: string): Promise<string> {
+  const sig = await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(text));
   return [...new Uint8Array(sig)].slice(0, 16).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
@@ -190,8 +213,12 @@ export async function handleSearchApi(request: Request, opts: SearchApiOpts): Pr
 
   try {
     const day = new Date(now).toISOString().slice(0, 10);
-    if (saltCache?.day !== day) saltCache = { day, salt: await store.daySalt(day, now) };
-    const salt = saltCache.salt;
+    if (saltCache?.day !== day) {
+      const salt = await store.daySalt(day, now);
+      const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(salt), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+      saltCache = { day, key };
+    }
+    const salt = saltCache.key;
     // Keyed by the day's salt so no stable IP identifier is kept. Trade-off: an IP's hourly window restarts at
     // 00:00 UTC, so the boundary hour allows up to twice the cap.
     const ipHash = await keyed(salt, `rate|${ip}`);

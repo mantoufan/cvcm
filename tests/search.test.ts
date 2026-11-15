@@ -110,6 +110,9 @@ describe("query rules", () => {
   it("normalises width, case and spaces and caps the length", () => {
     expect(normalizeQuery("  ＰＤＦ   合并 ")).toBe("pdf 合并");
     expect(normalizeQuery("x".repeat(100)).length).toBe(60);
+    const cut = normalizeQuery("a" + "😀".repeat(80));
+    expect([...cut].length).toBe(60);
+    expect(cut).not.toMatch(/[\uD800-\uDBFF]$/);
   });
 
   it("does not record links, emails, long numbers or punctuation", () => {
@@ -122,6 +125,11 @@ describe("query rules", () => {
     expect(isRecordableQuery("138 0013 8000")).toBe(false);
     expect(isRecordableQuery("110101199003071234")).toBe(false);
     expect(isRecordableQuery("?!…")).toBe(false);
+    expect(isRecordableQuery("bit.ly/3xYzAbc")).toBe(false);
+    expect(isRecordableQuery("t.me/someuser")).toBe(false);
+    expect(isRecordableQuery("example.com/reset?token=abc")).toBe(false);
+    expect(isRecordableQuery("node.js")).toBe(true);
+    expect(isRecordableQuery("c.ai")).toBe(true);
   });
 
   it("checks email shape", () => {
@@ -262,6 +270,7 @@ describe("rateSubject", () => {
     expect(rateSubject("2001:db8:1:2:aaaa::1")).toBe("2001:db8:1:2::/64");
     expect(rateSubject("2001:DB8:1:2:ffff:1:2:3")).toBe("2001:db8:1:2::/64");
     expect(rateSubject("2001:db8::1")).toBe("2001:db8:0:0::/64");
+    expect(rateSubject("::ffff:203.0.113.9")).toBe("203.0.113.9");
   });
 });
 
@@ -293,6 +302,20 @@ describe("search API", () => {
     expect((await handleSearchApi(post("/api/search/notify", { q: "abc", locale: "en", email: "nope" }), opts))?.status).toBe(400);
     expect((await handleSearchApi(new Request("https://cv.cm/api/search/miss"), opts))?.status).toBe(405);
     expect(await handleSearchApi(new Request("https://cv.cm/api/other", { method: "POST" }), opts)).toBeNull();
+  });
+
+  it("rejects an oversized body even without Content-Length", async () => {
+    const { store } = memoryStore();
+    const big = JSON.stringify({ q: "x".repeat(5000), locale: "en" });
+    const stream = new ReadableStream({ start(c) { c.enqueue(new TextEncoder().encode(big)); c.close(); } });
+    const req = new Request("https://cv.cm/api/search/miss", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Origin: "https://cv.cm", "Sec-Fetch-Site": "same-origin" },
+      body: stream,
+      // @ts-expect-error Node needs duplex for a streamed body
+      duplex: "half",
+    });
+    expect((await handleSearchApi(req, { store }))?.status).toBe(400);
   });
 
   it("rate-limits misses and emails per IP", async () => {

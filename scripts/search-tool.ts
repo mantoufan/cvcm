@@ -13,9 +13,9 @@
  * Reads and writes the remote D1 database through `wrangler d1 execute` (needs CLOUDFLARE_API_TOKEN or wrangler login).
  */
 import { execFileSync } from "node:child_process";
-import { appendFileSync, existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { connect, type TLSSocket } from "node:tls";
-import { randomUUID } from "node:crypto";
+import { createHash, randomUUID } from "node:crypto";
 import "../src/shared/messages-all";
 import "../src/shared/kb-code-meta";
 import "../src/shared/kb-ai-meta";
@@ -117,15 +117,19 @@ function demand(): void {
   }
 }
 
+/**
+ * The mail never quotes the visitor's query: anyone can type a stranger's address, so the only content is our own
+ * page names and links.
+ */
 const MAIL: Record<Locale, { subject: string; intro: string; outro: string }> = {
-  en: { subject: "Something you searched for is now on cv.cm", intro: "You asked us to tell you when cv.cm had something for “{q}”. It does now:", outro: "This is the only email about this request. Your address has been deleted." },
-  "zh-CN": { subject: "你在 cv.cm 搜索过的内容已上线", intro: "你曾在 cv.cm 搜索「{q}」并请我们上线后通知你。现在可以用了：", outro: "这是关于此请求的唯一一封邮件，你的邮箱已删除。" },
-  "zh-TW": { subject: "你在 cv.cm 搜尋過的內容已上線", intro: "你曾在 cv.cm 搜尋「{q}」並請我們上線後通知你。現在可以用了：", outro: "這是關於此請求的唯一一封信，你的 Email 已刪除。" },
-  ja: { subject: "cv.cm で検索された内容が追加されました", intro: "cv.cm で「{q}」を検索し、追加時の通知をご希望いただきました。ご利用いただけるようになりました：", outro: "このリクエストに関するメールはこれ一通のみです。メールアドレスは削除しました。" },
-  ko: { subject: "cv.cm에서 검색하신 내용이 추가되었습니다", intro: "cv.cm에서 “{q}”를 검색하고 추가되면 알려 달라고 하셨습니다. 이제 이용할 수 있습니다:", outro: "이 요청에 관한 메일은 이번 한 통뿐이며, 이메일 주소는 삭제되었습니다." },
-  vi: { subject: "Nội dung bạn tìm trên cv.cm đã có", intro: "Bạn đã nhờ chúng tôi báo khi cv.cm có nội dung cho “{q}”. Giờ đã có:", outro: "Đây là email duy nhất cho yêu cầu này. Địa chỉ của bạn đã được xóa." },
-  id: { subject: "Yang Anda cari di cv.cm kini tersedia", intro: "Anda meminta kami mengabari saat cv.cm punya sesuatu untuk “{q}”. Sekarang sudah ada:", outro: "Ini satu-satunya email untuk permintaan ini. Alamat Anda sudah dihapus." },
-  es: { subject: "Lo que buscaste en cv.cm ya está disponible", intro: "Nos pediste que te avisáramos cuando cv.cm tuviera algo para “{q}”. Ya está disponible:", outro: "Este es el único correo sobre esta solicitud. Tu dirección se ha borrado." },
+  en: { subject: "Something you searched for is now on cv.cm", intro: "You asked us to tell you when cv.cm had something for what you searched. It does now:", outro: "This is the only email about this request. Your address has been deleted." },
+  "zh-CN": { subject: "你在 cv.cm 搜索过的内容已上线", intro: "你曾在 cv.cm 搜索并请我们上线后通知你。现在可以用了：", outro: "这是关于此请求的唯一一封邮件，你的邮箱已删除。" },
+  "zh-TW": { subject: "你在 cv.cm 搜尋過的內容已上線", intro: "你曾在 cv.cm 搜尋並請我們上線後通知你。現在可以用了：", outro: "這是關於此請求的唯一一封信，你的 Email 已刪除。" },
+  ja: { subject: "cv.cm で検索された内容が追加されました", intro: "cv.cm で検索し、追加時の通知をご希望いただきました。ご利用いただけるようになりました：", outro: "このリクエストに関するメールはこれ一通のみです。メールアドレスは削除しました。" },
+  ko: { subject: "cv.cm에서 검색하신 내용이 추가되었습니다", intro: "cv.cm에서 검색하고 추가되면 알려 달라고 하셨습니다. 이제 이용할 수 있습니다:", outro: "이 요청에 관한 메일은 이번 한 통뿐이며, 이메일 주소는 삭제되었습니다." },
+  vi: { subject: "Nội dung bạn tìm trên cv.cm đã có", intro: "Bạn đã nhờ chúng tôi báo khi cv.cm có nội dung bạn tìm. Giờ đã có:", outro: "Đây là email duy nhất cho yêu cầu này. Địa chỉ của bạn đã được xóa." },
+  id: { subject: "Yang Anda cari di cv.cm kini tersedia", intro: "Anda meminta kami mengabari saat cv.cm punya yang Anda cari. Sekarang sudah ada:", outro: "Ini satu-satunya email untuk permintaan ini. Alamat Anda sudah dihapus." },
+  es: { subject: "Lo que buscaste en cv.cm ya está disponible", intro: "Nos pediste que te avisáramos cuando cv.cm tuviera lo que buscabas. Ya está disponible:", outro: "Este es el único correo sobre esta solicitud. Tu dirección se ha borrado." },
 };
 
 function fill(text: string, q: string): string {
@@ -211,7 +215,8 @@ class Smtp {
   private flush(): void {
     // A reply ends with a line "NNN text" (a space, not a dash, after the code).
     for (;;) {
-      const match = this.buffer.match(/(^|\r\n)(\d{3}) [^\r\n]*\r\n/);
+      // The last line has the code followed by a space or nothing ("250 OK", "250"), not a dash.
+      const match = this.buffer.match(/(^|\r\n)(\d{3})(?:[ \t][^\r\n]*)?\r\n/);
       if (!match || match.index === undefined || !this.waiters.length) return;
       const end = match.index + match[0].length;
       const reply = this.buffer.slice(0, end);
@@ -262,39 +267,43 @@ async function sendMail(to: string, message: string, from: string, user: string,
 }
 
 /**
- * Rows already mailed but whose DELETE failed: the next run must not mail them again. Local file, one JSON row per
- * line; delete an entry once its row is gone from D1.
+ * Rows mailed but whose DELETE failed, so the next run deletes them without mailing again. Each line is a SHA-256 of
+ * locale|q|email|created_at, never the address itself, and a line is dropped once its row is gone from D1.
  */
-const SENT_LEDGER = "tmp-verify/search-notified.jsonl";
+const SENT_LEDGER = "tmp-verify/search-notified.txt";
 
-/** created_at is part of the key: a later sign-up for the same query is a new request and gets its own email. */
 function ledgerKey(r: { q: string; locale: string; email: string; created_at: number }): string {
-  return `${r.locale}|${r.q}|${r.email}|${r.created_at}`;
+  return createHash("sha256").update(`${r.locale}|${r.q}|${r.email}|${r.created_at}`).digest("hex");
 }
 
 function readLedger(): Set<string> {
   if (!existsSync(SENT_LEDGER)) return new Set();
-  return new Set(
-    readFileSync(SENT_LEDGER, "utf8")
-      .split("\n")
-      .filter(Boolean)
-      .map((line) => ledgerKey(JSON.parse(line) as RequestRow)),
-  );
+  return new Set(readFileSync(SENT_LEDGER, "utf8").split("\n").filter(Boolean));
+}
+
+function writeLedger(keys: Set<string>): void {
+  mkdirSync("tmp-verify", { recursive: true });
+  writeFileSync(SENT_LEDGER, [...keys].map((k) => `${k}\n`).join(""));
 }
 
 async function notify(): Promise<void> {
   const send = flag("send");
   const sent = readLedger();
   const pending = d1<RequestRow>("SELECT q, locale, email, created_at FROM search_requests ORDER BY created_at");
+  // Ledger lines whose row is already gone are dropped, so the file only ever holds rows still in D1.
+  const stillThere = new Set(pending.map(ledgerKey));
+  for (const key of sent) if (!stillThere.has(key)) sent.delete(key);
   for (const r of pending.filter((p) => sent.has(ledgerKey(p)))) {
     // Mailed earlier, row left behind by a failed DELETE: delete it now, never mail it twice.
     try {
       d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)} AND created_at = ${Number(r.created_at)}`);
+      sent.delete(ledgerKey(r));
       console.log(`deleted already-mailed row: [${r.locale}] ${r.q} <${r.email}>`);
     } catch (err) {
       console.error(`still cannot delete already-mailed row [${r.locale}] ${r.q}: ${(err as Error).message}`);
     }
   }
+  writeLedger(sent);
   const matched = pending
     .filter((r) => !sent.has(ledgerKey(r)))
     .filter((r): r is RequestRow & { locale: Locale } => isLocale(r.locale))
@@ -327,7 +336,6 @@ async function notify(): Promise<void> {
   const port = Number(process.env.SMTP_PORT ?? "465");
   const from = process.env.SMTP_FROM ?? user;
   if (!pass) throw new Error("Set SMTP_PASS (and SMTP_USER if not m@cv.cm) to send.");
-  mkdirSync("tmp-verify", { recursive: true });
   for (const r of ready) {
     try {
       await sendMail(r.email, buildMessage(from, r.email, r.locale, r.q, r.hits), from, user, pass, host, port);
@@ -335,10 +343,13 @@ async function notify(): Promise<void> {
       console.error(`not sent: [${r.locale}] ${r.q} <${r.email}>: ${(err as Error).message}`);
       continue;
     }
-    // Recorded before the DELETE, so a failed DELETE cannot lead to a second email.
-    appendFileSync(SENT_LEDGER, JSON.stringify({ q: r.q, locale: r.locale, email: r.email, created_at: r.created_at }) + "\n");
+    // Recorded before the DELETE, so a failed DELETE cannot lead to a second email; removed again once it succeeds.
+    sent.add(ledgerKey(r));
+    writeLedger(sent);
     try {
       d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)} AND created_at = ${Number(r.created_at)}`);
+      sent.delete(ledgerKey(r));
+      writeLedger(sent);
       console.log(`sent and deleted: [${r.locale}] ${r.q} <${r.email}>`);
     } catch (err) {
       console.error(`SENT but row not deleted (the next run deletes it, without mailing): [${r.locale}] ${r.q}: ${(err as Error).message}`);
