@@ -339,3 +339,14 @@ Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`), refs `sol
 - `gomoku`: she places a glossy pink stone on a wooden grid board; five pink stones in a diagonal line glow softly; cream stones scattered; a cup of tea.
 - `nonogram`: she fills squares on pastel grid paper with a pink pen, the filled squares forming a heart; clue strips along the top and left drawn as dots only, never digits.
 - `memory-game`: on a table of face-down cards with pink lace backs she turns over two cards with the same pink star; one pair already face up shows pink hearts.
+
+## Phone number value, number plate valuation, domain value, car depreciation, net worth, business valuation (2026-11-14)
+
+Codex (`codex exec -m gpt-6-astra`, image tool; kie.ai had no credits that day), refs `dice-sweet.jpg` + `metronome-sweet.jpg`, 16:9, same base prompt as above. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `phone-number-value`: she holds up a pink smartphone whose screen shows only a row of glowing golden coin dots and a sparkle; a golden price tag with a heart; a pink jeweller's loupe and a golden ribbon.
+- `license-plate-value`: she holds a blank pastel plate with star rivets showing five glowing golden hearts instead of characters; a pink toy car and a golden auction gavel with a bow.
+- `domain-value`: she holds a glowing pink crystal globe wrapped in a chain of pastel link rings; a velvet jewellery box with a pink gem and a golden heart price tag.
+- `car-depreciation`: beside a pastel pink toy car she holds a pink clipboard with a falling curve of hearts; a little hourglass and a blank cream calendar.
+- `net-worth`: she balances a golden scale, a piggy bank, a little house and coins on the lower pan, feather-light bills with a ribbon on the other.
+- `business-valuation`: she holds a little pink boutique shop-front model; rising cream bars beside it and a golden calculator with blank keys.

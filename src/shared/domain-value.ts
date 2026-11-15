@@ -1,0 +1,336 @@
+import { roundEstimate } from "./number-pattern";
+
+/**
+ * Domain name valuation from the name itself: the extension, the length, whether it is a common English word or two,
+ * a short number or acronym, or pronounceable. The bands follow public aftermarket sales (short .com names,
+ * one-word .com names and four-digit .com numbers trade in the thousands and up; long, hyphenated or mixed names near
+ * their renewal fee). A rule-based estimate, not an appraisal: traffic, trademarks and one keen buyer move real prices.
+ */
+
+/** Common English words that make good names (business, money, tech, places, everyday things). */
+const WORDS = new Set(
+  (
+    "a ace act ad age agent ai air all alpha am angel answer ant app apple apps arc arch area art arts ask atlas auto away " +
+    "baby back bag bake baker bank bar base bay beach bean bear beat beauty bed bee best bet big bike bill bio bird bit black " +
+    "blog blue board boat body bold bond book books boost boot boss bot box boy brain brand bread bridge bright build bus " +
+    "business buy buzz cab cafe cake call cam camp can cap capital car card care cars case cash casino cast cat chain chat cheap " +
+    "check chef chess child chip city class clean clear click clinic clip clock cloud club coach code coffee coin cold " +
+    "color cook cool copy core cost craft crypto cube cup cut cyber daily dash data date day deal deals dental design desk " +
+    "dev diet digital direct doc dog door dot dream drink drive drop duck earth easy eat eco edge edu energy engine " +
+    "event exchange expert eye face fact fair fame family farm fashion fast fiber file film finance find fire first fish fit " +
+    "fitness fix flash flight flow fly focus food foot force forest form forum fox free fresh friend fruit fun fund future " +
+    "game games garden gas gate gear gift girl glass global go goal gold golf good gps green grid group grow guide guru gym " +
+    "hair hand happy hat health heart help hero hire home host hot hotel house hub ice idea image info ink insure invest " +
+    "iron island jet job jobs joy juice jump just key kid kids king kit kitchen lab land law lead learn legal lens life " +
+    "light line link lion list live loan local lock logic look love luck lucky mail main make map mark market mart master " +
+    "match max me media med medical meet meta metal mind mint mix mobile money moon motor move movie music my name nano nest " +
+    "net network new news next night note now one online open order pack page paint palm paper park part party pass pay " +
+    "peak pen people pet pets phone photo pilot pink pixel pizza place plan planet play plus pod point poker pop post power " +
+    "press price prime pro profit project prop pure quick quiz race radio rain rank rate real red rent rest rich ride right " +
+    "ring rise road robot rock room root rose run safe sale sales salt save scan school score sea search secure seed sell " +
+    "send service shift ship shoe shoes shop shopping show sign silver site skin sky smart smile snap social soft solar " +
+    "solutions solution sound space spark speed sport sports spot star start stock store story street studio style sun " +
+    "super sure swift system table talk tap task taxi tea team tech test text the thing think ticket time tip today token " +
+    "tool tools top tour town toy toys trade trader travel tree trend trip true trust tube tv up urban user van vault vegas " +
+    "video view villa vip vision voice vote wall wallet watch water wave way web wealth well west wiki win wind wine wise " +
+    "wolf wood word work works world yoga you young zen zero zone"
+  ).split(" "),
+);
+
+/** Words a buyer pays most for right now. */
+const HOT = new Set(["ai", "crypto", "bot", "coin", "token", "pay", "bank", "loan", "insure", "cash", "health", "solar", "data", "cloud", "bet", "poker", "casino", "app", "agent"]);
+
+/** What the same name is worth under each extension, relative to .com. */
+const TLD_FACTOR: Record<string, number> = {
+  com: 1, ai: 0.55, io: 0.18, net: 0.14, org: 0.14, co: 0.12, app: 0.1, dev: 0.08, me: 0.06, cn: 0.1, "com.cn": 0.06,
+  "org.uk": 0.06, "net.cn": 0.03, "co.jp": 0.05, "co.kr": 0.03, "com.br": 0.04, "com.tw": 0.04, "com.hk": 0.04, br: 0.04, tw: 0.04, hk: 0.04,
+  de: 0.14, "co.uk": 0.12, uk: 0.08, us: 0.05, ca: 0.08, au: 0.05, "com.au": 0.08, fr: 0.06, jp: 0.06, kr: 0.04, vn: 0.05,
+  "com.vn": 0.04, in: 0.04, xyz: 0.02, info: 0.03, biz: 0.02, store: 0.03, shop: 0.04, tech: 0.03, online: 0.02, site: 0.02,
+};
+const OTHER_TLD = 0.025;
+
+export type DomainKind =
+  | "word"
+  | "twoWords"
+  | "letters1"
+  | "letters2"
+  | "letters3"
+  | "letters4"
+  | "brandable"
+  | "numeric"
+  | "letters"
+  | "mixed"
+  | "idn";
+
+export type DomainFeature =
+  | { key: "tld"; tld: string; factor: number }
+  | { key: "kind"; kind: DomainKind; words?: string; digits?: number }
+  | { key: "length"; n: number }
+  | { key: "hyphen" }
+  | { key: "hot"; word: string }
+  | { key: "luckyDigits" }
+  | { key: "four" }
+  | { key: "pronounceable" };
+
+export type DomainValue = {
+  domain: string;
+  sld: string;
+  tld: string;
+  kind: DomainKind;
+  estimate: number;
+  low: number;
+  high: number;
+  /** 0–100, for the gauge. */
+  score: number;
+  features: DomainFeature[];
+};
+
+export type DomainError = "empty" | "invalid" | "noTld";
+
+/** Two-part extensions sold to the public (a list, not a rule: web.de and info.me are names, not suffixes). */
+const TWO_PART = new Set(
+  (
+    "co.uk org.uk me.uk ltd.uk plc.uk ac.uk gov.uk com.cn net.cn org.cn gov.cn edu.cn com.au net.au org.au edu.au " +
+    "com.vn net.vn org.vn edu.vn gov.vn co.id or.id ac.id web.id my.id go.id co.jp ne.jp or.jp ac.jp co.kr or.kr ne.kr " +
+    "com.br net.br org.br com.tw org.tw net.tw idv.tw com.hk org.hk net.hk co.in net.in org.in com.sg edu.sg org.sg " +
+    "com.my net.my org.my com.mx org.mx co.za org.za co.nz org.nz net.nz com.ph net.ph org.ph co.th in.th ac.th com.tr " +
+    "com.ar com.co com.pe co.il com.pk com.ng com.eg com.sa com.ua co.ke com.bd com.np"
+  ).split(" "),
+);
+
+function isTwoPartSuffix(second: string, top: string): boolean {
+  return TWO_PART.has(`${second}.${top}`);
+}
+
+/** The registrable name and its extension from whatever was pasted (a URL, www., upper case, a trailing dot). */
+export function parseDomain(raw: string): { ok: true; sld: string; tld: string } | { ok: false; error: DomainError } {
+  let s = raw.trim().toLowerCase();
+  if (!s) return { ok: false, error: "empty" };
+  s = s.replace(/^[a-z][a-z0-9+.-]*:\/\//, "").replace(/[/?#].*$/, "").replace(/^[^@]*@/, "").replace(/:\d+$/, "").replace(/\.$/, "");
+  // Names in other scripts (例子.com, tên.vn) are read in their punycode form (xn--…), as registries store them.
+  if (/[^\x00-\x7f]/.test(s)) {
+    try {
+      s = new URL(`http://${s}`).hostname;
+    } catch {
+      return { ok: false, error: "invalid" };
+    }
+  }
+  let labels = s.split(".");
+  if (labels.length < 2) return { ok: false, error: "noTld" };
+  // www. in front of a name is the site, not the name; www.com itself is a name.
+  if (labels[0] === "www" && labels.length > 2) labels = labels.slice(1);
+  if (labels.some((l) => !/^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/.test(l))) return { ok: false, error: "invalid" };
+  const twoPart = isTwoPartSuffix(labels[labels.length - 2]!, labels[labels.length - 1]!);
+  // co.uk or com.cn alone is a registry suffix, not a name anyone can own.
+  if (labels.length === 2 && twoPart) return { ok: false, error: "invalid" };
+  const tldLabels = twoPart ? 2 : 1;
+  const tld = labels.slice(-tldLabels).join(".");
+  const sld = labels[labels.length - tldLabels - 1]!;
+  if (/^\d+$/.test(tld)) return { ok: false, error: "invalid" };
+  // Registries refuse xn-- labels that are not real punycode.
+  if ([sld, ...tld.split(".")].some((l) => l.startsWith("xn--") && !decodeIdn(l))) return { ok: false, error: "invalid" };
+  return { ok: true, sld, tld };
+}
+
+/** Whether a string of letters reads like a word: no long consonant or vowel clusters, a sensible share of vowels. */
+export function pronounceable(s: string): boolean {
+  if (!/^[a-z]+$/.test(s)) return false;
+  const vowels = s.replace(/[^aeiouy]/g, "").length;
+  if (vowels === 0 || vowels / s.length < 0.25 || vowels / s.length > 0.7) return false;
+  return !/[^aeiouy]{4,}|[aeiou]{3,}/.test(s);
+}
+
+/** A common word of two letters or more: "a" alone would let beta.com count as bet + a. */
+function isPartWord(s: string): boolean {
+  return s.length >= 2 && WORDS.has(s);
+}
+
+/** The name split into two common words, if it splits ("cloudkitchen" → cloud + kitchen). */
+export function twoWords(s: string): [string, string] | null {
+  for (let i = 2; i <= s.length - 2; i++) {
+    const a = s.slice(0, i);
+    const b = s.slice(i);
+    if (isPartWord(a) && isPartWord(b)) return [a, b];
+  }
+  return null;
+}
+
+/** .com value of two common words by total letters. */
+function twoWordsValue(n: number): number {
+  return n <= 7 ? 18_000 : n <= 10 ? 6_000 : n <= 13 ? 2_000 : 700;
+}
+
+/** .com value of the name before the extension, in US dollars, with its kind. */
+function baseValue(sld: string): { kind: DomainKind; value: number; features: DomainFeature[]; chars?: number } {
+  const features: DomainFeature[] = [];
+  // Internationalised names sell for far less than ASCII ones; the shortest still find buyers.
+  const decoded = decodeIdn(sld);
+  if (decoded) {
+    const chars = [...decoded].length;
+    features.push({ key: "kind", kind: "idn", digits: chars });
+    return { kind: "idn", value: chars <= 2 ? 2_000 : chars <= 4 ? 300 : 40, features, chars };
+  }
+  const name = sld.replace(/-/g, "");
+  const n = name.length;
+  // A hyphenated name is not the short or one-word name it spells (a-b.com is not ab.com): words joined by hyphens
+  // count as two words, anything else as plain letters or a mix.
+  if (sld.includes("-")) {
+    const parts = sld.split("-").filter(Boolean);
+    if (parts.length === 2 && parts.every(isPartWord)) {
+      features.push({ key: "kind", kind: "twoWords", words: parts.join(" + ") });
+      return { kind: "twoWords", value: twoWordsValue(n), features };
+    }
+    const mixed = /\d/.test(name);
+    features.push({ key: "kind", kind: mixed ? "mixed" : "letters" });
+    return { kind: mixed ? "mixed" : "letters", value: mixed ? 30 : n <= 6 ? 250 : 60, features };
+  }
+  if (/^\d+$/.test(name)) {
+    const v = [0, 500_000, 250_000, 40_000, 5_000, 700, 150, 40][n] ?? 15;
+    let value = v;
+    if (n === 4 || n === 5) {
+      // Chinese buyers drive the number market: no 4, and 8s, 6s and 9s, add value.
+      if (name.includes("4")) {
+        features.push({ key: "four" });
+        value *= 0.5;
+      } else if (/^[689]+$/.test(name)) {
+        features.push({ key: "luckyDigits" });
+        value *= 2.5;
+      }
+    }
+    features.push({ key: "kind", kind: "numeric", digits: n });
+    return { kind: "numeric", value, features };
+  }
+  if (/^[a-z]+$/.test(name)) {
+    // A single letter is rarer than any word (a.com is a one-letter name first).
+    if (n === 1) return { kind: "letters1", value: 500_000, features: [{ key: "kind", kind: "letters1" }] };
+    if (WORDS.has(name)) {
+      const value = n <= 3 ? 400_000 : n <= 4 ? 250_000 : n <= 6 ? 90_000 : n <= 8 ? 40_000 : 15_000;
+      features.push({ key: "kind", kind: "word", words: name });
+      return { kind: "word", value, features };
+    }
+    const pair = twoWords(name);
+    if (pair) {
+      const value = twoWordsValue(n);
+      features.push({ key: "kind", kind: "twoWords", words: pair.join(" + ") });
+      return { kind: "twoWords", value, features };
+    }
+    if (n === 2) return { kind: "letters2", value: 300_000, features: [{ key: "kind", kind: "letters2" }] };
+    if (n === 3) {
+      const say = pronounceable(name);
+      if (say) features.push({ key: "pronounceable" });
+      features.push({ key: "kind", kind: "letters3" });
+      return { kind: "letters3", value: say ? 45_000 : 25_000, features };
+    }
+    if (n === 4) {
+      const say = pronounceable(name);
+      if (say) features.push({ key: "pronounceable" });
+      features.push({ key: "kind", kind: "letters4" });
+      return { kind: "letters4", value: say ? 5_000 : 1_200, features };
+    }
+    if (pronounceable(name) && n <= 10) {
+      features.push({ key: "pronounceable" }, { key: "kind", kind: "brandable" });
+      return { kind: "brandable", value: n <= 6 ? 2_500 : n <= 8 ? 1_200 : 500, features };
+    }
+    features.push({ key: "kind", kind: "letters" });
+    return { kind: "letters", value: n <= 6 ? 250 : 60, features };
+  }
+  features.push({ key: "kind", kind: "mixed" });
+  return { kind: "mixed", value: n <= 4 ? 600 : n <= 6 ? 120 : 30, features };
+}
+
+/** The value is never below a year's registration (about $10). */
+const FLOOR = 10;
+
+export function valueDomain(raw: string): { ok: true; value: DomainValue } | { ok: false; error: DomainError } {
+  const parsed = parseDomain(raw);
+  if (!parsed.ok) return parsed;
+  const { sld, tld } = parsed;
+  const base = baseValue(sld);
+  const features: DomainFeature[] = [...base.features];
+  let value = base.value;
+  if (sld.includes("-") && base.kind !== "idn") {
+    features.push({ key: "hyphen" });
+    value *= 0.15;
+  }
+  // A hot word on its own, in front of another common word (aibot, paynow), or closing one when it is four letters or
+  // more (cloudtoken); not inside a longer word (air, payroll) or as a short ending (alphabet is not alpha + bet).
+  const plainName = sld.replace(/-/g, "");
+  const hot = [...HOT].find((w) =>
+    plainName === w ||
+    (plainName.startsWith(w) && isPartWord(plainName.slice(w.length))) ||
+    (w.length >= 4 && plainName.endsWith(w) && isPartWord(plainName.slice(0, -w.length))));
+  if (hot && base.kind !== "numeric") {
+    features.push({ key: "hot", word: hot });
+    value *= 1.6;
+  }
+  // Every letter past ten costs: long names are hard to type and remember. A name in another script counts its
+  // own characters, not its punycode.
+  const letters = base.chars ?? plainName.length;
+  if (letters > 10) value *= Math.pow(0.8, letters - 10);
+  features.push({ key: "length", n: base.chars ?? sld.length });
+  const factor = TLD_FACTOR[tld] ?? OTHER_TLD;
+  features.unshift({ key: "tld", tld: unicodeName(tld), factor });
+  value *= factor;
+  const estimate = Math.max(FLOOR, roundTo(value));
+  const low = Math.max(FLOOR, roundTo(value / 2.5));
+  const high = Math.max(FLOOR, roundTo(value * 2.5));
+  const score = Math.round(Math.min(100, Math.max(0, (Math.log10(estimate) - 1) * 20)));
+  return { ok: true, value: { domain: `${unicodeName(sld)}.${unicodeName(tld)}`, sld, tld, kind: base.kind, estimate, low, high, score, features } };
+}
+
+/** The Unicode form of a punycode label, or null if it is not valid punycode. */
+export function decodeIdn(label: string): string | null {
+  if (!label.startsWith("xn--")) return null;
+  const decoded = punyDecode(label.slice(4));
+  // A real one has a character outside ASCII and no control characters (xn--abc decodes, but to nothing anyone typed).
+  return decoded && /[^\x00-\x7f]/.test(decoded) && !/[\x00-\x1f\x7f-\x9f]/.test(decoded) ? decoded : null;
+}
+
+/** RFC 3492 punycode decoder (the part after "xn--"). */
+function punyDecode(input: string): string | null {
+  const base = 36, tMin = 1, tMax = 26, skew = 38, damp = 700;
+  let n = 128, i = 0, bias = 72;
+  const out: number[] = [];
+  const b = input.lastIndexOf("-");
+  for (let j = 0; j < Math.max(0, b); j++) out.push(input.charCodeAt(j));
+  const adapt = (delta: number, points: number, first: boolean) => {
+    delta = first ? Math.floor(delta / damp) : delta >> 1;
+    delta += Math.floor(delta / points);
+    let k = 0;
+    while (delta > ((base - tMin) * tMax) >> 1) {
+      delta = Math.floor(delta / (base - tMin));
+      k += base;
+    }
+    return k + Math.floor(((base - tMin + 1) * delta) / (delta + skew));
+  };
+  for (let idx = b > 0 ? b + 1 : 0; idx < input.length;) {
+    const old = i;
+    for (let w = 1, k = base; ; k += base) {
+      if (idx >= input.length) return null;
+      const c = input.charCodeAt(idx++);
+      const digit = c >= 48 && c < 58 ? c - 22 : c >= 65 && c < 91 ? c - 65 : c >= 97 && c < 123 ? c - 97 : base;
+      if (digit >= base) return null;
+      i += digit * w;
+      const t = k <= bias ? tMin : k >= bias + tMax ? tMax : k - bias;
+      if (digit < t) break;
+      w *= base - t;
+    }
+    bias = adapt(i - old, out.length + 1, old === 0);
+    n += Math.floor(i / (out.length + 1));
+    // Past the last Unicode code point (or a surrogate) is not valid punycode.
+    if (n > 0x10ffff || (n >= 0xd800 && n <= 0xdfff)) return null;
+    i %= out.length + 1;
+    out.splice(i++, 0, n);
+  }
+  return String.fromCodePoint(...out);
+}
+
+/** A name for display: each xn-- label in its own script (例子.中国), others as they are. */
+function unicodeName(name: string): string {
+  return name.split(".").map((l) => decodeIdn(l) ?? l).join(".");
+}
+
+/** To $5 under $100, else two significant figures. */
+function roundTo(n: number): number {
+  return n < 100 ? Math.round(n / 5) * 5 : roundEstimate(n);
+}

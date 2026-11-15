@@ -1461,3 +1461,19 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .mem-card:focus-visible { outline: 3px solid var(--pink-deep); outline-offset: 2px; }
 .mem-stats dt.turn { color: var(--pink-deep); font-weight: 800; }
 .mem-stats [hidden] { display: none; }
+
+/* Valuation tools (batch 29): rarity gauge, range, feature list, depreciation bars. */
+.val-short { margin: -0.5rem 0 0.4rem; color: var(--ink-soft); font-weight: 650; }
+.val-range { margin: 0 0 0.75rem; color: var(--ink); font-weight: 650; font-variant-numeric: tabular-nums; }
+.val-gauge { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.6rem; margin: 0.25rem 0 0.5rem; }
+.val-gauge-label { color: var(--ink-soft); font-size: 0.9rem; }
+.val-gauge-track { height: 0.6rem; border-radius: 999px; background: var(--pink-soft); overflow: hidden; }
+.val-gauge-fill { display: block; height: 100%; background: var(--pink-deep); border-radius: 999px; }
+.val-gauge-num { font-weight: 700; color: var(--pink-deep); font-variant-numeric: tabular-nums; }
+.val-tier { margin: 0 0 0.75rem; font-weight: 650; }
+.val-features { margin: 0 0 1rem; padding-left: 1.2rem; }
+.val-features li { margin: 0.2rem 0; }
+.val-negative { color: var(--ink); }
+.val-chart svg { display: block; width: 100%; max-width: 30rem; height: auto; }
+.val-bar { fill: var(--pink-deep); opacity: 0.85; }
+.val-axis { font-size: 9px; fill: var(--ink-soft); }
