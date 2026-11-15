@@ -2,11 +2,9 @@ import { h } from "./dom";
 import { locale, t, type Locale } from "./i18n";
 import {
   isRecordableQuery,
-  isValidEmail,
   normalizeQuery,
   searchEntries,
   SEARCH_CHANNEL_NAV,
-  SEARCH_EMAIL_MAX,
   SEARCH_QUERY_MAX,
   type SearchEntry,
 } from "../shared/search";
@@ -14,8 +12,8 @@ import {
 /**
  * The header search panel. The index is one generated JSON chunk per locale (src/generated/search/, written by
  * scripts/emit-sitemap.ts from the sitemap pages), loaded the first time the panel opens, never at mount.
- * A query with no result is recorded (/api/search/miss) once it has stood still for MISS_DELAY_MS or on Enter,
- * and the visitor may leave an email to hear when it gets one (/api/search/notify).
+ * A query with no result is recorded (/api/search/miss) once it has stood still for MISS_DELAY_MS, on Enter, when
+ * the panel closes or the tab is hidden. Nothing else is sent.
  */
 
 /** Long enough that a pause mid-word rarely records a fragment; closing the panel records the final query anyway. */
@@ -58,24 +56,16 @@ async function post(path: string, body: Record<string, string>): Promise<Respons
   });
 }
 
-/** Miss posts on their way, by query: the email form lets one land before sending, so the search counts once. */
-const inflight = new Map<string, Promise<void>>();
-
-function recordMiss(q: string, loc: Locale): Promise<void> {
+function recordMiss(q: string, loc: Locale): void {
   const key = `${loc}|${q}`;
-  if (recorded.has(key)) return inflight.get(key) ?? Promise.resolve();
+  if (recorded.has(key)) return;
   recorded.add(key);
   // A miss that did not arrive (offline, 429, 503) may be sent again later from this tab.
-  const done = post("/api/search/miss", { q, locale: loc })
+  post("/api/search/miss", { q, locale: loc })
     .then((res) => {
       if (!res.ok) recorded.delete(key);
     })
-    .catch(() => {
-      recorded.delete(key);
-    })
-    .finally(() => inflight.delete(key));
-  inflight.set(key, done);
-  return done;
+    .catch(() => recorded.delete(key));
 }
 
 /** Single letters of a spaced script are still being typed; one CJK character can be a real query (梗). */
@@ -156,63 +146,10 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
   }
 
   function renderEmpty(q: string): void {
-    const email = h("input", {
-      type: "email",
-      class: "search-email",
-      placeholder: t("search.emailPlaceholder"),
-      "aria-label": t("search.emailLabel"),
-      autocomplete: "email",
-      required: true,
-      maxlength: SEARCH_EMAIL_MAX,
-    });
-    const send = h("button", { type: "submit", class: "btn" }, t("search.notify"));
-    const note = h("p", { class: "search-note" }, t("search.privacy"));
-    const form = h("form", {
-      class: "search-form",
-      onSubmit: async (e: Event) => {
-        e.preventDefault();
-        const address = email.value.trim().toLowerCase();
-        if (!isValidEmail(address)) {
-          note.textContent = t("search.badEmail");
-          email.focus();
-          return;
-        }
-        send.disabled = true;
-        note.textContent = t("search.sending");
-        // The server records this query as the visitor's miss along with the email: drop a pending post, and let one
-        // already on its way land first, so the search is counted once. A failed request gives the miss back.
-        const key = `${loc}|${q}`;
-        window.clearTimeout(missTimer);
-        pendingMiss = "";
-        await inflight.get(key);
-        const hadMiss = recorded.has(key);
-        recorded.add(key);
-        try {
-          const res = await post("/api/search/notify", { q, locale: loc, email: address });
-          if (res.ok) {
-            form.replaceChildren(h("p", { class: "search-done" }, t("search.done", { email: address })));
-            return;
-          }
-          if (!hadMiss) {
-            recorded.delete(key);
-            pendingMiss = q;
-          }
-          const data = (await res.json().catch(() => ({}))) as { error?: string };
-          note.textContent = t(data.error === "rate" ? "search.rate" : data.error === "email" ? "search.badEmail" : "search.failed");
-        } catch {
-          if (!hadMiss) {
-            recorded.delete(key);
-            pendingMiss = q;
-          }
-          note.textContent = t("search.failed");
-        }
-        send.disabled = false;
-      },
-    }, h("div", { class: "search-form-row" }, email, send), note);
     empty.replaceChildren(h("p", { class: "search-none" }, t("search.none", { q })));
-    if (worthRecording(q)) empty.append(h("p", null, t("search.ask")), form);
     empty.hidden = false;
   }
+
 
   async function update(): Promise<void> {
     const q = normalizeQuery(input.value);
@@ -271,7 +208,6 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
       if (link) link.click();
       else if (q && !hits.length && worthRecording(q)) {
         flushMiss();
-        empty.querySelector<HTMLInputElement>(".search-email")?.focus();
       }
     } else if (e.key === "Escape") {
       e.preventDefault();

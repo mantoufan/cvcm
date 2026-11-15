@@ -57,10 +57,6 @@ img { max-width: 100%; }
 .search-empty { padding: 0.3rem 0.3rem 0.1rem; font-size: 0.9rem; }
 .search-empty p { margin: 0.4rem 0; }
 .search-none { font-weight: 600; }
-.search-form-row { display: flex; gap: 0.4rem; flex-wrap: wrap; }
-.search-email { flex: 1 1 12rem; min-width: 0; min-height: 38px; padding: 0.4rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; font: inherit; }
-.search-note { color: var(--ink-soft); font-size: 0.78rem; }
-.search-done { color: var(--pink-deep); }
 .lang { width: auto; max-width: 9.5rem; min-height: 36px; padding: 0.3rem 0.5rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); font-size: 0.88rem; }
 .foot { margin-top: 3rem; padding: 1.5rem 0 2rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.85rem; }
 .foot p { margin: 0; }

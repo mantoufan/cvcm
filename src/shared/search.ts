@@ -1,5 +1,5 @@
 /**
- * Site search: the index format, matching and the rules for what a recorded query or email may be.
+ * Site search: the index format, matching and the rules for what a recorded query may be.
  * Shared by the header search box (client), the search API (Worker), the build that writes the index,
  * and the demand / notify scripts, so all of them normalise a query the same way.
  */
@@ -27,7 +27,6 @@ export type SearchEntry = [channel: SearchChannel, href: string, name: string, b
 export const SEARCH_MAX_RESULTS = 8;
 /** Longest query that is matched or recorded (in characters, after normalising). */
 export const SEARCH_QUERY_MAX = 60;
-export const SEARCH_EMAIL_MAX = 254;
 /** Blurbs in the index are cut to this many characters; the dropdown shows two lines at most. */
 export const SEARCH_BLURB_MAX = 110;
 
@@ -206,13 +205,8 @@ export function isRecordableQuery(query: string): boolean {
   if (/(^|[^a-z0-9.-])(bit\.ly|t\.me|t\.co|wa\.me|goo\.gl|tinyurl\.com|b23\.tv|dwz\.cn|url\.cn)\b/i.test(query)) return false;
   // Phone, ID and card numbers: an unbroken run of 7+ digits, or 10+ once spaces, dashes, dots and brackets are gone
   // (555 123 4567, (415) 555-0199, 4111 1111 1111 1111). One size or date (1920 1080, 2026-11-15) and sizes written
-  // with x (1920x1080 to 3840x2160) stay; a string of several spaced numbers is dropped, like a card number would be. Known number slang (520, 334424044) has a page, so it never
-  // reaches this check as a miss.
+  // with x (1920x1080 to 3840x2160) stay; a string of several spaced numbers is dropped, like a card number would be.
+  // Known number slang (520, 334424044) has a page, so it never reaches this check as a miss.
   if (/\d{7,}/.test(query) || /\d{10,}/.test(query.replace(/[\s\-().+]/g, ""))) return false;
   return true;
-}
-
-/** A plain address check: one @, a dot in the domain, no spaces. The real test is the email we send. */
-export function isValidEmail(email: string): boolean {
-  return email.length <= SEARCH_EMAIL_MAX && /^[^\s@<>()",;:]+@[^\s@<>()",;:]+\.[^\s@<>()",;:]{2,}$/.test(email);
 }

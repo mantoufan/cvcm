@@ -58,10 +58,10 @@ describe("search panel", () => {
     expect(header.querySelector("[aria-selected=true] a")?.getAttribute("href")).toBe("/en/learn/merge-pdf/");
   });
 
-  it("records a miss once after a pause and offers the email form", async () => {
+  it("records a miss once after a pause and offers no email form", async () => {
     await type("remove watermark");
     expect(header.querySelector(".search-none")?.textContent).toContain("remove watermark");
-    expect(header.querySelector(".search-email")).not.toBeNull();
+    expect(header.querySelector("form, input[type=email]")).toBeNull();
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit];
     expect(url).toBe("/api/search/miss");
@@ -83,23 +83,6 @@ describe("search panel", () => {
     await type("q");
     await type("me@example.com");
     expect(fetchMock).not.toHaveBeenCalled();
-    expect(header.querySelector(".search-email")).toBeNull();
-  });
-
-  it("sends the email request and confirms", async () => {
-    fetchMock.mockImplementation(async () => new Response(JSON.stringify({ ok: true }), { status: 200 }));
-    await type("photo restorer");
-    const missesBefore = fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length;
-    const email = header.querySelector<HTMLInputElement>(".search-email")!;
-    email.value = "Me@Example.com";
-    header.querySelector("form")!.dispatchEvent(new Event("submit", { cancelable: true }));
-    await vi.runAllTimersAsync();
-    // The server records the query as a miss with the email: submitting sends no further miss.
-    await vi.advanceTimersByTimeAsync(5000);
-    expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(missesBefore);
-    const call = fetchMock.mock.calls.find(([u]) => u === "/api/search/notify") as [string, RequestInit];
-    expect(JSON.parse(String(call[1].body))).toEqual({ q: "photo restorer", locale: "en", email: "me@example.com" });
-    expect(header.querySelector(".search-done")?.textContent).toContain("me@example.com");
   });
 
   it("records a shown miss when the panel closes before the pause ends", async () => {
@@ -129,23 +112,6 @@ describe("search panel", () => {
     input().dispatchEvent(new Event("input"));
     await vi.advanceTimersByTimeAsync(100);
     window.dispatchEvent(new Event("pagehide"));
-    expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(1);
-  });
-
-  it("gives the miss back when the email request fails", async () => {
-    fetchMock.mockImplementation(async (url: string) =>
-      url === "/api/search/notify" ? new Response(JSON.stringify({ error: "unavailable" }), { status: 503 }) : new Response(null, { status: 204 }),
-    );
-    input().value = "garden planner";
-    input().dispatchEvent(new Event("input"));
-    await vi.advanceTimersByTimeAsync(50);
-    const email = header.querySelector<HTMLInputElement>(".search-email")!;
-    email.value = "a@b.co";
-    header.querySelector("form")!.dispatchEvent(new Event("submit", { cancelable: true }));
-    await vi.advanceTimersByTimeAsync(50);
-    expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(0);
-    // The query is pending again: closing the panel records it.
-    closeSearch();
     expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(1);
   });
 

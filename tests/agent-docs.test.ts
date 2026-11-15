@@ -119,7 +119,7 @@ describe("agent discovery files", () => {
       "src/client/decode.ts": "decodes a local image with new Image()",
       "src/client/word-unscrambler/ui.ts": "downloads the static ENABLE word list (/words/enable.txt)",
       "src/client/analytics.ts": "loads Google Analytics on tracked pages (src/shared/analytics.ts)",
-      "src/client/search.ts": "site search: posts a query only when it found nothing, and an email only when the visitor asks to be notified",
+      "src/client/search.ts": "site search: posts a query only when it found nothing (no emails)",
     };
     const files = [...sourceFiles(join(root, "src/client")), ...sourceFiles(join(root, "src/shared"))]
       .map((file) => file.slice(root.length + 1).split("\\").join("/"))
