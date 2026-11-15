@@ -53,6 +53,8 @@ function showResult(section: HTMLElement, locale: Locale, id: NostalgiaId, value
 function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
   const section = host.querySelector<HTMLElement>(".nostalgia-vote");
   if (!section) return;
+  // Shown only once wired (styles.css): without this script, or in the prerendered copy, there is no dead question.
+  section.classList.add("ready");
   const earlier = readStored(id);
   if (earlier) {
     showResult(section, locale, id, earlier, false);
@@ -69,14 +71,18 @@ function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
         result.textContent = vote.sending;
         result.hidden = false;
       }
+      const timeout = new AbortController();
+      const timer = setTimeout(() => timeout.abort(), 10_000);
       try {
         const res = await fetch("/api/nostalgia/vote", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id, answer }),
-          // A stalled request must not leave the buttons locked: the catch below re-enables them.
-          signal: AbortSignal.timeout(10_000),
+          // A stalled request must not leave the buttons locked: the catch below re-enables them. AbortController and
+          // setTimeout, not AbortSignal.timeout, which iOS 15 and older WebViews lack.
+          signal: timeout.signal,
         });
+        clearTimeout(timer);
         if (!res.ok) throw new Error(String(res.status));
         const tally = (await res.json()) as { yes: number; no: number; counted?: boolean };
         if (!Number.isFinite(tally.yes) || !Number.isFinite(tally.no)) throw new Error("tally");
@@ -85,6 +91,7 @@ function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
         if (tally.counted !== false) store(id, value);
         if (section.isConnected) showResult(section, locale, id, value, true, tally.counted !== false);
       } catch {
+        clearTimeout(timer);
         if (!section.isConnected) return;
         for (const b of buttons) b.disabled = false;
         if (result) result.textContent = vote.failed;

@@ -37,7 +37,11 @@ function sqliteStore() {
       const p = {
         bind(...a: unknown[]) { args = a; return p; },
         async first<T>() { return (st.get(...(args as never[])) ?? null) as T | null; },
-        async run() { return { meta: { changes: Number(st.run(...(args as never[])).changes) } }; },
+        // Like D1: a statement with RETURNING hands back its rows in `results`, inside the batch.
+        async run() {
+          if (/\bRETURNING\b/i.test(sql)) return { results: st.all(...(args as never[])), meta: { changes: 1 } };
+          return { meta: { changes: Number(st.run(...(args as never[])).changes) } };
+        },
         async all<T>() { return { results: st.all(...(args as never[])) as T[] }; },
       };
       return p;
@@ -103,7 +107,7 @@ describe("nostalgia vote API", () => {
 describe("nostalgia vote markup", () => {
   it("puts the question and two buttons on every entry page, none on the hub, with no script", () => {
     const html = nostalgiaPageHtml("zh-CN", "white-rabbit");
-    expect(html).toContain('<section class="nostalgia-vote" data-id="white-rabbit"');
+    expect(html).toContain('<section class="nostalgia-vote" aria-labelledby="nostalgia-vote-title">');
     expect(html).toContain("你吃过吗？");
     expect(html).toContain('data-answer="yes">吃过</button>');
     expect(html).toContain('data-answer="no">没有</button>');

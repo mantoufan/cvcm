@@ -17,6 +17,8 @@ describe("nostalgia vote UI", () => {
     const host = document.body.appendChild(document.createElement("div"));
     mountNostalgia(host, "zh-CN", "white-rabbit");
     expect(fetchMock).not.toHaveBeenCalled();
+    // Shown only once wired.
+    expect(host.querySelector(".nostalgia-vote")!.classList.contains("ready")).toBe(true);
     expect(host.querySelector<HTMLButtonElement>('button[data-answer="yes"]')!.disabled).toBe(false);
     host.querySelector<HTMLButtonElement>('button[data-answer="yes"]')!.click();
     await vi.waitFor(() => expect(host.querySelector(".nostalgia-vote-result")!.textContent).toContain("%"));

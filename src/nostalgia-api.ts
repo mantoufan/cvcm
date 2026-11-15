@@ -39,12 +39,14 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
   const search = d1SearchStore(db);
   return {
     async vote(id, answer, key, now) {
-      // Count the address's answers for this entry today first (one atomic upsert), then add to the totals only while
-      // that count is within the cap. Both run in one batch, so a failed request leaves neither.
+      // One batch, one transaction: count the address's answers for this entry today, then add to the totals only while
+      // that count is within the cap. Both upserts return their rows, so `counted` and the totals are exactly this
+      // request's, not a later read that a concurrent request could have moved.
       const seen = db
         .prepare(
           `INSERT INTO nostalgia_vote_keys (key, answers, created_at) VALUES (?, 1, ?)
-           ON CONFLICT (key) DO UPDATE SET answers = nostalgia_vote_keys.answers + 1`,
+           ON CONFLICT (key) DO UPDATE SET answers = nostalgia_vote_keys.answers + 1
+           RETURNING answers`,
         )
         .bind(key, now);
       const within = `CASE WHEN (SELECT answers FROM nostalgia_vote_keys WHERE key = ?) <= ${NOSTALGIA_PER_ADDRESS} THEN 1 ELSE 0 END`;
@@ -53,13 +55,14 @@ export function d1NostalgiaStore(db: D1Database): NostalgiaVoteStore {
       const count = db
         .prepare(
           `INSERT INTO nostalgia_votes (id, yes, no, updated_at) VALUES (?, ${yes}, ${no}, ?)
-           ON CONFLICT (id) DO UPDATE SET yes = yes + excluded.yes, no = no + excluded.no, updated_at = excluded.updated_at`,
+           ON CONFLICT (id) DO UPDATE SET yes = yes + excluded.yes, no = no + excluded.no, updated_at = excluded.updated_at
+           RETURNING yes, no`,
         )
         .bind(id, key, now);
-      await db.batch([seen, count]);
-      const answers = await db.prepare("SELECT answers FROM nostalgia_vote_keys WHERE key = ?").bind(key).first<{ answers: number }>();
-      const row = await db.prepare("SELECT yes, no FROM nostalgia_votes WHERE id = ?").bind(id).first<NostalgiaTally>();
-      return { yes: row?.yes ?? 0, no: row?.no ?? 0, counted: Number(answers?.answers ?? 0) <= NOSTALGIA_PER_ADDRESS };
+      const [mark, totals] = (await db.batch([seen, count])) as Array<{ results?: Array<Record<string, number>> }>;
+      const answers = Number(mark?.results?.[0]?.answers ?? Infinity);
+      const row = totals?.results?.[0];
+      return { yes: Number(row?.yes ?? 0), no: Number(row?.no ?? 0), counted: answers <= NOSTALGIA_PER_ADDRESS };
     },
     daySalt: (day, now) => search.daySalt(day, now),
     async bumpRate(ipHash, max, now) {
