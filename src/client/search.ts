@@ -57,16 +57,24 @@ async function post(path: string, body: Record<string, string>): Promise<Respons
   });
 }
 
-function recordMiss(q: string, loc: Locale): void {
+/** Miss posts by query, so the email form can wait for its miss: the server takes an email only after it. */
+const inflight = new Map<string, Promise<void>>();
+
+function recordMiss(q: string, loc: Locale): Promise<void> {
   const key = `${loc}|${q}`;
-  if (recorded.has(key)) return;
+  if (recorded.has(key)) return inflight.get(key) ?? Promise.resolve();
   recorded.add(key);
   // A miss that did not arrive (offline, 429, 503) may be sent again later from this tab.
-  post("/api/search/miss", { q, locale: loc })
+  const done = post("/api/search/miss", { q, locale: loc })
     .then((res) => {
       if (!res.ok) recorded.delete(key);
     })
-    .catch(() => recorded.delete(key));
+    .catch(() => {
+      recorded.delete(key);
+    })
+    .finally(() => inflight.delete(key));
+  inflight.set(key, done);
+  return done;
 }
 
 /** Single letters of a spaced script are still being typed; one CJK character can be a real query (梗). */
@@ -168,10 +176,12 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
           email.focus();
           return;
         }
-        // The searcher counts in the demand table too, even when they submit before the pause ends.
-        flushMiss();
         send.disabled = true;
         note.textContent = t("search.sending");
+        // The searcher counts in the demand table too, even when they submit before the pause ends; the email is
+        // accepted only once that miss is stored, so wait for it.
+        flushMiss();
+        await recordMiss(q, loc);
         try {
           const res = await post("/api/search/notify", { q, locale: loc, email: address });
           if (res.ok) {
@@ -179,7 +189,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
             return;
           }
           const data = (await res.json().catch(() => ({}))) as { error?: string };
-          note.textContent = t(data.error === "rate" ? "search.rate" : data.error === "email" ? "search.badEmail" : data.error === "limit" ? "search.limit" : "search.failed");
+          note.textContent = t(data.error === "rate" ? "search.rate" : data.error === "email" ? "search.badEmail" : "search.failed");
         } catch {
           note.textContent = t("search.failed");
         }
@@ -282,6 +292,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
   function close(): void {
     flushMiss();
     document.removeEventListener("pointerdown", onOutside, true);
+    window.removeEventListener("pagehide", flushMiss);
     el.remove();
     button.setAttribute("aria-expanded", "false");
     if (open?.el === el) open = null;
@@ -290,6 +301,8 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
   header.append(el);
   button.setAttribute("aria-expanded", "true");
   document.addEventListener("pointerdown", onOutside, true);
+  // Closing the tab or reloading within the pause still records the miss (keepalive).
+  window.addEventListener("pagehide", flushMiss);
   open = { el, input, close };
   input.focus();
   prefetchSearch();

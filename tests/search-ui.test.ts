@@ -122,6 +122,14 @@ describe("search panel", () => {
     expect(header.querySelectorAll(".search-hit").length).toBe(2);
   });
 
+  it("records a shown miss when the page is hidden (tab closed, reload)", async () => {
+    input().value = "flight tracker";
+    input().dispatchEvent(new Event("input"));
+    await vi.advanceTimersByTimeAsync(100);
+    window.dispatchEvent(new Event("pagehide"));
+    expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(1);
+  });
+
   it("closes on Escape and gives focus back to the button", async () => {
     input().dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     expect(header.querySelector(".search-pop")).toBeNull();

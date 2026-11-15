@@ -20,6 +20,7 @@ import "../src/shared/messages-all";
 import "../src/shared/kb-code-meta";
 import "../src/shared/kb-ai-meta";
 import { isLocale, LOCALES, type Locale } from "../src/shared/locale";
+import { escapeHtml } from "../src/shared/md";
 import { searchEntries, type SearchEntry } from "../src/shared/search";
 import { buildAllSearchIndexes } from "../src/shared/search-index";
 
@@ -136,8 +137,8 @@ function fill(text: string, q: string): string {
   return text.replaceAll("{q}", q);
 }
 
-function escapeHtml(text: string): string {
-  return text.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] ?? c);
+function deleteRow(r: RequestRow): void {
+  d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)} AND created_at = ${Number(r.created_at)}`);
 }
 
 function b64(text: string): string {
@@ -296,7 +297,7 @@ async function notify(): Promise<void> {
   for (const r of pending.filter((p) => sent.has(ledgerKey(p)))) {
     // Mailed earlier, row left behind by a failed DELETE: delete it now, never mail it twice.
     try {
-      d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)} AND created_at = ${Number(r.created_at)}`);
+      deleteRow(r);
       sent.delete(ledgerKey(r));
       console.log(`deleted already-mailed row: [${r.locale}] ${r.q} <${r.email}>`);
     } catch (err) {
@@ -347,7 +348,7 @@ async function notify(): Promise<void> {
     sent.add(ledgerKey(r));
     writeLedger(sent);
     try {
-      d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)} AND created_at = ${Number(r.created_at)}`);
+      deleteRow(r);
       sent.delete(ledgerKey(r));
       writeLedger(sent);
       console.log(`sent and deleted: [${r.locale}] ${r.q} <${r.email}>`);

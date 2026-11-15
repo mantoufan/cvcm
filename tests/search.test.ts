@@ -71,6 +71,11 @@ describe("searchEntries", () => {
     expect(searchEntries(en, "bmi?").length).toBeGreaterThan(0);
   });
 
+  it("gives the whole-name bonus to hyphenated names", () => {
+    const entries: SearchEntry[] = [["learn", "/en/a/", "Rock paper scissors strategy", ""], ["tool", "/en/b/", "Rock-Paper-Scissors", ""]];
+    expect(searchEntries(entries, "rock paper scissors")[0][1]).toBe("/en/b/");
+  });
+
   it("gives every result in a locale a distinct name", () => {
     for (const locale of LOCALES) {
       const lower = indexes[locale].map((e) => e[2].toLowerCase());
@@ -160,6 +165,9 @@ function memoryStore() {
       if (fresh) row.visitors++;
       misses.set(`${locale}|${q}`, row);
     },
+    async hasVote(visitor) {
+      return votes.has(visitor);
+    },
     async addRequest(q, locale, email) {
       const key = `${locale}|${q}|${email}`;
       if (requests.has(key)) return "ok" as const;
@@ -241,13 +249,16 @@ describe("search API on the D1 schema", () => {
     const dump = JSON.stringify([db.prepare("SELECT * FROM search_votes").all(), db.prepare("SELECT * FROM search_rate").all()]);
     expect(dump).not.toContain("203.0.113.9");
     const statuses: number[] = [];
+    // Without this visitor's own miss for the query today, an email is refused.
+    expect((await handleSearchApi(post("/api/search/notify", { q: "never searched", locale: "en", email: "a@b.co" }), { store, now: day1 }))?.status).toBe(400);
     for (let i = 0; i < SEARCH_REQUESTS_PER_EMAIL + 2; i++) {
-      const res = await handleSearchApi(post("/api/search/notify", { q: `topic ${i}`, locale: "en", email: "a@b.co" }, { "CF-Connecting-IP": `192.0.2.${i}` }), { store, now: day1 });
+      const from = { "CF-Connecting-IP": `192.0.2.${i}` };
+      await handleSearchApi(post("/api/search/miss", { q: `topic ${i}`, locale: "en" }, from), { store, now: day1 });
+      const res = await handleSearchApi(post("/api/search/notify", { q: `topic ${i}`, locale: "en", email: "a@b.co" }, from), { store, now: day1 });
       statuses.push(res!.status);
     }
-    expect(statuses).toEqual([200, 200, 200, 409, 409]);
-    // Asking again for a request already stored is fine, even at the cap.
-    expect((await handleSearchApi(post("/api/search/notify", { q: "topic 0", locale: "en", email: "a@b.co" }), { store, now: day1 }))?.status).toBe(200);
+    // Past the cap the answer is the same (no row is added), so nobody learns what an address has on file.
+    expect(statuses).toEqual([200, 200, 200, 200, 200]);
     expect(db.prepare("SELECT COUNT(*) AS n FROM search_requests").get()).toEqual({ n: SEARCH_REQUESTS_PER_EMAIL });
     // The real store's rate limit is one atomic upsert: concurrent requests cannot slip past the cap.
     const burst = await Promise.all(
@@ -260,7 +271,7 @@ describe("search API on the D1 schema", () => {
     for (const table of ["search_votes", "search_salts", "search_rate"]) {
       expect(db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get(), table).toEqual({ n: 0 });
     }
-    expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 1 + SEARCH_MISS_MAX });
+    expect(db.prepare("SELECT COUNT(*) AS n FROM search_misses").get()).toEqual({ n: 1 + SEARCH_REQUESTS_PER_EMAIL + 2 + SEARCH_MISS_MAX });
   });
 });
 
@@ -287,6 +298,7 @@ describe("search API", () => {
 
   it("stores an email request", async () => {
     const { store, requests } = memoryStore();
+    await handleSearchApi(post("/api/search/miss", { q: "去水印", locale: "zh-CN" }), { store });
     const res = await handleSearchApi(post("/api/search/notify", { q: "去水印", locale: "zh-CN", email: " Me@Example.com " }), { store });
     expect(res?.status).toBe(200);
     expect([...requests]).toEqual(["zh-CN|去水印|me@example.com"]);

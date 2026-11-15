@@ -102,6 +102,8 @@ export function buildSearchIndex(locale: Locale, pages: SitemapPage[] = sitemapP
     seen.add(href);
     let name = pageName(locale, page, info.channel, info.seo);
     if (names.has(name.toLowerCase())) name = fullTitle(locale, info.seo);
+    // Still taken (two pages with the same title): number it, so every result reads differently.
+    for (let n = 2, base = name; names.has(name.toLowerCase()); n++) name = `${base} (${n})`;
     names.add(name.toLowerCase());
     const entry: SearchEntry = [info.channel, href, name, shortBlurb(pageDescription(locale, info.seo))];
     const alt = english.get(keyOf(page));

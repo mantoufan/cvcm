@@ -110,12 +110,20 @@ export function shortBlurb(text: string, max = SEARCH_BLURB_MAX): string {
 }
 
 /** Folded name, English name and blurb of every entry, computed once per index array. */
-const folded = new WeakMap<readonly SearchEntry[], Array<[name: string, alt: string, blurb: string]>>();
+const folded = new WeakMap<readonly SearchEntry[], Array<[name: string, alt: string, blurb: string, compact: string]>>();
 
-function foldedOf(entries: readonly SearchEntry[]): Array<[string, string, string]> {
+/** A name with spaces and punctuation removed, for the whole-query bonus ("Rock-Paper-Scissors" = "rock paper scissors"). */
+function compactOf(text: string): string {
+  return text.replace(/[^\p{L}\p{N}\p{M}+#ー]+/gu, "");
+}
+
+function foldedOf(entries: readonly SearchEntry[]): Array<[string, string, string, string]> {
   let table = folded.get(entries);
   if (!table) {
-    table = entries.map((e) => [foldText(e[2]), e[4] ? foldText(e[4]) : "", foldText(e[3])]);
+    table = entries.map((e) => {
+      const name = foldText(e[2]);
+      return [name, e[4] ? foldText(e[4]) : "", foldText(e[3]), compactOf(name)];
+    });
     folded.set(entries, table);
   }
   return table;
@@ -133,8 +141,9 @@ export function searchEntries(entries: readonly SearchEntry[], query: string, li
   if (words.length === 0) return [];
   const scored: Scored[] = [];
   const table = foldedOf(entries);
+  const wholeCompact = compactOf(whole);
   entries.forEach((entry, order) => {
-    const [name, alt, blurb] = table[order];
+    const [name, alt, blurb, compact] = table[order];
     let score = 0;
     for (const word of words) {
       const inName = hit(name, word);
@@ -150,8 +159,6 @@ export function searchEntries(entries: readonly SearchEntry[], query: string, li
       if (hit(blurb, word) >= 0) score += 2;
       else return;
     }
-    const compact = name.replace(/ /g, "");
-    const wholeCompact = whole.replace(/ /g, "");
     if (name === whole || alt === whole || compact === wholeCompact) score += 30;
     else if (compact.startsWith(wholeCompact)) score += 10;
     else if (compact.includes(wholeCompact)) score += 4;

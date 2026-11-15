@@ -1,7 +1,7 @@
 import "./shared/messages-all";
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
-import { d1SearchStore, handleSearchApi } from "./search-api";
+import { d1SearchStore, handleSearchApi, type D1WithBatch } from "./search-api";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
 import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, STATIC_FILE, toolJob } from "./shared/path";
@@ -93,7 +93,7 @@ function s3Config(env: Env): S3Config | null {
 export default {
   /** Hourly cron (wrangler.jsonc): sweep search hashes, salts and rate rows past their two days even when nobody searches. */
   async scheduled(_event: unknown, env: Env): Promise<void> {
-    if (env.DB) await d1SearchStore(env.DB).cleanup(Date.now());
+    if (env.DB) await d1SearchStore(env.DB as D1WithBatch).cleanup(Date.now());
   },
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
@@ -122,8 +122,10 @@ export default {
     const store = env.DB ? d1Store(env.DB) : null;
     const api = await handleClipApi(request, { store, s3: s3Config(env) });
     if (api) return api;
-    const search = await handleSearchApi(request, { store: env.DB ? d1SearchStore(env.DB) : null });
-    if (search) return search;
+    if (url.pathname.startsWith("/api/search/")) {
+      const search = await handleSearchApi(request, { store: env.DB ? d1SearchStore(env.DB as D1WithBatch) : null });
+      if (search) return search;
+    }
 
     if (request.method !== "GET" && request.method !== "HEAD") {
       const notAllowed = new Response("Method Not Allowed", {
