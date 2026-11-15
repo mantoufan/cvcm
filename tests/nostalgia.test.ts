@@ -276,12 +276,12 @@ describe("nostalgia: page HTML and SEO", () => {
     }
   });
 
-  it("only says \"to today\" for things still sold or brought back", () => {
+  it("only says \"to today\" for things still sold without a break", () => {
     for (const locale of LOCALES) {
       const ui = nostalgiaMessages(locale).ui;
       for (const id of NOSTALGIA_ENTRIES) {
         const meta = NOSTALGIA_META[id];
-        if (meta.status === "available" || meta.status === "revived" || meta.to) continue;
+        if (meta.status === "available" || meta.to) continue;
         const html = nostalgiaPageHtml(locale, id);
         // Shows "from 1991", never "1991 to today".
         const from = /^\d{4}s$/.test(meta.from) ? fill(ui.decade, { y: meta.from.slice(0, 4) }) : meta.from;

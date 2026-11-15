@@ -67,9 +67,12 @@ export function nostalgiaFaqItems(locale: Locale, id: NostalgiaId | null): { q: 
   return id ? nostalgiaCopy(locale, id).faq : nostalgiaHub(locale).faq;
 }
 
-/** Still sold or brought back: the only status a page may describe as lasting "to today". */
+/**
+ * Still sold without a break: the only status a page may describe as lasting "to today". A revived item (QQ秀,
+ * 北冰洋, Nokia 3310) had a gap, so it reads "from X" with its "brought back" status and gets no interval.
+ */
 function stillAround(status: NostalgiaMeta["status"]): boolean {
-  return status === "available" || status === "revived";
+  return status === "available";
 }
 
 /** An entry's years, status, related ids and sources, from the nostalgia pack. */
@@ -266,9 +269,9 @@ export function nostalgiaFaqJsonLd(locale: Locale, id: NostalgiaId | null): Reco
 function coverage(locale: Locale, id: NostalgiaId): string | null {
   const { from, to, status } = nostalgiaMeta(locale, id);
   const start = from.slice(0, 4);
-  // A revived item with a known first run (Nokia 3310: 2000–2005, then remade) is neither open nor closed: none.
   if (stillAround(status)) return to ? null : `${start}/..`;
-  if (!to) return null;
+  // Revived after a gap (and Nokia 3310's known first run, then a remake): neither open nor closed, so none.
+  if (!to || status === "revived") return null;
   return `${start}/${/^\d{4}s$/.test(to) ? Number(to.slice(0, 4)) + 9 : to}`;
 }
 

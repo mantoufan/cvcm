@@ -2,6 +2,7 @@ import { LOCALES, type Locale } from "./locale";
 import { pageDescription, pageTitle, type SeoInput } from "./seo";
 import { sitemapPages, SITE_ORIGIN, pageUrl, type SitemapPage } from "./sitemap";
 import { messages } from "./messages";
+import { nostalgiaName } from "./nostalgia-i18n";
 import { nameFromTitle, SEARCH_CHANNEL_NAV, shortBlurb, type SearchChannel, type SearchEntry } from "./search";
 
 /** A channel's front page (/tests/, /rankings/ …): listed under the channel's own name, not its SEO title. */
@@ -32,6 +33,8 @@ function pageName(locale: Locale, page: SitemapPage, channel: SearchChannel, seo
     const label = messages(locale).ui.nav[SEARCH_CHANNEL_NAV[channel]];
     if (typeof label === "string") return label;
   }
+  // Nostalgia titles are question headlines ("What Is a Floppy Disk? 1.44 MB, the A: Drive…"): use the entry's own name.
+  if (page.kind === "nostalgia" && page.entry) return nostalgiaName(locale, page.entry).name;
   return nameFromTitle(pageTitle(locale, seo));
 }
 
