@@ -329,3 +329,13 @@ Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`), refs `204
 - `freecell`: she slides a card into one of four little pink tray slots at the top of the layout; neat columns below.
 - `minesweeper`: a pastel grid of cream and pink tiles on a tray, some opened to soft dots and hearts (no numbers); she plants a tiny pink flag on one; one open tile holds a smiling round cartoon bomb with a heart-shaped fuse.
 - `snake-game`: a plush pink snake of round cushion segments curls across a pink-and-cream checkered mat toward a big strawberry; she cheers.
+
+## Checkers, Reversi, Gomoku, Nonogram, Memory game (2026-11-14)
+
+Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`), refs `solitaire-sweet.jpg` + `chess-sweet.jpg`, 16:9 landscape, same base prompt as above (style references only, same chibi girl and room, full-bleed, no words, letters, digits, logo or watermark). Save `public/covers/<id>-sweet.jpg`, `sips -s format jpeg` then `sips -z 720 1280`. All five came out on the first try.
+
+- `checkers`: she slides a round glossy pink checker diagonally to jump over a cream piece on a cream-and-pink checkerboard; a stacked two-high king topped with a small golden crown beside.
+- `reversi`: she flips a two-sided disc (pink one side, cream the other) above a green-felt board in a pastel pink frame; neat rows of pink and cream discs.
+- `gomoku`: she places a glossy pink stone on a wooden grid board; five pink stones in a diagonal line glow softly; cream stones scattered; a cup of tea.
+- `nonogram`: she fills squares on pastel grid paper with a pink pen, the filled squares forming a heart; clue strips along the top and left drawn as dots only, never digits.
+- `memory-game`: on a table of face-down cards with pink lace backs she turns over two cards with the same pink star; one pair already face up shows pink hearts.

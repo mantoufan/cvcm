@@ -127,3 +127,17 @@ Same Keyword Planner pull as above. Existing open-source versions were small, ol
 | `snake-game` | snake game 9.14M; es snake 1.5M; id snake game 90.5k; ko 지렁이 게임 74k; vi rắn săn mồi 60.5k | 贪吃蛇 / 貪食蛇 |
 
 Still open: checkers 1M (checkers online 90.5k), gomoku (ko 오목 74k), nonogram 110k (HandsomeOne/Nonogram MIT), typing game (ja 201k), word search 550k.
+
+## Board and puzzle games (2026-11-14, batch 31)
+
+Keyword Planner, same MCC and markets as above. Written for cv.cm. "跳棋" alone means Chinese checkers (the star board), so checkers is 西洋跳棋; reversi avoids the "Othello" trademark (also 오델로), nonogram avoids "Picross".
+
+| Slug | Evidence (monthly) | Page names |
+|---|---|---|
+| `checkers` | checkers 1M, checkers online 90.5k; es damas 90.5k; id dam 14.8k; vi cờ đam 2.9k | 西洋跳棋 / チェッカー / 체커 |
+| `reversi` | reversi 33.1k; ja リバーシ 33.1k; zh-TW 黑白棋 3.6k; vi cờ lật 1.9k | 黑白棋 / リバーシ / 리버시 |
+| `gomoku` | ko 오목 74k; ja 五目並べ 60.5k; zh-TW 五子棋 22.2k, zh-CN 8.1k; en gomoku 18.1k; vi cờ caro 14.8k | 五子棋 / 五目並べ / 오목 / cờ caro |
+| `nonogram` | nonogram 110k, griddlers 110k; es nonograma 27.1k; ja お絵かきロジック 22.2k; ko 노노그램 18.1k | 数织 / お絵かきロジック / 노노그램 |
+| `memory-game` | memory game 74k; es memorama 33.1k; ja 神経衰弱 22.2k | 记忆翻牌 / 神経衰弱 / memorama |
+
+The `games` group now holds 19 tools; `tests/categories.test.ts` caps a group at 20, so the next batch needs a new group (for example word or puzzle games) before it can add more than one.

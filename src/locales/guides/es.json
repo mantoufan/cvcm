@@ -1605,6 +1605,51 @@
       "s2b": "Dirige con las flechas, deslizando el dedo o con los botones. Cada bocado suma un punto y una casilla.",
       "s3t": "Evita las paredes y tu cola",
       "s3b": "Chocar con una pared o con tu propio cuerpo termina la partida. Tu mejor puntuación se guarda."
+    },
+    "checkers": {
+      "lead": "Juega a las damas en tres pasos.",
+      "s1t": "Elige tu partida",
+      "s1b": "Juega contra la computadora en fácil, medio o difícil con negras o blancas, o dos jugadores en la misma pantalla.",
+      "s2t": "Mueve y salta",
+      "s2b": "Toca una ficha y luego una casilla marcada. Capturar es obligatorio; una captura múltiple se hace salto a salto.",
+      "s3t": "Corona y gana",
+      "s3b": "Llega a la última fila para conseguir una dama. Captura todas las fichas o bloquea todas las jugadas para ganar."
+    },
+    "reversi": {
+      "lead": "Juega al reversi en tres pasos.",
+      "s1t": "Elige tu partida",
+      "s1b": "Juega contra la computadora en fácil, medio o difícil, o dos jugadores en la misma pantalla.",
+      "s2t": "Encierra y voltea",
+      "s2b": "Toca una casilla marcada para colocar una ficha y voltear todas las líneas que encierres.",
+      "s3t": "Cuenta las fichas",
+      "s3b": "Cuando ningún bando puede mover, gana el que tiene más fichas."
+    },
+    "gomoku": {
+      "lead": "Juega al gomoku en tres pasos.",
+      "s1t": "Elige tu partida",
+      "s1b": "Juega contra la computadora en fácil, medio o difícil, o dos jugadores en la misma pantalla.",
+      "s2t": "Coloca tus piedras",
+      "s2b": "Toca un punto vacío para colocar una piedra. Empiezan las negras.",
+      "s3t": "Haz cinco en raya",
+      "s3b": "Cinco o más piedras en línea ganan. Bloquea los tres y cuatro abiertos de tu rival."
+    },
+    "nonogram": {
+      "lead": "Resuelve un nonograma en tres pasos.",
+      "s1t": "Elige un rompecabezas",
+      "s1b": "Elige 5×5, 10×10 o 15×15. La primera visita abre un rompecabezas pequeño; toca Nuevo rompecabezas para otro.",
+      "s2t": "Lee las pistas",
+      "s2b": "Cada número es un bloque de celdas rellenas de esa fila o columna, en orden. Rellena lo que tiene que estar relleno y tacha lo que tiene que quedar vacío.",
+      "s3t": "Completa la imagen",
+      "s3b": "Cuando todas las filas y columnas coinciden con sus pistas, la imagen está completa. Activa Revisar errores si te atascas."
+    },
+    "memory-game": {
+      "lead": "Juega al memorama en tres pasos.",
+      "s1t": "Elige un tablero",
+      "s1b": "Elige 4×4, 4×5 o 6×6 y uno o dos jugadores.",
+      "s2t": "Voltea dos cartas",
+      "s2b": "Toca dos cartas. Una pareja se queda boca arriba; las demás cartas se vuelven a voltear.",
+      "s3t": "Despeja el tablero",
+      "s3b": "Encuentra todas las parejas. Cuantos menos movimientos, mejor; con dos jugadores, gana quien tenga más parejas."
     }
   }
 }
