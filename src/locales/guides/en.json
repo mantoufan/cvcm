@@ -1605,6 +1605,51 @@
       "s2b": "Steer with the arrow keys, a swipe or the buttons. Each piece of food adds a point and one square.",
       "s3t": "Avoid the walls and your tail",
       "s3b": "Hitting a wall or your own body ends the game. Your best score is kept."
+    },
+    "checkers": {
+      "lead": "Play checkers in three steps.",
+      "s1t": "Choose your game",
+      "s1b": "Play the computer at easy, medium or hard as Black or White, or two players on one screen.",
+      "s2t": "Move and jump",
+      "s2b": "Tap a piece, then a marked square. Captures are required; a multi-jump goes hop by hop.",
+      "s3t": "Crown and win",
+      "s3b": "Reach the far row to make a king. Take every piece or block every move to win."
+    },
+    "reversi": {
+      "lead": "Play reversi in three steps.",
+      "s1t": "Choose your game",
+      "s1b": "Play the computer at easy, medium or hard, or two players on one screen.",
+      "s2t": "Trap and flip",
+      "s2b": "Tap a marked square to place a disc and flip every line you trap.",
+      "s3t": "Count the discs",
+      "s3b": "When neither side can move, the side with more discs wins."
+    },
+    "gomoku": {
+      "lead": "Play gomoku in three steps.",
+      "s1t": "Choose your game",
+      "s1b": "Play the computer at easy, medium or hard, or two players on one screen.",
+      "s2t": "Place your stones",
+      "s2b": "Tap an empty point to place a stone. Black moves first.",
+      "s3t": "Make five in a row",
+      "s3b": "Five or more stones in a line wins. Block your opponent's open threes and fours."
+    },
+    "nonogram": {
+      "lead": "Solve a nonogram in three steps.",
+      "s1t": "Pick a puzzle",
+      "s1b": "Choose 5×5, 10×10 or 15×15. A first visit opens a small puzzle; tap New puzzle for another.",
+      "s2t": "Read the clues",
+      "s2b": "Each number is a block of filled cells in that row or column, in order. Fill what must be filled and cross out what must stay empty.",
+      "s3t": "Finish the picture",
+      "s3b": "When every row and column matches its clues, the picture is complete. Turn on Check mistakes if you are stuck."
+    },
+    "memory-game": {
+      "lead": "Play the memory game in three steps.",
+      "s1t": "Choose a board",
+      "s1b": "Pick 4×4, 4×5 or 6×6 and one or two players.",
+      "s2t": "Turn two cards",
+      "s2b": "Tap two cards. A matching pair stays face up; other cards turn back.",
+      "s3t": "Clear the board",
+      "s3b": "Find every pair. Fewer moves is better; with two players, more pairs wins."
     }
   }
 }

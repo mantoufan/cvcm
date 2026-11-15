@@ -76,7 +76,7 @@
     },
     {
       "id": "games",
-      "name": "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
+      "name": "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, checkers, reversi, gomoku, nonogram, memory game, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
     },
     {
       "id": "assets",
@@ -1655,6 +1655,46 @@
       "description": "Eat, grow and don't bite your tail.",
       "category": "games",
       "url": "https://cv.cm/en/snake-game/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "checkers",
+      "name": "Checkers",
+      "description": "Jump and crown against the computer.",
+      "category": "games",
+      "url": "https://cv.cm/en/checkers/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "reversi",
+      "name": "Reversi",
+      "description": "Flip discs to own the board.",
+      "category": "games",
+      "url": "https://cv.cm/en/reversi/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "gomoku",
+      "name": "Gomoku",
+      "description": "Five in a row on a 15 × 15 board.",
+      "category": "games",
+      "url": "https://cv.cm/en/gomoku/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "nonogram",
+      "name": "Nonogram",
+      "description": "Picture logic puzzles by numbers.",
+      "category": "games",
+      "url": "https://cv.cm/en/nonogram/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "memory-game",
+      "name": "Memory game",
+      "description": "Find the matching pairs.",
+      "category": "games",
+      "url": "https://cv.cm/en/memory-game/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
