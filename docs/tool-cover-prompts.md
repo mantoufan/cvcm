@@ -343,3 +343,30 @@ Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`), refs `sol
 ## Business idea validator (2026-11-15)
 
 Generated with Codex (gpt-6-astra, image tool) using `qr-sweet.jpg`, `watermark-sweet.jpg` and `collage-sweet.jpg` as style references; saved as `public/covers/idea-validator-sweet.jpg` (1280×720 JPEG). Prompt in short: same pink twin-tail chibi, lace bonnet and cream-pink room; she holds a pearlescent pink magnifying glass to a cream idea card with a glowing pastel lightbulb; three small rising pink bars and a rose-gold balance scale (heart on one pan, star on the other) on the desk. No words, letters, numbers, titles, logos, UI or watermark.
+## Phone number value, number plate valuation, domain value, car depreciation, net worth, business valuation (2026-11-14)
+
+Codex (`codex exec -m gpt-6-astra`, image tool; kie.ai had no credits that day), refs `dice-sweet.jpg` + `metronome-sweet.jpg`, 16:9, same base prompt as above. Save `public/covers/<id>-sweet.jpg`, `sips -z 720 1280`.
+
+- `phone-number-value`: she holds up a pink smartphone whose screen shows only a row of glowing golden coin dots and a sparkle; a golden price tag with a heart; a pink jeweller's loupe and a golden ribbon.
+- `license-plate-value`: she holds a blank pastel plate with star rivets showing five glowing golden hearts instead of characters; a pink toy car and a golden auction gavel with a bow.
+- `domain-value`: she holds a glowing pink crystal globe wrapped in a chain of pastel link rings; a velvet jewellery box with a pink gem and a golden heart price tag.
+- `car-depreciation`: beside a pastel pink toy car she holds a pink clipboard with a falling curve of hearts; a little hourglass and a blank cream calendar.
+- `net-worth`: she balances a golden scale, a piggy bank, a little house and coins on the lower pan, feather-light bills with a ribbon on the other.
+- `business-valuation`: she holds a little pink boutique shop-front model; rising cream bars beside it and a golden calculator with blank keys.
+## Hangman, rock paper scissors, BAC calculator, simple interest calculator (2026-11-15)
+
+Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`), refs `2048-sweet.jpg` + `chess-sweet.jpg`, 16:9 landscape, same base prompt as the batch above. Save `public/covers/<id>-sweet.jpg`, `sips -s format jpeg` then `sips -z 720 1280`. All came out on the first try. (On macOS `find -newermt "@epoch"` does not work; pick the newest file in `~/.codex/generated_images` by `-mmin`.)
+
+- `hangman`: she writes on a small pink chalkboard showing a row of blank dashes with empty cream letter tiles above them (no letters), a friendly stick-figure doodle holding pink heart balloons (no gallows); a little bell and a pink notebook.
+- `rock-paper-scissors`: she throws a playful hand sign toward a cute toy robot across a cream table; plush cushions shaped like a grey rock, a sheet of pink paper and pink scissors; little stars.
+- `bac-calculator`: she holds a glass of pink sparkling juice and looks at a round cream gauge with a soft needle (tick marks only); a glass of water, a pink alarm clock, a pink car key with a heart keyring set aside in a dish.
+- `simple-interest`: she drops a gold coin into a pink piggy bank; even stacks of coins grow in a straight row, each the same step taller; a pink calculator with blank keys and a blank desk calendar.
+
+
+## Word search, Typing game, Chinese checkers (2026-11-15)
+
+Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`; the cache's first entry `gpt-6.1-sol` returned 400 model_not_found, so the next one was used), refs `nonogram-sweet.jpg` + `memory-game-sweet.jpg`, 16:9 landscape, same base prompt as above (style references only, same chibi girl and room, full-bleed, no words, letters, digits, logo or watermark). Save `public/covers/<id>-sweet.jpg`, `sips -s format jpeg` then `sips -z 720 1280`. All came out on the first try.
+
+- `word-search`: she circles a straight line of pastel tiles with a pink highlighter on a tray of square game tiles that show only tiny hearts, stars and flowers, never letters; a magnifying glass on the tray.
+- `typing-game`: she types on a pastel pink keyboard with completely blank keys while translucent heart and star bubbles fall from above and pop into sparkles.
+- `chinese-checkers`: a six-pointed star board with round holes and glossy pink, cream and lilac marbles; she hops a pink marble over another into an empty hole along a sparkling arc.

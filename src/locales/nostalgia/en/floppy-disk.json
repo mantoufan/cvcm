@@ -1,0 +1,83 @@
+{
+  "name": "Floppy disk",
+  "blurb": "The 1.44 MB square disk that lived in the A: drive and became the Save icon",
+  "aka": [
+    "diskette",
+    "3.5-inch floppy",
+    "A: drive",
+    "软盘"
+  ],
+  "title": "What Is a Floppy Disk? 1.44 MB, the A: Drive and the Save Icon",
+  "description": "A floppy disk was a removable magnetic disk used from the 1970s to the 2000s. The common 3.5-inch kind held 1.44 MB and lives on today as the Save icon.",
+  "h1": "What was a floppy disk?",
+  "answer": "A floppy disk is a thin, flexible magnetic disk in a protective case, read and written by a computer's floppy drive; before USB sticks it was the normal way to carry files around. IBM introduced it in 1971, and the familiar 3.5-inch version held just 1.44 MB. CDs, USB drives and networks replaced it in the 2000s, Sony stopped selling them in Japan in 2011, but its shape survives as the Save icon in countless programs.",
+  "sections": [
+    {
+      "h": "What it looked like",
+      "body": [
+        "The 3.5-inch disk most people remember is a rigid plastic square about 9 cm on a side. Inside is a soft, round magnetic film, which is where the \"floppy\" comes from. A spring-loaded metal shutter slides open when the disk goes into the drive, and a little sliding tab in the corner write-protects it.",
+        "The older 5.25-inch and 8-inch disks really were floppy: thin card-and-plastic sleeves that bent, with the disk surface visible through an oval window you were told never to touch.",
+        "On DOS and Windows PCs the floppy drive took the letter A: (a second one was B:), which is why the hard drive is still C: today."
+      ]
+    },
+    {
+      "h": "Sizes and capacities",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Format",
+              "Introduced",
+              "Typical capacity"
+            ],
+            "rows": [
+              [
+                "8-inch",
+                "1971, IBM",
+                "from about 240 KB"
+              ],
+              [
+                "5.25-inch",
+                "1976, Shugart Associates",
+                "360 KB, later 1.2 MB"
+              ],
+              [
+                "3.5-inch",
+                "early 1980s, Sony",
+                "720 KB; 1.44 MB high density"
+              ]
+            ]
+          }
+        },
+        "For scale, 1.44 MB will not hold one high-quality MP3 or a single photo from a modern phone. Moving a big file meant splitting it across several disks with an archiving program."
+      ]
+    },
+    {
+      "h": "What happened to it",
+      "body": [
+        "Apple's 1998 iMac shipped with a CD drive and no floppy drive, an early sign of the end. Recordable CDs, USB flash drives and networks followed, and the slow, small, fragile floppy faded out.",
+        "In March 2011 Sony ended sales of 3.5-inch floppies in Japan, widely reported as the death of the format. Some Japanese government procedures still required floppies until 2024. New computers have no floppy drive; reading old disks takes an external USB drive, and the disks themselves now turn up mainly second-hand and with collectors."
+      ]
+    },
+    {
+      "h": "Why the Save icon is a floppy disk",
+      "body": [
+        "When word processors and spreadsheets got their toolbars, saving a file very often meant saving to a floppy, so the button showed one. The icon outlived the disk because everyone already recognized it, a classic case of skeuomorphic design: plenty of people click it daily without ever having held a floppy."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How much did a floppy disk hold?",
+      "a": "The common 3.5-inch high-density disk held 1.44 MB, enough for a few hundred pages of plain text but not one full high-quality MP3."
+    },
+    {
+      "q": "Why is the hard drive C: and not A:?",
+      "a": "A: and B: were reserved for floppy drives on early PCs, so the hard drive got C:, and the convention stuck."
+    },
+    {
+      "q": "Can you still read a floppy disk?",
+      "a": "Yes, with an external USB floppy drive, though disks stored for decades may have lost data as the magnetic coating ages."
+    }
+  ]
+}

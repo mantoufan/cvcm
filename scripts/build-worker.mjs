@@ -41,6 +41,11 @@ for (const [src, chunk] of Object.entries(manifest)) {
   if (ideaEntry && ideaEntry[1] !== "index") localePacks[`ideas-${ideaEntry[1]}/${ideaEntry[2]}`] = [`/${chunk.file}`];
   const ideaLoaders = /^src\/locales\/ideas\/loaders\/([^/]+)\.ts$/.exec(src);
   if (ideaLoaders) localePacks[`ideas-${ideaLoaders[1]}/loaders`] = [`/${chunk.file}`];
+  // Nostalgia entries and loader tables: "nostalgia-<locale>/<id>" and "nostalgia-<locale>/loaders" (the pack is "nostalgia-<locale>").
+  const nostalgiaEntry = /^src\/locales\/nostalgia\/([a-zA-Z-]+)\/([a-z0-9-]+)\.json$/.exec(src);
+  if (nostalgiaEntry && nostalgiaEntry[1] !== "index") localePacks[`nostalgia-${nostalgiaEntry[1]}/${nostalgiaEntry[2]}`] = [`/${chunk.file}`];
+  const nostalgiaLoaders = /^src\/locales\/nostalgia\/loaders\/([^/]+)\.ts$/.exec(src);
+  if (nostalgiaLoaders) localePacks[`nostalgia-${nostalgiaLoaders[1]}/loaders`] = [`/${chunk.file}`];
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
 // Page-copy buckets (a tool's FAQ and how-to, a tutorial's text): "copy-<locale>/<tools|tutorials>-<bucket>", written
@@ -77,6 +82,7 @@ const pageModules = {
   ref: "src/client/ref/ui.ts",
   slang: "src/client/slang/ui.ts",
   ideas: "src/client/ideas/ui.ts",
+  nostalgia: "src/client/nostalgia/ui.ts",
 };
 const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");

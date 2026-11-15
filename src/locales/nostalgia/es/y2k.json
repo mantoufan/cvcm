@@ -1,0 +1,67 @@
+{
+  "name": "Efecto 2000 (Y2K)",
+  "blurb": "El temor a que los ordenadores que guardaban el año con dos cifras leyeran 2000 como 1900",
+  "aka": [
+    "problema del año 2000",
+    "error del milenio",
+    "Y2K",
+    "千年虫"
+  ],
+  "title": "¿Qué fue el efecto 2000 (Y2K)? Causa, coste y qué pasó en el 2000",
+  "description": "El efecto 2000 (Y2K): programas que guardaban el año con dos cifras podían tomar 2000 por 1900. Arreglarlo costó unos 300.000 millones de dólares.",
+  "h1": "¿Qué fue el efecto 2000?",
+  "answer": "El efecto 2000, también llamado problema del año 2000 o Y2K, fue un fallo de programas antiguos que guardaban el año con solo dos cifras, de modo que «00» podía interpretarse como 1900 en lugar de 2000 y estropear cálculos de fechas, ordenaciones y comprobaciones de caducidad. Gobiernos y empresas pasaron los últimos años 90 buscándolo y corrigiéndolo, con un coste estimado de más de 300.000 millones de dólares en todo el mundo. Cuando llegó el 1 de enero de 2000 solo hubo fallos menores y aislados, y todavía se discute si eso demuestra que los arreglos funcionaron o que la amenaza se exageró.",
+  "sections": [
+    {
+      "h": "De dónde salió el fallo",
+      "body": [
+        "En los años 60 y 70 la memoria y el almacenamiento eran caros, así que los programadores escribían 1985 como «85» para ahorrarse dos caracteres. La costumbre duró décadas en los sistemas de bancos, telecomunicaciones, transporte y suministros. Después del «99» viene el «00», y un programa podía concluir que el tiempo había retrocedido 99 años: intereses calculados en negativo, documentos marcados como caducados hacía mucho, registros ordenados por fecha completamente revueltos.",
+        "Había un segundo problema más discreto: el año bisiesto. 2000 fue bisiesto, pero algunos programas aplicaban la regla de que «los años que terminan en 00 no son bisiestos» sin su excepción, con riesgo de errores el 29 de febrero de 2000."
+      ]
+    },
+    {
+      "h": "Cómo se preparó el mundo",
+      "body": [
+        "Las soluciones iban desde reescribir las fechas con el año en cuatro cifras hasta la técnica de la «ventana», en la que el programa supone, por ejemplo, que del 00 al 29 se trata de los años 2000. Solo en Estados Unidos, la consultora IDC estimó unos 134.000 millones de dólares en preparación y otros 13.000 millones en problemas surgidos en 2000 y 2001.",
+        "China lo trató como una tarea nacional. El Consejo de Estado dio instrucciones en 1998, el Ministerio de la Industria de la Información siguió de cerca 18 sectores prioritarios y una directiva de 1999 fijó septiembre de ese año como plazo para terminar pruebas y planes de emergencia en banca, hacienda, aviación, ferrocarriles, electricidad, telecomunicaciones y otros sectores. En Nochevieja los sectores clave tuvieron personal de guardia toda la noche, y según la prensa directivos de Air China y China Eastern viajaron en vuelos que cruzaban la medianoche para demostrar confianza."
+      ]
+    },
+    {
+      "h": "Qué pasó de verdad",
+      "body": [
+        {
+          "ul": [
+            "Algunas máquinas expendedoras de billetes de tren en Japón dejaron de funcionar un rato",
+            "Los alcoholímetros de la policía de Hong Kong fallaron a medianoche",
+            "Cajas registradoras en Grecia imprimieron tiques con fecha de 1900",
+            "La web del Observatorio Naval de Estados Unidos mostró por un momento el año como «19100»",
+            "Un sistema de impuestos de Montreal leyó el 29 de febrero de 2000 como 1 de marzo de 1900 y hubo que apagarlo"
+          ]
+        },
+        "Nada de esto fue el desastre que algunos habían anunciado. Los defensores de los arreglos dicen que precisamente de eso se trataba; los críticos señalan que lugares que apenas se prepararon tampoco tuvieron problemas graves. Y queda otra fecha parecida por delante: los sistemas que guardan el tiempo Unix como un número de 32 bits con signo se desbordan el 19 de enero de 2038."
+      ]
+    },
+    {
+      "h": "El otro Y2K",
+      "body": [
+        {
+          "note": "Hoy «Y2K» también es una estética de moda y diseño inspirada en finales de los 90 y principios de los 2000: tejidos metalizados y brillantes, vaqueros de tiro bajo, plástico translúcido y los primeros gráficos por ordenador. Toma el nombre del fallo informático, pero no tiene nada más que ver con él."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿El efecto 2000 era un virus?",
+      "a": "No. No era código malicioso y no podía propagarse. Era un defecto de diseño en la forma en que los programas guardaban las fechas."
+    },
+    {
+      "q": "¿Qué significa Y2K?",
+      "a": "Y de year (año) y 2K de 2.000, donde la K significa mil: el año 2000."
+    },
+    {
+      "q": "¿Viene otro efecto 2000?",
+      "a": "Lo más parecido es el problema del año 2038: los sistemas que cuentan el tiempo como un número de 32 bits con signo de segundos desde 1970 se desbordan el 19 de enero de 2038, y muchos se están actualizando con antelación."
+    }
+  ]
+}

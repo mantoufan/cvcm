@@ -43,6 +43,11 @@ import {
   hasIdeasMessages,
   registerIdeaEntry,
   registerIdeasMessages,
+  type NostalgiaMessages,
+  hasNostalgiaEntry,
+  hasNostalgiaMessages,
+  registerNostalgiaEntry,
+  registerNostalgiaMessages,
 } from "../shared/messages";
 import type { KbArticleCopy } from "../shared/kb-i18n";
 import { kbArticleOf, type KbId, type KbPage } from "../shared/kb";
@@ -53,6 +58,8 @@ import type { SlangId, SlangPage } from "../shared/slang";
 import { copyBucket, hasToolCopy, hasTutorialCopy, mergeToolCopy, mergeTutorialCopy, type PageCopy } from "../shared/page-copy";
 import type { IdeaEntryCopy } from "../shared/ideas-i18n";
 import type { IdeaId, IdeaPage } from "../shared/ideas";
+import type { NostalgiaEntryCopy } from "../shared/nostalgia-i18n";
+import type { NostalgiaId, NostalgiaPage } from "../shared/nostalgia";
 
 export type { PageCopy };
 
@@ -301,24 +308,57 @@ async function loadCore(next: Locale, copy: PageCopy): Promise<void> {
   ]);
 }
 
+// Nostalgia hub copy plus entry names (`npm run nostalgia:sync`), only for /nostalgia/ pages.
+const NOSTALGIA_PACKS: Record<Locale, () => Promise<{ default: NostalgiaMessages }>> = {
+  en: () => import("../locales/packs/nostalgia-en"),
+  "zh-CN": () => import("../locales/packs/nostalgia-zh-CN"),
+  "zh-TW": () => import("../locales/packs/nostalgia-zh-TW"),
+  ja: () => import("../locales/packs/nostalgia-ja"),
+  ko: () => import("../locales/packs/nostalgia-ko"),
+  vi: () => import("../locales/packs/nostalgia-vi"),
+  id: () => import("../locales/packs/nostalgia-id"),
+  es: () => import("../locales/packs/nostalgia-es"),
+};
+
+// One chunk per nostalgia entry and locale, through that locale's generated loader table.
+const NOSTALGIA_LOADER_TABLES: Record<Locale, () => Promise<{ NOSTALGIA_LOADERS: Record<NostalgiaId, () => Promise<unknown>> }>> = {
+  en: () => import("../locales/nostalgia/loaders/en"),
+  "zh-CN": () => import("../locales/nostalgia/loaders/zh-CN"),
+  "zh-TW": () => import("../locales/nostalgia/loaders/zh-TW"),
+  ja: () => import("../locales/nostalgia/loaders/ja"),
+  ko: () => import("../locales/nostalgia/loaders/ko"),
+  vi: () => import("../locales/nostalgia/loaders/vi"),
+  id: () => import("../locales/nostalgia/loaders/id"),
+  es: () => import("../locales/nostalgia/loaders/es"),
+};
+
+async function loadNostalgiaEntry(next: Locale, id: NostalgiaId): Promise<void> {
+  const { NOSTALGIA_LOADERS } = await NOSTALGIA_LOADER_TABLES[next]();
+  const m = (await NOSTALGIA_LOADERS[id]()) as { default: NostalgiaEntryCopy };
+  registerNostalgiaEntry(next, id, m.default);
+}
+
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null): boolean {
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
   const idea = ideas && ideas !== "hub" ? ideas : null;
+  const memory = nostalgia && nostalgia !== "hub" ? nostalgia : null;
   return hasMessages(next) && hasPageCopy(next, copy) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
     && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
     && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))))
     && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))))
-    && (!ideas || (hasIdeasMessages(next) && (!idea || hasIdeaEntry(next, idea))));
+    && (!ideas || (hasIdeasMessages(next) && (!idea || hasIdeaEntry(next, idea))))
+    && (!nostalgia || (hasNostalgiaMessages(next) && (!memory || hasNostalgiaEntry(next, memory))));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null): Promise<void> {
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
   const idea = ideas && ideas !== "hub" ? ideas : null;
+  const memory = nostalgia && nostalgia !== "hub" ? nostalgia : null;
   await Promise.all([
     hasMessages(next) && hasPageCopy(next, copy) ? null : loadCore(next, copy),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
@@ -333,6 +373,8 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !term || hasSlangEntry(next, term) ? null : loadSlangEntry(next, term),
     !ideas || hasIdeasMessages(next) ? null : IDEAS_PACKS[next]().then((m) => registerIdeasMessages(next, m.default)),
     !idea || hasIdeaEntry(next, idea) ? null : loadIdeaEntry(next, idea),
+    !nostalgia || hasNostalgiaMessages(next) ? null : NOSTALGIA_PACKS[next]().then((m) => registerNostalgiaMessages(next, m.default)),
+    !memory || hasNostalgiaEntry(next, memory) ? null : loadNostalgiaEntry(next, memory),
   ]);
 }
 

@@ -45,6 +45,13 @@
           ]
         },
         {
+          "h": "Tìm kiếm trên trang",
+          "p": [
+            "Ô tìm kiếm so khớp trang ngay trong trình duyệt của bạn, dựa trên danh sách tên trang của cv.cm. Chỉ những lượt tìm không có kết quả mới được gửi cho chúng tôi, như mô tả bên dưới.",
+            "Khi một lượt tìm không có kết quả nào, từ khóa và ngôn ngữ của trang được gửi tới cơ sở dữ liệu của chúng tôi trên Cloudflare D1 để biết mọi người còn cần gì. Từ khóa trông giống đường link, địa chỉ email hoặc dãy số dài sẽ không được ghi lại. Để mỗi người chỉ được tính một lần mỗi ngày và giới hạn số lần gửi từ một địa chỉ, máy chủ tạo hai giá trị băm từ địa chỉ IP của bạn (một giá trị kèm từ khóa) bằng một khóa thay đổi mỗi ngày. Khóa và giá trị băm bị xóa sau hai ngày; địa chỉ IP không bao giờ được lưu. Từ khóa bị xóa sau một năm kể từ lần cuối có người tìm."
+          ]
+        },
+        {
           "h": "Lưu trữ và nhật ký máy chủ",
           "p": [
             "cv.cm được phân phối qua Cloudflare. Để cung cấp và bảo vệ trang web, Cloudflare xử lý dữ liệu yêu cầu như địa chỉ IP, user agent của trình duyệt và URL được yêu cầu theo chính sách quyền riêng tư riêng của Cloudflare. Máy chủ lưu trữ của chúng tôi tại s3.cv.cm giữ nhật ký máy chủ web tiêu chuẩn (địa chỉ IP, thời gian, đường dẫn được yêu cầu) phục vụ bảo mật và khắc phục sự cố. Chúng tôi không dùng các nhật ký này để lập hồ sơ người dùng."

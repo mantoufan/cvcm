@@ -1,0 +1,67 @@
+{
+  "name": "Y2K bug",
+  "blurb": "The fear that computers storing two-digit years would read 2000 as 1900",
+  "aka": [
+    "Year 2000 problem",
+    "Millennium bug",
+    "Y2K",
+    "千年虫"
+  ],
+  "title": "What Was the Y2K Bug? Cause, Cost and What Happened in 2000",
+  "description": "The Y2K bug was the risk that software storing two-digit years would treat 2000 as 1900. Fixing it cost an estimated $300 billion worldwide in the late 1990s.",
+  "h1": "What was the Y2K bug?",
+  "answer": "The Y2K bug, or Year 2000 problem, was a flaw in older software that stored years as two digits, so \"00\" might be read as 1900 instead of 2000 and break date calculations, sorting and expiry checks. Governments and companies spent the late 1990s finding and fixing it, at an estimated cost of more than US$300 billion worldwide. When 1 January 2000 arrived there were only scattered minor glitches, and people still argue whether that proves the fixes worked or the threat was overblown.",
+  "sections": [
+    {
+      "h": "Where the bug came from",
+      "body": [
+        "In the 1960s and 1970s memory and storage were expensive, so programmers wrote 1985 as \"85\" to save two characters. The habit lived on for decades in banking, telecoms, transport and utility systems. After \"99\" comes \"00\", and a program might decide 99 years had gone backwards: interest calculated as negative, documents flagged as long expired, date-sorted records scrambled.",
+        "A second, quieter issue was the leap year. 2000 was a leap year, but some software applied the \"century years are not leap years\" rule without its exception, risking errors on 29 February 2000."
+      ]
+    },
+    {
+      "h": "How the world prepared",
+      "body": [
+        "Fixes ranged from rewriting dates with four-digit years to \"windowing\", where a program assumes, say, 00 to 29 means the 2000s. In the US alone, IDC estimated about $134 billion in preparation and another $13 billion on problems in 2000 and 2001.",
+        "China treated it as a national task. The State Council issued instructions in 1998, the Ministry of Information Industry tracked 18 priority sectors, and a 1999 directive set a September 1999 deadline for testing and contingency plans in banking, tax, aviation, railways, power, telecoms and more. On New Year's Eve key sectors kept staff on duty through the night, and executives of Air China and China Eastern reportedly flew on flights crossing midnight to show confidence."
+      ]
+    },
+    {
+      "h": "What actually happened",
+      "body": [
+        {
+          "ul": [
+            "Some Japanese train ticket machines briefly stopped working",
+            "Hong Kong police breathalyzers failed at midnight",
+            "Cash registers in Greece printed receipts dated 1900",
+            "The US Naval Observatory website briefly showed the year as \"19100\"",
+            "A tax system in Montreal misread 29 February 2000 as 1 March 1900 and had to be shut down"
+          ]
+        },
+        "None of this was the disaster some had predicted. Supporters of the remediation say that was the point; critics note that places which did little also escaped serious trouble. A similar deadline is still ahead: systems that store Unix time as a signed 32-bit number run out on 19 January 2038."
+      ]
+    },
+    {
+      "h": "The other Y2K",
+      "body": [
+        {
+          "note": "Today \"Y2K\" is also a fashion and design aesthetic that borrows from the late 1990s and early 2000s: metallic and glossy fabrics, low-rise jeans, translucent plastic and early computer graphics. It takes the name from the bug but has nothing else to do with it."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Was the Y2K bug a virus?",
+      "a": "No. It was not malicious code and could not spread. It was a design flaw in how programs stored dates."
+    },
+    {
+      "q": "What does Y2K stand for?",
+      "a": "Y for year and 2K for 2,000, with K meaning thousand: the year 2000."
+    },
+    {
+      "q": "Is there another Y2K coming?",
+      "a": "The closest is the Year 2038 problem: systems that count time as a signed 32-bit number of seconds since 1970 overflow on 19 January 2038, and many are being updated in advance."
+    }
+  ]
+}

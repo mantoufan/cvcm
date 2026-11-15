@@ -33,6 +33,8 @@ export interface D1Prepared {
 
 export interface D1Database {
   prepare(query: string): D1Prepared;
+  /** D1 runs a batch as one transaction in one round trip. */
+  batch(statements: D1Prepared[]): Promise<unknown[]>;
 }
 
 type SqlClip = {

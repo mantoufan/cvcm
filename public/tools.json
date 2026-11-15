@@ -76,11 +76,19 @@
     },
     {
       "id": "games",
-      "name": "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, checkers, reversi, gomoku, nonogram, memory game, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
+      "name": "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, checkers, reversi, gomoku, nonogram, memory game, Chinese checkers, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
+    },
+    {
+      "id": "wordgames",
+      "name": "Word games: word search, hangman, typing game"
     },
     {
       "id": "assets",
       "name": "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)"
+    },
+    {
+      "id": "valuation",
+      "name": "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)"
     }
   ],
   "tools": [
@@ -1138,11 +1146,11 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
-      "id": "idea-validator",
-      "name": "Business idea validator",
-      "description": "Score your idea out of 100 and see what to test first.",
+      "id": "simple-interest",
+      "name": "Simple interest calculator",
+      "description": "Interest, principal, rate or time.",
       "category": "finance",
-      "url": "https://cv.cm/en/idea-validator/",
+      "url": "https://cv.cm/en/simple-interest/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
@@ -1247,6 +1255,14 @@
       "description": "How tall your child may grow.",
       "category": "health",
       "url": "https://cv.cm/en/height-calculator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "bac-calculator",
+      "name": "BAC calculator",
+      "description": "Estimate blood alcohol content.",
+      "category": "health",
+      "url": "https://cv.cm/en/bac-calculator/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
@@ -1554,6 +1570,14 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "rock-paper-scissors",
+      "name": "Rock paper scissors",
+      "description": "Play the computer, best of 3, 5 or 7.",
+      "category": "fun",
+      "url": "https://cv.cm/en/rock-paper-scissors/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
       "id": "rom-emulator",
       "name": "ROM emulator",
       "description": "Play your own GBA, NES, SNES, GB or Mega Drive ROM.",
@@ -1706,6 +1730,38 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "chinese-checkers",
+      "name": "Chinese checkers",
+      "description": "Hop marbles across the star.",
+      "category": "games",
+      "url": "https://cv.cm/en/chinese-checkers/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "word-search",
+      "name": "Word search",
+      "description": "Find the hidden words in a grid.",
+      "category": "wordgames",
+      "url": "https://cv.cm/en/word-search/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "hangman",
+      "name": "Hangman",
+      "description": "Guess the word letter by letter.",
+      "category": "wordgames",
+      "url": "https://cv.cm/en/hangman/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "typing-game",
+      "name": "Typing game",
+      "description": "Type falling words before they land.",
+      "category": "wordgames",
+      "url": "https://cv.cm/en/typing-game/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
       "id": "gold",
       "name": "Gold weight",
       "description": "Troy ounce, gram, and tael.",
@@ -1751,6 +1807,62 @@
       "description": "Market cap, P/E, and dividend yield.",
       "category": "assets",
       "url": "https://cv.cm/en/stocks/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "phone-number-value",
+      "name": "Phone number value",
+      "description": "What a mobile number is worth from its digits.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/phone-number-value/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "license-plate-value",
+      "name": "Number plate valuation",
+      "description": "Estimate a UK, Vietnamese or Chinese plate.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/license-plate-value/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "domain-value",
+      "name": "Domain value",
+      "description": "Appraise a domain name in seconds.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/domain-value/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "car-depreciation",
+      "name": "Car depreciation calculator",
+      "description": "What your car is worth now and later.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/car-depreciation/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "net-worth",
+      "name": "Net worth calculator",
+      "description": "Assets minus debts, compared by age.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/net-worth/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "business-valuation",
+      "name": "Business valuation calculator",
+      "description": "Multiples and DCF for a small business.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/business-valuation/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "idea-validator",
+      "name": "Business idea validator",
+      "description": "Score your idea out of 100 and see what to test first.",
+      "category": "valuation",
+      "url": "https://cv.cm/en/idea-validator/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     }
   ]
