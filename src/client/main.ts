@@ -28,7 +28,6 @@ import {
   slangHref,
   ideasHref,
   ideasPackOf,
-  IDEAS_PACK_TOOLS,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -331,14 +330,13 @@ function prefetchGamePack(e: Event): void {
     const id = nav.startsWith("slang-") ? nav.slice(6) : "";
     const page: SlangPage = isSlangId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, null, page)) loadPageMessages(loc, false, false, false, false, null, null, page).catch(() => {});
-  } else if (target?.closest?.('a[data-nav^="ideas-"], a[data-nav="ideas"]') || IDEAS_PACK_TOOLS.includes(target?.closest?.("a[data-nav]")?.getAttribute("data-nav") as ToolId)) {
-    // data-nav is "ideas-<idea id>" on an idea link, "ideas" on a hub link; IDEAS_PACK_TOOLS links need the hub pack too.
+  } else if (target?.closest?.('a[data-nav^="ideas-"], a[data-nav="ideas"]')) {
+    // data-nav is "ideas-<idea id>" on an idea link, "ideas" on a hub link. (Tool links such as the idea validator
+    // prefetch only their copy, after the hover delay; the ideas pack loads with the page.)
     const nav = target!.closest("a[data-nav]")?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("ideas-") ? nav.slice(6) : "";
     const page: IdeaPage = isIdeaId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, null, null, {}, page)) loadPageMessages(loc, false, false, false, false, null, null, null, {}, page).catch(() => {});
-    // The validator is also a tool page: fetch its own copy (FAQ and how-to) as for any tool link.
-    if (IDEAS_PACK_TOOLS.includes(nav as ToolId)) prefetchCopy(target, loc, e.type === "pointerover");
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {

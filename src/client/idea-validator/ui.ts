@@ -126,6 +126,7 @@ function onIdeaInput(): void {
     const cleared = !state.idea.value.trim();
     const optedOut = state.pinned && state.match.value === NONE;
     if (!state.pinned || cleared || (!optedOut && found && found !== state.match.value && found !== state.autoAtPin)) {
+      if ((found ?? NONE) !== state.match.value) dropPreset();
       state.match.value = found ?? NONE;
       state.pinned = false;
     }
@@ -133,8 +134,17 @@ function onIdeaInput(): void {
   paint();
 }
 
+/** A ?idea= preset no longer describes the page once the reader changes the match: drop it from the URL. */
+function dropPreset(): void {
+  const url = new URL(location.href);
+  if (!url.searchParams.has("idea")) return;
+  url.searchParams.delete("idea");
+  history.replaceState(history.state, "", `${url.pathname}${url.search}${url.hash}`);
+}
+
 function onMatchChange(): void {
   if (!state) return;
+  dropPreset();
   state.pinned = true;
   state.autoAtPin = state.ready ? matchIdea(state.idea.value, state.names, locale()) ?? NONE : NONE;
   paint();
@@ -195,7 +205,7 @@ function paint(): void {
     ));
   }
   if (id && data) out.append(benchmark(id, data.scores.total));
-  out.append(h("p", { class: "more" }, h("a", { href: ideasHref(loc), "data-nav": "ideas" }, t("ideaValidator.allIdeas"))));
+  out.append(h("p", { class: "more" }, h("a", { href: ideasHref(loc), "data-nav": "ideas" }, t("ideaValidator.allIdeas", { n: IDEA_ENTRIES.length }))));
   state.last = summary(result, answers, id);
 }
 

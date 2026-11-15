@@ -39,7 +39,7 @@
       "title": "Business idea validator",
       "lede": "Answer eight questions to see how strong your idea is, what is weak, and what to test first. Similar ideas are benchmarked with Google search data. Runs in this tab; nothing is uploaded.",
       "describe": "Your idea",
-      "describePh": "e.g. a mobile car detailing service, an AI chatbot for dentists, handmade candles",
+      "describePh": "e.g. a mobile car detailing service, an AI agency for dentists, handmade candles",
       "match": "Closest idea in our search data",
       "matchNone": "Something else (no benchmark)",
       "matchHint": "Picked from what you type; change it if it is wrong.",
@@ -144,7 +144,7 @@
         "competition": {
           "t1": "Pick a narrower group the big players ignore (a city, an industry, a style).",
           "t2": "Read competitors' one- and two-star reviews and build what they miss.",
-          "t3": "If nobody sells it, check that people actually search for it or pay for something close."
+          "t3": "Write down what you would do better than the top three sellers, and test that promise first."
         },
         "cost": {
           "t1": "Start with the smallest version you can sell: one product, one service, one machine.",
@@ -169,12 +169,12 @@
         "trend": {
           "t1": "Check how searches and sales for the idea moved over the last few years.",
           "t2": "Look for a growing niche inside a shrinking market.",
-          "t3": "Plan for a market that gets smaller: keep costs flexible and avoid long contracts."
+          "t3": "Ask ten potential customers whether they buy this more or less than a few years ago."
         }
       },
       "benchmark": "Benchmark: {name} has a search-data outlook score of {score}.",
       "seeIdea": "See the data and guide for {name}",
-      "allIdeas": "Browse 40 business ideas valued with search data",
+      "allIdeas": "Browse {n} business ideas valued with search data",
       "copy": "Copy result",
       "copied": "Copied",
       "copyFailed": "Could not copy",

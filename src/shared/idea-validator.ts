@@ -74,12 +74,12 @@ export function validateIdea(answers: ValidatorAnswers, market: number | null): 
   return { readiness, market, total, grade, strengths, weaknesses };
 }
 
-// ー (U+30FC) and its halfwidth form are Script=Common but belong inside katakana words (コーヒー).
-const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\u30fc\uff70]+/gu;
+// ー (U+30FC; NFKC maps the halfwidth form to it) is Script=Common but belongs inside katakana words (コーヒー).
+const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\u30fc]+/gu;
 
 /**
- * Lowercased words with accents removed and an English plural "s" dropped; CJK runs become overlapping two-character
- * pieces (Chinese and Japanese have no spaces), leaving out pieces that are only hiragana (particles and endings).
+ * Lowercased words with accents removed and English plurals folded; Han and Hangul runs become overlapping
+ * two-character pieces (no spaces to split on), katakana words stay whole and hiragana is dropped.
  */
 export function ideaTokens(text: string, locale: Locale | null = null): string[] {
   const keep = locale ? KEEP[locale] : undefined;
@@ -87,16 +87,21 @@ export function ideaTokens(text: string, locale: Locale | null = null): string[]
   for (const part of text.toLowerCase().normalize("NFKC").split(/[^\p{L}\p{N}]+/u)) {
     if (!part) continue;
     for (const run of part.match(CJK_RUN) ?? []) {
-      const pieces = run.length === 1 ? [run] : Array.from({ length: run.length - 1 }, (_, i) => run.slice(i, i + 2));
-      for (const piece of pieces) if (!/^\p{Script=Hiragana}+$/u.test(piece) && !STOP_CJK.has(piece)) out.push(piece);
+      // Katakana loanwords are whole words (キッチンカー, ペットシッター): pairs of them would match by chance (ネットショップ
+      // and ペットシッター share トシ). Han and Hangul become overlapping pairs; hiragana (particles, endings) is dropped.
+      for (const seg of run.match(/[\p{Script=Katakana}\u30fc]+|\p{Script=Han}+|\p{Script=Hangul}+|\p{Script=Hiragana}+/gu) ?? []) {
+        if (/^\p{Script=Hiragana}/u.test(seg)) continue;
+        const pieces = /^[\p{Script=Katakana}\u30fc]/u.test(seg) || seg.length === 1 ? [seg] : Array.from({ length: seg.length - 1 }, (_, i) => seg.slice(i, i + 2));
+        for (const piece of pieces) if (!STOP_CJK.has(piece)) out.push(piece);
+      }
     }
     const latin = part.replace(CJK_RUN, " ").normalize("NFD").replace(/\p{M}/gu, "").replace(/đ/g, "d").trim();
     for (let word of latin.split(/\s+/)) {
       if (STOP.has(word) && !keep?.has(word)) continue;
-      // English plurals of 5+ letters: agencies → agency, washes → wash, candles → candle (short words like "this" stay).
+      // English plurals: agencies → agency, washes → wash, cars → car (filler like "this" was dropped above).
       if (word.length > 4 && word.endsWith("ies")) word = `${word.slice(0, -3)}y`;
       else if (word.length > 4 && /(sh|ch|x|ss)es$/.test(word)) word = word.slice(0, -2);
-      else if (word.length > 4 && word.endsWith("s") && !word.endsWith("ss")) word = word.slice(0, -1);
+      else if (word.length > 3 && word.endsWith("s") && !/(ss|us|is)$/.test(word)) word = word.slice(0, -1);
       if (word.length >= 2 && (!STOP.has(word) || keep?.has(word))) out.push(word);
     }
   }
@@ -105,15 +110,15 @@ export function ideaTokens(text: string, locale: Locale | null = null): string[]
 
 /** Words that say "business", "how to", "online", "I want" and the like in the eight languages (accents removed). */
 const STOP = new Set([
-  "business", "businesse", "companie", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small", "open", "opening", "launch", "handmade", "homemade", "app", "apps", "mobile", "portable", "custom", "small", "big", "best", "good", "cheap", "run", "own", "new", "local", "near", "about", "some", "this", "that",
-  "negocio", "de", "la", "el", "lo", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi", "abrir", "montar", "nuevo",
+  "business", "does", "was", "has", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small", "open", "opening", "launch", "handmade", "homemade", "app", "apps", "mobile", "portable", "custom", "big", "best", "good", "cheap", "run", "own", "new", "local", "near", "about", "some", "this", "that",
+  "negocio", "de", "la", "el", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi", "abrir", "montar", "nuevo",
   "bisni", "bisnis", "usaha", "jasa", "di", "cara", "jualan", "jual", "rumah", "saya", "ingin", "mau", "dan", "yang", "toko", "buka", "membuka",
   "kinh", "doanh", "mo", "ban", "va", "cua", "hang", "tren", "mang", "toi", "muon", "nha", "dich", "vu", "cong", "ty", "lam",
 ]);
 /** Filler in one language can be a real word in another: Vietnamese "in" is "print" (in 3D). */
 const KEEP: Partial<Record<Locale, Set<string>>> = { vi: new Set(["in"]) };
 
-const STOP_CJK = new Set(["创业", "創業", "开业", "開業", "副业", "副業", "生意", "加盟", "开店", "開店", "网上", "網上", "网店", "賺錢", "赚钱", "我想", "온라", "라인", "창업", "사업", "부업", "쇼핑", "핑몰", "ビジ", "ジネ", "ネス", "起業", "開発"]);
+const STOP_CJK = new Set(["创业", "創業", "开业", "開業", "副业", "副業", "生意", "加盟", "开店", "開店", "网上", "網上", "网店", "賺錢", "赚钱", "我想", "온라", "라인", "창업", "사업", "부업", "쇼핑", "핑몰", "ビジネス", "ショップ", "オンライン", "起業", "開発"]);
 
 /** Every idea's search phrases in every language, tokenized once. */
 const IDEA_POOLS: Record<IdeaId, Set<string>> = Object.fromEntries(
@@ -122,6 +127,8 @@ const IDEA_POOLS: Record<IdeaId, Set<string>> = Object.fromEntries(
     return [id, new Set(LOCALES.flatMap((loc) => (byLocale[loc] ?? []).flatMap((phrase) => ideaTokens(phrase, loc))))];
   }),
 ) as Record<IdeaId, Set<string>>;
+
+const CJK_ONLY = /^[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\u30fc]+$/u;
 
 const NO_NAMES: Partial<Record<IdeaId, string>> = {};
 
@@ -163,16 +170,19 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
   }).sort((a, b) => b.score - a.score || b.cover - a.cover);
   const [best, second] = scored;
   if (!best || best.score <= 0) return null;
-  if (second && best.score === second.score) {
-    // Two ideas sharing different words with the text equally ("t-shirt printing": shirt vs printing) is ambiguous;
-    // the same words in both goes to the one the text covers most (its own name beats a longer name containing it).
-    const same = best.hits.length === second.hits.length && best.hits.every((t) => second.hits.includes(t));
-    if (!same || best.cover === second.cover) return null;
+  const tied = scored.filter((s) => s.score === best.score).slice(1);
+  for (const other of tied) {
+    // Ideas sharing different words with the text equally ("t-shirt printing": shirt vs printing) are ambiguous; the
+    // same words go to the idea the text covers most (its own name beats a longer name containing it).
+    const same = best.hits.length === other.hits.length && best.hits.every((t) => other.hits.includes(t));
+    if (!same || best.cover === other.cover) return null;
   }
   const only = best.hits[0];
   // One shared word is enough in a short text (a name like "Pet services"), or when no other idea shares any word
   // ("open a laundromat near campus"); otherwise ("mobile" in "a mobile app for students") it is too weak a signal.
-  const alone = tokens.length <= 2 || !second || second.score === 0;
+  // A lone two-character Han/Hangul piece is only trusted in a short text: in a sentence such pieces match by chance.
+  const cjk = only !== undefined && only.length <= 2 && CJK_ONLY.test(only);
+  const alone = tokens.length <= 2 || ((!second || second.score === 0) && !cjk);
   const distinct = only !== undefined && (only.length >= 3 || /[^\x00-\x7f]/.test(only));
   // A word two ideas share counts when the text is just that word and one idea is clearly closer (洗车: car wash over
   // mobile car wash), as decided by the coverage tie-break above.

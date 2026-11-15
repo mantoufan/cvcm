@@ -84,7 +84,7 @@ describe("idea validator: matching", () => {
     expect(matchIdea("Pet services business", names("en"))).toBe("pet-services");
     expect(matchIdea("カフェを開きたい", names("ja"))).toBe("coffee-shop");
     expect(matchIdea("コーチングを始めたい", names("ja"))).toBeNull();
-    expect(ideaTokens("コーヒー")).toEqual(["コー", "ーヒ", "ヒー"]);
+    expect(ideaTokens("コーヒーショップを開きたい")).toEqual(["コーヒーショップ", "開"]);
     // Generic verbs do not pick an idea; one clear word in a longer text does when no other idea shares a word.
     expect(matchIdea("open a laundromat near campus", names("en"))).toBe("laundromat");
     expect(matchIdea("abrir una lavandería", names("es"))).toBe("laundromat");
@@ -101,6 +101,8 @@ describe("idea validator: matching", () => {
     expect(matchIdea("home bakeries", names("en"))).toBe("home-bakery");
     expect(matchIdea("洗车", names("zh-CN"), "zh-CN")).toBe("car-wash");
     expect(matchIdea("status app", names("en"))).toBeNull();
+    expect(matchIdea("ネットショップを開きたい", names("ja"), "ja")).toBeNull();
+    expect(matchIdea("pets", names("en"))).toBe("pet-services");
     // Plurals and accents.
     expect(matchIdea("pressure washing houses and driveways", names("en"))).toBe("pressure-washing");
     expect(matchIdea("tiệm giặt sấy tự động", names("vi"))).toBe("laundromat");
