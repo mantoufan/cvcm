@@ -51,6 +51,12 @@ describe("idea validator: scoring", () => {
 });
 
 describe("idea validator: weak spots", () => {
+  it("always names something to test when the grade is not strong", () => {
+    const middling = validateIdea(all(2), null)!;
+    expect(middling.grade).not.toBe("strong");
+    expect(middling.weaknesses.length).toBeGreaterThan(0);
+  });
+
   it("counts an unresearched market trend as a weak spot", () => {
     const unsure = validateIdea({ evidence: 4, price: 4, competition: 3, cost: 4, time: 4, edge: 4, channel: 4, trend: 1 }, null)!;
     expect(unsure.weaknesses).toEqual(["trend"]);
@@ -94,6 +100,9 @@ describe("idea validator: matching", () => {
     expect(matchIdea("selling cookies", names("en"))).toBe("home-bakery");
     expect(matchIdea("T恤", names("zh-CN"), "zh-CN")).toBe("t-shirt-business");
     expect(matchIdea("开一家T恤店", names("zh-CN"), "zh-CN")).toBe("t-shirt-business");
+    expect(ideaTokens("3D打印")).not.toContain("d打");
+    expect(matchIdea("coffee coffee", names("en"))).toBe(matchIdea("coffee", names("en")));
+    expect(matchIdea("핸드메이드 캔들", names("ko"), "ko")).toBe("candle-business");
     expect(matchIdea("car washes", names("es"), "es")).toBe("car-wash");
     expect(matchIdea("开一家装修公司", names("zh-CN"), "zh-CN")).toBeNull();
     expect(matchIdea("máquina de peluche", names("es"), "es")).toBe("claw-machine");

@@ -72,7 +72,13 @@ export function validateIdea(answers: ValidatorAnswers, market: number | null): 
   const grade: ValidatorGrade = total >= 75 ? "strong" : total >= 55 ? "promising" : total >= 35 ? "risky" : "rethink";
   const lost = (q: ValidatorQuestion): number => QUESTION_WEIGHT[q] * (4 - points(q));
   const strengths = VALIDATOR_QUESTIONS.filter((q) => points(q) >= 3).sort((a, b) => QUESTION_WEIGHT[b] * points(b) - QUESTION_WEIGHT[a] * points(a));
-  const weaknesses = VALIDATOR_QUESTIONS.filter((q) => points(q) <= 1).sort((a, b) => lost(b) - lost(a));
+  // Weak spots are answers worth 0-1 points; when there are none but the grade is not strong, the answers that lose
+  // the most weight are what to work on (a scorecard of middling answers still gets a next step).
+  let weaknesses = VALIDATOR_QUESTIONS.filter((q) => points(q) <= 1).sort((a, b) => lost(b) - lost(a));
+  if (!weaknesses.length && grade !== "strong") {
+    const most = Math.max(...VALIDATOR_QUESTIONS.map(lost));
+    weaknesses = most > 0 ? VALIDATOR_QUESTIONS.filter((q) => lost(q) === most) : [];
+  }
   return { readiness, market, total, grade, strengths, weaknesses };
 }
 
@@ -97,7 +103,7 @@ export function tokenGroups(text: string, locale: Locale | null = null): string[
   for (const part of text.toLowerCase().normalize("NFKC").split(/[^\p{L}\p{N}]+/u)) {
     if (!part) continue;
     // One Latin letter fused to one Han character is a word of its own (t恤 = t-shirt).
-    for (const m of part.matchAll(/(?<![a-z])[a-z]\p{Script=Han}/gu)) out.push([m[0]]);
+    for (const m of part.matchAll(/(?<![a-z0-9])[a-z]\p{Script=Han}/gu)) out.push([m[0]]);
     for (const run of part.match(CJK_RUN) ?? []) {
       // Katakana loanwords are whole words (キッチンカー, ペットシッター): pairs of them would match by chance (ネットショップ
       // and ペットシッター share トシ). Han and Hangul become overlapping pairs; hiragana (particles, endings) is dropped.
@@ -152,7 +158,7 @@ const ROMANCE = new Set<Locale>(["es", "id", "vi"]);
 /** Filler in one language can be a real word in another: Vietnamese "in" is "print" (in 3D). */
 const KEEP: Partial<Record<Locale, Set<string>>> = { vi: new Set(["in"]) };
 
-const STOP_CJK = new Set(["公司", "定制", "订制", "訂製", "客製", "手工", "手作", "自制", "自製", "创业", "創業", "开业", "開業", "副业", "副業", "生意", "加盟", "开店", "開店", "网上", "網上", "网店", "賺錢", "赚钱", "我想", "온라", "라인", "창업", "사업", "부업", "쇼핑", "핑몰", "ビジネス", "ショップ", "オンライン", "起業", "開発"]);
+const STOP_CJK = new Set(["ハンドメイド", "핸드", "드메", "메이", "이드", "公司", "定制", "订制", "訂製", "客製", "手工", "手作", "自制", "自製", "创业", "創業", "开业", "開業", "副业", "副業", "生意", "加盟", "开店", "開店", "网上", "網上", "网店", "賺錢", "赚钱", "我想", "온라", "라인", "창업", "사업", "부업", "쇼핑", "핑몰", "ビジネス", "ショップ", "オンライン", "起業", "開発"]);
 
 /** Every idea's search phrases in every language, tokenized once. */
 const IDEA_POOLS: Record<IdeaId, Set<string>> = Object.fromEntries(
@@ -230,7 +236,7 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
   // a longer text a single shared word ("coffee" in "selling coffee mugs") is too often a passing mention.
   if (best.hits.length >= 2) return best.id;
   const only = best.hits[0];
-  const short = groups.length === 1;
+  const short = new Set(groups.map((g) => g.join("|"))).size === 1;
   const distinct = only.length >= 3 || /[^\x00-\x7f]/.test(only);
   const sharedButCloser = df.get(only) === 2 && tied.length > 0;
   // In a longer text, one word still matches when only this idea uses it and it is not a short Latin word: a long word

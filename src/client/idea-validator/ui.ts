@@ -5,7 +5,7 @@ import { hasIdeasMessages } from "../../shared/messages";
 import { IDEA_ENTRIES, isIdeaId, type IdeaId } from "../../shared/ideas";
 import { ideaData, ideaName } from "../../shared/ideas-i18n";
 import { ideasHref } from "../../shared/path";
-import { OPTION_POINTS, VALIDATOR_QUESTIONS, matchIdea, validateIdea, type ValidatorAnswers, type ValidatorQuestion } from "../../shared/idea-validator";
+import { OPTION_POINTS, VALIDATOR_QUESTIONS, ideaTokens, matchIdea, validateIdea, type ValidatorAnswers, type ValidatorQuestion } from "../../shared/idea-validator";
 
 type State = {
   idea: HTMLTextAreaElement;
@@ -20,6 +20,8 @@ type State = {
   pinned: boolean;
   /** The automatic match the reader overrode when pinning: typing only overrides the pick with a different one. */
   autoAtPin: string;
+  /** The description when the match was pinned: replacing it with text that shares no word ends the pin. */
+  pinText: string;
   /** Idea names in the page's language, for matching. */
   names: Partial<Record<IdeaId, string>>;
   /** What the result area shows (match + answers), so typing does not rebuild it needlessly. */
@@ -55,7 +57,7 @@ export function mountIdeaValidator(host: HTMLElement): void {
     ...OPTION_POINTS[q].map((_, i) => h("option", { value: String(i) }, t(`ideaValidator.${q}.o${i + 1}`))),
   )])) as Record<ValidatorQuestion, HTMLSelectElement>;
   const out = h("div", { class: "iv-out", "aria-live": "polite", "data-out": "result" });
-  state = { idea, match, selects, out, copyBtn: null, pinned: false, autoAtPin: NONE, names: {}, signature: "", ready: false, last: "" };
+  state = { idea, match, selects, out, copyBtn: null, pinned: false, autoAtPin: NONE, pinText: "", names: {}, signature: "", ready: false, last: "" };
   host.append(
     h("header", { class: "tool-head" },
       h("h1", null, t("ideaValidator.title")),
@@ -103,6 +105,7 @@ function fillIdeas(loc: ReturnType<typeof locale>): void {
     state.match.value = preset;
     state.pinned = true;
     state.autoAtPin = matchIdea(state.idea.value, state.names, loc) ?? NONE;
+    state.pinText = state.idea.value;
     paint();
     return;
   }
@@ -124,7 +127,9 @@ function onIdeaInput(): void {
     const found = matchIdea(state.idea.value, state.names, locale());
     // A hand-picked (or preset) match stays through typo fixes and extra words; only a different confident match, or
     // clearing the box, replaces it.
-    const cleared = !state.idea.value.trim();
+    // Clearing the box, or replacing the text with something sharing no word with it (select-all and paste), is a new idea.
+    const before = new Set(ideaTokens(state.pinText, locale()));
+    const cleared = !state.idea.value.trim() || (state.pinned && !ideaTokens(state.idea.value, locale()).some((tk) => before.has(tk)));
     const optedOut = state.pinned && state.match.value === NONE;
     if (!state.pinned || cleared || (!optedOut && found && found !== state.match.value && found !== state.autoAtPin)) {
       state.match.value = found ?? NONE;
@@ -138,6 +143,7 @@ function onMatchChange(): void {
   if (!state) return;
   state.pinned = true;
   state.autoAtPin = state.ready ? matchIdea(state.idea.value, state.names, locale()) ?? NONE : NONE;
+  state.pinText = state.idea.value;
   paint();
 }
 

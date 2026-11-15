@@ -28,6 +28,7 @@ import {
   slangHref,
   ideasHref,
   ideasPackOf,
+  IDEAS_PACK_TOOLS,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -362,7 +363,7 @@ function prefetchCopy(target: Element | null, loc: Locale, hover: boolean): void
   const copy: PageCopy | null = isToolId(nav) ? { tool: nav } : nav.startsWith("learn-") && isTutorialId(nav.slice(6)) ? { tutorial: nav.slice(6) } : null;
   // A tool page that renders with the ideas pack (the idea validator) waits for it too, so fetch it with the copy.
   if (!copy) return;
-  const ideas: IdeaPage = copy.tool && isToolId(copy.tool) ? ideasPackOf({ kind: "app", locale: loc, tool: copy.tool }) : null;
+  const ideas: IdeaPage = copy.tool && IDEAS_PACK_TOOLS.includes(copy.tool as ToolId) ? "hub" : null;
   if (hasPageMessages(loc, false, false, false, false, null, null, null, copy, ideas)) return;
   const load = (): void => {
     loadPageMessages(loc, false, false, false, false, null, null, null, copy, ideas).catch(() => {});
