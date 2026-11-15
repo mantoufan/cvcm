@@ -4,7 +4,7 @@ import { locale, t } from "../i18n";
 import { currency, labeled, numField } from "../valuation/common";
 import { ASSET_FIELDS, DEBT_FIELDS, SCF_2022, ageBand, netWorth, type AssetField, type DebtField } from "../../shared/net-worth";
 import { parseDecimalInput, parseMoneyInput } from "../../shared/decimal-input";
-import { plain } from "../../shared/number-format";
+import { numberFormat, plain } from "../../shared/number-format";
 
 let mounted: { cleanup: () => void } | null = null;
 
@@ -83,7 +83,9 @@ export function mountNetWorth(host: HTMLElement): void {
     const band = ageRaw === undefined ? null : ageBand(ageRaw);
     if (ageRaw !== undefined && !band) compare.append(h("dt", null, t("netWorth.ageRange")), h("dd", null, ""));
     const perUsd = curSel.value === "usd" ? 1 : parseMoneyInput(rate.value, loc);
-    if (band && (perUsd === undefined || !Number.isFinite(perUsd) || perUsd <= 0)) {
+    if (curSel.value !== "usd" && perUsd !== undefined && !(perUsd > 0)) {
+      errorEl.textContent = t("netWorth.err_number", { field: t("netWorth.rate") });
+    } else if (band && perUsd === undefined) {
       rateHint.hidden = false;
     } else if (band && perUsd !== undefined) {
       const ref = SCF_2022[band];
@@ -92,7 +94,11 @@ export function mountNetWorth(host: HTMLElement): void {
         [t("netWorth.median"), usd(ref.median)],
         [t("netWorth.mean"), usd(ref.mean)],
       ];
-      if (curSel.value !== "usd") cmp.push([t("netWorth.inUsd"), usd(r.netWorth / perUsd)]);
+      if (curSel.value !== "usd") {
+        // "3.750" can be 3.75 or 3,750 depending on the writer: show the rate as read.
+        cmp.push([t("netWorth.rateRead"), numberFormat(loc, { maximumFractionDigits: 4 }).format(perUsd)]);
+        cmp.push([t("netWorth.inUsd"), usd(r.netWorth / perUsd)]);
+      }
       cmp.push([t("netWorth.vsMedian"), r.netWorth / perUsd >= ref.median ? t("netWorth.above") : t("netWorth.below")]);
       compare.append(h("dt", { class: "hint" }, t(`netWorth.band_${band}`)), h("dd", null, ""), ...cmp.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
       last += `\n${t(`netWorth.band_${band}`)}\n${cmp.map(([k, v]) => `${k}: ${v}`).join("\n")}`;

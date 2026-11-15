@@ -182,6 +182,8 @@ function baseValue(sld: string): { kind: DomainKind; value: number; features: Do
     return { kind: "numeric", value, features };
   }
   if (/^[a-z]+$/.test(name)) {
+    // A single letter is rarer than any word (a.com is a one-letter name first).
+    if (n === 1) return { kind: "letters1", value: 500_000, features: [{ key: "kind", kind: "letters1" }] };
     if (WORDS.has(name)) {
       const value = n <= 3 ? 400_000 : n <= 4 ? 250_000 : n <= 6 ? 90_000 : n <= 8 ? 40_000 : 15_000;
       features.push({ key: "kind", kind: "word", words: name });
@@ -193,7 +195,6 @@ function baseValue(sld: string): { kind: DomainKind; value: number; features: Do
       features.push({ key: "kind", kind: "twoWords", words: pair.join(" + ") });
       return { kind: "twoWords", value, features };
     }
-    if (n === 1) return { kind: "letters1", value: 500_000, features: [{ key: "kind", kind: "letters1" }] };
     if (n === 2) return { kind: "letters2", value: 300_000, features: [{ key: "kind", kind: "letters2" }] };
     if (n === 3) {
       const say = pronounceable(name);

@@ -142,7 +142,7 @@ export function mountCarDepreciation(host: HTMLElement): void {
           h("table", { class: "mil-chart", "data-out": "schedule" },
             h("thead", null, h("tr", null,
               h("th", { scope: "col" }, t("carDepreciation.year")),
-              h("th", { scope: "col" }, t("carDepreciation.value")),
+              h("th", { scope: "col" }, t("carDepreciation.valueYear")),
               h("th", { scope: "col" }, t("carDepreciation.lostPct")),
             )),
             table,

@@ -393,6 +393,12 @@ describe("review fixes", () => {
     expect(plate("浙A·D88888", "cn").estimate).toBe(plate("浙A·88888D", "cn").estimate);
   });
 
+  it("round 9: one letter before words, Đ series", () => {
+    expect(domain("a.com").kind).toBe("letters1");
+    expect(domain("a.com").estimate).toBe(domain("x.com").estimate);
+    expect(valuePlate("29-MĐ1 123.45", "vn").ok).toBe(true);
+  });
+
   it("takes whole forecast years only", () => {
     expect(dcf({ cashFlow: 100, growth: 0, discount: 0.1, terminalGrowth: 0, years: 1.4 })).toEqual({ ok: false, error: "invalid" });
   });

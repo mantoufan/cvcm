@@ -42,7 +42,8 @@ export function mountPlateValue(host: HTMLElement): void {
       if (!picked && !result.ok && complete) {
         const guess = guessPlateMarket(input.value, market);
         const other = guess === market ? result : valuePlate(input.value, guess);
-        if (other.ok) {
+        // UK marks are written without hyphens; ABC-1234 (a Taiwanese plate) is not one.
+        if (other.ok && !(guess === "uk" && input.value.includes("-"))) {
           market = guess;
           marketSel.value = market;
           paintPresets();

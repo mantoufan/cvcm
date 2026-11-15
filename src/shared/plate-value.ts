@@ -51,7 +51,7 @@ const CN_PROVINCES = "京津沪渝冀豫云辽黑湘皖鲁新苏浙赣鄂桂甘�
 /** Province, city letter, then 5 characters, or a new-energy 6: D/F + letter or digit + 4 digits, or 5 digits + D/F. */
 const CN_RE = new RegExp(`^([${CN_PROVINCES}])?([A-HJ-NP-Z])([A-HJ-NP-Z0-9]{5}|[DF][A-HJ-NP-Z0-9]\\d{4}|\\d{5}[DF])$`);
 /** Province code, series letters, then 4–6 digits: six is a series digit + the 5-digit serial (29-B1 123.45). */
-const VN_RE = /^(\d{2})([A-Z]{1,2})(\d{4,6})$/;
+const VN_RE = /^(\d{2})([A-ZĐ]{1,2})(\d{4,6})$/;
 /** Hanoi (29–33, 40) and Ho Chi Minh City (41, 50–59) plates draw the most bidders. */
 const VN_BIG = /^(29|30|31|32|33|40|41|50|51|52|53|54|55|56|57|58|59)$/;
 
@@ -60,7 +60,7 @@ const SEP = "\\s.\\-·•・_";
 
 const SEP_RE = new RegExp(`[${SEP}]`, "g");
 /** A Vietnamese plate with a separator after the series digit (29B1-8888): the serial starts after it. */
-const VN_SPLIT_RE = new RegExp(`^\\d{2}[${SEP}]*[A-Z]{1,2}\\d[${SEP}]+[\\d${SEP}]+$`);
+const VN_SPLIT_RE = new RegExp(`^\\d{2}[${SEP}]*[A-ZĐ]{1,2}\\d[${SEP}]+[\\d${SEP}]+$`);
 
 /** Upper case, with the separators taken out (and full-width forms from CJK input). */
 export function normalizePlate(raw: string): string {

@@ -231,6 +231,22 @@ describe("review fixes (ui)", () => {
     expect(q("[data-out=compare]").textContent).toContain("Your net worth in US dollars");
   });
 
+  it("shows the rate as read, names a bad rate and keeps a hyphenated plate off the UK", () => {
+    mountNetWorth(host);
+    set("[data-field=age]", "40");
+    set("[data-field=currency]", "other", "change");
+    set("[data-field=rate]", "3.75");
+    expect(q("[data-out=compare]").textContent).toContain("Rate used3.75");
+    set("[data-field=rate]", "abc");
+    expect(q("[data-out=error]").textContent).toContain("is not a number");
+    unmountNetWorth();
+    host.replaceChildren();
+    mountPlateValue(host);
+    set("[data-field=market]", "cn", "change");
+    set("[data-field=plate]", "ABC-1234");
+    expect(q<HTMLSelectElement>("[data-field=market]").value).toBe("cn");
+  });
+
   it("names a distance that is not a number and an age out of range", () => {
     mountCarDepreciation(host);
     set("[data-field=distance]", "12k");
