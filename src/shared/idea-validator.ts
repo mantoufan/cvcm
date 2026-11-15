@@ -50,9 +50,9 @@ export type ValidatorGrade = "strong" | "promising" | "risky" | "rethink";
 export type ValidatorResult = {
   /** 0-100 from the answers alone. */
   readiness: number;
-  /** The matched idea's outlook score, if any. */
+  /** The matched idea's outlook score, if any: shown beside the score as a market benchmark, never mixed into it. */
   market: number | null;
-  /** Readiness 75% + market 25% when there is a match, else readiness. */
+  /** The score: readiness from the answers alone, so the same answers always grade the same. */
   total: number;
   grade: ValidatorGrade;
   /** Questions answered with 3-4 points, best first. */
@@ -64,9 +64,11 @@ export type ValidatorResult = {
 /** Null until every question has an answer. */
 export function validateIdea(answers: ValidatorAnswers, market: number | null): ValidatorResult | null {
   if (VALIDATOR_QUESTIONS.some((q) => answers[q] === undefined)) return null;
-  const points = (q: ValidatorQuestion): number => OPTION_POINTS[q][answers[q]!] ?? 0;
+  // "Nobody does this yet" is weak only while demand is unproven: with people asking or paying, an empty market is
+  // an opening, scored like weak competitors.
+  const points = (q: ValidatorQuestion): number => q === "competition" && answers.competition === 4 && (answers.evidence ?? 0) >= 3 ? OPTION_POINTS.competition[3] : OPTION_POINTS[q][answers[q]!] ?? 0;
   const readiness = Math.round(VALIDATOR_QUESTIONS.reduce((sum, q) => sum + (QUESTION_WEIGHT[q] * points(q)) / 4, 0));
-  const total = market === null ? readiness : Math.round(0.75 * readiness + 0.25 * market);
+  const total = readiness;
   const grade: ValidatorGrade = total >= 75 ? "strong" : total >= 55 ? "promising" : total >= 35 ? "risky" : "rethink";
   const lost = (q: ValidatorQuestion): number => QUESTION_WEIGHT[q] * (4 - points(q));
   const strengths = VALIDATOR_QUESTIONS.filter((q) => points(q) >= 3).sort((a, b) => QUESTION_WEIGHT[b] * points(b) - QUESTION_WEIGHT[a] * points(a));
@@ -101,7 +103,8 @@ export function tokenGroups(text: string, locale: Locale | null = null): string[
         // Hiragana is particles and endings; a lone kanji (開 in 開きたい) is too ambiguous to match on.
         if (/^\p{Script=Hiragana}/u.test(seg) || (/^\p{Script=Han}$/u.test(seg))) continue;
         const pieces = (/^[\p{Script=Katakana}\u30fc]/u.test(seg) || seg.length === 1 ? [seg] : Array.from({ length: seg.length - 1 }, (_, i) => seg.slice(i, i + 2))).filter((p) => !STOP_CJK.has(p));
-        if (/^\p{Script=Hangul}/u.test(seg)) {
+        // The pieces of one Hangul word, or of one Han run (Chinese has no spaces: 开一家宠物店 is one run), count once.
+        if (/^\p{Script=Hangul}|^\p{Script=Han}/u.test(seg) && pieces.length > 1) {
           if (pieces.length) out.push(pieces);
         } else for (const piece of pieces) out.push([piece]);
       }
@@ -127,7 +130,7 @@ export function tokenGroups(text: string, locale: Locale | null = null): string[
 
 /** Words that say "business", "how to", "online", "I want" and the like in the eight languages (accents removed). */
 const STOP = new Set([
-  "business", "does", "was", "has", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small", "open", "opening", "launch", "handmade", "homemade", "app", "apps", "mobile", "portable", "custom", "big", "best", "good", "cheap", "run", "own", "new", "local", "near", "about", "some", "this", "that",
+  "business", "does", "was", "has", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small", "open", "opening", "launch", "handmade", "homemade", "mobile", "portable", "custom", "big", "best", "good", "cheap", "run", "own", "new", "local", "near", "about", "some", "this", "that",
   "negocio", "de", "la", "el", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi", "abrir", "montar", "nuevo", "artesanal", "artesanale", "aromatica", "casero", "casera",
   "bisni", "bisnis", "usaha", "jasa", "di", "cara", "jualan", "jual", "rumah", "saya", "ingin", "mau", "dan", "yang", "toko", "buka", "membuka",
   "kinh", "doanh", "mo", "ban", "va", "cua", "hang", "tren", "mang", "toi", "muon", "nha", "dich", "vu", "cong", "ty", "lam",

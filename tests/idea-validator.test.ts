@@ -31,15 +31,22 @@ describe("idea validator: scoring", () => {
     expect(low.weaknesses.slice(1, 3).sort()).toEqual(["channel", "edge"]);
   });
 
-  it("blends a matched idea's outlook score as a quarter of the total, and grades by the total", () => {
+  it("shows a matched idea's outlook score beside the score without changing it, and grades by the score", () => {
     const mid = validateIdea(all(2), 80)!;
     expect(mid.market).toBe(80);
-    expect(mid.total).toBe(Math.round(0.75 * mid.readiness + 0.25 * 80));
+    expect(mid.total).toBe(mid.readiness);
+    expect(validateIdea(all(2), 10)!.total).toBe(validateIdea(all(2), null)!.total);
     const grades = [validateIdea(all(4), 100)!.grade, validateIdea(all(2), null)!.grade, validateIdea(all(1), null)!.grade, validateIdea(all(0), 0)!.grade];
     expect(new Set(grades).size).toBeGreaterThanOrEqual(3);
-    // "Nobody does this yet" is not the best competition answer.
+    // "Nobody does this yet" is not the best competition answer while demand is unproven, and not a weak spot once
+    // people ask or pay.
     expect(OPTION_POINTS.competition[4]).toBeLessThan(OPTION_POINTS.competition[3]);
+    const proven = validateIdea({ evidence: 4, price: 4, competition: 4, cost: 4, time: 4, edge: 4, channel: 4, trend: 3 }, null)!;
+    expect(proven.weaknesses).toEqual([]);
+    const unproven = validateIdea({ evidence: 1, price: 4, competition: 4, cost: 4, time: 4, edge: 4, channel: 4, trend: 3 }, null)!;
+    expect(unproven.weaknesses).toContain("competition");
   });
+
 
 });
 
@@ -105,6 +112,8 @@ describe("idea validator: matching", () => {
     expect(matchIdea("home bakeries", names("en"))).toBe("home-bakery");
     expect(matchIdea("洗车", names("zh-CN"), "zh-CN")).toBe("car-wash");
     expect(matchIdea("status app", names("en"))).toBeNull();
+    expect(matchIdea("AI app", names("en"))).toBe("ai-app");
+    expect(matchIdea("开一家宠物店", names("zh-CN"), "zh-CN")).toBe("pet-services");
     expect(matchIdea("ネットショップを開きたい", names("ja"), "ja")).toBeNull();
     expect(matchIdea("pets", names("en"))).toBe("pet-services");
     // Plurals and accents.
