@@ -1012,6 +1012,30 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountHeight(host);
     return m.unmountHeight;
   },
+  "hangman": async (host, ctx) => {
+    const m = await import("./hangman/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountHangman(host);
+    return m.unmountHangman;
+  },
+  "rock-paper-scissors": async (host, ctx) => {
+    const m = await import("./rock-paper-scissors/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountRps(host);
+    return m.unmountRps;
+  },
+  "bac-calculator": async (host, ctx) => {
+    const m = await import("./bac-calculator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountBac(host);
+    return m.unmountBac;
+  },
+  "simple-interest": async (host, ctx) => {
+    const m = await import("./simple-interest/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSimpleInterest(host);
+    return m.unmountSimpleInterest;
+  },
   "2048": async (host, ctx) => {
     const m = await import("./game-2048/ui");
     if (!ctx.alive()) return undefined;

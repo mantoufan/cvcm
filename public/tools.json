@@ -76,7 +76,7 @@
     },
     {
       "id": "games",
-      "name": "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, checkers, reversi, gomoku, nonogram, memory game, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
+      "name": "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, hangman, checkers, reversi, gomoku, nonogram, memory game, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF"
     },
     {
       "id": "assets",
@@ -1142,6 +1142,14 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "simple-interest",
+      "name": "Simple interest calculator",
+      "description": "Interest, principal, rate or time.",
+      "category": "finance",
+      "url": "https://cv.cm/en/simple-interest/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
       "id": "bmi",
       "name": "BMI calculator",
       "description": "BMI from kg and cm. WHO bands.",
@@ -1243,6 +1251,14 @@
       "description": "How tall your child may grow.",
       "category": "health",
       "url": "https://cv.cm/en/height-calculator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "bac-calculator",
+      "name": "BAC calculator",
+      "description": "Estimate blood alcohol content.",
+      "category": "health",
+      "url": "https://cv.cm/en/bac-calculator/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
@@ -1550,6 +1566,14 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "rock-paper-scissors",
+      "name": "Rock paper scissors",
+      "description": "Play the computer, best of 3, 5 or 7.",
+      "category": "fun",
+      "url": "https://cv.cm/en/rock-paper-scissors/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
       "id": "rom-emulator",
       "name": "ROM emulator",
       "description": "Play your own GBA, NES, SNES, GB or Mega Drive ROM.",
@@ -1699,6 +1723,14 @@
       "description": "Find the matching pairs.",
       "category": "games",
       "url": "https://cv.cm/en/memory-game/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "hangman",
+      "name": "Hangman",
+      "description": "Guess the word letter by letter.",
+      "category": "games",
+      "url": "https://cv.cm/en/hangman/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

@@ -49,13 +49,13 @@ export const CATEGORIES = [
   { id: "text", tools: ["word-count", "case", "diff", "replace", "sort", "reverse", "slug", "lorem", "fancy-text", "markdown", "notepad", "reading-time", "morse"] },
   { id: "dev", tools: ["json", "data", "xml-json", "yaml-json", "base64", "url-encode", "html", "text-hex", "binary", "hash", "jwt", "uuid", "password", "regex", "cron", "cidr", "chmod", "timestamp"] },
   { id: "math", tools: ["calculator", "percent", "fraction", "average", "factors", "lcm-gcf", "quadratic", "triangle", "area", "volume", "slope", "graphing-calculator", "concrete", "radix", "roman", "words", "aspect", "units", "gpa", "grade"] },
-  { id: "finance", tools: ["loan", "mortgage", "compound", "discount", "tip", "vat", "margin", "hourly", "time-card", "fuel-cost", "electricity"] },
-  { id: "health", tools: ["bmi", "tdee", "body-fat", "ideal-weight", "water-intake", "macro", "calories-burned", "pace", "sleep", "due-date", "ovulation", "color-blindness-test", "height-calculator"] },
+  { id: "finance", tools: ["loan", "mortgage", "compound", "discount", "tip", "vat", "margin", "hourly", "time-card", "fuel-cost", "electricity", "simple-interest"] },
+  { id: "health", tools: ["bmi", "tdee", "body-fat", "ideal-weight", "water-intake", "macro", "calories-burned", "pace", "sleep", "due-date", "ovulation", "color-blindness-test", "height-calculator", "bac-calculator"] },
   { id: "time", tools: ["timezone", "countdown", "stopwatch", "alarm", "pomodoro", "days", "add-days", "workdays", "week", "duration", "age", "military-time"] },
   { id: "design", tools: ["color", "hex-rgb", "contrast", "gradient"] },
   { id: "hardware", tools: ["mic-test", "decibel-meter", "webcam-test", "keyboard-test", "gamepad-test", "touch-test", "dead-pixel", "refresh-rate", "screen-resolution"] },
-  { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter"] },
-  { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game"] },
+  { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter", "rock-paper-scissors"] },
+  { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "hangman"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
   { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation"] },
 ] as const;
@@ -217,6 +217,10 @@ export const TOOLS = [
   "color-blindness-test",
   "military-time",
   "height-calculator",
+  "hangman",
+  "rock-paper-scissors",
+  "bac-calculator",
+  "simple-interest",
   "2048",
   "dinosaur-game",
   "mahjong",
@@ -255,7 +259,7 @@ export const TOOLS = [
 export type ToolId = (typeof TOOLS)[number];
 
 /** Browser games (tool pages) listed on the /games/ hub too, apart from the emulator catalogue. */
-export const BROWSER_GAMES = ["solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "sudoku", "tic-tac-toe"] as const satisfies readonly ToolId[];
+export const BROWSER_GAMES = ["solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "sudoku", "tic-tac-toe", "hangman"] as const satisfies readonly ToolId[];
 
 /** Exact-match converter URLs. Same engine as `/convert/`, unique title and FAQ. */
 export const CONVERT_JOBS = [
