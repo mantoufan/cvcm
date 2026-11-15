@@ -207,6 +207,17 @@ describe("review fixes (ui)", () => {
     expect(q<HTMLInputElement>("[data-field=age]").value).toBe("");
   });
 
+  it("skips a range at the floor and gives signed fields a keyboard with a minus", () => {
+    mountDomainValue(host);
+    set("[data-field=domain]", "my-best-shop-online.net");
+    expect(host.querySelector("[data-out=range]")).toBeNull();
+    unmountDomainValue();
+    host.replaceChildren();
+    mountNetWorth(host);
+    expect(q<HTMLInputElement>("[data-field=investments]").getAttribute("inputmode")).toBe("text");
+    expect(q<HTMLInputElement>("[data-field=age]").getAttribute("inputmode")).toBe("numeric");
+  });
+
   it("names a distance that is not a number and an age out of range", () => {
     mountCarDepreciation(host);
     set("[data-field=distance]", "12k");

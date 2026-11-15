@@ -40,8 +40,6 @@ const WORDS = new Set(
 /** Words a buyer pays most for right now. */
 const HOT = new Set(["ai", "crypto", "bot", "coin", "token", "pay", "bank", "loan", "insure", "cash", "health", "solar", "data", "cloud", "bet", "poker", "casino", "app", "agent"]);
 
-export type TldTier = { tld: string; factor: number };
-
 /** What the same name is worth under each extension, relative to .com. */
 const TLD_FACTOR: Record<string, number> = {
   com: 1, ai: 0.55, io: 0.18, net: 0.14, org: 0.14, co: 0.12, app: 0.1, dev: 0.08, me: 0.06, cn: 0.1, "com.cn": 0.06,
@@ -107,7 +105,7 @@ function isTwoPartSuffix(second: string, top: string): boolean {
 export function parseDomain(raw: string): { ok: true; sld: string; tld: string } | { ok: false; error: DomainError } {
   let s = raw.trim().toLowerCase();
   if (!s) return { ok: false, error: "empty" };
-  s = s.replace(/^[a-z][a-z0-9+.-]*:\/\//, "").replace(/[/?#].*$/, "").replace(/:\d+$/, "").replace(/\.$/, "");
+  s = s.replace(/^[a-z][a-z0-9+.-]*:\/\//, "").replace(/[/?#].*$/, "").replace(/^[^@]*@/, "").replace(/:\d+$/, "").replace(/\.$/, "");
   // Names in other scripts (例子.com, tên.vn) are read in their punycode form (xn--…), as registries store them.
   if (/[^\x00-\x7f]/.test(s)) {
     try {
@@ -232,12 +230,13 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
     features.push({ key: "hyphen" });
     value *= 0.15;
   }
-  // A hot word on its own or beside another common word (aibot, paynow), not inside a longer one (air, payroll…).
+  // A hot word on its own, in front of another common word (aibot, paynow), or closing one when it is four letters or
+  // more (cloudtoken); not inside a longer word (air, payroll) or as a short ending (alphabet is not alpha + bet).
   const plainName = sld.replace(/-/g, "");
   const hot = [...HOT].find((w) =>
     plainName === w ||
     (plainName.startsWith(w) && isPartWord(plainName.slice(w.length))) ||
-    (plainName.endsWith(w) && isPartWord(plainName.slice(0, -w.length))));
+    (w.length >= 4 && plainName.endsWith(w) && isPartWord(plainName.slice(0, -w.length))));
   if (hot && base.kind !== "numeric") {
     features.push({ key: "hot", word: hot });
     value *= 1.6;
@@ -259,7 +258,10 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
 
 /** The Unicode form of a punycode label, or null if it is not valid punycode. */
 export function decodeIdn(label: string): string | null {
-  return label.startsWith("xn--") ? punyDecode(label.slice(4)) : null;
+  if (!label.startsWith("xn--")) return null;
+  const decoded = punyDecode(label.slice(4));
+  // A real one has a character outside ASCII and no control characters (xn--abc decodes, but to nothing anyone typed).
+  return decoded && /[^\x00-\x7f]/.test(decoded) && !/[\x00-\x1f\x7f-\x9f]/.test(decoded) ? decoded : null;
 }
 
 /** RFC 3492 punycode decoder (the part after "xn--"). */

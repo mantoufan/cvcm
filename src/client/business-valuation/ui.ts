@@ -25,9 +25,9 @@ export function mountBusinessValuation(host: HTMLElement): void {
   const rLo = numField("revenueLow", "", () => markCustom());
   const rHi = numField("revenueHigh", "", () => markCustom());
   const cash = numField("cashFlow", "100000", () => paint());
-  const growth = numField("growth", "8", () => paint());
+  const growth = numField("growth", "8", () => paint(), true);
   const discount = numField("discount", "18", () => paint());
-  const terminal = numField("terminalGrowth", "2", () => paint());
+  const terminal = numField("terminalGrowth", "2", () => paint(), true);
   const years = numField("years", "5", () => paint());
   /** Amounts (thousands may be dot-grouped in es/id/vi); multiples and rates are plain decimals. */
   const MONEY = new Set([revenue, profit, cash]);

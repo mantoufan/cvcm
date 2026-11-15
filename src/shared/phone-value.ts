@@ -10,8 +10,6 @@
 import { CN_LUCKY_TAILS, VN_LUCKY_TAILS, distinctDigits, logBetween, longestRun, luckyTail, roundEstimate, tailRun, tailShape, tailStraight, type TailShape } from "./number-pattern";
 import { halfWidth } from "./factors";
 
-export { CN_LUCKY_TAILS, VN_LUCKY_TAILS };
-
 export const PHONE_MARKETS = ["cn", "vn", "intl"] as const;
 export type PhoneMarket = (typeof PHONE_MARKETS)[number];
 
@@ -81,17 +79,17 @@ export function isValidPhone(digits: string, market: PhoneMarket): boolean {
  */
 export function guessMarket(raw: string, current: PhoneMarket): PhoneMarket {
   const text = halfWidth(raw).trim();
-  const plain = text.replace(/\D/g, "");
   if (/^(?:\+|00)/.test(text)) {
+    const plain = text.replace(/\D/g, "");
     const code = plain.replace(/^00/, "");
     if (/^860?1[3-9]\d{9}$/.test(code)) return "cn";
     if (/^840?[35789]\d{8}$/.test(code)) return "vn";
     return "intl";
   }
   if (current === "intl" || isValidPhone(phoneDigits(raw, current), current)) return current;
-  if (/^1[3-9]\d{9}$/.test(plain)) return "cn";
-  if (/^0[35789]\d{8}$/.test(plain)) return "vn";
-  return current;
+  // The other market reads it (its national form, or its code typed without + : 84 903…, 86 138…).
+  const other: PhoneMarket = current === "cn" ? "vn" : "cn";
+  return isValidPhone(phoneDigits(raw, other), other) ? other : current;
 }
 
 export function phoneNumerology(digits: string): { n: number; good: boolean } {
@@ -115,10 +113,13 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
   const features: PhoneFeature[] = [];
   let tier = 0;
   let tierDigit = "";
-  const lift = (t: number, digit = "") => {
+  // Whether the tier came from the ending (most patterns) or from a run inside the number.
+  let tierAtEnd = true;
+  const lift = (t: number, digit = "", atEnd = true) => {
     if (t > tier) {
       tier = t;
       tierDigit = digit;
+      tierAtEnd = atEnd;
     }
   };
 
@@ -146,7 +147,7 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
   const inner = longestRun(body.slice(0, body.length - run));
   if (inner.length >= 4 && shape !== "AAAABBBB") {
     features.push({ key: "midRun", n: inner.length, digit: inner.digit });
-    lift(inner.length >= 6 ? 3 : inner.length - 3, inner.digit);
+    lift(inner.length >= 6 ? 3 : inner.length - 3, inner.digit, false);
   }
   const luckyTails = market === "vn" ? VN_LUCKY_TAILS : market === "cn" ? CN_LUCKY_TAILS : null;
   if (luckyTails) {
@@ -165,7 +166,7 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
   // 4444 8888 alike, a 4455 ending too).
   const span = shape === "AAAABBBB" || shape === "ABCDABCD" ? 8 : Math.max(4, run);
   const patternFours = [...body.slice(-span)].filter((c) => c === "4").length;
-  if (market === "cn" && tier > 0 && (tierDigit === "4" || patternFours * 2 >= span)) tier -= 1;
+  if (market === "cn" && tier > 0 && (tierDigit === "4" || (tierAtEnd && patternFours * 2 >= span))) tier -= 1;
 
   const fours = [...body].filter((c) => c === "4").length;
   if (market === "cn" && fours >= 2) features.push({ key: "fours", n: fours });

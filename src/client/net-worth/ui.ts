@@ -20,7 +20,7 @@ export function mountNetWorth(host: HTMLElement): void {
   let copyBtn: HTMLButtonElement | null = null;
   const fields = new Map<string, HTMLInputElement>();
   const field = (id: AssetField | DebtField) => {
-    const el = numField(id, START[id] ?? "", () => paint());
+    const el = numField(id, START[id] ?? "", () => paint(), true);
     el.placeholder = "0";
     fields.set(id, el);
     return labeled(t(`netWorth.${id}`), el);

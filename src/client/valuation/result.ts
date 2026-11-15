@@ -25,7 +25,7 @@ export function paintEstimate(
 ): string {
   const amount = r.estimate > 0 ? currency(loc, r.currency, r.estimate) : t("valuation.noPremium");
   const short = r.estimate > 0 ? compactCurrency(loc, r.currency, r.estimate) : "";
-  const range = r.estimate > 0 ? t("valuation.range", { low: currency(loc, r.currency, r.low), high: currency(loc, r.currency, r.high) }) : "";
+  const range = r.estimate > 0 && r.low !== r.high ? t("valuation.range", { low: currency(loc, r.currency, r.low), high: currency(loc, r.currency, r.high) }) : "";
   const parts: Array<HTMLElement | null> = [
     h("p", { class: "hint" }, r.title),
     h("p", { class: "shape-main", "data-out": "estimate" }, amount),

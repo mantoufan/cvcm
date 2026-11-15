@@ -16,21 +16,19 @@ def flat(o, p=""):
 
 def check(loc: str) -> list[str]:
     errs = []
-    for kind in ("tools-src",):
-        en = dict(flat(json.loads((ROOT / f"scripts/{kind}/batch29/en.json").read_text(encoding="utf-8"))))
-        path = ROOT / f"scripts/{kind}/batch29/{loc}.json"
-        if not path.exists():
-            errs.append(f"missing {path}")
-            continue
-        tr = dict(flat(json.loads(path.read_text(encoding="utf-8"))))
-        for k in en.keys() - tr.keys():
-            errs.append(f"{kind}: missing {k}")
-        for k in tr.keys() - en.keys():
-            errs.append(f"{kind}: extra {k}")
-        for k, v in en.items():
-            if k in tr and isinstance(v, str):
-                if set(re.findall(r"\{\w+\}", v)) != set(re.findall(r"\{\w+\}", str(tr[k]))):
-                    errs.append(f"{kind}: placeholders differ in {k}")
+    en = dict(flat(json.loads((ROOT / "scripts/tools-src/batch29/en.json").read_text(encoding="utf-8"))))
+    path = ROOT / f"scripts/tools-src/batch29/{loc}.json"
+    if not path.exists():
+        return [f"missing {path}"]
+    tr = dict(flat(json.loads(path.read_text(encoding="utf-8"))))
+    for k in en.keys() - tr.keys():
+        errs.append(f"missing {k}")
+    for k in tr.keys() - en.keys():
+        errs.append(f"extra {k}")
+    for k, v in en.items():
+        if k in tr and isinstance(v, str):
+            if set(re.findall(r"\{\w+\}", v)) != set(re.findall(r"\{\w+\}", str(tr[k]))):
+                errs.append(f"placeholders differ in {k}")
     return errs
 
 

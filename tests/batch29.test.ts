@@ -369,6 +369,20 @@ describe("review fixes", () => {
     expect(parseDomain("mail.web.de")).toEqual({ ok: true, sld: "web", tld: "de" });
   });
 
+  it("round 7: inner runs, short hot endings, bare codes, userinfo, fake IDNs and the serial read", () => {
+    // 8888 inside sets the tier; the 44 at the end does not cost it.
+    expect(phone("13888884412", "cn").tier).toBe(1);
+    expect(domain("alphabet.com").features.some((f) => f.key === "hot")).toBe(false);
+    expect(domain("cloudtoken.com").features).toContainEqual({ key: "hot", word: "token" });
+    expect(guessMarket("84 903 686 868", "cn")).toBe("vn");
+    expect(guessMarket("86 138 8888 6688", "vn")).toBe("cn");
+    expect(parseDomain("https://user:pw@site.com/x")).toEqual({ ok: true, sld: "site", tld: "com" });
+    expect(decodeIdn("xn--abc")).toBeNull();
+    expect(domain("xn--abc.com").kind).not.toBe("idn");
+    expect(plate("29B18888", "vn").features).toContainEqual({ key: "vnSerial", serial: "18888" });
+    expect(plate("29B1-8888", "vn").features).toContainEqual({ key: "vnSerial", serial: "8888" });
+  });
+
   it("takes whole forecast years only", () => {
     expect(dcf({ cashFlow: 100, growth: 0, discount: 0.1, terminalGrowth: 0, years: 1.4 })).toEqual({ ok: false, error: "invalid" });
   });

@@ -28,7 +28,10 @@ export function labeled(label: string, control: HTMLElement): HTMLElement {
   return h("label", { class: "field" }, h("span", null, label), control);
 }
 
-/** A number field read with the page's decimal mark, empty → undefined. */
-export function numField(field: string, value: string, onInput: () => void): HTMLInputElement {
-  return h("input", { type: "text", inputmode: "decimal", autocomplete: "off", "data-field": field, value, onInput });
+/**
+ * A number field read with the page's decimal mark, empty → undefined. `signed` fields get the full keyboard: phone
+ * decimal keypads have no minus key.
+ */
+export function numField(field: string, value: string, onInput: () => void, signed = false): HTMLInputElement {
+  return h("input", { type: "text", inputmode: signed ? "text" : "decimal", autocomplete: "off", "data-field": field, value, onInput });
 }

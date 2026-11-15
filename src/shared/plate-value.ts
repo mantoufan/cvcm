@@ -29,6 +29,7 @@ export type PlateFeature =
   | { key: "shape"; shape: Exclude<TailShape, null> }
   | { key: "luckyTail"; tail: string }
   | { key: "bigCity" }
+  | { key: "vnSerial"; serial: string }
   | { key: "letters" }
   | { key: "plain" };
 
@@ -212,6 +213,8 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
     const split = VN_SPLIT_RE.test(halfWidth(raw).toUpperCase().trim());
     const serial = split ? m[3]!.slice(1) : m[3]!.length === 6 ? m[3]!.slice(1) : m[3]!;
     if (serial.length < 4) return { ok: false, error: "invalid" };
+    // 29B18888 could be series B1 + 8888 or B + 18888: the page says which serial it read.
+    const vnSerial: PlateFeature = { key: "vnSerial", serial };
     const s = scoreSerial(serial, VN_LUCKY_TAILS);
     ({ tier, f, features } = s);
     // A four-digit serial (older plates) is not auctioned the same way: one tier lower.
@@ -220,6 +223,7 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
       features.push({ key: "bigCity" });
       f += 0.15;
     }
+    features.push(vnSerial);
     band = VN_LADDER[tier]!;
   } else {
     const m = CN_RE.exec(p);
