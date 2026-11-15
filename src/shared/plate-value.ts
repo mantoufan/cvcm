@@ -62,14 +62,15 @@ const SEP_RE = new RegExp(`[${SEP}]`, "g");
 /** A Vietnamese plate with a separator after the series digit (29B1-8888): the serial starts after it. */
 const VN_SPLIT_RE = new RegExp(`^\\d{2}[${SEP}]*[A-ZĐ]{1,2}\\d[${SEP}]+[\\d${SEP}]+$`);
 
-/** Upper case, with the separators taken out (and full-width forms from CJK input). */
 /** Traditional forms of province characters (粵B from a Taiwanese or Hong Kong keyboard) as they appear on plates. */
 const PROVINCE_SIMPLIFIED: Record<string, string> = {
   粵: "粤", 滬: "沪", 遼: "辽", 魯: "鲁", 蘇: "苏", 贛: "赣", 晉: "晋", 陝: "陕", 閩: "闽", 貴: "贵", 寧: "宁", 瓊: "琼", 雲: "云",
 };
+const TRADITIONAL_RE = new RegExp(`[${Object.keys(PROVINCE_SIMPLIFIED).join("")}]`, "g");
 
+/** Upper case, with the separators taken out, full-width forms from CJK input and Traditional province characters. */
 export function normalizePlate(raw: string): string {
-  return halfWidth(raw).toUpperCase().replace(SEP_RE, "").replace(/[粵滬遼魯蘇贛晉陝閩貴寧瓊雲]/g, (c) => PROVINCE_SIMPLIFIED[c]!);
+  return halfWidth(raw).toUpperCase().replace(SEP_RE, "").replace(TRADITIONAL_RE, (c) => PROVINCE_SIMPLIFIED[c]!);
 }
 
 export function ukFormat(p: string): UkFormat | null {

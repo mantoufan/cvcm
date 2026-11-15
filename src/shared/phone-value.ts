@@ -115,13 +115,13 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
   const features: PhoneFeature[] = [];
   let tier = 0;
   let tierDigit = "";
-  // Whether the tier came from the ending (most patterns) or from a run inside the number.
-  let tierAtEnd = true;
-  const lift = (t: number, digit = "", atEnd = true) => {
+  // How many digits at the end make the pattern that set the tier (0 for a run inside the number).
+  let tierSpan = 0;
+  const lift = (t: number, digit: string, span: number) => {
     if (t > tier) {
       tier = t;
       tierDigit = digit;
-      tierAtEnd = atEnd;
+      tierSpan = span;
     }
   };
 
@@ -129,46 +129,45 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
   const last = body[body.length - 1]!;
   if (run >= 3) {
     features.push({ key: "tailRun", n: run, digit: last });
-    lift(Math.min(6, run - 1), last);
+    lift(Math.min(6, run - 1), last, run);
   }
   const straight = tailStraight(body);
   if (straight >= 4) {
     features.push({ key: "straight", n: straight });
-    lift(straight >= 6 ? 4 : straight === 5 ? 3 : 2);
+    lift(straight >= 6 ? 4 : straight === 5 ? 3 : 2, "", straight);
   }
   const shape = tailShape(body);
   if (shape === "AAAABBBB") {
     // Two runs of four (44448888) sell above a single run of four.
     features.push({ key: "shape", shape });
-    lift(4, last);
+    lift(4, last, 8);
   } else if (shape && run < 4) {
     features.push({ key: "shape", shape });
-    lift(shape.length >= 6 ? 3 : 2);
+    lift(shape.length >= 6 ? 3 : 2, "", shape.length);
   }
   // A run inside the number (not at the end) counts for less.
   const inner = longestRun(body.slice(0, body.length - run));
   if (inner.length >= 4 && shape !== "AAAABBBB") {
     features.push({ key: "midRun", n: inner.length, digit: inner.digit });
-    lift(inner.length >= 6 ? 3 : inner.length - 3, inner.digit, false);
+    lift(inner.length >= 6 ? 3 : inner.length - 3, inner.digit, 0);
   }
   const luckyTails = market === "vn" ? VN_LUCKY_TAILS : market === "cn" ? CN_LUCKY_TAILS : null;
   if (luckyTails) {
     const tail = luckyTail(body, luckyTails);
     if (tail && run < 3) {
       features.push({ key: "luckyTail", tail });
-      lift(1);
+      lift(1, "", tail.length);
     }
   }
   const year = Number(body.slice(-4));
   if (tier === 0 && body.length >= 6 && year >= 1950 && year <= 2030) {
     features.push({ key: "yearTail", year: body.slice(-4) });
-    lift(1);
+    lift(1, "", 4);
   }
   // In Chinese 4 sounds like "death": a pattern that is half or more 4s sells a tier lower (8888 4444 and
-  // 4444 8888 alike, a 4455 ending too).
-  const span = shape === "AAAABBBB" || shape === "ABCDABCD" ? 8 : Math.max(4, run);
-  const patternFours = [...body.slice(-span)].filter((c) => c === "4").length;
-  if (market === "cn" && tier > 0 && (tierDigit === "4" || (tierAtEnd && patternFours * 2 >= span))) tier -= 1;
+  // 4444 8888 alike, a 4455 ending too), judged on the digits of the pattern that set the tier.
+  const patternFours = tierSpan ? [...body.slice(-tierSpan)].filter((c) => c === "4").length : 0;
+  if (market === "cn" && tier > 0 && (tierDigit === "4" || (tierSpan > 0 && patternFours * 2 >= tierSpan))) tier -= 1;
 
   const fours = [...body].filter((c) => c === "4").length;
   if (market === "cn" && fours >= 2) features.push({ key: "fours", n: fours });

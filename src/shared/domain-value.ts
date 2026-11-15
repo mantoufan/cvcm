@@ -155,6 +155,11 @@ export function twoWords(s: string): [string, string] | null {
   return null;
 }
 
+/** .com value of two common words by total letters. */
+function twoWordsValue(n: number): number {
+  return n <= 7 ? 18_000 : n <= 10 ? 6_000 : n <= 13 ? 2_000 : 700;
+}
+
 /** .com value of the name before the extension, in US dollars, with its kind. */
 function baseValue(sld: string): { kind: DomainKind; value: number; features: DomainFeature[]; chars?: number } {
   const features: DomainFeature[] = [];
@@ -173,7 +178,7 @@ function baseValue(sld: string): { kind: DomainKind; value: number; features: Do
     const parts = sld.split("-").filter(Boolean);
     if (parts.length === 2 && parts.every(isPartWord)) {
       features.push({ key: "kind", kind: "twoWords", words: parts.join(" + ") });
-      return { kind: "twoWords", value: n <= 7 ? 18_000 : n <= 10 ? 6_000 : n <= 13 ? 2_000 : 700, features };
+      return { kind: "twoWords", value: twoWordsValue(n), features };
     }
     const mixed = /\d/.test(name);
     features.push({ key: "kind", kind: mixed ? "mixed" : "letters" });
@@ -205,7 +210,7 @@ function baseValue(sld: string): { kind: DomainKind; value: number; features: Do
     }
     const pair = twoWords(name);
     if (pair) {
-      const value = n <= 7 ? 18_000 : n <= 10 ? 6_000 : n <= 13 ? 2_000 : 700;
+      const value = twoWordsValue(n);
       features.push({ key: "kind", kind: "twoWords", words: pair.join(" + ") });
       return { kind: "twoWords", value, features };
     }

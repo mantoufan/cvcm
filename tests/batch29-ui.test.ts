@@ -261,6 +261,14 @@ describe("review fixes (ui)", () => {
     expect(q("[data-out=rows]").textContent).toContain("Needs the DCF inputs");
   });
 
+  it("shows net worth in dollars without an age", () => {
+    mountNetWorth(host);
+    set("[data-field=currency]", "other", "change");
+    set("[data-field=rate]", "25000");
+    expect(q("[data-out=compare]").textContent).toContain("Your net worth in US dollars");
+    expect(q("[data-out=compare]").textContent).not.toContain("Median");
+  });
+
   it("names a distance that is not a number and an age out of range", () => {
     mountCarDepreciation(host);
     set("[data-field=distance]", "12k");

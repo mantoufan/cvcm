@@ -415,6 +415,13 @@ describe("review fixes", () => {
     expect(valuePhone("123456", "intl").ok).toBe(true);
   });
 
+  it("round 12: fours judged on the tier's own pattern, positive discount", () => {
+    expect(phone("13812344468", "cn").tier).toBe(1);
+    expect(phone("13800124124", "cn").tier).toBe(3);
+    expect(phone("13812344444", "cn").tier).toBe(phone("13812388888", "cn").tier - 1);
+    expect(dcf({ cashFlow: 100_000, growth: 0, discount: -0.05, terminalGrowth: -0.1, years: 5 })).toEqual({ ok: false, error: "invalid" });
+  });
+
   it("takes whole forecast years only", () => {
     expect(dcf({ cashFlow: 100, growth: 0, discount: 0.1, terminalGrowth: 0, years: 1.4 })).toEqual({ ok: false, error: "invalid" });
   });

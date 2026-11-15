@@ -87,21 +87,25 @@ export function mountNetWorth(host: HTMLElement): void {
       errorEl.textContent = t("netWorth.err_number", { field: t("netWorth.rate") });
     } else if (band && perUsd === undefined) {
       rateHint.hidden = false;
-    } else if (band && perUsd !== undefined) {
-      const ref = SCF_2022[band];
+    } else if (perUsd !== undefined) {
       const usd = (n: number) => currency(loc, "USD", n);
-      const cmp: Array<[string, string]> = [
-        [t("netWorth.median"), usd(ref.median)],
-        [t("netWorth.mean"), usd(ref.mean)],
-      ];
+      const cmp: Array<[string, string]> = [];
       if (curSel.value !== "usd") {
         // "3.750" can be 3.75 or 3,750 depending on the writer: show the rate as read.
         cmp.push([t("netWorth.rateRead"), numberFormat(loc, { maximumFractionDigits: 4 }).format(perUsd)]);
         cmp.push([t("netWorth.inUsd"), usd(r.netWorth / perUsd)]);
       }
-      cmp.push([t("netWorth.vsMedian"), r.netWorth / perUsd >= ref.median ? t("netWorth.above") : t("netWorth.below")]);
-      compare.append(h("dt", { class: "hint" }, t(`netWorth.band_${band}`)), h("dd", null, ""), ...cmp.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
-      last += `\n${t(`netWorth.band_${band}`)}\n${cmp.map(([k, v]) => `${k}: ${v}`).join("\n")}`;
+      if (band) {
+        const ref = SCF_2022[band];
+        cmp.push([t("netWorth.median"), usd(ref.median)], [t("netWorth.mean"), usd(ref.mean)]);
+        cmp.push([t("netWorth.vsMedian"), r.netWorth / perUsd >= ref.median ? t("netWorth.above") : t("netWorth.below")]);
+        compare.append(h("dt", { class: "hint" }, t(`netWorth.band_${band}`)), h("dd", null, ""));
+        last += `\n${t(`netWorth.band_${band}`)}`;
+      }
+      if (cmp.length) {
+        compare.append(...cmp.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
+        last += `\n${cmp.map(([k, v]) => `${k}: ${v}`).join("\n")}`;
+      }
     }
   };
 

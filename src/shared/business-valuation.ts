@@ -25,7 +25,7 @@ export type DcfInput = {
   cashFlow: number;
   /** Yearly growth for the forecast years, as a fraction (0.1 = 10%). */
   growth: number;
-  /** Discount rate, as a fraction. */
+  /** Discount rate, as a fraction above 0. */
   discount: number;
   /** Growth after the forecast, as a fraction; must be below the discount rate. */
   terminalGrowth: number;
@@ -45,7 +45,7 @@ export type DcfError = "discountBelowGrowth" | "invalid";
 
 export function dcf(input: DcfInput): { ok: true; result: DcfResult } | { ok: false; error: DcfError } {
   const { cashFlow, growth, discount, terminalGrowth, years } = input;
-  if (![cashFlow, growth, discount, terminalGrowth, years].every(Number.isFinite) || !Number.isInteger(years) || years < 1 || years > 30 || discount <= -1 || growth <= -1 || terminalGrowth <= -1) {
+  if (![cashFlow, growth, discount, terminalGrowth, years].every(Number.isFinite) || !Number.isInteger(years) || years < 1 || years > 30 || discount <= 0 || growth <= -1 || terminalGrowth <= -1) {
     return { ok: false, error: "invalid" };
   }
   if (discount <= terminalGrowth) return { ok: false, error: "discountBelowGrowth" };
