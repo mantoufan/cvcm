@@ -45,6 +45,14 @@
           ]
         },
         {
+          "h": "Búsqueda en el sitio",
+          "p": [
+            "El buscador compara las páginas en tu navegador con una lista de nombres de páginas de cv.cm. Solo se nos envían las búsquedas que no encuentran nada, como se explica a continuación.",
+            "Cuando una búsqueda no encuentra nada, el texto buscado y el idioma de la página se envían a nuestra base de datos en Cloudflare D1 para saber qué echan en falta los usuarios. No se registran búsquedas que parezcan enlaces, direcciones de correo o números largos. Para contar a cada visitante una vez al día y limitar cuántas solicitudes envía una dirección, el servidor crea dos hashes a partir de tu dirección IP (uno de ellos junto con la búsqueda) con una clave que cambia cada día. Las claves y los hashes se borran a los dos días; la dirección IP nunca se guarda. El texto de una búsqueda se borra un año después de la última vez que alguien la hizo.",
+            "Si dejas tu correo para que te avisemos cuando se añada un tema que falta, lo guardamos junto a esa búsqueda, enviamos un único correo cuando esté disponible y después borramos la dirección. No la usamos para nada más. Una solicitud sobre un tema que nunca se añade se borra a los seis meses. Para borrarla antes, escribe a m@cv.cm."
+          ]
+        },
+        {
           "h": "Alojamiento y registros del servidor",
           "p": [
             "cv.cm se sirve a través de Cloudflare. Para entregar y proteger el sitio, Cloudflare procesa datos de las solicitudes, como la dirección IP, el agente de usuario del navegador y la URL solicitada, conforme a su propia política de privacidad. Nuestro servidor de almacenamiento en s3.cv.cm conserva registros estándar de servidor web (dirección IP, hora y ruta solicitada) por motivos de seguridad y resolución de problemas. No usamos estos registros para elaborar perfiles."
@@ -76,7 +84,7 @@
         {
           "h": "Sus derechos",
           "p": [
-            "Según el lugar donde resida, leyes como el GDPR, la CCPA o la Ley de Protección de Información Personal de China (PIPL) pueden otorgarle derechos para acceder a sus datos personales, corregirlos o eliminarlos. Como cv.cm no tiene cuentas, normalmente no podemos vincular los datos almacenados con una persona. Si desea que se elimine una nota antes de que caduque, envíenos su enlace. Para otras solicitudes, escriba a m@cv.cm y le responderemos en un plazo de 30 días."
+            "Según el lugar donde resida, leyes como el GDPR, la CCPA o la Ley de Protección de Información Personal de China (PIPL) pueden otorgarle derechos para acceder a sus datos personales, corregirlos o eliminarlos. Como cv.cm no tiene cuentas, normalmente no podemos vincular los datos almacenados con una persona. Si desea que se elimine una nota antes de que caduque, envíenos su enlace. Para otras solicitudes, escriba a m@cv.cm y le responderemos en un plazo de 30 días. Si dejaste tu correo en el buscador del sitio, escribe a m@cv.cm y lo borraremos."
           ]
         },
         {
