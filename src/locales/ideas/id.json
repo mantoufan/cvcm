@@ -1,0 +1,119 @@
+{
+  "crumbHome": "Beranda",
+  "ui": {
+    "kicker": "Ide bisnis",
+    "answer": "Singkatnya",
+    "toc": "Di halaman ini",
+    "faq": "Tanya jawab",
+    "related": "Ide serupa",
+    "all": "Semua ide bisnis",
+    "count": "{n} ide",
+    "sources": "Sumber",
+    "updated": "Diperbarui {date}",
+    "online": "Online",
+    "local": "Lokal",
+    "startup": "Modal awal",
+    "startup1": "Rendah",
+    "startup2": "Sedang",
+    "startup3": "Tinggi",
+    "panel": "Layak atau tidak? Penilaian berdasarkan data pencarian",
+    "score": "Skor prospek",
+    "scoreOf": "dari 100",
+    "parts": "Komponen skor",
+    "partDemand": "Permintaan",
+    "partMomentum": "Momentum",
+    "partValue": "Nilai",
+    "partOpenness": "Keterbukaan",
+    "demand": "Pencarian per bulan",
+    "demandBands": [
+      "Di bawah 100",
+      "100–1 rb",
+      "1 rb–10 rb",
+      "10 rb–100 rb",
+      "100 rb–1 jt",
+      "Di atas 1 jt"
+    ],
+    "yoy": "12 bulan terakhir dibanding 12 bulan sebelumnya",
+    "fourYear": "Sekarang dibanding 3 tahun lalu",
+    "times": "{n}×",
+    "next12": "Perkiraan 12 bulan ke depan",
+    "cpc": "Biaya per klik yang dibayar pengiklan",
+    "cpcBands": [
+      "Di bawah $0,50",
+      "$0,50–$1",
+      "$1–$3",
+      "$3–$10",
+      "Di atas $10"
+    ],
+    "value": "Nilai lalu lintas pencarian",
+    "valueBands": [
+      "Di bawah $1 rb / bulan",
+      "$1 rb–$10 rb / bulan",
+      "$10 rb–$100 rb / bulan",
+      "$100 rb–$1 jt / bulan",
+      "Di atas $1 jt / bulan"
+    ],
+    "competition": "Persaingan pengiklan",
+    "compLow": "Rendah",
+    "compMedium": "Sedang",
+    "compHigh": "Tinggi",
+    "outlookUp": "Tumbuh",
+    "outlookFlat": "Stabil",
+    "outlookDown": "Menyusut",
+    "chart": "Minat pencarian {from} – {to} (puncak = 100) dan perkiraan 12 bulan",
+    "chartHistory": "Pencarian",
+    "chartForecast": "Perkiraan",
+    "chartBand": "Rentang kemungkinan",
+    "langs": "Pencarian per bulan menurut bahasa",
+    "dataNote": "Data: Google Ads Keyword Planner, {from} – {to}, gabungan pencarian dalam {n} bahasa; diperbarui setiap bulan. Volume adalah perkiraan Google yang dibulatkan dan hanya mencakup Google (bukan Baidu, Naver, atau aplikasi media sosial).",
+    "disclaimer": "Minat pencarian bukan keuntungan. Penilaian ini menunjukkan berapa banyak orang yang mencari tahu sebuah ide dan berapa yang dibayar pengiklan untuk menjangkau mereka; ini bukan nasihat keuangan atau janji penghasilan.",
+    "method": "Cara kerja skor",
+    "ranking": "Semua ide menurut skor prospek",
+    "colIdea": "Ide",
+    "colScore": "Skor",
+    "colDemand": "Pencarian / bulan",
+    "colYoy": "Perubahan 12 bulan",
+    "colOutlook": "Prospek"
+  },
+  "hub": {
+    "title": "Ide Bisnis {year}: {n} Ide Usaha Dinilai dengan Data Pencarian",
+    "description": "{n} ide bisnis dan usaha sampingan, dinilai dengan data pencarian Google empat tahun dalam delapan bahasa: permintaan, momentum, nilai klik, dan perkiraan 12 bulan.",
+    "h1": "Ide bisnis dan peluang usaha, dinilai dengan data pencarian",
+    "lede": "Daftar ide usaha jarang memberi tahu apakah ada orang yang benar-benar mencarinya. Setiap ide di sini mendapat skor prospek yang disusun dari data pencarian Google selama empat tahun dalam delapan bahasa, berapa yang dibayar pengiklan untuk pencarian itu, dan perkiraan 12 bulan, ditambah panduan jujur tentang apa saja yang dibutuhkan.",
+    "groups": {
+      "ai": "AI dan jasa online",
+      "ecommerce": "Jualan online",
+      "services": "Jasa lokal",
+      "shops": "Toko, mesin, dan kuliner",
+      "maker": "Bikin dan jual sendiri"
+    },
+    "method": {
+      "h": "Cara kerja skor",
+      "items": [
+        "Permintaan (35%): rata-rata pencarian Google per bulan selama 12 bulan terakhir untuk frasa yang dipakai orang saat ingin memulai ide tersebut, dalam bahasa Inggris, Mandarin Sederhana, Mandarin Tradisional, Jepang, Korea, Vietnam, Indonesia, dan Spanyol. 100 pencarian bernilai 0 dan satu juta bernilai 100, pada skala logaritmik.",
+        "Momentum (35%): perbandingan 12 bulan terakhir dengan 12 bulan sebelumnya, digabung dengan perkiraan 12 bulan ke depan. Datar bernilai 50, dua kali lipat bernilai 100, dan turun setengah bernilai 0.",
+        "Nilai (20%): rata-rata tawaran teratas halaman yang dibayar pengiklan untuk pencarian ini, tanda seberapa berharga seorang pelanggan di bidang ini. $0,10 bernilai 0 dan $20 bernilai 100.",
+        "Keterbukaan (10%): 100 dikurangi indeks persaingan pengiklan dari Google, sehingga lelang iklan yang padat mendapat skor lebih rendah.",
+        "Perkiraan disusun dari pola musiman per bulan kalender dan tren yang diredam, berdasarkan data pencarian dua tahun terakhir; pita berbayang adalah rentang kasar 80%. Lonjakan sesaat satu bulan pada sebuah kata kunci dihaluskan sebelum dinilai, kecuali pada bulan terbaru karena belum ada bulan berikutnya untuk memastikannya."
+      ]
+    },
+    "about": [
+      "Setiap halaman ide punya dua bagian: angka-angka yang diperbarui setiap bulan dari Google Ads Keyword Planner, dan panduan tertulis tentang cara ide itu menghasilkan uang, apa yang dibutuhkan, cocok untuk siapa, risikonya, dan cara mengujinya dengan murah sebelum mengeluarkan uang.",
+      "Skor tinggi berarti banyak orang sedang mencari tahu ide tersebut, minatnya tumbuh, dan pelanggannya bernilai. Itu tidak berarti idenya mudah atau cocok untuk Anda: ide populer menarik banyak pesaing, dan usaha lokal dengan skor rendah tetap bisa berjalan baik di kota yang tepat."
+    ],
+    "faq": [
+      {
+        "q": "Ide bisnis apa yang terbaik untuk dimulai pada {year}?",
+        "a": "Tidak ada satu yang terbaik. Peringkat di halaman ini menunjukkan ide mana yang saat ini paling banyak dicari dan paling tumbuh, tetapi ide yang tepat bergantung pada modal, keterampilan, dan waktu Anda. Gunakan skor untuk membandingkan permintaan, lalu baca risiko dan cara uji murah di setiap halaman."
+      },
+      {
+        "q": "Dari mana angka-angkanya berasal?",
+        "a": "Dari Google Ads Keyword Planner: perkiraan pencarian bulanan selama empat tahun terakhir, tawaran dan persaingan pengiklan, untuk frasa yang dicari orang tentang setiap ide dalam delapan bahasa. Kami menampilkan rentang dan indeks, bukan angka mentah, dan memperbaruinya setiap bulan."
+      },
+      {
+        "q": "Apakah skor prospek tinggi berarti saya pasti untung?",
+        "a": "Tidak. Skor mengukur minat dan nilai pelanggan, bukan keuntungan. Banyak orang yang mencari sebuah ide juga berarti banyak orang yang mungkin memulainya, jadi selalu uji permintaan di pasar Anda sendiri sebelum mengeluarkan uang sungguhan."
+      }
+    ]
+  }
+}

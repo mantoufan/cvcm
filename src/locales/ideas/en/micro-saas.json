@@ -1,0 +1,104 @@
+{
+  "name": "Micro-SaaS",
+  "blurb": "A small subscription software product for a narrow niche, run by one person or a tiny team",
+  "title": "Micro SaaS Ideas: How It Works, What It Takes and the Risks",
+  "description": "What a micro-SaaS is, how small SaaS products make money, what you need to build one, who it suits, the real risks and how to validate SaaS ideas before coding.",
+  "h1": "How to start a micro-SaaS",
+  "answer": "A micro-SaaS is a small software-as-a-service product that solves one specific problem for a narrow group of users, such as a booking add-on for one e-commerce platform, and charges a monthly or yearly subscription. One person or a tiny team can run it. The catch is that building is the easy part: finding customers, handling support and keeping up with the platforms you depend on take most of the time, and many products never reach enough paying users.",
+  "sections": [
+    {
+      "h": "How a micro-SaaS makes money",
+      "body": [
+        "Customers pay a recurring subscription, usually in tiers by usage or features, and sometimes an annual plan at a discount. Some products sell through an app marketplace (a store, accounting or website platform), which brings users but takes a commission and sets the rules.",
+        "Costs are mostly hosting, third-party services, payment fees, marketplace commissions and your time on support. The quiet margin killer is churn: customers who cancel each month have to be replaced before revenue can grow."
+      ]
+    },
+    {
+      "h": "What you need to start",
+      "body": [
+        {
+          "ul": [
+            "Programming skill, or a no-code stack you know well, plus basic hosting, backups and security habits.",
+            "A narrow, painful problem you have seen first-hand, ideally in a niche that is too small for big software companies to bother with.",
+            "A way to reach that niche: a community, a marketplace listing, content or direct outreach.",
+            "Payments and subscription billing through a payment provider, with sales tax or VAT on digital services handled as your customers' countries require.",
+            "Terms of service, a privacy policy and data-protection basics (for example the GDPR if you have EU users).",
+            "Months of evenings or weekends, since early growth is usually slow."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Who it suits (and who it doesn't)",
+      "body": [
+        {
+          "table": {
+            "head": ["Suits", "Not for"],
+            "rows": [
+              ["Developers who also enjoy talking to users", "People who only want to code and never sell"],
+              ["Someone with insider knowledge of a niche", "Anyone needing steady income within weeks"],
+              ["Patient builders who can support a product for years", "Those who drop projects when they stop being new"]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Risks and what to watch",
+      "body": [
+        {
+          "ul": [
+            "Building before validating: the most common failure is a finished product nobody asked for.",
+            "Platform risk: if you live inside one marketplace or API, a policy, fee or feature change can end the business.",
+            "Churn and support load: small customers cancel often and still expect fast answers.",
+            "Copycats: a narrow idea that works is easy to clone; your edge is service, niche knowledge and distribution.",
+            "Idea lists and boilerplate sellers: buying a list of \"profitable SaaS ideas\" or a starter kit does not give you customers."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "How to test it cheaply first",
+      "body": [
+        {
+          "ol": [
+            "Write down the problem in the users' own words, taken from forums, reviews or interviews.",
+            "Talk to ten potential users and ask how they solve it today and what that costs them.",
+            "Put up a landing page with a price and an early-access or pre-order button.",
+            "Solve the problem manually or with a spreadsheet for two or three users first.",
+            "Only start building once a few people have paid or committed in writing."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Your first 30 days",
+      "body": [
+        {
+          "ol": [
+            "Define the one core feature and leave everything else out.",
+            "Build and launch it to your early users, with billing working from the start.",
+            "Set up error tracking, backups and a simple support inbox.",
+            "Track sign-ups, conversions to paid and cancellations every week.",
+            "Ask every cancelling customer why they left.",
+            "Spend at least as much time on finding users as on new features."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "How is micro-SaaS different from a regular startup?",
+      "a": "A micro-SaaS aims to be small, focused and usually self-funded, run by one person or a few. A venture-backed startup aims for fast, large growth and raises money to get there."
+    },
+    {
+      "q": "Can I build a micro-SaaS without coding?",
+      "a": "Yes, some founders use no-code tools, especially for internal-style tools and simple workflows. You may hit limits on performance, cost or customisation as you grow."
+    },
+    {
+      "q": "Where do good micro-SaaS ideas come from?",
+      "a": "Usually from repetitive problems you have seen in a job or hobby, complaints in niche forums, and gaps in popular platforms' app marketplaces. Validate before you build, whatever the source."
+    }
+  ]
+}
