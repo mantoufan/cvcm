@@ -38,10 +38,15 @@ export function nostalgiaGroupOf(id: NostalgiaId): NostalgiaGroupId {
 export const NOSTALGIA_PUBLISHED = "2026-11-15";
 
 /** Entries added after the first batch, by id, with the day each went live (set by hand when adding entries). */
-export const NOSTALGIA_ADDED: Partial<Record<NostalgiaId, string>> = {
-  // Second batch: American and Western 1990s things.
-  "dunkaroos": "2026-11-16", "crystal-pepsi": "2026-11-16", "surge": "2026-11-16", "pogs": "2026-11-16", "beanie-babies": "2026-11-16", "furby": "2026-11-16", "slap-bracelet": "2026-11-16", "vhs": "2026-11-16", "discman": "2026-11-16", "myspace": "2026-11-16", "aim": "2026-11-16", "napster": "2026-11-16", "dial-up": "2026-11-16", "blockbuster": "2026-11-16", "lisa-frank": "2026-11-16",
-};
+/** The second batch (American and Western 1990s things), all live on one day. */
+const BATCH2_DATE = "2026-11-16";
+const BATCH2: readonly NostalgiaId[] = [
+  "dunkaroos", "crystal-pepsi", "surge", "pogs", "beanie-babies", "furby", "slap-bracelet", "vhs", "discman",
+  "myspace", "aim", "napster", "dial-up", "blockbuster", "lisa-frank",
+];
+
+/** Entries added after the first batch, by id, with the day each went live (set by hand when adding entries). */
+export const NOSTALGIA_ADDED: Partial<Record<NostalgiaId, string>> = Object.fromEntries(BATCH2.map((id) => [id, BATCH2_DATE]));
 
 /** When an entry went live. */
 export function nostalgiaPublished(id: NostalgiaId): string {
@@ -52,7 +57,7 @@ export function nostalgiaPublished(id: NostalgiaId): string {
 export const NOSTALGIA_UPDATED: Partial<Record<NostalgiaId, string>> = {};
 
 /** The hub's own copy (lede, about, FAQ, group labels in src/locales/nostalgia/<locale>.json) last edited; set by hand. */
-export const NOSTALGIA_HUB_UPDATED: string | null = null;
+export const NOSTALGIA_HUB_UPDATED: string | null = BATCH2_DATE;
 
 /** When an entry last changed: its edit date, else the day it went live (the page's dateModified and its sitemap lastmod). */
 export function nostalgiaUpdated(id: NostalgiaId): string {

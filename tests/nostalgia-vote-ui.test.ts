@@ -28,7 +28,7 @@ describe("nostalgia vote UI", () => {
     expect(JSON.parse(String(init.body))).toEqual({ id: "white-rabbit", answer: "yes" });
     const result = host.querySelector<HTMLElement>(".nostalgia-vote-result")!;
     expect(result.hidden).toBe(false);
-    expect(result.textContent).toBe("75% 的回答是「吃过」 · 共 4 份回答 · 你的回答：吃过");
+    expect(result.textContent).toBe("75% 的回答是「尝过」 · 共 4 份回答 · 你的回答：尝过");
     expect(host.querySelector<HTMLButtonElement>('button[data-answer="yes"]')!.getAttribute("aria-pressed")).toBe("true");
 
     // Coming back: the stored answer shows at once, with no request.
@@ -36,7 +36,7 @@ describe("nostalgia vote UI", () => {
     mountNostalgia(again, "zh-CN", "white-rabbit");
     expect(fetchMock).toHaveBeenCalledTimes(1);
     // An earlier answer's totals are labelled as a snapshot.
-    expect(again.querySelector(".nostalgia-vote-result")!.textContent).toBe("75% 的回答是「吃过」 · 共 4 份回答（你回答时的统计） · 你的回答：吃过");
+    expect(again.querySelector(".nostalgia-vote-result")!.textContent).toBe("75% 的回答是「尝过」 · 共 4 份回答（你回答时的统计） · 你的回答：尝过");
     expect(again.querySelector<HTMLButtonElement>('button[data-answer="no"]')!.disabled).toBe(true);
   });
 

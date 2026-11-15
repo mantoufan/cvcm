@@ -245,7 +245,7 @@ export function nostalgiaPageHtml(locale: Locale, id: NostalgiaId | null): strin
   return [
     crumbHtml(locale, id),
     `<article class="kb nostalgia">`,
-    `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(groupLabels[nostalgiaGroupOf(id)])} · ${escapeHtml(meta.region === "cn" ? ui.regionCn : ui.regionGlobal)}</p>`,
+    `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(groupLabels[nostalgiaGroupOf(id)])} · ${escapeHtml({ cn: ui.regionCn, west: ui.regionWest, global: ui.regionGlobal }[meta.region])}</p>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
     `<p class="kb-meta">${facts}</p>`,
     copy.aka.length ? `<p class="ref-aka">${escapeHtml(ui.also)}${cjk ? "：" : ": "}${escapeHtml(copy.aka.join(cjk ? "、" : ", "))}</p>` : "",

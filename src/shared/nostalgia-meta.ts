@@ -8,8 +8,8 @@ export type NostalgiaSource = { name: string; url: string };
 export type NostalgiaMeta = {
   /** The original name (Chinese for Chinese items, the brand name for global ones). */
   term: string;
-  /** Mainly a Chinese childhood memory, or remembered in many countries. */
-  region: "cn" | "global";
+  /** Mainly a Chinese childhood memory, an American / Western one, or remembered in many countries. */
+  region: "cn" | "west" | "global";
   /** Year ("1990") or decade ("1990s") it appeared or became popular. */
   from: string;
   /** Year it ended (discontinued, abolished, shut down), or null. */

@@ -77,7 +77,7 @@ describe("nostalgia: catalog", () => {
       expect(id, id).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
       const meta = NOSTALGIA_META[id];
       expect(meta.term.trim(), id).toBeTruthy();
-      expect(["cn", "global"], id).toContain(meta.region);
+      expect(["cn", "west", "global"], id).toContain(meta.region);
       expect(meta.from, id).toMatch(/^\d{4}s?$/);
       if (meta.to !== null) {
         expect(meta.to, id).toMatch(/^\d{4}s?$/);
