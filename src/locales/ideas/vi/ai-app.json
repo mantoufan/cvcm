@@ -1,0 +1,95 @@
+{
+  "name": "Phát triển ứng dụng AI (AI wrapper)",
+  "blurb": "Xây một ứng dụng tập trung trên API mô hình AI và thu phí thuê bao hoặc theo lượt dùng",
+  "title": "Phát triển ứng dụng AI và AI wrapper: cách kiếm tiền, rủi ro",
+  "description": "Ứng dụng AI xây trên API mô hình (“AI wrapper”) kiếm tiền ra sao, cần gì để làm, ai phù hợp, rủi ro phụ thuộc nền tảng và cách thử ý tưởng SaaS AI.",
+  "h1": "Phát triển ứng dụng AI hay AI wrapper có phải hướng kinh doanh tốt?",
+  "answer": "Ứng dụng AI, thường gọi là “AI wrapper”, là sản phẩm gửi dữ liệu người dùng tới một mô hình AI qua API và thêm giao diện, prompt, dữ liệu hoặc quy trình riêng cho một việc cụ thể, như soạn thư pháp lý hay gắn thẻ ảnh sản phẩm. Nguồn thu là thuê bao, credit hoặc mua một lần. Điểm khó là mỗi lượt dùng đều tốn phí API của bạn, và nếu nhà cung cấp mô hình hay một đối thủ lớn thêm đúng tính năng đó, sản phẩm của bạn có thể mất lý do tồn tại.",
+  "sections": [
+    {
+      "h": "Ứng dụng AI kiếm tiền như thế nào",
+      "body": [
+        "Phần lớn ứng dụng AI bán thuê bao hằng tháng, credit trả trước hoặc gói tính theo mức dùng; một số bán cho doanh nghiệp theo số người dùng. Khác với đa số phần mềm, mỗi yêu cầu đều có chi phí trực tiếp: nhà cung cấp mô hình tính tiền bạn theo token, ảnh hoặc phút, nên người dùng nhiều có thể tốn hơn số tiền họ trả.",
+        "Biên lợi nhuận đến từ những gì bạn thêm vào: một quy trình tiết kiệm thời gian thật, dữ liệu riêng hoặc chuyên biệt, tích hợp với công cụ người dùng đang dùng, và một ngách mà các ứng dụng chat phổ thông chưa phục vụ tốt."
+      ]
+    },
+    {
+      "h": "Cần gì để bắt đầu",
+      "body": [
+        {
+          "ul": [
+            "Lập trình cơ bản, hoặc một công cụ low-code cộng tinh thần chịu học, và tài khoản API với ít nhất một nhà cung cấp mô hình.",
+            "Một vấn đề hẹp trong lĩnh vực bạn hiểu, để biết khi nào đầu ra đủ tốt để người ta trả tiền.",
+            "Giới hạn sử dụng, thanh toán và cảnh báo chi phí ngay từ ngày đầu để một đợt lan truyền bất ngờ không biến thành hóa đơn lớn.",
+            "Điều khoản dịch vụ, chính sách quyền riêng tư, và kiểm tra cách dùng của bạn có phù hợp chính sách sử dụng của nhà cung cấp mô hình.",
+            "Kế hoạch xử lý lỗi: đầu ra AI có thể sai, nên hãy quyết định bạn kiểm tra gì, cảnh báo người dùng điều gì và từ chối làm gì.",
+            "Đăng ký kinh doanh và xử lý thuế bán hàng hoặc VAT cho sản phẩm số theo nơi khách hàng sống; hãy kiểm tra quy định địa phương hoặc dùng nhà cung cấp thanh toán xử lý việc này."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Ai phù hợp (và ai không)",
+      "body": [
+        "Phù hợp với lập trình viên hoặc nhà sáng lập có nền tảng kỹ thuật, hiểu rõ một ngành, thích ra sản phẩm nhanh và chấp nhận được việc không biết các nhà cung cấp mô hình lớn sẽ tung ra gì tiếp theo. Không phù hợp với người mong chỉ một prompt khéo là thành doanh nghiệp, hoặc người không gánh nổi hóa đơn API trong lúc đi tìm người dùng trả tiền."
+      ]
+    },
+    {
+      "h": "Rủi ro và điều cần để ý",
+      "body": [
+        {
+          "ul": [
+            "Bị nuốt tính năng: nhà cung cấp mô hình và các nền tảng lớn liên tục thêm tính năng; một wrapper mỏng có thể bị họ sao chép chỉ sau một đêm.",
+            "Kinh tế đơn vị: dùng thử miễn phí và người dùng nặng có thể khiến mỗi khách đều lỗ. Hãy định giá cao hơn chi phí thật mỗi lượt dùng.",
+            "Phụ thuộc nhà cung cấp: thay đổi giá, khai tử mô hình, giới hạn tốc độ hay khóa tài khoản ở nhà cung cấp API ảnh hưởng trực tiếp tới bạn.",
+            "Độ chính xác và quảng cáo: nói quá khả năng của AI là rủi ro pháp lý; Ủy ban Thương mại Liên bang Mỹ (FTC) đã nói không có ngoại lệ AI nào đối với luật bảo vệ người tiêu dùng.",
+            "Lạm dụng: công cụ văn bản hoặc ảnh mở thu hút spam và dùng sai mục đích, có thể khiến tài khoản API bị khóa. Hãy thêm kiểm duyệt."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cách thử nghiệm với chi phí thấp",
+      "body": [
+        {
+          "ol": [
+            "Giải quyết vấn đề thủ công bằng một công cụ chat phổ thông cho ba người thật và xem họ có quay lại không.",
+            "Làm một landing page mô tả kết quả, có giá, và thu đăng ký hoặc đặt trước.",
+            "Xây phiên bản nhỏ nhất làm trọn vẹn một việc từ đầu đến cuối.",
+            "Đo mỗi lượt dùng tốn bao nhiêu phí API và so với giá bán.",
+            "Tự hỏi một ứng dụng chat phổ thông có làm được việc này trong hai prompt không; nếu có, hãy tìm thứ bạn thêm được mà nó không làm được."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "30 ngày đầu tiên",
+      "body": [
+        {
+          "ol": [
+            "Chọn một kiểu người dùng và một việc cần giải quyết.",
+            "Ra một phiên bản chạy được cho một nhóm nhỏ và quan sát họ dùng thế nào.",
+            "Đặt trần chi tiêu, giới hạn tốc độ và ghi log trước khi mở đăng ký.",
+            "Thêm thanh toán sớm để biết ai thực sự chịu trả tiền.",
+            "Đặt mô hình sau một lớp trung gian mỏng để có thể đổi nhà cung cấp khi cần.",
+            "Trò chuyện với mọi người dùng đầu tiên và cắt những tính năng không ai dùng."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Gọi là “AI wrapper” có phải chê bai không?",
+      "a": "Thường được dùng theo nghĩa đó, nhưng phần lớn phần mềm đều xây trên dịch vụ của công ty khác. Một wrapper yếu khi chẳng thêm gì ngoài một prompt, và mạnh khi nắm được quy trình, dữ liệu hoặc tệp người dùng mà nhà cung cấp mô hình không có."
+    },
+    {
+      "q": "Làm sao kiểm soát chi phí API?",
+      "a": "Giới hạn mức dùng theo gói, lưu cache kết quả lặp lại, dùng mô hình nhỏ cho bước đơn giản và theo dõi chi phí trên mỗi người dùng hoạt động hằng tuần. Định giá dựa trên dữ liệu sử dụng thật, đừng đoán."
+    },
+    {
+      "q": "Ứng dụng AI khác micro-SaaS thế nào?",
+      "a": "Micro-SaaS là bất kỳ sản phẩm phần mềm nhỏ, tập trung nào do một người hoặc một nhóm rất nhỏ vận hành. Ứng dụng AI là một dạng của nó, kèm thêm chi phí và rủi ro do phụ thuộc vào nhà cung cấp mô hình AI."
+    }
+  ]
+}

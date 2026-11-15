@@ -66,6 +66,16 @@ import viSlang from "../locales/packs/slang-vi";
 import zhCNSlang from "../locales/packs/slang-zh-CN";
 import zhTWSlang from "../locales/packs/slang-zh-TW";
 import { SLANG_ALL } from "../locales/slang/all";
+import enIdeas from "../locales/packs/ideas-en";
+import esIdeas from "../locales/packs/ideas-es";
+import idIdeas from "../locales/packs/ideas-id";
+import jaIdeas from "../locales/packs/ideas-ja";
+import koIdeas from "../locales/packs/ideas-ko";
+import viIdeas from "../locales/packs/ideas-vi";
+import zhCNIdeas from "../locales/packs/ideas-zh-CN";
+import zhTWIdeas from "../locales/packs/ideas-zh-TW";
+import { IDEAS_ALL } from "../locales/ideas/all";
+import type { IdeaId } from "./ideas";
 import type { SlangId } from "./slang";
 import type { RefId } from "./ref";
 import type { KbId } from "./kb";
@@ -82,6 +92,8 @@ import {
   registerRefMessages,
   registerSlangEntry,
   registerSlangMessages,
+  registerIdeaEntry,
+  registerIdeasMessages,
   type GameMessages,
   type KbMessages,
   type LegalMessages,
@@ -90,6 +102,7 @@ import {
   type DatasetMessages,
   type RefMessages,
   type SlangMessages,
+  type IdeasMessages,
 } from "./messages";
 
 const ALL: Record<Locale, LocaleMessages> = { en, "zh-CN": zhCN, "zh-TW": zhTW, ja, ko, vi, id, es };
@@ -186,4 +199,19 @@ const SLANG: Record<Locale, SlangMessages> = {
 for (const [locale, pack] of Object.entries(SLANG)) registerSlangMessages(locale as Locale, pack);
 for (const [locale, entries] of Object.entries(SLANG_ALL)) {
   for (const [id, copy] of Object.entries(entries)) registerSlangEntry(locale as Locale, id as SlangId, copy);
+}
+
+const IDEAS: Record<Locale, IdeasMessages> = {
+  en: enIdeas,
+  "zh-CN": zhCNIdeas,
+  "zh-TW": zhTWIdeas,
+  ja: jaIdeas,
+  ko: koIdeas,
+  vi: viIdeas,
+  id: idIdeas,
+  es: esIdeas,
+};
+for (const [locale, pack] of Object.entries(IDEAS)) registerIdeasMessages(locale as Locale, pack);
+for (const [locale, entries] of Object.entries(IDEAS_ALL)) {
+  for (const [id, copy] of Object.entries(entries)) registerIdeaEntry(locale as Locale, id as IdeaId, copy);
 }
