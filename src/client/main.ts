@@ -27,6 +27,8 @@ import {
   refHref,
   slangHref,
   ideasHref,
+  ideasPackOf,
+  IDEAS_PACK_TOOLS,
   nostalgiaHref,
   toolJob,
   withSearch,
@@ -381,9 +383,12 @@ let copyPrefetch = 0;
 function prefetchCopy(target: Element | null, loc: Locale, hover: boolean): void {
   const nav = target?.closest?.("a[data-nav]")?.getAttribute("data-nav") ?? "";
   const copy: PageCopy | null = isToolId(nav) ? { tool: nav } : nav.startsWith("learn-") && isTutorialId(nav.slice(6)) ? { tutorial: nav.slice(6) } : null;
-  if (!copy || hasPageMessages(loc, false, false, false, false, null, null, null, copy)) return;
+  // A tool page that renders with the ideas pack (the idea validator) waits for it too, so fetch it with the copy.
+  if (!copy) return;
+  const ideas: IdeaPage = copy.tool && IDEAS_PACK_TOOLS.includes(copy.tool as ToolId) ? "hub" : null;
+  if (hasPageMessages(loc, false, false, false, false, null, null, null, copy, ideas)) return;
   const load = (): void => {
-    loadPageMessages(loc, false, false, false, false, null, null, null, copy).catch(() => {});
+    loadPageMessages(loc, false, false, false, false, null, null, null, copy, ideas).catch(() => {});
   };
   if (hover) copyPrefetch = window.setTimeout(load, 120);
   else load();
@@ -616,7 +621,8 @@ export function render(): void {
   const kb: KbPage = parsed.kind === "kb" || parsed.kind === "bare-kb" ? parsed.article ?? "hub" : null;
   const ref: RefPage = parsed.kind === "ref" || parsed.kind === "bare-ref" ? parsed.entry ?? "hub" : null;
   const slang: SlangPage = parsed.kind === "slang" || parsed.kind === "bare-slang" ? parsed.entry ?? "hub" : null;
-  const ideas: IdeaPage = parsed.kind === "ideas" || parsed.kind === "bare-ideas" ? parsed.entry ?? "hub" : null;
+  // Ideas pages, and tool pages that match against the ideas pack (the idea validator), load it with the page.
+  const ideas: IdeaPage = ideasPackOf(parsed);
   const nostalgia: NostalgiaPage = parsed.kind === "nostalgia" || parsed.kind === "bare-nostalgia" ? parsed.entry ?? "hub" : null;
   const copy = pageCopyOf(parsed);
   if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia)) {

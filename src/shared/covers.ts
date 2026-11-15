@@ -157,6 +157,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "tic-tac-toe": "/covers/tic-tac-toe-sweet.jpg?v=1",
   "color-blindness-test": "/covers/color-blindness-test-sweet.jpg?v=1",
   "military-time": "/covers/military-time-sweet.jpg?v=1",
+  "idea-validator": "/covers/idea-validator-sweet.jpg?v=1",
   "height-calculator": "/covers/height-calculator-sweet.jpg?v=1",
   "hangman": "/covers/hangman-sweet.jpg?v=1",
   "rock-paper-scissors": "/covers/rock-paper-scissors-sweet.jpg?v=1",

@@ -1000,6 +1000,12 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountColorBlindnessTest(host);
     return m.unmountColorBlindnessTest;
   },
+  "idea-validator": async (host, ctx) => {
+    const m = await import("./idea-validator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountIdeaValidator(host);
+    return m.unmountIdeaValidator;
+  },
   "military-time": async (host, ctx) => {
     const m = await import("./military-time/ui");
     if (!ctx.alive()) return undefined;

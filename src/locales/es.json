@@ -707,7 +707,9 @@
     "titleTypingGame": "Juego de mecanografía — practica mecanografía con palabras que caen — cv.cm",
     "descTypingGame": "Juego de mecanografía gratis: escribe las palabras que caen antes de que lleguen al suelo. Tres niveles que se aceleran sobre la marcha, puntuación, precisión y caracteres por minuto. Funciona con métodos de entrada de japonés, chino y coreano.",
     "titleChineseCheckers": "Damas chinas — juega online contra la computadora — cv.cm",
-    "descChineseCheckers": "Juega gratis a las damas chinas online en el tablero de estrella contra la computadora en tres niveles o con un amigo. Avanza un paso o encadena saltos por el tablero; se muestran todos los huecos alcanzables. Deshacer y partida guardada."
+    "descChineseCheckers": "Juega gratis a las damas chinas online en el tablero de estrella contra la computadora en tres niveles o con un amigo. Avanza un paso o encadena saltos por el tablero; se muestran todos los huecos alcanzables. Deshacer y partida guardada.",
+    "titleIdeaValidator": "Validar idea de negocio — evalúala gratis en 2 minutos — cv.cm",
+    "descIdeaValidator": "¿Tu idea de negocio es buena? Responde 8 preguntas: puntaje de 0 a 100, fortalezas, puntos débiles, pruebas baratas y datos de búsqueda de ideas similares."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1555,6 +1557,10 @@
     "chinese-checkers": {
       "name": "Damas chinas",
       "blurb": "Salta con tus canicas por la estrella."
+    },
+    "idea-validator": {
+      "name": "Validar idea de negocio",
+      "blurb": "Califica tu idea sobre 100 y descubre qué probar primero."
     }
   },
   "watermark": {
@@ -5922,6 +5928,18 @@
       "a4": "Dos: contra la computadora en fácil, medio o difícil, o con un amigo por turnos en la misma pantalla.",
       "q5": "¿Es lo mismo que el Sternhalma o el juego del diamante?",
       "a5": "Sí. Las damas chinas son una versión del juego alemán Sternhalma, y el juego del diamante japonés es un pariente cercano."
+    },
+    "idea-validator": {
+      "q1": "¿Cómo sé si mi idea de negocio es buena?",
+      "a1": "Primero revisa si hay pruebas de demanda: ¿la gente ya paga por algo parecido, o ya pagó o se registró para lo tuyo? Después revisa si cada venta vale lo suficiente, qué tan saturado está el mercado, cuánto cuesta empezar y cómo llegarás a tus clientes. El validador califica todo esto.",
+      "q2": "¿Cómo se calcula el puntaje?",
+      "a2": "La puntuación sale de 8 respuestas: la prueba de demanda pesa más (20%), luego tu ventaja y cómo llegarás a los clientes (15% cada una), y después el precio, la competencia, el capital inicial, el tiempo hasta la primera venta y la tendencia del mercado (10% cada una). Si tu idea coincide con una de nuestra lista de ideas, su puntuación de perspectivas según datos de búsqueda se muestra al lado como referencia del mercado; no cambia tu puntuación.",
+      "q3": "¿De dónde sale la referencia del mercado?",
+      "a3": "Del canal de ideas de cv.cm: cuatro años de búsquedas de Google Ads Keyword Planner en ocho idiomas para 40 ideas de negocio, actualizadas cada mes. Escribe tu idea y se elige la más parecida, o selecciónala de la lista.",
+      "q4": "¿Mi idea se envía a algún lado?",
+      "a4": "No. La calificación y la comparación se hacen en esta pestaña. Nada de lo que escribes se sube ni se guarda.",
+      "q5": "¿Un puntaje alto significa que mi negocio tendrá éxito?",
+      "a5": "No. Significa que lo básico se ve sólido. La única prueba real es que los clientes paguen, así que sigue los pasos sugeridos para probar con poco dinero antes de invertir en serio."
     }
   },
   "qr": {
@@ -15072,5 +15090,150 @@
     "computerWins": "Gana la computadora.",
     "thinking": "La computadora está pensando…",
     "hint": "Toca una canica y luego un hueco marcado. Las flechas mueven entre huecos; Enter selecciona."
+  },
+  "ideaValidator": {
+    "title": "Validar idea de negocio",
+    "lede": "Responde ocho preguntas para ver qué tan sólida es tu idea, qué está flojo y qué probar primero. Las ideas similares se comparan con datos de búsqueda de Google. Funciona en esta pestaña; no se sube nada.",
+    "describe": "Tu idea",
+    "describePh": "p. ej.: lavado de autos a domicilio, una agencia de IA para dentistas, velas artesanales",
+    "match": "Idea más cercana en nuestros datos de búsqueda",
+    "matchNone": "Otra (sin referencia)",
+    "matchHint": "Se elige según lo que escribes; cámbiala si no es correcta.",
+    "questions": "Ocho preguntas",
+    "choose": "Elige…",
+    "evidence": {
+      "label": "Pruebas de demanda",
+      "o1": "Nada todavía",
+      "o2": "La gente se queja del problema",
+      "o3": "Otros ya venden algo parecido",
+      "o4": "Me lo han pedido",
+      "o5": "Me han pagado o hecho preventas"
+    },
+    "price": {
+      "label": "Lo que paga un cliente",
+      "o1": "Menos de $5, una vez",
+      "o2": "$5–$50, una vez",
+      "o3": "$50–$500, una vez",
+      "o4": "Más de $500, una vez",
+      "o5": "Suscripción o compras repetidas"
+    },
+    "competition": {
+      "label": "Competencia",
+      "o1": "Grandes marcas dominan el mercado",
+      "o2": "Muchos vendedores parecidos",
+      "o3": "Pocos competidores",
+      "o4": "Hay competidores, pero débiles",
+      "o5": "Nadie lo hace todavía"
+    },
+    "cost": {
+      "label": "Dinero para empezar",
+      "o1": "Más que mis ahorros",
+      "o2": "La mayor parte de mis ahorros",
+      "o3": "Unos meses de dinero sobrante",
+      "o4": "Menos de un mes de dinero sobrante",
+      "o5": "Casi nada"
+    },
+    "time": {
+      "label": "Tiempo hasta la primera venta",
+      "o1": "Más de un año",
+      "o2": "6–12 meses",
+      "o3": "1–6 meses",
+      "o4": "2–4 semanas",
+      "o5": "Menos de 2 semanas"
+    },
+    "edge": {
+      "label": "Tu ventaja",
+      "o1": "Nada especial todavía",
+      "o2": "Tendría que aprenderlo",
+      "o3": "Tengo la habilidad o la experiencia",
+      "o4": "Tengo audiencia o clientes",
+      "o5": "La habilidad y una audiencia"
+    },
+    "channel": {
+      "label": "Cómo llegarás a los clientes",
+      "o1": "Aún no lo sé",
+      "o2": "Anuncios pagados",
+      "o3": "Un marketplace (Amazon, Etsy, TikTok Shop…)",
+      "o4": "Recomendaciones locales o comunidades",
+      "o5": "Mi propia audiencia o clientes actuales"
+    },
+    "trend": {
+      "label": "Tendencia del mercado",
+      "o1": "En descenso",
+      "o2": "No sé",
+      "o3": "Estable",
+      "o4": "En crecimiento"
+    },
+    "result": "Tu resultado",
+    "answerAll": "Preguntas pendientes: {n}. Respóndelas todas para ver la puntuación.",
+    "outOf": "sobre 100",
+    "grade": {
+      "strong": "Sólida",
+      "promising": "Prometedora",
+      "risky": "Arriesgada",
+      "rethink": "Replantéala"
+    },
+    "verdict": {
+      "strong": "Lo básico se ve sólido. Pruébala ya con clientes reales, antes de pulir cualquier detalle.",
+      "promising": "Vale la pena si primero corriges los puntos débiles de abajo.",
+      "risky": "Faltan varios aspectos básicos. Haz las pruebas baratas antes de gastar dinero.",
+      "rethink": "Varios aspectos básicos son débiles. Replantea los más débiles o prueba otra idea antes de invertir dinero."
+    },
+    "readiness": "Preparación (tus respuestas)",
+    "market": "Referencia del mercado (datos de búsqueda)",
+    "noMarket": "Sin coincidencia",
+    "strengths": "Fortalezas",
+    "weaknesses": "Puntos débiles",
+    "none": "Ninguno",
+    "next": "Prueba esto primero: {item}",
+    "tip": {
+      "evidence": {
+        "t1": "Escribe una oferta de una página con precio y muéstrasela a diez personas que tengan el problema.",
+        "t2": "Pide un anticipo o una preventa, no solo \"¿lo comprarías?\".",
+        "t3": "Busca gente que ya paga por una alternativa torpe: esa es tu prueba."
+      },
+      "price": {
+        "t1": "Encuentra cómo vender más por cliente: un paquete, un nivel premium o un servicio adicional.",
+        "t2": "Busca una necesidad repetida que puedas convertir en suscripción o pedidos regulares.",
+        "t3": "Prueba un precio más alto con los próximos clientes antes de fijarlo."
+      },
+      "competition": {
+        "t1": "Averigua quién resuelve hoy este problema, aunque sea mal o a mano: esa es tu competencia real.",
+        "t2": "Si aún nadie lo vende, comprueba que la gente lo busca o paga por algo parecido antes de crearlo.",
+        "t3": "Escribe en qué harías algo mejor que los tres principales vendedores y prueba esa promesa primero."
+      },
+      "cost": {
+        "t1": "Empieza con la versión más pequeña que puedas vender: un producto, un servicio, una máquina.",
+        "t2": "Renta, pide prestado o compra usado antes de comprar equipo nuevo.",
+        "t3": "Vende por adelantado y usa esos pedidos para pagar el inventario."
+      },
+      "time": {
+        "t1": "Reduce la idea a algo que puedas vender este mes.",
+        "t2": "Vende el servicio a mano antes de construir el producto o la app.",
+        "t3": "Fija una fecha para tu primera venta y planifica hacia atrás desde ahí."
+      },
+      "edge": {
+        "t1": "Haz tres trabajos pequeños para amigos o con descuento para ganar habilidad y testimonios.",
+        "t2": "Comparte en público lo que aprendes para empezar a formar una audiencia.",
+        "t3": "Asóciate con alguien que tenga la habilidad o los clientes que te faltan."
+      },
+      "channel": {
+        "t1": "Identifica el lugar exacto donde pasan el tiempo tus primeros diez clientes, en línea o cerca de ti.",
+        "t2": "Prueba un canal a mano (publicaciones, mensajes, un volante) antes de pagar anuncios.",
+        "t3": "Pregunta a tus primeros clientes dónde buscarían esto y ve ahí."
+      },
+      "trend": {
+        "t1": "Revisa cómo han cambiado las búsquedas y las ventas de la idea en los últimos años.",
+        "t2": "Si se está reduciendo, busca un nicho dentro que siga creciendo.",
+        "t3": "Mantén los costos flexibles y evita contratos largos hasta que la tendencia esté clara."
+      }
+    },
+    "benchmark": "Referencia: {name} tiene un puntaje de perspectiva según datos de búsqueda de {score}.",
+    "seeIdea": "Ver los datos y la guía de {name}",
+    "allIdeas": "Explora {n} ideas de negocio valoradas con datos de búsqueda",
+    "copy": "Copiar resultado",
+    "copied": "Copiado",
+    "copyFailed": "No se pudo copiar",
+    "disclaimer": "Es un puntaje de lista de verificación, no asesoría financiera ni un pronóstico de ingresos. Prueba con clientes reales antes de invertir."
   }
 }
