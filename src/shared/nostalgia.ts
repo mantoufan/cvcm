@@ -48,6 +48,9 @@ export function nostalgiaPublished(id: NostalgiaId): string {
 /** Entries edited after they were published, for dateModified and the sitemap. */
 export const NOSTALGIA_UPDATED: Partial<Record<NostalgiaId, string>> = {};
 
+/** The hub's own copy (lede, about, FAQ, group labels in src/locales/nostalgia/<locale>.json) last edited; set by hand. */
+export const NOSTALGIA_HUB_UPDATED: string | null = null;
+
 /** When an entry last changed: its edit date, else the day it went live (the page's dateModified and its sitemap lastmod). */
 export function nostalgiaUpdated(id: NostalgiaId): string {
   return NOSTALGIA_UPDATED[id] ?? nostalgiaPublished(id);

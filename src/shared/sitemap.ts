@@ -8,7 +8,7 @@ import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./ranki
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
 import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublished, type SlangId } from "./slang";
 import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaModified, type IdeaId } from "./ideas";
-import { NOSTALGIA_ENTRIES, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
+import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
 import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
@@ -181,8 +181,8 @@ function pageLastmod(page: SitemapPage): string | null {
   }
   if (page.kind === "nostalgia") {
     if (page.entry) return nostalgiaUpdated(page.entry);
-    // The hub changes whenever an entry does (or one is added): its newest entry date.
-    return NOSTALGIA_ENTRIES.map(nostalgiaUpdated).sort().at(-1) ?? NOSTALGIA_PUBLISHED;
+    // The hub changes whenever an entry does (or one is added), or when its own copy is edited: the newest of those.
+    return [...NOSTALGIA_ENTRIES.map(nostalgiaUpdated), ...(NOSTALGIA_HUB_UPDATED ? [NOSTALGIA_HUB_UPDATED] : [])].sort().at(-1) ?? NOSTALGIA_PUBLISHED;
   }
   return null;
 }

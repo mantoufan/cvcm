@@ -106,13 +106,13 @@ export function nostalgiaYears(locale: Locale, id: NostalgiaId): string {
   return capitalize(locale, yearsText(locale, id));
 }
 
-/** "1983–2003", "1983 to today" (still around) or "from 1991" (discontinued, end year unknown), shown under the heading. */
+/** "1983–2003", "1983 to today" (still sold, never stopped) or "from 1991" (anything else with no end year), shown under the heading. */
 function yearsText(locale: Locale, id: NostalgiaId): string {
   const { from, to, status } = nostalgiaMeta(locale, id);
   const ui = nostalgiaUi(locale);
   if (to) return fill(ui.years, { from: yearLabel(locale, from), to: yearLabel(locale, to) });
-  // "To today" only for things still sold or brought back; anything else without an end year (a discontinued VCD,
-  // a 2000s fad, an old game) shows just its start.
+  // "To today" only for things still sold without a break (stillAround); anything else without an end year (a revived
+  // QQ秀, a discontinued VCD, a 2000s fad, an old game) shows just its start.
   return fill(stillAround(status) ? ui.since : ui.from, { from: yearLabel(locale, from) });
 }
 
@@ -135,7 +135,7 @@ function crumbHtml(locale: Locale, id: NostalgiaId | null): string {
       : `<span>${escapeHtml(m.hub.h1)}</span>`,
   ];
   if (id) parts.push(`<span>${escapeHtml(nostalgiaName(locale, id).name)}</span>`);
-  return `<nav class="device-crumb" aria-label="${escapeHtml(m.hub.h1)}">${parts.join(sep)}</nav>`;
+  return `<nav class="device-crumb" aria-label="${escapeHtml(messages(locale).ui.nav.breadcrumb)}">${parts.join(sep)}</nav>`;
 }
 
 function faqHtml(locale: Locale, id: NostalgiaId | null): string {
@@ -262,8 +262,8 @@ export function nostalgiaFaqJsonLd(locale: Locale, id: NostalgiaId | null): Reco
 }
 
 /**
- * temporalCoverage as an ISO 8601 interval, only where the page states it: "1983/.." while it is still sold or brought
- * back with no end year, "1983/2003" for a known run that is over. Without an end year (a fad, a corner shop, a VCD
+ * temporalCoverage as an ISO 8601 interval, only where the page states it: "1983/.." while it is still sold without a
+ * break, "1983/2003" for a known run that is over (never for a revived item, which had a gap). Without an end year (a fad, a corner shop, a VCD
  * whose last year is undocumented) there is none: a lone year or decade would claim it existed only then.
  */
 function coverage(locale: Locale, id: NostalgiaId): string | null {
