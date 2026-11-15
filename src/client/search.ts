@@ -45,8 +45,8 @@ export function prefetchSearch(): void {
   void loadIndex(locale()).catch(() => undefined);
 }
 
-async function post(path: string, body: Record<string, string>): Promise<Response> {
-  return fetch(path, {
+function postMiss(body: Record<string, string>): Promise<Response> {
+  return fetch("/api/search/miss", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -61,7 +61,7 @@ function recordMiss(q: string, loc: Locale): void {
   if (recorded.has(key)) return;
   recorded.add(key);
   // A miss that did not arrive (offline, 429, 503) may be sent again later from this tab.
-  post("/api/search/miss", { q, locale: loc })
+  postMiss({ q, locale: loc })
     .then((res) => {
       if (!res.ok) recorded.delete(key);
     })
@@ -150,7 +150,6 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
     empty.hidden = false;
   }
 
-
   async function update(): Promise<void> {
     const q = normalizeQuery(input.value);
     const mine = ++seq;
@@ -206,9 +205,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
       const q = normalizeQuery(input.value);
       const link = list.querySelectorAll<HTMLAnchorElement>("a.search-hit")[Math.max(active, 0)];
       if (link) link.click();
-      else if (q && !hits.length && worthRecording(q)) {
-        flushMiss();
-      }
+      else if (q && !hits.length && worthRecording(q)) flushMiss();
     } else if (e.key === "Escape") {
       e.preventDefault();
       close();

@@ -1,7 +1,7 @@
 /**
  * Site search: the index format, matching and the rules for what a recorded query may be.
  * Shared by the header search box (client), the search API (Worker), the build that writes the index,
- * and the demand / notify scripts, so all of them normalise a query the same way.
+ * and the demand script, so all of them normalise a query the same way.
  */
 
 /** Channels a result can belong to; the label is the core-pack key `nav.<SEARCH_CHANNEL_NAV[channel]>`. */

@@ -211,7 +211,7 @@ function post(path: string, body: unknown, headers: Record<string, string> = {})
 /** The real D1 store over node:sqlite with the real migration. */
 function sqliteStore(): { store: SearchStore; db: DatabaseSync } {
   const db = new DatabaseSync(":memory:");
-  for (const file of ["0002_search.sql", "0003_search_no_email.sql"]) db.exec(readFileSync(`migrations/${file}`, "utf8"));
+  db.exec(readFileSync("migrations/0002_search.sql", "utf8"));
   const d1 = {
     async batch(statements: Array<{ run(): Promise<unknown> }>) {
       db.exec("BEGIN");
@@ -251,9 +251,8 @@ describe("search API on the D1 schema", () => {
     expect(db.prepare("SELECT count, visitors FROM search_misses").get()).toEqual({ count: 3, visitors: 2 });
     const dump = JSON.stringify([db.prepare("SELECT * FROM search_votes").all(), db.prepare("SELECT * FROM search_rate").all()]);
     expect(dump).not.toContain("203.0.113.9");
-    // No email table and no email column remain after 0003.
-    expect(db.prepare("SELECT name FROM sqlite_master WHERE name = 'search_requests'").get()).toBeUndefined();
-    expect(JSON.stringify(db.prepare("PRAGMA table_info(search_rate)").all())).not.toContain("emails");
+    // Nothing is written to the email table, which a later migration drops.
+    expect(db.prepare("SELECT COUNT(*) AS n FROM search_requests").get()).toEqual({ n: 0 });
     // The real store's rate limit is one atomic upsert: concurrent requests cannot slip past the cap.
     const burst = await Promise.all(
       Array.from({ length: SEARCH_MISS_MAX + 10 }, (_, i) =>
