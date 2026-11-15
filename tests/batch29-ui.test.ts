@@ -218,6 +218,19 @@ describe("review fixes (ui)", () => {
     expect(q<HTMLInputElement>("[data-field=age]").getAttribute("inputmode")).toBe("numeric");
   });
 
+  it("names a blank multiple and shows dollars for a rate of 1", () => {
+    mountBusinessValuation(host);
+    set("[data-field=earningsLow]", "");
+    expect(q("[data-out=error]").textContent).toBe("Enter every multiple as 0 or more.");
+    unmountBusinessValuation();
+    host.replaceChildren();
+    mountNetWorth(host);
+    set("[data-field=age]", "40");
+    set("[data-field=currency]", "other", "change");
+    set("[data-field=rate]", "1");
+    expect(q("[data-out=compare]").textContent).toContain("Your net worth in US dollars");
+  });
+
   it("names a distance that is not a number and an age out of range", () => {
     mountCarDepreciation(host);
     set("[data-field=distance]", "12k");

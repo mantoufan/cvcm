@@ -65,9 +65,12 @@ export function mountBusinessValuation(host: HTMLElement): void {
     list.push([t("businessValuation.byRevenue"), rev ? span(rev) : none]);
     if (d.ok) list.push([t("businessValuation.byDcf"), d.result.value > 0 ? num(d.result.value) : none]);
     const backwards = (lo: HTMLInputElement, hi: HTMLInputElement) => v(lo) > v(hi);
-    errorEl.textContent = backwards(eLo, eHi) || backwards(rLo, rHi)
-      ? t("businessValuation.err_multiples")
-      : d.ok ? "" : t(d.error === "invalid" ? "businessValuation.err_dcfInvalid" : `businessValuation.err_${d.error}`);
+    const badMultiple = [eLo, eHi, rLo, rHi].some((el) => !(v(el) >= 0));
+    errorEl.textContent = badMultiple
+      ? t("businessValuation.err_multipleMissing")
+      : backwards(eLo, eHi) || backwards(rLo, rHi)
+        ? t("businessValuation.err_multiples")
+        : d.ok ? "" : t(d.error === "invalid" ? "businessValuation.err_dcfInvalid" : `businessValuation.err_${d.error}`);
     // One figure per method (the middle of a range), so the two multiples do not outvote the DCF.
     const points = [...(earn ? [(earn[0] + earn[1]) / 2] : []), ...(rev ? [(rev[0] + rev[1]) / 2] : []), ...(d.ok ? [d.result.value] : [])].filter((x) => x > 0);
     if (!points.length) {

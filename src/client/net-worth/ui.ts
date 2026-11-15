@@ -92,7 +92,7 @@ export function mountNetWorth(host: HTMLElement): void {
         [t("netWorth.median"), usd(ref.median)],
         [t("netWorth.mean"), usd(ref.mean)],
       ];
-      if (perUsd !== 1) cmp.push([t("netWorth.inUsd"), usd(r.netWorth / perUsd)]);
+      if (curSel.value !== "usd") cmp.push([t("netWorth.inUsd"), usd(r.netWorth / perUsd)]);
       cmp.push([t("netWorth.vsMedian"), r.netWorth / perUsd >= ref.median ? t("netWorth.above") : t("netWorth.below")]);
       compare.append(h("dt", { class: "hint" }, t(`netWorth.band_${band}`)), h("dd", null, ""), ...cmp.flatMap(([k, v]) => [h("dt", null, k), h("dd", null, v)]));
       last += `\n${t(`netWorth.band_${band}`)}\n${cmp.map(([k, v]) => `${k}: ${v}`).join("\n")}`;

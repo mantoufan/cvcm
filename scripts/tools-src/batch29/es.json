@@ -270,6 +270,7 @@
       "f_floor": "Probablemente vale lo que su renovación anual",
       "k_word": "Una palabra común: {words}",
       "k_twoWords": "Dos palabras comunes: {words}",
+      "k_letters1": "Una letra",
       "k_letters2": "Dos letras",
       "k_letters3": "Tres letras",
       "k_letters4": "Cuatro letras",
@@ -391,7 +392,8 @@
       "disclaimer": "Una estimación para planificar, no una valoración formal. Los múltiplos por sector son rangos típicos aproximados para pequeños negocios.",
       "err_dcfInvalid": "Introduce el flujo de caja libre, las tasas y de 1 a 30 años de previsión para el DCF.",
       "err_multiples": "El múltiplo alto debe ser al menos igual al bajo.",
-      "notApplicable": "Necesita una cifra mayor que 0"
+      "notApplicable": "Necesita una cifra mayor que 0",
+      "err_multipleMissing": "Escribe cada múltiplo como 0 o más."
     }
   }
 }

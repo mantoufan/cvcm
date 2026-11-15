@@ -159,7 +159,8 @@ describe("number plate value", () => {
   it("reads mainland Chinese plates with or without the province", () => {
     expect(plate("京A·88888", "cn").tier).toBe(4);
     expect(plate("A88888", "cn").tier).toBe(4);
-    expect(plate("沪AD12345", "cn").features).toContainEqual({ key: "letters" });
+    expect(plate("沪A·B1234", "cn").features).toContainEqual({ key: "letters" });
+    expect(plate("沪AD12345", "cn").features).not.toContainEqual({ key: "letters" });
     expect(valuePlate("京I12345", "cn")).toEqual({ ok: false, error: "invalid" });
     expect(guessPlateMarket("粤B·88866", "uk")).toBe("cn");
     expect(guessPlateMarket("30K-686.86", "uk")).toBe("vn");
@@ -381,6 +382,15 @@ describe("review fixes", () => {
     expect(domain("xn--abc.com").kind).not.toBe("idn");
     expect(plate("29B18888", "vn").features).toContainEqual({ key: "vnSerial", serial: "18888" });
     expect(plate("29B1-8888", "vn").features).toContainEqual({ key: "vnSerial", serial: "8888" });
+  });
+
+  it("round 8: UK grades follow price, IDNs display as typed, casino is a word, one letter, small new-energy D", () => {
+    expect(plate("ABC 1", "uk").tier).toBeGreaterThanOrEqual(plate("A1 ABC", "uk").tier);
+    expect(plate("ABC 1", "uk").score).toBeGreaterThan(plate("A1 ABC", "uk").score);
+    expect(domain("例子.com").domain).toBe("例子.com");
+    expect(domain("casino.com").kind).toBe("word");
+    expect(domain("x.com").kind).toBe("letters1");
+    expect(plate("浙A·D88888", "cn").estimate).toBe(plate("浙A·88888D", "cn").estimate);
   });
 
   it("takes whole forecast years only", () => {

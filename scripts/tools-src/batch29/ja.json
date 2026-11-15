@@ -270,6 +270,7 @@
       "f_floor": "価値はおそらく年間更新料程度",
       "k_word": "一般的な単語1語：{words}",
       "k_twoWords": "一般的な単語2語：{words}",
+      "k_letters1": "1文字",
       "k_letters2": "2文字",
       "k_letters3": "3文字",
       "k_letters4": "4文字",
@@ -391,7 +392,8 @@
       "disclaimer": "計画用の推定で、正式な企業価値評価ではありません。業種別の倍率は小規模事業の大まかな標準範囲です。",
       "err_dcfInvalid": "DCF にはフリーキャッシュフロー、各レート、1〜30年の予測期間を入力してください。",
       "err_multiples": "倍率の上限は下限以上にしてください。",
-      "notApplicable": "0より大きい値が必要です"
+      "notApplicable": "0より大きい値が必要です",
+      "err_multipleMissing": "倍率はすべて0以上で入力してください。"
     }
   }
 }

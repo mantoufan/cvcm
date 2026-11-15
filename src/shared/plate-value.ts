@@ -204,7 +204,9 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
     if (!format) return { ok: false, error: "invalid" };
     const s = scoreUk(p, format);
     ({ band, f, features } = s);
-    tier = format === "dateless" ? Math.max(1, 6 - p.length) : format === "current" ? 0 : 4 - p.replace(/\D/g, "").length;
+    // The grade follows the price: dateless marks are dearest, then prefix and suffix, then current marks.
+    const top = band[1];
+    tier = top >= 100_000 ? 4 : top >= 20_000 ? 3 : top >= 5_000 ? 2 : top >= 1_500 ? 1 : 0;
   } else if (market === "vn") {
     const m = VN_RE.exec(p);
     if (!m) return { ok: false, error: "invalid" };
@@ -228,8 +230,9 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
   } else {
     const m = CN_RE.exec(p);
     if (!m) return { ok: false, error: "invalid" };
-    // A large new-energy plate ends in D or F after five digits: the digits carry the pattern.
-    const s = scoreSerial(m[3]!.replace(/^(\d{5})[DF]$/, "$1"), CN_LUCKY_TAILS);
+    // A new-energy plate's D or F (after five digits, or in front of a small plate's serial) is required, not chosen:
+    // the rest carries the pattern.
+    const s = scoreSerial(m[3]!.replace(/^(\d{5})[DF]$/, "$1").replace(/^[DF](?=[A-HJ-NP-Z0-9]\d{4}$)/, ""), CN_LUCKY_TAILS);
     ({ tier, f, features } = s);
     band = CN_LADDER[tier]!;
   }

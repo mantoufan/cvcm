@@ -13,7 +13,7 @@ const WORDS = new Set(
     "a ace act ad age agent ai air all alpha am angel answer ant app apple apps arc arch area art arts ask atlas auto away " +
     "baby back bag bake baker bank bar base bay beach bean bear beat beauty bed bee best bet big bike bill bio bird bit black " +
     "blog blue board boat body bold bond book books boost boot boss bot box boy brain brand bread bridge bright build bus " +
-    "business buy buzz cab cafe cake call cam camp can cap capital car card care cars case cash cast cat chain chat cheap " +
+    "business buy buzz cab cafe cake call cam camp can cap capital car card care cars case cash casino cast cat chain chat cheap " +
     "check chef chess child chip city class clean clear click clinic clip clock cloud club coach code coffee coin cold " +
     "color cook cool copy core cost craft crypto cube cup cut cyber daily dash data date day deal deals dental design desk " +
     "dev diet digital direct doc dog door dot dream drink drive drop duck earth easy eat eco edge edu energy engine " +
@@ -52,6 +52,7 @@ const OTHER_TLD = 0.025;
 export type DomainKind =
   | "word"
   | "twoWords"
+  | "letters1"
   | "letters2"
   | "letters3"
   | "letters4"
@@ -192,7 +193,8 @@ function baseValue(sld: string): { kind: DomainKind; value: number; features: Do
       features.push({ key: "kind", kind: "twoWords", words: pair.join(" + ") });
       return { kind: "twoWords", value, features };
     }
-    if (n <= 2) return { kind: "letters2", value: 300_000, features: [{ key: "kind", kind: "letters2" }] };
+    if (n === 1) return { kind: "letters1", value: 500_000, features: [{ key: "kind", kind: "letters1" }] };
+    if (n === 2) return { kind: "letters2", value: 300_000, features: [{ key: "kind", kind: "letters2" }] };
     if (n === 3) {
       const say = pronounceable(name);
       if (say) features.push({ key: "pronounceable" });
@@ -247,13 +249,13 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
   if (n > 10) value *= Math.pow(0.8, n - 10);
   features.push({ key: "length", n });
   const factor = TLD_FACTOR[tld] ?? OTHER_TLD;
-  features.unshift({ key: "tld", tld, factor });
+  features.unshift({ key: "tld", tld: unicodeName(tld), factor });
   value *= factor;
   const estimate = Math.max(FLOOR, roundTo(value));
   const low = Math.max(FLOOR, roundTo(value / 2.5));
   const high = Math.max(FLOOR, roundTo(value * 2.5));
   const score = Math.round(Math.min(100, Math.max(0, (Math.log10(estimate) - 1) * 20)));
-  return { ok: true, value: { domain: `${sld}.${tld}`, sld, tld, kind: base.kind, estimate, low, high, score, features } };
+  return { ok: true, value: { domain: `${unicodeName(sld)}.${unicodeName(tld)}`, sld, tld, kind: base.kind, estimate, low, high, score, features } };
 }
 
 /** The Unicode form of a punycode label, or null if it is not valid punycode. */
@@ -301,6 +303,11 @@ function punyDecode(input: string): string | null {
     out.splice(i++, 0, n);
   }
   return String.fromCodePoint(...out);
+}
+
+/** A name for display: each xn-- label in its own script (例子.中国), others as they are. */
+function unicodeName(name: string): string {
+  return name.split(".").map((l) => decodeIdn(l) ?? l).join(".");
 }
 
 /** To $5 under $100, else two significant figures. */
