@@ -105,7 +105,7 @@ export function tokenGroups(text: string, locale: Locale | null = null): string[
         const pieces = (/^[\p{Script=Katakana}\u30fc]/u.test(seg) || seg.length === 1 ? [seg] : Array.from({ length: seg.length - 1 }, (_, i) => seg.slice(i, i + 2))).filter((p) => !STOP_CJK.has(p));
         // The pieces of one Hangul word, or of one Han run (Chinese has no spaces: 开一家宠物店 is one run), count once.
         if (/^\p{Script=Hangul}|^\p{Script=Han}/u.test(seg) && pieces.length > 1) {
-          if (pieces.length) out.push(pieces);
+          out.push(pieces);
         } else for (const piece of pieces) out.push([piece]);
       }
     }
@@ -135,7 +135,7 @@ const STOP = new Set([
   "bisni", "bisnis", "usaha", "jasa", "di", "cara", "jualan", "jual", "rumah", "saya", "ingin", "mau", "dan", "yang", "toko", "buka", "membuka",
   "kinh", "doanh", "mo", "ban", "va", "cua", "hang", "tren", "mang", "toi", "muon", "nha", "dich", "vu", "cong", "ty", "lam",
 ]);
-const NOT_PLURAL = new Set(["news", "glass", "gas", "bus", "canvas"]);
+const NOT_PLURAL = new Set(["news", "canvas"]);
 
 /** Filler in one language can be a real word in another: Vietnamese "in" is "print" (in 3D). */
 const KEEP: Partial<Record<Locale, Set<string>>> = { vi: new Set(["in"]) };
@@ -175,8 +175,8 @@ function poolsFor(names: Partial<Record<IdeaId, string>>, locale: Locale | null)
 
 /**
  * The idea whose search phrases (and name in the reader's language) best share the text's words, weighted by how few
- * ideas use each word. A match needs two shared words, or, in a text of at most two words, one word of 3+ letters
- * (or a CJK piece) only that idea uses.
+ * ideas use each word. A match needs two shared words, or one word only that idea uses when it is the whole text or a
+ * specific word (8+ Latin letters, or CJK).
  * Equal scores go to the idea whose pool the text covers most (its own name beats a longer name containing it); a
  * remaining tie is no match. `names` maps each idea to its name in the page's language.
  */
@@ -188,7 +188,8 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
   const scored = pools.map(({ id, words }) => {
     // Each word counts once, by its best piece.
     const hitGroups = groups.map((g) => g.filter((t) => words.has(t))).filter((g) => g.length);
-    const hits = hitGroups.map((g) => g.reduce((a, b) => (weight(b) > weight(a) ? b : a)));
+    // Each word counts once, however often it is typed ("coffee mugs and coffee cups" has one shared word).
+    const hits = [...new Set(hitGroups.map((g) => g.reduce((a, b) => (weight(b) > weight(a) ? b : a))))];
     return { id, hits, cover: hits.length / Math.max(1, words.size), score: hits.reduce((sum, t) => sum + weight(t), 0) };
   }).sort((a, b) => b.score - a.score || b.cover - a.cover);
   const [best] = scored;
@@ -207,9 +208,10 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
   const short = groups.length === 1;
   const distinct = only.length >= 3 || /[^\x00-\x7f]/.test(only);
   const sharedButCloser = df.get(only) === 2 && tied.length > 0;
-  // In a longer text, one word still matches when it is that specific: only this idea uses it and it is a long word
-  // (laundromat) or a katakana loanword (キッチンカー), not a common word like "coffee" or "truck".
-  const specific = df.get(only) === 1 && (only.length >= 8 || /^[\p{Script=Katakana}\u30fc]{4,}$/u.test(only));
+  // In a longer text, one word still matches when only this idea uses it and it is not a short Latin word: a long word
+  // (laundromat) or a CJK word (奶茶 in 我想开一家奶茶店，在学校附近; カフェ in 東京でカフェを開きたい). Common Latin words
+  // ("coffee", "truck") are too often a passing mention. A wrong suggestion only shows a benchmark the reader can change.
+  const specific = df.get(only) === 1 && (only.length >= 8 || /[^\x00-\x7f]/.test(only));
   return (short && distinct && (df.get(only) === 1 || sharedButCloser)) || specific ? best.id : null;
 }
 

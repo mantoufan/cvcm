@@ -178,7 +178,6 @@ function paint(): void {
     ),
     h("p", { class: "iv-verdict" }, t(`ideaValidator.verdict.${result.grade}`)),
     h("dl", { class: "iv-stats" },
-      h("div", null, h("dt", null, t("ideaValidator.readiness")), h("dd", { "data-out": "readiness" }, String(result.readiness))),
       h("div", null, h("dt", null, t("ideaValidator.market")), h("dd", { "data-out": "market" }, result.market === null ? t("ideaValidator.noMarket") : String(result.market))),
     ),
   );
@@ -215,7 +214,6 @@ function summary(result: NonNullable<ReturnType<typeof validateIdea>>, answers: 
   return [
     `${t("ideaValidator.title")}: ${result.total}/100 (${t(`ideaValidator.grade.${result.grade}`)})`,
     text ? `${t("ideaValidator.describe")}: ${text}` : "",
-    `${t("ideaValidator.readiness")}: ${result.readiness}`,
     `${t("ideaValidator.market")}: ${result.market === null ? t("ideaValidator.noMarket") : `${result.market}${id ? ` (${ideaName(loc, id).name})` : ""}`}`,
     ...VALIDATOR_QUESTIONS.map((q) => `${t(`ideaValidator.${q}.label`)}: ${t(`ideaValidator.${q}.o${(answers[q] ?? 0) + 1}`)}`),
     ...(focus ? [`${t("ideaValidator.next", { item: t(`ideaValidator.${focus}.label`) })}:`, ...tips.map((tip, i) => `${i + 1}. ${tip}`)] : []),

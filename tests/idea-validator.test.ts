@@ -94,6 +94,8 @@ describe("idea validator: matching", () => {
     // Generic verbs do not pick an idea; one clear word in a longer text does when no other idea shares a word.
     expect(matchIdea("open a laundromat near campus", names("en"))).toBe("laundromat");
     expect(matchIdea("selling coffee mugs with my designs", names("en"))).toBeNull();
+    expect(matchIdea("coffee mugs and coffee cups", names("en"))).toBeNull();
+    expect(matchIdea("我想开一家奶茶店，在学校附近", names("zh-CN"), "zh-CN")).toBe("bubble-tea");
     expect(matchIdea("a truck rental company", names("en"))).toBeNull();
     expect(matchIdea("핸드메이드 캔들", names("ko"), "ko")).not.toBe("jewelry-business");
     expect(matchIdea("캔들 창업", names("ko"), "ko")).toBe("candle-business");
