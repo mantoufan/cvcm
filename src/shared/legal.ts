@@ -3,7 +3,7 @@ import { legalMessages, type LegalMessages } from "./messages";
 import { appHref, legalHref, type LegalPageId } from "./path";
 
 /** Shown at the top of both pages. Bump it whenever the policy or terms text changes. */
-export const LEGAL_UPDATED = "2026-10-09";
+export const LEGAL_UPDATED = "2026-11-14";
 
 export const LEGAL_EMAIL = "m@cv.cm";
 

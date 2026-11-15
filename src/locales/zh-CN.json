@@ -1847,6 +1847,7 @@
   "footer": {
     "privacy": "图片、PDF 和文本工具留在当前标签页。云剪切板会短暂保存在 cv.cm，到期删除。",
     "legal": "法律信息",
+    "directory": "全部工具与页面",
     "privacyLink": "隐私政策",
     "termsLink": "服务条款"
   },
@@ -14440,6 +14441,27 @@
     "sh_moon": "月亮",
     "sh_cross": "十字",
     "hint": "点击或按回车键翻牌，方向键在牌之间移动。没配上的牌会自动翻回，或在你下次点击时翻回。"
+  },
+  "search": {
+    "open": "搜索 cv.cm",
+    "short": "搜索",
+    "label": "搜索工具、教程、测试等",
+    "placeholder": "搜索工具、教程、测试…",
+    "results": "搜索结果",
+    "count": "{n} 条结果",
+    "loading": "加载中…",
+    "none": "cv.cm 上还没有与「{q}」相关的内容。",
+    "ask": "想要这个？留下邮箱，上线后发一封邮件通知你。",
+    "emailPlaceholder": "you@example.com",
+    "emailLabel": "邮箱地址",
+    "notify": "上线通知我",
+    "privacy": "上线时只发一封邮件，发完即删除你的邮箱，不做他用。",
+    "badEmail": "请检查邮箱地址。",
+    "sending": "提交中…",
+    "done": "好的。上线后会发一封邮件到 {email}。",
+    "rate": "请求太频繁，请稍后再试。",
+    "failed": "提交失败，请重试。",
+    "unavailable": "搜索加载失败，请刷新页面。"
   },
   "valuation": {
     "copy": "复制结果",

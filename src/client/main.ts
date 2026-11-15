@@ -770,6 +770,8 @@ export function render(): void {
     rendered = (hydrating ? ready : Promise.race([ready, wait(SWAP_WAIT_MS)])).then(() => {
       if (gen !== pageGen) return;
       const focus = hydrating ? carryInput(old, page) : null;
+      // A directory opened on the server HTML stays open, so the link about to be tapped does not move away.
+      if (hydrating && old.some((el) => el.querySelector("details.dir-fold[open]"))) page.querySelector("details.dir-fold")?.setAttribute("open", "");
       for (const el of old) el.remove();
       page.classList.remove("pending");
       focus?.();
@@ -870,6 +872,8 @@ function restoreRendered(): void {
 }
 
 function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
+  // A new page replaces the header: an open search panel closes first (and records its pending miss).
+  searchModule?.closeSearch();
   const main = h("main", { id: "main" });
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
@@ -898,11 +902,14 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
+      searchButton(),
       langSwitch(loc),
     ),
     main,
     h("footer", { class: "foot" },
-      home ? null : toolDirectory(loc),
+      // Folded: the links stay in the markup for crawlers and one tap away for readers, and the page ends where
+      // its own content ends instead of under a wall of several hundred links.
+      home ? null : h("details", { class: "dir-fold" }, h("summary", null, t("footer.directory")), toolDirectory(loc)),
       h("p", null, t("footer.privacy")),
       h("nav", { class: "foot-links", "aria-label": t("footer.legal") },
         h("a", { href: legalHref(loc, "privacy"), "data-nav": "privacy" }, t("footer.privacyLink")),
@@ -919,9 +926,9 @@ function navLink(href: string, label: string, on: boolean, nav: string): HTMLEle
   return h("a", { class: on ? "on" : null, href, "data-nav": nav, "aria-current": on ? "page" : undefined }, label);
 }
 
-/** Every tool as a plain link, grouped like the home page, so any page is one click from any tool. */
+/** Every tool as a plain link, grouped like the home page, so every page links to every tool (folded in the footer). */
 function toolDirectory(loc: Locale): HTMLElement {
-  return h("nav", { class: "dir", "aria-label": t("nav.tools") },
+  return h("nav", { class: "dir", "aria-label": t("footer.directory") },
     ...CATEGORIES.map((cat) =>
       h("div", { class: "dir-group" },
         h("h2", null, t(`nav.${cat.id}`)),
@@ -1132,6 +1139,67 @@ function syncHreflang(seo: Parameters<typeof hreflangAlternates>[0]): void {
     link.href = alt.href;
     document.head.append(link);
   }
+}
+
+/** The search chunk once loaded: render() closes an open panel before it replaces the header. */
+let searchModule: typeof import("./search") | null = null;
+
+function loadSearch(): Promise<typeof import("./search")> {
+  return import("./search").then((m) => (searchModule = m));
+}
+
+/** Opens the site search under the header; the panel and its index are a separate chunk loaded on first use. */
+function searchButton(): HTMLElement {
+    let hoverTimer = 0;
+  const button: HTMLButtonElement = h("button", {
+    type: "button",
+    class: "search-btn",
+    "aria-label": t("search.open"),
+    title: t("search.open"),
+    "aria-haspopup": "dialog",
+    "aria-expanded": "false",
+    // A short hover, not a pass across the header on the way to the language picker, warms the index.
+    onPointerenter: () => {
+      // Only the panel code; the index loads when the panel opens.
+      hoverTimer = window.setTimeout(() => void loadSearch().catch(() => undefined), 150);
+    },
+    onPointerleave: () => window.clearTimeout(hoverTimer),
+    onFocus: () => void loadSearch().catch(() => undefined),
+    onClick: () => {
+      const header = button.closest("header");
+      if (!header) return;
+      loadSearch().then((m) => {
+        if (button.getAttribute("aria-expanded") === "true") m.closeSearch();
+        else m.openSearch(header, button);
+      }).catch((err: unknown) => {
+        // Usually a tab still on an older deploy's chunk names: one full reload picks up the new ones.
+        console.error(err);
+        // Not offline, and not over unsaved work in a tool: a reload would lose it or show the browser's offline page.
+        if (navigator.onLine && !mustStay()) reloadOnce();
+      });
+    },
+  });
+  // Magnifier drawn in SVG (no icon font, no image request).
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("width", "18");
+  svg.setAttribute("height", "18");
+  const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+  circle.setAttribute("cx", "10.5");
+  circle.setAttribute("cy", "10.5");
+  circle.setAttribute("r", "6.5");
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  line.setAttribute("d", "M15.5 15.5 21 21");
+  for (const part of [circle, line]) {
+    part.setAttribute("fill", "none");
+    part.setAttribute("stroke", "currentColor");
+    part.setAttribute("stroke-width", "2");
+    part.setAttribute("stroke-linecap", "round");
+    svg.append(part);
+  }
+  button.append(svg, h("span", { class: "search-btn-text" }, t("search.short")));
+  return button;
 }
 
 function langSwitch(current: Locale): HTMLElement {
