@@ -87,13 +87,16 @@ describe("search panel", () => {
 
   it("sends the email request and confirms", async () => {
     fetchMock.mockImplementation(async () => new Response(JSON.stringify({ ok: true }), { status: 200 }));
-    await type("remove watermark");
+    await type("photo restorer");
     const email = header.querySelector<HTMLInputElement>(".search-email")!;
     email.value = "Me@Example.com";
     header.querySelector("form")!.dispatchEvent(new Event("submit", { cancelable: true }));
     await vi.runAllTimersAsync();
+    // The searcher was recorded as a miss before the email request, and the miss survives page unload.
+    const miss = fetchMock.mock.calls.find(([u]) => u === "/api/search/miss") as [string, RequestInit] | undefined;
+    expect(miss?.[1].keepalive).toBe(true);
     const call = fetchMock.mock.calls.find(([u]) => u === "/api/search/notify") as [string, RequestInit];
-    expect(JSON.parse(String(call[1].body))).toEqual({ q: "remove watermark", locale: "en", email: "me@example.com" });
+    expect(JSON.parse(String(call[1].body))).toEqual({ q: "photo restorer", locale: "en", email: "me@example.com" });
     expect(header.querySelector(".search-done")?.textContent).toContain("me@example.com");
   });
 

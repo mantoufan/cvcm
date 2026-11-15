@@ -53,13 +53,18 @@ export function foldText(text: string): string {
 /** Letters that are written without spaces between words: a query term is matched inside them as a substring. */
 const UNSPACED = /^[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\p{Script=Thai}ー]/u;
 
+/** Hyphens, slashes and other punctuation separate words ("pdf-to-jpg", "bmi?"); + and # stay (C++, C#). */
+function spaced(query: string): string {
+  return foldText(query).replace(/[^\p{L}\p{N}\p{M}+#ー]+/gu, " ").trim();
+}
+
 /**
  * Query terms. A term that mixes CJK and other letters ("合并pdf") is split into runs, so it still finds
  * "合并 PDF" and "PDF 合并".
  */
 function terms(query: string): string[] {
   const out: string[] = [];
-  for (const word of foldText(query).split(" ")) {
+  for (const word of spaced(query).split(" ")) {
     if (!word) continue;
     const runs = word.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\p{Script=Thai}ー]+|[^\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}\p{Script=Thai}ー]+/gu) ?? [word];
     out.push(...runs);
@@ -122,7 +127,7 @@ type Scored = { entry: SearchEntry; score: number; order: number };
  * starts with the query most of all; ties keep index order (tools before tutorials before the rest).
  */
 export function searchEntries(entries: readonly SearchEntry[], query: string, limit = SEARCH_MAX_RESULTS): SearchEntry[] {
-  const whole = foldText(normalizeQuery(query));
+  const whole = spaced(normalizeQuery(query));
   const words = terms(whole).map(compile);
   if (words.length === 0) return [];
   const scored: Scored[] = [];

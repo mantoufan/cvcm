@@ -66,31 +66,49 @@ function demand(): void {
   const min = Number(option("min", "1"));
   const since = Date.now() - days * 86_400_000;
   const misses = d1<MissRow>(`SELECT q, locale, count, visitors, first_at, last_at FROM search_misses WHERE last_at >= ${since}`);
-  const requests = d1<{ q: string; locale: string; n: number }>("SELECT q, locale, COUNT(*) AS n FROM search_requests GROUP BY q, locale");
-  const asked = new Map(requests.map((r) => [`${r.locale}|${r.q}`, r.n]));
-  type Row = { q: string; visitors: number; count: number; emails: number; locales: string[]; last: string; answered: string[] };
+  // Every pending email request counts, even one whose miss row is older than the window or never arrived.
+  const requests = d1<{ q: string; locale: string; n: number; last: number }>(
+    "SELECT q, locale, COUNT(*) AS n, MAX(created_at) AS last FROM search_requests GROUP BY q, locale",
+  );
+  type Row = { q: string; visitors: number; count: number; emails: number; locales: string[]; first: string; last: string; answered: string[] };
   const byQuery = new Map<string, Row>();
+  const seenLocale = new Set<string>();
+  const rowOf = (q: string) => {
+    let row = byQuery.get(q);
+    if (!row) byQuery.set(q, (row = { q, visitors: 0, count: 0, emails: 0, locales: [], first: "", last: "", answered: [] }));
+    return row;
+  };
+  const addLocale = (row: Row, locale: string, lastAt: number, firstAt: number) => {
+    if (day(lastAt) > row.last) row.last = day(lastAt);
+    if (!row.first || day(firstAt) < row.first) row.first = day(firstAt);
+    if (seenLocale.has(`${locale}|${row.q}`)) return;
+    seenLocale.add(`${locale}|${row.q}`);
+    row.locales.push(locale);
+    if (isLocale(locale)) {
+      const now = hitsFor(row.q, locale);
+      if (now.length) row.answered.push(`${locale}: ${now[0][2]}`);
+    }
+  };
   for (const m of misses) {
-    const row = byQuery.get(m.q) ?? { q: m.q, visitors: 0, count: 0, emails: 0, locales: [], last: "", answered: [] };
+    const row = rowOf(m.q);
     row.visitors += m.visitors;
     row.count += m.count;
-    row.emails += asked.get(`${m.locale}|${m.q}`) ?? 0;
-    row.locales.push(m.locale);
-    if (day(m.last_at) > row.last) row.last = day(m.last_at);
-    if (isLocale(m.locale)) {
-      const now = hitsFor(m.q, m.locale);
-      if (now.length) row.answered.push(`${m.locale}: ${now[0][2]}`);
-    }
-    byQuery.set(m.q, row);
+    addLocale(row, m.locale, m.last_at, m.first_at);
+  }
+  for (const r of requests) {
+    const row = rowOf(r.q);
+    row.emails += r.n;
+    addLocale(row, r.locale, r.last, r.last);
   }
   const rows = [...byQuery.values()]
-    .filter((r) => r.visitors >= min)
+    .filter((r) => r.visitors >= min || r.emails > 0)
     .sort((a, b) => b.emails - a.emails || b.visitors - a.visitors || b.count - a.count);
-  console.log(`Searches with no result in the last ${days} days (≥${min} visitors): ${rows.length} queries\n`);
-  console.log("| query | visitors | searches | emails | locales | last | answered now |");
-  console.log("|---|---|---|---|---|---|---|");
+  console.log(`No-result queries last seen in the past ${days} days (≥${min} visitors) plus every pending email request: ${rows.length}`);
+  console.log("visitors and searches are totals since the first time a query was seen (column first), not counts within the window.\n");
+  console.log("| query | visitors | searches | emails | locales | first | last | answered now |");
+  console.log("|---|---|---|---|---|---|---|---|");
   for (const r of rows) {
-    console.log(`| ${r.q.replace(/\|/g, "\\|")} | ${r.visitors} | ${r.count} | ${r.emails} | ${r.locales.join(" ")} | ${r.last} | ${r.answered.join("; ")} |`);
+    console.log(`| ${r.q.replace(/\|/g, "\\|")} | ${r.visitors} | ${r.count} | ${r.emails} | ${r.locales.join(" ")} | ${r.first} | ${r.last} | ${r.answered.join("; ")} |`);
   }
   const out = option("json", "");
   if (out) {
@@ -276,12 +294,27 @@ async function notify(): Promise<void> {
       console.error(`still cannot delete already-mailed row [${r.locale}] ${r.q}: ${(err as Error).message}`);
     }
   }
-  const ready = pending
+  const matched = pending
     .filter((r) => !sent.has(ledgerKey(r)))
     .filter((r): r is RequestRow & { locale: Locale } => isLocale(r.locale))
     .map((r) => ({ ...r, hits: hitsFor(r.q, r.locale) }))
     .filter((r) => r.hits.length > 0);
-  console.log(`${pending.length} pending requests, ${ready.length} now have results in this checkout's index.`);
+  // This checkout's index may be ahead of production (a branch, or main before the deploy finished): only pages
+  // that already answer 200 on cv.cm are linked, and a request with none of them live waits for the next run.
+  const live = new Map<string, boolean>();
+  for (const href of new Set(matched.flatMap((r) => r.hits.map((h) => h[1])))) {
+    try {
+      const res = await fetch(`https://cv.cm${href}`, { method: "HEAD", redirect: "manual" });
+      live.set(href, res.status === 200);
+    } catch {
+      live.set(href, false);
+    }
+  }
+  const ready = matched
+    .map((r) => ({ ...r, hits: r.hits.filter((h) => live.get(h[1])) }))
+    .filter((r) => r.hits.length > 0);
+  const waiting = matched.length - ready.length;
+  console.log(`${pending.length} pending requests, ${matched.length} have results in this checkout's index, ${ready.length} of them live on cv.cm${waiting ? ` (${waiting} wait for a deploy)` : ""}.`);
   for (const r of ready) console.log(`- [${r.locale}] ${r.q} → ${r.hits.map((h) => `${h[2]} (${h[1]})`).join(", ")}  <${r.email}>`);
   if (!send) {
     if (ready.length) console.log("\nDry run. Check the matches above (the page must really answer the query), then rerun with --send.");

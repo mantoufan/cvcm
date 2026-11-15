@@ -65,6 +65,19 @@ describe("searchEntries", () => {
     expect(searchEntries(zh, "排行榜")[0][1]).toBe("/zh-cn/rankings/");
   });
 
+  it("treats hyphens and punctuation as spaces but keeps + and #", () => {
+    expect(names(searchEntries(en, "pdf-to-jpg"))).toEqual(names(searchEntries(en, "pdf to jpg")));
+    expect(searchEntries(en, "qr-code").length).toBeGreaterThan(0);
+    expect(searchEntries(en, "bmi?").length).toBeGreaterThan(0);
+  });
+
+  it("gives every result in a locale a distinct name", () => {
+    for (const locale of LOCALES) {
+      const lower = indexes[locale].map((e) => e[2].toLowerCase());
+      expect(lower.length - new Set(lower).size, locale).toBe(0);
+    }
+  });
+
   it("matches Latin terms at word starts only", () => {
     expect(names(searchEntries(en, "ps")).some((n) => /cps/i.test(n))).toBe(false);
     expect(names(searchEntries(en, "cps")).some((n) => /cps/i.test(n))).toBe(true);

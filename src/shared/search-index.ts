@@ -74,15 +74,29 @@ function relative(url: string): string {
  * Every sitemap page of one locale as search entries, in sitemap order (tools first). Outside English
  * each entry also carries the English name, so "pdf merge" still finds 合并 PDF.
  */
-export function buildSearchIndex(locale: Locale, pages: SitemapPage[] = sitemapPages()): SearchEntry[] {
+function englishNames(pages: SitemapPage[]): Map<string, string> {
   const english = new Map<string, string>();
+  for (const page of pages) {
+    const info = page.locale === "en" ? describe(page) : null;
+    if (info) english.set(keyOf(page), pageName("en", page, info.channel, info.seo));
+  }
+  return english;
+}
+
+/** The page title without the site suffix: used when the short name would repeat another result's name. */
+function fullTitle(locale: Locale, seo: SeoInput): string {
+  return pageTitle(locale, seo).replace(/\s*[|｜—–]\s*cv\.cm\s*$/i, "").trim();
+}
+
+/**
+ * Every sitemap page of one locale as search entries, in sitemap order (tools first). Outside English
+ * each entry also carries the English name, so "pdf merge" still finds 合并 PDF. When a short name repeats an
+ * earlier one (the 麦克风测试 tool and its tutorial "麦克风测试：…"), the later entry keeps its full title.
+ */
+export function buildSearchIndex(locale: Locale, pages: SitemapPage[] = sitemapPages(), english = englishNames(pages)): SearchEntry[] {
   const entries: SearchEntry[] = [];
   const seen = new Set<string>();
-  for (const page of pages) {
-    const info = describe(page);
-    if (!info) continue;
-    if (page.locale === "en") english.set(keyOf(page), pageName("en", page, info.channel, info.seo));
-  }
+  const names = new Set<string>();
   for (const page of pages) {
     if (page.locale !== locale) continue;
     const info = describe(page);
@@ -90,7 +104,9 @@ export function buildSearchIndex(locale: Locale, pages: SitemapPage[] = sitemapP
     const href = relative(pageUrl(page));
     if (seen.has(href)) continue;
     seen.add(href);
-    const name = pageName(locale, page, info.channel, info.seo);
+    let name = pageName(locale, page, info.channel, info.seo);
+    if (names.has(name.toLowerCase())) name = fullTitle(locale, info.seo);
+    names.add(name.toLowerCase());
     const entry: SearchEntry = [info.channel, href, name, shortBlurb(pageDescription(locale, info.seo))];
     const alt = english.get(keyOf(page));
     if (locale !== "en" && alt && alt !== name) entry.push(alt);
@@ -107,5 +123,6 @@ function keyOf(page: SitemapPage): string {
 
 export function buildAllSearchIndexes(): Record<Locale, SearchEntry[]> {
   const pages = sitemapPages();
-  return Object.fromEntries(LOCALES.map((locale) => [locale, buildSearchIndex(locale, pages)])) as Record<Locale, SearchEntry[]>;
+  const english = englishNames(pages);
+  return Object.fromEntries(LOCALES.map((locale) => [locale, buildSearchIndex(locale, pages, english)])) as Record<Locale, SearchEntry[]>;
 }

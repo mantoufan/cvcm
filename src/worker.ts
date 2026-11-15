@@ -90,7 +90,7 @@ function s3Config(env: Env): S3Config | null {
 }
 
 export default {
-  /** Daily cron (wrangler.jsonc): sweep search hashes, salts and rate rows past their two days even when nobody searches. */
+  /** Hourly cron (wrangler.jsonc): sweep search hashes, salts and rate rows past their two days even when nobody searches. */
   async scheduled(_event: unknown, env: Env): Promise<void> {
     if (env.DB) await d1SearchStore(env.DB).cleanup(Date.now());
   },

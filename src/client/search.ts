@@ -51,6 +51,8 @@ async function post(path: string, body: Record<string, string>): Promise<Respons
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
     credentials: "same-origin",
+    // The miss is often sent as the visitor leaves (a link that loads a new document, closing the tab).
+    keepalive: true,
   });
 }
 
@@ -165,13 +167,14 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
           email.focus();
           return;
         }
+        // The searcher counts in the demand table too, even when they submit before the pause ends.
+        flushMiss();
         send.disabled = true;
         note.textContent = t("search.sending");
         try {
           const res = await post("/api/search/notify", { q, locale: loc, email: address });
           if (res.ok) {
             form.replaceChildren(h("p", { class: "search-done" }, t("search.done", { email: address })));
-            recorded.add(`${loc}|${q}`);
             return;
           }
           const data = (await res.json().catch(() => ({}))) as { error?: string };

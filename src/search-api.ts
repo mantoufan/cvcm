@@ -8,7 +8,8 @@ import { isRecordableQuery, isValidEmail, normalizeQuery, SEARCH_EMAIL_MAX } fro
  * POST /api/search/notify { q, locale, email }  email me once when it has one (200 { ok: true })
  * Nothing is read back through the API: the owner reads the tables with wrangler (`npm run search:demand`, scripts/search-tool.ts).
  * IPs are never stored: the vote key and the rate key are HMACs under a random salt per UTC day (search_salts), and
- * salts, votes and rate rows are deleted after two days, after which no key can be linked to an address.
+ * salts, votes and rate rows are deleted after two days by the hourly cron (worker.ts `scheduled`). While a salt
+ * exists, someone with D1 access could brute-force IPv4 against it; once it is gone, no key can be tied to an address.
  */
 
 export const SEARCH_RATE_WINDOW_MS = 60 * 60 * 1000;
@@ -114,15 +115,12 @@ function noContent(): Response {
 
 export type SearchApiOpts = { store: SearchStore | null; now?: number };
 
-/** Per isolate: the salt of the current day (saves two D1 calls per request) and the last sweep time. */
+/** Per isolate: the salt of the current day (saves two D1 calls per request). The sweep is the hourly cron's job. */
 let saltCache: { day: string; salt: string } | null = null;
-let lastSweep = 0;
-const SWEEP_EVERY_MS = 60 * 60 * 1000;
 
 /** Tests reset the per-isolate caches. */
 export function resetSearchApiCache(): void {
   saltCache = null;
-  lastSweep = 0;
 }
 
 /** Only the site's own pages may post: a form on another site cannot add queries or emails. */
@@ -174,11 +172,6 @@ export async function handleSearchApi(request: Request, opts: SearchApiOpts): Pr
   const ip = clientIp(request);
 
   try {
-    // Sweep what is past its two days at most hourly per isolate; the daily cron covers days nobody searches.
-    if (now - lastSweep >= SWEEP_EVERY_MS) {
-      lastSweep = now;
-      await store.cleanup(now);
-    }
     const day = new Date(now).toISOString().slice(0, 10);
     if (saltCache?.day !== day) saltCache = { day, salt: await store.daySalt(day, now) };
     const salt = saltCache.salt;
