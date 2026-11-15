@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { DatabaseSync } from "node:sqlite";
 import { describe, expect, it } from "vitest";
-import { d1NostalgiaStore, handleNostalgiaApi, NOSTALGIA_VOTE_MAX, resetNostalgiaApiCache } from "../src/nostalgia-api";
+import { d1NostalgiaStore, handleNostalgiaApi, NOSTALGIA_PER_ADDRESS, NOSTALGIA_VOTE_MAX, resetNostalgiaApiCache } from "../src/nostalgia-api";
 import worker from "../src/worker";
 import "../src/shared/messages-all";
 import { nostalgiaPageHtml, nostalgiaVoteResult } from "../src/shared/nostalgia-i18n";
@@ -47,20 +47,21 @@ function sqliteStore() {
 }
 
 describe("nostalgia vote API", () => {
-  it("counts one answer per address, entry and day, returns the totals and stores no IP", async () => {
+  it("counts answers up to a cap per address, entry and day, returns the totals and stores no IP", async () => {
     resetNostalgiaApiCache();
     const { store, db } = sqliteStore();
     const day1 = Date.UTC(2026, 10, 15, 8);
     const first = await handleNostalgiaApi(post({ id: "famicom", answer: "yes" }), { store, now: day1 });
     expect(first?.status).toBe(200);
     expect(await first!.json()).toEqual({ yes: 1, no: 0, counted: true });
-    // Same address and entry again: not counted twice, even with the other answer, and the reply says so.
-    expect(await (await handleNostalgiaApi(post({ id: "famicom", answer: "no" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: 0, counted: false });
-    // Another address counts; another entry from the first address counts on its own.
-    expect(await (await handleNostalgiaApi(post({ id: "famicom", answer: "no" }, { "CF-Connecting-IP": "198.51.100.4" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: 1, counted: true });
+    // Readers behind one carrier NAT share an address: answers keep counting up to the cap, then stop, and the reply says so.
+    for (let i = 2; i <= NOSTALGIA_PER_ADDRESS; i++) await handleNostalgiaApi(post({ id: "famicom", answer: "no" }), { store, now: day1 });
+    expect(await (await handleNostalgiaApi(post({ id: "famicom", answer: "no" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: NOSTALGIA_PER_ADDRESS - 1, counted: false });
+    // Another address counts; another entry from the capped address counts on its own.
+    expect(await (await handleNostalgiaApi(post({ id: "famicom", answer: "no" }, { "CF-Connecting-IP": "198.51.100.4" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: NOSTALGIA_PER_ADDRESS, counted: true });
     expect(await (await handleNostalgiaApi(post({ id: "pager", answer: "yes" }), { store, now: day1 }))!.json()).toEqual({ yes: 1, no: 0, counted: true });
-    // The next day the same address counts again.
-    expect(await (await handleNostalgiaApi(post({ id: "pager", answer: "yes" }), { store, now: day1 + 24 * 60 * 60 * 1000 }))!.json()).toEqual({ yes: 2, no: 0, counted: true });
+    // The next day the capped address counts again.
+    expect(await (await handleNostalgiaApi(post({ id: "famicom", answer: "yes" }), { store, now: day1 + 24 * 60 * 60 * 1000 }))!.json()).toEqual({ yes: 2, no: NOSTALGIA_PER_ADDRESS, counted: true });
     const dump = JSON.stringify([
       db.prepare("SELECT * FROM nostalgia_votes").all(),
       db.prepare("SELECT * FROM nostalgia_vote_keys").all(),
@@ -72,7 +73,7 @@ describe("nostalgia vote API", () => {
     await store.cleanup(day1 + 4 * 24 * 60 * 60 * 1000);
     expect(db.prepare("SELECT COUNT(*) AS n FROM nostalgia_vote_keys").get()).toEqual({ n: 0 });
     expect(db.prepare("SELECT COUNT(*) AS n FROM nostalgia_rate").get()).toEqual({ n: 0 });
-    expect(db.prepare("SELECT yes, no FROM nostalgia_votes WHERE id = 'famicom'").get()).toEqual({ yes: 1, no: 1 });
+    expect(db.prepare("SELECT yes, no FROM nostalgia_votes WHERE id = 'famicom'").get()).toEqual({ yes: 2, no: NOSTALGIA_PER_ADDRESS });
   });
 
   it("rejects other origins, bad bodies, unknown ids, other methods, and rate-limits", async () => {
@@ -87,6 +88,7 @@ describe("nostalgia vote API", () => {
     expect(await handleNostalgiaApi(new Request("https://cv.cm/api/other", { method: "POST" }), opts)).toBeNull();
     expect((await handleNostalgiaApi(post({ id: "famicom", answer: "yes" }), { store: null }))?.status).toBe(503);
     for (let i = 1; i < NOSTALGIA_VOTE_MAX; i++) await handleNostalgiaApi(post({ id: "famicom", answer: "yes" }, { "CF-Connecting-IP": "192.0.2.50" }), opts);
+    // The hourly rate counts every request, counted or not.
     expect((await handleNostalgiaApi(post({ id: "pager", answer: "yes" }, { "CF-Connecting-IP": "192.0.2.50" }), opts))?.status).toBe(200);
     expect((await handleNostalgiaApi(post({ id: "y2k", answer: "yes" }, { "CF-Connecting-IP": "192.0.2.50" }), opts))?.status).toBe(429);
   });
@@ -111,7 +113,8 @@ describe("nostalgia vote markup", () => {
 
   it("formats the share", () => {
     expect(nostalgiaVoteResult("zh-CN", "white-rabbit", { yes: 3, no: 1 })).toBe("75% 的回答是「吃过」 · 共 4 份回答");
-    expect(nostalgiaVoteResult("en", "pager", { yes: 0, no: 0 })).toBe("0% chose “I used one” · 0 answers");
-    expect(nostalgiaVoteResult("en", "famicom", { yes: 1234, no: 0 })).toContain("1,234 answers");
+    // No "1 answers": the count reads as a label.
+    expect(nostalgiaVoteResult("en", "pager", { yes: 1, no: 0 })).toBe("100% chose “I used one” · answers: 1");
+    expect(nostalgiaVoteResult("en", "famicom", { yes: 1234, no: 0 })).toContain("answers: 1,234");
   });
 });

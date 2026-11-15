@@ -43,12 +43,12 @@
         "life": "I remember it"
       },
       "no": "No",
-      "result": "{p}% chose “{yes}” · {n} answers",
+      "result": "{p}% chose “{yes}” · answers: {n}",
       "mine": "Your answer: {a}",
       "sending": "Sending…",
       "failed": "Could not send your answer. Please try again later.",
-      "note": "Anonymous: no IP addresses are stored, and one answer counts per network, page and day.",
-      "repeat": "Your network already answered this today, so this answer was not added again.",
+      "note": "Anonymous: no IP addresses are stored, and one network can add only a limited number of answers to a page each day.",
+      "repeat": "Your network has reached today's limit for this page, so this answer was not added.",
       "snapshot": "{result} (when you answered)"
     }
   },

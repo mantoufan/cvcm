@@ -74,6 +74,8 @@ function wireVote(host: HTMLElement, locale: Locale, id: NostalgiaId): void {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ id, answer }),
+          // A stalled request must not leave the buttons locked: the catch below re-enables them.
+          signal: AbortSignal.timeout(10_000),
         });
         if (!res.ok) throw new Error(String(res.status));
         const tally = (await res.json()) as { yes: number; no: number; counted?: boolean };

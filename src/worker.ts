@@ -98,7 +98,9 @@ export default {
     // Independent sweeps: one failing must not keep the other's IP-derived rows past their two days.
     const now = Date.now();
     const sweeps = await Promise.allSettled([d1SearchStore(env.DB).cleanup(now), d1NostalgiaStore(env.DB).cleanup(now)]);
-    for (const sweep of sweeps) if (sweep.status === "rejected") console.error("cleanup", sweep.reason);
+    const failed = sweeps.flatMap((sweep) => (sweep.status === "rejected" ? [sweep.reason] : []));
+    // Both ran; a failure still fails the cron run so it shows up in Cloudflare.
+    if (failed.length) throw new AggregateError(failed, "scheduled cleanup");
   },
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);

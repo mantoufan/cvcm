@@ -38,13 +38,13 @@ describe("nostalgia vote UI", () => {
     expect(again.querySelector<HTMLButtonElement>('button[data-answer="no"]')!.disabled).toBe(true);
   });
 
-  it("says so when the network already answered today", async () => {
+  it("says so when the network reached today's cap", async () => {
     vi.stubGlobal("fetch", vi.fn(async () => new Response(JSON.stringify({ yes: 1, no: 0, counted: false }), { status: 200 })));
     const host = document.body.appendChild(document.createElement("div"));
     mountNostalgia(host, "en", "famicom");
     host.querySelector<HTMLButtonElement>('button[data-answer="no"]')!.click();
     await vi.waitFor(() => expect(host.querySelector(".nostalgia-vote-result")!.textContent).toContain("%"));
-    expect(host.querySelector(".nostalgia-vote-result")!.textContent).toContain("Your network already answered this today");
+    expect(host.querySelector(".nostalgia-vote-result")!.textContent).toContain("Your network has reached today's limit for this page");
     // Not remembered: the reader can answer again another day.
     expect(localStorage.getItem("cvcm.nostalgia.vote.famicom")).toBeNull();
   });

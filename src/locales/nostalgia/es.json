@@ -43,12 +43,12 @@
         "life": "Lo recuerdo"
       },
       "no": "No",
-      "result": "{p}% eligió «{yes}» · {n} respuestas",
+      "result": "{p}% eligió «{yes}» · respuestas: {n}",
       "mine": "Tu respuesta: {a}",
       "sending": "Enviando…",
       "failed": "No se pudo enviar. Inténtalo más tarde.",
-      "note": "Anónimo: no se guardan direcciones IP y cada red cuenta una vez por elemento y día.",
-      "repeat": "Tu red ya respondió hoy a esta página, así que esta respuesta no se sumó de nuevo.",
+      "note": "Anónimo: no se guardan direcciones IP y cada red solo puede sumar un número limitado de respuestas por página y día.",
+      "repeat": "Tu red alcanzó hoy el límite de respuestas para esta página, así que esta no se sumó.",
       "snapshot": "{result} (cuando respondiste)"
     }
   },

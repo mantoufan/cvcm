@@ -7,9 +7,11 @@ CREATE TABLE nostalgia_votes (
   updated_at INTEGER NOT NULL
 );
 
--- key = HMAC(day salt from search_salts, IP | entry), kept two days: one answer per address, entry and day.
+-- key = HMAC(day salt from search_salts, IP | entry), kept two days: answers counted from one address for one entry that
+-- day. Capped (NOSTALGIA_PER_ADDRESS), not one, because a carrier NAT puts many readers behind one address.
 CREATE TABLE nostalgia_vote_keys (
   key TEXT PRIMARY KEY,
+  answers INTEGER NOT NULL DEFAULT 0,
   created_at INTEGER NOT NULL
 );
 
