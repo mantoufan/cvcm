@@ -1,0 +1,95 @@
+{
+  "name": "Crear una app con IA (AI wrapper)",
+  "blurb": "Crea una app enfocada sobre las API de modelos de IA y cobra por suscripción o por uso",
+  "title": "Crear una app con IA: cómo gana dinero un AI wrapper y riesgos",
+  "description": "Cómo ganan dinero las apps sobre API de modelos (\"AI wrappers\"), qué necesitas para crear una, a quién le conviene, los riesgos y cómo validar la idea.",
+  "h1": "¿Es buen negocio crear una app con IA o un AI wrapper?",
+  "answer": "Una app con IA, a menudo llamada \"AI wrapper\", es un producto que envía lo que escribe el usuario a un modelo de IA a través de una API y añade su propia interfaz, instrucciones, datos o flujo de trabajo para una tarea concreta, como redactar cartas legales o etiquetar fotos de producto. Gana con suscripciones, créditos o compras únicas. El problema es que cada uso te cuesta tarifas de API, y si el proveedor del modelo o un rival más grande añade la misma función, tu producto puede quedarse sin razón de existir.",
+  "sections": [
+    {
+      "h": "Cómo gana dinero una app con IA",
+      "body": [
+        "La mayoría de las apps con IA venden una suscripción mensual, créditos prepagados o un plan según el uso; algunas venden a empresas por usuario. A diferencia de la mayoría del software, cada petición tiene un coste directo: el proveedor del modelo te cobra por tokens, imágenes o minutos, así que los usuarios intensivos pueden costarte más de lo que pagan.",
+        "El margen sale de lo que añades encima: un flujo de trabajo que ahorra tiempo de verdad, datos privados o especializados, integraciones con herramientas que tus usuarios ya usan y un nicho que las apps de chat generalistas no atienden bien."
+      ]
+    },
+    {
+      "h": "Qué necesitas para empezar",
+      "body": [
+        {
+          "ul": [
+            "Programación básica, o una herramienta low-code y ganas de aprender, y una cuenta de API con al menos un proveedor de modelos.",
+            "Un problema concreto en un campo que conozcas, para saber cuándo el resultado es lo bastante bueno como para pagar por él.",
+            "Límites de uso, facturación y alertas de coste desde el primer día, para que un pico viral no se convierta en una factura enorme.",
+            "Términos de servicio, una política de privacidad y comprobar que tu uso cumple las políticas de uso del proveedor del modelo.",
+            "Un plan para los errores: lo que genera la IA puede estar mal, así que decide qué revisas, de qué avisas a los usuarios y qué te niegas a hacer.",
+            "Registro del negocio y gestión del impuesto sobre ventas o IVA de las ventas digitales según dónde vivan tus clientes; consulta las normas locales o usa un proveedor de pagos que lo gestione."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "A quién le conviene (y a quién no)",
+      "body": [
+        "Le conviene a desarrolladores o fundadores técnicos que conocen bien un sector, disfrutan lanzando rápido y pueden convivir con la incertidumbre sobre lo que lanzarán después los grandes proveedores de modelos. No es para quien espera que unas instrucciones ingeniosas sean por sí solas un negocio, ni para quien no puede cubrir las facturas de API mientras busca usuarios de pago."
+      ]
+    },
+    {
+      "h": "Riesgos y qué vigilar",
+      "body": [
+        {
+          "ul": [
+            "Absorción de funciones: los proveedores de modelos y las grandes plataformas añaden funciones sin parar; pueden copiar un wrapper superficial de la noche a la mañana.",
+            "Economía por cliente: las pruebas gratuitas y los usuarios intensivos pueden hacer que cada cliente dé pérdidas. Pon un precio por encima de tu coste real por uso.",
+            "Dependencia del proveedor: los cambios de precio, la retirada de modelos, los límites de uso o la suspensión de tu cuenta de API te afectan directamente.",
+            "Exactitud y promesas: exagerar lo que hace tu IA es un riesgo legal; la Comisión Federal de Comercio de EE. UU. (FTC) ha dicho que no existe una excepción para la IA en las leyes de protección al consumidor.",
+            "Abusos: las herramientas abiertas de texto o imagen atraen spam y mal uso, lo que puede hacer que te cierren la cuenta de API. Añade moderación."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cómo probarlo con poco dinero",
+      "body": [
+        {
+          "ol": [
+            "Resuelve el problema a mano con una herramienta de chat generalista para tres personas reales y comprueba si vuelven a pedir más.",
+            "Escribe una página de aterrizaje que describa el resultado, con un precio, y recoge registros o reservas.",
+            "Construye la versión más pequeña que haga una tarea de principio a fin.",
+            "Mide cuánto te cuesta cada uso en tarifas de API y compáralo con tu precio.",
+            "Pregúntate si una app de chat generalista ya podría hacerlo con dos instrucciones; si es así, encuentra qué aportas tú que ella no puede."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Tus primeros 30 días",
+      "body": [
+        {
+          "ol": [
+            "Elige un tipo de usuario y una tarea que resolver.",
+            "Lanza una versión funcional a un grupo pequeño y observa cómo la usan.",
+            "Configura topes de gasto, límites de uso y registros antes de abrir el registro de usuarios.",
+            "Añade los pagos pronto para saber quién paga de verdad.",
+            "Mantén el modelo detrás de una capa fina para poder cambiar de proveedor si hace falta.",
+            "Habla con cada usuario temprano y elimina las funciones que nadie usa."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Llamar a algo \"AI wrapper\" es un insulto?",
+      "a": "A menudo se usa así, pero la mayoría del software se construye sobre servicios de otras empresas. Un wrapper es débil cuando no añade nada más allá de unas instrucciones, y fuerte cuando es dueño de un flujo de trabajo, unos datos o una audiencia que el proveedor del modelo no tiene."
+    },
+    {
+      "q": "¿Cómo mantengo bajo control los costes de API?",
+      "a": "Limita el uso por plan, guarda en caché los resultados repetidos, usa modelos más pequeños para los pasos sencillos y vigila cada semana el coste por usuario activo. Fija precios con datos de uso reales, no con suposiciones."
+    },
+    {
+      "q": "¿Qué diferencia hay entre una app con IA y un micro SaaS?",
+      "a": "Un micro SaaS es cualquier producto de software pequeño y enfocado que gestiona una persona o un equipo diminuto. Una app con IA es un tipo de micro SaaS, con el coste y el riesgo añadidos de depender de un proveedor de modelos de IA."
+    }
+  ]
+}

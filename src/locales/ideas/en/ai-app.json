@@ -1,0 +1,95 @@
+{
+  "name": "AI app (AI wrapper)",
+  "blurb": "Build a focused app on top of AI model APIs and charge users a subscription or per use",
+  "title": "AI Wrapper and AI App Ideas: How They Make Money and the Risks",
+  "description": "How AI apps built on model APIs (\"AI wrappers\") earn money, what you need to build one, who it suits, the platform risks and how to test AI SaaS ideas.",
+  "h1": "Is building an AI app or AI wrapper a good business?",
+  "answer": "An AI app, often called an \"AI wrapper\", is a product that sends user input to an AI model through an API and adds its own interface, prompts, data or workflow for one job, such as drafting legal letters or tagging product photos. It earns subscriptions, credits or one-off purchases. The catch is that each use costs you API fees, and if the model provider or a bigger rival adds the same feature, your product can lose its reason to exist.",
+  "sections": [
+    {
+      "h": "How an AI app makes money",
+      "body": [
+        "Most AI apps sell a monthly subscription, prepaid credits or a usage-based plan; some sell to businesses per seat. Unlike most software, every request has a direct cost: the model provider charges you for tokens, images or minutes, so heavy users can cost more than they pay.",
+        "Margin comes from what you add on top: a workflow that saves real time, private or specialised data, integrations with tools your users already use, and a niche the general chat apps do not serve well."
+      ]
+    },
+    {
+      "h": "What you need to start",
+      "body": [
+        {
+          "ul": [
+            "Basic programming, or a low-code builder plus willingness to learn, and an API account with at least one model provider.",
+            "A narrow problem in a field you know, so you can tell when the output is good enough to pay for.",
+            "Usage limits, billing and cost alerts from day one so a viral spike does not become a large bill.",
+            "Terms of service, a privacy policy, and a check that your use fits the model provider's usage policies.",
+            "A plan for errors: AI output can be wrong, so decide what you check, what you warn users about and what you refuse to do.",
+            "Business registration and sales-tax or VAT handling for digital sales where your customers live; check local rules or use a payment provider that handles it."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Who it suits (and who it doesn't)",
+      "body": [
+        "It suits developers or technical founders who know one industry well, enjoy shipping quickly and can live with uncertainty about what the big model providers will launch next. It does not suit people hoping a clever prompt alone is a business, or anyone who cannot cover API bills while finding paying users."
+      ]
+    },
+    {
+      "h": "Risks and what to watch",
+      "body": [
+        {
+          "ul": [
+            "Feature absorption: model providers and large platforms keep adding features; a thin wrapper can be copied by them overnight.",
+            "Unit economics: free trials and heavy users can make each customer unprofitable. Price above your real per-use cost.",
+            "Provider dependence: price changes, model retirements, rate limits or account suspension at your API provider hit you directly.",
+            "Accuracy and claims: overstating what your AI does is a legal risk; the US Federal Trade Commission has said there is no AI exemption from consumer-protection law.",
+            "Abuse: open text or image tools attract spam and misuse, which can get your API account banned. Add moderation."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "How to test it cheaply first",
+      "body": [
+        {
+          "ol": [
+            "Solve the problem by hand with a general chat tool for three real people and see whether they come back for more.",
+            "Write a landing page describing the result, with a price, and collect sign-ups or pre-orders.",
+            "Build the smallest version that does one task end to end.",
+            "Measure what each use costs you in API fees and compare it with your price.",
+            "Ask whether a general chat app could already do this in two prompts; if so, find what you add that it cannot."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Your first 30 days",
+      "body": [
+        {
+          "ol": [
+            "Pick one user type and one job to be done.",
+            "Ship a working version to a small group and watch how they use it.",
+            "Set spending caps, rate limits and logging before opening sign-ups.",
+            "Add payments early so you learn who will actually pay.",
+            "Keep the model behind a thin layer so you can switch providers if needed.",
+            "Talk to every early user and cut features nobody uses."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Is \"AI wrapper\" an insult?",
+      "a": "It is often used that way, but most software is built on other companies' services. A wrapper is weak when it adds nothing beyond a prompt, and strong when it owns a workflow, data or audience that the model provider does not."
+    },
+    {
+      "q": "How do I keep API costs under control?",
+      "a": "Cap usage per plan, cache repeated results, use smaller models for simple steps and watch cost per active user every week. Price from real usage data, not guesses."
+    },
+    {
+      "q": "What is the difference between an AI app and micro-SaaS?",
+      "a": "Micro-SaaS is any small, focused software product run by one person or a tiny team. An AI app is one kind of it, with the added cost and risk of depending on an AI model provider."
+    }
+  ]
+}

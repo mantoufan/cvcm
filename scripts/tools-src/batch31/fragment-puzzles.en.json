@@ -1,0 +1,135 @@
+{
+  "meta": {
+    "titleNonogram": "Nonogram — free picture logic puzzles online — cv.cm",
+    "descNonogram": "Play nonograms (griddlers, paint by numbers) free online: 5×5, 10×10 and 15×15 puzzles, each with one solution you can reach by logic alone. Fill, cross out, undo, check mistakes, numbered puzzles and saved progress.",
+    "titleMemoryGame": "Memory game — free online card matching — cv.cm",
+    "descMemoryGame": "Play the memory card game free online: turn over two cards and find all the matching pairs on a 4×4, 4×5 or 6×6 board, alone or with a friend. Moves, time and your best result are kept."
+  },
+  "tools": {
+    "nonogram": {
+      "name": "Nonogram",
+      "blurb": "Picture logic puzzles by numbers."
+    },
+    "memory-game": {
+      "name": "Memory game",
+      "blurb": "Find the matching pairs."
+    }
+  },
+  "faq": {
+    "nonogram": {
+      "q1": "How do you solve a nonogram?",
+      "a1": "The numbers beside each row and above each column give the lengths of the filled blocks in that line, in order, with at least one empty cell between blocks. Fill cells that must be part of a block, cross out cells that must stay empty, and the picture appears.",
+      "q2": "What does a 0 mean?",
+      "a2": "The whole row or column is empty. You can cross out all of its cells at once by dragging along it in cross mode.",
+      "q3": "Do I ever have to guess?",
+      "a3": "No. Each puzzle here is checked when it is made: it has exactly one solution, and you can always find the next cell by looking at one row or column at a time.",
+      "q4": "How do I mark a cell as empty?",
+      "a4": "Right-click it, press and hold on a touch screen, or turn on Cross mode. Crosses are only notes; they do not count for or against you.",
+      "q5": "Are nonograms the same as griddlers or paint by numbers?",
+      "a5": "Yes. Nonograms are also called griddlers, hanjie, paint by numbers or picture logic puzzles."
+    },
+    "memory-game": {
+      "q1": "How do you play the memory game?",
+      "a1": "All cards start face down. Turn over two: if they show the same picture they stay up, otherwise they turn back. Remember where each picture was and clear the board in as few moves as you can.",
+      "q2": "How do two players play?",
+      "a2": "Players take turns. Finding a pair scores a point and lets the same player go again; a miss passes the turn. The player with more pairs wins.",
+      "q3": "What counts as a move?",
+      "a3": "Turning over two cards is one move. Your best result for each board size is the fewest moves you needed.",
+      "q4": "Can I tell the cards apart without colour?",
+      "a4": "Yes. Every picture is a different shape or a solid shape against an outlined one, and the two colours differ strongly in lightness.",
+      "q5": "Is this good memory training?",
+      "a5": "It is a classic concentration game for children and adults. Start with 4×4 and move to 6×6 when it gets easy."
+    }
+  },
+  "guides": {
+    "nonogram": {
+      "lead": "Solve a nonogram in three steps.",
+      "s1t": "Pick a puzzle",
+      "s1b": "Choose 5×5, 10×10 or 15×15. A first visit opens a small puzzle; tap New puzzle for another.",
+      "s2t": "Read the clues",
+      "s2b": "Each number is a block of filled cells in that row or column, in order. Fill what must be filled and cross out what must stay empty.",
+      "s3t": "Finish the picture",
+      "s3b": "When every row and column matches its clues, the picture is complete. Turn on Check mistakes if you are stuck."
+    },
+    "memory-game": {
+      "lead": "Play the memory game in three steps.",
+      "s1t": "Choose a board",
+      "s1b": "Pick 4×4, 4×5 or 6×6 and one or two players.",
+      "s2t": "Turn two cards",
+      "s2b": "Tap two cards. A matching pair stays face up; other cards turn back.",
+      "s3t": "Clear the board",
+      "s3b": "Find every pair. Fewer moves is better; with two players, more pairs wins."
+    }
+  },
+  "ui": {
+    "nonogram": {
+      "title": "Nonogram",
+      "privacyNote": "Fill the cells the numbers ask for and a picture appears.",
+      "board": "Nonogram grid",
+      "size": "Size",
+      "sizeOption": "{n} × {n}",
+      "newPuzzle": "New puzzle",
+      "confirmNew": "Tap again for a new puzzle",
+      "undo": "Undo",
+      "clear": "Clear",
+      "crossOff": "Cross mode: off",
+      "crossOn": "Cross mode: on",
+      "check": "Check mistakes",
+      "numberLabel": "Puzzle number",
+      "play": "Play",
+      "badNumber": "Type a puzzle number from 1 to {max}.",
+      "puzzle": "Puzzle",
+      "puzzleNo": "{size} × {size} #{n}",
+      "time": "Time",
+      "best": "Best time",
+      "won": "Solved in {time}!",
+      "sizeNext": "The new size starts with the next puzzle. Tap New puzzle.",
+      "colClue": "Column {n}: {clue}",
+      "rowClue": "Row {n}: {clue}",
+      "cell": "Row {row}, column {col}: {state}",
+      "filled": "filled",
+      "crossed": "crossed out",
+      "blank": "blank",
+      "hint": "Tap or drag to fill. Right-click, press and hold, or use Cross mode to mark empty cells. Arrow keys move, Space fills, X crosses, Ctrl+Z undoes."
+    },
+    "memoryGame": {
+      "title": "Memory game",
+      "privacyNote": "Turn over two cards at a time and find every matching pair.",
+      "board": "Memory cards",
+      "layout": "Board",
+      "l_4x4": "4 × 4 (8 pairs)",
+      "l_4x5": "4 × 5 (10 pairs)",
+      "l_6x6": "6 × 6 (18 pairs)",
+      "players": "Players",
+      "p1": "One player",
+      "p2": "Two players",
+      "moves": "Moves",
+      "time": "Time",
+      "best": "Fewest moves",
+      "bestValue": "{moves} moves",
+      "player": "Player {n}",
+      "newGame": "New game",
+      "confirmNew": "Tap again for a new game",
+      "won": "All pairs found in {moves} moves and {time}!",
+      "tie": "It is a tie!",
+      "winner": "Player {n} wins!",
+      "turn": "Player {n}'s turn",
+      "settingNext": "The new setting starts with the next game. Tap New game.",
+      "card": "Row {row}, column {col}: {state}",
+      "down": "face down",
+      "face": "{style} {shape}",
+      "solid": "solid",
+      "outline": "outlined",
+      "sh_circle": "circle",
+      "sh_square": "square",
+      "sh_triangle": "triangle",
+      "sh_star": "star",
+      "sh_heart": "heart",
+      "sh_diamond": "diamond",
+      "sh_hexagon": "hexagon",
+      "sh_moon": "moon",
+      "sh_cross": "cross",
+      "hint": "Tap or press Enter to turn a card. Arrow keys move between cards. A missed pair turns back on its own or with your next tap."
+    }
+  }
+}

@@ -17,6 +17,7 @@ function isHub(page: SitemapPage): boolean {
       return page.ranking === null;
     case "ref":
     case "slang":
+    case "ideas":
       return page.entry === null;
     case "games":
       return page.console === null && page.game === null;
@@ -58,6 +59,8 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
       return { channel: "reference", seo: { ref: true, refId: page.entry } };
     case "slang":
       return { channel: "slang", seo: { slang: true, slangId: page.entry } };
+    case "ideas":
+      return { channel: "ideas", seo: { ideas: true, ideaId: page.entry } };
     case "games":
       return { channel: "games", seo: { games: true, console: page.console, game: page.game } };
     default:
