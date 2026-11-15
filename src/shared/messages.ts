@@ -40,6 +40,8 @@ export type IdeasMessages = typeof import("../locales/ideas/en.json") & {
   list: Record<IdeaId, { name: string; blurb: string }>;
   /** src/shared/ideas-data.json, written monthly by scripts/ideas/fetch_kp.py. */
   data: IdeasData;
+  /** src/shared/ideas-sources.json: checked references per idea. */
+  sources: Record<IdeaId, import("./ideas").IdeaSource[]>;
 };
 
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */

@@ -71,10 +71,11 @@ export function ideasSyncFiles(read: (path: string) => string | null): { files: 
       `import list from "../ideas/index/${locale}.json";`,
       // The monthly snapshot rides in the ideas pack, not the main bundle, which it would re-hash on every refresh.
       'import data from "../../shared/ideas-data.json";',
+      'import sources from "../../shared/ideas-sources.json";',
       'import type { IdeasMessages } from "../../shared/messages";',
       'import type { IdeasData } from "../../shared/ideas-i18n";',
       "",
-      "export default { ...hub, list, data: data as IdeasData } satisfies IdeasMessages;",
+      "export default { ...hub, list, data: data as IdeasData, sources } satisfies IdeasMessages;",
       "",
     ].join("\n");
   }

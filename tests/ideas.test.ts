@@ -59,6 +59,7 @@ describe("ideas: catalog", () => {
     expect(new Set(grouped).size).toBe(grouped.length);
     expect(grouped).toEqual([...IDEA_ENTRIES]);
     expect(Object.keys(IDEA_META).sort()).toEqual([...IDEA_ENTRIES].sort());
+    expect(Object.keys(ideasMessages("en").sources).sort()).toEqual([...IDEA_ENTRIES].sort());
     for (const id of IDEA_ENTRIES) {
       expect(id, id).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
       const meta = IDEA_META[id];
@@ -67,7 +68,7 @@ describe("ideas: catalog", () => {
       expect(meta.related.length, id).toBeGreaterThan(0);
       for (const other of meta.related) expect(isIdeaId(other) && other !== id, `${id} related ${other}`).toBe(true);
       expect(new Set(meta.related).size, id).toBe(meta.related.length);
-      for (const source of meta.sources) {
+      for (const source of ideasMessages("en").sources[id] ?? []) {
         expect(source.name.trim(), id).toBeTruthy();
         expect(source.url, id).toMatch(/^https:\/\/[^\s"<>]+$/);
       }
@@ -312,7 +313,7 @@ describe("ideas: page HTML and SEO", () => {
         expect(html).toContain('class="idea-panel"');
         expect(html.match(/<section class="kb-section"/g)?.length).toBe(copy.sections.length);
         for (const other of IDEA_META[id].related) expect(html).toContain(`href="${ideasHref(locale, other)}"`);
-        for (const source of IDEA_META[id].sources) expect(html).toContain(`href="${source.url.replace(/&/g, "&amp;")}"`);
+        for (const source of ideasMessages(locale).sources[id] ?? []) expect(html).toContain(`href="${source.url.replace(/&/g, "&amp;")}"`);
         expect(html).not.toMatch(/<(script|iframe)/i);
         expect(html).not.toMatch(/\{[a-z]+\}|NaN|undefined/);
       }

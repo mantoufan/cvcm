@@ -4,9 +4,12 @@ Refresh src/shared/ideas-data.json for the Ideas channel (/{locale}/ideas/) from
 
 Run locally once a month (Keyword Planner history updates monthly):
 
-    python3 -m venv /tmp/gads && /tmp/gads/bin/pip install google-ads
-    /tmp/gads/bin/python scripts/ideas/fetch_kp.py            # fetch + derive
-    /tmp/gads/bin/python scripts/ideas/fetch_kp.py --derive   # re-derive from the local cache only
+    python3 -m venv ~/.cache/cvcm-ideas/venv && ~/.cache/cvcm-ideas/venv/bin/pip install google-ads
+    ~/.cache/cvcm-ideas/venv/bin/python scripts/ideas/fetch_kp.py            # fetch + derive
+    ~/.cache/cvcm-ideas/venv/bin/python scripts/ideas/fetch_kp.py --derive   # re-derive from the local cache only
+
+Both also regenerate public/sitemaps (lastmod follows the snapshot date). Commit ideas-data.json, ideas.ts and the
+sitemaps together.
 
 Needs ~/.config/gads/google-ads.yaml (developer token with Basic access, login_customer_id = the MCC).
 
@@ -43,6 +46,10 @@ def band(value, bounds):
         if value < b:
             return i
     return len(bounds)
+
+
+def q5(x):
+    return int(5 * round(x / 5))
 
 
 def clamp(x, lo=0.0, hi=100.0):
@@ -143,7 +150,7 @@ def despike(series):
     # (e.g. 300, 1,000, 300) is a one-off and becomes their mean. The last month has nothing after it, so it stays.
     for t in (n - 3, n - 2):
         prev, nxt = series[t - 1], series[t + 1]
-        if series[t] > 2.5 * max(prev, nxt) and series[t] - max(prev, nxt) > 100:
+        if series[t] > 2 * max(prev, nxt) and series[t] - max(prev, nxt) > 100:
             out[t] = round((prev + nxt) / 2)
     return out
 
@@ -249,9 +256,10 @@ def derive(raw):
         ci = ci_sum / ci_weight if ci_weight else None
         momentum = math.sqrt(max(yoy, 1e-3) * max(fc, 1e-3)) if yoy is not None else max(fc, 1e-3)
         scores = {
-            "demand": round(clamp(100 * (math.log10(last12) - 2) / 4)),
+            # Demand and value are rounded to 5 so the published scores cannot be inverted back to volumes and bids.
+            "demand": q5(clamp(100 * (math.log10(last12) - 2) / 4)),
             "momentum": round(clamp(50 + 72.13 * math.log(momentum))),
-            "value": round(clamp(100 * math.log10(max(cpc, 0.1) / 0.1) / math.log10(200))) if cpc else 0,
+            "value": q5(clamp(100 * math.log10(max(cpc, 0.1) / 0.1) / math.log10(200))) if cpc else 0,
             "openness": round(100 - ci) if ci is not None else 50,
         }
         scores["total"] = round(0.35 * scores["demand"] + 0.35 * scores["momentum"] + 0.2 * scores["value"] + 0.1 * scores["openness"])
@@ -299,6 +307,9 @@ if __name__ == "__main__":
     else:
         raw = fetch()
     data = derive(raw)
+    # Sitemap lastmod follows the snapshot date, and tests compare the committed sitemap with the generated one.
+    import subprocess
+    subprocess.run(["node", "scripts/write-sitemap.mjs"], cwd=ROOT, check=True)
     rank = sorted(data["ideas"].items(), key=lambda kv: -kv[1]["scores"]["total"])
     for k, v in rank:
         s = v["scores"]

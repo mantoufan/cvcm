@@ -313,8 +313,12 @@ export function ideaLinkItems(locale: Locale, ids: readonly IdeaId[]): { href: s
   });
 }
 
+export function ideaSources(locale: Locale, id: IdeaId): { name: string; url: string }[] {
+  return ideasMessages(locale).sources[id] ?? [];
+}
+
 function sourcesHtml(locale: Locale, id: IdeaId): string {
-  const sources = IDEA_META[id].sources;
+  const sources = ideaSources(locale, id);
   if (!sources.length) return "";
   const items = sources.map((s) => `<li><a href="${escapeHtml(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.name)}</a></li>`).join("");
   return `<section class="learn-related"><h2>${escapeHtml(ideasUi(locale).sources)}</h2><ul>${items}</ul></section>`;
@@ -455,6 +459,6 @@ export function ideasArticleJsonLd(locale: Locale, id: IdeaId | null): Record<st
     publisher: PUBLISHER,
     isAccessibleForFree: true,
     articleSection: (ideasHub(locale).groups as Record<string, string>)[ideaGroupOf(id)],
-    ...(IDEA_META[id].sources.length ? { citation: IDEA_META[id].sources.map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url })) } : {}),
+    ...(ideaSources(locale, id).length ? { citation: ideaSources(locale, id).map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url })) } : {}),
   };
 }

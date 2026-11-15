@@ -2,7 +2,8 @@
 import hub from "../ideas/zh-CN.json";
 import list from "../ideas/index/zh-CN.json";
 import data from "../../shared/ideas-data.json";
+import sources from "../../shared/ideas-sources.json";
 import type { IdeasMessages } from "../../shared/messages";
 import type { IdeasData } from "../../shared/ideas-i18n";
 
-export default { ...hub, list, data: data as IdeasData } satisfies IdeasMessages;
+export default { ...hub, list, data: data as IdeasData, sources } satisfies IdeasMessages;
