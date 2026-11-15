@@ -1464,6 +1464,24 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .mem-card:focus-visible { outline: 3px solid var(--pink-deep); outline-offset: 2px; }
 .mem-stats dt.turn { color: var(--pink-deep); font-weight: 800; }
 .mem-stats [hidden] { display: none; }
+/* Business idea validator */
+.iv-field { display: grid; gap: 0.25rem; margin: 0.55rem 0 0; font-size: 0.88rem; }
+.iv-field > span { color: var(--ink-soft); }
+.iv-questions .iv-field:first-of-type { margin-top: 0; }
+.iv-out { display: grid; gap: 0.6rem; }
+.iv-score { display: grid; justify-items: center; margin: 0; padding: 0.7rem 1rem; border-radius: var(--radius); background: var(--pink-soft); }
+.iv-score strong { font-size: 2.6rem; line-height: 1; }
+.iv-score span { color: var(--ink-soft); font-size: 0.8rem; }
+.iv-score small { margin-top: 0.2rem; font-weight: 700; font-size: 0.95rem; }
+.iv-strong strong, .iv-strong small { color: #0a7a3d; }
+.iv-promising strong, .iv-promising small { color: var(--pink-deep); }
+.iv-risky strong, .iv-risky small { color: #9a4a00; }
+.iv-rethink strong, .iv-rethink small { color: #b42318; }
+.iv-verdict { margin: 0; }
+.iv-list h3 { margin: 0.4rem 0 0.2rem; font-size: 0.95rem; }
+.iv-list ul, .iv-list ol { margin: 0; padding-left: 1.2rem; }
+.iv-list li { margin: 0.2rem 0; }
+.iv-bench { margin: 0; padding: 0.6rem 0.8rem; border: 1px solid var(--line); border-radius: 10px; font-size: 0.9rem; }
 
 /* Valuation tools (batch 29): rarity gauge, range, feature list, depreciation bars. */
 .val-short { margin: -0.5rem 0 0.4rem; color: var(--ink-soft); font-weight: 650; }
