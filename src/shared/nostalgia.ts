@@ -11,12 +11,12 @@ import type { ToolId } from "./path";
 export const NOSTALGIA_SEGMENT = "nostalgia";
 
 export const NOSTALGIA_GROUPS = [
-  { id: "snacks", entries: ["tangseng-rou", "gaolegao", "white-rabbit", "pop-rocks", "jianlibao", "beibingyang", "xiaohuanxiong", "latiao", "mailisu", "guodanpi"] },
+  { id: "snacks", entries: ["tangseng-rou", "gaolegao", "white-rabbit", "pop-rocks", "jianlibao", "beibingyang", "xiaohuanxiong", "latiao", "mailisu", "guodanpi", "dunkaroos", "crystal-pepsi", "surge"] },
   { id: "games", entries: ["famicom", "subor", "contra", "game-boy", "tamagotchi", "arcade"] },
-  { id: "gadgets", entries: ["walkman", "cassette", "fuduji", "pager", "xiaolingtong", "nokia-3310", "wenquxing", "vcd", "mp3-player", "floppy-disk"] },
-  { id: "toys", entries: ["yo-yo", "mini-4wd", "marbles", "yanghua", "tiaopijin", "fanhuasheng"] },
-  { id: "internet", entries: ["qq-show", "feizhuliu", "jinwutuan", "qianqian-jingting", "y2k"] },
-  { id: "life", entries: ["liangpiao", "datoutie", "xiaomaibu"] },
+  { id: "gadgets", entries: ["walkman", "cassette", "fuduji", "pager", "xiaolingtong", "nokia-3310", "wenquxing", "vcd", "mp3-player", "floppy-disk", "vhs", "discman"] },
+  { id: "toys", entries: ["yo-yo", "mini-4wd", "marbles", "yanghua", "tiaopijin", "fanhuasheng", "pogs", "beanie-babies", "furby", "slap-bracelet"] },
+  { id: "internet", entries: ["qq-show", "feizhuliu", "jinwutuan", "qianqian-jingting", "y2k", "myspace", "aim", "napster", "dial-up"] },
+  { id: "life", entries: ["liangpiao", "datoutie", "xiaomaibu", "blockbuster", "lisa-frank"] },
 ] as const;
 
 export type NostalgiaGroupId = (typeof NOSTALGIA_GROUPS)[number]["id"];
@@ -38,7 +38,10 @@ export function nostalgiaGroupOf(id: NostalgiaId): NostalgiaGroupId {
 export const NOSTALGIA_PUBLISHED = "2026-11-15";
 
 /** Entries added after the first batch, by id, with the day each went live (set by hand when adding entries). */
-export const NOSTALGIA_ADDED: Partial<Record<NostalgiaId, string>> = {};
+export const NOSTALGIA_ADDED: Partial<Record<NostalgiaId, string>> = {
+  // Second batch: American and Western 1990s things.
+  "dunkaroos": "2026-11-16", "crystal-pepsi": "2026-11-16", "surge": "2026-11-16", "pogs": "2026-11-16", "beanie-babies": "2026-11-16", "furby": "2026-11-16", "slap-bracelet": "2026-11-16", "vhs": "2026-11-16", "discman": "2026-11-16", "myspace": "2026-11-16", "aim": "2026-11-16", "napster": "2026-11-16", "dial-up": "2026-11-16", "blockbuster": "2026-11-16", "lisa-frank": "2026-11-16",
+};
 
 /** When an entry went live. */
 export function nostalgiaPublished(id: NostalgiaId): string {
