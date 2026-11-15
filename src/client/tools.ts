@@ -1072,4 +1072,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountSnakeGame(host);
     return m.unmountSnakeGame;
   },
+  "checkers": async (host, ctx) => {
+    const m = await import("./checkers/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCheckers(host);
+    return m.unmountCheckers;
+  },
+  "reversi": async (host, ctx) => {
+    const m = await import("./reversi/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountReversi(host);
+    return m.unmountReversi;
+  },
+  "gomoku": async (host, ctx) => {
+    const m = await import("./gomoku/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGomoku(host);
+    return m.unmountGomoku;
+  },
+  "nonogram": async (host, ctx) => {
+    const m = await import("./nonogram/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountNonogram(host);
+    return m.unmountNonogram;
+  },
+  "memory-game": async (host, ctx) => {
+    const m = await import("./memory-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMemoryGame(host);
+    return m.unmountMemoryGame;
+  },
 };
