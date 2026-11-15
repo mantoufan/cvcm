@@ -27,6 +27,7 @@ import {
   refHref,
   slangHref,
   ideasHref,
+  nostalgiaHref,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -46,6 +47,7 @@ import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubO
 import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
 import { SLANG_FOCUS, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
 import { IDEAS_FOCUS, isIdeaId, type IdeaId, type IdeaPage } from "../shared/ideas";
+import { NOSTALGIA_FOCUS, isNostalgiaId, type NostalgiaId, type NostalgiaPage } from "../shared/nostalgia";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -94,6 +96,8 @@ let refPage: RefPage = null;
 let slangPage: SlangPage = null;
 /** An ideas page: "hub" for /ideas/, else the idea id. */
 let ideasPage: IdeaPage = null;
+/** A nostalgia page: "hub" for /nostalgia/, else the entry id. */
+let nostalgiaPage: NostalgiaPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -267,6 +271,18 @@ export function boot(): void {
     setLocale(loc);
     applyIdeas(parsed.entry);
     history.replaceState(null, "", withSearch(ideasHref(loc, parsed.entry), location.search));
+  } else if (parsed.kind === "nostalgia") {
+    setLocale(parsed.locale);
+    applyNostalgia(parsed.entry);
+    const canonical = nostalgiaHref(parsed.locale, parsed.entry);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-nostalgia") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyNostalgia(parsed.entry);
+    history.replaceState(null, "", withSearch(nostalgiaHref(loc, parsed.entry), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -335,6 +351,12 @@ function prefetchGamePack(e: Event): void {
     const id = nav.startsWith("ideas-") ? nav.slice(6) : "";
     const page: IdeaPage = isIdeaId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, null, null, {}, page)) loadPageMessages(loc, false, false, false, false, null, null, null, {}, page).catch(() => {});
+  } else if (target?.closest?.('a[data-nav^="nostalgia-"], a[data-nav="nostalgia"]')) {
+    // data-nav is "nostalgia-<entry id>" on an entry link, "nostalgia" on a hub link.
+    const nav = target.closest('a[data-nav^="nostalgia-"], a[data-nav="nostalgia"]')?.getAttribute("data-nav") ?? "";
+    const id = nav.startsWith("nostalgia-") ? nav.slice(10) : "";
+    const page: NostalgiaPage = isNostalgiaId(id) ? id : "hub";
+    if (!hasPageMessages(loc, false, false, false, false, null, null, null, {}, null, page)) loadPageMessages(loc, false, false, false, false, null, null, null, {}, null, page).catch(() => {});
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {
@@ -409,6 +431,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   refPage = null;
   slangPage = null;
   ideasPage = null;
+  nostalgiaPage = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -430,6 +453,7 @@ function applyLearn(next: TutorialId | null): void {
   refPage = null;
   slangPage = null;
   ideasPage = null;
+  nostalgiaPage = null;
 }
 
 function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
@@ -451,6 +475,7 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   refPage = null;
   slangPage = null;
   ideasPage = null;
+  nostalgiaPage = null;
 }
 
 function applyDevice(page: DevicePageId): void {
@@ -472,6 +497,7 @@ function applyDevice(page: DevicePageId): void {
   refPage = null;
   slangPage = null;
   ideasPage = null;
+  nostalgiaPage = null;
 }
 
 function applyLegal(page: LegalPageId): void {
@@ -493,6 +519,7 @@ function applyLegal(page: LegalPageId): void {
   refPage = null;
   slangPage = null;
   ideasPage = null;
+  nostalgiaPage = null;
 }
 
 function applyQuiz(id: QuizId | null): void {
@@ -514,6 +541,7 @@ function applyQuiz(id: QuizId | null): void {
   refPage = null;
   slangPage = null;
   ideasPage = null;
+  nostalgiaPage = null;
 }
 
 function applyDataset(id: DatasetId | null): void {
@@ -535,6 +563,7 @@ function applyDataset(id: DatasetId | null): void {
   refPage = null;
   slangPage = null;
   ideasPage = null;
+  nostalgiaPage = null;
 }
 
 function applyRanking(id: RankingId | null): void {
@@ -562,6 +591,11 @@ function applyIdeas(id: IdeaId | null): void {
   ideasPage = id ?? "hub";
 }
 
+function applyNostalgia(id: NostalgiaId | null): void {
+  applyTool(null, null);
+  nostalgiaPage = id ?? "hub";
+}
+
 function unmountTools(): void {
   const unmount = unmountCurrent;
   unmountCurrent = noop;
@@ -570,7 +604,7 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
@@ -583,10 +617,11 @@ export function render(): void {
   const ref: RefPage = parsed.kind === "ref" || parsed.kind === "bare-ref" ? parsed.entry ?? "hub" : null;
   const slang: SlangPage = parsed.kind === "slang" || parsed.kind === "bare-slang" ? parsed.entry ?? "hub" : null;
   const ideas: IdeaPage = parsed.kind === "ideas" || parsed.kind === "bare-ideas" ? parsed.entry ?? "hub" : null;
+  const nostalgia: NostalgiaPage = parsed.kind === "nostalgia" || parsed.kind === "bare-nostalgia" ? parsed.entry ?? "hub" : null;
   const copy = pageCopyOf(parsed);
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas)) {
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -679,6 +714,11 @@ export function render(): void {
     applyIdeas(parsed.entry);
   } else if (parsed.kind === "bare-ideas") {
     applyIdeas(parsed.entry);
+  } else if (parsed.kind === "nostalgia") {
+    setLocale(parsed.locale);
+    applyNostalgia(parsed.entry);
+  } else if (parsed.kind === "bare-nostalgia") {
+    applyNostalgia(parsed.entry);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
@@ -687,6 +727,8 @@ export function render(): void {
 
   const seo = ideasPage
     ? { ideas: true as const, ideaId: ideasPage === "hub" ? null : ideasPage }
+    : nostalgiaPage
+    ? { nostalgia: true as const, nostalgiaId: nostalgiaPage === "hub" ? null : nostalgiaPage }
     : slangPage
     ? { slang: true as const, slangId: slangPage === "hub" ? null : slangPage }
     : refPage
@@ -722,7 +764,7 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub")) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub") || (nostalgiaPage && nostalgiaPage !== "hub")) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
@@ -740,7 +782,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -878,7 +920,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage);
   const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
   const gamesOn = gamesHub || Boolean(gameId);
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
@@ -888,6 +930,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const refOn = Boolean(refPage);
   const slangOn = Boolean(slangPage);
   const ideasOn = Boolean(ideasPage);
+  const nostalgiaOn = Boolean(nostalgiaPage);
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
@@ -899,6 +942,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(refHref(loc), t("nav.reference"), refOn, "reference"),
         navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
         navLink(ideasHref(loc), t("nav.ideas"), ideasOn, "ideas"),
+        navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
@@ -990,6 +1034,16 @@ function toolDirectory(loc: Locale): HTMLElement {
       h("p", null,
         ...IDEAS_FOCUS.map((id) =>
           h("a", { href: ideasHref(loc, id), "data-nav": `ideas-${id}`, "aria-current": ideasPage === id ? "page" : undefined }, t(`ideasFocus.${id}`)),
+        ),
+      ),
+    ),
+    // Nostalgia entry names live in the nostalgia pack, so the footer links the hub and the NOSTALGIA_FOCUS entries,
+    // whose names are also in the core pack (nostalgiaFocus.*).
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: nostalgiaHref(loc), "data-nav": "nostalgia", "aria-current": nostalgiaPage === "hub" ? "page" : undefined }, t("nav.nostalgia"))),
+      h("p", null,
+        ...NOSTALGIA_FOCUS.map((id) =>
+          h("a", { href: nostalgiaHref(loc, id), "data-nav": `nostalgia-${id}`, "aria-current": nostalgiaPage === id ? "page" : undefined }, t(`nostalgiaFocus.${id}`)),
         ),
       ),
     ),
@@ -1100,6 +1154,10 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./ideas/ui");
     if (!alive()) return;
     m.mountIdeas(main, loc, ideasPage === "hub" ? null : ideasPage);
+  } else if (nostalgiaPage) {
+    const m = await import("./nostalgia/ui");
+    if (!alive()) return;
+    m.mountNostalgia(main, loc, nostalgiaPage === "hub" ? null : nostalgiaPage);
   } else if (legalPage) {
     main.innerHTML = legalStaticHtml(loc, legalPage);
   } else if (marketId || marketsHub) {
@@ -1267,6 +1325,8 @@ function localePath(next: Locale): string {
     ? slangHref(next, slangPage === "hub" ? null : slangPage)
     : ideasPage
     ? ideasHref(next, ideasPage === "hub" ? null : ideasPage)
+    : nostalgiaPage
+    ? nostalgiaHref(next, nostalgiaPage === "hub" ? null : nostalgiaPage)
     : legalPage
     ? legalHref(next, legalPage)
     : learnHub || tutorial

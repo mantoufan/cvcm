@@ -37,6 +37,8 @@ import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangFaqJsonLd } from "../sh
 import type { SlangPage } from "../shared/slang";
 import { ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd } from "../shared/ideas-i18n";
 import type { IdeaPage } from "../shared/ideas";
+import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaFaqJsonLd } from "../shared/nostalgia-i18n";
+import type { NostalgiaPage } from "../shared/nostalgia";
 import type { DevicePageId } from "../shared/device";
 import { legalBreadcrumbJsonLd } from "../shared/legal";
 import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
@@ -99,11 +101,13 @@ export function syncPageJsonLd(
   slangPage: SlangPage = null,
   learnHub = false,
   ideasPage: IdeaPage = null,
+  nostalgiaPage: NostalgiaPage = null,
 ): void {
   const refId = refPage === "hub" ? null : refPage;
   const slangId = slangPage === "hub" ? null : slangPage;
   const ideaId = ideasPage === "hub" ? null : ideasPage;
-  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : slangPage ? slangArticleJsonLd(locale, slangId) : ideasPage ? ideasArticleJsonLd(locale, ideaId) : null);
+  const nostalgiaId = nostalgiaPage === "hub" ? null : nostalgiaPage;
+  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : slangPage ? slangArticleJsonLd(locale, slangId) : ideasPage ? ideasArticleJsonLd(locale, ideaId) : nostalgiaPage ? nostalgiaArticleJsonLd(locale, nostalgiaId) : null);
   if (datasetPage) {
     const id = datasetPage === "hub" ? null : datasetPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
@@ -125,6 +129,12 @@ export function syncPageJsonLd(
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", ideasFaqJsonLd(locale, ideaId));
     writeJsonLd("breadcrumb-jsonld", ideasBreadcrumbJsonLd(locale, ideaId));
+    return;
+  }
+  if (nostalgiaPage) {
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("faq-jsonld", nostalgiaFaqJsonLd(locale, nostalgiaId));
+    writeJsonLd("breadcrumb-jsonld", nostalgiaBreadcrumbJsonLd(locale, nostalgiaId));
     return;
   }
   if (slangPage) {

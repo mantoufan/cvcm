@@ -9,11 +9,12 @@ import { AI_ARTICLES, CODE_ARTICLES } from "./kb";
 import { REF_ENTRIES } from "./ref";
 import { SLANG_ENTRIES } from "./slang";
 import { IDEA_ENTRIES } from "./ideas";
+import { NOSTALGIA_ENTRIES } from "./nostalgia";
 import { LOCALES, localePath } from "./locale";
 import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
 import { MUSIC_BARS, MUSIC_STYLES, STYLE_PRESETS, SURPRISE_IDS } from "./music-gen";
 import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
-import { AI_TOOLS, CATEGORIES, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, type CategoryId, type ToolId } from "./path";
+import { AI_TOOLS, CATEGORIES, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
 
 const CATEGORY_TITLE: Record<CategoryId, string> = {
@@ -235,6 +236,7 @@ export function buildLlmsTxt(): string {
     `- [Pose & style reference](${SITE_ORIGIN}${refHref("en", null)}): ${REF_ENTRIES.length} entries on hairstyles, hair colours, expressions, hand gestures, outfits, poses and camera angles, with credited photos linked from mfan8.com and English prompt keywords.`,
     `- [Memes](${SITE_ORIGIN}${slangHref("en", null)}): ${SLANG_ENTRIES.length} viral memes and internet slang words (Tung Tung Tung Sahur, Pepe, Chill Guy, aura, yyds, neijuan, 6 7…): meaning, dated origin timeline, usage and current popularity from Wikipedia page views, in eight languages.`,
     `- [Business ideas](${SITE_ORIGIN}${ideasHref("en", null)}): ${IDEA_ENTRIES.length} business and side-hustle ideas (AI agency, Amazon FBA, TikTok Shop, vending machines, cleaning, food trucks…), each with a 0-100 outlook score from four years of Google Ads Keyword Planner search data in eight languages, a 12-month forecast, a startup-cost level, and a guide to how it makes money, what it takes, the risks and how to test the idea cheaply (no income or cost figures).`,
+    `- [Nostalgia](${SITE_ORIGIN}${nostalgiaHref("en", null)}): ${NOSTALGIA_ENTRIES.length} things from 1980s–2000s childhoods (Famicom, Tamagotchi, pagers, Walkman, Y2K, White Rabbit candy, Chinese snacks and playground games): what each was, when it was around, what it cost, what happened to it and whether it is still sold, in eight languages.`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,
     `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): free homebrew games playable in the browser.`,
     `- [Sitemap](${SITE_ORIGIN}/sitemap.xml)`,
