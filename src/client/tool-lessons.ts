@@ -26,7 +26,7 @@ export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | nul
       ),
     ) : null,
     ...shelves.flatMap((shelf) => [
-      h("h2", { class: "shelf" }, h("a", { href: kbHref(loc, shelf.page), "data-nav": shelf.nav }, shelf.label)),
+      h("h2", null, h("a", { href: kbHref(loc, shelf.page), "data-nav": shelf.nav }, shelf.label)),
       h("ul", { class: "tool-lesson-list" },
         ...shelf.articles.map((id) =>
           h("li", null, h("a", { href: kbHref(loc, id), "data-nav": `kb-${id}` }, t(`kb.${id}.name`))),

@@ -46,10 +46,12 @@ img { max-width: 100%; }
 .dir-fold { margin-bottom: 1.25rem; }
 .dir-fold > summary { display: inline-block; cursor: pointer; padding: 0.45rem 0.9rem; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); font-weight: 600; list-style: none; }
 .dir-fold > summary::-webkit-details-marker { display: none; }
-.dir-fold > summary::after { content: " +"; color: var(--pink-deep); }
-.dir-fold[open] > summary::after { content: " −"; }
+/* The second declaration gives the sign an empty spoken name where supported: <details> already announces its state. */
+.dir-fold > summary::after { content: " +"; content: " +" / ""; color: var(--pink-deep); }
+.dir-fold[open] > summary::after { content: " −"; content: " −" / ""; }
 .dir-fold > summary:hover { border-color: var(--pink); color: var(--pink-deep); }
 .dir-fold[open] > summary { margin-bottom: 1.25rem; }
+.dir-fold > .dir { margin-bottom: 0; }
 .dir { display: grid; gap: 1rem; margin-bottom: 1.5rem; }
 .dir-group h2 { margin: 0 0 0.3rem; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink); }
 .dir-group p { display: flex; flex-wrap: wrap; gap: 0.15rem 0.85rem; margin: 0; line-height: 1.7; }
@@ -134,10 +136,11 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
 .pool-card strong { color: var(--pink-deep); }
 .pool-card span { font-size: 0.88rem; }
 .tool-lesson-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.3rem 1.25rem; }
-/* Shelf names under "How-to guides" are labels, like the directory's group names, not second headings. */
-.tool-lessons > h2.shelf { margin: 1rem 0 0.3rem; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
-.tool-lessons > h2.shelf a { color: var(--ink-soft); text-decoration: none; }
-.tool-lessons > h2.shelf a:hover { color: var(--pink-deep); }
+/* Shelf names under "How-to guides" are labels, like the directory's group names, not second headings. Without
+   that title (a tool with shelves but no guides) they stay headings. */
+.tool-lessons > h2:first-child:not(:has(a)) ~ h2 { margin: 1rem 0 0.3rem; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.tool-lessons > h2:first-child:not(:has(a)) ~ h2 a { color: var(--ink-soft); text-decoration: none; }
+.tool-lessons > h2:first-child:not(:has(a)) ~ h2 a:hover { color: var(--pink-deep); }
 .tool-lesson-list a, .convert-jobs a { font-weight: 600; text-decoration: none; }
 .tool-lesson-list a:hover, .convert-jobs a:hover, .convert-jobs a[aria-current="page"] { text-decoration: underline; }
 .convert-jobs { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0.85rem 0 0; }
@@ -182,7 +185,9 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
   .top { gap: 0.4rem; flex-wrap: wrap; }
   .brand { font-size: 1.05rem; }
   /* The sections and the language picker do not fit one phone row: the links get their own rows, all in view. */
-  .nav { order: 3; flex: 1 0 100%; flex-wrap: wrap; margin: 0 -0.4rem; }
+  .nav { order: 3; flex: 1 0 100%; margin: 0 -0.4rem; }
+  /* Game pages keep one scrolling row: the board or the emulator stays on the first screen. */
+  .page.is-game .nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .nav a { padding: 0.35rem 0.4rem; font-size: 0.86rem; }
   .lang { max-width: 7.5rem; font-size: 0.8rem; padding: 0.25rem 0.35rem; }
   .links { grid-template-columns: 1fr; }
