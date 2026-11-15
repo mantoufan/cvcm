@@ -45,7 +45,7 @@ import { RANKINGS, type RankingId } from "../shared/rankings";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
 import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
 import { SLANG_FOCUS, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
-import { IDEAS_FOCUS, isIdeaId, type IdeaId, type IdeaPage } from "../shared/ideas";
+import { IDEAS_FOCUS, IDEAS_PACK_TOOLS, isIdeaId, type IdeaId, type IdeaPage } from "../shared/ideas";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -329,9 +329,9 @@ function prefetchGamePack(e: Event): void {
     const id = nav.startsWith("slang-") ? nav.slice(6) : "";
     const page: SlangPage = isSlangId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, null, page)) loadPageMessages(loc, false, false, false, false, null, null, page).catch(() => {});
-  } else if (target?.closest?.('a[data-nav^="ideas-"], a[data-nav="ideas"]')) {
-    // data-nav is "ideas-<idea id>" on an idea link, "ideas" on a hub link.
-    const nav = target.closest('a[data-nav^="ideas-"], a[data-nav="ideas"]')?.getAttribute("data-nav") ?? "";
+  } else if (target?.closest?.('a[data-nav^="ideas-"], a[data-nav="ideas"], a[data-nav="idea-validator"]')) {
+    // data-nav is "ideas-<idea id>" on an idea link, "ideas" on a hub link; the idea validator needs the hub pack too.
+    const nav = target.closest('a[data-nav^="ideas-"], a[data-nav="ideas"], a[data-nav="idea-validator"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("ideas-") ? nav.slice(6) : "";
     const page: IdeaPage = isIdeaId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, false, false, null, null, null, {}, page)) loadPageMessages(loc, false, false, false, false, null, null, null, {}, page).catch(() => {});
@@ -584,7 +584,7 @@ export function render(): void {
   const slang: SlangPage = parsed.kind === "slang" || parsed.kind === "bare-slang" ? parsed.entry ?? "hub" : null;
   // The idea validator matches against the ideas pack's names and data, so it loads with the page like an ideas hub.
   const ideas: IdeaPage = parsed.kind === "ideas" || parsed.kind === "bare-ideas" ? parsed.entry ?? "hub"
-    : (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool === "idea-validator" ? "hub" : null;
+    : (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool && IDEAS_PACK_TOOLS.includes(parsed.tool) ? "hub" : null;
   const copy = pageCopyOf(parsed);
   if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.

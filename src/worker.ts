@@ -3,6 +3,7 @@ import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
+import { IDEAS_PACK_TOOLS } from "./shared/ideas";
 import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, STATIC_FILE, toolJob } from "./shared/path";
 import { rankingRowsChunk } from "./shared/rankings";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
@@ -364,7 +365,7 @@ export default {
       // The browser's core pack leaves out the copy only this page shows; preload the bucket that holds it.
       const copy = copyChunkKey(locale, pageCopyOf(parsed));
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, parsed.kind === "ideas" ? parsed.entry ?? "hub" : parsed.kind === "app" && parsed.tool === "idea-validator" ? "hub" : null);
+      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, parsed.kind === "ideas" ? parsed.entry ?? "hub" : parsed.kind === "app" && parsed.tool && IDEAS_PACK_TOOLS.includes(parsed.tool) ? "hub" : null);
       out = preloadPageChunk(out, chunk);
       if (parsed.kind === "ranking" && parsed.ranking) out = preloadPageChunk(out, rankingRowsChunk(parsed.ranking));
       if (parsed.kind === "dataset" && parsed.dataset) {

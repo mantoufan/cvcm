@@ -5,6 +5,7 @@
  */
 import keywords from "../../scripts/ideas/keywords.json";
 import { IDEA_ENTRIES, type IdeaId } from "./ideas";
+import { LOCALES, type Locale } from "./locale";
 
 /** The eight questions, in page order. Each answer is worth 0-4 points (the reader answers all of them). */
 export const VALIDATOR_QUESTIONS = ["evidence", "price", "competition", "cost", "time", "edge", "channel", "trend"] as const;
@@ -80,7 +81,8 @@ const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=
  * Lowercased words with accents removed and an English plural "s" dropped; CJK runs become overlapping two-character
  * pieces (Chinese and Japanese have no spaces), leaving out pieces that are only hiragana (particles and endings).
  */
-export function ideaTokens(text: string): string[] {
+export function ideaTokens(text: string, locale: Locale | null = null): string[] {
+  const keep = locale ? KEEP[locale] : undefined;
   const out: string[] = [];
   for (const part of text.toLowerCase().normalize("NFKC").split(/[^\p{L}\p{N}]+/u)) {
     if (!part) continue;
@@ -90,8 +92,10 @@ export function ideaTokens(text: string): string[] {
     }
     const latin = part.replace(CJK_RUN, " ").normalize("NFD").replace(/\p{M}/gu, "").replace(/đ/g, "d").trim();
     for (let word of latin.split(/\s+/)) {
-      if (word.length > 3 && word.endsWith("s") && !word.endsWith("ss")) word = word.slice(0, -1);
-      if (word.length >= 2 && !STOP.has(word)) out.push(word);
+      // English plurals: washes → wash, boxes → box, ideas → idea (not "business", "glass").
+      if (word.length > 4 && /(sh|ch|x|ss)es$/.test(word)) word = word.slice(0, -2);
+      else if (word.length > 3 && word.endsWith("s") && !word.endsWith("ss")) word = word.slice(0, -1);
+      if (word.length >= 2 && (!STOP.has(word) || keep?.has(word))) out.push(word);
     }
   }
   return out;
@@ -99,25 +103,33 @@ export function ideaTokens(text: string): string[] {
 
 /** Words that say "business", "how to", "online", "I want" and the like in the eight languages (accents removed). */
 const STOP = new Set([
-  "business", "businesse", "companie", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small",
-  "negocio", "de", "la", "el", "lo", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi",
-  "bisni", "bisnis", "usaha", "jasa", "di", "cara", "jualan", "jual", "rumah", "saya", "ingin", "mau", "dan", "yang", "toko",
+  "business", "businesse", "companie", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small", "open", "opening", "launch", "run", "own", "new", "local", "near", "about", "some", "this", "that",
+  "negocio", "de", "la", "el", "lo", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi", "abrir", "montar", "nuevo",
+  "bisni", "bisnis", "usaha", "jasa", "di", "cara", "jualan", "jual", "rumah", "saya", "ingin", "mau", "dan", "yang", "toko", "buka", "membuka",
   "kinh", "doanh", "mo", "ban", "va", "cua", "hang", "tren", "mang", "toi", "muon", "nha", "dich", "vu", "cong", "ty", "lam",
 ]);
+/** Filler in one language can be a real word in another: Vietnamese "in" is "print" (in 3D). */
+const KEEP: Partial<Record<Locale, Set<string>>> = { vi: new Set(["in"]) };
+
 const STOP_CJK = new Set(["创业", "創業", "开业", "開業", "副业", "副業", "生意", "加盟", "开店", "開店", "网上", "網上", "网店", "賺錢", "赚钱", "我想", "온라", "라인", "창업", "사업", "부업", "쇼핑", "핑몰", "ビジ", "ジネ", "ネス", "起業", "開発"]);
 
 /** Every idea's search phrases in every language, tokenized once. */
 const IDEA_POOLS: Record<IdeaId, Set<string>> = Object.fromEntries(
-  IDEA_ENTRIES.map((id) => [id, new Set(Object.values((keywords as Record<string, Record<string, string[]>>)[id] ?? {}).flat().flatMap(ideaTokens))]),
+  IDEA_ENTRIES.map((id) => {
+    const byLocale = (keywords as Record<string, Record<string, string[]>>)[id] ?? {};
+    return [id, new Set(LOCALES.flatMap((loc) => (byLocale[loc] ?? []).flatMap((phrase) => ideaTokens(phrase, loc))))];
+  }),
 ) as Record<IdeaId, Set<string>>;
+
+const NO_NAMES: Partial<Record<IdeaId, string>> = {};
 
 /** Per names table (one per locale): each idea's merged word pool and how many ideas use each word. */
 const poolCache = new WeakMap<object, { pools: { id: IdeaId; words: Set<string> }[]; df: Map<string, number> }>();
 
-function poolsFor(names: Partial<Record<IdeaId, string>>): { pools: { id: IdeaId; words: Set<string> }[]; df: Map<string, number> } {
+function poolsFor(names: Partial<Record<IdeaId, string>>, locale: Locale | null): { pools: { id: IdeaId; words: Set<string> }[]; df: Map<string, number> } {
   let entry = poolCache.get(names);
   if (!entry) {
-    const pools = IDEA_ENTRIES.map((id) => ({ id, words: new Set([...IDEA_POOLS[id], ...ideaTokens(names[id] ?? "")]) }));
+    const pools = IDEA_ENTRIES.map((id) => ({ id, words: new Set([...IDEA_POOLS[id], ...ideaTokens(names[id] ?? "", locale)]) }));
     const df = new Map<string, number>();
     for (const { words } of pools) for (const w of words) df.set(w, (df.get(w) ?? 0) + 1);
     entry = { pools, df };
@@ -133,19 +145,26 @@ function poolsFor(names: Partial<Record<IdeaId, string>>): { pools: { id: IdeaId
  * Equal scores go to the idea whose pool the text covers most (its own name beats a longer name containing it); a
  * remaining tie is no match. `names` maps each idea to its name in the page's language.
  */
-export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> = {}): IdeaId | null {
-  const tokens = [...new Set(ideaTokens(text))];
+export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> = NO_NAMES, locale: Locale | null = null): IdeaId | null {
+  const tokens = [...new Set(ideaTokens(text, locale))];
   if (!tokens.length) return null;
-  const { pools, df } = poolsFor(names);
+  const { pools, df } = poolsFor(names, locale);
   const scored = pools.map(({ id, words }) => {
     const hits = tokens.filter((t) => words.has(t));
     return { id, hits, cover: hits.length / Math.max(1, words.size), score: hits.reduce((sum, t) => sum + Math.log(IDEA_ENTRIES.length / (df.get(t) ?? 1)), 0) };
   }).sort((a, b) => b.score - a.score || b.cover - a.cover);
   const [best, second] = scored;
-  if (!best || best.score <= 0 || (best.score === second?.score && best.cover === second?.cover)) return null;
+  if (!best || best.score <= 0) return null;
+  if (second && best.score === second.score) {
+    // Two ideas sharing different words with the text equally ("t-shirt printing": shirt vs printing) is ambiguous;
+    // the same words in both goes to the one the text covers most (its own name beats a longer name containing it).
+    const same = best.hits.length === second.hits.length && best.hits.every((t) => second.hits.includes(t));
+    if (!same || best.cover === second.cover) return null;
+  }
   const only = best.hits[0];
-  // One shared word is enough only when the text is about that short (a name like "Pet services"); in a longer
-  // description one shared word ("mobile" in "a mobile app for students") is too weak a signal.
-  const strong = best.hits.length >= 2 || (best.hits.length === 1 && tokens.length <= 2 && df.get(only) === 1 && (only.length >= 3 || /[^\x00-\x7f]/.test(only)));
+  // One shared word is enough in a short text (a name like "Pet services"), or when no other idea shares any word
+  // ("open a laundromat near campus"); otherwise ("mobile" in "a mobile app for students") it is too weak a signal.
+  const alone = tokens.length <= 2 || !second || second.score === 0;
+  const strong = best.hits.length >= 2 || (best.hits.length === 1 && alone && df.get(only) === 1 && (only.length >= 3 || /[^\x00-\x7f]/.test(only)));
   return strong ? best.id : null;
 }

@@ -130,3 +130,6 @@ export function ideaGroupOf(id: IdeaId): IdeaGroupId {
   if (!group) throw new Error(`idea not in a group: ${id}`);
   return group.id;
 }
+
+/** Pages outside /ideas/ that render with the ideas pack: the idea validator (names and outlook scores). */
+export const IDEAS_PACK_TOOLS: readonly string[] = ["idea-validator"];

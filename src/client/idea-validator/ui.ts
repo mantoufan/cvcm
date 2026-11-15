@@ -24,13 +24,11 @@ type State = {
 };
 
 let state: State | null = null;
-let alive = 0;
 
 const NONE = "";
 
 export function mountIdeaValidator(host: HTMLElement): void {
   unmountIdeaValidator();
-  alive++;
   const loc = locale();
   const idea = h("textarea", {
     "data-field": "idea",
@@ -82,7 +80,7 @@ export function mountIdeaValidator(host: HTMLElement): void {
     ),
   );
   // Idea names and the search-data snapshot come with the ideas pack, which the page loads with the tool's strings
-  // (main.ts render). Without it the scorecard still works, with no benchmark.
+  // (IDEAS_PACK_TOOLS); the guard only keeps a test mount without it from failing.
   if (hasIdeasMessages(loc)) fillIdeas(loc);
   else paint();
 }
@@ -93,10 +91,10 @@ function fillIdeas(loc: ReturnType<typeof locale>): void {
   state.names = Object.fromEntries(IDEA_ENTRIES.map((id) => [id, ideaName(loc, id).name]));
   const sorted = IDEA_ENTRIES.map((id) => ({ id, name: state!.names[id] ?? id })).sort((a, b) => a.name.localeCompare(b.name, loc));
   state.match.append(...sorted.map(({ id, name }) => h("option", { value: id }, name)));
-  // Opened from an idea page (?idea=<id>): start from that idea as the benchmark, keeping anything already typed.
+  // Opened from an idea page (?idea=<id>): start from that idea as the benchmark.
   const preset = new URLSearchParams(location.search).get("idea") ?? "";
   if (isIdeaId(preset)) {
-    if (!state.idea.value.trim()) state.idea.value = state.names[preset] ?? "";
+    state.idea.value = state.names[preset] ?? "";
     state.match.value = preset;
     state.pinnedText = state.idea.value;
     paint();
@@ -106,7 +104,6 @@ function fillIdeas(loc: ReturnType<typeof locale>): void {
 }
 
 export function unmountIdeaValidator(): void {
-  alive++;
   state = null;
 }
 
@@ -117,9 +114,15 @@ function matchedIdea(): IdeaId | null {
 
 function onIdeaInput(): void {
   if (!state) return;
-  // A hand-picked match holds until the description changes.
-  if (state.pinnedText !== null && state.idea.value !== state.pinnedText) state.pinnedText = null;
-  if (state.ready && state.pinnedText === null) state.match.value = matchIdea(state.idea.value, state.names) ?? NONE;
+  if (state.ready) {
+    const found = matchIdea(state.idea.value, state.names, locale());
+    // A hand-picked (or preset) match stays through typo fixes and extra words; only a different confident match, or
+    // clearing the box, replaces it.
+    if (state.pinnedText === null || (found && found !== state.match.value) || !state.idea.value.trim()) {
+      state.match.value = found ?? NONE;
+      state.pinnedText = null;
+    }
+  }
   paint();
 }
 

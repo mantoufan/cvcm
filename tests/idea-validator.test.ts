@@ -74,6 +74,15 @@ describe("idea validator: matching", () => {
     expect(matchIdea("カフェを開きたい", names("ja"))).toBe("coffee-shop");
     expect(matchIdea("コーチングを始めたい", names("ja"))).toBeNull();
     expect(ideaTokens("コーヒー")).toEqual(["コー", "ーヒ", "ヒー"]);
+    // Generic verbs do not pick an idea; one clear word in a longer text does when no other idea shares a word.
+    expect(matchIdea("open a laundromat near campus", names("en"))).toBe("laundromat");
+    expect(matchIdea("abrir una lavandería", names("es"))).not.toBe("coffee-shop");
+    expect(matchIdea("open a salon", names("en"))).toBeNull();
+    // Two ideas sharing different words equally is ambiguous.
+    expect(matchIdea("t-shirt printing", names("en"))).not.toBe("3d-printing");
+    // Language-specific filler: Vietnamese "in" means print.
+    expect(matchIdea("Kinh doanh in 3D", names("vi"), "vi")).toBe("3d-printing");
+    expect(matchIdea("car washes", names("en"))).toBe("car-wash");
     // Plurals and accents.
     expect(matchIdea("pressure washing houses and driveways", names("en"))).toBe("pressure-washing");
     expect(matchIdea("tiệm giặt sấy tự động", names("vi"))).toBe("laundromat");
