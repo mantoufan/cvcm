@@ -37,7 +37,6 @@ export function nostalgiaGroupOf(id: NostalgiaId): NostalgiaGroupId {
 
 export const NOSTALGIA_PUBLISHED = "2026-11-15";
 
-/** Entries added after the first batch, by id, with the day each went live (set by hand when adding entries). */
 /** The second batch (American and Western 1990s things), all live on one day. */
 const BATCH2_DATE = "2026-11-16";
 const BATCH2: readonly NostalgiaId[] = [

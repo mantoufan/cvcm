@@ -64,7 +64,7 @@ function structure(copy: NostalgiaEntryCopy): { sections: number; faq: number; k
   return { sections: copy.sections.length, faq: copy.faq.length, kinds: copy.sections.map((s) => s.body.map(block)) };
 }
 
-/** Chinese childhood items are mastered in zh-CN, worldwide ones in en. */
+/** Chinese childhood items are mastered in zh-CN; Western and worldwide ones in en. */
 const masterOf = (id: (typeof NOSTALGIA_ENTRIES)[number]): Locale => (NOSTALGIA_META[id].region === "cn" ? "zh-CN" : "en");
 
 describe("nostalgia: catalog", () => {
