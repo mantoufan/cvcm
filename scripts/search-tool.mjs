@@ -4,7 +4,8 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const outfile = join(tmpdir(), "cvcm-search-tool.mjs");
+// Per process: two checkouts running at once must not import each other's bundle (and index).
+const outfile = join(tmpdir(), `cvcm-search-tool-${process.pid}.mjs`);
 
 await esbuild.build({
   absWorkingDir: root,

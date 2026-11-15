@@ -97,6 +97,19 @@ function hit(text: string, term: Term): number {
   return term.start.test(text) ? 1 : -1;
 }
 
+/**
+ * A CJK run written in another word order ("图片压缩" for 压缩图片): true when it splits into two parts of 2+
+ * characters that both occur in the text. Scored below a real hit.
+ */
+function splitHit(text: string, term: Term): boolean {
+  if (term.start) return false;
+  const chars = [...term.text];
+  for (let i = 2; i <= chars.length - 2; i++) {
+    if (text.includes(chars.slice(0, i).join("")) && text.includes(chars.slice(i).join(""))) return true;
+  }
+  return false;
+}
+
 /** The part of a page title before " | cv.cm", " — " and the like: the page's name. */
 export function nameFromTitle(title: string): string {
   const base = title.replace(/\s*[|｜]\s*cv\.cm\s*$/i, "").replace(/\s*[—–]\s*cv\.cm\s*$/i, "");
@@ -158,6 +171,8 @@ export function searchEntries(entries: readonly SearchEntry[], query: string, li
         continue;
       }
       if (hit(blurb, word) >= 0) score += 2;
+      else if (splitHit(`${name} ${alt}`, word)) score += 4;
+      else if (splitHit(blurb, word)) score += 1;
       else return;
     }
     if (name === whole || alt === whole || compact === wholeCompact) score += 30;
@@ -180,6 +195,8 @@ export function isRecordableQuery(query: string): boolean {
   if (points < 1 || points > SEARCH_QUERY_MAX) return false;
   if (!/[\p{L}\p{N}]/u.test(query)) return false;
   if (/@|https?:|www\.|:\/\//i.test(query)) return false;
+  // IP addresses (someone looking up their own): never stored.
+  if (/\b\d{1,3}(?:\.\d{1,3}){3}\b/.test(query) || /\b(?:[0-9a-f]{1,4}:){4,}[0-9a-f]{1,4}\b|[0-9a-f]{1,4}::[0-9a-f]{0,4}/i.test(query)) return false;
   // Bare links: a host followed by a path (example.com/reset?token=…), or a link shortener on its own (bit.ly, t.me).
   // Plain names with a dot (draw.io, asp.net, node.js) stay: they are real topics.
   if (/[a-z0-9-]+\.[a-z]{2,}\/\S/i.test(query)) return false;

@@ -71,6 +71,11 @@ describe("searchEntries", () => {
     expect(searchEntries(en, "bmi?").length).toBeGreaterThan(0);
   });
 
+  it("finds CJK words typed in another order", () => {
+    expect(searchEntries(indexes["zh-CN"], "图片压缩").length).toBeGreaterThan(0);
+    expect(searchEntries(indexes["zh-CN"], "图片压缩")[0][2]).toContain("压缩");
+  });
+
   it("reads 1920x1080 as two numbers", () => {
     const entries: SearchEntry[] = [["tool", "/en/r/", "Resize image", "Set 1920 by 1080 or any size."]];
     expect(searchEntries(entries, "1920x1080").length).toBe(1);
@@ -144,6 +149,9 @@ describe("query rules", () => {
     expect(isRecordableQuery("1920 1080 wallpaper")).toBe(true);
     expect(isRecordableQuery("2026-11-15")).toBe(true);
     expect(isRecordableQuery("1920x1080 to 3840x2160")).toBe(true);
+    expect(isRecordableQuery("203.0.113.45")).toBe(false);
+    expect(isRecordableQuery("2001:db8::1")).toBe(false);
+    expect(isRecordableQuery("14:30:00 to 12 hour")).toBe(true);
     expect(isRecordableQuery("𠮷".repeat(40))).toBe(true);
     expect(isRecordableQuery("c.ai")).toBe(true);
   });

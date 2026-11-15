@@ -1099,10 +1099,11 @@ function searchButton(): HTMLElement {
     "aria-expanded": "false",
     // A short hover, not a pass across the header on the way to the language picker, warms the index.
     onPointerenter: () => {
-      hoverTimer = window.setTimeout(() => void load().then((m) => m.prefetchSearch()).catch(() => undefined), 150);
+      // Only the panel code; the index loads when the panel opens.
+      hoverTimer = window.setTimeout(() => void load().catch(() => undefined), 150);
     },
     onPointerleave: () => window.clearTimeout(hoverTimer),
-    onFocus: () => void load().then((m) => m.prefetchSearch()).catch(() => undefined),
+    onFocus: () => void load().catch(() => undefined),
     onClick: () => {
       const header = button.closest("header");
       if (!header) return;

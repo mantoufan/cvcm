@@ -21,6 +21,8 @@ export const SEARCH_EMAIL_RATE_MAX = 5;
 const VOTE_TTL_MS = 2 * 24 * 60 * 60 * 1000;
 /** Email requests that were never mailed are deleted after this (the privacy policy says six months). */
 export const REQUEST_TTL_MS = 183 * 24 * 60 * 60 * 1000;
+/** A no-result query nobody has searched for a year is deleted (the privacy policy says one year). */
+export const MISS_TTL_MS = 365 * 24 * 60 * 60 * 1000;
 /** Pending requests per address: enough for a real visitor, a ceiling for someone signing up a stranger. */
 export const SEARCH_REQUESTS_PER_EMAIL = 3;
 const BODY_MAX = 2048;
@@ -99,6 +101,7 @@ export function d1SearchStore(db: D1Database): SearchStore {
         db.prepare("DELETE FROM search_votes WHERE created_at < ?").bind(now - VOTE_TTL_MS),
         db.prepare("DELETE FROM search_rate WHERE window_start < ?").bind(now - SEARCH_RATE_WINDOW_MS * 2),
         db.prepare("DELETE FROM search_salts WHERE created_at < ?").bind(now - VOTE_TTL_MS),
+        db.prepare("DELETE FROM search_misses WHERE last_at < ?").bind(now - MISS_TTL_MS),
         // A topic that is never added: the address is not kept longer than REQUEST_TTL_MS.
         db.prepare("DELETE FROM search_requests WHERE created_at < ?").bind(now - REQUEST_TTL_MS),
       ];

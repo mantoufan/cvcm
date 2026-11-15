@@ -48,7 +48,7 @@
           "h": "Site search",
           "p": [
             "The search box matches pages in your browser against a list of cv.cm page names. Only a search that finds nothing is sent to us, as described below.",
-            "When a search finds nothing, the query text and the page language are sent to our database on Cloudflare D1 so we can see what people are missing. Queries that look like links, email addresses or long numbers are not recorded. To count each visitor once a day and to limit how often one address can send, the server keeps two hashes made from your IP address (one of them together with the query) under a key that changes every day. The keys and the hashes are deleted after two days; the IP address itself is never stored.",
+            "When a search finds nothing, the query text and the page language are sent to our database on Cloudflare D1 so we can see what people are missing. Queries that look like links, email addresses or long numbers are not recorded. To count each visitor once a day and to limit how often one address can send, the server keeps two hashes made from your IP address (one of them together with the query) under a key that changes every day. The keys and the hashes are deleted after two days; the IP address itself is never stored. Query texts are deleted one year after anyone last searched for them.",
             "If you leave an email address to hear when a missing topic is added, we keep the address with that query, send one email when it is added, and then delete the address. We do not use it for anything else. A request for a topic that is never added is deleted after six months. To have it removed sooner, email m@cv.cm."
           ]
         },
@@ -84,7 +84,7 @@
         {
           "h": "Your rights",
           "p": [
-            "Depending on where you live, laws such as the GDPR, the CCPA, or China's PIPL may give you rights to access, correct, or delete your personal data. Because cv.cm has no accounts, we usually cannot link stored data to a person. If you want a note removed before it expires, send us its link. For other requests, email m@cv.cm and we will reply within 30 days."
+            "Depending on where you live, laws such as the GDPR, the CCPA, or China's PIPL may give you rights to access, correct, or delete your personal data. Because cv.cm has no accounts, we usually cannot link stored data to a person. If you want a note removed before it expires, send us its link. For other requests, email m@cv.cm and we will reply within 30 days. If you left an email address in site search, email m@cv.cm and we will delete it."
           ]
         },
         {

@@ -48,7 +48,7 @@
           "h": "Pencarian situs",
           "p": [
             "Kotak pencarian mencocokkan halaman di browser Anda dengan daftar nama halaman cv.cm. Hanya pencarian yang tidak menemukan apa pun yang dikirim ke kami, seperti dijelaskan di bawah.",
-            "Jika pencarian tidak menemukan apa pun, teks pencarian dan bahasa halaman dikirim ke database kami di Cloudflare D1 agar kami tahu apa yang masih dicari orang. Pencarian yang tampak seperti tautan, alamat email, atau deretan angka panjang tidak dicatat. Agar setiap pengunjung dihitung sekali sehari dan agar jumlah kiriman dari satu alamat dibatasi, server membuat dua hash dari alamat IP Anda (salah satunya bersama teks pencarian) dengan kunci yang berganti setiap hari. Kunci dan hash dihapus setelah dua hari; alamat IP-nya sendiri tidak pernah disimpan.",
+            "Jika pencarian tidak menemukan apa pun, teks pencarian dan bahasa halaman dikirim ke database kami di Cloudflare D1 agar kami tahu apa yang masih dicari orang. Pencarian yang tampak seperti tautan, alamat email, atau deretan angka panjang tidak dicatat. Agar setiap pengunjung dihitung sekali sehari dan agar jumlah kiriman dari satu alamat dibatasi, server membuat dua hash dari alamat IP Anda (salah satunya bersama teks pencarian) dengan kunci yang berganti setiap hari. Kunci dan hash dihapus setelah dua hari; alamat IP-nya sendiri tidak pernah disimpan. Teks pencarian dihapus satu tahun setelah terakhir kali dicari.",
             "Jika Anda meninggalkan alamat email agar dikabari saat topik yang belum ada ditambahkan, kami menyimpan alamat itu bersama teks pencariannya, mengirim satu email saat sudah ada, lalu menghapus alamatnya. Kami tidak memakainya untuk hal lain. Permintaan untuk topik yang tidak pernah ditambahkan dihapus setelah enam bulan. Untuk menghapusnya lebih cepat, kirim email ke m@cv.cm."
           ]
         },
@@ -84,7 +84,7 @@
         {
           "h": "Hak Anda",
           "p": [
-            "Tergantung tempat tinggal Anda, undang-undang seperti GDPR, CCPA, atau Undang-Undang Perlindungan Informasi Pribadi Tiongkok (PIPL) dapat memberi Anda hak untuk mengakses, memperbaiki, atau menghapus data pribadi Anda. Karena cv.cm tidak memiliki akun, kami biasanya tidak dapat mengaitkan data yang tersimpan dengan seseorang. Jika Anda ingin catatan dihapus sebelum kedaluwarsa, kirimkan tautannya kepada kami. Untuk permintaan lainnya, kirim email ke m@cv.cm dan kami akan membalas dalam 30 hari."
+            "Tergantung tempat tinggal Anda, undang-undang seperti GDPR, CCPA, atau Undang-Undang Perlindungan Informasi Pribadi Tiongkok (PIPL) dapat memberi Anda hak untuk mengakses, memperbaiki, atau menghapus data pribadi Anda. Karena cv.cm tidak memiliki akun, kami biasanya tidak dapat mengaitkan data yang tersimpan dengan seseorang. Jika Anda ingin catatan dihapus sebelum kedaluwarsa, kirimkan tautannya kepada kami. Untuk permintaan lainnya, kirim email ke m@cv.cm dan kami akan membalas dalam 30 hari. Jika Anda meninggalkan alamat email di pencarian situs, kirim email ke m@cv.cm dan kami akan menghapusnya."
           ]
         },
         {

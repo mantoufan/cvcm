@@ -132,6 +132,23 @@ describe("search panel", () => {
     expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(1);
   });
 
+  it("gives the miss back when the email request fails", async () => {
+    fetchMock.mockImplementation(async (url: string) =>
+      url === "/api/search/notify" ? new Response(JSON.stringify({ error: "unavailable" }), { status: 503 }) : new Response(null, { status: 204 }),
+    );
+    input().value = "garden planner";
+    input().dispatchEvent(new Event("input"));
+    await vi.advanceTimersByTimeAsync(50);
+    const email = header.querySelector<HTMLInputElement>(".search-email")!;
+    email.value = "a@b.co";
+    header.querySelector("form")!.dispatchEvent(new Event("submit", { cancelable: true }));
+    await vi.advanceTimersByTimeAsync(50);
+    expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(0);
+    // The query is pending again: closing the panel records it.
+    closeSearch();
+    expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(1);
+  });
+
   it("closes on Escape and gives focus back to the button", async () => {
     input().dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     expect(header.querySelector(".search-pop")).toBeNull();

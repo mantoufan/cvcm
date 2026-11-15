@@ -58,7 +58,7 @@ async function post(path: string, body: Record<string, string>): Promise<Respons
   });
 }
 
-/** Miss posts by query, so the email form can wait for its miss: the server takes an email only after it. */
+/** Miss posts on their way, by query: the email form lets one land before sending, so the search counts once. */
 const inflight = new Map<string, Promise<void>>();
 
 function recordMiss(q: string, loc: Locale): Promise<void> {
@@ -124,7 +124,7 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
   const status = h("p", { class: "search-status", role: "status", "aria-live": "polite" });
   const empty = h("div", { class: "search-empty" });
   empty.hidden = true;
-  const el = h("div", { class: "search-pop" }, input, status, list, empty);
+  const el = h("div", { class: "search-pop", role: "dialog", "aria-label": t("search.label") }, input, status, list, empty);
 
   function setActive(next: number): void {
     const items = [...list.querySelectorAll<HTMLElement>("[role=option]")];
@@ -179,20 +179,31 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
         }
         send.disabled = true;
         note.textContent = t("search.sending");
-        // The server records this query as the visitor's miss along with the email; drop the pending post so it is not
-        // counted twice.
+        // The server records this query as the visitor's miss along with the email: drop a pending post, and let one
+        // already on its way land first, so the search is counted once. A failed request gives the miss back.
+        const key = `${loc}|${q}`;
         window.clearTimeout(missTimer);
         pendingMiss = "";
-        recorded.add(`${loc}|${q}`);
+        await inflight.get(key);
+        const hadMiss = recorded.has(key);
+        recorded.add(key);
         try {
           const res = await post("/api/search/notify", { q, locale: loc, email: address });
           if (res.ok) {
             form.replaceChildren(h("p", { class: "search-done" }, t("search.done", { email: address })));
             return;
           }
+          if (!hadMiss) {
+            recorded.delete(key);
+            pendingMiss = q;
+          }
           const data = (await res.json().catch(() => ({}))) as { error?: string };
           note.textContent = t(data.error === "rate" ? "search.rate" : data.error === "email" ? "search.badEmail" : "search.failed");
         } catch {
+          if (!hadMiss) {
+            recorded.delete(key);
+            pendingMiss = q;
+          }
           note.textContent = t("search.failed");
         }
         send.disabled = false;
@@ -227,7 +238,8 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
       }
       return;
     }
-    if (mine !== seq) return;
+    // A newer keystroke, or the panel was closed while the index loaded: nothing to show or record.
+    if (mine !== seq || !el.isConnected) return;
     hits = searchEntries(index, q);
     renderHits(q);
     if (hits.length) {
