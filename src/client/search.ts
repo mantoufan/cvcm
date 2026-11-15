@@ -179,10 +179,11 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
         }
         send.disabled = true;
         note.textContent = t("search.sending");
-        // The searcher counts in the demand table too, even when they submit before the pause ends; the email is
-        // accepted only once that miss is stored, so wait for it.
-        flushMiss();
-        await recordMiss(q, loc);
+        // The server records this query as the visitor's miss along with the email; drop the pending post so it is not
+        // counted twice.
+        window.clearTimeout(missTimer);
+        pendingMiss = "";
+        recorded.add(`${loc}|${q}`);
         try {
           const res = await post("/api/search/notify", { q, locale: loc, email: address });
           if (res.ok) {

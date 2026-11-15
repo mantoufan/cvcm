@@ -56,7 +56,8 @@ const UNSPACED = /^[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Scrip
 
 /** Hyphens, slashes and other punctuation separate words ("pdf-to-jpg", "bmi?"); + and # stay (C++, C#). */
 function spaced(query: string): string {
-  return foldText(query).replace(/[^\p{L}\p{N}\p{M}+#ー]+/gu, " ").trim();
+  // "1920x1080" / "1920×1080" are two sizes: the pages write them apart ("1920 by 1080").
+  return foldText(query).replace(/(\d)\s*[x×]\s*(?=\d)/gu, "$1 ").replace(/[^\p{L}\p{N}\p{M}+#ー]+/gu, " ").trim();
 }
 
 /**
@@ -183,10 +184,10 @@ export function isRecordableQuery(query: string): boolean {
   // Plain names with a dot (draw.io, asp.net, node.js) stay: they are real topics.
   if (/[a-z0-9-]+\.[a-z]{2,}\/\S/i.test(query)) return false;
   if (/(^|[^a-z0-9.-])(bit\.ly|t\.me|t\.co|wa\.me|goo\.gl|tinyurl\.com|b23\.tv|dwz\.cn|url\.cn)\b/i.test(query)) return false;
-  // Phone, ID and card numbers: an unbroken run of 7+ digits, or 10+ digits in all (555 123 4567, (415) 555-0199).
-  // Sizes and dates (1920 1080, 2026-11-15) have fewer. Known number slang (520, 334424044) has a page, so it never
+  // Phone, ID and card numbers: an unbroken run of 7+ digits, or 10+ once spaces, dashes, dots and brackets are gone
+  // (555 123 4567, (415) 555-0199). Sizes and dates (1920 1080, 2026-11-15, 1920x1080 to 3840x2160) stay. Known number slang (520, 334424044) has a page, so it never
   // reaches this check as a miss.
-  if (/\d{7,}/.test(query) || (query.match(/\d/g)?.length ?? 0) >= 10) return false;
+  if (/\d{7,}/.test(query) || /\d{10,}/.test(query.replace(/[\s\-().+]/g, ""))) return false;
   return true;
 }
 

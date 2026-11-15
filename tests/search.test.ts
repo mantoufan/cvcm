@@ -71,6 +71,11 @@ describe("searchEntries", () => {
     expect(searchEntries(en, "bmi?").length).toBeGreaterThan(0);
   });
 
+  it("reads 1920x1080 as two numbers", () => {
+    const entries: SearchEntry[] = [["tool", "/en/r/", "Resize image", "Set 1920 by 1080 or any size."]];
+    expect(searchEntries(entries, "1920x1080").length).toBe(1);
+  });
+
   it("gives the whole-name bonus to hyphenated names", () => {
     const entries: SearchEntry[] = [["learn", "/en/a/", "Rock paper scissors strategy", ""], ["tool", "/en/b/", "Rock-Paper-Scissors", ""]];
     expect(searchEntries(entries, "rock paper scissors")[0][1]).toBe("/en/b/");
@@ -138,6 +143,7 @@ describe("query rules", () => {
     expect(isRecordableQuery("asp.net tutorial")).toBe(true);
     expect(isRecordableQuery("1920 1080 wallpaper")).toBe(true);
     expect(isRecordableQuery("2026-11-15")).toBe(true);
+    expect(isRecordableQuery("1920x1080 to 3840x2160")).toBe(true);
     expect(isRecordableQuery("𠮷".repeat(40))).toBe(true);
     expect(isRecordableQuery("c.ai")).toBe(true);
   });
@@ -254,7 +260,10 @@ describe("search API on the D1 schema", () => {
     // An email request counts as that visitor's miss too, once per day (same vote key as the page's own miss post).
     await handleSearchApi(post("/api/search/miss", { q: "kite maker", locale: "en" }), { store, now: day1 });
     await handleSearchApi(post("/api/search/notify", { q: "kite maker", locale: "en", email: "k@b.co" }), { store, now: day1 });
-    expect(db.prepare("SELECT count, visitors FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ count: 2, visitors: 1 });
+    expect(db.prepare("SELECT count, visitors FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ count: 1, visitors: 1 });
+    // Without the page's own miss (lost or rate-limited), the email request still counts the search once.
+    await handleSearchApi(post("/api/search/notify", { q: "kite maker", locale: "en", email: "k2@b.co" }, { "CF-Connecting-IP": "198.51.100.200" }), { store, now: day1 });
+    expect(db.prepare("SELECT count, visitors FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ count: 2, visitors: 2 });
     for (let i = 0; i < SEARCH_REQUESTS_PER_EMAIL + 2; i++) {
       const from = { "CF-Connecting-IP": `192.0.2.${i}` };
       await handleSearchApi(post("/api/search/miss", { q: `topic ${i}`, locale: "en" }, from), { store, now: day1 });

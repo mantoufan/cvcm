@@ -27,7 +27,8 @@ const BODY_MAX = 2048;
 
 export interface SearchStore {
   /** Count one hit; `visitor` is a per-day key, counted into `visitors` the first time it is seen. */
-  recordMiss(q: string, locale: Locale, visitor: string, now: number): Promise<void>;
+  /** `onlyNew`: count the search only if this visitor has not been counted today (an email request's implied miss). */
+  recordMiss(q: string, locale: Locale, visitor: string, now: number, onlyNew?: boolean): Promise<void>;
   /** Adds the request unless the address already has SEARCH_REQUESTS_PER_EMAIL pending ("limit"). */
   addRequest(q: string, locale: Locale, email: string, now: number): Promise<"ok" | "limit">;
   /** The random salt of a UTC day, created on first use. */
@@ -39,16 +40,18 @@ export interface SearchStore {
 
 export function d1SearchStore(db: D1Database): SearchStore {
   return {
-    async recordMiss(q, locale, visitor, now) {
+    async recordMiss(q, locale, visitor, now, onlyNew = false) {
       // The visitor counts if their vote key is new; the vote is written after, in the same transaction, so a failed
       // request leaves neither and its retry still counts the visitor.
       const miss = db
         .prepare(
           `INSERT INTO search_misses (q, locale, count, visitors, first_at, last_at)
-           VALUES (?, ?, 1, CASE WHEN EXISTS (SELECT 1 FROM search_votes WHERE key = ?) THEN 0 ELSE 1 END, ?, ?)
-           ON CONFLICT (q, locale) DO UPDATE SET count = count + 1, visitors = visitors + excluded.visitors, last_at = excluded.last_at`,
+           VALUES (?, ?, ?, CASE WHEN EXISTS (SELECT 1 FROM search_votes WHERE key = ?) THEN 0 ELSE 1 END, ?, ?)
+           ON CONFLICT (q, locale) DO UPDATE SET
+             count = count + CASE WHEN ? THEN excluded.visitors ELSE 1 END,
+             visitors = visitors + excluded.visitors, last_at = excluded.last_at`,
         )
-        .bind(q, locale, visitor, now, now);
+        .bind(q, locale, 1, visitor, now, now, onlyNew ? 1 : 0);
       const vote = db.prepare("INSERT OR IGNORE INTO search_votes (key, created_at) VALUES (?, ?)").bind(visitor, now);
       await db.batch([miss, vote]);
     },
@@ -230,9 +233,9 @@ export async function handleSearchApi(request: Request, opts: SearchApiOpts): Pr
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
     if (!isValidEmail(email)) return json(400, { error: "email" });
     if (!(await store.bumpRate(ipHash, "emails", SEARCH_EMAIL_RATE_MAX, now))) return json(429, { error: "rate" });
-    // An email is also this visitor's miss (the same per-day vote key, so it is not counted twice): the demand table
-    // then has every query someone asked about, even when the page's own miss post was lost or rate-limited.
-    await store.recordMiss(q, locale, await keyed(salt, `vote|${ip}|${locale}|${q}`), now);
+    // An email is also this visitor's miss, counted only if the page's own miss post did not already count them today:
+    // the demand table then has every query someone asked about, even when that post was lost or rate-limited.
+    await store.recordMiss(q, locale, await keyed(salt, `vote|${ip}|${locale}|${q}`), now, true);
     // The same answer at the per-address cap: a different one would tell anyone whether an address has requests on file.
     await store.addRequest(q, locale, email, now);
     return json(200, { ok: true });

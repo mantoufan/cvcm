@@ -65,6 +65,7 @@ describe("search panel", () => {
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const [url, init] = fetchMock.mock.calls[0] as [string, RequestInit];
     expect(url).toBe("/api/search/miss");
+    expect(init.keepalive).toBe(true);
     expect(JSON.parse(String(init.body))).toEqual({ q: "remove watermark", locale: "en" });
     await type("remove watermark ");
     expect(fetchMock).toHaveBeenCalledTimes(1);
@@ -88,13 +89,14 @@ describe("search panel", () => {
   it("sends the email request and confirms", async () => {
     fetchMock.mockImplementation(async () => new Response(JSON.stringify({ ok: true }), { status: 200 }));
     await type("photo restorer");
+    const missesBefore = fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length;
     const email = header.querySelector<HTMLInputElement>(".search-email")!;
     email.value = "Me@Example.com";
     header.querySelector("form")!.dispatchEvent(new Event("submit", { cancelable: true }));
     await vi.runAllTimersAsync();
-    // The searcher was recorded as a miss before the email request, and the miss survives page unload.
-    const miss = fetchMock.mock.calls.find(([u]) => u === "/api/search/miss") as [string, RequestInit] | undefined;
-    expect(miss?.[1].keepalive).toBe(true);
+    // The server records the query as a miss with the email: submitting sends no further miss.
+    await vi.advanceTimersByTimeAsync(5000);
+    expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(missesBefore);
     const call = fetchMock.mock.calls.find(([u]) => u === "/api/search/notify") as [string, RequestInit];
     expect(JSON.parse(String(call[1].body))).toEqual({ q: "photo restorer", locale: "en", email: "me@example.com" });
     expect(header.querySelector(".search-done")?.textContent).toContain("me@example.com");

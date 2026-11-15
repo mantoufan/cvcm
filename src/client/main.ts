@@ -1089,6 +1089,7 @@ function loadSearch(): Promise<typeof import("./search")> {
 /** Opens the site search under the header; the panel and its index are a separate chunk loaded on first use. */
 function searchButton(): HTMLElement {
   const load = loadSearch;
+  let hoverTimer = 0;
   const button: HTMLButtonElement = h("button", {
     type: "button",
     class: "search-btn",
@@ -1096,7 +1097,11 @@ function searchButton(): HTMLElement {
     title: t("search.open"),
     "aria-haspopup": "dialog",
     "aria-expanded": "false",
-    onPointerenter: () => void load().then((m) => m.prefetchSearch()).catch(() => undefined),
+    // A short hover, not a pass across the header on the way to the language picker, warms the index.
+    onPointerenter: () => {
+      hoverTimer = window.setTimeout(() => void load().then((m) => m.prefetchSearch()).catch(() => undefined), 150);
+    },
+    onPointerleave: () => window.clearTimeout(hoverTimer),
     onFocus: () => void load().then((m) => m.prefetchSearch()).catch(() => undefined),
     onClick: () => {
       const header = button.closest("header");
@@ -1107,7 +1112,8 @@ function searchButton(): HTMLElement {
       }).catch((err: unknown) => {
         // Usually a tab still on an older deploy's chunk names: one full reload picks up the new ones.
         console.error(err);
-        reloadOnce();
+        // Not offline, and not over unsaved work in a tool: a reload would lose it or show the browser's offline page.
+        if (navigator.onLine && !mustStay()) reloadOnce();
       });
     },
   });

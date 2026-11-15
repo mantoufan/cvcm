@@ -123,19 +123,15 @@ function demand(): void {
  * page names and links.
  */
 const MAIL: Record<Locale, { subject: string; intro: string; outro: string }> = {
-  en: { subject: "Something you searched for is now on cv.cm", intro: "You asked us to tell you when cv.cm had something for what you searched. It does now:", outro: "This is the only email about this request. Your address has been deleted." },
-  "zh-CN": { subject: "你在 cv.cm 搜索过的内容已上线", intro: "你曾在 cv.cm 搜索并请我们上线后通知你。现在可以用了：", outro: "这是关于此请求的唯一一封邮件，你的邮箱已删除。" },
-  "zh-TW": { subject: "你在 cv.cm 搜尋過的內容已上線", intro: "你曾在 cv.cm 搜尋並請我們上線後通知你。現在可以用了：", outro: "這是關於此請求的唯一一封信，你的 Email 已刪除。" },
-  ja: { subject: "cv.cm で検索された内容が追加されました", intro: "cv.cm で検索し、追加時の通知をご希望いただきました。ご利用いただけるようになりました：", outro: "このリクエストに関するメールはこれ一通のみです。メールアドレスは削除しました。" },
-  ko: { subject: "cv.cm에서 검색하신 내용이 추가되었습니다", intro: "cv.cm에서 검색하고 추가되면 알려 달라고 하셨습니다. 이제 이용할 수 있습니다:", outro: "이 요청에 관한 메일은 이번 한 통뿐이며, 이메일 주소는 삭제되었습니다." },
-  vi: { subject: "Nội dung bạn tìm trên cv.cm đã có", intro: "Bạn đã nhờ chúng tôi báo khi cv.cm có nội dung bạn tìm. Giờ đã có:", outro: "Đây là email duy nhất cho yêu cầu này. Địa chỉ của bạn đã được xóa." },
-  id: { subject: "Yang Anda cari di cv.cm kini tersedia", intro: "Anda meminta kami mengabari saat cv.cm punya yang Anda cari. Sekarang sudah ada:", outro: "Ini satu-satunya email untuk permintaan ini. Alamat Anda sudah dihapus." },
-  es: { subject: "Lo que buscaste en cv.cm ya está disponible", intro: "Nos pediste que te avisáramos cuando cv.cm tuviera lo que buscabas. Ya está disponible:", outro: "Este es el único correo sobre esta solicitud. Tu dirección se ha borrado." },
+  en: { subject: "Something you searched for is now on cv.cm", intro: "You asked us to tell you when cv.cm had something for what you searched. It does now:", outro: "This is the only email about this request, and the request has been deleted." },
+  "zh-CN": { subject: "你在 cv.cm 搜索过的内容已上线", intro: "你曾在 cv.cm 搜索并请我们上线后通知你。现在可以用了：", outro: "这是关于此请求的唯一一封邮件，该请求已删除。" },
+  "zh-TW": { subject: "你在 cv.cm 搜尋過的內容已上線", intro: "你曾在 cv.cm 搜尋並請我們上線後通知你。現在可以用了：", outro: "這是關於此請求的唯一一封信，該請求已刪除。" },
+  ja: { subject: "cv.cm で検索された内容が追加されました", intro: "cv.cm で検索し、追加時の通知をご希望いただきました。ご利用いただけるようになりました：", outro: "このリクエストに関するメールはこれ一通のみで、リクエストは削除しました。" },
+  ko: { subject: "cv.cm에서 검색하신 내용이 추가되었습니다", intro: "cv.cm에서 검색하고 추가되면 알려 달라고 하셨습니다. 이제 이용할 수 있습니다:", outro: "이 요청에 관한 메일은 이번 한 통뿐이며, 요청은 삭제되었습니다." },
+  vi: { subject: "Nội dung bạn tìm trên cv.cm đã có", intro: "Bạn đã nhờ chúng tôi báo khi cv.cm có nội dung bạn tìm. Giờ đã có:", outro: "Đây là email duy nhất cho yêu cầu này, và yêu cầu đã được xóa." },
+  id: { subject: "Yang Anda cari di cv.cm kini tersedia", intro: "Anda meminta kami mengabari saat cv.cm punya yang Anda cari. Sekarang sudah ada:", outro: "Ini satu-satunya email untuk permintaan ini, dan permintaannya sudah dihapus." },
+  es: { subject: "Lo que buscaste en cv.cm ya está disponible", intro: "Nos pediste que te avisáramos cuando cv.cm tuviera lo que buscabas. Ya está disponible:", outro: "Este es el único correo sobre esta solicitud, y la solicitud se ha borrado." },
 };
-
-function fill(text: string, q: string): string {
-  return text.replaceAll("{q}", q);
-}
 
 function deleteRow(r: RequestRow): void {
   d1(`DELETE FROM search_requests WHERE q = ${sqlString(r.q)} AND locale = ${sqlString(r.locale)} AND email = ${sqlString(r.email)} AND created_at = ${Number(r.created_at)}`);
@@ -149,18 +145,18 @@ function mimeWord(text: string): string {
   return `=?UTF-8?B?${Buffer.from(text, "utf8").toString("base64")}?=`;
 }
 
-function buildMessage(from: string, to: string, locale: Locale, q: string, hits: SearchEntry[]): string {
+function buildMessage(from: string, to: string, locale: Locale, hits: SearchEntry[]): string {
   const copy = MAIL[locale];
   const links = hits.map(([, href, name]) => ({ name, url: `https://cv.cm${href}` }));
-  const text = [fill(copy.intro, q), "", ...links.map((l) => `- ${l.name}: ${l.url}`), "", fill(copy.outro, q), "", "cv.cm"].join("\r\n");
-  const html = `<p>${escapeHtml(fill(copy.intro, q))}</p><ul>${links
+  const text = [copy.intro, "", ...links.map((l) => `- ${l.name}: ${l.url}`), "", copy.outro, "", "cv.cm"].join("\r\n");
+  const html = `<p>${escapeHtml(copy.intro)}</p><ul>${links
     .map((l) => `<li><a href="${escapeHtml(l.url)}">${escapeHtml(l.name)}</a></li>`)
-    .join("")}</ul><p style="color:#77606c">${escapeHtml(fill(copy.outro, q))}</p><p>cv.cm</p>`;
+    .join("")}</ul><p style="color:#77606c">${escapeHtml(copy.outro)}</p><p>cv.cm</p>`;
   const boundary = `b-${randomUUID()}`;
   return [
     `From: cv.cm <${from}>`,
     `To: <${to}>`,
-    `Subject: ${mimeWord(fill(copy.subject, q))}`,
+    `Subject: ${mimeWord(copy.subject)}`,
     `Date: ${new Date().toUTCString()}`,
     `Message-ID: <${randomUUID()}@cv.cm>`,
     `Reply-To: ${from}`,
@@ -339,7 +335,7 @@ async function notify(): Promise<void> {
   if (!pass) throw new Error("Set SMTP_PASS (and SMTP_USER if not m@cv.cm) to send.");
   for (const r of ready) {
     try {
-      await sendMail(r.email, buildMessage(from, r.email, r.locale, r.q, r.hits), from, user, pass, host, port);
+      await sendMail(r.email, buildMessage(from, r.email, r.locale, r.hits), from, user, pass, host, port);
     } catch (err) {
       console.error(`not sent: [${r.locale}] ${r.q} <${r.email}>: ${(err as Error).message}`);
       continue;
