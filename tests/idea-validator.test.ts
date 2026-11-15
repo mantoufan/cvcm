@@ -101,6 +101,7 @@ describe("idea validator: matching", () => {
     expect(matchIdea("T恤", names("zh-CN"), "zh-CN")).toBe("t-shirt-business");
     expect(matchIdea("开一家T恤店", names("zh-CN"), "zh-CN")).toBe("t-shirt-business");
     expect(ideaTokens("3D打印")).not.toContain("d打");
+    expect(ideaTokens("İstanbul cafe")).toContain("istanbul");
     expect(matchIdea("coffee coffee", names("en"))).toBe(matchIdea("coffee", names("en")));
     expect(matchIdea("핸드메이드 캔들", names("ko"), "ko")).toBe("candle-business");
     expect(matchIdea("car washes", names("es"), "es")).toBe("car-wash");

@@ -129,7 +129,8 @@ function onIdeaInput(): void {
     // clearing the box, replaces it.
     // Clearing the box, or replacing the text with something sharing no word with it (select-all and paste), is a new idea.
     const before = new Set(ideaTokens(state.pinText, locale()));
-    const cleared = !state.idea.value.trim() || (state.pinned && !ideaTokens(state.idea.value, locale()).some((tk) => before.has(tk)));
+    // (A pin made before any real word was typed has nothing to replace, so it holds.)
+    const cleared = !state.idea.value.trim() || (state.pinned && before.size > 0 && !ideaTokens(state.idea.value, locale()).some((tk) => before.has(tk)));
     const optedOut = state.pinned && state.match.value === NONE;
     if (!state.pinned || cleared || (!optedOut && found && found !== state.match.value && found !== state.autoAtPin)) {
       state.match.value = found ?? NONE;
@@ -216,9 +217,9 @@ function summary(result: NonNullable<ReturnType<typeof validateIdea>>, answers: 
   return [
     `${t("ideaValidator.title")}: ${result.total}/100 (${t(`ideaValidator.grade.${result.grade}`)})`,
     text ? `${t("ideaValidator.describe")}: ${text}` : "",
-    `${t("ideaValidator.market")}: ${result.market === null ? t("ideaValidator.noMarket") : `${result.market}${id ? ` (${ideaName(loc, id).name})` : ""}`}`,
+    `${t("ideaValidator.market")}: ${result.market !== null ? `${result.market}${id ? ` (${ideaName(loc, id).name})` : ""}` : id ? ideaName(loc, id).name : t("ideaValidator.noMarket")}`,
     ...VALIDATOR_QUESTIONS.map((q) => `${t(`ideaValidator.${q}.label`)}: ${t(`ideaValidator.${q}.o${(answers[q] ?? 0) + 1}`)}`),
-    ...(focus ? [`${t("ideaValidator.next", { item: t(`ideaValidator.${focus}.label`) })}:`, ...tips.map((tip, i) => `${i + 1}. ${tip}`)] : []),
+    ...(focus ? [t("ideaValidator.next", { item: t(`ideaValidator.${focus}.label`) }), ...tips.map((tip, i) => `${i + 1}. ${tip}`)] : []),
   ].filter(Boolean).join("\n");
 }
 

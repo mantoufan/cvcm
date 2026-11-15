@@ -100,7 +100,8 @@ export function ideaTokens(text: string, locale: Locale | null = null): string[]
 export function tokenGroups(text: string, locale: Locale | null = null): string[][] {
   const keep = locale ? KEEP[locale] : undefined;
   const out: string[][] = [];
-  for (const part of text.toLowerCase().normalize("NFKC").split(/[^\p{L}\p{N}]+/u)) {
+  // Marks stay inside words while splitting (İ lowercases to i + U+0307); the Latin path strips them below.
+  for (const part of text.toLowerCase().normalize("NFKC").split(/[^\p{L}\p{M}\p{N}]+/u)) {
     if (!part) continue;
     // One Latin letter fused to one Han character is a word of its own (t恤 = t-shirt).
     for (const m of part.matchAll(/(?<![a-z0-9])[a-z]\p{Script=Han}/gu)) out.push([m[0]]);
