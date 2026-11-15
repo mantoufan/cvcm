@@ -64,7 +64,7 @@ function structure(copy: NostalgiaEntryCopy): { sections: number; faq: number; k
   return { sections: copy.sections.length, faq: copy.faq.length, kinds: copy.sections.map((s) => s.body.map(block)) };
 }
 
-/** Chinese childhood items are mastered in zh-CN, worldwide ones in en. */
+/** Chinese childhood items are mastered in zh-CN; Western and worldwide ones in en. */
 const masterOf = (id: (typeof NOSTALGIA_ENTRIES)[number]): Locale => (NOSTALGIA_META[id].region === "cn" ? "zh-CN" : "en");
 
 describe("nostalgia: catalog", () => {
@@ -77,7 +77,7 @@ describe("nostalgia: catalog", () => {
       expect(id, id).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
       const meta = NOSTALGIA_META[id];
       expect(meta.term.trim(), id).toBeTruthy();
-      expect(["cn", "global"], id).toContain(meta.region);
+      expect(["cn", "west", "global"], id).toContain(meta.region);
       expect(meta.from, id).toMatch(/^\d{4}s?$/);
       if (meta.to !== null) {
         expect(meta.to, id).toMatch(/^\d{4}s?$/);

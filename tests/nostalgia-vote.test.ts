@@ -111,15 +111,15 @@ describe("nostalgia vote markup", () => {
   it("puts the question and two buttons on every entry page, none on the hub, with no script", () => {
     const html = nostalgiaPageHtml("zh-CN", "white-rabbit");
     expect(html).toContain('<section class="nostalgia-vote" aria-labelledby="nostalgia-vote-title">');
-    expect(html).toContain("你吃过吗？");
-    expect(html).toContain('data-answer="yes">吃过</button>');
+    expect(html).toContain("你尝过吗？");
+    expect(html).toContain('data-answer="yes">尝过</button>');
     expect(html).toContain('data-answer="no">没有</button>');
     expect(nostalgiaPageHtml("en", "famicom")).toContain("Did you ever play it?");
     expect(nostalgiaPageHtml("en", null)).not.toContain("nostalgia-vote");
   });
 
   it("formats the share", () => {
-    expect(nostalgiaVoteResult("zh-CN", "white-rabbit", { yes: 3, no: 1 })).toBe("75% 的回答是「吃过」 · 共 4 份回答");
+    expect(nostalgiaVoteResult("zh-CN", "white-rabbit", { yes: 3, no: 1 })).toBe("75% 的回答是「尝过」 · 共 4 份回答");
     // Never 100% or 0% while the other side has votes.
     expect(nostalgiaVoteResult("en", "famicom", { yes: 199, no: 1 })).toContain("99%");
     expect(nostalgiaVoteResult("en", "famicom", { yes: 1, no: 199 })).toContain("1%");

@@ -11,12 +11,12 @@ import type { ToolId } from "./path";
 export const NOSTALGIA_SEGMENT = "nostalgia";
 
 export const NOSTALGIA_GROUPS = [
-  { id: "snacks", entries: ["tangseng-rou", "gaolegao", "white-rabbit", "pop-rocks", "jianlibao", "beibingyang", "xiaohuanxiong", "latiao", "mailisu", "guodanpi"] },
+  { id: "snacks", entries: ["tangseng-rou", "gaolegao", "white-rabbit", "pop-rocks", "jianlibao", "beibingyang", "xiaohuanxiong", "latiao", "mailisu", "guodanpi", "dunkaroos", "crystal-pepsi", "surge"] },
   { id: "games", entries: ["famicom", "subor", "contra", "game-boy", "tamagotchi", "arcade"] },
-  { id: "gadgets", entries: ["walkman", "cassette", "fuduji", "pager", "xiaolingtong", "nokia-3310", "wenquxing", "vcd", "mp3-player", "floppy-disk"] },
-  { id: "toys", entries: ["yo-yo", "mini-4wd", "marbles", "yanghua", "tiaopijin", "fanhuasheng"] },
-  { id: "internet", entries: ["qq-show", "feizhuliu", "jinwutuan", "qianqian-jingting", "y2k"] },
-  { id: "life", entries: ["liangpiao", "datoutie", "xiaomaibu"] },
+  { id: "gadgets", entries: ["walkman", "cassette", "fuduji", "pager", "xiaolingtong", "nokia-3310", "wenquxing", "vcd", "mp3-player", "floppy-disk", "vhs", "discman"] },
+  { id: "toys", entries: ["yo-yo", "mini-4wd", "marbles", "yanghua", "tiaopijin", "fanhuasheng", "pogs", "beanie-babies", "furby", "slap-bracelet"] },
+  { id: "internet", entries: ["qq-show", "feizhuliu", "jinwutuan", "qianqian-jingting", "y2k", "myspace", "aim", "napster", "dial-up"] },
+  { id: "life", entries: ["liangpiao", "datoutie", "xiaomaibu", "blockbuster", "lisa-frank"] },
 ] as const;
 
 export type NostalgiaGroupId = (typeof NOSTALGIA_GROUPS)[number]["id"];
@@ -37,8 +37,15 @@ export function nostalgiaGroupOf(id: NostalgiaId): NostalgiaGroupId {
 
 export const NOSTALGIA_PUBLISHED = "2026-11-15";
 
+/** The second batch (American and Western childhood things), all live on one day. */
+const BATCH2_DATE = "2026-11-16";
+const BATCH2: readonly NostalgiaId[] = [
+  "dunkaroos", "crystal-pepsi", "surge", "pogs", "beanie-babies", "furby", "slap-bracelet", "vhs", "discman",
+  "myspace", "aim", "napster", "dial-up", "blockbuster", "lisa-frank",
+];
+
 /** Entries added after the first batch, by id, with the day each went live (set by hand when adding entries). */
-export const NOSTALGIA_ADDED: Partial<Record<NostalgiaId, string>> = {};
+export const NOSTALGIA_ADDED: Partial<Record<NostalgiaId, string>> = Object.fromEntries(BATCH2.map((id) => [id, BATCH2_DATE]));
 
 /** When an entry went live. */
 export function nostalgiaPublished(id: NostalgiaId): string {
@@ -49,7 +56,7 @@ export function nostalgiaPublished(id: NostalgiaId): string {
 export const NOSTALGIA_UPDATED: Partial<Record<NostalgiaId, string>> = {};
 
 /** The hub's own copy (lede, about, FAQ, group labels in src/locales/nostalgia/<locale>.json) last edited; set by hand. */
-export const NOSTALGIA_HUB_UPDATED: string | null = null;
+export const NOSTALGIA_HUB_UPDATED: string | null = BATCH2_DATE;
 
 /** When an entry last changed: its edit date, else the day it went live (the page's dateModified and its sitemap lastmod). */
 export function nostalgiaUpdated(id: NostalgiaId): string {
