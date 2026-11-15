@@ -97,7 +97,7 @@ export function tokenGroups(text: string, locale: Locale | null = null): string[
   for (const part of text.toLowerCase().normalize("NFKC").split(/[^\p{L}\p{N}]+/u)) {
     if (!part) continue;
     // One Latin letter fused to one Han character is a word of its own (t恤 = t-shirt).
-    for (const m of part.matchAll(/(?<![a-z])[a-z]\p{Script=Han}(?!\p{Script=Han})/gu)) out.push([m[0]]);
+    for (const m of part.matchAll(/(?<![a-z])[a-z]\p{Script=Han}/gu)) out.push([m[0]]);
     for (const run of part.match(CJK_RUN) ?? []) {
       // Katakana loanwords are whole words (キッチンカー, ペットシッター): pairs of them would match by chance (ネットショップ
       // and ペットシッター share トシ). Han and Hangul become overlapping pairs; hiragana (particles, endings) is dropped.
@@ -118,11 +118,15 @@ export function tokenGroups(text: string, locale: Locale | null = null): string[
       // ("services"). Words that only look plural stay (news).
       // Spanish, Indonesian and Vietnamese plurals only drop "s" (peluches → peluche); English also folds -es and -ies,
       // and "-ies" keeps both readings (agencies → agency, cookies → cookie).
-      const english = !locale || locale === "en" || !ROMANCE.has(locale);
-      const folds = word.length > 4 && word.endsWith("ies") && english ? [`${word.slice(0, -3)}y`, word.slice(0, -1)]
-        : word.length > 4 && /(sh|ch|x|ss)es$/.test(word) && english ? [word.slice(0, -2)]
+      // On es/id/vi pages people also type English business words, so both readings are kept there (washes → washe
+      // and wash).
+      const romance = locale !== null && ROMANCE.has(locale);
+      const english = word.length > 4 && word.endsWith("ies") ? [`${word.slice(0, -3)}y`, word.slice(0, -1)]
+        : word.length > 4 && /(sh|ch|x|ss)es$/.test(word) ? [word.slice(0, -2)]
         : word.length > 3 && word.endsWith("s") && !/(ss|us|is)$/.test(word) ? [word.slice(0, -1)]
         : [];
+      const plain = word.length > 3 && word.endsWith("s") && !/(ss|us|is)$/.test(word) ? [word.slice(0, -1)] : [];
+      const folds = romance ? [...new Set([...plain, ...english])] : english;
       if (folds.length && !NOT_PLURAL.has(word)) {
         if (folds.some((f) => STOP.has(f))) continue;
         out.push(folds);
@@ -161,7 +165,7 @@ const IDEA_POOLS: Record<IdeaId, Set<string>> = Object.fromEntries(
 const NO_NAMES: Partial<Record<IdeaId, string>> = {};
 
 /** Per names table (one per locale): each idea's merged word pool and how many ideas use each word. */
-type Pools = { pools: { id: IdeaId; words: Set<string> }[]; df: Map<string, number> };
+type Pools = { pools: { id: IdeaId; name: Set<string>; words: Set<string> }[]; df: Map<string, number> };
 /** Per names table (the page keeps one per mount) and locale. */
 const poolCache = new WeakMap<object, Map<string, Pools>>();
 
@@ -173,7 +177,10 @@ function poolsFor(names: Partial<Record<IdeaId, string>>, locale: Locale | null)
   }
   let entry = byLocale.get(locale ?? "");
   if (!entry) {
-    const pools = IDEA_ENTRIES.map((id) => ({ id, words: new Set([...IDEA_POOLS[id], ...ideaTokens(names[id] ?? "", locale)]) }));
+    const pools = IDEA_ENTRIES.map((id) => {
+      const name = new Set(ideaTokens(names[id] ?? "", locale));
+      return { id, name, words: new Set([...IDEA_POOLS[id], ...name]) };
+    });
     const df = new Map<string, number>();
     for (const { words } of pools) for (const w of words) df.set(w, (df.get(w) ?? 0) + 1);
     entry = { pools, df };
@@ -192,10 +199,10 @@ function poolsFor(names: Partial<Record<IdeaId, string>>, locale: Locale | null)
 export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> = NO_NAMES, locale: Locale | null = null): IdeaId | null {
   const groups = tokenGroups(text, locale);
   if (!groups.length) return null;
+  const tokens = new Set(groups.flat());
   const { pools, df } = poolsFor(names, locale);
   const weight = (t: string): number => Math.log(IDEA_ENTRIES.length / (df.get(t) ?? IDEA_ENTRIES.length));
-  const scored = pools.map(({ id, words }) => {
-    // Each word counts once, by its best piece.
+  const scored = pools.map(({ id, name, words }) => {
     // Each word counts once by its best piece not already used by another word: a word typed twice counts once
     // ("coffee mugs and coffee cups"), while two words that share a piece still count as two (社群小編接案（社群代操）).
     const hits: string[] = [];
@@ -203,8 +210,12 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
       const best = g.filter((t) => words.has(t) && !hits.includes(t)).sort((a, b) => weight(b) - weight(a))[0];
       if (best) hits.push(best);
     }
-    return { id, hits, cover: hits.length / Math.max(1, words.size), score: hits.reduce((sum, t) => sum + weight(t), 0) };
-  }).sort((a, b) => b.score - a.score || b.cover - a.cover);
+    // How much of the idea's own name the text covers: "AI agency" covers all of AI agency, half of AI automation agency.
+    const cover = name.size ? [...name].filter((t) => tokens.has(t)).length / name.size : 0;
+    // Last resort when no name is covered (English words on a Spanish page): the smaller pool is the narrower idea.
+    const focus = hits.length / Math.max(1, words.size);
+    return { id, hits, cover, focus, score: hits.reduce((sum, t) => sum + weight(t), 0) };
+  }).sort((a, b) => (Math.abs(b.score - a.score) < 1e-9 ? b.cover - a.cover || b.focus - a.focus : b.score - a.score));
   const [best] = scored;
   if (!best || best.score <= 0) return null;
   // Scores are sums of logs: compare with a tolerance, since the same weights added in another order can differ.
@@ -213,7 +224,7 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
     // Ideas sharing different words with the text equally ("t-shirt printing": shirt vs printing) are ambiguous; the
     // same words go to the idea the text covers most (its own name beats a longer name containing it).
     const same = best.hits.length === other.hits.length && best.hits.every((t) => other.hits.includes(t));
-    if (!same || best.cover === other.cover) return null;
+    if (!same || (best.cover === other.cover && best.focus === other.focus)) return null;
   }
   // Two shared words match. One shared word matches when it is the whole text (a name like "Pet services", 洗车): in
   // a longer text a single shared word ("coffee" in "selling coffee mugs") is too often a passing mention.

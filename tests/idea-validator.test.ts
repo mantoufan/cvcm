@@ -93,6 +93,8 @@ describe("idea validator: matching", () => {
     expect(matchIdea("coffee mugs and coffee cups", names("en"))).toBeNull();
     expect(matchIdea("selling cookies", names("en"))).toBe("home-bakery");
     expect(matchIdea("T恤", names("zh-CN"), "zh-CN")).toBe("t-shirt-business");
+    expect(matchIdea("开一家T恤店", names("zh-CN"), "zh-CN")).toBe("t-shirt-business");
+    expect(matchIdea("car washes", names("es"), "es")).toBe("car-wash");
     expect(matchIdea("开一家装修公司", names("zh-CN"), "zh-CN")).toBeNull();
     expect(matchIdea("máquina de peluche", names("es"), "es")).toBe("claw-machine");
     // Every idea's own name, in every locale, finds that idea.
