@@ -303,10 +303,15 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
     pendingMiss = "";
   }
 
+  function onHidden(): void {
+    if (document.visibilityState === "hidden") flushMiss();
+  }
+
   function close(): void {
     flushMiss();
     document.removeEventListener("pointerdown", onOutside, true);
     window.removeEventListener("pagehide", flushMiss);
+    document.removeEventListener("visibilitychange", onHidden);
     el.remove();
     button.setAttribute("aria-expanded", "false");
     if (open?.el === el) open = null;
@@ -315,8 +320,9 @@ export function openSearch(header: HTMLElement, button: HTMLElement): void {
   header.append(el);
   button.setAttribute("aria-expanded", "true");
   document.addEventListener("pointerdown", onOutside, true);
-  // Closing the tab or reloading within the pause still records the miss (keepalive).
+  // Closing the tab, reloading or switching apps on a phone (often no pagehide) within the pause still records the miss.
   window.addEventListener("pagehide", flushMiss);
+  document.addEventListener("visibilitychange", onHidden);
   open = { el, input, close };
   input.focus();
   prefetchSearch();

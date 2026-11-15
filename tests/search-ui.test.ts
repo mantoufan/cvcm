@@ -149,6 +149,16 @@ describe("search panel", () => {
     expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(1);
   });
 
+  it("records a shown miss when the tab is hidden (phone app switch)", async () => {
+    input().value = "tide table";
+    input().dispatchEvent(new Event("input"));
+    await vi.advanceTimersByTimeAsync(100);
+    Object.defineProperty(document, "visibilityState", { value: "hidden", configurable: true });
+    document.dispatchEvent(new Event("visibilitychange"));
+    Object.defineProperty(document, "visibilityState", { value: "visible", configurable: true });
+    expect(fetchMock.mock.calls.filter(([u]) => u === "/api/search/miss").length).toBe(1);
+  });
+
   it("closes on Escape and gives focus back to the button", async () => {
     input().dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     expect(header.querySelector(".search-pop")).toBeNull();

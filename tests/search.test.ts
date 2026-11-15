@@ -152,6 +152,9 @@ describe("query rules", () => {
     expect(isRecordableQuery("203.0.113.45")).toBe(false);
     expect(isRecordableQuery("2001:db8::1")).toBe(false);
     expect(isRecordableQuery("14:30:00 to 12 hour")).toBe(true);
+    expect(isRecordableQuery("std::vector")).toBe(true);
+    expect(isRecordableQuery("vec::new rust")).toBe(true);
+    expect(isRecordableQuery("fe80::1ff:fe23:4567:890a")).toBe(false);
     expect(isRecordableQuery("𠮷".repeat(40))).toBe(true);
     expect(isRecordableQuery("c.ai")).toBe(true);
   });
@@ -268,7 +271,10 @@ describe("search API on the D1 schema", () => {
     // An email request counts as that visitor's miss too, once per day (same vote key as the page's own miss post).
     await handleSearchApi(post("/api/search/miss", { q: "kite maker", locale: "en" }), { store, now: day1 });
     await handleSearchApi(post("/api/search/notify", { q: "kite maker", locale: "en", email: "k@b.co" }), { store, now: day1 });
-    expect(db.prepare("SELECT count, visitors FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ count: 1, visitors: 1 });
+    expect(db.prepare("SELECT count, visitors, last_at FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ count: 1, visitors: 1, last_at: day1 });
+    // A later email from a visitor already counted today neither counts nor refreshes last_at.
+    await handleSearchApi(post("/api/search/notify", { q: "kite maker", locale: "en", email: "k3@b.co" }), { store, now: day1 + 60_000 });
+    expect(db.prepare("SELECT last_at FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ last_at: day1 });
     // Without the page's own miss (lost or rate-limited), the email request still counts the search once.
     await handleSearchApi(post("/api/search/notify", { q: "kite maker", locale: "en", email: "k2@b.co" }, { "CF-Connecting-IP": "198.51.100.200" }), { store, now: day1 });
     expect(db.prepare("SELECT count, visitors FROM search_misses WHERE q = 'kite maker'").get()).toEqual({ count: 2, visitors: 2 });

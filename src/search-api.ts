@@ -51,9 +51,10 @@ export function d1SearchStore(db: D1Database): SearchStore {
            VALUES (?, ?, ?, CASE WHEN EXISTS (SELECT 1 FROM search_votes WHERE key = ?) THEN 0 ELSE 1 END, ?, ?)
            ON CONFLICT (q, locale) DO UPDATE SET
              count = count + CASE WHEN ? THEN excluded.visitors ELSE 1 END,
-             visitors = visitors + excluded.visitors, last_at = excluded.last_at`,
+             visitors = visitors + excluded.visitors,
+             last_at = CASE WHEN ? AND excluded.visitors = 0 THEN last_at ELSE excluded.last_at END`,
         )
-        .bind(q, locale, 1, visitor, now, now, onlyNew ? 1 : 0);
+        .bind(q, locale, 1, visitor, now, now, onlyNew ? 1 : 0, onlyNew ? 1 : 0);
       const vote = db.prepare("INSERT OR IGNORE INTO search_votes (key, created_at) VALUES (?, ?)").bind(visitor, now);
       await db.batch([miss, vote]);
     },

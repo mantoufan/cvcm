@@ -1088,8 +1088,7 @@ function loadSearch(): Promise<typeof import("./search")> {
 
 /** Opens the site search under the header; the panel and its index are a separate chunk loaded on first use. */
 function searchButton(): HTMLElement {
-  const load = loadSearch;
-  let hoverTimer = 0;
+    let hoverTimer = 0;
   const button: HTMLButtonElement = h("button", {
     type: "button",
     class: "search-btn",
@@ -1100,14 +1099,14 @@ function searchButton(): HTMLElement {
     // A short hover, not a pass across the header on the way to the language picker, warms the index.
     onPointerenter: () => {
       // Only the panel code; the index loads when the panel opens.
-      hoverTimer = window.setTimeout(() => void load().catch(() => undefined), 150);
+      hoverTimer = window.setTimeout(() => void loadSearch().catch(() => undefined), 150);
     },
     onPointerleave: () => window.clearTimeout(hoverTimer),
-    onFocus: () => void load().catch(() => undefined),
+    onFocus: () => void loadSearch().catch(() => undefined),
     onClick: () => {
       const header = button.closest("header");
       if (!header) return;
-      load().then((m) => {
+      loadSearch().then((m) => {
         if (button.getAttribute("aria-expanded") === "true") m.closeSearch();
         else m.openSearch(header, button);
       }).catch((err: unknown) => {

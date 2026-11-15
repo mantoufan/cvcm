@@ -195,14 +195,17 @@ export function isRecordableQuery(query: string): boolean {
   if (points < 1 || points > SEARCH_QUERY_MAX) return false;
   if (!/[\p{L}\p{N}]/u.test(query)) return false;
   if (/@|https?:|www\.|:\/\//i.test(query)) return false;
-  // IP addresses (someone looking up their own): never stored.
-  if (/\b\d{1,3}(?:\.\d{1,3}){3}\b/.test(query) || /\b(?:[0-9a-f]{1,4}:){4,}[0-9a-f]{1,4}\b|[0-9a-f]{1,4}::[0-9a-f]{0,4}/i.test(query)) return false;
+  // IP addresses (someone looking up their own): never stored. Four-part versions (3.12.0.1) look the same and go
+  // too. IPv6 needs whole hex groups, so C++/Rust paths (std::vector, Vec::new) stay.
+  if (/\b\d{1,3}(?:\.\d{1,3}){3}\b/.test(query)) return false;
+  if (/(^|[^0-9a-z:])(?:[0-9a-f]{1,4}:){4,7}[0-9a-f]{1,4}(?![0-9a-z:])|(^|[^0-9a-z:])(?:[0-9a-f]{1,4}(?::[0-9a-f]{1,4})*)?::[0-9a-f]{1,4}(?::[0-9a-f]{1,4})*(?![0-9a-z:])/i.test(query) && /\d/.test(query)) return false;
   // Bare links: a host followed by a path (example.com/reset?token=…), or a link shortener on its own (bit.ly, t.me).
   // Plain names with a dot (draw.io, asp.net, node.js) stay: they are real topics.
   if (/[a-z0-9-]+\.[a-z]{2,}\/\S/i.test(query)) return false;
   if (/(^|[^a-z0-9.-])(bit\.ly|t\.me|t\.co|wa\.me|goo\.gl|tinyurl\.com|b23\.tv|dwz\.cn|url\.cn)\b/i.test(query)) return false;
   // Phone, ID and card numbers: an unbroken run of 7+ digits, or 10+ once spaces, dashes, dots and brackets are gone
-  // (555 123 4567, (415) 555-0199). Sizes and dates (1920 1080, 2026-11-15, 1920x1080 to 3840x2160) stay. Known number slang (520, 334424044) has a page, so it never
+  // (555 123 4567, (415) 555-0199, 4111 1111 1111 1111). One size or date (1920 1080, 2026-11-15) and sizes written
+  // with x (1920x1080 to 3840x2160) stay; a string of several spaced numbers is dropped, like a card number would be. Known number slang (520, 334424044) has a page, so it never
   // reaches this check as a miss.
   if (/\d{7,}/.test(query) || /\d{10,}/.test(query.replace(/[\s\-().+]/g, ""))) return false;
   return true;
