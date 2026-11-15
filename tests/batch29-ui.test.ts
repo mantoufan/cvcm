@@ -247,6 +247,20 @@ describe("review fixes (ui)", () => {
     expect(q<HTMLSelectElement>("[data-field=market]").value).toBe("cn");
   });
 
+  it("swaps the example on a market pick and says what each business method lacks", () => {
+    mountPhoneValue(host);
+    set("[data-field=market]", "cn", "change");
+    expect(q<HTMLInputElement>("[data-field=number]").value).toBe("138 8888 6688");
+    expect(q("[data-out=error]").textContent).toBe("");
+    unmountPhoneValue();
+    host.replaceChildren();
+    mountBusinessValuation(host);
+    set("[data-field=earningsHigh]", "");
+    expect(q("[data-out=rows]").textContent).toContain("Needs its multiples");
+    set("[data-field=years]", "");
+    expect(q("[data-out=rows]").textContent).toContain("Needs the DCF inputs");
+  });
+
   it("names a distance that is not a number and an age out of range", () => {
     mountCarDepreciation(host);
     set("[data-field=distance]", "12k");

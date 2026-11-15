@@ -225,6 +225,7 @@ export function valuePlate(raw: string, market: PlateMarket): { ok: true; value:
       features.push({ key: "bigCity" });
       f += 0.15;
     }
+    if (!features.length) features.push({ key: "plain" });
     features.push(vnSerial);
     band = VN_LADDER[tier]!;
   } else {

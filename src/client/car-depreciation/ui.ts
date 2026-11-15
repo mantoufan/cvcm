@@ -20,6 +20,7 @@ export function mountCarDepreciation(host: HTMLElement): void {
   const price = numField("price", "30000", () => paint());
   const years = numField("years", "5", () => paint());
   const distance = numField("distance", String(Math.round(AVERAGE_YEARLY[unit0])), () => paint());
+  // The unit the distance field is in, to convert from when the select changes.
   let unit: "mi" | "km" = unit0;
   // Switching units converts the typed distance, so the car itself does not change.
   const unitSel = h("select", { "data-field": "unit", onChange: () => {

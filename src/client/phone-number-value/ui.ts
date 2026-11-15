@@ -36,7 +36,14 @@ export function mountPhoneValue(host: HTMLElement): void {
       paint();
     },
   });
-  const marketSel = h("select", { "data-field": "market", onChange: () => { picked = true; market = marketSel.value as PhoneMarket; paint(); } },
+  const marketSel = h("select", { "data-field": "market", onChange: () => {
+    picked = true;
+    const before = market;
+    market = marketSel.value as PhoneMarket;
+    // Keep a typed number; swap only an empty field or the last market's example.
+    if (!input.value.trim() || input.value === EXAMPLE[before]) input.value = EXAMPLE[market];
+    paint();
+  } },
     ...PHONE_MARKETS.map((m) => h("option", { value: m, selected: m === market }, t(`phoneValue.m_${m}`))),
   );
   marketSel.value = market;

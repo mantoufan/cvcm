@@ -246,7 +246,7 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
   }
   // Every letter past ten costs: long names are hard to type and remember. A name in another script counts its
   // own characters, not its punycode.
-  const n = base.chars ?? plainName.length;
+  const n = base.chars ?? sld.length;
   if (n > 10) value *= Math.pow(0.8, n - 10);
   features.push({ key: "length", n });
   const factor = TLD_FACTOR[tld] ?? OTHER_TLD;

@@ -61,9 +61,11 @@ export function mountBusinessValuation(host: HTMLElement): void {
     const list: Array<[string, string]> = [];
     const span = (r: [number, number]) => `${num(r[0])} – ${num(r[1])}`;
     const none = t("businessValuation.notApplicable");
-    list.push([t("businessValuation.byEarnings"), earn ? span(earn) : none]);
-    list.push([t("businessValuation.byRevenue"), rev ? span(rev) : none]);
-    if (d.ok) list.push([t("businessValuation.byDcf"), d.result.value > 0 ? num(d.result.value) : none]);
+    // What a method lacks: its base figure, or its multiples (blank, below 0 or backwards).
+    const lacks = (base: HTMLInputElement) => (v(base) > 0 ? t("businessValuation.needsMultiples") : none);
+    list.push([t("businessValuation.byEarnings"), earn ? span(earn) : lacks(profit)]);
+    list.push([t("businessValuation.byRevenue"), rev ? span(rev) : lacks(revenue)]);
+    list.push([t("businessValuation.byDcf"), d.ok && d.result.value > 0 ? num(d.result.value) : d.ok ? none : t("businessValuation.needsDcf")]);
     const backwards = (lo: HTMLInputElement, hi: HTMLInputElement) => v(lo) > v(hi);
     const badMultiple = [eLo, eHi, rLo, rHi].some((el) => !(v(el) >= 0));
     errorEl.textContent = badMultiple

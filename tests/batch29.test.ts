@@ -399,6 +399,12 @@ describe("review fixes", () => {
     expect(valuePlate("29-MĐ1 123.45", "vn").ok).toBe(true);
   });
 
+  it("round 10: plain Vietnamese plates, hyphen-inclusive length, country code outside the pattern", () => {
+    expect(plate("30E-123.67", "vn").features).toContainEqual({ key: "plain" });
+    expect(domain("my-best-shop-online.net").features).toContainEqual({ key: "length", n: 19 });
+    expect(phone("+852 6666 6666", "intl").features).toContainEqual({ key: "tailRun", n: 8, digit: "6" });
+  });
+
   it("takes whole forecast years only", () => {
     expect(dcf({ cashFlow: 100, growth: 0, discount: 0.1, terminalGrowth: 0, years: 1.4 })).toEqual({ ok: false, error: "invalid" });
   });

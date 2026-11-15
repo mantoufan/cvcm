@@ -107,9 +107,9 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
   const digits = phoneDigits(raw, market);
   if (!isValidPhone(digits, market)) return { ok: false, error: "invalid" };
 
-  // The part a buyer looks at: past the carrier prefix (3 digits in China and Vietnam); elsewhere the last ten
-  // digits, so a country code does not count towards runs or digit variety.
-  const body = market === "intl" ? digits.slice(-10) : digits.slice(3);
+  // The part a buyer looks at: past the carrier prefix (3 digits in China and Vietnam); elsewhere the last eight
+  // digits, which sit inside the national number everywhere, so a country code never counts towards the patterns.
+  const body = market === "intl" ? digits.slice(-8) : digits.slice(3);
   const features: PhoneFeature[] = [];
   let tier = 0;
   let tierDigit = "";
