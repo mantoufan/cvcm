@@ -154,9 +154,13 @@ const NO_NAMES: Partial<Record<IdeaId, string>> = {};
 
 /** Per names table (one per locale): each idea's merged word pool and how many ideas use each word. */
 type Pools = { pools: { id: IdeaId; words: Set<string> }[]; df: Map<string, number> };
+/** Per locale (names are fixed per locale; tests pass their own tables, cached by identity). */
 const poolCache = new WeakMap<object, Map<string, Pools>>();
+const localeCache = new Map<string, Pools>();
 
 function poolsFor(names: Partial<Record<IdeaId, string>>, locale: Locale | null): Pools {
+  const shared = locale && names !== NO_NAMES ? localeCache.get(`${locale}|${Object.values(names).join("|")}`) : undefined;
+  if (shared) return shared;
   let byLocale = poolCache.get(names);
   if (!byLocale) {
     byLocale = new Map();
@@ -169,6 +173,7 @@ function poolsFor(names: Partial<Record<IdeaId, string>>, locale: Locale | null)
     for (const { words } of pools) for (const w of words) df.set(w, (df.get(w) ?? 0) + 1);
     entry = { pools, df };
     byLocale.set(locale ?? "", entry);
+    if (locale && names !== NO_NAMES) localeCache.set(`${locale}|${Object.values(names).join("|")}`, entry);
   }
   return entry;
 }
@@ -187,14 +192,19 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
   const weight = (t: string): number => Math.log(IDEA_ENTRIES.length / (df.get(t) ?? IDEA_ENTRIES.length));
   const scored = pools.map(({ id, words }) => {
     // Each word counts once, by its best piece.
-    const hitGroups = groups.map((g) => g.filter((t) => words.has(t))).filter((g) => g.length);
-    // Each word counts once, however often it is typed ("coffee mugs and coffee cups" has one shared word).
-    const hits = [...new Set(hitGroups.map((g) => g.reduce((a, b) => (weight(b) > weight(a) ? b : a))))];
+    // Each word counts once by its best piece not already used by another word: a word typed twice counts once
+    // ("coffee mugs and coffee cups"), while two words that share a piece still count as two (社群小編接案（社群代操）).
+    const hits: string[] = [];
+    for (const g of groups) {
+      const best = g.filter((t) => words.has(t) && !hits.includes(t)).sort((a, b) => weight(b) - weight(a))[0];
+      if (best) hits.push(best);
+    }
     return { id, hits, cover: hits.length / Math.max(1, words.size), score: hits.reduce((sum, t) => sum + weight(t), 0) };
   }).sort((a, b) => b.score - a.score || b.cover - a.cover);
   const [best] = scored;
   if (!best || best.score <= 0) return null;
-  const tied = scored.filter((s) => s.score === best.score).slice(1);
+  // Scores are sums of logs: compare with a tolerance, since the same weights added in another order can differ.
+  const tied = scored.filter((s) => Math.abs(s.score - best.score) < 1e-9).slice(1);
   for (const other of tied) {
     // Ideas sharing different words with the text equally ("t-shirt printing": shirt vs printing) are ambiguous; the
     // same words go to the idea the text covers most (its own name beats a longer name containing it).
@@ -215,10 +225,7 @@ export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> =
   return (short && distinct && (df.get(only) === 1 || sharedButCloser)) || specific ? best.id : null;
 }
 
-/**
- * Which question's tips to show for the weakest answer: "nobody does this yet" is weak because demand is unproven,
- * so it gets the proof-of-demand tips rather than advice about competitors.
- */
-export function tipsFor(question: ValidatorQuestion, answers: ValidatorAnswers): ValidatorQuestion {
-  return question === "competition" && answers.competition === 4 ? "evidence" : question;
+/** Which question's tips to show for the weakest answer (each question's tips fit all of its weak answers). */
+export function tipsFor(question: ValidatorQuestion, _answers: ValidatorAnswers): ValidatorQuestion {
+  return question;
 }

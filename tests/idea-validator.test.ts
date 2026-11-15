@@ -51,8 +51,8 @@ describe("idea validator: scoring", () => {
 });
 
 describe("idea validator: tips", () => {
-  it("gives proof-of-demand tips when nobody competes, competitor tips otherwise", () => {
-    expect(tipsFor("competition", { competition: 4 })).toBe("evidence");
+  it("gives each weak spot its own tips", () => {
+    expect(tipsFor("competition", { competition: 4 })).toBe("competition");
     expect(tipsFor("competition", { competition: 0 })).toBe("competition");
     expect(tipsFor("cost", {})).toBe("cost");
     // An unresearched market trend is a weak spot.
@@ -95,6 +95,8 @@ describe("idea validator: matching", () => {
     expect(matchIdea("open a laundromat near campus", names("en"))).toBe("laundromat");
     expect(matchIdea("selling coffee mugs with my designs", names("en"))).toBeNull();
     expect(matchIdea("coffee mugs and coffee cups", names("en"))).toBeNull();
+    // Every idea's own name, in every locale, finds that idea.
+    for (const loc of LOCALES) for (const id of IDEA_ENTRIES) expect(matchIdea(ideaName(loc, id).name, names(loc), loc), `${loc} ${id}`).toBe(id);
     expect(matchIdea("我想开一家奶茶店，在学校附近", names("zh-CN"), "zh-CN")).toBe("bubble-tea");
     expect(matchIdea("a truck rental company", names("en"))).toBeNull();
     expect(matchIdea("핸드메이드 캔들", names("ko"), "ko")).not.toBe("jewelry-business");

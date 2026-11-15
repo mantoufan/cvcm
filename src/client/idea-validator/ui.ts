@@ -102,6 +102,7 @@ function fillIdeas(loc: ReturnType<typeof locale>): void {
     state.idea.value = state.names[preset] ?? "";
     state.match.value = preset;
     state.pinned = true;
+    state.autoAtPin = matchIdea(state.idea.value, state.names, loc) ?? NONE;
     paint();
     return;
   }
@@ -177,9 +178,6 @@ function paint(): void {
       h("small", null, gradeLabel),
     ),
     h("p", { class: "iv-verdict" }, t(`ideaValidator.verdict.${result.grade}`)),
-    h("dl", { class: "iv-stats" },
-      h("div", null, h("dt", null, t("ideaValidator.market")), h("dd", { "data-out": "market" }, result.market === null ? t("ideaValidator.noMarket") : String(result.market))),
-    ),
   );
   const list = (title: string, items: ValidatorQuestion[], key: string) => h("section", { class: "iv-list" },
     h("h3", null, title),

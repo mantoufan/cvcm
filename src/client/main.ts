@@ -361,8 +361,9 @@ function prefetchCopy(target: Element | null, loc: Locale, hover: boolean): void
   const nav = target?.closest?.("a[data-nav]")?.getAttribute("data-nav") ?? "";
   const copy: PageCopy | null = isToolId(nav) ? { tool: nav } : nav.startsWith("learn-") && isTutorialId(nav.slice(6)) ? { tutorial: nav.slice(6) } : null;
   // A tool page that renders with the ideas pack (the idea validator) waits for it too, so fetch it with the copy.
-  const ideas: IdeaPage = copy?.tool && isToolId(copy.tool) ? ideasPackOf({ kind: "app", locale: loc, tool: copy.tool }) : null;
-  if (!copy || hasPageMessages(loc, false, false, false, false, null, null, null, copy, ideas)) return;
+  if (!copy) return;
+  const ideas: IdeaPage = copy.tool && isToolId(copy.tool) ? ideasPackOf({ kind: "app", locale: loc, tool: copy.tool }) : null;
+  if (hasPageMessages(loc, false, false, false, false, null, null, null, copy, ideas)) return;
   const load = (): void => {
     loadPageMessages(loc, false, false, false, false, null, null, null, copy, ideas).catch(() => {});
   };
