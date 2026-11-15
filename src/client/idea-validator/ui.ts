@@ -1,10 +1,11 @@
 import { copyWithFlash } from "../copy";
 import { h } from "../dom";
 import { loadIdeasPack, locale, t } from "../i18n";
+import { hasIdeasMessages } from "../../shared/messages";
 import { IDEA_ENTRIES, isIdeaId, type IdeaId } from "../../shared/ideas";
 import { ideaData, ideaName } from "../../shared/ideas-i18n";
 import { ideasHref } from "../../shared/path";
-import { OPTION_POINTS, VALIDATOR_QUESTIONS, matchIdea, trendAnswerFor, validateIdea, type ValidatorAnswers, type ValidatorQuestion } from "../../shared/idea-validator";
+import { OPTION_POINTS, VALIDATOR_QUESTIONS, matchIdea, validateIdea, type ValidatorAnswers, type ValidatorQuestion } from "../../shared/idea-validator";
 
 type State = {
   idea: HTMLTextAreaElement;
@@ -12,10 +13,10 @@ type State = {
   selects: Record<ValidatorQuestion, HTMLSelectElement>;
   out: HTMLElement;
   copyBtn: HTMLButtonElement | null;
-  /** The match was picked by hand, so typing no longer changes it. */
-  pinned: boolean;
-  /** The trend answer was picked by hand, so a new match no longer fills it. */
-  trendPinned: boolean;
+  /** The text when the match was picked by hand (or preset): until the text changes, typing does not re-match. */
+  pinnedText: string | null;
+  /** Idea names in the page's language, for matching. */
+  names: Partial<Record<IdeaId, string>>;
   ready: boolean;
   last: string;
 };
@@ -43,16 +44,13 @@ export function mountIdeaValidator(host: HTMLElement): void {
   const selects = Object.fromEntries(VALIDATOR_QUESTIONS.map((q) => [q, h("select", {
     "data-field": q,
     "aria-label": t(`ideaValidator.${q}.label`),
-    onChange: () => {
-      if (q === "trend" && state) state.trendPinned = true;
-      paint();
-    },
+    onChange: () => paint(),
   },
     h("option", { value: "" }, t("ideaValidator.choose")),
     ...OPTION_POINTS[q].map((_, i) => h("option", { value: String(i) }, t(`ideaValidator.${q}.o${i + 1}`))),
   )])) as Record<ValidatorQuestion, HTMLSelectElement>;
   const out = h("div", { class: "iv-out", "aria-live": "polite", "data-out": "result" });
-  state = { idea, match, selects, out, copyBtn: null, pinned: false, trendPinned: false, ready: false, last: "" };
+  state = { idea, match, selects, out, copyBtn: null, pinnedText: null, names: {}, ready: false, last: "" };
   host.append(
     h("header", { class: "tool-head" },
       h("h1", null, t("ideaValidator.title")),
@@ -81,23 +79,33 @@ export function mountIdeaValidator(host: HTMLElement): void {
       ),
     ),
   );
-  paint();
-  // Idea names and the search-data snapshot come with the ideas pack; until it arrives the scorecard works on its own.
-  loadIdeasPack(loc).then(() => {
-    if (run !== alive || !state) return;
-    state.ready = true;
-    const names = IDEA_ENTRIES.map((id) => ({ id, name: ideaName(loc, id).name })).sort((a, b) => a.name.localeCompare(b.name, loc));
-    state.match.append(...names.map(({ id, name }) => h("option", { value: id }, name)));
-    // Opened from an idea page (?idea=<id>): start from that idea as the benchmark.
-    const preset = new URLSearchParams(location.search).get("idea") ?? "";
-    if (isIdeaId(preset)) {
-      state.match.value = preset;
-      state.idea.value = ideaName(loc, preset).name;
-      onMatchChange();
-      return;
-    }
-    onIdeaInput();
-  }).catch(() => {});
+  // Idea names and the search-data snapshot come with the ideas pack, which the page loads before mounting (it is
+  // requested with the tool's strings); if it is somehow missing, the scorecard works alone until it arrives.
+  if (hasIdeasMessages(loc)) fillIdeas(loc);
+  else {
+    paint();
+    loadIdeasPack(loc).then(() => {
+      if (run === alive && state) fillIdeas(loc);
+    }).catch((err: unknown) => console.error("idea validator: ideas pack", err));
+  }
+}
+
+function fillIdeas(loc: ReturnType<typeof locale>): void {
+  if (!state) return;
+  state.ready = true;
+  state.names = Object.fromEntries(IDEA_ENTRIES.map((id) => [id, ideaName(loc, id).name]));
+  const sorted = IDEA_ENTRIES.map((id) => ({ id, name: state!.names[id] ?? id })).sort((a, b) => a.name.localeCompare(b.name, loc));
+  state.match.append(...sorted.map(({ id, name }) => h("option", { value: id }, name)));
+  // Opened from an idea page (?idea=<id>): start from that idea as the benchmark, keeping anything already typed.
+  const preset = new URLSearchParams(location.search).get("idea") ?? "";
+  if (isIdeaId(preset)) {
+    if (!state.idea.value.trim()) state.idea.value = state.names[preset] ?? "";
+    state.match.value = preset;
+    state.pinnedText = state.idea.value;
+    paint();
+    return;
+  }
+  onIdeaInput();
 }
 
 export function unmountIdeaValidator(): void {
@@ -112,28 +120,16 @@ function matchedIdea(): IdeaId | null {
 
 function onIdeaInput(): void {
   if (!state) return;
-  if (state.ready && !state.pinned) {
-    const loc = locale();
-    const names = Object.fromEntries(IDEA_ENTRIES.map((id) => [id, ideaName(loc, id).name]));
-    state.match.value = matchIdea(state.idea.value, names) ?? NONE;
-    fillTrend();
-  }
+  // A hand-picked match holds until the description changes.
+  if (state.pinnedText !== null && state.idea.value !== state.pinnedText) state.pinnedText = null;
+  if (state.ready && state.pinnedText === null) state.match.value = matchIdea(state.idea.value, state.names) ?? NONE;
   paint();
 }
 
 function onMatchChange(): void {
   if (!state) return;
-  state.pinned = true;
-  fillTrend();
+  state.pinnedText = state.idea.value;
   paint();
-}
-
-/** A matched idea answers the trend question from its search data, unless the reader already answered it. */
-function fillTrend(): void {
-  if (!state || state.trendPinned) return;
-  const id = matchedIdea();
-  const data = id ? ideaData(locale(), id) : null;
-  state.selects.trend.value = data ? String(trendAnswerFor(data.scores.momentum)) : "";
 }
 
 function paint(): void {

@@ -73,59 +73,68 @@ export function validateIdea(answers: ValidatorAnswers, market: number | null): 
   return { readiness, market, total, grade, strengths, weaknesses };
 }
 
-/** The trend answer (index into the trend options) for an idea's momentum score: growing / steady / shrinking. */
-export function trendAnswerFor(momentum: number): number {
-  return momentum >= 58 ? 3 : momentum <= 42 ? 0 : 2;
-}
+const CJK_RUN = /[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+/gu;
 
-/** Lowercased words; CJK runs become overlapping two-character pieces (Chinese and Japanese have no spaces). */
+/**
+ * Lowercased words with accents removed and an English plural "s" dropped; CJK runs become overlapping two-character
+ * pieces (Chinese and Japanese have no spaces), leaving out pieces that are only hiragana (particles and endings).
+ */
 export function ideaTokens(text: string): string[] {
   const out: string[] = [];
   for (const part of text.toLowerCase().normalize("NFKC").split(/[^\p{L}\p{N}]+/u)) {
     if (!part) continue;
-    const cjk = part.match(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+/gu) ?? [];
-    for (const run of cjk) {
-      if (run.length === 1) out.push(run);
-      for (let i = 0; i + 1 < run.length; i++) out.push(run.slice(i, i + 2));
+    for (const run of part.match(CJK_RUN) ?? []) {
+      const pieces = run.length === 1 ? [run] : Array.from({ length: run.length - 1 }, (_, i) => run.slice(i, i + 2));
+      for (const piece of pieces) if (!/^\p{Script=Hiragana}+$/u.test(piece) && !STOP_CJK.has(piece)) out.push(piece);
     }
-    const latin = part.replace(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]+/gu, " ").trim();
-    for (const word of latin.split(/\s+/)) if (word.length >= 2 && !STOP.has(word)) out.push(word);
+    const latin = part.replace(CJK_RUN, " ").normalize("NFD").replace(/\p{M}/gu, "").replace(/đ/g, "d").trim();
+    for (let word of latin.split(/\s+/)) {
+      if (word.length > 3 && word.endsWith("s") && !word.endsWith("ss")) word = word.slice(0, -1);
+      if (word.length >= 2 && !STOP.has(word)) out.push(word);
+    }
   }
   return out;
 }
 
-/** Words that say "business" or "how to" in every language and would match every idea. */
+/** Words that say "business", "how to", "online", "I want" and the like in the eight languages (accents removed). */
 const STOP = new Set([
-  "business", "businesses", "ideas", "idea", "how", "to", "start", "starting", "a", "an", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling",
-  "negocio", "negocios", "de", "la", "el", "en", "como", "con", "bisnis", "usaha", "jasa", "di", "cara", "kinh", "doanh", "mở", "bán", "và",
+  "business", "busines", "idea", "how", "to", "start", "starting", "the", "my", "of", "for", "and", "online", "side", "hustle", "make", "money", "sell", "selling", "in", "on", "at", "with", "from", "want", "would", "like", "an", "is", "it", "me", "your", "you", "home", "shop", "store", "service", "company", "small",
+  "negocio", "de", "la", "el", "lo", "lo", "en", "como", "con", "por", "para", "un", "una", "quiero", "vender", "linea", "casa", "tienda", "servicio", "empresa", "mi",
+  "bisni", "bisnis", "usaha", "jasa", "di", "cara", "jualan", "jual", "rumah", "saya", "ingin", "mau", "dan", "yang", "toko",
+  "kinh", "doanh", "mo", "ban", "va", "cua", "hang", "tren", "mang", "toi", "muon", "nha", "dich", "vu", "cong", "ty", "lam",
 ]);
-const STOP_CJK = new Set(["创业", "創業", "开业", "開業", "副业", "副業", "生意", "加盟", "창업", "사업", "ビジ", "ジネ", "ネス"]);
+const STOP_CJK = new Set(["创业", "創業", "开业", "開業", "副业", "副業", "生意", "加盟", "开店", "開店", "网上", "網上", "网店", "賺錢", "赚钱", "我想", "온라", "라인", "창업", "사업", "부업", "쇼핑", "핑몰", "ビジ", "ジネ", "ネス", "起業", "開発"]);
 
 /** Every idea's search phrases in every language, tokenized once. */
-const IDEA_TOKENS: Record<IdeaId, Set<string>> = Object.fromEntries(
-  IDEA_ENTRIES.map((id) => {
-    const phrases = Object.values((keywords as Record<string, Record<string, string[]>>)[id] ?? {}).flat();
-    return [id, new Set(phrases.flatMap(ideaTokens).filter((t) => !STOP_CJK.has(t)))];
-  }),
+const IDEA_POOLS: Record<IdeaId, Set<string>> = Object.fromEntries(
+  IDEA_ENTRIES.map((id) => [id, new Set(Object.values((keywords as Record<string, Record<string, string[]>>)[id] ?? {}).flat().flatMap(ideaTokens))]),
 ) as Record<IdeaId, Set<string>>;
 
+/** Name tokens per locale's names table, built once per table. */
+const namePools = new WeakMap<object, Record<string, Set<string>>>();
+
 /**
- * The idea whose search phrases share the most tokens with the text (names in the reader's language count too), or
- * null when nothing shares a meaningful token. `names` maps each idea to its name in the page's language.
+ * The idea whose search phrases (and name in the reader's language) best share the text's words, weighted by how few
+ * ideas use each word. A match needs two shared words, or one long word only that idea uses, and a clear winner:
+ * otherwise null (the reader can still pick one). `names` maps each idea to its name in the page's language.
  */
 export function matchIdea(text: string, names: Partial<Record<IdeaId, string>> = {}): IdeaId | null {
-  const tokens = new Set(ideaTokens(text).filter((t) => !STOP_CJK.has(t)));
-  if (!tokens.size) return null;
-  let best: IdeaId | null = null;
-  let bestScore = 0;
-  for (const id of IDEA_ENTRIES) {
-    const pool = new Set([...IDEA_TOKENS[id], ...ideaTokens(names[id] ?? "").filter((t) => !STOP_CJK.has(t))]);
-    let score = 0;
-    for (const t of tokens) if (pool.has(t)) score += t.length >= 4 || /[^\x00-\x7f]/.test(t) ? 2 : 1;
-    if (score > bestScore) {
-      bestScore = score;
-      best = id;
-    }
+  const tokens = [...new Set(ideaTokens(text))];
+  if (!tokens.length) return null;
+  let byName = namePools.get(names);
+  if (!byName) {
+    byName = Object.fromEntries(IDEA_ENTRIES.map((id) => [id, new Set(ideaTokens(names[id] ?? ""))]));
+    namePools.set(names, byName);
   }
-  return bestScore >= 2 ? best : null;
+  const pool = (id: IdeaId): Set<string> => new Set([...IDEA_POOLS[id], ...byName![id]]);
+  const pools = IDEA_ENTRIES.map((id) => ({ id, words: pool(id) }));
+  const df = (t: string): number => pools.filter((p) => p.words.has(t)).length;
+  const scored = pools.map(({ id, words }) => {
+    const hits = tokens.filter((t) => words.has(t));
+    return { id, hits, score: hits.reduce((sum, t) => sum + Math.log(IDEA_ENTRIES.length / df(t)), 0) };
+  }).sort((a, b) => b.score - a.score);
+  const [best, second] = scored;
+  if (!best || best.score <= 0 || best.score === second?.score) return null;
+  const strong = best.hits.length >= 2 || (best.hits.length === 1 && df(best.hits[0]) === 1 && (best.hits[0].length >= 4 || /[^\x00-\x7f]/.test(best.hits[0])));
+  return strong ? best.id : null;
 }

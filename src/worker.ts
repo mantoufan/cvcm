@@ -364,7 +364,7 @@ export default {
       // The browser's core pack leaves out the copy only this page shows; preload the bucket that holds it.
       const copy = copyChunkKey(locale, pageCopyOf(parsed));
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, parsed.kind === "ideas" ? parsed.entry ?? "hub" : null);
+      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, parsed.kind === "ideas" ? parsed.entry ?? "hub" : parsed.kind === "app" && parsed.tool === "idea-validator" ? "hub" : null);
       out = preloadPageChunk(out, chunk);
       if (parsed.kind === "ranking" && parsed.ranking) out = preloadPageChunk(out, rankingRowsChunk(parsed.ranking));
       if (parsed.kind === "dataset" && parsed.dataset) {

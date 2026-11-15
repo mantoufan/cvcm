@@ -582,7 +582,9 @@ export function render(): void {
   const kb: KbPage = parsed.kind === "kb" || parsed.kind === "bare-kb" ? parsed.article ?? "hub" : null;
   const ref: RefPage = parsed.kind === "ref" || parsed.kind === "bare-ref" ? parsed.entry ?? "hub" : null;
   const slang: SlangPage = parsed.kind === "slang" || parsed.kind === "bare-slang" ? parsed.entry ?? "hub" : null;
-  const ideas: IdeaPage = parsed.kind === "ideas" || parsed.kind === "bare-ideas" ? parsed.entry ?? "hub" : null;
+  // The idea validator matches against the ideas pack's names and data, so it loads with the page like an ideas hub.
+  const ideas: IdeaPage = parsed.kind === "ideas" || parsed.kind === "bare-ideas" ? parsed.entry ?? "hub"
+    : (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool === "idea-validator" ? "hub" : null;
   const copy = pageCopyOf(parsed);
   if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.

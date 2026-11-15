@@ -4,7 +4,7 @@ import { LOCALES } from "../src/shared/locale";
 import { messages } from "../src/shared/messages";
 import { IDEA_ENTRIES } from "../src/shared/ideas";
 import { ideaName } from "../src/shared/ideas-i18n";
-import { OPTION_POINTS, QUESTION_WEIGHT, VALIDATOR_QUESTIONS, ideaTokens, matchIdea, trendAnswerFor, validateIdea, type ValidatorAnswers } from "../src/shared/idea-validator";
+import { OPTION_POINTS, QUESTION_WEIGHT, VALIDATOR_QUESTIONS, ideaTokens, matchIdea, validateIdea, type ValidatorAnswers } from "../src/shared/idea-validator";
 import { applyHtmlSeo, pageTitle } from "../src/shared/seo";
 import { appHref, parseAppPath } from "../src/shared/path";
 import { ideasPageHtml } from "../src/shared/ideas-i18n";
@@ -42,16 +42,12 @@ describe("idea validator: scoring", () => {
     expect(OPTION_POINTS.competition[4]).toBeLessThan(OPTION_POINTS.competition[3]);
   });
 
-  it("maps momentum to the trend answer", () => {
-    expect(trendAnswerFor(70)).toBe(3);
-    expect(trendAnswerFor(50)).toBe(2);
-    expect(trendAnswerFor(30)).toBe(0);
-  });
 });
 
 describe("idea validator: matching", () => {
   it("tokenizes Latin words and CJK pairs", () => {
-    expect(ideaTokens("Mobile car-detailing service")).toEqual(expect.arrayContaining(["mobile", "car", "detailing", "service"]));
+    expect(ideaTokens("Mobile car-detailing services")).toEqual(["mobile", "car", "detailing"]);
+    expect(ideaTokens("Velas aromáticas")).toEqual(["vela", "aromatica"]);
     expect(ideaTokens("自动售货机")).toEqual(["自动", "动售", "售货", "货机"]);
   });
 
@@ -64,6 +60,16 @@ describe("idea validator: matching", () => {
     expect(matchIdea("셀프 세차장", names("ko"))).toBe("car-wash");
     expect(matchIdea("negocio de velas aromáticas", names("es"))).toBe("candle-business");
     expect(matchIdea("asdf qwerty", names("en"))).toBeNull();
+    // Filler words and one shared word that several ideas use are not a match (these used to pick unrelated ideas).
+    expect(matchIdea("a mobile app for students", names("en"))).toBeNull();
+    expect(matchIdea("Tôi muốn mở cửa hàng", names("vi"))).toBeNull();
+    expect(matchIdea("온라인 쇼핑몰", names("ko"))).toBeNull();
+    expect(matchIdea("jualan online di rumah", names("id"))).toBeNull();
+    expect(matchIdea("副業でお金を稼ぎたい", names("ja"))).toBeNull();
+    expect(matchIdea("on at in", names("en"))).toBeNull();
+    // Plurals and accents.
+    expect(matchIdea("pressure washing houses and driveways", names("en"))).toBe("pressure-washing");
+    expect(matchIdea("tiệm giặt sấy tự động", names("vi"))).toBe("laundromat");
     expect(matchIdea("", names("en"))).toBeNull();
   });
 });
