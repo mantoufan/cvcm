@@ -319,7 +319,7 @@ describe("review fixes", () => {
 
   it("survives invalid punycode and counts an IDN's own characters", () => {
     expect(decodeIdn("xn--tm80u")).toBeNull();
-    expect(valueDomain("xn--tm80u.com").ok).toBe(true);
+    expect(valueDomain("xn--tm80u.com")).toEqual({ ok: false, error: "invalid" });
     const long = domain("中华人民共和国.com");
     expect(long.features).toContainEqual({ key: "length", n: 7 });
     expect(long.estimate).toBeGreaterThan(10);
@@ -379,7 +379,7 @@ describe("review fixes", () => {
     expect(guessMarket("86 138 8888 6688", "vn")).toBe("cn");
     expect(parseDomain("https://user:pw@site.com/x")).toEqual({ ok: true, sld: "site", tld: "com" });
     expect(decodeIdn("xn--abc")).toBeNull();
-    expect(domain("xn--abc.com").kind).not.toBe("idn");
+    expect(valueDomain("xn--abc.com")).toEqual({ ok: false, error: "invalid" });
     expect(plate("29B18888", "vn").features).toContainEqual({ key: "vnSerial", serial: "18888" });
     expect(plate("29B1-8888", "vn").features).toContainEqual({ key: "vnSerial", serial: "8888" });
   });
@@ -403,6 +403,16 @@ describe("review fixes", () => {
     expect(plate("30E-123.67", "vn").features).toContainEqual({ key: "plain" });
     expect(domain("my-best-shop-online.net").features).toContainEqual({ key: "length", n: 19 });
     expect(phone("+852 6666 6666", "intl").features).toContainEqual({ key: "tailRun", n: 8, digit: "6" });
+  });
+
+  it("round 11: Traditional provinces, hyphenated short names, letter-based length penalty, short + numbers", () => {
+    expect(plate("粵B·88866", "cn").estimate).toBe(plate("粤B·88866", "cn").estimate);
+    expect(domain("a-b.com").kind).toBe("letters");
+    expect(domain("a-b.com").estimate).toBeLessThan(100);
+    expect(domain("1-2.com").kind).toBe("mixed");
+    expect(domain("cloud-kitchen.com").kind).toBe("twoWords");
+    expect(valuePhone("+12 3456", "intl")).toEqual({ ok: false, error: "invalid" });
+    expect(valuePhone("123456", "intl").ok).toBe(true);
   });
 
   it("takes whole forecast years only", () => {

@@ -127,6 +127,8 @@ export function parseDomain(raw: string): { ok: true; sld: string; tld: string }
   const tld = labels.slice(-tldLabels).join(".");
   const sld = labels[labels.length - tldLabels - 1]!;
   if (/^\d+$/.test(tld)) return { ok: false, error: "invalid" };
+  // Registries refuse xn-- labels that are not real punycode.
+  if ([sld, ...tld.split(".")].some((l) => l.startsWith("xn--") && !decodeIdn(l))) return { ok: false, error: "invalid" };
   return { ok: true, sld, tld };
 }
 
@@ -165,6 +167,18 @@ function baseValue(sld: string): { kind: DomainKind; value: number; features: Do
   }
   const name = sld.replace(/-/g, "");
   const n = name.length;
+  // A hyphenated name is not the short or one-word name it spells (a-b.com is not ab.com): words joined by hyphens
+  // count as two words, anything else as plain letters or a mix.
+  if (sld.includes("-")) {
+    const parts = sld.split("-").filter(Boolean);
+    if (parts.length === 2 && parts.every(isPartWord)) {
+      features.push({ key: "kind", kind: "twoWords", words: parts.join(" + ") });
+      return { kind: "twoWords", value: n <= 7 ? 18_000 : n <= 10 ? 6_000 : n <= 13 ? 2_000 : 700, features };
+    }
+    const mixed = /\d/.test(name);
+    features.push({ key: "kind", kind: mixed ? "mixed" : "letters" });
+    return { kind: mixed ? "mixed" : "letters", value: mixed ? 30 : n <= 6 ? 250 : 60, features };
+  }
   if (/^\d+$/.test(name)) {
     const v = [0, 500_000, 250_000, 40_000, 5_000, 700, 150, 40][n] ?? 15;
     let value = v;
@@ -246,9 +260,9 @@ export function valueDomain(raw: string): { ok: true; value: DomainValue } | { o
   }
   // Every letter past ten costs: long names are hard to type and remember. A name in another script counts its
   // own characters, not its punycode.
-  const n = base.chars ?? sld.length;
-  if (n > 10) value *= Math.pow(0.8, n - 10);
-  features.push({ key: "length", n });
+  const letters = base.chars ?? plainName.length;
+  if (letters > 10) value *= Math.pow(0.8, letters - 10);
+  features.push({ key: "length", n: base.chars ?? sld.length });
   const factor = TLD_FACTOR[tld] ?? OTHER_TLD;
   features.unshift({ key: "tld", tld: unicodeName(tld), factor });
   value *= factor;

@@ -106,6 +106,8 @@ export function valuePhone(raw: string, market: PhoneMarket): { ok: true; value:
   if (!raw.trim()) return { ok: false, error: "empty" };
   const digits = phoneDigits(raw, market);
   if (!isValidPhone(digits, market)) return { ok: false, error: "invalid" };
+  // With a country code, at least eight digits must follow it for the last eight to leave the code out.
+  if (market === "intl" && /^\s*(?:\+|00)/.test(halfWidth(raw)) && digits.replace(/^00/, "").length < 9) return { ok: false, error: "invalid" };
 
   // The part a buyer looks at: past the carrier prefix (3 digits in China and Vietnam); elsewhere the last eight
   // digits, which sit inside the national number everywhere, so a country code never counts towards the patterns.
