@@ -180,6 +180,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "memory-game": "/covers/memory-game-sweet.jpg?v=1",
   "word-search": "/covers/word-search-sweet.jpg?v=1",
   "typing-game": "/covers/typing-game-sweet.jpg?v=1",
+  "typing-practice": "/covers/typing-practice-sweet.jpg?v=1",
   "chinese-checkers": "/covers/chinese-checkers-sweet.jpg?v=1",
   "phone-number-value": "/covers/phone-number-value-sweet.jpg?v=1",
   "license-plate-value": "/covers/license-plate-value-sweet.jpg?v=1",
