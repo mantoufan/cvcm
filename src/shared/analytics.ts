@@ -32,7 +32,7 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
  * of thinking, not a condition, and it links no screening.
  * A test checks every quiz in the wellbeing group is listed.
  */
-export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "adhd", "narcissist", "dark-triad", "codependency"]);
+export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd", "narcissist", "dark-triad", "codependency"]);
 
 /** Whether this page may report to GA. A clip URL is its own access key, so clip notes are never reported. */
 export function isTrackedPath(pathname: string): boolean {

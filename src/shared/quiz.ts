@@ -5,12 +5,12 @@
 export const QUIZ_GROUPS = [
   { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad"] },
   { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency"] },
-  { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money", "imposter-syndrome"] },
+  { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money", "imposter-syndrome", "grit"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
-  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "anime"] },
-  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain"] },
-  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "adhd"] },
+  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "anime"] },
+  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob", "harry-potter-character", "lord-of-the-rings", "game-of-thrones-house"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed", "sanrio"] },
+  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd"] },
 ] as const;
 
 export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
@@ -196,6 +196,11 @@ const SOCIAL_ANXIETY = likert(Array(7).fill("social+ social-").join(" "));
  * thoughts, and the time and distress rituals take). Not the Y-BOCS or OCI-R, not clinically validated; the copy says so.
  */
 const OCD = likert(Array(15).fill("ocd+").join(" "));
+/**
+ * Written for cv.cm from the main signs of insomnia (trouble falling or staying asleep, waking too early, and the
+ * daytime toll). Not the Insomnia Severity Index or any other scale, not clinically validated; the copy says so.
+ */
+const INSOMNIA = likert(Array(15).fill("sleep+").join(" "));
 /** Thinking style from analytic ("left-brain") to holistic ("right-brain"), written for cv.cm; analytic statements reversed. */
 const LEFT_RIGHT_BRAIN = likert(Array(7).fill("right+ right-").join(" "));
 /** Written for cv.cm around common descriptions of codependency (not any published scale), half reversed. */
@@ -748,6 +753,105 @@ const ATTACK_ON_TITAN: ChoiceItem[] = [
   { options: [{ mikasa: 2 }, { erwin: 2 }, { levi: 2 }, { jean: 2 }] },
 ];
 
+/** Eight Harry Potter characters, laid out like `GHIBLI`. */
+const HARRY_POTTER: ChoiceItem[] = [
+  { options: [{ harry: 2 }, { hermione: 2 }, { ron: 2 }, { luna: 2 }] },
+  { options: [{ neville: 2 }, { draco: 2 }, { ginny: 2 }, { dumbledore: 2 }] },
+  { options: [{ ginny: 2 }, { harry: 2 }, { neville: 2 }, { ron: 2 }] },
+  { options: [{ luna: 2 }, { draco: 2 }, { hermione: 2 }, { dumbledore: 2 }] },
+  { options: [{ dumbledore: 2 }, { harry: 2 }, { ginny: 2 }, { hermione: 2 }] },
+  { options: [{ draco: 2 }, { ron: 2 }, { luna: 2 }, { neville: 2 }] },
+  { options: [{ neville: 2 }, { dumbledore: 2 }, { harry: 2 }, { luna: 2 }] },
+  { options: [{ ron: 2 }, { ginny: 2 }, { draco: 2 }, { hermione: 2 }] },
+  { options: [{ draco: 2 }, { neville: 2 }, { hermione: 2 }, { harry: 2 }] },
+  { options: [{ ginny: 2 }, { luna: 2 }, { dumbledore: 2 }, { ron: 2 }] },
+  { options: [{ ron: 2 }, { dumbledore: 2 }, { harry: 2 }, { draco: 2 }] },
+  { options: [{ hermione: 2 }, { neville: 2 }, { luna: 2 }, { ginny: 2 }] },
+];
+
+/** Eight Avatar: The Last Airbender characters, laid out like `GHIBLI`. */
+const AVATAR_CHARACTER: ChoiceItem[] = [
+  { options: [{ aang: 2 }, { katara: 2 }, { sokka: 2 }, { toph: 2 }] },
+  { options: [{ zuko: 2 }, { iroh: 2 }, { azula: 2 }, { suki: 2 }] },
+  { options: [{ azula: 2 }, { aang: 2 }, { zuko: 2 }, { sokka: 2 }] },
+  { options: [{ toph: 2 }, { iroh: 2 }, { katara: 2 }, { suki: 2 }] },
+  { options: [{ suki: 2 }, { aang: 2 }, { azula: 2 }, { katara: 2 }] },
+  { options: [{ iroh: 2 }, { sokka: 2 }, { toph: 2 }, { zuko: 2 }] },
+  { options: [{ zuko: 2 }, { suki: 2 }, { aang: 2 }, { toph: 2 }] },
+  { options: [{ sokka: 2 }, { azula: 2 }, { iroh: 2 }, { katara: 2 }] },
+  { options: [{ iroh: 2 }, { zuko: 2 }, { katara: 2 }, { aang: 2 }] },
+  { options: [{ azula: 2 }, { toph: 2 }, { suki: 2 }, { sokka: 2 }] },
+  { options: [{ sokka: 2 }, { suki: 2 }, { aang: 2 }, { iroh: 2 }] },
+  { options: [{ katara: 2 }, { zuko: 2 }, { toph: 2 }, { azula: 2 }] },
+];
+
+/** Eight Game of Thrones houses, laid out like `GHIBLI`. */
+const GAME_OF_THRONES: ChoiceItem[] = [
+  { options: [{ stark: 2 }, { lannister: 2 }, { targaryen: 2 }, { baratheon: 2 }] },
+  { options: [{ greyjoy: 2 }, { tyrell: 2 }, { martell: 2 }, { tully: 2 }] },
+  { options: [{ martell: 2 }, { stark: 2 }, { greyjoy: 2 }, { targaryen: 2 }] },
+  { options: [{ baratheon: 2 }, { tyrell: 2 }, { lannister: 2 }, { tully: 2 }] },
+  { options: [{ tully: 2 }, { stark: 2 }, { martell: 2 }, { lannister: 2 }] },
+  { options: [{ tyrell: 2 }, { targaryen: 2 }, { baratheon: 2 }, { greyjoy: 2 }] },
+  { options: [{ greyjoy: 2 }, { tully: 2 }, { stark: 2 }, { baratheon: 2 }] },
+  { options: [{ targaryen: 2 }, { martell: 2 }, { tyrell: 2 }, { lannister: 2 }] },
+  { options: [{ tyrell: 2 }, { greyjoy: 2 }, { lannister: 2 }, { stark: 2 }] },
+  { options: [{ martell: 2 }, { baratheon: 2 }, { tully: 2 }, { targaryen: 2 }] },
+  { options: [{ targaryen: 2 }, { tully: 2 }, { stark: 2 }, { tyrell: 2 }] },
+  { options: [{ lannister: 2 }, { greyjoy: 2 }, { baratheon: 2 }, { martell: 2 }] },
+];
+
+/** Eight Lord of the Rings characters, laid out like `GHIBLI`. */
+const LORD_OF_THE_RINGS: ChoiceItem[] = [
+  { options: [{ frodo: 2 }, { sam: 2 }, { gandalf: 2 }, { aragorn: 2 }] },
+  { options: [{ legolas: 2 }, { gimli: 2 }, { galadriel: 2 }, { bilbo: 2 }] },
+  { options: [{ galadriel: 2 }, { frodo: 2 }, { legolas: 2 }, { gandalf: 2 }] },
+  { options: [{ aragorn: 2 }, { gimli: 2 }, { sam: 2 }, { bilbo: 2 }] },
+  { options: [{ bilbo: 2 }, { frodo: 2 }, { galadriel: 2 }, { sam: 2 }] },
+  { options: [{ gimli: 2 }, { gandalf: 2 }, { aragorn: 2 }, { legolas: 2 }] },
+  { options: [{ legolas: 2 }, { bilbo: 2 }, { frodo: 2 }, { aragorn: 2 }] },
+  { options: [{ gandalf: 2 }, { galadriel: 2 }, { gimli: 2 }, { sam: 2 }] },
+  { options: [{ gimli: 2 }, { legolas: 2 }, { sam: 2 }, { frodo: 2 }] },
+  { options: [{ galadriel: 2 }, { aragorn: 2 }, { bilbo: 2 }, { gandalf: 2 }] },
+  { options: [{ gandalf: 2 }, { bilbo: 2 }, { frodo: 2 }, { gimli: 2 }] },
+  { options: [{ sam: 2 }, { legolas: 2 }, { aragorn: 2 }, { galadriel: 2 }] },
+];
+
+/** Eight Sanrio characters, laid out like `GHIBLI`. */
+const SANRIO: ChoiceItem[] = [
+  { options: [{ kitty: 2 }, { melody: 2 }, { kuromi: 2 }, { cinnamoroll: 2 }] },
+  { options: [{ pompompurin: 2 }, { pochacco: 2 }, { keroppi: 2 }, { badtz: 2 }] },
+  { options: [{ keroppi: 2 }, { kitty: 2 }, { pompompurin: 2 }, { kuromi: 2 }] },
+  { options: [{ cinnamoroll: 2 }, { pochacco: 2 }, { melody: 2 }, { badtz: 2 }] },
+  { options: [{ badtz: 2 }, { kitty: 2 }, { keroppi: 2 }, { melody: 2 }] },
+  { options: [{ pochacco: 2 }, { kuromi: 2 }, { cinnamoroll: 2 }, { pompompurin: 2 }] },
+  { options: [{ pompompurin: 2 }, { badtz: 2 }, { kitty: 2 }, { cinnamoroll: 2 }] },
+  { options: [{ kuromi: 2 }, { keroppi: 2 }, { pochacco: 2 }, { melody: 2 }] },
+  { options: [{ pochacco: 2 }, { pompompurin: 2 }, { melody: 2 }, { kitty: 2 }] },
+  { options: [{ keroppi: 2 }, { cinnamoroll: 2 }, { badtz: 2 }, { kuromi: 2 }] },
+  { options: [{ kuromi: 2 }, { badtz: 2 }, { kitty: 2 }, { pochacco: 2 }] },
+  { options: [{ melody: 2 }, { pompompurin: 2 }, { cinnamoroll: 2 }, { keroppi: 2 }] },
+];
+
+/** Eight cat breeds, laid out like `GHIBLI`. */
+const CAT_BREED: ChoiceItem[] = [
+  { options: [{ mainecoon: 2 }, { siamese: 2 }, { persian: 2 }, { british: 2 }] },
+  { options: [{ bengal: 2 }, { ragdoll: 2 }, { sphynx: 2 }, { russianblue: 2 }] },
+  { options: [{ sphynx: 2 }, { mainecoon: 2 }, { bengal: 2 }, { persian: 2 }] },
+  { options: [{ british: 2 }, { ragdoll: 2 }, { siamese: 2 }, { russianblue: 2 }] },
+  { options: [{ russianblue: 2 }, { mainecoon: 2 }, { sphynx: 2 }, { siamese: 2 }] },
+  { options: [{ ragdoll: 2 }, { persian: 2 }, { british: 2 }, { bengal: 2 }] },
+  { options: [{ bengal: 2 }, { russianblue: 2 }, { mainecoon: 2 }, { british: 2 }] },
+  { options: [{ persian: 2 }, { sphynx: 2 }, { ragdoll: 2 }, { siamese: 2 }] },
+  { options: [{ ragdoll: 2 }, { bengal: 2 }, { siamese: 2 }, { mainecoon: 2 }] },
+  { options: [{ sphynx: 2 }, { british: 2 }, { russianblue: 2 }, { persian: 2 }] },
+  { options: [{ persian: 2 }, { russianblue: 2 }, { mainecoon: 2 }, { ragdoll: 2 }] },
+  { options: [{ siamese: 2 }, { bengal: 2 }, { british: 2 }, { sphynx: 2 }] },
+];
+
+/** Written for cv.cm around perseverance and steady interest (not the Grit Scale or any other published scale), half reversed. */
+const GRIT = likert(Array(7).fill("grit+ grit-").join(" "));
+
 /** Eight SpongeBob SquarePants characters, laid out like `GHIBLI`. */
 const SPONGEBOB: ChoiceItem[] = [
   { options: [{ spongebob: 2 }, { patrick: 2 }, { squidward: 2 }, { sandy: 2 }] },
@@ -1272,6 +1376,66 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     dims: ["spongebob", "patrick", "squidward", "sandy", "krabs", "plankton", "pearl", "gary"],
     items: SPONGEBOB,
     result: { kind: "top", tie: "spread" },
+  },
+  "harry-potter-character": {
+    id: "harry-potter-character",
+    type: "choice",
+    dims: ["harry", "hermione", "ron", "luna", "neville", "draco", "ginny", "dumbledore"],
+    items: HARRY_POTTER,
+    result: { kind: "top", tie: "spread" },
+  },
+  "avatar-character": {
+    id: "avatar-character",
+    type: "choice",
+    dims: ["aang", "katara", "sokka", "toph", "zuko", "iroh", "azula", "suki"],
+    items: AVATAR_CHARACTER,
+    result: { kind: "top", tie: "spread" },
+  },
+  "game-of-thrones-house": {
+    id: "game-of-thrones-house",
+    type: "choice",
+    dims: ["stark", "lannister", "targaryen", "baratheon", "greyjoy", "tyrell", "martell", "tully"],
+    items: GAME_OF_THRONES,
+    result: { kind: "top", tie: "spread" },
+  },
+  "lord-of-the-rings": {
+    id: "lord-of-the-rings",
+    type: "choice",
+    dims: ["frodo", "sam", "gandalf", "aragorn", "legolas", "gimli", "galadriel", "bilbo"],
+    items: LORD_OF_THE_RINGS,
+    result: { kind: "top", tie: "spread" },
+  },
+  sanrio: {
+    id: "sanrio",
+    type: "choice",
+    dims: ["kitty", "melody", "kuromi", "cinnamoroll", "pompompurin", "pochacco", "keroppi", "badtz"],
+    items: SANRIO,
+    result: { kind: "top", tie: "spread" },
+  },
+  "cat-breed": {
+    id: "cat-breed",
+    type: "choice",
+    dims: ["mainecoon", "siamese", "persian", "british", "bengal", "ragdoll", "sphynx", "russianblue"],
+    items: CAT_BREED,
+    result: { kind: "top", tie: "spread" },
+  },
+  insomnia: {
+    id: "insomnia",
+    type: "likert",
+    scale: "agree5",
+    dims: ["sleep"],
+    items: INSOMNIA,
+    // 24 and 39 of 60 are 40% and 65%, as in the OCD and ADHD checks. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 24, key: "few" }, { max: 39, key: "some" }, { max: 60, key: "many" }] },
+  },
+  grit: {
+    id: "grit",
+    type: "likert",
+    scale: "agree5",
+    dims: ["grit"],
+    items: GRIT,
+    // Three equal bands around the neutral total of 28.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "mid" }, { max: 56, key: "high" }] },
   },
   "spirit-animal": {
     id: "spirit-animal",

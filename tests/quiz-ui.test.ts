@@ -209,6 +209,7 @@ describe("test page UI", () => {
     expect(mount("burnout").querySelector(".quiz-hint")?.textContent).toContain("last few weeks");
     expect(mount("stress").querySelector(".quiz-hint")?.textContent).toContain("past month");
     expect(mount("ocd").querySelector(".quiz-hint")?.textContent).toContain("past month");
+    expect(mount("insomnia").querySelector(".quiz-hint")?.textContent).toContain("past month");
     expect(mount("disc").querySelector(".quiz-hint")?.textContent).toContain("as you usually are");
   });
 
