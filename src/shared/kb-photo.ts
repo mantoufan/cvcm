@@ -43,7 +43,7 @@ export const PHOTO_ARTICLE_TOOLS: Partial<Record<PhotoId, readonly ToolId[]>> = 
   "aperture-and-depth-of-field": ["portrait-sim"],
   "shutter-speed": ["portrait-sim", "exif"],
   "iso-and-noise": ["portrait-sim", "exif"],
-  "white-balance": ["portrait-sim", "image-colors"],
+  "white-balance": ["image-colors", "exif"],
   "focal-length": ["portrait-sim", "exif"],
   "rule-of-thirds": ["crop", "aspect"],
   "photo-composition": ["crop", "rotate"],

@@ -2,7 +2,7 @@ import { LOCALES, DEFAULT_LOCALE, type Locale } from "./locale";
 import { GAME_CONSOLES, GAMES, type GameConsoleId, type GameId } from "./games";
 import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
-import { KB_ARTICLES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type KbPage } from "./kb";
+import { KB_ARTICLES, KB_SHELVES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type KbPage } from "./kb";
 import { DATASET_SNAPSHOT, DATASETS, datasetUpdated, type DatasetId } from "./datasets";
 import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
@@ -54,10 +54,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const job of RESIZE_JOBS) pages.push({ locale, kind: "resize-job", job });
     pages.push({ locale, kind: "learn", tutorial: null });
     for (const tutorial of FEATURED_TUTORIALS) pages.push({ locale, kind: "learn", tutorial });
-    pages.push({ locale, kind: "kb", article: null });
-    pages.push({ locale, kind: "kb", article: "code" });
-    pages.push({ locale, kind: "kb", article: "ai" });
-    pages.push({ locale, kind: "kb", article: "photo" });
+    // Every shelf hub (the knowledge hub is article null), then every article.
+    for (const shelf of Object.values(KB_SHELVES)) pages.push({ locale, kind: "kb", article: shelf.hub === "hub" ? null : shelf.hub });
     for (const article of KB_ARTICLES) pages.push({ locale, kind: "kb", article });
     pages.push({ locale, kind: "games", console: null, game: null });
     for (const consoleId of GAME_CONSOLES) {

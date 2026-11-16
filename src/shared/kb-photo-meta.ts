@@ -17,7 +17,7 @@ const META: Record<PhotoId, Omit<KbMeta, "tools">> = {
       { title: "Nikon: A Basic Look at the Basics of Exposure", href: "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/a-basic-look-at-the-basics-of-exposure" },
       { title: "Nikon D3500 Digitutor: P, S, A, and M Modes", href: "https://imaging.nikon.com/imaging/support/digitutor/d3500/functions/shootingmodes.html" },
       { title: "Nikon: Understanding Auto ISO", href: "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/understanding-auto-iso" },
-      { title: "Apple Support: Use iPhone camera tools to set up your shot", href: "https://support.apple.com/guide/iphone/set-up-your-shot-iph3dc593597/ios" },
+      { title: "Apple Support: Use iPhone camera tools", href: "https://support.apple.com/guide/iphone/use-camera-tools-iph3dc593597/ios" },
     ],
   },
   "aperture-and-depth-of-field": {
@@ -133,7 +133,7 @@ const META: Record<PhotoId, Omit<KbMeta, "tools">> = {
     tutorials: ["crop-photo"],
     related: ["how-to-pose-for-photos", "aperture-and-depth-of-field", "focal-length", "self-portrait-photography"],
     sources: [
-      { title: "Canon SNAPSHOT: Portrait Photography: 3 Aperture Settings Favoured by Professional Photographers", href: "https://snapshot.canon-asia.com/article/eng/portrait-photography-3-aperture-settings-favoured-by-professional-photographers" },
+      { title: "Canon SNAPSHOT: Portrait Photography: 3 Aperture Settings Favoured by Professional Photographers", href: "https://snapshot.asia.canon/en/article/portrait-photography-3-aperture-settings-favoured-by-professional-photographers" },
       { title: "Nikon USA: Quick Tips for Taking Better Portraits", href: "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/quick-tips-for-taking-better-portraits" },
       { title: "Apple iPhone User Guide: Take portraits with your iPhone camera", href: "https://support.apple.com/guide/iphone/take-portraits-iphd7d3a91a2/ios" },
     ],
@@ -156,7 +156,7 @@ const META: Record<PhotoId, Omit<KbMeta, "tools">> = {
       { title: "Nikon USA: Have Fun Shooting Selfies (Self-Portrait) Photos", href: "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/have-fun-shooting-selfies-self-portrait-photos" },
       { title: "Nikon USA: Remotely taking photographs", href: "https://www.nikonusa.com/learn-and-explore/c/products-and-innovation/remotely-taking-photographs" },
       { title: "Canon Snapshot: How to Capture a Windswept Hair Self-Portrait at Home", href: "https://snapshot.asia.canon/en/article/how-to-capture-a-windswept-hair-self-portrait-at-home" },
-      { title: "Apple Support: Use iPhone camera tools to set up your shot", href: "https://support.apple.com/guide/iphone/iph3dc593597/ios" },
+      { title: "Apple Support: Use iPhone camera tools", href: "https://support.apple.com/guide/iphone/use-camera-tools-iph3dc593597/ios" },
       { title: "Pixel Camera Help: Take a selfie on your Pixel phone or tablet", href: "https://support.google.com/pixelcamera/answer/9937027?hl=en" },
     ],
   },
@@ -168,7 +168,7 @@ const META: Record<PhotoId, Omit<KbMeta, "tools">> = {
       { title: "Canon Snapshot: Indoor Wedding Photography with Available Light: 3 Simple Techniques", href: "https://snapshot.asia.canon/en/article/indoor-wedding-photography-with-available-light-3-simple-techniques" },
       { title: "Nikon USA: Using the Highlight-Weighted Metering Mode", href: "https://www.nikonusa.com/learn-and-explore/c/products-and-innovation/using-the-highlight-weighted-metering-mode" },
       { title: "Nikon USA: Remotely taking photographs", href: "https://www.nikonusa.com/learn-and-explore/c/products-and-innovation/remotely-taking-photographs" },
-      { title: "Apple Support: Use iPhone camera tools to set up your shot", href: "https://support.apple.com/guide/iphone/iph3dc593597/ios" },
+      { title: "Apple Support: Use iPhone camera tools", href: "https://support.apple.com/guide/iphone/use-camera-tools-iph3dc593597/ios" },
       { title: "NOAA Global Monitoring Laboratory: Solar Calculator", href: "https://gml.noaa.gov/grad/solcalc/" },
     ],
   },
@@ -199,7 +199,7 @@ const META: Record<PhotoId, Omit<KbMeta, "tools">> = {
     tutorials: ["crop-photo", "remove-exif"],
     related: ["selfie-tips", "night-photography", "focal-length", "photo-composition"],
     sources: [
-      { title: "Apple iPhone User Guide: Use iPhone camera tools to set up your shot", href: "https://support.apple.com/guide/iphone/set-up-your-shot-iph3dc593597/ios" },
+      { title: "Apple Support: Use iPhone camera tools", href: "https://support.apple.com/guide/iphone/use-camera-tools-iph3dc593597/ios" },
       { title: "Apple iPhone User Guide: Take Night mode photos with your iPhone camera", href: "https://support.apple.com/guide/iphone/take-night-mode-photos-iph1a3c5b4c3/ios" },
       { title: "Pixel Camera Help: Take high quality photos on your Pixel phone or tablet", href: "https://support.google.com/pixelcamera/answer/14106982?hl=en" },
       { title: "Pixel Camera Help: Take photos in low light or at night on your Pixel phone or tablet", href: "https://support.google.com/pixelcamera/answer/9708795?hl=en" },
@@ -212,7 +212,7 @@ const META: Record<PhotoId, Omit<KbMeta, "tools">> = {
     sources: [
       { title: "Nikon UK: 5 exposure settings to try for night-time photography", href: "https://www.nikon.co.uk/en_GB/learn-and-explore/magazine/tips-and-tricks/5-exposure-settings-to-try-for-night-time-photography--an-advanced-guide" },
       { title: "Nikon USA: Taking Pictures at Dusk and at Night", href: "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/taking-pictures-at-dusk-and-at-night" },
-      { title: "Canon SNAPSHOT: Nightscape Photography, Light Trails", href: "https://snapshot.canon-asia.com/article/eng/part-1-nightscape-photography-8211-light-trails" },
+      { title: "Canon SNAPSHOT: Nightscape Photography, Light Trails", href: "https://snapshot.asia.canon/en/article/part-1-nightscape-photography-8211-light-trails" },
       { title: "Pixel Camera Help: Take photos in low light or at night on your Pixel phone or tablet", href: "https://support.google.com/pixelcamera/answer/9708795?hl=en" },
       { title: "Apple iPhone User Guide: Take Night mode photos with your iPhone camera", href: "https://support.apple.com/guide/iphone/take-night-mode-photos-iph1a3c5b4c3/ios" },
     ],
@@ -234,9 +234,9 @@ const META: Record<PhotoId, Omit<KbMeta, "tools">> = {
     tutorials: ["crop-photo", "make-collage"],
     related: ["phone-photography", "white-balance", "product-photography", "photo-composition"],
     sources: [
-      { title: "Canon SNAPSHOT: Tips for Your First Food Photography Shoot", href: "https://snapshot.canon-asia.com/article/eng/tips-for-your-first-food-photography-shoot" },
+      { title: "Canon SNAPSHOT: Tips for Your First Food Photography Shoot", href: "https://snapshot.asia.canon/en/article/tips-for-your-first-food-photography-shoot" },
       { title: "Nikon UK: How to photograph restaurant food", href: "https://www.nikon.co.uk/en_GB/learn-and-explore/magazine/tips-and-tricks/how-to-photograph-restaurant-food" },
-      { title: "Canon SNAPSHOT: Take Better Food Photos: 3 Simple Tips", href: "https://snapshot.canon-asia.com/article/eng/take-better-food-photos-3-simple-tips" },
+      { title: "Canon SNAPSHOT: Take Better Food Photos: 3 Simple Tips", href: "https://snapshot.asia.canon/en/article/take-better-food-photos-3-simple-tips" },
     ],
   },
   "product-photography": {
@@ -247,7 +247,7 @@ const META: Record<PhotoId, Omit<KbMeta, "tools">> = {
       { title: "Nikon USA: Bright Ideas: Tips and Techniques for Photographing Jewelry", href: "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/bright-ideas-tips-and-techniques-for-photographing-jewelry" },
       { title: "Nikon USA: Transforming Plain White Seamless Paper into Colorful and Fun Backgrounds", href: "https://www.nikonusa.com/learn-and-explore/c/tips-and-techniques/transforming-plain-white-seamless-into-fun-backgrounds" },
       { title: "Canon EOS R7 Product Manual: Focus Bracketing", href: "https://cam.start.canon/en/C005/manual/html/UG-04_Shooting-1_0320.html" },
-      { title: "Canon SNAPSHOT: Simple Product Photography: Flowers & Confectionery", href: "https://snapshot.canon-asia.com/article/eng/simple-product-photography-flowers-confectionery" },
+      { title: "Canon SNAPSHOT: Simple Product Photography: Flowers & Confectionery", href: "https://snapshot.asia.canon/en/article/simple-product-photography-flowers-confectionery" },
     ],
   },
 };
