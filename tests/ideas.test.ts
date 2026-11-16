@@ -193,9 +193,15 @@ describe("ideas: content", () => {
     }
   }, 30_000);
 
-  it("keeps meta descriptions short enough for search results", () => {
-    for (const locale of LOCALES) for (const id of IDEA_ENTRIES) {
-      expect([...ideaCopy(locale, id).description].length, `${locale} ${id}`).toBeLessThanOrEqual(160);
+  it("keeps meta descriptions short enough for search results (hub and ideas)", () => {
+    // Search snippets are cut by width: Chinese and Japanese characters are about twice as wide as Latin letters,
+    // Korean in between.
+    const limit = (locale: Locale): number => (locale === "zh-CN" || locale === "zh-TW" || locale === "ja" ? 90 : locale === "ko" ? 110 : 160);
+    for (const locale of LOCALES) {
+      expect([...pageDescription(locale, { ideas: true })].length, `${locale} hub`).toBeLessThanOrEqual(limit(locale));
+      for (const id of IDEA_ENTRIES) {
+        expect([...ideaCopy(locale, id).description].length, `${locale} ${id}`).toBeLessThanOrEqual(limit(locale));
+      }
     }
   });
 

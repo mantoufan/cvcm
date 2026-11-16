@@ -67,7 +67,6 @@ const ORIGIN = "https://cv.cm";
 
 export type IdeasUi = IdeasMessages["ui"];
 
-
 export function ideasHub(locale: Locale): IdeasMessages["hub"] {
   return ideasMessages(locale).hub;
 }
@@ -106,7 +105,6 @@ export function ideaFaqItems(locale: Locale, id: IdeaId | null): { q: string; a:
   return id ? ideaCopy(locale, id).faq : ideasHub(locale).faq.map((item) => ({ q: fill(item.q, hubVars(locale)), a: fill(item.a, hubVars(locale)) }));
 }
 
-
 /** Every idea with data, best outlook score first (ties: more demand first, then catalog order). */
 export function rankedIdeas(locale: Locale): { id: IdeaId; data: IdeaData }[] {
   return IDEA_ENTRIES
@@ -116,7 +114,6 @@ export function rankedIdeas(locale: Locale): { id: IdeaId; data: IdeaData }[] {
     })
     .sort((a, b) => b.data.scores.total - a.data.scores.total || b.data.scores.demand - a.data.scores.demand);
 }
-
 
 export function ideaSources(locale: Locale, id: IdeaId): { name: string; url: string }[] {
   return ideasMessages(locale).sources[id] ?? [];

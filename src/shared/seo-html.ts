@@ -38,7 +38,6 @@ function ogImage(seo: SeoInput): string | null {
   return null;
 }
 
-
 /** Head tags for the page, and its body: the prerendered markup when given, else a plain text copy. */
 export function applyHtmlSeo(
   html: string,
