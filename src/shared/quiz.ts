@@ -207,6 +207,8 @@ const LEFT_RIGHT_BRAIN = likert(Array(7).fill("right+ right-").join(" "));
 const CODEPENDENCY = likert(Array(7).fill("codep+ codep-").join(" "));
 /** Written for cv.cm (not the Clance IP Scale or any other published scale): impostor feelings, half reversed. */
 const IMPOSTER = likert(Array(7).fill("imposter+ imposter-").join(" "));
+/** Written for cv.cm around perseverance and steady interest (not the Grit Scale or any other published scale), half reversed. */
+const GRIT = likert(Array(7).fill("grit+ grit-").join(" "));
 
 /**
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
@@ -849,9 +851,6 @@ const CAT_BREED: ChoiceItem[] = [
   { options: [{ siamese: 2 }, { bengal: 2 }, { british: 2 }, { sphynx: 2 }] },
 ];
 
-/** Written for cv.cm around perseverance and steady interest (not the Grit Scale or any other published scale), half reversed. */
-const GRIT = likert(Array(7).fill("grit+ grit-").join(" "));
-
 /** Eight SpongeBob SquarePants characters, laid out like `GHIBLI`. */
 const SPONGEBOB: ChoiceItem[] = [
   { options: [{ spongebob: 2 }, { patrick: 2 }, { squidward: 2 }, { sandy: 2 }] },
@@ -1480,6 +1479,8 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
  * Band results that show the gentler support box (helplines, "you don't have to wait for a crisis") when the crisis box
  * does not apply: results whose copy recommends seeing a doctor now, not "if it doesn't improve". WHO-5 scores of 28 or
  * less often go with depression, but the WHO-5 asks nothing about self-harm. Where both apply, the crisis box wins.
+ * Not insomnia: its "see a doctor" is sleep advice, and these are emotional-support lines; its high band links the
+ * depression check instead (FOLLOW_UP).
  */
 export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   "wellbeing-index": ["low"],
@@ -1489,7 +1490,6 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   stress: ["high"],
   "social-anxiety": ["high"],
   ocd: ["many"],
-  insomnia: ["many"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
