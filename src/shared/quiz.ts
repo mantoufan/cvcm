@@ -4,12 +4,12 @@
 
 export const QUIZ_GROUPS = [
   { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad"] },
-  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush"] },
-  { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money"] },
+  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency"] },
+  { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money", "imposter-syndrome"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
-  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "anime"] },
-  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed"] },
+  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "anime"] },
+  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain"] },
   { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "adhd"] },
 ] as const;
 
@@ -196,6 +196,12 @@ const SOCIAL_ANXIETY = likert(Array(7).fill("social+ social-").join(" "));
  * thoughts, and the time and distress rituals take). Not the Y-BOCS or OCI-R, not clinically validated; the copy says so.
  */
 const OCD = likert(Array(15).fill("ocd+").join(" "));
+/** Thinking style from analytic ("left-brain") to holistic ("right-brain"), written for cv.cm; analytic statements reversed. */
+const LEFT_RIGHT_BRAIN = likert(Array(7).fill("right+ right-").join(" "));
+/** Written for cv.cm around common descriptions of codependency (not any published scale), half reversed. */
+const CODEPENDENCY = likert(Array(7).fill("codep+ codep-").join(" "));
+/** Written for cv.cm (not the Clance IP Scale or any other published scale): impostor feelings, half reversed. */
+const IMPOSTER = likert(Array(7).fill("imposter+ imposter-").join(" "));
 
 /**
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
@@ -726,6 +732,95 @@ const CRUSH: ChoiceItem[] = [
   { options: [{ signs: 1 }, { signs: 3 }, { signs: 0 }, { signs: 2 }] },
 ];
 
+/** Eight Attack on Titan characters, laid out like `GHIBLI`. */
+const ATTACK_ON_TITAN: ChoiceItem[] = [
+  { options: [{ eren: 2 }, { mikasa: 2 }, { armin: 2 }, { levi: 2 }] },
+  { options: [{ erwin: 2 }, { hange: 2 }, { jean: 2 }, { sasha: 2 }] },
+  { options: [{ jean: 2 }, { eren: 2 }, { erwin: 2 }, { armin: 2 }] },
+  { options: [{ levi: 2 }, { hange: 2 }, { mikasa: 2 }, { sasha: 2 }] },
+  { options: [{ sasha: 2 }, { eren: 2 }, { jean: 2 }, { mikasa: 2 }] },
+  { options: [{ hange: 2 }, { armin: 2 }, { levi: 2 }, { erwin: 2 }] },
+  { options: [{ erwin: 2 }, { sasha: 2 }, { eren: 2 }, { levi: 2 }] },
+  { options: [{ armin: 2 }, { jean: 2 }, { hange: 2 }, { mikasa: 2 }] },
+  { options: [{ hange: 2 }, { erwin: 2 }, { mikasa: 2 }, { eren: 2 }] },
+  { options: [{ jean: 2 }, { levi: 2 }, { sasha: 2 }, { armin: 2 }] },
+  { options: [{ armin: 2 }, { sasha: 2 }, { eren: 2 }, { hange: 2 }] },
+  { options: [{ mikasa: 2 }, { erwin: 2 }, { levi: 2 }, { jean: 2 }] },
+];
+
+/** Eight SpongeBob SquarePants characters, laid out like `GHIBLI`. */
+const SPONGEBOB: ChoiceItem[] = [
+  { options: [{ spongebob: 2 }, { patrick: 2 }, { squidward: 2 }, { sandy: 2 }] },
+  { options: [{ krabs: 2 }, { plankton: 2 }, { pearl: 2 }, { gary: 2 }] },
+  { options: [{ pearl: 2 }, { spongebob: 2 }, { krabs: 2 }, { squidward: 2 }] },
+  { options: [{ sandy: 2 }, { plankton: 2 }, { patrick: 2 }, { gary: 2 }] },
+  { options: [{ gary: 2 }, { spongebob: 2 }, { pearl: 2 }, { patrick: 2 }] },
+  { options: [{ plankton: 2 }, { squidward: 2 }, { sandy: 2 }, { krabs: 2 }] },
+  { options: [{ krabs: 2 }, { gary: 2 }, { spongebob: 2 }, { sandy: 2 }] },
+  { options: [{ squidward: 2 }, { pearl: 2 }, { plankton: 2 }, { patrick: 2 }] },
+  { options: [{ plankton: 2 }, { krabs: 2 }, { patrick: 2 }, { spongebob: 2 }] },
+  { options: [{ pearl: 2 }, { sandy: 2 }, { gary: 2 }, { squidward: 2 }] },
+  { options: [{ squidward: 2 }, { gary: 2 }, { spongebob: 2 }, { plankton: 2 }] },
+  { options: [{ patrick: 2 }, { krabs: 2 }, { sandy: 2 }, { pearl: 2 }] },
+];
+
+/** Eight aesthetics, laid out like `GHIBLI`. */
+const AESTHETIC: ChoiceItem[] = [
+  { options: [{ cottagecore: 2 }, { academia: 2 }, { minimalist: 2 }, { y2k: 2 }] },
+  { options: [{ coastal: 2 }, { grunge: 2 }, { boho: 2 }, { streetwear: 2 }] },
+  { options: [{ boho: 2 }, { cottagecore: 2 }, { coastal: 2 }, { minimalist: 2 }] },
+  { options: [{ y2k: 2 }, { grunge: 2 }, { academia: 2 }, { streetwear: 2 }] },
+  { options: [{ streetwear: 2 }, { cottagecore: 2 }, { boho: 2 }, { academia: 2 }] },
+  { options: [{ grunge: 2 }, { minimalist: 2 }, { y2k: 2 }, { coastal: 2 }] },
+  { options: [{ coastal: 2 }, { streetwear: 2 }, { cottagecore: 2 }, { y2k: 2 }] },
+  { options: [{ minimalist: 2 }, { boho: 2 }, { grunge: 2 }, { academia: 2 }] },
+  { options: [{ grunge: 2 }, { coastal: 2 }, { academia: 2 }, { cottagecore: 2 }] },
+  { options: [{ boho: 2 }, { y2k: 2 }, { streetwear: 2 }, { minimalist: 2 }] },
+  { options: [{ minimalist: 2 }, { streetwear: 2 }, { cottagecore: 2 }, { grunge: 2 }] },
+  { options: [{ academia: 2 }, { coastal: 2 }, { y2k: 2 }, { boho: 2 }] },
+];
+
+/**
+ * Six Friends characters, laid out like `AVENGERS`; the pairs never left out together are Monica and Phoebe, Ross and
+ * Joey, Chandler and Rachel.
+ */
+const FRIENDS: ChoiceItem[] = [
+  { options: [{ monica: 2 }, { ross: 2 }, { joey: 2 }, { chandler: 2 }] },
+  { options: [{ chandler: 2 }, { phoebe: 2 }, { rachel: 2 }, { joey: 2 }] },
+  { options: [{ ross: 2 }, { chandler: 2 }, { phoebe: 2 }, { monica: 2 }] },
+  { options: [{ rachel: 2 }, { joey: 2 }, { phoebe: 2 }, { ross: 2 }] },
+  { options: [{ ross: 2 }, { rachel: 2 }, { monica: 2 }, { chandler: 2 }] },
+  { options: [{ monica: 2 }, { phoebe: 2 }, { chandler: 2 }, { joey: 2 }] },
+  { options: [{ rachel: 2 }, { ross: 2 }, { chandler: 2 }, { phoebe: 2 }] },
+  { options: [{ chandler: 2 }, { monica: 2 }, { joey: 2 }, { rachel: 2 }] },
+  { options: [{ phoebe: 2 }, { rachel: 2 }, { ross: 2 }, { monica: 2 }] },
+  { options: [{ joey: 2 }, { chandler: 2 }, { ross: 2 }, { phoebe: 2 }] },
+  { options: [{ joey: 2 }, { monica: 2 }, { rachel: 2 }, { ross: 2 }] },
+  { options: [{ phoebe: 2 }, { joey: 2 }, { monica: 2 }, { rachel: 2 }] },
+];
+
+/**
+ * Seasonal color analysis, simplified to two axes: odd questions ask about undertone (warm or cool), even ones about
+ * depth (light or deep). Each is a two-way choice worth 2 or nothing, seven a side, so neither axis can land on exactly
+ * 50%. The scoring answer alternates between first and second place.
+ */
+const PERSONAL_COLOR: ChoiceItem[] = [
+  { options: [{ warm: 2 }, {}] },
+  { options: [{}, { deep: 2 }] },
+  { options: [{}, { warm: 2 }] },
+  { options: [{ deep: 2 }, {}] },
+  { options: [{ warm: 2 }, {}] },
+  { options: [{}, { deep: 2 }] },
+  { options: [{}, { warm: 2 }] },
+  { options: [{ deep: 2 }, {}] },
+  { options: [{ warm: 2 }, {}] },
+  { options: [{}, { deep: 2 }] },
+  { options: [{}, { warm: 2 }] },
+  { options: [{ deep: 2 }, {}] },
+  { options: [{ warm: 2 }, {}] },
+  { options: [{}, { deep: 2 }] },
+];
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -1114,6 +1209,68 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     type: "choice",
     dims: ["golden", "collie", "shepherd", "chihuahua", "husky", "corgi", "poodle", "beagle"],
     items: DOG_BREED,
+    result: { kind: "top", tie: "spread" },
+  },
+  "personal-color": {
+    id: "personal-color",
+    type: "choice",
+    dims: ["warm", "deep"],
+    items: PERSONAL_COLOR,
+    result: { kind: "quadrant", x: "warm", y: "deep", results: { lowLow: "summer", highLow: "spring", lowHigh: "winter", highHigh: "autumn" } },
+  },
+  "left-right-brain": {
+    id: "left-right-brain",
+    type: "likert",
+    scale: "agree5",
+    dims: ["right"],
+    items: LEFT_RIGHT_BRAIN,
+    // Three equal bands around the neutral total of 28.
+    result: { kind: "band", bands: [{ max: 18, key: "left" }, { max: 37, key: "balanced" }, { max: 56, key: "right" }] },
+  },
+  aesthetic: {
+    id: "aesthetic",
+    type: "choice",
+    dims: ["cottagecore", "academia", "minimalist", "y2k", "coastal", "grunge", "boho", "streetwear"],
+    items: AESTHETIC,
+    result: { kind: "top", tie: "spread" },
+  },
+  codependency: {
+    id: "codependency",
+    type: "likert",
+    scale: "agree5",
+    dims: ["codep"],
+    items: CODEPENDENCY,
+    // Three equal bands around the neutral total of 28. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "some" }, { max: 56, key: "high" }] },
+  },
+  "imposter-syndrome": {
+    id: "imposter-syndrome",
+    type: "likert",
+    scale: "agree5",
+    dims: ["imposter"],
+    items: IMPOSTER,
+    // Three equal bands around the neutral total of 28.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "moderate" }, { max: 56, key: "high" }] },
+  },
+  "attack-on-titan": {
+    id: "attack-on-titan",
+    type: "choice",
+    dims: ["eren", "mikasa", "armin", "levi", "erwin", "hange", "jean", "sasha"],
+    items: ATTACK_ON_TITAN,
+    result: { kind: "top", tie: "spread" },
+  },
+  "friends-character": {
+    id: "friends-character",
+    type: "choice",
+    dims: ["rachel", "monica", "phoebe", "joey", "chandler", "ross"],
+    items: FRIENDS,
+    result: { kind: "top", tie: "spread" },
+  },
+  spongebob: {
+    id: "spongebob",
+    type: "choice",
+    dims: ["spongebob", "patrick", "squidward", "sandy", "krabs", "plankton", "pearl", "gary"],
+    items: SPONGEBOB,
     result: { kind: "top", tie: "spread" },
   },
   "spirit-animal": {
