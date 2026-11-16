@@ -7,9 +7,9 @@ export const QUIZ_GROUPS = [
   { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency"] },
   { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money", "imposter-syndrome", "grit"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
-  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "anime"] },
+  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "sanrio", "anime"] },
   { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob", "harry-potter-character", "lord-of-the-rings", "game-of-thrones-house"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed", "sanrio"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed"] },
   { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd"] },
 ] as const;
 
@@ -753,7 +753,7 @@ const ATTACK_ON_TITAN: ChoiceItem[] = [
   { options: [{ mikasa: 2 }, { erwin: 2 }, { levi: 2 }, { jean: 2 }] },
 ];
 
-/** Eight Harry Potter characters, laid out like `GHIBLI`. */
+/** Eight Harry Potter characters: the `GHIBLI` layout with the results relabeled. */
 const HARRY_POTTER: ChoiceItem[] = [
   { options: [{ harry: 2 }, { hermione: 2 }, { ron: 2 }, { luna: 2 }] },
   { options: [{ neville: 2 }, { draco: 2 }, { ginny: 2 }, { dumbledore: 2 }] },
@@ -769,7 +769,7 @@ const HARRY_POTTER: ChoiceItem[] = [
   { options: [{ hermione: 2 }, { neville: 2 }, { luna: 2 }, { ginny: 2 }] },
 ];
 
-/** Eight Avatar: The Last Airbender characters, laid out like `GHIBLI`. */
+/** Eight Avatar: The Last Airbender characters: the `GHIBLI` layout with the results relabeled. */
 const AVATAR_CHARACTER: ChoiceItem[] = [
   { options: [{ aang: 2 }, { katara: 2 }, { sokka: 2 }, { toph: 2 }] },
   { options: [{ zuko: 2 }, { iroh: 2 }, { azula: 2 }, { suki: 2 }] },
@@ -785,7 +785,7 @@ const AVATAR_CHARACTER: ChoiceItem[] = [
   { options: [{ katara: 2 }, { zuko: 2 }, { toph: 2 }, { azula: 2 }] },
 ];
 
-/** Eight Game of Thrones houses, laid out like `GHIBLI`. */
+/** Eight Game of Thrones houses: the `GHIBLI` layout with the results relabeled. */
 const GAME_OF_THRONES: ChoiceItem[] = [
   { options: [{ stark: 2 }, { lannister: 2 }, { targaryen: 2 }, { baratheon: 2 }] },
   { options: [{ greyjoy: 2 }, { tyrell: 2 }, { martell: 2 }, { tully: 2 }] },
@@ -801,7 +801,7 @@ const GAME_OF_THRONES: ChoiceItem[] = [
   { options: [{ lannister: 2 }, { greyjoy: 2 }, { baratheon: 2 }, { martell: 2 }] },
 ];
 
-/** Eight Lord of the Rings characters, laid out like `GHIBLI`. */
+/** Eight Lord of the Rings characters: the `GHIBLI` layout with the results relabeled. */
 const LORD_OF_THE_RINGS: ChoiceItem[] = [
   { options: [{ frodo: 2 }, { sam: 2 }, { gandalf: 2 }, { aragorn: 2 }] },
   { options: [{ legolas: 2 }, { gimli: 2 }, { galadriel: 2 }, { bilbo: 2 }] },
@@ -817,7 +817,7 @@ const LORD_OF_THE_RINGS: ChoiceItem[] = [
   { options: [{ sam: 2 }, { legolas: 2 }, { aragorn: 2 }, { galadriel: 2 }] },
 ];
 
-/** Eight Sanrio characters, laid out like `GHIBLI`. */
+/** Eight Sanrio characters: the `GHIBLI` layout with the results relabeled. */
 const SANRIO: ChoiceItem[] = [
   { options: [{ kitty: 2 }, { melody: 2 }, { kuromi: 2 }, { cinnamoroll: 2 }] },
   { options: [{ pompompurin: 2 }, { pochacco: 2 }, { keroppi: 2 }, { badtz: 2 }] },
@@ -833,7 +833,7 @@ const SANRIO: ChoiceItem[] = [
   { options: [{ melody: 2 }, { pompompurin: 2 }, { cinnamoroll: 2 }, { keroppi: 2 }] },
 ];
 
-/** Eight cat breeds, laid out like `GHIBLI`. */
+/** Eight cat breeds: the `GHIBLI` layout with the results relabeled. */
 const CAT_BREED: ChoiceItem[] = [
   { options: [{ mainecoon: 2 }, { siamese: 2 }, { persian: 2 }, { british: 2 }] },
   { options: [{ bengal: 2 }, { ragdoll: 2 }, { sphynx: 2 }, { russianblue: 2 }] },
@@ -1489,6 +1489,7 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   stress: ["high"],
   "social-anxiety": ["high"],
   ocd: ["many"],
+  insomnia: ["many"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
@@ -1497,6 +1498,7 @@ export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz:
   burnout: { bands: ["high"], quiz: "depression" },
   stress: { bands: ["high"], quiz: "anxiety" },
   "social-anxiety": { bands: ["high"], quiz: "anxiety" },
+  insomnia: { bands: ["many"], quiz: "depression" },
 };
 
 export function questionCount(id: QuizId): number {

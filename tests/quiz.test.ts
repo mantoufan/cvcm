@@ -430,7 +430,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("stress", QUIZ_DEFS.stress.items.map((_, i) => (i % 2 === 0 ? 4 : 0))).safety).toBe(false);
   });
 
-  it("bands the insomnia self-check like the OCD check, with no help box or follow-up", () => {
+  it("bands the insomnia self-check like the OCD check, with help and the depression check at many", () => {
     expect(maxTotal("insomnia")).toBe(60);
     expect(QUIZ_DEFS.insomnia.items.some((item) => "rev" in item)).toBe(false);
     const answersFor = (points: number): number[] => Array.from({ length: 15 }, (_, i) => Math.max(0, Math.min(4, points - i * 4)));
@@ -438,8 +438,8 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("insomnia", answersFor(25)).key).toBe("some");
     expect(scoreQuiz("insomnia", answersFor(39)).key).toBe("some");
     expect(scoreQuiz("insomnia", answersFor(40))).toMatchObject({ key: "many", safety: false });
-    expect(SUPPORT.insomnia).toBeUndefined();
-    expect(FOLLOW_UP.insomnia).toBeUndefined();
+    expect(SUPPORT.insomnia).toEqual(["many"]);
+    expect(FOLLOW_UP.insomnia).toEqual({ bands: ["many"], quiz: "depression" });
   });
 
   it("bands the OCD self-check from few to many signs, with help at many and no crisis box", () => {
