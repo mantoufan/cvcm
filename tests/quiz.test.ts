@@ -344,6 +344,20 @@ describe("test pages: scoring", () => {
     // 5 assertive, 4 aggressive, 3 passive: assertive leads alone.
     const lead = [...Array(5).fill("assertive"), ...Array(4).fill("aggressive"), ...Array(3).fill("passive")];
     expect(scoreQuiz("communication-style", pickStyles(lead)).key).toBe("assertive");
+    // Random answers: every style about equally often among the results that aren't mixed.
+    const next = randomInts(7);
+    const counts = new Map<string, number>();
+    const runs = 20000;
+    for (let n = 0; n < runs; n++) {
+      const key = scoreQuiz("communication-style", def.items.map((item) => next(item.options.length))).key;
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    const single = runs - (counts.get("mixed") ?? 0);
+    for (const dim of def.dims) {
+      const share = ((counts.get(dim) ?? 0) * def.dims.length) / single;
+      expect(share, dim).toBeGreaterThan(0.9);
+      expect(share, dim).toBeLessThan(1.1);
+    }
   });
 
   it("scores marriage areas and names the weakest", () => {
@@ -866,7 +880,8 @@ describe("test pages: scoring", () => {
   // (all of them in one test passed 30 s on a busy machine). Each quiz gets its own seed, so quizzes that share a
   // layout are not scored on the same answers.
   it.each(BALANCED_CHOICE)("lets no %s result dominate random answers", (id) => {
-    const next = randomInts(42 + BALANCED_CHOICE.indexOf(id));
+    // Seeded from the id, so adding or reordering quizzes doesn't reseed the others.
+    const next = randomInts([...id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 42));
     const def = QUIZ_DEFS[id];
     if (def.type !== "choice") throw new Error();
     const counts = new Map<string, number>();

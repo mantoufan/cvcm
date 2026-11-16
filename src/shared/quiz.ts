@@ -1669,6 +1669,16 @@ function tieHash(text: string): number {
  * Highest first; a tie keeps definition order. With `hits` (see `top`), each group of tied results is reordered by a
  * hash of the answers that scored them, so answers that only touch other results never change who wins the tie.
  */
+/**
+ * The results tied for the highest exact share (raw against each result's own range, not the rounded percentage), in
+ * ranked order. Used by `tie: "mixed"`, where a rounding tie must not count and a real tie must never be missed.
+ */
+export function topTied(ranked: readonly DimScore[]): DimScore[] {
+  const cmp = (a: DimScore, b: DimScore): number => (a.raw - a.min) * (b.max - b.min) - (b.raw - b.min) * (a.max - a.min);
+  const best = ranked.reduce((top, s) => (cmp(s, top) > 0 ? s : top), ranked[0]);
+  return ranked.filter((s) => cmp(s, best) === 0);
+}
+
 function rank(scores: DimScore[], hits?: ReadonlyMap<string, readonly string[]>): DimScore[] {
   // With hits, compare exact shares: two results whose percentages only round to the same number are not tied.
   const exact = (a: DimScore, b: DimScore): number => (hits ? b.raw * a.max - a.raw * b.max : 0);
@@ -1771,7 +1781,11 @@ function resultKey(rule: ResultRule, scores: DimScore[], ranked: DimScore[], tot
       // Each pair leans to its first letter above 50%. A tie goes to the second letter (I, N, F, P), as in MBTI scoring.
       return scores.map((s) => (s.pct > 50 ? s.dim[0] : s.dim[1])).join("");
     case "top":
-      return rule.tie === "mixed" && ranked.length > 1 && ranked[1].raw === ranked[0].raw ? "mixed" : ranked[0].dim;
+      if (rule.tie === "mixed") {
+        const tied = topTied(ranked);
+        return tied.length > 1 ? "mixed" : tied[0].dim;
+      }
+      return ranked[0].dim;
     case "code":
       return ranked.slice(0, 3).map((s) => s.dim).join("");
     case "quadrant": {
