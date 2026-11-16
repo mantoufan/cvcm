@@ -1,5 +1,5 @@
 import type { Locale } from "./locale";
-import { KB_SHELVES, kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbMinutesOf, kbShelfOf, kbShelfOfPage, kbUpdatedOn, type KbId, type KbPage, type KbShelf } from "./kb";
+import { KB_SHELVES, kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbShelfOf, kbShelfOfPage, kbUpdatedOn, type KbId, type KbPage, type KbShelf } from "./kb";
 import { kbArticleMessages, kbMessages, messages, type KbMessages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref } from "./path";
@@ -25,14 +25,9 @@ export type KbArticleCopy = {
 };
 
 export type KbUi = KbMessages["ui"];
-
 export type KbHubCopy = Omit<KbMessages["hub"], "groups"> & { groups: Record<string, string>; kicker?: string; all?: string };
 
 const ORIGIN = "https://cv.cm";
-
-export function kbUi(locale: Locale): KbUi {
-  return kbMessages(locale).ui;
-}
 
 /** Hub copy of a shelf: `hub` for knowledge, `codeHub` for coding, `aiHub` for AI. */
 export function kbHub(locale: Locale, shelf: KbShelf = "knowledge"): KbHubCopy {
@@ -64,22 +59,13 @@ export function kbFaqItems(locale: Locale, page: KbPage): { q: string; a: string
   return id ? kbCopy(locale, id).faq : kbHub(locale, kbShelfOfPage(page)).faq;
 }
 
+
 /** When this locale's page last changed (copy or sources), from `npm run kb:sync`. */
 export function kbUpdated(locale: Locale, id: KbId): string {
   return kbUpdatedOn(id, locale);
 }
 
-/** Reading time in minutes, precomputed by `npm run kb:sync` so lists need no article copy. */
-export function kbMinutes(locale: Locale, id: KbId): number {
-  return kbMinutesOf(id, locale);
-}
-
-/** data-nav of a shelf's hub links (main.ts prefetches the kb pack on hover). */
-export function kbHubNav(shelf: KbShelf): string {
-  return KB_SHELVES[shelf].nav;
-}
-
-export function hubOf(shelf: KbShelf): KbPage {
+export function kbHubOf(shelf: KbShelf): KbPage {
   return KB_SHELVES[shelf].hub;
 }
 
@@ -94,7 +80,7 @@ export function kbBreadcrumbJsonLd(locale: Locale, page: KbPage): Record<string,
   const items = [
     { name: m.crumbHome, item: `${ORIGIN}${appHref(locale, null)}` },
     { name: m.ui.learn, item: `${ORIGIN}${learnHref(locale)}` },
-    { name: kbHub(locale, shelf).h1, item: `${ORIGIN}${kbHref(locale, hubOf(shelf))}` },
+    { name: kbHub(locale, shelf).h1, item: `${ORIGIN}${kbHref(locale, kbHubOf(shelf))}` },
   ];
   if (id) items.push({ name: kbName(locale, id).name, item: `${ORIGIN}${kbHref(locale, id)}` });
   return {
@@ -134,7 +120,7 @@ export function kbArticleJsonLd(locale: Locale, page: KbPage): Record<string, un
       "@type": "CollectionPage",
       name: hub.h1,
       description: hub.description,
-      url: `${ORIGIN}${kbHref(locale, hubOf(shelf))}`,
+      url: `${ORIGIN}${kbHref(locale, kbHubOf(shelf))}`,
       inLanguage: HREFLANG[locale],
       mainEntity: {
         "@type": "ItemList",

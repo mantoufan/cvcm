@@ -11,9 +11,29 @@ import { messages, refMessages } from "./messages";
 import { appHref, refHref } from "./path";
 import { REF_GROUPS, REF_MANNEQUINS, REF_META, mfan8Href, refGroupOf, refMannequinUrl, type RefAngle, type RefId } from "./ref";
 import { HREFLANG } from "./sitemap";
-import { type RefPhoto, type RefUi, refUi, refHub, refCopy, refName, refPhotos, refImageUrl, refPhotoPage, refFaqItems, refLinkItems, CC0_URL, SHISEI_URL } from "./ref-i18n";
+import { type RefPhoto, type RefUi, refHub, refCopy, refName, refFaqItems, CC0_URL, SHISEI_URL } from "./ref-i18n";
 
 const SITE = "mfan8.com";
+
+export function refUi(locale: Locale): RefUi {
+  return refMessages(locale).ui;
+}
+
+/**
+ * Photos for an entry, in display order (hotlinked from s1.mtf6.com, never copied). src/data/ref-photos.json rides in
+ * the ref pack, so it loads only on reference pages (this module is in the entry chunk through seo.ts).
+ */
+export function refPhotos(locale: Locale, id: RefId): RefPhoto[] {
+  return (refMessages(locale).photos as Partial<Record<RefId, RefPhoto[]>>)[id] ?? [];
+}
+
+export function refImageUrl(photo: RefPhoto, width: 300 | 600): string {
+  return `https://s1.mtf6.com/${encodeURIComponent(photo.img)}_c_w_${width}_ext_jpg.webp`;
+}
+
+export function refPhotoPage(photo: RefPhoto): string {
+  return `https://www.mfan8.com/${encodeURIComponent(photo.item)}`;
+}
 
 const CJK = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
 
@@ -35,6 +55,10 @@ function faqHtml(locale: Locale, id: RefId | null): string {
     `<details${index === 0 ? " open" : ""}><summary>${inline(item.q)}</summary><p>${inline(item.a)}</p></details>`
   )).join("");
   return `<section class="faq" aria-labelledby="faq-title"><h2 id="faq-title">${escapeHtml(refUi(locale).faq)}</h2>${items}</section>`;
+}
+
+export function refLinkItems(locale: Locale, ids: readonly RefId[]): { href: string; name: string; blurb: string; nav: string }[] {
+  return ids.map((id) => ({ href: refHref(locale, id), ...refName(locale, id), nav: `ref-${id}` }));
 }
 
 function photoCredit(ui: RefUi, photo: RefPhoto): string {

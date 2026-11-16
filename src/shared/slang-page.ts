@@ -1,6 +1,7 @@
 /**
- * The slang and meme page HTML (hub and entries), shared by the client page and the Worker's crawler copy. Kept out of
- * slang-i18n so the main bundle, which needs only titles, descriptions and JSON-LD, does not carry it.
+ * The memes page HTML (hub and entries) with its trend and token panels, shared by the client page and the Worker's
+ * crawler copy. Kept out of slang-i18n so the main bundle, which needs only titles, descriptions and JSON-LD, does not
+ * carry it.
  */
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
@@ -12,7 +13,7 @@ import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, slangGroupOf, type SlangId } f
 import { memeImage, memeImagePath } from "./meme-images";
 import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
-import { slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, memeData, showsCoins, memeTrend, recentViews, memeDir, memeCoin, trendingIds, slangLinkItems } from "./slang-i18n";
+import { slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
 
 /**
  * The picture right under the answer, near the top of the page: loaded eagerly as the likely LCP element, with its size
@@ -26,6 +27,71 @@ function imageHtml(locale: Locale, id: SlangId): string {
   const credit = image.author ? fill(ui.imageCredit, { author: image.author }) : ui.imageCreditAnon;
   return `<figure class="meme-figure"><img src="${escapeHtml(memeImagePath(id)!)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(fill(ui.imageAlt, { name }))}" fetchpriority="high" decoding="async">`
     + `<figcaption><a href="${escapeHtml(image.page)}" target="_blank" rel="noopener">${escapeHtml(credit)}</a> · <a href="${escapeHtml(image.licenseUrl)}" target="_blank" rel="noopener license">${escapeHtml(image.license)}</a></figcaption></figure>`;
+}
+
+/** The snapshot comes with the slang pack (not the main bundle, which it would re-hash every day). */
+function memeData(locale: Locale): MemeData {
+  return slangMessages(locale).memes;
+}
+
+/**
+ * Coin prices are never shown in Simplified Chinese: mainland rules (PBoC et al. 2021 notice) bar commercial display and
+ * promotion of virtual currencies, and most zh-CN readers are in the mainland.
+ */
+export function showsCoins(locale: Locale): boolean {
+  return locale !== "zh-CN";
+}
+
+export function memeTrend(locale: Locale, id: SlangId): MemeTrend | null {
+  const t = memeData(locale).trend[id];
+  return t && t.w.length && t.w.some((v) => v > 0) ? t : null;
+}
+
+/** Views over the last four weeks of a trend (the figure the page shows and the trending list weighs). */
+export function recentViews(trend: MemeTrend): number {
+  return trend.w.slice(-4).reduce((a, b) => a + b, 0);
+}
+
+/** Views over the four weeks before those. */
+function priorViews(trend: MemeTrend): number {
+  return trend.w.slice(-8, -4).reduce((a, b) => a + b, 0);
+}
+
+/** Rising when the last four weeks are a quarter above the four before, cooling off when a fifth below, else steady. */
+export function memeDir(trend: MemeTrend): MemeDir {
+  const recent = recentViews(trend);
+  const before = priorViews(trend);
+  // No views before (a new or renamed article): nothing to compare with, so not "rising".
+  if (before === 0) return "flat";
+  return recent >= before * 1.25 ? "up" : recent <= before * 0.8 ? "down" : "flat";
+}
+
+export function memeCoin(locale: Locale, id: SlangId): MemeCoin | null {
+  return showsCoins(locale) ? memeData(locale).coins[id] ?? null : null;
+}
+
+/** An article needs this many views in four weeks to count as trending, so a tiny article's jump is not news. */
+const TRENDING_FLOOR = 500;
+
+/**
+ * The hub's "popularity now" list: entries not cooling off, fastest-growing first (last four weeks over the four before).
+ * Growth, not raw views, so memes measured on a smaller Wikipedia (zh) compete fairly with English ones; each keeps its
+ * own rising/steady badge, so the list never claims a steady meme is rising.
+ */
+export function trendingIds(locale: Locale, limit: number): { id: SlangId; trend: MemeTrend; dir: MemeDir }[] {
+  return SLANG_ENTRIES
+    .flatMap((id) => {
+      const trend = memeTrend(locale, id);
+      if (!trend) return [];
+      const recent = recentViews(trend);
+      const prior = priorViews(trend);
+      const dir = memeDir(trend);
+      // Both windows need real traffic: a tiny or brand-new article's jump is not news.
+      return recent >= TRENDING_FLOOR && prior >= TRENDING_FLOOR / 5 && dir !== "down" ? [{ id, trend, dir, recent, growth: recent / prior }] : [];
+    })
+    .sort((a, b) => b.growth - a.growth || b.recent - a.recent)
+    .slice(0, limit)
+    .map(({ id, trend, dir }) => ({ id, trend, dir }));
 }
 
 /** "2025-03" or "2025" as a month or a year in the reader's language. */
@@ -141,6 +207,10 @@ function faqHtml(locale: Locale, id: SlangId | null): string {
     `<details${index === 0 ? " open" : ""}><summary>${inline(item.q)}</summary><p>${inline(item.a)}</p></details>`
   )).join("");
   return `<section class="faq" aria-labelledby="faq-title"><h2 id="faq-title">${escapeHtml(slangUi(locale).faq)}</h2>${items}</section>`;
+}
+
+export function slangLinkItems(locale: Locale, ids: readonly SlangId[]): { href: string; name: string; blurb: string; nav: string }[] {
+  return ids.map((id) => ({ href: slangHref(locale, id), ...slangName(locale, id), nav: `slang-${id}` }));
 }
 
 function sourcesHtml(locale: Locale, id: SlangId): string {

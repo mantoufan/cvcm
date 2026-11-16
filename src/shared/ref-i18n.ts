@@ -23,12 +23,7 @@ export type RefEntryCopy = {
 export type RefPhoto = { img: string; item: string; w: number; h: number; photo?: string; model?: string };
 
 const ORIGIN = "https://cv.cm";
-
 export type RefUi = RefMessages["ui"];
-
-export function refUi(locale: Locale): RefUi {
-  return refMessages(locale).ui;
-}
 
 export function refHub(locale: Locale): RefMessages["hub"] {
   return refMessages(locale).hub;
@@ -43,22 +38,6 @@ export function refName(locale: Locale, id: RefId): { name: string; blurb: strin
   return refMessages(locale).list[id];
 }
 
-/**
- * Photos for an entry, in display order (hotlinked from s1.mtf6.com, never copied). src/data/ref-photos.json rides in
- * the ref pack, so it loads only on reference pages (this module is in the entry chunk through seo.ts).
- */
-export function refPhotos(locale: Locale, id: RefId): RefPhoto[] {
-  return (refMessages(locale).photos as Partial<Record<RefId, RefPhoto[]>>)[id] ?? [];
-}
-
-export function refImageUrl(photo: RefPhoto, width: 300 | 600): string {
-  return `https://s1.mtf6.com/${encodeURIComponent(photo.img)}_c_w_${width}_ext_jpg.webp`;
-}
-
-export function refPhotoPage(photo: RefPhoto): string {
-  return `https://www.mfan8.com/${encodeURIComponent(photo.item)}`;
-}
-
 export function refTitle(locale: Locale, id: RefId | null): string {
   return `${id ? refCopy(locale, id).title : refHub(locale).title} — cv.cm`;
 }
@@ -71,14 +50,8 @@ export function refFaqItems(locale: Locale, id: RefId | null): { q: string; a: s
   return id ? refCopy(locale, id).faq : refHub(locale).faq;
 }
 
-export function refLinkItems(locale: Locale, ids: readonly RefId[]): { href: string; name: string; blurb: string; nav: string }[] {
-  return ids.map((id) => ({ href: refHref(locale, id), ...refName(locale, id), nav: `ref-${id}` }));
-}
-
 export const CC0_URL = "https://creativecommons.org/publicdomain/zero/1.0/";
-
 export const SHISEI_URL = "https://github.com/wquguru/shisei";
-
 /** Rights metadata for the Shisei line art: CC0, licence page pinned to the commit the files came from (docs/ref-mannequins.md). */
 const SHISEI_IMAGE_META = {
   creator: { "@type": "Person", name: "wquguru", url: "https://github.com/wquguru" },

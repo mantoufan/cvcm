@@ -6,13 +6,22 @@
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
-import { kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbShelfOfPage, type KbId, type KbPage } from "./kb";
+import { KB_SHELVES, kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbMinutesOf, kbShelfOfPage, type KbId, type KbPage, type KbShelf } from "./kb";
 import { kbMessages, messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref, type ToolId } from "./path";
-import { type KbBlock, kbUi, kbHub, kbCopy, kbName, kbFaqItems, kbUpdated, kbMinutes, kbHubNav, hubOf, kbLinkItems } from "./kb-i18n";
+import { type KbBlock, type KbUi, kbHub, kbCopy, kbName, kbFaqItems, kbUpdated, kbHubOf, kbLinkItems } from "./kb-i18n";
 
-/** Plain text with `code` spans; everything else escaped. Shared with the reference pages (ref-i18n.ts). */
+export function kbUi(locale: Locale): KbUi {
+  return kbMessages(locale).ui;
+}
+
+/** Reading time in minutes, precomputed by `npm run kb:sync` so lists need no article copy. */
+export function kbMinutes(locale: Locale, id: KbId): number {
+  return kbMinutesOf(id, locale);
+}
+
+/** Plain text with `code` spans; everything else escaped. Shared with the ref, slang, nostalgia and ideas page modules. */
 export function inline(text: string): string {
   return text.split("`").map((part, i) => (i % 2 ? `<code>${escapeHtml(part)}</code>` : escapeHtml(part))).join("");
 }
@@ -30,6 +39,11 @@ export function blockHtml(block: KbBlock): string {
   return `<aside class="kb-note"><p>${inline(block.note)}</p></aside>`;
 }
 
+/** data-nav of a shelf's hub links (main.ts prefetches the kb pack on hover). */
+export function kbHubNav(shelf: KbShelf): string {
+  return KB_SHELVES[shelf].nav;
+}
+
 function crumbHtml(locale: Locale, page: KbPage): string {
   const m = kbMessages(locale);
   const id = kbArticleOf(page);
@@ -40,7 +54,7 @@ function crumbHtml(locale: Locale, page: KbPage): string {
     `<a href="${escapeHtml(appHref(locale, null))}" data-nav="home">${escapeHtml(m.crumbHome)}</a>`,
     `<a href="${escapeHtml(learnHref(locale))}" data-nav="learn">${escapeHtml(m.ui.learn)}</a>`,
     id
-      ? `<a href="${escapeHtml(kbHref(locale, hubOf(shelf)))}" data-nav="${kbHubNav(shelf)}">${escapeHtml(hub.h1)}</a>`
+      ? `<a href="${escapeHtml(kbHref(locale, kbHubOf(shelf)))}" data-nav="${kbHubNav(shelf)}">${escapeHtml(hub.h1)}</a>`
       : `<span>${escapeHtml(hub.h1)}</span>`,
   ];
   if (id) parts.push(`<span>${escapeHtml(kbName(locale, id).name)}</span>`);
@@ -88,7 +102,7 @@ export function kbPageHtml(locale: Locale, page: KbPage): string {
   const id = kbArticleOf(page);
   const shelf = kbShelfOfPage(page);
   const hub = kbHub(locale, shelf);
-  const hubHref = kbHref(locale, hubOf(shelf));
+  const hubHref = kbHref(locale, kbHubOf(shelf));
   const nav = kbHubNav(shelf);
   if (!id) {
     const groups = kbGroupsOf(shelf).map((group) => (

@@ -11,7 +11,43 @@ import { appHref, gamesHref, nostalgiaHref } from "./path";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_GROUPS, NOSTALGIA_LINKS, nostalgiaGroupOf, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
 import { HREFLANG } from "./sitemap";
 import { nostalgiaImage, nostalgiaImagePath } from "./nostalgia-images";
-import { NOSTALGIA_DECADES, nostalgiaUi, nostalgiaHub, nostalgiaCopy, nostalgiaName, nostalgiaFaqItems, nostalgiaMeta, nostalgiaDecade, yearLabel, capitalize, nostalgiaYears, nostalgiaLinkItems } from "./nostalgia-i18n";
+import { NOSTALGIA_DECADES, type NostalgiaDecade, nostalgiaUi, nostalgiaHub, nostalgiaCopy, nostalgiaName, nostalgiaFaqItems, stillAround, nostalgiaMeta } from "./nostalgia-i18n";
+
+/**
+ * The childhood decade an entry belongs to on the hub: the decade it appeared in, with anything older (ration coupons,
+ * cassettes, White Rabbit, marbles) under the 1980s, the earliest childhoods the channel covers.
+ */
+export function nostalgiaDecade(locale: Locale, id: NostalgiaId): NostalgiaDecade {
+  const year = Number.parseInt(nostalgiaMeta(locale, id).from, 10);
+  if (year < 1990) return "1980s";
+  if (year < 2000) return "1990s";
+  return "2000s";
+}
+
+/** "1983" → "1983", "1990s" → the locale's decade label, so years read naturally in every language. */
+function yearLabel(locale: Locale, value: string): string {
+  const decade = /^(\d{4})s$/.exec(value);
+  return decade ? fill(nostalgiaUi(locale).decade, { y: decade[1] }) : value;
+}
+
+/** First letter upper-cased, for labels that start a line ("los años 1990" → "Los años 1990"); CJK is unchanged. */
+function capitalize(locale: Locale, text: string): string {
+  return text.charAt(0).toLocaleUpperCase(HREFLANG[locale]) + text.slice(1);
+}
+
+export function nostalgiaYears(locale: Locale, id: NostalgiaId): string {
+  return capitalize(locale, yearsText(locale, id));
+}
+
+/** "1983–2003", "1983 to today" (still sold, never stopped) or "from 1991" (anything else with no end year), shown under the heading. */
+function yearsText(locale: Locale, id: NostalgiaId): string {
+  const { from, to, status } = nostalgiaMeta(locale, id);
+  const ui = nostalgiaUi(locale);
+  if (to) return fill(ui.years, { from: yearLabel(locale, from), to: yearLabel(locale, to) });
+  // "To today" only for things still sold without a break (stillAround); anything else without an end year (a revived
+  // QQ秀, a discontinued VCD, a 2000s fad, an old game) shows just its start.
+  return fill(stillAround(status) ? ui.since : ui.from, { from: yearLabel(locale, from) });
+}
 
 function statusLabel(locale: Locale, id: NostalgiaId): string | null {
   const status = nostalgiaMeta(locale, id).status;
@@ -40,6 +76,10 @@ function faqHtml(locale: Locale, id: NostalgiaId | null): string {
     `<details${index === 0 ? " open" : ""}><summary>${inline(item.q)}</summary><p>${inline(item.a)}</p></details>`
   )).join("");
   return `<section class="faq" aria-labelledby="faq-title"><h2 id="faq-title">${escapeHtml(nostalgiaUi(locale).faq)}</h2>${items}</section>`;
+}
+
+export function nostalgiaLinkItems(locale: Locale, ids: readonly NostalgiaId[]): { href: string; name: string; blurb: string; nav: string }[] {
+  return ids.map((id) => ({ href: nostalgiaHref(locale, id), ...nostalgiaName(locale, id), nav: `nostalgia-${id}` }));
 }
 
 function sourcesHtml(locale: Locale, id: NostalgiaId): string {
