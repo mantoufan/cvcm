@@ -18,6 +18,7 @@ import { refArticleJsonLd, refBreadcrumbJsonLd, refDescription, refFaqJsonLd, re
 import type { RefId } from "./ref";
 import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangDescription, slangFaqJsonLd, slangPageHtml, slangTitle } from "./slang-i18n";
 import type { SlangId } from "./slang";
+import { memeImagePath } from "./meme-images";
 import { ideaDescription, ideaTitle, ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd, ideasPageHtml } from "./ideas-i18n";
 import type { IdeaId } from "./ideas";
 import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaDescription, nostalgiaFaqJsonLd, nostalgiaPageHtml, nostalgiaTitle } from "./nostalgia-i18n";
@@ -1154,6 +1155,10 @@ export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<strin
 }
 
 function ogImage(seo: SeoInput): string | null {
+  if (seo.slang && seo.slangId) {
+    const path = memeImagePath(seo.slangId);
+    return path ? `https://cv.cm${path}` : null;
+  }
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
   if (seo.games && seo.game) return coverUrl(GAME_COVER[seo.game]);
   if (seo.markets && seo.market) return coverUrl(MARKET_COVER[seo.market]);
