@@ -1333,6 +1333,7 @@ export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz:
   burnout: { bands: ["high"], quiz: "depression" },
   stress: { bands: ["high"], quiz: "anxiety" },
   "social-anxiety": { bands: ["high"], quiz: "anxiety" },
+  "imposter-syndrome": { bands: ["high"], quiz: "anxiety" },
 };
 
 export function questionCount(id: QuizId): number {
