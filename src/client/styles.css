@@ -1622,3 +1622,42 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .cc-marble { width: 86%; height: 86%; border-radius: 50%; }
 .cc-marble.pink { background: var(--pink-deep); }
 .cc-marble.blue { background: #2f4fa8; }
+
+/* Typing practice: lessons, practice line, keyboard with finger zones. */
+.tp-tool { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem); gap: 1.25rem; align-items: start; }
+@media (max-width: 860px) { .tp-tool { grid-template-columns: minmax(0, 1fr); } }
+.tp-stats { margin-bottom: 0.6rem; }
+.tp-drill[hidden], .tp-words[hidden], .tp-reading[hidden] { display: none; }
+.tp-line { display: flex; flex-wrap: wrap; gap: 0.1rem 0; padding: 0.8rem; min-height: 5.6rem; border: 2px solid var(--line); border-radius: 10px; background: #fff; font-family: var(--mono); font-size: clamp(1.1rem, 3.6vw, 1.5rem); line-height: 1.6; outline: none; cursor: text; }
+.tp-line:focus-visible, .tp-line:focus { border-color: var(--pink-deep); }
+.tp-ch { display: inline-block; min-width: 0.7em; text-align: center; color: var(--ink-soft); }
+.tp-ch.sp { min-width: 0.6em; }
+.tp-ch.done { color: #2f8a4e; }
+.tp-ch.cur { color: var(--ink); background: var(--pink-soft); border-bottom: 3px solid var(--pink-deep); }
+.tp-finger { min-height: 1.6em; margin: 0.5rem 0; color: var(--ink-soft); font-weight: 600; }
+.tp-kb { display: grid; gap: 0.3rem; user-select: none; }
+.tp-kb-row { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 0.3rem; }
+.tp-kb-row.r1 { padding-left: 2.5%; }
+.tp-kb-row.r2 { padding-left: 5%; }
+.tp-kb-row.r3 { grid-template-columns: 1fr; margin: 0 22%; }
+.tp-key { touch-action: manipulation; min-height: 2.4rem; padding: 0; border: 1px solid #d9c3cf; border-radius: 6px; color: var(--ink); font: inherit; font-weight: 600; cursor: pointer; }
+.tp-key.f-lp, .tp-key.f-rp { background: #fde2ec; }
+.tp-key.f-lr, .tp-key.f-rr { background: #fdf0d8; }
+.tp-key.f-lm, .tp-key.f-rm { background: #e3f3e6; }
+.tp-key.f-li, .tp-key.f-ri { background: #e1ecfb; }
+.tp-key.f-th { background: #efe6f7; }
+.tp-key.target { outline: 3px solid var(--pink-deep); outline-offset: -1px; color: var(--pink-deep); }
+.tp-key.miss { background: #f8c9c9; }
+.tp-key[data-code="KeyF"]::after, .tp-key[data-code="KeyJ"]::after { content: "_"; display: block; line-height: 0.2; color: var(--ink-soft); }
+.tp-words { padding: 0.8rem; border: 2px solid var(--line); border-radius: 10px; background: #fff; }
+.tp-word { margin: 0; font-size: clamp(1.6rem, 6vw, 2.4rem); font-weight: 700; text-align: center; }
+.tp-reading { margin: 0.2rem 0 0.6rem; text-align: center; color: var(--ink-soft); }
+.tp-input { width: 100%; font-size: 1.3rem; padding: 0.5rem 0.7rem; text-align: center; }
+.tp-input.miss { border-color: #c2253b; }
+.tp-status { min-height: 1.6em; margin: 0.6rem 0 0; font-weight: 600; }
+.tp-lessons { list-style: none; margin: 0 0 0.75rem; padding: 0; display: grid; gap: 0.35rem; }
+.tp-lesson { display: grid; width: 100%; gap: 0.1rem; padding: 0.5rem 0.65rem; border: 1px solid var(--line); border-radius: 8px; background: #fff; text-align: left; font: inherit; color: var(--ink); cursor: pointer; }
+.tp-lesson span { font-family: var(--mono); color: var(--ink-soft); }
+.tp-lesson small { color: var(--ink-soft); }
+.tp-lesson.on { border-color: var(--pink-deep); background: var(--pink-soft); }
+.tp-lesson.passed strong::after { content: " ✓"; color: #2f8a4e; }

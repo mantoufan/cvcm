@@ -80,7 +80,7 @@
     },
     {
       "id": "wordgames",
-      "name": "Word games: word search, hangman, typing game"
+      "name": "Word games: word search, hangman, typing game, typing practice (touch-typing lessons)"
     },
     {
       "id": "assets",
@@ -1759,6 +1759,14 @@
       "description": "Type falling words before they land.",
       "category": "wordgames",
       "url": "https://cv.cm/en/typing-game/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "typing-practice",
+      "name": "Typing practice",
+      "description": "Touch typing lessons, key by key.",
+      "category": "wordgames",
+      "url": "https://cv.cm/en/typing-practice/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

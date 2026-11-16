@@ -370,3 +370,9 @@ Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`; the cache'
 - `word-search`: she circles a straight line of pastel tiles with a pink highlighter on a tray of square game tiles that show only tiny hearts, stars and flowers, never letters; a magnifying glass on the tray.
 - `typing-game`: she types on a pastel pink keyboard with completely blank keys while translucent heart and star bubbles fall from above and pop into sparkles.
 - `chinese-checkers`: a six-pointed star board with round holes and glossy pink, cream and lilac marbles; she hops a pink marble over another into an empty hole along a sparkling arc.
+
+## Typing practice (2026-11-16)
+
+Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`; the cache's first entry `gpt-6.1-sol` still returned 400 model_not_found), refs `typing-game-sweet.jpg` + `word-search-sweet.jpg`, 16:9 landscape, same base prompt as above (style references only, same chibi girl and room, full-bleed, no words, letters, digits, logo or watermark). Saved as `public/covers/typing-practice-sweet.jpg`, `sips -s format jpeg` then `sips -z 720 1280`. Came out on the first try.
+
+- `typing-practice`: she sits upright at a desk with her fingers resting on the middle row of a pastel pink keyboard with completely blank keys; a small pastel card with a hand diagram in soft coloured finger zones (no text) stands beside it; a pink metronome-style timer and a cup of tea.

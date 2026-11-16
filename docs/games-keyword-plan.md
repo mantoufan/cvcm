@@ -152,3 +152,17 @@ Keyword Planner, same MCC and markets. `games` was full at 20 once hangman (#112
 | `typing-game` | wordgames | ja タイピング練習 450k, タイピングゲーム 201k; ko 타자 연습 368k, 타자 게임 18.1k; es mecanografía 135k; en typing game 110k; id belajar mengetik 40.5k; zh-TW 打字練習 33.1k | Falling words; separate from the /typing/ speed test; IME-friendly |
 | `chinese-checkers` | games | chinese checkers 49.5k; ja ダイヤモンドゲーム 5.4k; zh-TW 跳棋 2.9k | 121-hole star board |
 | `hangman` (#112) | wordgames | hangman 201k; es ahorcado 49.5k | Moved here from `games` |
+
+## Typing practice (2026-11-16)
+
+Keyword Planner, same MCC and markets. Separate from the /typing/ speed test (timed passages) and the typing game (falling words).
+
+| Locale | Query | Monthly |
+|---|---|---|
+| ja | タイピング練習 / 無料 / タッチタイピング / ブラインドタッチ練習 | 450k / 33.1k / 12.1k / 9.9k |
+| ko | 타자 연습 (and a branded variant of the same size) | 368k |
+| en | typing practice / touch typing / typing lessons / learn to type | 201k / 74k / 33.1k / 22.2k |
+| es | mecanografía / curso de mecanografía | 135k / 5.4k |
+| zh-TW | 打字練習 / 英打練習 | 33.1k / 8.1k |
+| id | belajar mengetik | 40.5k |
+| vi | luyện gõ phím | 8.1k |

@@ -1144,6 +1144,12 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountTypingGame(host);
     return m.unmountTypingGame;
   },
+  "typing-practice": async (host, ctx) => {
+    const m = await import("./typing-practice/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTypingPractice(host);
+    return m.unmountTypingPractice;
+  },
   "chinese-checkers": async (host, ctx) => {
     const m = await import("./chinese-checkers/ui");
     if (!ctx.alive()) return undefined;

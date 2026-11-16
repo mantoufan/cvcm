@@ -180,6 +180,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "memory-game": 3,
   "word-search": 3,
   "typing-game": 3,
+  "typing-practice": 3,
   "chinese-checkers": 3,
   "phone-number-value": 3,
   "license-plate-value": 3,
