@@ -1,0 +1,60 @@
+{
+  "title": "Test de estrés: ¿cuánto estrés tengo? Mide tu nivel de estrés gratis — cv.cm",
+  "description": "Test de estrés gratis: valora 14 afirmaciones sobre el último mes y obtén una puntuación de estrés de 0 a 56, qué significa y formas sencillas de afrontarlo. Privado: nada sale de tu navegador.",
+  "h1": "Test de estrés",
+  "hint": "Pensando en el último mes, ¿hasta qué punto te describe cada afirmación?",
+  "scoreLabel": "Puntuación de estrés (0 = baja, 56 = alta)",
+  "lede": "¿Te sientes desbordado, con los nervios de punta o sin control? Valora 14 afirmaciones sobre el último mes para ver cuánto estrés has tenido y qué puede ayudarte.",
+  "about": [
+    "El estrés es la respuesta del cuerpo ante la presión. En dosis cortas puede ponerte alerta, pero cuando las exigencias parecen una y otra vez mayores que tu capacidad para afrontarlas, te desgasta: dormir mal, la irritabilidad, la preocupación, la tensión y la dificultad para concentrarte son señales habituales. Los psicólogos suelen medir el estrés percibido, es decir, hasta qué punto sientes tu vida impredecible, incontrolable y sobrecargada, en lugar de contar acontecimientos estresantes.",
+    "Las afirmaciones se han escrito para cv.cm en torno a señales habituales de estrés en el cuerpo, el sueño, el estado de ánimo, la forma de pensar y los hábitos. No proceden de la Escala de Estrés Percibido ni de ningún otro cuestionario, y no se han validado clínicamente, así que los tramos de puntuación son una guía aproximada y no puntos de corte clínicos. La mitad de las afirmaciones están invertidas, así que estar de acuerdo con todo te deja en el medio. Si el estrés lleva semanas afectando a tu salud, tu sueño o tus relaciones, habla con un médico o un psicólogo."
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo se calcula la puntuación de estrés?",
+      "a": "Cada afirmación puntúa de 0 a 4 y la mitad están invertidas, así que el total va de 0 a 56. 18 o menos es bajo, de 19 a 37 es moderado y 38 o más es alto."
+    },
+    {
+      "q": "¿Cuáles son las señales de un exceso de estrés?",
+      "a": "Las señales habituales son dormir mal, sentirte tenso o irritable, preocuparte mucho, tener dolores de cabeza o molestias de estómago, que te cueste concentrarte y recurrir al alcohol, la comida o las pantallas para sobrellevarlo."
+    },
+    {
+      "q": "¿Cómo puedo bajar el estrés rápido?",
+      "a": "Respirar despacio (soltando el aire durante más tiempo del que tardas en tomarlo), dar un paseo corto, escribir tus preocupaciones y elegir un pequeño paso siguiente ayudan en el momento. A lo largo de semanas, lo que más se nota es dormir con regularidad, hacer ejercicio, pasar tiempo con gente de confianza y recortar en lo que sí puedes controlar."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre estrés y ansiedad?",
+      "a": "El estrés suele ser una reacción a una presión concreta, como una fecha límite, y se alivia cuando pasa. La ansiedad es una preocupación o un miedo que puede continuar sin una causa clara. Si la preocupación te acompaña casi todos los días, prueba el test de ansiedad GAD-7 de este sitio."
+    }
+  ],
+  "items": [
+    "Casi todos los días he notado tensión en los hombros, la mandíbula o el estómago.",
+    "La mayoría de las noches he dormido bien.",
+    "He saltado con la gente por cosas sin importancia.",
+    "Me ha quedado energía para las cosas que disfruto.",
+    "No he parado de darle vueltas a todo lo que tengo pendiente.",
+    "Por las noches he podido desconectar.",
+    "He tenido dolores de cabeza, molestias de estómago u otros dolores sin una causa clara.",
+    "He sentido calma durante la mayor parte del día.",
+    "He tirado de picoteo, alcohol, cafeína o el móvil para aguantar el día.",
+    "He tomado las decisiones del día a día sin cuestionarme una y otra vez.",
+    "Se me han olvidado cosas o me ha costado concentrarme.",
+    "He tenido tiempo suficiente en el día para lo que me importa.",
+    "He sentido que un problema más sería demasiado.",
+    "He esperado con ganas la semana que viene."
+  ],
+  "results": {
+    "low": {
+      "name": "Estrés bajo (0–18)",
+      "body": "Parece que llevas bien lo que la vida te pide ahora mismo. Sigue con lo que te ayuda, como dormir bien, hacer ejercicio, descansar y tener gente con quien hablar, para tener reservas cuando llegue una racha de mucho trabajo."
+    },
+    "moderate": {
+      "name": "Estrés moderado (19–37)",
+      "body": "Llevas encima bastante presión. Es habitual, pero conviene actuar antes de que vaya a más. Elige una cosa que dejar, delegar o aplazar esta semana, protege tu sueño y haz pausas cortas: un paseo, respirar despacio o diez minutos lejos de las pantallas."
+    },
+    "high": {
+      "name": "Estrés alto (38–56)",
+      "body": "Parece que estás bajo mucho estrés, y probablemente afecta a cómo te sientes cada día. Habla con un médico o un psicólogo sobre cómo te has sentido: pueden ayudarte con el estrés y con lo que hay detrás, y no hace falta esperar a que empeore. Mientras tanto, apóyate en alguien de confianza, recorta donde puedas y cuida primero el sueño y la alimentación. El test de ansiedad de abajo puede ayudarte a ponerle palabras."
+    }
+  }
+}

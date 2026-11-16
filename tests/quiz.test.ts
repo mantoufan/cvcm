@@ -1,4 +1,10 @@
 import { describe, expect, it } from "vitest";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { quizSyncFiles } from "../src/shared/quiz-sync";
+import { QUIZ_ALL } from "../src/locales/quiz/all";
+import { preloadLocalePack } from "../src/shared/locale-preload";
 import en from "../src/locales/quiz/en.json";
 import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
@@ -28,6 +34,8 @@ import { buildSitemapXml } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
 
 const SHELL = `<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`;
+
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
 function shape(value: unknown): unknown {
   if (Array.isArray(value)) return value.map(shape);
@@ -122,13 +130,49 @@ describe("test pages: routes", () => {
     expect(pageCanonical("en", { quiz: true })).toBe("https://cv.cm/en/tests/");
     // The text fallback carries every question.
     const text = quizStaticHtml("en", "anxiety");
-    for (const item of en.tests.anxiety.items) expect(text).toContain(item.replace(/&/g, "&amp;"));
+    for (const item of quizCopy("en", "anxiety").items as string[]) expect(text).toContain(item.replace(/&/g, "&amp;"));
   });
 });
 
 describe("test pages: copy", () => {
   it("has the same copy structure in every locale", () => {
-    for (const locale of LOCALES) expect(shape(quizMessages(locale)), locale).toEqual(shape(en));
+    for (const locale of LOCALES) {
+      expect(shape(quizMessages(locale)), locale).toEqual(shape(en));
+      // From QUIZ_ALL, not quizCopy, whose English fallback would compare English with English.
+      for (const id of QUIZZES) expect(shape(QUIZ_ALL[locale][id]), `${locale} ${id}`).toEqual(shape(QUIZ_ALL.en[id]));
+    }
+  });
+
+  it("keeps each test's copy out of the quiz pack, in its own file per locale", () => {
+    expect(Object.keys(en).sort()).toEqual(["crumbHome", "hub", "ui"]);
+    for (const locale of LOCALES) {
+      for (const id of QUIZZES) expect(existsSync(join(root, `src/locales/quiz/${locale}/${id}.json`)), `${locale} ${id}`).toBe(true);
+      // No stray test files that the loaders would leave out.
+      const files = readdirSync(join(root, `src/locales/quiz/${locale}`)).filter((f) => f.endsWith(".json")).map((f) => f.replace(/\.json$/, "")).sort();
+      expect(files, locale).toEqual([...QUIZZES].sort());
+    }
+  });
+
+  it("has the generated files in step with the tests (run `npm run quiz:sync` after adding or removing a test)", async () => {
+    const read = (path: string): string | null => (existsSync(join(root, path)) ? readFileSync(join(root, path), "utf8") : null);
+    for (const [path, content] of Object.entries(quizSyncFiles((path) => existsSync(join(root, path))))) expect(read(path), `${path} is stale: run npm run quiz:sync`).toBe(content);
+    for (const locale of LOCALES) {
+      const { QUIZ_LOADERS } = await import(`../src/locales/quiz/loaders/${locale}.ts`);
+      expect(Object.keys(QUIZ_LOADERS).sort(), locale).toEqual([...QUIZZES].sort());
+    }
+  });
+
+  it("preloads the quiz pack on the hub, plus the loader table and one test on a test page", () => {
+    const packs = { en: ["/a/en.js"], "quiz-en": ["/a/q-en.js"], "quiz-en/loaders": ["/a/loaders.js"], "quiz-en/mbti": ["/a/mbti.js"], "quiz-en/ocd": ["/a/ocd.js"] };
+    const hub = preloadLocalePack("<head></head>", "en", false, packs, "hub");
+    expect(hub).toContain("/a/q-en.js");
+    expect(hub).not.toContain("/a/loaders.js");
+    const test = preloadLocalePack("<head></head>", "en", false, packs, "mbti");
+    expect(test).toContain("/a/q-en.js");
+    expect(test).toContain("/a/loaders.js");
+    expect(test).toContain("/a/mbti.js");
+    expect(test).not.toContain("/a/ocd.js");
+    expect(preloadLocalePack("<head></head>", "en", false, packs)).not.toContain("q-en");
   });
 
   it("has an item, every option, a label and a result for everything the scoring uses", () => {

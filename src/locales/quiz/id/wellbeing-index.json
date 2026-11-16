@@ -1,0 +1,49 @@
+{
+  "title": "Tes kesejahteraan gratis (Indeks Kesejahteraan WHO-5): skor 0–100 — cv.cm",
+  "description": "Tes kesejahteraan WHO-5 online gratis. Jawab 5 pertanyaan tentang dua minggu terakhir untuk mendapatkan skor kesejahteraanmu dari 0 sampai 100 beserta artinya. Privat: tidak ada data yang keluar dari browsermu.",
+  "h1": "Tes kesejahteraan (WHO-5)",
+  "lede": "Indeks Kesejahteraan WHO-5 berisi 5 pertanyaan singkat tentang perasaanmu selama dua minggu terakhir. Kurang dari satu menit, dengan skor 0 sampai 100.",
+  "about": [
+    "WHO-5 diterbitkan oleh Kantor Regional Eropa Organisasi Kesehatan Dunia (WHO) pada 1998 dan merupakan salah satu kuesioner kesejahteraan yang paling banyak digunakan di dunia. Kuesioner ini gratis digunakan. Setiap jawaban bernilai 0 sampai 5; totalnya (0–25) dikalikan 4 sehingga menjadi persentase dari 0 (terburuk) sampai 100 (terbaik).",
+    "Skor di bawah 52 menunjukkan kesejahteraan yang buruk, dan dokter menjadikannya alasan untuk memeriksa kemungkinan depresi; skor 28 atau kurang sering menyertai depresi. Tes ini adalah pemeriksaan mandiri, bukan diagnosis."
+  ],
+  "faq": [
+    {
+      "q": "Apa arti skor WHO-5-ku?",
+      "a": "Kalikan skor mentah (0–25) dengan 4. Skor 52 atau lebih berada dalam rentang kesejahteraan normal. Di bawah 52 menunjukkan kesejahteraan yang buruk. Skor 28 atau kurang adalah tanda kemungkinan depresi dan sebaiknya diperiksa oleh tenaga profesional."
+    },
+    {
+      "q": "Apakah WHO-5 tes depresi?",
+      "a": "WHO-5 mengukur kesejahteraan positif, bukan gejala depresi, tetapi skor rendah adalah alasan yang baik untuk melakukan skrining depresi, misalnya dengan tes PHQ-9 di situs ini, dan berbicara dengan dokter."
+    },
+    {
+      "q": "Seberapa sering aku boleh mengerjakannya?",
+      "a": "Tes ini menanyakan dua minggu terakhir, jadi mengulanginya kira-kira setiap dua minggu adalah cara mudah untuk memantau keadaanmu. Perubahan 10 poin atau lebih dianggap bermakna."
+    },
+    {
+      "q": "Apa yang bisa meningkatkan kesejahteraanku?",
+      "a": "Tidur teratur, cahaya matahari dan bergerak aktif, waktu bersama orang yang kamu sukai, dan melakukan hal-hal yang menarik minatmu membantu banyak orang. Jika suasana hati yang murung terus berlanjut, bicaralah dengan dokter atau konselor."
+    }
+  ],
+  "items": [
+    "Saya merasa ceria dan bersemangat.",
+    "Saya merasa tenang dan santai.",
+    "Saya merasa aktif dan bertenaga.",
+    "Saya bangun tidur dengan perasaan segar dan cukup istirahat.",
+    "Kehidupan saya sehari-hari dipenuhi hal-hal yang menarik minat saya."
+  ],
+  "results": {
+    "low": {
+      "name": "Kesejahteraan rendah (0–28)",
+      "body": "Jawabanmu menunjukkan kesejahteraanmu rendah selama dua minggu terakhir. Skor serendah ini sering menyertai depresi, jadi segeralah bicara dengan dokter atau tenaga profesional kesehatan mental. Kamu juga bisa mengikuti pemeriksaan depresi PHQ-9 di sini. Kamu tidak harus menghadapi ini sendirian, dan bantuan yang efektif itu ada."
+    },
+    "reduced": {
+      "name": "Kesejahteraan menurun (32–48)",
+      "body": "Kesejahteraanmu belakangan berada di bawah rentang biasanya. Ada baiknya memeriksa kemungkinan depresi (tes PHQ-9 di situs ini salah satu caranya) dan berbicara dengan dokter jika keadaan ini sudah berlangsung cukup lama. Langkah kecil seperti tidur teratur, cahaya matahari, bergerak aktif, dan waktu bersama orang yang kamu percayai bisa membantu."
+    },
+    "good": {
+      "name": "Kesejahteraan baik (52–100)",
+      "body": "Kesejahteraanmu berada dalam rentang normal. Pertahankan kebiasaan dan orang-orang yang membuatmu merasa seperti ini, dan ulangi pemeriksaan ini beberapa minggu lagi untuk melihat apakah tetap stabil."
+    }
+  }
+}

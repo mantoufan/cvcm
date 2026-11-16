@@ -1,0 +1,70 @@
+{
+  "title": "Dark triad test: Machiavellianism, narcissism, psychopathy — free — cv.cm",
+  "description": "Free dark triad test: rate 18 statements to get a score for Machiavellianism, narcissism and psychopathy, with what each trait means. Not a diagnosis; answers stay in your browser.",
+  "h1": "Dark triad test",
+  "lede": "Do you like to stay one step ahead, enjoy the spotlight or act first and think later? Rate 18 statements to see where you sit on the three dark triad traits.",
+  "about": [
+    "The dark triad is a set of three overlapping personality traits named by psychologists Delroy Paulhus and Kevin Williams in 2002: Machiavellianism (strategic, manipulative, cynical about others), narcissism (a need for admiration and a sense of being special) and psychopathy (impulsive, thrill-seeking, low in empathy and guilt). Everyone has some of each; they are measured on a scale, like other traits.",
+    "The statements were written for cv.cm; this is not the Short Dark Triad (SD3) or any clinical tool. A high score is not a diagnosis of narcissistic or antisocial personality disorder, which only a clinician can make. Half the statements are reversed, so agreeing with everything lands in the middle. Use your result to reflect, not to label yourself or anyone else."
+  ],
+  "faq": [
+    {
+      "q": "What are the three dark triad traits?",
+      "a": "Machiavellianism is a cold, strategic approach to people and a willingness to manipulate them. Narcissism is grandiosity, entitlement and a need for admiration. Psychopathy is impulsivity, thrill-seeking and a lack of empathy or remorse."
+    },
+    {
+      "q": "How is the score worked out?",
+      "a": "Each trait has six statements scored 0 to 4, three of them reversed, giving a score for each trait out of 24, shown as a percentage. Below 40% is low, 40–60% is average and above 60% is high."
+    },
+    {
+      "q": "Does a high score mean I'm a psychopath?",
+      "a": "No. These are everyday traits that vary across the population, and a self-report quiz cannot diagnose a personality disorder. Moderate levels can even help in competitive settings; very high levels tend to harm relationships over time."
+    },
+    {
+      "q": "Can I take it about someone else?",
+      "a": "It is written for rating yourself. Answering for a partner or coworker mostly measures your view of them, so don't use it to label people."
+    }
+  ],
+  "dims": {
+    "mach": "Machiavellianism",
+    "narc": "Narcissism",
+    "psych": "Psychopathy"
+  },
+  "items": [
+    "I think about what people can do for me before I decide how friendly to be.",
+    "I deserve more recognition than most people get.",
+    "I often act on impulse, even when I know it's risky.",
+    "I'd rather lose a deal than win it by tricking someone.",
+    "I'm happy to stay in the background at social events.",
+    "I feel guilty for a long time when I've hurt someone.",
+    "I'll tell people what they want to hear if it gets me what I want.",
+    "People often tell me I'm special or gifted.",
+    "I enjoy taking risks that make other people nervous.",
+    "I believe most people can be trusted.",
+    "I'm happy to let others take credit for shared work.",
+    "I avoid doing things that could hurt others, even if I'd gain from them.",
+    "I like to know people's weak spots, in case I need them one day.",
+    "I like being admired, and I go out of my way to be noticed.",
+    "When someone gets hurt because of me, I move on quickly.",
+    "I'm open and honest about what I want, even when it costs me.",
+    "I don't need others to see me as successful.",
+    "Other people's pain affects me deeply."
+  ],
+  "levels": {
+    "mach": {
+      "low": "You tend to be open and trusting, and you prefer honesty to strategy. People find you easy to deal with. In tough negotiations, it can help to prepare your position and not give everything away at once.",
+      "mid": "You can play the long game when you need to but don't usually manipulate people. You read situations realistically without being cynical about everyone.",
+      "high": "You think strategically about people and are willing to bend the truth to get ahead. That can win short-term advantages, but it erodes trust if others notice. Ask whether the goal is worth what it costs the relationship."
+    },
+    "narc": {
+      "low": "You don't need the spotlight and tend to play down your achievements. Modesty is attractive, but make sure your work is seen when it counts.",
+      "mid": "You like recognition and have healthy confidence, without needing constant admiration. You can take a compliment and also share the credit.",
+      "high": "You enjoy attention and feel you deserve more than others. Confidence can carry you far, but people may see you as self-centered. Practice asking about others and giving credit freely."
+    },
+    "psych": {
+      "low": "You are careful, considerate and feel others' pain strongly. You think before you act, which keeps you and others safe; just don't let fear of upsetting people stop you from acting.",
+      "mid": "You enjoy some excitement and can be bold, but empathy and guilt usually keep you in check.",
+      "high": "You act quickly, seek thrills and don't dwell on how others feel. That can make you fearless under pressure, but it can also hurt people and land you in trouble. Pausing before big decisions and checking how others are affected helps."
+    }
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "title": "Test de TOC: ¿tengo TOC? Autoevaluación de trastorno obsesivo-compulsivo gratis — cv.cm",
+  "description": "Test de TOC gratis: valora 15 afirmaciones sobre pensamientos no deseados, comprobaciones, limpieza y rituales durante el último mes y mira si vale la pena pedir una evaluación. No es un diagnóstico. Tus respuestas no salen del navegador.",
+  "h1": "Test de TOC: autoevaluación",
+  "hint": "Pensando en el último mes, ¿hasta qué punto te describe cada afirmación?",
+  "scoreLabel": "Puntuación de TOC (0 = pocos signos, 60 = muchos)",
+  "lede": "¿Te vuelven una y otra vez pensamientos no deseados, o sientes que tienes que comprobar, limpiar o repetir cosas hasta que estén «bien»? Valora 15 afirmaciones sobre el último mes para ayudarte a decidir si hablar con alguien sobre el TOC.",
+  "about": [
+    "El trastorno obsesivo-compulsivo (TOC) tiene dos partes. Las obsesiones son pensamientos, imágenes o impulsos no deseados y angustiosos que se te meten en la cabeza una y otra vez, como el miedo a los gérmenes, a hacer daño o a que algo no esté del todo bien. Las compulsiones son cosas que te sientes obligado a hacer, en voz alta o mentalmente, para aliviar la ansiedad: lavarte, comprobar, ordenar, contar o buscar que te tranquilicen. Mucha gente comprueba dos veces una cerradura de vez en cuando; en el TOC, los pensamientos y los rituales ocupan mucho tiempo, causan un malestar real e interfieren en la vida diaria. Entre 1 y 3 de cada 100 personas tienen TOC en algún momento, y el tratamiento funciona.",
+    "Las afirmaciones se han escrito para cv.cm en torno a las principales áreas de síntomas del TOC: contaminación, comprobación y duda, orden y simetría, pensamientos no deseados, rituales mentales, y el tiempo y el malestar que suponen. No son la Y-BOCS, el OCI-R ni ningún otro cuestionario, y no se han validado clínicamente, así que los tramos de puntuación son una guía aproximada, no puntos de corte clínicos. Solo un médico o un psicólogo puede diagnosticar el TOC."
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo se calcula la puntuación?",
+      "a": "Cada afirmación puntúa de 0 (muy en desacuerdo) a 4 (muy de acuerdo), así que el total va de 0 a 60. 24 o menos son pocos signos, de 25 a 39 son algunos signos y 40 o más son muchos."
+    },
+    {
+      "q": "Tengo pensamientos perturbadores. ¿Significa eso que voy a llevarlos a cabo?",
+      "a": "No. Casi todo el mundo tiene a veces pensamientos extraños o angustiosos. En el TOC, esos pensamientos le parecen tan inaceptables a la persona que le causan un gran malestar, que es justo lo contrario de querer llevarlos a cabo. Un profesional puede ayudarte a manejarlos."
+    },
+    {
+      "q": "¿Ser muy ordenado o perfeccionista es lo mismo que tener TOC?",
+      "a": "No. Que te gusten las cosas ordenadas o bien hechas es un rasgo de personalidad y normalmente sienta bien. El TOC lo mueve la ansiedad: los rituales se sienten necesarios en lugar de agradables, y quitan tiempo y causan malestar."
+    },
+    {
+      "q": "¿Cómo se trata el TOC?",
+      "a": "El tratamiento principal es un tipo de terapia cognitivo-conductual llamado exposición con prevención de respuesta (EPR), que te ayuda a enfrentarte a los miedos paso a paso sin hacer el ritual. A algunas personas también les ayuda la medicación. Un médico puede derivarte."
+    }
+  ],
+  "items": [
+    "He pasado mucho tiempo lavándome las manos, duchándome o limpiando después de que algo me pareciera sucio, aunque se viera limpio.",
+    "He evitado tocar cosas como pomos de puertas, dinero u objetos de otras personas por miedo a los gérmenes o la suciedad.",
+    "He vuelto, a veces varias veces, para asegurarme de que una puerta estaba cerrada, un aparato apagado o un mensaje bien escrito.",
+    "Incluso después de comprobar algo, he seguido con dudas y he necesitado volver a comprobarlo.",
+    "Me he sentido muy incómodo hasta que las cosas estaban alineadas, simétricas o hechas exactamente en el orden correcto.",
+    "He tenido que repetir una acción, como pulsar un interruptor o releer una línea, hasta que me pareciera que estaba «justo bien».",
+    "Me han venido a la cabeza pensamientos o imágenes angustiosos que no quería y que no parecían propios de mí.",
+    "Me ha preocupado que el simple hecho de tener un mal pensamiento pudiera hacer que pasara algo malo.",
+    "Cuanto más he intentado no pensar en algo angustioso, más ha vuelto.",
+    "He contado, rezado o repetido palabras mentalmente para anular un mal pensamiento o sentimiento.",
+    "He pedido a otras personas que me tranquilizaran una y otra vez sobre la misma preocupación.",
+    "Algunos días, pensamientos o rituales como estos me han ocupado más de una hora.",
+    "Me he sentido ansioso o angustiado cuando no podía terminar un ritual o una rutina.",
+    "He evitado lugares, personas o tareas porque desencadenaban estos pensamientos o impulsos.",
+    "Estos pensamientos o hábitos han interferido en mi trabajo, mis estudios, mi sueño o mis relaciones."
+  ],
+  "results": {
+    "few": {
+      "name": "Pocos signos (0–24)",
+      "body": "No indicas muchos signos de TOC en el último mes. Todo el mundo comprueba algo dos veces o tiene algún pensamiento no deseado de vez en cuando, y es normal. Si algo de esta lista te preocupa, puedes hablarlo con un médico igualmente."
+    },
+    "some": {
+      "name": "Algunos signos (25–39)",
+      "body": "Reconoces algunas de estas experiencias. Pueden ir y venir, y a menudo empeoran con el estrés. Fíjate en cuánto tiempo te ocupan y cuánto malestar te causan. Si van a más o interfieren en tu vida, habla con un médico o un psicólogo; la ayuda funciona mejor cuanto antes."
+    },
+    "many": {
+      "name": "Muchos signos (40–60)",
+      "body": "Reconoces muchas de estas experiencias, y parecen quitarte tiempo y causarte malestar. Eso no significa que tengas TOC, pero es un buen motivo para hablar pronto con un médico o un psicólogo. El TOC tiene muy buen tratamiento, sobre todo con la terapia de exposición con prevención de respuesta. No tienes que afrontarlo solo."
+    }
+  }
+}

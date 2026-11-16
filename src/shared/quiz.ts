@@ -1,6 +1,7 @@
 // Personality and self-check tests (`/{locale}/tests/{id}/`). Everything here is language-neutral:
-// which trait each item scores, reverse keys, option weights and result rules. The copy lives in
-// `src/locales/quiz/<locale>.json`, with items in the same order. Scoring runs in the page; answers never leave it.
+// which trait each item scores, reverse keys, option weights and result rules. Each test's copy lives in
+// `src/locales/quiz/<locale>/<id>.json`, with items in the same order (run `npm run quiz:sync` after adding a test).
+// Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
   { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad"] },
@@ -17,6 +18,9 @@ export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
 
 export const QUIZZES = QUIZ_GROUPS.flatMap((group) => [...group.quizzes]);
 export type QuizId = (typeof QUIZ_GROUPS)[number]["quizzes"][number];
+
+/** A test page: the hub or one test (null off the tests column). */
+export type QuizPage = QuizId | "hub" | null;
 
 export function isQuizId(value: string): value is QuizId {
   return (QUIZZES as readonly string[]).includes(value);

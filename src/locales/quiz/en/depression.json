@@ -1,0 +1,61 @@
+{
+  "title": "Free depression test (PHQ-9): depression screening — cv.cm",
+  "description": "Free PHQ-9 depression test online. Answer 9 questions about the last two weeks for a score from 0 to 27 and the standard severity level. Private: nothing leaves your browser.",
+  "h1": "Depression test (PHQ-9)",
+  "lede": "The PHQ-9 is the 9-question depression screening used by doctors worldwide. It takes about two minutes and scores from 0 to 27.",
+  "about": [
+    "The Patient Health Questionnaire (PHQ-9) was developed by Kroenke, Spitzer and Williams and is free to use. Scores of 5, 10, 15 and 20 mark mild, moderate, moderately severe and severe depression symptoms.",
+    "A score of 10 or more is a reason to see a doctor or mental health professional. If you have any thoughts of hurting yourself, reach out for help now, whatever your total score."
+  ],
+  "faq": [
+    {
+      "q": "What does my PHQ-9 score mean?",
+      "a": "0–4 minimal, 5–9 mild, 10–14 moderate, 15–19 moderately severe and 20–27 severe depression symptoms."
+    },
+    {
+      "q": "Can the PHQ-9 diagnose depression?",
+      "a": "No. It is a screening tool. A doctor or mental health professional makes a diagnosis after a full assessment."
+    },
+    {
+      "q": "Why does question 9 matter so much?",
+      "a": "It asks about thoughts of death or self-harm. Any answer other than \"not at all\" deserves a conversation with a professional, even if the total score is low."
+    },
+    {
+      "q": "Is depression treatable?",
+      "a": "Yes. Therapy, medication, exercise and social support all help, and most people improve with treatment."
+    }
+  ],
+  "items": [
+    "Little interest or pleasure in doing things",
+    "Feeling down, depressed, or hopeless",
+    "Trouble falling or staying asleep, or sleeping too much",
+    "Feeling tired or having little energy",
+    "Poor appetite or overeating",
+    "Feeling bad about yourself, or that you are a failure or have let yourself or your family down",
+    "Trouble concentrating on things, such as reading or watching television",
+    "Moving or speaking so slowly that other people could have noticed, or the opposite: being so fidgety or restless that you have been moving around a lot more than usual",
+    "Thoughts that you would be better off dead, or of hurting yourself in some way"
+  ],
+  "results": {
+    "minimal": {
+      "name": "Minimal depression (0–4)",
+      "body": "Your answers suggest few or no symptoms of depression over the last two weeks."
+    },
+    "mild": {
+      "name": "Mild depression (5–9)",
+      "body": "You have some symptoms. Keep an eye on how you feel, look after sleep, movement and social contact, and retake the test in a few weeks. If it doesn't improve, talk to a doctor."
+    },
+    "moderate": {
+      "name": "Moderate depression (10–14)",
+      "body": "Your symptoms are at a level where seeing a doctor or mental health professional is recommended. Depression is common and treatable."
+    },
+    "modsevere": {
+      "name": "Moderately severe depression (15–19)",
+      "body": "Your answers suggest significant symptoms. Please contact a doctor or mental health professional soon. Treatment such as therapy and medication helps most people."
+    },
+    "severe": {
+      "name": "Severe depression (20–27)",
+      "body": "Your answers suggest severe symptoms. Please reach out to a doctor or mental health professional as soon as possible, and let someone you trust know how you are feeling."
+    }
+  }
+}

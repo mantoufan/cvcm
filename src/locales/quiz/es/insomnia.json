@@ -1,0 +1,61 @@
+{
+  "title": "Test de insomnio: ¿tengo insomnio? Autoevaluación del sueño gratis — cv.cm",
+  "description": "Test de insomnio gratis: valora 15 afirmaciones sobre cómo te duermes, si te despiertas por la noche y lo cansado que te sientes de día durante el último mes, y mira si vale la pena hablar con un médico. No es un diagnóstico. Tus respuestas no salen del navegador.",
+  "h1": "Test de insomnio: autoevaluación",
+  "hint": "Pensando en el último mes, ¿hasta qué punto describe tu sueño cada afirmación?",
+  "scoreLabel": "Puntuación de insomnio (0 = pocos signos, 60 = muchos)",
+  "lede": "¿Pasas horas despierto en la cama, te despiertas a las 3 de la madrugada o estás agotado cada tarde? Valora 15 afirmaciones sobre el último mes para ver cuánto te afecta dormir mal y qué puede ayudarte.",
+  "about": [
+    "El insomnio consiste en tener dificultades para quedarte dormido, para seguir dormido o despertarte demasiado pronto, aunque tengas ocasión de dormir, y notar los efectos durante el día: cansancio, bajo estado de ánimo, poca concentración o irritabilidad. Casi todo el mundo duerme mal alguna vez. Cuando ocurre al menos tres noches por semana durante tres meses o más, los médicos lo llaman insomnio crónico; lo tiene alrededor de un adulto de cada diez. El tratamiento más eficaz es la terapia cognitivo-conductual para el insomnio (TCC-I), que a largo plazo ayuda más que las pastillas para dormir.",
+    "Las afirmaciones se han escrito para cv.cm en torno a los principales signos del insomnio: dificultad para dormirse, despertares nocturnos, despertarse demasiado pronto, sueño poco reparador, preocupación por el sueño y su efecto durante el día. No son el Índice de Gravedad del Insomnio ni ningún otro cuestionario, y no se han validado clínicamente, así que los tramos de puntuación son una guía aproximada, no puntos de corte clínicos. Roncar fuerte, ahogarte mientras duermes o sentir la necesidad de mover las piernas pueden indicar otros problemas de sueño, así que coméntaselo a un médico. Solo un médico puede diagnosticar el insomnio."
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo se calcula la puntuación?",
+      "a": "Cada afirmación puntúa de 0 (muy en desacuerdo) a 4 (muy de acuerdo), así que el total va de 0 a 60. 24 o menos son pocos signos, de 25 a 39 son algunos signos y 40 o más son muchos."
+    },
+    {
+      "q": "¿Cómo sé si tengo insomnio?",
+      "a": "Si a menudo te cuesta quedarte dormido o seguir dormido, o te despiertas demasiado pronto, al menos tres noches por semana, y eso afecta a cómo te sientes o funcionas durante el día, habla con un médico. Esta autoevaluación puede ayudarte a describir el problema."
+    },
+    {
+      "q": "¿Qué ayuda con el insomnio?",
+      "a": "Levántate a la misma hora todos los días, sal de la cama si no te duermes en unos 20 minutos, usa la cama solo para dormir, deja la cafeína después del mediodía y evita las siestas largas. Si persiste, pregunta por la TCC-I, que funciona en la mayoría de las personas."
+    },
+    {
+      "q": "¿Debo tomar pastillas para dormir?",
+      "a": "Solo si te lo aconseja un médico. Las pastillas para dormir pueden ayudar durante poco tiempo, pero pueden tener efectos secundarios y no resuelven la causa; se recomienda empezar por la TCC-I."
+    }
+  ],
+  "items": [
+    "A menudo tardo más de media hora en dormirme.",
+    "Me despierto durante la noche y me cuesta volver a dormirme.",
+    "Me despierto mucho antes de lo que quiero y no puedo volver a dormirme.",
+    "Me levanto sin sentirme descansado, incluso después de una noche entera en la cama.",
+    "Me quedo en la cama con la cabeza a mil por hora.",
+    "Durante el día me preocupa si podré dormir esa noche.",
+    "La mayoría de las tardes me siento cansado o agotado.",
+    "Dormir mal hace que me cueste concentrarme.",
+    "Estoy más irritable o bajo de ánimo por cómo duermo.",
+    "Mis problemas de sueño ocurren tres o más noches por semana.",
+    "A menudo me despierto más de una vez por noche y me quedo despierto cada vez.",
+    "Necesito alcohol o pastillas para dormir para conciliar el sueño.",
+    "Me pongo nervioso cuando llega la hora de acostarme.",
+    "Duermo hasta tarde o me echo muchas siestas para compensar las malas noches.",
+    "Mis problemas de sueño afectan a mi trabajo, mis estudios o mis relaciones."
+  ],
+  "results": {
+    "few": {
+      "name": "Pocos signos de insomnio (0–24)",
+      "body": "Ahora mismo tu sueño no parece un gran problema. Todo el mundo tiene alguna mala noche, sobre todo con estrés. Mantén los hábitos que te ayudan: una hora fija para levantarte, luz natural por la mañana y una hora tranquila antes de acostarte."
+    },
+    "some": {
+      "name": "Algunos signos de insomnio (25–39)",
+      "body": "Parece que dormir mal te afecta parte del tiempo. Prueba a levantarte siempre a la misma hora, también los fines de semana, sal de la cama si no te duermes en unos 20 minutos, deja la cafeína después del mediodía y no uses pantallas en la cama. Si dura semanas o empeora, habla con un médico."
+    },
+    "many": {
+      "name": "Muchos signos de insomnio (40–60)",
+      "body": "Tus respuestas muestran muchos problemas de sueño y su efecto durante el día. Habla con un médico: el insomnio es frecuente y tiene tratamiento, y la terapia cognitivo-conductual para el insomnio (TCC-I) ayuda a la mayoría de las personas. Si roncas, haces pausas al respirar o tienes las piernas inquietas, coméntalo, porque pueden indicar otros problemas de sueño. Si además te sientes con el ánimo bajo, el test de depresión de abajo puede ayudarte a describirlo."
+    }
+  }
+}

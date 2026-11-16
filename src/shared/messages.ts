@@ -13,12 +13,15 @@ import type { IdeaId } from "./ideas";
 import type { IdeaEntryCopy, IdeasData } from "./ideas-i18n";
 import type { NostalgiaId } from "./nostalgia";
 import type { NostalgiaEntryCopy } from "./nostalgia-i18n";
+import type { QuizId } from "./quiz";
+import type { QuizCopy } from "./quiz-i18n";
 
 export type UiMessages = typeof import("../locales/en.json");
 export type GuideMessages = typeof import("../locales/guides/en.json");
 export type DeviceMessages = typeof import("../locales/device/en.json");
 export type GameName = { name: string; blurb: string };
 export type LegalMessages = typeof import("../locales/legal/en.json");
+/** The quiz pack: UI strings and hub copy. Each test's own copy is a separate chunk (`registerQuizTest`). */
 export type QuizMessages = typeof import("../locales/quiz/en.json");
 export type DatasetMessages = typeof import("../locales/datasets/en.json");
 export type KbMessages = typeof import("../locales/kb/en.json");
@@ -78,6 +81,7 @@ const loaded: Partial<Record<Locale, LocaleMessages>> = {};
 const loadedGames: Partial<Record<Locale, GameMessages>> = {};
 const loadedLegal: Partial<Record<Locale, LegalMessages>> = {};
 const loadedQuiz: Partial<Record<Locale, QuizMessages>> = {};
+const loadedQuizTests: Partial<Record<Locale, Partial<Record<QuizId, QuizCopy>>>> = {};
 const loadedDatasets: Partial<Record<Locale, DatasetMessages>> = {};
 const loadedKb: Partial<Record<Locale, KbMessages>> = {};
 const loadedKbArticles: Partial<Record<Locale, Partial<Record<KbId, KbArticleCopy>>>> = {};
@@ -141,9 +145,25 @@ export function hasQuizMessages(locale: Locale): boolean {
   return Boolean(loadedQuiz[locale]);
 }
 
-/** Personality test copy; on the client only after the quiz pack is loaded (test pages). */
+/** Test UI strings and hub copy; on the client only after the quiz pack is loaded (test pages). */
 export function quizMessages(locale: Locale): QuizMessages {
   return pick(loadedQuiz, locale, "quiz messages");
+}
+
+/** One test's copy. The client loads each test on its own. */
+export function registerQuizTest(locale: Locale, id: QuizId, copy: QuizCopy): void {
+  (loadedQuizTests[locale] ??= {})[id] = copy;
+}
+
+export function hasQuizTest(locale: Locale, id: QuizId): boolean {
+  return Boolean(loadedQuizTests[locale]?.[id]);
+}
+
+/** One test's copy, falling back to English if that is all that is loaded (as the other entry getters do). */
+export function quizTestMessages(locale: Locale, id: QuizId): QuizCopy {
+  const copy = loadedQuizTests[locale]?.[id] ?? loadedQuizTests.en?.[id];
+  if (!copy) throw new Error(`quiz test not loaded: ${locale} ${id}`);
+  return copy;
 }
 
 export function registerDatasetMessages(locale: Locale, pack: DatasetMessages): void {

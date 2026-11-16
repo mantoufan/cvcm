@@ -1,7 +1,7 @@
 import type { Locale } from "./locale";
 import { fill } from "./fill";
 import { escapeHtml } from "./device-i18n";
-import { messages, quizMessages, type QuizMessages } from "./messages";
+import { messages, quizMessages, quizTestMessages, type QuizMessages } from "./messages";
 import { appHref, quizHref } from "./path";
 import { QUIZ_DEFS, QUIZ_GROUPS, questionCount, type QuizId } from "./quiz";
 
@@ -41,7 +41,7 @@ export function quizHub(locale: Locale): QuizHubCopy {
 }
 
 export function quizCopy(locale: Locale, id: QuizId): QuizCopy {
-  return quizMessages(locale).tests[id] as unknown as QuizCopy;
+  return quizTestMessages(locale, id);
 }
 
 /** Name and one-line blurb, from the core pack: home and footer links need them without the quiz pack. */

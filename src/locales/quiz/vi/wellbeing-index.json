@@ -1,0 +1,49 @@
+{
+  "title": "Kiểm tra mức độ hạnh phúc miễn phí (Chỉ số WHO-5): điểm 0–100 — cv.cm",
+  "description": "Bài kiểm tra WHO-5 online miễn phí. Trả lời 5 câu về hai tuần qua để nhận điểm hạnh phúc, an lạc từ 0 đến 100 kèm ý nghĩa. Riêng tư: không có gì rời khỏi trình duyệt của bạn.",
+  "h1": "Kiểm tra mức độ hạnh phúc, an lạc (WHO-5)",
+  "lede": "Chỉ số hạnh phúc WHO-5 gồm 5 câu hỏi ngắn về cảm nhận của bạn trong hai tuần qua. Chưa đến một phút, điểm từ 0 đến 100.",
+  "about": [
+    "WHO-5 được Văn phòng khu vực châu Âu của Tổ chức Y tế Thế giới công bố năm 1998 và là một trong những bảng hỏi về sức khỏe tinh thần tích cực được dùng rộng rãi nhất thế giới. Bảng hỏi được sử dụng miễn phí. Mỗi câu được 0 đến 5 điểm; tổng điểm (0–25) nhân với 4 ra phần trăm từ 0 (tệ nhất) đến 100 (tốt nhất).",
+    "Điểm dưới 52 cho thấy mức độ hạnh phúc, an lạc thấp, và bác sĩ dùng đó làm lý do để sàng lọc trầm cảm; điểm từ 28 trở xuống thường đi kèm trầm cảm. Đây là bài tự kiểm tra, không phải chẩn đoán."
+  ],
+  "faq": [
+    {
+      "q": "Điểm WHO-5 của tôi có nghĩa là gì?",
+      "a": "Nhân điểm thô (0–25) với 4. Từ 52 trở lên nằm trong mức bình thường. Dưới 52 cho thấy mức độ hạnh phúc, an lạc thấp. Từ 28 trở xuống là dấu hiệu có thể có trầm cảm và nên được chuyên gia kiểm tra."
+    },
+    {
+      "q": "WHO-5 có phải bài test trầm cảm không?",
+      "a": "Nó đo trạng thái tinh thần tích cực, không đo triệu chứng trầm cảm, nhưng điểm thấp là lý do chính đáng để sàng lọc trầm cảm, chẳng hạn bằng bài PHQ-9 trên trang này, và trao đổi với bác sĩ."
+    },
+    {
+      "q": "Tôi có thể làm bài bao lâu một lần?",
+      "a": "Bài hỏi về hai tuần qua, nên làm lại khoảng hai tuần một lần là cách đơn giản để theo dõi tình trạng của bạn. Thay đổi từ 10 điểm trở lên được xem là có ý nghĩa."
+    },
+    {
+      "q": "Điều gì giúp cải thiện sức khỏe tinh thần?",
+      "a": "Ngủ đều đặn, ra ngoài ánh sáng ban ngày, vận động, dành thời gian với người mình quý và làm những việc mình hứng thú giúp ích cho nhiều người. Nếu tâm trạng chán nản kéo dài, hãy nói chuyện với bác sĩ hoặc chuyên gia tư vấn."
+    }
+  ],
+  "items": [
+    "Tôi cảm thấy vui vẻ và tinh thần phấn chấn.",
+    "Tôi cảm thấy bình tĩnh và thư thái.",
+    "Tôi cảm thấy năng động và tràn đầy sinh lực.",
+    "Tôi thức dậy với cảm giác sảng khoái và được nghỉ ngơi đầy đủ.",
+    "Cuộc sống hằng ngày của tôi có nhiều điều khiến tôi hứng thú."
+  ],
+  "results": {
+    "low": {
+      "name": "Mức hạnh phúc thấp (0–28)",
+      "body": "Câu trả lời cho thấy trạng thái tinh thần của bạn ở mức thấp trong hai tuần qua. Điểm thấp như vậy thường đi kèm trầm cảm, vì thế hãy sớm trao đổi với bác sĩ hoặc chuyên gia sức khỏe tâm thần. Bạn cũng có thể làm bài kiểm tra trầm cảm PHQ-9 tại đây. Bạn không phải tự mình đối mặt với chuyện này, và luôn có sự hỗ trợ hiệu quả."
+    },
+    "reduced": {
+      "name": "Mức hạnh phúc giảm sút (32–48)",
+      "body": "Gần đây trạng thái tinh thần của bạn thấp hơn mức thông thường. Bạn nên sàng lọc trầm cảm (bài PHQ-9 trên trang này là một cách) và trao đổi với bác sĩ nếu tình trạng này đã kéo dài một thời gian. Những bước nhỏ như ngủ đều đặn, ra ngoài ánh sáng ban ngày, vận động và dành thời gian với người bạn tin tưởng có thể giúp ích."
+    },
+    "good": {
+      "name": "Mức hạnh phúc tốt (52–100)",
+      "body": "Trạng thái tinh thần của bạn nằm trong mức bình thường. Hãy duy trì những thói quen và những người giúp bạn cảm thấy như vậy, và làm lại bài sau vài tuần để xem tình trạng có được giữ vững không."
+    }
+  }
+}
