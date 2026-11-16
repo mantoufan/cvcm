@@ -10,8 +10,8 @@ import { preloadLocalePack } from "../src/shared/locale-preload";
 import { ideasMessages, messages } from "../src/shared/messages";
 import { ideasHref, parseAppPath } from "../src/shared/path";
 import { IDEAS_DATA_FETCHED, IDEAS_FOCUS, IDEA_ENTRIES, IDEA_GROUPS, IDEA_META, ideaGroupOf, ideaPublished, isIdeaId } from "../src/shared/ideas";
-import { ideaCopy, ideaData, ideaOutlook, ideaTitle, ideasArticleJsonLd, ideasData, pct, rankedIdeas, type IdeaEntryCopy } from "../src/shared/ideas-i18n";
-import { ideaChartSvg, ideasPageHtml } from "../src/shared/ideas-page";
+import { ideaCopy, ideaData, ideaTitle, ideasArticleJsonLd, ideasData, rankedIdeas, type IdeaEntryCopy } from "../src/shared/ideas-i18n";
+import { ideaChartSvg, ideaOutlook, ideasPageHtml, pct } from "../src/shared/ideas-page";
 import { ideasSyncFiles } from "../src/shared/ideas-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
 import { pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
@@ -193,6 +193,12 @@ describe("ideas: content", () => {
     }
   }, 30_000);
 
+  it("keeps meta descriptions short enough for search results", () => {
+    for (const locale of LOCALES) for (const id of IDEA_ENTRIES) {
+      expect([...ideaCopy(locale, id).description].length, `${locale} ${id}`).toBeLessThanOrEqual(160);
+    }
+  });
+
   it("has hub packs with the same keys and placeholders as English", () => {
     for (const locale of LOCALES) {
       const hub = readJson(`src/locales/ideas/${locale}.json`);
@@ -307,9 +313,11 @@ describe("ideas: bundle split", () => {
       if (seen.has(file)) return;
       seen.add(file);
       const text = readFileSync(join(root, file), "utf8");
-      for (const m of text.matchAll(/^(?:import|export)\s[^;]*?from\s+"(\.{1,2}\/[^"]+)"|^import\s+"(\.{1,2}\/[^"]+)"/gm)) {
-        if (/^import\s+type\s/.test(m[0]) || /^export\s+type\s/.test(m[0])) continue;
-        const spec = m[1] ?? m[2];
+      // One statement at a time (never past its ";"), either quote style, ".js" specifiers too; type-only imports
+      // never reach a bundle.
+      for (const m of text.matchAll(/^\s*(?:import|export)\b([^;]*?)\bfrom\s*(["'])(\.{1,2}\/[^"']+)\2|^\s*import\s*(["'])(\.{1,2}\/[^"']+)\4/gm)) {
+        if (m[1] !== undefined && /^\s*type\s/.test(m[1])) continue;
+        const spec = (m[3] ?? m[5]).replace(/\.js$/, "");
         const base = join(dirname(file), spec);
         const target = [`${base}.ts`, `${base}/index.ts`, base].find((p) => /\.(ts|json)$/.test(p) && existsSync(join(root, p)));
         if (target?.endsWith(".ts")) walk(target);
@@ -320,8 +328,6 @@ describe("ideas: bundle split", () => {
     expect(seen.has("src/shared/ideas-page.ts")).toBe(false);
     expect(seen.has("src/shared/seo-html.ts")).toBe(false);
   });
-
-
 });
 
 describe("ideas: page HTML and SEO", () => {

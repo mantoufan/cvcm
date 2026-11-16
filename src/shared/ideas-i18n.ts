@@ -8,7 +8,6 @@ import { PUBLISHER, type KbBlock } from "./kb-i18n";
 import { ideaEntryMessages, ideasMessages, type IdeasMessages } from "./messages";
 import { appHref, ideasHref } from "./path";
 import { IDEA_ENTRIES, ideaGroupOf, ideaModified, ideaPublished, type IdeaId } from "./ideas";
-import { plain } from "./number-format";
 import { HREFLANG } from "./sitemap";
 
 /** One idea's copy, `src/locales/ideas/<locale>/<id>.json`. Blocks are the kb blocks (backticks are the only inline markup). */
@@ -68,9 +67,6 @@ const ORIGIN = "https://cv.cm";
 
 export type IdeasUi = IdeasMessages["ui"];
 
-export function ideasUi(locale: Locale): IdeasUi {
-  return ideasMessages(locale).ui;
-}
 
 export function ideasHub(locale: Locale): IdeasMessages["hub"] {
   return ideasMessages(locale).hub;
@@ -110,13 +106,6 @@ export function ideaFaqItems(locale: Locale, id: IdeaId | null): { q: string; a:
   return id ? ideaCopy(locale, id).faq : ideasHub(locale).faq.map((item) => ({ q: fill(item.q, hubVars(locale)), a: fill(item.a, hubVars(locale)) }));
 }
 
-export type IdeaOutlook = "up" | "flat" | "down";
-
-/** Growing or shrinking by the momentum score (50 = flat), with a dead zone so small moves read as steady. */
-export function ideaOutlook(data: IdeaData): IdeaOutlook {
-  const m = data.scores.momentum;
-  return m >= 58 ? "up" : m <= 42 ? "down" : "flat";
-}
 
 /** Every idea with data, best outlook score first (ties: more demand first, then catalog order). */
 export function rankedIdeas(locale: Locale): { id: IdeaId; data: IdeaData }[] {
@@ -128,11 +117,6 @@ export function rankedIdeas(locale: Locale): { id: IdeaId; data: IdeaData }[] {
     .sort((a, b) => b.data.scores.total - a.data.scores.total || b.data.scores.demand - a.data.scores.demand);
 }
 
-/** "+12%", "−5%", "0%". */
-export function pct(locale: Locale, value: number): string {
-  const sign = value > 0 ? "+" : value < 0 ? "−" : "";
-  return `${sign}${plain(locale, Math.abs(value))}%`;
-}
 
 export function ideaSources(locale: Locale, id: IdeaId): { name: string; url: string }[] {
   return ideasMessages(locale).sources[id] ?? [];

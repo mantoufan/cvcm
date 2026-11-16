@@ -12,7 +12,25 @@ import { appHref, ideasHref } from "./path";
 import { IDEA_GROUPS, IDEA_META, ideaGroupOf, ideaModified, type IdeaId } from "./ideas";
 import { plain } from "./number-format";
 import { HREFLANG } from "./sitemap";
-import { ideaCopy, ideaData, ideaFaqItems, ideaName, ideaOutlook, ideaSources, ideasData, ideasHub, ideasUi, pct, rankedIdeas, type IdeaData, type IdeaOutlook } from "./ideas-i18n";
+import { ideaCopy, ideaData, ideaFaqItems, ideaName, ideaSources, ideasData, ideasHub, rankedIdeas, type IdeaData, type IdeasUi } from "./ideas-i18n";
+
+export function ideasUi(locale: Locale): IdeasUi {
+  return ideasMessages(locale).ui;
+}
+
+export type IdeaOutlook = "up" | "flat" | "down";
+
+/** Growing or shrinking by the momentum score (50 = flat), with a dead zone so small moves read as steady. */
+export function ideaOutlook(data: IdeaData): IdeaOutlook {
+  const m = data.scores.momentum;
+  return m >= 58 ? "up" : m <= 42 ? "down" : "flat";
+}
+
+/** "+12%", "−5%", "0%". */
+export function pct(locale: Locale, value: number): string {
+  const sign = value > 0 ? "+" : value < 0 ? "−" : "";
+  return `${sign}${plain(locale, Math.abs(value))}%`;
+}
 
 function changeHtml(locale: Locale, value: number): string {
   return `<span class="${value > 0 ? "up" : value < 0 ? "down" : ""}">${escapeHtml(pct(locale, value))}</span>`;
@@ -176,7 +194,7 @@ function faqHtml(locale: Locale, id: IdeaId | null): string {
   return `<section class="faq" aria-labelledby="faq-title"><h2 id="faq-title">${escapeHtml(ideasUi(locale).faq)}</h2>${items}</section>`;
 }
 
-export function ideaLinkItems(locale: Locale, ids: readonly IdeaId[]): { href: string; name: string; blurb: string; nav: string; meta?: string }[] {
+function ideaLinkItems(locale: Locale, ids: readonly IdeaId[]): { href: string; name: string; blurb: string; nav: string; meta?: string }[] {
   const ui = ideasUi(locale);
   return ids.map((id) => {
     const data = ideaData(locale, id);
