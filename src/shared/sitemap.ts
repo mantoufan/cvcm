@@ -7,6 +7,7 @@ import { DATASET_SNAPSHOT, DATASETS, datasetUpdated, type DatasetId } from "./da
 import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
 import { memeImagePath } from "./meme-images";
+import { nostalgiaImagePath } from "./nostalgia-images";
 import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublished, type SlangId } from "./slang";
 import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaModified, type IdeaId } from "./ideas";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
@@ -188,9 +189,9 @@ function pageLastmod(page: SitemapPage): string | null {
   return null;
 }
 
-/** A page's own picture for the image sitemap: a meme entry's freely licensed image. */
+/** A page's own picture for the image sitemap: a meme or nostalgia entry's freely licensed image. */
 function pageImage(page: SitemapPage): string | null {
-  const path = page.kind === "slang" ? memeImagePath(page.entry) : null;
+  const path = page.kind === "slang" ? memeImagePath(page.entry) : page.kind === "nostalgia" ? nostalgiaImagePath(page.entry) : null;
   return path ? `${SITE_ORIGIN}${path}` : null;
 }
 

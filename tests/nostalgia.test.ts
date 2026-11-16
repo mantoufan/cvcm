@@ -23,6 +23,7 @@ import { nostalgiaArticleJsonLd, nostalgiaCopy, nostalgiaPageHtml, nostalgiaTitl
 import { nostalgiaSyncFiles } from "../src/shared/nostalgia-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
 import { fill } from "../src/shared/fill";
+import nostalgiaImagesJson from "../src/shared/nostalgia-images.json";
 import { applyHtmlSeo, pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
 import { buildSitemapXml, sitemapPages } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
@@ -294,6 +295,34 @@ describe("nostalgia: page HTML and SEO", () => {
         expect((nostalgiaArticleJsonLd(locale, id) as { temporalCoverage?: string }).temporalCoverage, `${locale} ${id}`).toBeUndefined();
       }
     }
+  });
+
+  it("shows each picture with size, alt, credit and license, also in JSON-LD, og:image and the image sitemap", () => {
+    const images = Object.entries(nostalgiaImagesJson) as [string, { src: string; width: number; height: number; author: string | null; creatorType: string | null; license: string; licenseUrl: string; page: string }][];
+    expect(images.length).toBeGreaterThan(30);
+    const xml = buildSitemapXml(sitemapPages().filter((p) => p.kind === "nostalgia"));
+    for (const [id, image] of images) {
+      expect(isNostalgiaId(id), id).toBe(true);
+      expect(image.src, id).toBe(`nostalgia/${id}.webp`);
+      expect(existsSync(join(root, "public/covers", image.src)), id).toBe(true);
+      expect(image.licenseUrl, id).toMatch(/^https:\/\/creativecommons\.org\//);
+      expect(image.page, id).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
+      expect(Math.max(image.width, image.height), id).toBeLessThanOrEqual(640);
+      expect([null, "Person", "Organization"], id).toContain(image.creatorType);
+      expect(xml, id).toContain(`<image:loc>https://cv.cm/covers/${image.src}</image:loc>`);
+      for (const locale of LOCALES) {
+        const html = nostalgiaPageHtml(locale, id as never);
+        expect(html, `${locale} ${id}`).toContain(`src="/covers/${image.src}" width="${image.width}" height="${image.height}"`);
+        expect(html, `${locale} ${id}`).toContain(image.licenseUrl);
+        const ld = nostalgiaArticleJsonLd(locale, id as never) as { image?: { license: string; acquireLicensePage: string; creator?: unknown } };
+        expect(ld.image?.license, `${locale} ${id}`).toBe(image.licenseUrl);
+        expect(ld.image?.acquireLicensePage, `${locale} ${id}`).toBe(image.page);
+        if (!image.author) expect(ld.image?.creator, `${locale} ${id}`).toBeUndefined();
+      }
+      expect(applyHtmlSeo(SHELL, "en", { nostalgia: true, nostalgiaId: id as never })).toContain(`<meta property="og:image" content="https://cv.cm/covers/${image.src}"`);
+    }
+    // Entries without a free picture show none.
+    expect(nostalgiaPageHtml("en", "tangseng-rou")).not.toContain("meme-figure");
   });
 
   it("links entries to the cv.cm tools and consoles that go with them", () => {

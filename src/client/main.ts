@@ -49,6 +49,7 @@ import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubO
 import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
 import { SLANG_FOCUS, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
 import { memeImagePath } from "../shared/meme-images";
+import { nostalgiaImagePath } from "../shared/nostalgia-images";
 import { IDEAS_FOCUS, isIdeaId, type IdeaId, type IdeaPage } from "../shared/ideas";
 import { NOSTALGIA_FOCUS, isNostalgiaId, type NostalgiaId, type NostalgiaPage } from "../shared/nostalgia";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
@@ -785,7 +786,9 @@ export function render(): void {
           ? COVER[tool]
           : slangPage && slangPage !== "hub"
             ? memeImagePath(slangPage)
-            : null;
+            : nostalgiaPage && nostalgiaPage !== "hub"
+              ? nostalgiaImagePath(nostalgiaPage)
+              : null;
   upsertMeta("property", "og:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   upsertMeta("name", "twitter:title", pageTitle(loc, seo));
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
