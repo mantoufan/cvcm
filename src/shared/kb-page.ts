@@ -1,16 +1,15 @@
 /**
  * The knowledge-shelf page HTML (hub and articles), shared by the client page and the Worker's crawler copy. Kept out of
- * kb-i18n so the main bundle, which needs only titles, descriptions and JSON-LD, does not carry it; inline, blockHtml,
- * linkListHtml and dateLabel are the block helpers the other article channels reuse.
+ * kb-i18n so the main bundle, which needs only titles, descriptions and JSON-LD, does not carry it.
  */
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
+import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
 import { KB_SHELVES, kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbMinutesOf, kbShelfOfPage, type KbId, type KbPage, type KbShelf } from "./kb";
 import { kbMessages, messages } from "./messages";
-import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref, type ToolId } from "./path";
-import { type KbBlock, type KbUi, kbHub, kbCopy, kbName, kbFaqItems, kbUpdated, kbHubOf, kbLinkItems } from "./kb-i18n";
+import { type KbUi, kbHub, kbCopy, kbName, kbFaqItems, kbUpdated, kbHubOf, kbLinkItems } from "./kb-i18n";
 
 export function kbUi(locale: Locale): KbUi {
   return kbMessages(locale).ui;
@@ -19,24 +18,6 @@ export function kbUi(locale: Locale): KbUi {
 /** Reading time in minutes, precomputed by `npm run kb:sync` so lists need no article copy. */
 export function kbMinutes(locale: Locale, id: KbId): number {
   return kbMinutesOf(id, locale);
-}
-
-/** Plain text with `code` spans; everything else escaped. Shared with the ref, slang, nostalgia and ideas page modules. */
-export function inline(text: string): string {
-  return text.split("`").map((part, i) => (i % 2 ? `<code>${escapeHtml(part)}</code>` : escapeHtml(part))).join("");
-}
-
-export function blockHtml(block: KbBlock): string {
-  if (typeof block === "string") return `<p>${inline(block)}</p>`;
-  if ("ul" in block) return `<ul>${block.ul.map((li) => `<li>${inline(li)}</li>`).join("")}</ul>`;
-  if ("ol" in block) return `<ol>${block.ol.map((li) => `<li>${inline(li)}</li>`).join("")}</ol>`;
-  if ("table" in block) {
-    const head = `<thead><tr>${block.table.head.map((c) => `<th scope="col">${inline(c)}</th>`).join("")}</tr></thead>`;
-    const rows = block.table.rows.map((row) => `<tr>${row.map((c, i) => (i === 0 ? `<th scope="row">${inline(c)}</th>` : `<td>${inline(c)}</td>`)).join("")}</tr>`).join("");
-    return `<div class="kb-table"><table>${head}<tbody>${rows}</tbody></table></div>`;
-  }
-  if ("code" in block) return `<pre class="kb-code"><code data-lang="${escapeHtml(block.lang)}">${escapeHtml(block.code)}</code></pre>`;
-  return `<aside class="kb-note"><p>${inline(block.note)}</p></aside>`;
 }
 
 /** data-nav of a shelf's hub links (main.ts prefetches the kb pack on hover). */
@@ -68,16 +49,6 @@ function faqHtml(locale: Locale, page: KbPage): string {
   return `<section class="faq" aria-labelledby="faq-title"><h2 id="faq-title">${escapeHtml(kbUi(locale).faq)}</h2>${items}</section>`;
 }
 
-export function linkListHtml(items: { href: string; name: string; blurb?: string; meta?: string; nav?: string }[]): string {
-  return `<ul class="links">${items.map((item) => (
-    `<li><a href="${escapeHtml(item.href)}"${item.nav ? ` data-nav="${escapeHtml(item.nav)}"` : ""}>`
-    + (item.meta ? `<small>${escapeHtml(item.meta)}</small>` : "")
-    + `<strong>${escapeHtml(item.name)}</strong>`
-    + (item.blurb ? `<span>${escapeHtml(item.blurb)}</span>` : "")
-    + `</a></li>`
-  )).join("")}</ul>`;
-}
-
 function toolLinkItems(locale: Locale, tools: readonly ToolId[]): { href: string; name: string; blurb: string; nav: string }[] {
   const ui = messages(locale).ui.tools as unknown as Record<string, { name: string; blurb: string }>;
   return tools.map((tool) => ({ href: appHref(locale, tool), name: ui[tool].name, blurb: ui[tool].blurb, nav: tool }));
@@ -86,14 +57,6 @@ function toolLinkItems(locale: Locale, tools: readonly ToolId[]): { href: string
 function tutorialLinkItems(locale: Locale, id: KbId): { href: string; name: string; blurb: string; nav: string }[] {
   const learn = messages(locale).ui.learn as unknown as Record<string, { name: string; blurb: string }>;
   return kbMeta(id).tutorials.map((tutorial) => ({ href: learnHref(locale, tutorial), name: learn[tutorial].name, blurb: learn[tutorial].blurb, nav: `learn-${tutorial}` }));
-}
-
-export function dateLabel(locale: Locale, iso: string): string {
-  try {
-    return new Intl.DateTimeFormat(HREFLANG[locale], { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" }).format(new Date(`${iso}T00:00:00Z`));
-  } catch {
-    return iso;
-  }
 }
 
 /** A kb hub or one article as HTML: the client mounts it as is, and the Worker serves it to crawlers. */

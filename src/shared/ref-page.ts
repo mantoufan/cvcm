@@ -6,7 +6,7 @@ import type { Locale } from "./locale";
 import { LOCALES } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
-import { blockHtml, inline, linkListHtml } from "./kb-page";
+import { blockHtml, inline, linkListHtml } from "./article-html";
 import { messages, refMessages } from "./messages";
 import { appHref, refHref } from "./path";
 import { REF_GROUPS, REF_MANNEQUINS, REF_META, mfan8Href, refGroupOf, refMannequinUrl, type RefAngle, type RefId } from "./ref";

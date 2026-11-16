@@ -5,13 +5,17 @@
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
-import { blockHtml, dateLabel, inline, linkListHtml } from "./kb-page";
+import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
 import { messages, nostalgiaMessages } from "./messages";
 import { appHref, gamesHref, nostalgiaHref } from "./path";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_GROUPS, NOSTALGIA_LINKS, nostalgiaGroupOf, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
 import { HREFLANG } from "./sitemap";
 import { nostalgiaImage, nostalgiaImagePath } from "./nostalgia-images";
-import { NOSTALGIA_DECADES, type NostalgiaDecade, nostalgiaUi, nostalgiaHub, nostalgiaCopy, nostalgiaName, nostalgiaFaqItems, stillAround, nostalgiaMeta } from "./nostalgia-i18n";
+import { nostalgiaUi, nostalgiaHub, nostalgiaCopy, nostalgiaName, nostalgiaFaqItems, stillAround, nostalgiaMeta } from "./nostalgia-i18n";
+
+/** The decades the hub groups entries by, from each entry's `from`. */
+export const NOSTALGIA_DECADES = ["1980s", "1990s", "2000s"] as const;
+export type NostalgiaDecade = (typeof NOSTALGIA_DECADES)[number];
 
 /**
  * The childhood decade an entry belongs to on the hub: the decade it appeared in, with anything older (ration coupons,

@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = join(__dirname, "..");
+const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 
 /** Every module the client entry reaches through static imports (dynamic import() starts a separate chunk). */
 function reachableFromMain(): Set<string> {
@@ -25,13 +26,22 @@ function reachableFromMain(): Set<string> {
   return seen;
 }
 
-/** The channel page modules (`<channel>-page.ts`, see AGENTS.md); page-copy.ts is the main bundle's copy buckets. */
+/** The channel page modules (`<channel>-page.ts`, see AGENTS.md). */
 const PAGE_MODULES = readdirSync(join(root, "src/shared"))
-  .filter((f) => /^[a-z-]+-page\.ts$/.test(f) && f !== "page-copy.ts")
+  .filter((f) => /^[a-z-]+-page\.ts$/.test(f))
   .map((f) => `src/shared/${f}`);
 
-const exportedValues = (file: string): string[] =>
-  [...readFileSync(join(root, file), "utf8").matchAll(/^export (?:async )?(?:function|const|let) ([A-Za-z_$][\w$]*)/gm)].map((m) => m[1]);
+/** Top-level functions and constants a module declares (`exported`: only its exports). */
+const declared = (file: string, exported = false): string[] =>
+  [...readFileSync(join(root, file), "utf8").matchAll(/^(export )?(?:async )?(?:function|const|let|var|class) ([A-Za-z_$][\w$]*)/gm)]
+    .filter((m) => !exported || m[1])
+    .map((m) => m[2]);
+
+/**
+ * A page module's exported HTML builders, by naming convention: generic helpers such as `pct` are left out, and so are
+ * private helpers (other channels have their own `crumbHtml` / `faqHtml`).
+ */
+const isBuilder = (name: string): boolean => /(Html|Svg|VoteResult)$/.test(name);
 
 describe("bundle split", () => {
   it("keeps the channel page HTML builders and the Worker-only head module out of the main bundle", () => {
@@ -45,8 +55,9 @@ describe("bundle split", () => {
 
   it("does not declare a page module's builders again in a module the main bundle reaches", () => {
     // Catches a renderer copied (or moved back) into an i18n module under its old name, not only an import of the page module.
-    const builders = new Set(PAGE_MODULES.flatMap(exportedValues));
-    const clashes = [...reachableFromMain()].flatMap((file) => exportedValues(file).filter((name) => builders.has(name)).map((name) => `${file}: ${name}`));
+    const builders = new Set(PAGE_MODULES.flatMap((file) => declared(file, true)).filter(isBuilder));
+    for (const name of ["kbPageHtml", "refPageHtml", "slangPageHtml", "nostalgiaPageHtml", "ideasPageHtml", "nostalgiaVoteResult"]) expect(builders.has(name), name).toBe(true);
+    const clashes = [...reachableFromMain()].flatMap((file) => declared(file).filter((name) => builders.has(name)).map((name) => `${file}: ${name}`));
     expect(clashes).toEqual([]);
   });
 });

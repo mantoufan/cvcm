@@ -6,7 +6,7 @@
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
-import { blockHtml, dateLabel, inline, linkListHtml } from "./kb-page";
+import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
 import { slangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
 import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, slangGroupOf, type SlangId } from "./slang";

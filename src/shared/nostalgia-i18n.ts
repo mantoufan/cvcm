@@ -24,10 +24,6 @@ export type NostalgiaEntryCopy = {
 
 const ORIGIN = "https://cv.cm";
 
-/** The decades the hub groups entries by, from each entry's `from`. */
-export const NOSTALGIA_DECADES = ["1980s", "1990s", "2000s"] as const;
-export type NostalgiaDecade = (typeof NOSTALGIA_DECADES)[number];
-
 export type NostalgiaUi = NostalgiaMessages["ui"];
 
 export function nostalgiaUi(locale: Locale): NostalgiaUi {
