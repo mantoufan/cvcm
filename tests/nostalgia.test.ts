@@ -10,6 +10,7 @@ import { messages, nostalgiaMessages } from "../src/shared/messages";
 import { nostalgiaHref, parseAppPath } from "../src/shared/path";
 import {
   NOSTALGIA_ENTRIES,
+  NOSTALGIA_ADDED,
   NOSTALGIA_FOCUS,
   NOSTALGIA_GROUPS,
   NOSTALGIA_LINKS,
@@ -321,6 +322,8 @@ describe("nostalgia: page HTML and SEO", () => {
       }
       expect(applyHtmlSeo(SHELL, "en", { nostalgia: true, nostalgiaId: id as never })).toContain(`<meta property="og:image" content="https://cv.cm/covers/${image.src}"`);
     }
+    // A picture is an edit: every pictured entry has an update (or a later launch) date, so sitemaps show it.
+    for (const [id] of images) expect(NOSTALGIA_UPDATED[id as never] ?? NOSTALGIA_ADDED[id as never], id).toBeTruthy();
     // Entries without a free picture show none.
     expect(nostalgiaPageHtml("en", "tangseng-rou")).not.toContain("meme-figure");
   });
