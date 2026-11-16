@@ -26,10 +26,11 @@ function reachableFromMain(): Set<string> {
   return seen;
 }
 
-/** The channel page modules (`<channel>-page.ts`, see AGENTS.md). */
-const PAGE_MODULES = readdirSync(join(root, "src/shared"))
-  .filter((f) => /^[a-z-]+-page\.ts$/.test(f))
-  .map((f) => `src/shared/${f}`);
+/** The channel page modules (`<channel>-page.ts`, see AGENTS.md) and the block helpers only they use. */
+const PAGE_MODULES = [
+  ...readdirSync(join(root, "src/shared")).filter((f) => /^[a-z-]+-page\.ts$/.test(f)).map((f) => `src/shared/${f}`),
+  "src/shared/article-html.ts",
+];
 
 /** Top-level functions and constants a module declares (`exported`: only its exports). */
 const declared = (file: string, exported = false): string[] =>
@@ -46,7 +47,7 @@ const isBuilder = (name: string): boolean => /(Html|Svg|VoteResult)$/.test(name)
 describe("bundle split", () => {
   it("keeps the channel page HTML builders and the Worker-only head module out of the main bundle", () => {
     const seen = reachableFromMain();
-    expect(PAGE_MODULES).toEqual(expect.arrayContaining(["kb", "ref", "slang", "nostalgia", "ideas"].map((m) => `src/shared/${m}-page.ts`)));
+    expect(PAGE_MODULES).toEqual(expect.arrayContaining([...["kb", "ref", "slang", "nostalgia", "ideas"].map((m) => `src/shared/${m}-page.ts`), "src/shared/article-html.ts"]));
     // The head helpers stay reachable (titles, descriptions, JSON-LD); the page modules and seo-html.ts do not.
     for (const m of ["kb", "ref", "slang", "nostalgia", "ideas"]) expect(seen.has(`src/shared/${m}-i18n.ts`), m).toBe(true);
     expect(PAGE_MODULES.filter((f) => seen.has(f))).toEqual([]);

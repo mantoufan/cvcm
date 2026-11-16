@@ -1,5 +1,5 @@
 import type { Locale } from "./locale";
-import { KB_SHELVES, kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbShelfOf, kbShelfOfPage, kbUpdatedOn, type KbId, type KbPage, type KbShelf } from "./kb";
+import { kbArticleOf, kbHubOf, kbGroupOf, kbGroupsOf, kbMeta, kbShelfOf, kbShelfOfPage, kbUpdatedOn, type KbId, type KbPage, type KbShelf } from "./kb";
 import { kbArticleMessages, kbMessages, messages, type KbMessages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref } from "./path";
@@ -62,10 +62,6 @@ export function kbFaqItems(locale: Locale, page: KbPage): { q: string; a: string
 /** When this locale's page last changed (copy or sources), from `npm run kb:sync`. */
 export function kbUpdated(locale: Locale, id: KbId): string {
   return kbUpdatedOn(id, locale);
-}
-
-export function kbHubOf(shelf: KbShelf): KbPage {
-  return KB_SHELVES[shelf].hub;
 }
 
 export function kbLinkItems(locale: Locale, ids: readonly KbId[]): { href: string; name: string; blurb: string; nav: string }[] {

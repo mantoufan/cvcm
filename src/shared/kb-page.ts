@@ -6,12 +6,12 @@ import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
-import { KB_SHELVES, kbArticleOf, kbGroupOf, kbGroupsOf, kbMeta, kbMinutesOf, kbShelfOfPage, type KbId, type KbPage, type KbShelf } from "./kb";
+import { KB_SHELVES, kbArticleOf, kbHubOf, kbGroupOf, kbGroupsOf, kbMeta, kbMinutesOf, kbShelfOfPage, type KbId, type KbPage, type KbShelf } from "./kb";
 import { kbMessages, messages } from "./messages";
 import { appHref, kbHref, learnHref, type ToolId } from "./path";
-import { type KbUi, kbHub, kbCopy, kbName, kbFaqItems, kbUpdated, kbHubOf, kbLinkItems } from "./kb-i18n";
+import { type KbUi, kbHub, kbCopy, kbName, kbFaqItems, kbUpdated, kbLinkItems } from "./kb-i18n";
 
-export function kbUi(locale: Locale): KbUi {
+function kbUi(locale: Locale): KbUi {
   return kbMessages(locale).ui;
 }
 
@@ -21,7 +21,7 @@ export function kbMinutes(locale: Locale, id: KbId): number {
 }
 
 /** data-nav of a shelf's hub links (main.ts prefetches the kb pack on hover). */
-export function kbHubNav(shelf: KbShelf): string {
+function kbHubNav(shelf: KbShelf): string {
   return KB_SHELVES[shelf].nav;
 }
 
