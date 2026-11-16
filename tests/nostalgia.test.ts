@@ -323,9 +323,12 @@ describe("nostalgia: page HTML and SEO", () => {
       expect(applyHtmlSeo(SHELL, "en", { nostalgia: true, nostalgiaId: id as never })).toContain(`<meta property="og:image" content="https://cv.cm/covers/${image.src}"`);
     }
     // A picture is an edit: every pictured entry has an update (or a later launch) date, so sitemaps show it.
-    for (const [id] of images) expect(NOSTALGIA_UPDATED[id as never] ?? NOSTALGIA_ADDED[id as never], id).toBeTruthy();
+    const dated = { ...NOSTALGIA_ADDED, ...NOSTALGIA_UPDATED } as Record<string, string | undefined>;
+    for (const [id] of images) expect((dated[id] ?? "") >= "2026-11-16", id).toBe(true);
     // Entries without a free picture show none.
-    expect(nostalgiaPageHtml("en", "tangseng-rou")).not.toContain("meme-figure");
+    const bare = NOSTALGIA_ENTRIES.filter((id) => !(id in nostalgiaImagesJson));
+    expect(bare.length).toBeGreaterThan(0);
+    for (const id of bare) expect(nostalgiaPageHtml("en", id), id).not.toContain("meme-figure");
   });
 
   it("links entries to the cv.cm tools and consoles that go with them", () => {
