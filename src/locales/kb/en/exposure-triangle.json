@@ -1,0 +1,224 @@
+{
+  "title": "Exposure Triangle Explained: Aperture, Shutter, ISO — cv.cm",
+  "description": "The exposure triangle explained in stops: how aperture, shutter speed and ISO trade off, which camera mode to use, sunny 16, and starting settings by situation.",
+  "h1": "What is the exposure triangle and how do you use it?",
+  "answer": "The exposure triangle is the link between aperture, shutter speed and ISO. Aperture and shutter speed set how much light reaches the sensor; ISO sets how much the signal is amplified. Each is measured in stops, and one stop doubles or halves the light. If you make one setting one stop darker, make another one stop brighter to keep the same exposure.",
+  "sections": [
+    {
+      "h": "The three settings and what each one costs",
+      "body": [
+        "Exposure is how bright the photo is. Three settings control it, and each one also changes how the photo looks. That second effect is why the choice matters.",
+        {
+          "table": {
+            "head": [
+              "Setting",
+              "Brighter when",
+              "Side effect",
+              "Typical full stops"
+            ],
+            "rows": [
+              [
+                "Aperture (f-number)",
+                "Smaller f-number, e.g. f/2.8 instead of f/5.6",
+                "Shallower depth of field: less of the scene is sharp",
+                "f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16"
+              ],
+              [
+                "Shutter speed",
+                "Longer time, e.g. 1/60 s instead of 1/250 s",
+                "More motion blur from the subject or a shaking hand",
+                "1/1000, 1/500, 1/250, 1/125, 1/60, 1/30 s"
+              ],
+              [
+                "ISO",
+                "Higher number, e.g. ISO 800 instead of ISO 200",
+                "More visible noise and less color and detail",
+                "100, 200, 400, 800, 1600, 3200, 6400"
+              ]
+            ]
+          }
+        },
+        "Aperture and shutter speed change the amount of light that reaches the sensor. ISO does not add light. It amplifies the signal after capture, so it brightens the image but also brightens the noise. This is why photographers usually choose aperture and shutter first and raise ISO last.",
+        "This page gives the overview. Each setting has its own guide: see the articles on aperture and depth of field, shutter speed, and ISO and noise."
+      ]
+    },
+    {
+      "h": "Thinking in stops: a worked example",
+      "body": [
+        "A stop is a doubling or halving of light. On the f-number scale, each step in the list above lets in half as much light as the one before (f/4 gives half the light of f/2.8). Each shutter step halves the time. Each ISO step doubles the amplification. Most cameras also offer third-stop steps, such as f/3.2 and f/3.5 between f/2.8 and f/4.",
+        "Because the units match, you can trade one setting for another. Suppose the camera meters a correct exposure at f/8, 1/125 s, ISO 400, and you want a blurred background.",
+        {
+          "ol": [
+            "Open the aperture from f/8 to f/2.8. That is three stops more light (f/8 to f/5.6 to f/4 to f/2.8).",
+            "Take three stops away with the shutter: 1/125 s to 1/250 to 1/500 to 1/1000 s.",
+            "The exposure is the same as before, but the background is now much softer and any motion is frozen.",
+            "If the camera's fastest shutter cannot go far enough in bright sun, lower ISO, or use an ND filter."
+          ]
+        },
+        "The same logic works the other way at night. If 1/30 s at f/2.8 is too dark by two stops and you cannot use a slower shutter without blur, raise ISO two stops, for example from 800 to 3200."
+      ]
+    },
+    {
+      "h": "Camera modes: P, Av, Tv, M and auto ISO",
+      "body": [
+        "You do not need full manual to control exposure. Each mode decides which setting you choose and which one the camera chooses.",
+        {
+          "ul": [
+            "P (Program): the camera picks aperture and shutter. You can usually turn a dial to shift between equivalent pairs. Good for snapshots.",
+            "Av or A (Aperture priority): you set the aperture, the camera sets the shutter. Best for portraits, landscapes and most everyday shooting, because aperture controls what is sharp.",
+            "Tv or S (Shutter priority): you set the shutter speed, the camera sets the aperture. Use it for sports, pets, children and deliberate motion blur.",
+            "M (Manual): you set both. Use it when the light is constant but the scene would fool the meter, such as a stage, a snowy field, or night scenes on a tripod.",
+            "Auto ISO: the camera raises or lowers ISO within limits you set. Set a maximum ISO you accept and, on many cameras, a minimum shutter speed. Manual plus auto ISO lets you fix both aperture and shutter while the camera keeps the brightness right."
+          ]
+        },
+        "A practical default for beginners: Av mode, auto ISO with a maximum of 6400, and a minimum shutter speed of about 1/125 s for people. If you want to practise without risk, cv.cm's portrait camera simulator lets you switch between P, Av, Tv and M and see blur, motion and noise change on a simulated sitter."
+      ]
+    },
+    {
+      "h": "Metering, exposure compensation and the histogram",
+      "body": [
+        "The light meter decides what is correct. It assumes the scene averages to a middle grey. That works for most scenes, but it fails in two common cases. A white wedding dress, snow or a bright beach looks too dark, because the meter pulls the white down to grey. A person on a black stage or against a dark wall looks too bright, because the meter lifts the black up to grey.",
+        "Exposure compensation corrects this in Av, Tv, P and auto ISO modes. It is the +/- button or dial, measured in EV (one EV equals one stop).",
+        {
+          "ul": [
+            "Snow, beach, white dress, white product on white: +0.7 to +1.3 EV.",
+            "Backlit person against a bright sky: +1 to +2 EV, or meter on the face with spot metering.",
+            "Dark background, stage light, night city: -0.7 to -1.7 EV so lights and faces keep detail.",
+            "Sunset sky: -0.3 to -1 EV to keep the color rich."
+          ]
+        },
+        "Check the histogram, not only the screen. It is a graph of tones from black on the left to white on the right. A tall spike pressed against the right edge means white areas have no detail left (clipped highlights). A spike pressed against the left edge means shadows are pure black. Many cameras can also show blinking highlight warnings in playback. Bright sun makes the rear screen look dim and indoor rooms make it look bright, so the histogram is more reliable."
+      ]
+    },
+    {
+      "h": "Starting settings by situation",
+      "body": [
+        "These are starting points for a camera at full-frame or APS-C. Take one test shot, check the histogram, and adjust by a stop at a time.",
+        {
+          "table": {
+            "head": [
+              "Situation",
+              "Aperture",
+              "Shutter",
+              "ISO",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Landscape in bright sun",
+                "f/8 to f/11",
+                "1/250 to 1/500 s",
+                "100",
+                "Focus about one third into the scene"
+              ],
+              [
+                "Portrait in open shade",
+                "f/1.8 to f/2.8",
+                "1/250 to 1/1000 s",
+                "100 to 200",
+                "Shade gives soft light with no squinting"
+              ],
+              [
+                "Portrait by a window indoors",
+                "f/1.8 to f/2.8",
+                "1/125 to 1/250 s",
+                "400 to 1600",
+                "Face toward the window, side on"
+              ],
+              [
+                "Children or pets indoors",
+                "f/2 to f/2.8",
+                "1/500 s",
+                "Auto, up to 6400",
+                "Tv mode or M with auto ISO"
+              ],
+              [
+                "Outdoor sports, birds",
+                "f/2.8 to f/5.6",
+                "1/1000 to 1/2000 s",
+                "Auto",
+                "Continuous autofocus and burst"
+              ],
+              [
+                "City street at night, handheld",
+                "f/1.8 to f/2.8",
+                "1/30 to 1/60 s",
+                "1600 to 6400",
+                "-0.7 EV keeps lights from clipping"
+              ],
+              [
+                "Night scene on a tripod",
+                "f/8",
+                "5 to 30 s",
+                "100",
+                "Use the 2 s timer to avoid shake"
+              ],
+              [
+                "Concert or stage",
+                "f/2.8",
+                "1/250 s",
+                "3200 to 6400",
+                "Spot meter on the face, M mode"
+              ]
+            ]
+          }
+        },
+        "Sunny 16 is a useful check when there is no meter or the meter is confused. In bright sun with sharp shadows, f/16 at a shutter speed of 1/ISO gives a correct exposure: ISO 100 at f/16 and 1/100 s (use 1/125 s). The same exposure is f/8 at 1/500 s. Open one stop (f/11) for light overcast with soft shadows, two stops (f/8) for overcast, three stops (f/5.6) for heavy overcast, and four stops (f/4) for open shade. Snow or sand in bright sun can take f/22."
+      ]
+    },
+    {
+      "h": "Exposure on a phone",
+      "body": [
+        "A phone camera has a fixed aperture on each lens, so it controls exposure with shutter time, ISO and processing. You cannot choose f/8, but you can still control brightness and lock it.",
+        {
+          "ol": [
+            "Tap the subject on the screen. The phone focuses there and meters exposure for that area.",
+            "Drag the sun or brightness slider next to the focus box down for a bright sky or a white dress, up for a face in shadow.",
+            "Touch and hold the subject to lock focus and exposure (AE/AF lock on iPhone, similar on Android) so the brightness does not jump when you recompose.",
+            "In dim light, let night mode run and hold the phone still. It combines several frames to keep noise down.",
+            "If your camera app has a Pro or manual mode, it shows shutter speed and ISO. The same stop logic applies to those two settings."
+          ]
+        },
+        "Phones protect faces and skies with automatic HDR, but they can still clip a white shirt or a lamp. If highlights look flat and white, lower exposure before you shoot. Shadows recover in editing far better than blown highlights."
+      ]
+    },
+    {
+      "h": "Common exposure mistakes and fixes",
+      "body": [
+        {
+          "ul": [
+            "Photo is blurry, not dark: the shutter was too slow. Raise ISO or open the aperture so the shutter can be faster, rather than adding exposure compensation.",
+            "Face is dark against a bright window or sky: add +1 to +2 EV, use spot metering, or turn the person so the light falls on the face.",
+            "White dress or snow looks grey: add +0.7 to +1.3 EV and check that the histogram does not clip.",
+            "Grainy photo in daylight: auto ISO may have chosen a high value because of a fast minimum shutter. Check the ISO in the photo's EXIF data and set a lower maximum.",
+            "Photos look fine on the camera but dark on a computer: the rear screen was too bright. Trust the histogram.",
+            "Exposure changes between shots of the same scene: the meter reacts to the framing. Switch to M or use AE lock."
+          ]
+        },
+        "To learn from past shots, read the aperture, shutter speed and ISO stored in each file. cv.cm's EXIF viewer shows these in the browser without uploading the photo."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Which setting should I change first?",
+      "a": "Choose the setting that controls the look you need first: aperture for background blur or depth, shutter speed for motion. Then use the other to reach the right brightness, and raise ISO only when the first two have reached their limits."
+    },
+    {
+      "q": "Is it better to underexpose or overexpose a photo?",
+      "a": "On digital cameras and phones, slight underexposure is usually safer because blown highlights cannot be recovered. The best result is a histogram that reaches close to the right edge without a spike pressed against it."
+    },
+    {
+      "q": "What does EV mean on a camera?",
+      "a": "EV means exposure value. In exposure compensation, one EV is one stop, so +1 EV doubles the brightness and -1 EV halves it. Cameras usually offer steps of 1/3 EV."
+    },
+    {
+      "q": "Should beginners shoot in manual mode?",
+      "a": "Not as a rule. Aperture priority with auto ISO gives the same control over the look with fewer missed shots. Manual is most useful when the light is steady and the meter would be fooled, such as a stage or a night scene on a tripod."
+    },
+    {
+      "q": "Does the sunny 16 rule work with phones?",
+      "a": "Only as a check. A phone lens has a fixed wide aperture, so it cannot use f/16. The rule still tells you how bright bright sun is, which explains why phones use very short shutter times outdoors."
+    }
+  ]
+}

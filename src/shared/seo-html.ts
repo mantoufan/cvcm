@@ -295,6 +295,7 @@ function staticPageHtml(
       { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
       { href: kbHref(locale, "code"), text: linkText(pageTitle(locale, { kb: true, kbId: "code" })) },
       { href: kbHref(locale, "ai"), text: linkText(pageTitle(locale, { kb: true, kbId: "ai" })) },
+      { href: kbHref(locale, "photo"), text: linkText(pageTitle(locale, { kb: true, kbId: "photo" })) },
     ];
     parts.push(linkList(seo.tutorial ? [{ href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) }, ...kbHubs, ...tutorials] : [...kbHubs, ...tutorials]));
   } else if (seo.games || seo.markets) {
@@ -316,6 +317,7 @@ function staticPageHtml(
       { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
       { href: kbHref(locale, "code"), text: linkText(pageTitle(locale, { kb: true, kbId: "code" })) },
       { href: kbHref(locale, "ai"), text: linkText(pageTitle(locale, { kb: true, kbId: "ai" })) },
+      { href: kbHref(locale, "photo"), text: linkText(pageTitle(locale, { kb: true, kbId: "photo" })) },
       { href: refHref(locale), text: linkText(pageTitle(locale, { ref: true })) },
       { href: slangHref(locale), text: linkText(pageTitle(locale, { slang: true })) },
       { href: ideasHref(locale), text: linkText(pageTitle(locale, { ideas: true })) },

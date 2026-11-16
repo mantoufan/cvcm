@@ -1,0 +1,176 @@
+{
+  "title": "ISO và nhiễu hạt: nên dùng ISO bao nhiêu, khi nào tăng — cv.cm",
+  "description": "ISO là gì, vì sao ISO cao gây nhiễu hạt, ISO gốc, auto ISO kèm tốc độ màn trập tối thiểu, ISO theo từng tình huống, cách giảm nhiễu và chế độ chụp đêm trên điện thoại hoạt động ra sao.",
+  "h1": "ISO là gì và tăng đến bao nhiêu thì nhiễu hạt làm hỏng ảnh?",
+  "answer": "ISO quyết định mức khuếch đại tín hiệu từ cảm biến. Tăng gấp đôi ISO, ví dụ từ 400 lên 800, làm ảnh sáng thêm một stop. Nhiễu chủ yếu đến từ việc thiếu sáng, và ISO cao làm nhiễu lộ rõ. Hãy dùng ISO thấp nhất mà vẫn cho phép tốc độ màn trập đủ nhanh để ảnh nét, nhưng một bức ảnh nét có nhiễu vẫn tốt hơn một bức ảnh sạch mà bị nhòe.",
+  "sections": [
+    {
+      "h": "ISO thực sự làm gì",
+      "body": [
+        "Cảm biến thu ánh sáng trong lúc phơi sáng. ISO không thay đổi lượng sáng đến cảm biến; việc đó là của khẩu độ và tốc độ màn trập. ISO đặt độ khuếch đại, tức mức máy ảnh phóng đại tín hiệu trước hoặc sau khi chuyển thành số. Nó giống núm âm lượng của micro: vặn lớn lên thì giọng nhỏ thành to, và tiếng rè cũng to theo.",
+        "Các con số đi theo stop. ISO 200 sáng hơn ISO 100 một stop, ISO 400 hai stop, ISO 3200 năm stop. Nếu một cảnh cần 1/15 s ở ISO 100 mà bạn muốn 1/250 s, tức nhanh hơn bốn stop, bạn cần ISO 1600 ở cùng khẩu độ.",
+        "Thang ISO của máy ảnh số được quy định trong tiêu chuẩn ISO 12232, để ISO 200 trên máy ảnh cho độ phơi sáng xấp xỉ ISO 200 của phim. Tiêu chuẩn cho các hãng một chút tự do khi định mức cho máy, nên cùng một con số ISO có thể trông sáng hơn hoặc tối hơn đôi chút giữa các hãng."
+      ]
+    },
+    {
+      "h": "Nhiễu hạt đến từ đâu",
+      "body": [
+        "Ánh sáng đến dưới dạng các hạt riêng lẻ gọi là photon, và chúng đến không đều. Ở vùng sáng, hàng nghìn photon rơi vào mỗi điểm ảnh nên sự dao động ngẫu nhiên rất nhỏ so với tín hiệu. Ở vùng tối chỉ có vài photon rơi vào, và sự dao động lộ ra thành hạt. Đây gọi là nhiễu photon (shot noise). Cảm biến và mạch điện tử còn thêm một ít nhiễu riêng, đáng kể nhất ở vùng tối sâu.",
+        "Vậy nguyên nhân thật của nhiễu là lượng sáng ít. ISO cao thường là dấu hiệu của việc thiếu sáng. Điều này giải thích nhiều hiện tượng mà người chụp hay gặp:",
+        {
+          "ul": [
+            "Vùng tối nhiễu hơn vùng sáng trong cùng một tấm ảnh.",
+            "Làm sáng một bức ảnh tối khi chỉnh sửa sẽ làm lộ nhiễu, kể cả ở ISO thấp.",
+            "Cảm biến lớn hơn sạch hơn ở cùng ISO, vì với cùng khung hình và số f, tổng lượng sáng thu được nhiều hơn.",
+            "Nhiễu có hai loại: nhiễu độ sáng (hạt mịn, giống hạt phim) và nhiễu màu (các đốm đỏ, xanh lá, xanh dương). Nhiễu màu trông xấu hơn nhưng dễ loại bỏ hơn."
+          ]
+        },
+        "Phơi sáng lâu nhiều giây cũng có thể xuất hiện các điểm ảnh sáng đơn lẻ, gọi là hot pixel. Nhiều máy có tính năng giảm nhiễu phơi sáng lâu, chụp thêm một khung hình tối thứ hai để trừ chúng; tính năng này làm thời gian chờ tăng gấp đôi."
+      ]
+    },
+    {
+      "h": "ISO gốc và dải ISO thực tế",
+      "body": [
+        "ISO gốc là mức thấp nhất theo chuẩn của máy, thường là ISO 100, đôi khi là 64 hoặc 200. Mức này cho dải tương phản động lớn nhất: khoảng trải rộng nhất từ vùng tối còn chi tiết đến vùng sáng còn chi tiết. Các mức mở rộng ghi L hoặc Lo bên dưới mức gốc thường làm mất chi tiết vùng sáng, nên chỉ dùng khi cần tốc độ màn trập chậm hơn.",
+        "ISO cao bao nhiêu là chấp nhận được còn tùy cảm biến, ánh sáng và kích thước ảnh khi xem. Ảnh xem trên màn hình điện thoại giấu nhiễu tốt hơn nhiều so với ảnh in lớn. Làm hướng dẫn sơ bộ cho các máy ảnh hiện nay:",
+        {
+          "table": {
+            "head": [
+              "Tình huống",
+              "ISO thường dùng",
+              "Mục tiêu tốc độ màn trập",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Nắng gắt, mọi chủ thể",
+                "100",
+                "1/250 s trở lên",
+                "ISO gốc cho tệp sạch nhất"
+              ],
+              [
+                "Bóng râm, trời nhiều mây",
+                "100 đến 400",
+                "1/250 s",
+                "Tăng ISO nếu người mẫu cử động"
+              ],
+              [
+                "Trong nhà cạnh cửa sổ, ban ngày",
+                "400 đến 1600",
+                "1/125 đến 1/250 s",
+                "Mặt quay về phía cửa sổ"
+              ],
+              [
+                "Phòng trong nhà có đèn, buổi tối",
+                "1600 đến 6400",
+                "1/60 đến 1/125 s",
+                "Mở hết cỡ khẩu độ trước"
+              ],
+              [
+                "Thể thao trong nhà, hội trường trường học",
+                "3200 đến 12800",
+                "1/500 đến 1/1000 s",
+                "Hành động nét quan trọng hơn hạt"
+              ],
+              [
+                "Buổi hòa nhạc hoặc sân khấu",
+                "1600 đến 6400",
+                "1/250 s",
+                "Đèn sân khấu sáng hơn vẻ ngoài"
+              ],
+              [
+                "Phong cảnh hoặc cảnh đêm trên chân máy",
+                "100",
+                "Vài giây",
+                "Không có lý do tăng ISO khi không có gì chuyển động"
+              ],
+              [
+                "Sao và dải Ngân Hà",
+                "1600 đến 6400",
+                "10 đến 25 s",
+                "Tốc độ màn trập bị giới hạn bởi vệt sao"
+              ]
+            ]
+          }
+        },
+        "Máy ảnh cảm biến nhỏ và điện thoại lộ nhiễu sớm hơn máy full-frame khoảng một đến hai stop, nên hãy dùng nửa dưới của mỗi dải khi có thể."
+      ]
+    },
+    {
+      "h": "Auto ISO kèm tốc độ màn trập tối thiểu",
+      "body": [
+        "Auto ISO để máy chỉ tăng ISO khi ánh sáng đòi hỏi. Đây là thiết lập hữu ích nhất khi chụp người, thú cưng và sự kiện. Chỉ cần cài đặt một lần:",
+        {
+          "ol": [
+            "Bật auto ISO trong menu ISO.",
+            "Đặt ISO tối đa mà bạn chấp nhận được, ví dụ 6400 trên máy full-frame hoặc 3200 trên APS-C.",
+            "Đặt tốc độ màn trập tối thiểu. Ở chế độ ưu tiên khẩu độ, máy hạ tốc độ màn trập khi sáng yếu dần cho đến khi chạm giá trị này, rồi chuyển sang tăng ISO. Chọn 1/125 s cho người đứng yên, 1/250 s cho trẻ em, 1/500 s trở lên cho thể thao. Nhiều máy có tùy chọn Auto gắn với tiêu cự.",
+            "Ở chế độ M kèm auto ISO, bạn cố định khẩu độ và tốc độ màn trập còn máy đặt ISO. Bù trừ sáng vẫn dùng được trên hầu hết máy.",
+            "Nếu máy chạm ISO tối đa, nó sẽ hạ tốc độ màn trập xuống dưới mức tối thiểu của bạn hoặc chụp thiếu sáng. Hãy để ý khi màn hình ISO nhấp nháy."
+          ]
+        },
+        "Để biết một tấm ảnh cũ dùng ISO bao nhiêu, hãy đọc dữ liệu EXIF của nó; công cụ xem EXIF của cv.cm hiển thị ISO, tốc độ màn trập và khẩu độ ngay trên trình duyệt."
+      ]
+    },
+    {
+      "h": "Khi nào ISO cao là lựa chọn đúng",
+      "body": [
+        "Người mới thường giữ ISO thấp và cuối cùng nhận về những bức ảnh nhòe. Nhiễu có thể giảm khi chỉnh sửa. Nhòe chuyển động và rung máy thì thường không sửa được. Nếu phải chọn giữa ISO 6400 ở 1/250 s và ISO 800 ở 1/30 s cho một đứa trẻ đang chạy, hãy chọn ISO 6400.",
+        "Một lỗi phổ biến khác là giữ ISO thấp rồi chụp thiếu sáng, định làm sáng ảnh sau. Trên hầu hết máy, kết quả tương đương hoặc tệ hơn so với đặt ISO cao hơn ngay trên máy, và tệp JPEG mất chất lượng nhiều hơn khi kéo sáng. Hãy phơi sáng đúng ở mức ISO bạn cần.",
+        "Chỉ hạ ISO khi bạn giải quyết được vấn đề ánh sáng bằng cách khác: mở khẩu độ lớn hơn, dùng chân máy cho chủ thể đứng yên, thêm đèn hoặc flash, đưa người mẫu đến gần cửa sổ, hoặc chờ khoảnh khắc ổn định hơn. Công cụ giả lập máy ảnh chân dung của cv.cm hiển thị nhiễu và nhòe chuyển động cạnh nhau, giúp bạn dễ thấy sự đánh đổi này."
+      ]
+    },
+    {
+      "h": "Nhiễu trên điện thoại và chế độ chụp đêm",
+      "body": [
+        "Cảm biến điện thoại nhỏ nên nhanh chóng chạm các mức ISO cao. Điện thoại đối phó bằng tính toán. Trong chế độ chụp đêm, điện thoại chụp nhiều khung hình trong một đến vài giây, căn chỉnh rồi lấy trung bình chúng. Nhiễu ngẫu nhiên bị triệt tiêu một phần: lấy trung bình 4 khung hình làm nhiễu giảm một nửa, 16 khung hình giảm còn một phần tư. Đó là lý do điện thoại yêu cầu bạn giữ yên.",
+        {
+          "ul": [
+            "Cầm điện thoại bằng hai tay hoặc tựa vào vật gì đó trong lúc đếm ngược. Trên chân máy, nhiều điện thoại cho phép chụp lâu hơn.",
+            "Nhờ người mẫu đứng yên đến khi chụp xong, nếu không các phần cử động sẽ bị nhòe.",
+            "Dùng camera chính 1x khi thiếu sáng. Ống góc siêu rộng và ống tele thường có cảm biến nhỏ hơn hoặc khẩu độ tối hơn nên nhiễu nhiều hơn; một số điện thoại âm thầm crop từ camera chính thay thế.",
+            "Tránh zoom quá các mức quang học của ống kính vào ban đêm. Zoom kỹ thuật số phóng đại cả nhiễu.",
+            "Nếu ảnh trông bị nhòe mịn như nhựa, đó là do khử nhiễu mạnh. Thêm ánh sáng, hoặc chụp RAW nếu máy hỗ trợ, cho kết quả tự nhiên hơn."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Giảm nhiễu sau khi chụp",
+      "body": [
+        {
+          "ul": [
+            "Chụp RAW nếu máy ảnh hoặc điện thoại cho phép. Khử nhiễu trong máy áp dụng cho JPEG; RAW cho bạn chọn mức cân bằng sau.",
+            "Giảm nhiễu màu trước. Có thể loại bỏ gần như hoàn toàn mà ít mất chi tiết.",
+            "Áp dụng khử nhiễu độ sáng nhẹ tay. Thiết lập mạnh làm da trông như sáp và mất sợi tóc mịn, kết cấu vải.",
+            "Các công cụ khử nhiễu AI hiện đại trong phần mềm chỉnh ảnh làm sạch tốt các tệp ISO 6400 đến 12800. Hãy áp dụng chúng trước khi làm nét.",
+            "Đừng kéo sáng vùng tối sâu quá nhiều. Nâng lên một chút và chấp nhận để tối.",
+            "Chuyển ảnh rất nhiễu sang đen trắng giúp che nhiễu màu và có thể trông như chủ ý."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "ISO nào cho ảnh nét nhất?",
+      "a": "Hãy dùng ISO thấp nhất mà vẫn cho phép tốc độ màn trập đủ nhanh với chủ thể của bạn. Ban ngày thường là ISO gốc 100; trong nhà có thể là 1600 trở lên."
+    },
+    {
+      "q": "ISO cao có làm giảm chất lượng ảnh không?",
+      "a": "Có, ảnh lộ nhiều nhiễu hơn, dải tương phản động thấp hơn và màu sắc yếu hơn, chủ yếu vì thu được ít sáng hơn. Nhiễu nhẹ thường không thấy trên màn hình điện thoại."
+    },
+    {
+      "q": "Có nên dùng auto ISO không?",
+      "a": "Với chủ thể chuyển động và ánh sáng thay đổi thì nên. Hãy đặt ISO tối đa và tốc độ màn trập tối thiểu để máy giữ ảnh nét và nhiễu trong mức bạn chấp nhận."
+    },
+    {
+      "q": "Vì sao ảnh của tôi có hạt dù ISO thấp?",
+      "a": "Có lẽ ảnh bị chụp thiếu sáng rồi được làm sáng sau đó, do bạn hoặc do xử lý của máy. Vùng tối được kéo sáng sẽ lộ nhiễu ở mọi mức ISO."
+    },
+    {
+      "q": "Chụp đêm nên dùng ISO bao nhiêu?",
+      "a": "Trên chân máy với cảnh đứng yên, dùng ISO 100 và phơi sáng lâu. Cầm tay trong thành phố, ISO 1600 đến 6400. Với chụp sao, khoảng ISO 1600 đến 6400 với thời gian phơi sáng 10 đến 25 giây."
+    }
+  ]
+}

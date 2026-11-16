@@ -9,7 +9,7 @@ const LOCALE_PACKS: Record<string, string[]> = typeof __LOCALE_PACKS__ === "unde
 
 /**
  * Fetch the page's strings (plus the game, quiz, dataset, kb or ref pack on those pages; `quiz` is "hub" or the test id,
- * `kb` "hub", "code", "ai" or the article id, `ref`, `slang`, `idea` and `nostalgia` "hub" or the entry id; `copy` the key of the page's copy bucket) in
+ * `kb` "hub", "code", "ai", "photo" or the article id, `ref`, `slang`, `idea` and `nostalgia` "hub" or the entry id; `copy` the key of the page's copy bucket) in
  * parallel with the entry script instead of after it runs.
  */
 export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz: QuizPage | false = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, copy: string | null = null, idea: string | null = null, nostalgia: string | null = null): string {

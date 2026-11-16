@@ -91,7 +91,7 @@ let quizPage: QuizId | "hub" | null = null;
 let datasetPage: DatasetId | "hub" | null = null;
 /** A ranking page: "hub" for /rankings/, else the ranking id. */
 let rankingPage: RankingId | "hub" | null = null;
-/** A kb page: "hub" for /learn/knowledge/, "code" for /learn/code/, "ai" for /learn/ai/, else the article id. */
+/** A kb page: "hub" for /learn/knowledge/, "code" for /learn/code/, "ai" for /learn/ai/, "photo" for /learn/photography/, else the article id. */
 let kbPage: KbPage = null;
 /** A reference page: "hub" for /reference/, else the entry id. */
 let refPage: RefPage = null;
@@ -1089,6 +1089,14 @@ function toolDirectory(loc: Locale): HTMLElement {
       h("p", null,
         ...kbGroupsOf("ai").map((group) =>
           h("a", { href: `${kbHref(loc, "ai")}#${group.id}`, "data-nav": KB_SHELVES.ai.nav }, t(`kb.ai.groups.${group.id}`)),
+        ),
+      ),
+    ),
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: kbHref(loc, "photo"), "data-nav": KB_SHELVES.photo.nav }, t("kb.photo.label"))),
+      h("p", null,
+        ...kbGroupsOf("photo").map((group) =>
+          h("a", { href: `${kbHref(loc, "photo")}#${group.id}`, "data-nav": KB_SHELVES.photo.nav }, t(`kb.photo.groups.${group.id}`)),
         ),
       ),
     ),

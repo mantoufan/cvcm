@@ -9,7 +9,7 @@ import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
 import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
-import { AI_ARTICLES, CODE_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
+import { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
 import { kbArticleJsonLd, kbCopy, kbUpdated, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
 import { kbMinutes, kbPageHtml } from "../src/shared/kb-page";
 import { pageCanonical, pageTitle } from "../src/shared/seo";
@@ -81,6 +81,30 @@ describe("knowledge: routes", () => {
     for (const id of AI_ARTICLES) expect(kbShelfOf(id)).toBe("ai");
   });
 
+  it("parses the photography shelf under /learn/photography/ and keeps each article on its own shelf", () => {
+    expect(parseAppPath("/en/learn/photography/")).toEqual({ kind: "kb", locale: "en", article: "photo" });
+    expect(parseAppPath("/ja/learn/photography/solo-bridal-photoshoot/")).toEqual({ kind: "kb", locale: "ja", article: "solo-bridal-photoshoot" });
+    expect(parseAppPath("/learn/photography/")).toEqual({ kind: "bare-kb", article: "photo" });
+    expect(parseAppPath("/en/learn/ai/golden-hour/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/learn/photo/")).toEqual({ kind: "unknown" });
+    expect(kbHref("en", "photo")).toBe("/en/learn/photography/");
+    expect(kbHref("zh-CN", "solo-bridal-photoshoot")).toBe("/zh-cn/learn/photography/solo-bridal-photoshoot/");
+    for (const id of PHOTO_ARTICLES) expect(kbShelfOf(id)).toBe("photo");
+  });
+
+  it("builds the photography hub with every group and links its articles from tool pages", () => {
+    const hub = kbPageHtml("en", "photo");
+    for (const group of KB_GROUPS.filter((g) => g.shelf === "photo")) expect(hub).toContain(`<section class="wall" id="${group.id}">`);
+    const ld = kbArticleJsonLd("en", "photo") as { url: string; mainEntity: { itemListElement: unknown[] } };
+    expect(ld.url).toBe("https://cv.cm/en/learn/photography/");
+    expect(ld.mainEntity.itemListElement.length).toBe(PHOTO_ARTICLES.length);
+    expect(kbForTool("portrait-sim", "photo")).toContain("exposure-triangle");
+    expect(kbForTool("portrait-sim", "ai")).not.toContain("exposure-triangle");
+    const article = kbPageHtml("ko", "solo-bridal-photoshoot");
+    expect(article).toContain('href="/ko/learn/photography/" data-nav="photo-learn"');
+    expect(article).toContain('href="/ko/collage/"');
+  });
+
   it("builds the AI hub with every group and links AI articles from AI tool pages", () => {
     const hub = kbPageHtml("en", "ai");
     for (const group of KB_GROUPS.filter((g) => g.shelf === "ai")) expect(hub).toContain(`<section class="wall" id="${group.id}">`);
@@ -130,6 +154,22 @@ describe("knowledge: routes", () => {
     expect((await worker.fetch(new Request("https://cv.cm/en/learn/ai/nope/"), { ASSETS: assets })).status).toBe(404);
   });
 
+  it("serves the photography hub and articles, and redirects bare paths", async () => {
+    const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
+    const bare = await worker.fetch(new Request("https://cv.cm/learn/photography/golden-hour/", { headers: { "Accept-Language": "es" } }), { ASSETS: assets });
+    expect(bare.status).toBe(302);
+    expect(bare.headers.get("Location")).toBe("https://cv.cm/es/learn/photography/golden-hour/");
+    const hub = await worker.fetch(new Request("https://cv.cm/zh-tw/learn/photography/"), { ASSETS: assets });
+    expect(hub.status).toBe(200);
+    expect(await hub.text()).toContain(`<title>${pageTitle("zh-TW", { kb: true, kbId: "photo" })}</title>`);
+    const page = await worker.fetch(new Request("https://cv.cm/en/learn/photography/solo-bridal-photoshoot/"), { ASSETS: assets });
+    expect(page.status).toBe(200);
+    const html = await page.text();
+    expect(html).toContain('<link rel="canonical" href="https://cv.cm/en/learn/photography/solo-bridal-photoshoot/"');
+    expect(html).toContain('<meta property="og:type" content="article" />');
+    expect((await worker.fetch(new Request("https://cv.cm/en/learn/photography/nope/"), { ASSETS: assets })).status).toBe(404);
+  });
+
   it("redirects bare paths, adds the slash, 404s unknown articles and serves the page", async () => {
     const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
     const bare = await worker.fetch(new Request("https://cv.cm/learn/knowledge/what-is-uuid/", { headers: { "Accept-Language": "vi" } }), { ASSETS: assets });
@@ -154,6 +194,7 @@ describe("knowledge: routes", () => {
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale)}</loc>`);
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "code")}</loc>`);
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "ai")}</loc>`);
+      expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "photo")}</loc>`);
       for (const id of KB_ARTICLES) expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, id)}</loc>`);
     }
   });

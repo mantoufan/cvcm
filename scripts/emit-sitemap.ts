@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 import "../src/shared/messages-all";
 import "../src/shared/kb-code-meta";
 import "../src/shared/kb-ai-meta";
+import "../src/shared/kb-photo-meta";
 import { buildLlmsTxt, buildPoppyJson, buildToolsJson } from "../src/shared/agent-docs";
 import { buildAllSearchIndexes } from "../src/shared/search-index";
 import { buildSectionSitemaps, buildSitemapIndexXml, SITEMAP_SECTIONS } from "../src/shared/sitemap";

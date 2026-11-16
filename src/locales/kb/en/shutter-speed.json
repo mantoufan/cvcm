@@ -1,0 +1,224 @@
+{
+  "title": "Shutter Speed Explained: Freeze Motion or Blur It — cv.cm",
+  "description": "Shutter speed guide: speeds by subject, the reciprocal rule with stabilization, panning, long exposures, ND filter math, light trails and silky water.",
+  "h1": "What shutter speed should I use?",
+  "answer": "Shutter speed is how long the sensor collects light. Fast speeds such as 1/500 s or 1/1000 s freeze moving people, pets and sports. Speeds of 1/60 s to 1/125 s suit still people handheld. Slow speeds from 1/2 s to 30 s on a tripod blur water, clouds and traffic into smooth streaks. Each halving or doubling of the time is one stop.",
+  "sections": [
+    {
+      "h": "Freezing versus blurring",
+      "body": [
+        "While the shutter is open, anything that moves draws a streak across the sensor. The streak can come from the subject moving or from the camera moving in your hands. Shutter speed decides how long that streak is.",
+        "A short time freezes the moment: a splash of water, a child mid-jump, a bird's wing. A long time shows movement: a waterfall turns smooth, car lights become lines, a crowd becomes soft ghosts while the buildings stay sharp. Neither is better. Decide which you want before you shoot.",
+        "Shutter speed also changes brightness. Going from 1/250 s to 1/500 s halves the light, which is one stop. To keep the same exposure you must open the aperture one stop or double the ISO. This is why fast action in dim light is hard: see the exposure triangle article for how the three settings trade off."
+      ]
+    },
+    {
+      "h": "Shutter speeds by subject",
+      "body": [
+        "These are starting points. Subjects crossing the frame need faster speeds than subjects coming toward you, and close or large subjects need faster speeds than distant ones.",
+        {
+          "table": {
+            "head": [
+              "Subject",
+              "To freeze",
+              "To show motion",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Person standing, posed portrait",
+                "1/125 to 1/250 s",
+                "Not usually wanted",
+                "1/250 s also stops small hand movements"
+              ],
+              [
+                "People walking",
+                "1/250 s",
+                "1/15 to 1/30 s",
+                "Slow speeds make a crowd soft while the street stays sharp"
+              ],
+              [
+                "Children playing, pets running",
+                "1/500 to 1/1000 s",
+                "1/30 to 1/60 s with panning",
+                "Use continuous autofocus and burst"
+              ],
+              [
+                "Running, football, basketball",
+                "1/1000 s",
+                "1/30 to 1/60 s panning",
+                "Indoor halls often need high ISO"
+              ],
+              [
+                "Cyclists",
+                "1/1000 s",
+                "1/30 to 1/60 s panning",
+                "Pan with the rider for a sharp face"
+              ],
+              [
+                "Cars on a road",
+                "1/1000 to 1/2000 s",
+                "1/60 to 1/125 s panning",
+                "Slower than 1/60 s is hard to pan sharply"
+              ],
+              [
+                "Birds in flight",
+                "1/2000 s or faster",
+                "1/30 to 1/60 s for wing blur",
+                "Small birds need the fastest speeds"
+              ],
+              [
+                "Waterfall or river",
+                "1/1000 s for droplets",
+                "1/2 to 4 s for silky water",
+                "Tripod and an ND filter in daylight"
+              ],
+              [
+                "Waves at the sea",
+                "1/500 to 1/1000 s",
+                "0.5 to 2 s for streaks, 30 s or more for mist",
+                "Longer times flatten the sea"
+              ],
+              [
+                "Car light trails",
+                "Not applicable",
+                "10 to 30 s",
+                "Tripod, ISO 100, f/8 to f/11"
+              ],
+              [
+                "Clouds moving",
+                "Not applicable",
+                "30 s to several minutes",
+                "Bulb mode with a strong ND filter"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Handheld shooting: the reciprocal rule and stabilization",
+      "body": [
+        "The reciprocal rule is a starting point for avoiding blur from your own hands: use a shutter speed of at least 1 divided by the full-frame equivalent focal length.",
+        {
+          "ul": [
+            "50 mm on full frame: 1/50 s or faster (use 1/60 s).",
+            "50 mm on an APS-C camera (crop 1.5): 1/75 s or faster (use 1/80 s).",
+            "200 mm on full frame: 1/200 s or faster (use 1/250 s).",
+            "Phone main camera (about 24 to 26 mm equivalent): around 1/30 s, but phones also stabilize and stack frames."
+          ]
+        },
+        "Image stabilization in the lens or the body lets you go slower. Each stop of stabilization doubles the time. With 4 stops of stabilization, 1/80 s becomes about 1/5 s (1/80, 1/40, 1/20, 1/10, 1/5). Treat the claimed number as a best case: most people get two or three stops reliably. High-resolution sensors show small shake more clearly, so many photographers use twice the rule, for example 1/100 s at 50 mm.",
+        "Stabilization does not freeze a moving subject. A person walking at 1/10 s will be blurred even if the background is sharp. For people, keep at least 1/125 s unless you want motion.",
+        "Holding technique helps: elbows against your body, the camera against your face if it has a viewfinder, breathe out and press the shutter gently, and take three frames in burst. One of them is often sharper."
+      ]
+    },
+    {
+      "h": "Panning: a sharp subject on a streaked background",
+      "body": [
+        "Panning means moving the camera with the subject during a slow exposure. The subject stays fairly sharp while the background turns into horizontal streaks, which shows speed.",
+        {
+          "ol": [
+            "Choose a place where the subject passes across the frame at a steady speed, such as cyclists, runners or cars on a straight road.",
+            "Set Tv or S mode at 1/60 s for cars, or 1/30 s for cyclists and runners. Try 1/15 s once you get sharp results.",
+            "Use continuous autofocus. Turn on burst.",
+            "Stand with your feet apart, facing the point where you will take the picture. Turn from the hips, not the arms.",
+            "Start following the subject before it reaches you, press the shutter as it passes, and keep turning after the shutter closes.",
+            "Expect many failures. A keeper rate of one in five is normal at 1/30 s."
+          ]
+        },
+        "If the lens has a panning stabilization mode, turn it on; it corrects only up-and-down shake. A background with lights, trees or colorful signs gives more visible streaks than a plain wall."
+      ]
+    },
+    {
+      "h": "Long exposures: tripod, ND filters and light trails",
+      "body": [
+        "For exposures longer than about 1/15 s, put the camera on a tripod or a steady surface. Use the 2-second self-timer or a remote so pressing the button does not shake the camera. On many lenses, turn off stabilization on a tripod. Set ISO 100 and an aperture around f/8 to f/11.",
+        "In bright sun, even f/16 at ISO 100 needs about 1/125 s, and open shade about 1/8 s, so long exposures need a neutral density (ND) filter. It darkens the scene without changing color.",
+        {
+          "table": {
+            "head": [
+              "ND filter",
+              "Stops",
+              "1/60 s becomes",
+              "Good for"
+            ],
+            "rows": [
+              [
+                "ND8",
+                "3",
+                "about 1/8 s",
+                "Slight blur of walking people"
+              ],
+              [
+                "ND64",
+                "6",
+                "about 1 s",
+                "Silky waterfalls in shade"
+              ],
+              [
+                "ND1000",
+                "10",
+                "about 17 s",
+                "Smooth sea, moving clouds, empty-looking streets"
+              ]
+            ]
+          }
+        },
+        "To compute the new time, double the base time once for each stop. Ten stops multiply the time by 1024: 1/60 s times 1024 is about 17 s. Compose and focus before you screw on a strong ND filter, because the viewfinder becomes almost black. Then switch focus to manual so the camera does not hunt.",
+        "Light trails: start after sunset, during blue hour, when the sky still has color. Set ISO 100, f/8 to f/11 and 10 to 30 s, and fire when traffic enters the frame. Use Bulb mode with a remote for times longer than 30 s. Do not stand in a road or on a busy bridge walkway in a way that blocks people.",
+        "Long exposures on a phone: many camera apps offer a long exposure, live photo long exposure, or a light trail mode that blends frames. Rest the phone on a small tripod or a wall and use the timer. See the night photography article for star photos and city scenes."
+      ]
+    },
+    {
+      "h": "Shutter speed on a phone",
+      "body": [
+        "Phones choose the shutter speed automatically. In good light it is very short, so action usually freezes. In dim light the phone slows the shutter and raises ISO, and moving people blur.",
+        {
+          "ul": [
+            "Use burst for action: hold the shutter button, or on some phones swipe it, to take a fast sequence and keep the sharpest frame.",
+            "For moving subjects indoors, add light: open the curtains or move nearer a lamp. More light lets the phone use a faster shutter.",
+            "If your camera app has a Pro or manual mode, set the shutter speed directly, for example 1/500 s for a pet. The phone will raise ISO to compensate.",
+            "Night mode uses long total exposure times. Ask the subject to hold still and keep the phone steady, or blur and double edges appear."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Mistakes and fixes",
+      "body": [
+        {
+          "ul": [
+            "Everything is slightly blurred, including the background: camera shake. Use a faster shutter or a support.",
+            "The background is sharp but the person is blurred: subject motion. Use at least 1/250 s for people moving, faster for sport.",
+            "Water looks white and has no texture in a long exposure: the highlights are clipped. Use a stronger ND filter or a smaller aperture, and check the histogram.",
+            "Banding stripes under indoor LED or fluorescent light at fast speeds: the light flickers. Use a shutter speed of 1/50 s or 1/100 s in regions with 50 Hz power, or 1/60 s or 1/120 s with 60 Hz, or turn on flicker reduction.",
+            "Panning shots are all blurred: the speed was too slow to start with. Begin at 1/125 s and step down."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is a good shutter speed for portraits?",
+      "a": "For a still adult, 1/125 s to 1/250 s handheld. For children or someone moving, use 1/500 s. In dim light it is better to raise ISO than to drop below about 1/60 s."
+    },
+    {
+      "q": "Why are my photos blurry indoors?",
+      "a": "Indoor light is far dimmer than daylight, so the camera chooses a slow shutter. Set a minimum shutter speed of 1/125 s with auto ISO, open the aperture, or add light from a window or lamp."
+    },
+    {
+      "q": "What does 30 seconds or Bulb mean on a camera?",
+      "a": "30 seconds is usually the longest time the camera sets on its own. Bulb keeps the shutter open as long as you hold the button or remote, for exposures of minutes."
+    },
+    {
+      "q": "Does a faster shutter speed make photos sharper?",
+      "a": "It removes blur from motion and hand shake, which is the most common cause of soft photos. It does not fix missed focus, and very fast speeds may force a high ISO that adds noise."
+    },
+    {
+      "q": "What shutter speed makes water look silky?",
+      "a": "Usually 1/2 s to 4 s for a waterfall or stream, longer for the sea. In daylight you need a tripod and an ND filter to reach those times."
+    }
+  ]
+}

@@ -1,0 +1,264 @@
+{
+  "title": "Cân bằng trắng: nhiệt độ màu Kelvin, preset và màu da — cv.cm",
+  "description": "Giải thích cân bằng trắng: nhiệt độ màu Kelvin, các preset, cân bằng trắng tùy chỉnh bằng thẻ xám, sửa da bị vàng cam hoặc xanh, ánh sáng hỗn hợp, RAW và các tông màu sáng tạo.",
+  "h1": "Cân bằng trắng là gì và cách cài đặt?",
+  "answer": "Cân bằng trắng cho máy ảnh biết ánh sáng đang có màu gì, để vật màu trắng trông vẫn trắng trong ảnh. Màu ánh sáng được đo bằng Kelvin: bóng đèn trong nhà ấm, khoảng 2700 đến 3200 K, còn bóng râm lạnh, khoảng 7000 K trở lên. Hãy chọn preset phù hợp với ánh sáng, đo bằng thẻ xám, hoặc chụp RAW rồi chỉnh sau.",
+  "sections": [
+    {
+      "h": "Nhiệt độ màu tính bằng Kelvin",
+      "body": [
+        "Mỗi nguồn sáng có một màu. Mắt người thích nghi nhanh đến mức tờ giấy trắng trông vẫn trắng dưới đèn và dưới bầu trời xanh. Máy ảnh thì không tự thích nghi. Cân bằng trắng là bước hiệu chỉnh để các màu trung tính giữ nguyên là trung tính.",
+        "Nhiệt độ màu mô tả ánh sáng từ cam đến xanh trên thang Kelvin (K). Số thấp thì ấm hơn (nghiêng cam), số cao thì lạnh hơn (nghiêng xanh). Các giá trị dưới đây là điển hình; nguồn sáng thực tế có thể khác.",
+        {
+          "table": {
+            "head": [
+              "Nguồn sáng",
+              "Kelvin xấp xỉ",
+              "Màu nếu không hiệu chỉnh"
+            ],
+            "rows": [
+              [
+                "Nến, lửa",
+                "1800 đến 2000 K",
+                "Cam đậm"
+              ],
+              [
+                "Bóng đèn gia đình, LED trắng ấm",
+                "2700 đến 3200 K",
+                "Cam, da bị vàng"
+              ],
+              [
+                "Bình minh và hoàng hôn",
+                "khoảng 2500 đến 3500 K",
+                "Vàng óng, ấm"
+              ],
+              [
+                "LED hoặc đèn huỳnh quang trắng trung tính",
+                "khoảng 4000 K",
+                "Hơi vàng, đôi khi ngả xanh lá"
+              ],
+              [
+                "Nắng trưa",
+                "khoảng 5000 đến 5500 K",
+                "Trung tính"
+              ],
+              [
+                "Flash máy ảnh",
+                "khoảng 5500 đến 6000 K",
+                "Trung tính đến hơi lạnh"
+              ],
+              [
+                "Trời nhiều mây",
+                "khoảng 6000 đến 7000 K",
+                "Hơi xanh"
+              ],
+              [
+                "Bóng râm thoáng ngày nắng",
+                "khoảng 7000 đến 8000 K",
+                "Xanh, da bị lạnh"
+              ],
+              [
+                "Giờ xanh, bầu trời xanh trong",
+                "10000 K trở lên",
+                "Xanh đậm"
+              ]
+            ]
+          }
+        },
+        "Ánh sáng nhân tạo còn khác nhau theo một trục thứ hai, từ xanh lá đến đỏ tía, gọi là tint. Một số đèn LED và đèn huỳnh quang thêm sắc xanh lá mà chỉ chỉnh Kelvin thì không sửa được."
+      ]
+    },
+    {
+      "h": "Cân bằng trắng tự động và các preset",
+      "body": [
+        "Cân bằng trắng tự động (AWB) hoạt động tốt dưới ánh sáng ban ngày ổn định và trong hầu hết cảnh hỗn hợp. Nó gặp khó khi một màu chiếm gần hết khung hình, như lá xanh, bức tường đỏ hoặc hoàng hôn, vì máy cố trung hòa chính màu mà bạn muốn giữ. Nó cũng có thể thay đổi giữa các tấm cùng một cảnh, gây phiền khi bạn chụp loạt ảnh sản phẩm hoặc loạt chân dung.",
+        "Preset đặt một mức hiệu chỉnh cố định. Giá trị chính xác khác nhau theo hãng; đây là các mức xấp xỉ phổ biến:",
+        {
+          "table": {
+            "head": [
+              "Preset",
+              "Khoảng",
+              "Dùng cho",
+              "Nếu dùng sai ánh sáng"
+            ],
+            "rows": [
+              [
+                "Tungsten hoặc đèn sợi đốt (biểu tượng bóng đèn)",
+                "3200 K",
+                "Bóng đèn gia đình, LED ấm",
+                "Rất xanh dưới ánh sáng ban ngày"
+              ],
+              [
+                "Huỳnh quang (Fluorescent)",
+                "khoảng 4000 K",
+                "Đèn tuýp văn phòng, LED trung tính",
+                "Ngả tím hoặc đỏ tía dưới ánh sáng ban ngày"
+              ],
+              [
+                "Ánh sáng ban ngày hoặc trời nắng (Daylight)",
+                "khoảng 5000 đến 5500 K",
+                "Nắng trực tiếp",
+                "Cam trong nhà, xanh trong bóng râm"
+              ],
+              [
+                "Flash",
+                "khoảng 5500 đến 6000 K",
+                "Flash là nguồn sáng chính",
+                "Hơi ấm dưới nắng"
+              ],
+              [
+                "Trời nhiều mây (Cloudy)",
+                "khoảng 6000 K",
+                "Ngày nhiều mây, chân dung ấm hơn",
+                "Ấm dưới nắng"
+              ],
+              [
+                "Bóng râm (Shade)",
+                "khoảng 7000 K",
+                "Bóng râm thoáng, dưới tán cây",
+                "Rất cam khi ở trong nhà"
+              ],
+              [
+                "K (Kelvin)",
+                "Con số do bạn đặt",
+                "Mọi ánh sáng bạn ước lượng được",
+                "Đặt quá thấp thì ảnh xanh, quá cao thì ảnh cam"
+              ]
+            ]
+          }
+        },
+        "Khi bạn đặt một con số Kelvin, bạn báo cho máy biết ánh sáng đang là gì, và máy hiệu chỉnh theo chiều ngược lại. Đặt 3200 K dưới ánh sáng ban ngày làm ảnh xanh. Đặt 7500 K trong nhà làm ảnh rất cam. Lúc đầu thấy ngược, nhưng đó là quy luật nhất quán."
+      ]
+    },
+    {
+      "h": "Cân bằng trắng tùy chỉnh bằng thẻ xám",
+      "body": [
+        "Cách chính xác nhất là đo ánh sáng. Thẻ xám hoặc bảng chuẩn cân bằng trắng chuyên dụng cho kết quả tốt nhất. Một tờ giấy trắng trơn là thứ thay thế chấp nhận được, dù một số loại giấy chứa chất tăng trắng làm giấy ngả xanh.",
+        {
+          "ol": [
+            "Đặt thẻ tại chỗ chủ thể đứng, hướng về cùng nguồn sáng. Với chân dung, người mẫu có thể cầm thẻ dưới cằm.",
+            "Mở thiết lập cân bằng trắng tùy chỉnh (hoặc preset thủ công, PRE) trong menu máy ảnh.",
+            "Cho thẻ chiếm đầy khung hình hoặc vùng được đánh dấu. Lấy nét không quan trọng, nhưng độ phơi sáng nên bình thường, đừng quá tối hay quá trắng.",
+            "Chụp tấm đo và xác nhận. Máy lưu nó thành một thiết lập tùy chỉnh.",
+            "Chụp. Hãy đo lại khi ánh sáng thay đổi, ví dụ khi mặt trời khuất sau mây hoặc khi bạn sang phòng khác."
+          ]
+        },
+        "Nếu bạn chụp RAW, hãy chụp một tấm thẻ ở đầu mỗi lần đổi ánh sáng. Khi chỉnh sửa, dùng ống hút cân bằng trắng bấm vào thẻ rồi sao chép thiết lập sang các ảnh khác trong cùng bối cảnh."
+      ]
+    },
+    {
+      "h": "Vì sao da bị cam, xanh hoặc xanh lá và cách sửa",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Bạn thấy gì",
+              "Nguyên nhân có thể",
+              "Cách sửa"
+            ],
+            "rows": [
+              [
+                "Mặt ngả cam hoặc vàng trong nhà",
+                "Bóng đèn ấm kết hợp cân bằng trắng ban ngày hoặc tự động",
+                "Đặt Tungsten hoặc 3000 đến 3200 K, hoặc đo bằng bức tường trắng hay thẻ"
+              ],
+              [
+                "Da xanh hoặc xám ngoài trời",
+                "Bóng râm thoáng hoặc ánh sáng trời nhiều mây",
+                "Đặt Shade hoặc Cloudy, hoặc khoảng 6500 đến 7500 K"
+              ],
+              [
+                "Da ngả xanh lá hoặc trông ốm yếu",
+                "Đèn huỳnh quang hoặc LED giá rẻ",
+                "Dùng preset huỳnh quang hoặc thêm tint đỏ tía khi chỉnh sửa"
+              ],
+              [
+                "Mặt hai màu, một bên cam, một bên xanh",
+                "Ánh sáng cửa sổ và đèn cùng lúc",
+                "Tắt đèn hoặc xoay mặt hẳn về một nguồn sáng"
+              ],
+              [
+                "Hoàng hôn trông xỉn và xám",
+                "Cân bằng trắng tự động đã khử mất màu ấm",
+                "Đặt Daylight hoặc Cloudy thay vì Auto"
+              ],
+              [
+                "Tuyết ngả xanh",
+                "Bóng râm được chiếu sáng bởi bầu trời xanh",
+                "Đặt Shade, hoặc chấp nhận hơi xanh để tạo cảm giác lạnh"
+              ]
+            ]
+          }
+        },
+        "Cách kiểm tra nhanh là nhìn một thứ mà bạn biết là trung tính, như áo trắng, bức tường xám hoặc đĩa trắng. Nếu trong ảnh nó bị ám màu, mọi thứ khác cũng bị ám màu như vậy."
+      ]
+    },
+    {
+      "h": "Ánh sáng hỗn hợp",
+      "body": [
+        "Ánh sáng hỗn hợp là trường hợp khó nhất: cửa sổ cùng đèn trần, nhà hàng có nến và màn hình, con phố có đèn natri và đèn LED. Một thiết lập cân bằng trắng không thể sửa hai màu cùng lúc.",
+        {
+          "ul": [
+            "Loại bỏ một nguồn sáng. Tắt đèn phòng và dùng ánh sáng cửa sổ, hoặc đóng rèm và dùng đèn.",
+            "Làm một nguồn sáng thành chủ đạo. Đưa chủ thể lại gần nguồn sáng chính hơn nhiều để nguồn còn lại yếu đi.",
+            "Cân bằng trắng theo khuôn mặt, đừng theo phông nền. Phông nền ấm sau khuôn mặt trung tính thường trông dễ chịu.",
+            "Khi dùng flash trong căn phòng ấm, gắn gel làm ấm (CTO) lên flash để khớp với bóng đèn; sau đó đặt Tungsten.",
+            "Khi chỉnh sửa, dùng điều chỉnh cục bộ để sửa một vùng, như làm lạnh bức tường ấm mà không đổi màu khuôn mặt."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Cân bằng trắng trên điện thoại",
+      "body": [
+        "Điện thoại dùng cân bằng trắng tự động và thường làm khá tốt. Chúng cũng cố ý giữ lại chút ấm dưới bóng đèn, vì một căn phòng hoàn toàn trung tính vào ban đêm có thể trông lạnh.",
+        {
+          "ul": [
+            "Chạm vào chủ thể để đặt nét và phơi sáng; trên một số điện thoại, việc này còn ảnh hưởng đến màu sắc.",
+            "Nếu ứng dụng camera có chế độ Pro hoặc thủ công, thường có thiết lập WB với các preset hoặc thanh trượt Kelvin.",
+            "Một số điện thoại có phong cách ảnh hoặc thanh trượt tông ấm và lạnh. Chúng đổi diện mạo chứ không phải cân bằng trắng đo được, nhưng có thể sửa một sắc ám đều.",
+            "Với đồ ăn trong nhà hàng, hãy so sánh đĩa trong ảnh với đĩa thật. Nếu đĩa trắng bị vàng, hãy làm lạnh ảnh bằng thanh nhiệt độ hoặc độ ấm trong trình chỉnh sửa.",
+            "Tệp RAW hoặc ProRAW, nếu có, cho phép bạn đặt cân bằng trắng thoải mái sau khi chụp."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "RAW, chỉnh sửa và tông ấm hoặc lạnh sáng tạo",
+      "body": [
+        "Tệp RAW lưu dữ liệu cảm biến trước khi cân bằng trắng được áp vào. Bạn có thể đổi sau mà không mất chất lượng, nên nhiều người chụp để máy ở chế độ tự động rồi chỉnh khi hậu kỳ. Tệp JPEG cũng chỉnh được, nhưng điều chỉnh lớn có thể làm màu bị phẳng hoặc bị bệt.",
+        {
+          "ol": [
+            "Chọn ống hút cân bằng trắng và bấm vào thứ gì đó trung tính: thẻ xám, áo trắng trong bóng râm nhẹ, mặt đường xám.",
+            "Điều chỉnh thanh nhiệt độ theo ý thích. Ấm hơn trung tính một chút thường làm da đẹp hơn.",
+            "Điều chỉnh tint nếu da bị xanh lá hoặc đỏ tía.",
+            "Sao chép thiết lập sang các ảnh khác chụp cùng ánh sáng để cả bộ ảnh đồng nhất."
+          ]
+        },
+        "Cân bằng trắng còn là công cụ sáng tạo. Thiết lập ấm hơn, như Cloudy hoặc Shade dưới nắng, làm giờ vàng và chân dung ấm áp hơn. Thiết lập lạnh hơn, như 3800 đến 4500 K lúc hoàng hôn, làm giờ xanh và cảnh thành phố có cảm giác tĩnh lặng hoặc lạnh lẽo. Nguyên tắc là nhất quán: trong cùng một bộ ảnh hãy giữ cùng diện mạo. Để so sánh màu giữa các ảnh, công cụ trích xuất màu ảnh của cv.cm cho thấy các màu chính của một tấm ảnh dưới dạng giá trị HEX."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Chụp trong nhà nên dùng cân bằng trắng nào?",
+      "a": "Dưới bóng đèn gia đình ấm, hãy dùng Tungsten hoặc khoảng 3000 đến 3200 K. Dưới đèn LED hoặc đèn tuýp trung tính, thử 4000 K hoặc preset huỳnh quang. Đo tùy chỉnh bằng tường trắng hoặc thẻ cho kết quả chính xác nhất."
+    },
+    {
+      "q": "Cân bằng trắng tự động có đủ tốt không?",
+      "a": "Có, với ánh sáng ban ngày và hầu hết cảnh thường ngày. Hãy dùng preset hoặc giá trị Kelvin khi một màu chiếm gần hết khung hình, khi bạn muốn hoàng hôn giữ được màu ấm hoặc khi một loạt ảnh phải đồng nhất."
+    },
+    {
+      "q": "Vì sao ảnh chụp ban đêm của tôi bị vàng?",
+      "a": "Phần lớn đèn trong nhà và ngoài phố đều ấm, quanh 2700 đến 3200 K. Cân bằng trắng tự động và điện thoại thường giữ lại một phần sắc ấm đó. Hãy hạ giá trị Kelvin hoặc làm lạnh ảnh khi chỉnh sửa."
+    },
+    {
+      "q": "Chụp RAW thì cân bằng trắng có quan trọng không?",
+      "a": "Nó không thay đổi dữ liệu RAW nên bạn sửa được sau. Tuy vậy nó vẫn quyết định bản xem trước, histogram và tệp JPEG nhúng, nên một thiết lập hợp lý giúp việc xem lại và chỉnh sửa dễ hơn."
+    },
+    {
+      "q": "Thẻ xám có tốt hơn thẻ trắng không?",
+      "a": "Cả hai đều dùng được cho cân bằng trắng. Thẻ xám ít bị thừa sáng hơn khi đo, và còn giúp bạn kiểm tra độ phơi sáng."
+    }
+  ]
+}

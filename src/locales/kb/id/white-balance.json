@@ -1,0 +1,264 @@
+{
+  "title": "White Balance: Kelvin, Preset, dan Warna Kulit yang Pas — cv.cm",
+  "description": "White balance dijelaskan: suhu warna dalam kelvin, preset, custom WB dengan grey card, memperbaiki kulit oranye atau kebiruan, cahaya campuran, RAW, dan tampilan kreatif.",
+  "h1": "Apa itu white balance dan bagaimana cara mengaturnya?",
+  "answer": "White balance memberi tahu kamera warna cahaya yang ada, supaya benda putih tampak putih di foto. Cahaya diukur dalam kelvin: lampu dalam ruangan hangat, sekitar 2700 sampai 3200 K, dan tempat teduh dingin, sekitar 7000 K atau lebih. Pilih preset yang sesuai dengan cahayanya, ukur dengan grey card, atau potret dalam RAW dan koreksi nanti.",
+  "sections": [
+    {
+      "h": "Suhu warna dalam kelvin",
+      "body": [
+        "Setiap sumber cahaya punya warna. Mata kita beradaptasi begitu cepat sehingga selembar kertas putih tampak putih di bawah lampu maupun di bawah langit biru. Kamera tidak beradaptasi sendiri. White balance adalah koreksi yang diterapkannya agar warna netral tetap netral.",
+        "Suhu warna menggambarkan cahaya dari oranye sampai biru pada skala kelvin (K). Angka yang lebih rendah lebih hangat (lebih oranye), angka yang lebih tinggi lebih dingin (lebih biru). Nilai di bawah ini tipikal; sumber cahaya sebenarnya bervariasi.",
+        {
+          "table": {
+            "head": [
+              "Sumber cahaya",
+              "Kelvin perkiraan",
+              "Tampilan tanpa koreksi"
+            ],
+            "rows": [
+              [
+                "Lilin, api",
+                "1800 sampai 2000 K",
+                "Oranye pekat"
+              ],
+              [
+                "Lampu rumah, LED warm white",
+                "2700 sampai 3200 K",
+                "Oranye, kulit tampak kuning"
+              ],
+              [
+                "Matahari terbit dan terbenam",
+                "sekitar 2500 sampai 3500 K",
+                "Keemasan, hangat"
+              ],
+              [
+                "LED atau neon putih netral",
+                "sekitar 4000 K",
+                "Sedikit kuning, kadang kehijauan"
+              ],
+              [
+                "Matahari siang",
+                "sekitar 5000 sampai 5500 K",
+                "Netral"
+              ],
+              [
+                "Flash kamera",
+                "sekitar 5500 sampai 6000 K",
+                "Netral sampai sedikit dingin"
+              ],
+              [
+                "Langit mendung",
+                "sekitar 6000 sampai 7000 K",
+                "Sedikit biru"
+              ],
+              [
+                "Tempat teduh terbuka di hari cerah",
+                "sekitar 7000 sampai 8000 K",
+                "Biru, kulit tampak dingin"
+              ],
+              [
+                "Blue hour, langit biru cerah",
+                "10000 K ke atas",
+                "Sangat biru"
+              ]
+            ]
+          }
+        },
+        "Cahaya buatan juga bervariasi pada sumbu kedua, dari hijau ke magenta, yang disebut tint. Beberapa LED dan lampu neon menambah warna kehijauan yang tidak bisa diperbaiki hanya dengan setelan kelvin."
+      ]
+    },
+    {
+      "h": "Auto white balance dan preset",
+      "body": [
+        "Auto white balance (AWB) bekerja baik di cahaya matahari yang stabil dan di sebagian besar adegan dengan cahaya campuran. AWB kesulitan saat satu warna memenuhi frame, seperti daun hijau, tembok merah, atau matahari terbenam, karena ia mencoba menetralkan warna yang justru ingin Anda pertahankan. AWB juga bisa berubah antar-frame pada adegan yang sama, yang menjadi masalah untuk seri foto produk atau rangkaian potret.",
+        "Preset menetapkan koreksi yang tetap. Nilai persisnya berbeda antar merek; ini perkiraan yang umum:",
+        {
+          "table": {
+            "head": [
+              "Preset",
+              "Sekitar",
+              "Dipakai untuk",
+              "Kalau dipakai di cahaya yang salah"
+            ],
+            "rows": [
+              [
+                "Tungsten atau incandescent (ikon bohlam)",
+                "3200 K",
+                "Lampu rumah, LED hangat",
+                "Sangat biru di siang hari"
+              ],
+              [
+                "Fluorescent",
+                "sekitar 4000 K",
+                "Lampu neon kantor, LED netral",
+                "Keunguan atau magenta di siang hari"
+              ],
+              [
+                "Daylight atau sunny",
+                "sekitar 5000 sampai 5500 K",
+                "Matahari langsung",
+                "Oranye di dalam ruangan, biru di tempat teduh"
+              ],
+              [
+                "Flash",
+                "sekitar 5500 sampai 6000 K",
+                "Flash sebagai cahaya utama",
+                "Sedikit hangat di bawah matahari"
+              ],
+              [
+                "Cloudy",
+                "sekitar 6000 K",
+                "Hari mendung, potret yang lebih hangat",
+                "Hangat di bawah matahari"
+              ],
+              [
+                "Shade",
+                "sekitar 7000 K",
+                "Tempat teduh terbuka, di bawah pohon",
+                "Sangat oranye di dalam ruangan"
+              ],
+              [
+                "K (kelvin)",
+                "Angka Anda sendiri",
+                "Cahaya apa pun yang bisa Anda perkirakan",
+                "Terlalu rendah tampak biru, terlalu tinggi tampak oranye"
+              ]
+            ]
+          }
+        },
+        "Saat Anda mengatur angka kelvin, Anda memberi tahu kamera seperti apa cahayanya, lalu kamera mengoreksi ke arah sebaliknya. Mengatur 3200 K di siang hari membuat foto kebiruan. Mengatur 7500 K di dalam ruangan membuatnya sangat oranye. Awalnya terasa terbalik, tetapi konsisten."
+      ]
+    },
+    {
+      "h": "Custom white balance dengan grey card",
+      "body": [
+        "Cara paling akurat adalah mengukur cahayanya. Grey card atau target white balance khusus bekerja paling baik. Selembar kertas putih polos adalah pengganti yang layak, walau sebagian kertas mengandung pemutih yang tampak kebiruan.",
+        {
+          "ol": [
+            "Letakkan kartu di tempat subjek berada, menghadap cahaya yang sama. Untuk potret, orangnya bisa memegangnya di bawah dagu.",
+            "Buka setelan custom white balance (atau preset manual, PRE) di menu kamera.",
+            "Penuhi frame atau area yang ditandai dengan kartu itu. Fokus tidak penting, tetapi eksposurnya harus normal, tidak terlalu gelap atau putih.",
+            "Ambil foto pengukuran lalu konfirmasi. Kamera menyimpannya sebagai setelan custom.",
+            "Mulai memotret. Ukur ulang kalau cahayanya berubah, misalnya saat matahari tertutup awan atau Anda pindah ke ruangan lain."
+          ]
+        },
+        "Kalau Anda memotret RAW, ambil satu foto kartu di awal setiap pengaturan cahaya. Saat editing, klik kartu itu dengan eyedropper white balance lalu salin setelannya ke foto lain dari pengaturan yang sama."
+      ]
+    },
+    {
+      "h": "Kenapa kulit tampak oranye, biru, atau hijau, dan cara memperbaikinya",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Yang terlihat",
+              "Kemungkinan penyebab",
+              "Perbaikan"
+            ],
+            "rows": [
+              [
+                "Wajah tampak oranye atau kuning di dalam ruangan",
+                "Lampu hangat dengan white balance daylight atau auto",
+                "Atur Tungsten atau 3000 sampai 3200 K, atau ukur pada dinding putih atau kartu"
+              ],
+              [
+                "Kulit tampak biru atau abu-abu di luar ruangan",
+                "Tempat teduh terbuka atau cahaya mendung",
+                "Atur Shade atau Cloudy, atau sekitar 6500 sampai 7500 K"
+              ],
+              [
+                "Kulit tampak hijau atau pucat",
+                "Lampu neon atau LED murah",
+                "Pakai preset Fluorescent atau tambahkan tint magenta saat editing"
+              ],
+              [
+                "Wajah dua warna, satu sisi oranye dan satu sisi biru",
+                "Cahaya jendela dan lampu bersamaan",
+                "Matikan lampu atau hadapkan wajah sepenuhnya ke satu sumber"
+              ],
+              [
+                "Matahari terbenam tampak kusam dan abu-abu",
+                "Auto white balance menghilangkan kehangatannya",
+                "Atur Daylight atau Cloudy, bukan Auto"
+              ],
+              [
+                "Salju tampak biru",
+                "Tempat teduh yang disinari langit biru",
+                "Atur Shade, atau terima sedikit biru demi kesan dingin"
+              ]
+            ]
+          }
+        },
+        "Cara cepat mengecek adalah melihat sesuatu yang Anda tahu netral, seperti kemeja putih, dinding abu-abu, atau piring putih. Kalau di foto benda itu tampak berwarna, semua yang lain punya warna yang sama."
+      ]
+    },
+    {
+      "h": "Cahaya campuran",
+      "body": [
+        "Cahaya campuran adalah kasus tersulit: jendela dan lampu plafon, restoran dengan lilin dan layar, jalan dengan lampu sodium dan LED. Satu setelan white balance tidak bisa mengoreksi dua warna sekaligus.",
+        {
+          "ul": [
+            "Singkirkan satu sumber. Matikan lampu ruangan dan pakai cahaya jendela, atau tutup tirai dan pakai lampu.",
+            "Jadikan satu sumber dominan. Dekatkan subjek ke cahaya utama sehingga sumber lainnya melemah.",
+            "Atur white balance untuk wajah, bukan latar. Latar hangat di belakang wajah yang netral sering tampak menyenangkan.",
+            "Dengan flash di ruangan hangat, filter penghangat (gel CTO) pada flash menyamakannya dengan lampu; lalu atur Tungsten.",
+            "Saat editing, pakai penyesuaian lokal untuk mengoreksi satu area, seperti mendinginkan dinding hangat tanpa mengubah wajah."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "White balance di ponsel",
+      "body": [
+        "Ponsel memakai white balance otomatis dan biasanya cukup andal. Ponsel juga cenderung sengaja mempertahankan sedikit kehangatan di bawah bohlam, karena ruangan yang sepenuhnya netral di malam hari bisa tampak dingin.",
+        {
+          "ul": [
+            "Ketuk subjek untuk mengatur fokus dan eksposur; di beberapa ponsel ini juga memengaruhi warna.",
+            "Kalau aplikasi kamera Anda punya mode Pro atau manual, biasanya ada setelan WB dengan preset atau slider kelvin.",
+            "Beberapa ponsel menawarkan gaya fotografi atau slider nada hangat dan dingin. Ini mengubah tampilan, bukan white balance yang terukur, tetapi bisa mengoreksi warna yang konsisten melenceng.",
+            "Untuk makanan di restoran, bandingkan piring dengan aslinya. Kalau piring putih tampak kuning, dinginkan foto dengan slider warmth atau temperature di editor.",
+            "File RAW atau ProRAW, jika tersedia, memungkinkan Anda mengatur white balance dengan bebas sesudahnya."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "RAW, editing, dan tampilan hangat atau dingin yang kreatif",
+      "body": [
+        "File RAW menyimpan data sensor sebelum white balance diterapkan. Anda bisa mengubahnya nanti tanpa kehilangan kualitas, jadi banyak fotografer membiarkan kamera di auto dan mengoreksi saat editing. JPEG juga bisa dikoreksi, tetapi perubahan besar bisa membuat warna tampak datar atau berundak.",
+        {
+          "ol": [
+            "Pilih eyedropper white balance lalu klik sesuatu yang netral: grey card, kemeja putih di tempat teduh ringan, trotoar abu-abu.",
+            "Atur slider temperature sesuai selera. Sedikit lebih hangat dari netral biasanya lebih menyanjung kulit.",
+            "Atur tint kalau kulit tampak hijau atau magenta.",
+            "Salin setelan ke foto lain yang diambil di cahaya yang sama, agar seluruh set seragam."
+          ]
+        },
+        "White balance juga alat kreatif. Setelan yang lebih hangat, seperti Cloudy atau Shade di bawah matahari, membuat golden hour dan potret terasa lebih hangat. Setelan yang lebih dingin, seperti 3800 sampai 4500 K saat senja, membuat blue hour dan pemandangan kota terasa tenang atau dingin. Aturannya adalah konsistensi: dalam satu set foto, jaga tampilan yang sama. Untuk membandingkan warna antar-foto, pengekstrak warna gambar cv.cm menampilkan warna utama sebuah foto sebagai nilai HEX."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "White balance apa yang dipakai untuk foto dalam ruangan?",
+      "a": "Di bawah bohlam rumah yang hangat, pakai Tungsten atau sekitar 3000 sampai 3200 K. Di bawah LED atau lampu neon yang netral, coba 4000 K atau preset Fluorescent. Pengukuran custom dari dinding putih atau kartu adalah yang paling akurat."
+    },
+    {
+      "q": "Apakah auto white balance sudah cukup?",
+      "a": "Di cahaya matahari dan sebagian besar adegan sehari-hari, ya. Pakai preset atau nilai kelvin saat satu warna memenuhi frame, saat Anda ingin matahari terbenam tetap hangat, atau saat rangkaian foto harus seragam."
+    },
+    {
+      "q": "Kenapa foto saya tampak kuning di malam hari?",
+      "a": "Kebanyakan lampu dalam ruangan dan jalanan hangat, sekitar 2700 sampai 3200 K. Auto white balance dan ponsel sering mempertahankan sebagian kehangatan itu. Turunkan nilai kelvin atau dinginkan foto saat editing."
+    },
+    {
+      "q": "Apakah white balance penting kalau saya memotret RAW?",
+      "a": "White balance tidak mengubah data RAW, jadi Anda bisa memperbaikinya nanti. Namun ia tetap menentukan pratinjau, histogram, dan JPEG tertanam, jadi setelan yang masuk akal mempermudah peninjauan dan editing."
+    },
+    {
+      "q": "Apakah grey card lebih baik daripada kartu putih?",
+      "a": "Keduanya berfungsi untuk white balance. Grey card lebih kecil kemungkinannya overexposed saat diukur, dan juga bisa membantu Anda memeriksa eksposur."
+    }
+  ]
+}

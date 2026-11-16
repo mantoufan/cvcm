@@ -1,0 +1,212 @@
+{
+  "title": "How to Photograph the Moon: Settings for Camera and Phone — cv.cm",
+  "description": "How to photograph the moon: Looney 11 settings by phase, why auto makes a white blob, how big the moon looks at each focal length, and step-by-step phone tips.",
+  "h1": "How do you photograph the moon?",
+  "answer": "Put the camera on a tripod, use the longest lens you have, focus on the moon and set exposure manually. A good starting point is the Looney 11 rule: f/11 with a shutter speed of 1 divided by the ISO, such as ISO 100 at 1/100 s for a full moon. On a phone, tap the moon and drag the exposure slider down until surface detail appears.",
+  "sections": [
+    {
+      "h": "Why the moon comes out as a white blob",
+      "body": [
+        "The moon is lit by direct sunlight. Its surface is as bright as a sunlit grey rock on Earth, while the sky around it is black. Your camera or phone meters the whole frame, sees mostly darkness, and brightens the exposure for a night scene. The tiny moon is then overexposed by several stops and loses all its craters.",
+        "The fix is to ignore the dark sky and expose for the moon as if it were in daylight. That is why moon settings look like bright-day settings: fast shutter, low ISO, medium aperture. It also explains a common surprise: a moon exposure makes the landscape below almost black, because the two are many stops apart."
+      ]
+    },
+    {
+      "h": "Starting settings: the Looney 11 rule",
+      "body": [
+        "The Looney 11 rule says: at f/11, set the shutter speed to 1 divided by the ISO. At ISO 100 that is 1/100 s; at ISO 200, 1/200 s. It is the moon version of the sunny 16 rule, one stop darker, because the moon's surface is darker than most daylight scenes. It assumes a full moon high in a clear sky.",
+        "Less of the moon is lit at other phases, and the light near the edge of the shadow is low and dim, so add exposure. The table below keeps the shutter fast enough for a long lens, using f/8 and ISO 400.",
+        {
+          "table": {
+            "head": [
+              "Phase",
+              "Looney 11 (f/11, ISO 100)",
+              "Practical start (f/8, ISO 400)",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Full moon",
+                "1/100 s",
+                "1/800 s",
+                "Bright and flat; little crater shadow"
+              ],
+              [
+                "Gibbous",
+                "1/50 s",
+                "1/400 s",
+                "Craters visible along the shadow edge"
+              ],
+              [
+                "Quarter (half moon)",
+                "1/25 s",
+                "1/200 s",
+                "Best crater detail near the line between light and dark"
+              ],
+              [
+                "Crescent",
+                "1/13 s",
+                "1/100 s",
+                "Thin and dimmer; often low in a twilight sky"
+              ],
+              [
+                "Moon near the horizon",
+                "add 1 to 2 stops",
+                "1/200 to 1/400 s (full)",
+                "Thick air dims and warms the light; detail is softer"
+              ]
+            ]
+          }
+        },
+        "Treat these as starting points. Take a shot, zoom in on the screen and look at the histogram. Turn on highlight warnings: the brightest areas should not flash. If they do, use a faster shutter speed. Bracket by one stop either way and pick the best later.",
+        "Set white balance to daylight. Moonlight is reflected sunlight, so daylight balance shows the moon as a neutral grey, slightly warm. Auto may make it blue or yellow."
+      ]
+    },
+    {
+      "h": "How big will the moon be? Focal length math",
+      "body": [
+        "The moon is about 3,475 km across and about 384,400 km away, so it covers about half a degree of sky. On a sensor, its image is about the focal length divided by 110. A 110 mm lens makes a moon about 1 mm wide on the sensor; a 550 mm lens makes it about 5 mm wide.",
+        {
+          "table": {
+            "head": [
+              "Lens (full-frame equivalent)",
+              "Moon on the sensor",
+              "Share of the frame height",
+              "What it looks like"
+            ],
+            "rows": [
+              [
+                "26 mm (phone main camera)",
+                "0.24 mm",
+                "About 1%",
+                "A small bright dot; good only as part of a landscape"
+              ],
+              [
+                "77 mm (phone 3x)",
+                "0.7 mm",
+                "About 3%",
+                "A small disc; little surface detail"
+              ],
+              [
+                "200 mm",
+                "1.8 mm",
+                "About 8%",
+                "Clear disc; main dark areas visible"
+              ],
+              [
+                "300 mm",
+                "2.7 mm",
+                "About 11%",
+                "Craters visible; can be cropped"
+              ],
+              [
+                "600 mm",
+                "5.5 mm",
+                "About 23%",
+                "Detailed moon; crop to fill a phone screen"
+              ],
+              [
+                "About 2,600 mm",
+                "24 mm",
+                "Full height",
+                "The moon fills a full-frame image top to bottom"
+              ]
+            ]
+          }
+        },
+        "To use the table with a real lens on a smaller sensor, use the physical focal length divided by 110 for the size in millimeters, then compare it with the sensor height: about 24 mm for full frame, about 15 to 16 mm for APS-C, and 13 mm for Micro Four Thirds. A 300 mm lens on APS-C fills about 17 percent of the height.",
+        "Pixels matter more than frame share when you plan to crop. A 300 mm lens on a 24-megapixel full-frame camera gives a moon about 450 pixels across. Cropping a sharp moon is fine; enlarging it with AI tools invents detail that was not there.",
+        {
+          "note": "The moon near the horizon looks huge to your eyes, but this is an illusion. In a photo it is the same size as when it is high. To make it look large next to a building or a hill, stand far away and use a long lens."
+        }
+      ]
+    },
+    {
+      "h": "Step by step with a camera",
+      "body": [
+        {
+          "ol": [
+            "Mount the camera on a sturdy tripod. Hang a bag from the center column in wind.",
+            "Use your longest lens. Turn image stabilization off if the lens maker recommends it on a tripod.",
+            "Set manual mode (M), RAW, ISO 100 to 400, and the Looney 11 or table settings above.",
+            "Focus: try autofocus on the bright edge of the moon. If it hunts, switch to manual focus, magnify live view on the moon, and turn the ring until the crater edges are sharpest. Do not trust the infinity mark.",
+            "Use a 2-second timer or a remote so pressing the button does not shake the camera. Use electronic front curtain or silent shutter if available.",
+            "Take many frames in short bursts. Air turbulence changes from moment to moment, so some frames will be sharper than others.",
+            "Check sharpness at full magnification, adjust exposure, and refocus every so often, since temperature can shift focus."
+          ]
+        },
+        "The moon moves across the sky by about its own width every two minutes. At fractions of a second this does not matter; vibration and air turbulence are the real limits. If you keep it near the center, re-aim every few minutes."
+      ]
+    },
+    {
+      "h": "Photographing the moon with a phone",
+      "body": [
+        {
+          "ol": [
+            "Turn off the flash. It cannot light the moon.",
+            "Rest the phone on a small tripod, a wall or a railing, and use the 3-second timer.",
+            "Switch to the longest optical lens (the 2x, 3x or 5x button). Avoid zooming far beyond it; digital zoom only crops and adds noise.",
+            "Tap the moon to focus on it.",
+            "Drag the exposure slider down until the moon is grey with visible markings, not a white disc. On iPhone, press and hold to lock AE/AF first, then slide the sun icon down; on Pixel, tap Lock after tapping the moon.",
+            "Turn off night mode if it makes the moon brighter or blurry; it is designed for dark scenes, not bright points.",
+            "If your camera app has a pro or manual mode, try ISO 50 to 100 and a shutter around 1/250 to 1/1000 s and adjust from there.",
+            "Shoot several frames and keep the sharpest."
+          ]
+        },
+        "A phone works best when the sky is not fully dark. At twilight the difference between the moon and the sky is smaller, so the phone can show both the moon and some color or landscape. Some phones also apply strong processing to moon shots; if you share the photo as a record, mention what the phone did."
+      ]
+    },
+    {
+      "h": "Phases, moonrise and planning",
+      "body": [
+        "The full cycle from new moon to new moon takes about 29.5 days. The full moon is the brightest but the flattest, because sunlight hits it straight on and casts almost no shadows. For crater detail, shoot between a crescent and a gibbous moon and look along the line between the lit and dark parts, where shadows are long.",
+        {
+          "ul": [
+            "The full moon rises around sunset and sets around sunrise.",
+            "Moonrise is on average about 50 minutes later each day, though the exact gap varies with season and latitude.",
+            "The evening before full moon, the moon rises shortly before sunset, so it appears in a still-bright sky. This is the best time to show a nearly full moon with a well-exposed landscape in one frame.",
+            "A waxing crescent is seen in the west after sunset; a waning crescent in the east before sunrise.",
+            "The moon is visible in daylight for much of the month, often in the afternoon around first quarter. Daylight moon shots are easy to expose."
+          ]
+        },
+        "Look up moonrise, moonset and phase for your location with an official almanac service such as the U.S. Naval Observatory data pages, or the almanac in your phone weather app. Check the direction of moonrise on a map so a building, tree or mountain lines up with it."
+      ]
+    },
+    {
+      "h": "Moon and landscape in one picture, honestly",
+      "body": [
+        "A bright moon over a dark city is many stops brighter than the city. You have three honest options.",
+        {
+          "ul": [
+            "Shoot at twilight, when the sky and the land are closer in brightness to the moon.",
+            "Take two exposures from the same tripod position and focal length, one for the moon and one for the landscape, and blend them. This is a common and accepted technique.",
+            "Accept a bright, detailless moon in a night scene, or a dark landscape with a detailed moon."
+          ]
+        },
+        "Pasting a large moon from another photo or another focal length into a landscape makes a composite, not a record. It can be good art, but say so when you share it, and never enter it in contests or news use as a single photo."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the best ISO for moon photography?",
+      "a": "Start at ISO 100 to 400. The moon is bright, so low ISO keeps noise down while still allowing a fast shutter speed. Raise it only if the shutter would drop below about 1/100 s with a long lens."
+    },
+    {
+      "q": "Why is my moon photo blurry?",
+      "a": "Usually camera shake, missed focus, or air turbulence. Use a tripod and a timer, focus manually with magnified live view, and take many frames so you can keep the sharpest. Shooting the moon high in the sky also helps."
+    },
+    {
+      "q": "Can you photograph the moon without a telephoto lens?",
+      "a": "Yes, but it will be small. With a phone main camera or a wide lens, make the moon part of a scene, such as a skyline or trees at twilight, instead of trying to show craters."
+    },
+    {
+      "q": "What lens do I need to fill the frame with the moon?",
+      "a": "On full frame, roughly 2,600 mm fills the image height. Most people use 400 to 800 mm and crop. A telescope with a camera adapter is the usual way to reach very long focal lengths."
+    },
+    {
+      "q": "When is the best time to photograph the moon?",
+      "a": "For craters, a few days before or after first or last quarter. For a moon with a landscape, the evening before full moon around sunset, or moonrise during twilight. Clear, steady air gives the sharpest results."
+    }
+  ]
+}

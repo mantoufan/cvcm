@@ -29,10 +29,10 @@ export type KbHubCopy = Omit<KbMessages["hub"], "groups"> & { groups: Record<str
 
 const ORIGIN = "https://cv.cm";
 
-/** Hub copy of a shelf: `hub` for knowledge, `codeHub` for coding, `aiHub` for AI. */
+/** Hub copy of a shelf: `hub` for knowledge, `codeHub` for coding, `aiHub` for AI, `photoHub` for photography. */
 export function kbHub(locale: Locale, shelf: KbShelf = "knowledge"): KbHubCopy {
   const m = kbMessages(locale);
-  return shelf === "code" ? m.codeHub : shelf === "ai" ? m.aiHub : m.hub;
+  return shelf === "code" ? m.codeHub : shelf === "ai" ? m.aiHub : shelf === "photo" ? m.photoHub : m.hub;
 }
 
 export function kbCopy(locale: Locale, id: KbId): KbArticleCopy {

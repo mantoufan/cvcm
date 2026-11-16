@@ -1,0 +1,224 @@
+{
+  "title": "Segitiga Eksposur: Aperture, Shutter Speed, ISO — cv.cm",
+  "description": "Segitiga eksposur dijelaskan dalam stop: cara aperture, shutter speed, dan ISO saling menyeimbangkan, mode kamera yang dipakai, aturan sunny 16, dan setelan awal per situasi.",
+  "h1": "Apa itu segitiga eksposur dan bagaimana cara memakainya?",
+  "answer": "Segitiga eksposur adalah hubungan antara aperture, shutter speed, dan ISO. Aperture dan shutter speed menentukan seberapa banyak cahaya yang masuk ke sensor, sedangkan ISO menentukan seberapa besar sinyalnya diperkuat. Ketiganya diukur dalam stop, dan satu stop berarti cahaya menjadi dua kali lipat atau separuhnya. Kalau satu setelan Anda gelapkan satu stop, terangkan setelan lain satu stop agar eksposurnya tetap sama.",
+  "sections": [
+    {
+      "h": "Tiga setelan dan harga yang harus dibayar masing-masing",
+      "body": [
+        "Eksposur adalah tingkat terang-gelapnya foto. Ada tiga setelan yang mengaturnya, dan masing-masing juga mengubah tampilan foto. Efek kedua inilah yang membuat pilihan setelan jadi penting.",
+        {
+          "table": {
+            "head": [
+              "Setelan",
+              "Lebih terang jika",
+              "Efek samping",
+              "Full stop yang umum"
+            ],
+            "rows": [
+              [
+                "Aperture (f-number)",
+                "Angka f lebih kecil, misalnya f/2.8 dan bukan f/5.6",
+                "Depth of field lebih tipis: bagian foto yang tajam berkurang",
+                "f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16"
+              ],
+              [
+                "Shutter speed",
+                "Waktu lebih lama, misalnya 1/60 s dan bukan 1/250 s",
+                "Lebih banyak blur gerakan dari subjek atau tangan yang goyang",
+                "1/1000, 1/500, 1/250, 1/125, 1/60, 1/30 s"
+              ],
+              [
+                "ISO",
+                "Angka lebih tinggi, misalnya ISO 800 dan bukan ISO 200",
+                "Noise makin terlihat, warna dan detail berkurang",
+                "100, 200, 400, 800, 1600, 3200, 6400"
+              ]
+            ]
+          }
+        },
+        "Aperture dan shutter speed mengubah jumlah cahaya yang sampai ke sensor. ISO tidak menambah cahaya. ISO memperkuat sinyal setelah foto direkam, jadi gambar memang jadi lebih terang, tetapi noise-nya ikut terang. Karena itu fotografer biasanya menentukan aperture dan shutter dulu, lalu menaikkan ISO paling akhir.",
+        "Halaman ini hanya gambaran umum. Setiap setelan punya panduan sendiri: lihat artikel Aperture dan depth of field, Shutter speed, serta ISO dan noise."
+      ]
+    },
+    {
+      "h": "Berpikir dalam stop: contoh hitungan",
+      "body": [
+        "Satu stop berarti cahaya digandakan atau dibelah dua. Pada deretan f-number, setiap langkah di daftar atas memasukkan separuh cahaya dibanding langkah sebelumnya (f/4 memberi separuh cahaya f/2.8). Setiap langkah shutter membagi dua waktu bukaan. Setiap langkah ISO menggandakan penguatan. Kebanyakan kamera juga menyediakan langkah sepertiga stop, seperti f/3.2 dan f/3.5 di antara f/2.8 dan f/4.",
+        "Karena satuannya sama, Anda bisa menukar satu setelan dengan yang lain. Misalkan kamera mengukur eksposur yang pas di f/8, 1/125 s, ISO 400, dan Anda ingin latar belakang yang blur.",
+        {
+          "ol": [
+            "Buka aperture dari f/8 ke f/2.8. Itu tambahan tiga stop cahaya (f/8 ke f/5.6 ke f/4 ke f/2.8).",
+            "Kurangi tiga stop lewat shutter: 1/125 s ke 1/250 ke 1/500 ke 1/1000 s.",
+            "Eksposurnya sama seperti sebelumnya, tetapi latar belakang kini jauh lebih lembut dan gerakan terbekukan.",
+            "Kalau shutter tercepat kamera tidak cukup di bawah matahari terik, turunkan ISO atau pakai filter ND."
+          ]
+        },
+        "Logika yang sama berlaku sebaliknya di malam hari. Kalau 1/30 s di f/2.8 kurang terang dua stop dan shutter tidak bisa diperlambat tanpa membuat foto blur, naikkan ISO dua stop, misalnya dari 800 ke 3200."
+      ]
+    },
+    {
+      "h": "Mode kamera: P, Av, Tv, M, dan auto ISO",
+      "body": [
+        "Anda tidak harus memakai manual penuh untuk mengendalikan eksposur. Setiap mode membagi tugas: setelan mana yang Anda pilih dan mana yang diatur kamera.",
+        {
+          "ul": [
+            "P (Program): kamera memilih aperture dan shutter. Biasanya Anda bisa memutar dial untuk bergeser di antara pasangan setelan yang setara. Cocok untuk foto spontan.",
+            "Av atau A (Aperture priority): Anda menentukan aperture, kamera mengatur shutter. Paling pas untuk potret, lanskap, dan pemotretan sehari-hari, karena aperture menentukan bagian mana yang tajam.",
+            "Tv atau S (Shutter priority): Anda menentukan shutter speed, kamera mengatur aperture. Pakai untuk olahraga, hewan peliharaan, anak-anak, atau blur gerakan yang disengaja.",
+            "M (Manual): Anda mengatur keduanya. Pakai saat cahaya stabil tetapi adegannya bisa mengecoh light meter, seperti panggung, hamparan salju, atau pemandangan malam dengan tripod.",
+            "Auto ISO: kamera menaikkan atau menurunkan ISO dalam batas yang Anda tentukan. Atur ISO maksimum yang masih bisa Anda terima dan, di banyak kamera, shutter speed minimum. Manual plus auto ISO memungkinkan Anda mengunci aperture dan shutter sementara kamera menjaga kecerahan."
+          ]
+        },
+        "Setelan awal yang praktis untuk pemula: mode Av, auto ISO dengan maksimum 6400, dan shutter speed minimum sekitar 1/125 s untuk foto orang. Kalau ingin berlatih tanpa risiko, simulator kamera potret cv.cm memungkinkan Anda berganti antara P, Av, Tv, dan M, lalu melihat perubahan blur, gerakan, dan noise pada model simulasi."
+      ]
+    },
+    {
+      "h": "Metering, kompensasi eksposur, dan histogram",
+      "body": [
+        "Light meter yang menentukan mana yang dianggap benar. Meter mengasumsikan rata-rata adegan adalah abu-abu tengah. Itu berhasil untuk kebanyakan adegan, tetapi gagal dalam dua kasus yang umum. Gaun pengantin putih, salju, atau pantai yang terang tampak terlalu gelap karena meter menurunkan warna putih jadi abu-abu. Orang di panggung hitam atau di depan dinding gelap tampak terlalu terang karena meter mengangkat warna hitam jadi abu-abu.",
+        "Kompensasi eksposur memperbaikinya di mode Av, Tv, P, dan auto ISO. Tombol atau dialnya bertanda +/-, dengan satuan EV (satu EV sama dengan satu stop).",
+        {
+          "ul": [
+            "Salju, pantai, gaun putih, produk putih di latar putih: +0,7 sampai +1,3 EV.",
+            "Orang membelakangi cahaya di depan langit terang: +1 sampai +2 EV, atau ukur cahaya di wajah dengan spot metering.",
+            "Latar gelap, lampu panggung, kota di malam hari: -0,7 sampai -1,7 EV agar lampu dan wajah tetap punya detail.",
+            "Langit senja: -0,3 sampai -1 EV agar warnanya tetap pekat."
+          ]
+        },
+        "Periksa histogram, jangan hanya layar. Histogram adalah grafik nada dari hitam di kiri sampai putih di kanan. Lonjakan tinggi yang menempel di tepi kanan berarti area putih kehilangan detail (highlight clipping). Lonjakan yang menempel di tepi kiri berarti bayangan menjadi hitam pekat. Banyak kamera juga bisa menampilkan peringatan highlight berkedip saat playback. Matahari terik membuat layar belakang tampak redup, dan ruangan dalam membuatnya tampak terang, jadi histogram lebih bisa diandalkan."
+      ]
+    },
+    {
+      "h": "Setelan awal per situasi",
+      "body": [
+        "Ini titik awal untuk kamera full-frame atau APS-C. Ambil satu foto uji, cek histogram, lalu sesuaikan satu stop demi satu stop.",
+        {
+          "table": {
+            "head": [
+              "Situasi",
+              "Aperture",
+              "Shutter",
+              "ISO",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Lanskap di bawah matahari terik",
+                "f/8 sampai f/11",
+                "1/250 sampai 1/500 s",
+                "100",
+                "Fokus sekitar sepertiga ke dalam adegan"
+              ],
+              [
+                "Potret di tempat teduh terbuka",
+                "f/1.8 sampai f/2.8",
+                "1/250 sampai 1/1000 s",
+                "100 sampai 200",
+                "Tempat teduh memberi cahaya lembut tanpa membuat mata menyipit"
+              ],
+              [
+                "Potret di dekat jendela dalam ruangan",
+                "f/1.8 sampai f/2.8",
+                "1/125 sampai 1/250 s",
+                "400 sampai 1600",
+                "Wajah menghadap jendela dari samping"
+              ],
+              [
+                "Anak atau hewan peliharaan dalam ruangan",
+                "f/2 sampai f/2.8",
+                "1/500 s",
+                "Auto, sampai 6400",
+                "Mode Tv, atau M dengan auto ISO"
+              ],
+              [
+                "Olahraga, burung di luar ruangan",
+                "f/2.8 sampai f/5.6",
+                "1/1000 sampai 1/2000 s",
+                "Auto",
+                "Continuous autofocus dan burst"
+              ],
+              [
+                "Jalanan kota di malam hari, handheld",
+                "f/1.8 sampai f/2.8",
+                "1/30 sampai 1/60 s",
+                "1600 sampai 6400",
+                "-0,7 EV mencegah lampu terlalu terang"
+              ],
+              [
+                "Pemandangan malam dengan tripod",
+                "f/8",
+                "5 sampai 30 s",
+                "100",
+                "Pakai timer 2 detik agar tidak goyang"
+              ],
+              [
+                "Konser atau panggung",
+                "f/2.8",
+                "1/250 s",
+                "3200 sampai 6400",
+                "Spot metering di wajah, mode M"
+              ]
+            ]
+          }
+        },
+        "Sunny 16 berguna sebagai pengecekan saat tidak ada meter atau meternya bingung. Di bawah matahari terik dengan bayangan tegas, f/16 dengan shutter speed 1/ISO menghasilkan eksposur yang pas: ISO 100 di f/16 dan 1/100 s (pakai 1/125 s). Eksposur yang sama didapat di f/8 dengan 1/500 s. Buka satu stop (f/11) untuk mendung tipis dengan bayangan lembut, dua stop (f/8) untuk mendung, tiga stop (f/5.6) untuk mendung tebal, dan empat stop (f/4) untuk tempat teduh terbuka. Salju atau pasir di bawah matahari terik bisa memakai f/22."
+      ]
+    },
+    {
+      "h": "Eksposur di ponsel",
+      "body": [
+        "Kamera ponsel punya aperture tetap di setiap lensanya, jadi eksposur diatur lewat waktu shutter, ISO, dan pemrosesan. Anda tidak bisa memilih f/8, tetapi tetap bisa mengatur dan mengunci kecerahan.",
+        {
+          "ol": [
+            "Ketuk subjek di layar. Ponsel akan fokus di sana dan mengukur eksposur untuk area itu.",
+            "Geser slider matahari atau kecerahan di samping kotak fokus ke bawah untuk langit terang atau gaun putih, dan ke atas untuk wajah yang berada di bayangan.",
+            "Tekan dan tahan subjek untuk mengunci fokus dan eksposur (AE/AF lock di iPhone, serupa di Android) agar kecerahan tidak melompat saat Anda mengubah komposisi.",
+            "Di tempat redup, biarkan mode malam bekerja dan pegang ponsel dengan mantap. Mode ini menggabungkan beberapa frame untuk menekan noise.",
+            "Kalau aplikasi kamera Anda punya mode Pro atau manual, di sana tampil shutter speed dan ISO. Logika stop yang sama berlaku untuk kedua setelan itu."
+          ]
+        },
+        "Ponsel melindungi wajah dan langit dengan HDR otomatis, tetapi tetap bisa membuat kemeja putih atau lampu terlalu terang. Kalau highlight tampak datar dan putih, turunkan eksposur sebelum memotret. Bayangan jauh lebih mudah dipulihkan saat editing daripada highlight yang sudah terlalu terang."
+      ]
+    },
+    {
+      "h": "Kesalahan eksposur yang umum dan cara memperbaikinya",
+      "body": [
+        {
+          "ul": [
+            "Foto buram, bukan gelap: shutter terlalu lambat. Naikkan ISO atau buka aperture agar shutter bisa lebih cepat, jangan menambah kompensasi eksposur.",
+            "Wajah gelap di depan jendela atau langit yang terang: tambah +1 sampai +2 EV, pakai spot metering, atau putar posisi orang agar cahaya jatuh di wajahnya.",
+            "Gaun putih atau salju tampak abu-abu: tambah +0,7 sampai +1,3 EV dan pastikan histogram tidak terpotong.",
+            "Foto berbintik di siang hari: auto ISO mungkin memilih angka tinggi karena shutter minimumnya terlalu cepat. Cek ISO di data EXIF foto dan atur batas maksimum yang lebih rendah.",
+            "Foto tampak bagus di kamera tetapi gelap di komputer: layar belakang kamera terlalu terang. Percayai histogram.",
+            "Eksposur berubah antar-foto dari adegan yang sama: meter bereaksi terhadap framing. Pindah ke mode M atau pakai AE lock."
+          ]
+        },
+        "Untuk belajar dari foto-foto lama, baca aperture, shutter speed, dan ISO yang tersimpan di setiap file. Penampil EXIF cv.cm menampilkannya di browser tanpa mengunggah foto."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Setelan mana yang sebaiknya diubah lebih dulu?",
+      "a": "Pilih dulu setelan yang menentukan tampilan yang Anda inginkan: aperture untuk blur latar atau kedalaman, shutter speed untuk gerakan. Lalu pakai setelan lainnya untuk mencapai kecerahan yang tepat, dan naikkan ISO hanya setelah dua setelan pertama mentok."
+    },
+    {
+      "q": "Lebih baik foto underexposed atau overexposed?",
+      "a": "Di kamera digital dan ponsel, underexposure ringan biasanya lebih aman karena highlight yang terlalu terang tidak bisa dipulihkan. Hasil terbaik adalah histogram yang mendekati tepi kanan tanpa ada lonjakan yang menempel di sana."
+    },
+    {
+      "q": "Apa arti EV di kamera?",
+      "a": "EV berarti exposure value. Dalam kompensasi eksposur, satu EV sama dengan satu stop, jadi +1 EV menggandakan kecerahan dan -1 EV menjadikannya separuh. Kamera biasanya menyediakan langkah 1/3 EV."
+    },
+    {
+      "q": "Apakah pemula sebaiknya memotret dengan mode manual?",
+      "a": "Tidak harus. Aperture priority dengan auto ISO memberi kendali tampilan yang sama dengan lebih sedikit foto gagal. Mode manual paling berguna saat cahaya stabil dan meter bisa tertipu, seperti di panggung atau pemandangan malam dengan tripod."
+    },
+    {
+      "q": "Apakah aturan sunny 16 berlaku untuk ponsel?",
+      "a": "Hanya sebagai pengecekan. Lensa ponsel punya aperture lebar yang tetap, jadi tidak bisa memakai f/16. Aturan ini tetap menunjukkan seberapa terang matahari terik, yang menjelaskan mengapa ponsel memakai waktu shutter sangat pendek di luar ruangan."
+    }
+  ]
+}

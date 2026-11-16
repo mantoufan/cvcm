@@ -902,7 +902,7 @@ export function learnHref(locale: Locale, tutorial: TutorialId | null = null): s
   return tutorial ? `${base}/${tutorial}/` : `${base}/`;
 }
 
-/** Kb articles sit under the tutorials: `/{locale}/learn/{knowledge,code,ai}/{id}/`; null or "hub" is the knowledge hub, "code" the coding hub, "ai" the AI hub. */
+/** Kb articles sit under the tutorials: `/{locale}/learn/{knowledge,code,ai,photography}/{id}/`; null or "hub" is the knowledge hub, "code" the coding hub, "ai" the AI hub, "photo" the photography hub. */
 export function kbHref(locale: Locale, page: KbPage = null): string {
   const base = `/${localePath(locale)}/learn/${KB_SHELVES[kbShelfOfPage(page)].segment}`;
   const article = kbArticleOf(page);
