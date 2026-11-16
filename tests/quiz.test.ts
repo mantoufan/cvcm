@@ -238,6 +238,37 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("attachment", lean("attachment", ["anx", "avo"])).key).toBe("fearful");
   });
 
+  it("reads the color season from undertone and depth, and never lands an axis on exactly 50%", () => {
+    const def = QUIZ_DEFS["personal-color"];
+    if (def.type !== "choice") throw new Error();
+    // Each question is a two-way choice on one axis: 2 points or nothing, seven questions an axis.
+    for (const dim of ["warm", "deep"]) {
+      const mine = def.items.filter((item) => item.options.some((o) => dim in o));
+      expect(mine, dim).toHaveLength(7);
+      for (const item of mine) expect(item.options.map((o) => o[dim] ?? 0).sort(), dim).toEqual([0, 2]);
+      // The scoring answer is first in some questions and second in others.
+      const first = mine.filter((item) => (item.options[0][dim] ?? 0) > 0).length;
+      expect(first, dim).toBeGreaterThanOrEqual(3);
+      expect(first, dim).toBeLessThanOrEqual(4);
+    }
+    const pick = (warm: boolean, deep: boolean): number[] =>
+      def.items.map((item) => {
+        const dim = "warm" in item.options[0] || "warm" in item.options[1] ? "warm" : "deep";
+        const want = dim === "warm" ? warm : deep;
+        return item.options.findIndex((o) => (dim in o) === want);
+      });
+    expect(scoreQuiz("personal-color", pick(true, false)).key).toBe("spring");
+    expect(scoreQuiz("personal-color", pick(false, false)).key).toBe("summer");
+    expect(scoreQuiz("personal-color", pick(true, true)).key).toBe("autumn");
+    expect(scoreQuiz("personal-color", pick(false, true)).key).toBe("winter");
+    // Each axis scores an even number of points out of 14, so it can never sit at exactly 7 (50%).
+    const next = randomInts(7);
+    for (let n = 0; n < 2000; n++) {
+      const result = scoreQuiz("personal-color", def.items.map(() => next(2)));
+      for (const s of result.scores) expect(s.pct).not.toBe(50);
+    }
+  });
+
   it("scores marriage areas and names the weakest", () => {
     const strong = scoreQuiz("marriage", lean("marriage", ["talk", "conflict", "money", "family", "future"]));
     expect(strong.key).toBe("ready");
@@ -337,6 +368,9 @@ describe("test pages: scoring", () => {
       { id: "stress", max: 56, keys: ["low", "moderate", "high"], cuts: [18, 37] },
       { id: "empath", max: 56, keys: ["low", "mid", "high"], cuts: [18, 37] },
       { id: "social-anxiety", max: 56, keys: ["low", "moderate", "high"], cuts: [18, 37] },
+      { id: "left-right-brain", max: 56, keys: ["left", "balanced", "right"], cuts: [18, 37] },
+      { id: "codependency", max: 56, keys: ["low", "some", "high"], cuts: [18, 37] },
+      { id: "imposter-syndrome", max: 56, keys: ["low", "moderate", "high"], cuts: [18, 37] },
     ] as const;
     for (const { id, max, keys, cuts } of cases) {
       const def = QUIZ_DEFS[id];
@@ -489,6 +523,8 @@ describe("test pages: scoring", () => {
     expect(isTrackedPath("/en/tests/dark-triad/")).toBe(false);
     expect(isTrackedPath("/vi/tests/ocd/")).toBe(false);
     expect(isTrackedPath("/en/tests/social-anxiety/")).toBe(false);
+    expect(isTrackedPath("/en/tests/codependency/")).toBe(false);
+    expect(isTrackedPath("/en/tests/imposter-syndrome/")).toBe(true);
     expect(isTrackedPath("/en/tests/empath/")).toBe(true);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
     expect(isTrackedPath("/en/tests/")).toBe(true);
@@ -674,8 +710,8 @@ describe("test pages: scoring", () => {
     // eight results, four a question (each in six); four results, all in every question; twelve results, four a
     // question (each in four, once in each position).
     const positions = [
-      { ids: ["friend-role", "avengers"], min: 2, max: 2 },
-      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed"], min: 1, max: 2 },
+      { ids: ["friend-role", "avengers", "friends-character"], min: 2, max: 2 },
+      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic"], min: 1, max: 2 },
       { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age"], min: 3, max: 3 },
       { ids: ["hunger-games-district", "greek-god"], min: 1, max: 1 },
     ] as const;
@@ -692,9 +728,9 @@ describe("test pages: scoring", () => {
         }
       }
     }
-    // Friend roles and Avengers leave out a different pair of results in each question, never an "opposite" pair
+    // Friend roles, Avengers and Friends leave out a different pair of results in each question, never an "opposite" pair
     // (the pairs that are never left out are three disjoint pairs covering all six results).
-    for (const id of ["friend-role", "avengers"] as const) {
+    for (const id of ["friend-role", "avengers", "friends-character"] as const) {
       const def = QUIZ_DEFS[id];
       if (def.type !== "choice") throw new Error();
       const left = def.items.map((item) => def.dims.filter((dim) => item.options.every((o) => !o[dim])).sort().join("+"));
