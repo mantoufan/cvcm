@@ -157,7 +157,7 @@ describe("test pages: copy", () => {
           expect(ui.scaleHint[def.scale], `${where} hint`).toBeTruthy();
         }
         // These ask about a set period, and an empty hint would silently fall back to "as you usually are".
-        if (id === "adhd" || id === "burnout" || id === "stress" || id === "ocd") {
+        if (id === "adhd" || id === "burnout" || id === "stress" || id === "ocd" || id === "insomnia") {
           expect(copy.hint, `${where} own hint`).toBeTruthy();
           expect(quizStaticHtml(locale, id), `${where} static hint`).toContain(escapeHtml(copy.hint!));
         }
@@ -379,6 +379,7 @@ describe("test pages: scoring", () => {
       { id: "left-right-brain", max: 56, keys: ["left", "balanced", "right"], cuts: [18, 37] },
       { id: "codependency", max: 56, keys: ["low", "some", "high"], cuts: [18, 37] },
       { id: "imposter-syndrome", max: 56, keys: ["low", "moderate", "high"], cuts: [18, 37] },
+      { id: "grit", max: 56, keys: ["low", "mid", "high"], cuts: [18, 37] },
     ] as const;
     for (const { id, max, keys, cuts } of cases) {
       const def = QUIZ_DEFS[id];
@@ -427,6 +428,18 @@ describe("test pages: scoring", () => {
     expect(SUPPORT.stress).toEqual(["high"]);
     expect(FOLLOW_UP.stress).toEqual({ bands: ["high"], quiz: "anxiety" });
     expect(scoreQuiz("stress", QUIZ_DEFS.stress.items.map((_, i) => (i % 2 === 0 ? 4 : 0))).safety).toBe(false);
+  });
+
+  it("bands the insomnia self-check like the OCD check, with the depression check, not the support box, at many", () => {
+    expect(maxTotal("insomnia")).toBe(60);
+    expect(QUIZ_DEFS.insomnia.items.some((item) => "rev" in item)).toBe(false);
+    const answersFor = (points: number): number[] => Array.from({ length: 15 }, (_, i) => Math.max(0, Math.min(4, points - i * 4)));
+    expect(scoreQuiz("insomnia", answersFor(24)).key).toBe("few");
+    expect(scoreQuiz("insomnia", answersFor(25)).key).toBe("some");
+    expect(scoreQuiz("insomnia", answersFor(39)).key).toBe("some");
+    expect(scoreQuiz("insomnia", answersFor(40))).toMatchObject({ key: "many", safety: false });
+    expect(SUPPORT.insomnia).toBeUndefined();
+    expect(FOLLOW_UP.insomnia).toEqual({ bands: ["many"], quiz: "depression" });
   });
 
   it("bands the OCD self-check from few to many signs, with help at many and no crisis box", () => {
@@ -532,6 +545,7 @@ describe("test pages: scoring", () => {
     expect(isTrackedPath("/vi/tests/ocd/")).toBe(false);
     expect(isTrackedPath("/en/tests/social-anxiety/")).toBe(false);
     expect(isTrackedPath("/en/tests/codependency/")).toBe(false);
+    expect(isTrackedPath("/en/tests/insomnia/")).toBe(false);
     expect(isTrackedPath("/en/tests/imposter-syndrome/")).toBe(true);
     expect(isTrackedPath("/en/tests/empath/")).toBe(true);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
@@ -719,7 +733,7 @@ describe("test pages: scoring", () => {
     // question (each in four, once in each position).
     const positions = [
       { ids: ["friend-role", "avengers", "friends-character"], min: 2, max: 2 },
-      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic"], min: 1, max: 2 },
+      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic", "harry-potter-character", "avatar-character", "game-of-thrones-house", "lord-of-the-rings", "sanrio", "cat-breed"], min: 1, max: 2 },
       { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age"], min: 3, max: 3 },
       { ids: ["hunger-games-district", "greek-god"], min: 1, max: 1 },
     ] as const;
