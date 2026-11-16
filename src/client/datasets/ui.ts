@@ -2,7 +2,7 @@ import { h } from "../dom";
 import { linkList } from "../links";
 import { t } from "../i18n";
 import type { Locale } from "../../shared/locale";
-import { appHref, datasetHref } from "../../shared/path";
+import { appHref, countriesHref, datasetHref } from "../../shared/path";
 import {
   DATASET_GROUPS,
   DATASET_SENSITIVE,
@@ -63,6 +63,8 @@ export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
     crumb(locale, null),
     h("h1", null, hub.h1),
     h("p", { class: "lede" }, hub.lede),
+    // Country profiles gather every table's figure for one country, and link back to the tables.
+    h("section", { class: "wall" }, linkList([{ href: countriesHref(locale), name: hub.countries.title, blurb: hub.countries.text, nav: "countries" }])),
     h("section", { class: "wall quiz-hub" },
       ...DATASET_GROUPS.map((group) => h("div", { class: "group" }, h("h2", null, hub.groups[group.id]), setLinks(locale, group.sets))),
     ),

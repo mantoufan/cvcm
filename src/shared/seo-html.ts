@@ -22,9 +22,11 @@ import { slangPageHtml } from "./slang-page";
 import { ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd } from "./ideas-i18n";
 import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaFaqJsonLd } from "./nostalgia-i18n";
 import { nostalgiaPageHtml } from "./nostalgia-page";
+import { countriesCollectionJsonLd, countryBreadcrumbJsonLd, countryFaqJsonLd } from "./countries-i18n";
+import { countriesPageHtml } from "./countries-page";
 import { lessonsForTool } from "./learn";
 import { type Locale } from "./locale";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, type ToolId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, type ToolId } from "./path";
 import { ideasPageHtml } from "./ideas-page";
 import { memeImagePath } from "./meme-images";
 import { nostalgiaImagePath } from "./nostalgia-images";
@@ -186,9 +188,17 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(gameBreadcrumbJsonLd(locale, consoleId, seo.game ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia) {
+  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.countries) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
+    );
+  }
+  if (seo.countries) {
+    const collection = countriesCollectionJsonLd(locale, seo.countryId ?? null);
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(countryBreadcrumbJsonLd(locale, seo.countryId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(countryFaqJsonLd(locale, seo.countryId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      ...(collection ? [`<script type="application/ld+json" id="article-jsonld">${JSON.stringify(collection).replace(/</g, "\\u003c")}</script>`] : []),
     );
   }
   if (seo.game) {
@@ -246,6 +256,8 @@ export function applyHtmlSeo(
     ? ideasPageHtml(locale, seo.ideaId ?? null)
     : seo.nostalgia
     ? nostalgiaPageHtml(locale, seo.nostalgiaId ?? null)
+    : seo.countries
+    ? countriesPageHtml(locale, seo.countryId ?? null)
     : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));
   // A function replacement: page text may contain "$&" or "$1", which a string replacement would expand.
   out = out.replace(/<div id="app">[\s\S]*?<\/div>/, () => `<div id="app">${inner}</div>`);
@@ -319,6 +331,7 @@ function staticPageHtml(
       { href: slangHref(locale), text: linkText(pageTitle(locale, { slang: true })) },
       { href: ideasHref(locale), text: linkText(pageTitle(locale, { ideas: true })) },
       { href: nostalgiaHref(locale), text: linkText(pageTitle(locale, { nostalgia: true })) },
+      { href: countriesHref(locale), text: linkText(pageTitle(locale, { countries: true })) },
       { href: legalHref(locale, "privacy"), text: linkText(pageTitle(locale, { legalPage: "privacy" })) },
       { href: legalHref(locale, "terms"), text: linkText(pageTitle(locale, { legalPage: "terms" })) },
     ]));

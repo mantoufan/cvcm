@@ -10,8 +10,9 @@ import { memeImagePath } from "./meme-images";
 import { nostalgiaImagePath } from "./nostalgia-images";
 import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublished, type SlangId } from "./slang";
 import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaModified, type IdeaId } from "./ideas";
+import { COUNTRY_LIST, COUNTRIES_UPDATED } from "./countries";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -43,7 +44,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "ref"; entry: RefId | null }
   | { locale: Locale; kind: "slang"; entry: SlangId | null }
   | { locale: Locale; kind: "ideas"; entry: IdeaId | null }
-  | { locale: Locale; kind: "nostalgia"; entry: NostalgiaId | null };
+  | { locale: Locale; kind: "nostalgia"; entry: NostalgiaId | null }
+  | { locale: Locale; kind: "countries"; entry: string | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -79,6 +81,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const entry of IDEA_ENTRIES) pages.push({ locale, kind: "ideas", entry });
     pages.push({ locale, kind: "nostalgia", entry: null });
     for (const entry of NOSTALGIA_ENTRIES) pages.push({ locale, kind: "nostalgia", entry });
+    pages.push({ locale, kind: "countries", entry: null });
+    for (const entry of COUNTRY_LIST) pages.push({ locale, kind: "countries", entry });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -100,6 +104,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(page.locale, page.entry)}`;
   if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(page.locale, page.entry)}`;
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(page.locale, page.entry)}`;
+  if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(page.locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -123,6 +128,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(locale, page.entry)}`;
   if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(locale, page.entry)}`;
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(locale, page.entry)}`;
+  if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -149,6 +155,7 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "slang") return "slang";
   if (page.kind === "ideas") return "ideas";
   if (page.kind === "nostalgia") return "nostalgia";
+  if (page.kind === "countries") return "countries";
   return "pages";
 }
 
@@ -185,6 +192,8 @@ function pageLastmod(page: SitemapPage): string | null {
     // The hub changes whenever an entry does (or one is added), or when its own copy is edited: the newest of those.
     return [...NOSTALGIA_ENTRIES.map(nostalgiaUpdated), ...(NOSTALGIA_HUB_UPDATED ? [NOSTALGIA_HUB_UPDATED] : [])].sort().at(-1) ?? NOSTALGIA_PUBLISHED;
   }
+  // Country profiles change with the data snapshot (World Bank tables, codes, capitals, flags).
+  if (page.kind === "countries") return COUNTRIES_UPDATED;
   return null;
 }
 

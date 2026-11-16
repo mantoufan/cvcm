@@ -18,6 +18,7 @@
     "search:demand": "node scripts/search-tool.mjs demand",
     "ideas:sync": "node scripts/ideas-sync.mjs",
     "nostalgia:sync": "node scripts/nostalgia-sync.mjs",
+    "countries:sync": "node scripts/countries-sync.mjs",
     "quiz:sync": "node scripts/quiz-sync.mjs",
     "test": "vitest run",
     "deploy": "npm run build && wrangler deploy"

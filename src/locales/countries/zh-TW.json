@@ -1,0 +1,182 @@
+{
+  "crumbHome": "首頁",
+  "hub": {
+    "title": "世界各國國旗、首都、人口與GDP一覽",
+    "description": "收錄{n}個國家和地區的資料：國旗、首都、人口、GDP、貨幣、國際電話代碼和時區，數據來自世界銀行，並附世界排名。",
+    "h1": "世界各國國旗、首都與人口",
+    "lede": "依大洲列出所有國家和地區的國旗、首都和人口，數據來自世界銀行。點開任一國家或地區，即可查看其GDP、貨幣、國際電話代碼、時區以及另外約50項數據，每項都附世界排名。",
+    "about": [
+      "數據來自世界銀行的世界發展指標（World Development Indicators），與本站資料表使用同一份快照，因此資料頁上的排名與其連結的資料表中的排名一致。首都資料來自 Wikidata，國旗來自 flag-icons 專案。",
+      "名稱採用你的瀏覽器針對目前語言使用的 Unicode 名稱清單。本清單涵蓋世界銀行發布數據的所有經濟體，其中包括部分地區，因此並不是聯合國會員國名單。"
+    ],
+    "faq": [
+      {
+        "q": "這份清單收錄了多少個國家？",
+        "a": "{n}個國家和地區，即世界銀行發布數據的所有經濟體。其中有些（例如香港、波多黎各、格陵蘭）是地區，而不是獨立國家。"
+      },
+      {
+        "q": "首都和國旗資料從哪裡來？",
+        "a": "首都採用 Wikidata 為各地列出的首都（CC0）。首都有爭議的，不顯示首都。國旗是來自 flag-icons 專案的 SVG 圖片（MIT 授權）。"
+      },
+      {
+        "q": "這些數據有多新？",
+        "a": "每個資料頁都標明了每項數據的年份和快照日期。世界銀行的多數數據會在一兩年後才發布，因此有些數值比其他數值更舊。"
+      }
+    ],
+    "name": "國家或地區"
+  },
+  "title": "{name}人口、GDP、首都、國旗（{year}年資料）",
+  "titleShort": "{name}人口、GDP與主要數據（{year}年資料）",
+  "h1": "{name}：人口、GDP、首都與國旗",
+  "h1Short": "{name}：人口、GDP與主要數據",
+  "description": "{name}概況：{facts}。世界銀行數據及世界排名，另附時區和 ISO 代碼。",
+  "descFacts": {
+    "capital": "首都{v}",
+    "population": "人口{v}（{year}年）",
+    "gdp": "GDP {v}",
+    "perCapita": "人均GDP {v}",
+    "currency": "貨幣{v}",
+    "dial": "國際電話代碼{v}"
+  },
+  "sentences": {
+    "capital": "{the}的首都是{capital}。",
+    "capitals": "{The}有{n}個首都：{capitals}。",
+    "population": "{the}{year}年的人口為{pop}，在全球{n}個國家和地區中排名{rank}。",
+    "gdp": "{year}年GDP為{gdp}，在{n}個國家和地區中排名{rank}。",
+    "perCapita": "人均GDP為{pc}（{year}年）。",
+    "currency": "貨幣為{currency}（{code}）。",
+    "currencies": "使用的貨幣：{list}。",
+    "dial": "國際電話代碼為{dial}。"
+  },
+  "faq": {
+    "capital": {
+      "q": "{the}的首都在哪裡？"
+    },
+    "population": {
+      "q": "{the}有多少人口？"
+    },
+    "gdp": {
+      "q": "{the}的GDP是多少？"
+    },
+    "currency": {
+      "q": "{the}使用什麼貨幣？"
+    },
+    "dial": {
+      "q": "{the}的國際電話代碼是多少？"
+    }
+  },
+  "ui": {
+    "kicker": "國家和地區概況",
+    "answer": "簡要回答",
+    "facts": "主要數據",
+    "flag": "旗幟",
+    "flagAlt": "{name}的旗幟",
+    "capital": "首都",
+    "continent": "大洲",
+    "population": "人口",
+    "currency": "貨幣",
+    "dial": "國際電話代碼",
+    "zones": "時區",
+    "tld": "網際網路網域",
+    "iso": "ISO 3166 代碼",
+    "rankOf": "{rank}／{n}",
+    "indicator": "指標",
+    "value": "數值",
+    "year": "年份",
+    "rank": "世界排名",
+    "figures": "全部數據",
+    "figuresNote": "每項數據都連結到對應的資料表，表中列出了所有國家和地區的排名。第1名為數值最高者。",
+    "codes": "代碼、貨幣與時間",
+    "zonesCount": "{n}個時區",
+    "zoneRange": "{from}至{to}",
+    "dst": "夏令時間 {offset}",
+    "rankings": "所在排行榜",
+    "rankingCount": "{n}項",
+    "rankingShare": "含{name}的數據",
+    "rankingCurrency": "包含{currency}",
+    "related": "{continent}的更多國家和地區",
+    "all": "所有國家和地區",
+    "sources": "資料來源",
+    "sourceWb": "數據：世界銀行，世界發展指標（CC BY 4.0）",
+    "sourceCodes": "代碼：ISO 3166、ITU-T E.164、ISO 4217，經 datahub.io（ODC-PDDL）；時區：IANA tz 資料庫（公有領域）",
+    "sourceCapital": "首都：Wikidata（CC0）",
+    "sourceFlag": "旗幟：flag-icons，作者 Panayiotis Lipiridis（MIT）",
+    "snapshot": "資料截至{date}",
+    "faq": "常見問題",
+    "count": "{n}個",
+    "noCapital": "–",
+    "sep": "，",
+    "ord": "第{n}",
+    "usdLong": "{v}美元",
+    "join": "",
+    "datasets": "全部資料表"
+  },
+  "groups": {
+    "economy": "經濟",
+    "people": "人口與健康",
+    "planet": "土地、能源與網路"
+  },
+  "continents": {
+    "AF": "非洲",
+    "AN": "南極洲",
+    "AS": "亞洲",
+    "EU": "歐洲",
+    "NA": "北美洲",
+    "OC": "大洋洲",
+    "SA": "南美洲"
+  },
+  "labels": {
+    "population": "人口",
+    "gdp": "GDP（美元）",
+    "gdp-per-capita": "人均 GDP（美元）",
+    "life-expectancy": "平均壽命（歲）",
+    "fertility-rate": "生育率（每名婦女生育數）",
+    "internet-users": "上網人口比例（%）",
+    "gdp-ppp-per-capita": "人均 GDP，PPP（國際元）",
+    "gdp-growth": "GDP 成長率（%）",
+    "inflation": "通膨率（%）",
+    "unemployment": "失業率（%）",
+    "land-area": "土地面積（平方公里）",
+    "population-density": "人口密度（每平方公里人數）",
+    "urban-population": "都市人口（%）",
+    "aged-65-plus": "65 歲以上人口（%）",
+    "birth-rate": "出生率（每千人）",
+    "infant-mortality": "嬰兒死亡率（每千名活產）",
+    "co2-per-capita": "每人 CO2（公噸）",
+    "electricity-access": "電力普及率（%）",
+    "population-growth": "人口成長率（%）",
+    "death-rate": "死亡率（每千人）",
+    "life-expectancy-male": "男性平均壽命（歲）",
+    "life-expectancy-female": "女性平均壽命（歲）",
+    "maternal-mortality": "孕產婦死亡率（每 10 萬名活產）",
+    "exports": "出口額（美元）",
+    "imports": "進口額（美元）",
+    "health-spending-per-capita": "每人醫療支出（美元）",
+    "female-labor-force": "女性勞動參與率（%）",
+    "forest-area": "森林面積（占土地 %）",
+    "renewable-energy": "再生能源（占能源使用 %）",
+    "gni-per-capita": "人均 GNI（美元）",
+    "youth-unemployment": "青年失業率（%）",
+    "remittances": "僑匯（占 GDP %）",
+    "foreign-reserves": "外匯存底（美元）",
+    "military-spending": "軍費（美元）",
+    "military-spending-gdp": "軍費（占 GDP %）",
+    "rd-spending": "研發經費（占 GDP %）",
+    "aged-0-14": "0–14 歲兒童（%）",
+    "international-migrants": "國際移民（占人口 %）",
+    "physicians": "醫師（每千人）",
+    "education-spending": "教育支出（占 GDP %）",
+    "co2-emissions": "CO2 排放量（百萬公噸）",
+    "electricity-consumption": "用電量（每人度數）",
+    "mobile-subscriptions": "行動電話用戶（每 100 人）",
+    "broadband-subscriptions": "固網寬頻用戶（每 100 人）",
+    "gdp-ppp": "GDP，PPP（國際元）",
+    "gini-index": "所得不均（吉尼係數）",
+    "poverty-rate": "貧窮：每日低於 $3.00（%）",
+    "homicide-rate": "兇殺案（每 10 萬人）",
+    "literacy-rate": "識字率（%）",
+    "alcohol-consumption": "酒精消費（每人公升數）",
+    "tobacco-use": "菸草使用率（成人 %）",
+    "air-pollution": "空氣汙染，PM2.5（µg/m³）"
+  }
+}

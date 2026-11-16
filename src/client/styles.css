@@ -1665,3 +1665,9 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 .tp-lesson small { color: var(--ink-soft); }
 .tp-lesson.on { border-color: var(--pink-deep); background: var(--pink-soft); }
 .tp-lesson.passed strong::after { content: " ✓"; color: #2f8a4e; }
+
+/* Country profiles: flags are content (rule 7), shown at their own 4:3 size with a hairline so white flags keep an edge. */
+.country-flag { display: block; height: auto; max-width: 100%; border: 1px solid var(--line); }
+.country-figure { margin: 0.5rem 0 1rem; }
+.country-list td:first-child { width: 3rem; }
+.country-list .country-flag { width: 40px; }

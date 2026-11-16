@@ -39,6 +39,8 @@ import { ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd } from "../sh
 import type { IdeaPage } from "../shared/ideas";
 import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaFaqJsonLd } from "../shared/nostalgia-i18n";
 import type { NostalgiaPage } from "../shared/nostalgia";
+import { countriesCollectionJsonLd, countryBreadcrumbJsonLd, countryFaqJsonLd } from "../shared/countries-i18n";
+import type { CountryPage } from "../shared/countries";
 import type { DevicePageId } from "../shared/device";
 import { legalBreadcrumbJsonLd } from "../shared/legal";
 import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
@@ -102,6 +104,7 @@ export function syncPageJsonLd(
   learnHub = false,
   ideasPage: IdeaPage = null,
   nostalgiaPage: NostalgiaPage = null,
+  countriesPage: CountryPage = null,
 ): void {
   const refId = refPage === "hub" ? null : refPage;
   const slangId = slangPage === "hub" ? null : slangPage;
@@ -125,6 +128,14 @@ export function syncPageJsonLd(
     return;
   }
   writeJsonLd("dataset-jsonld", null);
+  if (countriesPage) {
+    const slug = countriesPage === "hub" ? null : countriesPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("faq-jsonld", countryFaqJsonLd(locale, slug));
+    writeJsonLd("breadcrumb-jsonld", countryBreadcrumbJsonLd(locale, slug));
+    writeJsonLd("article-jsonld", countriesCollectionJsonLd(locale, slug));
+    return;
+  }
   if (ideasPage) {
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", ideasFaqJsonLd(locale, ideaId));

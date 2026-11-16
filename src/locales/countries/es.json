@@ -1,0 +1,182 @@
+{
+  "crumbHome": "Inicio",
+  "hub": {
+    "title": "Países del mundo: banderas, capitales, población y PIB",
+    "description": "Fichas de {n} países y territorios con bandera, capital, población, PIB, moneda, prefijo telefónico y husos horarios: datos del Banco Mundial con su posición en el mundo.",
+    "h1": "Países del mundo: banderas, capitales y población",
+    "lede": "Todos los países y territorios con datos del Banco Mundial, por continente: bandera, capital y población. Abre uno para ver su PIB, moneda, prefijo telefónico, husos horarios y unos 50 datos más, cada uno con su posición en el mundo.",
+    "about": [
+      "Los datos proceden de los Indicadores del Desarrollo Mundial (World Development Indicators) del Banco Mundial, la misma instantánea que las tablas de datos de este sitio, de modo que la posición en una ficha coincide con la de la tabla a la que enlaza. Las capitales proceden de Wikidata y las banderas del proyecto flag-icons.",
+      "Los nombres siguen la lista de Unicode que tu navegador usa para tu idioma. La lista abarca todas las economías sobre las que informa el Banco Mundial, incluidos algunos territorios, así que no es una lista de miembros de las Naciones Unidas."
+    ],
+    "faq": [
+      {
+        "q": "¿Cuántos países hay en esta lista?",
+        "a": "{n} países y territorios: todas las economías de las que el Banco Mundial publica datos. Algunos, como Hong Kong, Puerto Rico o Groenlandia, son territorios y no países independientes."
+      },
+      {
+        "q": "¿De dónde salen las capitales y las banderas?",
+        "a": "Las capitales son las que Wikidata indica para cada lugar (CC0). Cuando la capital está en disputa, no se muestra ninguna. Las banderas son imágenes SVG del proyecto flag-icons (licencia MIT)."
+      },
+      {
+        "q": "¿Qué tan actuales son las cifras?",
+        "a": "Cada ficha muestra el año de cada dato y la fecha de la instantánea. El Banco Mundial publica la mayoría de las cifras uno o dos años después, por lo que algunos valores son más antiguos que otros."
+      }
+    ],
+    "name": "País o territorio"
+  },
+  "title": "{name}: población, PIB, capital y bandera (datos de {year})",
+  "titleShort": "{name}: población, PIB y datos clave (datos de {year})",
+  "h1": "{name}: población, PIB, capital y bandera",
+  "h1Short": "{name}: población, PIB y datos clave",
+  "description": "{name} en resumen: {facts}. Datos del Banco Mundial con su posición en el mundo, además de husos horarios y códigos ISO.",
+  "descFacts": {
+    "capital": "capital {v}",
+    "population": "población {v} ({year})",
+    "gdp": "PIB {v}",
+    "perCapita": "PIB per cápita {v}",
+    "currency": "moneda {v}",
+    "dial": "prefijo telefónico {v}"
+  },
+  "sentences": {
+    "capital": "La capital de {the} es {capital}.",
+    "capitals": "{The} tiene {n} capitales: {capitals}.",
+    "population": "La población de {the} era de {pop} en {year}, en el puesto {rank} de {n} en el mundo.",
+    "gdp": "Su PIB fue de {gdp} en {year}, en el puesto {rank} de {n}.",
+    "perCapita": "El PIB per cápita fue de {pc} ({year}).",
+    "currency": "La moneda es {currency} ({code}).",
+    "currencies": "Monedas en uso: {list}.",
+    "dial": "El prefijo telefónico internacional es {dial}."
+  },
+  "faq": {
+    "capital": {
+      "q": "¿Cuál es la capital de {the}?"
+    },
+    "population": {
+      "q": "¿Cuál es la población de {the}?"
+    },
+    "gdp": {
+      "q": "¿Cuál es el PIB de {the}?"
+    },
+    "currency": {
+      "q": "¿Qué moneda se usa en {the}?"
+    },
+    "dial": {
+      "q": "¿Cuál es el prefijo telefónico de {the}?"
+    }
+  },
+  "ui": {
+    "kicker": "Ficha de país",
+    "answer": "Respuesta rápida",
+    "facts": "Datos clave",
+    "flag": "Bandera",
+    "flagAlt": "Bandera de {name}",
+    "capital": "Capital",
+    "continent": "Continente",
+    "population": "Población",
+    "currency": "Moneda",
+    "dial": "Prefijo telefónico",
+    "zones": "Husos horarios",
+    "tld": "Dominio de internet",
+    "iso": "Códigos ISO 3166",
+    "rankOf": "{rank} de {n}",
+    "indicator": "Dato",
+    "value": "Valor",
+    "year": "Año",
+    "rank": "Posición mundial",
+    "figures": "Todos los datos",
+    "figuresNote": "Cada dato enlaza con su tabla, donde se clasifican todos los países. La posición 1 corresponde al valor más alto.",
+    "codes": "Códigos, moneda y hora",
+    "zonesCount": "{n} husos horarios",
+    "zoneRange": "de {from} a {to}",
+    "dst": "verano {offset}",
+    "rankings": "En las clasificaciones",
+    "rankingCount": "{n} entradas",
+    "rankingShare": "con datos de {name}",
+    "rankingCurrency": "incluye {currency}",
+    "related": "Más en {continent}",
+    "all": "Todos los países y territorios",
+    "sources": "Fuentes",
+    "sourceWb": "Datos: Banco Mundial, Indicadores del Desarrollo Mundial (CC BY 4.0)",
+    "sourceCodes": "Códigos: ISO 3166, ITU-T E.164, ISO 4217 vía datahub.io (ODC-PDDL); husos horarios: base de datos tz de IANA (dominio público)",
+    "sourceCapital": "Capitales: Wikidata (CC0)",
+    "sourceFlag": "Banderas: flag-icons, de Panayiotis Lipiridis (MIT)",
+    "snapshot": "Datos a {date}",
+    "faq": "Preguntas y respuestas",
+    "count": "{n} lugares",
+    "noCapital": "–",
+    "sep": ", ",
+    "ord": "{n}.º",
+    "usdLong": "{v} de dólares",
+    "join": " ",
+    "datasets": "Todas las tablas de datos"
+  },
+  "groups": {
+    "economy": "Economía",
+    "people": "Población y salud",
+    "planet": "Territorio, energía e internet"
+  },
+  "continents": {
+    "AF": "África",
+    "AN": "Antártida",
+    "AS": "Asia",
+    "EU": "Europa",
+    "NA": "América del Norte",
+    "OC": "Oceanía",
+    "SA": "América del Sur"
+  },
+  "labels": {
+    "population": "Población",
+    "gdp": "PIB (US$)",
+    "gdp-per-capita": "PIB per cápita (US$)",
+    "life-expectancy": "Esperanza de vida (años)",
+    "fertility-rate": "Fecundidad (hijos por mujer)",
+    "internet-users": "Usuarios de internet (%)",
+    "gdp-ppp-per-capita": "PIB per cápita, PPA ($ int.)",
+    "gdp-growth": "Crecimiento del PIB (%)",
+    "inflation": "Inflación (%)",
+    "unemployment": "Desempleo (%)",
+    "land-area": "Superficie (km²)",
+    "population-density": "Densidad de población (hab. por km²)",
+    "urban-population": "Población urbana (%)",
+    "aged-65-plus": "Personas de 65 años o más (%)",
+    "birth-rate": "Natalidad (por cada 1000 habitantes)",
+    "infant-mortality": "Mortalidad infantil (por cada 1000 nacimientos)",
+    "co2-per-capita": "CO2 por persona (t)",
+    "electricity-access": "Acceso a la electricidad (%)",
+    "population-growth": "Crecimiento de la población (%)",
+    "death-rate": "Mortalidad (por cada 1000 habitantes)",
+    "life-expectancy-male": "Esperanza de vida masculina (años)",
+    "life-expectancy-female": "Esperanza de vida femenina (años)",
+    "maternal-mortality": "Mortalidad materna (por cada 100 000 nacimientos)",
+    "exports": "Exportaciones (US$)",
+    "imports": "Importaciones (US$)",
+    "health-spending-per-capita": "Gasto en salud por persona (US$)",
+    "female-labor-force": "Mujeres en la población activa (%)",
+    "forest-area": "Superficie forestal (% del territorio)",
+    "renewable-energy": "Energía renovable (% del consumo de energía)",
+    "gni-per-capita": "INB per cápita (US$)",
+    "youth-unemployment": "Desempleo juvenil (%)",
+    "remittances": "Remesas (% del PIB)",
+    "foreign-reserves": "Reservas internacionales (US$)",
+    "military-spending": "Gasto militar (US$)",
+    "military-spending-gdp": "Gasto militar (% del PIB)",
+    "rd-spending": "Gasto en I+D (% del PIB)",
+    "aged-0-14": "Niños de 0 a 14 años (%)",
+    "international-migrants": "Migrantes internacionales (% de la población)",
+    "physicians": "Médicos (por cada 1000 habitantes)",
+    "education-spending": "Gasto en educación (% del PIB)",
+    "co2-emissions": "Emisiones de CO2 (Mt)",
+    "electricity-consumption": "Consumo eléctrico (kWh por persona)",
+    "mobile-subscriptions": "Líneas móviles (por cada 100 habitantes)",
+    "broadband-subscriptions": "Banda ancha fija (por cada 100 habitantes)",
+    "gdp-ppp": "PIB, PPA ($ int.)",
+    "gini-index": "Desigualdad de ingresos (índice de Gini)",
+    "poverty-rate": "Pobreza: menos de 3,00 US$ al día (%)",
+    "homicide-rate": "Homicidios (por cada 100 000 habitantes)",
+    "literacy-rate": "Tasa de alfabetización (%)",
+    "alcohol-consumption": "Alcohol (litros por persona)",
+    "tobacco-use": "Consumo de tabaco (% de adultos)",
+    "air-pollution": "Contaminación del aire, PM2.5 (µg/m³)"
+  }
+}

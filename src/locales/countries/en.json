@@ -1,0 +1,182 @@
+{
+  "crumbHome": "Home",
+  "hub": {
+    "title": "Countries of the World: Flags, Capitals, Population and GDP",
+    "description": "Profiles of {n} countries and territories with flag, capital, population, GDP, currency, calling code and time zones: World Bank figures with world ranks.",
+    "h1": "Countries of the world: flags, capitals and population",
+    "lede": "Every country and territory with World Bank figures, by continent: flag, capital and population. Open one for its GDP, currency, calling code, time zones and about 50 more figures, each with its world rank.",
+    "about": [
+      "Figures come from the World Bank World Development Indicators, the same snapshot as the data tables on this site, so a rank on a profile matches the rank in the table it links to. Capitals come from Wikidata and flags from the flag-icons project.",
+      "Names follow the Unicode list your browser uses for your language. The list covers every economy the World Bank reports on, including some territories, so it is not a list of United Nations members."
+    ],
+    "faq": [
+      {
+        "q": "How many countries are on this list?",
+        "a": "{n} countries and territories: every economy the World Bank reports figures for. Some, such as Hong Kong, Puerto Rico or Greenland, are territories rather than independent countries."
+      },
+      {
+        "q": "Where do the capitals and flags come from?",
+        "a": "Capitals are the ones Wikidata lists for each place (CC0). Where a capital is disputed, no capital is shown. Flags are SVG images from the flag-icons project (MIT licence)."
+      },
+      {
+        "q": "How current are the numbers?",
+        "a": "Each profile shows the year of every figure and the date of the snapshot. The World Bank publishes most figures a year or two after the fact, so some values are older than others."
+      }
+    ],
+    "name": "Country or territory"
+  },
+  "title": "{name}: Population, GDP, Capital, Flag ({year} Data)",
+  "titleShort": "{name}: Population, GDP and Key Facts ({year} Data)",
+  "h1": "{name}: population, GDP, capital and flag",
+  "h1Short": "{name}: population, GDP and key facts",
+  "description": "{name} at a glance: {facts}. World Bank figures with world ranks, plus time zones and ISO codes.",
+  "descFacts": {
+    "capital": "capital {v}",
+    "population": "population {v} ({year})",
+    "gdp": "GDP {v}",
+    "perCapita": "GDP per capita {v}",
+    "currency": "currency {v}",
+    "dial": "calling code {v}"
+  },
+  "sentences": {
+    "capital": "The capital of {the} is {capital}.",
+    "capitals": "{The} has {n} capitals: {capitals}.",
+    "population": "The population of {the} was {pop} in {year}, {rank} of {n} in the world.",
+    "gdp": "Its GDP was {gdp} in {year}, {rank} of {n}.",
+    "perCapita": "GDP per person was {pc} ({year}).",
+    "currency": "The currency is the {currency} ({code}).",
+    "currencies": "Currencies in use: {list}.",
+    "dial": "The international calling code is {dial}."
+  },
+  "faq": {
+    "capital": {
+      "q": "What is the capital of {the}?"
+    },
+    "population": {
+      "q": "What is the population of {the}?"
+    },
+    "gdp": {
+      "q": "What is the GDP of {the}?"
+    },
+    "currency": {
+      "q": "What currency does {the} use?"
+    },
+    "dial": {
+      "q": "What is the calling code of {the}?"
+    }
+  },
+  "ui": {
+    "kicker": "Country profile",
+    "answer": "Quick answer",
+    "facts": "Key facts",
+    "flag": "Flag",
+    "flagAlt": "Flag of {name}",
+    "capital": "Capital",
+    "continent": "Continent",
+    "population": "Population",
+    "currency": "Currency",
+    "dial": "Calling code",
+    "zones": "Time zones",
+    "tld": "Internet domain",
+    "iso": "ISO 3166 codes",
+    "rankOf": "{rank} of {n}",
+    "indicator": "Figure",
+    "value": "Value",
+    "year": "Year",
+    "rank": "World rank",
+    "figures": "All figures",
+    "figuresNote": "Each figure links to its table, where every country is ranked. Rank 1 is the highest value.",
+    "codes": "Codes, currency and time",
+    "zonesCount": "{n} time zones",
+    "zoneRange": "{from} to {to}",
+    "dst": "summer {offset}",
+    "rankings": "In the rankings",
+    "rankingCount": "{n} entries",
+    "rankingShare": "with figures for {name}",
+    "rankingCurrency": "includes the {currency}",
+    "related": "More in {continent}",
+    "all": "All countries and territories",
+    "sources": "Sources",
+    "sourceWb": "Figures: World Bank, World Development Indicators (CC BY 4.0)",
+    "sourceCodes": "Codes: ISO 3166, ITU-T E.164, ISO 4217 via datahub.io (ODC-PDDL); time zones: IANA tz database (public domain)",
+    "sourceCapital": "Capitals: Wikidata (CC0)",
+    "sourceFlag": "Flags: flag-icons by Panayiotis Lipiridis (MIT)",
+    "snapshot": "Data as of {date}",
+    "faq": "Questions and answers",
+    "count": "{n} places",
+    "noCapital": "–",
+    "sep": ", ",
+    "ord": "{n}",
+    "usdLong": "${v}",
+    "join": " ",
+    "datasets": "All data tables"
+  },
+  "groups": {
+    "economy": "Economy",
+    "people": "People and health",
+    "planet": "Land, energy and the internet"
+  },
+  "continents": {
+    "AF": "Africa",
+    "AN": "Antarctica",
+    "AS": "Asia",
+    "EU": "Europe",
+    "NA": "North America",
+    "OC": "Oceania",
+    "SA": "South America"
+  },
+  "labels": {
+    "population": "Population",
+    "gdp": "GDP (US$)",
+    "gdp-per-capita": "GDP per capita (US$)",
+    "life-expectancy": "Life expectancy (years)",
+    "fertility-rate": "Fertility (births per woman)",
+    "internet-users": "Internet users (%)",
+    "gdp-ppp-per-capita": "GDP per capita, PPP (Int$)",
+    "gdp-growth": "GDP growth (%)",
+    "inflation": "Inflation (%)",
+    "unemployment": "Unemployment (%)",
+    "land-area": "Land area (km²)",
+    "population-density": "Population density (people per km²)",
+    "urban-population": "Urban population (%)",
+    "aged-65-plus": "People aged 65+ (%)",
+    "birth-rate": "Birth rate (per 1,000 people)",
+    "infant-mortality": "Infant mortality (per 1,000 births)",
+    "co2-per-capita": "CO2 per person (t)",
+    "electricity-access": "Access to electricity (%)",
+    "population-growth": "Population growth (%)",
+    "death-rate": "Death rate (per 1,000 people)",
+    "life-expectancy-male": "Male life expectancy (years)",
+    "life-expectancy-female": "Female life expectancy (years)",
+    "maternal-mortality": "Maternal mortality (per 100,000 births)",
+    "exports": "Exports (US$)",
+    "imports": "Imports (US$)",
+    "health-spending-per-capita": "Health spending per person (US$)",
+    "female-labor-force": "Women in the labour force (%)",
+    "forest-area": "Forest area (% of land)",
+    "renewable-energy": "Renewable energy (% of energy use)",
+    "gni-per-capita": "GNI per capita (US$)",
+    "youth-unemployment": "Youth unemployment (%)",
+    "remittances": "Remittances (% of GDP)",
+    "foreign-reserves": "Foreign reserves (US$)",
+    "military-spending": "Military spending (US$)",
+    "military-spending-gdp": "Military spending (% of GDP)",
+    "rd-spending": "R&D spending (% of GDP)",
+    "aged-0-14": "Children aged 0–14 (%)",
+    "international-migrants": "International migrants (% of population)",
+    "physicians": "Doctors (per 1,000 people)",
+    "education-spending": "Education spending (% of GDP)",
+    "co2-emissions": "CO2 emissions (Mt)",
+    "electricity-consumption": "Electricity use (kWh per person)",
+    "mobile-subscriptions": "Mobile subscriptions (per 100 people)",
+    "broadband-subscriptions": "Fixed broadband (per 100 people)",
+    "gdp-ppp": "GDP, PPP (int. $)",
+    "gini-index": "Income inequality (Gini index)",
+    "poverty-rate": "Poverty: below $3.00 a day (%)",
+    "homicide-rate": "Homicides (per 100,000 people)",
+    "literacy-rate": "Literacy rate (%)",
+    "alcohol-consumption": "Alcohol (litres per person)",
+    "tobacco-use": "Tobacco use (% of adults)",
+    "air-pollution": "Air pollution, PM2.5 (µg/m³)"
+  }
+}

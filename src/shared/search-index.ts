@@ -3,6 +3,8 @@ import { pageDescription, pageTitle, type SeoInput } from "./seo";
 import { sitemapPages, SITE_ORIGIN, pageUrl, type SitemapPage } from "./sitemap";
 import { messages } from "./messages";
 import { nostalgiaName } from "./nostalgia-i18n";
+import { countryName } from "./countries-i18n";
+import { countryCode } from "./countries";
 import { nameFromTitle, SEARCH_CHANNEL_NAV, shortBlurb, type SearchChannel, type SearchEntry } from "./search";
 
 /** A channel's front page (/tests/, /rankings/ …): listed under the channel's own name, not its SEO title. */
@@ -20,6 +22,7 @@ function isHub(page: SitemapPage): boolean {
     case "slang":
     case "ideas":
     case "nostalgia":
+    case "countries":
       return page.entry === null;
     case "games":
       return page.console === null && page.game === null;
@@ -35,6 +38,8 @@ function pageName(locale: Locale, page: SitemapPage, channel: SearchChannel, seo
   }
   // Nostalgia titles are question headlines ("What Is a Floppy Disk? 1.44 MB, the A: Drive…"): use the entry's own name.
   if (page.kind === "nostalgia" && page.entry) return nostalgiaName(locale, page.entry).name;
+  // Country titles list what the page answers ("Japan: Population, GDP…"): the name is the place.
+  if (page.kind === "countries" && page.entry) return countryName(locale, countryCode(page.entry));
   return nameFromTitle(pageTitle(locale, seo));
 }
 
@@ -69,6 +74,8 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
       return { channel: "nostalgia", seo: { nostalgia: true, nostalgiaId: page.entry } };
     case "games":
       return { channel: "games", seo: { games: true, console: page.console, game: page.game } };
+    case "countries":
+      return { channel: "countries", seo: { countries: true, countryId: page.entry } };
     default:
       return null;
   }
