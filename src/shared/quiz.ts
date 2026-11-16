@@ -930,9 +930,10 @@ const PERSONAL_COLOR: ChoiceItem[] = [
 
 /**
  * A tested choice layout with its results renamed, so quizzes that share an arrangement (and its balance: every result
- * equally often, spread over the answer positions) cannot drift from it. Every result in the layout must be renamed.
+ * equally often, spread over the answer positions) cannot drift from it. Every result in the layout must get its own new name.
  */
 function relabel(items: readonly ChoiceItem[], names: Record<string, string>): ChoiceItem[] {
+  if (new Set(Object.values(names)).size !== Object.keys(names).length) throw new Error("relabel: two results share a new name");
   return items.map((item) => ({
     options: item.options.map((option) =>
       Object.fromEntries(
@@ -964,7 +965,7 @@ const DRAGON_BALL = relabel(GHIBLI, { chihiro: "goku", san: "vegeta", kiki: "goh
 /** Four communication styles: the `HOGWARTS` layout with the results renamed. */
 const COMMUNICATION = relabel(HOGWARTS, { gryffindor: "assertive", hufflepuff: "passive", ravenclaw: "aggressive", slytherin: "passiveaggressive" });
 
-/** Twelve Jungian-style archetypes: the `GREEK_GOD` layout with the results renamed. */
+/** Twelve archetypes (Pearson and Mark, after Jung): the `GREEK_GOD` layout with the results renamed. */
 const ARCHETYPE = relabel(GREEK_GOD, { zeus: "innocent", hera: "everyman", poseidon: "hero", demeter: "caregiver", athena: "explorer", apollo: "rebel", artemis: "lover", ares: "creator", aphrodite: "jester", hephaestus: "sage", hermes: "magician", dionysus: "ruler" });
 
 /**
@@ -1552,9 +1553,10 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   "communication-style": {
     id: "communication-style",
     type: "choice",
-    dims: ["assertive", "passive", "aggressive", "passiveaggressive"],
+    // Ties go to the earlier style, so a flat profile reads as assertive and never as aggressive (like conflict-style).
+    dims: ["assertive", "passive", "passiveaggressive", "aggressive"],
     items: COMMUNICATION,
-    result: { kind: "top", tie: "spread" },
+    result: { kind: "top" },
   },
   archetype: {
     id: "archetype",
