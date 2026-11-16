@@ -65,8 +65,6 @@ export type IdeasData = {
 
 const ORIGIN = "https://cv.cm";
 
-export type IdeasUi = IdeasMessages["ui"];
-
 export function ideasHub(locale: Locale): IdeasMessages["hub"] {
   return ideasMessages(locale).hub;
 }

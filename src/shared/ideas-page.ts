@@ -7,12 +7,14 @@ import { LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { blockHtml, dateLabel, inline, linkListHtml } from "./kb-i18n";
-import { ideasMessages, messages } from "./messages";
+import { ideasMessages, messages, type IdeasMessages } from "./messages";
 import { appHref, ideasHref } from "./path";
 import { IDEA_GROUPS, IDEA_META, ideaGroupOf, ideaModified, type IdeaId } from "./ideas";
 import { plain } from "./number-format";
 import { HREFLANG } from "./sitemap";
-import { ideaCopy, ideaData, ideaFaqItems, ideaName, ideaSources, ideasData, ideasHub, rankedIdeas, type IdeaData, type IdeasUi } from "./ideas-i18n";
+import { ideaCopy, ideaData, ideaFaqItems, ideaName, ideaSources, ideasData, ideasHub, rankedIdeas, type IdeaData } from "./ideas-i18n";
+
+export type IdeasUi = IdeasMessages["ui"];
 
 export function ideasUi(locale: Locale): IdeasUi {
   return ideasMessages(locale).ui;

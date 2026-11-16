@@ -333,6 +333,8 @@ describe("ideas: bundle split", () => {
     expect(seen.has("src/shared/ideas-i18n.ts")).toBe(true);
     expect(seen.has("src/shared/ideas-page.ts")).toBe(false);
     expect(seen.has("src/shared/seo-html.ts")).toBe(false);
+    // Any channel split the same way (<channel>-page.ts, see AGENTS.md) is covered too.
+    expect([...seen].filter((f) => /^src\/shared\/[a-z-]+-page\.ts$/.test(f) && f !== "src/shared/page-copy.ts")).toEqual([]);
   });
 });
 
