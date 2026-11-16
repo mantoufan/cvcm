@@ -56,7 +56,7 @@ export const CATEGORIES = [
   { id: "hardware", tools: ["mic-test", "decibel-meter", "webcam-test", "keyboard-test", "gamepad-test", "touch-test", "dead-pixel", "refresh-rate", "screen-resolution"] },
   { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter", "rock-paper-scissors"] },
   { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "chinese-checkers"] },
-  { id: "wordgames", tools: ["word-search", "hangman", "typing-game"] },
+  { id: "wordgames", tools: ["word-search", "hangman", "typing-game", "typing-practice"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
   { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation", "idea-validator"] },
 ] as const;
@@ -240,6 +240,7 @@ export const TOOLS = [
   "memory-game",
   "word-search",
   "typing-game",
+  "typing-practice",
   "chinese-checkers",
   "phone-number-value",
   "license-plate-value",

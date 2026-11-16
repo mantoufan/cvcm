@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "titleTypingPractice": "Mecanografía — clases gratis para escribir con diez dedos online — cv.cm",
+    "descTypingPractice": "Practica mecanografía online gratis: aprende a escribir con diez dedos fila por fila con un teclado que muestra la siguiente tecla y el dedo que debes usar, y luego escribe palabras reales. Pulsaciones por minuto, precisión y tus teclas más débiles tras cada lección."
+  },
+  "tools": {
+    "typing-practice": {
+      "name": "Mecanografía",
+      "blurb": "Clases de mecanografía, tecla a tecla."
+    }
+  },
+  "faq": {
+    "typing-practice": {
+      "q1": "¿Cómo aprendo a escribir con diez dedos aquí?",
+      "a1": "Empieza por la lección de la fila guía y sigue la lista en orden. Apoya los dedos en A S D F y J K L ; (las teclas F y J tienen un relieve), pulsa la tecla resaltada con el dedo indicado y mantén la vista en la pantalla.",
+      "q2": "¿Cuándo debo pasar a la siguiente lección?",
+      "a2": "Cuando terminas una lección con un 90% de precisión o más, queda marcada. Primero la precisión y luego la velocidad: la siguiente lección añade la siguiente fila.",
+      "q3": "¿Funciona con un método de entrada coreano o japonés activado?",
+      "a3": "Sí. Las lecciones de teclas comprueban qué tecla pulsas, no el carácter, así que el método de entrada puede seguir activado. En la página en coreano las teclas muestran la distribución de 2 grupos (dubeolsik); en la página en japonés practicas las teclas que se usan para escribir en romaji.",
+      "q4": "¿Puedo practicar en un móvil o una tableta?",
+      "a4": "Las lecciones de teclas están pensadas para un teclado físico, pero también puedes tocar las teclas en pantalla. La lección de palabras funciona con cualquier teclado, incluido el de tu móvil.",
+      "q5": "¿En qué se diferencia del test de mecanografía?",
+      "a5": "El test de mecanografía mide tu velocidad con un texto en un tiempo fijo. Esta práctica te enseña las teclas fila por fila y te muestra qué teclas fallas más."
+    }
+  },
+  "guides": {
+    "typing-practice": {
+      "lead": "Practica mecanografía en tres pasos.",
+      "s1t": "Elige una lección",
+      "s1b": "Empieza por la fila guía; cada lección añade teclas nuevas a las anteriores.",
+      "s2t": "Escribe las teclas",
+      "s2b": "Pulsa la tecla resaltada con el dedo indicado. Si te equivocas, no avanzas.",
+      "s3t": "Revisa tu resultado",
+      "s3b": "Mira tus pulsaciones por minuto, tu precisión y tus teclas más débiles. Llega al 90% para marcar la lección."
+    }
+  },
+  "ui": {
+    "typingPractice": {
+      "title": "Mecanografía",
+      "privacyNote": "Aprende a escribir con diez dedos fila por fila y luego escribe palabras reales.",
+      "lessons": "Lecciones",
+      "lesson": "Lección",
+      "progress": "Progreso",
+      "kpm": "Pulsaciones por minuto",
+      "cpm": "Caracteres por minuto",
+      "accuracy": "Precisión",
+      "time": "Tiempo",
+      "l_home": "Fila guía",
+      "l_home2": "Fila guía + G H",
+      "l_top": "Fila superior",
+      "l_bottom": "Fila inferior",
+      "l_letters": "Todas las letras",
+      "l_words": "Palabras reales",
+      "ld_words": "Escribe palabras completas",
+      "best": "Mejor: {kpm}/min, {accuracy}%",
+      "start": "Empezar",
+      "restart": "Reiniciar",
+      "again": "Intentar de nuevo",
+      "nextLesson": "Siguiente lección",
+      "ready": "Pulsa Empezar o cualquier tecla en la zona de práctica.",
+      "readyWords": "Pulsa Empezar, escribe cada palabra y pulsa Enter o Espacio.",
+      "result": "{kpm} pulsaciones por minuto, {accuracy}% de precisión.",
+      "resultWords": "{kpm} caracteres por minuto, {accuracy}% de precisión.",
+      "passed": "¡Lección superada!",
+      "notPassed": "Necesitas un {n}% de precisión para superarla.",
+      "weak": "Teclas para practicar: {keys}",
+      "drillArea": "Línea de práctica: escribe la tecla resaltada",
+      "keyboard": "Teclado con la siguiente tecla marcada",
+      "typeWord": "Escribe la palabra",
+      "space": "Espacio",
+      "useFinger": "Usa el {finger}",
+      "f_lp": "meñique izquierdo",
+      "f_lr": "anular izquierdo",
+      "f_lm": "dedo medio izquierdo",
+      "f_li": "índice izquierdo",
+      "f_ri": "índice derecho",
+      "f_rm": "dedo medio derecho",
+      "f_rr": "anular derecho",
+      "f_rp": "meñique derecho",
+      "f_th": "pulgar",
+      "help": "Mantén los dedos en la fila guía y la vista en la pantalla. Las teclas se comprueban por su posición, así que sirve cualquier distribución de teclado o método de entrada; también puedes tocar las teclas.",
+      "koNote": "Las teclas muestran la distribución coreana de 2 grupos (dubeolsik).",
+      "jaNote": "Las lecciones de teclas practican las teclas para escribir en romaji; la lección de palabras acepta kana, la forma escrita o romaji."
+    }
+  }
+}

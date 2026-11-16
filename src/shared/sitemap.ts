@@ -6,6 +6,7 @@ import { KB_ARTICLES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type 
 import { DATASET_SNAPSHOT, DATASETS, datasetUpdated, type DatasetId } from "./datasets";
 import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
+import { memeImagePath } from "./meme-images";
 import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublished, type SlangId } from "./slang";
 import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaModified, type IdeaId } from "./ideas";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
@@ -187,16 +188,23 @@ function pageLastmod(page: SitemapPage): string | null {
   return null;
 }
 
+/** A page's own picture for the image sitemap: a meme entry's freely licensed image. */
+function pageImage(page: SitemapPage): string | null {
+  const path = page.kind === "slang" ? memeImagePath(page.entry) : null;
+  return path ? `${SITE_ORIGIN}${path}` : null;
+}
+
 /** A `<urlset>` of the given pages (default: every page). */
 export function buildSitemapXml(pages: SitemapPage[] = sitemapPages()): string {
   const blocks = pages.map((page) => {
     const loc = xmlAttr(pageUrl(page));
     const lastmod = pageLastmod(page);
-    return `  <url>\n    <loc>${loc}</loc>\n${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ""}${alternateLinks(page)}\n  </url>`;
+    const image = pageImage(page);
+    return `  <url>\n    <loc>${loc}</loc>\n${lastmod ? `    <lastmod>${lastmod}</lastmod>\n` : ""}${alternateLinks(page)}\n${image ? `    <image:image><image:loc>${xmlAttr(image)}</image:loc></image:image>\n` : ""}  </url>`;
   });
   return [
     '<?xml version="1.0" encoding="UTF-8"?>',
-    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">',
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">',
     ...blocks,
     "</urlset>",
     "",

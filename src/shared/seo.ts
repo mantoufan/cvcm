@@ -12,7 +12,7 @@ import type { DatasetId } from "./datasets";
 import type { RankingId } from "./rankings";
 import { rankingDescription, rankingTitle } from "./rankings-i18n";
 import { kbDescription, kbTitle } from "./kb-i18n";
-import { type KbPage } from "./kb";
+import type { KbPage } from "./kb";
 import { refDescription, refTitle } from "./ref-i18n";
 import type { RefId } from "./ref";
 import { slangDescription, slangTitle } from "./slang-i18n";
@@ -259,6 +259,7 @@ const TITLE: Record<ToolId, string> = {
   "memory-game": "meta.titleMemoryGame",
   "word-search": "meta.titleWordSearch",
   "typing-game": "meta.titleTypingGame",
+  "typing-practice": "meta.titleTypingPractice",
   "chinese-checkers": "meta.titleChineseCheckers",
   "phone-number-value": "meta.titlePhoneNumberValue",
   "license-plate-value": "meta.titleLicensePlateValue",
@@ -485,6 +486,7 @@ const DESC: Record<ToolId, string> = {
   "memory-game": "meta.descMemoryGame",
   "word-search": "meta.descWordSearch",
   "typing-game": "meta.descTypingGame",
+  "typing-practice": "meta.descTypingPractice",
   "chinese-checkers": "meta.descChineseCheckers",
   "phone-number-value": "meta.descPhoneNumberValue",
   "license-plate-value": "meta.descLicensePlateValue",

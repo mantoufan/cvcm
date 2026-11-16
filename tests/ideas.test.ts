@@ -299,13 +299,28 @@ describe("ideas: routes", () => {
 });
 
 describe("ideas: bundle split", () => {
-  it("keeps the page HTML builders out of the modules the main bundle imports", () => {
-    // seo.ts, faq.ts and main.ts are in the main client bundle: none of them may reach ideas-page.ts or seo-html.ts
-    // (the Worker-only head and body builder that imports it).
-    for (const path of ["src/shared/seo.ts", "src/client/faq.ts", "src/client/main.ts", "src/shared/ideas-i18n.ts"]) {
-      expect(readFileSync(join(root, path), "utf8"), path).not.toMatch(/from "[^"]*(ideas-page|seo-html)"/);
-    }
+  it("keeps the page HTML builders out of everything the main bundle imports", () => {
+    // Walk the static imports from the client entry (dynamic import() starts a separate chunk and is skipped): the
+    // ideas page builders and the Worker-only head/body module must not be reachable, or Rollup puts them in the entry.
+    const seen = new Set<string>();
+    const walk = (file: string): void => {
+      if (seen.has(file)) return;
+      seen.add(file);
+      const text = readFileSync(join(root, file), "utf8");
+      for (const m of text.matchAll(/^(?:import|export)\s[^;]*?from\s+"(\.{1,2}\/[^"]+)"|^import\s+"(\.{1,2}\/[^"]+)"/gm)) {
+        if (/^import\s+type\s/.test(m[0]) || /^export\s+type\s/.test(m[0])) continue;
+        const spec = m[1] ?? m[2];
+        const base = join(dirname(file), spec);
+        const target = [`${base}.ts`, `${base}/index.ts`, base].find((p) => /\.(ts|json)$/.test(p) && existsSync(join(root, p)));
+        if (target?.endsWith(".ts")) walk(target);
+      }
+    };
+    walk("src/client/main.ts");
+    expect(seen.has("src/shared/ideas-i18n.ts")).toBe(true);
+    expect(seen.has("src/shared/ideas-page.ts")).toBe(false);
+    expect(seen.has("src/shared/seo-html.ts")).toBe(false);
   });
+
 
 });
 

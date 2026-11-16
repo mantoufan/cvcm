@@ -153,6 +153,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Chinese checkers** / 跳棋 — the six-point star board against the computer or a friend, chain jumps. [Open](https://cv.cm/en/chinese-checkers/)
 - **Word search** / 单词搜索 — themed puzzles in every site language, three sizes. [Open](https://cv.cm/en/word-search/)
 - **Typing game** / 打字游戏 — type the falling words before they land; works with input methods. [Open](https://cv.cm/en/typing-game/)
+- **Typing practice** / 打字练习 — touch-typing lessons row by row with finger hints, then real words; Korean 2-set layout on the Korean page. [Open](https://cv.cm/en/typing-practice/)
 - **Color blindness test** / 色盲测试 — red–green and blue–yellow screening with dot plates. [Open](https://cv.cm/en/color-blindness-test/)
 - **Military time converter** / 24小时制转换 — 1430 ↔ 2:30 PM, how to say it, Zulu time. [Open](https://cv.cm/en/military-time/)
 - **Height calculator** / 身高预测 — a child's adult height from parents and growth charts. [Open](https://cv.cm/en/height-calculator/)

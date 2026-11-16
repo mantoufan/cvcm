@@ -70,7 +70,10 @@ export function slangPublished(id: SlangId): string {
 }
 
 /** Entries edited after they were published, for dateModified and the sitemap. */
-export const SLANG_UPDATED: Partial<Record<SlangId, string>> = {};
+export const SLANG_UPDATED: Partial<Record<SlangId, string>> = {
+  // 2026-11-14: freely licensed pictures added.
+  "ballerina-cappuccina": "2026-11-14", "brr-brr-patapim": "2026-11-14", "cappuccino-assassino": "2026-11-14", doge: "2026-11-14", goutou: "2026-11-14", "grimace-shake": "2026-11-14", harambe: "2026-11-14", huaji: "2026-11-14", "italian-brainrot": "2026-11-14", mewing: "2026-11-14", "moo-deng": "2026-11-14", rickroll: "2026-11-14", "skibidi-toilet": "2026-11-14", stonks: "2026-11-14", "tralalero-tralala": "2026-11-14", trollface: "2026-11-14", "tung-tung-tung-sahur": "2026-11-14",
+};
 
 /** Entries the site footer links directly (highest Keyword Planner volume); their names are core-pack `slangFocus.*`. */
 export const SLANG_FOCUS = [

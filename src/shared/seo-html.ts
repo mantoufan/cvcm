@@ -5,7 +5,7 @@
  * uses (ideas-page.ts …) stay out of the main bundle.
  */
 import { DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, TOOL_COVER, coverUrl } from "./covers";
-import { deviceBreadcrumbJsonLd, deviceFaqJsonLd, deviceStaticHtml } from "./device-i18n";
+import { deviceBreadcrumbJsonLd, deviceFaqJsonLd, deviceStaticHtml, escapeHtml } from "./device-i18n";
 import { gameById } from "./games";
 import { toolHowToJsonLd } from "./guide";
 import { legalBreadcrumbJsonLd, legalStaticHtml } from "./legal";
@@ -22,9 +22,14 @@ import { lessonsForTool } from "./learn";
 import { type Locale } from "./locale";
 import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, type ToolId } from "./path";
 import { ideasPageHtml } from "./ideas-page";
+import { memeImagePath } from "./meme-images";
 import { BRANDED_TOOLS, faqJsonLd, flashHubHowToJsonLd, flashHubSoftwareJsonLd, gameBreadcrumbJsonLd, gameHowToJsonLd, gameVideoGameJsonLd, howToJsonLd, hreflangAlternates, marketBreadcrumbJsonLd, pageCanonical, pageDescription, pageTitle, toolBreadcrumbJsonLd, toolSoftwareJsonLd, tutorialBreadcrumbJsonLd, normalizeSeo, type SeoInput } from "./seo";
 
 function ogImage(seo: SeoInput): string | null {
+  if (seo.slang && seo.slangId) {
+    const path = memeImagePath(seo.slangId);
+    return path ? `https://cv.cm${path}` : null;
+  }
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
   if (seo.games && seo.game) return coverUrl(GAME_COVER[seo.game]);
   if (seo.markets && seo.market) return coverUrl(MARKET_COVER[seo.market]);
@@ -33,13 +38,6 @@ function ogImage(seo: SeoInput): string | null {
   return null;
 }
 
-function escapeHtml(value: string): string {
-  return value
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
 
 /** Head tags for the page, and its body: the prerendered markup when given, else a plain text copy. */
 export function applyHtmlSeo(

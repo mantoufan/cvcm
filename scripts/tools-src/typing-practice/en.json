@@ -1,0 +1,86 @@
+{
+  "meta": {
+    "titleTypingPractice": "Typing practice — free touch typing lessons online — cv.cm",
+    "descTypingPractice": "Free typing practice online: learn touch typing row by row with a keyboard that shows the next key and the finger to use, then type real words. Keys per minute, accuracy and your weakest keys after every lesson."
+  },
+  "tools": {
+    "typing-practice": {
+      "name": "Typing practice",
+      "blurb": "Touch typing lessons, key by key."
+    }
+  },
+  "faq": {
+    "typing-practice": {
+      "q1": "How do I learn touch typing here?",
+      "a1": "Start with the home row lesson and work down the list. Rest your fingers on A S D F and J K L ; (the F and J keys have a bump), type the highlighted key with the finger shown, and keep your eyes on the screen.",
+      "q2": "When should I move on to the next lesson?",
+      "a2": "When you finish a lesson with 90% accuracy or better it is ticked. Accuracy first, then speed: the next lesson adds the next row.",
+      "q3": "Does it work with a Korean or Japanese input method on?",
+      "a3": "Yes. The key lessons check which key you press, not the character, so the input method can stay on. On the Korean page the keys show the 2-set (dubeolsik) layout; on the Japanese page you practise the keys used for romaji input.",
+      "q4": "Can I practise on a phone or tablet?",
+      "a4": "The key lessons are meant for a physical keyboard, but you can tap the on-screen keys too. The word lesson works with any keyboard, including your phone's.",
+      "q5": "How is this different from the typing test?",
+      "a5": "The typing test measures your speed on a passage in a set time. Typing practice teaches the keys one row at a time and shows which keys you miss most."
+    }
+  },
+  "guides": {
+    "typing-practice": {
+      "lead": "Practise touch typing in three steps.",
+      "s1t": "Pick a lesson",
+      "s1b": "Start with the home row; each lesson adds new keys to the ones before.",
+      "s2t": "Type the keys",
+      "s2b": "Press the highlighted key with the finger shown. Mistakes don't move you on.",
+      "s3t": "Check your result",
+      "s3b": "See your keys per minute, accuracy and weakest keys. Reach 90% to tick the lesson."
+    }
+  },
+  "ui": {
+    "typingPractice": {
+      "title": "Typing practice",
+      "privacyNote": "Learn touch typing one row at a time, then type real words.",
+      "lessons": "Lessons",
+      "lesson": "Lesson",
+      "progress": "Progress",
+      "kpm": "Keys per minute",
+      "cpm": "Characters per minute",
+      "accuracy": "Accuracy",
+      "time": "Time",
+      "l_home": "Home row",
+      "l_home2": "Home row + G H",
+      "l_top": "Top row",
+      "l_bottom": "Bottom row",
+      "l_letters": "All letters",
+      "l_words": "Real words",
+      "ld_words": "Type whole words",
+      "best": "Best: {kpm}/min, {accuracy}%",
+      "start": "Start",
+      "restart": "Restart",
+      "again": "Try again",
+      "nextLesson": "Next lesson",
+      "ready": "Press Start or any key in the practice area.",
+      "readyWords": "Press Start, then type each word and press Enter or Space.",
+      "result": "{kpm} keys a minute, {accuracy}% accurate.",
+      "resultWords": "{kpm} characters a minute, {accuracy}% accurate.",
+      "passed": "Lesson passed!",
+      "notPassed": "Aim for {n}% accuracy to pass.",
+      "weak": "Keys to practise: {keys}",
+      "drillArea": "Practice line: type the highlighted key",
+      "keyboard": "Keyboard with the next key marked",
+      "typeWord": "Type the word",
+      "space": "Space",
+      "useFinger": "Use your {finger}",
+      "f_lp": "left little finger",
+      "f_lr": "left ring finger",
+      "f_lm": "left middle finger",
+      "f_li": "left index finger",
+      "f_ri": "right index finger",
+      "f_rm": "right middle finger",
+      "f_rr": "right ring finger",
+      "f_rp": "right little finger",
+      "f_th": "thumb",
+      "help": "Keep your fingers on the home row and your eyes on the screen. Keys are checked by position, so any keyboard layout or input method works; you can also tap the keys.",
+      "koNote": "The keys show the Korean 2-set (dubeolsik) layout.",
+      "jaNote": "Key lessons practise the keys for romaji input; the word lesson accepts kana, the written form or romaji."
+    }
+  }
+}
