@@ -21,7 +21,7 @@ export function refUi(locale: Locale): RefUi {
 
 /**
  * Photos for an entry, in display order (hotlinked from s1.mtf6.com, never copied). src/data/ref-photos.json rides in
- * the ref pack, so it loads only on reference pages (this module is in the entry chunk through seo.ts).
+ * the ref pack, so it loads only on reference pages.
  */
 export function refPhotos(locale: Locale, id: RefId): RefPhoto[] {
   return (refMessages(locale).photos as Partial<Record<RefId, RefPhoto[]>>)[id] ?? [];

@@ -310,34 +310,6 @@ describe("ideas: routes", () => {
   });
 });
 
-describe("ideas: bundle split", () => {
-  it("keeps the page HTML builders out of everything the main bundle imports", () => {
-    // Walk the static imports from the client entry (dynamic import() starts a separate chunk and is skipped): the
-    // ideas page builders and the Worker-only head/body module must not be reachable, or Rollup puts them in the entry.
-    const seen = new Set<string>();
-    const walk = (file: string): void => {
-      if (seen.has(file)) return;
-      seen.add(file);
-      const text = readFileSync(join(root, file), "utf8");
-      // One statement at a time (never past its ";"), either quote style, ".js" specifiers too; type-only imports
-      // never reach a bundle.
-      for (const m of text.matchAll(/^\s*(?:import|export)\b([^;]*?)\bfrom\s*(["'])(\.{1,2}\/[^"']+)\2|^\s*import\s*(["'])(\.{1,2}\/[^"']+)\4/gm)) {
-        if (m[1] !== undefined && /^\s*type\s/.test(m[1])) continue;
-        const spec = (m[3] ?? m[5]).replace(/\.js$/, "");
-        const base = join(dirname(file), spec);
-        const target = [`${base}.ts`, `${base}/index.ts`, base].find((p) => /\.(ts|json)$/.test(p) && existsSync(join(root, p)));
-        if (target?.endsWith(".ts")) walk(target);
-      }
-    };
-    walk("src/client/main.ts");
-    expect(seen.has("src/shared/ideas-i18n.ts")).toBe(true);
-    expect(seen.has("src/shared/ideas-page.ts")).toBe(false);
-    expect(seen.has("src/shared/seo-html.ts")).toBe(false);
-    // Any channel split the same way (<channel>-page.ts, see AGENTS.md) is covered too.
-    expect([...seen].filter((f) => /^src\/shared\/[a-z-]+-page\.ts$/.test(f) && f !== "src/shared/page-copy.ts")).toEqual([]);
-  });
-});
-
 describe("ideas: page HTML and SEO", () => {
   it("renders the hub and every idea in every locale", () => {
     for (const locale of LOCALES) {

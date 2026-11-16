@@ -59,7 +59,6 @@ export function kbFaqItems(locale: Locale, page: KbPage): { q: string; a: string
   return id ? kbCopy(locale, id).faq : kbHub(locale, kbShelfOfPage(page)).faq;
 }
 
-
 /** When this locale's page last changed (copy or sources), from `npm run kb:sync`. */
 export function kbUpdated(locale: Locale, id: KbId): string {
   return kbUpdatedOn(id, locale);
