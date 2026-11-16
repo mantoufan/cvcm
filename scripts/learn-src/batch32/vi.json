@@ -1,0 +1,200 @@
+{
+  "meta": {
+    "titlePlayHangman": "Cách chơi Hangman (đoán chữ): luật chơi và mẹo đoán từ | cv.cm",
+    "descPlayHangman": "Học chơi Hangman trong sáu bước: luật chơi, sáu lần đoán sai, nên thử chữ cái nào trước, cách đọc mẫu của từ, khi nào dùng gợi ý và cách chọn từ khó cho bạn bè. Chơi miễn phí online.",
+    "titlePlayRockPaperScissors": "Luật oẳn tù tì (kéo búa bao) và cách thắng (kèm Thằn lằn Spock) | cv.cm",
+    "descPlayRockPaperScissors": "Giải thích oẳn tù tì: cái gì thắng cái gì, thắng 2/3, phiên bản năm nước Thằn lằn Spock và những quy luật người chơi hay mắc mà bạn có thể tận dụng. Rồi đấu với máy online.",
+    "titleCalculateBac": "Cách tính nồng độ cồn trong máu (BAC) bằng công thức Widmark | cv.cm",
+    "descCalculateBac": "Ước tính BAC từng bước: số gam cồn trong một ly, công thức Widmark, tốc độ cơ thể đào thải cồn và ý nghĩa của 0,08 %, 0,5 ‰ và 80 mg/100 mL. Chỉ là ước tính, không bao giờ là lý do để lái xe.",
+    "titleCalculateSimpleInterest": "Cách tính lãi đơn: I = P × r × t kèm ví dụ | cv.cm",
+    "descCalculateSimpleInterest": "Lãi đơn trong sáu bước: công thức, đổi lãi suất sang số thập phân, tháng và ngày (năm 365 hoặc 360 ngày), tìm vốn gốc, lãi suất hoặc thời gian, và so sánh với lãi kép."
+  },
+  "lessons": {
+    "play-hangman": {
+      "copy": {
+        "name": "Cách chơi Hangman",
+        "blurb": "Luật chơi, chữ cái nên đoán và mẫu của từ.",
+        "title": "Cách chơi Hangman và đoán đúng từ",
+        "lead": "Hangman là trò đoán chữ: từ cần tìm hiện dưới dạng các ô trống và bạn đoán từng chữ cái một trước khi sáu lần đoán sai hoàn tất hình vẽ. Bạn sẽ học luật chơi, nên thử chữ cái nào trước và cách đọc mẫu của một từ đã giải được một nửa.",
+        "result": "Một cách đoán tìm ra hầu hết các từ chỉ với ba hoặc bốn lần sai, và một cách chọn từ khó đoán.",
+        "note": "Chữ cái nên thử trước khác nhau theo từng danh sách. Mẹo dưới đây dành cho danh sách tiếng Anh; danh sách tiếng Tây Ban Nha bắt đầu với A, O, E, I và danh sách tiếng Indonesia với A, N, E, R.",
+        "s1t": "Mở Hangman (đoán chữ) trên cv.cm",
+        "s1b": "Chọn ngôn ngữ của từ và một chủ đề, hoặc để Tất cả chủ đề. Từ hiện ra với mỗi chữ cái là một ô trống; dấu cách và gạch nối được hiển thị sẵn.",
+        "s2t": "Nắm luật chơi",
+        "s2b": "Đoán một chữ cái bằng cách bấm hoặc gõ chữ đó. Chữ đúng sẽ điền vào mọi ô có chữ đó. Chữ sai thêm một phần vào hình vẽ: đầu, thân, hai tay, hai chân. Lần đoán sai thứ sáu kết thúc ván chơi.",
+        "s3t": "Bắt đầu bằng chữ thông dụng",
+        "s3b": "Hãy thử trước những chữ cái có mặt trong nhiều từ nhất. Trong danh sách tiếng Anh của trò chơi, 61 % số từ có chữ E, tiếp theo là A, R, N, O và I. Đoán ra hai, ba nguyên âm sớm sẽ thấy ngay hình dạng của từ.",
+        "s4t": "Đọc mẫu của từ",
+        "s4b": "Xem các chữ đã điền gợi ý điều gì: từ kết thúc bằng _ _ G thường là -ING, sau Q gần như luôn là U, và chữ cái đôi thu hẹp các khả năng. Dùng chủ đề để khoanh vùng.",
+        "s5t": "Chỉ dùng gợi ý khi bí",
+        "s5b": "Gợi ý mở một chữ cái bị ẩn nhưng tính là một lần đoán sai. Không dùng được ở lượt cuối hoặc khi chỉ còn một chữ, nên hãy dùng khi còn vài lượt mà chưa nghĩ ra chữ nào.",
+        "s6t": "Chọn từ khó cho bạn bè",
+        "s6b": "Ở mục Chơi với bạn, nhập một từ bí mật. Những từ ngắn có chữ hiếm (J, Q, X, Z) và ít chữ lặp lại là khó đoán nhất, vì các chữ thông dụng sẽ đoán trượt.",
+        "diagram1": "Bàn chơi: ô trống, chữ đoán sai và sáu phần của hình vẽ.",
+        "diagram2": "Tỉ lệ từ trong danh sách tiếng Anh của trò chơi có chứa mỗi chữ cái: hãy thử các cột dài trước."
+      },
+      "faq": {
+        "q1": "Trong Hangman được đoán sai bao nhiêu lần?",
+        "a1": "Sáu lần trong cách chơi thông thường, mỗi lần ứng với một phần của hình vẽ: đầu, thân, hai tay và hai chân. Một số phiên bản thêm mặt, bàn tay hoặc bàn chân để có thêm lượt.",
+        "q2": "Nên đoán chữ nào đầu tiên?",
+        "a2": "Chữ E: 61 % số từ trong danh sách tiếng Anh của trò chơi có chữ E. Sau đó hãy thử A, R, N, O và I.",
+        "q3": "Những từ nào khó nhất trong Hangman?",
+        "a3": "Những từ ngắn có chữ hiếm, như JINX, FJORD hay QUIZ. Từ dài lại dễ hơn vì mỗi lần đoán có nhiều cơ hội trúng hơn.",
+        "q4": "Danh sách tiếng Tây Ban Nha có tính dấu không?",
+        "a4": "Không. Đoán A cũng mở ra Á, và U mở ra Ü. Ñ có phím riêng.",
+        "q5": "Hangman có giúp học chính tả không?",
+        "a5": "Có. Trò chơi tập cho bạn nghĩ xem một từ có thể chứa những chữ cái nào và theo thứ tự nào, còn chủ đề gợi ý cho bạn về nghĩa của từ."
+      }
+    },
+    "play-rock-paper-scissors": {
+      "copy": {
+        "name": "Luật oẳn tù tì",
+        "blurb": "Cái gì thắng cái gì, và người ta thường ra thế nào.",
+        "title": "Oẳn tù tì (kéo búa bao): luật chơi và cách thắng",
+        "lead": "Oẳn tù tì là trò chơi tay cho hai người: cả hai cùng ra một ký hiệu tay vào cùng lúc và một ký hiệu thắng ký hiệu kia. Bạn sẽ học luật chơi, cách đấu theo thể thức thắng nhiều ván nhất, phiên bản năm nước Thằn lằn Spock và những quy luật người chơi hay mắc.",
+        "result": "Toàn bộ luật của cả hai phiên bản và vài thói quen cần để ý khi chơi với người.",
+        "note": "Trước một máy ra ngẫu nhiên thì không chiến thuật nào có ích: về lâu dài bạn thắng một phần ba số ván. Các quy luật dưới đây chỉ có tác dụng khi chơi với người.",
+        "s1t": "Mở Oẳn tù tì trên cv.cm",
+        "s1b": "Chọn luật chơi và thể thức trận đấu. Bấm vào một nước, hoặc nhấn R, P hay S trên bàn phím.",
+        "s2t": "Biết cái gì thắng cái gì",
+        "s2b": "Búa đập kéo, kéo cắt bao và bao bọc búa. Nếu hai người ra giống nhau, ván đó hòa.",
+        "s3t": "Đấu một trận",
+        "s3b": "BO3 nghĩa là ai thắng hai ván trước sẽ thắng trận; BO5 cần ba ván thắng. Ván hòa không được tính, nên một trận có thể kéo dài hơn số ván ghi trên thể thức.",
+        "s4t": "Thử Thằn lằn Spock",
+        "s4b": "Phiên bản năm nước thêm thằn lằn và Spock. Mỗi nước thắng hai nước và thua hai nước: kéo chặt đầu thằn lằn, thằn lằn đầu độc Spock, Spock đập vỡ kéo, Spock làm bốc hơi búa, búa đập nát thằn lằn, thằn lằn ăn bao và bao bác bỏ Spock. Trên bàn phím, phím L ra Thằn lằn và K ra Spock.",
+        "s5t": "Để ý quy luật khi chơi với người",
+        "s5b": "Con người rất khó ra ngẫu nhiên. Nhiều người lặp lại nước vừa thắng và đổi nước sau khi thua, thường đổi sang nước có thể thắng nước mình vừa ra. Nhiều người mới chơi cũng hay mở đầu bằng búa.",
+        "s6t": "Xem lại thói quen của chính bạn",
+        "s6b": "Trang liệt kê các ván gần nhất và đếm số lần bạn ra mỗi nước. Nếu một nước vượt hẳn các nước khác, người chơi với bạn cũng có thể nhận ra.",
+        "diagram1": "Mỗi nước thắng nước kế tiếp theo vòng tròn.",
+        "diagram2": "Thằn lằn Spock: mỗi nước thắng hai nước và thua hai nước."
+      },
+      "faq": {
+        "q1": "Trong oẳn tù tì, cái gì thắng cái gì?",
+        "a1": "Búa thắng kéo, kéo thắng bao và bao thắng búa. Hai bên ra giống nhau là hòa.",
+        "q2": "Nên ra nước gì đầu tiên?",
+        "a2": "Trước đối thủ ngẫu nhiên thì không có nước nào tốt nhất. Trước người mới chơi, ra bao có lợi hơn một chút, vì nhiều người mới hay mở đầu bằng búa.",
+        "q3": "Máy ở đây có thật sự ngẫu nhiên không?",
+        "a3": "Có. Máy chọn nước bằng bộ sinh số ngẫu nhiên mật mã của trình duyệt ngay khi bạn ra, và không bao giờ thấy lựa chọn của bạn.",
+        "q4": "Trò chơi này bắt nguồn từ đâu?",
+        "a4": "Những trò chơi tay tương tự đã có từ nhiều thế kỷ trước ở Đông Á. Phiên bản búa, bao, kéo lan ra từ Nhật Bản, nơi nó được gọi là jan-ken, và được cả thế giới biết đến vào thế kỷ 20.",
+        "q5": "Ai nghĩ ra Thằn lằn Spock?",
+        "a5": "Sam Kass và Karen Bryla. Họ thêm hai nước để hai người ít ra trùng nhau hơn."
+      }
+    },
+    "calculate-bac": {
+      "copy": {
+        "name": "Cách tính nồng độ cồn trong máu",
+        "blurb": "Công thức Widmark, từng bước một.",
+        "title": "Cách tính nồng độ cồn trong máu (BAC)",
+        "lead": "Nồng độ cồn trong máu (BAC) là lượng cồn có trong máu của bạn. Bạn có thể ước tính nó từ lượng đã uống, cân nặng và thời gian đã trôi qua bằng công thức Widmark. Bạn sẽ học từng phần của công thức, ý nghĩa của kết quả và vì sao nó chỉ là ước tính.",
+        "result": "BAC ước tính hiện tại của bạn và số giờ cho đến khi nó về 0.",
+        "note": "Đây là ước tính cho người trung bình, không phải số đo. Đồ ăn, sức khỏe, thuốc và tốc độ uống đều làm thay đổi mức thực tế. Đừng bao giờ dùng nó để quyết định có lái xe hay không.",
+        "s1t": "Mở Tính nồng độ cồn trong máu trên cv.cm",
+        "s1b": "Chọn giới tính và nhập cân nặng theo kilôgam hoặc pound. Các giá trị này quyết định cồn được pha loãng bao nhiêu trong cơ thể bạn.",
+        "s2t": "Tính số gam cồn",
+        "s2b": "Nhân dung tích đồ uống (mL) với nồng độ cồn (%) và với 0,789, khối lượng của 1 mL cồn. Một lon bia 355 mL nồng độ 5 % chứa 355 × 0,05 × 0,789 = 14 g, bằng một ly chuẩn của Mỹ.",
+        "s3t": "Áp dụng công thức Widmark",
+        "s3b": "Chia số gam cho cân nặng tính bằng gam nhân hệ số nước trong cơ thể (0,68 với nam, 0,55 với nữ), rồi nhân 100. Ba lon bia như vậy với một người nam 70 kg: 42 ÷ (70.000 × 0,68) × 100 = 0,088 %.",
+        "s4t": "Trừ đi thời gian",
+        "s4b": "Cơ thể đào thải khoảng 0,015 % mỗi giờ và không gì làm nhanh hơn được: cà phê, nước, tắm nước lạnh hay ngủ đều không. Hai giờ sau khi bắt đầu uống, ví dụ trên còn 0,088 − 0,030 = 0,058 %.",
+        "s5t": "Đọc các đơn vị",
+        "s5b": "Mỗi nước ghi cùng một giá trị theo cách khác nhau: 0,08 % bằng 0,8 ‰ (gam trên lít) và 80 mg trên 100 mL. Nhiều nơi đặt giới hạn lái xe ở 0,05 %, phần lớn các bang của Mỹ dùng 0,08 % (Utah 0,05 %), và một số nước dùng 0,02–0,03 % hoặc 0. Việt Nam cấm tuyệt đối: người lái xe không được có bất kỳ nồng độ cồn nào.",
+        "s6t": "Đếm số giờ đến khi về 0",
+        "s6b": "Chia BAC cho 0,015 để ra số giờ còn lại. Ví dụ trên cần gần bốn giờ nữa. Công cụ hiển thị thời gian để giảm xuống 0,08, 0,05, 0,02 và về 0.",
+        "diagram1": "Công thức Widmark kèm ví dụ tính.",
+        "diagram2": "Sau mức đỉnh, BAC giảm khoảng 0,015 % mỗi giờ."
+      },
+      "faq": {
+        "q1": "Công cụ tính BAC chính xác đến mức nào?",
+        "a1": "Nó cho một giá trị trung bình. Mức thực tế có thể cao hoặc thấp hơn nhiều, tùy đồ ăn, vóc dáng, sức khỏe, thuốc và tốc độ uống.",
+        "q2": "Uống bao nhiêu ly thì vẫn lái xe được?",
+        "a2": "Không công cụ nào có thể trả lời điều đó một cách an toàn. Giới hạn khác nhau theo từng nước và có nơi là 0, còn khả năng lái xe đã suy giảm từ dưới mức giới hạn. Đã uống rượu bia thì đừng lái xe.",
+        "q3": "Vì sao uống cùng lượng mà nữ giới có BAC cao hơn?",
+        "a3": "Trung bình, với cùng cân nặng, cơ thể nữ giới chứa ít nước hơn, nên cùng lượng cồn bị pha loãng ít hơn. Vì thế công thức dùng 0,55 thay cho 0,68.",
+        "q4": "Ăn uống có làm giảm BAC không?",
+        "a4": "Thức ăn trong dạ dày làm cồn được hấp thụ chậm hơn, nên mức đỉnh thấp hơn và đến muộn hơn. Nó không làm cơ thể đào thải cồn nhanh hơn.",
+        "q5": "Ly chuẩn là gì?",
+        "a5": "Một lượng cồn nguyên chất cố định: 14 g ở Mỹ, 10 g ở Úc và 8 g (một đơn vị) ở Anh. Một lon bia, một ly rượu vang và một shot rượu mạnh đều gần bằng một ly chuẩn của Mỹ."
+      }
+    },
+    "calculate-simple-interest": {
+      "copy": {
+        "name": "Cách tính lãi đơn",
+        "blurb": "I = P × r × t kèm ví dụ.",
+        "title": "Cách tính lãi đơn",
+        "lead": "Lãi đơn chỉ được tính trên số tiền bạn vay hoặc gửi ban đầu, nên mỗi năm tăng thêm một khoản như nhau. Bạn sẽ học công thức, cách tính tháng và ngày, cách tính ngược ra vốn gốc, lãi suất hoặc thời gian, và lãi đơn khác lãi kép thế nào.",
+        "result": "Tiền lãi và tổng tiền với bất kỳ vốn gốc, lãi suất và thời gian nào, cùng giá trị còn thiếu khi bạn biết ba giá trị kia.",
+        "note": "Các khoản vay và tiết kiệm tính lãi kép, như hầu hết các khoản vay mua nhà, thẻ tín dụng và tài khoản tiết kiệm, tăng nhanh hơn mức này. Hãy kiểm tra xem khoản của bạn dùng loại nào.",
+        "s1t": "Mở Tính lãi đơn trên cv.cm",
+        "s1b": "Chọn đại lượng cần tìm: tiền lãi và tổng tiền, hoặc vốn gốc, lãi suất hay thời gian.",
+        "s2t": "Dùng công thức",
+        "s2b": "Tiền lãi I = P × r × t: vốn gốc nhân lãi suất năm dạng thập phân nhân thời gian tính bằng năm. 10.000 với lãi suất 5 % trong 3 năm: 10.000 × 0,05 × 3 = 1.500.",
+        "s3t": "Đổi lãi suất sang số thập phân",
+        "s3b": "Chia phần trăm cho 100: 5 % là 0,05 và 4,5 % là 0,045. Lãi suất phải tính theo năm; lãi suất tháng nhân 12 sẽ ra lãi suất năm.",
+        "s4t": "Tính thời gian theo năm",
+        "s4b": "Chia số tháng cho 12 và số ngày cho 365. Một số khoản vay dùng năm 360 ngày, cho tiền lãi nhiều hơn một chút: 10.000 với 6 % trong 90 ngày là 147,95 theo năm 365 ngày nhưng 150,00 theo năm 360 ngày.",
+        "s5t": "Tìm giá trị còn thiếu",
+        "s5b": "Biến đổi công thức: P = I ÷ (r × t), r = I ÷ (P × t) và t = I ÷ (P × r). Muốn có 300 tiền lãi từ 5.000 với 4 % thì cần 300 ÷ (5.000 × 0,04) = 1,5 năm.",
+        "s6t": "So sánh với lãi kép",
+        "s6b": "Cộng tiền lãi vào vốn gốc để ra tổng số tiền phải trả hoặc nhận được: 11.500 trong ví dụ đầu tiên. Nếu tính lãi kép hằng năm với cùng lãi suất thì sẽ là 11.576,25, và khoảng chênh lệch tăng lên mỗi năm. Bảng hiển thị cả hai.",
+        "diagram1": "Công thức lãi đơn kèm ví dụ.",
+        "diagram2": "Lãi đơn tăng đều từng bước; lãi kép tăng nhanh hơn."
+      },
+      "faq": {
+        "q1": "Công thức lãi đơn là gì?",
+        "a1": "I = P × r × t, trong đó P là vốn gốc, r là lãi suất năm dạng thập phân và t là thời gian tính bằng năm. Tổng tiền là P + I.",
+        "q2": "Tính lãi đơn theo tháng thế nào?",
+        "a2": "Chia tiền lãi một năm cho 12. 10.000 với lãi suất 6 % một năm cho 600 mỗi năm, tức 50 mỗi tháng.",
+        "q3": "Lãi đơn và lãi kép khác nhau thế nào?",
+        "a3": "Lãi đơn chỉ tính trên vốn gốc. Lãi kép tính cả trên tiền lãi trước đó, nên càng về sau càng tăng nhanh.",
+        "q4": "Vì sao một số khoản vay dùng năm 360 ngày?",
+        "a4": "Đó là một quy ước ngân hàng cũ giúp tính toán dễ hơn. Chia số ngày cho 360 thay vì 365 làm tiền lãi cao hơn khoảng 1,4 %.",
+        "q5": "Lãi đơn được dùng ở đâu?",
+        "a5": "Nhiều khoản vay mua ô tô và vay cá nhân ngắn hạn, tiền lãi coupon của trái phiếu và một số chứng chỉ tiền gửi. Vay mua nhà, thẻ tín dụng và tài khoản tiết kiệm thường tính lãi kép."
+      }
+    }
+  },
+  "svg": {
+    "play-hangman": {
+      "word": "Từ",
+      "wrong": "Chữ sai",
+      "parts": "6 lần đoán sai",
+      "head": "đầu",
+      "body": "thân",
+      "arms": "tay",
+      "legs": "chân",
+      "freq": "Tỉ lệ từ có chứa mỗi chữ cái (danh sách tiếng Anh)",
+      "tryFirst": "thử trước"
+    },
+    "play-rock-paper-scissors": {
+      "rock": "Búa",
+      "paper": "Bao",
+      "scissors": "Kéo",
+      "lizard": "Thằn lằn",
+      "spock": "Spock",
+      "beats": "thắng"
+    },
+    "calculate-bac": {
+      "grams": "số gam cồn",
+      "weight": "cân nặng (g)",
+      "factor": "0,68 nam · 0,55 nữ",
+      "hours": "giờ",
+      "example": "3 lon bia, nam 70 kg, 2 giờ",
+      "peak": "đỉnh",
+      "time": "số giờ từ ly đầu tiên",
+      "hUnit": "giờ"
+    },
+    "calculate-simple-interest": {
+      "interest": "tiền lãi",
+      "principal": "vốn gốc",
+      "rate": "lãi suất năm",
+      "years": "năm",
+      "example": "10.000, 5 %, 3 năm",
+      "simple": "Lãi đơn",
+      "compound": "Lãi kép",
+      "year": "Năm",
+      "after10": "Tiền lãi sau 10 năm"
+    }
+  }
+}
