@@ -784,9 +784,9 @@ describe("test pages: scoring", () => {
     // question (each in four, once in each position).
     const positions = [
       { ids: ["friend-role", "avengers", "friends-character"], min: 2, max: 2 },
-      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic", "harry-potter-character", "avatar-character", "game-of-thrones-house", "lord-of-the-rings", "sanrio", "cat-breed"], min: 1, max: 2 },
-      { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age"], min: 3, max: 3 },
-      { ids: ["hunger-games-district", "greek-god"], min: 1, max: 1 },
+      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic", "harry-potter-character", "avatar-character", "game-of-thrones-house", "lord-of-the-rings", "sanrio", "cat-breed", "flower", "mythical-creature", "superpower", "star-wars-character", "dragon-ball-character"], min: 1, max: 2 },
+      { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age", "communication-style"], min: 3, max: 3 },
+      { ids: ["hunger-games-district", "greek-god", "archetype"], min: 1, max: 1 },
     ] as const;
     for (const { ids, min, max } of positions) {
       for (const id of ids) {

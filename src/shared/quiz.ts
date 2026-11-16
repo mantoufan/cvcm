@@ -928,139 +928,51 @@ const PERSONAL_COLOR: ChoiceItem[] = [
   { options: [{}, { deep: 2 }] },
 ];
 
-/** Eight flowers: the `GHIBLI` layout with the results relabeled. */
-const FLOWER: ChoiceItem[] = [
-  { options: [{ rose: 2 }, { sunflower: 2 }, { lily: 2 }, { lavender: 2 }] },
-  { options: [{ daisy: 2 }, { orchid: 2 }, { tulip: 2 }, { lotus: 2 }] },
-  { options: [{ tulip: 2 }, { rose: 2 }, { daisy: 2 }, { lily: 2 }] },
-  { options: [{ lavender: 2 }, { orchid: 2 }, { sunflower: 2 }, { lotus: 2 }] },
-  { options: [{ lotus: 2 }, { rose: 2 }, { tulip: 2 }, { sunflower: 2 }] },
-  { options: [{ orchid: 2 }, { lily: 2 }, { lavender: 2 }, { daisy: 2 }] },
-  { options: [{ daisy: 2 }, { lotus: 2 }, { rose: 2 }, { lavender: 2 }] },
-  { options: [{ lily: 2 }, { tulip: 2 }, { orchid: 2 }, { sunflower: 2 }] },
-  { options: [{ orchid: 2 }, { daisy: 2 }, { sunflower: 2 }, { rose: 2 }] },
-  { options: [{ tulip: 2 }, { lavender: 2 }, { lotus: 2 }, { lily: 2 }] },
-  { options: [{ lily: 2 }, { lotus: 2 }, { rose: 2 }, { orchid: 2 }] },
-  { options: [{ sunflower: 2 }, { daisy: 2 }, { lavender: 2 }, { tulip: 2 }] },
-];
+/**
+ * A tested choice layout with its results renamed, so quizzes that share an arrangement (and its balance: every result
+ * equally often, spread over the answer positions) cannot drift from it. Every result in the layout must be renamed.
+ */
+function relabel(items: readonly ChoiceItem[], names: Record<string, string>): ChoiceItem[] {
+  return items.map((item) => ({
+    options: item.options.map((option) =>
+      Object.fromEntries(
+        Object.entries(option).map(([key, points]) => {
+          const name = names[key];
+          if (!name) throw new Error(`relabel: no new name for ${key}`);
+          return [name, points];
+        }),
+      ),
+    ),
+  }));
+}
 
-/** Eight mythical creatures: the `GHIBLI` layout with the results relabeled. */
-const MYTHICAL_CREATURE: ChoiceItem[] = [
-  { options: [{ dragon: 2 }, { phoenix: 2 }, { unicorn: 2 }, { griffin: 2 }] },
-  { options: [{ mermaid: 2 }, { kitsune: 2 }, { werewolf: 2 }, { pegasus: 2 }] },
-  { options: [{ werewolf: 2 }, { dragon: 2 }, { mermaid: 2 }, { unicorn: 2 }] },
-  { options: [{ griffin: 2 }, { kitsune: 2 }, { phoenix: 2 }, { pegasus: 2 }] },
-  { options: [{ pegasus: 2 }, { dragon: 2 }, { werewolf: 2 }, { phoenix: 2 }] },
-  { options: [{ kitsune: 2 }, { unicorn: 2 }, { griffin: 2 }, { mermaid: 2 }] },
-  { options: [{ mermaid: 2 }, { pegasus: 2 }, { dragon: 2 }, { griffin: 2 }] },
-  { options: [{ unicorn: 2 }, { werewolf: 2 }, { kitsune: 2 }, { phoenix: 2 }] },
-  { options: [{ kitsune: 2 }, { mermaid: 2 }, { phoenix: 2 }, { dragon: 2 }] },
-  { options: [{ werewolf: 2 }, { griffin: 2 }, { pegasus: 2 }, { unicorn: 2 }] },
-  { options: [{ unicorn: 2 }, { pegasus: 2 }, { dragon: 2 }, { kitsune: 2 }] },
-  { options: [{ phoenix: 2 }, { mermaid: 2 }, { griffin: 2 }, { werewolf: 2 }] },
-];
+/** Eight flowers: the `GHIBLI` layout with the results renamed. */
+const FLOWER = relabel(GHIBLI, { chihiro: "rose", san: "sunflower", kiki: "lily", sophie: "lavender", nausicaa: "daisy", howl: "orchid", haku: "tulip", totoro: "lotus" });
 
-/** Eight superpowers: the `GHIBLI` layout with the results relabeled. */
-const SUPERPOWER: ChoiceItem[] = [
-  { options: [{ flight: 2 }, { invisibility: 2 }, { telepathy: 2 }, { timetravel: 2 }] },
-  { options: [{ teleport: 2 }, { strength: 2 }, { healing: 2 }, { shapeshift: 2 }] },
-  { options: [{ healing: 2 }, { flight: 2 }, { teleport: 2 }, { telepathy: 2 }] },
-  { options: [{ timetravel: 2 }, { strength: 2 }, { invisibility: 2 }, { shapeshift: 2 }] },
-  { options: [{ shapeshift: 2 }, { flight: 2 }, { healing: 2 }, { invisibility: 2 }] },
-  { options: [{ strength: 2 }, { telepathy: 2 }, { timetravel: 2 }, { teleport: 2 }] },
-  { options: [{ teleport: 2 }, { shapeshift: 2 }, { flight: 2 }, { timetravel: 2 }] },
-  { options: [{ telepathy: 2 }, { healing: 2 }, { strength: 2 }, { invisibility: 2 }] },
-  { options: [{ strength: 2 }, { teleport: 2 }, { invisibility: 2 }, { flight: 2 }] },
-  { options: [{ healing: 2 }, { timetravel: 2 }, { shapeshift: 2 }, { telepathy: 2 }] },
-  { options: [{ telepathy: 2 }, { shapeshift: 2 }, { flight: 2 }, { strength: 2 }] },
-  { options: [{ invisibility: 2 }, { teleport: 2 }, { timetravel: 2 }, { healing: 2 }] },
-];
+/** Eight mythical creatures: the `GHIBLI` layout with the results renamed. */
+const MYTHICAL_CREATURE = relabel(GHIBLI, { chihiro: "dragon", san: "phoenix", kiki: "unicorn", sophie: "griffin", nausicaa: "mermaid", howl: "kitsune", haku: "werewolf", totoro: "pegasus" });
 
-/** Eight Star Wars characters: the `GHIBLI` layout with the results relabeled. */
-const STAR_WARS: ChoiceItem[] = [
-  { options: [{ luke: 2 }, { leia: 2 }, { han: 2 }, { yoda: 2 }] },
-  { options: [{ obiwan: 2 }, { chewbacca: 2 }, { vader: 2 }, { rey: 2 }] },
-  { options: [{ vader: 2 }, { luke: 2 }, { obiwan: 2 }, { han: 2 }] },
-  { options: [{ yoda: 2 }, { chewbacca: 2 }, { leia: 2 }, { rey: 2 }] },
-  { options: [{ rey: 2 }, { luke: 2 }, { vader: 2 }, { leia: 2 }] },
-  { options: [{ chewbacca: 2 }, { han: 2 }, { yoda: 2 }, { obiwan: 2 }] },
-  { options: [{ obiwan: 2 }, { rey: 2 }, { luke: 2 }, { yoda: 2 }] },
-  { options: [{ han: 2 }, { vader: 2 }, { chewbacca: 2 }, { leia: 2 }] },
-  { options: [{ chewbacca: 2 }, { obiwan: 2 }, { leia: 2 }, { luke: 2 }] },
-  { options: [{ vader: 2 }, { yoda: 2 }, { rey: 2 }, { han: 2 }] },
-  { options: [{ han: 2 }, { rey: 2 }, { luke: 2 }, { chewbacca: 2 }] },
-  { options: [{ leia: 2 }, { obiwan: 2 }, { yoda: 2 }, { vader: 2 }] },
-];
+/** Eight superpowers: the `GHIBLI` layout with the results renamed. */
+const SUPERPOWER = relabel(GHIBLI, { chihiro: "flight", san: "invisibility", kiki: "telepathy", sophie: "timetravel", nausicaa: "teleport", howl: "strength", haku: "healing", totoro: "shapeshift" });
 
-/** Eight Dragon Ball characters: the `GHIBLI` layout with the results relabeled. */
-const DRAGON_BALL: ChoiceItem[] = [
-  { options: [{ goku: 2 }, { vegeta: 2 }, { gohan: 2 }, { piccolo: 2 }] },
-  { options: [{ bulma: 2 }, { krillin: 2 }, { trunks: 2 }, { frieza: 2 }] },
-  { options: [{ trunks: 2 }, { goku: 2 }, { bulma: 2 }, { gohan: 2 }] },
-  { options: [{ piccolo: 2 }, { krillin: 2 }, { vegeta: 2 }, { frieza: 2 }] },
-  { options: [{ frieza: 2 }, { goku: 2 }, { trunks: 2 }, { vegeta: 2 }] },
-  { options: [{ krillin: 2 }, { gohan: 2 }, { piccolo: 2 }, { bulma: 2 }] },
-  { options: [{ bulma: 2 }, { frieza: 2 }, { goku: 2 }, { piccolo: 2 }] },
-  { options: [{ gohan: 2 }, { trunks: 2 }, { krillin: 2 }, { vegeta: 2 }] },
-  { options: [{ krillin: 2 }, { bulma: 2 }, { vegeta: 2 }, { goku: 2 }] },
-  { options: [{ trunks: 2 }, { piccolo: 2 }, { frieza: 2 }, { gohan: 2 }] },
-  { options: [{ gohan: 2 }, { frieza: 2 }, { goku: 2 }, { krillin: 2 }] },
-  { options: [{ vegeta: 2 }, { bulma: 2 }, { piccolo: 2 }, { trunks: 2 }] },
-];
+/** Eight Star Wars characters: the `GHIBLI` layout with the results renamed. */
+const STAR_WARS = relabel(GHIBLI, { chihiro: "luke", san: "leia", kiki: "han", sophie: "yoda", nausicaa: "obiwan", howl: "chewbacca", haku: "vader", totoro: "rey" });
 
-/** Four communication styles: the `HOGWARTS` layout with the results relabeled. */
-const COMMUNICATION: ChoiceItem[] = [
-  { options: [{ assertive: 2 }, { passive: 2 }, { aggressive: 2 }, { passiveaggressive: 2 }] },
-  { options: [{ aggressive: 2 }, { passiveaggressive: 2 }, { passive: 2 }, { assertive: 2 }] },
-  { options: [{ passive: 2 }, { aggressive: 2 }, { assertive: 2 }, { passiveaggressive: 2 }] },
-  { options: [{ passiveaggressive: 2 }, { assertive: 2 }, { passive: 2 }, { aggressive: 2 }] },
-  { options: [{ assertive: 2 }, { aggressive: 2 }, { passiveaggressive: 2 }, { passive: 2 }] },
-  { options: [{ passiveaggressive: 2 }, { passive: 2 }, { aggressive: 2 }, { assertive: 2 }] },
-  { options: [{ aggressive: 2 }, { passiveaggressive: 2 }, { assertive: 2 }, { passive: 2 }] },
-  { options: [{ passive: 2 }, { assertive: 2 }, { aggressive: 2 }, { passiveaggressive: 2 }] },
-  { options: [{ assertive: 2 }, { passiveaggressive: 2 }, { passive: 2 }, { aggressive: 2 }] },
-  { options: [{ passive: 2 }, { aggressive: 2 }, { passiveaggressive: 2 }, { assertive: 2 }] },
-  { options: [{ passiveaggressive: 2 }, { passive: 2 }, { assertive: 2 }, { aggressive: 2 }] },
-  { options: [{ aggressive: 2 }, { assertive: 2 }, { passiveaggressive: 2 }, { passive: 2 }] },
-];
+/** Eight Dragon Ball characters: the `GHIBLI` layout with the results renamed. */
+const DRAGON_BALL = relabel(GHIBLI, { chihiro: "goku", san: "vegeta", kiki: "gohan", sophie: "piccolo", nausicaa: "bulma", howl: "krillin", haku: "trunks", totoro: "frieza" });
 
-/** Twelve Jungian-style archetypes: the `GREEK_GOD` layout with the results relabeled. */
-const ARCHETYPE: ChoiceItem[] = [
-  { options: [{ rebel: 2 }, { ruler: 2 }, { creator: 2 }, { jester: 2 }] },
-  { options: [{ hero: 2 }, { rebel: 2 }, { magician: 2 }, { innocent: 2 }] },
-  { options: [{ innocent: 2 }, { lover: 2 }, { everyman: 2 }, { creator: 2 }] },
-  { options: [{ everyman: 2 }, { sage: 2 }, { hero: 2 }, { caregiver: 2 }] },
-  { options: [{ caregiver: 2 }, { jester: 2 }, { lover: 2 }, { rebel: 2 }] },
-  { options: [{ explorer: 2 }, { caregiver: 2 }, { jester: 2 }, { magician: 2 }] },
-  { options: [{ ruler: 2 }, { hero: 2 }, { explorer: 2 }, { everyman: 2 }] },
-  { options: [{ lover: 2 }, { creator: 2 }, { rebel: 2 }, { explorer: 2 }] },
-  { options: [{ creator: 2 }, { innocent: 2 }, { sage: 2 }, { ruler: 2 }] },
-  { options: [{ jester: 2 }, { explorer: 2 }, { innocent: 2 }, { hero: 2 }] },
-  { options: [{ magician: 2 }, { everyman: 2 }, { ruler: 2 }, { sage: 2 }] },
-  { options: [{ sage: 2 }, { magician: 2 }, { caregiver: 2 }, { lover: 2 }] },
-];
+/** Four communication styles: the `HOGWARTS` layout with the results renamed. */
+const COMMUNICATION = relabel(HOGWARTS, { gryffindor: "assertive", hufflepuff: "passive", ravenclaw: "aggressive", slytherin: "passiveaggressive" });
+
+/** Twelve Jungian-style archetypes: the `GREEK_GOD` layout with the results renamed. */
+const ARCHETYPE = relabel(GREEK_GOD, { zeus: "innocent", hera: "everyman", poseidon: "hero", demeter: "caregiver", athena: "explorer", apollo: "rebel", artemis: "lover", ares: "creator", aphrodite: "jester", hephaestus: "sage", hermes: "magician", dionysus: "ruler" });
 
 /**
  * Parenting style after Diana Baumrind and Maccoby & Martin, simplified to two axes: odd questions ask about warmth,
- * even ones about rules and expectations (control). The `PERSONAL_COLOR` layout with the axes relabeled: seven two-way
+ * even ones about rules and expectations (control). The `PERSONAL_COLOR` layout with the axes renamed: seven two-way
  * questions an axis worth 2 or nothing, so neither axis can land on exactly 50%. Questions written for cv.cm.
  */
-const PARENTING: ChoiceItem[] = [
-  { options: [{ warmth: 2 }, {}] },
-  { options: [{}, { control: 2 }] },
-  { options: [{}, { warmth: 2 }] },
-  { options: [{ control: 2 }, {}] },
-  { options: [{ warmth: 2 }, {}] },
-  { options: [{}, { control: 2 }] },
-  { options: [{}, { warmth: 2 }] },
-  { options: [{ control: 2 }, {}] },
-  { options: [{ warmth: 2 }, {}] },
-  { options: [{}, { control: 2 }] },
-  { options: [{}, { warmth: 2 }] },
-  { options: [{ control: 2 }, {}] },
-  { options: [{ warmth: 2 }, {}] },
-  { options: [{}, { control: 2 }] },
-];
+const PARENTING = relabel(PERSONAL_COLOR, { warm: "warmth", deep: "control" });
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
