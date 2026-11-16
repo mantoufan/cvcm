@@ -20,7 +20,8 @@ import {
   nostalgiaPublished,
 } from "../src/shared/nostalgia";
 import { NOSTALGIA_META } from "../src/shared/nostalgia-meta";
-import { nostalgiaArticleJsonLd, nostalgiaCopy, nostalgiaPageHtml, nostalgiaTitle, type NostalgiaEntryCopy } from "../src/shared/nostalgia-i18n";
+import { nostalgiaArticleJsonLd, nostalgiaCopy, nostalgiaTitle, type NostalgiaEntryCopy } from "../src/shared/nostalgia-i18n";
+import { nostalgiaPageHtml } from "../src/shared/nostalgia-page";
 import { nostalgiaSyncFiles } from "../src/shared/nostalgia-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
 import { fill } from "../src/shared/fill";

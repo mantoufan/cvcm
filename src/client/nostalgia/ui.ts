@@ -1,7 +1,8 @@
 import { fill } from "../../shared/fill";
 import type { Locale } from "../../shared/locale";
 import { nostalgiaGroupOf, type NostalgiaId } from "../../shared/nostalgia";
-import { nostalgiaPageHtml, nostalgiaUi, nostalgiaVoteResult } from "../../shared/nostalgia-i18n";
+import { nostalgiaUi } from "../../shared/nostalgia-i18n";
+import { nostalgiaPageHtml, nostalgiaVoteResult } from "../../shared/nostalgia-page";
 
 type Stored = { a: "yes" | "no"; yes: number; no: number };
 

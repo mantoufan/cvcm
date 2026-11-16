@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 import { d1NostalgiaStore, handleNostalgiaApi, NOSTALGIA_PER_ADDRESS, NOSTALGIA_VOTE_MAX, resetNostalgiaApiCache } from "../src/nostalgia-api";
 import worker from "../src/worker";
 import "../src/shared/messages-all";
-import { nostalgiaPageHtml, nostalgiaVoteResult } from "../src/shared/nostalgia-i18n";
+import { nostalgiaPageHtml, nostalgiaVoteResult } from "../src/shared/nostalgia-page";
 
 function post(body: unknown, headers: Record<string, string> = {}): Request {
   return new Request("https://cv.cm/api/nostalgia/vote", {

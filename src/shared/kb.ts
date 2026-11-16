@@ -344,6 +344,11 @@ export function isKbHub(page: KbPage | string): page is KbHub {
   return HUB_SHELF.has(page as KbPage);
 }
 
+/** A shelf's hub page. */
+export function kbHubOf(shelf: KbShelf): KbHub {
+  return KB_SHELVES[shelf].hub;
+}
+
 /** The hub page whose links carry this data-nav value (main.ts prefetch), or null. */
 export function kbHubOfNav(nav: string): KbHub | null {
   const shelf = (Object.keys(KB_SHELVES) as KbShelf[]).find((s) => KB_SHELVES[s].nav === nav);
