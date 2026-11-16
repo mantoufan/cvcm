@@ -1,0 +1,212 @@
+{
+  "title": "Cara Memotret Bulan: Setelan Kamera dan Ponsel — cv.cm",
+  "description": "Cara foto bulan: setelan Looney 11 per fase, kenapa mode auto membuat bulan jadi gumpalan putih, seberapa besar bulan di setiap panjang fokus, dan langkah di ponsel.",
+  "h1": "Bagaimana cara memotret bulan?",
+  "answer": "Letakkan kamera di tripod, pakai lensa terpanjang yang Anda punya, fokus ke bulan, dan atur eksposur secara manual. Titik awal yang bagus adalah aturan Looney 11: f/11 dengan shutter speed 1 dibagi ISO, misalnya ISO 100 di 1/100 s untuk bulan purnama. Di ponsel, ketuk bulan dan geser slider eksposur ke bawah sampai detail permukaannya muncul.",
+  "sections": [
+    {
+      "h": "Kenapa bulan jadi gumpalan putih",
+      "body": [
+        "Bulan disinari matahari langsung. Permukaannya seterang batu abu-abu yang terkena sinar matahari di Bumi, sementara langit di sekitarnya hitam. Kamera atau ponsel Anda mengukur seluruh frame, melihat kebanyakan gelap, lalu mencerahkan eksposur untuk adegan malam. Bulan yang kecil pun jadi overexposed beberapa stop dan kehilangan semua kawahnya.",
+        "Solusinya adalah mengabaikan langit yang gelap dan mengatur eksposur untuk bulan seolah-olah berada di siang hari. Itu sebabnya setelan bulan mirip setelan siang terik: shutter cepat, ISO rendah, aperture sedang. Itu juga menjelaskan kejutan yang umum: eksposur untuk bulan membuat pemandangan di bawahnya hampir hitam, karena keduanya berbeda banyak stop."
+      ]
+    },
+    {
+      "h": "Setelan awal: aturan Looney 11",
+      "body": [
+        "Aturan Looney 11 berbunyi: di f/11, atur shutter speed menjadi 1 dibagi ISO. Di ISO 100 itu 1/100 s; di ISO 200, 1/200 s. Ini versi bulan dari aturan sunny 16 dengan eksposur satu stop lebih banyak (f/11, bukan f/16), karena permukaan bulan lebih gelap daripada kebanyakan adegan siang hari. Aturan ini mengasumsikan bulan purnama yang tinggi di langit yang cerah.",
+        "Di fase lain, bagian bulan yang disinari lebih sedikit, dan cahaya di dekat tepi bayangan rendah dan redup, jadi tambahkan eksposur. Tabel di bawah menjaga shutter cukup cepat untuk lensa panjang, memakai f/8 dan ISO 400.",
+        {
+          "table": {
+            "head": [
+              "Fase",
+              "Looney 11 (f/11, ISO 100)",
+              "Titik awal praktis (f/8, ISO 400)",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Bulan purnama",
+                "1/100 s",
+                "1/800 s",
+                "Terang dan datar; bayangan kawah sedikit"
+              ],
+              [
+                "Gibbous",
+                "1/50 s",
+                "1/400 s",
+                "Kawah terlihat di sepanjang tepi bayangan"
+              ],
+              [
+                "Perempat (setengah bulan)",
+                "1/25 s",
+                "1/200 s",
+                "Detail kawah terbaik di dekat garis antara terang dan gelap"
+              ],
+              [
+                "Sabit",
+                "1/13 s",
+                "1/100 s",
+                "Tipis dan lebih redup; sering rendah di langit senja"
+              ],
+              [
+                "Bulan di dekat horizon",
+                "tambah 1 sampai 2 stop",
+                "1/200 sampai 1/400 s (purnama)",
+                "Udara tebal meredupkan dan menghangatkan cahaya; detail lebih lembut"
+              ]
+            ]
+          }
+        },
+        "Anggap ini titik awal. Ambil satu foto, zoom di layar, dan lihat histogram. Aktifkan peringatan highlight: area paling terang tidak boleh berkedip. Kalau berkedip, pakai shutter speed yang lebih cepat. Lakukan bracketing satu stop ke kedua arah dan pilih yang terbaik nanti.",
+        "Atur white balance ke daylight. Cahaya bulan adalah sinar matahari yang dipantulkan, jadi white balance daylight menampilkan bulan sebagai abu-abu netral yang sedikit hangat. Auto bisa membuatnya kebiruan atau kekuningan."
+      ]
+    },
+    {
+      "h": "Seberapa besar bulan nanti? Hitungan panjang fokus",
+      "body": [
+        "Garis tengah bulan sekitar 3.475 km dan jaraknya sekitar 384.400 km, sehingga ia menutupi sekitar setengah derajat langit. Di sensor, ukuran gambarnya sekitar panjang fokus dibagi 110. Lensa 110 mm membuat bulan selebar sekitar 1 mm di sensor; lensa 550 mm membuatnya selebar sekitar 5 mm.",
+        {
+          "table": {
+            "head": [
+              "Lensa (ekuivalen full-frame)",
+              "Bulan di sensor",
+              "Porsi tinggi frame",
+              "Tampilannya"
+            ],
+            "rows": [
+              [
+                "26 mm (kamera utama ponsel)",
+                "0,24 mm",
+                "Sekitar 1%",
+                "Titik terang kecil; bagus hanya sebagai bagian dari lanskap"
+              ],
+              [
+                "77 mm (ponsel 3x)",
+                "0,7 mm",
+                "Sekitar 3%",
+                "Cakram kecil; detail permukaan sedikit"
+              ],
+              [
+                "200 mm",
+                "1,8 mm",
+                "Sekitar 8%",
+                "Cakram jelas; area gelap utama terlihat"
+              ],
+              [
+                "300 mm",
+                "2,7 mm",
+                "Sekitar 11%",
+                "Kawah terlihat; bisa di-crop"
+              ],
+              [
+                "600 mm",
+                "5,5 mm",
+                "Sekitar 23%",
+                "Bulan detail; crop untuk memenuhi layar ponsel"
+              ],
+              [
+                "Sekitar 2.600 mm",
+                "24 mm",
+                "Tinggi penuh",
+                "Bulan memenuhi gambar full-frame dari atas sampai bawah"
+              ]
+            ]
+          }
+        },
+        "Untuk memakai tabel ini dengan lensa asli di sensor yang lebih kecil, pakai panjang fokus fisik dibagi 110 untuk ukuran dalam milimeter, lalu bandingkan dengan tinggi sensor: sekitar 24 mm untuk full frame, sekitar 15 sampai 16 mm untuk APS-C, dan 13 mm untuk Micro Four Thirds. Lensa 300 mm di APS-C mengisi sekitar 17 persen tinggi frame.",
+        "Piksel lebih penting daripada porsi frame kalau Anda berencana meng-crop. Lensa 300 mm di kamera full-frame 24 megapiksel menghasilkan bulan selebar sekitar 450 piksel. Meng-crop bulan yang tajam itu tidak masalah; memperbesarnya dengan alat AI mengarang detail yang sebenarnya tidak ada.",
+        {
+          "note": "Bulan di dekat horizon tampak sangat besar di mata Anda, tetapi itu ilusi. Di foto ukurannya sama seperti saat tinggi. Agar tampak besar di samping bangunan atau bukit, berdirilah jauh dan pakai lensa panjang."
+        }
+      ]
+    },
+    {
+      "h": "Langkah demi langkah dengan kamera",
+      "body": [
+        {
+          "ol": [
+            "Pasang kamera di tripod yang kokoh. Gantungkan tas di center column saat berangin.",
+            "Pakai lensa terpanjang Anda. Matikan stabilisasi gambar kalau pembuat lensa menyarankannya saat memakai tripod.",
+            "Atur mode manual (M), RAW, ISO 100 sampai 400, dan setelan Looney 11 atau tabel di atas.",
+            "Fokus: coba autofokus pada tepi bulan yang terang. Kalau mencari-cari, pindah ke fokus manual, perbesar live view pada bulan, dan putar cincin sampai tepi kawah paling tajam. Jangan percaya tanda tak terhingga.",
+            "Pakai timer 2 detik atau remote agar menekan tombol tidak menggoyang kamera. Pakai electronic front curtain atau silent shutter kalau ada.",
+            "Ambil banyak frame dalam burst pendek. Turbulensi udara berubah dari saat ke saat, jadi sebagian frame akan lebih tajam daripada yang lain.",
+            "Periksa ketajaman pada pembesaran penuh, sesuaikan eksposur, dan fokus ulang sesekali, karena suhu bisa menggeser fokus."
+          ]
+        },
+        "Bulan bergerak di langit sejauh lebarnya sendiri setiap dua menit. Pada pecahan detik ini tidak masalah; getaran dan turbulensi udara adalah batas yang sebenarnya. Kalau Anda menjaganya dekat tengah, arahkan ulang setiap beberapa menit."
+      ]
+    },
+    {
+      "h": "Memotret bulan dengan ponsel",
+      "body": [
+        {
+          "ol": [
+            "Matikan flash. Flash tidak bisa menerangi bulan.",
+            "Sandarkan ponsel di tripod kecil, tembok, atau pagar, dan pakai timer 3 detik.",
+            "Pindah ke lensa optik terpanjang (tombol 2x, 3x, atau 5x). Hindari zoom jauh melewatinya; zoom digital hanya meng-crop dan menambah noise.",
+            "Ketuk bulan untuk fokus padanya.",
+            "Geser slider eksposur ke bawah sampai bulan tampak abu-abu dengan corak terlihat, bukan cakram putih. Di iPhone, tekan dan tahan untuk mengunci AE/AF dulu, lalu geser ikon matahari ke bawah; di Pixel, ketuk Lock setelah mengetuk bulan.",
+            "Matikan mode malam kalau membuat bulan lebih terang atau buram; mode itu dirancang untuk adegan gelap, bukan titik terang.",
+            "Kalau aplikasi kamera Anda punya mode pro atau manual, coba ISO 50 sampai 100 dan shutter sekitar 1/250 sampai 1/1000 s lalu sesuaikan dari sana.",
+            "Ambil beberapa frame dan simpan yang paling tajam."
+          ]
+        },
+        "Ponsel bekerja paling baik saat langit tidak sepenuhnya gelap. Saat senja, perbedaan antara bulan dan langit lebih kecil, sehingga ponsel bisa menampilkan bulan sekaligus sedikit warna atau pemandangan. Beberapa ponsel juga menerapkan pemrosesan kuat pada foto bulan; kalau Anda membagikan foto itu sebagai rekaman, sebutkan apa yang dilakukan ponselnya."
+      ]
+    },
+    {
+      "h": "Fase, bulan terbit, dan perencanaan",
+      "body": [
+        "Siklus penuh dari bulan baru ke bulan baru berlangsung sekitar 29,5 hari. Bulan purnama paling terang tetapi paling datar, karena sinar matahari menimpanya lurus dan nyaris tanpa bayangan. Untuk detail kawah, potret antara bulan sabit dan gibbous dan lihat sepanjang garis antara bagian yang terang dan gelap, tempat bayangannya panjang.",
+        {
+          "ul": [
+            "Bulan purnama terbit sekitar matahari terbenam dan terbenam sekitar matahari terbit.",
+            "Bulan terbit rata-rata sekitar 50 menit lebih lambat setiap hari, walau selisih persisnya berbeda menurut musim dan lintang.",
+            "Pada sore sebelum purnama, bulan terbit sesaat sebelum matahari terbenam, sehingga tampak di langit yang masih terang. Ini waktu terbaik untuk menampilkan bulan hampir purnama dengan pemandangan yang terekspos baik dalam satu frame.",
+            "Bulan sabit awal terlihat di barat setelah matahari terbenam; bulan sabit akhir di timur sebelum matahari terbit.",
+            "Bulan terlihat di siang hari pada sebagian besar bulan, sering di sore hari sekitar perempat pertama. Foto bulan di siang hari mudah diatur eksposurnya."
+          ]
+        },
+        "Cari bulan terbit, bulan terbenam, dan fase untuk lokasi Anda lewat layanan almanak resmi seperti halaman data U.S. Naval Observatory, atau almanak di aplikasi cuaca ponsel Anda. Periksa arah bulan terbit di peta agar bangunan, pohon, atau gunung sejajar dengannya."
+      ]
+    },
+    {
+      "h": "Bulan dan pemandangan dalam satu gambar, secara jujur",
+      "body": [
+        "Bulan yang terang di atas kota yang gelap itu terang banyak stop dibanding kotanya. Ada tiga pilihan yang jujur.",
+        {
+          "ul": [
+            "Potret saat senja, ketika langit dan daratan kecerahannya lebih mendekati bulan.",
+            "Ambil dua eksposur dari posisi tripod dan panjang fokus yang sama, satu untuk bulan dan satu untuk pemandangan, lalu gabungkan. Ini teknik yang umum dan diterima.",
+            "Terima bulan yang terang tanpa detail di adegan malam, atau pemandangan gelap dengan bulan yang detail."
+          ]
+        },
+        "Menempelkan bulan besar dari foto lain atau panjang fokus lain ke pemandangan menghasilkan komposit, bukan rekaman. Itu bisa menjadi karya seni yang bagus, tetapi sebutkan saat membagikannya, dan jangan pernah mengikutkannya di lomba atau pemakaian berita sebagai satu foto."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "ISO berapa yang terbaik untuk foto bulan?",
+      "a": "Mulai dari ISO 100 sampai 400. Bulan itu terang, jadi ISO rendah menjaga noise tetap kecil sambil tetap memungkinkan shutter speed yang cepat. Naikkan hanya kalau shutter akan turun di bawah sekitar 1/100 s dengan lensa panjang."
+    },
+    {
+      "q": "Kenapa foto bulan saya buram?",
+      "a": "Biasanya karena kamera goyang, fokus meleset, atau turbulensi udara. Pakai tripod dan timer, fokus manual dengan live view yang diperbesar, dan ambil banyak frame agar bisa menyimpan yang paling tajam. Memotret bulan saat tinggi di langit juga membantu."
+    },
+    {
+      "q": "Bisakah memotret bulan tanpa lensa telefoto?",
+      "a": "Bisa, tetapi akan kecil. Dengan kamera utama ponsel atau lensa wide, jadikan bulan bagian dari adegan, seperti skyline atau pepohonan saat senja, alih-alih mencoba menampilkan kawah."
+    },
+    {
+      "q": "Lensa apa yang dibutuhkan agar bulan memenuhi frame?",
+      "a": "Di full frame, sekitar 2.600 mm memenuhi tinggi gambar. Kebanyakan orang memakai 400 sampai 800 mm lalu crop. Teleskop dengan adaptor kamera adalah cara umum untuk mencapai panjang fokus yang sangat panjang."
+    },
+    {
+      "q": "Kapan waktu terbaik memotret bulan?",
+      "a": "Untuk kawah, beberapa hari sebelum atau sesudah perempat pertama atau terakhir. Untuk bulan dengan pemandangan, sore sebelum purnama sekitar matahari terbenam, atau bulan terbit saat senja. Udara yang cerah dan stabil memberi hasil paling tajam."
+    }
+  ]
+}

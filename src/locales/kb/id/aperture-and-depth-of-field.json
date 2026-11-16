@@ -1,0 +1,199 @@
+{
+  "title": "Aperture dan Depth of Field: Cara Blur Latar Belakang — cv.cm",
+  "description": "Aperture dan depth of field dijelaskan: kenapa f/1.8 itu bukaan lebar, empat faktor penentu blur, contoh angka, mode potret di ponsel, dan f-stop untuk foto grup.",
+  "h1": "Bagaimana aperture dan depth of field bekerja?",
+  "answer": "Aperture adalah bukaan di dalam lensa, ditulis sebagai f-number. F-number kecil seperti f/1.8 berarti bukaan lebar: cahaya yang masuk lebih banyak dan depth of field tipis, sehingga latar belakang blur. F-number besar seperti f/11 berarti bukaan kecil: cahaya lebih sedikit, dan lebih banyak bagian adegan dari depan sampai belakang yang tampak tajam.",
+  "sections": [
+    {
+      "h": "Kenapa f-number kecil berarti aperture lebar",
+      "body": [
+        "F-number adalah rasio: panjang fokus dibagi diameter bukaan. Pada lensa 50 mm, f/2 berarti bukaan selebar 25 mm (50 / 2), dan f/8 berarti bukaan sekitar 6 mm (50 / 8). Itu sebabnya angkanya naik saat lubangnya mengecil. Penulisan f/2 mengingatkan bahwa angka ini adalah pecahan.",
+        "Full stop standarnya adalah f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16, dan f/22. Masing-masing meloloskan separuh cahaya dari angka sebelumnya, karena luas bukaannya berkurang setengah. Setiap angka adalah angka sebelumnya dikali sekitar 1,4 (akar kuadrat dari 2).",
+        "Karena f-number adalah rasio, f/4 memberi kecerahan yang sama di lensa apa pun, baik lebar maupun telefoto. Lensa sering dinamai menurut aperture terlebarnya. Lensa 50 mm f/1.8 bisa dibuka sampai f/1.8. Lensa zoom bertanda f/3.5-5.6 terbuka sampai f/3.5 di sisi lebar dan hanya f/5.6 di sisi panjang."
+      ]
+    },
+    {
+      "h": "Empat hal yang mengatur depth of field",
+      "body": [
+        "Depth of field adalah zona di depan dan di belakang titik fokus yang tampak cukup tajam. Di luar zona itu tidak langsung blur; ketajaman menurun secara bertahap. Empat faktor menentukan seberapa dalam zona tersebut.",
+        {
+          "table": {
+            "head": [
+              "Faktor",
+              "Lebih tipis (lebih blur)",
+              "Lebih dalam (lebih tajam)",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Aperture",
+                "f/1.4 sampai f/2.8",
+                "f/8 sampai f/16",
+                "Yang paling mudah diubah"
+              ],
+              [
+                "Jarak ke subjek",
+                "Dekat dengan subjek",
+                "Jauh dari subjek",
+                "Jarak yang dipotong separuh membuat zona tajam jauh lebih tipis"
+              ],
+              [
+                "Panjang fokus",
+                "Telefoto, misalnya 85 sampai 135 mm",
+                "Wide-angle, misalnya 16 sampai 24 mm",
+                "Pada framing yang sama, efeknya lebih kecil dari yang dikira orang"
+              ],
+              [
+                "Ukuran sensor",
+                "Full frame atau lebih besar",
+                "Sensor kecil, ponsel",
+                "Ponsel di f/1.8 punya depth of field jauh lebih dalam daripada kamera full-frame di f/1.8"
+              ]
+            ]
+          }
+        },
+        "Faktor kelima mengubah seberapa blur latar belakang tampak tanpa mengubah depth of field itu sendiri: jarak dari subjek ke latar belakang. Orang yang berdiri 1 m di depan tembok tetap dekat dengan zona tajam. Orang yang sama 10 m di depan pepohonan memberi ruang bagi pepohonan itu untuk jatuh jauh dari fokus.",
+        "Contoh angka untuk lensa 50 mm di full frame, fokus pada orang sejauh 2 m: di f/1.8 zona tajamnya sedalam sekitar 17 cm, cukup untuk wajah tetapi tidak untuk hidung sekaligus bahu yang berpaling. Di f/8 zonanya melebar menjadi sekitar 80 cm. Dengan lensa 24 mm di f/11 yang difokuskan pada jarak sekitar 1,8 m, semuanya dari sekitar 0,9 m sampai cakrawala tampak tajam."
+      ]
+    },
+    {
+      "h": "Cara mendapat latar belakang blur di kamera",
+      "body": [
+        {
+          "ol": [
+            "Atur mode Av atau A dan pilih f-number terkecil yang diizinkan lensa, seperti f/1.8 atau f/2.8.",
+            "Pakai panjang fokus yang lebih panjang kalau ada: 50 mm, 85 mm, atau ujung panjang lensa zoom.",
+            "Dekati subjek agar orangnya mengisi lebih banyak frame. Foto kepala dan bahu membuat latar jauh lebih blur daripada foto seluruh badan.",
+            "Jauhkan orang dari latar belakang. Cari latar yang berjarak beberapa meter di belakangnya: taman, jalan, lampu di kejauhan.",
+            "Gunakan eye autofocus atau letakkan titik fokus pada mata terdekat. Di f/1.8, kalau fokus meleset ke telinga, mata jadi tidak tajam.",
+            "Periksa shutter speed. Di bawah matahari terik dengan ISO 100, f/1.8 membutuhkan sekitar 1/8000 s. Kalau kamera tidak bisa secepat itu, turunkan ISO ke nilai dasar, pakai electronic shutter, atau tambahkan filter ND."
+          ]
+        },
+        "Lensa zoom kit di f/5.6 pun masih bisa membuat latar blur: zoom ke panjang fokus terpanjang, mundur sampai wajah pas di frame, dan pilih latar yang jauh. Blurnya lebih kecil daripada lensa prime f/1.8, tetapi tetap terlihat jelas.",
+        "Untuk melihat bagaimana aperture, panjang fokus, dan jarak subjek mengubah blur sebelum membeli lensa, coba simulator kamera potret cv.cm. Simulator ini punya lensa 24, 35, 50, 85, dan 135 mm serta lensa ponsel, dan menunjukkan perubahan latar saat Anda menggeser posisi model."
+      ]
+    },
+    {
+      "h": "Bokeh: apa itu dan cara membentuknya",
+      "body": [
+        "Bokeh adalah karakter area yang tidak fokus, bukan sekadar seberapa besar blurnya. Titik-titik cahaya di latar belakang berubah menjadi cakram. Aperture lebar membuat cakram itu lebih besar. Saat aperture sedikit ditutup, cakram mengikuti bentuk bilah aperture, sehingga bisa tampak seperti segi banyak di f/4 atau f/5.6.",
+        {
+          "ul": [
+            "Untuk cakram cahaya yang besar dan bulat, potret di aperture terlebar dan letakkan lampu kecil (lampu jalan, lampu hias, matahari di sela daun) jauh di belakang subjek.",
+            "Untuk latar yang halus dan merata, pilih area polos di tempat teduh atau hamparan rumput dan jauhkan subjek dari sana.",
+            "Latar yang ramai dengan cabang-cabang terang bisa tampak mengganggu walau sudah blur. Ubah sudut agar latar lebih gelap atau lebih sederhana.",
+            "Kualitas bokeh berbeda antar lensa. Itu keputusan desain lensa, jadi dua lensa di f-number yang sama bisa tampak berbeda."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Blur latar di ponsel: mode potret",
+      "body": [
+        "Sensor kecil dan panjang fokus asli yang pendek membuat ponsel punya depth of field dalam bahkan di f/1.8, sehingga foto biasa orang tetap menjaga latar cukup tajam. Mode potret mengatasinya lewat software. Ponsel memperkirakan kedalaman dengan dua lensa, sensor kedalaman, atau machine learning, lalu mem-blur semua yang dianggap berada di belakang subjek.",
+        {
+          "ol": [
+            "Buka mode Potret. Banyak ponsel memakai lensa 1x atau 2x secara default; 2x biasanya memberi bentuk wajah yang lebih natural dan blur yang lebih besar.",
+            "Berdirilah pada jarak yang diminta aplikasi. Aplikasi memberi peringatan kalau Anda terlalu dekat, terlalu jauh, atau cahayanya terlalu redup.",
+            "Ketuk wajah untuk fokus dan mengunci eksposur.",
+            "Atur blur-nya. Di iPhone ada slider f-number atau kontrol kedalaman; ponsel Android punya slider blur yang serupa. Banyak orang merasa setelan sedang, sekitar f/2.8 sampai f/4 di slider, tampak lebih meyakinkan daripada maksimum.",
+            "Setelah memotret, biasanya Anda masih bisa mengubah blur atau titik fokus di editor foto."
+          ]
+        },
+        "Mode potret bisa salah di bagian tepi: rambut yang terurai, kacamata, tangan yang terangkat, gelas di meja, atau celah antara lengan dan badan. Periksa area itu dalam ukuran penuh. Latar polos, cahaya yang bagus, dan jarak di belakang subjek mengurangi kesalahan. Blur optik asli dari kamera tidak punya kesalahan tepi seperti ini."
+      ]
+    },
+    {
+      "h": "Aperture untuk foto grup, lanskap, dan produk",
+      "body": [
+        "Kadang yang Anda butuhkan adalah kedalaman, bukan blur. Aperture lebar berisiko saat beberapa wajah berada pada jarak yang berbeda.",
+        {
+          "table": {
+            "head": [
+              "Subjek",
+              "Aperture full-frame",
+              "Titik fokus",
+              "Alasan"
+            ],
+            "rows": [
+              [
+                "Satu orang, kepala dan bahu",
+                "f/1.8 sampai f/2.8",
+                "Mata terdekat",
+                "Latar blur, wajah tetap tajam"
+              ],
+              [
+                "Dua orang berdampingan",
+                "f/2.8 sampai f/4",
+                "Mata salah satu orang jika sejajar",
+                "Memberi ruang kalau salah satu bersandar ke belakang"
+              ],
+              [
+                "Grup dalam satu baris",
+                "f/4 sampai f/5.6",
+                "Tengah barisan",
+                "Wajah di sepanjang baris tetap tajam"
+              ],
+              [
+                "Grup dalam dua atau tiga baris",
+                "f/5.6 sampai f/8",
+                "Baris kedua",
+                "Baris depan dan belakang sama-sama tajam"
+              ],
+              [
+                "Lanskap dengan foreground",
+                "f/8 sampai f/11",
+                "Sekitar sepertiga ke dalam adegan",
+                "Zona dalam dari batu terdekat sampai cakrawala"
+              ],
+              [
+                "Produk kecil di atas meja",
+                "f/8 sampai f/11",
+                "Tepi depan produk",
+                "Seluruh produk tetap tajam"
+              ]
+            ]
+          }
+        },
+        "Jangan menutup jauh melewati f/11 sampai f/16 di full frame (atau sekitar f/8 di sensor yang lebih kecil) kecuali Anda memang butuh kedalaman. Aperture yang sangat kecil membuat detail halus melembut akibat difraksi, dan memerlukan shutter yang lambat atau ISO yang tinggi."
+      ]
+    },
+    {
+      "h": "Kesalahan umum dan cara memperbaikinya",
+      "body": [
+        {
+          "ul": [
+            "Hidung tajam, mata tidak: depth of field di f/1.4 sampai f/2 hanya beberapa sentimeter saat dekat. Fokus pada mata atau tutup sampai f/2.8.",
+            "Latar masih ramai di f/1.8: latarnya terlalu dekat. Majukan subjek atau ubah sudut pemotretan.",
+            "Baris kedua pada foto grup blur: pakai f/5.6 sampai f/8 dan fokus pada baris kedua.",
+            "Seluruh foto lembek di f/22: akibat difraksi dan shutter yang lambat. Pakai f/8 sampai f/11.",
+            "Mode potret memotong rambut atau telinga: kurangi efeknya, sederhanakan latar, atau ambil foto biasa.",
+            "Potret terlalu terang di bawah matahari pada f/1.8: shutter sudah mencapai batasnya. Turunkan ISO, pakai filter ND, atau pindah ke tempat teduh."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "F-stop berapa yang memberi blur latar paling besar?",
+      "a": "F-number terkecil yang ditawarkan lensa Anda, seperti f/1.2, f/1.4, atau f/1.8. Mendekati subjek, memakai lensa yang lebih panjang, dan menjauhkan subjek dari latar menambah blur lebih banyak daripada f-stop saja."
+    },
+    {
+      "q": "Mana lebih baik untuk potret, f/1.8 atau f/2.8?",
+      "a": "f/1.8 memberi blur lebih besar dan bekerja di cahaya yang lebih redup, tetapi zona tajamnya tipis sehingga fokus harus tepat. f/2.8 lebih aman untuk orang yang bergerak, wajah yang menyamping, dan foto dua orang."
+    },
+    {
+      "q": "Aperture mana yang paling tajam di sebuah lensa?",
+      "a": "Kebanyakan lensa paling tajam sekitar dua sampai tiga stop dari aperture terlebarnya, sering kali di sekitar f/5.6 sampai f/8. Pada aperture yang sangat kecil seperti f/16 dan f/22, difraksi melunakkan detail halus."
+    },
+    {
+      "q": "Kenapa foto ponsel semuanya tampak fokus?",
+      "a": "Sensor ponsel kecil dan panjang fokus aslinya sangat pendek, jadi depth of field dalam bahkan di f/1.8. Mode potret menambahkan blur lewat software untuk meniru kamera yang lebih besar."
+    },
+    {
+      "q": "Apakah sensor crop memberi depth of field lebih dalam?",
+      "a": "Pada framing dan f-number yang sama, ya. Sensor yang lebih kecil membutuhkan lensa yang lebih pendek atau jarak yang lebih jauh untuk membingkai adegan yang sama, sehingga depth of field lebih dalam. Untuk APS-C kira-kira satu stop lebih dalam daripada full frame."
+    }
+  ]
+}

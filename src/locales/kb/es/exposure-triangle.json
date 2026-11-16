@@ -1,0 +1,224 @@
+{
+  "title": "Triángulo de exposición: apertura, obturación e ISO — cv.cm",
+  "description": "El triángulo de exposición explicado en pasos: cómo se compensan apertura, velocidad de obturación e ISO, qué modo usar, la regla soleada f/16 y ajustes de partida por situación.",
+  "h1": "¿Qué es el triángulo de exposición y cómo se usa?",
+  "answer": "El triángulo de exposición es la relación entre apertura, velocidad de obturación e ISO. La apertura y la velocidad de obturación determinan cuánta luz llega al sensor; el ISO determina cuánto se amplifica la señal. Cada ajuste se mide en pasos, y un paso duplica o reduce a la mitad la luz. Si oscureces un ajuste un paso, aclara otro un paso para mantener la misma exposición.",
+  "sections": [
+    {
+      "h": "Los tres ajustes y lo que cuesta cada uno",
+      "body": [
+        "La exposición es lo clara u oscura que sale la foto. La controlan tres ajustes, y cada uno cambia además el aspecto de la imagen. Ese segundo efecto es lo que hace que la elección importe.",
+        {
+          "table": {
+            "head": [
+              "Ajuste",
+              "Más luz cuando",
+              "Efecto secundario",
+              "Pasos completos habituales"
+            ],
+            "rows": [
+              [
+                "Apertura (número f)",
+                "Número f más pequeño, p. ej. f/2.8 en lugar de f/5.6",
+                "Menos profundidad de campo: se ve nítida una parte menor de la escena",
+                "f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16"
+              ],
+              [
+                "Velocidad de obturación",
+                "Tiempo más largo, p. ej. 1/60 s en lugar de 1/250 s",
+                "Más desenfoque de movimiento del sujeto o por temblor de la mano",
+                "1/1000, 1/500, 1/250, 1/125, 1/60, 1/30 s"
+              ],
+              [
+                "ISO",
+                "Número más alto, p. ej. ISO 800 en lugar de ISO 200",
+                "Más ruido visible y menos color y detalle",
+                "100, 200, 400, 800, 1600, 3200, 6400"
+              ]
+            ]
+          }
+        },
+        "La apertura y la velocidad de obturación cambian la cantidad de luz que llega al sensor. El ISO no añade luz: amplifica la señal después de captarla, así que aclara la imagen pero también el ruido. Por eso los fotógrafos suelen elegir primero apertura y velocidad, y suben el ISO en último lugar.",
+        "Esta página es la visión general. Cada ajuste tiene su propia guía: consulta los artículos sobre apertura y profundidad de campo, velocidad de obturación, e ISO y ruido."
+      ]
+    },
+    {
+      "h": "Pensar en pasos: un ejemplo resuelto",
+      "body": [
+        "Un paso es duplicar o reducir a la mitad la luz. En la escala de números f, cada valor de la lista anterior deja entrar la mitad de luz que el anterior (f/4 da la mitad de luz que f/2.8). Cada paso de velocidad reduce el tiempo a la mitad. Cada paso de ISO duplica la amplificación. La mayoría de las cámaras ofrecen también pasos de un tercio, como f/3.2 y f/3.5 entre f/2.8 y f/4.",
+        "Como las unidades coinciden, puedes cambiar un ajuste por otro. Supón que la cámara mide una exposición correcta con f/8, 1/125 s, ISO 400 y quieres un fondo desenfocado.",
+        {
+          "ol": [
+            "Abre la apertura de f/8 a f/2.8. Son tres pasos más de luz (f/8, f/5.6, f/4, f/2.8).",
+            "Quita tres pasos con la velocidad: de 1/125 s a 1/250, 1/500 y 1/1000 s.",
+            "La exposición es la misma que antes, pero el fondo queda mucho más suave y el movimiento se congela.",
+            "Si en pleno sol la velocidad más rápida de la cámara no llega tan lejos, baja el ISO o usa un filtro ND."
+          ]
+        },
+        "La misma lógica funciona al revés de noche. Si 1/30 s a f/2.8 queda dos pasos oscuro y no puedes alargar la exposición sin que salga movido, sube el ISO dos pasos, por ejemplo de 800 a 3200."
+      ]
+    },
+    {
+      "h": "Modos de cámara: P, Av, Tv, M e ISO automático",
+      "body": [
+        "No necesitas el modo manual completo para controlar la exposición. Cada modo decide qué ajuste eliges tú y cuál elige la cámara.",
+        {
+          "ul": [
+            "P (Programa): la cámara elige apertura y velocidad. Normalmente puedes girar una rueda para pasar a otro par equivalente. Sirve para fotos rápidas.",
+            "Av o A (prioridad de apertura): tú fijas la apertura y la cámara fija la velocidad. Es lo mejor para retratos, paisajes y casi todo el uso diario, porque la apertura controla qué sale nítido.",
+            "Tv o S (prioridad de obturación): tú fijas la velocidad y la cámara fija la apertura. Úsalo para deporte, mascotas, niños y desenfoque de movimiento intencionado.",
+            "M (Manual): ajustas ambas. Úsalo cuando la luz es constante pero la escena engañaría al fotómetro, como un escenario, un campo nevado o escenas nocturnas con trípode.",
+            "ISO automático: la cámara sube o baja el ISO dentro de los límites que marques. Define un ISO máximo que aceptes y, en muchas cámaras, una velocidad mínima. Manual con ISO automático te deja fijar apertura y velocidad mientras la cámara mantiene el brillo correcto."
+          ]
+        },
+        "Un punto de partida práctico para principiantes: modo Av, ISO automático con máximo de 6400 y velocidad mínima de unos 1/125 s para personas. Si quieres practicar sin riesgo, el simulador de cámara de retrato de cv.cm te permite cambiar entre P, Av, Tv y M y ver cómo varían el desenfoque, el movimiento y el ruido en un modelo simulado."
+      ]
+    },
+    {
+      "h": "Medición, compensación de exposición e histograma",
+      "body": [
+        "El fotómetro decide qué es correcto. Supone que la escena en promedio es un gris medio. Funciona en la mayoría de las escenas, pero falla en dos casos comunes. Un vestido de novia blanco, la nieve o una playa luminosa salen demasiado oscuros, porque el fotómetro baja el blanco a gris. Una persona en un escenario negro o ante una pared oscura sale demasiado clara, porque el fotómetro sube el negro a gris.",
+        "La compensación de exposición corrige esto en los modos Av, Tv, P y con ISO automático. Es el botón o la rueda +/-, y se mide en EV (un EV equivale a un paso).",
+        {
+          "ul": [
+            "Nieve, playa, vestido blanco, producto blanco sobre blanco: de +0,7 a +1,3 EV.",
+            "Persona a contraluz con cielo brillante: de +1 a +2 EV, o mide sobre la cara con medición puntual.",
+            "Fondo oscuro, luz de escenario, ciudad de noche: de -0,7 a -1,7 EV para que luces y caras conserven detalle.",
+            "Cielo de atardecer: de -0,3 a -1 EV para mantener el color intenso."
+          ]
+        },
+        "Mira el histograma, no solo la pantalla. Es un gráfico de tonos, del negro a la izquierda al blanco a la derecha. Un pico alto pegado al borde derecho significa que las zonas blancas han perdido detalle (altas luces quemadas). Un pico pegado al borde izquierdo significa que las sombras son negro puro. Muchas cámaras pueden además mostrar un aviso parpadeante de altas luces al reproducir. Con sol intenso la pantalla trasera se ve oscura y en interiores se ve clara, así que el histograma es más fiable."
+      ]
+    },
+    {
+      "h": "Ajustes de partida por situación",
+      "body": [
+        "Son puntos de partida para una cámara de fotograma completo o APS-C. Haz una foto de prueba, mira el histograma y ajusta de un paso en un paso.",
+        {
+          "table": {
+            "head": [
+              "Situación",
+              "Apertura",
+              "Velocidad",
+              "ISO",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Paisaje a pleno sol",
+                "f/8 a f/11",
+                "1/250 a 1/500 s",
+                "100",
+                "Enfoca aproximadamente un tercio dentro de la escena"
+              ],
+              [
+                "Retrato en sombra abierta",
+                "f/1.8 a f/2.8",
+                "1/250 a 1/1000 s",
+                "100 a 200",
+                "La sombra da luz suave y nadie entrecierra los ojos"
+              ],
+              [
+                "Retrato junto a una ventana en interior",
+                "f/1.8 a f/2.8",
+                "1/125 a 1/250 s",
+                "400 a 1600",
+                "Cara hacia la ventana, de lado"
+              ],
+              [
+                "Niños o mascotas en interior",
+                "f/2 a f/2.8",
+                "1/500 s",
+                "Auto, hasta 6400",
+                "Modo Tv o M con ISO automático"
+              ],
+              [
+                "Deporte al aire libre, aves",
+                "f/2.8 a f/5.6",
+                "1/1000 a 1/2000 s",
+                "Auto",
+                "Enfoque continuo y ráfaga"
+              ],
+              [
+                "Calle de noche, a mano alzada",
+                "f/1.8 a f/2.8",
+                "1/30 a 1/60 s",
+                "1600 a 6400",
+                "-0,7 EV evita que las luces se quemen"
+              ],
+              [
+                "Escena nocturna con trípode",
+                "f/8",
+                "5 a 30 s",
+                "100",
+                "Usa el disparador con retardo de 2 s para evitar vibraciones"
+              ],
+              [
+                "Concierto o escenario",
+                "f/2.8",
+                "1/250 s",
+                "3200 a 6400",
+                "Medición puntual sobre la cara, modo M"
+              ]
+            ]
+          }
+        },
+        "La regla soleada f/16 es una buena comprobación cuando no hay fotómetro o este se confunde. Con sol intenso y sombras marcadas, f/16 con una velocidad de 1/ISO da una exposición correcta: ISO 100 a f/16 y 1/100 s (usa 1/125 s). La misma exposición es f/8 a 1/500 s. Abre un paso (f/11) con ligera nubosidad y sombras suaves, dos pasos (f/8) con cielo nublado, tres pasos (f/5.6) con nubes muy densas y cuatro pasos (f/4) en sombra abierta. Nieve o arena a pleno sol admiten f/22."
+      ]
+    },
+    {
+      "h": "La exposición en el móvil",
+      "body": [
+        "La cámara de un móvil tiene apertura fija en cada objetivo, así que controla la exposición con el tiempo de obturación, el ISO y el procesado. No puedes elegir f/8, pero sí controlar el brillo y bloquearlo.",
+        {
+          "ol": [
+            "Toca el sujeto en la pantalla. El móvil enfoca ahí y mide la exposición de esa zona.",
+            "Arrastra el control de sol o brillo junto al recuadro de enfoque hacia abajo si hay cielo brillante o vestido blanco, y hacia arriba si la cara está en sombra.",
+            "Mantén pulsado el sujeto para bloquear enfoque y exposición (bloqueo AE/AF en iPhone, algo similar en Android) y que el brillo no cambie al recomponer.",
+            "Con poca luz, deja que actúe el modo noche y mantén el móvil quieto. Combina varios fotogramas para reducir el ruido.",
+            "Si tu app de cámara tiene modo Pro o manual, muestra velocidad e ISO. La misma lógica de pasos vale para esos dos ajustes."
+          ]
+        },
+        "Los móviles protegen caras y cielos con HDR automático, pero aun así pueden quemar una camisa blanca o una lámpara. Si las altas luces se ven planas y blancas, baja la exposición antes de disparar. Las sombras se recuperan al editar mucho mejor que las luces quemadas."
+      ]
+    },
+    {
+      "h": "Errores de exposición frecuentes y cómo corregirlos",
+      "body": [
+        {
+          "ul": [
+            "La foto sale movida, no oscura: la velocidad era demasiado lenta. Sube el ISO o abre la apertura para poder usar una velocidad más rápida, en lugar de añadir compensación de exposición.",
+            "La cara sale oscura frente a una ventana o un cielo brillante: añade de +1 a +2 EV, usa medición puntual o gira a la persona para que la luz caiga sobre la cara.",
+            "El vestido blanco o la nieve salen grises: añade de +0,7 a +1,3 EV y comprueba que el histograma no se queme.",
+            "Foto con grano a plena luz: el ISO automático puede haber elegido un valor alto por una velocidad mínima muy rápida. Mira el ISO en los datos EXIF de la foto y fija un máximo más bajo.",
+            "Las fotos se ven bien en la cámara pero oscuras en el ordenador: la pantalla trasera tenía demasiado brillo. Fíate del histograma.",
+            "La exposición cambia entre fotos de la misma escena: el fotómetro reacciona al encuadre. Pasa a M o usa el bloqueo de exposición (AE lock)."
+          ]
+        },
+        "Para aprender de tus fotos anteriores, lee la apertura, la velocidad y el ISO guardados en cada archivo. El visor EXIF de cv.cm los muestra en el navegador sin subir la foto."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué ajuste debo cambiar primero?",
+      "a": "Elige primero el que controla el aspecto que buscas: la apertura para el desenfoque del fondo o la profundidad, la velocidad de obturación para el movimiento. Después usa el otro para llegar al brillo correcto y sube el ISO solo cuando los dos primeros hayan llegado a su límite."
+    },
+    {
+      "q": "¿Es mejor subexponer o sobreexponer una foto?",
+      "a": "En cámaras digitales y móviles, una ligera subexposición suele ser más segura porque las altas luces quemadas no se recuperan. El mejor resultado es un histograma que llega cerca del borde derecho sin un pico pegado a él."
+    },
+    {
+      "q": "¿Qué significa EV en una cámara?",
+      "a": "EV significa valor de exposición. En la compensación de exposición, un EV es un paso, así que +1 EV duplica el brillo y -1 EV lo reduce a la mitad. Las cámaras suelen ofrecer pasos de 1/3 EV."
+    },
+    {
+      "q": "¿Deben los principiantes disparar en modo manual?",
+      "a": "No necesariamente. La prioridad de apertura con ISO automático da el mismo control sobre el aspecto con menos fotos fallidas. El modo manual es más útil cuando la luz es estable y el fotómetro se equivocaría, como en un escenario o una escena nocturna con trípode."
+    },
+    {
+      "q": "¿Funciona la regla soleada f/16 con el móvil?",
+      "a": "Solo como comprobación. El objetivo de un móvil tiene una apertura ancha fija, así que no puede usar f/16. Aun así, la regla te indica cuánta luz hay a pleno sol, lo que explica por qué los móviles usan tiempos de obturación muy cortos al aire libre."
+    }
+  ]
+}

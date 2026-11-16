@@ -65,7 +65,7 @@ export type SeoInput = {
   /** A ranking under /rankings/; `rankingId` null is the hub. */
   ranking?: boolean;
   rankingId?: RankingId | null;
-  /** A kb page under /learn/knowledge/, /learn/code/ or /learn/ai/; `kbId` null is the knowledge hub, "code" the coding hub, "ai" the AI hub. */
+  /** A kb page under /learn/knowledge/, /learn/code/, /learn/ai/ or /learn/photography/; `kbId` null is the knowledge hub, "code" the coding hub, "ai" the AI hub, "photo" the photography hub. */
   kb?: boolean;
   kbId?: KbPage;
   /** The pose and style reference under /reference/; `refId` null is the hub. */

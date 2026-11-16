@@ -1,0 +1,224 @@
+{
+  "title": "Tam giác phơi sáng: khẩu độ, tốc độ màn trập, ISO — cv.cm",
+  "description": "Giải thích tam giác phơi sáng theo stop: khẩu độ, tốc độ màn trập và ISO bù trừ cho nhau ra sao, nên dùng chế độ nào, quy tắc Sunny 16 và thông số khởi điểm theo từng tình huống.",
+  "h1": "Tam giác phơi sáng là gì và dùng như thế nào?",
+  "answer": "Tam giác phơi sáng là mối liên hệ giữa khẩu độ, tốc độ màn trập và ISO. Khẩu độ và tốc độ màn trập quyết định lượng sáng đến cảm biến; ISO quyết định mức khuếch đại tín hiệu. Cả ba đều đo bằng stop, mỗi stop làm lượng sáng tăng gấp đôi hoặc giảm một nửa. Nếu bạn làm một thông số tối đi một stop, hãy làm một thông số khác sáng lên một stop để giữ nguyên độ phơi sáng.",
+  "sections": [
+    {
+      "h": "Ba thông số và cái giá của từng thông số",
+      "body": [
+        "Độ phơi sáng là độ sáng của bức ảnh. Ba thông số điều khiển nó, và mỗi thông số còn làm thay đổi diện mạo bức ảnh. Chính tác động thứ hai này khiến việc lựa chọn trở nên quan trọng.",
+        {
+          "table": {
+            "head": [
+              "Thông số",
+              "Ảnh sáng hơn khi",
+              "Tác dụng phụ",
+              "Các stop tròn thường gặp"
+            ],
+            "rows": [
+              [
+                "Khẩu độ (số f)",
+                "Số f nhỏ hơn, ví dụ f/2.8 thay vì f/5.6",
+                "Độ sâu trường ảnh mỏng hơn: phần nét trong cảnh ít hơn",
+                "f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16"
+              ],
+              [
+                "Tốc độ màn trập",
+                "Thời gian dài hơn, ví dụ 1/60 s thay vì 1/250 s",
+                "Nhòe chuyển động nhiều hơn do chủ thể di chuyển hoặc tay rung",
+                "1/1000, 1/500, 1/250, 1/125, 1/60, 1/30 s"
+              ],
+              [
+                "ISO",
+                "Số cao hơn, ví dụ ISO 800 thay vì ISO 200",
+                "Nhiễu hạt rõ hơn, màu sắc và chi tiết kém đi",
+                "100, 200, 400, 800, 1600, 3200, 6400"
+              ]
+            ]
+          }
+        },
+        "Khẩu độ và tốc độ màn trập thay đổi lượng sáng đến cảm biến. ISO không thêm ánh sáng. Nó khuếch đại tín hiệu sau khi ghi hình, nên làm ảnh sáng lên nhưng nhiễu cũng sáng lên theo. Vì vậy người chụp thường chọn khẩu độ và tốc độ màn trập trước, rồi mới tăng ISO sau cùng.",
+        "Trang này chỉ là phần tổng quan. Mỗi thông số có một bài riêng: xem các bài về khẩu độ và độ sâu trường ảnh, tốc độ màn trập, ISO và nhiễu hạt."
+      ]
+    },
+    {
+      "h": "Tư duy theo stop: một ví dụ cụ thể",
+      "body": [
+        "Một stop là gấp đôi hoặc giảm một nửa lượng sáng. Trên thang số f, mỗi nấc trong danh sách phía trên cho lượng sáng bằng một nửa nấc trước (f/4 cho lượng sáng bằng một nửa f/2.8). Mỗi nấc tốc độ màn trập giảm một nửa thời gian. Mỗi nấc ISO nhân đôi mức khuếch đại. Hầu hết máy ảnh còn có các nấc 1/3 stop, như f/3.2 và f/3.5 nằm giữa f/2.8 và f/4.",
+        "Vì các đơn vị tương ứng với nhau, bạn có thể đổi thông số này lấy thông số kia. Giả sử máy đo sáng cho độ phơi sáng chuẩn ở f/8, 1/125 s, ISO 400, còn bạn muốn xóa phông.",
+        {
+          "ol": [
+            "Mở khẩu độ từ f/8 lên f/2.8. Đó là thêm ba stop sáng (f/8 sang f/5.6 sang f/4 sang f/2.8).",
+            "Bù lại ba stop bằng tốc độ màn trập: 1/125 s sang 1/250 sang 1/500 sang 1/1000 s.",
+            "Độ phơi sáng vẫn như cũ, nhưng phông nền giờ mờ hơn nhiều và chuyển động được đóng băng.",
+            "Nếu dưới nắng gắt, tốc độ màn trập nhanh nhất của máy vẫn chưa đủ, hãy hạ ISO hoặc dùng kính lọc ND."
+          ]
+        },
+        "Vào ban đêm, logic này áp dụng theo chiều ngược lại. Nếu 1/30 s ở f/2.8 tối hơn hai stop mà bạn không thể chụp chậm hơn vì sẽ bị nhòe, hãy tăng ISO hai stop, chẳng hạn từ 800 lên 3200."
+      ]
+    },
+    {
+      "h": "Các chế độ chụp: P, Av, Tv, M và auto ISO",
+      "body": [
+        "Bạn không cần chụp hoàn toàn thủ công mới kiểm soát được độ phơi sáng. Mỗi chế độ quy định thông số nào do bạn chọn và thông số nào do máy chọn.",
+        {
+          "ul": [
+            "P (Program): máy chọn khẩu độ và tốc độ màn trập. Thường bạn có thể xoay bánh xe để dịch giữa các cặp tương đương. Phù hợp với ảnh chụp nhanh.",
+            "Av hoặc A (ưu tiên khẩu độ): bạn đặt khẩu độ, máy đặt tốc độ màn trập. Tốt nhất cho chân dung, phong cảnh và phần lớn việc chụp hằng ngày, vì khẩu độ quyết định vùng nào nét.",
+            "Tv hoặc S (ưu tiên tốc độ màn trập): bạn đặt tốc độ màn trập, máy đặt khẩu độ. Dùng cho thể thao, thú cưng, trẻ em và khi muốn chủ ý tạo nhòe chuyển động.",
+            "M (thủ công): bạn đặt cả hai. Dùng khi ánh sáng ổn định nhưng cảnh làm máy đo sáng bị đánh lừa, như sân khấu, cánh đồng tuyết hoặc cảnh đêm trên chân máy.",
+            "Auto ISO: máy tự tăng giảm ISO trong giới hạn bạn đặt. Hãy đặt ISO tối đa mà bạn chấp nhận được và, trên nhiều máy, cả tốc độ màn trập tối thiểu. Chế độ M kết hợp auto ISO cho phép bạn cố định cả khẩu độ lẫn tốc độ màn trập trong khi máy giữ độ sáng đúng."
+          ]
+        },
+        "Cấu hình mặc định hợp lý cho người mới: chế độ Av, auto ISO với mức tối đa 6400 và tốc độ màn trập tối thiểu khoảng 1/125 s khi chụp người. Nếu muốn luyện tập mà không sợ hỏng ảnh, công cụ giả lập máy ảnh chân dung của cv.cm cho phép bạn chuyển qua lại giữa P, Av, Tv và M, rồi xem độ mờ, chuyển động và nhiễu thay đổi trên người mẫu mô phỏng."
+      ]
+    },
+    {
+      "h": "Đo sáng, bù trừ sáng và biểu đồ histogram",
+      "body": [
+        "Máy đo sáng quyết định thế nào là đúng. Nó giả định cả cảnh có độ sáng trung bình là xám trung tính. Điều đó đúng với hầu hết cảnh, nhưng sai trong hai trường hợp phổ biến. Váy cưới trắng, tuyết hoặc bãi biển nắng chói trông quá tối, vì máy kéo màu trắng xuống thành xám. Người đứng trên sân khấu đen hoặc trước bức tường tối trông quá sáng, vì máy nâng màu đen lên thành xám.",
+        "Bù trừ sáng sửa lỗi này ở các chế độ Av, Tv, P và auto ISO. Đó là nút hoặc bánh xe +/-, đo bằng EV (một EV bằng một stop).",
+        {
+          "ul": [
+            "Tuyết, bãi biển, váy trắng, sản phẩm trắng trên nền trắng: +0,7 đến +1,3 EV.",
+            "Người ngược sáng trước bầu trời sáng: +1 đến +2 EV, hoặc đo sáng điểm trên khuôn mặt.",
+            "Nền tối, đèn sân khấu, thành phố về đêm: -0,7 đến -1,7 EV để đèn và khuôn mặt còn chi tiết.",
+            "Bầu trời hoàng hôn: -0,3 đến -1 EV để màu đậm hơn."
+          ]
+        },
+        "Hãy xem histogram chứ đừng chỉ nhìn màn hình. Đó là đồ thị các vùng tông từ đen ở bên trái đến trắng ở bên phải. Một đỉnh cao dồn sát mép phải nghĩa là vùng trắng đã mất chi tiết (cháy sáng). Một đỉnh dồn sát mép trái nghĩa là vùng tối đã đen hoàn toàn. Nhiều máy còn có cảnh báo nhấp nháy vùng cháy sáng khi xem lại ảnh. Nắng gắt làm màn hình sau trông tối còn trong phòng thì trông sáng, nên histogram đáng tin hơn."
+      ]
+    },
+    {
+      "h": "Thông số khởi điểm theo tình huống",
+      "body": [
+        "Đây là các điểm xuất phát cho máy full-frame hoặc APS-C. Chụp thử một tấm, xem histogram rồi chỉnh từng stop một.",
+        {
+          "table": {
+            "head": [
+              "Tình huống",
+              "Khẩu độ",
+              "Tốc độ màn trập",
+              "ISO",
+              "Ghi chú"
+            ],
+            "rows": [
+              [
+                "Phong cảnh dưới nắng gắt",
+                "f/8 đến f/11",
+                "1/250 đến 1/500 s",
+                "100",
+                "Lấy nét vào khoảng một phần ba cảnh tính từ gần ra xa"
+              ],
+              [
+                "Chân dung dưới bóng râm thoáng",
+                "f/1.8 đến f/2.8",
+                "1/250 đến 1/1000 s",
+                "100 đến 200",
+                "Bóng râm cho ánh sáng mềm, người mẫu không bị nheo mắt"
+              ],
+              [
+                "Chân dung bên cửa sổ trong nhà",
+                "f/1.8 đến f/2.8",
+                "1/125 đến 1/250 s",
+                "400 đến 1600",
+                "Quay mặt về phía cửa sổ, đứng nghiêng người"
+              ],
+              [
+                "Trẻ em hoặc thú cưng trong nhà",
+                "f/2 đến f/2.8",
+                "1/500 s",
+                "Tự động, tối đa 6400",
+                "Chế độ Tv hoặc M kèm auto ISO"
+              ],
+              [
+                "Thể thao ngoài trời, chim",
+                "f/2.8 đến f/5.6",
+                "1/1000 đến 1/2000 s",
+                "Tự động",
+                "Lấy nét liên tục và chụp liên tiếp"
+              ],
+              [
+                "Phố đêm, cầm tay",
+                "f/1.8 đến f/2.8",
+                "1/30 đến 1/60 s",
+                "1600 đến 6400",
+                "-0,7 EV giúp đèn không bị cháy sáng"
+              ],
+              [
+                "Cảnh đêm trên chân máy",
+                "f/8",
+                "5 đến 30 s",
+                "100",
+                "Dùng hẹn giờ 2 s để tránh rung máy"
+              ],
+              [
+                "Buổi hòa nhạc hoặc sân khấu",
+                "f/2.8",
+                "1/250 s",
+                "3200 đến 6400",
+                "Đo sáng điểm trên khuôn mặt, chế độ M"
+              ]
+            ]
+          }
+        },
+        "Sunny 16 là cách kiểm tra hữu ích khi không có máy đo sáng hoặc máy đo bị đánh lừa. Dưới nắng gắt với bóng đổ sắc nét, f/16 với tốc độ màn trập 1/ISO cho độ phơi sáng đúng: ISO 100 ở f/16 và 1/100 s (dùng 1/125 s). Cùng độ phơi sáng đó là f/8 ở 1/500 s. Mở thêm một stop (f/11) khi trời hơi nhiều mây, bóng đổ mềm; hai stop (f/8) khi trời nhiều mây; ba stop (f/5.6) khi trời u ám nặng; bốn stop (f/4) khi ở bóng râm thoáng. Tuyết hoặc cát dưới nắng gắt có thể dùng f/22."
+      ]
+    },
+    {
+      "h": "Phơi sáng trên điện thoại",
+      "body": [
+        "Mỗi ống kính trên điện thoại có khẩu độ cố định, nên điện thoại điều khiển độ phơi sáng bằng thời gian màn trập, ISO và xử lý hình ảnh. Bạn không chọn được f/8, nhưng vẫn kiểm soát và khóa được độ sáng.",
+        {
+          "ol": [
+            "Chạm vào chủ thể trên màn hình. Điện thoại sẽ lấy nét và đo sáng ở vùng đó.",
+            "Kéo thanh hình mặt trời hoặc thanh độ sáng cạnh khung lấy nét xuống nếu bầu trời sáng hoặc váy trắng, kéo lên nếu khuôn mặt nằm trong bóng tối.",
+            "Chạm và giữ chủ thể để khóa nét và khóa phơi sáng (AE/AF lock trên iPhone, tương tự trên Android) để độ sáng không nhảy khi bạn đổi bố cục.",
+            "Trong điều kiện thiếu sáng, hãy để chế độ chụp đêm hoạt động và giữ yên điện thoại. Máy sẽ ghép nhiều khung hình để giảm nhiễu.",
+            "Nếu ứng dụng camera có chế độ Pro hoặc thủ công, nó sẽ hiện tốc độ màn trập và ISO. Logic stop như trên áp dụng cho hai thông số này."
+          ]
+        },
+        "Điện thoại bảo vệ khuôn mặt và bầu trời bằng HDR tự động, nhưng vẫn có thể làm cháy áo trắng hoặc bóng đèn. Nếu vùng sáng trông phẳng và trắng bệch, hãy giảm độ sáng trước khi chụp. Vùng tối cứu được khi chỉnh sửa tốt hơn nhiều so với vùng cháy sáng."
+      ]
+    },
+    {
+      "h": "Lỗi phơi sáng thường gặp và cách sửa",
+      "body": [
+        {
+          "ul": [
+            "Ảnh bị nhòe chứ không phải tối: tốc độ màn trập quá chậm. Hãy tăng ISO hoặc mở khẩu độ để màn trập chạy nhanh hơn, thay vì thêm bù trừ sáng.",
+            "Mặt tối khi đứng trước cửa sổ hoặc bầu trời sáng: thêm +1 đến +2 EV, dùng đo sáng điểm, hoặc xoay người mẫu để ánh sáng rơi vào mặt.",
+            "Váy trắng hoặc tuyết bị xám: thêm +0,7 đến +1,3 EV và kiểm tra histogram không bị cháy sáng.",
+            "Ảnh nhiễu hạt giữa ban ngày: auto ISO có thể đã chọn giá trị cao do đặt tốc độ màn trập tối thiểu quá nhanh. Hãy xem ISO trong dữ liệu EXIF của ảnh và đặt mức tối đa thấp hơn.",
+            "Ảnh trên máy trông ổn nhưng lên máy tính lại tối: màn hình sau của máy quá sáng. Hãy tin vào histogram.",
+            "Độ phơi sáng thay đổi giữa các tấm cùng một cảnh: máy đo sáng phản ứng theo khung hình. Chuyển sang chế độ M hoặc dùng khóa AE."
+          ]
+        },
+        "Để rút kinh nghiệm từ các tấm đã chụp, hãy đọc khẩu độ, tốc độ màn trập và ISO lưu trong từng tệp. Công cụ xem EXIF của cv.cm hiển thị các thông tin này ngay trên trình duyệt mà không cần tải ảnh lên."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Nên chỉnh thông số nào trước?",
+      "a": "Hãy chọn trước thông số quyết định diện mạo bạn cần: khẩu độ cho xóa phông hoặc độ sâu, tốc độ màn trập cho chuyển động. Sau đó dùng thông số còn lại để đạt độ sáng đúng, và chỉ tăng ISO khi hai thông số kia đã chạm giới hạn."
+    },
+    {
+      "q": "Nên chụp thiếu sáng hay thừa sáng?",
+      "a": "Với máy ảnh số và điện thoại, thiếu sáng nhẹ thường an toàn hơn vì vùng cháy sáng không thể cứu lại. Kết quả tốt nhất là histogram chạm gần mép phải mà không có đỉnh dồn sát mép."
+    },
+    {
+      "q": "EV trên máy ảnh nghĩa là gì?",
+      "a": "EV là giá trị phơi sáng. Trong bù trừ sáng, một EV bằng một stop, nên +1 EV làm ảnh sáng gấp đôi còn -1 EV làm ảnh sáng giảm một nửa. Máy ảnh thường cho chỉnh theo từng nấc 1/3 EV."
+    },
+    {
+      "q": "Người mới có nên chụp ở chế độ thủ công không?",
+      "a": "Không nhất thiết. Ưu tiên khẩu độ kèm auto ISO cho bạn quyền kiểm soát diện mạo ảnh tương đương mà ít bỏ lỡ khoảnh khắc hơn. Chế độ thủ công hữu ích nhất khi ánh sáng ổn định và máy đo sáng dễ bị đánh lừa, như sân khấu hoặc cảnh đêm trên chân máy."
+    },
+    {
+      "q": "Quy tắc Sunny 16 có dùng được với điện thoại không?",
+      "a": "Chỉ để tham khảo. Ống kính điện thoại có khẩu độ lớn cố định nên không dùng được f/16. Quy tắc này vẫn cho bạn biết nắng gắt sáng đến mức nào, và giải thích vì sao điện thoại dùng tốc độ màn trập rất ngắn khi chụp ngoài trời."
+    }
+  ]
+}

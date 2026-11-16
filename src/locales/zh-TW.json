@@ -11843,6 +11843,113 @@
         "dev": "在瀏覽器中執行模型與呼叫大型語言模型 API",
         "trust": "AI 產出的歸屬、標示規則、C2PA 與 AI 浮水印"
       }
+    },
+    "exposure-triangle": {
+      "name": "曝光三要素",
+      "blurb": "光圈、快門與 ISO 如何以「檔」互相換算，附各情境起始參數"
+    },
+    "aperture-and-depth-of-field": {
+      "name": "光圈與景深",
+      "blurb": "為什麼 f/1.8 能虛化背景，人像與合照各該用哪個光圈"
+    },
+    "shutter-speed": {
+      "name": "快門速度",
+      "blurb": "凍結或模糊動作的快門速度、手持極限、追焦與 ND 長曝光"
+    },
+    "iso-and-noise": {
+      "name": "ISO 與雜訊",
+      "blurb": "ISO 的作用、雜訊的來源、自動 ISO 設定與手機夜間模式"
+    },
+    "white-balance": {
+      "name": "白平衡",
+      "blurb": "用 K 值、預設與灰卡修正偏橘、偏藍或偏綠的膚色"
+    },
+    "focal-length": {
+      "name": "焦距",
+      "blurb": "mm 的意思、焦段係數、手機 0.5x 到 5x，以及人像最佳焦段"
+    },
+    "rule-of-thirds": {
+      "name": "三分法構圖",
+      "blurb": "眼睛、地平線與主體在 3x3 九宮格上怎麼放，以及何時該置中"
+    },
+    "photo-composition": {
+      "name": "攝影構圖技巧",
+      "blurb": "引導線、框景、對稱、前景，以及每次按快門前的檢查表"
+    },
+    "golden-hour": {
+      "name": "黃金時刻與藍調時刻",
+      "blurb": "你那裡的黃金時刻幾點、持續多久，以及拍暖調光線的設定"
+    },
+    "backlit-photos": {
+      "name": "逆光攝影",
+      "blurb": "迎著光拍：亮臉、輪廓光或乾淨的剪影，相機與手機都適用"
+    },
+    "how-to-pose-for-photos": {
+      "name": "拍照姿勢",
+      "blurb": "站姿、角度、下巴與手的位置，加上看起來自然的姿勢清單"
+    },
+    "portrait-photography-tips": {
+      "name": "人像攝影技巧",
+      "blurb": "鏡頭、光圈、對眼睛對焦、柔和光線與引導被攝者，拍出更好的人像"
+    },
+    "selfie-tips": {
+      "name": "自拍技巧",
+      "blurb": "任何手機都適用的角度、手臂距離、窗光、計時器、連拍與鏡子自拍"
+    },
+    "self-portrait-photography": {
+      "name": "自拍攝影",
+      "blurb": "用腳架、計時器或遙控器拍自己，並讓焦點穩穩落在你身上"
+    },
+    "solo-bridal-photoshoot": {
+      "name": "單人婚紗照",
+      "blurb": "規劃、擺姿勢與曝光，一個人也能拍婚紗，找攝影師或自己拍都行"
+    },
+    "bridal-poses": {
+      "name": "婚紗照姿勢",
+      "blurb": "24 種新娘姿勢的做法、角度與鏡頭，加上頭紗、裙襬、捧花與戒指特寫"
+    },
+    "pre-wedding-photoshoot": {
+      "name": "拍婚紗準備指南",
+      "blurb": "時程、場地、服裝、情侶姿勢，以及向婚紗工作室提問的問題"
+    },
+    "phone-photography": {
+      "name": "手機攝影技巧",
+      "blurb": "對焦、曝光鎖定、該用哪顆鏡頭、夜間模式、HDR、RAW 與快速修圖"
+    },
+    "night-photography": {
+      "name": "夜景攝影",
+      "blurb": "城市燈光、車軌與星空的設定，手持、腳架或手機都適用"
+    },
+    "photograph-the-moon": {
+      "name": "拍月亮",
+      "blurb": "各月相的 Looney 11 設定、焦距算法與手機拍出細節月亮的步驟"
+    },
+    "food-photography": {
+      "name": "美食攝影技巧",
+      "blurb": "手機與相機的角度、窗邊側光、擺盤、蒸氣與餐廳拍攝技巧"
+    },
+    "product-photography": {
+      "name": "居家商品攝影",
+      "blurb": "白色背景、打光、腳架設定、對焦堆疊與統一的拍攝清單"
+    },
+    "photo": {
+      "label": "攝影教學",
+      "lead": "用相機或手機拍出更好照片的指南：光圈、快門速度、ISO 與白平衡，構圖與光線，姿勢與人像，單人婚紗照與拍婚紗，以及夜景、月亮、美食與商品攝影。",
+      "all": "所有攝影教學",
+      "groups": {
+        "exposure": "相機設定",
+        "composition": "構圖與光線",
+        "portraits": "人像與姿勢",
+        "wedding": "婚紗照",
+        "scenes": "手機與場景"
+      },
+      "blurbs": {
+        "exposure": "曝光三要素、光圈與背景虛化、快門速度、ISO、白平衡與焦距",
+        "composition": "三分法、構圖技巧、黃金時刻與逆光拍攝",
+        "portraits": "怎麼擺姿勢、人像技巧、自拍，以及用腳架與計時器拍自己",
+        "wedding": "單人婚紗照、婚紗照姿勢與拍婚紗準備",
+        "scenes": "手機攝影、夜景、月亮、美食與商品攝影"
+      }
     }
   },
   "dice": {

@@ -1,0 +1,176 @@
+{
+  "title": "ISO and Noise: What ISO to Use and When to Raise It — cv.cm",
+  "description": "What ISO does, why high ISO adds noise, base ISO, auto ISO with a minimum shutter speed, ISO by situation, noise reduction and how phone night modes work.",
+  "h1": "What is ISO and how high can you go before noise ruins the photo?",
+  "answer": "ISO sets how much the camera amplifies the signal from the sensor. Doubling ISO, for example from 400 to 800, brightens the image by one stop. Noise comes mostly from too little light, and high ISO makes it visible. Use the lowest ISO that still allows a sharp shutter speed, but a noisy sharp photo is better than a clean blurred one.",
+  "sections": [
+    {
+      "h": "What ISO actually does",
+      "body": [
+        "The sensor collects light during the exposure. ISO does not change how much light arrives; aperture and shutter speed do that. ISO sets the gain, the amount by which the camera amplifies the signal before or after it is turned into numbers. It works like the volume knob on a microphone: turning it up makes a quiet voice loud, and it also makes the hiss loud.",
+        "The numbers follow stops. ISO 200 is one stop brighter than ISO 100, ISO 400 two stops, ISO 3200 five stops. If a scene needs 1/15 s at ISO 100 and you want 1/250 s, that is four stops faster, so you need ISO 1600 at the same aperture.",
+        "The ISO scale for digital cameras is defined in the standard ISO 12232, so that ISO 200 on a camera gives roughly the same exposure as ISO 200 film. The standard allows makers some freedom in how they rate a camera, so the same ISO number can look slightly brighter or darker on different brands."
+      ]
+    },
+    {
+      "h": "Where noise comes from",
+      "body": [
+        "Light arrives as separate particles, photons, and they arrive unevenly. In a bright area thousands land on each pixel and the random variation is small compared with the signal. In a dark area only a few land, and the variation becomes visible as grain. This is called shot noise. The sensor and its electronics add a little more noise of their own, which matters most in the deepest shadows.",
+        "So the real cause of noise is a small amount of light. High ISO is usually a sign that light was short. That explains several things photographers notice:",
+        {
+          "ul": [
+            "Shadows are noisier than highlights in the same photo.",
+            "Brightening a dark photo in editing shows noise, even at a low ISO.",
+            "Larger sensors are cleaner at the same ISO, because at the same framing and f-number they collect more light in total.",
+            "Noise appears as two kinds: luminance noise (fine grain, like film) and color noise (red, green and blue blotches). Color noise looks worse and is easier to remove."
+          ]
+        },
+        "Long exposures of many seconds can also show bright single pixels, called hot pixels. Many cameras offer long-exposure noise reduction, which takes a second dark frame to subtract them; it doubles the waiting time."
+      ]
+    },
+    {
+      "h": "Base ISO and practical ISO ranges",
+      "body": [
+        "Base ISO is the camera's native, lowest standard setting, usually ISO 100, sometimes 64 or 200. It gives the most dynamic range: the widest spread from detailed shadows to detailed highlights. Extended settings marked L or Lo below the base often reduce highlight detail, so use them only to get a slower shutter.",
+        "How high is acceptable depends on the sensor, the light and how large the photo will be seen. A photo for a phone screen hides much more noise than a large print. As a rough guide for current cameras:",
+        {
+          "table": {
+            "head": [
+              "Situation",
+              "Typical ISO",
+              "Shutter target",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Bright sun, any subject",
+                "100",
+                "1/250 s or faster",
+                "Base ISO for the cleanest file"
+              ],
+              [
+                "Shade, overcast",
+                "100 to 400",
+                "1/250 s",
+                "Raise ISO if people move"
+              ],
+              [
+                "Indoors by a window, daytime",
+                "400 to 1600",
+                "1/125 to 1/250 s",
+                "Faces toward the window"
+              ],
+              [
+                "Indoor room with lamps, evening",
+                "1600 to 6400",
+                "1/60 to 1/125 s",
+                "Open the aperture fully first"
+              ],
+              [
+                "Indoor sport, school hall",
+                "3200 to 12800",
+                "1/500 to 1/1000 s",
+                "Sharp action matters more than grain"
+              ],
+              [
+                "Concert or stage",
+                "1600 to 6400",
+                "1/250 s",
+                "Stage lights are brighter than they seem"
+              ],
+              [
+                "Landscape or night scene on a tripod",
+                "100",
+                "Seconds",
+                "No reason to raise ISO when nothing moves"
+              ],
+              [
+                "Stars and Milky Way",
+                "1600 to 6400",
+                "10 to 25 s",
+                "Shutter is limited by star trails"
+              ]
+            ]
+          }
+        },
+        "Small-sensor cameras and phones show noise about one to two stops earlier than full-frame cameras, so use the lower half of each range when you can."
+      ]
+    },
+    {
+      "h": "Auto ISO with a minimum shutter speed",
+      "body": [
+        "Auto ISO lets the camera raise ISO only when the light requires it. It is the most useful setting for people, pets and events. Set it up once:",
+        {
+          "ol": [
+            "Turn on auto ISO in the ISO menu.",
+            "Set a maximum ISO that you accept, for example 6400 on a full-frame camera or 3200 on APS-C.",
+            "Set a minimum shutter speed. In aperture priority, the camera lowers the shutter speed as light falls until it reaches this value, then raises ISO instead. Choose 1/125 s for still people, 1/250 s for children, 1/500 s or faster for sport. Many cameras offer an Auto option tied to the focal length.",
+            "In manual mode with auto ISO, you fix aperture and shutter speed and the camera sets ISO. Exposure compensation still works on most cameras.",
+            "If the camera hits the maximum ISO, it will slow the shutter below your minimum or underexpose. Watch for a blinking ISO display."
+          ]
+        },
+        "To see which ISO a past photo used, read its EXIF data; cv.cm's EXIF viewer shows ISO, shutter speed and aperture in the browser."
+      ]
+    },
+    {
+      "h": "When a high ISO is the right choice",
+      "body": [
+        "Beginners often keep ISO low and end up with blurred photos. Noise can be reduced in editing. Motion blur and camera shake usually cannot. If the choice is between ISO 6400 at 1/250 s and ISO 800 at 1/30 s for a moving child, take ISO 6400.",
+        "Another common mistake is to keep ISO low and underexpose, planning to brighten the photo later. On most cameras the result is similar or worse than setting the higher ISO in camera, and JPEG files lose more quality when pushed. Expose correctly at the ISO you need.",
+        "Lower ISO only when you can solve the light problem another way: open the aperture, use a tripod for still subjects, add a lamp or flash, move the person to the window, or wait for a steadier moment. cv.cm's portrait camera simulator shows noise and motion blur side by side, which makes this trade-off easy to see."
+      ]
+    },
+    {
+      "h": "Noise on phones and night modes",
+      "body": [
+        "Phone sensors are small, so they reach high ISO values quickly. Phones fight this with computation. In night mode, the phone captures several frames over one to several seconds, aligns them and averages them. Random noise partly cancels: averaging 4 frames halves the noise, and 16 frames reduce it to a quarter. That is why the phone asks you to hold still.",
+        {
+          "ul": [
+            "Hold the phone with both hands or rest it on something during the countdown. On a tripod, many phones allow a longer capture.",
+            "Ask people to stay still until the capture ends, or moving parts look smeared.",
+            "Use the 1x main camera in dim light. Ultra-wide and telephoto lenses usually have smaller sensors or darker apertures and produce more noise; some phones quietly crop the main camera instead.",
+            "Avoid zooming beyond the lens's optical steps at night. Digital zoom enlarges the noise.",
+            "If a photo looks smeared or plastic, that is heavy noise reduction. More light, or RAW capture where available, gives a more natural result."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Reducing noise after the shot",
+      "body": [
+        {
+          "ul": [
+            "Shoot RAW if your camera or phone allows it. In-camera noise reduction applies to JPEG; RAW lets you choose the balance later.",
+            "Reduce color noise first. It can be removed almost completely with little loss of detail.",
+            "Apply luminance noise reduction gently. Strong settings make skin look waxy and lose fine hair and fabric texture.",
+            "Modern AI denoise tools in photo editors can clean ISO 6400 to 12800 files well. Apply them before sharpening.",
+            "Do not brighten deep shadows a lot. Lift them a little and accept some darkness.",
+            "Converting a very noisy image to black and white hides color noise and can look intentional."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What is the best ISO for a sharp photo?",
+      "a": "Use the lowest ISO that still allows a shutter speed fast enough for your subject. In daylight that is usually base ISO 100; indoors it may be 1600 or more."
+    },
+    {
+      "q": "Does high ISO reduce image quality?",
+      "a": "Yes, it shows more noise, lowers dynamic range and weakens color, mostly because less light was collected. Small amounts of noise are often invisible on a phone screen."
+    },
+    {
+      "q": "Should I use auto ISO?",
+      "a": "For moving subjects and changing light, yes. Set a maximum ISO and a minimum shutter speed so the camera keeps photos sharp and noise within the limit you accept."
+    },
+    {
+      "q": "Why is my photo grainy even at low ISO?",
+      "a": "It was probably underexposed and brightened afterwards, either by you or by the camera's processing. Dark shadows that are brightened show noise at any ISO."
+    },
+    {
+      "q": "What ISO should I use for night photography?",
+      "a": "On a tripod with a still scene, ISO 100 and a long exposure. Handheld in a city, ISO 1600 to 6400. For stars, about ISO 1600 to 6400 with exposures of 10 to 25 seconds."
+    }
+  ]
+}

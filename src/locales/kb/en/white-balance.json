@@ -1,0 +1,264 @@
+{
+  "title": "White Balance Explained: Kelvin, Presets and Skin Tones — cv.cm",
+  "description": "White balance explained: kelvin color temperature, presets, custom WB with a grey card, fixing orange or blue skin, mixed light, RAW and creative looks.",
+  "h1": "What is white balance and how do you set it?",
+  "answer": "White balance tells the camera what color the light is, so that white objects look white in the photo. Light is measured in kelvin: indoor bulbs are warm, about 2700 to 3200 K, and shade is cool, about 7000 K or more. Set a preset that matches the light, measure a grey card, or shoot RAW and correct it later.",
+  "sections": [
+    {
+      "h": "Color temperature in kelvin",
+      "body": [
+        "Every light source has a color. Our eyes adapt so quickly that a white sheet of paper looks white under a lamp and under a blue sky. A camera does not adapt on its own. White balance is the correction it applies so that neutral colors stay neutral.",
+        "Color temperature describes light from orange to blue on the kelvin (K) scale. Lower numbers are warmer (more orange), higher numbers are cooler (more blue). The values below are typical; real sources vary.",
+        {
+          "table": {
+            "head": [
+              "Light source",
+              "Approximate kelvin",
+              "Uncorrected look"
+            ],
+            "rows": [
+              [
+                "Candle, fire",
+                "1800 to 2000 K",
+                "Deep orange"
+              ],
+              [
+                "Household bulb, warm white LED",
+                "2700 to 3200 K",
+                "Orange, yellow skin"
+              ],
+              [
+                "Sunrise and sunset",
+                "about 2500 to 3500 K",
+                "Golden, warm"
+              ],
+              [
+                "Neutral white LED or fluorescent",
+                "about 4000 K",
+                "Slightly yellow, sometimes green"
+              ],
+              [
+                "Midday sun",
+                "about 5000 to 5500 K",
+                "Neutral"
+              ],
+              [
+                "Camera flash",
+                "about 5500 to 6000 K",
+                "Neutral to slightly cool"
+              ],
+              [
+                "Overcast sky",
+                "about 6000 to 7000 K",
+                "Slightly blue"
+              ],
+              [
+                "Open shade on a sunny day",
+                "about 7000 to 8000 K",
+                "Blue, cold skin"
+              ],
+              [
+                "Blue hour, clear blue sky",
+                "10000 K and above",
+                "Strongly blue"
+              ]
+            ]
+          }
+        },
+        "Artificial light also varies on a second axis, green to magenta, called tint. Some LEDs and fluorescent tubes add a green cast that the kelvin setting alone does not fix."
+      ]
+    },
+    {
+      "h": "Auto white balance and presets",
+      "body": [
+        "Auto white balance (AWB) works well in steady daylight and in most mixed scenes. It struggles when one color fills the frame, such as green leaves, a red wall or a sunset, because it tries to neutralize the color that you wanted to keep. It can also change between frames of the same scene, which is a problem for a set of product photos or a series of portraits.",
+        "Presets set a fixed correction. Exact values differ by brand; these are common approximations:",
+        {
+          "table": {
+            "head": [
+              "Preset",
+              "About",
+              "Use it for",
+              "If used in the wrong light"
+            ],
+            "rows": [
+              [
+                "Tungsten or incandescent (bulb icon)",
+                "3200 K",
+                "Household bulbs, warm LEDs",
+                "Strongly blue in daylight"
+              ],
+              [
+                "Fluorescent",
+                "about 4000 K",
+                "Office tubes, neutral LEDs",
+                "Purple or magenta in daylight"
+              ],
+              [
+                "Daylight or sunny",
+                "about 5000 to 5500 K",
+                "Direct sun",
+                "Orange indoors, blue in shade"
+              ],
+              [
+                "Flash",
+                "about 5500 to 6000 K",
+                "Flash as the main light",
+                "Slightly warm in sun"
+              ],
+              [
+                "Cloudy",
+                "about 6000 K",
+                "Overcast days, warmer portraits",
+                "Warm in sun"
+              ],
+              [
+                "Shade",
+                "about 7000 K",
+                "Open shade, under trees",
+                "Very orange indoors"
+              ],
+              [
+                "K (kelvin)",
+                "Your number",
+                "Any light you can estimate",
+                "Too low looks blue, too high looks orange"
+              ]
+            ]
+          }
+        },
+        "When you set a kelvin number, you tell the camera what the light is, and it corrects in the opposite direction. Setting 3200 K in daylight makes the photo blue. Setting 7500 K indoors makes it very orange. This feels backwards at first, but it is consistent."
+      ]
+    },
+    {
+      "h": "Custom white balance with a grey card",
+      "body": [
+        "The most accurate method is to measure the light. A grey card or a purpose-made white balance target works best. A sheet of plain white paper is a reasonable substitute, though some papers contain brighteners that look blue.",
+        {
+          "ol": [
+            "Put the card where the subject is, facing the same light. For a portrait, the person can hold it under the chin.",
+            "Open the custom (or preset manual, PRE) white balance setting in the camera menu.",
+            "Fill the frame or the marked area with the card. Focus does not matter, but exposure should be normal, not very dark or white.",
+            "Take the measuring shot and confirm. The camera stores it as a custom setting.",
+            "Shoot. Measure again if the light changes, for example when the sun goes behind a cloud or you move to another room."
+          ]
+        },
+        "If you shoot RAW, take one photo of the card at the start of each lighting setup instead. In editing, click the card with the white balance eyedropper and copy the setting to the other photos from that setup."
+      ]
+    },
+    {
+      "h": "Why skin looks orange, blue or green, and how to fix it",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "What you see",
+              "Likely cause",
+              "Fix"
+            ],
+            "rows": [
+              [
+                "Faces look orange or yellow indoors",
+                "Warm bulbs with daylight or auto white balance",
+                "Set Tungsten or 3000 to 3200 K, or measure a white wall or card"
+              ],
+              [
+                "Skin looks blue or grey outdoors",
+                "Open shade or overcast light",
+                "Set Shade or Cloudy, or about 6500 to 7500 K"
+              ],
+              [
+                "Skin looks green or sickly",
+                "Fluorescent tubes or cheap LEDs",
+                "Use the Fluorescent preset or add magenta tint in editing"
+              ],
+              [
+                "Face is two colors, one side orange and one side blue",
+                "Window light and a lamp together",
+                "Turn off the lamp or turn the face fully to one source"
+              ],
+              [
+                "Sunset looks dull and grey",
+                "Auto white balance removed the warmth",
+                "Set Daylight or Cloudy instead of Auto"
+              ],
+              [
+                "Snow looks blue",
+                "Shade lit by a blue sky",
+                "Set Shade, or accept some blue for a cold feeling"
+              ]
+            ]
+          }
+        },
+        "A quick check is to look at something you know is neutral, such as a white shirt, a grey wall or a white plate. If it has a cast in the photo, everything else has the same cast."
+      ]
+    },
+    {
+      "h": "Mixed light",
+      "body": [
+        "Mixed light is the hardest case: a window and a ceiling lamp, a restaurant with candles and screens, a street with sodium and LED lamps. One white balance setting cannot correct two colors at once.",
+        {
+          "ul": [
+            "Remove one source. Turn off the room lights and use the window, or close the curtains and use the lamps.",
+            "Make one source dominant. Move the subject much closer to the main light so the other becomes weak.",
+            "Set white balance for the faces, not the background. A warm background behind a neutral face often looks pleasant.",
+            "With flash in a warm room, a warming filter (CTO gel) on the flash makes it match the bulbs; then set Tungsten.",
+            "In editing, use local adjustments to correct one area, such as cooling a warm wall without changing the face."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "White balance on a phone",
+      "body": [
+        "Phones use automatic white balance and are usually good at it. They also tend to keep some warmth under bulbs on purpose, because a fully neutral room at night can look cold.",
+        {
+          "ul": [
+            "Tap the subject to set focus and exposure; on some phones this also influences color.",
+            "If your camera app has a Pro or manual mode, it usually has a WB setting with presets or a kelvin slider.",
+            "Some phones offer photographic styles or a warm and cool tone slider. They change the look, not the measured white balance, but they can correct a consistent cast.",
+            "For food in restaurants, compare the plate with the real one. If the white plate is yellow, cool the photo in the editor's warmth or temperature slider.",
+            "RAW or ProRAW files, where available, let you set white balance freely afterwards."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "RAW, editing and creative warm or cool looks",
+      "body": [
+        "A RAW file stores the sensor data before white balance is baked in. You can change it later with no loss of quality, so many photographers leave the camera on auto and correct in editing. A JPEG can also be corrected, but large changes can make colors look flat or posterized.",
+        {
+          "ol": [
+            "Select the white balance eyedropper and click something neutral: a grey card, a white shirt in light shade, a grey pavement.",
+            "Adjust the temperature slider to taste. A little warmer than neutral is usually more flattering for skin.",
+            "Adjust tint if skin looks green or magenta.",
+            "Copy the setting to other photos taken in the same light, so the whole set matches."
+          ]
+        },
+        "White balance is also a creative tool. A warmer setting, such as Cloudy or Shade in sunlight, makes golden hour and portraits feel warmer. A cooler setting, such as 3800 to 4500 K at dusk, makes blue hour and city scenes feel calm or cold. The rule is consistency: within one set of photos, keep the same look. To compare colors across photos, cv.cm's image color extractor shows the main colors of a photo as HEX values."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What white balance should I use for indoor photos?",
+      "a": "Under warm household bulbs, use Tungsten or about 3000 to 3200 K. Under neutral LEDs or tubes, try 4000 K or the Fluorescent preset. A custom measurement from a white wall or card is the most accurate."
+    },
+    {
+      "q": "Is auto white balance good enough?",
+      "a": "In daylight and most everyday scenes, yes. Use a preset or kelvin value when one color fills the frame, when you want a sunset to stay warm, or when a series of photos must match."
+    },
+    {
+      "q": "Why do my photos look yellow at night?",
+      "a": "Most indoor and street lights are warm, around 2700 to 3200 K. Auto white balance and phones often keep some of that warmth. Lower the kelvin value or cool the photo in editing."
+    },
+    {
+      "q": "Does white balance matter if I shoot RAW?",
+      "a": "It does not change the RAW data, so you can fix it later. It still sets the preview, the histogram and the embedded JPEG, so a sensible setting makes reviewing and editing easier."
+    },
+    {
+      "q": "Is a grey card better than a white card?",
+      "a": "Both work for white balance. A grey card is less likely to be overexposed when you measure it, and it can also help you check exposure."
+    }
+  ]
+}

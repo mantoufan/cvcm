@@ -11843,6 +11843,113 @@
         "dev": "Chạy mô hình trong trình duyệt và gọi API của LLM",
         "trust": "Ai sở hữu sản phẩm của AI, quy định gắn nhãn, C2PA và watermark AI"
       }
+    },
+    "exposure-triangle": {
+      "name": "Tam giác phơi sáng",
+      "blurb": "Khẩu độ, tốc độ màn trập và ISO bù trừ nhau theo stop, kèm thông số theo tình huống"
+    },
+    "aperture-and-depth-of-field": {
+      "name": "Khẩu độ và độ sâu trường ảnh",
+      "blurb": "Vì sao f/1,8 xóa phông và nên dùng khẩu độ nào cho chân dung, chụp nhóm"
+    },
+    "shutter-speed": {
+      "name": "Tốc độ màn trập",
+      "blurb": "Tốc độ để đóng băng hay làm nhòe chuyển động, giới hạn khi cầm tay, panning và phơi sáng lâu"
+    },
+    "iso-and-noise": {
+      "name": "ISO và nhiễu hạt",
+      "blurb": "ISO làm gì, nhiễu đến từ đâu, cài auto ISO và chế độ chụp đêm trên điện thoại"
+    },
+    "white-balance": {
+      "name": "Cân bằng trắng",
+      "blurb": "Kelvin, preset và thẻ xám để sửa màu da bị cam, xanh hoặc xanh lá"
+    },
+    "focal-length": {
+      "name": "Tiêu cự",
+      "blurb": "mm nghĩa là gì, hệ số crop, ống kính 0,5x đến 5x trên điện thoại và tiêu cự tốt nhất cho chân dung"
+    },
+    "rule-of-thirds": {
+      "name": "Quy tắc 1/3",
+      "blurb": "Đặt mắt, đường chân trời và chủ thể ở đâu trên lưới 3x3, và khi nào nên đặt giữa khung"
+    },
+    "photo-composition": {
+      "name": "Bố cục chụp ảnh",
+      "blurb": "Đường dẫn, khung hình, đối xứng, tiền cảnh và checklist trước mỗi lần bấm máy"
+    },
+    "golden-hour": {
+      "name": "Giờ vàng và giờ xanh",
+      "blurb": "Giờ vàng diễn ra lúc nào, kéo dài bao lâu và thông số để chụp ánh sáng ấm"
+    },
+    "backlit-photos": {
+      "name": "Chụp ngược sáng",
+      "blurb": "Chụp ngược sáng với mặt sáng, ánh sáng viền hoặc silhouette, trên máy ảnh và điện thoại"
+    },
+    "how-to-pose-for-photos": {
+      "name": "Cách tạo dáng chụp ảnh",
+      "blurb": "Tư thế, góc người, bàn tay và danh sách dáng để trông tự nhiên trong mọi bức ảnh"
+    },
+    "portrait-photography-tips": {
+      "name": "Mẹo chụp ảnh chân dung",
+      "blurb": "Ống kính, khẩu độ, lấy nét vào mắt, ánh sáng mềm và cách chỉ đạo người mẫu"
+    },
+    "selfie-tips": {
+      "name": "Mẹo selfie đẹp",
+      "blurb": "Góc chụp, độ dài tay, ánh sáng cửa sổ, hẹn giờ, chụp liên tiếp và selfie trong gương"
+    },
+    "self-portrait-photography": {
+      "name": "Tự chụp chân dung",
+      "blurb": "Tự chụp bằng chân máy, hẹn giờ hoặc điều khiển từ xa mà vẫn giữ nét vào mình"
+    },
+    "solo-bridal-photoshoot": {
+      "name": "Chụp ảnh cưới một mình",
+      "blurb": "Lên kế hoạch, tạo dáng và phơi sáng cho buổi ảnh cưới một người, có thợ chụp hoặc tự chụp"
+    },
+    "bridal-poses": {
+      "name": "Dáng chụp ảnh cưới",
+      "blurb": "24 dáng cô dâu kèm cách làm, góc máy và ống kính, cùng ảnh voan, đuôi váy, bó hoa và nhẫn"
+    },
+    "pre-wedding-photoshoot": {
+      "name": "Chụp ảnh cưới cặp đôi",
+      "blurb": "Lịch trình, địa điểm, trang phục, dáng chụp cặp đôi và câu hỏi nên hỏi studio"
+    },
+    "phone-photography": {
+      "name": "Mẹo chụp ảnh bằng điện thoại",
+      "blurb": "Lấy nét, khóa phơi sáng, chọn ống kính, chế độ chụp đêm, HDR, RAW và chỉnh sửa nhanh"
+    },
+    "night-photography": {
+      "name": "Chụp ảnh đêm",
+      "blurb": "Thông số cho đèn thành phố, vệt sáng và sao, khi cầm tay, dùng chân máy hoặc điện thoại"
+    },
+    "photograph-the-moon": {
+      "name": "Chụp trăng",
+      "blurb": "Thông số Looney 11 theo pha, tính tiêu cự và các bước chụp trăng chi tiết bằng điện thoại"
+    },
+    "food-photography": {
+      "name": "Chụp ảnh đồ ăn",
+      "blurb": "Góc chụp, ánh sáng bên cửa sổ, bày biện, hơi nóng và mẹo chụp trong nhà hàng"
+    },
+    "product-photography": {
+      "name": "Chụp ảnh sản phẩm tại nhà",
+      "blurb": "Nền trắng cong, ánh sáng, thông số chân máy, ghép nét và danh sách kiểu ảnh nhất quán"
+    },
+    "photo": {
+      "label": "Hướng dẫn chụp ảnh",
+      "lead": "Cách chụp ảnh đẹp hơn bằng máy ảnh hoặc điện thoại: khẩu độ, tốc độ màn trập, ISO và cân bằng trắng, bố cục và ánh sáng, tạo dáng và chân dung, chụp ảnh cưới một mình, chụp ảnh cưới, chụp đêm, chụp trăng, chụp đồ ăn và sản phẩm.",
+      "all": "Tất cả hướng dẫn chụp ảnh",
+      "groups": {
+        "exposure": "Cài đặt máy ảnh",
+        "composition": "Bố cục và ánh sáng",
+        "portraits": "Chân dung và tạo dáng",
+        "wedding": "Ảnh cưới",
+        "scenes": "Điện thoại và các cảnh chụp"
+      },
+      "blurbs": {
+        "exposure": "Tam giác phơi sáng, khẩu độ và xóa phông, tốc độ màn trập, ISO, cân bằng trắng và tiêu cự",
+        "composition": "Quy tắc 1/3, các kỹ thuật bố cục, giờ vàng và chụp ngược sáng",
+        "portraits": "Cách tạo dáng, mẹo chụp chân dung, selfie và tự chụp bằng chân máy, hẹn giờ",
+        "wedding": "Chụp ảnh cưới một mình, dáng chụp cho cô dâu và chụp ảnh cưới cho cặp đôi",
+        "scenes": "Chụp ảnh bằng điện thoại, chụp đêm, chụp trăng, chụp đồ ăn và sản phẩm"
+      }
     }
   },
   "dice": {

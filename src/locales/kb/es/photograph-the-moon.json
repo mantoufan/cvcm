@@ -1,0 +1,212 @@
+{
+  "title": "Cómo fotografiar la luna: ajustes para cámara y móvil — cv.cm",
+  "description": "Cómo fotografiar la luna: ajustes Looney 11 por fase, por qué en automático sale una mancha blanca, qué tamaño tiene la luna con cada focal y pasos para hacerlo con el móvil.",
+  "h1": "¿Cómo se fotografía la luna?",
+  "answer": "Pon la cámara en un trípode, usa el objetivo más largo que tengas, enfoca la luna y fija la exposición en manual. Un buen punto de partida es la regla Looney 11: f/11 con una velocidad de 1 dividido entre el ISO, como ISO 100 a 1/100 s para una luna llena. En un móvil, toca la luna y arrastra el control de exposición hacia abajo hasta que aparezca el detalle de la superficie.",
+  "sections": [
+    {
+      "h": "Por qué la luna sale como una mancha blanca",
+      "body": [
+        "La luna está iluminada por luz solar directa. Su superficie es tan brillante como una roca gris iluminada por el sol en la Tierra, mientras que el cielo a su alrededor es negro. Tu cámara o tu móvil mide todo el encuadre, ve sobre todo oscuridad y aclara la exposición como en una escena nocturna. La diminuta luna queda entonces sobreexpuesta varios pasos y pierde todos sus cráteres.",
+        "La solución es ignorar el cielo oscuro y exponer para la luna como si estuviera a plena luz del día. Por eso los ajustes para la luna parecen ajustes de un día soleado: velocidad rápida, ISO bajo, apertura media. También explica una sorpresa habitual: una exposición para la luna deja el paisaje de abajo casi negro, porque ambos están a muchos pasos de distancia."
+      ]
+    },
+    {
+      "h": "Ajustes de partida: la regla Looney 11",
+      "body": [
+        "La regla Looney 11 dice: a f/11, fija la velocidad de obturación en 1 dividido entre el ISO. A ISO 100 son 1/100 s; a ISO 200, 1/200 s. Es la versión lunar de la regla soleada f/16 con un paso más de exposición (f/11 en lugar de f/16), porque la superficie de la luna es más oscura que la mayoría de las escenas diurnas. Supone una luna llena alta en un cielo despejado.",
+        "En otras fases está iluminada una parte menor de la luna y la luz cerca del borde de la sombra es baja y tenue, así que añade exposición. La tabla siguiente mantiene la velocidad suficientemente rápida para un objetivo largo, con f/8 e ISO 400.",
+        {
+          "table": {
+            "head": [
+              "Fase",
+              "Looney 11 (f/11, ISO 100)",
+              "Inicio práctico (f/8, ISO 400)",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Luna llena",
+                "1/100 s",
+                "1/800 s",
+                "Brillante y plana; poca sombra en los cráteres"
+              ],
+              [
+                "Gibosa",
+                "1/50 s",
+                "1/400 s",
+                "Cráteres visibles a lo largo del borde de la sombra"
+              ],
+              [
+                "Cuarto (media luna)",
+                "1/25 s",
+                "1/200 s",
+                "Mejor detalle de cráteres cerca de la línea entre luz y sombra"
+              ],
+              [
+                "Creciente o menguante",
+                "1/13 s",
+                "1/100 s",
+                "Fina y más tenue; a menudo baja en un cielo crepuscular"
+              ],
+              [
+                "Luna cerca del horizonte",
+                "añade 1 a 2 pasos",
+                "1/200 a 1/400 s (llena)",
+                "El aire denso atenúa y calienta la luz; el detalle es más suave"
+              ]
+            ]
+          }
+        },
+        "Tómalos como puntos de partida. Haz una foto, amplía en la pantalla y mira el histograma. Activa los avisos de altas luces: las zonas más brillantes no deberían parpadear. Si lo hacen, usa una velocidad más rápida. Haz bracketing de un paso en cada sentido y elige la mejor después.",
+        "Pon el balance de blancos en luz de día. La luz de la luna es luz solar reflejada, así que el balance de luz de día muestra la luna como un gris neutro, algo cálido. En automático puede salir azul o amarilla."
+      ]
+    },
+    {
+      "h": "¿Qué tamaño tendrá la luna? Cálculo de la distancia focal",
+      "body": [
+        "La luna mide unos 3475 km de diámetro y está a unos 384 400 km, así que cubre aproximadamente medio grado de cielo. En el sensor, su imagen mide aproximadamente la distancia focal dividida entre 110. Un objetivo de 110 mm hace una luna de aproximadamente 1 mm de ancho en el sensor; uno de 550 mm la hace de unos 5 mm.",
+        {
+          "table": {
+            "head": [
+              "Objetivo (equivalente en fotograma completo)",
+              "Luna en el sensor",
+              "Proporción de la altura del encuadre",
+              "Cómo se ve"
+            ],
+            "rows": [
+              [
+                "26 mm (cámara principal del móvil)",
+                "0,24 mm",
+                "Aprox. 1 %",
+                "Un punto brillante pequeño; solo sirve como parte de un paisaje"
+              ],
+              [
+                "77 mm (móvil 3x)",
+                "0,7 mm",
+                "Aprox. 3 %",
+                "Un disco pequeño; poco detalle de la superficie"
+              ],
+              [
+                "200 mm",
+                "1,8 mm",
+                "Aprox. 8 %",
+                "Disco claro; se ven las zonas oscuras principales"
+              ],
+              [
+                "300 mm",
+                "2,7 mm",
+                "Aprox. 11 %",
+                "Cráteres visibles; se puede recortar"
+              ],
+              [
+                "600 mm",
+                "5,5 mm",
+                "Aprox. 23 %",
+                "Luna detallada; recorta para llenar la pantalla de un móvil"
+              ],
+              [
+                "Aprox. 2600 mm",
+                "24 mm",
+                "Altura completa",
+                "La luna llena una imagen de fotograma completo de arriba abajo"
+              ]
+            ]
+          }
+        },
+        "Para usar la tabla con un objetivo real en un sensor más pequeño, usa la distancia focal física dividida entre 110 para el tamaño en milímetros y compáralo con la altura del sensor: unos 24 mm en fotograma completo, unos 15 a 16 mm en APS-C y 13 mm en Micro cuatro tercios. Un objetivo de 300 mm en APS-C llena aproximadamente el 17 % de la altura.",
+        "Los píxeles importan más que la proporción del encuadre cuando piensas recortar. Un objetivo de 300 mm en una cámara de fotograma completo de 24 megapíxeles da una luna de unos 450 píxeles de ancho. Recortar una luna nítida está bien; ampliarla con herramientas de IA inventa detalle que no estaba.",
+        {
+          "note": "La luna cerca del horizonte parece enorme a simple vista, pero es una ilusión. En una foto tiene el mismo tamaño que cuando está alta. Para que parezca grande junto a un edificio o una colina, colócate lejos y usa un objetivo largo."
+        }
+      ]
+    },
+    {
+      "h": "Paso a paso con una cámara",
+      "body": [
+        {
+          "ol": [
+            "Monta la cámara en un trípode robusto. Cuelga una bolsa de la columna central si hay viento.",
+            "Usa tu objetivo más largo. Desactiva la estabilización de imagen si el fabricante del objetivo lo recomienda con trípode.",
+            "Pon el modo manual (M), RAW, ISO 100 a 400 y los ajustes Looney 11 o de la tabla anterior.",
+            "Enfoque: prueba el autoenfoque sobre el borde brillante de la luna. Si busca sin parar, pasa a enfoque manual, amplía la vista en vivo sobre la luna y gira el anillo hasta que los bordes de los cráteres estén lo más nítidos posible. No te fíes de la marca del infinito.",
+            "Usa un temporizador de 2 segundos o un mando para que pulsar el botón no mueva la cámara. Usa cortinilla electrónica delantera u obturador silencioso si los hay.",
+            "Haz muchas fotos en ráfagas cortas. La turbulencia del aire cambia de un momento a otro, así que unas fotos saldrán más nítidas que otras.",
+            "Comprueba la nitidez a la ampliación máxima, ajusta la exposición y vuelve a enfocar de vez en cuando, porque la temperatura puede desplazar el enfoque."
+          ]
+        },
+        "La luna se desplaza por el cielo aproximadamente su propio ancho cada dos minutos. Con fracciones de segundo no importa; los verdaderos límites son la vibración y la turbulencia del aire. Si la mantienes cerca del centro, vuelve a apuntar cada pocos minutos."
+      ]
+    },
+    {
+      "h": "Fotografiar la luna con el móvil",
+      "body": [
+        {
+          "ol": [
+            "Apaga el flash. No puede iluminar la luna.",
+            "Apoya el móvil en un trípode pequeño, un muro o una barandilla y usa el temporizador de 3 segundos.",
+            "Cambia al objetivo óptico más largo (el botón 2x, 3x o 5x). Evita hacer zoom mucho más allá; el zoom digital solo recorta y añade ruido.",
+            "Toca la luna para enfocarla.",
+            "Arrastra el control de exposición hacia abajo hasta que la luna sea gris con marcas visibles, no un disco blanco. En iPhone, mantén pulsado primero para bloquear AE/AF y luego desliza hacia abajo el icono de sol; en Pixel, toca Bloquear después de tocar la luna.",
+            "Desactiva el modo noche si hace la luna más brillante o borrosa; está diseñado para escenas oscuras, no para puntos brillantes.",
+            "Si tu app de cámara tiene modo pro o manual, prueba ISO 50 a 100 y una velocidad en torno a 1/250 a 1/1000 s y ajusta a partir de ahí.",
+            "Haz varias fotos y quédate con la más nítida."
+          ]
+        },
+        "Un móvil funciona mejor cuando el cielo no está totalmente oscuro. En el crepúsculo la diferencia entre la luna y el cielo es menor, así que el móvil puede mostrar la luna junto con algo de color o paisaje. Algunos móviles también aplican un procesado fuerte a las fotos de la luna; si compartes la foto como registro, indica lo que hizo el móvil."
+      ]
+    },
+    {
+      "h": "Fases, salida de la luna y planificación",
+      "body": [
+        "El ciclo completo de luna nueva a luna nueva dura unos 29,5 días. La luna llena es la más brillante pero la más plana, porque la luz solar incide de frente y casi no proyecta sombras. Para ver el detalle de los cráteres, dispara entre una luna creciente y una gibosa y mira a lo largo de la línea entre la parte iluminada y la oscura, donde las sombras son largas.",
+        {
+          "ul": [
+            "La luna llena sale hacia la puesta del sol y se pone hacia el amanecer.",
+            "La salida de la luna se retrasa de media unos 50 minutos cada día, aunque la diferencia exacta varía con la estación y la latitud.",
+            "La tarde antes de la luna llena, la luna sale poco antes de la puesta del sol, así que aparece en un cielo todavía claro. Es el mejor momento para mostrar una luna casi llena con un paisaje bien expuesto en un solo encuadre.",
+            "Una luna creciente se ve en el oeste después de la puesta del sol; una menguante, en el este antes del amanecer.",
+            "La luna es visible de día durante buena parte del mes, a menudo por la tarde hacia el cuarto creciente. Las fotos diurnas de la luna son fáciles de exponer."
+          ]
+        },
+        "Consulta la salida, la puesta y la fase de la luna para tu ubicación en un servicio de almanaque oficial, como las páginas de datos del Observatorio Naval de EE. UU., o en el almanaque de la app del tiempo de tu móvil. Comprueba en un mapa la dirección de la salida de la luna para que un edificio, un árbol o una montaña queden alineados con ella."
+      ]
+    },
+    {
+      "h": "Luna y paisaje en una misma imagen, con honestidad",
+      "body": [
+        "Una luna brillante sobre una ciudad oscura es muchos pasos más brillante que la ciudad. Tienes tres opciones honestas.",
+        {
+          "ul": [
+            "Dispara en el crepúsculo, cuando el cielo y la tierra están más cerca en brillo de la luna.",
+            "Haz dos exposiciones desde la misma posición del trípode y con la misma distancia focal, una para la luna y otra para el paisaje, y combínalas. Es una técnica habitual y aceptada.",
+            "Acepta una luna brillante y sin detalle en una escena nocturna, o un paisaje oscuro con una luna detallada."
+          ]
+        },
+        "Pegar una luna grande de otra foto o de otra distancia focal en un paisaje crea un montaje, no un registro. Puede ser buen arte, pero dilo cuando lo compartas y no lo presentes nunca como una sola foto en concursos o usos informativos."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es el mejor ISO para fotografiar la luna?",
+      "a": "Empieza en ISO 100 a 400. La luna es brillante, así que un ISO bajo mantiene el ruido bajo y permite una velocidad rápida. Súbelo solo si la velocidad bajara de unos 1/100 s con un objetivo largo."
+    },
+    {
+      "q": "¿Por qué sale borrosa mi foto de la luna?",
+      "a": "Normalmente por temblor de la cámara, enfoque fallido o turbulencia del aire. Usa trípode y temporizador, enfoca en manual con la vista en vivo ampliada y haz muchas fotos para quedarte con la más nítida. Fotografiar la luna cuando está alta en el cielo también ayuda."
+    },
+    {
+      "q": "¿Se puede fotografiar la luna sin teleobjetivo?",
+      "a": "Sí, pero saldrá pequeña. Con la cámara principal de un móvil o un gran angular, haz que la luna forme parte de una escena, como un skyline o árboles en el crepúsculo, en lugar de intentar mostrar cráteres."
+    },
+    {
+      "q": "¿Qué objetivo necesito para llenar el encuadre con la luna?",
+      "a": "En fotograma completo, aproximadamente 2600 mm llenan la altura de la imagen. La mayoría usa 400 a 800 mm y recorta. Un telescopio con adaptador para cámara es la forma habitual de llegar a distancias focales muy largas."
+    },
+    {
+      "q": "¿Cuál es el mejor momento para fotografiar la luna?",
+      "a": "Para los cráteres, unos días antes o después del cuarto creciente o menguante. Para una luna con paisaje, la tarde antes de la luna llena hacia la puesta del sol, o la salida de la luna durante el crepúsculo. El aire limpio y estable da los resultados más nítidos."
+    }
+  ]
+}

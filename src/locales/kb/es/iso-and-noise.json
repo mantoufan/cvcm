@@ -1,0 +1,176 @@
+{
+  "title": "ISO y ruido: qué ISO usar y cuándo subirlo — cv.cm",
+  "description": "Qué hace el ISO, por qué un ISO alto añade ruido, ISO base, ISO automático con velocidad mínima, ISO por situación, reducción de ruido y modos noche del móvil.",
+  "h1": "¿Qué es el ISO y hasta dónde puedes subirlo antes de que el ruido arruine la foto?",
+  "answer": "El ISO indica cuánto amplifica la cámara la señal del sensor. Duplicar el ISO, por ejemplo de 400 a 800, aclara la imagen un paso. El ruido viene sobre todo de la falta de luz, y un ISO alto lo hace visible. Usa el ISO más bajo que aún permita una velocidad de obturación nítida, pero una foto nítida con ruido es mejor que una limpia y movida.",
+  "sections": [
+    {
+      "h": "Qué hace realmente el ISO",
+      "body": [
+        "El sensor recoge luz durante la exposición. El ISO no cambia cuánta luz llega; eso lo hacen la apertura y la velocidad de obturación. El ISO fija la ganancia, es decir, cuánto amplifica la cámara la señal antes o después de convertirla en números. Funciona como el volumen de un micrófono: subirlo hace que una voz baja suene fuerte, y también hace fuerte el siseo.",
+        "Los números siguen los pasos. ISO 200 es un paso más claro que ISO 100, ISO 400 dos pasos, ISO 3200 cinco pasos. Si una escena necesita 1/15 s a ISO 100 y quieres 1/250 s, son cuatro pasos más rápido, así que necesitas ISO 1600 con la misma apertura.",
+        "La escala ISO de las cámaras digitales está definida en la norma ISO 12232, de modo que ISO 200 en una cámara da aproximadamente la misma exposición que ISO 200 en película. La norma deja cierta libertad a los fabricantes al calificar una cámara, así que el mismo número ISO puede verse algo más claro u oscuro según la marca."
+      ]
+    },
+    {
+      "h": "De dónde viene el ruido",
+      "body": [
+        "La luz llega en partículas separadas, los fotones, y llegan de forma irregular. En una zona luminosa caen miles en cada píxel y la variación aleatoria es pequeña frente a la señal. En una zona oscura caen pocos y la variación se hace visible como grano. Se llama ruido de disparo. El sensor y su electrónica añaden algo más de ruido propio, que importa sobre todo en las sombras más profundas.",
+        "Así que la causa real del ruido es la poca luz. Un ISO alto suele ser señal de que faltaba luz. Eso explica varias cosas que notan los fotógrafos:",
+        {
+          "ul": [
+            "Las sombras tienen más ruido que las altas luces en la misma foto.",
+            "Aclarar una foto oscura al editar muestra ruido, incluso con ISO bajo.",
+            "Los sensores más grandes son más limpios con el mismo ISO, porque con el mismo encuadre y número f recogen más luz en total.",
+            "El ruido aparece de dos tipos: ruido de luminancia (grano fino, como el de la película) y ruido de color (manchas rojas, verdes y azules). El ruido de color se ve peor y es más fácil de quitar."
+          ]
+        },
+        "Las exposiciones largas de muchos segundos también pueden mostrar píxeles brillantes sueltos, llamados píxeles calientes. Muchas cámaras ofrecen reducción de ruido en larga exposición, que toma un segundo fotograma oscuro para restarlos; duplica el tiempo de espera."
+      ]
+    },
+    {
+      "h": "ISO base e intervalos de ISO prácticos",
+      "body": [
+        "El ISO base es el ajuste nativo y más bajo estándar de la cámara, normalmente ISO 100, a veces 64 o 200. Da el mayor rango dinámico: la mayor amplitud entre sombras con detalle y altas luces con detalle. Los ajustes ampliados marcados L o Lo por debajo del base suelen reducir el detalle de las altas luces, así que úsalos solo para conseguir una velocidad más lenta.",
+        "Hasta dónde es aceptable depende del sensor, la luz y el tamaño con el que se verá la foto. Una foto para la pantalla de un móvil oculta mucho más ruido que una copia grande. Como orientación aproximada para cámaras actuales:",
+        {
+          "table": {
+            "head": [
+              "Situación",
+              "ISO habitual",
+              "Velocidad objetivo",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Sol intenso, cualquier sujeto",
+                "100",
+                "1/250 s o más rápido",
+                "ISO base para el archivo más limpio"
+              ],
+              [
+                "Sombra, cielo nublado",
+                "100 a 400",
+                "1/250 s",
+                "Sube el ISO si las personas se mueven"
+              ],
+              [
+                "Interior junto a una ventana, de día",
+                "400 a 1600",
+                "1/125 a 1/250 s",
+                "Caras hacia la ventana"
+              ],
+              [
+                "Sala interior con lámparas, por la tarde-noche",
+                "1600 a 6400",
+                "1/60 a 1/125 s",
+                "Abre primero del todo la apertura"
+              ],
+              [
+                "Deporte en pabellón, gimnasio de colegio",
+                "3200 a 12800",
+                "1/500 a 1/1000 s",
+                "Una acción nítida importa más que el grano"
+              ],
+              [
+                "Concierto o escenario",
+                "1600 a 6400",
+                "1/250 s",
+                "Las luces de escenario son más intensas de lo que parecen"
+              ],
+              [
+                "Paisaje o escena nocturna con trípode",
+                "100",
+                "Segundos",
+                "No hay motivo para subir el ISO si nada se mueve"
+              ],
+              [
+                "Estrellas y Vía Láctea",
+                "1600 a 6400",
+                "10 a 25 s",
+                "La velocidad la limita el rastro de las estrellas"
+              ]
+            ]
+          }
+        },
+        "Las cámaras de sensor pequeño y los móviles muestran ruido entre uno y dos pasos antes que las de fotograma completo, así que usa la mitad inferior de cada intervalo cuando puedas."
+      ]
+    },
+    {
+      "h": "ISO automático con una velocidad de obturación mínima",
+      "body": [
+        "El ISO automático deja que la cámara suba el ISO solo cuando la luz lo exige. Es el ajuste más útil para personas, mascotas y eventos. Configúralo una sola vez:",
+        {
+          "ol": [
+            "Activa el ISO automático en el menú ISO.",
+            "Fija un ISO máximo que aceptes, por ejemplo 6400 en fotograma completo o 3200 en APS-C.",
+            "Fija una velocidad mínima. En prioridad de apertura, la cámara baja la velocidad a medida que cae la luz hasta alcanzar este valor, y entonces sube el ISO. Elige 1/125 s para personas quietas, 1/250 s para niños y 1/500 s o más rápido para deporte. Muchas cámaras ofrecen una opción Auto ligada a la distancia focal.",
+            "En modo manual con ISO automático, fijas apertura y velocidad y la cámara fija el ISO. La compensación de exposición sigue funcionando en la mayoría de las cámaras.",
+            "Si la cámara llega al ISO máximo, hará más lenta la velocidad por debajo de tu mínimo o subexpondrá. Vigila si parpadea la indicación del ISO."
+          ]
+        },
+        "Para ver qué ISO usó una foto anterior, lee sus datos EXIF; el visor EXIF de cv.cm muestra ISO, velocidad y apertura en el navegador."
+      ]
+    },
+    {
+      "h": "Cuándo un ISO alto es la elección correcta",
+      "body": [
+        "Los principiantes suelen mantener el ISO bajo y acaban con fotos movidas. El ruido se puede reducir al editar. El desenfoque de movimiento y la vibración de la cámara normalmente no. Si tienes que elegir entre ISO 6400 a 1/250 s e ISO 800 a 1/30 s para un niño en movimiento, elige ISO 6400.",
+        "Otro error frecuente es mantener el ISO bajo y subexponer con la idea de aclarar la foto después. En la mayoría de las cámaras el resultado es similar o peor que fijar el ISO más alto en la cámara, y los archivos JPEG pierden más calidad al forzarlos. Expón bien con el ISO que necesites.",
+        "Baja el ISO solo cuando puedas resolver el problema de luz de otra manera: abre la apertura, usa un trípode con sujetos quietos, añade una lámpara o flash, lleva a la persona junto a la ventana o espera un momento más estable. El simulador de cámara de retrato de cv.cm muestra el ruido y el desenfoque de movimiento lado a lado, lo que facilita ver este equilibrio."
+      ]
+    },
+    {
+      "h": "Ruido en móviles y modos noche",
+      "body": [
+        "Los sensores de los móviles son pequeños, así que llegan enseguida a valores de ISO altos. Los móviles lo combaten con computación. En modo noche, el móvil captura varios fotogramas durante uno o varios segundos, los alinea y los promedia. El ruido aleatorio se cancela en parte: promediar 4 fotogramas reduce el ruido a la mitad y 16 fotogramas lo reducen a una cuarta parte. Por eso el móvil te pide que te quedes quieto.",
+        {
+          "ul": [
+            "Sujeta el móvil con las dos manos o apóyalo en algo durante la cuenta atrás. En un trípode, muchos móviles permiten una captura más larga.",
+            "Pide a las personas que se queden quietas hasta que termine la captura, o las partes en movimiento saldrán emborronadas.",
+            "Usa la cámara principal 1x con poca luz. Los objetivos ultra gran angular y teleobjetivo suelen tener sensores más pequeños o aperturas más oscuras y producen más ruido; algunos móviles recortan en silencio la cámara principal en su lugar.",
+            "Evita hacer zoom más allá de los pasos ópticos del objetivo de noche. El zoom digital amplía el ruido.",
+            "Si una foto se ve emborronada o con aspecto plástico, es una reducción de ruido muy fuerte. Más luz, o captura en RAW si está disponible, da un resultado más natural."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Reducir el ruido después de disparar",
+      "body": [
+        {
+          "ul": [
+            "Dispara en RAW si tu cámara o móvil lo permite. La reducción de ruido en cámara se aplica al JPEG; el RAW te deja elegir el equilibrio después.",
+            "Reduce primero el ruido de color. Se puede quitar casi por completo con poca pérdida de detalle.",
+            "Aplica la reducción de ruido de luminancia con suavidad. Los ajustes fuertes dejan la piel con aspecto de cera y pierden el pelo fino y la textura de las telas.",
+            "Las herramientas modernas de reducción de ruido con IA de los editores de fotos pueden limpiar bien archivos de ISO 6400 a 12800. Aplícalas antes de enfocar.",
+            "No aclares mucho las sombras profundas. Súbelas un poco y acepta algo de oscuridad.",
+            "Convertir una imagen muy ruidosa a blanco y negro oculta el ruido de color y puede parecer intencionado."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Cuál es el mejor ISO para una foto nítida?",
+      "a": "Usa el ISO más bajo que aún permita una velocidad de obturación suficientemente rápida para tu sujeto. A la luz del día suele ser el ISO base 100; en interior puede ser 1600 o más."
+    },
+    {
+      "q": "¿Un ISO alto reduce la calidad de imagen?",
+      "a": "Sí, muestra más ruido, reduce el rango dinámico y debilita el color, sobre todo porque se recogió menos luz. Pequeñas cantidades de ruido suelen ser invisibles en la pantalla de un móvil."
+    },
+    {
+      "q": "¿Debo usar ISO automático?",
+      "a": "Para sujetos en movimiento y luz cambiante, sí. Fija un ISO máximo y una velocidad mínima para que la cámara mantenga las fotos nítidas y el ruido dentro del límite que aceptes."
+    },
+    {
+      "q": "¿Por qué mi foto tiene grano incluso con ISO bajo?",
+      "a": "Probablemente estaba subexpuesta y se aclaró después, ya sea por ti o por el procesado de la cámara. Las sombras oscuras que se aclaran muestran ruido con cualquier ISO."
+    },
+    {
+      "q": "¿Qué ISO debo usar en fotografía nocturna?",
+      "a": "Con trípode y una escena quieta, ISO 100 y una exposición larga. A mano en la ciudad, ISO 1600 a 6400. Para estrellas, aproximadamente ISO 1600 a 6400 con exposiciones de 10 a 25 segundos."
+    }
+  ]
+}

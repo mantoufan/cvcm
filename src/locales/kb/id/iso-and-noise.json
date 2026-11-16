@@ -1,0 +1,176 @@
+{
+  "title": "ISO dan Noise: ISO Berapa yang Dipakai dan Kapan Dinaikkan — cv.cm",
+  "description": "Fungsi ISO, kenapa ISO tinggi menambah noise, base ISO, auto ISO dengan shutter speed minimum, ISO per situasi, pengurangan noise, dan cara kerja mode malam di ponsel.",
+  "h1": "Apa itu ISO dan seberapa tinggi bisa dinaikkan sebelum noise merusak foto?",
+  "answer": "ISO mengatur seberapa besar kamera memperkuat sinyal dari sensor. Menggandakan ISO, misalnya dari 400 ke 800, membuat gambar lebih terang satu stop. Noise sebagian besar muncul karena cahaya terlalu sedikit, dan ISO tinggi membuatnya terlihat. Pakai ISO terendah yang masih memungkinkan shutter speed yang tajam, tetapi foto tajam yang berbintik tetap lebih baik daripada foto bersih yang buram.",
+  "sections": [
+    {
+      "h": "Apa sebenarnya yang dilakukan ISO",
+      "body": [
+        "Sensor mengumpulkan cahaya selama eksposur. ISO tidak mengubah jumlah cahaya yang datang; itu tugas aperture dan shutter speed. ISO mengatur gain, yaitu seberapa besar kamera memperkuat sinyal sebelum atau sesudah diubah menjadi angka. Cara kerjanya seperti tombol volume pada mikrofon: memutarnya naik membuat suara pelan jadi keras, dan desisnya ikut keras.",
+        "Angkanya mengikuti stop. ISO 200 lebih terang satu stop daripada ISO 100, ISO 400 dua stop, ISO 3200 lima stop. Kalau sebuah adegan butuh 1/15 s di ISO 100 dan Anda ingin 1/250 s, itu empat stop lebih cepat, jadi Anda butuh ISO 1600 pada aperture yang sama.",
+        "Skala ISO kamera digital didefinisikan dalam standar ISO 12232, supaya ISO 200 di kamera memberi eksposur yang kira-kira sama dengan film ISO 200. Standar ini memberi produsen sedikit kelonggaran dalam menilai kamera, sehingga angka ISO yang sama bisa tampak sedikit lebih terang atau lebih gelap di merek yang berbeda."
+      ]
+    },
+    {
+      "h": "Dari mana noise berasal",
+      "body": [
+        "Cahaya datang sebagai partikel terpisah, yaitu foton, dan datangnya tidak merata. Di area terang, ribuan foton mendarat di setiap piksel dan variasi acaknya kecil dibanding sinyalnya. Di area gelap hanya beberapa yang mendarat, dan variasinya terlihat sebagai butiran. Ini disebut shot noise. Sensor dan elektroniknya menambah sedikit noise sendiri, yang paling terasa di bayangan terdalam.",
+        "Jadi penyebab sebenarnya dari noise adalah cahaya yang sedikit. ISO tinggi biasanya tanda bahwa cahaya kurang. Itu menjelaskan beberapa hal yang disadari fotografer:",
+        {
+          "ul": [
+            "Bayangan lebih berbintik daripada highlight di foto yang sama.",
+            "Mencerahkan foto gelap saat editing memunculkan noise, bahkan pada ISO rendah.",
+            "Sensor yang lebih besar lebih bersih pada ISO yang sama, karena pada framing dan f-number yang sama sensor itu mengumpulkan lebih banyak cahaya secara total.",
+            "Noise muncul dalam dua jenis: noise luminans (butiran halus seperti film) dan noise warna (bercak merah, hijau, dan biru). Noise warna tampak lebih jelek dan lebih mudah dihilangkan."
+          ]
+        },
+        "Eksposur panjang berdurasi beberapa detik juga bisa menampilkan piksel tunggal yang terang, disebut hot pixel. Banyak kamera menawarkan long-exposure noise reduction yang mengambil frame gelap kedua untuk mengurangkannya; fitur ini menggandakan waktu tunggu."
+      ]
+    },
+    {
+      "h": "Base ISO dan rentang ISO yang praktis",
+      "body": [
+        "Base ISO adalah setelan standar terendah bawaan kamera, biasanya ISO 100, kadang 64 atau 200. Setelan ini memberi dynamic range terluas: rentang terbentang dari bayangan yang detail sampai highlight yang detail. Setelan perluasan bertanda L atau Lo di bawah base sering mengurangi detail highlight, jadi pakai hanya untuk mendapat shutter yang lebih lambat.",
+        "Seberapa tinggi yang masih bisa diterima bergantung pada sensor, cahaya, dan seberapa besar foto akan dilihat. Foto untuk layar ponsel menyembunyikan jauh lebih banyak noise daripada cetakan besar. Sebagai patokan kasar untuk kamera masa kini:",
+        {
+          "table": {
+            "head": [
+              "Situasi",
+              "ISO umum",
+              "Target shutter",
+              "Catatan"
+            ],
+            "rows": [
+              [
+                "Matahari terik, subjek apa pun",
+                "100",
+                "1/250 s atau lebih cepat",
+                "Base ISO untuk file paling bersih"
+              ],
+              [
+                "Tempat teduh, mendung",
+                "100 sampai 400",
+                "1/250 s",
+                "Naikkan ISO kalau orangnya bergerak"
+              ],
+              [
+                "Dalam ruangan dekat jendela, siang hari",
+                "400 sampai 1600",
+                "1/125 sampai 1/250 s",
+                "Wajah menghadap jendela"
+              ],
+              [
+                "Ruangan dengan lampu, malam hari",
+                "1600 sampai 6400",
+                "1/60 sampai 1/125 s",
+                "Buka aperture penuh dulu"
+              ],
+              [
+                "Olahraga dalam ruangan, aula sekolah",
+                "3200 sampai 12800",
+                "1/500 sampai 1/1000 s",
+                "Aksi yang tajam lebih penting daripada butiran"
+              ],
+              [
+                "Konser atau panggung",
+                "1600 sampai 6400",
+                "1/250 s",
+                "Lampu panggung lebih terang daripada kelihatannya"
+              ],
+              [
+                "Lanskap atau pemandangan malam dengan tripod",
+                "100",
+                "Beberapa detik",
+                "Tidak perlu menaikkan ISO kalau tidak ada yang bergerak"
+              ],
+              [
+                "Bintang dan Bima Sakti",
+                "1600 sampai 6400",
+                "10 sampai 25 s",
+                "Shutter dibatasi oleh star trail"
+              ]
+            ]
+          }
+        },
+        "Kamera bersensor kecil dan ponsel menampakkan noise sekitar satu sampai dua stop lebih awal daripada kamera full-frame, jadi pakai separuh bawah tiap rentang kalau bisa."
+      ]
+    },
+    {
+      "h": "Auto ISO dengan shutter speed minimum",
+      "body": [
+        "Auto ISO membiarkan kamera menaikkan ISO hanya ketika cahaya memerlukannya. Ini setelan yang paling berguna untuk foto orang, hewan peliharaan, dan acara. Atur sekali saja:",
+        {
+          "ol": [
+            "Aktifkan auto ISO di menu ISO.",
+            "Tetapkan ISO maksimum yang Anda terima, misalnya 6400 di kamera full-frame atau 3200 di APS-C.",
+            "Tetapkan shutter speed minimum. Di aperture priority, kamera menurunkan shutter speed saat cahaya berkurang sampai mencapai nilai ini, lalu menaikkan ISO. Pilih 1/125 s untuk orang yang diam, 1/250 s untuk anak-anak, 1/500 s atau lebih cepat untuk olahraga. Banyak kamera menyediakan opsi Auto yang mengikuti panjang fokus.",
+            "Di mode manual dengan auto ISO, Anda mengunci aperture dan shutter speed dan kamera mengatur ISO. Kompensasi eksposur tetap bekerja di sebagian besar kamera.",
+            "Kalau kamera mencapai ISO maksimum, ia akan memperlambat shutter di bawah batas minimum Anda atau membuat foto underexposed. Perhatikan tampilan ISO yang berkedip."
+          ]
+        },
+        "Untuk melihat ISO yang dipakai foto lama, baca data EXIF-nya; penampil EXIF cv.cm menampilkan ISO, shutter speed, dan aperture di browser."
+      ]
+    },
+    {
+      "h": "Kapan ISO tinggi adalah pilihan yang tepat",
+      "body": [
+        "Pemula sering mempertahankan ISO rendah lalu mendapat foto buram. Noise bisa dikurangi saat editing. Blur gerakan dan kamera goyang biasanya tidak. Kalau pilihannya antara ISO 6400 di 1/250 s dan ISO 800 di 1/30 s untuk anak yang bergerak, ambil ISO 6400.",
+        "Kesalahan umum lain adalah mempertahankan ISO rendah dan membiarkan foto underexposed, dengan rencana mencerahkannya nanti. Di kebanyakan kamera, hasilnya serupa atau lebih buruk daripada mengatur ISO lebih tinggi di kamera, dan file JPEG kehilangan lebih banyak kualitas saat ditarik. Atur eksposur dengan benar pada ISO yang Anda butuhkan.",
+        "Turunkan ISO hanya jika masalah cahayanya bisa diatasi dengan cara lain: buka aperture, pakai tripod untuk subjek yang diam, tambahkan lampu atau flash, pindahkan orang ke dekat jendela, atau tunggu momen yang lebih stabil. Simulator kamera potret cv.cm menampilkan noise dan blur gerakan berdampingan, sehingga pertukaran ini mudah dilihat."
+      ]
+    },
+    {
+      "h": "Noise di ponsel dan mode malam",
+      "body": [
+        "Sensor ponsel kecil, sehingga cepat mencapai nilai ISO tinggi. Ponsel melawannya dengan komputasi. Di mode malam, ponsel menangkap beberapa frame selama satu sampai beberapa detik, menyejajarkannya, dan merata-ratakannya. Noise acak saling meniadakan sebagian: merata-ratakan 4 frame membuat noise separuh, dan 16 frame menguranginya jadi seperempat. Itu sebabnya ponsel meminta Anda diam.",
+        {
+          "ul": [
+            "Pegang ponsel dengan dua tangan atau sandarkan pada sesuatu selama hitungan mundur. Di tripod, banyak ponsel mengizinkan pengambilan yang lebih lama.",
+            "Minta orang tetap diam sampai pengambilan selesai, kalau tidak bagian yang bergerak tampak menyatu dan berbayang.",
+            "Pakai kamera utama 1x di cahaya redup. Lensa ultra-wide dan telefoto biasanya punya sensor lebih kecil atau aperture lebih gelap sehingga noise-nya lebih banyak; beberapa ponsel diam-diam memotong dari kamera utama.",
+            "Hindari zoom melewati langkah optik lensa di malam hari. Zoom digital memperbesar noise.",
+            "Kalau foto tampak menyatu atau seperti plastik, itu pengurangan noise yang berlebihan. Cahaya yang lebih banyak, atau pengambilan RAW jika tersedia, memberi hasil yang lebih natural."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Mengurangi noise setelah memotret",
+      "body": [
+        {
+          "ul": [
+            "Potret dalam RAW kalau kamera atau ponsel Anda mengizinkan. Pengurangan noise di kamera diterapkan pada JPEG; RAW memungkinkan Anda memilih keseimbangannya nanti.",
+            "Kurangi noise warna lebih dulu. Noise ini bisa dihilangkan hampir sepenuhnya dengan sedikit kehilangan detail.",
+            "Terapkan pengurangan noise luminans dengan lembut. Setelan yang kuat membuat kulit tampak seperti lilin dan menghilangkan tekstur rambut halus dan kain.",
+            "Alat denoise berbasis AI modern di aplikasi edit foto bisa membersihkan file ISO 6400 sampai 12800 dengan baik. Terapkan sebelum sharpening.",
+            "Jangan terlalu banyak mencerahkan bayangan yang dalam. Angkat sedikit dan terima sebagian gelapnya.",
+            "Mengubah gambar yang sangat berbintik menjadi hitam putih menyembunyikan noise warna dan bisa terlihat disengaja."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "ISO berapa yang terbaik untuk foto yang tajam?",
+      "a": "Pakai ISO terendah yang masih memungkinkan shutter speed yang cukup cepat untuk subjek Anda. Di siang hari biasanya base ISO 100; di dalam ruangan bisa 1600 atau lebih."
+    },
+    {
+      "q": "Apakah ISO tinggi menurunkan kualitas gambar?",
+      "a": "Ya, noise jadi lebih banyak, dynamic range menurun, dan warna melemah, terutama karena cahaya yang terkumpul lebih sedikit. Noise dalam jumlah kecil sering tidak terlihat di layar ponsel."
+    },
+    {
+      "q": "Apakah sebaiknya memakai auto ISO?",
+      "a": "Untuk subjek yang bergerak dan cahaya yang berubah-ubah, ya. Atur ISO maksimum dan shutter speed minimum agar kamera menjaga foto tetap tajam dan noise dalam batas yang Anda terima."
+    },
+    {
+      "q": "Kenapa foto saya berbintik padahal ISO-nya rendah?",
+      "a": "Kemungkinan foto itu underexposed lalu dicerahkan sesudahnya, oleh Anda atau oleh pemrosesan kamera. Bayangan gelap yang dicerahkan menampakkan noise pada ISO berapa pun."
+    },
+    {
+      "q": "ISO berapa yang dipakai untuk foto malam?",
+      "a": "Dengan tripod dan adegan yang diam, ISO 100 dan eksposur panjang. Handheld di kota, ISO 1600 sampai 6400. Untuk bintang, sekitar ISO 1600 sampai 6400 dengan eksposur 10 sampai 25 detik."
+    }
+  ]
+}

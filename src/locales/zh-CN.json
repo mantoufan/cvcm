@@ -11843,6 +11843,113 @@
         "dev": "在浏览器中运行模型，调用大语言模型 API",
         "trust": "AI生成内容归谁所有、标识规则、C2PA 与AI水印"
       }
+    },
+    "exposure-triangle": {
+      "name": "曝光三要素",
+      "blurb": "光圈、快门速度和 ISO 如何用“档”互相换算，附各场景起步参数"
+    },
+    "aperture-and-depth-of-field": {
+      "name": "光圈与景深",
+      "blurb": "为什么 f/1.8 能虚化背景，人像和合影该用多大光圈"
+    },
+    "shutter-speed": {
+      "name": "快门速度",
+      "blurb": "定格或拍出动感的快门速度、手持安全快门、追拍和 ND 滤镜长曝光"
+    },
+    "iso-and-noise": {
+      "name": "ISO 与噪点",
+      "blurb": "ISO 感光度的作用、噪点成因、自动 ISO 设置和手机夜景模式"
+    },
+    "white-balance": {
+      "name": "白平衡",
+      "blurb": "用开尔文、预设和灰卡校正偏橙、偏蓝、偏绿的肤色"
+    },
+    "focal-length": {
+      "name": "焦距",
+      "blurb": "毫米数的含义、等效焦距、手机 0.5x 到 5x 镜头和人像最佳焦距"
+    },
+    "rule-of-thirds": {
+      "name": "三分法构图",
+      "blurb": "眼睛、地平线和主体在九宫格上的位置，以及何时改用居中构图"
+    },
+    "photo-composition": {
+      "name": "摄影构图技巧",
+      "blurb": "引导线、框架、对称、前景，以及按快门前的构图检查清单"
+    },
+    "golden-hour": {
+      "name": "黄金时刻与蓝调时刻",
+      "blurb": "你所在的地方黄金时刻是几点、持续多久，以及拍暖光的参数"
+    },
+    "backlit-photos": {
+      "name": "逆光拍照",
+      "blurb": "迎光拍出明亮的脸、轮廓光或干净的剪影，相机和手机都适用"
+    },
+    "how-to-pose-for-photos": {
+      "name": "拍照姿势",
+      "blurb": "姿态、角度、手的位置，以及怎样在任何照片里显得自然的姿势清单"
+    },
+    "portrait-photography-tips": {
+      "name": "人像摄影技巧",
+      "blurb": "镜头、光圈、对焦眼睛、柔光和引导被摄者，拍出更好的人像"
+    },
+    "selfie-tips": {
+      "name": "自拍技巧",
+      "blurb": "任何手机都适用的角度、手臂距离、窗光、定时、连拍和镜子自拍"
+    },
+    "self-portrait-photography": {
+      "name": "自拍与自我肖像",
+      "blurb": "用三脚架、定时或遥控器给自己拍照，并让焦点落在自己身上"
+    },
+    "solo-bridal-photoshoot": {
+      "name": "单人婚纱照",
+      "blurb": "一个人的婚纱照怎么筹备、摆姿势和曝光，找摄影师或自己拍都适用"
+    },
+    "bridal-poses": {
+      "name": "婚纱照姿势",
+      "blurb": "24 个新娘姿势的摆法、角度和镜头，附头纱、拖尾、捧花和戒指拍法"
+    },
+    "pre-wedding-photoshoot": {
+      "name": "婚纱照拍摄",
+      "blurb": "婚前拍摄的时间表、选景、服装、情侣姿势，以及向影楼要问的问题"
+    },
+    "phone-photography": {
+      "name": "手机摄影技巧",
+      "blurb": "对焦、曝光锁定、镜头选择、夜景模式、HDR、RAW 和快速修图"
+    },
+    "night-photography": {
+      "name": "夜景拍摄",
+      "blurb": "城市灯光、光轨和星空的参数，手持、三脚架和手机都适用"
+    },
+    "photograph-the-moon": {
+      "name": "拍月亮",
+      "blurb": "按月相给出 Looney 11 参数、焦距计算和手机拍月步骤"
+    },
+    "food-photography": {
+      "name": "美食摄影技巧",
+      "blurb": "手机和相机的拍摄角度、窗边侧光、摆盘、热气和餐厅拍法"
+    },
+    "product-photography": {
+      "name": "在家拍产品图",
+      "blurb": "白色背景、布光、三脚架参数、景深合成和统一的镜头清单"
+    },
+    "photo": {
+      "label": "摄影教程",
+      "lead": "用相机或手机拍出更好照片的指南：光圈、快门速度、ISO 和白平衡，构图与光线，姿势与人像，单人婚纱照和婚纱照拍摄，夜景、月亮、美食和产品摄影。",
+      "all": "全部摄影教程",
+      "groups": {
+        "exposure": "相机参数",
+        "composition": "构图与光线",
+        "portraits": "人像与姿势",
+        "wedding": "婚纱照",
+        "scenes": "手机与场景"
+      },
+      "blurbs": {
+        "exposure": "曝光三要素、光圈与背景虚化、快门速度、ISO、白平衡和焦距",
+        "composition": "三分法、构图技巧、黄金时刻和逆光拍摄",
+        "portraits": "怎么摆姿势、人像技巧、自拍，以及用三脚架和定时给自己拍照",
+        "wedding": "单人婚纱照、婚纱照姿势和婚前拍摄",
+        "scenes": "手机摄影、夜景、月亮、美食和产品摄影"
+      }
     }
   },
   "dice": {

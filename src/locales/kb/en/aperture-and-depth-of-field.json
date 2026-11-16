@@ -1,0 +1,199 @@
+{
+  "title": "Aperture and Depth of Field: How to Blur a Background — cv.cm",
+  "description": "Aperture and depth of field explained: why f/1.8 is wide, the four factors that control blur, worked numbers, phone portrait mode, and f-stops for groups.",
+  "h1": "How do aperture and depth of field work?",
+  "answer": "Aperture is the opening in the lens, written as an f-number. A small f-number such as f/1.8 is a wide opening: it lets in more light and gives a shallow depth of field, so the background blurs. A large f-number such as f/11 is a small opening: less light, and more of the scene from front to back looks sharp.",
+  "sections": [
+    {
+      "h": "Why a small f-number means a wide aperture",
+      "body": [
+        "The f-number is a ratio: the focal length divided by the diameter of the opening. On a 50 mm lens, f/2 means an opening 25 mm wide (50 / 2), and f/8 means an opening about 6 mm wide (50 / 8). That is why the number goes up as the hole gets smaller. Writing it as f/2 is a reminder that it is a fraction.",
+        "The standard full stops are f/1.4, f/2, f/2.8, f/4, f/5.6, f/8, f/11, f/16 and f/22. Each one passes half the light of the one before, because the area of the opening halves. Each number is the previous one times about 1.4 (the square root of 2).",
+        "Because the f-number is a ratio, f/4 gives the same brightness on any lens, wide or telephoto. A lens is often named by its widest aperture. A 50 mm f/1.8 lens can open to f/1.8. A zoom marked f/3.5-5.6 opens to f/3.5 at the wide end and only f/5.6 at the long end."
+      ]
+    },
+    {
+      "h": "The four things that control depth of field",
+      "body": [
+        "Depth of field is the zone in front of and behind the focus point that looks acceptably sharp. Nothing outside it is suddenly blurred; sharpness falls off gradually. Four factors decide how deep the zone is.",
+        {
+          "table": {
+            "head": [
+              "Factor",
+              "Shallower (more blur)",
+              "Deeper (more in focus)",
+              "Notes"
+            ],
+            "rows": [
+              [
+                "Aperture",
+                "f/1.4 to f/2.8",
+                "f/8 to f/16",
+                "The easiest control to change"
+              ],
+              [
+                "Subject distance",
+                "Close to the subject",
+                "Far from the subject",
+                "Halving the distance makes the zone much thinner"
+              ],
+              [
+                "Focal length",
+                "Telephoto, e.g. 85 to 135 mm",
+                "Wide-angle, e.g. 16 to 24 mm",
+                "At the same framing the effect is smaller than people expect"
+              ],
+              [
+                "Sensor size",
+                "Full frame or larger",
+                "Small sensors, phones",
+                "A phone at f/1.8 has much more depth of field than a full-frame camera at f/1.8"
+              ]
+            ]
+          }
+        },
+        "A fifth factor changes how blurred the background looks, without changing depth of field itself: the distance from the subject to the background. A person standing 1 m in front of a wall stays close to the sharp zone. The same person 10 m in front of trees gives the trees space to fall far out of focus.",
+        "Example numbers for a 50 mm lens on full frame, focused on a person 2 m away: at f/1.8 the sharp zone is about 17 cm deep, enough for a face but not for both the nose and a shoulder turned away. At f/8 it grows to about 80 cm. With a 24 mm lens at f/11 focused at about 1.8 m, everything from about 0.9 m to the horizon looks sharp."
+      ]
+    },
+    {
+      "h": "How to get a blurred background on a camera",
+      "body": [
+        {
+          "ol": [
+            "Set Av or A mode and choose the smallest f-number the lens allows, such as f/1.8 or f/2.8.",
+            "Use a longer focal length if you have one: 50 mm, 85 mm, or the long end of a zoom.",
+            "Move closer so the person fills more of the frame. Head and shoulders blurs the background far more than a full-length shot.",
+            "Move the person away from the background. Look for a background at least several metres behind them: a park, a street, distant lights.",
+            "Use eye autofocus or put the focus point on the nearest eye. At f/1.8, focus on the ear by mistake and the eyes go soft.",
+            "Check the shutter speed. In bright sun at ISO 100, f/1.8 needs about 1/8000 s. If the camera cannot go that fast, lower ISO to the base value, use an electronic shutter, or add an ND filter."
+          ]
+        },
+        "A kit zoom at f/5.6 can still blur a background: zoom to the longest focal length, step back to frame the face, and choose a distant background. The blur will be smaller than with an f/1.8 prime, but it is clearly visible.",
+        "To see how aperture, focal length and subject distance change the blur before you buy a lens, try cv.cm's portrait camera simulator. It has 24, 35, 50, 85 and 135 mm lenses and a phone lens, and shows the background change as you move the sitter."
+      ]
+    },
+    {
+      "h": "Bokeh: what it is and how to shape it",
+      "body": [
+        "Bokeh is the look of the out-of-focus areas, not just the amount of blur. Points of light in the background turn into discs. Wide apertures make those discs larger. When you stop down a little, the discs take the shape of the aperture blades, so they may look like polygons at f/4 or f/5.6.",
+        {
+          "ul": [
+            "For large, round light discs, shoot at the widest aperture and place small lights (street lamps, fairy lights, sun through leaves) well behind the subject.",
+            "For a smooth, even background, choose a plain area in shade or a field of grass and keep the subject far in front of it.",
+            "Busy backgrounds with bright branches can look restless even when blurred. Change your angle so the background is darker or simpler.",
+            "Bokeh quality differs between lenses. It is a design choice of the lens, so two lenses at the same f-number can look different."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Background blur on a phone: portrait mode",
+      "body": [
+        "A phone's small sensor and short real focal length give deep depth of field even at f/1.8, so a normal photo of a person keeps the background fairly sharp. Portrait mode solves this in software. The phone estimates depth, using two lenses, a depth sensor or machine learning, and blurs everything it decides is behind the subject.",
+        {
+          "ol": [
+            "Open Portrait mode. Many phones default to the 1x or 2x lens; 2x usually gives a more natural face shape and more blur.",
+            "Stand at the distance the app asks for. It warns when you are too close, too far or the light is too low.",
+            "Tap the face to focus and lock exposure.",
+            "Adjust the blur. On iPhone it is the f-number or depth control slider; Android phones have a similar blur slider. Many people find a medium setting, around f/2.8 to f/4 on the slider, looks more believable than the maximum.",
+            "After the shot, you can usually change the blur or the focus point in the photo editor."
+          ]
+        },
+        "Portrait mode makes mistakes at edges: loose hair, glasses, a raised hand, a glass on a table, or a gap between an arm and the body. Check those areas at full size. A plain background, good light and some distance behind the subject reduce errors. Real optical blur from a camera does not have these edge errors."
+      ]
+    },
+    {
+      "h": "Apertures for groups, landscapes and products",
+      "body": [
+        "Sometimes you want depth, not blur. Wide apertures are risky when several faces sit at different distances.",
+        {
+          "table": {
+            "head": [
+              "Subject",
+              "Full-frame aperture",
+              "Where to focus",
+              "Why"
+            ],
+            "rows": [
+              [
+                "One person, head and shoulders",
+                "f/1.8 to f/2.8",
+                "Nearest eye",
+                "Blurs the background, keeps the face sharp"
+              ],
+              [
+                "Two people side by side",
+                "f/2.8 to f/4",
+                "Eyes of either person if level",
+                "Gives room if one leans back"
+              ],
+              [
+                "Group in one row",
+                "f/4 to f/5.6",
+                "Middle of the row",
+                "Faces stay sharp across the row"
+              ],
+              [
+                "Group in two or three rows",
+                "f/5.6 to f/8",
+                "Second row",
+                "Front and back rows both stay sharp"
+              ],
+              [
+                "Landscape with foreground",
+                "f/8 to f/11",
+                "About one third into the scene",
+                "Deep zone from near rocks to the horizon"
+              ],
+              [
+                "Small product on a table",
+                "f/8 to f/11",
+                "Front edge of the product",
+                "Keeps the whole product sharp"
+              ]
+            ]
+          }
+        },
+        "Do not go much past f/11 to f/16 on full frame (or about f/8 on smaller sensors) unless you need the depth. Very small apertures soften fine detail through diffraction, and they need a slow shutter or a high ISO."
+      ]
+    },
+    {
+      "h": "Common mistakes and fixes",
+      "body": [
+        {
+          "ul": [
+            "Nose sharp, eyes soft: depth of field at f/1.4 to f/2 is only a few centimetres when close. Focus on the eye or close down to f/2.8.",
+            "Background still busy at f/1.8: the background is too close. Move the subject forward or change the angle.",
+            "Second row of a group is blurred: use f/5.6 to f/8 and focus on the second row.",
+            "Whole photo is soft at f/22: diffraction and a slow shutter. Use f/8 to f/11 instead.",
+            "Portrait mode cut off hair or an ear: turn the effect down, simplify the background, or take a normal photo.",
+            "Overexposed portraits in sun at f/1.8: the shutter reached its limit. Lower ISO, use an ND filter, or move into shade."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "What f-stop gives the most background blur?",
+      "a": "The smallest f-number your lens offers, such as f/1.2, f/1.4 or f/1.8. Getting closer to the subject, using a longer lens and moving the subject away from the background add more blur than the f-stop alone."
+    },
+    {
+      "q": "Is f/1.8 or f/2.8 better for portraits?",
+      "a": "f/1.8 gives more blur and works in dimmer light, but the sharp zone is thin, so focus must be exact. f/2.8 is safer for moving people, for faces at an angle, and for two people."
+    },
+    {
+      "q": "What is the sharpest aperture on a lens?",
+      "a": "Most lenses are sharpest about two to three stops down from their widest aperture, often around f/5.6 to f/8. At very small apertures such as f/16 and f/22, diffraction softens fine detail."
+    },
+    {
+      "q": "Why do phone photos have everything in focus?",
+      "a": "Phone sensors are small and the real focal lengths are very short, so depth of field is deep even at f/1.8. Portrait mode adds blur in software to imitate a larger camera."
+    },
+    {
+      "q": "Does a crop sensor give more depth of field?",
+      "a": "At the same framing and f-number, yes. A smaller sensor needs a shorter lens or a greater distance to frame the same scene, so depth of field is deeper. For APS-C it is roughly one stop deeper than full frame."
+    }
+  ]
+}

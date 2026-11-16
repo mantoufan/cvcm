@@ -11,6 +11,7 @@ export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | nul
     { page: "hub" as const, nav: KB_SHELVES.knowledge.nav, label: t("kb.label"), articles: kbForTool(tool) },
     { page: "code" as const, nav: KB_SHELVES.code.nav, label: t("kb.code.label"), articles: kbForTool(tool, "code") },
     { page: "ai" as const, nav: KB_SHELVES.ai.nav, label: t("kb.ai.label"), articles: kbForTool(tool, "ai") },
+    { page: "photo" as const, nav: KB_SHELVES.photo.nav, label: t("kb.photo.label"), articles: kbForTool(tool, "photo") },
   ].filter((shelf) => shelf.articles.length);
   if (ids.length === 0 && shelves.length === 0) return null;
   return h("section", { class: "learn-related tool-lessons" },

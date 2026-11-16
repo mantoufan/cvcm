@@ -14,7 +14,7 @@ import { datasetBreadcrumbJsonLd, datasetFaqJsonLd, datasetJsonLd, datasetStatic
 import { rankingBreadcrumbJsonLd, rankingFaqJsonLd, rankingJsonLd, rankingStaticHtml } from "./rankings-i18n";
 import { kbArticleJsonLd, kbBreadcrumbJsonLd, kbFaqJsonLd } from "./kb-i18n";
 import { kbPageHtml } from "./kb-page";
-import { kbArticleOf } from "./kb";
+import { KB_SHELVES, kbArticleOf } from "./kb";
 import { refArticleJsonLd, refBreadcrumbJsonLd, refFaqJsonLd } from "./ref-i18n";
 import { refPageHtml } from "./ref-page";
 import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangFaqJsonLd } from "./slang-i18n";
@@ -259,6 +259,11 @@ function linkText(title: string): string {
   return title.replace(/\s+[—|-]\s+cv\.cm$/i, "");
 }
 
+/** Every kb shelf hub (knowledge, coding, AI, photography…), in KB_SHELVES order. */
+function kbHubLinks(locale: Locale): { href: string; text: string }[] {
+  return Object.values(KB_SHELVES).map((shelf) => ({ href: kbHref(locale, shelf.hub), text: linkText(pageTitle(locale, { kb: true, kbId: shelf.hub })) }));
+}
+
 function linkList(items: { href: string; text: string }[]): string {
   if (items.length === 0) return "";
   return `<ul>${items.map((item) => `<li><a href="${escapeHtml(item.href)}">${escapeHtml(item.text)}</a></li>`).join("")}</ul>`;
@@ -291,11 +296,7 @@ function staticPageHtml(
     const tutorials = FEATURED_TUTORIALS
       .filter((id) => id !== seo.tutorial)
       .map((id) => ({ href: learnHref(locale, id), text: linkText(pageTitle(locale, { learn: true, tutorial: id })) }));
-    const kbHubs = [
-      { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
-      { href: kbHref(locale, "code"), text: linkText(pageTitle(locale, { kb: true, kbId: "code" })) },
-      { href: kbHref(locale, "ai"), text: linkText(pageTitle(locale, { kb: true, kbId: "ai" })) },
-    ];
+    const kbHubs = kbHubLinks(locale);
     parts.push(linkList(seo.tutorial ? [{ href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) }, ...kbHubs, ...tutorials] : [...kbHubs, ...tutorials]));
   } else if (seo.games || seo.markets) {
     parts.push(linkList([home]));
@@ -313,9 +314,7 @@ function staticPageHtml(
       { href: quizHref(locale), text: linkText(pageTitle(locale, { quiz: true })) },
       { href: datasetHref(locale), text: linkText(pageTitle(locale, { dataset: true })) },
       { href: rankingHref(locale), text: linkText(pageTitle(locale, { ranking: true })) },
-      { href: kbHref(locale), text: linkText(pageTitle(locale, { kb: true })) },
-      { href: kbHref(locale, "code"), text: linkText(pageTitle(locale, { kb: true, kbId: "code" })) },
-      { href: kbHref(locale, "ai"), text: linkText(pageTitle(locale, { kb: true, kbId: "ai" })) },
+      ...kbHubLinks(locale),
       { href: refHref(locale), text: linkText(pageTitle(locale, { ref: true })) },
       { href: slangHref(locale), text: linkText(pageTitle(locale, { slang: true })) },
       { href: ideasHref(locale), text: linkText(pageTitle(locale, { ideas: true })) },

@@ -1,0 +1,264 @@
+{
+  "title": "Balance de blancos: kelvin, preajustes y tonos de piel — cv.cm",
+  "description": "Balance de blancos explicado: temperatura de color en kelvin, preajustes, balance manual con tarjeta gris, piel naranja o azul, luz mixta, RAW y looks creativos.",
+  "h1": "¿Qué es el balance de blancos y cómo se ajusta?",
+  "answer": "El balance de blancos le dice a la cámara de qué color es la luz para que los objetos blancos se vean blancos en la foto. La luz se mide en kelvin: las bombillas de interior son cálidas, de unos 2700 a 3200 K, y la sombra es fría, de unos 7000 K o más. Elige un preajuste que coincida con la luz, mide una tarjeta gris o dispara en RAW y corrígelo después.",
+  "sections": [
+    {
+      "h": "Temperatura de color en kelvin",
+      "body": [
+        "Cada fuente de luz tiene un color. Nuestros ojos se adaptan tan rápido que una hoja de papel blanca se ve blanca bajo una lámpara y bajo un cielo azul. Una cámara no se adapta sola. El balance de blancos es la corrección que aplica para que los colores neutros sigan siendo neutros.",
+        "La temperatura de color describe la luz del naranja al azul en la escala kelvin (K). Los números bajos son más cálidos (más naranja) y los altos más fríos (más azul). Los valores siguientes son típicos; las fuentes reales varían.",
+        {
+          "table": {
+            "head": [
+              "Fuente de luz",
+              "Kelvin aproximado",
+              "Aspecto sin corregir"
+            ],
+            "rows": [
+              [
+                "Vela, fuego",
+                "1800 a 2000 K",
+                "Naranja intenso"
+              ],
+              [
+                "Bombilla doméstica, LED blanco cálido",
+                "2700 a 3200 K",
+                "Naranja, piel amarillenta"
+              ],
+              [
+                "Amanecer y atardecer",
+                "aprox. 2500 a 3500 K",
+                "Dorado, cálido"
+              ],
+              [
+                "LED o fluorescente blanco neutro",
+                "aprox. 4000 K",
+                "Algo amarillento, a veces verdoso"
+              ],
+              [
+                "Sol del mediodía",
+                "aprox. 5000 a 5500 K",
+                "Neutro"
+              ],
+              [
+                "Flash de la cámara",
+                "aprox. 5500 a 6000 K",
+                "De neutro a ligeramente frío"
+              ],
+              [
+                "Cielo nublado",
+                "aprox. 6000 a 7000 K",
+                "Ligeramente azul"
+              ],
+              [
+                "Sombra abierta en un día soleado",
+                "aprox. 7000 a 8000 K",
+                "Azul, piel fría"
+              ],
+              [
+                "Hora azul, cielo azul despejado",
+                "10000 K y más",
+                "Muy azul"
+              ]
+            ]
+          }
+        },
+        "La luz artificial varía además en un segundo eje, del verde al magenta, llamado matiz. Algunos LED y tubos fluorescentes añaden una dominante verde que el ajuste en kelvin por sí solo no corrige."
+      ]
+    },
+    {
+      "h": "Balance de blancos automático y preajustes",
+      "body": [
+        "El balance de blancos automático (AWB) funciona bien con luz de día estable y en la mayoría de las escenas mixtas. Le cuesta cuando un solo color llena el encuadre, como hojas verdes, una pared roja o un atardecer, porque intenta neutralizar el color que querías conservar. También puede cambiar entre fotos de la misma escena, lo que es un problema en una serie de fotos de producto o de retratos.",
+        "Los preajustes aplican una corrección fija. Los valores exactos varían según la marca; estas son aproximaciones habituales:",
+        {
+          "table": {
+            "head": [
+              "Preajuste",
+              "Aprox.",
+              "Úsalo para",
+              "Si se usa con la luz equivocada"
+            ],
+            "rows": [
+              [
+                "Tungsteno o incandescente (icono de bombilla)",
+                "3200 K",
+                "Bombillas domésticas, LED cálidos",
+                "Muy azul a la luz del día"
+              ],
+              [
+                "Fluorescente",
+                "aprox. 4000 K",
+                "Tubos de oficina, LED neutros",
+                "Violeta o magenta a la luz del día"
+              ],
+              [
+                "Luz de día o soleado",
+                "aprox. 5000 a 5500 K",
+                "Sol directo",
+                "Naranja en interior, azul en sombra"
+              ],
+              [
+                "Flash",
+                "aprox. 5500 a 6000 K",
+                "Flash como luz principal",
+                "Algo cálido con sol"
+              ],
+              [
+                "Nublado",
+                "aprox. 6000 K",
+                "Días nublados, retratos más cálidos",
+                "Cálido con sol"
+              ],
+              [
+                "Sombra",
+                "aprox. 7000 K",
+                "Sombra abierta, bajo los árboles",
+                "Muy naranja en interior"
+              ],
+              [
+                "K (kelvin)",
+                "Tu valor",
+                "Cualquier luz que puedas estimar",
+                "Demasiado bajo se ve azul, demasiado alto se ve naranja"
+              ]
+            ]
+          }
+        },
+        "Al fijar un valor en kelvin, le dices a la cámara cuál es la luz y ella corrige en sentido contrario. Fijar 3200 K a la luz del día hace la foto azul. Fijar 7500 K en interior la hace muy naranja. Al principio parece al revés, pero es coherente."
+      ]
+    },
+    {
+      "h": "Balance de blancos personalizado con una tarjeta gris",
+      "body": [
+        "El método más preciso es medir la luz. Funciona mejor una tarjeta gris o una carta de balance de blancos específica. Una hoja de papel blanco liso es un sustituto razonable, aunque algunos papeles contienen blanqueadores que se ven azules.",
+        {
+          "ol": [
+            "Coloca la tarjeta donde está el sujeto, orientada a la misma luz. En un retrato, la persona puede sostenerla bajo la barbilla.",
+            "Abre el ajuste de balance de blancos personalizado (o preajuste manual, PRE) en el menú de la cámara.",
+            "Llena el encuadre o la zona marcada con la tarjeta. El enfoque no importa, pero la exposición debe ser normal, ni muy oscura ni blanca.",
+            "Haz la foto de medición y confirma. La cámara la guarda como ajuste personalizado.",
+            "Dispara. Vuelve a medir si cambia la luz, por ejemplo cuando el sol se oculta tras una nube o pasas a otra habitación."
+          ]
+        },
+        "Si disparas en RAW, haz en su lugar una foto de la tarjeta al comienzo de cada montaje de luz. Al editar, haz clic en la tarjeta con el cuentagotas de balance de blancos y copia el ajuste al resto de fotos de ese montaje."
+      ]
+    },
+    {
+      "h": "Por qué la piel se ve naranja, azul o verde, y cómo arreglarlo",
+      "body": [
+        {
+          "table": {
+            "head": [
+              "Lo que ves",
+              "Causa probable",
+              "Solución"
+            ],
+            "rows": [
+              [
+                "Las caras salen naranjas o amarillas en interior",
+                "Bombillas cálidas con balance de luz de día o automático",
+                "Elige Tungsteno o 3000 a 3200 K, o mide una pared blanca o una tarjeta"
+              ],
+              [
+                "La piel se ve azul o gris en exterior",
+                "Sombra abierta o luz nublada",
+                "Elige Sombra o Nublado, o aproximadamente 6500 a 7500 K"
+              ],
+              [
+                "La piel se ve verde o enfermiza",
+                "Tubos fluorescentes o LED baratos",
+                "Usa el preajuste Fluorescente o añade matiz magenta al editar"
+              ],
+              [
+                "La cara tiene dos colores, un lado naranja y otro azul",
+                "Luz de ventana y una lámpara a la vez",
+                "Apaga la lámpara o gira la cara por completo hacia una sola fuente"
+              ],
+              [
+                "El atardecer se ve apagado y gris",
+                "El balance automático eliminó la calidez",
+                "Elige Luz de día o Nublado en lugar de Auto"
+              ],
+              [
+                "La nieve se ve azul",
+                "Sombra iluminada por un cielo azul",
+                "Elige Sombra, o acepta algo de azul para dar sensación de frío"
+              ]
+            ]
+          }
+        },
+        "Una comprobación rápida es mirar algo que sabes que es neutro, como una camisa blanca, una pared gris o un plato blanco. Si tiene una dominante en la foto, todo lo demás tiene la misma dominante."
+      ]
+    },
+    {
+      "h": "Luz mixta",
+      "body": [
+        "La luz mixta es el caso más difícil: una ventana y una lámpara de techo, un restaurante con velas y pantallas, una calle con farolas de sodio y LED. Un solo ajuste de balance de blancos no puede corregir dos colores a la vez.",
+        {
+          "ul": [
+            "Elimina una fuente. Apaga las luces de la sala y usa la ventana, o cierra las cortinas y usa las lámparas.",
+            "Haz que una fuente domine. Acerca mucho al sujeto a la luz principal para que la otra se vuelva débil.",
+            "Ajusta el balance de blancos para las caras, no para el fondo. Un fondo cálido tras una cara neutra suele resultar agradable.",
+            "Con flash en una sala cálida, un filtro de calidez (gel CTO) sobre el flash lo iguala con las bombillas; después elige Tungsteno.",
+            "Al editar, usa ajustes locales para corregir una zona, como enfriar una pared cálida sin cambiar la cara."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Balance de blancos en el móvil",
+      "body": [
+        "Los móviles usan balance de blancos automático y suelen hacerlo bien. También tienden a conservar a propósito algo de calidez bajo las bombillas, porque una sala totalmente neutra de noche puede parecer fría.",
+        {
+          "ul": [
+            "Toca el sujeto para fijar enfoque y exposición; en algunos móviles esto también influye en el color.",
+            "Si tu app de cámara tiene modo Pro o manual, suele tener un ajuste WB con preajustes o un control deslizante en kelvin.",
+            "Algunos móviles ofrecen estilos fotográficos o un control de tono cálido y frío. Cambian el aspecto, no el balance de blancos medido, pero pueden corregir una dominante constante.",
+            "Para comida en restaurantes, compara el plato con el real. Si el plato blanco sale amarillo, enfría la foto con el control de calidez o temperatura del editor.",
+            "Los archivos RAW o ProRAW, cuando están disponibles, te permiten fijar el balance de blancos con libertad después."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "RAW, edición y looks creativos cálidos o fríos",
+      "body": [
+        "Un archivo RAW guarda los datos del sensor antes de aplicar el balance de blancos. Puedes cambiarlo después sin pérdida de calidad, así que muchos fotógrafos dejan la cámara en automático y corrigen al editar. Un JPEG también se puede corregir, pero los cambios grandes pueden dejar los colores planos o con posterización.",
+        {
+          "ol": [
+            "Selecciona el cuentagotas de balance de blancos y haz clic en algo neutro: una tarjeta gris, una camisa blanca en sombra suave, un pavimento gris.",
+            "Ajusta el control de temperatura a tu gusto. Un poco más cálido que lo neutro suele favorecer más a la piel.",
+            "Ajusta el matiz si la piel se ve verde o magenta.",
+            "Copia el ajuste a otras fotos tomadas con la misma luz para que todo el conjunto coincida."
+          ]
+        },
+        "El balance de blancos también es una herramienta creativa. Un ajuste más cálido, como Nublado o Sombra a pleno sol, hace que la hora dorada y los retratos resulten más cálidos. Un ajuste más frío, como 3800 a 4500 K al anochecer, hace que la hora azul y las escenas urbanas resulten tranquilas o frías. La regla es la coherencia: dentro de una misma serie de fotos, mantén el mismo aspecto. Para comparar colores entre fotos, el extractor de colores de imagen de cv.cm muestra los colores principales de una foto como valores HEX."
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué balance de blancos debo usar en fotos de interior?",
+      "a": "Con bombillas domésticas cálidas, usa Tungsteno o aproximadamente 3000 a 3200 K. Con LED o tubos neutros, prueba 4000 K o el preajuste Fluorescente. Una medición personalizada sobre una pared o tarjeta blanca es lo más preciso."
+    },
+    {
+      "q": "¿Basta con el balance de blancos automático?",
+      "a": "A la luz del día y en la mayoría de las escenas cotidianas, sí. Usa un preajuste o un valor en kelvin cuando un solo color llene el encuadre, cuando quieras que un atardecer siga cálido o cuando una serie de fotos deba coincidir."
+    },
+    {
+      "q": "¿Por qué mis fotos salen amarillas de noche?",
+      "a": "La mayoría de las luces de interior y de la calle son cálidas, de unos 2700 a 3200 K. El balance de blancos automático y los móviles suelen conservar parte de esa calidez. Baja el valor en kelvin o enfría la foto al editar."
+    },
+    {
+      "q": "¿Importa el balance de blancos si disparo en RAW?",
+      "a": "No cambia los datos RAW, así que puedes corregirlo después. Aun así determina la vista previa, el histograma y el JPEG incrustado, de modo que un ajuste sensato facilita revisar y editar."
+    },
+    {
+      "q": "¿Es mejor una tarjeta gris que una blanca?",
+      "a": "Ambas sirven para el balance de blancos. Una tarjeta gris tiene menos probabilidad de quedar sobreexpuesta al medirla y además puede ayudarte a comprobar la exposición."
+    }
+  ]
+}

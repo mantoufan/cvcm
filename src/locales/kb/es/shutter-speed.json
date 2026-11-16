@@ -1,0 +1,224 @@
+{
+  "title": "Velocidad de obturación: congelar o difuminar el movimiento — cv.cm",
+  "description": "Guía de velocidad de obturación: valores por sujeto, regla recíproca con estabilizador, barrido, larga exposición, filtros ND, estelas de luz y agua sedosa.",
+  "h1": "¿Qué velocidad de obturación debo usar?",
+  "answer": "La velocidad de obturación es el tiempo que el sensor recoge luz. Velocidades rápidas como 1/500 s o 1/1000 s congelan personas en movimiento, mascotas y deporte. De 1/60 s a 1/125 s sirven para personas quietas a mano. Velocidades lentas de 1/2 s a 30 s con trípode convierten el agua, las nubes y el tráfico en estelas suaves. Cada vez que el tiempo se reduce a la mitad o se duplica, es un paso.",
+  "sections": [
+    {
+      "h": "Congelar o difuminar",
+      "body": [
+        "Mientras el obturador está abierto, todo lo que se mueve dibuja una estela sobre el sensor. La estela puede venir del movimiento del sujeto o del movimiento de la cámara en tus manos. La velocidad de obturación decide cuánto mide esa estela.",
+        "Un tiempo corto congela el instante: una salpicadura, un niño en pleno salto, el ala de un pájaro. Un tiempo largo muestra movimiento: una cascada se vuelve suave, las luces de los coches se hacen líneas, una multitud se convierte en fantasmas difusos mientras los edificios siguen nítidos. Ninguno es mejor. Decide cuál quieres antes de disparar.",
+        "La velocidad de obturación también cambia el brillo. Pasar de 1/250 s a 1/500 s reduce la luz a la mitad, es decir, un paso. Para mantener la misma exposición debes abrir la apertura un paso o duplicar el ISO. Por eso es difícil la acción rápida con poca luz: consulta el artículo del triángulo de exposición para ver cómo se compensan los tres ajustes."
+      ]
+    },
+    {
+      "h": "Velocidades de obturación por sujeto",
+      "body": [
+        "Son puntos de partida. Los sujetos que cruzan el encuadre necesitan velocidades más rápidas que los que vienen hacia ti, y los sujetos cercanos o grandes necesitan más velocidad que los lejanos.",
+        {
+          "table": {
+            "head": [
+              "Sujeto",
+              "Para congelar",
+              "Para mostrar movimiento",
+              "Notas"
+            ],
+            "rows": [
+              [
+                "Persona de pie, retrato posado",
+                "1/125 a 1/250 s",
+                "Normalmente no se busca",
+                "1/250 s también detiene pequeños movimientos de las manos"
+              ],
+              [
+                "Personas caminando",
+                "1/250 s",
+                "1/15 a 1/30 s",
+                "Las velocidades lentas difuminan a la multitud y dejan nítida la calle"
+              ],
+              [
+                "Niños jugando, mascotas corriendo",
+                "1/500 a 1/1000 s",
+                "1/30 a 1/60 s con barrido",
+                "Usa enfoque continuo y ráfaga"
+              ],
+              [
+                "Correr, fútbol, baloncesto",
+                "1/1000 s",
+                "1/30 a 1/60 s con barrido",
+                "Los pabellones cubiertos suelen exigir ISO alto"
+              ],
+              [
+                "Ciclistas",
+                "1/1000 s",
+                "1/30 a 1/60 s con barrido",
+                "Haz el barrido siguiendo al ciclista para que la cara salga nítida"
+              ],
+              [
+                "Coches en una carretera",
+                "1/1000 a 1/2000 s",
+                "1/60 a 1/125 s con barrido",
+                "Más lento que 1/60 s es difícil de barrer con nitidez"
+              ],
+              [
+                "Aves en vuelo",
+                "1/2000 s o más rápido",
+                "1/30 a 1/60 s para difuminar las alas",
+                "Las aves pequeñas necesitan las velocidades más rápidas"
+              ],
+              [
+                "Cascada o río",
+                "1/1000 s para ver las gotas",
+                "1/2 a 4 s para agua sedosa",
+                "Trípode y filtro ND a plena luz"
+              ],
+              [
+                "Olas del mar",
+                "1/500 a 1/1000 s",
+                "0,5 a 2 s para estelas, 30 s o más para neblina",
+                "Los tiempos largos aplanan el mar"
+              ],
+              [
+                "Estelas de luz de coches",
+                "No aplica",
+                "10 a 30 s",
+                "Trípode, ISO 100, f/8 a f/11"
+              ],
+              [
+                "Nubes en movimiento",
+                "No aplica",
+                "30 s hasta varios minutos",
+                "Modo Bulb con un filtro ND fuerte"
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "h": "Disparar a mano: la regla recíproca y el estabilizador",
+      "body": [
+        "La regla recíproca es un punto de partida para evitar el temblor de tus propias manos: usa una velocidad de al menos 1 dividido entre la distancia focal equivalente en fotograma completo.",
+        {
+          "ul": [
+            "50 mm en fotograma completo: 1/50 s o más rápido (usa 1/60 s).",
+            "50 mm en una cámara APS-C (factor de recorte 1,5): 1/75 s o más rápido (usa 1/80 s).",
+            "200 mm en fotograma completo: 1/200 s o más rápido (usa 1/250 s).",
+            "Cámara principal del móvil (unos 24 a 26 mm equivalentes): en torno a 1/30 s, aunque los móviles también estabilizan y apilan fotogramas."
+          ]
+        },
+        "La estabilización de imagen en el objetivo o en el cuerpo permite ir más lento. Cada paso de estabilización duplica el tiempo. Con 4 pasos de estabilización, 1/80 s pasa a ser aproximadamente 1/5 s (1/80, 1/40, 1/20, 1/10, 1/5). Toma la cifra anunciada como el mejor caso: la mayoría de la gente consigue dos o tres pasos de forma fiable. Los sensores de alta resolución muestran mejor la vibración pequeña, así que muchos fotógrafos usan el doble de la regla, por ejemplo 1/100 s con 50 mm.",
+        "La estabilización no congela un sujeto en movimiento. Una persona caminando a 1/10 s saldrá movida aunque el fondo esté nítido. Para personas, mantén al menos 1/125 s salvo que busques movimiento.",
+        "La técnica de sujeción ayuda: codos pegados al cuerpo, la cámara contra la cara si tiene visor, suelta el aire y pulsa el disparador con suavidad, y haz tres fotos en ráfaga. Una de ellas suele salir más nítida."
+      ]
+    },
+    {
+      "h": "Barrido: sujeto nítido sobre un fondo con estelas",
+      "body": [
+        "Hacer un barrido es mover la cámara siguiendo al sujeto durante una exposición lenta. El sujeto queda bastante nítido mientras el fondo se convierte en estelas horizontales que transmiten velocidad.",
+        {
+          "ol": [
+            "Elige un lugar donde el sujeto cruce el encuadre a velocidad constante, como ciclistas, corredores o coches en una recta.",
+            "Pon el modo Tv o S a 1/60 s para coches, o 1/30 s para ciclistas y corredores. Prueba 1/15 s cuando ya consigas fotos nítidas.",
+            "Usa el enfoque continuo. Activa la ráfaga.",
+            "Colócate con los pies separados, de cara al punto donde harás la foto. Gira desde la cadera, no desde los brazos.",
+            "Empieza a seguir al sujeto antes de que llegue a ti, dispara cuando pase y sigue girando después de que se cierre el obturador.",
+            "Espera muchos fallos. Aprovechar una de cada cinco es normal a 1/30 s."
+          ]
+        },
+        "Si el objetivo tiene un modo de estabilización para barridos, actívalo; solo corrige la vibración vertical. Un fondo con luces, árboles o carteles de colores da estelas más visibles que una pared lisa."
+      ]
+    },
+    {
+      "h": "Larga exposición: trípode, filtros ND y estelas de luz",
+      "body": [
+        "Para exposiciones más largas que 1/15 s, pon la cámara en un trípode o sobre una superficie estable. Usa el autodisparador de 2 segundos o un mando a distancia para que pulsar el botón no mueva la cámara. En muchos objetivos, desactiva la estabilización cuando uses trípode. Pon ISO 100 y una apertura en torno a f/8 a f/11.",
+        "Con sol intenso, incluso f/16 a ISO 100 necesita unos 1/125 s, y en sombra abierta unos 1/8 s, así que las larga exposición requieren un filtro de densidad neutra (ND). Oscurece la escena sin cambiar el color.",
+        {
+          "table": {
+            "head": [
+              "Filtro ND",
+              "Pasos",
+              "1/60 s pasa a",
+              "Bueno para"
+            ],
+            "rows": [
+              [
+                "ND8",
+                "3",
+                "aprox. 1/8 s",
+                "Ligero desenfoque de personas caminando"
+              ],
+              [
+                "ND64",
+                "6",
+                "aprox. 1 s",
+                "Cascadas sedosas en sombra"
+              ],
+              [
+                "ND1000",
+                "10",
+                "aprox. 17 s",
+                "Mar liso, nubes en movimiento, calles que parecen vacías"
+              ]
+            ]
+          }
+        },
+        "Para calcular el nuevo tiempo, duplica el tiempo base una vez por cada paso. Diez pasos multiplican el tiempo por 1024: 1/60 s por 1024 son unos 17 s. Compón y enfoca antes de enroscar un filtro ND fuerte, porque el visor se queda casi negro. Después pasa el enfoque a manual para que la cámara no busque.",
+        "Estelas de luz: empieza después de la puesta de sol, en la hora azul, cuando el cielo aún tiene color. Pon ISO 100, f/8 a f/11 y de 10 a 30 s, y dispara cuando entre tráfico en el encuadre. Usa el modo Bulb con mando a distancia para tiempos de más de 30 s. No te coloques en la calzada ni en la pasarela de un puente concurrido de forma que estorbes a la gente.",
+        "Larga exposición con el móvil: muchas apps de cámara ofrecen larga exposición, larga exposición en Live Photo o un modo de estelas de luz que combina fotogramas. Apoya el móvil en un trípode pequeño o en un muro y usa el temporizador. Consulta el artículo de fotografía nocturna para fotos de estrellas y escenas urbanas."
+      ]
+    },
+    {
+      "h": "La velocidad de obturación en el móvil",
+      "body": [
+        "Los móviles eligen la velocidad automáticamente. Con buena luz es muy corta, así que la acción suele quedar congelada. Con poca luz el móvil alarga la velocidad y sube el ISO, y las personas en movimiento salen movidas.",
+        {
+          "ul": [
+            "Usa la ráfaga para la acción: mantén pulsado el botón de disparo, o en algunos móviles deslízalo, para tomar una secuencia rápida y quedarte con el fotograma más nítido.",
+            "Para sujetos en movimiento en interior, añade luz: abre las cortinas o acércate a una lámpara. Más luz permite al móvil usar una velocidad más rápida.",
+            "Si tu app de cámara tiene modo Pro o manual, fija la velocidad directamente, por ejemplo 1/500 s para una mascota. El móvil subirá el ISO para compensar.",
+            "El modo noche usa tiempos totales de exposición largos. Pide al sujeto que se quede quieto y mantén el móvil firme, o aparecerán desenfoque y bordes dobles."
+          ]
+        }
+      ]
+    },
+    {
+      "h": "Errores y soluciones",
+      "body": [
+        {
+          "ul": [
+            "Todo sale ligeramente movido, incluido el fondo: vibración de la cámara. Usa una velocidad más rápida o un apoyo.",
+            "El fondo está nítido pero la persona sale movida: movimiento del sujeto. Usa al menos 1/250 s para personas en movimiento y más rápido para deporte.",
+            "El agua se ve blanca y sin textura en una larga exposición: las altas luces están quemadas. Usa un filtro ND más fuerte o una apertura más pequeña y revisa el histograma.",
+            "Bandas con luz LED o fluorescente en interior a velocidades rápidas: la luz parpadea. Usa 1/50 s o 1/100 s en regiones con red de 50 Hz, o 1/60 s o 1/120 s con 60 Hz, o activa la reducción de parpadeo.",
+            "Todos los barridos salen movidos: la velocidad era demasiado lenta desde el principio. Empieza en 1/125 s y ve bajando."
+          ]
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "¿Qué velocidad de obturación es buena para retratos?",
+      "a": "Para un adulto quieto, de 1/125 s a 1/250 s a mano. Para niños o alguien que se mueve, usa 1/500 s. Con poca luz es mejor subir el ISO que bajar de unos 1/60 s."
+    },
+    {
+      "q": "¿Por qué mis fotos salen movidas en interior?",
+      "a": "La luz interior es mucho más tenue que la del día, así que la cámara elige una velocidad lenta. Fija una velocidad mínima de 1/125 s con ISO automático, abre la apertura o añade luz de una ventana o una lámpara."
+    },
+    {
+      "q": "¿Qué significa 30 segundos o Bulb en una cámara?",
+      "a": "30 segundos suele ser el tiempo más largo que la cámara fija por sí sola. Bulb mantiene el obturador abierto mientras mantengas pulsado el botón o el mando, para exposiciones de minutos."
+    },
+    {
+      "q": "¿Una velocidad de obturación más rápida hace las fotos más nítidas?",
+      "a": "Elimina el desenfoque de movimiento y de temblor de manos, que es la causa más común de fotos blandas. No arregla un enfoque fallido, y las velocidades muy rápidas pueden obligar a un ISO alto que añade ruido."
+    },
+    {
+      "q": "¿Qué velocidad de obturación hace el agua sedosa?",
+      "a": "Normalmente de 1/2 s a 4 s para una cascada o un arroyo, y más para el mar. A plena luz necesitas trípode y un filtro ND para llegar a esos tiempos."
+    }
+  ]
+}
