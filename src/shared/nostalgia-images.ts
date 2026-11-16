@@ -8,7 +8,7 @@ import type { MemeImage } from "./meme-images";
  */
 export type NostalgiaImage = MemeImage;
 
-const NOSTALGIA_IMAGES: Partial<Record<string, NostalgiaImage>> = images as Record<string, NostalgiaImage>;
+const NOSTALGIA_IMAGES: Partial<Record<string, NostalgiaImage>> = images satisfies Record<string, NostalgiaImage>;
 
 /** Pictures do not depend on the language, so they are a static table, not part of the nostalgia packs. */
 export function nostalgiaImage(id: string | null): NostalgiaImage | null {
