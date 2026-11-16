@@ -23,11 +23,16 @@ import { type Locale } from "./locale";
 import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, type ToolId } from "./path";
 import { ideasPageHtml } from "./ideas-page";
 import { memeImagePath } from "./meme-images";
+import { nostalgiaImagePath } from "./nostalgia-images";
 import { BRANDED_TOOLS, faqJsonLd, flashHubHowToJsonLd, flashHubSoftwareJsonLd, gameBreadcrumbJsonLd, gameHowToJsonLd, gameVideoGameJsonLd, howToJsonLd, hreflangAlternates, marketBreadcrumbJsonLd, pageCanonical, pageDescription, pageTitle, toolBreadcrumbJsonLd, toolSoftwareJsonLd, tutorialBreadcrumbJsonLd, normalizeSeo, type SeoInput } from "./seo";
 
 function ogImage(seo: SeoInput): string | null {
   if (seo.slang && seo.slangId) {
     const path = memeImagePath(seo.slangId);
+    return path ? `https://cv.cm${path}` : null;
+  }
+  if (seo.nostalgia && seo.nostalgiaId) {
+    const path = nostalgiaImagePath(seo.nostalgiaId);
     return path ? `https://cv.cm${path}` : null;
   }
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);

@@ -53,7 +53,10 @@ export function nostalgiaPublished(id: NostalgiaId): string {
 }
 
 /** Entries edited after they were published, for dateModified and the sitemap. */
-export const NOSTALGIA_UPDATED: Partial<Record<NostalgiaId, string>> = {};
+export const NOSTALGIA_UPDATED: Partial<Record<NostalgiaId, string>> = {
+  // Pictures added (2026-11-16), so sitemaps and dateModified show the change.
+  "arcade": "2026-11-16", "beanie-babies": "2026-11-16", "beibingyang": "2026-11-16", "blockbuster": "2026-11-16", "cassette": "2026-11-16", "contra": "2026-11-16", "crystal-pepsi": "2026-11-16", "datoutie": "2026-11-16", "dial-up": "2026-11-16", "discman": "2026-11-16", "dunkaroos": "2026-11-16", "famicom": "2026-11-16", "fanhuasheng": "2026-11-16", "floppy-disk": "2026-11-16", "fuduji": "2026-11-16", "game-boy": "2026-11-16", "guodanpi": "2026-11-16", "jianlibao": "2026-11-16", "latiao": "2026-11-16", "liangpiao": "2026-11-16", "marbles": "2026-11-16", "mini-4wd": "2026-11-16", "mp3-player": "2026-11-16", "nokia-3310": "2026-11-16", "pager": "2026-11-16", "pogs": "2026-11-16", "pop-rocks": "2026-11-16", "subor": "2026-11-16", "tamagotchi": "2026-11-16", "tiaopijin": "2026-11-16", "vhs": "2026-11-16", "walkman": "2026-11-16", "wenquxing": "2026-11-16", "white-rabbit": "2026-11-16", "xiaomaibu": "2026-11-16", "y2k": "2026-11-16", "yo-yo": "2026-11-16",
+};
 
 /** The hub's own copy (lede, about, FAQ, group labels in src/locales/nostalgia/<locale>.json) last edited; set by hand. */
 export const NOSTALGIA_HUB_UPDATED: string | null = BATCH2_DATE;
