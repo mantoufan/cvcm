@@ -15,6 +15,7 @@ import {
 } from "./nostalgia";
 import { HREFLANG } from "./sitemap";
 import type { NostalgiaMeta } from "./nostalgia-meta";
+import { nostalgiaImage, nostalgiaImagePath } from "./nostalgia-images";
 
 /** One entry's copy, `src/locales/nostalgia/<locale>/<id>.json`. Blocks are the kb blocks. */
 export type NostalgiaEntryCopy = {
@@ -197,6 +198,41 @@ export function nostalgiaVoteResult(locale: Locale, id: NostalgiaId, tally: { ye
   return fill(vote.result, { p, n: n.toLocaleString(HREFLANG[locale]), yes: vote.yes[nostalgiaGroupOf(id)] });
 }
 
+/**
+ * The picture right under the answer: eager as the likely LCP element, fixed size (no layout shift), alt in the reader's
+ * language and a credit linking the Commons file and its license. Same markup as the meme pictures.
+ */
+function imageHtml(locale: Locale, id: NostalgiaId): string {
+  const image = nostalgiaImage(id);
+  if (!image) return "";
+  const ui = nostalgiaUi(locale);
+  const name = nostalgiaName(locale, id).name;
+  const credit = image.author ? fill(ui.imageCredit, { author: image.author }) : ui.imageCreditAnon;
+  return `<figure class="meme-figure"><img src="${escapeHtml(nostalgiaImagePath(id)!)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(fill(ui.imageAlt, { name }))}" fetchpriority="high" decoding="async">`
+    + `<figcaption><a href="${escapeHtml(image.page)}" target="_blank" rel="noopener">${escapeHtml(credit)}</a> · <a href="${escapeHtml(image.licenseUrl)}" target="_blank" rel="noopener license">${escapeHtml(image.license)}</a></figcaption></figure>`;
+}
+
+/** ImageObject with the license fields Google Images reads (license, acquireLicensePage, creditText, creator). */
+function imageJsonLd(locale: Locale, id: NostalgiaId): Record<string, unknown> | null {
+  const image = nostalgiaImage(id);
+  if (!image) return null;
+  const url = `${ORIGIN}${nostalgiaImagePath(id)}`;
+  const by = image.author ? `${image.author} / ` : "";
+  return {
+    "@type": "ImageObject",
+    contentUrl: url,
+    url,
+    width: image.width,
+    height: image.height,
+    caption: fill(nostalgiaUi(locale).imageAlt, { name: nostalgiaName(locale, id).name }),
+    ...(image.author && image.creatorType ? { creator: { "@type": image.creatorType, name: image.author } } : {}),
+    creditText: `${by}${image.license} / Wikimedia Commons`,
+    copyrightNotice: `${by}${image.license}`,
+    license: image.licenseUrl,
+    acquireLicensePage: image.page,
+  };
+}
+
 /** The nostalgia hub or one entry as HTML: the client mounts it as is, and the Worker serves it to crawlers. */
 export function nostalgiaPageHtml(locale: Locale, id: NostalgiaId | null): string {
   const ui = nostalgiaUi(locale);
@@ -251,6 +287,7 @@ export function nostalgiaPageHtml(locale: Locale, id: NostalgiaId | null): strin
     copy.aka.length ? `<p class="ref-aka">${escapeHtml(ui.also)}${cjk ? "：" : ": "}${escapeHtml(copy.aka.join(cjk ? "、" : ", "))}</p>` : "",
     `</header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p></section>`,
+    imageHtml(locale, id),
     `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
     sections,
     playHtml(locale, id),
@@ -338,6 +375,7 @@ export function nostalgiaArticleJsonLd(locale: Locale, id: NostalgiaId | null): 
   const answer = copy.answer.replaceAll("`", "");
   const meta = nostalgiaMeta(locale, id);
   const period = coverage(locale, id);
+  const image = imageJsonLd(locale, id);
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -354,6 +392,7 @@ export function nostalgiaArticleJsonLd(locale: Locale, id: NostalgiaId | null): 
     isAccessibleForFree: true,
     articleSection: (nostalgiaHub(locale).groups as Record<string, string>)[nostalgiaGroupOf(id)],
     ...(period ? { temporalCoverage: period } : {}),
+    ...(image ? { image } : {}),
     about: {
       "@type": "Thing",
       name: copy.name,
