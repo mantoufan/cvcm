@@ -13,7 +13,8 @@ import { SLANG_ENTRIES, SLANG_FOCUS, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, is
 import { memeTrend, recentViews, slangArticleJsonLd, slangCopy, slangPageHtml, slangTitle, trendingIds, type SlangEntryCopy } from "../src/shared/slang-i18n";
 import { slangSyncFiles } from "../src/shared/slang-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
-import { applyHtmlSeo, pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
+import { pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml, sitemapPages } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
 

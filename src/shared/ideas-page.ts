@@ -1,3 +1,8 @@
+/**
+ * The ideas pages as HTML: hub, idea guide, valuation panel and chart. Separate from ideas-i18n (titles, descriptions,
+ * JSON-LD), which the main bundle needs for every page's head: only the ideas UI chunk and the Worker's fallback body
+ * (seo-html.ts) import this, so the renderers stay out of the main bundle.
+ */
 import { LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
@@ -9,11 +14,6 @@ import { plain } from "./number-format";
 import { HREFLANG } from "./sitemap";
 import { ideaCopy, ideaData, ideaFaqItems, ideaName, ideaOutlook, ideaSources, ideasData, ideasHub, ideasUi, pct, rankedIdeas, type IdeaData, type IdeaOutlook } from "./ideas-i18n";
 
-/**
- * The ideas pages as HTML: hub, idea guide, valuation panel and chart. Separate from ideas-i18n (titles, descriptions,
- * JSON-LD), which the main bundle needs for every page's head: only the ideas UI chunk and the Worker's fallback body
- * (seo-body.ts) import this, so the renderers stay out of the main bundle.
- */
 function changeHtml(locale: Locale, value: number): string {
   return `<span class="${value > 0 ? "up" : value < 0 ? "down" : ""}">${escapeHtml(pct(locale, value))}</span>`;
 }

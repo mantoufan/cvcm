@@ -24,13 +24,8 @@ import {
   parseAppPath,
 } from "../src/shared/path";
 import { localizedTutorialSrc } from "../src/shared/covers";
-import {
-  applyHtmlSeo,
-  howToJsonLd,
-  learnFaqItems,
-  pageCanonical,
-  pageTitle,
-} from "../src/shared/seo";
+import { howToJsonLd, learnFaqItems, pageCanonical, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml, sitemapPages } from "../src/shared/sitemap";
 import worker from "../src/worker";
 

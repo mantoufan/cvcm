@@ -14,7 +14,8 @@ import { ideaCopy, ideaData, ideaOutlook, ideaTitle, ideasArticleJsonLd, ideasDa
 import { ideaChartSvg, ideasPageHtml } from "../src/shared/ideas-page";
 import { ideasSyncFiles } from "../src/shared/ideas-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
-import { applyHtmlSeo, pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
+import { pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml, sitemapPages } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
 
@@ -299,13 +300,13 @@ describe("ideas: routes", () => {
 
 describe("ideas: bundle split", () => {
   it("keeps the page HTML builders out of the modules the main bundle imports", () => {
-    // seo.ts and faq.ts are in the main client bundle; importing ideas-page there would pull the renderers back in.
+    // seo.ts, faq.ts and main.ts are in the main client bundle: none of them may reach ideas-page.ts or seo-html.ts
+    // (the Worker-only head and body builder that imports it).
     for (const path of ["src/shared/seo.ts", "src/client/faq.ts", "src/client/main.ts", "src/shared/ideas-i18n.ts"]) {
-      expect(readFileSync(join(root, path), "utf8"), path).not.toMatch(/from "[./]*\/?(shared\/)?ideas-page"/);
+      expect(readFileSync(join(root, path), "utf8"), path).not.toMatch(/from "[^"]*(ideas-page|seo-html)"/);
     }
-    // The Worker registers the fallback body; without it, applyHtmlSeo cannot render an ideas page.
-    expect(readFileSync(join(root, "src/worker.ts"), "utf8")).toContain('import "./shared/seo-body";');
   });
+
 });
 
 describe("ideas: page HTML and SEO", () => {

@@ -11,7 +11,8 @@ import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
 import { AI_ARTICLES, CODE_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
 import { kbArticleJsonLd, kbCopy, kbMinutes, kbPageHtml, kbUpdated, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
-import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
+import { pageCanonical, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
 

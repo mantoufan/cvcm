@@ -4,7 +4,8 @@ import { LOCALES } from "../src/shared/locale";
 import { legalMessages } from "../src/shared/messages";
 import { LEGAL_UPDATED, legalStaticHtml } from "../src/shared/legal";
 import { LEGAL_PAGES, legalHref, parseAppPath } from "../src/shared/path";
-import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
+import { pageCanonical, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml } from "../src/shared/sitemap";
 
 const SHELL = `<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`;

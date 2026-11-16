@@ -13,7 +13,8 @@ import { REF_ENTRIES, REF_FOCUS, REF_GROUPS, REF_MANNEQUINS, REF_META, REF_PUBLI
 import { refArticleJsonLd, refCopy, refPageHtml, refPhotos, refTitle, type RefEntryCopy, type RefPhoto } from "../src/shared/ref-i18n";
 import { refSyncFiles } from "../src/shared/ref-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
-import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
+import { pageCanonical, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml, sitemapPages } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
 

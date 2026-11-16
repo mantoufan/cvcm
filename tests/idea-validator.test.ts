@@ -6,7 +6,8 @@ import { IDEA_ENTRIES } from "../src/shared/ideas";
 import { ideaName } from "../src/shared/ideas-i18n";
 import { ideasPageHtml } from "../src/shared/ideas-page";
 import { OPTION_POINTS, QUESTION_WEIGHT, VALIDATOR_QUESTIONS, ideaTokens, matchIdea, validateIdea, type ValidatorAnswers } from "../src/shared/idea-validator";
-import { applyHtmlSeo, pageTitle } from "../src/shared/seo";
+import { pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { appHref, ideasPackOf, parseAppPath } from "../src/shared/path";
 
 const all = (i: number): ValidatorAnswers => Object.fromEntries(VALIDATOR_QUESTIONS.map((q) => [q, Math.min(i, OPTION_POINTS[q].length - 1)]));
