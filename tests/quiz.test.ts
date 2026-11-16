@@ -844,34 +844,33 @@ describe("test pages: scoring", () => {
     }
   });
 
-  // 200k scorings: about two seconds locally, more than the default 5 s on a slow CI runner.
-  it("lets no fan quiz or friend role result dominate random answers", () => {
+  // 20k scorings a quiz, one test each so no single test grows with the number of balanced quizzes (all of them in one
+  // test passed 30 s on a busy machine); still more than the default 5 s on a slow CI runner.
+  it.each(BALANCED_CHOICE)("lets no %s result dominate random answers", (id) => {
     const next = randomInts(42);
-    for (const id of BALANCED_CHOICE) {
-      const def = QUIZ_DEFS[id];
-      if (def.type !== "choice") throw new Error();
-      const counts = new Map<string, number>();
-      // Ties at the top: how often each result was in one, weighted by 1 / tie size, and how often it won.
-      const tiedIn = new Map<string, number>();
-      const tiedWon = new Map<string, number>();
-      const runs = 20000;
-      for (let n = 0; n < runs; n++) {
-        const result = scoreQuiz(id, def.items.map((item) => next(item.options.length)));
-        counts.set(result.key, (counts.get(result.key) ?? 0) + 1);
-        const tied = result.ranked.filter((s) => s.pct === result.ranked[0].pct);
-        if (tied.length < 2) continue;
-        for (const s of tied) tiedIn.set(s.dim, (tiedIn.get(s.dim) ?? 0) + 1 / tied.length);
-        tiedWon.set(result.key, (tiedWon.get(result.key) ?? 0) + 1);
-      }
-      for (const dim of def.dims) {
-        // A fair tie-break wins about as many ties as a coin (or die) would.
-        const fair = (tiedWon.get(dim) ?? 0) / (tiedIn.get(dim) ?? 1);
-        expect(fair, `${id} ${dim} ties`).toBeGreaterThan(0.85);
-        expect(fair, `${id} ${dim} ties`).toBeLessThan(1.15);
-        const share = ((counts.get(dim) ?? 0) * def.dims.length) / runs;
-        expect(share, `${id} ${dim}`).toBeGreaterThan(0.8);
-        expect(share, `${id} ${dim}`).toBeLessThan(1.2);
-      }
+    const def = QUIZ_DEFS[id];
+    if (def.type !== "choice") throw new Error();
+    const counts = new Map<string, number>();
+    // Ties at the top: how often each result was in one, weighted by 1 / tie size, and how often it won.
+    const tiedIn = new Map<string, number>();
+    const tiedWon = new Map<string, number>();
+    const runs = 20000;
+    for (let n = 0; n < runs; n++) {
+      const result = scoreQuiz(id, def.items.map((item) => next(item.options.length)));
+      counts.set(result.key, (counts.get(result.key) ?? 0) + 1);
+      const tied = result.ranked.filter((s) => s.pct === result.ranked[0].pct);
+      if (tied.length < 2) continue;
+      for (const s of tied) tiedIn.set(s.dim, (tiedIn.get(s.dim) ?? 0) + 1 / tied.length);
+      tiedWon.set(result.key, (tiedWon.get(result.key) ?? 0) + 1);
+    }
+    for (const dim of def.dims) {
+      // A fair tie-break wins about as many ties as a coin (or die) would.
+      const fair = (tiedWon.get(dim) ?? 0) / (tiedIn.get(dim) ?? 1);
+      expect(fair, `${id} ${dim} ties`).toBeGreaterThan(0.85);
+      expect(fair, `${id} ${dim} ties`).toBeLessThan(1.15);
+      const share = ((counts.get(dim) ?? 0) * def.dims.length) / runs;
+      expect(share, `${id} ${dim}`).toBeGreaterThan(0.8);
+      expect(share, `${id} ${dim}`).toBeLessThan(1.2);
     }
   }, 30_000);
 });
