@@ -1000,6 +1000,12 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountColorBlindnessTest(host);
     return m.unmountColorBlindnessTest;
   },
+  "idea-validator": async (host, ctx) => {
+    const m = await import("./idea-validator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountIdeaValidator(host);
+    return m.unmountIdeaValidator;
+  },
   "military-time": async (host, ctx) => {
     const m = await import("./military-time/ui");
     if (!ctx.alive()) return undefined;
@@ -1011,6 +1017,30 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     if (!ctx.alive()) return undefined;
     m.mountHeight(host);
     return m.unmountHeight;
+  },
+  "hangman": async (host, ctx) => {
+    const m = await import("./hangman/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountHangman(host);
+    return m.unmountHangman;
+  },
+  "rock-paper-scissors": async (host, ctx) => {
+    const m = await import("./rock-paper-scissors/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountRps(host);
+    return m.unmountRps;
+  },
+  "bac-calculator": async (host, ctx) => {
+    const m = await import("./bac-calculator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountBac(host);
+    return m.unmountBac;
+  },
+  "simple-interest": async (host, ctx) => {
+    const m = await import("./simple-interest/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSimpleInterest(host);
+    return m.unmountSimpleInterest;
   },
   "2048": async (host, ctx) => {
     const m = await import("./game-2048/ui");
@@ -1041,5 +1071,119 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     if (!ctx.alive()) return undefined;
     m.mountChineseChess(host);
     return m.unmountChineseChess;
+  },
+  "solitaire": async (host, ctx) => {
+    const m = await import("./solitaire/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSolitaire(host);
+    return m.unmountSolitaire;
+  },
+  "spider-solitaire": async (host, ctx) => {
+    const m = await import("./spider-solitaire/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSpiderSolitaire(host);
+    return m.unmountSpiderSolitaire;
+  },
+  "freecell": async (host, ctx) => {
+    const m = await import("./freecell/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFreeCell(host);
+    return m.unmountFreeCell;
+  },
+  "minesweeper": async (host, ctx) => {
+    const m = await import("./minesweeper/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMinesweeper(host);
+    return m.unmountMinesweeper;
+  },
+  "snake-game": async (host, ctx) => {
+    const m = await import("./snake-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSnakeGame(host);
+    return m.unmountSnakeGame;
+  },
+  "checkers": async (host, ctx) => {
+    const m = await import("./checkers/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCheckers(host);
+    return m.unmountCheckers;
+  },
+  "reversi": async (host, ctx) => {
+    const m = await import("./reversi/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountReversi(host);
+    return m.unmountReversi;
+  },
+  "gomoku": async (host, ctx) => {
+    const m = await import("./gomoku/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountGomoku(host);
+    return m.unmountGomoku;
+  },
+  "nonogram": async (host, ctx) => {
+    const m = await import("./nonogram/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountNonogram(host);
+    return m.unmountNonogram;
+  },
+  "memory-game": async (host, ctx) => {
+    const m = await import("./memory-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMemoryGame(host);
+    return m.unmountMemoryGame;
+  },
+  "word-search": async (host, ctx) => {
+    const m = await import("./word-search/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountWordSearch(host);
+    return m.unmountWordSearch;
+  },
+  "typing-game": async (host, ctx) => {
+    const m = await import("./typing-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTypingGame(host);
+    return m.unmountTypingGame;
+  },
+  "chinese-checkers": async (host, ctx) => {
+    const m = await import("./chinese-checkers/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountChineseCheckers(host);
+    return m.unmountChineseCheckers;
+  },
+  "phone-number-value": async (host, ctx) => {
+    const m = await import("./phone-number-value/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPhoneValue(host);
+    return m.unmountPhoneValue;
+  },
+  "license-plate-value": async (host, ctx) => {
+    const m = await import("./license-plate-value/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPlateValue(host);
+    return m.unmountPlateValue;
+  },
+  "domain-value": async (host, ctx) => {
+    const m = await import("./domain-value/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDomainValue(host);
+    return m.unmountDomainValue;
+  },
+  "car-depreciation": async (host, ctx) => {
+    const m = await import("./car-depreciation/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCarDepreciation(host);
+    return m.unmountCarDepreciation;
+  },
+  "net-worth": async (host, ctx) => {
+    const m = await import("./net-worth/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountNetWorth(host);
+    return m.unmountNetWorth;
+  },
+  "business-valuation": async (host, ctx) => {
+    const m = await import("./business-valuation/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountBusinessValuation(host);
+    return m.unmountBusinessValuation;
   },
 };

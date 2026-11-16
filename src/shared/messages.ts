@@ -8,6 +8,11 @@ import type { RefId } from "./ref";
 import type { RefEntryCopy, RefPhoto } from "./ref-i18n";
 import type { SlangId } from "./slang";
 import type { SlangEntryCopy } from "./slang-i18n";
+import type { ToolCopy, TutorialCopy } from "./page-copy";
+import type { IdeaId } from "./ideas";
+import type { IdeaEntryCopy, IdeasData } from "./ideas-i18n";
+import type { NostalgiaId } from "./nostalgia";
+import type { NostalgiaEntryCopy } from "./nostalgia-i18n";
 
 export type UiMessages = typeof import("../locales/en.json");
 export type GuideMessages = typeof import("../locales/guides/en.json");
@@ -32,6 +37,22 @@ export type SlangMessages = typeof import("../locales/slang/en.json") & {
   memes: import("./slang-i18n").MemeData;
 };
 
+/** Ideas hub copy plus every idea's name and blurb (`list`) and the derived search-data snapshot, from `npm run ideas:sync`. */
+export type IdeasMessages = typeof import("../locales/ideas/en.json") & {
+  list: Record<IdeaId, { name: string; blurb: string }>;
+  /** src/shared/ideas-data.json, written monthly by scripts/ideas/fetch_kp.py. */
+  data: IdeasData;
+  /** src/shared/ideas-sources.json: checked references per idea. */
+  sources: Record<IdeaId, import("./ideas").IdeaSource[]>;
+};
+
+/** Nostalgia hub copy plus every entry's name and blurb (`list`), from `npm run nostalgia:sync`. */
+export type NostalgiaMessages = typeof import("../locales/nostalgia/en.json") & {
+  list: Record<NostalgiaId, { name: string; blurb: string }>;
+  /** src/shared/nostalgia-meta.json (years, status, related, sources): rides in the nostalgia pack, never the entry bundle. */
+  meta: Record<NostalgiaId, import("./nostalgia-meta").NostalgiaMeta>;
+};
+
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */
 export type LocaleMessages = {
   ui: UiMessages;
@@ -39,6 +60,12 @@ export type LocaleMessages = {
   guides: GuideMessages;
   device: DeviceMessages;
   markets: MarketMessages;
+};
+
+/** A core pack's page-copy chunks, one loader per bucket (src/shared/page-copy.ts). */
+export type CopyLoaders = {
+  tools: Array<() => Promise<{ default: ToolCopy }>>;
+  tutorials: Array<() => Promise<{ default: TutorialCopy }>>;
 };
 
 /** Full game copy and walkthroughs. The client loads these only on a game page. */
@@ -58,6 +85,10 @@ const loadedRef: Partial<Record<Locale, RefMessages>> = {};
 const loadedRefEntries: Partial<Record<Locale, Partial<Record<RefId, RefEntryCopy>>>> = {};
 const loadedSlang: Partial<Record<Locale, SlangMessages>> = {};
 const loadedSlangEntries: Partial<Record<Locale, Partial<Record<SlangId, SlangEntryCopy>>>> = {};
+const loadedIdeas: Partial<Record<Locale, IdeasMessages>> = {};
+const loadedIdeaEntries: Partial<Record<Locale, Partial<Record<IdeaId, IdeaEntryCopy>>>> = {};
+const loadedNostalgia: Partial<Record<Locale, NostalgiaMessages>> = {};
+const loadedNostalgiaEntries: Partial<Record<Locale, Partial<Record<NostalgiaId, NostalgiaEntryCopy>>>> = {};
 
 function pick<T>(table: Partial<Record<Locale, T>>, locale: Locale, what: string): T {
   const pack = table[locale] ?? table.en ?? Object.values(table)[0];
@@ -209,5 +240,61 @@ export function hasSlangEntry(locale: Locale, id: SlangId): boolean {
 export function slangEntryMessages(locale: Locale, id: SlangId): SlangEntryCopy {
   const copy = loadedSlangEntries[locale]?.[id] ?? loadedSlangEntries.en?.[id];
   if (!copy) throw new Error(`slang entry not loaded: ${locale} ${id}`);
+  return copy;
+}
+
+export function registerIdeasMessages(locale: Locale, pack: IdeasMessages): void {
+  loadedIdeas[locale] = pack;
+}
+
+export function hasIdeasMessages(locale: Locale): boolean {
+  return Boolean(loadedIdeas[locale]);
+}
+
+/** Ideas hub copy, labels, idea names and the data snapshot; on the client only after the ideas pack is loaded. */
+export function ideasMessages(locale: Locale): IdeasMessages {
+  return pick(loadedIdeas, locale, "ideas messages");
+}
+
+/** One idea's copy. The client loads each idea on its own. */
+export function registerIdeaEntry(locale: Locale, id: IdeaId, copy: IdeaEntryCopy): void {
+  (loadedIdeaEntries[locale] ??= {})[id] = copy;
+}
+
+export function hasIdeaEntry(locale: Locale, id: IdeaId): boolean {
+  return Boolean(loadedIdeaEntries[locale]?.[id]);
+}
+
+export function ideaEntryMessages(locale: Locale, id: IdeaId): IdeaEntryCopy {
+  const copy = loadedIdeaEntries[locale]?.[id] ?? loadedIdeaEntries.en?.[id];
+  if (!copy) throw new Error(`idea not loaded: ${locale} ${id}`);
+  return copy;
+}
+
+export function registerNostalgiaMessages(locale: Locale, pack: NostalgiaMessages): void {
+  loadedNostalgia[locale] = pack;
+}
+
+export function hasNostalgiaMessages(locale: Locale): boolean {
+  return Boolean(loadedNostalgia[locale]);
+}
+
+/** Nostalgia hub copy, labels and entry names; on the client only after the nostalgia pack is loaded (nostalgia pages). */
+export function nostalgiaMessages(locale: Locale): NostalgiaMessages {
+  return pick(loadedNostalgia, locale, "nostalgia messages");
+}
+
+/** One nostalgia entry's copy. The client loads each entry on its own. */
+export function registerNostalgiaEntry(locale: Locale, id: NostalgiaId, copy: NostalgiaEntryCopy): void {
+  (loadedNostalgiaEntries[locale] ??= {})[id] = copy;
+}
+
+export function hasNostalgiaEntry(locale: Locale, id: NostalgiaId): boolean {
+  return Boolean(loadedNostalgiaEntries[locale]?.[id]);
+}
+
+export function nostalgiaEntryMessages(locale: Locale, id: NostalgiaId): NostalgiaEntryCopy {
+  const copy = loadedNostalgiaEntries[locale]?.[id] ?? loadedNostalgiaEntries.en?.[id];
+  if (!copy) throw new Error(`nostalgia entry not loaded: ${locale} ${id}`);
   return copy;
 }

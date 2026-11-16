@@ -1,0 +1,26 @@
+
+/* Word search (batch 33). */
+.ws-tool { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem); gap: 1.25rem; align-items: start; }
+@media (max-width: 860px) { .ws-tool { grid-template-columns: minmax(0, 1fr); } }
+.ws-stats { margin-bottom: 0.6rem; }
+.ws-wrap { max-width: 34rem; overflow-x: auto; }
+.ws-grid { --n: 10; display: grid; width: 100%; border: 2px solid var(--ink); border-radius: 6px; background: #fff; user-select: none; -webkit-user-select: none; touch-action: none; }
+.ws-row { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+.ws-cell { aspect-ratio: 1; min-width: 0; padding: 0; border: 0; border-right: 1px solid #f2dbe5; border-bottom: 1px solid #f2dbe5; background: #fff; color: var(--ink); font: inherit; font-weight: 700; font-size: clamp(0.72rem, calc(60vw / var(--n)), 1.25rem); line-height: 1; cursor: pointer; touch-action: none; }
+.ws-grid.cjk .ws-cell { font-weight: 500; }
+.ws-row .ws-cell:last-child { border-right: 0; }
+.ws-row:last-child .ws-cell { border-bottom: 0; }
+.ws-cell.found { background: var(--pink-soft); color: var(--pink-deep); }
+.ws-cell.hint { outline: 2px solid #c9a400; outline-offset: -2px; }
+.ws-cell.sel { background: var(--pink); color: #fff; }
+.ws-cell:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: -2px; }
+.ws-status { min-height: 1.6em; margin: 0.5rem 0; font-weight: 600; }
+.ws-words-title { font-size: 0.74rem; letter-spacing: 0.08em; text-transform: uppercase; margin: 0.75rem 0 0.4rem; color: var(--ink-soft); }
+.ws-words { display: flex; flex-wrap: wrap; gap: 0.3rem 0.9rem; margin: 0; padding: 0; list-style: none; max-width: 34rem; }
+.ws-words li { font-weight: 600; }
+.ws-words li.done { color: var(--ink-soft); text-decoration: line-through; }
+.ws-number { display: flex; align-items: flex-end; gap: 0.5rem; margin-top: 0.75rem; }
+.ws-number .field { flex: 1; margin: 0; }
+.ws-number input { width: 100%; }
+
+[data-out="english-note"][hidden] { display: none; }

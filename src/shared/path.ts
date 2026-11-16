@@ -14,10 +14,12 @@ import { RANKING_SEGMENT, isRankingId, type RankingId } from "./rankings";
 import { KB_SHELVES, isKbId, kbArticleOf, kbShelfOf, kbShelfOfPage, type KbHub, type KbId, type KbPage, type KbShelf } from "./kb";
 import { REF_SEGMENT, isRefId, type RefId } from "./ref";
 import { LEGACY_SLANG_SEGMENTS, SLANG_SEGMENT, isSlangId, type SlangId } from "./slang";
+import { IDEAS_SEGMENT, isIdeaId, type IdeaId } from "./ideas";
+import { NOSTALGIA_SEGMENT, isNostalgiaId, type NostalgiaId } from "./nostalgia";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -47,14 +49,16 @@ export const CATEGORIES = [
   { id: "text", tools: ["word-count", "case", "diff", "replace", "sort", "reverse", "slug", "lorem", "fancy-text", "markdown", "notepad", "reading-time", "morse"] },
   { id: "dev", tools: ["json", "data", "xml-json", "yaml-json", "base64", "url-encode", "html", "text-hex", "binary", "hash", "jwt", "uuid", "password", "regex", "cron", "cidr", "chmod", "timestamp"] },
   { id: "math", tools: ["calculator", "percent", "fraction", "average", "factors", "lcm-gcf", "quadratic", "triangle", "area", "volume", "slope", "graphing-calculator", "concrete", "radix", "roman", "words", "aspect", "units", "gpa", "grade"] },
-  { id: "finance", tools: ["loan", "mortgage", "compound", "discount", "tip", "vat", "margin", "hourly", "time-card", "fuel-cost", "electricity"] },
-  { id: "health", tools: ["bmi", "tdee", "body-fat", "ideal-weight", "water-intake", "macro", "calories-burned", "pace", "sleep", "due-date", "ovulation", "color-blindness-test", "height-calculator"] },
+  { id: "finance", tools: ["loan", "mortgage", "compound", "discount", "tip", "vat", "margin", "hourly", "time-card", "fuel-cost", "electricity", "simple-interest"] },
+  { id: "health", tools: ["bmi", "tdee", "body-fat", "ideal-weight", "water-intake", "macro", "calories-burned", "pace", "sleep", "due-date", "ovulation", "color-blindness-test", "height-calculator", "bac-calculator"] },
   { id: "time", tools: ["timezone", "countdown", "stopwatch", "alarm", "pomodoro", "days", "add-days", "workdays", "week", "duration", "age", "military-time"] },
   { id: "design", tools: ["color", "hex-rgb", "contrast", "gradient"] },
   { id: "hardware", tools: ["mic-test", "decibel-meter", "webcam-test", "keyboard-test", "gamepad-test", "touch-test", "dead-pixel", "refresh-rate", "screen-resolution"] },
-  { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter"] },
-  { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess"] },
+  { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter", "rock-paper-scissors"] },
+  { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "chinese-checkers"] },
+  { id: "wordgames", tools: ["word-search", "hangman", "typing-game"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
+  { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation", "idea-validator"] },
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
@@ -213,12 +217,36 @@ export const TOOLS = [
   "tic-tac-toe",
   "color-blindness-test",
   "military-time",
+  "idea-validator",
   "height-calculator",
+  "hangman",
+  "rock-paper-scissors",
+  "bac-calculator",
+  "simple-interest",
   "2048",
   "dinosaur-game",
   "mahjong",
   "chess",
   "chinese-chess",
+  "solitaire",
+  "spider-solitaire",
+  "freecell",
+  "minesweeper",
+  "snake-game",
+  "checkers",
+  "reversi",
+  "gomoku",
+  "nonogram",
+  "memory-game",
+  "word-search",
+  "typing-game",
+  "chinese-checkers",
+  "phone-number-value",
+  "license-plate-value",
+  "domain-value",
+  "car-depreciation",
+  "net-worth",
+  "business-valuation",
   "gold",
   "silver",
   "platinum",
@@ -235,8 +263,8 @@ export const TOOLS = [
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
-/** Browser games built on open-source code, listed on the /games/ hub too (each is a tool page). */
-export const OPEN_SOURCE_GAMES = ["2048", "dinosaur-game", "mahjong", "chess", "chinese-chess"] as const satisfies readonly ToolId[];
+/** Browser games (tool pages) listed on the /games/ hub too, apart from the emulator catalogue. */
+export const BROWSER_GAMES = ["solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "sudoku", "tic-tac-toe", "chinese-checkers", "hangman", "word-search", "typing-game"] as const satisfies readonly ToolId[];
 
 /** Exact-match converter URLs. Same engine as `/convert/`, unique title and FAQ. */
 export const CONVERT_JOBS = [
@@ -535,6 +563,8 @@ export type AppPath =
   | { kind: "bare-kb"; article: KbArticlePath }
   | { kind: "bare-ref"; entry: RefId | null }
   | { kind: "bare-slang"; entry: SlangId | null }
+  | { kind: "bare-ideas"; entry: IdeaId | null }
+  | { kind: "bare-nostalgia"; entry: NostalgiaId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -547,6 +577,8 @@ export type AppPath =
   | { kind: "kb"; locale: Locale; article: KbArticlePath }
   | { kind: "ref"; locale: Locale; entry: RefId | null }
   | { kind: "slang"; locale: Locale; entry: SlangId | null }
+  | { kind: "ideas"; locale: Locale; entry: IdeaId | null }
+  | { kind: "nostalgia"; locale: Locale; entry: NostalgiaId | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -671,6 +703,18 @@ export function parseAppPath(pathname: string): AppPath {
       if (isSlangId(third.toLowerCase())) return { kind: "slang", locale, entry: third.toLowerCase() as SlangId };
       return { kind: "unknown" };
     }
+    if (second === IDEAS_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "ideas", locale, entry: null };
+      if (isIdeaId(third)) return { kind: "ideas", locale, entry: third };
+      return { kind: "unknown" };
+    }
+    if (second === NOSTALGIA_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "nostalgia", locale, entry: null };
+      if (isNostalgiaId(third)) return { kind: "nostalgia", locale, entry: third };
+      return { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -745,6 +789,16 @@ export function parseAppPath(pathname: string): AppPath {
     if (isSlangId(second.toLowerCase()) && !third) return { kind: "bare-slang", entry: second.toLowerCase() as SlangId };
     return { kind: "unknown" };
   }
+  if (first === IDEAS_SEGMENT) {
+    if (!second) return { kind: "bare-ideas", entry: null };
+    if (isIdeaId(second) && !third) return { kind: "bare-ideas", entry: second };
+    return { kind: "unknown" };
+  }
+  if (first === NOSTALGIA_SEGMENT) {
+    if (!second) return { kind: "bare-nostalgia", entry: null };
+    if (isNostalgiaId(second) && !third) return { kind: "bare-nostalgia", entry: second };
+    return { kind: "unknown" };
+  }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
   if (first === "v" && second && LEGACY_V_PAGES.has(second) && rest.length === 0) return { kind: "bare", tool: "v" };
@@ -809,6 +863,28 @@ export function refHref(locale: Locale, entry: RefId | null = null): string {
 /** The meme channel (formerly the slang dictionary): `/{locale}/memes/` (hub) and `/{locale}/memes/{id}/`. */
 export function slangHref(locale: Locale, entry: SlangId | null = null): string {
   const base = `/${localePath(locale)}/${SLANG_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** Tool pages that render with the ideas pack (idea names and outlook scores): the idea validator. */
+export const IDEAS_PACK_TOOLS: readonly ToolId[] = ["idea-validator"];
+
+/** The ideas pack a page needs: the idea (or "hub") on ideas pages, "hub" on IDEAS_PACK_TOOLS pages, else none. */
+export function ideasPackOf(parsed: AppPath): IdeaId | "hub" | null {
+  if (parsed.kind === "ideas" || parsed.kind === "bare-ideas") return parsed.entry ?? "hub";
+  if ((parsed.kind === "app" || parsed.kind === "bare") && parsed.tool && IDEAS_PACK_TOOLS.includes(parsed.tool)) return "hub";
+  return null;
+}
+
+/** The ideas channel: `/{locale}/ideas/` (hub) and `/{locale}/ideas/{id}/`. */
+export function ideasHref(locale: Locale, entry: IdeaId | null = null): string {
+  const base = `/${localePath(locale)}/${IDEAS_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The nostalgia channel: `/{locale}/nostalgia/` (hub) and `/{locale}/nostalgia/{id}/`. */
+export function nostalgiaHref(locale: Locale, entry: NostalgiaId | null = null): string {
+  const base = `/${localePath(locale)}/${NOSTALGIA_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
 }
 

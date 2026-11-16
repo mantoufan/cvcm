@@ -1,12 +1,12 @@
 // Registers every locale up front. The Worker and tests use this; the client loads one pack at a time.
-import en from "../locales/packs/en";
-import es from "../locales/packs/es";
-import id from "../locales/packs/id";
-import ja from "../locales/packs/ja";
-import ko from "../locales/packs/ko";
-import vi from "../locales/packs/vi";
-import zhCN from "../locales/packs/zh-CN";
-import zhTW from "../locales/packs/zh-TW";
+import en from "../locales/packs/full/en";
+import es from "../locales/packs/full/es";
+import id from "../locales/packs/full/id";
+import ja from "../locales/packs/full/ja";
+import ko from "../locales/packs/full/ko";
+import vi from "../locales/packs/full/vi";
+import zhCN from "../locales/packs/full/zh-CN";
+import zhTW from "../locales/packs/full/zh-TW";
 import enGames from "../locales/packs/games-en";
 import esGames from "../locales/packs/games-es";
 import idGames from "../locales/packs/games-id";
@@ -66,7 +66,27 @@ import viSlang from "../locales/packs/slang-vi";
 import zhCNSlang from "../locales/packs/slang-zh-CN";
 import zhTWSlang from "../locales/packs/slang-zh-TW";
 import { SLANG_ALL } from "../locales/slang/all";
+import enIdeas from "../locales/packs/ideas-en";
+import esIdeas from "../locales/packs/ideas-es";
+import idIdeas from "../locales/packs/ideas-id";
+import jaIdeas from "../locales/packs/ideas-ja";
+import koIdeas from "../locales/packs/ideas-ko";
+import viIdeas from "../locales/packs/ideas-vi";
+import zhCNIdeas from "../locales/packs/ideas-zh-CN";
+import zhTWIdeas from "../locales/packs/ideas-zh-TW";
+import { IDEAS_ALL } from "../locales/ideas/all";
+import type { IdeaId } from "./ideas";
 import type { SlangId } from "./slang";
+import enNostalgia from "../locales/packs/nostalgia-en";
+import esNostalgia from "../locales/packs/nostalgia-es";
+import idNostalgia from "../locales/packs/nostalgia-id";
+import jaNostalgia from "../locales/packs/nostalgia-ja";
+import koNostalgia from "../locales/packs/nostalgia-ko";
+import viNostalgia from "../locales/packs/nostalgia-vi";
+import zhCNNostalgia from "../locales/packs/nostalgia-zh-CN";
+import zhTWNostalgia from "../locales/packs/nostalgia-zh-TW";
+import { NOSTALGIA_ALL } from "../locales/nostalgia/all";
+import type { NostalgiaId } from "./nostalgia";
 import type { RefId } from "./ref";
 import type { KbId } from "./kb";
 import type { Locale } from "./locale";
@@ -82,6 +102,10 @@ import {
   registerRefMessages,
   registerSlangEntry,
   registerSlangMessages,
+  registerIdeaEntry,
+  registerIdeasMessages,
+  registerNostalgiaEntry,
+  registerNostalgiaMessages,
   type GameMessages,
   type KbMessages,
   type LegalMessages,
@@ -90,6 +114,8 @@ import {
   type DatasetMessages,
   type RefMessages,
   type SlangMessages,
+  type IdeasMessages,
+  type NostalgiaMessages,
 } from "./messages";
 
 const ALL: Record<Locale, LocaleMessages> = { en, "zh-CN": zhCN, "zh-TW": zhTW, ja, ko, vi, id, es };
@@ -186,4 +212,34 @@ const SLANG: Record<Locale, SlangMessages> = {
 for (const [locale, pack] of Object.entries(SLANG)) registerSlangMessages(locale as Locale, pack);
 for (const [locale, entries] of Object.entries(SLANG_ALL)) {
   for (const [id, copy] of Object.entries(entries)) registerSlangEntry(locale as Locale, id as SlangId, copy);
+}
+
+const IDEAS: Record<Locale, IdeasMessages> = {
+  en: enIdeas,
+  "zh-CN": zhCNIdeas,
+  "zh-TW": zhTWIdeas,
+  ja: jaIdeas,
+  ko: koIdeas,
+  vi: viIdeas,
+  id: idIdeas,
+  es: esIdeas,
+};
+for (const [locale, pack] of Object.entries(IDEAS)) registerIdeasMessages(locale as Locale, pack);
+for (const [locale, entries] of Object.entries(IDEAS_ALL)) {
+  for (const [id, copy] of Object.entries(entries)) registerIdeaEntry(locale as Locale, id as IdeaId, copy);
+}
+
+const NOSTALGIA: Record<Locale, NostalgiaMessages> = {
+  en: enNostalgia,
+  "zh-CN": zhCNNostalgia,
+  "zh-TW": zhTWNostalgia,
+  ja: jaNostalgia,
+  ko: koNostalgia,
+  vi: viNostalgia,
+  id: idNostalgia,
+  es: esNostalgia,
+};
+for (const [locale, pack] of Object.entries(NOSTALGIA)) registerNostalgiaMessages(locale as Locale, pack);
+for (const [locale, entries] of Object.entries(NOSTALGIA_ALL)) {
+  for (const [id, copy] of Object.entries(entries)) registerNostalgiaEntry(locale as Locale, id as NostalgiaId, copy);
 }

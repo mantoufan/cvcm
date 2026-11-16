@@ -113,3 +113,42 @@ Google Ads Keyword Planner, `generateKeywordHistoricalMetrics` on MCC `700703124
 | `chinese-chess` | XiangQi Wizard Light (GPL-2.0-or-later) | vi cờ tướng 301,000; zh-TW 象棋 33,100 + 暗棋 12,100; zh-CN 象棋 12,100 / 中国象棋 9,900; en chinese chess 33,100, xiangqi 14,800 |
 
 Not done (trademark or game IP): wordle, tetris, pac-man, geometry dash, flappy bird, cookie clicker, slope, crossy road, angry birds; "connect 4" and "othello" are brands (use four in a row / reversi). Next by volume, to be written for cv.cm (existing open-source clones are small or unlicensed): solitaire 16.6M (spider 1.5M, freecell 823k), minesweeper 5M, snake 9.1M, checkers 1M, gomoku (lihongxun945/gobang has no licence), nonogram 110k (HandsomeOne/Nonogram MIT), typing game (ja 201,000).
+
+## Self-written classics (2026-11-14, batch 30)
+
+Same Keyword Planner pull as above. Existing open-source versions were small, old or unlicensed, so these are written for cv.cm.
+
+| Slug | Evidence (monthly) | Page names |
+|---|---|---|
+| `solitaire` | solitaire 16.6M, free solitaire 823k, klondike solitaire 246k; es solitario 1.83M; ja ソリティア 1.83M; ko 솔리테어 74k | 纸牌接龙 / 接龍 / ソリティア |
+| `spider-solitaire` | spider solitaire 1.5M; es solitario spider 823k; ja 246k; zh-CN 蜘蛛纸牌 4.4k | 蜘蛛纸牌 / スパイダーソリティア |
+| `freecell` | freecell 823k; ja フリーセル 301k; es carta blanca 246k; ko 프리셀 22k | 空当接龙 / 新接龍 / フリーセル |
+| `minesweeper` | minesweeper 5M; es buscaminas 823k; ja 823k; ko 지뢰찾기 368k; zh-TW 踩地雷 90.5k; vi dò mìn 74k | 扫雷 / 踩地雷 |
+| `snake-game` | snake game 9.14M; es snake 1.5M; id snake game 90.5k; ko 지렁이 게임 74k; vi rắn săn mồi 60.5k | 贪吃蛇 / 貪食蛇 |
+
+Still open: checkers 1M (checkers online 90.5k), gomoku (ko 오목 74k), nonogram 110k (HandsomeOne/Nonogram MIT), typing game (ja 201k), word search 550k.
+
+## Board and puzzle games (2026-11-14, batch 31)
+
+Keyword Planner, same MCC and markets as above. Written for cv.cm. "跳棋" alone means Chinese checkers (the star board), so checkers is 西洋跳棋; reversi avoids the "Othello" trademark (also 오델로), nonogram avoids "Picross".
+
+| Slug | Evidence (monthly) | Page names |
+|---|---|---|
+| `checkers` | checkers 1M, checkers online 90.5k; es damas 90.5k; id dam 14.8k; vi cờ đam 2.9k | 西洋跳棋 / チェッカー / 체커 |
+| `reversi` | reversi 33.1k; ja リバーシ 33.1k; zh-TW 黑白棋 3.6k; vi cờ lật 1.9k | 黑白棋 / リバーシ / 리버시 |
+| `gomoku` | ko 오목 74k; ja 五目並べ 60.5k; zh-TW 五子棋 22.2k, zh-CN 8.1k; en gomoku 18.1k; vi cờ caro 14.8k | 五子棋 / 五目並べ / 오목 / cờ caro |
+| `nonogram` | nonogram 110k, griddlers 110k; es nonograma 27.1k; ja お絵かきロジック 22.2k; ko 노노그램 18.1k | 数织 / お絵かきロジック / 노노그램 |
+| `memory-game` | memory game 74k; es memorama 33.1k; ja 神経衰弱 22.2k | 记忆翻牌 / 神経衰弱 / memorama |
+
+The `games` group now holds 19 tools; `tests/categories.test.ts` caps a group at 20, so the next batch needs a new group (for example word or puzzle games) before it can add more than one.
+
+## Word games and Chinese checkers (2026-11-15, batch 33)
+
+Keyword Planner, same MCC and markets. `games` was full at 20 once hangman (#112) landed there, so a new `wordgames` group ("Word games") now holds word search, the typing game and hangman (moved from `games`); Chinese checkers takes hangman's old `games` slot.
+
+| Slug | Group | Evidence (monthly) | Notes |
+|---|---|---|---|
+| `word-search` | wordgames | word search 550k, word search puzzle 110k; es sopa de letras 301k; id cari kata 1.6k; CJK tiny | Own themed lists per locale; CJK grids hold characters, kana or Hangul |
+| `typing-game` | wordgames | ja タイピング練習 450k, タイピングゲーム 201k; ko 타자 연습 368k, 타자 게임 18.1k; es mecanografía 135k; en typing game 110k; id belajar mengetik 40.5k; zh-TW 打字練習 33.1k | Falling words; separate from the /typing/ speed test; IME-friendly |
+| `chinese-checkers` | games | chinese checkers 49.5k; ja ダイヤモンドゲーム 5.4k; zh-TW 跳棋 2.9k | 121-hole star board |
+| `hangman` (#112) | wordgames | hangman 201k; es ahorcado 49.5k | Moved here from `games` |

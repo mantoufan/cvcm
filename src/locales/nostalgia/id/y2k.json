@@ -1,0 +1,67 @@
+{
+  "name": "Bug Y2K (Bug Milenium)",
+  "blurb": "Kekhawatiran bahwa komputer yang menyimpan tahun dua digit akan membaca 2000 sebagai 1900",
+  "aka": [
+    "Y2K",
+    "masalah tahun 2000",
+    "Millennium bug",
+    "千年虫"
+  ],
+  "title": "Apa itu Bug Y2K? Penyebab, Biaya dan Apa yang Terjadi di 2000",
+  "description": "Bug Y2K adalah risiko software yang menyimpan tahun dua digit menganggap 2000 sebagai 1900. Perbaikannya diperkirakan menelan US$300 miliar di seluruh dunia.",
+  "h1": "Apa itu bug Y2K?",
+  "answer": "Bug Y2K, atau masalah tahun 2000 (bug milenium), adalah cacat pada perangkat lunak lama yang menyimpan tahun dalam dua digit, sehingga \"00\" bisa dibaca sebagai 1900, bukan 2000, dan merusak perhitungan tanggal, pengurutan dan pengecekan masa berlaku. Pemerintah dan perusahaan menghabiskan akhir 1990-an untuk mencari dan memperbaikinya, dengan biaya global diperkirakan lebih dari US$300 miliar. Ketika 1 Januari 2000 tiba, hanya ada gangguan kecil yang tersebar, dan sampai sekarang orang masih berdebat apakah itu bukti perbaikannya berhasil atau ancamannya dibesar-besarkan.",
+  "sections": [
+    {
+      "h": "Dari mana bug ini berasal",
+      "body": [
+        "Pada 1960-an dan 1970-an memori dan media penyimpanan sangat mahal, jadi programmer menulis tahun 1985 sebagai \"85\" untuk menghemat dua karakter. Kebiasaan ini bertahan puluhan tahun di sistem perbankan, telekomunikasi, transportasi dan utilitas. Setelah \"99\" datang \"00\", dan program bisa mengira waktu mundur 99 tahun: bunga dihitung negatif, dokumen dianggap sudah lama kedaluwarsa, data yang diurutkan berdasarkan tanggal jadi kacau.",
+        "Masalah kedua yang lebih jarang dibahas adalah tahun kabisat. Tahun 2000 adalah tahun kabisat, tetapi sebagian perangkat lunak menerapkan aturan \"tahun abad bukan tahun kabisat\" tanpa pengecualiannya, sehingga berisiko error pada 29 Februari 2000."
+      ]
+    },
+    {
+      "h": "Bagaimana dunia bersiap",
+      "body": [
+        "Perbaikannya beragam, dari menulis ulang tanggal dengan tahun empat digit sampai teknik \"windowing\", yaitu program menganggap misalnya 00 sampai 29 berarti tahun 2000-an. Di Amerika Serikat saja, IDC memperkirakan sekitar US$134 miliar untuk persiapan dan US$13 miliar lagi untuk masalah yang muncul pada 2000 dan 2001.",
+        "China menjadikannya tugas nasional. Dewan Negara mengeluarkan instruksi pada 1998, Kementerian Industri Informasi memantau 18 sektor prioritas, dan arahan tahun 1999 menetapkan batas akhir September 1999 untuk pengujian dan rencana darurat di perbankan, perpajakan, penerbangan, kereta api, listrik, telekomunikasi dan lainnya. Pada malam tahun baru, sektor-sektor kunci menyiagakan petugas sepanjang malam, dan petinggi Air China dan China Eastern dilaporkan ikut terbang dalam penerbangan yang melintasi tengah malam untuk menunjukkan keyakinan."
+      ]
+    },
+    {
+      "h": "Apa yang sebenarnya terjadi",
+      "body": [
+        {
+          "ul": [
+            "Sebagian mesin tiket kereta di Jepang sempat berhenti bekerja",
+            "Alat tes napas alkohol milik polisi Hong Kong gagal berfungsi tepat tengah malam",
+            "Mesin kasir di Yunani mencetak struk bertanggal 1900",
+            "Situs US Naval Observatory sempat menampilkan tahun sebagai \"19100\"",
+            "Sistem pajak di Montreal salah membaca 29 Februari 2000 sebagai 1 Maret 1900 dan harus dimatikan"
+          ]
+        },
+        "Tak satu pun dari itu menjadi bencana seperti yang diramalkan sebagian orang. Pendukung upaya perbaikan bilang justru itulah tujuannya; para pengkritik mencatat bahwa tempat yang nyaris tidak bersiap pun lolos tanpa masalah serius. Tenggat serupa masih ada di depan: sistem yang menyimpan waktu Unix sebagai bilangan bertanda 32-bit akan habis pada 19 Januari 2038."
+      ]
+    },
+    {
+      "h": "Y2K yang lain",
+      "body": [
+        {
+          "note": "Sekarang \"Y2K\" juga merupakan estetika fesyen dan desain yang meminjam gaya akhir 1990-an dan awal 2000-an: kain metalik dan mengilap, celana jin pinggang rendah, plastik transparan dan grafis komputer generasi awal. Namanya diambil dari bug ini, tetapi selain itu tidak ada hubungannya."
+        }
+      ]
+    }
+  ],
+  "faq": [
+    {
+      "q": "Apakah bug Y2K itu virus?",
+      "a": "Bukan. Bug Y2K bukan kode jahat dan tidak bisa menular. Ini adalah cacat desain dalam cara program menyimpan tanggal."
+    },
+    {
+      "q": "Y2K singkatan dari apa?",
+      "a": "Y berarti year (tahun) dan 2K berarti 2.000, dengan K sebagai ribuan: tahun 2000."
+    },
+    {
+      "q": "Apakah akan ada Y2K berikutnya?",
+      "a": "Yang paling mirip adalah masalah tahun 2038: sistem yang menghitung waktu sebagai jumlah detik sejak 1970 dalam bilangan bertanda 32-bit akan meluap pada 19 Januari 2038, dan banyak yang sudah diperbarui lebih awal."
+    }
+  ]
+}

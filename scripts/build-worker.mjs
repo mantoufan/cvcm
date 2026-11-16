@@ -18,7 +18,8 @@ try {
 const localePacks = {};
 for (const [src, chunk] of Object.entries(manifest)) {
   const m = /^src\/locales\/packs\/(.+)\.ts$/.exec(src);
-  if (m) localePacks[m[1]] = [chunk.file, ...(chunk.imports ?? []).map((key) => manifest[key].file)].map((f) => `/${f}`);
+  // Not the entry: the page loads it itself (a chunk with dynamic imports takes Vite's preload helper from it).
+  if (m) localePacks[m[1]] = [chunk.file, ...(chunk.imports ?? []).filter((key) => !manifest[key].isEntry).map((key) => manifest[key].file)].map((f) => `/${f}`);
   // One knowledge article in one locale: preloaded as "kb-<locale>/<id>".
   const article = /^src\/locales\/kb\/([^/]+)\/([a-z0-9-]+)\.json$/.exec(src);
   if (article) localePacks[`kb-${article[1]}/${article[2]}`] = [`/${chunk.file}`];
@@ -35,8 +36,31 @@ for (const [src, chunk] of Object.entries(manifest)) {
   if (slangEntry && slangEntry[1] !== "index") localePacks[`slang-${slangEntry[1]}/${slangEntry[2]}`] = [`/${chunk.file}`];
   const slangLoaders = /^src\/locales\/slang\/loaders\/([^/]+)\.ts$/.exec(src);
   if (slangLoaders) localePacks[`slang-${slangLoaders[1]}/loaders`] = [`/${chunk.file}`];
+  // Ideas entries and loader tables: "ideas-<locale>/<id>" and "ideas-<locale>/loaders" (the pack is "ideas-<locale>").
+  const ideaEntry = /^src\/locales\/ideas\/([a-zA-Z-]+)\/([a-z0-9-]+)\.json$/.exec(src);
+  if (ideaEntry && ideaEntry[1] !== "index") localePacks[`ideas-${ideaEntry[1]}/${ideaEntry[2]}`] = [`/${chunk.file}`];
+  const ideaLoaders = /^src\/locales\/ideas\/loaders\/([^/]+)\.ts$/.exec(src);
+  if (ideaLoaders) localePacks[`ideas-${ideaLoaders[1]}/loaders`] = [`/${chunk.file}`];
+  // Nostalgia entries and loader tables: "nostalgia-<locale>/<id>" and "nostalgia-<locale>/loaders" (the pack is "nostalgia-<locale>").
+  const nostalgiaEntry = /^src\/locales\/nostalgia\/([a-zA-Z-]+)\/([a-z0-9-]+)\.json$/.exec(src);
+  if (nostalgiaEntry && nostalgiaEntry[1] !== "index") localePacks[`nostalgia-${nostalgiaEntry[1]}/${nostalgiaEntry[2]}`] = [`/${chunk.file}`];
+  const nostalgiaLoaders = /^src\/locales\/nostalgia\/loaders\/([^/]+)\.ts$/.exec(src);
+  if (nostalgiaLoaders) localePacks[`nostalgia-${nostalgiaLoaders[1]}/loaders`] = [`/${chunk.file}`];
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
+// Page-copy buckets (a tool's FAQ and how-to, a tutorial's text): "copy-<locale>/<tools|tutorials>-<bucket>", written
+// by the page-copy plugin in vite.config.ts because virtual modules have no usable manifest key.
+const { buckets: copyBuckets, chunks: copyChunks } = JSON.parse(readFileSync(resolve(manifestDir, "page-copy.json"), "utf8"));
+// Per locale: the loader table ("copy-<locale>") and every bucket of tools and of tutorials.
+for (const file of readdirSync(resolve(root, "src/locales/packs/full")).filter((name) => name.endsWith(".ts"))) {
+  const locale = file.replace(/\.ts$/, "");
+  const keys = [`copy-${locale}`];
+  for (const kind of ["tools", "tutorials"]) for (let n = 0; n < copyBuckets; n++) keys.push(`copy-${locale}/${kind}-${n}`);
+  for (const key of keys) {
+    if (!copyChunks[key]) throw new Error(`build-worker: no chunk for ${key} (page-copy plugin, vite.config.ts)`);
+    localePacks[key] = [copyChunks[key]];
+  }
+}
 
 // Each page's lazy chunk plus the shared chunks it imports (the entry is already loading, so it is left out).
 function chunkFiles(key, seen = new Set()) {
@@ -57,6 +81,8 @@ const pageModules = {
   kb: "src/client/kb/ui.ts",
   ref: "src/client/ref/ui.ts",
   slang: "src/client/slang/ui.ts",
+  ideas: "src/client/ideas/ui.ts",
+  nostalgia: "src/client/nostalgia/ui.ts",
 };
 const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");

@@ -1,14 +1,17 @@
 import "./shared/messages-all";
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
+import { d1SearchStore, handleSearchApi } from "./search-api";
+import { d1NostalgiaStore, handleNostalgiaApi } from "./nostalgia-api";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, STATIC_FILE, toolJob } from "./shared/path";
 import { rankingRowsChunk } from "./shared/rankings";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { thumbOriginal } from "./shared/covers";
 import { aiContentType, upstreamUrl } from "./shared/ai-models";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
+import { copyChunkKey, pageCopyOf } from "./shared/page-copy";
 import { DATASET_FILES } from "./shared/datasets";
 import { applyHtmlSeo } from "./shared/seo";
 import type { S3Config } from "./s3-sign";
@@ -89,6 +92,16 @@ function s3Config(env: Env): S3Config | null {
 }
 
 export default {
+  /** Hourly cron (wrangler.jsonc): sweep search hashes, salts and rate rows past their two days even when nobody searches. */
+  async scheduled(_event: unknown, env: Env): Promise<void> {
+    if (!env.DB) return;
+    // Independent sweeps: one failing must not keep the other's IP-derived rows past their two days.
+    const now = Date.now();
+    const sweeps = await Promise.allSettled([d1SearchStore(env.DB).cleanup(now), d1NostalgiaStore(env.DB).cleanup(now)]);
+    const failed = sweeps.flatMap((sweep) => (sweep.status === "rejected" ? [sweep.reason] : []));
+    // Both ran; a failure still fails the cron run so it shows up in Cloudflare.
+    if (failed.length) throw new AggregateError(failed, "scheduled cleanup");
+  },
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     // CORS preflight for the agent discovery files, before the www redirect: browsers reject redirected preflights.
@@ -116,6 +129,14 @@ export default {
     const store = env.DB ? d1Store(env.DB) : null;
     const api = await handleClipApi(request, { store, s3: s3Config(env) });
     if (api) return api;
+    if (url.pathname.startsWith("/api/search/")) {
+      const search = await handleSearchApi(request, { store: env.DB ? d1SearchStore(env.DB) : null });
+      if (search) return search;
+    }
+    if (url.pathname.startsWith("/api/nostalgia/")) {
+      const vote = await handleNostalgiaApi(request, { store: env.DB ? d1NostalgiaStore(env.DB) : null });
+      if (vote) return vote;
+    }
 
     if (request.method !== "GET" && request.method !== "HEAD") {
       const notAllowed = new Response("Method Not Allowed", {
@@ -185,6 +206,12 @@ export default {
       }
       if (parsed.kind === "bare-slang") {
         return redirectTo(slangHref(locale, parsed.entry), url, 302);
+      }
+      if (parsed.kind === "bare-ideas") {
+        return redirectTo(ideasHref(locale, parsed.entry), url, 302);
+      }
+      if (parsed.kind === "bare-nostalgia") {
+        return redirectTo(nostalgiaHref(locale, parsed.entry), url, 302);
       }
       if (parsed.kind === "unknown") {
         return withHeaders(notFound(locale, request.method), path);
@@ -261,6 +288,18 @@ export default {
           return redirectTo(canonical, url, 301);
         }
       }
+      if (parsed.kind === "ideas") {
+        const canonical = ideasHref(parsed.locale, parsed.entry);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
+      if (parsed.kind === "nostalgia") {
+        const canonical = nostalgiaHref(parsed.locale, parsed.entry);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
     }
 
     // Fetch the page's prerendered body alongside the page itself.
@@ -299,10 +338,10 @@ export default {
     const parsed = parseAppPath(path);
     if (
       type.includes("text/html")
-      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || path === "/" || path === "/index.html")
+      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || path === "/" || path === "/index.html")
     ) {
       const html = await assetResponse.text();
-      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang"
+      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia"
         ? parsed.locale
         : negotiateLocale(
           request.headers.get("Accept-Language"),
@@ -330,6 +369,10 @@ export default {
               ? { ref: true as const, refId: parsed.entry }
             : parsed.kind === "slang"
               ? { slang: true as const, slangId: parsed.entry }
+            : parsed.kind === "ideas"
+              ? { ideas: true as const, ideaId: parsed.entry }
+            : parsed.kind === "nostalgia"
+              ? { nostalgia: true as const, nostalgiaId: parsed.entry }
             : parsed.kind === "app"
             ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob, resizeJob: parsed.resizeJob }
             : { tool: null };
@@ -346,10 +389,14 @@ export default {
         : parsed.kind === "kb" ? "kb"
         : parsed.kind === "ref" ? "ref"
         : parsed.kind === "slang" ? "slang"
+        : parsed.kind === "ideas" ? "ideas"
+        : parsed.kind === "nostalgia" ? "nostalgia"
         : parsed.kind === "legal" ? null
         : "home";
+      // The browser's core pack leaves out the copy only this page shows; preload the bucket that holds it.
+      const copy = copyChunkKey(locale, pageCopyOf(parsed));
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null);
+      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz", parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, ideasPackOf(parsed), parsed.kind === "nostalgia" ? parsed.entry ?? "hub" : null);
       out = preloadPageChunk(out, chunk);
       if (parsed.kind === "ranking" && parsed.ranking) out = preloadPageChunk(out, rankingRowsChunk(parsed.ranking));
       if (parsed.kind === "dataset" && parsed.dataset) {
@@ -381,7 +428,7 @@ function unconditional(request: Request): Request {
 function ssrPath(parsed: ReturnType<typeof parseAppPath>, path: string): string | null {
   if (STATIC_FILE.test(path)) return null;
   if (parsed.kind === "app") return parsed.clipId ? null : path;
-  if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang") return path;
+  if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia") return path;
   return null;
 }
 

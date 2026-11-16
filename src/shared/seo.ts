@@ -19,13 +19,17 @@ import type { RefId } from "./ref";
 import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangDescription, slangFaqJsonLd, slangPageHtml, slangTitle } from "./slang-i18n";
 import type { SlangId } from "./slang";
 import { memeImagePath } from "./meme-images";
+import { ideaDescription, ideaTitle, ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd, ideasPageHtml } from "./ideas-i18n";
+import type { IdeaId } from "./ideas";
+import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaDescription, nostalgiaFaqJsonLd, nostalgiaPageHtml, nostalgiaTitle } from "./nostalgia-i18n";
+import type { NostalgiaId } from "./nostalgia";
 import { TUTORIAL_DIAGRAMS, lessonsForTool, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -72,6 +76,12 @@ export type SeoInput = {
   /** The slang dictionary under /slang/; `slangId` null is the hub. */
   slang?: boolean;
   slangId?: SlangId | null;
+  /** The ideas channel under /ideas/; `ideaId` null is the hub. */
+  ideas?: boolean;
+  ideaId?: IdeaId | null;
+  /** The nostalgia channel under /nostalgia/; `nostalgiaId` null is the hub. */
+  nostalgia?: boolean;
+  nostalgiaId?: NostalgiaId | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -228,12 +238,36 @@ const TITLE: Record<ToolId, string> = {
   "tic-tac-toe": "meta.titleTicTacToe",
   "color-blindness-test": "meta.titleColorBlindnessTest",
   "military-time": "meta.titleMilitaryTime",
+  "idea-validator": "meta.titleIdeaValidator",
   "height-calculator": "meta.titleHeightCalculator",
+  "hangman": "meta.titleHangman",
+  "rock-paper-scissors": "meta.titleRockPaperScissors",
+  "bac-calculator": "meta.titleBacCalculator",
+  "simple-interest": "meta.titleSimpleInterest",
   "2048": "meta.title2048",
   "dinosaur-game": "meta.titleDinosaurGame",
   "mahjong": "meta.titleMahjong",
   "chess": "meta.titleChess",
   "chinese-chess": "meta.titleChineseChess",
+  "solitaire": "meta.titleSolitaire",
+  "spider-solitaire": "meta.titleSpiderSolitaire",
+  "freecell": "meta.titleFreecell",
+  "minesweeper": "meta.titleMinesweeper",
+  "snake-game": "meta.titleSnakeGame",
+  "checkers": "meta.titleCheckers",
+  "reversi": "meta.titleReversi",
+  "gomoku": "meta.titleGomoku",
+  "nonogram": "meta.titleNonogram",
+  "memory-game": "meta.titleMemoryGame",
+  "word-search": "meta.titleWordSearch",
+  "typing-game": "meta.titleTypingGame",
+  "chinese-checkers": "meta.titleChineseCheckers",
+  "phone-number-value": "meta.titlePhoneNumberValue",
+  "license-plate-value": "meta.titleLicensePlateValue",
+  "domain-value": "meta.titleDomainValue",
+  "car-depreciation": "meta.titleCarDepreciation",
+  "net-worth": "meta.titleNetWorth",
+  "business-valuation": "meta.titleBusinessValuation",
   gold: "meta.titleGold",
   silver: "meta.titleSilver",
   platinum: "meta.titlePlatinum",
@@ -430,12 +464,36 @@ const DESC: Record<ToolId, string> = {
   "tic-tac-toe": "meta.descTicTacToe",
   "color-blindness-test": "meta.descColorBlindnessTest",
   "military-time": "meta.descMilitaryTime",
+  "idea-validator": "meta.descIdeaValidator",
   "height-calculator": "meta.descHeightCalculator",
+  "hangman": "meta.descHangman",
+  "rock-paper-scissors": "meta.descRockPaperScissors",
+  "bac-calculator": "meta.descBacCalculator",
+  "simple-interest": "meta.descSimpleInterest",
   "2048": "meta.desc2048",
   "dinosaur-game": "meta.descDinosaurGame",
   "mahjong": "meta.descMahjong",
   "chess": "meta.descChess",
   "chinese-chess": "meta.descChineseChess",
+  "solitaire": "meta.descSolitaire",
+  "spider-solitaire": "meta.descSpiderSolitaire",
+  "freecell": "meta.descFreecell",
+  "minesweeper": "meta.descMinesweeper",
+  "snake-game": "meta.descSnakeGame",
+  "checkers": "meta.descCheckers",
+  "reversi": "meta.descReversi",
+  "gomoku": "meta.descGomoku",
+  "nonogram": "meta.descNonogram",
+  "memory-game": "meta.descMemoryGame",
+  "word-search": "meta.descWordSearch",
+  "typing-game": "meta.descTypingGame",
+  "chinese-checkers": "meta.descChineseCheckers",
+  "phone-number-value": "meta.descPhoneNumberValue",
+  "license-plate-value": "meta.descLicensePlateValue",
+  "domain-value": "meta.descDomainValue",
+  "car-depreciation": "meta.descCarDepreciation",
+  "net-worth": "meta.descNetWorth",
+  "business-valuation": "meta.descBusinessValuation",
   gold: "meta.descGold",
   silver: "meta.descSilver",
   platinum: "meta.descPlatinum",
@@ -741,7 +799,9 @@ const LEARN_DESC: Record<TutorialId, string> = {
 
 export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}): string {
   const seo = normalizeSeo(input);
+  if (seo.nostalgia) return nostalgiaTitle(locale, seo.nostalgiaId ?? null);
   if (seo.slang) return slangTitle(locale, seo.slangId ?? null);
+  if (seo.ideas) return ideaTitle(locale, seo.ideaId ?? null);
   if (seo.ref) return refTitle(locale, seo.refId ?? null);
   if (seo.kb) return kbTitle(locale, seo.kbId ?? null);
   if (seo.learn) {
@@ -765,7 +825,9 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
 
 export function pageDescription(locale: Locale, input: SeoInput | ToolId | null = {}): string {
   const seo = normalizeSeo(input);
+  if (seo.nostalgia) return nostalgiaDescription(locale, seo.nostalgiaId ?? null);
   if (seo.slang) return slangDescription(locale, seo.slangId ?? null);
+  if (seo.ideas) return ideaDescription(locale, seo.ideaId ?? null);
   if (seo.ref) return refDescription(locale, seo.refId ?? null);
   if (seo.kb) return kbDescription(locale, seo.kbId ?? null);
   if (seo.learn) {
@@ -806,7 +868,9 @@ export function pageCanonical(
   clipId?: string | null,
 ): string {
   const seo = normalizeSeo(input, clipId);
+  if (seo.nostalgia) return `https://cv.cm${nostalgiaHref(locale, seo.nostalgiaId ?? null)}`;
   if (seo.slang) return `https://cv.cm${slangHref(locale, seo.slangId ?? null)}`;
+  if (seo.ideas) return `https://cv.cm${ideasHref(locale, seo.ideaId ?? null)}`;
   if (seo.ref) return `https://cv.cm${refHref(locale, seo.refId ?? null)}`;
   if (seo.kb) return `https://cv.cm${kbHref(locale, seo.kbId ?? null)}`;
   if (seo.learn) return `https://cv.cm${learnHref(locale, seo.tutorial ?? null)}`;
@@ -1021,7 +1085,9 @@ const APP_CATEGORY: Partial<Record<CategoryId, string>> = {
   health: "HealthApplication",
   design: "DesignApplication",
   games: "GameApplication",
+  wordgames: "GameApplication",
   fun: "EntertainmentApplication",
+  valuation: "FinanceApplication",
 };
 /** Tools sold under their own name (watermark + mosaic share the ID Watermark & Redact brand). */
 export const BRANDED_TOOLS = new Set<ToolId>(["watermark", "mosaic"]);
@@ -1148,7 +1214,7 @@ export function applyHtmlSeo(
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
     `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
-    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game || (seo.kb && kbArticleOf(seo.kbId ?? null)) || (seo.ref && seo.refId) || (seo.slang && seo.slangId) ? "article" : "website"}" />`,
+    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game || (seo.kb && kbArticleOf(seo.kbId ?? null)) || (seo.ref && seo.refId) || (seo.slang && seo.slangId) || (seo.ideas && seo.ideaId) || (seo.nostalgia && seo.nostalgiaId) ? "article" : "website"}" />`,
     `<meta property="og:site_name" content="cv.cm" />`,
     `<meta property="og:locale" content="${escapeHtml(locale.replace("-", "_"))}" />`,
     `<meta name="twitter:card" content="${image ? "summary_large_image" : "summary"}" />`,
@@ -1181,11 +1247,23 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(deviceBreadcrumbJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(deviceFaqJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
     );
+  } else if (seo.nostalgia) {
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(nostalgiaBreadcrumbJsonLd(locale, seo.nostalgiaId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(nostalgiaFaqJsonLd(locale, seo.nostalgiaId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="article-jsonld">${JSON.stringify(nostalgiaArticleJsonLd(locale, seo.nostalgiaId ?? null)).replace(/</g, "\\u003c")}</script>`,
+    );
   } else if (seo.slang) {
     tags.push(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(slangBreadcrumbJsonLd(locale, seo.slangId ?? null)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(slangFaqJsonLd(locale, seo.slangId ?? null)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="article-jsonld">${JSON.stringify(slangArticleJsonLd(locale, seo.slangId ?? null)).replace(/</g, "\\u003c")}</script>`,
+    );
+  } else if (seo.ideas) {
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(ideasBreadcrumbJsonLd(locale, seo.ideaId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ideasFaqJsonLd(locale, seo.ideaId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="article-jsonld">${JSON.stringify(ideasArticleJsonLd(locale, seo.ideaId ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   } else if (seo.ref) {
     tags.push(
@@ -1236,7 +1314,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(gameBreadcrumbJsonLd(locale, consoleId, seo.game ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang) {
+  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
     );
@@ -1256,7 +1334,7 @@ export function applyHtmlSeo(
     ? null
     : seo.learn && seo.tutorial
       ? howToJsonLd(locale, seo.tutorial)
-      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && seo.tool
+      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && seo.tool
         ? toolHowToJsonLd(locale, seo.tool)
         : null;
   if (howTo) {
@@ -1264,7 +1342,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howTo).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && seo.tool && !seo.clipId;
+  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && seo.tool && !seo.clipId;
   if (isToolPage && seo.tool) {
     tags.push(
       `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(toolSoftwareJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
@@ -1292,6 +1370,10 @@ export function applyHtmlSeo(
     ? refPageHtml(locale, seo.refId ?? null)
     : seo.slang
     ? slangPageHtml(locale, seo.slangId ?? null)
+    : seo.ideas
+    ? ideasPageHtml(locale, seo.ideaId ?? null)
+    : seo.nostalgia
+    ? nostalgiaPageHtml(locale, seo.nostalgiaId ?? null)
     : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));
   // A function replacement: page text may contain "$&" or "$1", which a string replacement would expand.
   out = out.replace(/<div id="app">[\s\S]*?<\/div>/, () => `<div id="app">${inner}</div>`);
@@ -1364,6 +1446,8 @@ function staticPageHtml(
       { href: kbHref(locale, "ai"), text: linkText(pageTitle(locale, { kb: true, kbId: "ai" })) },
       { href: refHref(locale), text: linkText(pageTitle(locale, { ref: true })) },
       { href: slangHref(locale), text: linkText(pageTitle(locale, { slang: true })) },
+      { href: ideasHref(locale), text: linkText(pageTitle(locale, { ideas: true })) },
+      { href: nostalgiaHref(locale), text: linkText(pageTitle(locale, { nostalgia: true })) },
       { href: legalHref(locale, "privacy"), text: linkText(pageTitle(locale, { legalPage: "privacy" })) },
       { href: legalHref(locale, "terms"), text: linkText(pageTitle(locale, { legalPage: "terms" })) },
     ]));

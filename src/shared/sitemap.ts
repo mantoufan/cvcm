@@ -8,7 +8,9 @@ import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./ranki
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
 import { memeImagePath } from "./meme-images";
 import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublished, type SlangId } from "./slang";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaModified, type IdeaId } from "./ideas";
+import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -38,7 +40,9 @@ export type SitemapPage =
   | { locale: Locale; kind: "ranking"; ranking: RankingId | null }
   | { locale: Locale; kind: "kb"; article: KbPage }
   | { locale: Locale; kind: "ref"; entry: RefId | null }
-  | { locale: Locale; kind: "slang"; entry: SlangId | null };
+  | { locale: Locale; kind: "slang"; entry: SlangId | null }
+  | { locale: Locale; kind: "ideas"; entry: IdeaId | null }
+  | { locale: Locale; kind: "nostalgia"; entry: NostalgiaId | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -71,6 +75,10 @@ export function sitemapPages(): SitemapPage[] {
     for (const entry of REF_ENTRIES) pages.push({ locale, kind: "ref", entry });
     pages.push({ locale, kind: "slang", entry: null });
     for (const entry of SLANG_ENTRIES) pages.push({ locale, kind: "slang", entry });
+    pages.push({ locale, kind: "ideas", entry: null });
+    for (const entry of IDEA_ENTRIES) pages.push({ locale, kind: "ideas", entry });
+    pages.push({ locale, kind: "nostalgia", entry: null });
+    for (const entry of NOSTALGIA_ENTRIES) pages.push({ locale, kind: "nostalgia", entry });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -90,6 +98,8 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "kb") return `${SITE_ORIGIN}${kbHref(page.locale, page.article)}`;
   if (page.kind === "ref") return `${SITE_ORIGIN}${refHref(page.locale, page.entry)}`;
   if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(page.locale, page.entry)}`;
+  if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(page.locale, page.entry)}`;
+  if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(page.locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -111,6 +121,8 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "kb") return `${SITE_ORIGIN}${kbHref(locale, page.article)}`;
   if (page.kind === "ref") return `${SITE_ORIGIN}${refHref(locale, page.entry)}`;
   if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(locale, page.entry)}`;
+  if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(locale, page.entry)}`;
+  if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -135,6 +147,8 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "ranking") return "rankings";
   if (page.kind === "ref") return "reference";
   if (page.kind === "slang") return "slang";
+  if (page.kind === "ideas") return "ideas";
+  if (page.kind === "nostalgia") return "nostalgia";
   return "pages";
 }
 
@@ -144,7 +158,7 @@ export function sitemapSectionUrl(section: SitemapSection): string {
 
 /**
  * `<lastmod>` only where a real edit date exists: knowledge articles (per-locale dates from git via
- * `npm run kb:sync`), their hub (newest article), data tables (snapshot date), reference entries in REF_UPDATED, slang entries (published or edited date; the hub takes the newest). Other pages have no tracked
+ * `npm run kb:sync`), their hub (newest article), data tables (snapshot date), reference entries in REF_UPDATED, slang and nostalgia entries (published or edited date; the hub takes the newest), ideas (also the data snapshot date). Other pages have no tracked
  * edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
  */
 function pageLastmod(page: SitemapPage): string | null {
@@ -160,6 +174,16 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "slang") {
     if (page.entry) return SLANG_UPDATED[page.entry] ?? slangPublished(page.entry);
     return [SLANG_PUBLISHED, ...Object.values(SLANG_ADDED), ...Object.values(SLANG_UPDATED)].sort().at(-1) ?? SLANG_PUBLISHED;
+  }
+  // Ideas pages show the monthly search-data snapshot, so they change at least when it is refreshed.
+  if (page.kind === "ideas") {
+    if (page.entry) return ideaModified(page.entry);
+    return [IDEAS_PUBLISHED, ...Object.values(IDEAS_ADDED), ...Object.values(IDEAS_UPDATED), IDEAS_DATA_FETCHED].sort().at(-1) ?? IDEAS_PUBLISHED;
+  }
+  if (page.kind === "nostalgia") {
+    if (page.entry) return nostalgiaUpdated(page.entry);
+    // The hub changes whenever an entry does (or one is added), or when its own copy is edited: the newest of those.
+    return [...NOSTALGIA_ENTRIES.map(nostalgiaUpdated), ...(NOSTALGIA_HUB_UPDATED ? [NOSTALGIA_HUB_UPDATED] : [])].sort().at(-1) ?? NOSTALGIA_PUBLISHED;
   }
   return null;
 }

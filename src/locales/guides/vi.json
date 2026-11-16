@@ -1560,6 +1560,222 @@
       "s2b": "Chạm vào một quân, rồi chạm vào giao điểm được đánh dấu. Bên Đỏ đi trước.",
       "s3t": "Chiếu bí tướng",
       "s3b": "Thắng khi tướng đối phương không còn đường thoát. Dùng Hoàn tác để đi lại."
+    },
+    "solitaire": {
+      "lead": "Chơi xếp bài Klondike trong ba bước.",
+      "s1t": "Chọn kiểu rút",
+      "s1b": "Chọn rút 1 lá (dễ hơn) hoặc rút 3 lá (kinh điển) rồi chạm Ván mới.",
+      "s2t": "Xếp các cột",
+      "s2b": "Kéo hoặc chạm lá bài để xếp nhỏ dần, xen kẽ màu. Chạm vào nọc bài để lấy lá mới.",
+      "s3t": "Lấp đầy hàng đích",
+      "s3b": "Đưa từng chất lên hàng đích từ Át đến Già. Nhấp đúp vào lá bài để đưa nó tới chỗ tốt nhất."
+    },
+    "spider-solitaire": {
+      "lead": "Chơi xếp bài nhện trong ba bước.",
+      "s1t": "Chọn số chất",
+      "s1b": "Một chất là dễ nhất; hai và bốn chất khó hơn.",
+      "s2t": "Xếp nhỏ dần",
+      "s2b": "Đặt lá bài lên lá lớn hơn một bậc và di chuyển cả dãy cùng chất.",
+      "s3t": "Dọn tám dãy",
+      "s3b": "Dãy cùng chất từ Già đến Át sẽ rời khỏi bàn. Chạm vào nọc bài để chia khi cần lá mới."
+    },
+    "freecell": {
+      "lead": "Chơi FreeCell trong ba bước.",
+      "s1t": "Chọn ván",
+      "s1b": "Chạm Ván mới, hoặc nhập số ván rồi chạm Chơi ván này.",
+      "s2t": "Dùng ô tự do",
+      "s2b": "Gửi tạm từng lá vào bốn ô tự do và xếp cột nhỏ dần, xen kẽ màu.",
+      "s3t": "Đưa lên hàng đích",
+      "s3b": "Đưa mọi chất lên hàng đích từ Át đến Già. Lá an toàn sẽ tự đi lên."
+    },
+    "minesweeper": {
+      "lead": "Chơi dò mìn trong ba bước.",
+      "s1t": "Mở một ô",
+      "s1b": "Chọn mức chơi và nhấp vào ô bất kỳ. Lần nhấp đầu luôn mở ra một vùng an toàn.",
+      "s2t": "Đọc các con số",
+      "s2b": "Mỗi con số đếm số mìn xung quanh nó. Cắm cờ bằng chuột phải, nhấn giữ hoặc Chế độ cắm cờ.",
+      "s3t": "Dọn sạch bãi mìn",
+      "s3b": "Mở hết các ô không có mìn để thắng. Nhấp vào con số đã đủ cờ để mở các ô còn lại."
+    },
+    "snake-game": {
+      "lead": "Chơi rắn săn mồi trong ba bước.",
+      "s1t": "Bắt đầu",
+      "s1b": "Chạm Bắt đầu hoặc nhấn Space. Chọn tốc độ và bật hay tắt tường.",
+      "s2t": "Ăn và lớn lên",
+      "s2b": "Điều khiển bằng phím mũi tên, vuốt hoặc các nút. Mỗi miếng mồi cộng một điểm và một ô.",
+      "s3t": "Tránh tường và đuôi",
+      "s3b": "Đâm vào tường hoặc thân mình là kết thúc. Điểm cao nhất của bạn được lưu lại."
+    },
+    "checkers": {
+      "lead": "Chơi cờ đam trong ba bước.",
+      "s1t": "Chọn kiểu chơi",
+      "s1b": "Đấu với máy ở mức dễ, trung bình hoặc khó, cầm quân Đen hoặc Trắng, hoặc hai người chơi trên một màn hình.",
+      "s2t": "Đi quân và ăn quân",
+      "s2b": "Chạm vào một quân, rồi chạm vào ô được đánh dấu. Bắt buộc phải ăn quân; ăn liên tiếp thì đi từng bước nhảy một.",
+      "s3t": "Phong vua và giành chiến thắng",
+      "s3b": "Đi đến hàng cuối để phong vua. Ăn hết quân hoặc chặn mọi nước đi của đối phương để thắng."
+    },
+    "reversi": {
+      "lead": "Chơi cờ lật trong ba bước.",
+      "s1t": "Chọn kiểu chơi",
+      "s1b": "Đấu với máy ở mức dễ, trung bình hoặc khó, hoặc hai người chơi trên một màn hình.",
+      "s2t": "Kẹp và lật quân",
+      "s2b": "Chạm vào ô được đánh dấu để đặt quân và lật mọi hàng quân bị kẹp.",
+      "s3t": "Đếm quân",
+      "s3b": "Khi cả hai bên đều không còn nước đi, bên có nhiều quân hơn thắng."
+    },
+    "gomoku": {
+      "lead": "Chơi cờ caro trong ba bước.",
+      "s1t": "Chọn kiểu chơi",
+      "s1b": "Đấu với máy ở mức dễ, trung bình hoặc khó, hoặc hai người chơi trên một màn hình.",
+      "s2t": "Đặt quân",
+      "s2b": "Chạm vào một điểm trống để đặt quân. Bên Đen đi trước.",
+      "s3t": "Xếp năm quân liên tiếp",
+      "s3b": "Năm quân thẳng hàng trở lên là thắng. Hãy chặn các hàng ba và hàng bốn mở của đối thủ."
+    },
+    "nonogram": {
+      "lead": "Giải một câu đố nonogram trong ba bước.",
+      "s1t": "Chọn câu đố",
+      "s1b": "Chọn 5×5, 10×10 hoặc 15×15. Lần đầu vào trang sẽ mở một câu đố nhỏ; chạm Câu đố mới để lấy câu khác.",
+      "s2t": "Đọc gợi ý",
+      "s2b": "Mỗi con số là một khối ô được tô trong hàng hoặc cột đó, theo thứ tự. Tô những ô chắc chắn phải tô và đánh dấu X những ô chắc chắn để trống.",
+      "s3t": "Hoàn thành bức tranh",
+      "s3b": "Khi mọi hàng và cột đều khớp với gợi ý, bức tranh đã hoàn thành. Bật Kiểm tra lỗi nếu bạn bị bí."
+    },
+    "memory-game": {
+      "lead": "Chơi trò lật hình trong ba bước.",
+      "s1t": "Chọn bàn chơi",
+      "s1b": "Chọn 4×4, 4×5 hoặc 6×6 và một hoặc hai người chơi.",
+      "s2t": "Lật hai thẻ",
+      "s2b": "Chạm vào hai thẻ. Cặp giống nhau sẽ giữ nguyên mặt ngửa; các thẻ khác úp lại.",
+      "s3t": "Dọn sạch bàn",
+      "s3b": "Tìm hết mọi cặp. Càng ít lượt càng tốt; khi chơi hai người, ai nhiều cặp hơn sẽ thắng."
+    },
+    "phone-number-value": {
+      "lead": "Định giá số điện thoại trong ba bước.",
+      "s1t": "Nhập số",
+      "s1b": "Có thể có dấu cách, gạch ngang và mã quốc gia.",
+      "s2t": "Kiểm tra thị trường",
+      "s2b": "Việt Nam, Trung Quốc hoặc nước khác; công cụ tự đoán theo số.",
+      "s3t": "Xem kết quả",
+      "s3b": "Xem khoảng giá, điểm số và các kiểu số quyết định giá."
+    },
+    "license-plate-value": {
+      "lead": "Định giá biển số trong ba bước.",
+      "s1t": "Chọn quốc gia",
+      "s1b": "Anh, Việt Nam hoặc Trung Quốc đại lục.",
+      "s2t": "Nhập biển số",
+      "s2b": "Có thể có dấu cách, dấu chấm và gạch ngang.",
+      "s3t": "Xem kết quả",
+      "s3b": "Xem khoảng giá, điểm số, định dạng và các kiểu số tìm được."
+    },
+    "domain-value": {
+      "lead": "Thẩm định tên miền trong ba bước.",
+      "s1t": "Nhập hoặc dán tên miền",
+      "s1b": "Dán cả đường link cũng được; công cụ chỉ giữ lại tên.",
+      "s2t": "Xem kết quả",
+      "s2b": "Xem giá trị, khoảng giá và điểm số.",
+      "s3t": "Xem các yếu tố",
+      "s3b": "Danh sách cho thấy đuôi, từ và độ dài đã làm giá thay đổi ra sao."
+    },
+    "car-depreciation": {
+      "lead": "Ước tính giá xe trong ba bước.",
+      "s1t": "Nhập giá và tuổi xe",
+      "s1b": "Dùng giá xe lúc mới và số năm đã sử dụng.",
+      "s2t": "Mô tả xe",
+      "s2b": "Chọn loại xe, tình trạng và quãng đường đi mỗi năm.",
+      "s3t": "Xem giá trị",
+      "s3b": "Xem giá trị hôm nay cùng bảng và biểu đồ từng năm."
+    },
+    "net-worth": {
+      "lead": "Tính tài sản ròng trong ba bước.",
+      "s1t": "Liệt kê tài sản",
+      "s1b": "Tiền mặt, đầu tư, hưu trí, nhà và xe.",
+      "s2t": "Liệt kê khoản nợ",
+      "s2b": "Vay mua nhà, vay mua xe, vay học phí, thẻ và các khoản nợ khác.",
+      "s3t": "So sánh",
+      "s3b": "Nhập tuổi để so với hộ gia đình Mỹ cùng độ tuổi."
+    },
+    "business-valuation": {
+      "lead": "Định giá doanh nghiệp trong ba bước.",
+      "s1t": "Chọn ngành",
+      "s1b": "Công cụ điền sẵn hệ số lợi nhuận và doanh thu điển hình.",
+      "s2t": "Nhập số liệu",
+      "s2b": "Doanh thu, lợi nhuận và dòng tiền tự do hằng năm, kèm tốc độ tăng trưởng và tỷ lệ chiết khấu.",
+      "s3t": "Xem khoảng giá",
+      "s3b": "Xem giá trị theo từng phương pháp và con số ở giữa."
+    },
+    "hangman": {
+      "lead": "Chơi một ván Hangman trong ba bước.",
+      "s1t": "Chọn từ",
+      "s1b": "Chọn ngôn ngữ và chủ đề, hoặc nhập một từ bí mật cho bạn bè đoán.",
+      "s2t": "Đoán chữ cái",
+      "s2b": "Bấm một chữ cái hoặc gõ trên bàn phím. Chữ đúng điền vào ô trống; chữ sai thêm nét vào hình vẽ.",
+      "s3t": "Giải kịp lúc",
+      "s3b": "Hoàn thành từ trước sáu lần đoán sai. Bấm Từ mới để sang ván tiếp; số ván thắng và chuỗi thắng được cộng dồn."
+    },
+    "rock-paper-scissors": {
+      "lead": "Chơi oẳn tù tì với máy trong ba bước.",
+      "s1t": "Thiết lập trận",
+      "s1b": "Chọn luật cổ điển hoặc Thằn lằn Spock, chơi từng ván hoặc thắng 2/3, 3/5, 4/7.",
+      "s2t": "Ra tay",
+      "s2b": "Bấm búa, bao hoặc kéo, hoặc nhấn R, P hoặc S. Máy ra cùng lúc với bạn.",
+      "s3t": "Xem kết quả",
+      "s3b": "Trang cho biết ai thắng và vì sao, ghi điểm và liệt kê các ván gần nhất."
+    },
+    "bac-calculator": {
+      "lead": "Ước tính nồng độ cồn trong máu trong ba bước.",
+      "s1t": "Nhập thông tin của bạn",
+      "s1b": "Chọn giới tính, nhập cân nặng và số giờ từ ly đầu tiên.",
+      "s2t": "Thêm đồ uống",
+      "s2b": "Chọn từng loại đồ uống và số lượng. Đổi dung tích hoặc % cồn cho khớp với nhãn.",
+      "s3t": "Xem ước tính",
+      "s3b": "Xem BAC theo %, ‰ và mg/100 mL, cùng thời gian để giảm xuống từng mức. Đây chỉ là ước tính: đã uống thì đừng lái xe."
+    },
+    "simple-interest": {
+      "lead": "Tính lãi đơn trong ba bước.",
+      "s1t": "Chọn đại lượng cần tìm",
+      "s1b": "Tiền lãi và tổng tiền, hoặc vốn gốc, lãi suất hay thời gian.",
+      "s2t": "Nhập các giá trị còn lại",
+      "s2b": "Nhập vốn gốc, lãi suất năm, thời gian (năm, tháng hoặc ngày) hoặc tiền lãi, tùy ô nào hiện ra.",
+      "s3t": "Xem đáp án",
+      "s3b": "Kết quả, công thức đã điền số và bảng từng năm so sánh với lãi kép. Sao chép chỉ với một lần bấm."
+    },
+    "word-search": {
+      "lead": "Chơi tìm chữ trong ba bước.",
+      "s1t": "Chọn câu đố",
+      "s1b": "Chọn chủ đề, kích thước và mức độ. Lần đầu sẽ mở câu đố động vật mức dễ.",
+      "s2t": "Tìm các từ",
+      "s2b": "Kéo qua một từ từ chữ đầu đến chữ cuối, hoặc chạm vào hai đầu. Từ đã tìm được giữ màu.",
+      "s3t": "Hoàn thành danh sách",
+      "s3b": "Tìm mọi từ trong danh sách để hoàn thành. Dùng Gợi ý để xem một từ bắt đầu ở đâu."
+    },
+    "typing-game": {
+      "lead": "Chơi trò chơi gõ phím trong ba bước.",
+      "s1t": "Chọn mức độ",
+      "s1b": "Chọn dễ, trung bình hoặc khó rồi nhấn Bắt đầu.",
+      "s2t": "Gõ các từ",
+      "s2b": "Gõ từ bạn thấy và nhấn Enter hoặc Space trước khi nó chạm đáy.",
+      "s3t": "Phá kỷ lục",
+      "s3b": "Bỏ lỡ ba từ là hết ván. Xem điểm, tốc độ và độ chính xác, rồi thử lại."
+    },
+    "chinese-checkers": {
+      "lead": "Chơi cờ nhảy trong ba bước.",
+      "s1t": "Chọn kiểu chơi",
+      "s1b": "Đấu với máy ở mức dễ, trung bình hoặc khó bằng bi hồng hoặc xanh, hoặc hai người trên cùng một màn hình.",
+      "s2t": "Bước hoặc nhảy",
+      "s2b": "Chạm vào một viên bi để xem mọi ô nó có thể đến, rồi chạm vào một ô. Nhảy liên tiếp giúp băng qua bàn cờ thật nhanh.",
+      "s3t": "Lấp đầy đỉnh đối diện",
+      "s3b": "Lấp đầy góc đối diện là thắng; bi của đối thủ chưa từng rời đi vẫn được tính."
+    },
+    "idea-validator": {
+      "lead": "Chấm điểm một ý tưởng kinh doanh trong ba bước.",
+      "s1t": "Mô tả ý tưởng",
+      "s1b": "Nhập vài từ. Nếu khớp với một trong 40 ý tưởng của chúng tôi, điểm dữ liệu tìm kiếm của ý tưởng đó được dùng làm mốc đối chiếu thị trường; bạn cũng có thể tự chọn trong danh sách.",
+      "s2t": "Trả lời tám câu hỏi",
+      "s2b": "Chọn phương án gần nhất cho bằng chứng về nhu cầu, giá, mức cạnh tranh, chi phí khởi đầu, thời gian đến đơn hàng đầu tiên, lợi thế của bạn, cách tiếp cận khách hàng và xu hướng thị trường.",
+      "s3t": "Xem kết quả",
+      "s3b": "Xem điểm trên thang 100, điểm mạnh, điểm yếu và ba cách thử rẻ cho điểm yếu nhất. Sao chép kết quả để lưu lại."
     }
   }
 }

@@ -1560,6 +1560,222 @@
       "s2b": "Toca una pieza y luego un punto marcado. Las rojas mueven primero.",
       "s3t": "Da mate al general",
       "s3b": "Gana dejando al general rival sin escapatoria. Usa Deshacer para volver atrás una jugada."
+    },
+    "solitaire": {
+      "lead": "Juega al solitario Klondike en tres pasos.",
+      "s1t": "Elige cómo robar",
+      "s1b": "Elige robar 1 (más fácil) o robar 3 (clásico) y toca Nueva partida.",
+      "s2t": "Forma las columnas",
+      "s2b": "Arrastra o toca las cartas para apilarlas en orden descendente alternando colores. Toca el mazo para sacar cartas nuevas.",
+      "s3t": "Completa las bases",
+      "s3b": "Sube cada palo a su base del as al rey. Haz doble clic en una carta para llevarla al mejor sitio."
+    },
+    "spider-solitaire": {
+      "lead": "Juega al Solitario Spider en tres pasos.",
+      "s1t": "Elige los palos",
+      "s1b": "Un palo es lo más fácil; dos y cuatro palos son más difíciles.",
+      "s2t": "Apila hacia abajo",
+      "s2b": "Pon cartas sobre otra de un valor más alto y mueve juntas las escaleras del mismo palo.",
+      "s3t": "Completa ocho escaleras",
+      "s3b": "Una escalera del rey al as de un mismo palo sale de la mesa. Toca el mazo para repartir cuando necesites cartas nuevas."
+    },
+    "freecell": {
+      "lead": "Juega a Carta blanca (FreeCell) en tres pasos.",
+      "s1t": "Elige una partida",
+      "s1b": "Toca Nueva partida, o escribe un número de partida y toca Jugar partida.",
+      "s2t": "Usa las celdas libres",
+      "s2b": "Deja cartas sueltas en las cuatro celdas y apila las columnas en orden descendente alternando colores.",
+      "s3t": "Sube a las bases",
+      "s3b": "Lleva cada palo a las bases del as al rey. Las cartas seguras suben solas."
+    },
+    "minesweeper": {
+      "lead": "Juega al Buscaminas en tres pasos.",
+      "s1t": "Abre una casilla",
+      "s1b": "Elige un nivel y haz clic en cualquier casilla. El primer clic siempre abre una zona segura.",
+      "s2t": "Lee los números",
+      "s2b": "Cada número cuenta las minas que lo rodean. Marca las minas con clic derecho, una pulsación larga o el modo bandera.",
+      "s3t": "Despeja el campo",
+      "s3b": "Abre todas las casillas sin mina para ganar. Haz clic en un número con todas sus banderas puestas para abrir el resto."
+    },
+    "snake-game": {
+      "lead": "Juega al juego de la serpiente en tres pasos.",
+      "s1t": "Empieza",
+      "s1b": "Toca Empezar o pulsa Espacio. Elige una velocidad y si hay paredes.",
+      "s2t": "Come y crece",
+      "s2b": "Dirige con las flechas, deslizando el dedo o con los botones. Cada bocado suma un punto y una casilla.",
+      "s3t": "Evita las paredes y tu cola",
+      "s3b": "Chocar con una pared o con tu propio cuerpo termina la partida. Tu mejor puntuación se guarda."
+    },
+    "checkers": {
+      "lead": "Juega a las damas en tres pasos.",
+      "s1t": "Elige tu partida",
+      "s1b": "Juega contra la computadora en fácil, medio o difícil con negras o blancas, o dos jugadores en la misma pantalla.",
+      "s2t": "Mueve y salta",
+      "s2b": "Toca una ficha y luego una casilla marcada. Capturar es obligatorio; una captura múltiple se hace salto a salto.",
+      "s3t": "Corona y gana",
+      "s3b": "Llega a la última fila para conseguir una dama. Captura todas las fichas o bloquea todas las jugadas para ganar."
+    },
+    "reversi": {
+      "lead": "Juega al reversi en tres pasos.",
+      "s1t": "Elige tu partida",
+      "s1b": "Juega contra la computadora en fácil, medio o difícil, o dos jugadores en la misma pantalla.",
+      "s2t": "Encierra y voltea",
+      "s2b": "Toca una casilla marcada para colocar una ficha y voltear todas las líneas que encierres.",
+      "s3t": "Cuenta las fichas",
+      "s3b": "Cuando ningún bando puede mover, gana el que tiene más fichas."
+    },
+    "gomoku": {
+      "lead": "Juega al gomoku en tres pasos.",
+      "s1t": "Elige tu partida",
+      "s1b": "Juega contra la computadora en fácil, medio o difícil, o dos jugadores en la misma pantalla.",
+      "s2t": "Coloca tus piedras",
+      "s2b": "Toca un punto vacío para colocar una piedra. Empiezan las negras.",
+      "s3t": "Haz cinco en raya",
+      "s3b": "Cinco o más piedras en línea ganan. Bloquea los tres y cuatro abiertos de tu rival."
+    },
+    "nonogram": {
+      "lead": "Resuelve un nonograma en tres pasos.",
+      "s1t": "Elige un rompecabezas",
+      "s1b": "Elige 5×5, 10×10 o 15×15. La primera visita abre un rompecabezas pequeño; toca Nuevo rompecabezas para otro.",
+      "s2t": "Lee las pistas",
+      "s2b": "Cada número es un bloque de celdas rellenas de esa fila o columna, en orden. Rellena lo que tiene que estar relleno y tacha lo que tiene que quedar vacío.",
+      "s3t": "Completa la imagen",
+      "s3b": "Cuando todas las filas y columnas coinciden con sus pistas, la imagen está completa. Activa Revisar errores si te atascas."
+    },
+    "memory-game": {
+      "lead": "Juega al memorama en tres pasos.",
+      "s1t": "Elige un tablero",
+      "s1b": "Elige 4×4, 4×5 o 6×6 y uno o dos jugadores.",
+      "s2t": "Voltea dos cartas",
+      "s2b": "Toca dos cartas. Una pareja se queda boca arriba; las demás cartas se vuelven a voltear.",
+      "s3t": "Despeja el tablero",
+      "s3b": "Encuentra todas las parejas. Cuantos menos movimientos, mejor; con dos jugadores, gana quien tenga más parejas."
+    },
+    "phone-number-value": {
+      "lead": "Valora un número de teléfono en tres pasos.",
+      "s1t": "Escribe el número",
+      "s1b": "Puedes usar espacios, guiones y prefijo de país.",
+      "s2t": "Revisa el mercado",
+      "s2b": "China, Vietnam u otro; la herramienta lo deduce del número.",
+      "s3t": "Lee la estimación",
+      "s3b": "Ve el rango de precio, la puntuación y qué patrones lo fijan."
+    },
+    "license-plate-value": {
+      "lead": "Valora una matrícula en tres pasos.",
+      "s1t": "Elige el país",
+      "s1b": "Reino Unido, Vietnam o China continental.",
+      "s2t": "Escribe la matrícula",
+      "s2b": "Puedes usar espacios, puntos y guiones.",
+      "s3t": "Lee la estimación",
+      "s3b": "Ve el rango de precio, la puntuación y el formato y patrones detectados."
+    },
+    "domain-value": {
+      "lead": "Tasa un dominio en tres pasos.",
+      "s1t": "Escribe o pega el dominio",
+      "s1b": "También vale un enlace completo; la herramienta se queda solo con el nombre.",
+      "s2t": "Lee la estimación",
+      "s2b": "Ve el valor, el rango y la puntuación.",
+      "s3t": "Revisa los factores",
+      "s3b": "La lista muestra cómo la extensión, las palabras y la longitud movieron el precio."
+    },
+    "car-depreciation": {
+      "lead": "Estima el valor de tu coche en tres pasos.",
+      "s1t": "Introduce precio y antigüedad",
+      "s1b": "Usa lo que costó el coche nuevo y cuántos años tiene.",
+      "s2t": "Describe el coche",
+      "s2b": "Elige su tipo, su estado y cuánto recorre al año.",
+      "s3t": "Lee el valor",
+      "s3b": "Ve el valor actual y la tabla y el gráfico año por año."
+    },
+    "net-worth": {
+      "lead": "Calcula tu patrimonio neto en tres pasos.",
+      "s1t": "Anota lo que tienes",
+      "s1b": "Efectivo, inversiones, retiro, vivienda y vehículos.",
+      "s2t": "Anota lo que debes",
+      "s2b": "Hipoteca, préstamos de auto, préstamos estudiantiles, tarjetas y otras deudas.",
+      "s3t": "Compara",
+      "s3b": "Añade tu edad para compararte con hogares de EE. UU. de tu edad."
+    },
+    "business-valuation": {
+      "lead": "Valora un negocio en tres pasos.",
+      "s1t": "Elige el sector",
+      "s1b": "Rellena múltiplos típicos de beneficios e ingresos.",
+      "s2t": "Introduce las cifras",
+      "s2b": "Ingresos, beneficio y flujo de caja libre anuales, con tasas de crecimiento y descuento.",
+      "s3t": "Lee el rango",
+      "s3b": "Ve el valor según cada método y la cifra intermedia."
+    },
+    "hangman": {
+      "lead": "Juega una partida de ahorcado en tres pasos.",
+      "s1t": "Elige las palabras",
+      "s1b": "Escoge un idioma y una categoría, o escribe una palabra secreta para que la adivine un amigo.",
+      "s2t": "Adivina letras",
+      "s2b": "Toca una letra o púlsala en el teclado. Las letras acertadas rellenan los huecos; las falladas se suman al dibujo.",
+      "s3t": "Resuélvela a tiempo",
+      "s3b": "Completa la palabra antes de seis fallos. Toca Nueva palabra para la siguiente ronda; tus victorias y tu racha se acumulan."
+    },
+    "rock-paper-scissors": {
+      "lead": "Juega a piedra, papel o tijera contra la computadora en tres pasos.",
+      "s1t": "Prepara la partida",
+      "s1b": "Elige las reglas clásicas o con lagarto y Spock, y juega rondas sueltas o al mejor de 3, 5 o 7.",
+      "s2t": "Juega",
+      "s2b": "Toca piedra, papel o tijeras, o pulsa R, P o S. La computadora juega en el mismo momento.",
+      "s3t": "Mira el resultado",
+      "s3b": "La página dice quién ganó y por qué, lleva el marcador y muestra tus últimas rondas."
+    },
+    "bac-calculator": {
+      "lead": "Estima tu tasa de alcohol en sangre en tres pasos.",
+      "s1t": "Tus datos",
+      "s1b": "Elige el sexo e introduce tu peso y las horas desde la primera copa.",
+      "s2t": "Añade tus bebidas",
+      "s2b": "Elige cada bebida y cuántas tomaste. Cambia el tamaño o el % de alcohol según la etiqueta.",
+      "s3t": "Lee la estimación",
+      "s3b": "Mira tu alcoholemia en %, ‰ y mg/100 mL, y el tiempo hasta que baje a cada nivel. Es una estimación: no conduzcas después de beber."
+    },
+    "simple-interest": {
+      "lead": "Calcula el interés simple en tres pasos.",
+      "s1t": "Elige qué calcular",
+      "s1b": "El interés y el total, o el capital, la tasa o el tiempo.",
+      "s2t": "Introduce los demás datos",
+      "s2b": "Escribe el capital, la tasa anual, el tiempo (años, meses o días) o el interés, según los campos que aparezcan.",
+      "s3t": "Lee la respuesta",
+      "s3b": "El resultado, la fórmula con tus datos y una tabla año por año junto al interés compuesto. Cópialo con un toque."
+    },
+    "word-search": {
+      "lead": "Juega a la sopa de letras en tres pasos.",
+      "s1t": "Elige una sopa",
+      "s1b": "Elige un tema, un tamaño y un nivel. En tu primera visita se abre una sopa fácil de animales.",
+      "s2t": "Encuentra las palabras",
+      "s2b": "Arrastra sobre una palabra de su primera letra a la última, o toca los dos extremos. Las palabras encontradas quedan coloreadas.",
+      "s3t": "Completa la lista",
+      "s3b": "Encuentra todas las palabras de la lista para terminar. Usa Pista para ver dónde empieza una palabra."
+    },
+    "typing-game": {
+      "lead": "Juega al juego de mecanografía en tres pasos.",
+      "s1t": "Elige un nivel",
+      "s1b": "Elige fácil, medio o difícil y pulsa Empezar.",
+      "s2t": "Escribe las palabras",
+      "s2b": "Escribe la palabra que ves y pulsa Enter o Espacio antes de que llegue abajo.",
+      "s3t": "Supera tu récord",
+      "s3b": "Tres palabras perdidas terminan la partida. Mira tu puntuación, velocidad y precisión, y vuelve a intentarlo."
+    },
+    "chinese-checkers": {
+      "lead": "Juega a las damas chinas en tres pasos.",
+      "s1t": "Elige tu partida",
+      "s1b": "Juega contra la computadora en fácil, medio o difícil con las rosas o las azules, o dos jugadores en la misma pantalla.",
+      "s2t": "Avanza o salta",
+      "s2b": "Toca una canica para ver todos los huecos a los que puede llegar y toca uno. Las cadenas de saltos cruzan el tablero rápido.",
+      "s3t": "Llena la punta opuesta",
+      "s3b": "Llena la punta opuesta para ganar; las canicas rivales que nunca salieron pueden quedarse allí."
+    },
+    "idea-validator": {
+      "lead": "Evalúa una idea de negocio en tres pasos.",
+      "s1t": "Describe la idea",
+      "s1b": "Escríbela en pocas palabras. Si coincide con una de nuestras 40 ideas, su puntaje de datos de búsqueda se usa como referencia del mercado; también puedes elegir una de la lista.",
+      "s2t": "Responde ocho preguntas",
+      "s2b": "Elige la opción más cercana para pruebas de demanda, precio, competencia, costo inicial, tiempo hasta la primera venta, tu ventaja, cómo llegarás a los clientes y la tendencia del mercado.",
+      "s3t": "Lee el resultado",
+      "s3b": "Mira el puntaje sobre 100, tus fortalezas y puntos débiles, y tres pruebas baratas para el más débil. Copia el resultado para guardarlo."
     }
   }
 }

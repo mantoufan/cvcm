@@ -45,6 +45,14 @@
           ]
         },
         {
+          "h": "Búsqueda en el sitio y respuestas de Nostalgia",
+          "p": [
+            "El buscador compara las páginas en tu navegador con una lista de nombres de páginas de cv.cm. Solo se nos envían las búsquedas que no encuentran nada, como se explica a continuación.",
+            "Cuando una búsqueda no encuentra nada, el texto buscado y el idioma de la página se envían a nuestra base de datos en Cloudflare D1 para saber qué echan en falta los usuarios. No se registran búsquedas que parezcan enlaces, direcciones de correo o números largos. Para contar a cada visitante una vez al día y limitar cuántas solicitudes envía una dirección, el servidor crea dos hashes a partir de tu dirección IP (uno de ellos junto con la búsqueda) con una clave que cambia cada día. Las claves y los hashes se borran a los dos días; la dirección IP nunca se guarda. El texto de una búsqueda se borra un año después de la última vez que alguien la hizo.",
+            "Las páginas de Nostalgia preguntan si tuviste, jugaste o usaste lo que describen. Solo cuando pulsas una respuesta se envía el nombre de la página y tu sí o no, que se suman a un recuento. Para limitar cuántas respuestas puede sumar una red a cada página por día y limitar cuántas veces puede enviar una dirección, el servidor guarda dos hashes distintos de tu dirección IP con la misma clave diaria que la búsqueda del sitio (uno combinado con la página); se borran a los dos días y la dirección IP nunca se guarda. Cuando tu respuesta se cuenta, tu navegador la recuerda en el almacenamiento local para volver a mostrarla."
+          ]
+        },
+        {
           "h": "Alojamiento y registros del servidor",
           "p": [
             "cv.cm se sirve a través de Cloudflare. Para entregar y proteger el sitio, Cloudflare procesa datos de las solicitudes, como la dirección IP, el agente de usuario del navegador y la URL solicitada, conforme a su propia política de privacidad. Nuestro servidor de almacenamiento en s3.cv.cm conserva registros estándar de servidor web (dirección IP, hora y ruta solicitada) por motivos de seguridad y resolución de problemas. No usamos estos registros para elaborar perfiles."

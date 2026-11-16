@@ -1560,6 +1560,222 @@
       "s2b": "Ketuk bidak, lalu titik yang ditandai. Merah jalan lebih dulu.",
       "s3t": "Skakmat jenderal",
       "s3b": "Menangkan permainan dengan membuat jenderal lawan tak bisa lolos. Gunakan Urungkan untuk membatalkan langkah."
+    },
+    "solitaire": {
+      "lead": "Main solitaire Klondike dalam tiga langkah.",
+      "s1t": "Pilih cara ambil",
+      "s1b": "Pilih ambil 1 (lebih mudah) atau ambil 3 (klasik), lalu ketuk Permainan baru.",
+      "s2t": "Susun tumpukan",
+      "s2b": "Seret atau ketuk kartu untuk menyusunnya menurun dengan warna berselang-seling. Ketuk stok untuk kartu baru.",
+      "s3t": "Isi fondasi",
+      "s3b": "Kirim setiap jenis ke fondasi dari As sampai King. Klik dua kali kartu untuk memindahkannya ke tempat terbaik."
+    },
+    "spider-solitaire": {
+      "lead": "Main Spider Solitaire dalam tiga langkah.",
+      "s1t": "Pilih jumlah jenis",
+      "s1b": "Satu jenis paling mudah; dua dan empat jenis lebih sulit.",
+      "s2t": "Susun menurun",
+      "s2b": "Taruh kartu di atas kartu yang satu tingkat lebih tinggi dan pindahkan deret satu jenis bersama-sama.",
+      "s3t": "Bersihkan delapan deret",
+      "s3b": "Deret satu jenis dari King sampai As keluar dari meja. Ketuk stok untuk membagikan saat Anda butuh kartu baru."
+    },
+    "freecell": {
+      "lead": "Main FreeCell dalam tiga langkah.",
+      "s1t": "Pilih permainan",
+      "s1b": "Ketuk Permainan baru, atau ketik nomor permainan lalu ketuk Mainkan nomor ini.",
+      "s2t": "Gunakan sel bebas",
+      "s2b": "Taruh kartu satu per satu di empat sel dan susun kolom menurun dengan warna berselang-seling.",
+      "s3t": "Naik ke fondasi",
+      "s3b": "Pindahkan setiap jenis ke fondasi dari As sampai King. Kartu yang aman naik dengan sendirinya."
+    },
+    "minesweeper": {
+      "lead": "Main Minesweeper dalam tiga langkah.",
+      "s1t": "Buka sebuah kotak",
+      "s1b": "Pilih tingkat dan klik kotak mana saja. Klik pertama selalu membuka area yang aman.",
+      "s2t": "Baca angkanya",
+      "s2b": "Setiap angka menghitung ranjau di sekitarnya. Tandai ranjau dengan klik kanan, tekan lama, atau Mode bendera.",
+      "s3t": "Bersihkan ladang",
+      "s3b": "Buka semua kotak tanpa ranjau untuk menang. Klik angka yang benderanya sudah lengkap untuk membuka sisanya."
+    },
+    "snake-game": {
+      "lead": "Main game ular dalam tiga langkah.",
+      "s1t": "Mulai",
+      "s1b": "Ketuk Mulai atau tekan Spasi. Pilih kecepatan dan apakah dinding aktif.",
+      "s2t": "Makan dan tumbuh",
+      "s2b": "Arahkan dengan tombol panah, usapan, atau tombol. Setiap makanan menambah satu poin dan satu kotak.",
+      "s3t": "Hindari dinding dan ekor",
+      "s3b": "Menabrak dinding atau tubuh sendiri mengakhiri permainan. Skor terbaik Anda disimpan."
+    },
+    "checkers": {
+      "lead": "Main dam dalam tiga langkah.",
+      "s1t": "Pilih permainan",
+      "s1b": "Lawan komputer di level mudah, sedang, atau sulit sebagai Hitam atau Putih, atau dua pemain di satu layar.",
+      "s2t": "Jalan dan lompat",
+      "s2b": "Ketuk bidak, lalu kotak yang ditandai. Makan itu wajib; lompatan beruntun dilakukan satu per satu.",
+      "s3t": "Jadikan raja dan menang",
+      "s3b": "Capai baris terjauh untuk menjadi raja. Makan semua bidak atau blokir semua langkah lawan untuk menang."
+    },
+    "reversi": {
+      "lead": "Main reversi dalam tiga langkah.",
+      "s1t": "Pilih permainan",
+      "s1b": "Lawan komputer di level mudah, sedang, atau sulit, atau dua pemain di satu layar.",
+      "s2t": "Jepit dan balik",
+      "s2b": "Ketuk kotak yang ditandai untuk meletakkan keping dan membalik setiap garis yang Anda jepit.",
+      "s3t": "Hitung kepingnya",
+      "s3b": "Saat kedua pihak tidak bisa bergerak, pihak dengan keping lebih banyak menang."
+    },
+    "gomoku": {
+      "lead": "Main gomoku dalam tiga langkah.",
+      "s1t": "Pilih permainan",
+      "s1b": "Lawan komputer di level mudah, sedang, atau sulit, atau dua pemain di satu layar.",
+      "s2t": "Letakkan batu",
+      "s2b": "Ketuk titik kosong untuk meletakkan batu. Hitam jalan lebih dulu.",
+      "s3t": "Buat lima berderet",
+      "s3b": "Lima batu atau lebih dalam satu garis menang. Blokir tiga dan empat terbuka milik lawan."
+    },
+    "nonogram": {
+      "lead": "Selesaikan nonogram dalam tiga langkah.",
+      "s1t": "Pilih teka-teki",
+      "s1b": "Pilih 5×5, 10×10, atau 15×15. Kunjungan pertama membuka teka-teki kecil; ketuk Teka-teki baru untuk yang lain.",
+      "s2t": "Baca petunjuknya",
+      "s2b": "Setiap angka adalah satu blok sel terisi di baris atau kolom itu, berurutan. Isi yang pasti terisi dan coret yang pasti kosong.",
+      "s3t": "Selesaikan gambarnya",
+      "s3b": "Saat setiap baris dan kolom cocok dengan petunjuknya, gambarnya selesai. Aktifkan Periksa kesalahan jika Anda buntu."
+    },
+    "memory-game": {
+      "lead": "Main permainan memori dalam tiga langkah.",
+      "s1t": "Pilih papan",
+      "s1b": "Pilih 4×4, 4×5, atau 6×6 dan satu atau dua pemain.",
+      "s2t": "Buka dua kartu",
+      "s2b": "Ketuk dua kartu. Pasangan yang sama tetap terbuka; kartu lain tertutup lagi.",
+      "s3t": "Bersihkan papan",
+      "s3b": "Temukan semua pasangan. Makin sedikit langkah makin baik; dengan dua pemain, pasangan terbanyak menang."
+    },
+    "phone-number-value": {
+      "lead": "Nilai nomor HP dalam tiga langkah.",
+      "s1t": "Ketik nomornya",
+      "s1b": "Spasi, tanda hubung, dan kode negara boleh dipakai.",
+      "s2t": "Periksa pasarnya",
+      "s2b": "Tiongkok, Vietnam, atau lainnya; alat menebak dari nomornya.",
+      "s3t": "Baca taksirannya",
+      "s3b": "Lihat rentang harga, skor, dan pola yang menentukannya."
+    },
+    "license-plate-value": {
+      "lead": "Nilai pelat nomor dalam tiga langkah.",
+      "s1t": "Pilih negara",
+      "s1b": "Inggris, Vietnam, atau Tiongkok daratan.",
+      "s2t": "Ketik pelatnya",
+      "s2b": "Spasi, titik, dan tanda hubung boleh dipakai.",
+      "s3t": "Baca taksirannya",
+      "s3b": "Lihat rentang harga, skor, serta format dan pola yang ditemukan."
+    },
+    "domain-value": {
+      "lead": "Taksir domain dalam tiga langkah.",
+      "s1t": "Ketik atau tempel domain",
+      "s1b": "Tautan lengkap juga bisa; alat hanya mengambil namanya.",
+      "s2t": "Baca taksirannya",
+      "s2b": "Lihat nilai, rentang, dan skornya.",
+      "s3t": "Periksa faktornya",
+      "s3b": "Daftar menunjukkan bagaimana ekstensi, kata, dan panjang memengaruhi harga."
+    },
+    "car-depreciation": {
+      "lead": "Perkirakan nilai mobil Anda dalam tiga langkah.",
+      "s1t": "Masukkan harga dan usia",
+      "s1b": "Gunakan harga mobil saat baru dan usianya dalam tahun.",
+      "s2t": "Jelaskan mobilnya",
+      "s2b": "Pilih jenis, kondisi, dan jarak tempuh per tahun.",
+      "s3t": "Baca nilainya",
+      "s3b": "Lihat nilai hari ini serta tabel dan grafik per tahun."
+    },
+    "net-worth": {
+      "lead": "Hitung kekayaan bersih Anda dalam tiga langkah.",
+      "s1t": "Catat milik Anda",
+      "s1b": "Kas, investasi, dana pensiun, rumah, dan kendaraan.",
+      "s2t": "Catat utang Anda",
+      "s2b": "KPR, kredit mobil, pinjaman pendidikan, kartu kredit, dan utang lain.",
+      "s3t": "Bandingkan",
+      "s3b": "Masukkan usia untuk membandingkan dengan rumah tangga AS seusia Anda."
+    },
+    "business-valuation": {
+      "lead": "Nilai bisnis dalam tiga langkah.",
+      "s1t": "Pilih industri",
+      "s1b": "Kelipatan laba dan pendapatan umum akan terisi otomatis.",
+      "s2t": "Masukkan angkanya",
+      "s2b": "Pendapatan, laba, dan arus kas bebas tahunan, beserta tingkat pertumbuhan dan diskonto.",
+      "s3t": "Baca rentangnya",
+      "s3b": "Lihat nilai per metode dan angka tengahnya."
+    },
+    "hangman": {
+      "lead": "Main satu ronde hangman dalam tiga langkah.",
+      "s1t": "Pilih katanya",
+      "s1b": "Pilih bahasa dan kategori, atau ketik kata rahasia untuk ditebak teman.",
+      "s2t": "Tebak huruf",
+      "s2b": "Ketuk huruf atau tekan di keyboard. Huruf yang benar mengisi kotak; yang salah menambah gambar.",
+      "s3t": "Selesaikan tepat waktu",
+      "s3b": "Lengkapi kata sebelum enam tebakan salah. Ketuk Kata baru untuk ronde berikutnya; kemenangan dan rentetan Anda terus bertambah."
+    },
+    "rock-paper-scissors": {
+      "lead": "Main batu gunting kertas melawan komputer dalam tiga langkah.",
+      "s1t": "Atur pertandingan",
+      "s1b": "Pilih aturan klasik atau dengan kadal dan Spock, lalu main ronde lepas atau best of 3, 5, atau 7.",
+      "s2t": "Pilih",
+      "s2b": "Ketuk batu, kertas, atau gunting, atau tekan R, P, atau S. Komputer memilih pada saat yang sama.",
+      "s3t": "Lihat hasilnya",
+      "s3b": "Halaman menunjukkan siapa yang menang dan alasannya, mencatat skor, dan menampilkan ronde terakhir Anda."
+    },
+    "bac-calculator": {
+      "lead": "Perkirakan kadar alkohol dalam darah Anda dalam tiga langkah.",
+      "s1t": "Data diri",
+      "s1b": "Pilih jenis kelamin, masukkan berat badan dan jam sejak minuman pertama.",
+      "s2t": "Tambahkan minuman",
+      "s2b": "Pilih tiap minuman dan jumlahnya. Ubah ukuran atau % alkohol sesuai label.",
+      "s3t": "Baca perkiraannya",
+      "s3b": "Lihat BAC Anda dalam %, ‰, dan mg/100 mL, serta waktu sampai turun ke tiap level. Ini perkiraan: jangan menyetir setelah minum."
+    },
+    "simple-interest": {
+      "lead": "Hitung bunga sederhana dalam tiga langkah.",
+      "s1t": "Pilih yang dicari",
+      "s1b": "Bunga dan total, atau pokok, suku bunga, atau waktu.",
+      "s2t": "Masukkan nilai lainnya",
+      "s2b": "Ketik pokok, suku bunga per tahun, waktu (tahun, bulan, atau hari), atau bunga, sesuai kolom yang tampil.",
+      "s3t": "Baca jawabannya",
+      "s3b": "Hasilnya, rumus yang sudah diisi, dan tabel per tahun di samping bunga majemuk. Salin dengan sekali ketuk."
+    },
+    "word-search": {
+      "lead": "Main cari kata dalam tiga langkah.",
+      "s1t": "Pilih teka-teki",
+      "s1b": "Pilih tema, ukuran, dan tingkat. Kunjungan pertama membuka teka-teki hewan tingkat mudah.",
+      "s2t": "Temukan kata",
+      "s2b": "Seret di atas kata dari huruf pertama ke huruf terakhir, atau ketuk kedua ujungnya. Kata yang ditemukan tetap berwarna.",
+      "s3t": "Selesaikan daftar",
+      "s3b": "Temukan semua kata dalam daftar untuk menyelesaikan. Gunakan Petunjuk untuk melihat di mana sebuah kata dimulai."
+    },
+    "typing-game": {
+      "lead": "Main game mengetik dalam tiga langkah.",
+      "s1t": "Pilih tingkat",
+      "s1b": "Pilih mudah, sedang, atau sulit lalu tekan Mulai.",
+      "s2t": "Ketik kata",
+      "s2b": "Ketik kata yang Anda lihat dan tekan Enter atau Spasi sebelum mencapai dasar.",
+      "s3t": "Kalahkan rekor Anda",
+      "s3b": "Tiga kata terlewat mengakhiri permainan. Lihat skor, kecepatan, dan akurasi Anda, lalu coba lagi."
+    },
+    "chinese-checkers": {
+      "lead": "Main dam Cina dalam tiga langkah.",
+      "s1t": "Pilih permainan",
+      "s1b": "Lawan komputer di tingkat mudah, sedang, atau sulit sebagai merah muda atau biru, atau dua pemain di satu layar.",
+      "s2t": "Melangkah atau lompat",
+      "s2b": "Ketuk kelereng untuk melihat semua lubang yang bisa dicapainya, lalu ketuk salah satunya. Lompatan beruntun melintasi papan dengan cepat.",
+      "s3t": "Isi ujung seberang",
+      "s3b": "Penuhi sudut seberang untuk menang; kelereng lawan yang tidak pernah pergi boleh tetap di sana."
+    },
+    "idea-validator": {
+      "lead": "Nilai ide bisnis dalam tiga langkah.",
+      "s1t": "Jelaskan idenya",
+      "s1b": "Ketik dalam beberapa kata. Jika cocok dengan salah satu dari 40 ide kami, skor data pencariannya dipakai sebagai tolok ukur pasar; Anda juga bisa memilih dari daftar.",
+      "s2t": "Jawab delapan pertanyaan",
+      "s2b": "Pilih opsi yang paling mendekati untuk bukti permintaan, harga, persaingan, biaya awal, waktu hingga penjualan pertama, keunggulan Anda, cara menjangkau pelanggan, dan tren pasar.",
+      "s3t": "Baca hasilnya",
+      "s3b": "Lihat skor dari 100, kekuatan dan kelemahan Anda, serta tiga uji murah untuk titik terlemah. Salin hasilnya untuk disimpan."
     }
   }
 }
