@@ -67,6 +67,8 @@ import type { QuizCopy } from "../shared/quiz-i18n";
 import { countryBucket, countryCode, type CountryPage } from "../shared/countries";
 import { hasCountriesMessages, hasCountryBucket, registerCountriesMessages, registerCountryBucket, type CountriesMessages, type CountryDetail } from "../shared/countries-store";
 import { COUNTRY_BUCKET_LOADERS } from "../shared/countries/loaders";
+import { hasCaloriesMessages, registerCaloriesMessages, type CaloriesMessages } from "../shared/messages";
+import type { CaloriesPage } from "../shared/calories";
 
 export type { PageCopy };
 
@@ -379,8 +381,20 @@ function countryBucketOf(page: CountryPage): number | null {
   return page && page !== "hub" ? countryBucket(countryCode(page)) : null;
 }
 
+// Calories copy, food names and the USDA snapshot, only for /calories/ pages.
+const CALORIES_PACKS: Record<Locale, () => Promise<{ default: CaloriesMessages }>> = {
+  en: () => import("../locales/packs/calories-en"),
+  "zh-CN": () => import("../locales/packs/calories-zh-CN"),
+  "zh-TW": () => import("../locales/packs/calories-zh-TW"),
+  ja: () => import("../locales/packs/calories-ja"),
+  ko: () => import("../locales/packs/calories-ko"),
+  vi: () => import("../locales/packs/calories-vi"),
+  id: () => import("../locales/packs/calories-id"),
+  es: () => import("../locales/packs/calories-es"),
+};
+
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
@@ -393,10 +407,11 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))))
     && (!ideas || (hasIdeasMessages(next) && (!idea || hasIdeaEntry(next, idea))))
     && (!nostalgia || (hasNostalgiaMessages(next) && (!memory || hasNostalgiaEntry(next, memory))))
-    && (!countries || (hasCountriesMessages(next) && (countryBucketOf(countries) === null || hasCountryBucket(countryBucketOf(countries)!))));
+    && (!countries || (hasCountriesMessages(next) && (countryBucketOf(countries) === null || hasCountryBucket(countryBucketOf(countries)!))))
+    && (!calories || hasCaloriesMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null): Promise<void> {
   const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
@@ -423,6 +438,7 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !memory || hasNostalgiaEntry(next, memory) ? null : loadNostalgiaEntry(next, memory),
     !countries || hasCountriesMessages(next) ? null : COUNTRIES_PACKS[next]().then((m) => registerCountriesMessages(next, m.default)),
     bucket === null || hasCountryBucket(bucket) ? null : COUNTRY_BUCKET_LOADERS[bucket]().then((m) => registerCountryBucket(bucket, m.default as Record<string, CountryDetail>)),
+    !calories || hasCaloriesMessages(next) ? null : CALORIES_PACKS[next]().then((m) => registerCaloriesMessages(next, m.default)),
   ]);
 }
 

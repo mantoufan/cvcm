@@ -31,6 +31,7 @@ import {
   IDEAS_PACK_TOOLS,
   nostalgiaHref,
   countriesHref,
+  caloriesHref,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -54,6 +55,7 @@ import { IDEAS_FOCUS, isIdeaId, type IdeaId, type IdeaPage } from "../shared/ide
 import { NOSTALGIA_FOCUS, isNostalgiaId, type NostalgiaId, type NostalgiaPage } from "../shared/nostalgia";
 import { COUNTRIES_FOCUS, countryCode, isCountrySlug, type CountryPage } from "../shared/countries";
 import { regionName } from "../shared/datasets-i18n";
+import { CALORIES_FOCUS, type CaloriesPage, type FoodId } from "../shared/calories";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -106,6 +108,8 @@ let ideasPage: IdeaPage = null;
 let nostalgiaPage: NostalgiaPage = null;
 /** A country profile: "hub" for /countries/, else the country slug. */
 let countriesPage: CountryPage = null;
+/** A calories page: "hub" for /calories/, else the food id. */
+let caloriesPage: CaloriesPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -303,6 +307,18 @@ export function boot(): void {
     setLocale(loc);
     applyCountries(parsed.entry);
     history.replaceState(null, "", withSearch(countriesHref(loc, parsed.entry), location.search));
+  } else if (parsed.kind === "calories") {
+    setLocale(parsed.locale);
+    applyCalories(parsed.food);
+    const canonical = caloriesHref(parsed.locale, parsed.food);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-calories") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyCalories(parsed.food);
+    history.replaceState(null, "", withSearch(caloriesHref(loc, parsed.food), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -395,6 +411,9 @@ function prefetchGamePack(e: Event): void {
     const slug = nav.startsWith("countries-") ? nav.slice(10) : "";
     const page: CountryPage = isCountrySlug(slug) ? slug : "hub";
     if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, page).catch(() => {});
+  } else if (target?.closest?.('a[data-nav^="food-"], a[data-nav="calories"]')) {
+    // data-nav is "food-<food id>" on a food link, "calories" on a hub link (not "calories-…": that is the calories-burned tool).
+    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, "hub")) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, "hub").catch(() => {});
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {
@@ -474,6 +493,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   ideasPage = null;
   nostalgiaPage = null;
   countriesPage = null;
+  caloriesPage = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -497,6 +517,7 @@ function applyLearn(next: TutorialId | null): void {
   ideasPage = null;
   nostalgiaPage = null;
   countriesPage = null;
+  caloriesPage = null;
 }
 
 function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
@@ -520,6 +541,7 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   ideasPage = null;
   nostalgiaPage = null;
   countriesPage = null;
+  caloriesPage = null;
 }
 
 function applyDevice(page: DevicePageId): void {
@@ -543,6 +565,7 @@ function applyDevice(page: DevicePageId): void {
   ideasPage = null;
   nostalgiaPage = null;
   countriesPage = null;
+  caloriesPage = null;
 }
 
 function applyLegal(page: LegalPageId): void {
@@ -566,6 +589,7 @@ function applyLegal(page: LegalPageId): void {
   ideasPage = null;
   nostalgiaPage = null;
   countriesPage = null;
+  caloriesPage = null;
 }
 
 function applyQuiz(id: QuizId | null): void {
@@ -589,6 +613,7 @@ function applyQuiz(id: QuizId | null): void {
   ideasPage = null;
   nostalgiaPage = null;
   countriesPage = null;
+  caloriesPage = null;
 }
 
 function applyDataset(id: DatasetId | null): void {
@@ -612,6 +637,7 @@ function applyDataset(id: DatasetId | null): void {
   ideasPage = null;
   nostalgiaPage = null;
   countriesPage = null;
+  caloriesPage = null;
 }
 
 function applyRanking(id: RankingId | null): void {
@@ -649,6 +675,11 @@ function applyCountries(slug: string | null): void {
   countriesPage = slug ?? "hub";
 }
 
+function applyCalories(id: FoodId | null): void {
+  applyTool(null, null);
+  caloriesPage = id ?? "hub";
+}
+
 function unmountTools(): void {
   const unmount = unmountCurrent;
   unmountCurrent = noop;
@@ -657,7 +688,7 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
@@ -674,9 +705,10 @@ export function render(): void {
   const nostalgia: NostalgiaPage = parsed.kind === "nostalgia" || parsed.kind === "bare-nostalgia" ? parsed.entry ?? "hub" : null;
   const countries: CountryPage = parsed.kind === "countries" || parsed.kind === "bare-countries" ? parsed.entry ?? "hub" : null;
   const copy = pageCopyOf(parsed);
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries)) {
+  const calories: CaloriesPage = parsed.kind === "calories" || parsed.kind === "bare-calories" ? parsed.food ?? "hub" : null;
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -779,6 +811,11 @@ export function render(): void {
     applyCountries(parsed.entry);
   } else if (parsed.kind === "bare-countries") {
     applyCountries(parsed.entry);
+  } else if (parsed.kind === "calories") {
+    setLocale(parsed.locale);
+    applyCalories(parsed.food);
+  } else if (parsed.kind === "bare-calories") {
+    applyCalories(parsed.food);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
@@ -787,6 +824,8 @@ export function render(): void {
 
   const seo = countriesPage
     ? { countries: true as const, countryId: countriesPage === "hub" ? null : countriesPage }
+    : caloriesPage
+    ? { calories: true as const, foodId: caloriesPage === "hub" ? null : caloriesPage }
     : ideasPage
     ? { ideas: true as const, ideaId: ideasPage === "hub" ? null : ideasPage }
     : nostalgiaPage
@@ -846,7 +885,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -984,7 +1023,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage);
   const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
   const gamesOn = gamesHub || Boolean(gameId);
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
@@ -1120,6 +1159,16 @@ function toolDirectory(loc: Locale): HTMLElement {
         ),
       ),
     ),
+    // Food names live in the calories pack (calories pages only), so the footer links the hub and the CALORIES_FOCUS
+    // foods, whose names are also in the core pack (caloriesFocus.*).
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: caloriesHref(loc), "data-nav": "calories", "aria-current": caloriesPage === "hub" ? "page" : undefined }, t("nav.calories"))),
+      h("p", null,
+        ...CALORIES_FOCUS.map((id) =>
+          h("a", { href: caloriesHref(loc, id), "data-nav": `food-${id}`, "aria-current": caloriesPage === id ? "page" : undefined }, t(`caloriesFocus.${id}`)),
+        ),
+      ),
+    ),
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: kbHref(loc), "data-nav": "knowledge" }, t("kb.label"))),
       h("p", null,
@@ -1243,6 +1292,10 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./countries/ui");
     if (!alive()) return;
     m.mountCountries(main, loc, countriesPage === "hub" ? null : countriesPage);
+  } else if (caloriesPage) {
+    const m = await import("./calories/ui");
+    if (!alive()) return;
+    m.mountCalories(main, loc, caloriesPage === "hub" ? null : caloriesPage);
   } else if (legalPage) {
     main.innerHTML = legalStaticHtml(loc, legalPage);
   } else if (marketId || marketsHub) {
@@ -1414,6 +1467,8 @@ function localePath(next: Locale): string {
     ? nostalgiaHref(next, nostalgiaPage === "hub" ? null : nostalgiaPage)
     : countriesPage
     ? countriesHref(next, countriesPage === "hub" ? null : countriesPage)
+    : caloriesPage
+    ? caloriesHref(next, caloriesPage === "hub" ? null : caloriesPage)
     : legalPage
     ? legalHref(next, legalPage)
     : learnHub || tutorial

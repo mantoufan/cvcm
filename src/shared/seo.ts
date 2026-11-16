@@ -22,13 +22,15 @@ import type { IdeaId } from "./ideas";
 import { nostalgiaDescription, nostalgiaTitle } from "./nostalgia-i18n";
 import type { NostalgiaId } from "./nostalgia";
 import { countryDescription, countryTitle } from "./countries-i18n";
+import { caloriesDescription, caloriesTitle } from "./calories-i18n";
+import type { FoodId } from "./calories";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -84,6 +86,9 @@ export type SeoInput = {
   /** Country profiles under /countries/; `countryId` is the slug, null the hub. */
   countries?: boolean;
   countryId?: string | null;
+  /** The calories channel under /calories/; `foodId` null is the hub. */
+  calories?: boolean;
+  foodId?: FoodId | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -830,6 +835,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   if (seo.quiz) return quizTitle(locale, seo.quizId ?? null);
   if (seo.dataset) return datasetTitle(locale, seo.datasetId ?? null);
   if (seo.ranking) return rankingTitle(locale, seo.rankingId ?? null);
+  if (seo.calories) return caloriesTitle(locale, seo.foodId ?? null);
   if (seo.legalPage) return legalPageCopy(locale, seo.legalPage).title;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_TITLE[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_TITLE[seo.resizeJob]);
@@ -857,6 +863,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   if (seo.quiz) return quizDescription(locale, seo.quizId ?? null);
   if (seo.dataset) return datasetDescription(locale, seo.datasetId ?? null);
   if (seo.ranking) return rankingDescription(locale, seo.rankingId ?? null);
+  if (seo.calories) return caloriesDescription(locale, seo.foodId ?? null);
   if (seo.legalPage) return legalPageCopy(locale, seo.legalPage).description;
   if (seo.tool === "convert" && seo.convertJob) return lookup(locale, CONVERT_JOB_DESC[seo.convertJob]);
   if (seo.tool === "resize" && seo.resizeJob) return lookup(locale, RESIZE_JOB_DESC[seo.resizeJob]);
@@ -895,6 +902,7 @@ export function pageCanonical(
   if (seo.quiz) return `https://cv.cm${quizHref(locale, seo.quizId ?? null)}`;
   if (seo.dataset) return `https://cv.cm${datasetHref(locale, seo.datasetId ?? null)}`;
   if (seo.ranking) return `https://cv.cm${rankingHref(locale, seo.rankingId ?? null)}`;
+  if (seo.calories) return `https://cv.cm${caloriesHref(locale, seo.foodId ?? null)}`;
   if (seo.legalPage) return `https://cv.cm${legalHref(locale, seo.legalPage)}`;
   return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob ?? seo.resizeJob)}`;
 }

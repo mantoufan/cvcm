@@ -318,3 +318,25 @@ export function nostalgiaEntryMessages(locale: Locale, id: NostalgiaId): Nostalg
   if (!copy) throw new Error(`nostalgia entry not loaded: ${locale} ${id}`);
   return copy;
 }
+
+/** Calories hub and page copy plus food names (`src/locales/calories/<locale>.json`) and the USDA snapshot (`data`). */
+export type CaloriesMessages = Omit<typeof import("../locales/calories/en.json"), "units"> & {
+  /** Serving units: one string, or singular and plural forms (en, es). */
+  units: Record<string, string | { one: string; other: string }>;
+  data: import("./calories-i18n").CaloriesData;
+};
+
+const loadedCalories: Partial<Record<Locale, CaloriesMessages>> = {};
+
+export function registerCaloriesMessages(locale: Locale, pack: CaloriesMessages): void {
+  loadedCalories[locale] = pack;
+}
+
+export function hasCaloriesMessages(locale: Locale): boolean {
+  return Boolean(loadedCalories[locale]);
+}
+
+/** Calories copy, food names and numbers; on the client only after the calories pack is loaded (calories pages). */
+export function caloriesMessages(locale: Locale): CaloriesMessages {
+  return pick(loadedCalories, locale, "calories messages");
+}

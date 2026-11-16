@@ -4,6 +4,8 @@ import { lessonsForTool } from "../shared/learn";
 import { KB_SHELVES, kbForTool } from "../shared/kb";
 import type { Locale } from "../shared/locale";
 import { kbHref, learnHref, type ToolId } from "../shared/path";
+import { caloriesHref } from "../shared/path";
+import { CALORIES_FOCUS, CALORIES_TOOLS } from "../shared/calories";
 
 export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | null {
   const ids = lessonsForTool(tool);
@@ -13,7 +15,9 @@ export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | nul
     { page: "ai" as const, nav: KB_SHELVES.ai.nav, label: t("kb.ai.label"), articles: kbForTool(tool, "ai") },
     { page: "photo" as const, nav: KB_SHELVES.photo.nav, label: t("kb.photo.label"), articles: kbForTool(tool, "photo") },
   ].filter((shelf) => shelf.articles.length);
-  if (ids.length === 0 && shelves.length === 0) return null;
+  // The health calculators that work with food energy also point to the food calorie chart.
+  const calories = (CALORIES_TOOLS as readonly string[]).includes(tool);
+  if (ids.length === 0 && shelves.length === 0 && !calories) return null;
   return h("section", { class: "learn-related tool-lessons" },
     ids.length ? h("h2", null, t("learn.guides")) : null,
     ids.length ? h("ul", { class: "tool-lesson-list" },
@@ -34,5 +38,9 @@ export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | nul
         ),
       ),
     ]),
+    calories ? h("h2", null, h("a", { href: caloriesHref(loc), "data-nav": "calories" }, t("nav.calories"))) : null,
+    calories ? h("ul", { class: "tool-lesson-list" },
+      ...CALORIES_FOCUS.map((id) => h("li", null, h("a", { href: caloriesHref(loc, id), "data-nav": `food-${id}` }, t(`caloriesFocus.${id}`)))),
+    ) : null,
   );
 }

@@ -92,6 +92,7 @@ const pageModules = {
   ideas: "src/client/ideas/ui.ts",
   nostalgia: "src/client/nostalgia/ui.ts",
   countries: "src/client/countries/ui.ts",
+  calories: "src/client/calories/ui.ts",
 };
 const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");

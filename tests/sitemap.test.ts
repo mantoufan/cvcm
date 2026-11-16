@@ -3,6 +3,7 @@ import { SLANG_ENTRIES } from "../src/shared/slang";
 import { IDEA_ENTRIES } from "../src/shared/ideas";
 import { NOSTALGIA_ENTRIES } from "../src/shared/nostalgia";
 import { COUNTRY_LIST } from "../src/shared/countries";
+import { FOODS } from "../src/shared/calories";
 import { describe, expect, it } from "vitest";
 import { LOCALES } from "../src/shared/locale";
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
@@ -22,7 +23,7 @@ describe("sitemap", () => {
     expect(xml).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
     expect(sitemapPages().length).toBe(
-      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + RANKINGS.length + 1 + DATASETS.length + Object.keys(KB_SHELVES).length + KB_ARTICLES.length + 1 + REF_ENTRIES.length + 1 + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + COUNTRY_LIST.length),
+      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + RANKINGS.length + 1 + DATASETS.length + Object.keys(KB_SHELVES).length + KB_ARTICLES.length + 1 + REF_ENTRIES.length + 1 + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length),
     );
     for (const locale of LOCALES) {
       expect(xml).toContain(`https://cv.cm${appHref(locale, null)}`);
@@ -45,8 +46,8 @@ describe("sitemap", () => {
     expect(xml).toContain("https://cv.cm/zh-tw/");
     expect(xml).not.toContain("https://cv.cm/zh-CN/");
     expect(xml).not.toContain("https://cv.cm/zh-TW/");
-    // Only kb pages (every shelf hub and its articles), data tables, reference pages, slang, nostalgia and country pages have real edit dates.
-    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + Object.keys(KB_SHELVES).length + DATASETS.length + 1 + RANKINGS.length + 1 + Object.keys(REF_UPDATED).length + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + COUNTRY_LIST.length + 1));
+    // Only kb pages (every shelf hub and its articles), data tables, reference pages, slang, nostalgia, country and calories pages have real edit dates.
+    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + Object.keys(KB_SHELVES).length + DATASETS.length + 1 + RANKINGS.length + 1 + Object.keys(REF_UPDATED).length + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1));
     expect(xml).toContain(`<lastmod>${DATASET_SNAPSHOT}</lastmod>`);
     const newest = KNOWLEDGE_ARTICLES.map((id) => kbUpdatedOn(id, "en")).sort().at(-1);
     expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", null)}</loc>\n    <lastmod>${newest}</lastmod>`);

@@ -252,3 +252,25 @@ for (const [locale, entries] of Object.entries(NOSTALGIA_ALL)) {
 
 // Country profiles keep their own store (countries-store.ts).
 import "./countries-all";
+
+import enCalories from "../locales/packs/calories-en";
+import esCalories from "../locales/packs/calories-es";
+import idCalories from "../locales/packs/calories-id";
+import jaCalories from "../locales/packs/calories-ja";
+import koCalories from "../locales/packs/calories-ko";
+import viCalories from "../locales/packs/calories-vi";
+import zhCNCalories from "../locales/packs/calories-zh-CN";
+import zhTWCalories from "../locales/packs/calories-zh-TW";
+import { registerCaloriesMessages, type CaloriesMessages } from "./messages";
+
+const CALORIES: Record<Locale, CaloriesMessages> = {
+  en: enCalories,
+  "zh-CN": zhCNCalories,
+  "zh-TW": zhTWCalories,
+  ja: jaCalories,
+  ko: koCalories,
+  vi: viCalories,
+  id: idCalories,
+  es: esCalories,
+};
+for (const [locale, pack] of Object.entries(CALORIES)) registerCaloriesMessages(locale as Locale, pack);
