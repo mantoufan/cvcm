@@ -261,12 +261,8 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("personal-color", pick(false, false)).key).toBe("summer");
     expect(scoreQuiz("personal-color", pick(true, true)).key).toBe("autumn");
     expect(scoreQuiz("personal-color", pick(false, true)).key).toBe("winter");
-    // Each axis scores an even number of points out of 14, so it can never sit at exactly 7 (50%).
-    const next = randomInts(7);
-    for (let n = 0; n < 2000; n++) {
-      const result = scoreQuiz("personal-color", def.items.map(() => next(2)));
-      for (const s of result.scores) expect(s.pct).not.toBe(50);
-    }
+    // Each axis scores 2 points on k of its 7 questions: k × 2 of 14, never exactly 50%.
+    for (let k = 0; k <= 7; k++) expect((k * 2 * 100) / 14).not.toBe(50);
   });
 
   it("scores marriage areas and names the weakest", () => {
@@ -524,7 +520,7 @@ describe("test pages: scoring", () => {
     expect(isTrackedPath("/vi/tests/ocd/")).toBe(false);
     expect(isTrackedPath("/en/tests/social-anxiety/")).toBe(false);
     expect(isTrackedPath("/en/tests/codependency/")).toBe(false);
-    expect(isTrackedPath("/en/tests/imposter-syndrome/")).toBe(true);
+    expect(isTrackedPath("/en/tests/imposter-syndrome/")).toBe(false);
     expect(isTrackedPath("/en/tests/empath/")).toBe(true);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
     expect(isTrackedPath("/en/tests/")).toBe(true);

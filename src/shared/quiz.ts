@@ -196,6 +196,12 @@ const SOCIAL_ANXIETY = likert(Array(7).fill("social+ social-").join(" "));
  * thoughts, and the time and distress rituals take). Not the Y-BOCS or OCI-R, not clinically validated; the copy says so.
  */
 const OCD = likert(Array(15).fill("ocd+").join(" "));
+/** Thinking style from analytic ("left-brain") to holistic ("right-brain"), written for cv.cm; analytic statements reversed. */
+const LEFT_RIGHT_BRAIN = likert(Array(7).fill("right+ right-").join(" "));
+/** Written for cv.cm around common descriptions of codependency (not any published scale), half reversed. */
+const CODEPENDENCY = likert(Array(7).fill("codep+ codep-").join(" "));
+/** Written for cv.cm (not the Clance IP Scale or any other published scale): impostor feelings, half reversed. */
+const IMPOSTER = likert(Array(7).fill("imposter+ imposter-").join(" "));
 
 /**
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
@@ -814,13 +820,6 @@ const PERSONAL_COLOR: ChoiceItem[] = [
   { options: [{ warm: 2 }, {}] },
   { options: [{}, { deep: 2 }] },
 ];
-
-/** Thinking style from analytic ("left-brain") to holistic ("right-brain"), written for cv.cm; analytic statements reversed. */
-const LEFT_RIGHT_BRAIN = likert(Array(7).fill("right+ right-").join(" "));
-/** Written for cv.cm around common descriptions of codependency (not any published scale), half reversed. */
-const CODEPENDENCY = likert(Array(7).fill("codep+ codep-").join(" "));
-/** Written for cv.cm (not the Clance IP Scale or any other published scale): impostor feelings, half reversed. */
-const IMPOSTER = likert(Array(7).fill("imposter+ imposter-").join(" "));
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
