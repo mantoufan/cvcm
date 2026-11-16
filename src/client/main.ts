@@ -341,7 +341,13 @@ function prefetchGamePack(e: Event): void {
     const nav = target.closest('a[data-nav^="test-"], a[data-nav="tests"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("test-") ? nav.slice(5) : "";
     const page: QuizPage = isQuizId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, page)) loadPageMessages(loc, false, false, page).catch(() => {});
+    if (hasPageMessages(loc, false, false, page)) return;
+    const load = (): void => {
+      loadPageMessages(loc, false, false, page).catch(() => {});
+    };
+    // The hub lists every test: under a pointer, wait until it rests on a link, as tool links do.
+    if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
+    else load();
   } else if (target?.closest?.('a[data-nav^="ref-"], a[data-nav="reference"]')) {
     // data-nav is "ref-<entry id>" on an entry link, "reference" on a hub link.
     const nav = target.closest('a[data-nav^="ref-"], a[data-nav="reference"]')?.getAttribute("data-nav") ?? "";

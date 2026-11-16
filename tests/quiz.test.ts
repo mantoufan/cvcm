@@ -3,6 +3,7 @@ import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { quizSyncFiles } from "../src/shared/quiz-sync";
+import { QUIZ_ALL } from "../src/locales/quiz/all";
 import { preloadLocalePack } from "../src/shared/locale-preload";
 import en from "../src/locales/quiz/en.json";
 import worker from "../src/worker";
@@ -137,7 +138,8 @@ describe("test pages: copy", () => {
   it("has the same copy structure in every locale", () => {
     for (const locale of LOCALES) {
       expect(shape(quizMessages(locale)), locale).toEqual(shape(en));
-      for (const id of QUIZZES) expect(shape(quizCopy(locale, id)), `${locale} ${id}`).toEqual(shape(quizCopy("en", id)));
+      // From QUIZ_ALL, not quizCopy, whose English fallback would compare English with English.
+      for (const id of QUIZZES) expect(shape(QUIZ_ALL[locale][id]), `${locale} ${id}`).toEqual(shape(QUIZ_ALL.en[id]));
     }
   });
 

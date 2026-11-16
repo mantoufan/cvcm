@@ -1,5 +1,6 @@
 import type { Locale } from "./locale";
 import { isKbHub } from "./kb";
+import type { QuizPage } from "./quiz";
 
 // Locale -> hashed string-pack chunk files, injected by scripts/build-worker.mjs (absent in tests).
 declare const __LOCALE_PACKS__: Record<string, string[]> | undefined;
@@ -11,7 +12,7 @@ const LOCALE_PACKS: Record<string, string[]> = typeof __LOCALE_PACKS__ === "unde
  * `kb` "hub", "code", "ai" or the article id, `ref`, `slang`, `idea` and `nostalgia` "hub" or the entry id; `copy` the key of the page's copy bucket) in
  * parallel with the entry script instead of after it runs.
  */
-export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz: string | false = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, copy: string | null = null, idea: string | null = null, nostalgia: string | null = null): string {
+export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz: QuizPage | false = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, copy: string | null = null, idea: string | null = null, nostalgia: string | null = null): string {
   const files = [...new Set([
     ...(packs[locale] ?? []),
     // The page's own copy bucket (`copyChunkKey`: a tool's FAQ and how-to, or a tutorial's text) and the locale's loader table.
