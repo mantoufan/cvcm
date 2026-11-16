@@ -709,7 +709,9 @@
     "titleChineseCheckers": "Dam Cina (Chinese checkers) — main online melawan komputer — cv.cm",
     "descChineseCheckers": "Main dam Cina (Chinese checkers) online gratis di papan bintang melawan komputer di tiga tingkat atau bersama teman. Melangkah atau lompat beruntun melintasi papan; semua lubang yang bisa dicapai ditampilkan. Urungkan, permainan tersimpan.",
     "titleIdeaValidator": "Validasi ide bisnis — nilai ide Anda gratis dalam 2 menit — cv.cm",
-    "descIdeaValidator": "Apakah ide bisnis Anda bagus? Jawab 8 pertanyaan untuk skor 0-100, kekuatan dan kelemahan, uji murah yang perlu dicoba, dan data pencarian ide serupa."
+    "descIdeaValidator": "Apakah ide bisnis Anda bagus? Jawab 8 pertanyaan untuk skor 0-100, kekuatan dan kelemahan, uji murah yang perlu dicoba, dan data pencarian ide serupa.",
+    "titleTypingPractice": "Belajar mengetik — latihan mengetik 10 jari online gratis — cv.cm",
+    "descTypingPractice": "Latihan mengetik online gratis: belajar mengetik 10 jari baris demi baris dengan keyboard yang menunjukkan tombol berikutnya dan jari yang dipakai, lalu ketik kata sungguhan. Tombol per menit, akurasi, dan tombol terlemah Anda setelah setiap pelajaran."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1561,6 +1563,10 @@
     "idea-validator": {
       "name": "Validasi ide bisnis",
       "blurb": "Nilai ide Anda dari 100 dan lihat apa yang perlu diuji dulu."
+    },
+    "typing-practice": {
+      "name": "Belajar mengetik",
+      "blurb": "Pelajaran mengetik 10 jari, tombol demi tombol."
     }
   },
   "watermark": {
@@ -5940,6 +5946,18 @@
       "a4": "Tidak. Penilaian dan pencocokan berjalan di tab ini. Apa pun yang Anda ketik tidak diunggah atau disimpan.",
       "q5": "Apakah skor tinggi berarti bisnis saya akan berhasil?",
       "a5": "Tidak. Skor tinggi berarti dasarnya tampak kuat. Satu-satunya ujian nyata adalah pelanggan yang membayar, jadi ikuti langkah yang disarankan untuk menguji dengan murah sebelum Anda mengeluarkan uang sungguhan."
+    },
+    "typing-practice": {
+      "q1": "Bagaimana cara belajar mengetik 10 jari di sini?",
+      "a1": "Mulailah dengan pelajaran baris dasar lalu lanjutkan sesuai daftar. Letakkan jari Anda di A S D F dan J K L ; (tombol F dan J punya tonjolan), ketik tombol yang disorot dengan jari yang ditunjukkan, dan tetap lihat layar.",
+      "q2": "Kapan saya sebaiknya lanjut ke pelajaran berikutnya?",
+      "a2": "Saat Anda menyelesaikan pelajaran dengan akurasi 90% atau lebih, pelajaran itu dicentang. Akurasi dulu, baru kecepatan: pelajaran berikutnya menambahkan baris berikutnya.",
+      "q3": "Apakah bisa dipakai saat metode input Korea atau Jepang aktif?",
+      "a3": "Bisa. Pelajaran tombol memeriksa tombol yang Anda tekan, bukan karakternya, jadi metode input boleh tetap aktif. Di halaman Korea, tombol menampilkan tata letak 2-set (dubeolsik); di halaman Jepang, Anda berlatih tombol untuk input romaji.",
+      "q4": "Bisakah saya berlatih di ponsel atau tablet?",
+      "a4": "Pelajaran tombol ditujukan untuk keyboard fisik, tetapi Anda juga bisa mengetuk tombol di layar. Pelajaran kata bisa dipakai dengan keyboard apa pun, termasuk keyboard ponsel Anda.",
+      "q5": "Apa bedanya dengan tes mengetik?",
+      "a5": "Tes mengetik mengukur kecepatan Anda pada sebuah teks dalam waktu tertentu. Belajar mengetik mengajarkan tombol satu baris demi satu baris dan menunjukkan tombol yang paling sering Anda salah ketik."
     }
   },
   "qr": {
@@ -15235,5 +15253,52 @@
     "copied": "Tersalin",
     "copyFailed": "Gagal menyalin",
     "disclaimer": "Ini skor daftar periksa, bukan nasihat keuangan atau perkiraan penghasilan. Uji dengan pelanggan sungguhan sebelum Anda berinvestasi."
+  },
+  "typingPractice": {
+    "title": "Belajar mengetik",
+    "privacyNote": "Belajar mengetik 10 jari baris demi baris, lalu ketik kata sungguhan.",
+    "lessons": "Pelajaran",
+    "lesson": "Pelajaran",
+    "progress": "Kemajuan",
+    "kpm": "Tombol per menit",
+    "cpm": "Karakter per menit",
+    "accuracy": "Akurasi",
+    "time": "Waktu",
+    "l_home": "Baris dasar",
+    "l_home2": "Baris dasar + G H",
+    "l_top": "Baris atas",
+    "l_bottom": "Baris bawah",
+    "l_letters": "Semua huruf",
+    "l_words": "Kata sungguhan",
+    "ld_words": "Ketik kata utuh",
+    "best": "Terbaik: {kpm}/menit, {accuracy}%",
+    "start": "Mulai",
+    "restart": "Ulangi dari awal",
+    "again": "Coba lagi",
+    "nextLesson": "Pelajaran berikutnya",
+    "ready": "Tekan Mulai atau tombol apa saja di area latihan.",
+    "readyWords": "Tekan Mulai, lalu ketik setiap kata dan tekan Enter atau Spasi.",
+    "result": "{kpm} tombol per menit, akurasi {accuracy}%.",
+    "resultWords": "{kpm} karakter per menit, akurasi {accuracy}%.",
+    "passed": "Pelajaran lulus!",
+    "notPassed": "Capai akurasi {n}% untuk lulus.",
+    "weak": "Tombol yang perlu dilatih: {keys}",
+    "drillArea": "Baris latihan: ketik tombol yang disorot",
+    "keyboard": "Keyboard dengan tombol berikutnya ditandai",
+    "typeWord": "Ketik kata ini",
+    "space": "Spasi",
+    "useFinger": "Gunakan {finger}",
+    "f_lp": "kelingking kiri",
+    "f_lr": "jari manis kiri",
+    "f_lm": "jari tengah kiri",
+    "f_li": "telunjuk kiri",
+    "f_ri": "telunjuk kanan",
+    "f_rm": "jari tengah kanan",
+    "f_rr": "jari manis kanan",
+    "f_rp": "kelingking kanan",
+    "f_th": "ibu jari",
+    "help": "Tetap letakkan jari di baris dasar dan pandangan di layar. Tombol diperiksa menurut posisinya, jadi tata letak keyboard atau metode input apa pun bisa dipakai; Anda juga bisa mengetuk tombolnya.",
+    "koNote": "Tombol menampilkan tata letak Korea 2-set (dubeolsik).",
+    "jaNote": "Pelajaran tombol melatih tombol untuk input romaji; pelajaran kata menerima kana, bentuk tulisan, atau romaji."
   }
 }
