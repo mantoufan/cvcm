@@ -18,7 +18,7 @@ import { refArticleJsonLd, refBreadcrumbJsonLd, refDescription, refFaqJsonLd, re
 import type { RefId } from "./ref";
 import { slangArticleJsonLd, slangBreadcrumbJsonLd, slangDescription, slangFaqJsonLd, slangPageHtml, slangTitle } from "./slang-i18n";
 import type { SlangId } from "./slang";
-import { ideaDescription, ideaTitle, ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd, ideasPageHtml } from "./ideas-i18n";
+import { ideaDescription, ideaTitle, ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd } from "./ideas-i18n";
 import type { IdeaId } from "./ideas";
 import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaDescription, nostalgiaFaqJsonLd, nostalgiaPageHtml, nostalgiaTitle } from "./nostalgia-i18n";
 import type { NostalgiaId } from "./nostalgia";
@@ -1171,6 +1171,23 @@ function escapeHtml(value: string): string {
 }
 
 /** Head tags for the page, and its body: the prerendered markup when given, else a plain text copy. */
+/**
+ * The fallback page body for channels whose HTML builders stay out of the main bundle (the client mounts those pages
+ * from their own chunks): registered by `seo-body.ts`, which the Worker and the tests import and the client does not.
+ */
+type ChannelBody = (locale: Locale, seo: SeoInput) => string | null;
+let channelBodyRenderer: ChannelBody | null = null;
+
+export function registerChannelBody(render: ChannelBody): void {
+  channelBodyRenderer = render;
+}
+
+function channelBody(locale: Locale, seo: SeoInput): string {
+  const html = channelBodyRenderer?.(locale, seo);
+  if (html == null) throw new Error("applyHtmlSeo: channel body renderer not registered (import shared/seo-body)");
+  return html;
+}
+
 export function applyHtmlSeo(
   html: string,
   locale: Locale,
@@ -1366,7 +1383,7 @@ export function applyHtmlSeo(
     : seo.slang
     ? slangPageHtml(locale, seo.slangId ?? null)
     : seo.ideas
-    ? ideasPageHtml(locale, seo.ideaId ?? null)
+    ? channelBody(locale, seo)
     : seo.nostalgia
     ? nostalgiaPageHtml(locale, seo.nostalgiaId ?? null)
     : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));

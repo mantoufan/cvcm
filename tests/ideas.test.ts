@@ -10,7 +10,8 @@ import { preloadLocalePack } from "../src/shared/locale-preload";
 import { ideasMessages, messages } from "../src/shared/messages";
 import { ideasHref, parseAppPath } from "../src/shared/path";
 import { IDEAS_DATA_FETCHED, IDEAS_FOCUS, IDEA_ENTRIES, IDEA_GROUPS, IDEA_META, ideaGroupOf, ideaPublished, isIdeaId } from "../src/shared/ideas";
-import { ideaChartSvg, ideaCopy, ideaData, ideaOutlook, ideaTitle, ideasArticleJsonLd, ideasData, ideasPageHtml, pct, rankedIdeas, type IdeaEntryCopy } from "../src/shared/ideas-i18n";
+import { ideaCopy, ideaData, ideaOutlook, ideaTitle, ideasArticleJsonLd, ideasData, pct, rankedIdeas, type IdeaEntryCopy } from "../src/shared/ideas-i18n";
+import { ideaChartSvg, ideasPageHtml } from "../src/shared/ideas-page";
 import { ideasSyncFiles } from "../src/shared/ideas-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
 import { applyHtmlSeo, pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
@@ -293,6 +294,17 @@ describe("ideas: routes", () => {
     expect(readFileSync(join(root, "public/sitemaps/ideas.xml"), "utf8")).toBe(xml);
     expect(readFileSync(join(root, "public/sitemap.xml"), "utf8")).toContain("https://cv.cm/sitemaps/ideas.xml");
     expect(isTrackedPath("/en/ideas/laundromat/")).toBe(true);
+  });
+});
+
+describe("ideas: bundle split", () => {
+  it("keeps the page HTML builders out of the modules the main bundle imports", () => {
+    // seo.ts and faq.ts are in the main client bundle; importing ideas-page there would pull the renderers back in.
+    for (const path of ["src/shared/seo.ts", "src/client/faq.ts", "src/client/main.ts", "src/shared/ideas-i18n.ts"]) {
+      expect(readFileSync(join(root, path), "utf8"), path).not.toMatch(/from "[./]*\/?(shared\/)?ideas-page"/);
+    }
+    // The Worker registers the fallback body; without it, applyHtmlSeo cannot render an ideas page.
+    expect(readFileSync(join(root, "src/worker.ts"), "utf8")).toContain('import "./shared/seo-body";');
   });
 });
 

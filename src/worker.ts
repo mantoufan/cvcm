@@ -14,6 +14,7 @@ import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
 import { copyChunkKey, pageCopyOf } from "./shared/page-copy";
 import { DATASET_FILES } from "./shared/datasets";
 import { applyHtmlSeo } from "./shared/seo";
+import "./shared/seo-body";
 import type { S3Config } from "./s3-sign";
 
 
