@@ -33,7 +33,7 @@ img { max-width: 100%; }
 /* Server HTML before the app takes over: links and text fields work, controls that need a handler wait. */
 .page.ssr :is(button, select, input[type="file"], input[type="range"], input[type="color"], .drop, .chip) { pointer-events: none; }
 .page { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; padding-bottom: env(safe-area-inset-bottom); }
-.top { position: relative; display: flex; align-items: center; gap: 0.75rem; padding: calc(0.75rem + env(safe-area-inset-top)) 0 0.75rem; border-bottom: 1px solid var(--line); }
+.top { position: relative; display: flex; align-items: center; gap: 0.75rem; padding: calc(0.4rem + env(safe-area-inset-top)) 0 0.4rem; border-bottom: 1px solid var(--line); }
 .brand { color: var(--pink-deep); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; text-decoration: none; white-space: nowrap; }
 .nav { display: flex; flex-wrap: wrap; gap: 0.15rem; min-width: 0; }
 .nav a { color: var(--ink-soft); text-decoration: none; font-size: 0.92rem; padding: 0.4rem 0.6rem; border-radius: 8px; white-space: nowrap; }
@@ -89,14 +89,18 @@ h2 { font-size: 1.15rem; line-height: 1.35; }
 .tool-head .kicker { margin: 0 0 0.2rem; color: var(--pink-deep); font-size: 0.78rem; font-weight: 600; }
 .back { display: inline-flex; align-items: center; min-height: 32px; color: var(--ink-soft); text-decoration: none; font-size: 0.85rem; }
 .back:hover { color: var(--pink-deep); }
-.home-hero { padding: 1.5rem 0 0.5rem; }
-.home-hero .lede { margin-bottom: 1rem; }
-.home-hero .muted { margin: 0.75rem 0 0; }
+.home-hero { padding: 0.75rem 0 0.25rem; }
+.home-hero .lede { margin-bottom: 0.5rem; }
+.home-hero .muted { margin: 0.5rem 0 0; }
+/* Empty status / result rows only reserve space once they have content */
+.home-hero .clip-compose > .status:empty, .home-hero .clip-result:empty { display: none; }
 
 /* Link lists: the home directory, hubs and related links */
 .wall { padding-top: 2rem; }
 .wall > h2 { margin: 0 0 0.5rem; }
 .wall > h3 { margin: 1.25rem 0 0.5rem; font-size: 1rem; }
+.home-hero + .wall { padding-top: 0.75rem; }
+.home-hero + .wall .group:first-of-type > h3 { margin-top: 0; }
 .group > h3 { margin: 1.4rem 0 0.35rem; font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-soft); }
 .group > h3 a { color: inherit; text-decoration: none; }
 .links { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0 0.75rem; }
