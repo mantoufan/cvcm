@@ -1,0 +1,60 @@
+{
+  "title": "Stress test: how stressed am I? Free stress level check — cv.cm",
+  "description": "Free stress test: rate 14 statements about the past month to get a stress score from 0 to 56, what it means and simple ways to cope. Private: nothing leaves your browser.",
+  "h1": "Stress test",
+  "hint": "Thinking about the past month, how well does each statement describe you?",
+  "scoreLabel": "Stress score (0 = low, 56 = high)",
+  "lede": "Feeling stretched thin, on edge or out of control? Rate 14 statements about the past month to see how stressed you have been, and what can help.",
+  "about": [
+    "Stress is the body's response to pressure. In short bursts it can sharpen you, but when demands keep feeling bigger than your ability to cope, it wears you down: poor sleep, irritability, worry, tension and trouble concentrating are common signs. Psychologists often measure perceived stress, meaning how unpredictable, uncontrollable and overloaded your life feels, rather than counting stressful events.",
+    "The statements here were written for cv.cm around common signs of stress in the body, sleep, mood, thinking and habits. They are not taken from the Perceived Stress Scale or any other questionnaire, and they haven't been clinically validated, so the score bands are a rough guide rather than clinical cut-offs. Half the statements are reversed, so agreeing with everything lands in the middle. If stress is affecting your health, sleep or relationships for weeks, talk to a doctor or counselor."
+  ],
+  "faq": [
+    {
+      "q": "How is the stress score worked out?",
+      "a": "Each statement scores 0 to 4 and half are reversed, so the total runs from 0 to 56. 18 or less is low, 19 to 37 is moderate and 38 or more is high."
+    },
+    {
+      "q": "What are the signs of too much stress?",
+      "a": "Common signs are trouble sleeping, feeling tense or irritable, worrying a lot, headaches or an upset stomach, finding it hard to concentrate, and using alcohol, food or screens to cope."
+    },
+    {
+      "q": "How can I lower my stress quickly?",
+      "a": "Slow breathing (breathe out for longer than you breathe in), a short walk, writing your worries down and picking one small next step all help in the moment. Over weeks, regular sleep, exercise, time with people you trust and cutting back on what you can control make the biggest difference."
+    },
+    {
+      "q": "What is the difference between stress and anxiety?",
+      "a": "Stress is usually a reaction to a pressure you can name, such as a deadline, and eases when it passes. Anxiety is worry or fear that can continue without a clear cause. If worry stays with you most days, try the GAD-7 anxiety check on this site."
+    }
+  ],
+  "items": [
+    "My shoulders, jaw or stomach have felt tense most days.",
+    "I have slept well most nights.",
+    "I have snapped at people over small things.",
+    "I have had energy left for things I enjoy.",
+    "My mind has kept racing with everything I need to do.",
+    "I have been able to switch off in the evenings.",
+    "I have had headaches, stomach trouble or other aches with no clear cause.",
+    "I have felt calm for most of the day.",
+    "I have leaned on snacks, alcohol, caffeine or my phone to get through the day.",
+    "I have made everyday decisions without second-guessing myself.",
+    "I have been forgetful or found it hard to focus.",
+    "I have had enough time in the day for what matters to me.",
+    "I have felt that one more problem would be too much.",
+    "I have looked forward to the week ahead."
+  ],
+  "results": {
+    "low": {
+      "name": "Low stress (0–18)",
+      "body": "You seem to be coping well with what life is asking of you right now. Keep up whatever is helping, such as sleep, exercise, time off and people you can talk to, so you have reserves when a busy patch comes."
+    },
+    "moderate": {
+      "name": "Moderate stress (19–37)",
+      "body": "You are carrying a fair amount of pressure. That is common, but it is worth acting before it builds. Pick one thing to drop, delegate or delay this week, protect your sleep, and build in short breaks: a walk, slow breathing or ten minutes away from screens."
+    },
+    "high": {
+      "name": "High stress (38–56)",
+      "body": "You seem to be under heavy stress, and it is probably affecting how you feel day to day. Talk to a doctor or counselor about how you've been feeling: they can help with the stress and with what's behind it, and you don't need to wait until it gets worse. Meanwhile, lean on someone you trust, cut back where you can, and look after sleep and food first. The anxiety check below can help you put it into words."
+    }
+  }
+}

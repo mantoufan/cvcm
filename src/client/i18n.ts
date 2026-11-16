@@ -12,6 +12,7 @@ import {
   hasKbArticle,
   hasKbMessages,
   hasQuizMessages,
+  hasQuizTest,
   hasDatasetMessages,
   hasRefEntry,
   hasRefMessages,
@@ -22,6 +23,7 @@ import {
   registerKbArticle,
   registerKbMessages,
   registerQuizMessages,
+  registerQuizTest,
   registerDatasetMessages,
   registerRefEntry,
   registerRefMessages,
@@ -60,6 +62,8 @@ import type { IdeaEntryCopy } from "../shared/ideas-i18n";
 import type { IdeaId, IdeaPage } from "../shared/ideas";
 import type { NostalgiaEntryCopy } from "../shared/nostalgia-i18n";
 import type { NostalgiaId, NostalgiaPage } from "../shared/nostalgia";
+import type { QuizId, QuizPage } from "../shared/quiz";
+import type { QuizCopy } from "../shared/quiz-i18n";
 
 export type { PageCopy };
 
@@ -123,6 +127,24 @@ const QUIZ_PACKS: Record<Locale, () => Promise<{ default: QuizMessages }>> = {
   id: () => import("../locales/packs/quiz-id"),
   es: () => import("../locales/packs/quiz-es"),
 };
+
+// One chunk per test and locale, through that locale's generated loader table (`npm run quiz:sync`).
+const QUIZ_LOADER_TABLES: Record<Locale, () => Promise<{ QUIZ_LOADERS: Record<QuizId, () => Promise<unknown>> }>> = {
+  en: () => import("../locales/quiz/loaders/en"),
+  "zh-CN": () => import("../locales/quiz/loaders/zh-CN"),
+  "zh-TW": () => import("../locales/quiz/loaders/zh-TW"),
+  ja: () => import("../locales/quiz/loaders/ja"),
+  ko: () => import("../locales/quiz/loaders/ko"),
+  vi: () => import("../locales/quiz/loaders/vi"),
+  id: () => import("../locales/quiz/loaders/id"),
+  es: () => import("../locales/quiz/loaders/es"),
+};
+
+async function loadQuizTest(next: Locale, id: QuizId): Promise<void> {
+  const { QUIZ_LOADERS } = await QUIZ_LOADER_TABLES[next]();
+  const m = (await QUIZ_LOADERS[id]()) as { default: QuizCopy };
+  registerQuizTest(next, id, m.default);
+}
 
 // Data table copy, only for /datasets/ pages.
 const DATASET_PACKS: Record<Locale, () => Promise<{ default: DatasetMessages }>> = {
@@ -339,13 +361,14 @@ async function loadNostalgiaEntry(next: Locale, id: NostalgiaId): Promise<void> 
 }
 
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage | false = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null): boolean {
+  const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
   const idea = ideas && ideas !== "hub" ? ideas : null;
   const memory = nostalgia && nostalgia !== "hub" ? nostalgia : null;
-  return hasMessages(next) && hasPageCopy(next, copy) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || hasQuizMessages(next)) && (!dataset || hasDatasetMessages(next))
+  return hasMessages(next) && hasPageCopy(next, copy) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || (hasQuizMessages(next) && (!test || hasQuizTest(next, test)))) && (!dataset || hasDatasetMessages(next))
     && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
     && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))))
     && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))))
@@ -353,7 +376,8 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!nostalgia || (hasNostalgiaMessages(next) && (!memory || hasNostalgiaEntry(next, memory))));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz = false, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage | false = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null): Promise<void> {
+  const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
@@ -364,6 +388,7 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
     !legal || hasLegalMessages(next) ? null : LEGAL_PACKS[next]().then((m) => registerLegalMessages(next, m.default)),
     !quiz || hasQuizMessages(next) ? null : QUIZ_PACKS[next]().then((m) => registerQuizMessages(next, m.default)),
+    !test || hasQuizTest(next, test) ? null : loadQuizTest(next, test),
     !dataset || hasDatasetMessages(next) ? null : DATASET_PACKS[next]().then((m) => registerDatasetMessages(next, m.default)),
     !kb || hasKbMessages(next) ? null : KB_PACKS[next]().then((m) => registerKbMessages(next, m.default)),
     !article || hasKbArticle(next, article) ? null : loadKbArticle(next, article),

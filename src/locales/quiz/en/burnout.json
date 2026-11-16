@@ -1,0 +1,62 @@
+{
+  "title": "Burnout test: am I burned out at work? Free self-check — cv.cm",
+  "description": "Free burnout test: rate 16 statements on exhaustion, detachment and effectiveness at work to get a score from 0 to 64 and what to do next. Private: nothing leaves your browser.",
+  "h1": "Burnout test",
+  "hint": "Thinking about your work over the last few weeks, how well does each statement describe you?",
+  "scoreLabel": "Burnout score (0 = low, 64 = high)",
+  "lede": "Always tired, fed up with your job, and feeling you get less done? Rate 16 statements about your work over recent weeks to see how close you may be to burnout, and what can help.",
+  "about": [
+    "The World Health Organization's ICD-11 describes burnout as an occupational phenomenon, not a medical condition. It results from chronic workplace stress that hasn't been successfully managed and has three dimensions: exhaustion, mental distance or cynicism about your job, and reduced effectiveness at work.",
+    "The statements here were written for cv.cm around those three dimensions. This isn't the Maslach Burnout Inventory, and it hasn't been clinically validated, so the score bands are a rough guide rather than clinical cut-offs. Depression, thyroid problems and other medical conditions can feel like burnout. If you feel this way most of the time, see a doctor. If you study or care for someone rather than work a job, answer with that in mind."
+  ],
+  "faq": [
+    {
+      "q": "What are the signs of burnout?",
+      "a": "The three main signs are feeling drained, feeling negative or detached about your job, and getting less done or doubting your ability. Poor sleep, headaches and irritability often come along with them."
+    },
+    {
+      "q": "How is the score worked out?",
+      "a": "Each statement scores 0 to 4, and half are reversed, so the total runs from 0 to 64. 21 or less is low, 22 to 42 suggests some risk, and 43 or more suggests strong signs of burnout."
+    },
+    {
+      "q": "What is the difference between burnout and depression?",
+      "a": "Burnout is tied to work, while depression usually affects all of life, including things you normally enjoy. They overlap, and one can lead to the other. If your low mood goes beyond work, try the PHQ-9 check on this site and talk to a doctor."
+    },
+    {
+      "q": "How do I recover from burnout?",
+      "a": "Rest helps, but it rarely lasts unless the cause changes too. Look at your workload, your control over it, how you're treated and whether you get enough time off. Talk to your manager or occupational health service if you can, and see a doctor if symptoms persist."
+    }
+  ],
+  "items": [
+    "I feel drained by the end of most working days.",
+    "I usually have plenty of energy left after work.",
+    "I wake up tired at the thought of another day of work.",
+    "I look forward to most of my working days.",
+    "I care less about my work than I used to.",
+    "My work still feels meaningful to me.",
+    "I've become more cynical about my job and the people I deal with.",
+    "I stay patient and friendly with the people I work with.",
+    "I just go through the motions at work.",
+    "I still get absorbed in my work.",
+    "It's harder to concentrate at work than it used to be.",
+    "I can usually focus well on the task in front of me.",
+    "I doubt whether I'm doing my job well.",
+    "I feel I get useful things done at work.",
+    "I find it hard to switch off from work, even when I'm off duty.",
+    "Time off leaves me feeling properly rested."
+  ],
+  "results": {
+    "low": {
+      "name": "Low burnout signs (0–21)",
+      "body": "Work doesn't seem to be wearing you out at the moment. Keep protecting what helps, such as sleep, time off and a clear end to the working day. It's worth checking again if your job gets more demanding."
+    },
+    "risk": {
+      "name": "Some burnout signs (22–42)",
+      "body": "You have some signs of strain. This is a good moment to act: see which part of work drains you most, talk about your workload and take real breaks. Take the test again in a few weeks, and see a doctor if it's getting worse."
+    },
+    "high": {
+      "name": "Strong burnout signs (43–64)",
+      "body": "Your answers suggest serious exhaustion and distance from your work. Please don't just push through it. Talk to a doctor, since other conditions can feel the same, and if you can, talk to your manager or occupational health service about what can change. You can also take the PHQ-9 check here."
+    }
+  }
+}

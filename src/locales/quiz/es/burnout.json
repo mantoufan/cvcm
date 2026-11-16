@@ -1,0 +1,62 @@
+{
+  "title": "Test de burnout: ¿estoy quemado en el trabajo? Autoevaluación gratis — cv.cm",
+  "description": "Test de burnout (desgaste profesional) gratis: valora 16 afirmaciones sobre agotamiento, distanciamiento y eficacia en el trabajo y obtén una puntuación de 0 a 64 y qué hacer a continuación. Privado: nada sale de tu navegador.",
+  "h1": "Test de burnout",
+  "hint": "Pensando en tu trabajo durante las últimas semanas, ¿hasta qué punto te describe cada afirmación?",
+  "scoreLabel": "Puntuación de burnout (0 = baja, 64 = alta)",
+  "lede": "¿Siempre cansado, harto de tu trabajo y con la sensación de que rindes menos? Valora 16 afirmaciones sobre tu trabajo en las últimas semanas para ver qué tan cerca podrías estar del burnout y qué puede ayudarte.",
+  "about": [
+    "La CIE-11 de la Organización Mundial de la Salud describe el burnout como un fenómeno ocupacional, no como una afección médica. Es el resultado de un estrés laboral crónico que no se ha gestionado con éxito y tiene tres dimensiones: agotamiento, distancia mental o cinismo respecto al trabajo, y menor eficacia laboral.",
+    "Las afirmaciones se han escrito para cv.cm en torno a esas tres dimensiones. Este test no es el Maslach Burnout Inventory y no se ha validado clínicamente, así que los tramos de puntuación son una guía aproximada y no puntos de corte clínicos. La depresión, los problemas de tiroides y otras afecciones médicas pueden sentirse como burnout. Si te sientes así la mayor parte del tiempo, acude a un médico. Si estudias o cuidas de alguien en lugar de tener un empleo, responde pensando en esa actividad."
+  ],
+  "faq": [
+    {
+      "q": "¿Cuáles son los signos del burnout?",
+      "a": "Los tres signos principales son sentirte sin energía, tener una actitud negativa o distante hacia tu trabajo, y rendir menos o dudar de tu capacidad. A menudo los acompañan el mal sueño, los dolores de cabeza y la irritabilidad."
+    },
+    {
+      "q": "¿Cómo se calcula la puntuación?",
+      "a": "Cada afirmación puntúa de 0 a 4, y la mitad están invertidas, así que el total va de 0 a 64. 21 o menos es bajo, de 22 a 42 sugiere cierto riesgo y 43 o más sugiere signos fuertes de burnout."
+    },
+    {
+      "q": "¿Cuál es la diferencia entre burnout y depresión?",
+      "a": "El burnout está ligado al trabajo, mientras que la depresión suele afectar a toda la vida, incluidas las cosas que normalmente disfrutas. Se solapan, y uno puede llevar a la otra. Si tu bajo estado de ánimo va más allá del trabajo, prueba el test PHQ-9 de este sitio y habla con un médico."
+    },
+    {
+      "q": "¿Cómo me recupero del burnout?",
+      "a": "Descansar ayuda, pero el efecto rara vez dura si la causa no cambia también. Revisa tu carga de trabajo, el control que tienes sobre ella, cómo te tratan y si tienes suficiente tiempo libre. Si puedes, habla con tu superior o con el servicio de salud laboral, y acude a un médico si los síntomas persisten."
+    }
+  ],
+  "items": [
+    "Al final de casi todas las jornadas de trabajo siento que no me queda energía.",
+    "Después del trabajo suelo tener energía de sobra.",
+    "Al despertar, ya me cansa pensar en otro día de trabajo.",
+    "Casi todos los días de trabajo empiezo con ganas.",
+    "Mi trabajo me importa menos que antes.",
+    "Mi trabajo sigue teniendo sentido para mí.",
+    "Cada vez veo con más cinismo mi trabajo y a las personas con las que trato.",
+    "Mantengo la paciencia y el buen trato con las personas con las que trabajo.",
+    "En el trabajo me limito a cumplir de forma mecánica.",
+    "Todavía me meto de lleno en mi trabajo.",
+    "Me cuesta más concentrarme en el trabajo que antes.",
+    "Por lo general puedo concentrarme bien en la tarea que tengo delante.",
+    "Dudo de si estoy haciendo bien mi trabajo.",
+    "Siento que hago cosas útiles en el trabajo.",
+    "Me cuesta desconectar del trabajo, incluso fuera de mi horario.",
+    "Con el tiempo libre consigo descansar de verdad."
+  ],
+  "results": {
+    "low": {
+      "name": "Pocos signos de burnout (0–21)",
+      "body": "El trabajo no parece estar desgastándote en este momento. Sigue protegiendo lo que te ayuda, como el sueño, el tiempo libre y un final claro de la jornada. Vale la pena volver a comprobarlo si tu trabajo se vuelve más exigente."
+    },
+    "risk": {
+      "name": "Algunos signos de burnout (22–42)",
+      "body": "Tienes algunos signos de tensión. Es un buen momento para actuar: mira qué parte del trabajo te agota más, habla de tu carga de trabajo y tómate descansos de verdad. Repite el test dentro de unas semanas y acude a un médico si va a peor."
+    },
+    "high": {
+      "name": "Signos fuertes de burnout (43–64)",
+      "body": "Tus respuestas sugieren un agotamiento serio y distancia respecto a tu trabajo. Por favor, no te limites a aguantar. Habla con un médico, porque otras afecciones pueden sentirse igual, y si puedes, habla con tu superior o con el servicio de salud laboral sobre lo que se puede cambiar. También puedes hacer aquí el test PHQ-9."
+    }
+  }
+}

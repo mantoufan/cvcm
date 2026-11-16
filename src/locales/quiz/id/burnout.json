@@ -1,0 +1,62 @@
+{
+  "title": "Tes burnout: apakah aku mengalami burnout kerja? Cek mandiri gratis — cv.cm",
+  "description": "Tes burnout gratis: nilai 16 pernyataan tentang kelelahan, jarak mental, dan efektivitas di tempat kerja untuk mendapat skor 0 sampai 64 dan langkah berikutnya. Privat: tidak ada yang keluar dari browsermu.",
+  "h1": "Tes burnout",
+  "hint": "Dengan memikirkan pekerjaanmu dalam beberapa minggu terakhir, seberapa tepat setiap pernyataan menggambarkan dirimu?",
+  "scoreLabel": "Skor burnout (0 = rendah, 64 = tinggi)",
+  "lede": "Selalu lelah, jenuh dengan pekerjaan, dan merasa makin sedikit yang selesai? Nilai 16 pernyataan tentang pekerjaanmu dalam beberapa minggu terakhir untuk melihat seberapa dekat kamu mungkin dengan burnout, dan apa yang bisa membantu.",
+  "about": [
+    "ICD-11 dari Organisasi Kesehatan Dunia (WHO) menggambarkan burnout sebagai fenomena pekerjaan, bukan kondisi medis. Burnout muncul akibat stres kerja kronis yang belum berhasil dikelola dan punya tiga dimensi: kelelahan, jarak mental atau sinisme terhadap pekerjaan, dan menurunnya efektivitas kerja.",
+    "Pernyataan di sini disusun untuk cv.cm berdasarkan ketiga dimensi itu. Ini bukan Maslach Burnout Inventory dan belum divalidasi secara klinis, jadi rentang skornya adalah panduan kasar, bukan ambang batas klinis. Depresi, masalah tiroid, dan kondisi medis lainnya bisa terasa seperti burnout. Jika kamu merasa seperti ini hampir sepanjang waktu, temui dokter. Jika kamu kuliah atau merawat seseorang dan bukan bekerja, jawablah dengan mengingat hal itu."
+  ],
+  "faq": [
+    {
+      "q": "Apa saja tanda-tanda burnout?",
+      "a": "Tiga tanda utamanya adalah merasa terkuras, merasa negatif atau menjauh dari pekerjaan, dan makin sedikit yang selesai atau meragukan kemampuan sendiri. Tidur buruk, sakit kepala, dan mudah tersinggung sering menyertainya."
+    },
+    {
+      "q": "Bagaimana skornya dihitung?",
+      "a": "Setiap pernyataan bernilai 0 sampai 4, dan separuhnya dibalik, jadi totalnya 0 sampai 64. Skor 21 atau kurang berarti rendah, 22 sampai 42 menunjukkan ada risiko, dan 43 atau lebih menunjukkan tanda-tanda burnout yang kuat."
+    },
+    {
+      "q": "Apa bedanya burnout dan depresi?",
+      "a": "Burnout terkait dengan pekerjaan, sedangkan depresi biasanya memengaruhi seluruh aspek hidup, termasuk hal-hal yang biasanya kamu nikmati. Keduanya bisa tumpang tindih, dan yang satu bisa memicu yang lain. Jika suasana hatimu yang buruk melampaui urusan pekerjaan, coba pemeriksaan PHQ-9 di situs ini dan bicaralah dengan dokter."
+    },
+    {
+      "q": "Bagaimana cara pulih dari burnout?",
+      "a": "Istirahat membantu, tetapi jarang bertahan lama kalau penyebabnya tidak ikut berubah. Tinjau beban kerjamu, kendalimu atas beban itu, bagaimana kamu diperlakukan, dan apakah waktu liburmu cukup. Bicaralah dengan atasan atau layanan kesehatan kerja jika memungkinkan, dan temui dokter jika gejalanya menetap."
+    }
+  ],
+  "items": [
+    "Aku merasa terkuras di akhir sebagian besar hari kerja.",
+    "Aku biasanya masih punya banyak tenaga setelah bekerja.",
+    "Aku bangun dalam keadaan lelah begitu teringat harus bekerja sehari lagi.",
+    "Aku menantikan sebagian besar hari kerjaku.",
+    "Aku lebih tidak peduli pada pekerjaanku dibanding dulu.",
+    "Pekerjaanku masih terasa bermakna bagiku.",
+    "Aku jadi lebih sinis terhadap pekerjaanku dan orang-orang yang kuhadapi.",
+    "Aku tetap sabar dan ramah kepada orang-orang yang bekerja denganku.",
+    "Di tempat kerja, aku hanya menjalankan rutinitas tanpa benar-benar terlibat.",
+    "Aku masih bisa tenggelam dalam pekerjaanku.",
+    "Sekarang lebih sulit berkonsentrasi di tempat kerja dibanding dulu.",
+    "Aku biasanya bisa fokus dengan baik pada tugas di depanku.",
+    "Aku ragu apakah aku mengerjakan pekerjaanku dengan baik.",
+    "Aku merasa menyelesaikan hal-hal yang berguna di tempat kerja.",
+    "Aku sulit melepaskan pikiran dari pekerjaan, bahkan saat sedang tidak bertugas.",
+    "Waktu libur membuatku merasa benar-benar segar kembali."
+  ],
+  "results": {
+    "low": {
+      "name": "Sedikit tanda burnout (0–21)",
+      "body": "Pekerjaan tampaknya sedang tidak menguras dirimu. Terus jaga hal-hal yang membantu, seperti tidur, waktu libur, dan batas yang jelas di akhir hari kerja. Ada baiknya mengecek lagi jika pekerjaanmu makin berat."
+    },
+    "risk": {
+      "name": "Beberapa tanda burnout (22–42)",
+      "body": "Kamu menunjukkan beberapa tanda tekanan. Ini saat yang tepat untuk bertindak: lihat bagian pekerjaan mana yang paling menguras tenagamu, bicarakan beban kerjamu, dan ambil istirahat yang sungguhan. Ulangi tes ini beberapa minggu lagi, dan temui dokter jika keadaannya memburuk."
+    },
+    "high": {
+      "name": "Tanda burnout kuat (43–64)",
+      "body": "Jawabanmu menunjukkan kelelahan yang serius dan jarak dari pekerjaanmu. Tolong jangan sekadar memaksakan diri. Bicaralah dengan dokter, karena kondisi lain bisa terasa sama, dan jika memungkinkan, bicarakan dengan atasan atau layanan kesehatan kerja tentang apa yang bisa diubah. Kamu juga bisa mengambil pemeriksaan PHQ-9 di sini."
+    }
+  }
+}

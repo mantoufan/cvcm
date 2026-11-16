@@ -1,0 +1,171 @@
+{
+  "title": "Free chronotype test: are you a morning lark or a night owl? — cv.cm",
+  "description": "Free chronotype quiz. Answer 14 questions about your natural sleep and energy rhythm to see if you are a morning lark, a night owl or in between, with practical schedule tips.",
+  "h1": "Chronotype test: morning lark or night owl?",
+  "lede": "Your chronotype is your body clock's natural timing: when you feel sleepy, when you wake, and when you think best. Answer 14 questions about how you live when nobody sets the alarm.",
+  "about": [
+    "Chronotype is partly genetic and changes with age: teenagers and young adults tend to run late, and most people shift earlier after their mid-twenties. Larks feel sharpest in the morning; owls hit their stride in the evening; most people are somewhere in between.",
+    "The questions here were written for cv.cm and are not a clinical questionnaire. The result is a self-reflection, not a diagnosis. If you often can't fall asleep, wake up exhausted after a full night, or feel very sleepy during the day, talk to a doctor: those can be signs of a sleep problem that has nothing to do with being an owl."
+  ],
+  "faq": [
+    {
+      "q": "Can a night owl become a morning person?",
+      "a": "Partly. Your underlying tendency stays, but you can shift your schedule earlier with steady habits: bright light soon after waking, dim light in the evening, and the same wake time every day, moved 15 minutes at a time."
+    },
+    {
+      "q": "Is one chronotype healthier?",
+      "a": "No chronotype is unhealthy by itself. Problems come from a mismatch: an owl forced into early starts builds up sleep debt. Matching your schedule to your clock where you can, and keeping it regular, matters most."
+    },
+    {
+      "q": "Why do you ask about weekends?",
+      "a": "Sleeping much later on free days than on workdays, sometimes called social jet lag, is a common sign that your natural clock runs later than your schedule."
+    },
+    {
+      "q": "Is this a sleep disorder test?",
+      "a": "No. It describes your natural timing. It cannot detect insomnia, sleep apnea or other conditions; see a doctor if sleep problems affect your daily life."
+    }
+  ],
+  "items": [
+    {
+      "q": "With no alarm and no plans, when would you naturally wake up?",
+      "options": [
+        "Before 6:30",
+        "6:30 to 8:00",
+        "8:00 to 9:30",
+        "After 9:30"
+      ]
+    },
+    {
+      "q": "On a free evening with nothing on the next day, when do you start feeling sleepy?",
+      "options": [
+        "Before 10 p.m.",
+        "10 to 11:30 p.m.",
+        "11:30 p.m. to 1 a.m.",
+        "After 1 a.m."
+      ]
+    },
+    {
+      "q": "How do you feel in the first half hour after waking?",
+      "options": [
+        "Alert and ready to go",
+        "Fine after a few minutes",
+        "Groggy for a good while",
+        "Like a zombie until late morning"
+      ]
+    },
+    {
+      "q": "When do you do your best focused work?",
+      "options": [
+        "Early morning",
+        "Late morning",
+        "Afternoon",
+        "Evening or night"
+      ]
+    },
+    {
+      "q": "A friend asks you to go for a run at 7 a.m. You think…",
+      "options": [
+        "Great, my favorite time",
+        "Fine, if I go to bed early",
+        "I'll go, but it'll be hard",
+        "Absolutely not"
+      ]
+    },
+    {
+      "q": "A game night or party starts at 11 p.m. You…",
+      "options": [
+        "Would be fading already",
+        "Could manage an hour or so",
+        "Would be fine",
+        "Would just be warming up"
+      ]
+    },
+    {
+      "q": "How much later do you wake on free days than on workdays?",
+      "options": [
+        "About the same time",
+        "Less than an hour later",
+        "One to two hours later",
+        "More than two hours later"
+      ]
+    },
+    {
+      "q": "You can choose the time of an important exam or interview. You pick…",
+      "options": [
+        "8 a.m.",
+        "11 a.m.",
+        "3 p.m.",
+        "7 p.m."
+      ]
+    },
+    {
+      "q": "How hungry are you for breakfast?",
+      "options": [
+        "Hungry as soon as I wake",
+        "Hungry within an hour",
+        "Not until mid-morning",
+        "I usually skip it"
+      ]
+    },
+    {
+      "q": "If you had to turn off the lights at 10 p.m. tonight, you would…",
+      "options": [
+        "Fall asleep easily",
+        "Fall asleep after a while",
+        "Lie awake for an hour or more",
+        "Find it nearly impossible"
+      ]
+    },
+    {
+      "q": "When is your energy usually lowest during a normal day?",
+      "options": [
+        "Early evening",
+        "Just after lunch",
+        "Late morning",
+        "First thing in the morning"
+      ]
+    },
+    {
+      "q": "When do your best ideas tend to show up?",
+      "options": [
+        "In the morning",
+        "Around midday",
+        "In the evening",
+        "After midnight"
+      ]
+    },
+    {
+      "q": "If your working hours were entirely up to you, you would work…",
+      "options": [
+        "6 a.m. to 2 p.m.",
+        "8 a.m. to 4 p.m.",
+        "10 a.m. to 6 p.m.",
+        "1 p.m. to 9 p.m. or later"
+      ]
+    },
+    {
+      "q": "Which describes you best?",
+      "options": [
+        "Clearly a morning person",
+        "More morning than evening",
+        "More evening than morning",
+        "Clearly a night person"
+      ]
+    }
+  ],
+  "scoreLabel": "Evening score (0 = earliest)",
+  "results": {
+    "lark": {
+      "name": "Morning lark",
+      "body": "Your body clock runs early: you wake easily and think best before lunch. Tips: put your hardest work between about 8 a.m. and noon and keep afternoons for meetings and routine tasks; protect your bedtime on nights out, or plan a short afternoon nap instead of a late lie-in; dim screens an hour before bed so you don't wake at 4 a.m. Larks often find late-evening social life tiring: it's fine to suggest brunch instead of drinks."
+    },
+    "between": {
+      "name": "In between",
+      "body": "Your clock sits in the middle, like most people's, so you adapt fairly easily to normal schedules. Tips: keep the same wake time every day, weekends included, within about an hour; get daylight in the morning; and notice your own peak, usually late morning, for demanding tasks. A steady routine matters more than which hour you choose."
+    },
+    "owl": {
+      "name": "Night owl",
+      "body": "Your body clock runs late: mornings are hard and you come alive in the evening. Tips: get bright light, outdoors if possible, within an hour of waking, and keep evening light dim and warm; keep wake time within an hour on weekends to limit social jet lag; stop caffeine about eight hours before bed; to shift earlier, move bedtime and wake time by 15 minutes every few days. Ask for later meetings where you can, and put demanding work in the late afternoon."
+    }
+  }
+}

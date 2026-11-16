@@ -46,6 +46,11 @@ for (const [src, chunk] of Object.entries(manifest)) {
   if (nostalgiaEntry && nostalgiaEntry[1] !== "index") localePacks[`nostalgia-${nostalgiaEntry[1]}/${nostalgiaEntry[2]}`] = [`/${chunk.file}`];
   const nostalgiaLoaders = /^src\/locales\/nostalgia\/loaders\/([^/]+)\.ts$/.exec(src);
   if (nostalgiaLoaders) localePacks[`nostalgia-${nostalgiaLoaders[1]}/loaders`] = [`/${chunk.file}`];
+  // One test's copy and the loader tables: "quiz-<locale>/<id>" and "quiz-<locale>/loaders" (the pack is "quiz-<locale>").
+  const quizTest = /^src\/locales\/quiz\/([a-zA-Z-]+)\/([a-z0-9-]+)\.json$/.exec(src);
+  if (quizTest) localePacks[`quiz-${quizTest[1]}/${quizTest[2]}`] = [`/${chunk.file}`];
+  const quizLoaders = /^src\/locales\/quiz\/loaders\/([^/]+)\.ts$/.exec(src);
+  if (quizLoaders) localePacks[`quiz-${quizLoaders[1]}/loaders`] = [`/${chunk.file}`];
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
 // Page-copy buckets (a tool's FAQ and how-to, a tutorial's text): "copy-<locale>/<tools|tutorials>-<bucket>", written

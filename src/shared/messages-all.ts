@@ -86,6 +86,8 @@ import viNostalgia from "../locales/packs/nostalgia-vi";
 import zhCNNostalgia from "../locales/packs/nostalgia-zh-CN";
 import zhTWNostalgia from "../locales/packs/nostalgia-zh-TW";
 import { NOSTALGIA_ALL } from "../locales/nostalgia/all";
+import { QUIZ_ALL } from "../locales/quiz/all";
+import type { QuizId } from "./quiz";
 import type { NostalgiaId } from "./nostalgia";
 import type { RefId } from "./ref";
 import type { KbId } from "./kb";
@@ -97,6 +99,7 @@ import {
   registerLegalMessages,
   registerMessages,
   registerQuizMessages,
+  registerQuizTest,
   registerDatasetMessages,
   registerRefEntry,
   registerRefMessages,
@@ -167,6 +170,9 @@ for (const [locale, pack] of Object.entries(ALL)) registerMessages(locale as Loc
 for (const [locale, pack] of Object.entries(GAMES)) registerGameMessages(locale as Locale, pack);
 for (const [locale, pack] of Object.entries(LEGAL)) registerLegalMessages(locale as Locale, pack);
 for (const [locale, pack] of Object.entries(QUIZ)) registerQuizMessages(locale as Locale, pack);
+for (const [locale, tests] of Object.entries(QUIZ_ALL)) {
+  for (const [id, copy] of Object.entries(tests)) registerQuizTest(locale as Locale, id as QuizId, copy);
+}
 
 const DATASETS: Record<Locale, DatasetMessages> = {
   en: enDatasets,

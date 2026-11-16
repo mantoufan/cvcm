@@ -1,0 +1,49 @@
+{
+  "title": "Test de bienestar gratis (Índice de Bienestar WHO-5): puntuación de 0 a 100 — cv.cm",
+  "description": "Test de bienestar WHO-5 online gratis. Responde 5 preguntas sobre las últimas dos semanas y obtén tu puntuación de bienestar de 0 a 100 y qué significa. Privado: nada sale de tu navegador.",
+  "h1": "Test de bienestar (WHO-5)",
+  "lede": "El Índice de Bienestar WHO-5 hace 5 preguntas breves sobre cómo te has sentido durante las últimas dos semanas. Se tarda menos de un minuto y da una puntuación de 0 a 100.",
+  "about": [
+    "El WHO-5 lo publicó la Oficina Regional para Europa de la Organización Mundial de la Salud en 1998 y es uno de los cuestionarios de bienestar más usados del mundo. Es de uso libre. Cada respuesta vale de 0 a 5; el total (0–25) se multiplica por 4 para obtener un porcentaje de 0 (el peor posible) a 100 (el mejor posible).",
+    "Una puntuación por debajo de 52 sugiere un bienestar bajo, y los médicos la usan como motivo para evaluar una posible depresión; una puntuación de 28 o menos suele ir asociada a la depresión. Este test es una autoevaluación, no un diagnóstico."
+  ],
+  "faq": [
+    {
+      "q": "¿Qué significa mi puntuación del WHO-5?",
+      "a": "Multiplica la puntuación bruta (0–25) por 4. 52 o más está en el rango normal de bienestar. Por debajo de 52 sugiere un bienestar bajo. 28 o menos es señal de que podría haber depresión y conviene que lo evalúe un profesional."
+    },
+    {
+      "q": "¿El WHO-5 es un test de depresión?",
+      "a": "Mide el bienestar positivo, no los síntomas de depresión, pero una puntuación baja es un buen motivo para hacer un cribado de depresión, por ejemplo con el test PHQ-9 de este sitio, y para hablar con un médico."
+    },
+    {
+      "q": "¿Cada cuánto puedo hacerlo?",
+      "a": "Pregunta por las últimas dos semanas, así que repetirlo más o menos cada dos semanas es una forma sencilla de seguir cómo estás. Un cambio de 10 puntos o más se considera significativo."
+    },
+    {
+      "q": "¿Qué puede mejorar mi bienestar?",
+      "a": "Dormir con regularidad, la luz del día y el movimiento, pasar tiempo con personas que te caen bien y hacer cosas que te interesan ayudan a mucha gente. Si el ánimo bajo se prolonga, habla con un médico o un psicólogo."
+    }
+  ],
+  "items": [
+    "Me he sentido alegre y de buen humor.",
+    "Me he sentido tranquilo y relajado.",
+    "Me he sentido activo y enérgico.",
+    "Me he despertado fresco y descansado.",
+    "Mi vida cotidiana ha estado llena de cosas que me interesan."
+  ],
+  "results": {
+    "low": {
+      "name": "Bienestar bajo (0–28)",
+      "body": "Tus respuestas sugieren que tu bienestar ha sido bajo durante las últimas dos semanas. Las puntuaciones así de bajas suelen ir asociadas a la depresión, así que habla pronto con un médico o un profesional de la salud mental. También puedes hacer aquí el test de depresión PHQ-9. No tienes que enfrentarlo solo: existe ayuda eficaz."
+    },
+    "reduced": {
+      "name": "Bienestar reducido (32–48)",
+      "body": "Últimamente tu bienestar ha estado por debajo del rango habitual. Vale la pena hacer un cribado de depresión (el test PHQ-9 de este sitio es una opción) y hablar con un médico si esto dura desde hace tiempo. Pequeños pasos como dormir con regularidad, la luz del día, el movimiento y el tiempo con personas de confianza pueden ayudar."
+    },
+    "good": {
+      "name": "Buen bienestar (52–100)",
+      "body": "Tu bienestar está en el rango normal. Mantén los hábitos y las personas que te ayudan a sentirte así, y repite el test dentro de unas semanas para ver cómo se mantiene."
+    }
+  }
+}

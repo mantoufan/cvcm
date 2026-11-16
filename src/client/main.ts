@@ -42,7 +42,7 @@ import type { GameConsoleId, GameId } from "../shared/games";
 import type { DevicePageId } from "../shared/device";
 import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
-import { QUIZZES, type QuizId } from "../shared/quiz";
+import { QUIZZES, type QuizId, type QuizPage } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
 import { RANKINGS, type RankingId } from "../shared/rankings";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
@@ -616,7 +616,7 @@ export function render(): void {
   const req = ++localeReq;
   const gamePage = (parsed.kind === "games" || parsed.kind === "bare-games") && Boolean(parsed.game);
   const legal = parsed.kind === "legal" || parsed.kind === "bare-legal";
-  const quiz = parsed.kind === "quiz" || parsed.kind === "bare-quiz";
+  const quiz: QuizPage = parsed.kind === "quiz" || parsed.kind === "bare-quiz" ? parsed.quiz ?? "hub" : null;
   // Ranking copy travels in the data pack.
   const dataset = parsed.kind === "dataset" || parsed.kind === "bare-dataset" || parsed.kind === "ranking" || parsed.kind === "bare-ranking";
   const kb: KbPage = parsed.kind === "kb" || parsed.kind === "bare-kb" ? parsed.article ?? "hub" : null;

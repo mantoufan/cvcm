@@ -1,0 +1,188 @@
+{
+  "title": "Which pet is right for me? Free pet match quiz — cv.cm",
+  "description": "Free pet quiz. Answer 14 questions about your time, home, budget, allergies and lifestyle to see whether a cat, dog, rabbit, fish, bird, hamster or reptile suits you best.",
+  "h1": "Which pet suits you?",
+  "lede": "A good match makes life better for you and the animal. Answer 14 honest questions about your time, space, money and habits, and see which pet fits your life right now.",
+  "about": [
+    "This quiz, written for cv.cm, weighs the practical things that decide whether an animal will thrive with you: daily time, home size, hours away, travel, allergies, budget, noise, lifespan and the chores you can live with. It is a starting point, not a guarantee: individual animals and breeds vary a lot.",
+    "Before you bring any animal home: research the species' needs, count the full cost including vet care, check your lease and local rules, and think about who will care for it when you travel. Consider adopting from a shelter or rescue, and fostering first if you're unsure. A pet is a commitment for its whole life, which can mean decades."
+  ],
+  "faq": [
+    {
+      "q": "What is the easiest pet for a beginner?",
+      "a": "There is no zero-effort pet. For busy people, a cat or a properly set-up aquarium usually fits best; for families with time and space, a dog. Small animals like hamsters and rabbits need more specialized care than people expect."
+    },
+    {
+      "q": "I'm allergic. Can I still have a pet?",
+      "a": "Fish and reptiles don't shed fur or dander, so they are the safest choices. No cat or dog is truly hypoallergenic; if you want one, spend time with that animal before adopting and ask a doctor."
+    },
+    {
+      "q": "How much does a pet cost?",
+      "a": "It depends on the species and where you live. Beyond food, plan for the setup (cage, tank, lamps), vaccinations, neutering, and an emergency vet fund. Reptile and aquarium setups cost more up front than many people expect."
+    },
+    {
+      "q": "Should I get a pet for my child?",
+      "a": "Only if an adult is ready to be the real caregiver. Children can help, but hamsters and rabbits are fragile and often don't like being held, so supervise every interaction."
+    }
+  ],
+  "items": [
+    {
+      "q": "How much time can you spend on a pet each day, including care and play?",
+      "options": [
+        "Under 15 minutes",
+        "15 to 45 minutes",
+        "One to two hours",
+        "Two hours or more, including walks"
+      ]
+    },
+    {
+      "q": "Where do you live?",
+      "options": [
+        "A small room, studio or dorm",
+        "An average apartment",
+        "A roomy apartment or house",
+        "A house with a yard"
+      ]
+    },
+    {
+      "q": "On a typical day, how long is nobody home?",
+      "options": [
+        "Ten hours or more",
+        "A normal workday, eight or nine hours",
+        "Someone is home most of the day"
+      ]
+    },
+    {
+      "q": "How often are you away for several days?",
+      "options": [
+        "Often, for work or travel",
+        "A few times a year, and someone can pet-sit",
+        "Rarely"
+      ]
+    },
+    {
+      "q": "Allergies in your home?",
+      "options": [
+        "None that I know of",
+        "Yes, to fur or animal dander",
+        "Not sure"
+      ]
+    },
+    {
+      "q": "How much can you spend each month on food, supplies and a vet fund?",
+      "options": [
+        "As little as possible",
+        "A moderate amount",
+        "Enough for vet bills and good food"
+      ]
+    },
+    {
+      "q": "How do you want to enjoy your pet?",
+      "options": [
+        "Watching it; I find that calming",
+        "Cuddles now and then from an independent companion",
+        "Playing, training and doing things together every day",
+        "Quiet company and gentle handling in the evening"
+      ]
+    },
+    {
+      "q": "How do you feel about noise?",
+      "options": [
+        "I need a quiet home",
+        "A bit of noise at night is fine",
+        "Barking or chattering doesn't bother me"
+      ]
+    },
+    {
+      "q": "How many years are you ready to commit?",
+      "options": [
+        "Two or three years",
+        "About ten years",
+        "Fifteen years or more",
+        "Decades, even longer than 30 years"
+      ]
+    },
+    {
+      "q": "Which chore sounds least bad?",
+      "options": [
+        "Walks in all weather",
+        "Scooping a litter box",
+        "Weekly water changes and testing",
+        "Cleaning a cage and changing bedding",
+        "Managing heat lamps and live or frozen food"
+      ]
+    },
+    {
+      "q": "Who lives with you?",
+      "options": [
+        "Just me",
+        "A partner or adult roommates",
+        "Young children"
+      ]
+    },
+    {
+      "q": "What do your lease or building rules allow?",
+      "options": [
+        "Only small caged or tank animals",
+        "Cats and small animals, no dogs",
+        "Any pet, or I own my home"
+      ]
+    },
+    {
+      "q": "How would you feel about a pet that follows you everywhere and wants your attention?",
+      "options": [
+        "I'd love it",
+        "Nice in small doses",
+        "I'd prefer a pet that's content on its own"
+      ]
+    },
+    {
+      "q": "Which evening with a pet sounds best?",
+      "options": [
+        "Watching a tiny, busy animal dig and run its wheel",
+        "Free-roam time with a rabbit zooming around or a bird chatting with me",
+        "Watching a lizard bask under its lamp or fish drift by",
+        "A walk together, then curling up on the sofa"
+      ]
+    }
+  ],
+  "dims": {
+    "cat": "Cat",
+    "dog": "Dog",
+    "rabbit": "Rabbit",
+    "fish": "Fish",
+    "bird": "Bird",
+    "hamster": "Hamster",
+    "reptile": "Reptile"
+  },
+  "results": {
+    "cat": {
+      "name": "Cat",
+      "body": "A cat fits a busy life with moderate space: independent but affectionate, fine alone during a workday, no walks needed. Plan for: 15 or more years, a clean litter box (one per cat plus one), scratching posts, play every day, yearly vet checks, and neutering. Indoor cats live longer; a catio or window perch keeps them entertained."
+    },
+    "dog": {
+      "name": "Dog",
+      "body": "You have the time, space and energy a dog needs, and you want a companion who shares your days. Plan for: 10 to 15 years, walks and play every day, training from day one, someone home or a dog walker on long days, and a bigger budget for food, grooming and vets. Choose energy level and size to match your life, and look at shelters and breed rescues first."
+    },
+    "rabbit": {
+      "name": "Rabbit",
+      "body": "A rabbit suits a calm home with floor space and someone around much of the day. Rabbits are social, so most are happiest in a bonded pair, and they need hours of free-roam time in a rabbit-proofed room, not a small hutch. Plan for: 8 to 12 years, unlimited hay, a vet who knows rabbits, and neutering. They rarely enjoy being picked up; enjoy them on their level."
+    },
+    "fish": {
+      "name": "Fish",
+      "body": "An aquarium fits small spaces, tight schedules and allergies, and it's genuinely calming to watch. Skip the bowl: start with a filtered, heated tank of at least 40 liters (about 10 gallons), and cycle it for several weeks before adding fish. Plan for: weekly partial water changes, testing kits, and choosing species that suit the tank size and each other."
+    },
+    "bird": {
+      "name": "Bird",
+      "body": "A bird fits someone home a lot who enjoys interaction and doesn't mind noise. Parrots, even small ones, are smart, social and need hours of time outside the cage, toys to chew and training. Plan for: a long life (budgies 5 to 10 years, larger parrots 30 or more), an avian vet, and a fresh diet beyond seed. If you're away all day, a pair of small birds may be better than one."
+    },
+    "hamster": {
+      "name": "Hamster",
+      "body": "A hamster fits a small space, a modest budget and a quiet evening routine. They are solitary and nocturnal, so they'll be awake when you're winding down, and their wheel may squeak at night. Plan for: a big enclosure (at least 100 × 50 cm floor), deep bedding to burrow, a solid wheel of the right size, and a 2- to 3-year life. Handle gently; they're not ideal for young children."
+    },
+    "reptile": {
+      "name": "Reptile",
+      "body": "A reptile fits someone who is curious, patient, allergic to fur, or away often. Many species are quiet and fine alone for a day or two once their setup runs well. Plan for: a proper enclosure with heat and UVB lighting on timers, live or frozen food for many species, an exotic-animal vet, and a long life (leopard geckos 15 to 20 years, tortoises much longer). Choose captive-bred animals and research the species first."
+    }
+  }
+}

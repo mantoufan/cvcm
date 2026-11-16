@@ -1,0 +1,64 @@
+{
+  "title": "Test de TDAH en adultos: autoevaluación gratis de atención e inquietud — cv.cm",
+  "description": "Autoevaluación de TDAH en adultos gratis: valora 18 afirmaciones sobre atención, inquietud e impulsividad y mira si vale la pena pedir una evaluación. No es un diagnóstico. Tus respuestas no salen del navegador.",
+  "h1": "Autoevaluación de TDAH en adultos",
+  "hint": "Pensando en los últimos 6 meses, ¿hasta qué punto te describe cada afirmación?",
+  "scoreLabel": "Puntuación de la autoevaluación de TDAH (0 = pocos signos, 72 = muchos)",
+  "lede": "¿Pierdes el hilo de las tareas, extravías cosas y te cuesta quedarte quieto? Valora 18 afirmaciones sobre tu día a día en los últimos 6 meses para decidir si vale la pena consultar sobre una evaluación de TDAH.",
+  "about": [
+    "El TDAH (trastorno por déficit de atención e hiperactividad) es una afección del neurodesarrollo que empieza en la infancia y a menudo continúa en la edad adulta. Se manifiesta con problemas persistentes de atención, inquietud o impulsividad. Un diagnóstico requiere una evaluación profesional: los síntomas deben haber comenzado en la infancia, aparecer en más de un área de la vida y causar problemas reales.",
+    "Estas afirmaciones se han escrito para cv.cm en torno a esas áreas de síntomas. Este test no es la Escala de Autoinforme de TDAH en Adultos (ASRS) y no se ha validado clínicamente, así que no puede detectar ni descartar el TDAH, y sus tramos no son puntos de corte clínicos. Úsalo para ordenar tus ideas antes de ver a un profesional, que puede usar una herramienta validada como la ASRS. La falta de sueño, el estrés, la ansiedad, la depresión y otras afecciones pueden causar problemas similares."
+  ],
+  "faq": [
+    {
+      "q": "¿Este test puede decirme si tengo TDAH?",
+      "a": "No. Solo un profesional cualificado puede diagnosticar el TDAH, después de preguntar por tu historia, incluida la infancia, y descartar otras causas. Una puntuación alta es simplemente un motivo para consultar, y una baja no lo descarta."
+    },
+    {
+      "q": "¿Cómo se calcula la puntuación?",
+      "a": "Cada afirmación puntúa de 0 a 4, así que el total va de 0 a 72. 28 o menos cuenta como pocos signos, de 29 a 47 como algunos y 48 o más como muchos. Los tramos son una guía solo para este test, no puntos de corte clínicos."
+    },
+    {
+      "q": "¿Es esta la ASRS?",
+      "a": "No. La ASRS es un cuestionario validado aparte cuya redacción no se puede cambiar. Nuestras afirmaciones son originales y no se han validado, así que un profesional clínico puede pedirte que rellenes la ASRS o una herramienta similar."
+    },
+    {
+      "q": "¿Qué más puede parecer TDAH?",
+      "a": "La falta de sueño, la ansiedad, la depresión, el estrés, los problemas de tiroides, algunos medicamentos y el uso intensivo del teléfono pueden perjudicar la atención. Por eso un profesional comprueba si hay otras causas."
+    }
+  ],
+  "items": [
+    "Pierdo el hilo en conversaciones, lecturas o reuniones, incluso cuando quiero prestar atención.",
+    "Cometo errores por descuido porque paso por alto los detalles.",
+    "Empiezo tareas y luego las dejo sin terminar.",
+    "Me cuesta organizar las tareas, los papeles o mi tiempo.",
+    "Pospongo las tareas que requieren un esfuerzo mental sostenido.",
+    "A menudo extravío cosas como las llaves, el teléfono o la cartera.",
+    "Los ruidos pequeños o los pensamientos pasajeros me apartan fácilmente de lo que estoy haciendo.",
+    "Olvido citas, facturas o cosas que dije que haría.",
+    "La gente dice que parece que no escucho cuando me habla.",
+    "Muevo sin parar las manos o los pies cuando tengo que permanecer mucho tiempo en mi asiento.",
+    "Me cuesta no levantarme durante las reuniones o comidas largas.",
+    "Siento una inquietud interna, como si tuviera que seguir moviéndome.",
+    "Me cuesta relajarme, incluso cuando no tengo nada que hacer.",
+    "Hablo más de lo que los demás parecen querer.",
+    "Termino las frases de la gente o respondo antes de que acaben.",
+    "Me cuesta esperar en una fila o a que llegue mi turno.",
+    "Interrumpo a la gente o me meto en lo que está haciendo.",
+    "Tomo decisiones rápidas o compro cosas por impulso y luego me arrepiento."
+  ],
+  "results": {
+    "few": {
+      "name": "Pocos signos (0–28)",
+      "body": "No indicas muchas de estas dificultades. Eso no descarta el TDAH, sobre todo si has desarrollado buenos hábitos para compensarlas. Si los problemas de atención te preocupan de todos modos, puedes hablar con un médico igualmente."
+    },
+    "some": {
+      "name": "Algunos signos (29–47)",
+      "body": "Reconoces algunas de estas dificultades, como le ocurre a mucha gente a veces, sobre todo con cansancio o estrés. Piensa si vienen de la infancia y causan problemas reales en el trabajo, en casa o en tus relaciones. Si es así, plantéate consultarlo con un médico."
+    },
+    "many": {
+      "name": "Muchos signos (48–72)",
+      "body": "Reconoces muchas de estas dificultades. Esto no significa que tengas TDAH, pero es un buen motivo para pedirle a un médico o a un psicólogo una evaluación. Anota ejemplos de tu trabajo, tu casa y tu infancia para llevarlos a la consulta. Existe apoyo eficaz."
+    }
+  }
+}

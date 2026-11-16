@@ -1,0 +1,78 @@
+{
+  "title": "Free work style test: remote, hybrid or office? Solo or team? — cv.cm",
+  "description": "Free work style quiz. Rate 20 statements to see whether remote, hybrid or office work suits you, how much teamwork, structure and variety you need, with practical tips.",
+  "h1": "Work style test",
+  "lede": "Where and how do you do your best work? Score four preferences, home or office, solo or team, structure or freedom, focus or variety, and get a tip for each.",
+  "about": [
+    "Job satisfaction depends not only on what you do but on how the work is set up. This test, written for cv.cm, measures four everyday preferences: where you like to work, how much you like to work with others, how much structure you want, and whether you prefer variety or long stretches of focus.",
+    "Each score runs from 0 to 100. Below 40 leans one way, above 60 the other, and the middle is a mix. Use the result to ask better questions in job interviews (\"How many days are in the office?\", \"How are priorities set?\") and to shape the job you have."
+  ],
+  "faq": [
+    {
+      "q": "Does this tell me which career to choose?",
+      "a": "No. It describes working conditions, not fields. For career fields, take the Holland code career test, then use this one to choose between similar jobs."
+    },
+    {
+      "q": "My remote score is in the middle. What does that mean?",
+      "a": "You'll probably be happiest in a hybrid setup: office days for meetings and people, home days for focused work."
+    },
+    {
+      "q": "What if my job doesn't match my result?",
+      "a": "Small changes help: block focus time on your calendar, ask for one remote day, agree on clearer priorities with your manager, or swap tasks with a teammate who likes the work you don't."
+    },
+    {
+      "q": "Is one work style better than another?",
+      "a": "No. Teams need both people who like structure and people who like freedom, both soloists and connectors. What matters is fit."
+    }
+  ],
+  "items": [
+    "I get more done at home than in an office.",
+    "I do my best work when I can bounce ideas off other people.",
+    "I like knowing exactly what is expected of me and by when.",
+    "A day full of different tasks energizes me more than one long task.",
+    "I need the buzz of an office to stay motivated.",
+    "I'd rather own a piece of work from start to finish on my own.",
+    "I work best when I decide how and when to do things myself.",
+    "I'm happiest staying on one task for hours without switching.",
+    "Commuting feels like wasted time to me.",
+    "Regular meetings and check-ins help me more than they slow me down.",
+    "Clear processes and routines make work less stressful for me.",
+    "I enjoy a fast pace with new problems every day.",
+    "I learn a lot just by being near colleagues and hearing how they work.",
+    "Constant group chats and meetings drain me.",
+    "Rigid rules and fixed schedules make me restless.",
+    "Frequent interruptions ruin my best work.",
+    "I can keep a steady routine at home without anyone checking on me.",
+    "Shared wins mean more to me than personal ones.",
+    "I like having a manager who sets clear priorities for me.",
+    "I get bored quickly once a job becomes routine."
+  ],
+  "dims": {
+    "remote": "Working from home",
+    "team": "Teamwork",
+    "structure": "Structure",
+    "variety": "Variety"
+  },
+  "levels": {
+    "remote": {
+      "low": "Office: you get energy, focus and learning from being around colleagues. Look for roles with a real office culture, and if you work remotely, use a coworking space or a regular office day so you don't become isolated.",
+      "mid": "Hybrid: office days for meetings and people, home days for focused work. Ask employers how hybrid works in practice, and plan which tasks go on which days.",
+      "high": "Remote: you work well on your own schedule and don't miss the commute. Look for remote-first teams with good written communication, and protect a start and end time so work doesn't fill the whole day."
+    },
+    "team": {
+      "low": "Solo: you prefer owning work end to end. Roles like specialist, analyst, writer or developer with clear ownership suit you. Agree on a few fixed check-ins so you stay in the loop without constant meetings.",
+      "mid": "Mixed: you like time alone to do the work and time together to plan and review it. Batch meetings into one part of the day and keep the rest for focus.",
+      "high": "Team: you think best out loud and enjoy shared goals. Look for collaborative roles such as project work, sales, teaching or product teams, and on solo tasks, pair up or hold short check-ins to stay motivated."
+    },
+    "structure": {
+      "low": "Freedom: you want to decide how and when to work. Startups, freelancing and roles judged on results suit you. Set your own deadlines and share them, so freedom doesn't turn into last-minute stress.",
+      "mid": "Balanced: you like clear goals but some say in how to reach them. Ask managers for the \"what\" and \"by when\", and propose the \"how\" yourself.",
+      "high": "Structure: clear expectations, processes and priorities calm you and help you do excellent work. Larger organizations and process-driven roles suit you; when things are vague, ask early for a checklist or definition of done."
+    },
+    "variety": {
+      "low": "Deep focus: you do your best work in long, uninterrupted blocks. Book two- or three-hour focus blocks, turn off notifications, and look for roles that value depth such as research, engineering or editing.",
+      "mid": "Balanced: some variety keeps you fresh, but too much switching wears you down. Group similar tasks together and give each day one main focus.",
+      "high": "Variety: new problems and a fast pace energize you, and routine bores you. Roles in operations, client work, events or startups fit; keep a simple list so many threads don't slip."
+    }
+  }
+}
