@@ -282,41 +282,48 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("attachment", lean("attachment", ["anx", "avo"])).key).toBe("fearful");
   });
 
-  it("reads the color season from undertone and depth, and never lands an axis on exactly 50%", () => {
-    const def = QUIZ_DEFS["personal-color"];
-    if (def.type !== "choice") throw new Error();
-    // Each question is a two-way choice on one axis: 2 points or nothing, seven questions an axis.
-    for (const dim of ["warm", "deep"]) {
-      const mine = def.items.filter((item) => item.options.some((o) => dim in o));
-      expect(mine, dim).toHaveLength(7);
-      for (const item of mine) expect(item.options.map((o) => o[dim] ?? 0).sort(), dim).toEqual([0, 2]);
-      // The scoring answer is first in some questions and second in others.
-      const first = mine.filter((item) => (item.options[0][dim] ?? 0) > 0).length;
-      expect(first, dim).toBeGreaterThanOrEqual(3);
-      expect(first, dim).toBeLessThanOrEqual(4);
-    }
-    const pick = (warm: boolean, deep: boolean): number[] =>
-      def.items.map((item) => {
-        const dim = "warm" in item.options[0] || "warm" in item.options[1] ? "warm" : "deep";
-        const want = dim === "warm" ? warm : deep;
-        return item.options.findIndex((o) => (dim in o) === want);
-      });
-    expect(scoreQuiz("personal-color", pick(true, false)).key).toBe("spring");
-    expect(scoreQuiz("personal-color", pick(false, false)).key).toBe("summer");
-    expect(scoreQuiz("personal-color", pick(true, true)).key).toBe("autumn");
-    expect(scoreQuiz("personal-color", pick(false, true)).key).toBe("winter");
-    // Scoring k of an axis's 7 questions, for every k, never puts that axis at exactly 50%.
-    for (let k = 0; k <= 7; k++) {
-      const seen = { warm: 0, deep: 0 };
-      const answers = def.items.map((item) => {
-        const dim = "warm" in item.options[0] || "warm" in item.options[1] ? "warm" : "deep";
-        const take = seen[dim]++ < k;
-        return item.options.findIndex((o) => (dim in o) === take);
-      });
-      const result = scoreQuiz("personal-color", answers);
-      for (const s of result.scores) {
-        expect(s.raw, `${s.dim} k=${k}`).toBe(k * 2);
-        expect(s.pct, `${s.dim} k=${k}`).not.toBe(50);
+  it("reads the two-axis choice quadrants (color season, parenting style), and never lands an axis on exactly 50%", () => {
+    const cases = [
+      { id: "personal-color", x: "warm", y: "deep", keys: { lowLow: "summer", highLow: "spring", lowHigh: "winter", highHigh: "autumn" } },
+      { id: "parenting-style", x: "warmth", y: "control", keys: { lowLow: "uninvolved", highLow: "permissive", lowHigh: "authoritarian", highHigh: "authoritative" } },
+    ] as const;
+    for (const { id, x, y, keys } of cases) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      // Each question is a two-way choice on one axis: 2 points or nothing, seven questions an axis.
+      for (const dim of [x, y]) {
+        const mine = def.items.filter((item) => item.options.some((o) => dim in o));
+        expect(mine, `${id} ${dim}`).toHaveLength(7);
+        for (const item of mine) expect(item.options.map((o) => o[dim] ?? 0).sort(), `${id} ${dim}`).toEqual([0, 2]);
+        // The scoring answer is first in some questions and second in others.
+        const first = mine.filter((item) => (item.options[0][dim] ?? 0) > 0).length;
+        expect(first, `${id} ${dim}`).toBeGreaterThanOrEqual(3);
+        expect(first, `${id} ${dim}`).toBeLessThanOrEqual(4);
+      }
+      const axisOf = (item: (typeof def.items)[number]): string => (x in item.options[0] || x in item.options[1] ? x : y);
+      const pick = (highX: boolean, highY: boolean): number[] =>
+        def.items.map((item) => {
+          const dim = axisOf(item);
+          const want = dim === x ? highX : highY;
+          return item.options.findIndex((o) => (dim in o) === want);
+        });
+      expect(scoreQuiz(id, pick(true, false)).key, id).toBe(keys.highLow);
+      expect(scoreQuiz(id, pick(false, false)).key, id).toBe(keys.lowLow);
+      expect(scoreQuiz(id, pick(true, true)).key, id).toBe(keys.highHigh);
+      expect(scoreQuiz(id, pick(false, true)).key, id).toBe(keys.lowHigh);
+      // Scoring k of an axis's 7 questions, for every k, never puts that axis at exactly 50%.
+      for (let k = 0; k <= 7; k++) {
+        const seen: Record<string, number> = { [x]: 0, [y]: 0 };
+        const answers = def.items.map((item) => {
+          const dim = axisOf(item);
+          const take = seen[dim]++ < k;
+          return item.options.findIndex((o) => (dim in o) === take);
+        });
+        const result = scoreQuiz(id, answers);
+        for (const s of result.scores) {
+          expect(s.raw, `${id} ${s.dim} k=${k}`).toBe(k * 2);
+          expect(s.pct, `${id} ${s.dim} k=${k}`).not.toBe(50);
+        }
       }
     }
   });
