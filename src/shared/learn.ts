@@ -759,6 +759,30 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 1,
     related: ["height-calculator", "bmi", "ideal-weight"],
   },
+  "play-hangman": {
+    minutes: 4,
+    steps: 6,
+    openAt: 1,
+    related: ["hangman", "word-search", "word-unscrambler"],
+  },
+  "play-rock-paper-scissors": {
+    minutes: 4,
+    steps: 6,
+    openAt: 1,
+    related: ["rock-paper-scissors", "coin-flip", "dice"],
+  },
+  "calculate-bac": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["bac-calculator", "calories-burned", "water-intake"],
+  },
+  "calculate-simple-interest": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["simple-interest", "compound", "loan"],
+  },
   "electricity-cost": {
     minutes: 6,
     steps: 6,
@@ -1421,6 +1445,22 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "predict-child-height": [
     { step: 2, src: "/covers/tutorials/predict-child-height-parents.svg" },
     { step: 5, src: "/covers/tutorials/predict-child-height-percentile.svg" },
+  ],
+  "play-hangman": [
+    { step: 2, src: "/covers/tutorials/play-hangman-board.svg" },
+    { step: 3, src: "/covers/tutorials/play-hangman-letters.svg" },
+  ],
+  "play-rock-paper-scissors": [
+    { step: 2, src: "/covers/tutorials/play-rock-paper-scissors-rules.svg" },
+    { step: 4, src: "/covers/tutorials/play-rock-paper-scissors-spock.svg" },
+  ],
+  "calculate-bac": [
+    { step: 3, src: "/covers/tutorials/calculate-bac-formula.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-bac-curve.svg" },
+  ],
+  "calculate-simple-interest": [
+    { step: 2, src: "/covers/tutorials/calculate-simple-interest-formula.svg" },
+    { step: 6, src: "/covers/tutorials/calculate-simple-interest-compare.svg" },
   ],
   "electricity-cost": [
     { step: 1, src: "/covers/tutorials/electricity-cost-formula.svg" },
