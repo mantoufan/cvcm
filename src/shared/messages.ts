@@ -159,9 +159,9 @@ export function hasQuizTest(locale: Locale, id: QuizId): boolean {
   return Boolean(loadedQuizTests[locale]?.[id]);
 }
 
-/** Every test exists in every locale (tests/quiz.test.ts), so there is no English stand-in: a miss is a loading bug. */
+/** One test's copy, falling back to English if that is all that is loaded (as the other entry getters do). */
 export function quizTestMessages(locale: Locale, id: QuizId): QuizCopy {
-  const copy = loadedQuizTests[locale]?.[id];
+  const copy = loadedQuizTests[locale]?.[id] ?? loadedQuizTests.en?.[id];
   if (!copy) throw new Error(`quiz test not loaded: ${locale} ${id}`);
   return copy;
 }

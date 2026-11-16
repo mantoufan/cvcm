@@ -42,7 +42,7 @@ import type { GameConsoleId, GameId } from "../shared/games";
 import type { DevicePageId } from "../shared/device";
 import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
-import { QUIZZES, type QuizId, type QuizPage } from "../shared/quiz";
+import { QUIZZES, isQuizId, type QuizId, type QuizPage } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
 import { RANKINGS, type RankingId } from "../shared/rankings";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
@@ -328,7 +328,7 @@ export function boot(): void {
   render();
 }
 
-/** Start the game, knowledge or reference pack download when such a link is about to be followed, so the page opens without a wait. */
+/** Start the game, test, knowledge or reference pack download when such a link is about to be followed, so the page opens without a wait. */
 function prefetchGamePack(e: Event): void {
   const target = e.target as Element | null;
   const loc = locale();
@@ -336,30 +336,36 @@ function prefetchGamePack(e: Event): void {
   clearTimeout(copyPrefetch);
   if (target?.closest?.('a[data-nav^="game-"]')) {
     if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
+  } else if (target?.closest?.('a[data-nav^="test-"], a[data-nav="tests"]')) {
+    // data-nav is "test-<test id>" on a test link, "tests" on a hub link: the quiz pack, plus that test's own chunk.
+    const nav = target.closest('a[data-nav^="test-"], a[data-nav="tests"]')?.getAttribute("data-nav") ?? "";
+    const id = nav.startsWith("test-") ? nav.slice(5) : "";
+    const page: QuizPage = isQuizId(id) ? id : "hub";
+    if (!hasPageMessages(loc, false, false, page)) loadPageMessages(loc, false, false, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="ref-"], a[data-nav="reference"]')) {
     // data-nav is "ref-<entry id>" on an entry link, "reference" on a hub link.
     const nav = target.closest('a[data-nav^="ref-"], a[data-nav="reference"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("ref-") ? nav.slice(4) : "";
     const page: RefPage = isRefId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, false, false, null, page)) loadPageMessages(loc, false, false, false, false, null, page).catch(() => {});
+    if (!hasPageMessages(loc, false, false, null, false, null, page)) loadPageMessages(loc, false, false, null, false, null, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="slang-"], a[data-nav="slang"]')) {
     // data-nav is "slang-<entry id>" on an entry link, "slang" on a hub link.
     const nav = target.closest('a[data-nav^="slang-"], a[data-nav="slang"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("slang-") ? nav.slice(6) : "";
     const page: SlangPage = isSlangId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, false, false, null, null, page)) loadPageMessages(loc, false, false, false, false, null, null, page).catch(() => {});
+    if (!hasPageMessages(loc, false, false, null, false, null, null, page)) loadPageMessages(loc, false, false, null, false, null, null, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="ideas-"], a[data-nav="ideas"]')) {
     // data-nav is "ideas-<idea id>" on an idea link, "ideas" on a hub link.
     const nav = target.closest('a[data-nav^="ideas-"], a[data-nav="ideas"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("ideas-") ? nav.slice(6) : "";
     const page: IdeaPage = isIdeaId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, false, false, null, null, null, {}, page)) loadPageMessages(loc, false, false, false, false, null, null, null, {}, page).catch(() => {});
+    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="nostalgia-"], a[data-nav="nostalgia"]')) {
     // data-nav is "nostalgia-<entry id>" on an entry link, "nostalgia" on a hub link.
     const nav = target.closest('a[data-nav^="nostalgia-"], a[data-nav="nostalgia"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("nostalgia-") ? nav.slice(10) : "";
     const page: NostalgiaPage = isNostalgiaId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, false, false, null, null, null, {}, null, page)) loadPageMessages(loc, false, false, false, false, null, null, null, {}, null, page).catch(() => {});
+    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, page).catch(() => {});
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {
@@ -370,7 +376,7 @@ function prefetchGamePack(e: Event): void {
     const nav = link.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("kb-") ? nav.slice(3) : "";
     const page: KbPage = isKbId(id) ? id : kbHubOfNav(nav) ?? "hub";
-    if (!hasPageMessages(loc, false, false, false, false, page)) loadPageMessages(loc, false, false, false, false, page).catch(() => {});
+    if (!hasPageMessages(loc, false, false, null, false, page)) loadPageMessages(loc, false, false, null, false, page).catch(() => {});
   }
 }
 
@@ -387,9 +393,9 @@ function prefetchCopy(target: Element | null, loc: Locale, hover: boolean): void
   // A tool page that renders with the ideas pack (the idea validator) waits for it too, so fetch it with the copy.
   if (!copy) return;
   const ideas: IdeaPage = copy.tool && IDEAS_PACK_TOOLS.includes(copy.tool as ToolId) ? "hub" : null;
-  if (hasPageMessages(loc, false, false, false, false, null, null, null, copy, ideas)) return;
+  if (hasPageMessages(loc, false, false, null, false, null, null, null, copy, ideas)) return;
   const load = (): void => {
-    loadPageMessages(loc, false, false, false, false, null, null, null, copy, ideas).catch(() => {});
+    loadPageMessages(loc, false, false, null, false, null, null, null, copy, ideas).catch(() => {});
   };
   if (hover) copyPrefetch = window.setTimeout(load, 120);
   else load();

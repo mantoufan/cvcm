@@ -146,14 +146,14 @@ describe("test pages: copy", () => {
     for (const locale of LOCALES) {
       for (const id of QUIZZES) expect(existsSync(join(root, `src/locales/quiz/${locale}/${id}.json`)), `${locale} ${id}`).toBe(true);
       // No stray test files that the loaders would leave out.
-      const files = readdirSync(join(root, `src/locales/quiz/${locale}`)).map((f) => f.replace(/\.json$/, "")).sort();
+      const files = readdirSync(join(root, `src/locales/quiz/${locale}`)).filter((f) => f.endsWith(".json")).map((f) => f.replace(/\.json$/, "")).sort();
       expect(files, locale).toEqual([...QUIZZES].sort());
     }
   });
 
-  it("has the generated files in step with the tests (run `npm run quiz:sync` after adding a test)", async () => {
+  it("has the generated files in step with the tests (run `npm run quiz:sync` after adding or removing a test)", async () => {
     const read = (path: string): string | null => (existsSync(join(root, path)) ? readFileSync(join(root, path), "utf8") : null);
-    for (const [path, content] of Object.entries(quizSyncFiles(read))) expect(read(path), `${path} is stale: run npm run quiz:sync`).toBe(content);
+    for (const [path, content] of Object.entries(quizSyncFiles((path) => existsSync(join(root, path))))) expect(read(path), `${path} is stale: run npm run quiz:sync`).toBe(content);
     for (const locale of LOCALES) {
       const { QUIZ_LOADERS } = await import(`../src/locales/quiz/loaders/${locale}.ts`);
       expect(Object.keys(QUIZ_LOADERS).sort(), locale).toEqual([...QUIZZES].sort());
