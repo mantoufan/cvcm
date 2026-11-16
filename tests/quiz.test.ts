@@ -328,6 +328,24 @@ describe("test pages: scoring", () => {
     }
   });
 
+  it("gives a communication style tie at the top the mixed result, never a hash-picked style", () => {
+    const def = QUIZ_DEFS["communication-style"];
+    if (def.type !== "choice") throw new Error();
+    expect(resultKeys("communication-style")).toEqual([...def.dims, "mixed"]);
+    const pickStyles = (styles: string[]): number[] => def.items.map((item, i) => item.options.findIndex((o) => (o[styles[i]] ?? 0) > 0));
+    const all = (style: string): string[] => def.items.map(() => style);
+    for (const dim of def.dims) expect(scoreQuiz("communication-style", pickStyles(all(dim))).key).toBe(dim);
+    // 6 assertive, 6 aggressive: a tie at the top.
+    const tie = def.items.map((_, i) => (i % 2 ? "aggressive" : "assertive"));
+    expect(scoreQuiz("communication-style", pickStyles(tie)).key).toBe("mixed");
+    // 3 of each: every style tied.
+    const flat = def.items.map((_, i) => def.dims[i % 4]);
+    expect(scoreQuiz("communication-style", pickStyles(flat)).key).toBe("mixed");
+    // 5 assertive, 4 aggressive, 3 passive: assertive leads alone.
+    const lead = [...Array(5).fill("assertive"), ...Array(4).fill("aggressive"), ...Array(3).fill("passive")];
+    expect(scoreQuiz("communication-style", pickStyles(lead)).key).toBe("assertive");
+  });
+
   it("scores marriage areas and names the weakest", () => {
     const strong = scoreQuiz("marriage", lean("marriage", ["talk", "conflict", "money", "family", "future"]));
     expect(strong.key).toBe("ready");
@@ -844,10 +862,11 @@ describe("test pages: scoring", () => {
     }
   });
 
-  // 20k scorings a quiz, one test each so no single test grows with the number of balanced quizzes (all of them in one
-  // test passed 30 s on a busy machine); still more than the default 5 s on a slow CI runner.
+  // 20k scorings a quiz, about half a second each; one test per quiz so none grows with the number of balanced quizzes
+  // (all of them in one test passed 30 s on a busy machine). Each quiz gets its own seed, so quizzes that share a
+  // layout are not scored on the same answers.
   it.each(BALANCED_CHOICE)("lets no %s result dominate random answers", (id) => {
-    const next = randomInts(42);
+    const next = randomInts(42 + BALANCED_CHOICE.indexOf(id));
     const def = QUIZ_DEFS[id];
     if (def.type !== "choice") throw new Error();
     const counts = new Map<string, number>();

@@ -55,7 +55,9 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
  * top      — the highest dimension wins; all dimensions shown ranked. A tie goes to the earlier dimension, or with
  *            `tie: "spread"` to one picked by a hash of the answers that scored the tied results: with many results
  *            scored by small whole numbers, ties are common, and any fixed order would favor some results. The same
- *            answers always give the same result. (Likert quizzes hash which statements scored and how much.)
+ *            answers always give the same result. (Likert quizzes hash which statements scored and how much.) With
+ *            `tie: "mixed"` a tie at the top gives the extra result `mixed` instead, for self-reflection quizzes where
+ *            neither a fixed order nor a hash should pick a label the answers don't support.
  * code     — like top, but the result is the first three letters (Holland RIASEC).
  * quadrant — two dimensions, each high or low, give one of four results (attachment).
  * areas    — overall percentage picks a band (a band's `floor` also needs the weakest area that high);
@@ -66,7 +68,7 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
 export type ResultRule =
   | { kind: "profile" }
   | { kind: "types" }
-  | { kind: "top"; tie?: "spread" }
+  | { kind: "top"; tie?: "spread" | "mixed" }
   | { kind: "code" }
   | { kind: "quadrant"; x: string; y: string; results: { lowLow: string; highLow: string; lowHigh: string; highHigh: string } }
   | { kind: "areas"; bands: readonly { min: number; key: string; floor?: number }[] }
@@ -1553,11 +1555,11 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   "communication-style": {
     id: "communication-style",
     type: "choice",
-    // Four results in whole steps tie often: a fixed order would hand ties to one style (assertive took a third of random
-    // runs), so ties are spread like the fan quizzes, and the result shows the tie.
+    // Four results in whole steps tie often. A fixed order handed ties to one style (assertive won a third of random
+    // runs) and a hash could label a flat profile aggressive, so a tie at the top reads as a mixed style.
     dims: ["assertive", "passive", "aggressive", "passiveaggressive"],
     items: COMMUNICATION,
-    result: { kind: "top", tie: "spread" },
+    result: { kind: "top", tie: "mixed" },
   },
   archetype: {
     id: "archetype",
@@ -1769,7 +1771,7 @@ function resultKey(rule: ResultRule, scores: DimScore[], ranked: DimScore[], tot
       // Each pair leans to its first letter above 50%. A tie goes to the second letter (I, N, F, P), as in MBTI scoring.
       return scores.map((s) => (s.pct > 50 ? s.dim[0] : s.dim[1])).join("");
     case "top":
-      return ranked[0].dim;
+      return rule.tie === "mixed" && ranked.length > 1 && ranked[1].raw === ranked[0].raw ? "mixed" : ranked[0].dim;
     case "code":
       return ranked.slice(0, 3).map((s) => s.dim).join("");
     case "quadrant": {
@@ -1820,6 +1822,7 @@ export function resultKeys(id: QuizId): string[] {
       return out;
     }
     case "top":
+      return rule.tie === "mixed" ? [...def.dims, "mixed"] : [...def.dims];
     case "code":
       return [...def.dims];
     case "quadrant":

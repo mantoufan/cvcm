@@ -328,13 +328,15 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
     }
     case "top": {
       const [first, second] = result.ranked;
-      const nodes = [...headline(results[first.dim])];
+      const nodes = [...headline(results[result.key])];
       const rule = QUIZ_DEFS[id].result;
-      // Spread ties: name every result tied with the winner (the hash only picked which one leads).
-      const tied = rule.kind === "top" && rule.tie === "spread" ? result.ranked.slice(1).filter((s) => s.raw === first.raw && results[s.dim]) : [];
+      // Spread ties: name every result tied with the winner (the hash only picked which one leads). A mixed result
+      // names all the tied results.
+      const mixed = result.key === "mixed";
+      const tied = rule.kind === "top" && (rule.tie === "spread" || mixed) ? result.ranked.slice(mixed ? 0 : 1).filter((s) => s.raw === first.raw) : [];
       if (tied.length) {
-        const names = listNames(locale, tied.map((s) => results[s.dim].name));
-        nodes.push(h("p", { class: "muted" }, `${ui.tiedWith}: ${names}`));
+        const names = listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)));
+        nodes.push(h("p", { class: "muted" }, `${mixed ? ui.tiedTop : ui.tiedWith}: ${names}`));
       } else if (second && first.pct - second.pct <= 10 && results[second.dim]) {
         nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
       }

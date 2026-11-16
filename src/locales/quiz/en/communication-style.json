@@ -5,7 +5,7 @@
   "lede": "Do you say what you need, keep the peace, push hard or hint? Pick how you'd really react in 12 everyday situations at work, at home and with friends to find your main communication style.",
   "about": [
     "Communication skills courses often describe four styles. Assertive people say what they think and need, clearly and respectfully, and listen to others too. Passive people put others first and keep quiet to avoid conflict. Aggressive people get their point across forcefully, sometimes at others' expense. Passive-aggressive people seem to go along but show their frustration indirectly, through sarcasm, sulking or quiet resistance. Most of us use all four depending on the situation; this quiz shows which one you fall back on most.",
-    "Each question offers one answer for each style, and your result names the style you chose most, with all four scores. There are no bad people here, only habits, and every style can be shifted toward assertive with practice. The quiz was written for cv.cm from this common four-style model. It is a starting point for reflection, not a professional assessment. If you'd like to look at disagreements in more depth, try the conflict style quiz on this site."
+    "Each question offers one answer for each style, and your result names the style you chose most, with all four scores. If two or more styles tie for first, your result is a mixed style, because the quiz won't pick a label your answers don't support. There are no bad people here, only habits, and every style can be shifted toward assertive with practice. The quiz was written for cv.cm from this common four-style model. It is a starting point for reflection, not a professional assessment. If you'd like to look at disagreements in more depth, try the conflict style quiz on this site."
   ],
   "faq": [
     {
@@ -18,7 +18,7 @@
     },
     {
       "q": "Why are my scores mixed?",
-      "a": "Most people use different styles in different places, say passive at work and aggressive with family. Look at your two highest scores and think about where each shows up."
+      "a": "Most people use different styles in different places, say passive at work and aggressive with family. If two or more styles tie for first, your result is a mixed style; otherwise look at your two highest scores and think about where each shows up."
     },
     {
       "q": "Are my answers saved?",
@@ -157,6 +157,10 @@
     "passiveaggressive": {
       "name": "Passive-aggressive",
       "body": "You often go along with things on the surface but let your frustration out indirectly, through sarcasm, silence or quiet resistance. That's usually a sign you don't feel safe saying it straight. Try naming what bothers you early, while it's still small: \"I'm annoyed that…\" works better than a sigh. People can't fix what they don't know about."
+    },
+    "mixed": {
+      "name": "Mixed style",
+      "body": "No single style came out on top: you chose two or more equally often. That usually means your style changes with the situation, perhaps assertive with friends but passive at work, or calm until you're tired. Look at the tied styles above and think about where each one shows up. The aim is to use the assertive one in more of those places."
     }
   }
 }

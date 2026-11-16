@@ -5,7 +5,7 @@
   "lede": "¿Dices lo que necesitas, mantienes la paz, presionas fuerte o lanzas indirectas? Elige cómo reaccionarías de verdad en 12 situaciones cotidianas en el trabajo, en casa y con amigos y descubre tu estilo de comunicación principal.",
   "about": [
     "Los cursos de habilidades de comunicación suelen describir cuatro estilos. Las personas asertivas dicen lo que piensan y necesitan, con claridad y respeto, y también escuchan a los demás. Las pasivas ponen a los demás primero y se callan para evitar el conflicto. Las agresivas imponen su punto de vista con fuerza, a veces a costa de los demás. Las pasivo-agresivas parecen estar de acuerdo, pero muestran su frustración de forma indirecta, con sarcasmo, enfurruñándose o con una resistencia silenciosa. Casi todos usamos los cuatro según la situación; este test muestra a cuál recurres más.",
-    "Cada pregunta ofrece una respuesta para cada estilo, y tu resultado indica el estilo que más elegiste, con las cuatro puntuaciones. Aquí no hay malas personas, solo hábitos, y cualquier estilo puede acercarse al asertivo con práctica. El test se escribió para cv.cm a partir de este modelo habitual de cuatro estilos. Es un punto de partida para reflexionar, no una evaluación profesional. Si quieres analizar los desacuerdos más a fondo, prueba el test de estilo de conflicto de este sitio."
+    "Cada pregunta ofrece una respuesta para cada estilo, y tu resultado indica el estilo que más elegiste, con las cuatro puntuaciones. Si dos o más estilos empatan en primer lugar, tu resultado es un estilo mixto, porque el test no elige una etiqueta que tus respuestas no respaldan. Aquí no hay malas personas, solo hábitos, y cualquier estilo puede acercarse al asertivo con práctica. El test se escribió para cv.cm a partir de este modelo habitual de cuatro estilos. Es un punto de partida para reflexionar, no una evaluación profesional. Si quieres analizar los desacuerdos más a fondo, prueba el test de estilo de conflicto de este sitio."
   ],
   "faq": [
     {
@@ -18,7 +18,7 @@
     },
     {
       "q": "¿Por qué mis puntuaciones están repartidas?",
-      "a": "La mayoría de la gente usa estilos distintos en sitios distintos, por ejemplo pasivo en el trabajo y agresivo con la familia. Fíjate en tus dos puntuaciones más altas y piensa dónde aparece cada una."
+      "a": "La mayoría de la gente usa estilos distintos en sitios distintos, por ejemplo pasivo en el trabajo y agresivo con la familia. Si dos o más estilos empatan en primer lugar, tu resultado es un estilo mixto; si no, fíjate en tus dos puntuaciones más altas y piensa dónde aparece cada una."
     },
     {
       "q": "¿Se guardan mis respuestas?",
@@ -157,6 +157,10 @@
     "passiveaggressive": {
       "name": "Pasivo-agresivo",
       "body": "A menudo aceptas las cosas en apariencia, pero sacas tu frustración de forma indirecta, con sarcasmo, silencio o una resistencia callada. Eso suele indicar que no te sientes seguro diciéndolo directamente. Prueba a nombrar lo que te molesta pronto, mientras todavía es pequeño: \"Me molesta que…\" funciona mejor que un suspiro. La gente no puede arreglar lo que no sabe."
+    },
+    "mixed": {
+      "name": "Mixto",
+      "body": "Ningún estilo quedó por encima de los demás: elegiste dos o más con la misma frecuencia. Eso suele significar que tu estilo cambia según la situación, quizá asertivo con los amigos pero pasivo en el trabajo, o tranquilo hasta que estás cansado. Mira los estilos empatados arriba y piensa dónde aparece cada uno. La meta es usar el asertivo en más de esos lugares."
     }
   }
 }
