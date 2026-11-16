@@ -25,7 +25,8 @@ import { nostalgiaSyncFiles } from "../src/shared/nostalgia-sync";
 import type { KbBlock } from "../src/shared/kb-i18n";
 import { fill } from "../src/shared/fill";
 import nostalgiaImagesJson from "../src/shared/nostalgia-images.json";
-import { applyHtmlSeo, pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
+import { pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml, sitemapPages } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
 

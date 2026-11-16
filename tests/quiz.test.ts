@@ -22,7 +22,8 @@ import {
 } from "../src/shared/quiz";
 import { escapeHtml } from "../src/shared/device-i18n";
 import { quizCopy, quizStaticHtml } from "../src/shared/quiz-i18n";
-import { applyHtmlSeo, pageCanonical, pageTitle } from "../src/shared/seo";
+import { pageCanonical, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
 

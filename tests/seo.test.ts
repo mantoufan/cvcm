@@ -1,15 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { encodeWav, resampleChannels } from "../src/shared/wav";
 import { mediaBox, pdfFromJpegs } from "../src/shared/pdf";
-import {
-  applyHtmlSeo,
-  faqItems,
-  faqJsonLd,
-  pageCanonical,
-  pageDescription,
-  pageTitle,
-  toolSoftwareJsonLd,
-} from "../src/shared/seo";
+import { faqItems, faqJsonLd, pageCanonical, pageDescription, pageTitle, toolSoftwareJsonLd } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import worker from "../src/worker";
 
 const html = `<!doctype html>

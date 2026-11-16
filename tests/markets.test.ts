@@ -16,7 +16,8 @@ import {
 import { marketCopy } from "../src/shared/markets-i18n";
 import { STATIC_FILE, appHref, parseAppPath } from "../src/shared/path";
 import { BARREL_GAL, BARREL_L, convertOil } from "../src/shared/markets";
-import { applyHtmlSeo, hreflangAlternates, pageTitle } from "../src/shared/seo";
+import { hreflangAlternates, pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import worker from "../src/worker";
 
 const html = `<!doctype html>

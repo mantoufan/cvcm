@@ -13,7 +13,7 @@ import { LOCALES } from "../src/shared/locale";
 import { appHref, parseAppPath, rankingHref } from "../src/shared/path";
 import { RANKINGS, RANKING_REGIONS, RANKING_SOURCE, rankingCsvHref, rankingKind, rankingMeta, type BuildingRow, type IslandRow, type LakeRow, type MountainRow, type RiverRow, isPlaceRanking, rankingGroupOf, rankingRowsChunk } from "../src/shared/rankings";
 import { rankingFaqItems, rankingHub, rankingJsonLd, rankingName, rankingPageCopy, rankingStaticHtml, rankingTable, rankingTitle } from "../src/shared/rankings-i18n";
-import { applyHtmlSeo } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 
 const geoRows: Record<string, unknown[]> = {
   "tallest-mountains": mountainRows,

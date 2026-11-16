@@ -4,7 +4,8 @@ import { DEVICE_PAGES, describeClient, estimatedDevicePixels, isIpAddress, parse
 import { deviceFaqItems, deviceFaqJsonLd, devicePageCopy, deviceStaticHtml } from "../src/shared/device-i18n";
 import { LOCALES } from "../src/shared/locale";
 import { deviceHref, parseAppPath } from "../src/shared/path";
-import { applyHtmlSeo, pageTitle } from "../src/shared/seo";
+import { pageTitle } from "../src/shared/seo";
+import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml } from "../src/shared/sitemap";
 import worker from "../src/worker";
 import en from "../src/locales/device/en.json";
