@@ -1553,10 +1553,11 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   "communication-style": {
     id: "communication-style",
     type: "choice",
-    // Ties go to the earlier style, so a flat profile reads as assertive and never as aggressive (like conflict-style).
-    dims: ["assertive", "passive", "passiveaggressive", "aggressive"],
+    // Four results in whole steps tie often: a fixed order would hand ties to one style (assertive took a third of random
+    // runs), so ties are spread like the fan quizzes, and the result shows the tie.
+    dims: ["assertive", "passive", "aggressive", "passiveaggressive"],
     items: COMMUNICATION,
-    result: { kind: "top" },
+    result: { kind: "top", tie: "spread" },
   },
   archetype: {
     id: "archetype",
