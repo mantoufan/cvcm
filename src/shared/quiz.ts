@@ -1689,6 +1689,23 @@ export function topTied(ranked: readonly DimScore[]): DimScore[] {
 }
 
 /**
+ * The line a top result shows under its headline, as result keys in ranked order. A mixed result lists the results
+ * tied for the top by exact share (as scoring decided). Otherwise results whose bars show the leader's percentage are
+ * "tied with" it, whatever order or hash picked the leader; failing that, a close second place (within 10 points)
+ * names the results shown at its percentage, unless three or more share it, which says nothing about a runner-up.
+ */
+export function resultSideLine(ranked: readonly DimScore[], mixed: boolean): { kind: "tiedTop" | "tiedWith" | "runnerUp"; dims: string[] } | null {
+  if (mixed) return { kind: "tiedTop", dims: topTied(ranked).map((s) => s.dim) };
+  const [first, ...rest] = ranked;
+  if (!first || !rest.length) return null;
+  const same = rest.filter((s) => s.pct === first.pct);
+  if (same.length) return { kind: "tiedWith", dims: same.map((s) => s.dim) };
+  if (first.pct - rest[0].pct > 10) return null;
+  const near = rest.filter((s) => s.pct === rest[0].pct);
+  return near.length <= 2 ? { kind: "runnerUp", dims: near.map((s) => s.dim) } : null;
+}
+
+/**
  * Highest exact share first (percentages that only round to the same number are not tied); a real tie keeps definition
  * order. With `hits` (see `top`), each group of tied results is reordered by a hash of the answers that scored them,
  * so answers that only touch other results never change who wins the tie.

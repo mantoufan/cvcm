@@ -22,6 +22,7 @@ import {
   isComplete,
   maxTotal,
   resultKeys,
+  resultSideLine,
   topTied,
   type DimScore,
   scoreQuiz,
@@ -349,6 +350,22 @@ describe("test pages: scoring", () => {
     const flat = scoreQuiz("conflict-style", QUIZ_DEFS["conflict-style"].items.map(() => 2));
     expect(new Set(flat.scores.map((x) => x.raw)).size).toBe(1);
     expect(flat.key).toBe("compromise");
+  });
+
+  it("puts the same shown percentage as the leader down as tied, and a close second as a runner-up of at most two", () => {
+    const s = (dim: string, raw: number, max: number): DimScore => ({ dim, raw, min: 0, max, pct: Math.round((raw / max) * 100) });
+    // 5/13 and 6/16 both show 38%: tied on the page, though the exact shares differ.
+    expect(resultSideLine([s("tsundere", 5, 13), s("genki", 6, 16), s("kuudere", 3, 13)], false)).toEqual({ kind: "tiedWith", dims: ["genki"] });
+    // One close second.
+    expect(resultSideLine([s("a", 6, 10), s("b", 5, 10), s("c", 2, 10)], false)).toEqual({ kind: "runnerUp", dims: ["b"] });
+    // Two alike in second place: both named, not the first in order.
+    expect(resultSideLine([s("a", 6, 10), s("b", 5, 10), s("c", 5, 10), s("d", 1, 10)], false)).toEqual({ kind: "runnerUp", dims: ["b", "c"] });
+    // Three alike: no runner-up line.
+    expect(resultSideLine([s("a", 6, 10), s("b", 5, 10), s("c", 5, 10), s("d", 5, 10)], false)).toBeNull();
+    // More than 10 points behind: no line.
+    expect(resultSideLine([s("a", 8, 10), s("b", 5, 10)], false)).toBeNull();
+    // Mixed: every result tied for the top by exact share.
+    expect(resultSideLine([s("a", 4, 12), s("b", 4, 12), s("c", 2, 12)], true)).toEqual({ kind: "tiedTop", dims: ["a", "b"] });
   });
 
   it("gives a communication style tie at the top the mixed result, never a hash-picked style", () => {
