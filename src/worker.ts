@@ -1,4 +1,5 @@
 import "./shared/messages-all";
+import { readPack, ssrPackPath } from "./shared/ssr-pack";
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { d1SearchStore, handleSearchApi } from "./search-api";
@@ -488,11 +489,12 @@ async function assetsFetch(env: Pick<Env, "ASSETS">, input: Request | string): P
 async function prerendered(env: Env, origin: string, pagePath: string | null): Promise<string | null> {
   if (!pagePath || !pagePath.startsWith("/") || !pagePath.endsWith("/") || pagePath.includes("..")) return null;
   try {
-    const res = await assetsFetch(env, `${origin}${SSR_PREFIX.slice(0, -1)}${pagePath}`);
+    // Bodies are packed into a fixed number of files (src/shared/ssr-pack.ts); decode only this page's bytes.
+    const res = await assetsFetch(env, `${origin}${ssrPackPath(pagePath)}`);
     if (!res.ok) return null;
-    const text = await res.text();
-    // A missing file comes back as the SPA's index.html, which has no marker.
-    return text.startsWith(SSR_MARKER) ? text.slice(SSR_MARKER.length) : null;
+    // A missing pack comes back as the SPA's index.html, which is not a pack.
+    const text = readPack(await res.arrayBuffer(), pagePath);
+    return text && text.startsWith(SSR_MARKER) ? text.slice(SSR_MARKER.length) : null;
   } catch {
     return null;
   }
