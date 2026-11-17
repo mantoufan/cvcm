@@ -3,7 +3,7 @@ import "../src/shared/messages-all";
 import { LOCALES } from "../src/shared/locale";
 import { CALENDAR_PAGES, COUNTRY_CODE, HOLIDAY_COUNTRIES, calendarPageOf } from "../src/shared/calendar";
 import { calendarCopy, calendarDescription, calendarFaqItems, calendarTitle, daysOffCount, holidayDays, holidayYears, longBreaks } from "../src/shared/calendar-i18n";
-import { calendarPageHtml, pasaranOf } from "../src/shared/calendar-page";
+import { calendarPageHtml, converterHtml, pasaranOf } from "../src/shared/calendar-page";
 import { calendarHref, parseAppPath } from "../src/shared/path";
 import { dayNumber } from "../src/shared/lunar";
 import holidays from "../src/shared/calendar-holidays.json";
@@ -62,10 +62,16 @@ describe("calendar pages", () => {
     expect(parseAppPath("/en/calendar/2027-13/").kind).toBe("unknown");
   });
 
-  it("gives each locale's hub a converter that matches its sample date", () => {
-    const html = calendarPageHtml("zh-CN", "hub");
-    expect(html).toContain('value="2027-02-06"');
-    expect(html).toContain("正月初一");
+  it("puts the converter on its own tool page and links it from the hub", () => {
+    const tool = converterHtml("zh-CN");
+    expect(tool).toContain('value="2027-02-06"');
+    expect(tool).toContain("正月初一");
+    expect(calendarPageHtml("zh-CN", "hub")).toContain('href="/zh-cn/lunar-converter/"');
+  });
+
+  it("places the calendar under Tools in the trail", () => {
+    const trail = calendarPageHtml("en", "2027-02").match(/<nav class="device-crumb"[^]*?<\/nav>/)![0];
+    expect(trail).toMatch(/data-nav="home"[^]*data-nav="tools"[^]*data-nav="calendar"[^]*data-nav="calendar-2027"/);
   });
 
   it("labels each row with the ISO week of its Monday", () => {

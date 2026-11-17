@@ -8,6 +8,7 @@ import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { messages } from "./messages";
 import { appHref, elementsHref } from "./path";
+import { dataCrumbHtml } from "./channel-parent";
 import { ELEMENT_SLUGS, ELEMENTS_SNAPSHOT, atomicNumberOf, blockOf, cellOf, groupMembers, groupOf, hasStandardWeight, periodOf, slugOf, type ElementSlug } from "./elements";
 import {
   ELEMENT_CATEGORIES,
@@ -40,6 +41,7 @@ function crumbHtml(locale: Locale, slug: ElementSlug | null): string {
   const m = elementsMessages(locale);
   const parts = [
     `<a href="${escapeHtml(appHref(locale, null))}" data-nav="home">${escapeHtml(m.crumbHome)}</a>`,
+    dataCrumbHtml(locale),
     slug ? `<a href="${escapeHtml(elementsHref(locale))}" data-nav="elements">${escapeHtml(m.hub.h1)}</a>` : `<span>${escapeHtml(m.hub.h1)}</span>`,
   ];
   if (slug) parts.push(`<span>${escapeHtml(elementName(locale, atomicNumberOf(slug)))}</span>`);

@@ -2,7 +2,7 @@ import { h } from "../dom";
 import { linkList } from "../links";
 import { t } from "../i18n";
 import type { Locale } from "../../shared/locale";
-import { appHref, countriesHref, datasetHref } from "../../shared/path";
+import { appHref, caloriesHref, countriesHref, datasetHref, elementsHref } from "../../shared/path";
 import {
   DATASET_GROUPS,
   DATASET_SENSITIVE,
@@ -63,8 +63,16 @@ export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
     crumb(locale, null),
     h("h1", null, hub.h1),
     h("p", { class: "lede" }, hub.lede),
-    // Country profiles gather every table's figure for one country, and link back to the tables.
-    h("section", { class: "wall" }, linkList([{ href: countriesHref(locale), name: hub.countries.title, blurb: hub.countries.text, nav: "countries" }])),
+    // Reference channels that belong to Data: country profiles (every table's figure for one country, linking back to
+    // the tables), food calories and the periodic table. Their breadcrumbs run Home / Data / … (channel-parent.ts).
+    h("section", { class: "wall" },
+      h("h2", null, hub.reference),
+      linkList([
+        { href: countriesHref(locale), name: hub.countries.title, blurb: hub.countries.text, nav: "countries" },
+        { href: caloriesHref(locale), name: hub.calories.title, blurb: hub.calories.text, nav: "calories" },
+        { href: elementsHref(locale), name: hub.elements.title, blurb: hub.elements.text, nav: "elements" },
+      ]),
+    ),
     h("section", { class: "wall quiz-hub" },
       ...DATASET_GROUPS.map((group) => h("div", { class: "group" }, h("h2", null, hub.groups[group.id]), setLinks(locale, group.sets))),
     ),

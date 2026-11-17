@@ -208,6 +208,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "chi-square": 3,
   "p-value": 3,
   "z-score": 3,
+  "lunar-converter": 3,
 };
 
 export function guideSteps(tool: ToolId): number {

@@ -6,6 +6,7 @@ import type { Locale } from "./locale";
 import { fill } from "./fill";
 import { caloriesMessages, type CaloriesMessages } from "./messages";
 import { appHref, caloriesHref } from "./path";
+import { dataCrumbItem } from "./channel-parent";
 import { CALORIE_GROUPS, CALORIES_SNAPSHOT, FOODS, foodGroupOf, type CalorieGroupId, type FoodId } from "./calories";
 import { HREFLANG } from "./sitemap";
 
@@ -235,6 +236,7 @@ export function caloriesBreadcrumbJsonLd(locale: Locale, id: FoodId | null): Rec
   const m = caloriesMessages(locale);
   const items = [
     { name: m.crumbHome, item: `${ORIGIN}${appHref(locale, null)}` },
+    dataCrumbItem(locale),
     { name: m.hub.h1, item: `${ORIGIN}${caloriesHref(locale)}` },
   ];
   if (id) items.push({ name: foodLabel(locale, id), item: `${ORIGIN}${caloriesHref(locale, id)}` });

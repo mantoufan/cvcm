@@ -735,7 +735,9 @@
     "titlePValue": "Calculadora de valor p — desde z, t, chi cuadrado o F, y valores críticos — cv.cm",
     "descPValue": "Calculadora de valor p gratis: convierte una puntuación z, un estadístico t, un chi cuadrado o un valor F con sus grados de libertad en un valor p de una o dos colas, o encuentra el valor crítico para un nivel de significancia α.",
     "titleZScore": "Calculadora de puntuación z — z de un valor, percentil y probabilidad normal — cv.cm",
-    "descZScore": "Calculadora de puntuación z gratis: calcula z = (x − μ) / σ y la proporción de una distribución normal por debajo, por encima o entre valores, o la puntuación z y el valor en un percentil, con el área sombreada en la campana."
+    "descZScore": "Calculadora de puntuación z gratis: calcula z = (x − μ) / σ y la proporción de una distribución normal por debajo, por encima o entre valores, o la puntuación z y el valor en un percentil, con el área sombreada en la campana.",
+    "titleLunarConverter": "Convertidor de calendario lunar chino a gregoriano (1900–2100) — cv.cm",
+    "descLunarConverter": "Convertidor gratuito del calendario lunar: pasa una fecha gregoriana a su fecha lunar china (con el año del ciclo y el animal del zodiaco) o una fecha lunar, meses intercalares incluidos, a la gregoriana. Cómputo chino (UTC+8), vietnamita (UTC+7) y coreano / japonés (UTC+9), 1900–2100."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1624,6 +1626,10 @@
     "z-score": {
       "name": "Calculadora de puntuación z",
       "blurb": "z, percentiles y áreas de la normal."
+    },
+    "lunar-converter": {
+      "name": "Convertidor de calendario lunar",
+      "blurb": "Fecha lunar china a gregoriana y al revés."
     }
   },
   "watermark": {
@@ -6157,6 +6163,18 @@
       "a4": "Elige Percentil → valor y escribe el percentil, la media y la desviación estándar. Por ejemplo, el percentil 90 de N(100, 15) es aproximadamente 119,2.",
       "q5": "¿Mis datos tienen que ser normales?",
       "a5": "Los porcentajes suponen una distribución normal. La puntuación z en sí es solo una distancia en desviaciones estándar, pero su percentil solo es exacto cuando los datos tienen forma aproximada de campana."
+    },
+    "lunar-converter": {
+      "q1": "¿Cómo paso una fecha gregoriana al calendario lunar?",
+      "a1": "Elige la fecha en Solar → lunar. Aparecen al instante el año lunar (con su nombre del ciclo y su animal), el mes y el día.",
+      "q2": "¿Cómo encuentro la fecha gregoriana de un cumpleaños lunar?",
+      "a2": "Escribe el año, el mes y el día lunares en Lunar → solar. Marca Mes bisiesto solo si el cumpleaños cae en un mes intercalar; el convertidor avisa si ese mes no existe ese año.",
+      "q3": "¿Cuándo es el Año Nuevo chino 2027?",
+      "a3": "El sábado 6 de febrero de 2027; empieza el año de la Cabra (丁未).",
+      "q4": "¿Por qué la fecha lunar puede variar entre países?",
+      "a4": "Cada mes lunar empieza el día de la luna nueva en la hora oficial de cada país. Si la luna nueva cae cerca de la medianoche, UTC+7, UTC+8 y UTC+9 pueden dar días distintos.",
+      "q5": "¿Se sube algún dato?",
+      "a5": "No. Las tablas están en la página y la fecha se calcula en esta pestaña."
     }
   },
   "qr": {
@@ -15820,6 +15838,7 @@
     "sweet-potato-baked": "Batata (asada)"
   },
   "calendarHolidays": "Días festivos",
+  "calendarBlurb": "Calendarios anuales y mensuales con festivos, calendario lunar y fases de la luna.",
   "stdDev": {
     "title": "Calculadora de desviación estándar",
     "privacyNote": "Desviación estándar muestral o poblacional, varianza y error estándar, paso a paso. Tus números se quedan en esta pestaña.",
@@ -16094,5 +16113,8 @@
     "copy": "Copiar resultado",
     "copied": "Copiado",
     "copyFailed": "No se pudo copiar"
+  },
+  "lunarConverter": {
+    "lede": "Fechas gregorianas ↔ lunares de 1900 a 2100, según el cómputo chino (UTC+8), vietnamita (UTC+7) o coreano / japonés (UTC+9). Se calcula en esta pestaña."
   }
 }

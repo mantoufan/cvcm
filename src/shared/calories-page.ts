@@ -8,6 +8,7 @@ import { fill } from "./fill";
 import { dateLabel, linkListHtml } from "./article-html";
 import { caloriesMessages, messages } from "./messages";
 import { appHref, caloriesHref } from "./path";
+import { dataCrumbHtml } from "./channel-parent";
 import { CALORIE_GROUPS, CALORIES_SNAPSHOT, CALORIES_TOOLS, FOODS, foodGroupOf, type FoodId } from "./calories";
 import {
   FDC_HOME,
@@ -48,6 +49,7 @@ function crumbHtml(locale: Locale, id: FoodId | null): string {
   const sep = ` <span aria-hidden="true">/</span> `;
   const parts = [
     `<a href="${escapeHtml(appHref(locale, null))}" data-nav="home">${escapeHtml(m.crumbHome)}</a>`,
+    dataCrumbHtml(locale),
     id
       ? `<a href="${escapeHtml(caloriesHref(locale))}" data-nav="calories">${escapeHtml(m.hub.h1)}</a>`
       : `<span>${escapeHtml(m.hub.h1)}</span>`,

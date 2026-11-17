@@ -55,7 +55,7 @@ export const CATEGORIES = [
   { id: "math", tools: ["calculator", "percent", "fraction", "average", "factors", "lcm-gcf", "quadratic", "triangle", "area", "volume", "slope", "graphing-calculator", "concrete", "radix", "roman", "words", "aspect", "units", "gpa", "grade"] },
   { id: "finance", tools: ["loan", "mortgage", "compound", "discount", "tip", "vat", "margin", "hourly", "time-card", "fuel-cost", "electricity", "simple-interest"] },
   { id: "health", tools: ["bmi", "tdee", "body-fat", "ideal-weight", "water-intake", "macro", "calories-burned", "pace", "sleep", "due-date", "ovulation", "color-blindness-test", "height-calculator", "bac-calculator"] },
-  { id: "time", tools: ["timezone", "countdown", "stopwatch", "alarm", "pomodoro", "days", "add-days", "workdays", "week", "duration", "age", "military-time"] },
+  { id: "time", tools: ["timezone", "countdown", "stopwatch", "alarm", "pomodoro", "days", "add-days", "workdays", "week", "duration", "age", "military-time", "lunar-converter"] },
   { id: "design", tools: ["color", "hex-rgb", "contrast", "gradient"] },
   { id: "hardware", tools: ["mic-test", "decibel-meter", "webcam-test", "keyboard-test", "gamepad-test", "touch-test", "dead-pixel", "refresh-rate", "screen-resolution"] },
   { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter", "rock-paper-scissors"] },
@@ -273,6 +273,7 @@ export const TOOLS = [
   "chi-square",
   "p-value",
   "z-score",
+  "lunar-converter",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 

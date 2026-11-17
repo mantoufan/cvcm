@@ -6,6 +6,7 @@ import type { Locale } from "./locale";
 import { fill } from "./fill";
 import { elementsMessages, type ElementsMessages } from "./messages";
 import { appHref, elementsHref } from "./path";
+import { dataCrumbItem } from "./channel-parent";
 import { HREFLANG } from "./sitemap";
 import {
   ELEMENT_SLUGS,
@@ -235,6 +236,7 @@ export function elementsBreadcrumbJsonLd(locale: Locale, slug: ElementSlug | nul
   const m = elementsMessages(locale);
   const items = [
     { name: m.crumbHome, item: `${ORIGIN}${appHref(locale, null)}` },
+    dataCrumbItem(locale),
     { name: m.hub.h1, item: `${ORIGIN}${elementsHref(locale)}` },
   ];
   if (slug) items.push({ name: elementName(locale, atomicNumberOf(slug)), item: `${ORIGIN}${elementsHref(locale, slug)}` });
