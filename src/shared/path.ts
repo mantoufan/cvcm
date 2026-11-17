@@ -17,10 +17,11 @@ import { LEGACY_SLANG_SEGMENTS, SLANG_SEGMENT, isSlangId, type SlangId } from ".
 import { IDEAS_SEGMENT, isIdeaId, type IdeaId } from "./ideas";
 import { NOSTALGIA_SEGMENT, isNostalgiaId, type NostalgiaId } from "./nostalgia";
 import { COUNTRIES_SEGMENT, isCountrySlug } from "./countries";
+import { CALORIES_SEGMENT, isFoodId, type FoodId } from "./calories";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "countries"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "countries", "calories"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -572,6 +573,7 @@ export type AppPath =
   | { kind: "bare-ideas"; entry: IdeaId | null }
   | { kind: "bare-nostalgia"; entry: NostalgiaId | null }
   | { kind: "bare-countries"; entry: string | null }
+  | { kind: "bare-calories"; food: FoodId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -587,6 +589,7 @@ export type AppPath =
   | { kind: "ideas"; locale: Locale; entry: IdeaId | null }
   | { kind: "nostalgia"; locale: Locale; entry: NostalgiaId | null }
   | { kind: "countries"; locale: Locale; entry: string | null }
+  | { kind: "calories"; locale: Locale; food: FoodId | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -729,6 +732,13 @@ export function parseAppPath(pathname: string): AppPath {
       if (isCountrySlug(third)) return { kind: "countries", locale, entry: third };
       return { kind: "unknown" };
     }
+    if (second === CALORIES_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "calories", locale, food: null };
+      // Typed in capitals (/calories/Banana/): parse as the lowercase id so the Worker 301s.
+      if (isFoodId(third.toLowerCase())) return { kind: "calories", locale, food: third.toLowerCase() as FoodId };
+      return { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -816,6 +826,11 @@ export function parseAppPath(pathname: string): AppPath {
   if (first === COUNTRIES_SEGMENT) {
     if (!second) return { kind: "bare-countries", entry: null };
     if (isCountrySlug(second) && !third) return { kind: "bare-countries", entry: second };
+    return { kind: "unknown" };
+  }
+  if (first === CALORIES_SEGMENT) {
+    if (!second) return { kind: "bare-calories", food: null };
+    if (isFoodId(second.toLowerCase()) && !third) return { kind: "bare-calories", food: second.toLowerCase() as FoodId };
     return { kind: "unknown" };
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
@@ -911,6 +926,12 @@ export function nostalgiaHref(locale: Locale, entry: NostalgiaId | null = null):
 export function countriesHref(locale: Locale, entry: string | null = null): string {
   const base = `/${localePath(locale)}/${COUNTRIES_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The calories channel: `/{locale}/calories/` (hub) and `/{locale}/calories/{food}/`. */
+export function caloriesHref(locale: Locale, food: FoodId | null = null): string {
+  const base = `/${localePath(locale)}/${CALORIES_SEGMENT}`;
+  return food ? `${base}/${food}/` : `${base}/`;
 }
 
 export function legalHref(locale: Locale, page: LegalPageId): string {

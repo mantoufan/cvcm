@@ -24,9 +24,11 @@ import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaFaqJsonLd }
 import { nostalgiaPageHtml } from "./nostalgia-page";
 import { countriesCollectionJsonLd, countryBreadcrumbJsonLd, countryFaqJsonLd } from "./countries-i18n";
 import { countriesPageHtml } from "./countries-page";
+import { caloriesBreadcrumbJsonLd, caloriesFaqJsonLd, caloriesPageJsonLd } from "./calories-i18n";
+import { caloriesPageHtml } from "./calories-page";
 import { lessonsForTool } from "./learn";
 import { type Locale } from "./locale";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, type ToolId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, type ToolId } from "./path";
 import { ideasPageHtml } from "./ideas-page";
 import { memeImagePath } from "./meme-images";
 import { nostalgiaImagePath } from "./nostalgia-images";
@@ -121,6 +123,12 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(deviceBreadcrumbJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(deviceFaqJsonLd(locale, seo.devicePage)).replace(/</g, "\\u003c")}</script>`,
     );
+  } else if (seo.calories) {
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(caloriesBreadcrumbJsonLd(locale, seo.foodId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(caloriesFaqJsonLd(locale, seo.foodId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="article-jsonld">${JSON.stringify(caloriesPageJsonLd(locale, seo.foodId ?? null)).replace(/</g, "\\u003c")}</script>`,
+    );
   } else if (seo.nostalgia) {
     tags.push(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(nostalgiaBreadcrumbJsonLd(locale, seo.nostalgiaId ?? null)).replace(/</g, "\\u003c")}</script>`,
@@ -188,7 +196,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(gameBreadcrumbJsonLd(locale, consoleId, seo.game ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.countries) {
+  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.countries && !seo.calories) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
     );
@@ -258,6 +266,8 @@ export function applyHtmlSeo(
     ? nostalgiaPageHtml(locale, seo.nostalgiaId ?? null)
     : seo.countries
     ? countriesPageHtml(locale, seo.countryId ?? null)
+    : seo.calories
+    ? caloriesPageHtml(locale, seo.foodId ?? null)
     : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));
   // A function replacement: page text may contain "$&" or "$1", which a string replacement would expand.
   out = out.replace(/<div id="app">[\s\S]*?<\/div>/, () => `<div id="app">${inner}</div>`);
@@ -332,6 +342,7 @@ function staticPageHtml(
       { href: ideasHref(locale), text: linkText(pageTitle(locale, { ideas: true })) },
       { href: nostalgiaHref(locale), text: linkText(pageTitle(locale, { nostalgia: true })) },
       { href: countriesHref(locale), text: linkText(pageTitle(locale, { countries: true })) },
+      { href: caloriesHref(locale), text: linkText(pageTitle(locale, { calories: true })) },
       { href: legalHref(locale, "privacy"), text: linkText(pageTitle(locale, { legalPage: "privacy" })) },
       { href: legalHref(locale, "terms"), text: linkText(pageTitle(locale, { legalPage: "terms" })) },
     ]));

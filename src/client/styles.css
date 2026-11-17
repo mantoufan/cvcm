@@ -1669,3 +1669,23 @@ html.dp-lock, html.dp-lock body { overflow: hidden; }
 /* Country profiles: flags are content (rule 7), shown at their own 4:3 size with a hairline so white flags keep an edge. */
 .country-flag { display: block; height: auto; max-width: 100%; border: 1px solid var(--line); }
 .country-figure { margin: 0.5rem 0 1rem; }
+
+/* Calories channel: hub table filter, nutrition facts, macro split bar (data, not decoration), gram calculator. */
+.cal-group { min-height: 42px; padding: 0.4rem 0.6rem; border: 1px solid var(--line); border-radius: 10px; background: var(--gray); font: inherit; }
+.cal-facts, .cal-macro, .cal-calc, .cal-compare { margin: 1.25rem 0; }
+.cal-facts-table { max-height: none; }
+.cal-compare tr.on { background: var(--pink-soft); }
+.cal-bar { display: flex; height: 14px; overflow: hidden; border-radius: 7px; background: var(--gray); }
+.cal-bar span { display: block; height: 100%; }
+.cal-legend { display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; margin: 0.5rem 0; padding: 0; list-style: none; font-size: 0.9rem; }
+.cal-legend i { display: inline-block; width: 0.75rem; height: 0.75rem; margin-right: 0.35rem; border-radius: 2px; vertical-align: -0.05rem; }
+.cal-protein { background: var(--pink-deep); }
+.cal-fat { background: var(--pink); }
+.cal-carbs { background: #8a6f7c; }
+.cal-calc-row { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; }
+.cal-grams { width: 7rem; min-height: 42px; padding: 0.4rem 0.6rem; border: 1px solid var(--line); border-radius: 10px; font: inherit; }
+.cal-out-head { margin: 0.6rem 0 0.3rem; font-weight: 600; }
+.cal-out-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: 0.5rem; margin: 0; }
+.cal-out-list div { padding: 0.5rem 0.7rem; border: 1px solid var(--line); border-radius: 10px; }
+.cal-out-list dt { color: var(--ink-soft); font-size: 0.85rem; }
+.cal-out-list dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }

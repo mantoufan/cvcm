@@ -41,6 +41,8 @@ import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaFaqJsonLd }
 import type { NostalgiaPage } from "../shared/nostalgia";
 import { countriesCollectionJsonLd, countryBreadcrumbJsonLd, countryFaqJsonLd } from "../shared/countries-i18n";
 import type { CountryPage } from "../shared/countries";
+import { caloriesBreadcrumbJsonLd, caloriesFaqJsonLd, caloriesPageJsonLd } from "../shared/calories-i18n";
+import type { CaloriesPage } from "../shared/calories";
 import type { DevicePageId } from "../shared/device";
 import { legalBreadcrumbJsonLd } from "../shared/legal";
 import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
@@ -105,6 +107,7 @@ export function syncPageJsonLd(
   ideasPage: IdeaPage = null,
   nostalgiaPage: NostalgiaPage = null,
   countriesPage: CountryPage = null,
+  caloriesPage: CaloriesPage = null,
 ): void {
   const refId = refPage === "hub" ? null : refPage;
   const slangId = slangPage === "hub" ? null : slangPage;
@@ -134,6 +137,14 @@ export function syncPageJsonLd(
     writeJsonLd("faq-jsonld", countryFaqJsonLd(locale, slug));
     writeJsonLd("breadcrumb-jsonld", countryBreadcrumbJsonLd(locale, slug));
     writeJsonLd("article-jsonld", countriesCollectionJsonLd(locale, slug));
+    return;
+  }
+  if (caloriesPage) {
+    const foodId = caloriesPage === "hub" ? null : caloriesPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("faq-jsonld", caloriesFaqJsonLd(locale, foodId));
+    writeJsonLd("breadcrumb-jsonld", caloriesBreadcrumbJsonLd(locale, foodId));
+    writeJsonLd("article-jsonld", caloriesPageJsonLd(locale, foodId));
     return;
   }
   if (ideasPage) {

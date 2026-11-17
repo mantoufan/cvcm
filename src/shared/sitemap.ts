@@ -12,7 +12,8 @@ import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublis
 import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaModified, type IdeaId } from "./ideas";
 import { COUNTRY_LIST, COUNTRIES_UPDATED } from "./countries";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { CALORIES_SNAPSHOT, FOODS, type FoodId } from "./calories";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -45,7 +46,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "slang"; entry: SlangId | null }
   | { locale: Locale; kind: "ideas"; entry: IdeaId | null }
   | { locale: Locale; kind: "nostalgia"; entry: NostalgiaId | null }
-  | { locale: Locale; kind: "countries"; entry: string | null };
+  | { locale: Locale; kind: "countries"; entry: string | null }
+  | { locale: Locale; kind: "calories"; food: FoodId | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -83,6 +85,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const entry of NOSTALGIA_ENTRIES) pages.push({ locale, kind: "nostalgia", entry });
     pages.push({ locale, kind: "countries", entry: null });
     for (const entry of COUNTRY_LIST) pages.push({ locale, kind: "countries", entry });
+    pages.push({ locale, kind: "calories", food: null });
+    for (const food of FOODS) pages.push({ locale, kind: "calories", food });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -105,6 +109,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(page.locale, page.entry)}`;
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(page.locale, page.entry)}`;
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(page.locale, page.entry)}`;
+  if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(page.locale, page.food)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -129,6 +134,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(locale, page.entry)}`;
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(locale, page.entry)}`;
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(locale, page.entry)}`;
+  if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(locale, page.food)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -156,6 +162,7 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "ideas") return "ideas";
   if (page.kind === "nostalgia") return "nostalgia";
   if (page.kind === "countries") return "countries";
+  if (page.kind === "calories") return "calories";
   return "pages";
 }
 
@@ -194,6 +201,8 @@ function pageLastmod(page: SitemapPage): string | null {
   }
   // Country profiles change with the data snapshot (World Bank tables, codes, capitals, flags).
   if (page.kind === "countries") return COUNTRIES_UPDATED;
+  // Calories pages show the USDA snapshot: they change when scripts/fetch-calories.mjs writes a new one.
+  if (page.kind === "calories") return CALORIES_SNAPSHOT;
   return null;
 }
 

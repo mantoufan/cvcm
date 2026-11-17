@@ -1,0 +1,5359 @@
+{
+ "snapshot": "2026-11-16",
+ "releases": {
+  "foundation": "2026-10-29",
+  "sr": "2018-04"
+ },
+ "foods": {
+  "apple": {
+   "fdc": 171688,
+   "type": "sr",
+   "desc": "Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)",
+   "energy": "208",
+   "n": {
+    "kcal": 52,
+    "kj": 218,
+    "protein": 0.26,
+    "fat": 0.17,
+    "satFat": 0.028,
+    "carbs": 13.8,
+    "fiber": 2.4,
+    "sugars": 10.4,
+    "sodium": 1,
+    "potassium": 107,
+    "calcium": 6,
+    "iron": 0.12,
+    "vitC": 4.6
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 182,
+    "usda": "1 medium (3\" dia)",
+    "fdc": 171688
+   }
+  },
+  "banana": {
+   "fdc": 1105314,
+   "type": "foundation",
+   "desc": "Bananas, ripe and slightly ripe, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 97,
+    "kj": 408,
+    "protein": 0.74,
+    "fat": 0.29,
+    "satFat": null,
+    "carbs": 23,
+    "fiber": 1.7,
+    "sugars": 15.8,
+    "sodium": 0,
+    "potassium": 326,
+    "calcium": 5,
+    "iron": 0,
+    "vitC": 12.3
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 118,
+    "usda": "1 medium (7\" to 7-7/8\" long)",
+    "fdc": 173944
+   }
+  },
+  "orange": {
+   "fdc": 169097,
+   "type": "sr",
+   "desc": "Oranges, raw, all commercial varieties",
+   "energy": "208",
+   "n": {
+    "kcal": 47,
+    "kj": 197,
+    "protein": 0.94,
+    "fat": 0.12,
+    "satFat": 0.015,
+    "carbs": 11.8,
+    "fiber": 2.4,
+    "sugars": 9.35,
+    "sodium": 0,
+    "potassium": 181,
+    "calcium": 40,
+    "iron": 0.1,
+    "vitC": 53.2
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 131,
+    "usda": "1 fruit (2-5/8\" dia)",
+    "fdc": 169097
+   }
+  },
+  "grapes": {
+   "fdc": 174683,
+   "type": "sr",
+   "desc": "Grapes, red or green (European type, such as Thompson seedless), raw",
+   "energy": "208",
+   "n": {
+    "kcal": 69,
+    "kj": 288,
+    "protein": 0.72,
+    "fat": 0.16,
+    "satFat": 0.054,
+    "carbs": 18.1,
+    "fiber": 0.9,
+    "sugars": 15.5,
+    "sodium": 2,
+    "potassium": 191,
+    "calcium": 10,
+    "iron": 0.36,
+    "vitC": 3.2
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 151,
+    "usda": "1 cup",
+    "fdc": 174683
+   }
+  },
+  "strawberries": {
+   "fdc": 2346409,
+   "type": "foundation",
+   "desc": "Strawberries, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 32.7,
+    "kj": 137,
+    "protein": 0.641,
+    "fat": 0.22,
+    "satFat": null,
+    "carbs": 7.96,
+    "fiber": null,
+    "sugars": 4.86,
+    "sodium": 0,
+    "potassium": 161,
+    "calcium": 16.9,
+    "iron": 0.255,
+    "vitC": 59.6
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 152,
+    "usda": "1 cup, halves",
+    "fdc": 167762
+   }
+  },
+  "blueberries": {
+   "fdc": 2346411,
+   "type": "foundation",
+   "desc": "Blueberries, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 57.4,
+    "kj": 240,
+    "protein": 0.703,
+    "fat": 0.306,
+    "satFat": null,
+    "carbs": 14.6,
+    "fiber": null,
+    "sugars": 9.36,
+    "sodium": 0,
+    "potassium": 85.6,
+    "calcium": 11.7,
+    "iron": 0.34,
+    "vitC": 8.06
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 148,
+    "usda": "1 cup",
+    "fdc": 171711
+   }
+  },
+  "watermelon": {
+   "fdc": 167765,
+   "type": "sr",
+   "desc": "Watermelon, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 30,
+    "kj": 127,
+    "protein": 0.61,
+    "fat": 0.15,
+    "satFat": 0.016,
+    "carbs": 7.55,
+    "fiber": 0.4,
+    "sugars": 6.2,
+    "sodium": 1,
+    "potassium": 112,
+    "calcium": 7,
+    "iron": 0.24,
+    "vitC": 8.1
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 152,
+    "usda": "1 cup, diced",
+    "fdc": 167765
+   }
+  },
+  "mango": {
+   "fdc": 169910,
+   "type": "sr",
+   "desc": "Mangos, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 60,
+    "kj": 250,
+    "protein": 0.82,
+    "fat": 0.38,
+    "satFat": 0.092,
+    "carbs": 15,
+    "fiber": 1.6,
+    "sugars": 13.7,
+    "sodium": 1,
+    "potassium": 168,
+    "calcium": 11,
+    "iron": 0.16,
+    "vitC": 36.4
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 336,
+    "usda": "1 fruit without refuse",
+    "fdc": 169910
+   }
+  },
+  "pineapple": {
+   "fdc": 2346398,
+   "type": "foundation",
+   "desc": "Pineapple, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 54,
+    "kj": 226,
+    "protein": 0.461,
+    "fat": 0.211,
+    "satFat": null,
+    "carbs": 14.1,
+    "fiber": 0.935,
+    "sugars": 11.4,
+    "sodium": 0,
+    "potassium": 137,
+    "calcium": 12.5,
+    "iron": 0.054,
+    "vitC": 58.6
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 165,
+    "usda": "1 cup, chunks",
+    "fdc": 169124
+   }
+  },
+  "pear": {
+   "fdc": 169118,
+   "type": "sr",
+   "desc": "Pears, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 57,
+    "kj": 239,
+    "protein": 0.36,
+    "fat": 0.14,
+    "satFat": 0.022,
+    "carbs": 15.2,
+    "fiber": 3.1,
+    "sugars": 9.75,
+    "sodium": 1,
+    "potassium": 116,
+    "calcium": 9,
+    "iron": 0.18,
+    "vitC": 4.3
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 178,
+    "usda": "1 medium",
+    "fdc": 169118
+   }
+  },
+  "peach": {
+   "fdc": 325430,
+   "type": "foundation",
+   "desc": "Peaches, yellow, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 42,
+    "kj": 174,
+    "protein": 0.91,
+    "fat": 0.27,
+    "satFat": null,
+    "carbs": 10.1,
+    "fiber": 1.5,
+    "sugars": 8.39,
+    "sodium": 13,
+    "potassium": 122,
+    "calcium": 4,
+    "iron": 0.34,
+    "vitC": 4.1
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 150,
+    "usda": "1 medium (2-2/3\" dia)",
+    "fdc": 169928
+   }
+  },
+  "cherries": {
+   "fdc": 2346399,
+   "type": "foundation",
+   "desc": "Cherries, sweet, dark red, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 63.3,
+    "kj": 265,
+    "protein": 1.04,
+    "fat": 0.192,
+    "satFat": null,
+    "carbs": 16.2,
+    "fiber": null,
+    "sugars": 13.9,
+    "sodium": 0,
+    "potassium": 230,
+    "calcium": 12.3,
+    "iron": 0.105,
+    "vitC": 10.4
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 154,
+    "usda": "1 cup, without pits",
+    "fdc": 171719
+   }
+  },
+  "kiwi": {
+   "fdc": 327046,
+   "type": "foundation",
+   "desc": "Kiwifruit, green, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 58,
+    "kj": 241,
+    "protein": 1.06,
+    "fat": 0.44,
+    "satFat": null,
+    "carbs": 14,
+    "fiber": 3,
+    "sugars": 8.99,
+    "sodium": 5,
+    "potassium": 198,
+    "calcium": 35,
+    "iron": 0.24,
+    "vitC": 74.7
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 69,
+    "usda": "1 fruit (2\" dia)",
+    "fdc": 168153
+   }
+  },
+  "avocado": {
+   "fdc": 171705,
+   "type": "sr",
+   "desc": "Avocados, raw, all commercial varieties",
+   "energy": "208",
+   "n": {
+    "kcal": 160,
+    "kj": 670,
+    "protein": 2,
+    "fat": 14.7,
+    "satFat": 2.13,
+    "carbs": 8.53,
+    "fiber": 6.7,
+    "sugars": 0.66,
+    "sodium": 7,
+    "potassium": 485,
+    "calcium": 12,
+    "iron": 0.55,
+    "vitC": 10
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 201,
+    "usda": "1 avocado, NS as to Florida or California",
+    "fdc": 171705
+   }
+  },
+  "lemon": {
+   "fdc": 167746,
+   "type": "sr",
+   "desc": "Lemons, raw, without peel",
+   "energy": "208",
+   "n": {
+    "kcal": 29,
+    "kj": 121,
+    "protein": 1.1,
+    "fat": 0.3,
+    "satFat": 0.039,
+    "carbs": 9.32,
+    "fiber": 2.8,
+    "sugars": 2.5,
+    "sodium": 2,
+    "potassium": 138,
+    "calcium": 26,
+    "iron": 0.6,
+    "vitC": 53
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 58,
+    "usda": "1 fruit (2-1/8\" dia)",
+    "fdc": 167746
+   }
+  },
+  "grapefruit": {
+   "fdc": 174673,
+   "type": "sr",
+   "desc": "Grapefruit, raw, pink and red, all areas",
+   "energy": "208",
+   "n": {
+    "kcal": 42,
+    "kj": 176,
+    "protein": 0.77,
+    "fat": 0.14,
+    "satFat": 0.021,
+    "carbs": 10.7,
+    "fiber": 1.6,
+    "sugars": 6.89,
+    "sodium": 0,
+    "potassium": 135,
+    "calcium": 22,
+    "iron": 0.08,
+    "vitC": 31.2
+   },
+   "serving": {
+    "unit": "half",
+    "n": 1,
+    "g": 123,
+    "usda": "0.5 fruit (3-3/4\" dia)",
+    "fdc": 174673
+   }
+  },
+  "papaya": {
+   "fdc": 169926,
+   "type": "sr",
+   "desc": "Papayas, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 43,
+    "kj": 179,
+    "protein": 0.47,
+    "fat": 0.26,
+    "satFat": 0.081,
+    "carbs": 10.8,
+    "fiber": 1.7,
+    "sugars": 7.82,
+    "sodium": 8,
+    "potassium": 182,
+    "calcium": 20,
+    "iron": 0.25,
+    "vitC": 60.9
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 145,
+    "usda": "1 cup 1\" pieces",
+    "fdc": 169926
+   }
+  },
+  "raspberries": {
+   "fdc": 2346410,
+   "type": "foundation",
+   "desc": "Raspberries, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 51.4,
+    "kj": 215,
+    "protein": 1.01,
+    "fat": 0.188,
+    "satFat": null,
+    "carbs": 12.9,
+    "fiber": null,
+    "sugars": 2.68,
+    "sodium": 0,
+    "potassium": 156,
+    "calcium": 16.4,
+    "iron": 0.45,
+    "vitC": 23
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 123,
+    "usda": "1 cup",
+    "fdc": 167755
+   }
+  },
+  "blackberries": {
+   "fdc": 173946,
+   "type": "sr",
+   "desc": "Blackberries, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 43,
+    "kj": 181,
+    "protein": 1.39,
+    "fat": 0.49,
+    "satFat": 0.014,
+    "carbs": 9.61,
+    "fiber": 5.3,
+    "sugars": 4.88,
+    "sodium": 1,
+    "potassium": 162,
+    "calcium": 29,
+    "iron": 0.62,
+    "vitC": 21
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 144,
+    "usda": "1 cup",
+    "fdc": 173946
+   }
+  },
+  "plum": {
+   "fdc": 169949,
+   "type": "sr",
+   "desc": "Plums, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 46,
+    "kj": 192,
+    "protein": 0.7,
+    "fat": 0.28,
+    "satFat": 0.017,
+    "carbs": 11.4,
+    "fiber": 1.4,
+    "sugars": 9.92,
+    "sodium": 0,
+    "potassium": 157,
+    "calcium": 6,
+    "iron": 0.17,
+    "vitC": 9.5
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 66,
+    "usda": "1 fruit (2-1/8\" dia)",
+    "fdc": 169949
+   }
+  },
+  "cantaloupe": {
+   "fdc": 746770,
+   "type": "foundation",
+   "desc": "Melons, cantaloupe, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 34,
+    "kj": 141,
+    "protein": 0.82,
+    "fat": 0.18,
+    "satFat": null,
+    "carbs": 8.16,
+    "fiber": 0.8,
+    "sugars": 7.88,
+    "sodium": 30,
+    "potassium": 157,
+    "calcium": 9,
+    "iron": 0.38,
+    "vitC": 10.9
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 160,
+    "usda": "1 cup, cubes",
+    "fdc": 169092
+   }
+  },
+  "honeydew": {
+   "fdc": 2710816,
+   "type": "foundation",
+   "desc": "Melons, honeydew, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 32.9,
+    "kj": 138,
+    "protein": 0.531,
+    "fat": 0.216,
+    "satFat": null,
+    "carbs": 8.15,
+    "fiber": null,
+    "sugars": 7.03,
+    "sodium": 21.2,
+    "potassium": 209,
+    "calcium": 6.58,
+    "iron": 0,
+    "vitC": 15.7
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 170,
+    "usda": "1 cup, diced (approx 20 pieces per cup)",
+    "fdc": 169911
+   }
+  },
+  "pomegranate": {
+   "fdc": 169134,
+   "type": "sr",
+   "desc": "Pomegranates, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 83,
+    "kj": 346,
+    "protein": 1.67,
+    "fat": 1.17,
+    "satFat": 0.12,
+    "carbs": 18.7,
+    "fiber": 4,
+    "sugars": 13.7,
+    "sodium": 3,
+    "potassium": 236,
+    "calcium": 10,
+    "iron": 0.3,
+    "vitC": 10.2
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 282,
+    "usda": "1 pomegranate (4\" dia)",
+    "fdc": 169134
+   }
+  },
+  "dates": {
+   "fdc": 168191,
+   "type": "sr",
+   "desc": "Dates, medjool",
+   "energy": "208",
+   "n": {
+    "kcal": 277,
+    "kj": 1160,
+    "protein": 1.81,
+    "fat": 0.15,
+    "satFat": null,
+    "carbs": 75,
+    "fiber": 6.7,
+    "sugars": 66.5,
+    "sodium": 1,
+    "potassium": 696,
+    "calcium": 64,
+    "iron": 0.9,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 24,
+    "usda": "1 date, pitted",
+    "fdc": 168191
+   }
+  },
+  "lychee": {
+   "fdc": 169086,
+   "type": "sr",
+   "desc": "Litchis, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 66,
+    "kj": 276,
+    "protein": 0.83,
+    "fat": 0.44,
+    "satFat": 0.099,
+    "carbs": 16.5,
+    "fiber": 1.3,
+    "sugars": 15.2,
+    "sodium": 1,
+    "potassium": 171,
+    "calcium": 5,
+    "iron": 0.31,
+    "vitC": 71.5
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 9.6,
+    "usda": "1 fruit without refuse",
+    "fdc": 169086
+   }
+  },
+  "persimmon": {
+   "fdc": 169941,
+   "type": "sr",
+   "desc": "Persimmons, japanese, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 70,
+    "kj": 293,
+    "protein": 0.58,
+    "fat": 0.19,
+    "satFat": 0.02,
+    "carbs": 18.6,
+    "fiber": 3.6,
+    "sugars": 12.5,
+    "sodium": 1,
+    "potassium": 161,
+    "calcium": 8,
+    "iron": 0.15,
+    "vitC": 7.5
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 168,
+    "usda": "1 fruit (2-1/2\" dia)",
+    "fdc": 169941
+   }
+  },
+  "tangerine": {
+   "fdc": 169105,
+   "type": "sr",
+   "desc": "Tangerines, (mandarin oranges), raw",
+   "energy": "208",
+   "n": {
+    "kcal": 53,
+    "kj": 223,
+    "protein": 0.81,
+    "fat": 0.31,
+    "satFat": 0.039,
+    "carbs": 13.3,
+    "fiber": 1.8,
+    "sugars": 10.6,
+    "sodium": 2,
+    "potassium": 166,
+    "calcium": 37,
+    "iron": 0.15,
+    "vitC": 26.7
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 88,
+    "usda": "1 medium (2-1/2\" dia)",
+    "fdc": 169105
+   }
+  },
+  "guava": {
+   "fdc": 173044,
+   "type": "sr",
+   "desc": "Guavas, common, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 68,
+    "kj": 285,
+    "protein": 2.55,
+    "fat": 0.95,
+    "satFat": 0.272,
+    "carbs": 14.3,
+    "fiber": 5.4,
+    "sugars": 8.92,
+    "sodium": 2,
+    "potassium": 417,
+    "calcium": 18,
+    "iron": 0.26,
+    "vitC": 228
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 55,
+    "usda": "1 fruit, without refuse",
+    "fdc": 173044
+   }
+  },
+  "jackfruit": {
+   "fdc": 174687,
+   "type": "sr",
+   "desc": "Jackfruit, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 95,
+    "kj": 397,
+    "protein": 1.72,
+    "fat": 0.64,
+    "satFat": 0.195,
+    "carbs": 23.2,
+    "fiber": 1.5,
+    "sugars": 19.1,
+    "sodium": 2,
+    "potassium": 448,
+    "calcium": 24,
+    "iron": 0.23,
+    "vitC": 13.7
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 165,
+    "usda": "1 cup, sliced",
+    "fdc": 174687
+   }
+  },
+  "durian": {
+   "fdc": 168192,
+   "type": "sr",
+   "desc": "Durian, raw or frozen",
+   "energy": "208",
+   "n": {
+    "kcal": 147,
+    "kj": 615,
+    "protein": 1.47,
+    "fat": 5.33,
+    "satFat": null,
+    "carbs": 27.1,
+    "fiber": 3.8,
+    "sugars": null,
+    "sodium": 2,
+    "potassium": 436,
+    "calcium": 6,
+    "iron": 0.43,
+    "vitC": 19.7
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 243,
+    "usda": "1 cup, chopped or diced",
+    "fdc": 168192
+   }
+  },
+  "coconut-meat": {
+   "fdc": 170169,
+   "type": "sr",
+   "desc": "Nuts, coconut meat, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 354,
+    "kj": 1480,
+    "protein": 3.33,
+    "fat": 33.5,
+    "satFat": 29.7,
+    "carbs": 15.2,
+    "fiber": 9,
+    "sugars": 6.23,
+    "sodium": 20,
+    "potassium": 356,
+    "calcium": 14,
+    "iron": 2.43,
+    "vitC": 3.3
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 45,
+    "usda": "1 piece (2\" x 2\" x 1/2\")",
+    "fdc": 170169
+   }
+  },
+  "figs": {
+   "fdc": 173021,
+   "type": "sr",
+   "desc": "Figs, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 74,
+    "kj": 310,
+    "protein": 0.75,
+    "fat": 0.3,
+    "satFat": 0.06,
+    "carbs": 19.2,
+    "fiber": 2.9,
+    "sugars": 16.3,
+    "sodium": 1,
+    "potassium": 232,
+    "calcium": 35,
+    "iron": 0.37,
+    "vitC": 2
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 50,
+    "usda": "1 medium (2-1/4\" dia)",
+    "fdc": 173021
+   }
+  },
+  "apricot": {
+   "fdc": 2710815,
+   "type": "foundation",
+   "desc": "Apricot, with skin, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 43.5,
+    "kj": 182,
+    "protein": 0.961,
+    "fat": 0.405,
+    "satFat": null,
+    "carbs": 10.2,
+    "fiber": 1.51,
+    "sugars": 6.25,
+    "sodium": 0,
+    "potassium": 231,
+    "calcium": 11.6,
+    "iron": 0.163,
+    "vitC": 3.07
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 35,
+    "usda": "1 apricot",
+    "fdc": 171697
+   }
+  },
+  "raisins": {
+   "fdc": 168165,
+   "type": "sr",
+   "desc": "Raisins, dark, seedless (Includes foods for USDA's Food Distribution Program)",
+   "energy": "208",
+   "n": {
+    "kcal": 299,
+    "kj": 1250,
+    "protein": 3.3,
+    "fat": 0.25,
+    "satFat": 0.094,
+    "carbs": 79.3,
+    "fiber": 4.5,
+    "sugars": 65.2,
+    "sodium": 26,
+    "potassium": 744,
+    "calcium": 62,
+    "iron": 1.79,
+    "vitC": 2.3
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz (60 raisins)",
+    "fdc": 168165
+   }
+  },
+  "broccoli": {
+   "fdc": 747447,
+   "type": "foundation",
+   "desc": "Broccoli, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 31,
+    "kj": 132,
+    "protein": 2.57,
+    "fat": 0.34,
+    "satFat": 0.039,
+    "carbs": 6.27,
+    "fiber": 2.4,
+    "sugars": 1.4,
+    "sodium": 36,
+    "potassium": 303,
+    "calcium": 46,
+    "iron": 0.69,
+    "vitC": 91.3
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 91,
+    "usda": "1 cup chopped",
+    "fdc": 170379
+   }
+  },
+  "carrot": {
+   "fdc": 2258586,
+   "type": "foundation",
+   "desc": "Carrots, mature, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 45,
+    "kj": 188,
+    "protein": 0.941,
+    "fat": 0.351,
+    "satFat": null,
+    "carbs": 10.3,
+    "fiber": 3.1,
+    "sugars": null,
+    "sodium": 86.6,
+    "potassium": 280,
+    "calcium": 30.5,
+    "iron": 0.15,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 61,
+    "usda": "1 medium",
+    "fdc": 170393
+   }
+  },
+  "potato-baked": {
+   "fdc": 170093,
+   "type": "sr",
+   "desc": "Potatoes, baked, flesh and skin, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 93,
+    "kj": 390,
+    "protein": 2.5,
+    "fat": 0.13,
+    "satFat": 0.034,
+    "carbs": 21.2,
+    "fiber": 2.2,
+    "sugars": 1.18,
+    "sodium": 10,
+    "potassium": 535,
+    "calcium": 15,
+    "iron": 1.08,
+    "vitC": 9.6
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 173,
+    "usda": "1 potato medium",
+    "fdc": 170093
+   }
+  },
+  "potato-boiled": {
+   "fdc": 170440,
+   "type": "sr",
+   "desc": "Potatoes, boiled, cooked without skin, flesh, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 86,
+    "kj": 360,
+    "protein": 1.71,
+    "fat": 0.1,
+    "satFat": 0.026,
+    "carbs": 20,
+    "fiber": 1.8,
+    "sugars": 0.89,
+    "sodium": 5,
+    "potassium": 328,
+    "calcium": 8,
+    "iron": 0.31,
+    "vitC": 7.4
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 167,
+    "usda": "1 medium (2-1/4\" to 3-1/4\" dia.)",
+    "fdc": 170440
+   }
+  },
+  "sweet-potato-baked": {
+   "fdc": 168483,
+   "type": "sr",
+   "desc": "Sweet potato, cooked, baked in skin, flesh, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 90,
+    "kj": 378,
+    "protein": 2.01,
+    "fat": 0.15,
+    "satFat": 0.052,
+    "carbs": 20.7,
+    "fiber": 3.3,
+    "sugars": 6.48,
+    "sodium": 36,
+    "potassium": 475,
+    "calcium": 38,
+    "iron": 0.69,
+    "vitC": 19.6
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 114,
+    "usda": "1 medium (2\" dia, 5\" long, raw)",
+    "fdc": 168483
+   }
+  },
+  "tomato": {
+   "fdc": 170457,
+   "type": "sr",
+   "desc": "Tomatoes, red, ripe, raw, year round average",
+   "energy": "208",
+   "n": {
+    "kcal": 18,
+    "kj": 74,
+    "protein": 0.88,
+    "fat": 0.2,
+    "satFat": 0.028,
+    "carbs": 3.89,
+    "fiber": 1.2,
+    "sugars": 2.63,
+    "sodium": 5,
+    "potassium": 237,
+    "calcium": 10,
+    "iron": 0.27,
+    "vitC": 13.7
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 123,
+    "usda": "1 medium whole (2-3/5\" dia)",
+    "fdc": 170457
+   }
+  },
+  "cucumber": {
+   "fdc": 2346406,
+   "type": "foundation",
+   "desc": "Cucumber, with peel, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 13.9,
+    "kj": 58,
+    "protein": 0.625,
+    "fat": 0.178,
+    "satFat": null,
+    "carbs": 2.95,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 1.52,
+    "potassium": 170,
+    "calcium": 16.3,
+    "iron": 0,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "whole",
+    "n": 1,
+    "g": 301,
+    "usda": "1 cucumber (8-1/4\")",
+    "fdc": 168409
+   }
+  },
+  "spinach": {
+   "fdc": 1999633,
+   "type": "foundation",
+   "desc": "Spinach, mature",
+   "energy": "958",
+   "n": {
+    "kcal": 21.6,
+    "kj": 90,
+    "protein": 2.91,
+    "fat": 0.604,
+    "satFat": null,
+    "carbs": 2.64,
+    "fiber": 1.59,
+    "sugars": null,
+    "sodium": 107,
+    "potassium": 460,
+    "calcium": 66.6,
+    "iron": 1.05,
+    "vitC": 30.3
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 30,
+    "usda": "1 cup",
+    "fdc": 168462
+   }
+  },
+  "lettuce": {
+   "fdc": 746769,
+   "type": "foundation",
+   "desc": "Lettuce, cos or romaine, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 17,
+    "kj": 70,
+    "protein": 1.24,
+    "fat": 0.26,
+    "satFat": null,
+    "carbs": 3.24,
+    "fiber": 1.8,
+    "sugars": 1.19,
+    "sodium": null,
+    "potassium": 253,
+    "calcium": 35,
+    "iron": 0.95,
+    "vitC": 4.6
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 47,
+    "usda": "1 cup shredded",
+    "fdc": 169247
+   }
+  },
+  "cabbage": {
+   "fdc": 2346407,
+   "type": "foundation",
+   "desc": "Cabbage, green, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 27.9,
+    "kj": 117,
+    "protein": 0.961,
+    "fat": 0.228,
+    "satFat": null,
+    "carbs": 6.38,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 16.1,
+    "potassium": 207,
+    "calcium": 41.8,
+    "iron": 0.066,
+    "vitC": 40.3
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 89,
+    "usda": "1 cup, chopped",
+    "fdc": 169975
+   }
+  },
+  "onion": {
+   "fdc": 170000,
+   "type": "sr",
+   "desc": "Onions, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 40,
+    "kj": 166,
+    "protein": 1.1,
+    "fat": 0.1,
+    "satFat": 0.042,
+    "carbs": 9.34,
+    "fiber": 1.7,
+    "sugars": 4.24,
+    "sodium": 4,
+    "potassium": 146,
+    "calcium": 23,
+    "iron": 0.21,
+    "vitC": 7.4
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 110,
+    "usda": "1 medium (2-1/2\" dia)",
+    "fdc": 170000
+   }
+  },
+  "garlic": {
+   "fdc": 1104647,
+   "type": "foundation",
+   "desc": "Garlic, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 143,
+    "kj": 597,
+    "protein": 6.62,
+    "fat": 0.38,
+    "satFat": null,
+    "carbs": 28.2,
+    "fiber": 2.7,
+    "sugars": null,
+    "sodium": null,
+    "potassium": null,
+    "calcium": null,
+    "iron": null,
+    "vitC": 10
+   },
+   "serving": {
+    "unit": "clove",
+    "n": 1,
+    "g": 3,
+    "usda": "1 clove",
+    "fdc": 169230
+   }
+  },
+  "red-bell-pepper": {
+   "fdc": 2258590,
+   "type": "foundation",
+   "desc": "Peppers, bell, red, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 27,
+    "kj": 113,
+    "protein": 0.896,
+    "fat": 0.126,
+    "satFat": null,
+    "carbs": 6.65,
+    "fiber": 1.16,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 213,
+    "calcium": 6.36,
+    "iron": 0.353,
+    "vitC": 142
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 119,
+    "usda": "1 medium (approx 2-3/4\" long, 2-1/2 dia.)",
+    "fdc": 170108
+   }
+  },
+  "sweet-corn-cooked": {
+   "fdc": 169999,
+   "type": "sr",
+   "desc": "Corn, sweet, yellow, cooked, boiled, drained, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 96,
+    "kj": 401,
+    "protein": 3.41,
+    "fat": 1.5,
+    "satFat": 0.197,
+    "carbs": 21,
+    "fiber": 2.4,
+    "sugars": 4.54,
+    "sodium": 1,
+    "potassium": 218,
+    "calcium": 3,
+    "iron": 0.45,
+    "vitC": 5.5
+   },
+   "serving": {
+    "unit": "ear",
+    "n": 1,
+    "g": 103,
+    "usda": "1 ear medium (6-3/4\" to 7-1/2\" long)",
+    "fdc": 169999
+   }
+  },
+  "green-peas": {
+   "fdc": 170419,
+   "type": "sr",
+   "desc": "Peas, green, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 81,
+    "kj": 339,
+    "protein": 5.42,
+    "fat": 0.4,
+    "satFat": 0.071,
+    "carbs": 14.4,
+    "fiber": 5.7,
+    "sugars": 5.67,
+    "sodium": 5,
+    "potassium": 244,
+    "calcium": 25,
+    "iron": 1.47,
+    "vitC": 40
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 145,
+    "usda": "1 cup",
+    "fdc": 170419
+   }
+  },
+  "cauliflower": {
+   "fdc": 2685573,
+   "type": "foundation",
+   "desc": "Cauliflower, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 22.9,
+    "kj": 96,
+    "protein": 1.64,
+    "fat": 0.238,
+    "satFat": null,
+    "carbs": 4.72,
+    "fiber": 1.95,
+    "sugars": null,
+    "sodium": 20,
+    "potassium": 274,
+    "calcium": 20.4,
+    "iron": 0.334,
+    "vitC": 67.1
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 107,
+    "usda": "1 cup chopped (1/2\" pieces)",
+    "fdc": 169986
+   }
+  },
+  "zucchini": {
+   "fdc": 169291,
+   "type": "sr",
+   "desc": "Squash, summer, zucchini, includes skin, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 17,
+    "kj": 70,
+    "protein": 1.21,
+    "fat": 0.32,
+    "satFat": 0.084,
+    "carbs": 3.11,
+    "fiber": 1,
+    "sugars": 2.5,
+    "sodium": 8,
+    "potassium": 261,
+    "calcium": 16,
+    "iron": 0.37,
+    "vitC": 17.9
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 196,
+    "usda": "1 medium",
+    "fdc": 169291
+   }
+  },
+  "mushrooms": {
+   "fdc": 1999629,
+   "type": "foundation",
+   "desc": "Mushrooms, white button",
+   "energy": "958",
+   "n": {
+    "kcal": 24.9,
+    "kj": 104,
+    "protein": 2.89,
+    "fat": 0.371,
+    "satFat": null,
+    "carbs": 4.08,
+    "fiber": 1.72,
+    "sugars": null,
+    "sodium": 6.44,
+    "potassium": 373,
+    "calcium": 5.46,
+    "iron": 0.227,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 70,
+    "usda": "1 cup, pieces or slices",
+    "fdc": 169251
+   }
+  },
+  "eggplant": {
+   "fdc": 2685577,
+   "type": "foundation",
+   "desc": "Eggplant, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 22.4,
+    "kj": 94,
+    "protein": 0.852,
+    "fat": 0.12,
+    "satFat": null,
+    "carbs": 5.4,
+    "fiber": 2.45,
+    "sugars": 2.35,
+    "sodium": 0.442,
+    "potassium": 222,
+    "calcium": 11.1,
+    "iron": 0,
+    "vitC": 0.8
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 82,
+    "usda": "1 cup, cubes",
+    "fdc": 169228
+   }
+  },
+  "celery": {
+   "fdc": 2346405,
+   "type": "foundation",
+   "desc": "Celery, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 14.8,
+    "kj": 62,
+    "protein": 0.492,
+    "fat": 0.162,
+    "satFat": null,
+    "carbs": 3.32,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 97.2,
+    "potassium": 265,
+    "calcium": 46.3,
+    "iron": 0,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "stalk",
+    "n": 1,
+    "g": 40,
+    "usda": "1 stalk, medium (7-1/2\" - 8\" long)",
+    "fdc": 169988
+   }
+  },
+  "kale": {
+   "fdc": 323505,
+   "type": "foundation",
+   "desc": "Kale, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 35,
+    "kj": 148,
+    "protein": 2.92,
+    "fat": 1.49,
+    "satFat": null,
+    "carbs": 4.42,
+    "fiber": 4.1,
+    "sugars": 0.8,
+    "sodium": 53,
+    "potassium": 348,
+    "calcium": 254,
+    "iron": 1.6,
+    "vitC": 93.4
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 21,
+    "usda": "1 cup",
+    "fdc": 168421
+   }
+  },
+  "asparagus": {
+   "fdc": 168389,
+   "type": "sr",
+   "desc": "Asparagus, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 20,
+    "kj": 85,
+    "protein": 2.2,
+    "fat": 0.12,
+    "satFat": 0.04,
+    "carbs": 3.88,
+    "fiber": 2.1,
+    "sugars": 1.88,
+    "sodium": 2,
+    "potassium": 202,
+    "calcium": 24,
+    "iron": 2.14,
+    "vitC": 5.6
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 134,
+    "usda": "1 cup",
+    "fdc": 168389
+   }
+  },
+  "green-beans": {
+   "fdc": 2346400,
+   "type": "foundation",
+   "desc": "Beans, snap, green, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 33.6,
+    "kj": 141,
+    "protein": 1.97,
+    "fat": 0.275,
+    "satFat": null,
+    "carbs": 7.41,
+    "fiber": 3.01,
+    "sugars": 2.33,
+    "sodium": 0,
+    "potassium": 290,
+    "calcium": 40,
+    "iron": 0.652,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 100,
+    "usda": "1 cup 1/2\" pieces",
+    "fdc": 169961
+   }
+  },
+  "pumpkin": {
+   "fdc": 168448,
+   "type": "sr",
+   "desc": "Pumpkin, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 26,
+    "kj": 109,
+    "protein": 1,
+    "fat": 0.1,
+    "satFat": 0.052,
+    "carbs": 6.5,
+    "fiber": 0.5,
+    "sugars": 2.76,
+    "sodium": 1,
+    "potassium": 340,
+    "calcium": 21,
+    "iron": 0.8,
+    "vitC": 9
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 116,
+    "usda": "1 cup (1\" cubes)",
+    "fdc": 168448
+   }
+  },
+  "bok-choy": {
+   "fdc": 2685572,
+   "type": "foundation",
+   "desc": "Cabbage, bok choy, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 17,
+    "kj": 71,
+    "protein": 1.02,
+    "fat": 0.234,
+    "satFat": null,
+    "carbs": 3.51,
+    "fiber": 1.26,
+    "sugars": null,
+    "sodium": 14.3,
+    "potassium": 228,
+    "calcium": 61.9,
+    "iron": 0.439,
+    "vitC": 30.3
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 70,
+    "usda": "1 cup, shredded",
+    "fdc": 170390
+   }
+  },
+  "bean-sprouts": {
+   "fdc": 169957,
+   "type": "sr",
+   "desc": "Mung beans, mature seeds, sprouted, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 30,
+    "kj": 126,
+    "protein": 3.04,
+    "fat": 0.18,
+    "satFat": 0.046,
+    "carbs": 5.94,
+    "fiber": 1.8,
+    "sugars": 4.13,
+    "sodium": 6,
+    "potassium": 149,
+    "calcium": 13,
+    "iron": 0.91,
+    "vitC": 13.2
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 104,
+    "usda": "1 cup",
+    "fdc": 169957
+   }
+  },
+  "kimchi": {
+   "fdc": 170392,
+   "type": "sr",
+   "desc": "Cabbage, kimchi",
+   "energy": "208",
+   "n": {
+    "kcal": 15,
+    "kj": 65,
+    "protein": 1.1,
+    "fat": 0.5,
+    "satFat": 0.067,
+    "carbs": 2.4,
+    "fiber": 1.6,
+    "sugars": 1.06,
+    "sodium": 498,
+    "potassium": 151,
+    "calcium": 33,
+    "iron": 2.5,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 150,
+    "usda": "1 cup",
+    "fdc": 170392
+   }
+  },
+  "wakame": {
+   "fdc": 170496,
+   "type": "sr",
+   "desc": "Seaweed, wakame, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 45,
+    "kj": 188,
+    "protein": 3.03,
+    "fat": 0.64,
+    "satFat": 0.13,
+    "carbs": 9.14,
+    "fiber": 0.5,
+    "sugars": 0.65,
+    "sodium": 872,
+    "potassium": 50,
+    "calcium": 150,
+    "iron": 2.18,
+    "vitC": 3
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 2,
+    "g": 10,
+    "usda": "2 tbsp (1/8 cup)",
+    "fdc": 170496
+   }
+  },
+  "daikon": {
+   "fdc": 168451,
+   "type": "sr",
+   "desc": "Radishes, oriental, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 18,
+    "kj": 76,
+    "protein": 0.6,
+    "fat": 0.1,
+    "satFat": 0.03,
+    "carbs": 4.1,
+    "fiber": 1.6,
+    "sugars": 2.5,
+    "sodium": 21,
+    "potassium": 227,
+    "calcium": 27,
+    "iron": 0.4,
+    "vitC": 22
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 116,
+    "usda": "1 cup slices",
+    "fdc": 168451
+   }
+  },
+  "taro-cooked": {
+   "fdc": 168486,
+   "type": "sr",
+   "desc": "Taro, cooked, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 142,
+    "kj": 594,
+    "protein": 0.52,
+    "fat": 0.11,
+    "satFat": 0.023,
+    "carbs": 34.6,
+    "fiber": 5.1,
+    "sugars": 0.49,
+    "sodium": 15,
+    "potassium": 484,
+    "calcium": 18,
+    "iron": 0.72,
+    "vitC": 5
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 132,
+    "usda": "1 cup, sliced",
+    "fdc": 168486
+   }
+  },
+  "white-rice-cooked": {
+   "fdc": 168878,
+   "type": "sr",
+   "desc": "Rice, white, long-grain, regular, enriched, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 130,
+    "kj": 544,
+    "protein": 2.69,
+    "fat": 0.28,
+    "satFat": 0.077,
+    "carbs": 28.2,
+    "fiber": 0.4,
+    "sugars": 0.05,
+    "sodium": 1,
+    "potassium": 35,
+    "calcium": 10,
+    "iron": 1.2,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 158,
+    "usda": "1 cup",
+    "fdc": 168878
+   }
+  },
+  "white-rice-uncooked": {
+   "fdc": 168877,
+   "type": "sr",
+   "desc": "Rice, white, long-grain, regular, raw, enriched",
+   "energy": "208",
+   "n": {
+    "kcal": 365,
+    "kj": 1530,
+    "protein": 7.13,
+    "fat": 0.66,
+    "satFat": 0.18,
+    "carbs": 80,
+    "fiber": 1.3,
+    "sugars": 0.12,
+    "sodium": 5,
+    "potassium": 115,
+    "calcium": 28,
+    "iron": 4.31,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 185,
+    "usda": "1 cup",
+    "fdc": 168877
+   }
+  },
+  "brown-rice-cooked": {
+   "fdc": 169704,
+   "type": "sr",
+   "desc": "Rice, brown, long-grain, cooked (Includes foods for USDA's Food Distribution Program)",
+   "energy": "208",
+   "n": {
+    "kcal": 123,
+    "kj": 514,
+    "protein": 2.74,
+    "fat": 0.97,
+    "satFat": 0.26,
+    "carbs": 25.6,
+    "fiber": 1.6,
+    "sugars": 0.24,
+    "sodium": 4,
+    "potassium": 86,
+    "calcium": 3,
+    "iron": 0.56,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 202,
+    "usda": "1 cup",
+    "fdc": 169704
+   }
+  },
+  "short-grain-rice-cooked": {
+   "fdc": 168882,
+   "type": "sr",
+   "desc": "Rice, white, short-grain, enriched, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 130,
+    "kj": 544,
+    "protein": 2.36,
+    "fat": 0.19,
+    "satFat": 0.051,
+    "carbs": 28.7,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 26,
+    "calcium": 1,
+    "iron": 1.46,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 186,
+    "usda": "1 cup",
+    "fdc": 168882
+   }
+  },
+  "glutinous-rice-cooked": {
+   "fdc": 169711,
+   "type": "sr",
+   "desc": "Rice, white, glutinous, unenriched, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 97,
+    "kj": 406,
+    "protein": 2.02,
+    "fat": 0.19,
+    "satFat": 0.039,
+    "carbs": 21.1,
+    "fiber": 1,
+    "sugars": 0.05,
+    "sodium": 5,
+    "potassium": 10,
+    "calcium": 2,
+    "iron": 0.14,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 174,
+    "usda": "1 cup",
+    "fdc": 169711
+   }
+  },
+  "oats": {
+   "fdc": 173904,
+   "type": "sr",
+   "desc": "Cereals, oats, regular and quick, not fortified, dry",
+   "energy": "208",
+   "n": {
+    "kcal": 379,
+    "kj": 1590,
+    "protein": 13.2,
+    "fat": 6.52,
+    "satFat": 1.11,
+    "carbs": 67.7,
+    "fiber": 10.1,
+    "sugars": 0.99,
+    "sodium": 6,
+    "potassium": 362,
+    "calcium": 52,
+    "iron": 4.25,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 81,
+    "usda": "1 cup",
+    "fdc": 173904
+   }
+  },
+  "oatmeal-cooked": {
+   "fdc": 171675,
+   "type": "sr",
+   "desc": "Cereals, oats, regular and quick and instant, unenriched, cooked with water (includes boiling and microwaving), with salt",
+   "energy": "208",
+   "n": {
+    "kcal": 71,
+    "kj": 297,
+    "protein": 2.54,
+    "fat": 1.52,
+    "satFat": 0.31,
+    "carbs": 12,
+    "fiber": 1.7,
+    "sugars": 0.27,
+    "sodium": 71,
+    "potassium": 70,
+    "calcium": 9,
+    "iron": 0.9,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 234,
+    "usda": "1 cup",
+    "fdc": 171675
+   }
+  },
+  "white-bread": {
+   "fdc": 2758993,
+   "type": "foundation",
+   "desc": "Bread, white, commercial",
+   "energy": "957",
+   "n": {
+    "kcal": 263,
+    "kj": 1100,
+    "protein": 9.5,
+    "fat": 2.84,
+    "satFat": 1.03,
+    "carbs": 50,
+    "fiber": 2.2,
+    "sugars": 7.4,
+    "sodium": 420,
+    "potassium": 115,
+    "calcium": 288,
+    "iron": 4.06,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "slice",
+    "n": 1,
+    "g": 29,
+    "usda": "1 slice",
+    "fdc": 174924
+   }
+  },
+  "whole-wheat-bread": {
+   "fdc": 2758994,
+   "type": "foundation",
+   "desc": "Bread, 100% whole wheat, commercial",
+   "energy": "957",
+   "n": {
+    "kcal": 261,
+    "kj": 1092,
+    "protein": 12.9,
+    "fat": 3.5,
+    "satFat": 0.804,
+    "carbs": 44.5,
+    "fiber": 5.9,
+    "sugars": 5.65,
+    "sodium": 408,
+    "potassium": 203,
+    "calcium": 132,
+    "iron": 2.78,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "slice",
+    "n": 1,
+    "g": 32,
+    "usda": "1 slice",
+    "fdc": 172688
+   }
+  },
+  "rye-bread": {
+   "fdc": 172684,
+   "type": "sr",
+   "desc": "Bread, rye",
+   "energy": "208",
+   "n": {
+    "kcal": 259,
+    "kj": 1080,
+    "protein": 8.5,
+    "fat": 3.3,
+    "satFat": 0.626,
+    "carbs": 48.3,
+    "fiber": 5.8,
+    "sugars": 3.85,
+    "sodium": 603,
+    "potassium": 166,
+    "calcium": 73,
+    "iron": 2.83,
+    "vitC": 0.4
+   },
+   "serving": {
+    "unit": "slice",
+    "n": 1,
+    "g": 32,
+    "usda": "1 slice, regular",
+    "fdc": 172684
+   }
+  },
+  "bagel": {
+   "fdc": 174899,
+   "type": "sr",
+   "desc": "Bagels, plain, enriched, with calcium propionate (includes onion, poppy, sesame)",
+   "energy": "208",
+   "n": {
+    "kcal": 264,
+    "kj": 1100,
+    "protein": 10.6,
+    "fat": 1.32,
+    "satFat": 0.36,
+    "carbs": 52.4,
+    "fiber": 1.6,
+    "sugars": 8.43,
+    "sodium": 422,
+    "potassium": 107,
+    "calcium": 219,
+    "iron": 3.57,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 105,
+    "usda": "1 medium bagel (3-1/2\" to 4\" dia)",
+    "fdc": 174899
+   }
+  },
+  "croissant": {
+   "fdc": 174987,
+   "type": "sr",
+   "desc": "Croissants, butter",
+   "energy": "208",
+   "n": {
+    "kcal": 406,
+    "kj": 1700,
+    "protein": 8.2,
+    "fat": 21,
+    "satFat": 11.7,
+    "carbs": 45.8,
+    "fiber": 2.6,
+    "sugars": 11.3,
+    "sodium": 384,
+    "potassium": 118,
+    "calcium": 37,
+    "iron": 2.03,
+    "vitC": 0.2
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 1,
+    "g": 57,
+    "usda": "1 croissant, medium",
+    "fdc": 174987
+   }
+  },
+  "pancake": {
+   "fdc": 175009,
+   "type": "sr",
+   "desc": "Pancakes, plain, prepared from recipe",
+   "energy": "208",
+   "n": {
+    "kcal": 227,
+    "kj": 950,
+    "protein": 6.4,
+    "fat": 9.7,
+    "satFat": 2.12,
+    "carbs": 28.3,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 439,
+    "potassium": 132,
+    "calcium": 219,
+    "iron": 1.8,
+    "vitC": 0.3
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 77,
+    "usda": "1 pancake (6\" dia)",
+    "fdc": 175009
+   }
+  },
+  "spaghetti-cooked": {
+   "fdc": 169737,
+   "type": "sr",
+   "desc": "Pasta, cooked, enriched, without added salt",
+   "energy": "208",
+   "n": {
+    "kcal": 158,
+    "kj": 660,
+    "protein": 5.8,
+    "fat": 0.93,
+    "satFat": 0.176,
+    "carbs": 30.9,
+    "fiber": 1.8,
+    "sugars": 0.56,
+    "sodium": 1,
+    "potassium": 44,
+    "calcium": 7,
+    "iron": 1.28,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 124,
+    "usda": "1 cup spaghetti not packed",
+    "fdc": 169737
+   }
+  },
+  "pasta-dry": {
+   "fdc": 169736,
+   "type": "sr",
+   "desc": "Pasta, dry, enriched",
+   "energy": "208",
+   "n": {
+    "kcal": 371,
+    "kj": 1550,
+    "protein": 13,
+    "fat": 1.51,
+    "satFat": 0.277,
+    "carbs": 74.7,
+    "fiber": 3.2,
+    "sugars": 2.67,
+    "sodium": 6,
+    "potassium": 223,
+    "calcium": 21,
+    "iron": 3.3,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 2,
+    "g": 57,
+    "usda": "2 oz",
+    "fdc": 169736
+   }
+  },
+  "egg-noodles-cooked": {
+   "fdc": 169732,
+   "type": "sr",
+   "desc": "Noodles, egg, enriched, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 138,
+    "kj": 578,
+    "protein": 4.54,
+    "fat": 2.07,
+    "satFat": 0.419,
+    "carbs": 25.2,
+    "fiber": 1.2,
+    "sugars": 0.4,
+    "sodium": 5,
+    "potassium": 38,
+    "calcium": 12,
+    "iron": 1.47,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 160,
+    "usda": "1 cup",
+    "fdc": 169732
+   }
+  },
+  "rice-noodles-cooked": {
+   "fdc": 168914,
+   "type": "sr",
+   "desc": "Rice noodles, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 108,
+    "kj": 454,
+    "protein": 1.79,
+    "fat": 0.2,
+    "satFat": 0.023,
+    "carbs": 24,
+    "fiber": 1,
+    "sugars": 0.03,
+    "sodium": 19,
+    "potassium": 4,
+    "calcium": 4,
+    "iron": 0.14,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 176,
+    "usda": "1 cup",
+    "fdc": 168914
+   }
+  },
+  "soba-cooked": {
+   "fdc": 168907,
+   "type": "sr",
+   "desc": "Noodles, japanese, soba, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 99,
+    "kj": 414,
+    "protein": 5.06,
+    "fat": 0.1,
+    "satFat": 0.019,
+    "carbs": 21.4,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 60,
+    "potassium": 35,
+    "calcium": 4,
+    "iron": 0.48,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 114,
+    "usda": "1 cup",
+    "fdc": 168907
+   }
+  },
+  "somen-cooked": {
+   "fdc": 168909,
+   "type": "sr",
+   "desc": "Noodles, japanese, somen, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 131,
+    "kj": 548,
+    "protein": 4,
+    "fat": 0.18,
+    "satFat": 0.025,
+    "carbs": 27.5,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 161,
+    "potassium": 29,
+    "calcium": 8,
+    "iron": 0.52,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 176,
+    "usda": "1 cup",
+    "fdc": 168909
+   }
+  },
+  "instant-ramen": {
+   "fdc": 171177,
+   "type": "sr",
+   "desc": "Soup, ramen noodle, any flavor, dry",
+   "energy": "208",
+   "n": {
+    "kcal": 440,
+    "kj": 1840,
+    "protein": 10.2,
+    "fat": 17.6,
+    "satFat": 8.12,
+    "carbs": 60.3,
+    "fiber": 2.9,
+    "sugars": 1.98,
+    "sodium": 1860,
+    "potassium": 181,
+    "calcium": 21,
+    "iron": 4.11,
+    "vitC": 0.3
+   },
+   "serving": {
+    "unit": "block",
+    "n": 1,
+    "g": 81,
+    "usda": "1 package without flavor packet",
+    "fdc": 171177
+   }
+  },
+  "quinoa-cooked": {
+   "fdc": 168917,
+   "type": "sr",
+   "desc": "Quinoa, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 120,
+    "kj": 503,
+    "protein": 4.4,
+    "fat": 1.92,
+    "satFat": 0.231,
+    "carbs": 21.3,
+    "fiber": 2.8,
+    "sugars": 0.87,
+    "sodium": 7,
+    "potassium": 172,
+    "calcium": 17,
+    "iron": 1.49,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 185,
+    "usda": "1 cup",
+    "fdc": 168917
+   }
+  },
+  "couscous-cooked": {
+   "fdc": 169700,
+   "type": "sr",
+   "desc": "Couscous, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 112,
+    "kj": 469,
+    "protein": 3.79,
+    "fat": 0.16,
+    "satFat": 0.029,
+    "carbs": 23.2,
+    "fiber": 1.4,
+    "sugars": 0.1,
+    "sodium": 5,
+    "potassium": 58,
+    "calcium": 8,
+    "iron": 0.38,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 157,
+    "usda": "1 cup, cooked",
+    "fdc": 169700
+   }
+  },
+  "barley-cooked": {
+   "fdc": 170285,
+   "type": "sr",
+   "desc": "Barley, pearled, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 123,
+    "kj": 515,
+    "protein": 2.26,
+    "fat": 0.44,
+    "satFat": 0.093,
+    "carbs": 28.2,
+    "fiber": 3.8,
+    "sugars": 0.28,
+    "sodium": 3,
+    "potassium": 93,
+    "calcium": 11,
+    "iron": 1.33,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 157,
+    "usda": "1 cup",
+    "fdc": 170285
+   }
+  },
+  "corn-tortilla": {
+   "fdc": 2758997,
+   "type": "foundation",
+   "desc": "Tortilla, corn, shelf stable",
+   "energy": "957",
+   "n": {
+    "kcal": 215,
+    "kj": 900,
+    "protein": 4.31,
+    "fat": 2.31,
+    "satFat": 0.388,
+    "carbs": 44.2,
+    "fiber": 4.5,
+    "sugars": 4.02,
+    "sodium": 34.9,
+    "potassium": 168,
+    "calcium": 35.2,
+    "iron": 0.791,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 24,
+    "usda": "1 tortilla",
+    "fdc": 175036
+   }
+  },
+  "flour-tortilla": {
+   "fdc": 175037,
+   "type": "sr",
+   "desc": "Tortillas, ready-to-bake or -fry, flour, refrigerated",
+   "energy": "208",
+   "n": {
+    "kcal": 306,
+    "kj": 1280,
+    "protein": 8.2,
+    "fat": 7.99,
+    "satFat": 2.92,
+    "carbs": 49.4,
+    "fiber": 3.5,
+    "sugars": 3.71,
+    "sodium": 736,
+    "potassium": 125,
+    "calcium": 146,
+    "iron": 3.63,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 30,
+    "usda": "1 tortilla medium (approx 6\" dia)",
+    "fdc": 175037
+   }
+  },
+  "popcorn": {
+   "fdc": 167959,
+   "type": "sr",
+   "desc": "Snacks, popcorn, air-popped",
+   "energy": "208",
+   "n": {
+    "kcal": 387,
+    "kj": 1620,
+    "protein": 12.9,
+    "fat": 4.54,
+    "satFat": 0.637,
+    "carbs": 77.8,
+    "fiber": 14.5,
+    "sugars": 0.87,
+    "sodium": 8,
+    "potassium": 329,
+    "calcium": 7,
+    "iron": 3.19,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 8,
+    "usda": "1 cup",
+    "fdc": 167959
+   }
+  },
+  "flour": {
+   "fdc": 789890,
+   "type": "foundation",
+   "desc": "Flour, wheat, all-purpose, enriched, bleached",
+   "energy": "208",
+   "n": {
+    "kcal": 366,
+    "kj": 1530,
+    "protein": 10.9,
+    "fat": 1.48,
+    "satFat": null,
+    "carbs": 77.3,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 2,
+    "potassium": 136,
+    "calcium": 19,
+    "iron": 5.62,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 125,
+    "usda": "1 cup",
+    "fdc": 168894
+   }
+  },
+  "chicken-breast-roasted": {
+   "fdc": 171477,
+   "type": "sr",
+   "desc": "Chicken, broilers or fryers, breast, meat only, cooked, roasted",
+   "energy": "208",
+   "n": {
+    "kcal": 165,
+    "kj": 690,
+    "protein": 31,
+    "fat": 3.57,
+    "satFat": 1.01,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 74,
+    "potassium": 256,
+    "calcium": 15,
+    "iron": 1.04,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "half-breast",
+    "n": 1,
+    "g": 86,
+    "usda": "0.5 breast, bone and skin removed",
+    "fdc": 171477
+   }
+  },
+  "chicken-breast-raw": {
+   "fdc": 171077,
+   "type": "sr",
+   "desc": "Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 120,
+    "kj": 501,
+    "protein": 22.5,
+    "fat": 2.62,
+    "satFat": 0.563,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 45,
+    "potassium": 334,
+    "calcium": 5,
+    "iron": 0.37,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 4,
+    "g": 113,
+    "usda": "4 oz",
+    "fdc": 171077
+   }
+  },
+  "chicken-thigh-roasted": {
+   "fdc": 172388,
+   "type": "sr",
+   "desc": "Chicken, broilers or fryers, thigh, meat only, cooked, roasted",
+   "energy": "208",
+   "n": {
+    "kcal": 179,
+    "kj": 750,
+    "protein": 24.8,
+    "fat": 8.15,
+    "satFat": 2.31,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 106,
+    "potassium": 269,
+    "calcium": 9,
+    "iron": 1.13,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 116,
+    "usda": "1 thigh without skin",
+    "fdc": 172388
+   }
+  },
+  "chicken-wing-roasted": {
+   "fdc": 173630,
+   "type": "sr",
+   "desc": "Chicken, broilers or fryers, wing, meat and skin, cooked, roasted",
+   "energy": "208",
+   "n": {
+    "kcal": 254,
+    "kj": 1060,
+    "protein": 23.8,
+    "fat": 16.9,
+    "satFat": 4.98,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 98,
+    "potassium": 212,
+    "calcium": 18,
+    "iron": 0.84,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 173630
+   }
+  },
+  "ground-beef-cooked": {
+   "fdc": 174032,
+   "type": "sr",
+   "desc": "Beef, ground, 85% lean meat / 15% fat, patty, cooked, broiled",
+   "energy": "208",
+   "n": {
+    "kcal": 250,
+    "kj": 1040,
+    "protein": 25.9,
+    "fat": 15.4,
+    "satFat": 5.9,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 72,
+    "potassium": 318,
+    "calcium": 18,
+    "iron": 2.6,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "patty",
+    "n": 1,
+    "g": 77,
+    "usda": "1 patty (yield from 1/4 lb raw meat)",
+    "fdc": 174032
+   }
+  },
+  "sirloin-steak": {
+   "fdc": 168727,
+   "type": "sr",
+   "desc": "Beef, top sirloin, steak, separable lean and fat, trimmed to 1/8\" fat, all grades, cooked, broiled",
+   "energy": "208",
+   "n": {
+    "kcal": 243,
+    "kj": 1020,
+    "protein": 27,
+    "fat": 14.2,
+    "satFat": 5.6,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 56,
+    "potassium": 336,
+    "calcium": 20,
+    "iron": 1.73,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 168727
+   }
+  },
+  "pork-chop": {
+   "fdc": 167827,
+   "type": "sr",
+   "desc": "Pork, fresh, loin, center loin (chops), bone-in, separable lean and fat, cooked, broiled",
+   "energy": "208",
+   "n": {
+    "kcal": 209,
+    "kj": 875,
+    "protein": 25.6,
+    "fat": 11.1,
+    "satFat": 3.52,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 55,
+    "potassium": 344,
+    "calcium": 24,
+    "iron": 0.79,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 157,
+    "usda": "1 chop without refuse (Yield from 1 cooked chop, with refuse, weighing 209g)",
+    "fdc": 167827
+   }
+  },
+  "pork-belly-raw": {
+   "fdc": 167812,
+   "type": "sr",
+   "desc": "Pork, fresh, belly, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 518,
+    "kj": 2170,
+    "protein": 9.34,
+    "fat": 53,
+    "satFat": 19.3,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 32,
+    "potassium": 185,
+    "calcium": 5,
+    "iron": 0.52,
+    "vitC": 0.3
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 4,
+    "g": 113,
+    "usda": "4 oz",
+    "fdc": 167812
+   }
+  },
+  "ground-pork-cooked": {
+   "fdc": 167903,
+   "type": "sr",
+   "desc": "Pork, fresh, ground, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 297,
+    "kj": 1240,
+    "protein": 25.7,
+    "fat": 20.8,
+    "satFat": 7.72,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 73,
+    "potassium": 362,
+    "calcium": 22,
+    "iron": 1.29,
+    "vitC": 0.7
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 167903
+   }
+  },
+  "bacon": {
+   "fdc": 167914,
+   "type": "sr",
+   "desc": "Pork, cured, bacon, cooked, baked",
+   "energy": "208",
+   "n": {
+    "kcal": 548,
+    "kj": 2290,
+    "protein": 35.7,
+    "fat": 43.3,
+    "satFat": 14.2,
+    "carbs": 1.35,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 2190,
+    "potassium": 539,
+    "calcium": 10,
+    "iron": 1.49,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "slice",
+    "n": 1,
+    "g": 8.1,
+    "usda": "1 slice cooked",
+    "fdc": 167914
+   }
+  },
+  "ham": {
+   "fdc": 173864,
+   "type": "sr",
+   "desc": "Ham, sliced, regular (approximately 11% fat)",
+   "energy": "208",
+   "n": {
+    "kcal": 164,
+    "kj": 687,
+    "protein": 16.6,
+    "fat": 8.8,
+    "satFat": 0.5,
+    "carbs": 3.63,
+    "fiber": 1.3,
+    "sugars": 1,
+    "sodium": 814,
+    "potassium": 287,
+    "calcium": 24,
+    "iron": 1.02,
+    "vitC": 4
+   },
+   "serving": {
+    "unit": "slice",
+    "n": 1,
+    "g": 28,
+    "usda": "1 slice",
+    "fdc": 173864
+   }
+  },
+  "lamb-leg-roasted": {
+   "fdc": 172485,
+   "type": "sr",
+   "desc": "Lamb, leg, shank half, separable lean and fat, trimmed to 1/4\" fat, choice, cooked, roasted",
+   "energy": "208",
+   "n": {
+    "kcal": 225,
+    "kj": 941,
+    "protein": 26.4,
+    "fat": 12.4,
+    "satFat": 5.09,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": null,
+    "sodium": 65,
+    "potassium": 326,
+    "calcium": 10,
+    "iron": 1.98,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 172485
+   }
+  },
+  "turkey-breast-roasted": {
+   "fdc": 171496,
+   "type": "sr",
+   "desc": "Turkey, whole, breast, meat only, cooked, roasted",
+   "energy": "208",
+   "n": {
+    "kcal": 147,
+    "kj": 617,
+    "protein": 30.1,
+    "fat": 2.08,
+    "satFat": 0.593,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 99,
+    "potassium": 249,
+    "calcium": 9,
+    "iron": 0.71,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 171496
+   }
+  },
+  "duck-roasted": {
+   "fdc": 172411,
+   "type": "sr",
+   "desc": "Duck, domesticated, meat only, cooked, roasted",
+   "energy": "208",
+   "n": {
+    "kcal": 201,
+    "kj": 841,
+    "protein": 23.5,
+    "fat": 11.2,
+    "satFat": 3.95,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 65,
+    "potassium": 252,
+    "calcium": 12,
+    "iron": 2.7,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 140,
+    "usda": "1 cup, chopped or diced",
+    "fdc": 172411
+   }
+  },
+  "hot-dog": {
+   "fdc": 323121,
+   "type": "foundation",
+   "desc": "Frankfurter, beef, unheated",
+   "energy": "208",
+   "n": {
+    "kcal": 314,
+    "kj": 1310,
+    "protein": 11.7,
+    "fat": 28,
+    "satFat": 11.4,
+    "carbs": 2.89,
+    "fiber": null,
+    "sugars": 1.26,
+    "sodium": 872,
+    "potassium": 343,
+    "calcium": 15,
+    "iron": 1.14,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 49,
+    "usda": "1 hot dog",
+    "fdc": 173862
+   }
+  },
+  "beef-jerky": {
+   "fdc": 167536,
+   "type": "sr",
+   "desc": "Snacks, beef jerky, chopped and formed",
+   "energy": "208",
+   "n": {
+    "kcal": 410,
+    "kj": 1720,
+    "protein": 33.2,
+    "fat": 25.6,
+    "satFat": 10.8,
+    "carbs": 11,
+    "fiber": 1.8,
+    "sugars": 9,
+    "sodium": 1780,
+    "potassium": 597,
+    "calcium": 20,
+    "iron": 5.42,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 20,
+    "usda": "1 piece, large",
+    "fdc": 167536
+   }
+  },
+  "salmon-cooked": {
+   "fdc": 175168,
+   "type": "sr",
+   "desc": "Fish, salmon, Atlantic, farmed, cooked, dry heat",
+   "energy": "208",
+   "n": {
+    "kcal": 206,
+    "kj": 861,
+    "protein": 22.1,
+    "fat": 12.4,
+    "satFat": 2.4,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 61,
+    "potassium": 384,
+    "calcium": 15,
+    "iron": 0.34,
+    "vitC": 3.7
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 175168
+   }
+  },
+  "salmon-raw": {
+   "fdc": 2684441,
+   "type": "foundation",
+   "desc": "Fish, salmon, Atlantic, farm raised, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 203,
+    "kj": 849,
+    "protein": 20.3,
+    "fat": 13.1,
+    "satFat": 2.28,
+    "carbs": 0,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 49.5,
+    "potassium": 378,
+    "calcium": 9.42,
+    "iron": 0.259,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 175167
+   }
+  },
+  "tuna-canned": {
+   "fdc": 334194,
+   "type": "foundation",
+   "desc": "Fish, tuna, light, canned in water, drained solids",
+   "energy": "208",
+   "n": {
+    "kcal": 90,
+    "kj": 376,
+    "protein": 19,
+    "fat": 0.94,
+    "satFat": 0.224,
+    "carbs": 0.08,
+    "fiber": null,
+    "sugars": 0,
+    "sodium": 219,
+    "potassium": 176,
+    "calcium": 18,
+    "iron": 1.67,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "can",
+    "n": 1,
+    "g": 165,
+    "usda": "1 can",
+    "fdc": 173709
+   }
+  },
+  "tuna-raw": {
+   "fdc": 175159,
+   "type": "sr",
+   "desc": "Fish, tuna, fresh, yellowfin, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 109,
+    "kj": 454,
+    "protein": 24.4,
+    "fat": 0.49,
+    "satFat": 0.172,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 45,
+    "potassium": 441,
+    "calcium": 4,
+    "iron": 0.77,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 175159
+   }
+  },
+  "cod-cooked": {
+   "fdc": 171956,
+   "type": "sr",
+   "desc": "Fish, cod, Atlantic, cooked, dry heat",
+   "energy": "208",
+   "n": {
+    "kcal": 105,
+    "kj": 440,
+    "protein": 22.8,
+    "fat": 0.86,
+    "satFat": 0.168,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 78,
+    "potassium": 244,
+    "calcium": 14,
+    "iron": 0.49,
+    "vitC": 1
+   },
+   "serving": {
+    "unit": "fillet",
+    "n": 1,
+    "g": 180,
+    "usda": "1 fillet",
+    "fdc": 171956
+   }
+  },
+  "tilapia-cooked": {
+   "fdc": 175177,
+   "type": "sr",
+   "desc": "Fish, tilapia, cooked, dry heat",
+   "energy": "208",
+   "n": {
+    "kcal": 128,
+    "kj": 538,
+    "protein": 26.2,
+    "fat": 2.65,
+    "satFat": 0.94,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 56,
+    "potassium": 380,
+    "calcium": 14,
+    "iron": 0.69,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "fillet",
+    "n": 1,
+    "g": 87,
+    "usda": "1 fillet",
+    "fdc": 175177
+   }
+  },
+  "mackerel-cooked": {
+   "fdc": 175120,
+   "type": "sr",
+   "desc": "Fish, mackerel, Atlantic, cooked, dry heat",
+   "energy": "208",
+   "n": {
+    "kcal": 262,
+    "kj": 1100,
+    "protein": 23.8,
+    "fat": 17.8,
+    "satFat": 4.18,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": null,
+    "sodium": 83,
+    "potassium": 401,
+    "calcium": 15,
+    "iron": 1.57,
+    "vitC": 0.4
+   },
+   "serving": {
+    "unit": "fillet",
+    "n": 1,
+    "g": 88,
+    "usda": "1 fillet",
+    "fdc": 175120
+   }
+  },
+  "sardines-canned": {
+   "fdc": 175139,
+   "type": "sr",
+   "desc": "Fish, sardine, Atlantic, canned in oil, drained solids with bone",
+   "energy": "208",
+   "n": {
+    "kcal": 208,
+    "kj": 871,
+    "protein": 24.6,
+    "fat": 11.4,
+    "satFat": 1.53,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 307,
+    "potassium": 397,
+    "calcium": 382,
+    "iron": 2.92,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "can",
+    "n": 1,
+    "g": 92,
+    "usda": "1 can (3.75 oz)",
+    "fdc": 175139
+   }
+  },
+  "eel-cooked": {
+   "fdc": 174194,
+   "type": "sr",
+   "desc": "Fish, eel, mixed species, cooked, dry heat",
+   "energy": "208",
+   "n": {
+    "kcal": 236,
+    "kj": 987,
+    "protein": 23.6,
+    "fat": 15,
+    "satFat": 3.02,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": null,
+    "sodium": 65,
+    "potassium": 349,
+    "calcium": 26,
+    "iron": 0.64,
+    "vitC": 1.8
+   },
+   "serving": {
+    "unit": "fillet",
+    "n": 1,
+    "g": 159,
+    "usda": "1 fillet",
+    "fdc": 174194
+   }
+  },
+  "shrimp-cooked": {
+   "fdc": 175180,
+   "type": "sr",
+   "desc": "Crustaceans, shrimp, cooked",
+   "energy": "208",
+   "n": {
+    "kcal": 99,
+    "kj": 415,
+    "protein": 24,
+    "fat": 0.28,
+    "satFat": 0.056,
+    "carbs": 0.2,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 111,
+    "potassium": 259,
+    "calcium": 70,
+    "iron": 0.51,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 175180
+   }
+  },
+  "crab-cooked": {
+   "fdc": 174202,
+   "type": "sr",
+   "desc": "Crustaceans, crab, alaska king, cooked, moist heat",
+   "energy": "208",
+   "n": {
+    "kcal": 97,
+    "kj": 406,
+    "protein": 19.4,
+    "fat": 1.54,
+    "satFat": 0.133,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": null,
+    "sodium": 1070,
+    "potassium": 262,
+    "calcium": 59,
+    "iron": 0.76,
+    "vitC": 7.6
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 174202
+   }
+  },
+  "lobster-cooked": {
+   "fdc": 174209,
+   "type": "sr",
+   "desc": "Crustaceans, lobster, northern, cooked, moist heat",
+   "energy": "208",
+   "n": {
+    "kcal": 89,
+    "kj": 372,
+    "protein": 19,
+    "fat": 0.86,
+    "satFat": 0.208,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 486,
+    "potassium": 230,
+    "calcium": 96,
+    "iron": 0.29,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 174209
+   }
+  },
+  "scallops-cooked": {
+   "fdc": 167742,
+   "type": "sr",
+   "desc": "Mollusks, scallop, (bay and sea), cooked, steamed",
+   "energy": "208",
+   "n": {
+    "kcal": 111,
+    "kj": 466,
+    "protein": 20.5,
+    "fat": 0.84,
+    "satFat": 0.218,
+    "carbs": 5.41,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 667,
+    "potassium": 314,
+    "calcium": 10,
+    "iron": 0.58,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 167742
+   }
+  },
+  "squid-raw": {
+   "fdc": 174223,
+   "type": "sr",
+   "desc": "Mollusks, squid, mixed species, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 92,
+    "kj": 385,
+    "protein": 15.6,
+    "fat": 1.38,
+    "satFat": 0.358,
+    "carbs": 3.08,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 44,
+    "potassium": 246,
+    "calcium": 32,
+    "iron": 0.68,
+    "vitC": 4.7
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 174223
+   }
+  },
+  "oysters-raw": {
+   "fdc": 171978,
+   "type": "sr",
+   "desc": "Mollusks, oyster, eastern, wild, raw",
+   "energy": "208",
+   "n": {
+    "kcal": 51,
+    "kj": 213,
+    "protein": 5.71,
+    "fat": 1.71,
+    "satFat": 0.474,
+    "carbs": 2.72,
+    "fiber": 0,
+    "sugars": 0.62,
+    "sodium": 85,
+    "potassium": 156,
+    "calcium": 59,
+    "iron": 4.61,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "medium",
+    "n": 6,
+    "g": 84,
+    "usda": "6 medium",
+    "fdc": 171978
+   }
+  },
+  "clams-cooked": {
+   "fdc": 171975,
+   "type": "sr",
+   "desc": "Mollusks, clam, mixed species, cooked, moist heat",
+   "energy": "208",
+   "n": {
+    "kcal": 148,
+    "kj": 618,
+    "protein": 25.6,
+    "fat": 1.95,
+    "satFat": 0.188,
+    "carbs": 5.13,
+    "fiber": 0,
+    "sugars": null,
+    "sodium": 1200,
+    "potassium": 628,
+    "calcium": 92,
+    "iron": 2.81,
+    "vitC": 22.1
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 3,
+    "g": 85,
+    "usda": "3 oz",
+    "fdc": 171975
+   }
+  },
+  "egg": {
+   "fdc": 748967,
+   "type": "foundation",
+   "desc": "Eggs, Grade A, Large, egg whole",
+   "energy": "208",
+   "n": {
+    "kcal": 148,
+    "kj": 617,
+    "protein": 12.4,
+    "fat": 9.96,
+    "satFat": 3.2,
+    "carbs": 0.96,
+    "fiber": 0,
+    "sugars": 0.2,
+    "sodium": 129,
+    "potassium": 132,
+    "calcium": 48,
+    "iron": 1.67,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "large",
+    "n": 1,
+    "g": 50,
+    "usda": "1 large",
+    "fdc": 171287
+   }
+  },
+  "egg-boiled": {
+   "fdc": 173424,
+   "type": "sr",
+   "desc": "Egg, whole, cooked, hard-boiled",
+   "energy": "208",
+   "n": {
+    "kcal": 155,
+    "kj": 649,
+    "protein": 12.6,
+    "fat": 10.6,
+    "satFat": 3.27,
+    "carbs": 1.12,
+    "fiber": 0,
+    "sugars": 1.12,
+    "sodium": 124,
+    "potassium": 126,
+    "calcium": 50,
+    "iron": 1.19,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "large",
+    "n": 1,
+    "g": 50,
+    "usda": "1 large",
+    "fdc": 173424
+   }
+  },
+  "egg-fried": {
+   "fdc": 173423,
+   "type": "sr",
+   "desc": "Egg, whole, cooked, fried",
+   "energy": "208",
+   "n": {
+    "kcal": 196,
+    "kj": 821,
+    "protein": 13.6,
+    "fat": 14.8,
+    "satFat": 4.32,
+    "carbs": 0.83,
+    "fiber": 0,
+    "sugars": 0.4,
+    "sodium": 207,
+    "potassium": 152,
+    "calcium": 62,
+    "iron": 1.89,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "large",
+    "n": 1,
+    "g": 46,
+    "usda": "1 large",
+    "fdc": 173423
+   }
+  },
+  "egg-scrambled": {
+   "fdc": 172187,
+   "type": "sr",
+   "desc": "Egg, whole, cooked, scrambled",
+   "energy": "208",
+   "n": {
+    "kcal": 149,
+    "kj": 621,
+    "protein": 9.99,
+    "fat": 11,
+    "satFat": 3.33,
+    "carbs": 1.61,
+    "fiber": 0,
+    "sugars": 1.39,
+    "sodium": 145,
+    "potassium": 132,
+    "calcium": 66,
+    "iron": 1.31,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "large",
+    "n": 1,
+    "g": 61,
+    "usda": "1 large",
+    "fdc": 172187
+   }
+  },
+  "egg-white": {
+   "fdc": 747997,
+   "type": "foundation",
+   "desc": "Eggs, Grade A, Large, egg white",
+   "energy": "208",
+   "n": {
+    "kcal": 55,
+    "kj": 231,
+    "protein": 10.7,
+    "fat": 0,
+    "satFat": null,
+    "carbs": 2.36,
+    "fiber": null,
+    "sugars": null,
+    "sodium": null,
+    "potassium": null,
+    "calcium": null,
+    "iron": null,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "large",
+    "n": 1,
+    "g": 33,
+    "usda": "1 large",
+    "fdc": 172183
+   }
+  },
+  "egg-yolk": {
+   "fdc": 748236,
+   "type": "foundation",
+   "desc": "Eggs, Grade A, Large, egg yolk",
+   "energy": "208",
+   "n": {
+    "kcal": 334,
+    "kj": 1400,
+    "protein": 16.2,
+    "fat": 28.8,
+    "satFat": null,
+    "carbs": 1.02,
+    "fiber": null,
+    "sugars": null,
+    "sodium": null,
+    "potassium": null,
+    "calcium": null,
+    "iron": null,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "large",
+    "n": 1,
+    "g": 17,
+    "usda": "1 large",
+    "fdc": 172184
+   }
+  },
+  "whole-milk": {
+   "fdc": 746782,
+   "type": "foundation",
+   "desc": "Milk, whole, 3.25% milkfat, with added vitamin D",
+   "energy": "208",
+   "n": {
+    "kcal": 60,
+    "kj": 251,
+    "protein": 3.27,
+    "fat": 3.2,
+    "satFat": 1.86,
+    "carbs": 4.63,
+    "fiber": null,
+    "sugars": 4.81,
+    "sodium": 38,
+    "potassium": 150,
+    "calcium": 123,
+    "iron": 0,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 244,
+    "usda": "1 cup",
+    "fdc": 171265
+   }
+  },
+  "milk-2-percent": {
+   "fdc": 746778,
+   "type": "foundation",
+   "desc": "Milk, reduced fat, fluid, 2% milkfat, with added vitamin A and vitamin D",
+   "energy": "208",
+   "n": {
+    "kcal": 50,
+    "kj": 209,
+    "protein": 3.36,
+    "fat": 1.9,
+    "satFat": 1.11,
+    "carbs": 4.9,
+    "fiber": null,
+    "sugars": 4.89,
+    "sodium": 39,
+    "potassium": 159,
+    "calcium": 126,
+    "iron": 0,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 244,
+    "usda": "1 cup",
+    "fdc": 171267
+   }
+  },
+  "skim-milk": {
+   "fdc": 746776,
+   "type": "foundation",
+   "desc": "Milk, nonfat, fluid, with added vitamin A and vitamin D (fat free or skim)",
+   "energy": "208",
+   "n": {
+    "kcal": 34,
+    "kj": 144,
+    "protein": 3.43,
+    "fat": 0.08,
+    "satFat": 0.049,
+    "carbs": 4.92,
+    "fiber": null,
+    "sugars": 5.05,
+    "sodium": 41,
+    "potassium": 167,
+    "calcium": 132,
+    "iron": 0,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 245,
+    "usda": "1 cup",
+    "fdc": 171269
+   }
+  },
+  "greek-yogurt": {
+   "fdc": 330137,
+   "type": "foundation",
+   "desc": "Yogurt, Greek, plain, nonfat",
+   "energy": "208",
+   "n": {
+    "kcal": 61,
+    "kj": 256,
+    "protein": 10.3,
+    "fat": 0.37,
+    "satFat": 0.108,
+    "carbs": 3.64,
+    "fiber": null,
+    "sugars": 3.27,
+    "sodium": 36,
+    "potassium": 141,
+    "calcium": 111,
+    "iron": 0.07,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "container",
+    "n": 1,
+    "g": 170,
+    "usda": "1 container",
+    "fdc": 170894
+   }
+  },
+  "plain-yogurt": {
+   "fdc": 2259793,
+   "type": "foundation",
+   "desc": "Yogurt, plain, whole milk",
+   "energy": "958",
+   "n": {
+    "kcal": 77.3,
+    "kj": 323,
+    "protein": 3.82,
+    "fat": 4.48,
+    "satFat": 2.32,
+    "carbs": 5.57,
+    "fiber": null,
+    "sugars": 4.09,
+    "sodium": 41.8,
+    "potassium": 164,
+    "calcium": 127,
+    "iron": 0,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "container",
+    "n": 1,
+    "g": 170,
+    "usda": "1 container (6 oz)",
+    "fdc": 171284
+   }
+  },
+  "cheddar": {
+   "fdc": 328637,
+   "type": "foundation",
+   "desc": "Cheese, cheddar",
+   "energy": "208",
+   "n": {
+    "kcal": 408,
+    "kj": 1710,
+    "protein": 23.3,
+    "fat": 34,
+    "satFat": 19.2,
+    "carbs": 2.44,
+    "fiber": null,
+    "sugars": 0.33,
+    "sodium": 654,
+    "potassium": 77,
+    "calcium": 707,
+    "iron": 0.16,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "slice",
+    "n": 1,
+    "g": 28,
+    "usda": "1 slice (1 oz)",
+    "fdc": 173414
+   }
+  },
+  "mozzarella": {
+   "fdc": 170845,
+   "type": "sr",
+   "desc": "Cheese, mozzarella, whole milk",
+   "energy": "208",
+   "n": {
+    "kcal": 299,
+    "kj": 1250,
+    "protein": 22.2,
+    "fat": 22.1,
+    "satFat": 13.9,
+    "carbs": 2.4,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 486,
+    "potassium": 76,
+    "calcium": 505,
+    "iron": 0.44,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz",
+    "fdc": 170845
+   }
+  },
+  "cottage-cheese": {
+   "fdc": 2346384,
+   "type": "foundation",
+   "desc": "Cottage cheese, full fat, large or small curd",
+   "energy": "958",
+   "n": {
+    "kcal": 105,
+    "kj": 439,
+    "protein": 11.6,
+    "fat": 4.22,
+    "satFat": 2.6,
+    "carbs": 4.6,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 350,
+    "potassium": 124,
+    "calcium": 88.3,
+    "iron": 0,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 4,
+    "g": 113,
+    "usda": "4 oz",
+    "fdc": 172179
+   }
+  },
+  "cream-cheese": {
+   "fdc": 2346385,
+   "type": "foundation",
+   "desc": "Cream cheese, full fat, block",
+   "energy": "958",
+   "n": {
+    "kcal": 337,
+    "kj": 1410,
+    "protein": 5.79,
+    "fat": 33.5,
+    "satFat": 19.7,
+    "carbs": 4.56,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 368,
+    "potassium": 125,
+    "calcium": 97.1,
+    "iron": 0,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 14.5,
+    "usda": "1 tbsp",
+    "fdc": 173418
+   }
+  },
+  "butter": {
+   "fdc": 173410,
+   "type": "sr",
+   "desc": "Butter, salted",
+   "energy": "208",
+   "n": {
+    "kcal": 717,
+    "kj": 3000,
+    "protein": 0.85,
+    "fat": 81.1,
+    "satFat": 51.4,
+    "carbs": 0.06,
+    "fiber": 0,
+    "sugars": 0.06,
+    "sodium": 643,
+    "potassium": 24,
+    "calcium": 24,
+    "iron": 0.02,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 14.2,
+    "usda": "1 tbsp",
+    "fdc": 173410
+   }
+  },
+  "ice-cream": {
+   "fdc": 167575,
+   "type": "sr",
+   "desc": "Ice creams, vanilla",
+   "energy": "208",
+   "n": {
+    "kcal": 207,
+    "kj": 868,
+    "protein": 3.5,
+    "fat": 11,
+    "satFat": 6.79,
+    "carbs": 23.6,
+    "fiber": 0.7,
+    "sugars": 21.2,
+    "sodium": 80,
+    "potassium": 199,
+    "calcium": 128,
+    "iron": 0.09,
+    "vitC": 0.6
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 0.5,
+    "g": 66,
+    "usda": "1 serving 1/2 cup",
+    "fdc": 167575
+   }
+  },
+  "tofu-firm": {
+   "fdc": 172448,
+   "type": "sr",
+   "desc": "Tofu, firm, prepared with calcium sulfate and magnesium chloride (nigari)",
+   "energy": "208",
+   "n": {
+    "kcal": 78,
+    "kj": 326,
+    "protein": 9.04,
+    "fat": 4.17,
+    "satFat": 0.793,
+    "carbs": 2.85,
+    "fiber": 0.9,
+    "sugars": 0.6,
+    "sodium": 12,
+    "potassium": 148,
+    "calcium": 201,
+    "iron": 1.61,
+    "vitC": 0.2
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 0.5,
+    "g": 126,
+    "usda": "0.5 cup",
+    "fdc": 172448
+   }
+  },
+  "tofu-soft": {
+   "fdc": 172449,
+   "type": "sr",
+   "desc": "Tofu, soft, prepared with calcium sulfate and magnesium chloride (nigari)",
+   "energy": "208",
+   "n": {
+    "kcal": 61,
+    "kj": 253,
+    "protein": 7.17,
+    "fat": 3.69,
+    "satFat": 0.533,
+    "carbs": 1.18,
+    "fiber": 0.2,
+    "sugars": 0.7,
+    "sodium": 8,
+    "potassium": 120,
+    "calcium": 111,
+    "iron": 1.11,
+    "vitC": 0.2
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 1,
+    "g": 120,
+    "usda": "1 piece (2-1/2\" x 2-3/4\" x 1\")",
+    "fdc": 172449
+   }
+  },
+  "soy-milk": {
+   "fdc": 172446,
+   "type": "sr",
+   "desc": "Soymilk, original and vanilla, unfortified",
+   "energy": "208",
+   "n": {
+    "kcal": 54,
+    "kj": 226,
+    "protein": 3.27,
+    "fat": 1.75,
+    "satFat": 0.205,
+    "carbs": 6.28,
+    "fiber": 0.6,
+    "sugars": 3.99,
+    "sodium": 51,
+    "potassium": 118,
+    "calcium": 25,
+    "iron": 0.64,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 243,
+    "usda": "1 cup",
+    "fdc": 172446
+   }
+  },
+  "edamame": {
+   "fdc": 168411,
+   "type": "sr",
+   "desc": "Edamame, frozen, prepared",
+   "energy": "208",
+   "n": {
+    "kcal": 121,
+    "kj": 507,
+    "protein": 11.9,
+    "fat": 5.2,
+    "satFat": 0.62,
+    "carbs": 8.91,
+    "fiber": 5.2,
+    "sugars": 2.18,
+    "sodium": 6,
+    "potassium": 436,
+    "calcium": 63,
+    "iron": 2.27,
+    "vitC": 6.1
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 155,
+    "usda": "1 cup",
+    "fdc": 168411
+   }
+  },
+  "natto": {
+   "fdc": 172443,
+   "type": "sr",
+   "desc": "Natto",
+   "energy": "208",
+   "n": {
+    "kcal": 211,
+    "kj": 883,
+    "protein": 19.4,
+    "fat": 11,
+    "satFat": 1.59,
+    "carbs": 12.7,
+    "fiber": 5.4,
+    "sugars": 4.89,
+    "sodium": 7,
+    "potassium": 729,
+    "calcium": 217,
+    "iron": 8.6,
+    "vitC": 13
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 175,
+    "usda": "1 cup",
+    "fdc": 172443
+   }
+  },
+  "tempeh": {
+   "fdc": 174272,
+   "type": "sr",
+   "desc": "Tempeh",
+   "energy": "208",
+   "n": {
+    "kcal": 192,
+    "kj": 803,
+    "protein": 20.3,
+    "fat": 10.8,
+    "satFat": 2.54,
+    "carbs": 7.64,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 9,
+    "potassium": 412,
+    "calcium": 111,
+    "iron": 2.7,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 166,
+    "usda": "1 cup",
+    "fdc": 174272
+   }
+  },
+  "black-beans": {
+   "fdc": 173735,
+   "type": "sr",
+   "desc": "Beans, black, mature seeds, cooked, boiled, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 132,
+    "kj": 552,
+    "protein": 8.86,
+    "fat": 0.54,
+    "satFat": 0.139,
+    "carbs": 23.7,
+    "fiber": 8.7,
+    "sugars": 0.32,
+    "sodium": 1,
+    "potassium": 355,
+    "calcium": 27,
+    "iron": 2.1,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 172,
+    "usda": "1 cup",
+    "fdc": 173735
+   }
+  },
+  "chickpeas": {
+   "fdc": 173757,
+   "type": "sr",
+   "desc": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 164,
+    "kj": 686,
+    "protein": 8.86,
+    "fat": 2.59,
+    "satFat": 0.269,
+    "carbs": 27.4,
+    "fiber": 7.6,
+    "sugars": 4.8,
+    "sodium": 7,
+    "potassium": 291,
+    "calcium": 49,
+    "iron": 2.89,
+    "vitC": 1.3
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 164,
+    "usda": "1 cup",
+    "fdc": 173757
+   }
+  },
+  "lentils": {
+   "fdc": 172421,
+   "type": "sr",
+   "desc": "Lentils, mature seeds, cooked, boiled, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 116,
+    "kj": 487,
+    "protein": 9.02,
+    "fat": 0.38,
+    "satFat": 0.053,
+    "carbs": 20.1,
+    "fiber": 7.9,
+    "sugars": 1.8,
+    "sodium": 2,
+    "potassium": 369,
+    "calcium": 19,
+    "iron": 3.33,
+    "vitC": 1.5
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 198,
+    "usda": "1 cup",
+    "fdc": 172421
+   }
+  },
+  "kidney-beans": {
+   "fdc": 173740,
+   "type": "sr",
+   "desc": "Beans, kidney, all types, mature seeds, cooked, boiled, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 127,
+    "kj": 532,
+    "protein": 8.67,
+    "fat": 0.5,
+    "satFat": 0.073,
+    "carbs": 22.8,
+    "fiber": 6.4,
+    "sugars": 0.32,
+    "sodium": 1,
+    "potassium": 405,
+    "calcium": 35,
+    "iron": 2.22,
+    "vitC": 1.2
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 177,
+    "usda": "1 cup",
+    "fdc": 173740
+   }
+  },
+  "mung-beans": {
+   "fdc": 174257,
+   "type": "sr",
+   "desc": "Mung beans, mature seeds, cooked, boiled, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 105,
+    "kj": 441,
+    "protein": 7.02,
+    "fat": 0.38,
+    "satFat": 0.116,
+    "carbs": 19.2,
+    "fiber": 7.6,
+    "sugars": 2,
+    "sodium": 2,
+    "potassium": 266,
+    "calcium": 27,
+    "iron": 1.4,
+    "vitC": 1
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 202,
+    "usda": "1 cup",
+    "fdc": 174257
+   }
+  },
+  "adzuki-beans": {
+   "fdc": 173728,
+   "type": "sr",
+   "desc": "Beans, adzuki, mature seeds, cooked, boiled, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 128,
+    "kj": 536,
+    "protein": 7.52,
+    "fat": 0.1,
+    "satFat": 0.036,
+    "carbs": 24.8,
+    "fiber": 7.3,
+    "sugars": null,
+    "sodium": 8,
+    "potassium": 532,
+    "calcium": 28,
+    "iron": 2,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 230,
+    "usda": "1 cup",
+    "fdc": 173728
+   }
+  },
+  "hummus": {
+   "fdc": 321358,
+   "type": "foundation",
+   "desc": "Hummus, commercial",
+   "energy": "208",
+   "n": {
+    "kcal": 229,
+    "kj": 960,
+    "protein": 7.35,
+    "fat": 17.1,
+    "satFat": 2.22,
+    "carbs": 14.9,
+    "fiber": 5.4,
+    "sugars": 0.34,
+    "sodium": 438,
+    "potassium": 289,
+    "calcium": 41,
+    "iron": 2.41,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 15,
+    "usda": "1 tbsp",
+    "fdc": 174289
+   }
+  },
+  "almonds": {
+   "fdc": 2346393,
+   "type": "foundation",
+   "desc": "Nuts, almonds, whole, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 584,
+    "kj": 2443,
+    "protein": 21.5,
+    "fat": 51.1,
+    "satFat": 3.78,
+    "carbs": 20,
+    "fiber": 10.8,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 733,
+    "calcium": 254,
+    "iron": 3.74,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz (23 whole kernels)",
+    "fdc": 170567
+   }
+  },
+  "walnuts": {
+   "fdc": 2346394,
+   "type": "foundation",
+   "desc": "Nuts, walnuts, English, halves, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 679,
+    "kj": 2841,
+    "protein": 14.6,
+    "fat": 69.7,
+    "satFat": 6.05,
+    "carbs": 10.9,
+    "fiber": 5.21,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 424,
+    "calcium": 88.3,
+    "iron": 2.24,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz (14 halves)",
+    "fdc": 170187
+   }
+  },
+  "peanuts": {
+   "fdc": 173806,
+   "type": "sr",
+   "desc": "Peanuts, all types, dry-roasted, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 587,
+    "kj": 2460,
+    "protein": 24.4,
+    "fat": 49.7,
+    "satFat": 7.72,
+    "carbs": 21.3,
+    "fiber": 8.4,
+    "sugars": 4.9,
+    "sodium": 6,
+    "potassium": 634,
+    "calcium": 58,
+    "iron": 1.58,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz",
+    "fdc": 173806
+   }
+  },
+  "cashews": {
+   "fdc": 2515374,
+   "type": "foundation",
+   "desc": "Nuts, cashew nuts, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 533,
+    "kj": 2230,
+    "protein": 17.4,
+    "fat": 38.9,
+    "satFat": null,
+    "carbs": 36.3,
+    "fiber": 4.1,
+    "sugars": null,
+    "sodium": 4.76,
+    "potassium": 638,
+    "calcium": 42,
+    "iron": 5.99,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz",
+    "fdc": 170162
+   }
+  },
+  "pistachios": {
+   "fdc": 2515379,
+   "type": "foundation",
+   "desc": "Nuts, pistachio nuts, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 561,
+    "kj": 2347,
+    "protein": 20.5,
+    "fat": 45,
+    "satFat": null,
+    "carbs": 27.7,
+    "fiber": 6.97,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 947,
+    "calcium": 117,
+    "iron": 3.46,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz (49 kernels)",
+    "fdc": 170184
+   }
+  },
+  "macadamia": {
+   "fdc": 2515378,
+   "type": "foundation",
+   "desc": "Nuts, macadamia nuts, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 669,
+    "kj": 2799,
+    "protein": 7.79,
+    "fat": 64.9,
+    "satFat": null,
+    "carbs": 24.1,
+    "fiber": 7.56,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 373,
+    "calcium": 52.7,
+    "iron": 1.88,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz (10-12 kernels)",
+    "fdc": 170178
+   }
+  },
+  "pecans": {
+   "fdc": 2346395,
+   "type": "foundation",
+   "desc": "Nuts, pecans, halves, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 700,
+    "kj": 2929,
+    "protein": 9.96,
+    "fat": 73.3,
+    "satFat": 6.46,
+    "carbs": 12.7,
+    "fiber": 5.79,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 360,
+    "calcium": 54.8,
+    "iron": 2.37,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz (19 halves)",
+    "fdc": 170182
+   }
+  },
+  "chestnuts-roasted": {
+   "fdc": 170190,
+   "type": "sr",
+   "desc": "Nuts, chestnuts, european, roasted",
+   "energy": "208",
+   "n": {
+    "kcal": 245,
+    "kj": 1020,
+    "protein": 3.17,
+    "fat": 2.2,
+    "satFat": 0.414,
+    "carbs": 53,
+    "fiber": 5.1,
+    "sugars": 10.6,
+    "sodium": 2,
+    "potassium": 592,
+    "calcium": 29,
+    "iron": 0.91,
+    "vitC": 26
+   },
+   "serving": {
+    "unit": "piece",
+    "n": 10,
+    "g": 84,
+    "usda": "10 kernels",
+    "fdc": 170190
+   }
+  },
+  "peanut-butter": {
+   "fdc": 172470,
+   "type": "sr",
+   "desc": "Peanut butter, smooth style, without salt",
+   "energy": "208",
+   "n": {
+    "kcal": 598,
+    "kj": 2500,
+    "protein": 22.2,
+    "fat": 51.4,
+    "satFat": 10.3,
+    "carbs": 22.3,
+    "fiber": 5,
+    "sugars": 10.5,
+    "sodium": 17,
+    "potassium": 558,
+    "calcium": 49,
+    "iron": 1.74,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 2,
+    "g": 32,
+    "usda": "2 tbsp",
+    "fdc": 172470
+   }
+  },
+  "sunflower-seeds": {
+   "fdc": 2515381,
+   "type": "foundation",
+   "desc": "Seeds, sunflower seed, kernel, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 571,
+    "kj": 2389,
+    "protein": 18.9,
+    "fat": 48.4,
+    "satFat": null,
+    "carbs": 24.5,
+    "fiber": 7.22,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 657,
+    "calcium": 116,
+    "iron": 4.37,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 140,
+    "usda": "1 cup",
+    "fdc": 170562
+   }
+  },
+  "pumpkin-seeds": {
+   "fdc": 2515380,
+   "type": "foundation",
+   "desc": "Seeds, pumpkin seeds (pepitas), raw",
+   "energy": "958",
+   "n": {
+    "kcal": 515,
+    "kj": 2155,
+    "protein": 29.9,
+    "fat": 40,
+    "satFat": null,
+    "carbs": 18.7,
+    "fiber": 5.08,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 691,
+    "calcium": 37.4,
+    "iron": 8.36,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz",
+    "fdc": 170556
+   }
+  },
+  "chia-seeds": {
+   "fdc": 2710819,
+   "type": "foundation",
+   "desc": "Chia seeds, dry, raw",
+   "energy": "958",
+   "n": {
+    "kcal": 490,
+    "kj": 2050,
+    "protein": 17,
+    "fat": 32.9,
+    "satFat": null,
+    "carbs": 38.3,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 642,
+    "calcium": 595,
+    "iron": 6.04,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz",
+    "fdc": 170554
+   }
+  },
+  "flaxseed": {
+   "fdc": 2262075,
+   "type": "foundation",
+   "desc": "Flaxseed, ground",
+   "energy": "958",
+   "n": {
+    "kcal": 514,
+    "kj": 2151,
+    "protein": 18,
+    "fat": 37.3,
+    "satFat": 3.28,
+    "carbs": 34.4,
+    "fiber": 23.1,
+    "sugars": null,
+    "sodium": 36.7,
+    "potassium": 793,
+    "calcium": 230,
+    "iron": 5.78,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 7,
+    "usda": "1 tbsp, ground",
+    "fdc": 169414
+   }
+  },
+  "sesame-seeds": {
+   "fdc": 170150,
+   "type": "sr",
+   "desc": "Seeds, sesame seeds, whole, dried",
+   "energy": "208",
+   "n": {
+    "kcal": 573,
+    "kj": 2400,
+    "protein": 17.7,
+    "fat": 49.7,
+    "satFat": 6.96,
+    "carbs": 23.4,
+    "fiber": 11.8,
+    "sugars": 0.3,
+    "sodium": 11,
+    "potassium": 468,
+    "calcium": 975,
+    "iron": 14.6,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 9,
+    "usda": "1 tbsp",
+    "fdc": 170150
+   }
+  },
+  "olive-oil": {
+   "fdc": 171413,
+   "type": "sr",
+   "desc": "Oil, olive, salad or cooking",
+   "energy": "208",
+   "n": {
+    "kcal": 884,
+    "kj": 3700,
+    "protein": 0,
+    "fat": 100,
+    "satFat": 13.8,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 2,
+    "potassium": 1,
+    "calcium": 1,
+    "iron": 0.56,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 13.5,
+    "usda": "1 tablespoon",
+    "fdc": 171413
+   }
+  },
+  "canola-oil": {
+   "fdc": 172336,
+   "type": "sr",
+   "desc": "Oil, canola",
+   "energy": "208",
+   "n": {
+    "kcal": 884,
+    "kj": 3700,
+    "protein": 0,
+    "fat": 100,
+    "satFat": 7.36,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 0,
+    "potassium": 0,
+    "calcium": 0,
+    "iron": 0,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 14,
+    "usda": "1 tbsp",
+    "fdc": 172336
+   }
+  },
+  "coconut-oil": {
+   "fdc": 330458,
+   "type": "foundation",
+   "desc": "Oil, coconut",
+   "energy": "208",
+   "n": {
+    "kcal": 833,
+    "kj": 3480,
+    "protein": 0,
+    "fat": 99.1,
+    "satFat": 82.5,
+    "carbs": 0.84,
+    "fiber": null,
+    "sugars": null,
+    "sodium": 0,
+    "potassium": 0,
+    "calcium": 1,
+    "iron": 0.05,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 13.6,
+    "usda": "1 tbsp",
+    "fdc": 171412
+   }
+  },
+  "sesame-oil": {
+   "fdc": 171016,
+   "type": "sr",
+   "desc": "Oil, sesame, salad or cooking",
+   "energy": "208",
+   "n": {
+    "kcal": 884,
+    "kj": 3700,
+    "protein": 0,
+    "fat": 100,
+    "satFat": 14.2,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 0,
+    "potassium": 0,
+    "calcium": 0,
+    "iron": 0,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 13.6,
+    "usda": "1 tablespoon",
+    "fdc": 171016
+   }
+  },
+  "lard": {
+   "fdc": 171401,
+   "type": "sr",
+   "desc": "Lard",
+   "energy": "208",
+   "n": {
+    "kcal": 902,
+    "kj": 3770,
+    "protein": 0,
+    "fat": 100,
+    "satFat": 39.2,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 0,
+    "potassium": 0,
+    "calcium": 0,
+    "iron": 0,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 12.8,
+    "usda": "1 tbsp",
+    "fdc": 171401
+   }
+  },
+  "mayonnaise": {
+   "fdc": 171009,
+   "type": "sr",
+   "desc": "Salad dressing, mayonnaise, regular",
+   "energy": "208",
+   "n": {
+    "kcal": 680,
+    "kj": 2840,
+    "protein": 0.96,
+    "fat": 74.8,
+    "satFat": 11.7,
+    "carbs": 0.57,
+    "fiber": 0,
+    "sugars": 0.57,
+    "sodium": 635,
+    "potassium": 20,
+    "calcium": 8,
+    "iron": 0.21,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 13.8,
+    "usda": "1 tbsp",
+    "fdc": 171009
+   }
+  },
+  "coffee": {
+   "fdc": 171890,
+   "type": "sr",
+   "desc": "Beverages, coffee, brewed, prepared with tap water",
+   "energy": "208",
+   "n": {
+    "kcal": 1,
+    "kj": 2,
+    "protein": 0.12,
+    "fat": 0.02,
+    "satFat": 0.002,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 2,
+    "potassium": 49,
+    "calcium": 2,
+    "iron": 0.01,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 237,
+    "usda": "1 cup (8 fl oz)",
+    "fdc": 171890
+   }
+  },
+  "black-tea": {
+   "fdc": 173227,
+   "type": "sr",
+   "desc": "Beverages, tea, black, brewed, prepared with tap water",
+   "energy": "208",
+   "n": {
+    "kcal": 1,
+    "kj": 4,
+    "protein": 0,
+    "fat": 0,
+    "satFat": 0.002,
+    "carbs": 0.3,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 3,
+    "potassium": 37,
+    "calcium": 0,
+    "iron": 0.02,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 237,
+    "usda": "1 cup (8 fl oz)",
+    "fdc": 173227
+   }
+  },
+  "green-tea": {
+   "fdc": 171917,
+   "type": "sr",
+   "desc": "Beverages, tea, green, brewed, regular",
+   "energy": "208",
+   "n": {
+    "kcal": 1,
+    "kj": 4,
+    "protein": 0.22,
+    "fat": 0,
+    "satFat": 0,
+    "carbs": 0,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 1,
+    "potassium": 8,
+    "calcium": 0,
+    "iron": 0.02,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 245,
+    "usda": "1 cup",
+    "fdc": 171917
+   }
+  },
+  "orange-juice": {
+   "fdc": 2003597,
+   "type": "foundation",
+   "desc": "Orange juice, no pulp, not fortified, not from concentrate, refrigerated",
+   "energy": "958",
+   "n": {
+    "kcal": 45,
+    "kj": 188,
+    "protein": 0.812,
+    "fat": 0.356,
+    "satFat": null,
+    "carbs": 10,
+    "fiber": null,
+    "sugars": 8.08,
+    "sodium": 0.075,
+    "potassium": 183,
+    "calcium": 9.29,
+    "iron": 0.071,
+    "vitC": 30.5
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 248,
+    "usda": "1 cup",
+    "fdc": 169098
+   }
+  },
+  "apple-juice": {
+   "fdc": 173933,
+   "type": "sr",
+   "desc": "Apple juice, canned or bottled, unsweetened, without added ascorbic acid",
+   "energy": "208",
+   "n": {
+    "kcal": 46,
+    "kj": 191,
+    "protein": 0.1,
+    "fat": 0.13,
+    "satFat": 0.022,
+    "carbs": 11.3,
+    "fiber": 0.2,
+    "sugars": 9.62,
+    "sodium": 4,
+    "potassium": 101,
+    "calcium": 8,
+    "iron": 0.12,
+    "vitC": 0.9
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 248,
+    "usda": "1 cup",
+    "fdc": 173933
+   }
+  },
+  "cola": {
+   "fdc": 174852,
+   "type": "sr",
+   "desc": "Beverages, carbonated, cola, regular",
+   "energy": "208",
+   "n": {
+    "kcal": 42,
+    "kj": 176,
+    "protein": 0,
+    "fat": 0.25,
+    "satFat": 0,
+    "carbs": 10.4,
+    "fiber": 0,
+    "sugars": 9.94,
+    "sodium": 3,
+    "potassium": 5,
+    "calcium": 1,
+    "iron": 0.02,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "can",
+    "n": 1,
+    "g": 370,
+    "usda": "1 can or bottle (12 fl oz)",
+    "fdc": 174852
+   }
+  },
+  "beer": {
+   "fdc": 168746,
+   "type": "sr",
+   "desc": "Alcoholic beverage, beer, regular, all",
+   "energy": "208",
+   "n": {
+    "kcal": 43,
+    "kj": 181,
+    "protein": 0.46,
+    "fat": 0,
+    "satFat": 0,
+    "carbs": 3.55,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 4,
+    "potassium": 27,
+    "calcium": 4,
+    "iron": 0.02,
+    "vitC": 0,
+    "alcohol": 3.9
+   },
+   "serving": {
+    "unit": "can",
+    "n": 1,
+    "g": 356,
+    "usda": "1 can",
+    "fdc": 168746
+   }
+  },
+  "red-wine": {
+   "fdc": 173190,
+   "type": "sr",
+   "desc": "Alcoholic beverage, wine, table, red",
+   "energy": "208",
+   "n": {
+    "kcal": 85,
+    "kj": 356,
+    "protein": 0.07,
+    "fat": 0,
+    "satFat": 0,
+    "carbs": 2.61,
+    "fiber": 0,
+    "sugars": 0.62,
+    "sodium": 4,
+    "potassium": 127,
+    "calcium": 8,
+    "iron": 0.46,
+    "vitC": 0,
+    "alcohol": 10.6
+   },
+   "serving": {
+    "unit": "glass",
+    "n": 1,
+    "g": 147,
+    "usda": "1 serving (5 fl oz)",
+    "fdc": 173190
+   }
+  },
+  "coconut-water": {
+   "fdc": 170174,
+   "type": "sr",
+   "desc": "Nuts, coconut water (liquid from coconuts)",
+   "energy": "208",
+   "n": {
+    "kcal": 19,
+    "kj": 79,
+    "protein": 0.72,
+    "fat": 0.2,
+    "satFat": 0.176,
+    "carbs": 3.71,
+    "fiber": 1.1,
+    "sugars": 2.61,
+    "sodium": 105,
+    "potassium": 250,
+    "calcium": 24,
+    "iron": 0.29,
+    "vitC": 2.4
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 240,
+    "usda": "1 cup",
+    "fdc": 170174
+   }
+  },
+  "almond-milk": {
+   "fdc": 1999631,
+   "type": "foundation",
+   "desc": "Almond milk, unsweetened, plain, shelf stable",
+   "energy": "958",
+   "n": {
+    "kcal": 14.6,
+    "kj": 61,
+    "protein": 0.555,
+    "fat": 1.22,
+    "satFat": 0.104,
+    "carbs": 0.337,
+    "fiber": 0,
+    "sugars": 0,
+    "sodium": 59.6,
+    "potassium": 30.8,
+    "calcium": 173,
+    "iron": 0.29,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "cup",
+    "n": 1,
+    "g": 262,
+    "usda": "1 cup",
+    "fdc": 174832
+   }
+  },
+  "sugar": {
+   "fdc": 746784,
+   "type": "foundation",
+   "desc": "Sugars, granulated",
+   "energy": "208",
+   "n": {
+    "kcal": 385,
+    "kj": 1610,
+    "protein": 0,
+    "fat": 0.32,
+    "satFat": null,
+    "carbs": 99.6,
+    "fiber": null,
+    "sugars": 99.8,
+    "sodium": 1,
+    "potassium": 2,
+    "calcium": 1,
+    "iron": 0.05,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "tsp",
+    "n": 1,
+    "g": 4.2,
+    "usda": "1 tsp",
+    "fdc": 169655
+   }
+  },
+  "honey": {
+   "fdc": 169640,
+   "type": "sr",
+   "desc": "Honey",
+   "energy": "208",
+   "n": {
+    "kcal": 304,
+    "kj": 1270,
+    "protein": 0.3,
+    "fat": 0,
+    "satFat": 0,
+    "carbs": 82.4,
+    "fiber": 0.2,
+    "sugars": 82.1,
+    "sodium": 4,
+    "potassium": 52,
+    "calcium": 6,
+    "iron": 0.42,
+    "vitC": 0.5
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 21,
+    "usda": "1 tbsp",
+    "fdc": 169640
+   }
+  },
+  "maple-syrup": {
+   "fdc": 169661,
+   "type": "sr",
+   "desc": "Syrups, maple",
+   "energy": "208",
+   "n": {
+    "kcal": 260,
+    "kj": 1090,
+    "protein": 0.04,
+    "fat": 0.06,
+    "satFat": 0.007,
+    "carbs": 67,
+    "fiber": 0,
+    "sugars": 60.5,
+    "sodium": 12,
+    "potassium": 212,
+    "calcium": 102,
+    "iron": 0.11,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 20,
+    "usda": "1 tbsp",
+    "fdc": 169661
+   }
+  },
+  "jam": {
+   "fdc": 169641,
+   "type": "sr",
+   "desc": "Jams and preserves",
+   "energy": "208",
+   "n": {
+    "kcal": 278,
+    "kj": 1160,
+    "protein": 0.37,
+    "fat": 0.07,
+    "satFat": 0.01,
+    "carbs": 68.9,
+    "fiber": 1.1,
+    "sugars": 48.5,
+    "sodium": 32,
+    "potassium": 77,
+    "calcium": 20,
+    "iron": 0.49,
+    "vitC": 8.8
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 20,
+    "usda": "1 tbsp",
+    "fdc": 169641
+   }
+  },
+  "dark-chocolate": {
+   "fdc": 170273,
+   "type": "sr",
+   "desc": "Chocolate, dark, 70-85% cacao solids",
+   "energy": "208",
+   "n": {
+    "kcal": 598,
+    "kj": 2500,
+    "protein": 7.79,
+    "fat": 42.6,
+    "satFat": 24.5,
+    "carbs": 45.9,
+    "fiber": 10.9,
+    "sugars": 24,
+    "sodium": 20,
+    "potassium": 715,
+    "calcium": 73,
+    "iron": 11.9,
+    "vitC": null
+   },
+   "serving": {
+    "unit": "oz",
+    "n": 1,
+    "g": 28.4,
+    "usda": "1 oz",
+    "fdc": 170273
+   }
+  },
+  "milk-chocolate": {
+   "fdc": 167587,
+   "type": "sr",
+   "desc": "Candies, milk chocolate",
+   "energy": "208",
+   "n": {
+    "kcal": 535,
+    "kj": 2240,
+    "protein": 7.65,
+    "fat": 29.7,
+    "satFat": 18.5,
+    "carbs": 59.4,
+    "fiber": 3.4,
+    "sugars": 51.5,
+    "sodium": 79,
+    "potassium": 372,
+    "calcium": 189,
+    "iron": 2.35,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "bar",
+    "n": 1,
+    "g": 44,
+    "usda": "1 bar (1.55 oz)",
+    "fdc": 167587
+   }
+  },
+  "soy-sauce": {
+   "fdc": 174277,
+   "type": "sr",
+   "desc": "Soy sauce made from soy and wheat (shoyu)",
+   "energy": "208",
+   "n": {
+    "kcal": 53,
+    "kj": 222,
+    "protein": 8.14,
+    "fat": 0.57,
+    "satFat": 0.073,
+    "carbs": 4.93,
+    "fiber": 0.8,
+    "sugars": 0.4,
+    "sodium": 5490,
+    "potassium": 435,
+    "calcium": 33,
+    "iron": 1.45,
+    "vitC": 0
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 16,
+    "usda": "1 tbsp",
+    "fdc": 174277
+   }
+  },
+  "ketchup": {
+   "fdc": 168556,
+   "type": "sr",
+   "desc": "Catsup",
+   "energy": "208",
+   "n": {
+    "kcal": 101,
+    "kj": 423,
+    "protein": 1.04,
+    "fat": 0.1,
+    "satFat": 0.014,
+    "carbs": 27.4,
+    "fiber": 0.3,
+    "sugars": 21.3,
+    "sodium": 907,
+    "potassium": 281,
+    "calcium": 15,
+    "iron": 0.35,
+    "vitC": 4.1
+   },
+   "serving": {
+    "unit": "tbsp",
+    "n": 1,
+    "g": 17,
+    "usda": "1 tbsp",
+    "fdc": 168556
+   }
+  }
+ }
+}
