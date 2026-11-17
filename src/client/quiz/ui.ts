@@ -331,10 +331,10 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const [first, second] = result.ranked;
       const nodes = [...headline(results[result.key])];
       const rule = QUIZ_DEFS[id].result;
-      // Spread ties: name every result tied with the winner (the hash only picked which one leads). A mixed result
-      // names all the tied results.
+      // Name every result tied with the winner: the hash (spread) or list order (plain top) only picked which one leads,
+      // so an exact tie is never shown as a runner-up. A mixed result names all the tied results.
       const mixed = rule.kind === "top" && rule.tie === "mixed" && result.key === "mixed";
-      const tied = mixed ? topTied(result.ranked) : rule.kind === "top" && rule.tie === "spread" ? topTied(result.ranked).filter((s) => s !== first) : [];
+      const tied = mixed ? topTied(result.ranked) : topTied(result.ranked).filter((s) => s !== first);
       const tiedLine = tied.length ? `${mixed ? ui.tiedTop : ui.tiedWith}: ${listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)))}` : "";
       if (tiedLine) {
         nodes.push(h("p", { class: "muted" }, tiedLine));
