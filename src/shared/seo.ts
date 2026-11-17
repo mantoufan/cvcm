@@ -34,7 +34,7 @@ import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, categoryOf, isBrowserGame, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -1202,6 +1202,15 @@ export function gameBreadcrumbJsonLd(locale: Locale, consoleId: GameConsoleId | 
  * own, so it is left out of the structured data (a BreadcrumbList item should be a distinct URL).
  */
 export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<string, unknown> {
+  // A browser game sits under Games / Free mini games, both real pages, matching the visible trail.
+  if (isBrowserGame(tool)) {
+    return breadcrumbList([
+      { name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) },
+      { name: lookup(locale, "nav.games"), url: pageCanonical(locale, { games: true }) },
+      { name: lookup(locale, "games.consoles.mini"), url: pageCanonical(locale, { games: true, console: "mini" }) },
+      { name: lookup(locale, `tools.${tool}.name`), url: pageCanonical(locale, tool) },
+    ]);
+  }
   return breadcrumbList([
     { name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) },
     { name: lookup(locale, `tools.${tool}.name`), url: pageCanonical(locale, tool) },

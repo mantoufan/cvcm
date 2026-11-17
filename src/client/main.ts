@@ -34,6 +34,7 @@ import {
   caloriesHref,
   elementsHref,
   calendarHref,
+  isBrowserGame,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -1100,8 +1101,9 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
     console.error(err);
   });
   const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage || calendarPage);
-  const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
-  const gamesOn = gamesHub || Boolean(gameId);
+  const miniGame = Boolean(tool) && isBrowserGame(tool!);
+  const toolsOn = (Boolean(tool) && !miniGame) || Boolean(devicePage) || Boolean(marketsHub || marketId);
+  const gamesOn = gamesHub || Boolean(gameId) || miniGame;
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
   const testsOn = Boolean(quizPage);
   const dataOn = Boolean(datasetPage);
@@ -1304,9 +1306,18 @@ function toolDirectory(loc: Locale): HTMLElement {
 
 /**
  * Home / Tools / this tool, above the tool's heading like the column pages' trail. "Tools" is the home page's tool wall.
+ * A browser game (BROWSER_GAMES) is filed under Home / Games / Free mini games instead, the hub that lists it.
  * A shared clip is a page inside the clipboard, so there the tool's name links back to the clipboard itself.
  */
 function toolCrumb(loc: Locale, id: ToolId, clip: string | null): HTMLElement {
+  if (isBrowserGame(id)) {
+    return crumbNav([
+      homeCrumb(loc),
+      { label: t("nav.games"), href: gamesHref(loc, null), nav: "games" },
+      { label: t("games.consoles.mini"), href: gamesHref(loc, "mini"), nav: "games-mini" },
+      { label: t(`tools.${id}.name`) },
+    ]);
+  }
   return crumbNav([
     homeCrumb(loc),
     { label: t("nav.tools"), href: `${appHref(loc, null)}#tools`, nav: "tools" },

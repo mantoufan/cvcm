@@ -533,6 +533,11 @@ export function categoryOf(tool: ToolId): CategoryId {
   return "image";
 }
 
+/** A tool page that is one of cv.cm's own browser games: its trail and nav sit under Games / Free mini games. */
+export function isBrowserGame(tool: ToolId): boolean {
+  return (BROWSER_GAMES as readonly string[]).includes(tool);
+}
+
 export function isToolId(value: string): value is ToolId {
   return (TOOLS as readonly string[]).includes(value);
 }
