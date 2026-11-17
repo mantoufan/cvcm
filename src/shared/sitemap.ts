@@ -6,6 +6,7 @@ import { KB_ARTICLES, KB_SHELVES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpda
 import { DATASET_SNAPSHOT, DATASETS, datasetUpdated, type DatasetId } from "./datasets";
 import { RANKING_SNAPSHOT, RANKINGS, rankingMeta, type RankingId } from "./rankings";
 import { REF_ENTRIES, REF_UPDATED, type RefId } from "./ref";
+import { coverUrl } from "./covers";
 import { memeImagePath } from "./meme-images";
 import { nostalgiaImagePath } from "./nostalgia-images";
 import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublished, type SlangId } from "./slang";
@@ -226,7 +227,7 @@ function pageLastmod(page: SitemapPage): string | null {
 /** A page's own picture for the image sitemap: a meme or nostalgia entry's freely licensed image. */
 function pageImage(page: SitemapPage): string | null {
   const path = page.kind === "slang" ? memeImagePath(page.entry) : page.kind === "nostalgia" ? nostalgiaImagePath(page.entry) : null;
-  return path ? `${SITE_ORIGIN}${path}` : null;
+  return path ? coverUrl(path) : null;
 }
 
 /** A `<urlset>` of the given pages (default: every page). */

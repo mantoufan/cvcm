@@ -4,6 +4,7 @@ import { PUBLISHER, type KbBlock } from "./kb-i18n";
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
 import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, slangGroupOf, slangPublished, type SlangId } from "./slang";
+import { coverUrl } from "./covers";
 import { memeImage, memeImagePath } from "./meme-images";
 import { HREFLANG } from "./sitemap";
 
@@ -63,7 +64,7 @@ function imageJsonLd(locale: Locale, id: SlangId): Record<string, unknown> | nul
   const image = memeImage(id);
   if (!image) return null;
   const name = slangName(locale, id).name;
-  const url = `${ORIGIN}${memeImagePath(id)}`;
+  const url = coverUrl(memeImagePath(id)!);
   const by = image.author ? `${image.author} / ` : "";
   return {
     "@type": "ImageObject",

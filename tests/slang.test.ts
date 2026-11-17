@@ -345,7 +345,7 @@ describe("slang: page HTML and SEO", () => {
       }
     }
     expect(slangPageHtml("en", "yyds")).not.toContain("meme-figure");
-    expect(buildSitemapXml(sitemapPages().filter((p) => p.kind === "slang"))).toContain("<image:loc>https://cv.cm/covers/memes/doge-meme.webp</image:loc>");
+    expect(buildSitemapXml(sitemapPages().filter((p) => p.kind === "slang"))).toContain("<image:loc>https://s3.cv.cm/files/covers/memes/doge-meme.webp</image:loc>");
   });
 
   it("has the nav label in every core pack", () => {

@@ -259,7 +259,7 @@ it("places instructional diagrams on published lessons", () => {
       expect(diagram.step).toBeGreaterThan(0);
       expect(diagram.step).toBeLessThanOrEqual(tutorialSteps(id));
       const step = (howToJsonLd("en", id).step as { image?: string }[])[diagram.step - 1];
-      expect(step.image).toBe(`https://cv.cm${diagram.src}`);
+      expect(step.image).toBe(`https://s3.cv.cm/files${diagram.src}`);
     }
   }
 });
@@ -268,7 +268,7 @@ it("localizes instructional diagrams for Chinese HowTo JSON-LD", () => {
   expect(localizedTutorialSrc("/covers/tutorials/make-qr.svg", "en")).toBe("/covers/tutorials/make-qr.svg");
   expect(localizedTutorialSrc("/covers/tutorials/make-qr.svg", "zh-CN")).toBe("/covers/tutorials/zh-cn/make-qr.svg");
   const step = (howToJsonLd("zh-CN", "make-qr").step as { image?: string }[])[0];
-  expect(step.image).toBe("https://cv.cm/covers/tutorials/zh-cn/make-qr-contents.svg");
+  expect(step.image).toBe("https://s3.cv.cm/files/covers/tutorials/zh-cn/make-qr-contents.svg");
   const out = applyHtmlSeo(html, "zh-CN", { learn: true, tutorial: "heic-to-jpg" });
   expect(out).toContain("/covers/tutorials/zh-cn/heic-to-jpg-why.svg");
 });

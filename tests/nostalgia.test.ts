@@ -312,7 +312,7 @@ describe("nostalgia: page HTML and SEO", () => {
       expect(image.page, id).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
       expect(Math.max(image.width, image.height), id).toBeLessThanOrEqual(640);
       expect([null, "Person", "Organization"], id).toContain(image.creatorType);
-      expect(xml, id).toContain(`<image:loc>https://cv.cm/covers/${image.src}</image:loc>`);
+      expect(xml, id).toContain(`<image:loc>https://s3.cv.cm/files/covers/${image.src}</image:loc>`);
       for (const locale of LOCALES) {
         const html = nostalgiaPageHtml(locale, id as never);
         expect(html, `${locale} ${id}`).toContain(`src="/covers/${image.src}" width="${image.width}" height="${image.height}"`);
@@ -322,7 +322,7 @@ describe("nostalgia: page HTML and SEO", () => {
         expect(ld.image?.acquireLicensePage, `${locale} ${id}`).toBe(image.page);
         if (!image.author) expect(ld.image?.creator, `${locale} ${id}`).toBeUndefined();
       }
-      expect(applyHtmlSeo(SHELL, "en", { nostalgia: true, nostalgiaId: id as never })).toContain(`<meta property="og:image" content="https://cv.cm/covers/${image.src}"`);
+      expect(applyHtmlSeo(SHELL, "en", { nostalgia: true, nostalgiaId: id as never })).toContain(`<meta property="og:image" content="https://s3.cv.cm/files/covers/${image.src}"`);
     }
     // A picture is an edit: every pictured entry has an update (or a later launch) date, so sitemaps show it.
     const dated = { ...NOSTALGIA_ADDED, ...NOSTALGIA_UPDATED } as Record<string, string | undefined>;
