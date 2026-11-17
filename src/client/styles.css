@@ -1787,3 +1787,16 @@ tr.is-work > * { color: var(--ink-soft); }
   .top, .foot, .cal-pager, .faq, .device-crumb, .cal-convert { display: none !important; }
   .cal-big td { height: 4.5rem; }
 }
+/* Academic statistics tools (standard deviation, sample size, Cronbach's alpha, t-test, chi-square, p-value, z-score) */
+.ac-matrix { font-family: var(--mono); font-size: 0.85rem; tab-size: 4; white-space: pre; overflow-x: auto; }
+.ac-plot { margin: 0.5rem 0 0.75rem; }
+.ac-curve { display: block; width: 100%; max-width: 420px; height: auto; }
+.ac-curve .ac-area { fill: var(--pink); opacity: 0.55; }
+.ac-curve .ac-line { fill: none; stroke: var(--pink-deep); stroke-width: 2; }
+.ac-curve .ac-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.ac-curve .ac-tick { fill: var(--ink-soft); font-size: 9px; text-anchor: middle; }
+.ac-grid { margin-bottom: 0.75rem; }
+.ac-grid .si-table th { white-space: nowrap; }
+.ac-grid .ac-cell { width: 5.5rem; min-height: 36px; box-sizing: border-box; padding: 0.3rem 0.45rem; border: 1px solid var(--line); border-radius: 8px; background: var(--gray); font: inherit; text-align: right; font-variant-numeric: tabular-nums; }
+.ac-grid .ac-cell:focus { outline: none; border-color: var(--pink-deep); }
+.field.ac-check { display: flex; align-items: center; gap: 0.5rem; }

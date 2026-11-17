@@ -1785,6 +1785,69 @@
       "s2b": "Press the highlighted key with the finger shown. Mistakes don't move you on.",
       "s3t": "Check your result",
       "s3b": "See your keys per minute, accuracy and weakest keys. Reach 90% to tick the lesson."
+    },
+    "standard-deviation": {
+      "lead": "Find the standard deviation in three steps.",
+      "s1t": "Paste your numbers",
+      "s1b": "Type or paste values separated by spaces, commas or new lines, or a column from a spreadsheet.",
+      "s2t": "Choose sample or population",
+      "s2b": "Sample (n − 1) for data from a larger group, population (n) when you have every value.",
+      "s3t": "Read and copy",
+      "s3b": "See the standard deviation, variance, mean and standard error, the filled-in formula and each step in the table."
+    },
+    "sample-size": {
+      "lead": "Work out a survey sample size in three steps.",
+      "s1t": "Choose a method",
+      "s1b": "Cochran for a proportion, Slovin's formula, or a mean with a known standard deviation.",
+      "s2t": "Set the precision",
+      "s2b": "Pick the confidence level and margin of error, and add the population size and expected response rate if you know them.",
+      "s3t": "Read the sample",
+      "s3b": "The sample size is rounded up, with the formula worked out and a table for other margins."
+    },
+    "cronbach-alpha": {
+      "lead": "Check a scale's reliability in three steps.",
+      "s1t": "Copy your item scores",
+      "s1b": "Select the item columns in Excel, Sheets or SPSS: one row per respondent, with or without a header.",
+      "s2t": "Paste them",
+      "s2b": "Paste into the box. Alpha, standardized alpha and the item table update as you type.",
+      "s3t": "Review the items",
+      "s3b": "Look for low item-total correlations or a higher alpha if item deleted (↑), then copy the APA line."
+    },
+    "t-test": {
+      "lead": "Run a t-test in three steps.",
+      "s1t": "Choose the test",
+      "s1b": "One-sample, independent samples (Welch or Student) or paired.",
+      "s2t": "Paste the data",
+      "s2b": "Paste each group's numbers, or the before and after values in the same order.",
+      "s3t": "Read the result",
+      "s3b": "See t, df, the p-value, the confidence interval and Cohen's d, then copy the APA-style line."
+    },
+    "chi-square": {
+      "lead": "Run a chi-square test in three steps.",
+      "s1t": "Choose the test",
+      "s1b": "Independence for a table of two variables, or goodness of fit for one variable against expected shares.",
+      "s2t": "Enter the counts",
+      "s2b": "Set the number of rows and columns (or categories) and type the observed counts.",
+      "s3t": "Read the result",
+      "s3b": "See χ², df, the p-value, Cramér's V and the expected counts, with a warning when they are too small."
+    },
+    "p-value": {
+      "lead": "Find a p-value or critical value in three steps.",
+      "s1t": "Choose the distribution",
+      "s1b": "z, t, chi-square or F, the one your test statistic follows.",
+      "s2t": "Enter the numbers",
+      "s2b": "Type the statistic (or the significance level α for a critical value) and the degrees of freedom, and pick the tail.",
+      "s3t": "Read the answer",
+      "s3b": "The p-value with how it compares with 0.1, 0.05, 0.01 and 0.001, or the critical value and when to reject."
+    },
+    "z-score": {
+      "lead": "Work with z-scores in three steps.",
+      "s1t": "Choose what to find",
+      "s1b": "The z-score of a value, the value at a percentile, or the probability between two values.",
+      "s2t": "Enter the mean and SD",
+      "s2b": "Type the mean (μ) and standard deviation (σ); leave 0 and 1 for the standard normal.",
+      "s3t": "Read the areas",
+      "s3b": "See z, the share below and above, and the area shaded on the bell curve."
     }
   }
 }

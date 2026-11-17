@@ -201,6 +201,13 @@ export const TOOL_COVER: Record<ToolId, string> = {
   v: "/covers/v-sweet.jpg?v=1",
   "ai-image-generator": "/covers/ai-image-generator-sweet.jpg?v=1",
   "ai-music-generator": "/covers/ai-music-generator-sweet.jpg?v=1",
+  "standard-deviation": "/covers/standard-deviation-sweet.jpg?v=1",
+  "sample-size": "/covers/sample-size-sweet.jpg?v=1",
+  "cronbach-alpha": "/covers/cronbach-alpha-sweet.jpg?v=1",
+  "t-test": "/covers/t-test-sweet.jpg?v=1",
+  "chi-square": "/covers/chi-square-sweet.jpg?v=1",
+  "p-value": "/covers/p-value-sweet.jpg?v=1",
+  "z-score": "/covers/z-score-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {

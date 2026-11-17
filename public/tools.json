@@ -87,6 +87,10 @@
       "name": "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)"
     },
     {
+      "id": "academic",
+      "name": "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines"
+    },
+    {
       "id": "valuation",
       "name": "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)"
     }
@@ -1815,6 +1819,62 @@
       "description": "Market cap, P/E, and dividend yield.",
       "category": "assets",
       "url": "https://cv.cm/en/stocks/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "standard-deviation",
+      "name": "Standard deviation calculator",
+      "description": "Sample or population, step by step.",
+      "category": "academic",
+      "url": "https://cv.cm/en/standard-deviation/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "sample-size",
+      "name": "Sample size calculator",
+      "description": "Cochran, Slovin or a mean.",
+      "category": "academic",
+      "url": "https://cv.cm/en/sample-size/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "cronbach-alpha",
+      "name": "Cronbach's alpha calculator",
+      "description": "Scale reliability, item by item.",
+      "category": "academic",
+      "url": "https://cv.cm/en/cronbach-alpha/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "t-test",
+      "name": "T-test calculator",
+      "description": "One-sample, independent or paired.",
+      "category": "academic",
+      "url": "https://cv.cm/en/t-test/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "chi-square",
+      "name": "Chi-square calculator",
+      "description": "Independence or goodness of fit.",
+      "category": "academic",
+      "url": "https://cv.cm/en/chi-square/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "p-value",
+      "name": "P-value calculator",
+      "description": "From z, t, χ² or F, and critical values.",
+      "category": "academic",
+      "url": "https://cv.cm/en/p-value/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "z-score",
+      "name": "Z-score calculator",
+      "description": "Z, percentiles and normal areas.",
+      "category": "academic",
+      "url": "https://cv.cm/en/z-score/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

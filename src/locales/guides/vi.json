@@ -1785,6 +1785,69 @@
       "s2b": "Nhấn phím được tô sáng bằng ngón tay được chỉ. Gõ sai thì không đi tiếp.",
       "s3t": "Xem kết quả",
       "s3b": "Xem số phím mỗi phút, độ chính xác và các phím yếu nhất. Đạt 90% để hoàn thành bài."
+    },
+    "standard-deviation": {
+      "lead": "Tính độ lệch chuẩn trong ba bước.",
+      "s1t": "Dán dãy số",
+      "s1b": "Gõ hoặc dán các giá trị cách nhau bằng dấu cách, dấu phẩy hoặc xuống dòng, hoặc một cột từ bảng tính.",
+      "s2t": "Chọn mẫu hay tổng thể",
+      "s2b": "Mẫu (n − 1) cho dữ liệu lấy từ nhóm lớn hơn, tổng thể (n) khi bạn có mọi giá trị.",
+      "s3t": "Đọc và sao chép",
+      "s3b": "Xem độ lệch chuẩn, phương sai, trung bình và sai số chuẩn, công thức đã điền số và từng bước trong bảng."
+    },
+    "sample-size": {
+      "lead": "Tính cỡ mẫu khảo sát trong ba bước.",
+      "s1t": "Chọn phương pháp",
+      "s1b": "Cochran cho tỷ lệ, công thức Slovin, hoặc trung bình với độ lệch chuẩn đã biết.",
+      "s2t": "Đặt độ chính xác",
+      "s2b": "Chọn độ tin cậy và sai số cho phép, thêm quy mô tổng thể và tỷ lệ phản hồi dự kiến nếu biết.",
+      "s3t": "Đọc cỡ mẫu",
+      "s3b": "Cỡ mẫu được làm tròn lên, kèm công thức đã tính và bảng cho các mức sai số khác."
+    },
+    "cronbach-alpha": {
+      "lead": "Kiểm định độ tin cậy thang đo trong ba bước.",
+      "s1t": "Sao chép điểm các biến",
+      "s1b": "Chọn các cột biến trong Excel, Sheets hoặc SPSS: mỗi người trả lời một hàng, có hoặc không có tiêu đề.",
+      "s2t": "Dán vào",
+      "s2b": "Dán vào ô. Alpha, alpha chuẩn hóa và bảng biến cập nhật ngay khi bạn gõ.",
+      "s3t": "Xem xét các biến",
+      "s3b": "Tìm biến có tương quan biến – tổng thấp hoặc alpha nếu loại biến cao hơn (↑), rồi sao chép dòng APA."
+    },
+    "t-test": {
+      "lead": "Chạy kiểm định t trong ba bước.",
+      "s1t": "Chọn kiểm định",
+      "s1b": "Một mẫu, mẫu độc lập (Welch hoặc Student) hoặc mẫu cặp.",
+      "s2t": "Dán dữ liệu",
+      "s2b": "Dán số của từng nhóm, hoặc giá trị trước và sau theo cùng thứ tự.",
+      "s3t": "Đọc kết quả",
+      "s3b": "Xem t, df, giá trị p, khoảng tin cậy và Cohen's d, rồi sao chép dòng theo chuẩn APA."
+    },
+    "chi-square": {
+      "lead": "Chạy kiểm định chi bình phương trong ba bước.",
+      "s1t": "Chọn kiểm định",
+      "s1b": "Tính độc lập cho bảng hai biến, hoặc phù hợp phân phối cho một biến so với tỷ lệ kỳ vọng.",
+      "s2t": "Nhập tần số",
+      "s2b": "Đặt số hàng và số cột (hoặc số nhóm) rồi nhập tần số quan sát.",
+      "s3t": "Đọc kết quả",
+      "s3b": "Xem χ², df, giá trị p, Cramér's V và tần số kỳ vọng, có cảnh báo khi chúng quá nhỏ."
+    },
+    "p-value": {
+      "lead": "Tìm giá trị p hoặc giá trị tới hạn trong ba bước.",
+      "s1t": "Chọn phân phối",
+      "s1b": "z, t, chi bình phương hoặc F, theo phân phối của thống kê kiểm định.",
+      "s2t": "Nhập số liệu",
+      "s2b": "Nhập thống kê (hoặc mức ý nghĩa α để tìm giá trị tới hạn) và bậc tự do, rồi chọn phía.",
+      "s3t": "Đọc kết quả",
+      "s3b": "Giá trị p và so sánh với 0,1, 0,05, 0,01 và 0,001, hoặc giá trị tới hạn và khi nào bác bỏ H₀."
+    },
+    "z-score": {
+      "lead": "Làm việc với điểm z trong ba bước.",
+      "s1t": "Chọn điều cần tìm",
+      "s1b": "Điểm z của một giá trị, giá trị tại một phân vị, hoặc xác suất giữa hai giá trị.",
+      "s2t": "Nhập trung bình và SD",
+      "s2b": "Nhập trung bình (μ) và độ lệch chuẩn (σ); để 0 và 1 cho phân phối chuẩn tắc.",
+      "s3t": "Đọc diện tích",
+      "s3b": "Xem z, phần phía dưới và phía trên, và vùng được tô trên đường cong hình chuông."
     }
   }
 }

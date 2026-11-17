@@ -376,3 +376,15 @@ Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`; the cache'
 Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`; the cache's first entry `gpt-6.1-sol` still returned 400 model_not_found), refs `typing-game-sweet.jpg` + `word-search-sweet.jpg`, 16:9 landscape, same base prompt as above (style references only, same chibi girl and room, full-bleed, no words, letters, digits, logo or watermark). Saved as `public/covers/typing-practice-sweet.jpg`, `sips -s format jpeg` then `sips -z 720 1280`. Came out on the first try.
 
 - `typing-practice`: she sits upright at a desk with her fingers resting on the middle row of a pastel pink keyboard with completely blank keys; a small pastel card with a hand diagram in soft coloured finger zones (no text) stands beside it; a pink metronome-style timer and a cup of tea.
+
+## Standard deviation, sample size, Cronbach's alpha, t-test, chi-square, p-value, z-score (2026-11-17)
+
+Codex (`codex exec -m gpt-6-astra --image gpa-sweet.jpg --image average-sweet.jpg`; the cache's first entry `gpt-6.1-sol` still returns 400 model_not_found on the ChatGPT account), 16:9 landscape, same base prompt as above (style references only, same chibi girl and room, full-bleed, no words, letters, digits, symbols, logo or watermark). `sips -s format jpeg` then `sips -z 720 1280`. All seven came out on the first try.
+
+- `standard-deviation`: a pink clipboard with a row of pastel dots spread evenly on both sides of a glowing heart line, two ribbon arrows spreading outwards; a pink ruler and a pearl abacus.
+- `sample-size`: she looks through a pink magnifying glass at five tiny doll figurines picked out of a much larger crowd of identical figurines; a clipboard with empty checkboxes and a survey envelope.
+- `cronbach-alpha`: a questionnaire clipboard with rows of heart-shaped answer bubbles, some filled; five matching teacups in a perfectly straight row.
+- `t-test`: a golden balance with a basket of pink macarons and a basket of cream macarons; a card with two overlapping bell-shaped hills.
+- `chi-square`: she sorts pink and white candies with tweezers into a four-compartment cream tray; a candy jar and a notebook with an empty table grid.
+- `p-value`: a card with one bell curve whose far right tail is shaded pink, a magnifying glass on the tail and a small heart flag; a pink hourglass.
+- `z-score`: she points a star wand at a heart marker on the slope of a bell-shaped pink jelly hill; a pink ruler with tick marks only.
