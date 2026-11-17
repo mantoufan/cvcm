@@ -4,13 +4,13 @@
 // Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad"] },
-  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad", "archetype", "communication-style"] },
+  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency", "parenting-style"] },
   { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money", "imposter-syndrome", "grit"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
-  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "sanrio", "anime"] },
-  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob", "harry-potter-character", "lord-of-the-rings", "game-of-thrones-house"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed"] },
+  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "sanrio", "dragon-ball-character", "anime"] },
+  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob", "harry-potter-character", "lord-of-the-rings", "game-of-thrones-house", "star-wars-character"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed", "flower", "mythical-creature", "superpower"] },
   { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd"] },
 ] as const;
 
@@ -55,7 +55,9 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
  * top      — the highest dimension wins; all dimensions shown ranked. A tie goes to the earlier dimension, or with
  *            `tie: "spread"` to one picked by a hash of the answers that scored the tied results: with many results
  *            scored by small whole numbers, ties are common, and any fixed order would favor some results. The same
- *            answers always give the same result. (Likert quizzes hash which statements scored and how much.)
+ *            answers always give the same result. (Likert quizzes hash which statements scored and how much.) With
+ *            `tie: "mixed"` a tie at the top gives the extra result `mixed` instead, for self-reflection quizzes where
+ *            neither a fixed order nor a hash should pick a label the answers don't support.
  * code     — like top, but the result is the first three letters (Holland RIASEC).
  * quadrant — two dimensions, each high or low, give one of four results (attachment).
  * areas    — overall percentage picks a band (a band's `floor` also needs the weakest area that high);
@@ -66,7 +68,7 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
 export type ResultRule =
   | { kind: "profile" }
   | { kind: "types" }
-  | { kind: "top"; tie?: "spread" }
+  | { kind: "top"; tie?: "spread" | "mixed" }
   | { kind: "code" }
   | { kind: "quadrant"; x: string; y: string; results: { lowLow: string; highLow: string; lowHigh: string; highHigh: string } }
   | { kind: "areas"; bands: readonly { min: number; key: string; floor?: number }[] }
@@ -928,6 +930,53 @@ const PERSONAL_COLOR: ChoiceItem[] = [
   { options: [{}, { deep: 2 }] },
 ];
 
+/**
+ * A tested choice layout with its results renamed, so quizzes that share an arrangement (and its balance: every result
+ * equally often, spread over the answer positions) cannot drift from it. Every result in the layout must get its own new name.
+ */
+function relabel(items: readonly ChoiceItem[], names: Record<string, string>): ChoiceItem[] {
+  if (new Set(Object.values(names)).size !== Object.keys(names).length) throw new Error("relabel: two results share a new name");
+  return items.map((item) => ({
+    options: item.options.map((option) =>
+      Object.fromEntries(
+        Object.entries(option).map(([key, points]) => {
+          const name = names[key];
+          if (!name) throw new Error(`relabel: no new name for ${key}`);
+          return [name, points];
+        }),
+      ),
+    ),
+  }));
+}
+
+/** Eight flowers: the `GHIBLI` layout with the results renamed. */
+const FLOWER = relabel(GHIBLI, { chihiro: "rose", san: "sunflower", kiki: "lily", sophie: "lavender", nausicaa: "daisy", howl: "orchid", haku: "tulip", totoro: "lotus" });
+
+/** Eight mythical creatures: the `GHIBLI` layout with the results renamed. */
+const MYTHICAL_CREATURE = relabel(GHIBLI, { chihiro: "dragon", san: "phoenix", kiki: "unicorn", sophie: "griffin", nausicaa: "mermaid", howl: "kitsune", haku: "werewolf", totoro: "pegasus" });
+
+/** Eight superpowers: the `GHIBLI` layout with the results renamed. */
+const SUPERPOWER = relabel(GHIBLI, { chihiro: "flight", san: "invisibility", kiki: "telepathy", sophie: "timetravel", nausicaa: "teleport", howl: "strength", haku: "healing", totoro: "shapeshift" });
+
+/** Eight Star Wars characters: the `GHIBLI` layout with the results renamed. */
+const STAR_WARS = relabel(GHIBLI, { chihiro: "luke", san: "leia", kiki: "han", sophie: "yoda", nausicaa: "obiwan", howl: "chewbacca", haku: "vader", totoro: "rey" });
+
+/** Eight Dragon Ball characters: the `GHIBLI` layout with the results renamed. */
+const DRAGON_BALL = relabel(GHIBLI, { chihiro: "goku", san: "vegeta", kiki: "gohan", sophie: "piccolo", nausicaa: "bulma", howl: "krillin", haku: "trunks", totoro: "frieza" });
+
+/** Four communication styles: the `HOGWARTS` layout with the results renamed. */
+const COMMUNICATION = relabel(HOGWARTS, { gryffindor: "assertive", hufflepuff: "passive", ravenclaw: "aggressive", slytherin: "passiveaggressive" });
+
+/** Twelve archetypes (Pearson and Mark, after Jung): the `GREEK_GOD` layout with the results renamed. */
+const ARCHETYPE = relabel(GREEK_GOD, { zeus: "innocent", hera: "everyman", poseidon: "hero", demeter: "caregiver", athena: "explorer", apollo: "rebel", artemis: "lover", ares: "creator", aphrodite: "jester", hephaestus: "sage", hermes: "magician", dionysus: "ruler" });
+
+/**
+ * Parenting style after Diana Baumrind and Maccoby & Martin, simplified to two axes: odd questions ask about warmth,
+ * even ones about rules and expectations (control). The `PERSONAL_COLOR` layout with the axes renamed: seven two-way
+ * questions an axis worth 2 or nothing, so neither axis can land on exactly 50%. Questions written for cv.cm.
+ */
+const PARENTING = relabel(PERSONAL_COLOR, { warm: "warmth", deep: "control" });
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -1468,6 +1517,64 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: HOGWARTS,
     result: { kind: "top", tie: "spread" },
   },
+  flower: {
+    id: "flower",
+    type: "choice",
+    dims: ["rose", "sunflower", "lily", "lavender", "daisy", "orchid", "tulip", "lotus"],
+    items: FLOWER,
+    result: { kind: "top", tie: "spread" },
+  },
+  "mythical-creature": {
+    id: "mythical-creature",
+    type: "choice",
+    dims: ["dragon", "phoenix", "unicorn", "griffin", "mermaid", "kitsune", "werewolf", "pegasus"],
+    items: MYTHICAL_CREATURE,
+    result: { kind: "top", tie: "spread" },
+  },
+  superpower: {
+    id: "superpower",
+    type: "choice",
+    dims: ["flight", "invisibility", "telepathy", "timetravel", "teleport", "strength", "healing", "shapeshift"],
+    items: SUPERPOWER,
+    result: { kind: "top", tie: "spread" },
+  },
+  "star-wars-character": {
+    id: "star-wars-character",
+    type: "choice",
+    dims: ["luke", "leia", "han", "yoda", "obiwan", "chewbacca", "vader", "rey"],
+    items: STAR_WARS,
+    result: { kind: "top", tie: "spread" },
+  },
+  "dragon-ball-character": {
+    id: "dragon-ball-character",
+    type: "choice",
+    dims: ["goku", "vegeta", "gohan", "piccolo", "bulma", "krillin", "trunks", "frieza"],
+    items: DRAGON_BALL,
+    result: { kind: "top", tie: "spread" },
+  },
+  "communication-style": {
+    id: "communication-style",
+    type: "choice",
+    // Four results in whole steps tie often. A fixed order handed ties to one style (assertive won a third of random
+    // runs) and a hash could label a flat profile aggressive, so a tie at the top reads as a mixed style.
+    dims: ["assertive", "passive", "aggressive", "passiveaggressive"],
+    items: COMMUNICATION,
+    result: { kind: "top", tie: "mixed" },
+  },
+  archetype: {
+    id: "archetype",
+    type: "choice",
+    dims: ["innocent", "everyman", "hero", "caregiver", "explorer", "rebel", "lover", "creator", "jester", "sage", "magician", "ruler"],
+    items: ARCHETYPE,
+    result: { kind: "top", tie: "spread" },
+  },
+  "parenting-style": {
+    id: "parenting-style",
+    type: "choice",
+    dims: ["warmth", "control"],
+    items: PARENTING,
+    result: { kind: "quadrant", x: "warmth", y: "control", results: { lowLow: "uninvolved", highLow: "permissive", lowHigh: "authoritarian", highHigh: "authoritative" } },
+  },
 };
 
 /**
@@ -1559,17 +1666,36 @@ function tieHash(text: string): number {
 }
 
 /**
- * Highest first; a tie keeps definition order. With `hits` (see `top`), each group of tied results is reordered by a
- * hash of the answers that scored them, so answers that only touch other results never change who wins the tie.
+ * Compares exact shares (raw within each result's own range, not the rounded percentage): above 0 when `a` is ahead.
+ * Two results whose percentages only round to the same number are not tied. A result with no range has share 0.
+ */
+function shareCmp(a: DimScore, b: DimScore): number {
+  const ra = a.max - a.min;
+  const rb = b.max - b.min;
+  if (!ra || !rb) return (ra ? (a.raw - a.min) / ra : 0) - (rb ? (b.raw - b.min) / rb : 0);
+  return (a.raw - a.min) * rb - (b.raw - b.min) * ra;
+}
+
+/**
+ * The results tied for the highest exact share (see `shareCmp`), in ranked order: a mixed result's tied styles and a
+ * spread result's winner plus the results it was tied with.
+ */
+export function topTied(ranked: readonly DimScore[]): DimScore[] {
+  const best = ranked.reduce((top, s) => (shareCmp(s, top) > 0 ? s : top), ranked[0]);
+  return ranked.filter((s) => shareCmp(s, best) === 0);
+}
+
+/**
+ * Highest exact share first (percentages that only round to the same number are not tied); a real tie keeps definition
+ * order. With `hits` (see `top`), each group of tied results is reordered by a hash of the answers that scored them,
+ * so answers that only touch other results never change who wins the tie.
  */
 function rank(scores: DimScore[], hits?: ReadonlyMap<string, readonly string[]>): DimScore[] {
-  // With hits, compare exact shares: two results whose percentages only round to the same number are not tied.
-  const exact = (a: DimScore, b: DimScore): number => (hits ? b.raw * a.max - a.raw * b.max : 0);
-  const ranked = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s.pct - a.s.pct || exact(a.s, b.s) || a.i - b.i).map(({ s }) => s);
+  const ranked = scores.map((s, i) => ({ s, i })).sort((a, b) => shareCmp(b.s, a.s) || a.i - b.i).map(({ s }) => s);
   if (!hits) return ranked;
   for (let start = 0; start < ranked.length; ) {
     let end = start + 1;
-    while (end < ranked.length && exact(ranked[start], ranked[end]) === 0) end++;
+    while (end < ranked.length && shareCmp(ranked[start], ranked[end]) === 0) end++;
     if (end - start > 1) {
       const group = ranked.slice(start, end);
       const seed = group.map((g) => `${g.dim}=${(hits.get(g.dim) ?? []).join(".")}`).join(";");
@@ -1664,6 +1790,9 @@ function resultKey(rule: ResultRule, scores: DimScore[], ranked: DimScore[], tot
       // Each pair leans to its first letter above 50%. A tie goes to the second letter (I, N, F, P), as in MBTI scoring.
       return scores.map((s) => (s.pct > 50 ? s.dim[0] : s.dim[1])).join("");
     case "top":
+      if (rule.tie === "mixed") {
+        return topTied(ranked).length > 1 ? "mixed" : ranked[0].dim;
+      }
       return ranked[0].dim;
     case "code":
       return ranked.slice(0, 3).map((s) => s.dim).join("");
@@ -1715,6 +1844,7 @@ export function resultKeys(id: QuizId): string[] {
       return out;
     }
     case "top":
+      return rule.tie === "mixed" ? [...def.dims, "mixed"] : [...def.dims];
     case "code":
       return [...def.dims];
     case "quadrant":

@@ -22,6 +22,8 @@ import {
   isComplete,
   maxTotal,
   resultKeys,
+  topTied,
+  type DimScore,
   scoreQuiz,
   type ChoiceItem,
   type QuizId,
@@ -282,42 +284,102 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("attachment", lean("attachment", ["anx", "avo"])).key).toBe("fearful");
   });
 
-  it("reads the color season from undertone and depth, and never lands an axis on exactly 50%", () => {
-    const def = QUIZ_DEFS["personal-color"];
-    if (def.type !== "choice") throw new Error();
-    // Each question is a two-way choice on one axis: 2 points or nothing, seven questions an axis.
-    for (const dim of ["warm", "deep"]) {
-      const mine = def.items.filter((item) => item.options.some((o) => dim in o));
-      expect(mine, dim).toHaveLength(7);
-      for (const item of mine) expect(item.options.map((o) => o[dim] ?? 0).sort(), dim).toEqual([0, 2]);
-      // The scoring answer is first in some questions and second in others.
-      const first = mine.filter((item) => (item.options[0][dim] ?? 0) > 0).length;
-      expect(first, dim).toBeGreaterThanOrEqual(3);
-      expect(first, dim).toBeLessThanOrEqual(4);
-    }
-    const pick = (warm: boolean, deep: boolean): number[] =>
-      def.items.map((item) => {
-        const dim = "warm" in item.options[0] || "warm" in item.options[1] ? "warm" : "deep";
-        const want = dim === "warm" ? warm : deep;
-        return item.options.findIndex((o) => (dim in o) === want);
-      });
-    expect(scoreQuiz("personal-color", pick(true, false)).key).toBe("spring");
-    expect(scoreQuiz("personal-color", pick(false, false)).key).toBe("summer");
-    expect(scoreQuiz("personal-color", pick(true, true)).key).toBe("autumn");
-    expect(scoreQuiz("personal-color", pick(false, true)).key).toBe("winter");
-    // Scoring k of an axis's 7 questions, for every k, never puts that axis at exactly 50%.
-    for (let k = 0; k <= 7; k++) {
-      const seen = { warm: 0, deep: 0 };
-      const answers = def.items.map((item) => {
-        const dim = "warm" in item.options[0] || "warm" in item.options[1] ? "warm" : "deep";
-        const take = seen[dim]++ < k;
-        return item.options.findIndex((o) => (dim in o) === take);
-      });
-      const result = scoreQuiz("personal-color", answers);
-      for (const s of result.scores) {
-        expect(s.raw, `${s.dim} k=${k}`).toBe(k * 2);
-        expect(s.pct, `${s.dim} k=${k}`).not.toBe(50);
+  it("reads the two-axis choice quadrants (color season, parenting style), and never lands an axis on exactly 50%", () => {
+    const cases = [
+      { id: "personal-color", x: "warm", y: "deep", keys: { lowLow: "summer", highLow: "spring", lowHigh: "winter", highHigh: "autumn" } },
+      { id: "parenting-style", x: "warmth", y: "control", keys: { lowLow: "uninvolved", highLow: "permissive", lowHigh: "authoritarian", highHigh: "authoritative" } },
+    ] as const;
+    for (const { id, x, y, keys } of cases) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      // Each question is a two-way choice on one axis: 2 points or nothing, seven questions an axis.
+      for (const dim of [x, y]) {
+        const mine = def.items.filter((item) => item.options.some((o) => dim in o));
+        expect(mine, `${id} ${dim}`).toHaveLength(7);
+        for (const item of mine) expect(item.options.map((o) => o[dim] ?? 0).sort(), `${id} ${dim}`).toEqual([0, 2]);
+        // The scoring answer is first in some questions and second in others.
+        const first = mine.filter((item) => (item.options[0][dim] ?? 0) > 0).length;
+        expect(first, `${id} ${dim}`).toBeGreaterThanOrEqual(3);
+        expect(first, `${id} ${dim}`).toBeLessThanOrEqual(4);
       }
+      const axisOf = (item: (typeof def.items)[number]): string => (x in item.options[0] || x in item.options[1] ? x : y);
+      const pick = (highX: boolean, highY: boolean): number[] =>
+        def.items.map((item) => {
+          const dim = axisOf(item);
+          const want = dim === x ? highX : highY;
+          return item.options.findIndex((o) => (dim in o) === want);
+        });
+      expect(scoreQuiz(id, pick(true, false)).key, id).toBe(keys.highLow);
+      expect(scoreQuiz(id, pick(false, false)).key, id).toBe(keys.lowLow);
+      expect(scoreQuiz(id, pick(true, true)).key, id).toBe(keys.highHigh);
+      expect(scoreQuiz(id, pick(false, true)).key, id).toBe(keys.lowHigh);
+      // Scoring k of an axis's 7 questions, for every k, never puts that axis at exactly 50%.
+      for (let k = 0; k <= 7; k++) {
+        const seen: Record<string, number> = { [x]: 0, [y]: 0 };
+        const answers = def.items.map((item) => {
+          const dim = axisOf(item);
+          const take = seen[dim]++ < k;
+          return item.options.findIndex((o) => (dim in o) === take);
+        });
+        const result = scoreQuiz(id, answers);
+        for (const s of result.scores) {
+          expect(s.raw, `${id} ${s.dim} k=${k}`).toBe(k * 2);
+          expect(s.pct, `${id} ${s.dim} k=${k}`).not.toBe(50);
+        }
+      }
+    }
+  });
+
+  it("finds top ties by exact share, never by rounding, across different ranges and with an empty range", () => {
+    const s = (dim: string, raw: number, max: number, min = 0): DimScore => ({ dim, raw, min, max, pct: Math.round(((raw - min) / (max - min || 1)) * 100) });
+    // 1/3 and 33/100 both round to 33%, but only the first is the top.
+    expect(topTied([s("a", 1, 3), s("b", 33, 100)]).map((x) => x.dim)).toEqual(["a"]);
+    // 2 of 4 and 3 of 6 are the same share.
+    expect(topTied([s("a", 2, 4), s("b", 3, 6)]).map((x) => x.dim)).toEqual(["a", "b"]);
+    // Minimums count: 3 within 2–4 is 50%, like 2 of 4.
+    expect(topTied([s("a", 2, 4), s("b", 3, 4, 2)]).map((x) => x.dim)).toEqual(["a", "b"]);
+    // A result nothing can score is not tied with the leader.
+    expect(topTied([s("a", 2, 4), s("z", 0, 0)]).map((x) => x.dim)).toEqual(["a"]);
+    // Through scoreQuiz: fish 12 of 23 (52.17%) and reptile 11 of 21 (52.38%) both round to 52%; reptile leads.
+    const pet = scoreQuiz("pet", [1, 1, 1, 0, 1, 0, 0, 1, 3, 0, 2, 0, 2, 0]);
+    const raw = Object.fromEntries(pet.scores.map((x) => [x.dim, `${x.raw}/${x.max}`]));
+    expect(raw).toMatchObject({ fish: "12/23", reptile: "11/21" });
+    expect(pet.key).toBe("reptile");
+    // A real tie in a plain top quiz still goes to the earlier result: a flat conflict-style profile is compromising.
+    const flat = scoreQuiz("conflict-style", QUIZ_DEFS["conflict-style"].items.map(() => 2));
+    expect(new Set(flat.scores.map((x) => x.raw)).size).toBe(1);
+    expect(flat.key).toBe("compromise");
+  });
+
+  it("gives a communication style tie at the top the mixed result, never a hash-picked style", () => {
+    const def = QUIZ_DEFS["communication-style"];
+    if (def.type !== "choice") throw new Error();
+    expect(resultKeys("communication-style")).toEqual([...def.dims, "mixed"]);
+    const pickStyles = (styles: string[]): number[] => def.items.map((item, i) => item.options.findIndex((o) => (o[styles[i]] ?? 0) > 0));
+    const all = (style: string): string[] => def.items.map(() => style);
+    for (const dim of def.dims) expect(scoreQuiz("communication-style", pickStyles(all(dim))).key).toBe(dim);
+    // 6 assertive, 6 aggressive: a tie at the top.
+    const tie = def.items.map((_, i) => (i % 2 ? "aggressive" : "assertive"));
+    expect(scoreQuiz("communication-style", pickStyles(tie)).key).toBe("mixed");
+    // 3 of each: every style tied.
+    const flat = def.items.map((_, i) => def.dims[i % 4]);
+    expect(scoreQuiz("communication-style", pickStyles(flat)).key).toBe("mixed");
+    // 5 assertive, 4 aggressive, 3 passive: assertive leads alone.
+    const lead = [...Array(5).fill("assertive"), ...Array(4).fill("aggressive"), ...Array(3).fill("passive")];
+    expect(scoreQuiz("communication-style", pickStyles(lead)).key).toBe("assertive");
+    // Random answers: every style about equally often among the results that aren't mixed.
+    const next = randomInts(7);
+    const counts = new Map<string, number>();
+    const runs = 20000;
+    for (let n = 0; n < runs; n++) {
+      const key = scoreQuiz("communication-style", def.items.map((item) => next(item.options.length))).key;
+      counts.set(key, (counts.get(key) ?? 0) + 1);
+    }
+    const single = runs - (counts.get("mixed") ?? 0);
+    for (const dim of def.dims) {
+      const share = ((counts.get(dim) ?? 0) * def.dims.length) / single;
+      expect(share, dim).toBeGreaterThan(0.9);
+      expect(share, dim).toBeLessThan(1.1);
     }
   });
 
@@ -777,9 +839,9 @@ describe("test pages: scoring", () => {
     // question (each in four, once in each position).
     const positions = [
       { ids: ["friend-role", "avengers", "friends-character"], min: 2, max: 2 },
-      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic", "harry-potter-character", "avatar-character", "game-of-thrones-house", "lord-of-the-rings", "sanrio", "cat-breed"], min: 1, max: 2 },
-      { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age"], min: 3, max: 3 },
-      { ids: ["hunger-games-district", "greek-god"], min: 1, max: 1 },
+      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic", "harry-potter-character", "avatar-character", "game-of-thrones-house", "lord-of-the-rings", "sanrio", "cat-breed", "flower", "mythical-creature", "superpower", "star-wars-character", "dragon-ball-character"], min: 1, max: 2 },
+      { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age", "communication-style"], min: 3, max: 3 },
+      { ids: ["hunger-games-district", "greek-god", "archetype"], min: 1, max: 1 },
     ] as const;
     for (const { ids, min, max } of positions) {
       for (const id of ids) {
@@ -837,34 +899,35 @@ describe("test pages: scoring", () => {
     }
   });
 
-  // 200k scorings: about two seconds locally, more than the default 5 s on a slow CI runner.
-  it("lets no fan quiz or friend role result dominate random answers", () => {
-    const next = randomInts(42);
-    for (const id of BALANCED_CHOICE) {
-      const def = QUIZ_DEFS[id];
-      if (def.type !== "choice") throw new Error();
-      const counts = new Map<string, number>();
-      // Ties at the top: how often each result was in one, weighted by 1 / tie size, and how often it won.
-      const tiedIn = new Map<string, number>();
-      const tiedWon = new Map<string, number>();
-      const runs = 20000;
-      for (let n = 0; n < runs; n++) {
-        const result = scoreQuiz(id, def.items.map((item) => next(item.options.length)));
-        counts.set(result.key, (counts.get(result.key) ?? 0) + 1);
-        const tied = result.ranked.filter((s) => s.pct === result.ranked[0].pct);
-        if (tied.length < 2) continue;
-        for (const s of tied) tiedIn.set(s.dim, (tiedIn.get(s.dim) ?? 0) + 1 / tied.length);
-        tiedWon.set(result.key, (tiedWon.get(result.key) ?? 0) + 1);
-      }
-      for (const dim of def.dims) {
-        // A fair tie-break wins about as many ties as a coin (or die) would.
-        const fair = (tiedWon.get(dim) ?? 0) / (tiedIn.get(dim) ?? 1);
-        expect(fair, `${id} ${dim} ties`).toBeGreaterThan(0.85);
-        expect(fair, `${id} ${dim} ties`).toBeLessThan(1.15);
-        const share = ((counts.get(dim) ?? 0) * def.dims.length) / runs;
-        expect(share, `${id} ${dim}`).toBeGreaterThan(0.8);
-        expect(share, `${id} ${dim}`).toBeLessThan(1.2);
-      }
+  // 20k scorings a quiz, about half a second each; one test per quiz so none grows with the number of balanced quizzes
+  // (all of them in one test passed 30 s on a busy machine). Each quiz gets its own seed, so quizzes that share a
+  // layout are not scored on the same answers.
+  it.each(BALANCED_CHOICE)("lets no %s result dominate random answers", (id) => {
+    // Seeded from the id, so adding or reordering quizzes doesn't reseed the others.
+    const next = randomInts([...id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 42));
+    const def = QUIZ_DEFS[id];
+    if (def.type !== "choice") throw new Error();
+    const counts = new Map<string, number>();
+    // Ties at the top: how often each result was in one, weighted by 1 / tie size, and how often it won.
+    const tiedIn = new Map<string, number>();
+    const tiedWon = new Map<string, number>();
+    const runs = 20000;
+    for (let n = 0; n < runs; n++) {
+      const result = scoreQuiz(id, def.items.map((item) => next(item.options.length)));
+      counts.set(result.key, (counts.get(result.key) ?? 0) + 1);
+      const tied = result.ranked.filter((s) => s.pct === result.ranked[0].pct);
+      if (tied.length < 2) continue;
+      for (const s of tied) tiedIn.set(s.dim, (tiedIn.get(s.dim) ?? 0) + 1 / tied.length);
+      tiedWon.set(result.key, (tiedWon.get(result.key) ?? 0) + 1);
+    }
+    for (const dim of def.dims) {
+      // A fair tie-break wins about as many ties as a coin (or die) would.
+      const fair = (tiedWon.get(dim) ?? 0) / (tiedIn.get(dim) ?? 1);
+      expect(fair, `${id} ${dim} ties`).toBeGreaterThan(0.85);
+      expect(fair, `${id} ${dim} ties`).toBeLessThan(1.15);
+      const share = ((counts.get(dim) ?? 0) * def.dims.length) / runs;
+      expect(share, `${id} ${dim}`).toBeGreaterThan(0.8);
+      expect(share, `${id} ${dim}`).toBeLessThan(1.2);
     }
   }, 30_000);
 });
