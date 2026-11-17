@@ -33,6 +33,7 @@ import {
   countriesHref,
   caloriesHref,
   elementsHref,
+  calendarHref,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -58,6 +59,7 @@ import { COUNTRIES_FOCUS, countryCode, isCountrySlug, type CountryPage } from ".
 import { regionName } from "../shared/datasets-i18n";
 import { CALORIES_FOCUS, type CaloriesPage, type FoodId } from "../shared/calories";
 import { ELEMENTS_FOCUS, type ElementSlug, type ElementsPage } from "../shared/elements";
+import { CALENDAR_LOCALE, CALENDAR_YEARS, type CalendarPage } from "../shared/calendar";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -114,6 +116,8 @@ let countriesPage: CountryPage = null;
 let caloriesPage: CaloriesPage = null;
 /** A periodic table page: "hub" for /periodic-table/, else the element slug. Reset at the start of every render(). */
 let elementsPage: ElementsPage = null;
+/** A calendar page id ("hub", "2027", "2027-02", "holidays/japan" …), or null. */
+let calendarPage: CalendarPage | null = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -335,6 +339,18 @@ export function boot(): void {
     setLocale(loc);
     applyElements(parsed.entry);
     history.replaceState(null, "", withSearch(elementsHref(loc, parsed.entry), location.search));
+  } else if (parsed.kind === "calendar") {
+    setLocale(parsed.locale);
+    applyCalendar(parsed.page);
+    const canonical = calendarHref(parsed.locale, parsed.page);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-calendar") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyCalendar(parsed.page);
+    history.replaceState(null, "", withSearch(calendarHref(loc, parsed.page), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -438,7 +454,9 @@ function prefetchGamePack(e: Event): void {
     else load();
   } else if (target?.closest?.('a[data-nav^="element-"], a[data-nav="elements"]')) {
     // One pack serves the hub and every element page.
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true).catch(() => {});
+  } else if (target?.closest?.('a[data-nav^="calendar"]')) {
+    // data-nav is "calendar" on a hub link, "calendar-<page id>" on a page link: one pack serves them all.
+    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true).catch(() => {});
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {
@@ -519,6 +537,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   nostalgiaPage = null;
   countriesPage = null;
   caloriesPage = null;
+  calendarPage = null;
 }
 
 function applyLearn(next: TutorialId | null): void {
@@ -543,6 +562,7 @@ function applyLearn(next: TutorialId | null): void {
   nostalgiaPage = null;
   countriesPage = null;
   caloriesPage = null;
+  calendarPage = null;
 }
 
 function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
@@ -567,6 +587,7 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   nostalgiaPage = null;
   countriesPage = null;
   caloriesPage = null;
+  calendarPage = null;
 }
 
 function applyDevice(page: DevicePageId): void {
@@ -591,6 +612,7 @@ function applyDevice(page: DevicePageId): void {
   nostalgiaPage = null;
   countriesPage = null;
   caloriesPage = null;
+  calendarPage = null;
 }
 
 function applyLegal(page: LegalPageId): void {
@@ -615,6 +637,7 @@ function applyLegal(page: LegalPageId): void {
   nostalgiaPage = null;
   countriesPage = null;
   caloriesPage = null;
+  calendarPage = null;
 }
 
 function applyQuiz(id: QuizId | null): void {
@@ -639,6 +662,7 @@ function applyQuiz(id: QuizId | null): void {
   nostalgiaPage = null;
   countriesPage = null;
   caloriesPage = null;
+  calendarPage = null;
 }
 
 function applyDataset(id: DatasetId | null): void {
@@ -663,6 +687,7 @@ function applyDataset(id: DatasetId | null): void {
   nostalgiaPage = null;
   countriesPage = null;
   caloriesPage = null;
+  calendarPage = null;
 }
 
 function applyRanking(id: RankingId | null): void {
@@ -709,6 +734,11 @@ function applyElements(slug: ElementSlug | null): void {
   elementsPage = slug ?? "hub";
 }
 
+function applyCalendar(page: CalendarPage): void {
+  applyTool(null, null);
+  calendarPage = page;
+}
+
 function unmountTools(): void {
   const unmount = unmountCurrent;
   unmountCurrent = noop;
@@ -717,7 +747,7 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
@@ -736,9 +766,10 @@ export function render(): void {
   const copy = pageCopyOf(parsed);
   const calories: CaloriesPage = parsed.kind === "calories" || parsed.kind === "bare-calories" ? parsed.food ?? "hub" : null;
   const elements = parsed.kind === "elements" || parsed.kind === "bare-elements";
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements)) {
+  const calendar = parsed.kind === "calendar" || parsed.kind === "bare-calendar";
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -852,6 +883,11 @@ export function render(): void {
     applyElements(parsed.entry);
   } else if (parsed.kind === "bare-elements") {
     applyElements(parsed.entry);
+  } else if (parsed.kind === "calendar") {
+    setLocale(parsed.locale);
+    applyCalendar(parsed.page);
+  } else if (parsed.kind === "bare-calendar") {
+    applyCalendar(parsed.page);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
@@ -868,6 +904,8 @@ export function render(): void {
     ? { ideas: true as const, ideaId: ideasPage === "hub" ? null : ideasPage }
     : nostalgiaPage
     ? { nostalgia: true as const, nostalgiaId: nostalgiaPage === "hub" ? null : nostalgiaPage }
+    : calendarPage
+    ? { calendar: true as const, calendarPage }
     : slangPage
     ? { slang: true as const, slangId: slangPage === "hub" ? null : slangPage }
     : refPage
@@ -923,7 +961,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -1061,7 +1099,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage || calendarPage);
   const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
   const gamesOn = gamesHub || Boolean(gameId);
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
@@ -1072,6 +1110,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const slangOn = Boolean(slangPage);
   const ideasOn = Boolean(ideasPage);
   const nostalgiaOn = Boolean(nostalgiaPage);
+  const calendarOn = Boolean(calendarPage);
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
@@ -1084,6 +1123,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
         navLink(ideasHref(loc), t("nav.ideas"), ideasOn, "ideas"),
         navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
+        navLink(calendarHref(loc), t("nav.calendar"), calendarOn, "calendar"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
@@ -1215,6 +1255,16 @@ function toolDirectory(loc: Locale): HTMLElement {
         ...ELEMENTS_FOCUS.map((slug) =>
           h("a", { href: elementsHref(loc, slug), "data-nav": `element-${slug}`, "aria-current": elementsPage === slug ? "page" : undefined }, t(`periodicTable.focus.${slug}`)),
         ),
+      ),
+    ),
+    // Calendar page names are computed from the calendar pack, so the footer links the hub and the year pages by number.
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: calendarHref(loc), "data-nav": "calendar", "aria-current": calendarPage === "hub" ? "page" : undefined }, t("nav.calendar"))),
+      h("p", null,
+        ...CALENDAR_YEARS.map((y) =>
+          h("a", { href: calendarHref(loc, `${y}`), "data-nav": `calendar-${y}`, "aria-current": calendarPage === `${y}` ? "page" : undefined }, String(y)),
+        ),
+        h("a", { href: calendarHref(loc, `holidays/${CALENDAR_LOCALE[loc].country}`), "data-nav": `calendar-holidays/${CALENDAR_LOCALE[loc].country}` }, t("calendarHolidays")),
       ),
     ),
     h("div", { class: "dir-group" },
@@ -1349,6 +1399,11 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./elements/ui");
     if (!alive()) return;
     m.mountElements(main, loc, page === "hub" ? null : page);
+  } else if (calendarPage) {
+    const m = await import("./calendar/ui");
+    if (!alive()) return;
+    m.mountCalendar(main, loc, calendarPage);
+    unmountCurrent = m.unmountCalendar;
   } else if (legalPage) {
     main.innerHTML = legalStaticHtml(loc, legalPage);
   } else if (marketId || marketsHub) {
@@ -1524,6 +1579,8 @@ function localePath(next: Locale): string {
     ? countriesHref(next, countriesPage === "hub" ? null : countriesPage)
     : caloriesPage
     ? caloriesHref(next, caloriesPage === "hub" ? null : caloriesPage)
+    : calendarPage
+    ? calendarHref(next, calendarPage)
     : legalPage
     ? legalHref(next, legalPage)
     : learnHub || tutorial

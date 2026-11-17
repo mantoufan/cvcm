@@ -1,0 +1,568 @@
+{
+  "crumbHome": "홈",
+  "hub": {
+    "title": "달력 2026–2028: 공휴일·음력·24절기·달의 위상",
+    "description": "2026년, 2027년, 2028년 무료 온라인 달력: 공식 발표에 따른 11개 국가·지역의 공휴일, 음력 날짜, 24절기, 보름달과 그믐(신월), 주차, 양력·음력 변환기.",
+    "h1": "달력",
+    "lede": "공휴일, 음력, 절기, 달의 위상을 표시한 연간·월간 달력과 음력 변환기. 공휴일은 각국 정부의 공식 발표를 그대로 옮겼습니다.",
+    "today": "오늘",
+    "years": "연간 달력",
+    "months": "월간 달력",
+    "holidays": "나라별 공휴일",
+    "more": "절기와 달",
+    "converter": "양력·음력 변환기",
+    "about": [
+      "이 페이지의 모든 날짜는 미리 만들어 둔 표를 바탕으로 브라우저에서 계산합니다. 음력의 달은 매 삭(신월)의 순간으로, 24절기는 태양의 위치로 정하며(오픈소스 천문 라이브러리 astronomy-engine으로 계산), 날짜는 각 나라의 표준시를 따릅니다. 페이지를 보는 동안 외부에서 따로 조회하는 것은 없습니다.",
+      "공휴일은 공식 고시에서 그대로 가져왔습니다. 중국 국무원, 대만 행정원 인사행정총처, 홍콩 정부 관보, 일본 내각부, 한국 우주항공청, 베트남 내무부, 인도네시아 장관 공동 결정, 미국 인사관리처, 영국 GOV.UK, 스페인 관보(BOE), 멕시코 연방노동법. 나라별 페이지마다 출처 링크가 있습니다."
+    ],
+    "faq": [
+      {
+        "q": "2027년 음력 설은 언제인가요?",
+        "a": "중국, 대만, 홍콩, 베트남에서는 2027년 2월 6일 토요일이며, 정미(丁未)년, 양띠 해가 시작됩니다. 음력을 UTC+9 기준으로 계산하는 한국에서는 신월이 베이징 시간 자정 직전에 들기 때문에 설날이 2027년 2월 7일 일요일입니다."
+      },
+      {
+        "q": "음력 날짜는 어떻게 계산하나요?",
+        "a": "음력의 한 달은 그 나라 표준시로 신월(삭)이 드는 날에 시작합니다. 동지가 든 달이 11월이고, 신월이 13번 있는 해에는 중기가 없는 첫 달이 윤달이 됩니다. 그래서 베트남(UTC+7), 중국(UTC+8), 한국(UTC+9)은 가끔 같은 달을 서로 다른 날에 시작합니다."
+      },
+      {
+        "q": "공휴일은 공식 자료인가요?",
+        "a": "네. 나라별 페이지에 실린 연도는 정부 발표를 그대로 옮긴 것으로, 대체 근무일(중국의 조휴)과 인도네시아의 공동 휴가(cuti bersama)도 포함합니다. 정부가 아직 발표하지 않은 연도는 추측하지 않고 비워 둡니다."
+      }
+    ]
+  },
+  "year": {
+    "title": "{y}년 달력 (공휴일·음력·절기)",
+    "description": "{y}년 달력: 12개월 전체의 주차, {country} 공휴일, 설날({lny}), 24절기, {y}년의 모든 보름달.",
+    "h1": "{y}년 달력",
+    "lede": "{y}년은 {first}에 시작하며 {days}일입니다. 음력 설은 {lny}이고, 이날부터 {gz}년({animal}띠 해)입니다.",
+    "faq": [
+      {
+        "q": "{y}년 1월 1일은 무슨 요일인가요?",
+        "a": "{y}년 1월 1일은 {first}, 12월 31일은 {last}입니다. 1년은 {days}일이고 ISO 주는 {weeks}주입니다."
+      },
+      {
+        "q": "{y}년 설날은 언제인가요?",
+        "a": "{lny}입니다. 이날부터 {gz}년({animal}띠 해)입니다."
+      },
+      {
+        "q": "{y}년 {country}의 공휴일은 며칠인가요?",
+        "a": "{holidayAnswer}"
+      }
+    ]
+  },
+  "month": {
+    "title": "{y}년 {m}월 달력 (음력·공휴일)",
+    "description": "{y}년 {m}월 달력: 주차, {country} 공휴일, 절기, 음력 날짜, 보름달({full}).",
+    "h1": "{y}년 {m}월 달력",
+    "lede": "{y}년 {m}월은 {days}일이며 {first}에 시작합니다.",
+    "faq": [
+      {
+        "q": "{y}년 {m}월에는 어떤 공휴일이 있나요?",
+        "a": "{holidayAnswer}"
+      },
+      {
+        "q": "{y}년 {m}월 보름달은 언제인가요?",
+        "a": "{fullAnswer}"
+      },
+      {
+        "q": "{y}년 {m}월 1일은 음력으로 며칠인가요?",
+        "a": "{lunarAnswer}"
+      }
+    ]
+  },
+  "holidays": {
+    "title": "{y}년 {country} 공휴일 ({prev}년 포함)",
+    "description": "{y}년 {country} 공휴일: 모든 날짜와 요일, 대체 휴일, 연휴를 공식 발표({source})에서 옮겼습니다. {prev}년 목록도 함께 있습니다.",
+    "h1": "{y}년 {country} 공휴일",
+    "lede": "공식 발표에 따른 {y}년 휴일은 {n}일입니다. 공휴일과 이어지는 주말은 아래 연휴에 함께 셉니다.",
+    "faq": [
+      {
+        "q": "{y}년 {country}의 공휴일은 며칠인가요?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "{country}의 다음 연휴는 언제인가요?",
+        "a": "{longAnswer}"
+      },
+      {
+        "q": "이 목록의 출처는 어디인가요?",
+        "a": "{sourceAnswer}"
+      }
+    ]
+  },
+  "terms": {
+    "title": "{y}년 24절기 날짜와 시각",
+    "description": "2026년, 2027년, 2028년 24절기(입춘부터 대한까지)의 날짜와 정확한 시각, 절기별 태양 황경.",
+    "h1": "24절기",
+    "lede": "24절기는 태양이 1년 동안 지나는 길을 15°씩 나눈 것입니다. 음력의 달과 농사의 때를 정해 왔습니다. 시각은 {zone} 기준입니다.",
+    "faq": [
+      {
+        "q": "{y}년 동지는 언제인가요?",
+        "a": "{solsticeAnswer}"
+      },
+      {
+        "q": "{y}년 입춘은 언제인가요?",
+        "a": "{springAnswer}"
+      },
+      {
+        "q": "왜 절기 날짜가 하루씩 달라지나요?",
+        "a": "절기는 태양이 정해진 황경에 이르는 순간입니다. 1년은 약 365.24일이라 그 순간이 해마다 약 6시간씩 늦어지고, 윤일이 지나면 날짜가 다시 당겨집니다. 시간대에 따라서도 날짜가 달라집니다."
+      }
+    ]
+  },
+  "moon": {
+    "title": "{y}년 보름달 달력: 달의 위상 2026–2028",
+    "description": "2026년, 2027년, 2028년의 모든 보름달, 신월, 상현, 하현의 날짜와 시각({zone}).",
+    "h1": "달의 위상",
+    "lede": "신월, 상현, 보름달, 하현의 정확한 시각({zone}).",
+    "faq": [
+      {
+        "q": "{y}년 보름달은 언제인가요?",
+        "a": "{nextAnswer}"
+      },
+      {
+        "q": "{y}년에는 보름달이 몇 번 뜨나요?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "사이트마다 달의 위상 시각이 다른 이유는?",
+        "a": "달의 위상은 지구 전체에서 같은 순간에 일어나고, 표시되는 날짜는 시간대에 따라 달라집니다. UTC 23:30의 보름달은 아시아에서는 이미 다음 날입니다."
+      }
+    ]
+  },
+  "ui": {
+    "week": "주",
+    "weekShort": "주",
+    "prev": "이전 달",
+    "next": "다음 달",
+    "prevYear": "이전 해",
+    "nextYear": "다음 해",
+    "date": "날짜",
+    "weekday": "요일",
+    "name": "공휴일",
+    "localName": "공식 명칭",
+    "type": "구분",
+    "types": {
+      "public": "공휴일",
+      "substitute": "대체 공휴일",
+      "workday": "대체 근무일",
+      "collective-leave": "공동 휴가",
+      "bridge": "징검다리 휴일"
+    },
+    "longBreaks": "연휴 (3일 이상)",
+    "breakLine": "{from} – {to}: {n}일",
+    "noHolidays": "이번 달에는 공휴일이 없습니다.",
+    "notAnnounced": "{country}의 {y}년 공휴일은 아직 발표되지 않았습니다. 공식 목록이 나오면 추가합니다.",
+    "holidaysIn": "{country} 공휴일",
+    "otherCountries": "다른 나라",
+    "festivals": "전통 명절",
+    "solarTerms": "절기",
+    "moonPhases": "달의 위상",
+    "term": "절기",
+    "longitude": "태양 황경",
+    "time": "시각",
+    "zoneUtc": "UTC",
+    "zoneOffset": "한국 시간",
+    "sources": "출처",
+    "notes": "참고",
+    "dataNote": "음력, 절기, 달의 위상은 astronomy-engine(MIT 라이선스)으로 계산합니다. 공휴일 출처는 나라별 페이지에 있습니다.",
+    "today": "오늘",
+    "todayLunar": "음력",
+    "isoWeek": "ISO {n}주차",
+    "dayOfYear": "{total}일 중 {n}번째 날",
+    "daysLeft": "올해 남은 날: {n}일",
+    "nextFull": "다음 보름달",
+    "currentTerm": "절기",
+    "convert": "변환",
+    "solarDate": "날짜",
+    "lunarYear": "음력 연도",
+    "lunarMonth": "음력 월",
+    "lunarDay": "음력 일",
+    "leap": "윤달",
+    "reckoning": "기준",
+    "reckonings": {
+      "cn": "중국 (UTC+8)",
+      "vn": "베트남 (UTC+7)",
+      "kr": "한국·일본 (UTC+9)"
+    },
+    "toLunar": "양력 → 음력",
+    "toSolar": "음력 → 양력",
+    "noSuchDate": "존재하지 않는 음력 날짜입니다(그달이 29일까지이거나 그해에 해당 윤달이 없습니다).",
+    "outOfRange": "1900년부터 2100년까지만 지원합니다.",
+    "lunarLine": "음력 {gz}년 {leap}{lm}월 {ld}일 ({animal}띠)",
+    "leapMark": "윤",
+    "solarLine": "{date}",
+    "monthsOf": "{y}년 월별 달력",
+    "moreYears": "다른 연도",
+    "weekNumbers": "주차는 ISO 8601 기준입니다(월요일에 주가 시작하고, 그해 첫 목요일이 든 주가 1주차).",
+    "printNote": "이 페이지를 인쇄하면 종이 달력이 됩니다. 사이트 머리글과 바닥글은 인쇄되지 않습니다.",
+    "workShort": "근무",
+    "daysLeftLabel": "올해 남은 날",
+    "lunarFull": "음력 {gz}년 {leap}{lm}월 {ld}일",
+    "faq": "자주 묻는 질문"
+  },
+  "countries": {
+    "china": "중국",
+    "taiwan": "대만",
+    "hong-kong": "홍콩",
+    "japan": "일본",
+    "south-korea": "한국",
+    "vietnam": "베트남",
+    "indonesia": "인도네시아",
+    "united-states": "미국",
+    "united-kingdom": "영국",
+    "spain": "스페인",
+    "mexico": "멕시코"
+  },
+  "quarters": [
+    "삭(신월)",
+    "상현",
+    "보름달",
+    "하현"
+  ],
+  "animals": [
+    "쥐",
+    "소",
+    "호랑이",
+    "토끼",
+    "용",
+    "뱀",
+    "말",
+    "양",
+    "원숭이",
+    "닭",
+    "개",
+    "돼지"
+  ],
+  "solarTerms": [
+    "입춘",
+    "우수",
+    "경칩",
+    "춘분",
+    "청명",
+    "곡우",
+    "입하",
+    "소만",
+    "망종",
+    "하지",
+    "소서",
+    "대서",
+    "입추",
+    "처서",
+    "백로",
+    "추분",
+    "한로",
+    "상강",
+    "입동",
+    "소설",
+    "대설",
+    "동지",
+    "소한",
+    "대한"
+  ],
+  "festivals": {
+    "spring": "춘절(중국 설)",
+    "lantern": "원소절",
+    "dragon-head": "용대두",
+    "dragon-boat": "단오절",
+    "qixi": "칠석",
+    "ghost": "중원절",
+    "mid-autumn": "중추절",
+    "double-ninth": "중양절",
+    "laba": "납팔절",
+    "kitchen-god": "소년(조왕신의 날)",
+    "new-year-eve": "섣달그믐",
+    "tet": "뗏(베트남 설)",
+    "ram-thang-gieng": "정월 보름",
+    "han-thuc": "한식",
+    "hung-kings": "훙왕 기일",
+    "doan-ngo": "단오(도안응오)",
+    "vu-lan": "우란분절(부란)",
+    "trung-thu": "중추절",
+    "ong-tao": "조왕신의 날",
+    "tat-nien": "섣달그믐",
+    "seollal": "설날",
+    "daeboreum": "정월대보름",
+    "dano": "단오",
+    "chilseok": "칠석",
+    "chuseok": "추석"
+  },
+  "lunarMonths": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+  ],
+  "lunarDays": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30"
+  ],
+  "rokuyo": [
+    "Taian",
+    "Shakkō",
+    "Senshō",
+    "Tomobiki",
+    "Senbu",
+    "Butsumetsu"
+  ],
+  "pasaran": [
+    "Legi",
+    "Pahing",
+    "Pon",
+    "Wage",
+    "Kliwon"
+  ],
+  "holidayNames": {
+    "CN:new-year": "신정",
+    "CN:lunar-new-year": "춘절",
+    "CN:qingming": "청명절",
+    "CN:labour-day": "노동절",
+    "CN:dragon-boat": "단오절",
+    "CN:national-day": "국경절",
+    "CN:mid-autumn": "중추절",
+    "TW:new-year": "개국기념일",
+    "TW:lunar-new-year": "춘절",
+    "TW:peace-memorial-day": "평화기념일",
+    "TW:childrens-day": "어린이날",
+    "TW:qingming": "청명절",
+    "TW:labour-day": "노동절",
+    "TW:dragon-boat": "단오절",
+    "TW:mid-autumn": "중추절",
+    "TW:teachers-day": "교사절",
+    "TW:national-day": "쌍십절",
+    "TW:retrocession-day": "대만 광복절",
+    "TW:constitution-day": "행헌기념일",
+    "HK:new-year": "신정",
+    "HK:lunar-new-year": "음력 설",
+    "HK:good-friday": "성금요일",
+    "HK:day-after-good-friday": "성금요일 다음 날",
+    "HK:qingming": "청명절",
+    "HK:easter-monday": "부활절 월요일",
+    "HK:labour-day": "노동절",
+    "HK:buddhas-birthday": "부처님 오신 날",
+    "HK:dragon-boat": "단오절",
+    "HK:hksar-establishment-day": "홍콩 특별행정구 수립 기념일",
+    "HK:mid-autumn": "중추절 다음 날",
+    "HK:national-day": "국경절",
+    "HK:chung-yeung": "중양절",
+    "HK:christmas": "크리스마스",
+    "HK:boxing-day": "크리스마스 후 첫 평일",
+    "JP:new-year": "신정",
+    "JP:coming-of-age-day": "성년의 날",
+    "JP:national-foundation-day": "건국기념일",
+    "JP:emperors-birthday": "천황 탄생일",
+    "JP:vernal-equinox-day": "춘분의 날",
+    "JP:showa-day": "쇼와의 날",
+    "JP:constitution-memorial-day": "헌법기념일",
+    "JP:greenery-day": "녹색의 날",
+    "JP:childrens-day": "어린이날",
+    "JP:marine-day": "바다의 날",
+    "JP:mountain-day": "산의 날",
+    "JP:respect-for-the-aged-day": "경로의 날",
+    "JP:citizens-holiday": "국민의 휴일",
+    "JP:autumnal-equinox-day": "추분의 날",
+    "JP:sports-day": "스포츠의 날",
+    "JP:culture-day": "문화의 날",
+    "JP:labour-thanksgiving-day": "근로감사의 날",
+    "VN:new-year": "신정",
+    "VN:lunar-new-year": "뗏",
+    "VN:hung-kings": "훙왕 기념일",
+    "VN:reunification-day": "통일의 날",
+    "VN:labour-day": "노동절",
+    "VN:national-day": "국경절",
+    "VN:culture-day": "베트남 문화의 날",
+    "ID:new-year": "신정",
+    "ID:isra-miraj": "이스라 미라즈",
+    "ID:lunar-new-year": "음력 설",
+    "ID:nyepi": "녜피",
+    "ID:eid-al-fitr": "이드 알피트르",
+    "ID:good-friday": "성금요일",
+    "ID:easter": "부활절",
+    "ID:labour-day": "노동절",
+    "ID:ascension-day": "예수 승천일",
+    "ID:eid-al-adha": "이드 알아드하",
+    "ID:vesak": "베삭",
+    "ID:pancasila-day": "판차실라의 날",
+    "ID:islamic-new-year": "이슬람 새해",
+    "ID:independence-day": "독립기념일",
+    "ID:mawlid": "무함마드 탄신일",
+    "ID:christmas": "크리스마스",
+    "US:new-year": "신정",
+    "US:mlk-day": "마틴 루터 킹 주니어의 날",
+    "US:washingtons-birthday": "워싱턴 탄생일",
+    "US:memorial-day": "메모리얼 데이",
+    "US:juneteenth": "준틴스",
+    "US:independence-day": "독립기념일",
+    "US:labor-day": "노동절",
+    "US:columbus-day": "콜럼버스의 날",
+    "US:veterans-day": "재향군인의 날",
+    "US:thanksgiving": "추수감사절",
+    "US:christmas": "크리스마스",
+    "GB:new-year": "신정",
+    "GB:good-friday": "성금요일",
+    "GB:easter-monday": "부활절 월요일",
+    "GB:early-may-bank-holiday": "5월 초 뱅크 홀리데이",
+    "GB:spring-bank-holiday": "봄 뱅크 홀리데이",
+    "GB:summer-bank-holiday": "여름 뱅크 홀리데이",
+    "GB:christmas": "크리스마스",
+    "GB:boxing-day": "박싱 데이",
+    "ES:new-year": "신정",
+    "ES:epiphany": "주현절",
+    "ES:good-friday": "성금요일",
+    "ES:labour-day": "노동절",
+    "ES:assumption": "성모 승천 대축일",
+    "ES:national-day": "스페인 국경일",
+    "ES:immaculate-conception": "원죄 없이 잉태되신 성모 마리아 대축일",
+    "ES:christmas": "크리스마스",
+    "ES:all-saints": "모든 성인 대축일",
+    "ES:constitution-day": "헌법의 날",
+    "MX:new-year": "신정",
+    "MX:constitution-day": "헌법의 날",
+    "MX:benito-juarez": "베니토 후아레스 탄생일",
+    "MX:labour-day": "노동절",
+    "MX:independence-day": "독립기념일",
+    "MX:revolution-day": "혁명기념일",
+    "MX:christmas": "크리스마스",
+    "MX:election-day": "연방 선거일"
+  },
+  "answers": {
+    "countLine": "공식 목록에 따르면 {y}년 {country}의 공휴일 휴무는 {n}일입니다{work}.",
+    "workdays": "(대체 근무일 {n}일 별도)",
+    "monthHolidays": "{country}: {list}.",
+    "monthNone": "{y}년 {m}월에는 {country}의 공휴일이 없습니다.",
+    "monthFull": "보름달: {time} ({zone}).",
+    "monthNoFull": "{y}년 {m}월에는 보름달이 없습니다. 다음 보름달: {time} ({zone}).",
+    "monthLunar": "{y}년 {m}월 1일은 {lunar}입니다.",
+    "longLine": "{y}년 연휴: {list}.",
+    "longNone": "{y}년에는 3일 이상의 연휴가 없습니다.",
+    "sourceLine": "{title}, {date} 발표. 날짜는 이 발표를 그대로 옮겼습니다.",
+    "termLine": "{time} ({zone}).",
+    "moonList": "{y}년 보름달 ({zone}): {list}.",
+    "moonCount": "{y}년에는 보름달이 {n}번 뜹니다."
+  },
+  "leapPrefix": "윤",
+  "stems": [
+    "갑",
+    "을",
+    "병",
+    "정",
+    "무",
+    "기",
+    "경",
+    "신",
+    "임",
+    "계"
+  ],
+  "stemJoin": "",
+  "branches": [
+    "자",
+    "축",
+    "인",
+    "묘",
+    "진",
+    "사",
+    "오",
+    "미",
+    "신",
+    "유",
+    "술",
+    "해"
+  ],
+  "termHan": [
+    "立春",
+    "雨水",
+    "惊蛰",
+    "春分",
+    "清明",
+    "谷雨",
+    "立夏",
+    "小满",
+    "芒种",
+    "夏至",
+    "小暑",
+    "大暑",
+    "立秋",
+    "处暑",
+    "白露",
+    "秋分",
+    "寒露",
+    "霜降",
+    "立冬",
+    "小雪",
+    "大雪",
+    "冬至",
+    "小寒",
+    "大寒"
+  ],
+  "countryNotes": {
+    "china": [
+      "국무원 판공청이 정부 기관을 대상으로 정한 일정이며, 기업도 대체로 이를 따릅니다. 연휴 기간의 주말과 대체 근무일(调休)도 표시했습니다."
+    ],
+    "taiwan": [
+      "대만 행정원 인사행정총처가 공표한 정부 기관 달력입니다. 민간 기업은 노동기준법을 따르므로 다를 수 있습니다."
+    ],
+    "hong-kong": [
+      "정부가 관보에 고시한 일반 공휴일입니다. 매주 일요일도 일반 공휴일이며, 근로자의 법정 휴일은 이보다 짧은 별도 목록입니다."
+    ],
+    "japan": [
+      "국민의 축일에 관한 법률에 따른 공휴일로, 대체 휴일(振替休日)과 국민의 휴일(国民の休日)을 포함합니다."
+    ],
+    "south-korea": [
+      "관공서의 공휴일로, 대체공휴일을 포함하며 우주항공청(KASA)이 발행한 역서에 따릅니다."
+    ],
+    "vietnam": [
+      "2019년 노동법에 따른 법정 공휴일입니다. 표시된 뗏과 국경절 연휴는 내무부가 공무원을 대상으로 정한 일정이며, 기업은 자체적으로 나눠 정합니다."
+    ],
+    "indonesia": [
+      "3개 부처 장관 공동 결정에 따른 국경일과 공동 휴가(cuti bersama)입니다. 이슬람 명절의 날짜는 종교부 장관의 결정으로 조정될 수 있습니다."
+    ],
+    "united-states": [
+      "미국 인사관리처가 공표한 연방 공휴일입니다. 공휴일이 주말과 겹치면 대신 쉬는 평일도 함께 표시합니다. 주와 민간 고용주에 따라 다를 수 있습니다."
+    ],
+    "united-kingdom": [
+      "GOV.UK에 따른 잉글랜드와 웨일스의 뱅크 홀리데이입니다. 스코틀랜드와 북아일랜드는 목록이 다릅니다."
+    ],
+    "spain": [
+      "모든 자치 지방에서 공통으로 쉬는 축일만 실었습니다(관보 BOE). 각 지방이 자체 휴일을 더하고, 각 시·읍이 지역 휴일 이틀을 더합니다."
+    ],
+    "mexico": [
+      "연방노동법 제74조에 따른 법정 휴무일입니다. 성주간 같은 날은 관례일 뿐 법정 휴일이 아닙니다."
+    ]
+  }
+}

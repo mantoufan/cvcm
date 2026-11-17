@@ -1,0 +1,566 @@
+{
+  "crumbHome": "Beranda",
+  "hub": {
+    "title": "Kalender 2026–2028: Libur Nasional, Imlek, Jawa dan Fase Bulan",
+    "description": "Kalender online gratis 2026, 2027 dan 2028: hari libur resmi 11 negara dari pengumuman pemerintah, tanggal Imlek, 24 musim matahari (jieqi), bulan purnama dan bulan baru, nomor minggu, serta konverter tanggal Masehi–Imlek.",
+    "h1": "Kalender",
+    "lede": "Kalender tahunan dan bulanan dengan hari libur, tanggal Imlek, musim matahari dan fase bulan, plus konverter tanggal Imlek. Hari libur disalin langsung dari pengumuman resmi tiap pemerintah.",
+    "today": "Hari ini",
+    "years": "Kalender tahunan",
+    "months": "Kalender bulanan",
+    "holidays": "Hari libur per negara",
+    "more": "Langit dan musim",
+    "converter": "Konverter tanggal Masehi dan Imlek",
+    "about": [
+      "Semua tanggal di halaman ini dihitung di browser Anda dari tabel yang sudah disiapkan: bulan Imlek dari saat setiap bulan baru, dan 24 musim matahari dari posisi matahari (dihitung dengan pustaka astronomi open-source astronomy-engine), menurut waktu standar tiap negara. Tidak ada yang dicari secara online saat Anda membaca.",
+      "Hari libur diambil dari pengumuman resminya: Dewan Negara Tiongkok, DGPA Taiwan, lembaran resmi Hong Kong, Kantor Kabinet Jepang, KASA Korea, Kementerian Dalam Negeri Vietnam, SKB tiga menteri Indonesia, Office of Personnel Management AS, GOV.UK, BOE Spanyol, dan Undang-Undang Ketenagakerjaan Federal Meksiko. Setiap halaman negara mencantumkan tautan sumbernya."
+    ],
+    "faq": [
+      {
+        "q": "Kapan Tahun Baru Imlek 2027?",
+        "a": "Sabtu, 6 Februari 2027 di Tiongkok, Taiwan, Hong Kong dan Vietnam; hari itu dimulai Tahun Kambing (丁未). Di Korea, yang menghitung kalender lunar dalam UTC+9, Seollal jatuh pada Minggu, 7 Februari 2027, karena bulan baru terjadi sesaat sebelum tengah malam waktu Beijing."
+      },
+      {
+        "q": "Bagaimana tanggal Imlek dihitung?",
+        "a": "Bulan lunar dimulai pada hari bulan baru menurut waktu standar negara tersebut; bulan yang memuat titik balik musim dingin adalah bulan ke-11; pada tahun dengan 13 bulan baru, bulan pertama tanpa musim matahari utama (zhongqi) menjadi bulan kabisat. Karena itu Vietnam (UTC+7), Tiongkok (UTC+8) dan Korea (UTC+9) kadang memulai bulan pada hari yang berbeda."
+      },
+      {
+        "q": "Apakah hari liburnya resmi?",
+        "a": "Ya, untuk tahun yang tercantum di setiap halaman negara: disalin dari pengumuman pemerintah, termasuk hari kerja pengganti (调休 di Tiongkok) dan cuti bersama di Indonesia. Tahun yang belum diumumkan pemerintah tidak dicantumkan, bukan ditebak."
+      }
+    ]
+  },
+  "year": {
+    "title": "Kalender {y} Lengkap: Libur Nasional, Cuti Bersama, Jawa",
+    "description": "Kalender {y} lengkap 12 bulan dengan nomor minggu, hari libur {country}, Imlek ({lny}), pasaran Jawa, 24 musim matahari dan setiap bulan purnama {y}.",
+    "h1": "Kalender {y}",
+    "lede": "Tahun {y} dimulai pada hari {first} dan memiliki {days} hari. Tahun Baru Imlek jatuh pada {lny}, awal Tahun {animal} ({gz}).",
+    "faq": [
+      {
+        "q": "Tahun {y} dimulai pada hari apa?",
+        "a": "1 Januari {y} jatuh pada hari {first}, dan 31 Desember {y} pada hari {last}. Tahun ini memiliki {days} hari dan {weeks} minggu ISO."
+      },
+      {
+        "q": "Kapan Imlek {y}?",
+        "a": "{lny}. Hari itu dimulai Tahun {animal} ({gz})."
+      },
+      {
+        "q": "Berapa hari libur nasional di {country} pada {y}?",
+        "a": "{holidayAnswer}"
+      }
+    ]
+  },
+  "month": {
+    "title": "Kalender {month} {y} (Libur & Jawa)",
+    "description": "Kalender {month} {y} dengan nomor minggu, hari libur {country}, pasaran Jawa, musim matahari, tanggal Imlek dan bulan purnama ({full}).",
+    "h1": "Kalender {month} {y}",
+    "lede": "{month} {y} memiliki {days} hari, dimulai pada hari {first}.",
+    "faq": [
+      {
+        "q": "Hari libur apa saja di bulan {month} {y}?",
+        "a": "{holidayAnswer}"
+      },
+      {
+        "q": "Kapan bulan purnama di bulan {month} {y}?",
+        "a": "{fullAnswer}"
+      },
+      {
+        "q": "Tanggal berapa Imlek pada 1 {month} {y}?",
+        "a": "{lunarAnswer}"
+      }
+    ]
+  },
+  "holidays": {
+    "title": "Hari Libur Nasional {country} {y} (dan {prev})",
+    "description": "Hari libur nasional {country} {y}: setiap tanggal beserta harinya, hari pengganti dan libur panjang, dari pengumuman resmi {source}. Termasuk daftar {prev}.",
+    "h1": "Hari Libur Nasional {country} {y}",
+    "lede": "{n} hari libur pada {y}, menurut pengumuman resmi. Akhir pekan yang menyambung dengan hari libur dihitung dalam libur panjang di bawah.",
+    "faq": [
+      {
+        "q": "Berapa hari libur nasional di {country} pada {y}?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "Kapan libur panjang berikutnya di {country}?",
+        "a": "{longAnswer}"
+      },
+      {
+        "q": "Dari mana daftar ini berasal?",
+        "a": "{sourceAnswer}"
+      }
+    ]
+  },
+  "terms": {
+    "title": "24 Musim Matahari {y}: Tanggal dan Jam (Jieqi)",
+    "description": "Tanggal dan jam tepat 24 musim matahari (节气) untuk 2026, 2027 dan 2028, dari Awal Musim Semi hingga Dingin Besar, dengan bujur matahari masing-masing.",
+    "h1": "24 Musim Matahari",
+    "lede": "24 musim matahari membagi lintasan tahunan matahari menjadi langkah 15°. Musim ini menentukan bulan-bulan kalender Tionghoa dan musim bertani. Waktu dalam {zone}.",
+    "faq": [
+      {
+        "q": "Kapan titik balik musim dingin {y}?",
+        "a": "{solsticeAnswer}"
+      },
+      {
+        "q": "Kapan Awal Musim Semi (Lichun) {y}?",
+        "a": "{springAnswer}"
+      },
+      {
+        "q": "Mengapa tanggalnya bergeser satu hari?",
+        "a": "Musim matahari adalah saat matahari mencapai bujur tertentu. Tahun kalender sekitar 365,24 hari, sehingga saat itu bergeser sekitar enam jam per tahun dan tanggalnya berubah setelah hari kabisat; tanggalnya juga bergantung pada zona waktu."
+      }
+    ]
+  },
+  "moon": {
+    "title": "Kalender Bulan Purnama {y}: Fase Bulan 2026–2028",
+    "description": "Setiap bulan purnama, bulan baru, dan kuartal bulan pada 2026, 2027 dan 2028 lengkap dengan tanggal dan jam ({zone}).",
+    "h1": "Fase Bulan",
+    "lede": "Bulan baru, kuartal pertama, bulan purnama dan kuartal terakhir dengan jam tepat dalam {zone}.",
+    "faq": [
+      {
+        "q": "Kapan saja bulan purnama pada {y}?",
+        "a": "{nextAnswer}"
+      },
+      {
+        "q": "Berapa kali bulan purnama pada {y}?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "Mengapa jam fase bulan berbeda di tiap situs?",
+        "a": "Fase bulan adalah satu saat yang sama untuk seluruh Bumi; tanggal yang ditampilkan bergantung pada zona waktu. Bulan purnama pukul 23.30 UTC sudah jatuh pada hari berikutnya di Asia."
+      }
+    ]
+  },
+  "ui": {
+    "week": "Minggu",
+    "weekShort": "Mg",
+    "prev": "Bulan sebelumnya",
+    "next": "Bulan berikutnya",
+    "prevYear": "Tahun sebelumnya",
+    "nextYear": "Tahun berikutnya",
+    "date": "Tanggal",
+    "weekday": "Hari",
+    "name": "Hari libur",
+    "localName": "Nama resmi",
+    "type": "Jenis",
+    "types": {
+      "public": "Libur nasional",
+      "substitute": "Hari pengganti",
+      "workday": "Hari kerja pengganti",
+      "collective-leave": "Cuti bersama",
+      "bridge": "Hari kejepit"
+    },
+    "longBreaks": "Libur panjang (3 hari atau lebih)",
+    "breakLine": "{from} – {to}: {n} hari",
+    "noHolidays": "Tidak ada hari libur nasional bulan ini.",
+    "notAnnounced": "{country} belum mengumumkan hari libur {y}; akan ditambahkan setelah daftar resminya keluar.",
+    "holidaysIn": "Hari libur {country}",
+    "otherCountries": "Negara lain",
+    "festivals": "Perayaan tradisional",
+    "solarTerms": "Musim matahari",
+    "moonPhases": "Fase bulan",
+    "term": "Musim",
+    "longitude": "Bujur matahari",
+    "time": "Waktu",
+    "zoneUtc": "UTC",
+    "zoneOffset": "WIB",
+    "sources": "Sumber",
+    "notes": "Catatan",
+    "dataNote": "Tanggal Imlek, musim matahari dan fase bulan dihitung dengan astronomy-engine (lisensi MIT). Hari libur: sumber resmi di setiap halaman negara.",
+    "today": "Hari ini",
+    "todayLunar": "Tanggal Imlek",
+    "isoWeek": "Minggu ISO ke-{n}",
+    "dayOfYear": "Hari ke-{n} dari {total}",
+    "daysLeft": "{n} hari lagi tahun ini",
+    "nextFull": "Purnama berikutnya",
+    "currentTerm": "Musim matahari",
+    "convert": "Konversi",
+    "solarDate": "Tanggal",
+    "lunarYear": "Tahun Imlek",
+    "lunarMonth": "Bulan Imlek",
+    "lunarDay": "Tanggal Imlek",
+    "leap": "Bulan kabisat",
+    "reckoning": "Perhitungan",
+    "reckonings": {
+      "cn": "Tiongkok (UTC+8)",
+      "vn": "Vietnam (UTC+7)",
+      "kr": "Korea / Jepang (UTC+9)"
+    },
+    "toLunar": "Masehi → Imlek",
+    "toSolar": "Imlek → Masehi",
+    "noSuchDate": "Tanggal Imlek itu tidak ada (bulannya hanya 29 hari atau tahun itu tidak punya bulan kabisat tersebut).",
+    "outOfRange": "Hanya tanggal dari 1900 sampai 2100.",
+    "lunarLine": "{ly} ({gz}, Tahun {animal}), bulan {lm}{leap}, tanggal {ld}",
+    "leapMark": " (kabisat)",
+    "solarLine": "{date}",
+    "monthsOf": "{y} per bulan",
+    "moreYears": "Tahun lain",
+    "weekNumbers": "Nomor minggu mengikuti ISO 8601 (minggu dimulai hari Senin; minggu ke-1 memuat Kamis pertama).",
+    "printNote": "Cetak halaman ini untuk kalender kertas; header dan footer situs tidak ikut dicetak.",
+    "workShort": "Masuk",
+    "daysLeftLabel": "Sisa hari tahun ini",
+    "lunarFull": "tahun {gz}, bulan {leap}{lm}, tanggal {ld}",
+    "faq": "Pertanyaan"
+  },
+  "countries": {
+    "china": "Tiongkok",
+    "taiwan": "Taiwan",
+    "hong-kong": "Hong Kong",
+    "japan": "Jepang",
+    "south-korea": "Korea Selatan",
+    "vietnam": "Vietnam",
+    "indonesia": "Indonesia",
+    "united-states": "Amerika Serikat",
+    "united-kingdom": "Inggris",
+    "spain": "Spanyol",
+    "mexico": "Meksiko"
+  },
+  "quarters": [
+    "Bulan baru",
+    "Kuartal pertama",
+    "Bulan purnama",
+    "Kuartal terakhir"
+  ],
+  "animals": [
+    "Tikus",
+    "Kerbau",
+    "Macan",
+    "Kelinci",
+    "Naga",
+    "Ular",
+    "Kuda",
+    "Kambing",
+    "Monyet",
+    "Ayam",
+    "Anjing",
+    "Babi"
+  ],
+  "solarTerms": [
+    "Awal Musim Semi",
+    "Air Hujan",
+    "Bangunnya Serangga",
+    "Ekuinoks Musim Semi",
+    "Terang dan Cerah",
+    "Hujan Biji-bijian",
+    "Awal Musim Panas",
+    "Biji Mulai Berisi",
+    "Biji Berbulir",
+    "Titik Balik Musim Panas",
+    "Panas Kecil",
+    "Panas Besar",
+    "Awal Musim Gugur",
+    "Akhir Panas",
+    "Embun Putih",
+    "Ekuinoks Musim Gugur",
+    "Embun Dingin",
+    "Turunnya Embun Beku",
+    "Awal Musim Dingin",
+    "Salju Kecil",
+    "Salju Besar",
+    "Titik Balik Musim Dingin",
+    "Dingin Kecil",
+    "Dingin Besar"
+  ],
+  "festivals": {
+    "spring": "Tahun Baru Imlek",
+    "lantern": "Cap Go Meh",
+    "dragon-head": "Hari Naga Mengangkat Kepala",
+    "dragon-boat": "Festival Perahu Naga (Peh Cun)",
+    "qixi": "Festival Qixi",
+    "ghost": "Festival Hantu (Cioko)",
+    "mid-autumn": "Festival Kue Bulan",
+    "double-ninth": "Festival Sembilan Ganda",
+    "laba": "Festival Laba",
+    "kitchen-god": "Hari Dewa Dapur",
+    "new-year-eve": "Malam Tahun Baru Imlek",
+    "tet": "Tết (Tahun Baru Imlek Vietnam)",
+    "ram-thang-gieng": "Purnama Pertama",
+    "han-thuc": "Festival Makanan Dingin",
+    "hung-kings": "Hari Raja-Raja Hùng",
+    "doan-ngo": "Đoan Ngọ (Lima Ganda)",
+    "vu-lan": "Vu Lan",
+    "trung-thu": "Festival Pertengahan Musim Gugur",
+    "ong-tao": "Hari Dewa Dapur",
+    "tat-nien": "Malam Tahun Baru Imlek",
+    "seollal": "Seollal",
+    "daeboreum": "Daeboreum",
+    "dano": "Dano",
+    "chilseok": "Chilseok",
+    "chuseok": "Chuseok"
+  },
+  "lunarMonths": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+  ],
+  "lunarDays": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30"
+  ],
+  "rokuyo": [
+    "Taian",
+    "Shakkō",
+    "Senshō",
+    "Tomobiki",
+    "Senbu",
+    "Butsumetsu"
+  ],
+  "pasaran": [
+    "Legi",
+    "Pahing",
+    "Pon",
+    "Wage",
+    "Kliwon"
+  ],
+  "holidayNames": {
+    "CN:new-year": "Tahun Baru",
+    "CN:lunar-new-year": "Tahun Baru Imlek",
+    "CN:qingming": "Festival Qingming",
+    "CN:labour-day": "Hari Buruh",
+    "CN:dragon-boat": "Festival Perahu Naga",
+    "CN:national-day": "Hari Nasional",
+    "CN:mid-autumn": "Festival Pertengahan Musim Gugur",
+    "TW:new-year": "Hari Pendirian Republik Tiongkok",
+    "TW:lunar-new-year": "Tahun Baru Imlek",
+    "TW:peace-memorial-day": "Hari Peringatan Perdamaian",
+    "TW:childrens-day": "Hari Anak",
+    "TW:qingming": "Festival Qingming",
+    "TW:labour-day": "Hari Buruh",
+    "TW:dragon-boat": "Festival Perahu Naga",
+    "TW:mid-autumn": "Festival Pertengahan Musim Gugur",
+    "TW:teachers-day": "Hari Guru",
+    "TW:national-day": "Hari Double Ten",
+    "TW:retrocession-day": "Hari Retrosesi Taiwan",
+    "TW:constitution-day": "Hari Konstitusi",
+    "HK:new-year": "Tahun Baru",
+    "HK:lunar-new-year": "Tahun Baru Imlek",
+    "HK:good-friday": "Jumat Agung",
+    "HK:day-after-good-friday": "Sehari setelah Jumat Agung",
+    "HK:qingming": "Festival Qingming",
+    "HK:easter-monday": "Senin Paskah",
+    "HK:labour-day": "Hari Buruh",
+    "HK:buddhas-birthday": "Hari Lahir Buddha",
+    "HK:dragon-boat": "Festival Perahu Naga",
+    "HK:hksar-establishment-day": "Hari Pembentukan Daerah Administratif Khusus Hong Kong",
+    "HK:mid-autumn": "Sehari setelah Festival Pertengahan Musim Gugur",
+    "HK:national-day": "Hari Nasional",
+    "HK:chung-yeung": "Festival Chung Yeung",
+    "HK:christmas": "Hari Natal",
+    "HK:boxing-day": "Hari kerja pertama setelah Natal",
+    "JP:new-year": "Tahun Baru",
+    "JP:coming-of-age-day": "Hari Kedewasaan",
+    "JP:national-foundation-day": "Hari Peringatan Berdirinya Negara",
+    "JP:emperors-birthday": "Hari Ulang Tahun Kaisar",
+    "JP:vernal-equinox-day": "Hari Ekuinoks Musim Semi",
+    "JP:showa-day": "Hari Showa",
+    "JP:constitution-memorial-day": "Hari Peringatan Konstitusi",
+    "JP:greenery-day": "Hari Hijau",
+    "JP:childrens-day": "Hari Anak",
+    "JP:marine-day": "Hari Laut",
+    "JP:mountain-day": "Hari Gunung",
+    "JP:respect-for-the-aged-day": "Hari Penghormatan Lansia",
+    "JP:citizens-holiday": "Hari Libur Rakyat",
+    "JP:autumnal-equinox-day": "Hari Ekuinoks Musim Gugur",
+    "JP:sports-day": "Hari Olahraga",
+    "JP:culture-day": "Hari Kebudayaan",
+    "JP:labour-thanksgiving-day": "Hari Terima Kasih Buruh",
+    "KR:new-year": "Tahun Baru",
+    "KR:lunar-new-year": "Seollal",
+    "KR:independence-movement-day": "Hari Gerakan Kemerdekaan",
+    "KR:labour-day": "Hari Buruh",
+    "KR:childrens-day": "Hari Anak",
+    "KR:buddhas-birthday": "Hari Lahir Buddha",
+    "KR:local-election": "Hari Pemilihan Daerah Serentak",
+    "KR:memorial-day": "Hari Peringatan",
+    "KR:constitution-day": "Hari Konstitusi",
+    "KR:liberation-day": "Hari Pembebasan",
+    "KR:chuseok": "Chuseok",
+    "KR:national-foundation-day": "Hari Pendirian Nasional",
+    "KR:hangeul-day": "Hari Hangeul",
+    "KR:christmas": "Hari Natal",
+    "VN:new-year": "Tahun Baru",
+    "VN:lunar-new-year": "Tết",
+    "VN:hung-kings": "Hari Peringatan Raja Hùng",
+    "VN:reunification-day": "Hari Reunifikasi",
+    "VN:labour-day": "Hari Buruh Internasional",
+    "VN:national-day": "Hari Nasional",
+    "VN:culture-day": "Hari Kebudayaan Vietnam",
+    "US:new-year": "Tahun Baru",
+    "US:mlk-day": "Hari Martin Luther King Jr.",
+    "US:washingtons-birthday": "Hari Ulang Tahun Washington",
+    "US:memorial-day": "Memorial Day",
+    "US:juneteenth": "Juneteenth",
+    "US:independence-day": "Hari Kemerdekaan",
+    "US:labor-day": "Hari Buruh",
+    "US:columbus-day": "Hari Columbus",
+    "US:veterans-day": "Hari Veteran",
+    "US:thanksgiving": "Hari Thanksgiving",
+    "US:christmas": "Hari Natal",
+    "GB:new-year": "Tahun Baru",
+    "GB:good-friday": "Jumat Agung",
+    "GB:easter-monday": "Senin Paskah",
+    "GB:early-may-bank-holiday": "Libur Bank Awal Mei",
+    "GB:spring-bank-holiday": "Libur Bank Musim Semi",
+    "GB:summer-bank-holiday": "Libur Bank Musim Panas",
+    "GB:christmas": "Hari Natal",
+    "GB:boxing-day": "Boxing Day",
+    "ES:new-year": "Tahun Baru",
+    "ES:epiphany": "Hari Epifani",
+    "ES:good-friday": "Jumat Agung",
+    "ES:labour-day": "Hari Buruh",
+    "ES:assumption": "Hari Maria Diangkat ke Surga",
+    "ES:national-day": "Hari Nasional Spanyol",
+    "ES:immaculate-conception": "Hari Maria Dikandung Tanpa Noda",
+    "ES:christmas": "Hari Natal",
+    "ES:all-saints": "Hari Raya Semua Orang Kudus",
+    "ES:constitution-day": "Hari Konstitusi",
+    "MX:new-year": "Tahun Baru",
+    "MX:constitution-day": "Hari Konstitusi",
+    "MX:benito-juarez": "Hari Lahir Benito Juárez",
+    "MX:labour-day": "Hari Buruh",
+    "MX:independence-day": "Hari Kemerdekaan",
+    "MX:revolution-day": "Hari Revolusi",
+    "MX:christmas": "Hari Natal",
+    "MX:election-day": "Hari Pemilu Federal"
+  },
+  "answers": {
+    "countLine": "{country} memiliki {n} hari libur nasional pada {y}{work}, menurut daftar resmi.",
+    "workdays": ", ditambah {n} hari kerja pengganti",
+    "monthHolidays": "{country}: {list}.",
+    "monthNone": "Tidak ada hari libur nasional di {country} pada {month} {y}.",
+    "monthFull": "Bulan purnama: {time} ({zone}).",
+    "monthNoFull": "Tidak ada bulan purnama pada {month} {y}; purnama berikutnya {time} ({zone}).",
+    "monthLunar": "1 {month} {y} bertepatan dengan {lunar} dalam kalender Imlek.",
+    "longLine": "Libur panjang {y}: {list}.",
+    "longNone": "Tidak ada libur tiga hari atau lebih pada {y}.",
+    "sourceLine": "{title}, diterbitkan {date}. Tanggal-tanggalnya disalin dari pengumuman tersebut.",
+    "termLine": "{time} ({zone}).",
+    "moonList": "Bulan purnama {y} ({zone}): {list}.",
+    "moonCount": "Ada {n} bulan purnama pada {y}."
+  },
+  "leapPrefix": "kabisat ",
+  "stems": [
+    "甲",
+    "乙",
+    "丙",
+    "丁",
+    "戊",
+    "己",
+    "庚",
+    "辛",
+    "壬",
+    "癸"
+  ],
+  "stemJoin": "",
+  "branches": [
+    "子",
+    "丑",
+    "寅",
+    "卯",
+    "辰",
+    "巳",
+    "午",
+    "未",
+    "申",
+    "酉",
+    "戌",
+    "亥"
+  ],
+  "termHan": [
+    "立春",
+    "雨水",
+    "惊蛰",
+    "春分",
+    "清明",
+    "谷雨",
+    "立夏",
+    "小满",
+    "芒种",
+    "夏至",
+    "小暑",
+    "大暑",
+    "立秋",
+    "处暑",
+    "白露",
+    "秋分",
+    "寒露",
+    "霜降",
+    "立冬",
+    "小雪",
+    "大雪",
+    "冬至",
+    "小寒",
+    "大寒"
+  ],
+  "countryNotes": {
+    "china": [
+      "Pengaturan dari Kantor Umum Dewan Negara untuk instansi pemerintah; perusahaan umumnya mengikutinya. Akhir pekan di dalam masa libur dan hari kerja pengganti (调休) ikut dicantumkan."
+    ],
+    "taiwan": [
+      "Kalender DGPA untuk kantor pemerintah. Perusahaan swasta mengikuti Undang-Undang Standar Ketenagakerjaan, yang bisa berbeda."
+    ],
+    "hong-kong": [
+      "Hari libur umum yang diumumkan pemerintah dalam lembaran resmi. Setiap hari Minggu juga merupakan hari libur umum; hari libur wajib bagi pekerja adalah daftar terpisah yang lebih pendek."
+    ],
+    "japan": [
+      "Hari libur nasional menurut Undang-Undang Hari Libur Nasional, termasuk hari libur pengganti (振替休日) dan hari libur rakyat (国民の休日)."
+    ],
+    "south-korea": [
+      "Hari libur instansi pemerintah (관공서의 공휴일), termasuk hari libur pengganti (대체공휴일), sebagaimana diterbitkan dalam almanak KASA."
+    ],
+    "vietnam": [
+      "Hari libur resmi menurut Undang-Undang Ketenagakerjaan 2019. Libur Tết dan Hari Nasional yang ditampilkan adalah pengaturan Kementerian Dalam Negeri untuk pegawai negeri; perusahaan menentukan pembagiannya sendiri."
+    ],
+    "indonesia": [
+      "Hari libur nasional dan cuti bersama berdasarkan SKB tiga menteri. Tanggal hari besar Islam masih dapat disesuaikan melalui keputusan Menteri Agama."
+    ],
+    "united-states": [
+      "Hari libur federal menurut Office of Personnel Management; jika hari libur jatuh pada akhir pekan, hari kerja penggantinya juga dicantumkan. Negara bagian dan perusahaan swasta bisa berbeda."
+    ],
+    "united-kingdom": [
+      "Libur bank di Inggris dan Wales dari GOV.UK. Skotlandia dan Irlandia Utara memiliki daftar yang berbeda."
+    ],
+    "spain": [
+      "Hanya hari libur yang berlaku di semua komunitas otonom (BOE). Setiap wilayah menambah hari liburnya sendiri, dan setiap kota menambah dua hari libur lokal."
+    ],
+    "mexico": [
+      "Hari istirahat wajib menurut Pasal 74 Undang-Undang Ketenagakerjaan Federal. Hari seperti Pekan Suci hanya kebiasaan, bukan kewajiban."
+    ]
+  }
+}

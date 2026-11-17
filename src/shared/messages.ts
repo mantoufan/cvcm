@@ -65,6 +65,14 @@ export type ElementsMessages = typeof import("../locales/elements/en.json") & {
   data: import("./elements-i18n").ElementRow[];
 };
 
+/** Calendar copy plus the astronomy tables and official holiday lists (the same modules in every locale's pack). */
+export type CalendarMessages = typeof import("../locales/calendar/en.json") & {
+  /** src/shared/calendar-data.json (scripts/build-calendar-data.mjs). */
+  astro: unknown;
+  /** src/shared/calendar-holidays.json. */
+  holidayData: unknown;
+};
+
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */
 export type LocaleMessages = {
   ui: UiMessages;
@@ -101,6 +109,7 @@ const loadedSlangEntries: Partial<Record<Locale, Partial<Record<SlangId, SlangEn
 const loadedIdeas: Partial<Record<Locale, IdeasMessages>> = {};
 const loadedIdeaEntries: Partial<Record<Locale, Partial<Record<IdeaId, IdeaEntryCopy>>>> = {};
 const loadedNostalgia: Partial<Record<Locale, NostalgiaMessages>> = {};
+const loadedCalendar: Partial<Record<Locale, CalendarMessages>> = {};
 const loadedNostalgiaEntries: Partial<Record<Locale, Partial<Record<NostalgiaId, NostalgiaEntryCopy>>>> = {};
 const loadedElements: Partial<Record<Locale, ElementsMessages>> = {};
 
@@ -361,4 +370,17 @@ export function hasElementsMessages(locale: Locale): boolean {
 /** Periodic table copy, names and rows; on the client only after the elements pack is loaded (periodic table pages). */
 export function elementsMessages(locale: Locale): ElementsMessages {
   return pick(loadedElements, locale, "elements messages");
+}
+
+export function registerCalendarMessages(locale: Locale, pack: CalendarMessages): void {
+  loadedCalendar[locale] = pack;
+}
+
+export function hasCalendarMessages(locale: Locale): boolean {
+  return Boolean(loadedCalendar[locale]);
+}
+
+/** Calendar copy and data; on the client only after the calendar pack is loaded (calendar pages). */
+export function calendarMessages(locale: Locale): CalendarMessages {
+  return pick(loadedCalendar, locale, "calendar messages");
 }

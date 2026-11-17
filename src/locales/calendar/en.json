@@ -1,0 +1,456 @@
+{
+  "crumbHome": "Home",
+  "hub": {
+    "title": "Calendar 2026–2028: Holidays, Lunar Calendar, Solar Terms and Moon Phases",
+    "description": "Free online calendar for 2026, 2027 and 2028: public holidays for 11 countries from official announcements, Chinese lunar dates, the 24 solar terms, full and new moons, week numbers and a solar–lunar date converter.",
+    "h1": "Calendar",
+    "lede": "Year and month calendars with public holidays, lunar dates, solar terms and moon phases, plus a lunar date converter. Holidays are typed in from each government's own announcement.",
+    "today": "Today",
+    "years": "Year calendars",
+    "months": "Month calendars",
+    "holidays": "Public holidays by country",
+    "more": "Sky and seasons",
+    "converter": "Solar and lunar date converter",
+    "about": [
+      "Every date on these pages is worked out in your browser from tables built ahead of time: lunar months from the moment of each new moon and the 24 solar terms from the sun's position (computed with the open-source astronomy-engine library), in the standard time of each country. Nothing is looked up while you read.",
+      "Public holidays come from the official notices themselves: China's State Council, Taiwan's DGPA, the Hong Kong gazette, Japan's Cabinet Office, Korea's KASA, Vietnam's Ministry of Home Affairs, Indonesia's joint ministerial decree, the US Office of Personnel Management, GOV.UK, Spain's BOE and Mexico's Federal Labor Law. Each country page links its sources."
+    ],
+    "faq": [
+      {
+        "q": "When is Lunar New Year 2027?",
+        "a": "Saturday, 6 February 2027 in China, Taiwan, Hong Kong and Vietnam; it starts the Year of the Goat (丁未). In Korea, which reckons the lunar calendar in UTC+9, Seollal is Sunday, 7 February 2027, because the new moon falls just before midnight Beijing time."
+      },
+      {
+        "q": "How is the lunar date calculated?",
+        "a": "A lunar month starts on the day of a new moon in the country's standard time; the month holding the winter solstice is the 11th; in a year with 13 new moons, the first month without a major solar term is a leap month. That is why Vietnam (UTC+7), China (UTC+8) and Korea (UTC+9) occasionally start a month on different days."
+      },
+      {
+        "q": "Are the holidays official?",
+        "a": "Yes for the years listed on each country page: they are copied from the government announcement, including makeup working days (China's 调休) and collective leave (Indonesia's cuti bersama). Years a government has not announced yet are left out rather than guessed."
+      }
+    ]
+  },
+  "year": {
+    "title": "{y} Calendar with Holidays, Week Numbers and Moon Phases",
+    "description": "{y} calendar: all 12 months with week numbers, {country} public holidays, Lunar New Year ({lny}), the 24 solar terms and every full moon of {y}.",
+    "h1": "{y} Calendar",
+    "lede": "{y} starts on a {first} and has {days} days. Lunar New Year falls on {lny}, the start of the Year of the {animal} ({gz}).",
+    "faq": [
+      {
+        "q": "What day does {y} start on?",
+        "a": "January 1, {y} is a {first}, and December 31, {y} is a {last}. The year has {days} days and {weeks} ISO weeks."
+      },
+      {
+        "q": "When is Lunar New Year {y}?",
+        "a": "{lny}. It starts the Year of the {animal} ({gz})."
+      },
+      {
+        "q": "How many public holidays are there in {country} in {y}?",
+        "a": "{holidayAnswer}"
+      }
+    ]
+  },
+  "month": {
+    "title": "{month} {y} Calendar with Holidays and Moon Phases",
+    "description": "{month} {y} calendar with week numbers, {country} public holidays, solar terms, lunar dates and the full moon ({full}).",
+    "h1": "{month} {y} Calendar",
+    "lede": "{month} {y} has {days} days, starting on a {first}.",
+    "faq": [
+      {
+        "q": "What holidays are in {month} {y}?",
+        "a": "{holidayAnswer}"
+      },
+      {
+        "q": "When is the full moon in {month} {y}?",
+        "a": "{fullAnswer}"
+      },
+      {
+        "q": "What is the lunar date on {month} 1, {y}?",
+        "a": "{lunarAnswer}"
+      }
+    ]
+  },
+  "holidays": {
+    "title": "{country} Public Holidays {y} (and {prev})",
+    "description": "{country} public holidays {y}: every date with its weekday, makeup days and long weekends, from the official {source} announcement. {prev} list included.",
+    "h1": "{country} Public Holidays {y}",
+    "lede": "{n} days off in {y}, copied from the official announcement. Weekends that join a holiday are counted in the long breaks below.",
+    "faq": [
+      {
+        "q": "How many public holidays are there in {country} in {y}?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "When are the long weekends in {country} in {y}?",
+        "a": "{longAnswer}"
+      },
+      {
+        "q": "Where does this list come from?",
+        "a": "{sourceAnswer}"
+      }
+    ]
+  },
+  "terms": {
+    "title": "24 Solar Terms {y}: Dates and Times (Jieqi)",
+    "description": "Dates and exact times of the 24 solar terms (节气) for 2026, 2027 and 2028, from the Start of Spring to Major Cold, with the sun's longitude for each.",
+    "h1": "24 Solar Terms",
+    "lede": "The 24 solar terms divide the sun's yearly path into 15° steps. They set the months of the Chinese calendar and the farming year. Times are in {zone}.",
+    "faq": [
+      {
+        "q": "When is the winter solstice {y}?",
+        "a": "{solsticeAnswer}"
+      },
+      {
+        "q": "When does Start of Spring {y} begin?",
+        "a": "{springAnswer}"
+      },
+      {
+        "q": "Why do the dates move by a day?",
+        "a": "A term is the moment the sun reaches a set longitude. The calendar year is about 365.24 days, so that moment drifts by about six hours a year and the date shifts after leap days; it also depends on the time zone."
+      }
+    ]
+  },
+  "moon": {
+    "title": "Full Moon Calendar {y}: Moon Phases 2026–2028",
+    "description": "Every full moon, new moon and quarter moon of 2026, 2027 and 2028 with date and time ({zone}).",
+    "h1": "Moon Phases",
+    "lede": "New moon, first quarter, full moon and last quarter with the exact time in {zone}.",
+    "faq": [
+      {
+        "q": "When are the full moons in {y}?",
+        "a": "{nextAnswer}"
+      },
+      {
+        "q": "How many full moons are there in {y}?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "Why do moon phase times differ between websites?",
+        "a": "The phase is one instant for the whole Earth; the date shown depends on the time zone. A full moon at 23:30 UTC is already the next day in Asia."
+      }
+    ]
+  },
+  "ui": {
+    "week": "Week",
+    "weekShort": "Wk",
+    "prev": "Previous month",
+    "next": "Next month",
+    "prevYear": "Previous year",
+    "nextYear": "Next year",
+    "date": "Date",
+    "weekday": "Day",
+    "name": "Holiday",
+    "localName": "Official name",
+    "type": "Type",
+    "types": {
+      "public": "Public holiday",
+      "substitute": "Substitute day",
+      "workday": "Working day (makeup)",
+      "collective-leave": "Collective leave",
+      "bridge": "Day off in the break"
+    },
+    "longBreaks": "Long breaks (3 days or more)",
+    "breakLine": "{from} – {to}: {n} days",
+    "noHolidays": "No public holidays this month.",
+    "notAnnounced": "{country} has not announced its {y} holidays yet; they will be added once the official list is out.",
+    "holidaysIn": "{country} holidays",
+    "otherCountries": "Other countries",
+    "festivals": "Traditional festivals",
+    "solarTerms": "Solar terms",
+    "moonPhases": "Moon phases",
+    "term": "Term",
+    "longitude": "Sun's longitude",
+    "time": "Time",
+    "zoneUtc": "UTC",
+    "zoneOffset": "UTC{sign}{h}",
+    "sources": "Sources",
+    "notes": "Notes",
+    "dataNote": "Lunar dates, solar terms and moon phases are computed with astronomy-engine (MIT licence). Holidays: official sources on each country page.",
+    "today": "Today",
+    "todayLunar": "Lunar date",
+    "isoWeek": "ISO week {n}",
+    "dayOfYear": "Day {n} of {total}",
+    "daysLeft": "{n} days left in the year",
+    "nextFull": "Next full moon",
+    "currentTerm": "Solar term",
+    "convert": "Convert",
+    "solarDate": "Date",
+    "lunarYear": "Lunar year",
+    "lunarMonth": "Lunar month",
+    "lunarDay": "Lunar day",
+    "leap": "Leap month",
+    "reckoning": "Reckoning",
+    "reckonings": {
+      "cn": "China (UTC+8)",
+      "vn": "Vietnam (UTC+7)",
+      "kr": "Korea / Japan (UTC+9)"
+    },
+    "toLunar": "Solar → lunar",
+    "toSolar": "Lunar → solar",
+    "noSuchDate": "That lunar date does not exist (the month has 29 days or no leap month that year).",
+    "outOfRange": "Dates from 1900 to 2100 only.",
+    "lunarLine": "{ly} ({gz}, Year of the {animal}), month {lm}{leap}, day {ld}",
+    "leapMark": " (leap)",
+    "solarLine": "{date}",
+    "monthsOf": "{y} by month",
+    "moreYears": "Other years",
+    "weekNumbers": "Week numbers are ISO 8601 (weeks start on Monday; week 1 holds the first Thursday).",
+    "printNote": "Print this page for a paper calendar; the site header and footer are left off.",
+    "workShort": "Work",
+    "daysLeftLabel": "Days left this year",
+    "lunarFull": "{gz} year, {leap}month {lm}, day {ld}",
+    "faq": "Questions"
+  },
+  "countries": {
+    "china": "China",
+    "taiwan": "Taiwan",
+    "hong-kong": "Hong Kong",
+    "japan": "Japan",
+    "south-korea": "South Korea",
+    "vietnam": "Vietnam",
+    "indonesia": "Indonesia",
+    "united-states": "United States",
+    "united-kingdom": "United Kingdom",
+    "spain": "Spain",
+    "mexico": "Mexico"
+  },
+  "quarters": [
+    "New moon",
+    "First quarter",
+    "Full moon",
+    "Last quarter"
+  ],
+  "animals": [
+    "Rat",
+    "Ox",
+    "Tiger",
+    "Rabbit",
+    "Dragon",
+    "Snake",
+    "Horse",
+    "Goat",
+    "Monkey",
+    "Rooster",
+    "Dog",
+    "Pig"
+  ],
+  "solarTerms": [
+    "Start of Spring",
+    "Rain Water",
+    "Awakening of Insects",
+    "Spring Equinox",
+    "Clear and Bright",
+    "Grain Rain",
+    "Start of Summer",
+    "Grain Buds",
+    "Grain in Ear",
+    "Summer Solstice",
+    "Minor Heat",
+    "Major Heat",
+    "Start of Autumn",
+    "End of Heat",
+    "White Dew",
+    "Autumn Equinox",
+    "Cold Dew",
+    "Frost's Descent",
+    "Start of Winter",
+    "Minor Snow",
+    "Major Snow",
+    "Winter Solstice",
+    "Minor Cold",
+    "Major Cold"
+  ],
+  "festivals": {
+    "spring": "Spring Festival",
+    "lantern": "Lantern Festival",
+    "dragon-head": "Dragon Raises Its Head",
+    "dragon-boat": "Dragon Boat Festival",
+    "qixi": "Qixi Festival",
+    "ghost": "Ghost Festival",
+    "mid-autumn": "Mid-Autumn Festival",
+    "double-ninth": "Double Ninth Festival",
+    "laba": "Laba Festival",
+    "kitchen-god": "Kitchen God Day",
+    "new-year-eve": "Lunar New Year's Eve",
+    "tet": "Tết (Lunar New Year)",
+    "ram-thang-gieng": "First Full Moon",
+    "han-thuc": "Cold Food Festival",
+    "hung-kings": "Hùng Kings' Day",
+    "doan-ngo": "Đoan Ngọ (Double Fifth)",
+    "vu-lan": "Vu Lan",
+    "trung-thu": "Mid-Autumn Festival",
+    "ong-tao": "Kitchen Gods' Day",
+    "tat-nien": "Lunar New Year's Eve",
+    "seollal": "Seollal",
+    "daeboreum": "Daeboreum",
+    "dano": "Dano",
+    "chilseok": "Chilseok",
+    "chuseok": "Chuseok"
+  },
+  "lunarMonths": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+  ],
+  "lunarDays": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30"
+  ],
+  "rokuyo": [
+    "Taian",
+    "Shakkō",
+    "Senshō",
+    "Tomobiki",
+    "Senbu",
+    "Butsumetsu"
+  ],
+  "pasaran": [
+    "Legi",
+    "Pahing",
+    "Pon",
+    "Wage",
+    "Kliwon"
+  ],
+  "holidayNames": {},
+  "answers": {
+    "countLine": "In {y}, {country} has {n} days off for public holidays{work}, under the official list.",
+    "workdays": ", plus {n} makeup working days",
+    "monthHolidays": "In {country}: {list}.",
+    "monthNone": "No public holidays in {country} in {month} {y}.",
+    "monthFull": "Full moon: {time} ({zone}).",
+    "monthNoFull": "There is no full moon in {month} {y}; the next one is {time} ({zone}).",
+    "monthLunar": "{month} 1, {y} is {lunar} in the lunar calendar.",
+    "longLine": "Long breaks in {y}: {list}.",
+    "longNone": "No break of three days or more in {y}.",
+    "sourceLine": "{title}, published {date}. The dates are copied from that announcement.",
+    "termLine": "{time} ({zone}).",
+    "moonList": "Full moons in {y} ({zone}): {list}.",
+    "moonCount": "{y} has {n} full moons."
+  },
+  "leapPrefix": "leap ",
+  "stems": [
+    "甲",
+    "乙",
+    "丙",
+    "丁",
+    "戊",
+    "己",
+    "庚",
+    "辛",
+    "壬",
+    "癸"
+  ],
+  "stemJoin": "",
+  "branches": [
+    "子",
+    "丑",
+    "寅",
+    "卯",
+    "辰",
+    "巳",
+    "午",
+    "未",
+    "申",
+    "酉",
+    "戌",
+    "亥"
+  ],
+  "termHan": [
+    "立春",
+    "雨水",
+    "惊蛰",
+    "春分",
+    "清明",
+    "谷雨",
+    "立夏",
+    "小满",
+    "芒种",
+    "夏至",
+    "小暑",
+    "大暑",
+    "立秋",
+    "处暑",
+    "白露",
+    "秋分",
+    "寒露",
+    "霜降",
+    "立冬",
+    "小雪",
+    "大雪",
+    "冬至",
+    "小寒",
+    "大寒"
+  ],
+  "countryNotes": {
+    "china": [
+      "Arrangement by the General Office of the State Council for government bodies; companies generally follow it. Weekend days inside a break and the makeup working days (调休) are listed."
+    ],
+    "taiwan": [
+      "The DGPA calendar for government offices. Private employers follow the Labor Standards Act, which can differ."
+    ],
+    "hong-kong": [
+      "General holidays gazetted by the government. Every Sunday is also a general holiday; statutory holidays for employees are a separate, shorter list."
+    ],
+    "japan": [
+      "National holidays under the Act on National Holidays, including substitute holidays (振替休日) and citizens' holidays (国民の休日)."
+    ],
+    "south-korea": [
+      "Public holidays of government offices (관공서의 공휴일), including substitute holidays (대체공휴일), as published in the KASA almanac."
+    ],
+    "vietnam": [
+      "Statutory holidays under the Labour Code 2019. The Tết and National Day breaks shown are the Ministry of Home Affairs arrangement for public servants; companies choose their own split."
+    ],
+    "indonesia": [
+      "National holidays and collective leave (cuti bersama) under the joint decree of three ministers. Islamic holiday dates can still be adjusted by decree of the Minister of Religious Affairs."
+    ],
+    "united-states": [
+      "Federal holidays as listed by the Office of Personnel Management; when a holiday falls on a weekend, the observed weekday is listed too. States and private employers can differ."
+    ],
+    "united-kingdom": [
+      "Bank holidays in England and Wales from GOV.UK. Scotland and Northern Ireland have different lists."
+    ],
+    "spain": [
+      "Only the fiestas held in every autonomous community (BOE). Each region adds its own days, and each town adds two local ones."
+    ],
+    "mexico": [
+      "Mandatory rest days under Article 74 of the Federal Labour Law. Days such as Holy Week are customary, not mandatory."
+    ]
+  }
+}

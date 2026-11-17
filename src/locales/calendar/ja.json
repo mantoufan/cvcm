@@ -1,0 +1,540 @@
+{
+  "crumbHome": "ホーム",
+  "hub": {
+    "title": "カレンダー 2026–2028：祝日・六曜・旧暦・二十四節気・月齢",
+    "description": "2026年・2027年・2028年の無料オンラインカレンダー。公式発表に基づく11の国と地域の祝日、旧暦（中国暦）、二十四節気、満月・新月、週番号、新暦と旧暦の変換。",
+    "h1": "カレンダー",
+    "lede": "祝日・旧暦・二十四節気・月の満ち欠けを載せた年間カレンダーと月間カレンダー、そして旧暦変換ツール。祝日は各国政府の発表をそのまま書き写しています。",
+    "today": "今日",
+    "years": "年間カレンダー",
+    "months": "月間カレンダー",
+    "holidays": "国別の祝日",
+    "more": "暦と季節",
+    "converter": "新暦・旧暦変換",
+    "about": [
+      "このページの日付はすべて、あらかじめ作成した表からブラウザ内で計算しています。旧暦の月は各新月（朔）の瞬間から、二十四節気は太陽の位置から求め（オープンソースの天文ライブラリ astronomy-engine で計算）、各国の標準時で日付を決めています。閲覧中に外部へ問い合わせることはありません。",
+      "祝日は公式の告示そのものから取っています。中国国務院、台湾の行政院人事行政総処、香港の政府公報、日本の内閣府、韓国の宇宙航空庁、ベトナム内務省、インドネシアの共同大臣決定、米国人事管理局、英国政府 GOV.UK、スペイン官報（BOE）、メキシコ連邦労働法。各国のページに出典へのリンクがあります。"
+    ],
+    "faq": [
+      {
+        "q": "2027年の旧正月（春節）はいつ？",
+        "a": "中国・台湾・香港・ベトナムでは2027年2月6日（土）で、丁未（ひつじ）年が始まります。旧暦をUTC+9で計算する韓国では、新月が北京時間の午前0時直前にあたるため、ソルラル（설날）は2027年2月7日（日）です。"
+      },
+      {
+        "q": "旧暦の日付はどう計算するの？",
+        "a": "旧暦の月は、その国の標準時で新月となる日に始まります。冬至を含む月が11月で、新月が13回ある年には、中気を含まない最初の月が閏月になります。そのため、ベトナム（UTC+7）、中国（UTC+8）、韓国（UTC+9）では月の始まりが1日ずれることがあります。"
+      },
+      {
+        "q": "祝日は公式のものですか？",
+        "a": "はい。各国のページに載せた年は政府の発表から書き写したもので、振替出勤日（中国の調休）やインドネシアの一斉休暇（cuti bersama）も含みます。政府がまだ発表していない年は推測せず、載せていません。"
+      }
+    ]
+  },
+  "year": {
+    "title": "{y}年（令和{reiwa}年）カレンダー 祝日・六曜・旧暦",
+    "description": "{y}年のカレンダー：12か月分の週番号、{country}の祝日、旧正月（{lny}）、二十四節気、{y}年のすべての満月。",
+    "h1": "{y}年カレンダー",
+    "lede": "{y}年は{first}に始まり、{days}日あります。旧正月は{lny}で、{gz}（{animal}）年が始まります。",
+    "faq": [
+      {
+        "q": "{y}年1月1日は何曜日？",
+        "a": "{y}年1月1日は{first}、12月31日は{last}です。1年は{days}日、ISO週は{weeks}週あります。"
+      },
+      {
+        "q": "{y}年の旧正月はいつ？",
+        "a": "{lny}です。{gz}（{animal}）年が始まります。"
+      },
+      {
+        "q": "{y}年の{country}の祝日は何日？",
+        "a": "{holidayAnswer}"
+      }
+    ]
+  },
+  "month": {
+    "title": "{y}年{m}月カレンダー（祝日・六曜）",
+    "description": "{y}年{m}月のカレンダー：週番号、{country}の祝日、二十四節気、六曜、旧暦の日付、満月（{full}）。",
+    "h1": "{y}年{m}月カレンダー",
+    "lede": "{y}年{m}月は{days}日あり、{first}から始まります。",
+    "faq": [
+      {
+        "q": "{y}年{m}月の祝日は？",
+        "a": "{holidayAnswer}"
+      },
+      {
+        "q": "{y}年{m}月の満月はいつ？",
+        "a": "{fullAnswer}"
+      },
+      {
+        "q": "{y}年{m}月1日は旧暦で何日？",
+        "a": "{lunarAnswer}"
+      }
+    ]
+  },
+  "holidays": {
+    "title": "{y}年の{country}の祝日一覧（{prev}年付き）",
+    "description": "{y}年の{country}の祝日：すべての日付と曜日、振替日、連休を公式発表（{source}）から掲載。{prev}年の一覧付き。",
+    "h1": "{y}年の{country}の祝日",
+    "lede": "公式発表による{y}年の休日は{n}日です。祝日とつながる週末は、下の連休に含めて数えています。",
+    "faq": [
+      {
+        "q": "{y}年の{country}の祝日は何日？",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "{country}の次の連休はいつ？",
+        "a": "{longAnswer}"
+      },
+      {
+        "q": "この一覧の出典は？",
+        "a": "{sourceAnswer}"
+      }
+    ]
+  },
+  "terms": {
+    "title": "{y}年の二十四節気 日付と時刻一覧",
+    "description": "2026年・2027年・2028年の二十四節気（立春から大寒まで）の日付と正確な時刻、各節気の太陽黄経。",
+    "h1": "二十四節気",
+    "lede": "二十四節気は太陽が1年に通る道を15°ずつに分けたものです。旧暦の月と農作業の暦を決めてきました。時刻は{zone}です。",
+    "faq": [
+      {
+        "q": "{y}年の冬至はいつ？",
+        "a": "{solsticeAnswer}"
+      },
+      {
+        "q": "{y}年の立春はいつ？",
+        "a": "{springAnswer}"
+      },
+      {
+        "q": "なぜ日付が1日ずれるの？",
+        "a": "節気は太陽が決まった黄経に達する瞬間です。暦の1年は約365.24日なので、その瞬間は毎年約6時間ずつ遅れ、うるう日のあとに日付が戻ります。時間帯（タイムゾーン）によっても日付は変わります。"
+      }
+    ]
+  },
+  "moon": {
+    "title": "{y}年の満月カレンダー：月の満ち欠け 2026–2028",
+    "description": "2026年・2027年・2028年のすべての満月・新月・上弦・下弦の日付と時刻（{zone}）。",
+    "h1": "月の満ち欠け",
+    "lede": "新月・上弦・満月・下弦の正確な時刻（{zone}）。",
+    "faq": [
+      {
+        "q": "{y}年の満月はいつ？",
+        "a": "{nextAnswer}"
+      },
+      {
+        "q": "{y}年の満月は何回？",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "サイトによって月相の時刻が違うのはなぜ？",
+        "a": "月の満ち欠けは地球全体で同じ瞬間に起こり、表示される日付はタイムゾーンで変わります。UTCで23：30の満月は、アジアではもう翌日です。"
+      }
+    ]
+  },
+  "ui": {
+    "week": "週",
+    "weekShort": "週",
+    "prev": "前の月",
+    "next": "次の月",
+    "prevYear": "前の年",
+    "nextYear": "次の年",
+    "date": "日付",
+    "weekday": "曜日",
+    "name": "祝日",
+    "localName": "正式名称",
+    "type": "種類",
+    "types": {
+      "public": "祝日",
+      "substitute": "振替休日",
+      "workday": "振替出勤日",
+      "collective-leave": "一斉休暇",
+      "bridge": "休日"
+    },
+    "longBreaks": "連休（3日以上）",
+    "breakLine": "{from}～{to}：{n}日間",
+    "noHolidays": "今月は祝日がありません。",
+    "notAnnounced": "{country}は{y}年の祝日をまだ発表していません。公式の一覧が出しだい追加します。",
+    "holidaysIn": "{country}の祝日",
+    "otherCountries": "ほかの国と地域",
+    "festivals": "伝統行事",
+    "solarTerms": "二十四節気",
+    "moonPhases": "月の満ち欠け",
+    "term": "節気",
+    "longitude": "太陽黄経",
+    "time": "時刻",
+    "zoneUtc": "UTC",
+    "zoneOffset": "日本時間",
+    "sources": "出典",
+    "notes": "注記",
+    "dataNote": "旧暦・二十四節気・月の満ち欠けは astronomy-engine（MITライセンス）で計算。祝日の出典は各国のページにあります。",
+    "today": "今日",
+    "todayLunar": "旧暦",
+    "isoWeek": "第{n}週（ISO）",
+    "dayOfYear": "{total}日中{n}日目",
+    "daysLeft": "今年はあと{n}日",
+    "nextFull": "次の満月",
+    "currentTerm": "二十四節気",
+    "convert": "変換",
+    "solarDate": "日付",
+    "lunarYear": "旧暦の年",
+    "lunarMonth": "旧暦の月",
+    "lunarDay": "旧暦の日",
+    "leap": "閏月",
+    "reckoning": "暦法",
+    "reckonings": {
+      "cn": "中国（UTC+8）",
+      "vn": "ベトナム（UTC+7）",
+      "kr": "韓国・日本（UTC+9）"
+    },
+    "toLunar": "新暦→旧暦",
+    "toSolar": "旧暦→新暦",
+    "noSuchDate": "その旧暦の日付はありません（その月が29日までか、その年にその閏月がありません）。",
+    "outOfRange": "1900年から2100年までの日付のみ対応しています。",
+    "lunarLine": "旧暦{leap}{lm}月{ld}日（{gz}・{animal}年）",
+    "leapMark": "閏",
+    "solarLine": "{date}",
+    "monthsOf": "{y}年の各月",
+    "moreYears": "ほかの年",
+    "weekNumbers": "週番号は ISO 8601 によります（週は月曜始まり、その年最初の木曜日を含む週が第1週）。",
+    "printNote": "このページを印刷すると紙のカレンダーになります。サイトのヘッダーとフッターは印刷されません。",
+    "workShort": "出勤",
+    "daysLeftLabel": "今年の残り日数",
+    "lunarFull": "旧暦{leap}{lm}月{ld}日（{gz}年）",
+    "faq": "よくある質問"
+  },
+  "countries": {
+    "china": "中国",
+    "taiwan": "台湾",
+    "hong-kong": "香港",
+    "japan": "日本",
+    "south-korea": "韓国",
+    "vietnam": "ベトナム",
+    "indonesia": "インドネシア",
+    "united-states": "アメリカ",
+    "united-kingdom": "イギリス",
+    "spain": "スペイン",
+    "mexico": "メキシコ"
+  },
+  "quarters": [
+    "新月",
+    "上弦の月",
+    "満月",
+    "下弦の月"
+  ],
+  "animals": [
+    "鼠",
+    "牛",
+    "虎",
+    "兎",
+    "竜",
+    "蛇",
+    "馬",
+    "羊",
+    "猿",
+    "鶏",
+    "犬",
+    "猪"
+  ],
+  "solarTerms": [
+    "立春",
+    "雨水",
+    "啓蟄",
+    "春分",
+    "清明",
+    "穀雨",
+    "立夏",
+    "小満",
+    "芒種",
+    "夏至",
+    "小暑",
+    "大暑",
+    "立秋",
+    "処暑",
+    "白露",
+    "秋分",
+    "寒露",
+    "霜降",
+    "立冬",
+    "小雪",
+    "大雪",
+    "冬至",
+    "小寒",
+    "大寒"
+  ],
+  "festivals": {
+    "spring": "春節",
+    "lantern": "元宵節",
+    "dragon-head": "龍抬頭",
+    "dragon-boat": "端午節",
+    "qixi": "七夕",
+    "ghost": "中元節",
+    "mid-autumn": "中秋節",
+    "double-ninth": "重陽節",
+    "laba": "臘八節",
+    "kitchen-god": "小年（かまど神の日）",
+    "new-year-eve": "除夕（旧暦の大晦日）",
+    "tet": "テト（ベトナムの旧正月）",
+    "ram-thang-gieng": "旧暦1月の満月（上元）",
+    "han-thuc": "寒食節",
+    "hung-kings": "フン王の命日",
+    "doan-ngo": "端午節（ドアンゴー）",
+    "vu-lan": "盂蘭盆（ヴーラン）",
+    "trung-thu": "中秋節",
+    "ong-tao": "かまど神の日",
+    "tat-nien": "旧暦の大晦日",
+    "seollal": "ソルラル（韓国の旧正月）",
+    "daeboreum": "テボルム",
+    "dano": "端午（タノ）",
+    "chilseok": "七夕（チルソク）",
+    "chuseok": "秋夕（チュソク）"
+  },
+  "lunarMonths": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+  ],
+  "lunarDays": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30"
+  ],
+  "rokuyo": [
+    "大安",
+    "赤口",
+    "先勝",
+    "友引",
+    "先負",
+    "仏滅"
+  ],
+  "pasaran": [
+    "Legi",
+    "Pahing",
+    "Pon",
+    "Wage",
+    "Kliwon"
+  ],
+  "holidayNames": {
+    "CN:new-year": "元日",
+    "CN:lunar-new-year": "春節",
+    "CN:qingming": "清明節",
+    "CN:labour-day": "メーデー",
+    "CN:dragon-boat": "端午節",
+    "CN:national-day": "国慶節",
+    "CN:mid-autumn": "中秋節",
+    "TW:new-year": "開国記念日",
+    "TW:lunar-new-year": "春節",
+    "TW:peace-memorial-day": "平和記念日",
+    "TW:childrens-day": "児童節",
+    "TW:qingming": "清明節",
+    "TW:labour-day": "メーデー",
+    "TW:dragon-boat": "端午節",
+    "TW:mid-autumn": "中秋節",
+    "TW:teachers-day": "教師節",
+    "TW:national-day": "双十節",
+    "TW:retrocession-day": "台湾光復節",
+    "TW:constitution-day": "行憲記念日",
+    "HK:new-year": "元日",
+    "HK:lunar-new-year": "旧正月",
+    "HK:good-friday": "聖金曜日",
+    "HK:day-after-good-friday": "聖金曜日の翌日",
+    "HK:qingming": "清明節",
+    "HK:easter-monday": "イースターマンデー",
+    "HK:labour-day": "メーデー",
+    "HK:buddhas-birthday": "釈迦誕生日",
+    "HK:dragon-boat": "端午節",
+    "HK:hksar-establishment-day": "香港特別行政区設立記念日",
+    "HK:mid-autumn": "中秋節の翌日",
+    "HK:national-day": "国慶節",
+    "HK:chung-yeung": "重陽節",
+    "HK:christmas": "クリスマス",
+    "HK:boxing-day": "クリスマス後の最初の平日",
+    "KR:new-year": "元日",
+    "KR:lunar-new-year": "ソルラル",
+    "KR:independence-movement-day": "三・一節",
+    "KR:labour-day": "労働節",
+    "KR:childrens-day": "こどもの日",
+    "KR:buddhas-birthday": "釈迦誕生日",
+    "KR:local-election": "全国同時地方選挙日",
+    "KR:memorial-day": "顕忠日",
+    "KR:constitution-day": "制憲節",
+    "KR:liberation-day": "光復節",
+    "KR:chuseok": "秋夕",
+    "KR:national-foundation-day": "開天節",
+    "KR:hangeul-day": "ハングルの日",
+    "KR:christmas": "クリスマス",
+    "VN:new-year": "元日",
+    "VN:lunar-new-year": "テト",
+    "VN:hung-kings": "フン王記念日",
+    "VN:reunification-day": "統一記念日",
+    "VN:labour-day": "メーデー",
+    "VN:national-day": "国慶節",
+    "VN:culture-day": "ベトナム文化の日",
+    "ID:new-year": "元日",
+    "ID:isra-miraj": "イスラー・ミウラージュ",
+    "ID:lunar-new-year": "旧正月",
+    "ID:nyepi": "ニュピ",
+    "ID:eid-al-fitr": "断食明け大祭",
+    "ID:good-friday": "聖金曜日",
+    "ID:easter": "イースター",
+    "ID:labour-day": "メーデー",
+    "ID:ascension-day": "キリスト昇天祭",
+    "ID:eid-al-adha": "犠牲祭",
+    "ID:vesak": "ウェーサーカ祭",
+    "ID:pancasila-day": "パンチャシラの日",
+    "ID:islamic-new-year": "イスラム新年",
+    "ID:independence-day": "独立記念日",
+    "ID:mawlid": "預言者生誕祭",
+    "ID:christmas": "クリスマス",
+    "US:new-year": "元日",
+    "US:mlk-day": "キング牧師記念日",
+    "US:washingtons-birthday": "ワシントン誕生日",
+    "US:memorial-day": "メモリアル・デー",
+    "US:juneteenth": "ジューンティーンス",
+    "US:independence-day": "独立記念日",
+    "US:labor-day": "レイバー・デー",
+    "US:columbus-day": "コロンブス・デー",
+    "US:veterans-day": "復員軍人の日",
+    "US:thanksgiving": "感謝祭",
+    "US:christmas": "クリスマス",
+    "GB:new-year": "元日",
+    "GB:good-friday": "聖金曜日",
+    "GB:easter-monday": "イースターマンデー",
+    "GB:early-may-bank-holiday": "5月初めのバンクホリデー",
+    "GB:spring-bank-holiday": "春のバンクホリデー",
+    "GB:summer-bank-holiday": "夏のバンクホリデー",
+    "GB:christmas": "クリスマス",
+    "GB:boxing-day": "ボクシング・デー",
+    "ES:new-year": "元日",
+    "ES:epiphany": "公現祭",
+    "ES:good-friday": "聖金曜日",
+    "ES:labour-day": "メーデー",
+    "ES:assumption": "聖母被昇天祭",
+    "ES:national-day": "スペイン・ナショナルデー",
+    "ES:immaculate-conception": "無原罪の御宿り",
+    "ES:christmas": "クリスマス",
+    "ES:all-saints": "諸聖人の日",
+    "ES:constitution-day": "憲法記念日",
+    "MX:new-year": "元日",
+    "MX:constitution-day": "憲法記念日",
+    "MX:benito-juarez": "ベニート・フアレス生誕記念日",
+    "MX:labour-day": "メーデー",
+    "MX:independence-day": "独立記念日",
+    "MX:revolution-day": "革命記念日",
+    "MX:christmas": "クリスマス",
+    "MX:election-day": "連邦選挙日"
+  },
+  "answers": {
+    "countLine": "公式の一覧によると、{y}年の{country}の祝日による休日は{n}日です{work}。",
+    "workdays": "（ほかに振替出勤日が{n}日）",
+    "monthHolidays": "{country}：{list}。",
+    "monthNone": "{y}年{m}月の{country}には祝日がありません。",
+    "monthFull": "満月：{time}（{zone}）。",
+    "monthNoFull": "{y}年{m}月には満月がありません。次の満月は{time}（{zone}）です。",
+    "monthLunar": "{y}年{m}月1日は{lunar}です。",
+    "longLine": "{y}年の連休：{list}。",
+    "longNone": "{y}年には3日以上の連休がありません。",
+    "sourceLine": "{title}（{date}発表）。日付はこの発表から書き写しています。",
+    "termLine": "{time}（{zone}）。",
+    "moonList": "{y}年の満月（{zone}）：{list}。",
+    "moonCount": "{y}年の満月は{n}回です。"
+  },
+  "leapPrefix": "閏",
+  "stems": [
+    "甲",
+    "乙",
+    "丙",
+    "丁",
+    "戊",
+    "己",
+    "庚",
+    "辛",
+    "壬",
+    "癸"
+  ],
+  "stemJoin": "",
+  "branches": [
+    "子",
+    "丑",
+    "寅",
+    "卯",
+    "辰",
+    "巳",
+    "午",
+    "未",
+    "申",
+    "酉",
+    "戌",
+    "亥"
+  ],
+  "termHan": [],
+  "countryNotes": {
+    "china": [
+      "国務院弁公庁が政府機関向けに定めた日程で、企業も通常これに従います。連休中の週末と振替出勤日（调休）も載せています。"
+    ],
+    "taiwan": [
+      "行政院人事行政総処が公表する政府機関向けのカレンダーです。民間企業は労働基準法に従うため、異なる場合があります。"
+    ],
+    "hong-kong": [
+      "政府が官報で告示する一般休日です。毎週日曜日も一般休日にあたります。従業員の法定休日は別の、より短い一覧です。"
+    ],
+    "japan": [
+      "国民の祝日に関する法律による祝日で、振替休日と国民の休日を含みます。"
+    ],
+    "south-korea": [
+      "官公庁の公休日（관공서의 공휴일）で、代替公休日（대체공휴일）を含みます。宇宙航空庁（KASA）が発行する暦書によります。"
+    ],
+    "vietnam": [
+      "2019年労働法に基づく法定休日です。テトと国慶節の休みは内務省が公務員向けに定めた日程で、企業は独自に割り振ります。"
+    ],
+    "indonesia": [
+      "3大臣共同決定による祝日と一斉休暇（cuti bersama）です。イスラム教の祝日の日付は、宗教大臣の決定で変更されることがあります。"
+    ],
+    "united-states": [
+      "米国人事管理局が公表する連邦祝日です。祝日が週末に重なる場合は、代わりに休む平日も載せています。州や民間の雇用主によって異なることがあります。"
+    ],
+    "united-kingdom": [
+      "GOV.UK によるイングランドとウェールズのバンクホリデーです。スコットランドと北アイルランドは別の一覧になります。"
+    ],
+    "spain": [
+      "すべての自治州で共通の祝日のみを掲載しています（官報 BOE）。各州が独自の祝日を加え、さらに各市町村が地元の祝日を2日加えます。"
+    ],
+    "mexico": [
+      "連邦労働法第74条による法定休日です。聖週間などの休みは慣習であり、法定ではありません。"
+    ]
+  }
+}

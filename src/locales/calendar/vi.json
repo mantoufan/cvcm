@@ -1,0 +1,575 @@
+{
+  "crumbHome": "Trang chủ",
+  "hub": {
+    "title": "Lịch vạn niên 2026–2028: lịch âm, ngày lễ, tiết khí, tuần trăng",
+    "description": "Lịch vạn niên trực tuyến miễn phí 2026, 2027, 2028: ngày lễ của 11 quốc gia và vùng lãnh thổ theo thông báo chính thức, lịch âm, 24 tiết khí, ngày trăng tròn và trăng non, số tuần và công cụ đổi ngày dương sang âm.",
+    "h1": "Lịch vạn niên",
+    "lede": "Lịch năm và lịch tháng có ngày lễ, ngày âm lịch, tiết khí và tuần trăng, kèm công cụ đổi lịch âm dương. Ngày lễ được chép lại từ chính thông báo của chính phủ mỗi nước.",
+    "today": "Hôm nay",
+    "years": "Lịch theo năm",
+    "months": "Lịch theo tháng",
+    "holidays": "Ngày lễ theo quốc gia",
+    "more": "Trời và mùa",
+    "converter": "Đổi lịch dương sang âm",
+    "about": [
+      "Mọi ngày trên các trang này đều được tính ngay trong trình duyệt của bạn từ các bảng dựng sẵn: tháng âm lịch tính từ thời điểm mỗi lần sóc (trăng non), 24 tiết khí tính từ vị trí mặt trời (bằng thư viện thiên văn mã nguồn mở astronomy-engine), theo giờ chuẩn của từng nước. Không có gì phải tra cứu thêm khi bạn đang xem.",
+      "Ngày lễ lấy từ chính văn bản chính thức: Quốc vụ viện Trung Quốc, Tổng cục Nhân sự Hành chính Đài Loan (DGPA), Công báo Hồng Kông, Văn phòng Nội các Nhật Bản, Cơ quan Hàng không Vũ trụ Hàn Quốc (KASA), Bộ Nội vụ Việt Nam, quyết định liên bộ của Indonesia, Văn phòng Quản lý Nhân sự Hoa Kỳ, GOV.UK, Công báo Tây Ban Nha (BOE) và Luật Lao động Liên bang Mexico. Trang của mỗi nước đều có đường dẫn tới nguồn."
+    ],
+    "faq": [
+      {
+        "q": "Tết Nguyên Đán 2027 là ngày nào?",
+        "a": "Thứ Bảy, ngày 6 tháng 2 năm 2027 tại Trung Quốc, Đài Loan, Hồng Kông và Việt Nam; đây là ngày bắt đầu năm Đinh Mùi (丁未), năm con Dê. Ở Hàn Quốc, nơi tính âm lịch theo UTC+9, Seollal là Chủ Nhật, ngày 7 tháng 2 năm 2027, vì lần trăng non rơi ngay trước nửa đêm theo giờ Bắc Kinh."
+      },
+      {
+        "q": "Ngày âm lịch được tính như thế nào?",
+        "a": "Một tháng âm lịch bắt đầu vào ngày có trăng non (sóc) theo giờ chuẩn của nước đó; tháng chứa ngày Đông chí là tháng 11; năm nào có 13 lần trăng non thì tháng đầu tiên không chứa trung khí là tháng nhuận. Vì vậy Việt Nam (UTC+7), Trung Quốc (UTC+8) và Hàn Quốc (UTC+9) đôi khi bắt đầu một tháng vào những ngày khác nhau."
+      },
+      {
+        "q": "Các ngày lễ có phải là chính thức không?",
+        "a": "Có, với các năm được liệt kê trên trang của từng nước: chúng được chép từ thông báo của chính phủ, gồm cả ngày làm bù (调休 của Trung Quốc) và nghỉ tập thể (cuti bersama của Indonesia). Những năm chính phủ chưa công bố thì để trống, không đoán."
+      }
+    ]
+  },
+  "year": {
+    "title": "Lịch vạn niên {y}: lịch âm, ngày lễ, tiết khí",
+    "description": "Lịch {y} đủ 12 tháng: số tuần, ngày lễ {country}, Tết Nguyên Đán ({lny}), 24 tiết khí và mọi ngày trăng tròn trong năm {y}.",
+    "h1": "Lịch năm {y}",
+    "lede": "Năm {y} bắt đầu vào {first} và có {days} ngày. Tết Nguyên Đán rơi vào {lny}, mở đầu năm {gz} (năm con {animal}).",
+    "faq": [
+      {
+        "q": "Năm {y} bắt đầu vào thứ mấy?",
+        "a": "Ngày 1 tháng 1 năm {y} là {first}, ngày 31 tháng 12 năm {y} là {last}. Năm có {days} ngày và {weeks} tuần ISO."
+      },
+      {
+        "q": "Tết Nguyên Đán {y} là ngày nào?",
+        "a": "{lny}. Đây là ngày bắt đầu năm {gz} (năm con {animal})."
+      },
+      {
+        "q": "Năm {y} {country} có bao nhiêu ngày nghỉ lễ?",
+        "a": "{holidayAnswer}"
+      }
+    ]
+  },
+  "month": {
+    "title": "Lịch âm tháng {m} năm {y} (lịch vạn niên)",
+    "description": "Lịch tháng {m} năm {y}: số tuần, ngày lễ {country}, tiết khí, ngày âm lịch và ngày trăng tròn ({full}).",
+    "h1": "Lịch tháng {m} năm {y}",
+    "lede": "Tháng {m} năm {y} có {days} ngày, bắt đầu vào {first}.",
+    "faq": [
+      {
+        "q": "Tháng {m} năm {y} có những ngày lễ nào?",
+        "a": "{holidayAnswer}"
+      },
+      {
+        "q": "Trăng tròn tháng {m} năm {y} vào ngày nào?",
+        "a": "{fullAnswer}"
+      },
+      {
+        "q": "Ngày 1 tháng {m} năm {y} là ngày bao nhiêu âm lịch?",
+        "a": "{lunarAnswer}"
+      }
+    ]
+  },
+  "holidays": {
+    "title": "Lịch nghỉ lễ {country} {y} (kèm {prev})",
+    "description": "Các ngày lễ {country} năm {y}: từng ngày kèm thứ, ngày nghỉ bù và các đợt nghỉ dài, theo thông báo chính thức {source}. Có kèm danh sách năm {prev}.",
+    "h1": "Ngày lễ {country} {y}",
+    "lede": "Năm {y} có {n} ngày nghỉ theo thông báo chính thức. Các ngày cuối tuần liền với ngày lễ được tính vào các đợt nghỉ dài bên dưới.",
+    "faq": [
+      {
+        "q": "Năm {y} {country} có bao nhiêu ngày nghỉ lễ?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "Đợt nghỉ dài tiếp theo ở {country} là khi nào?",
+        "a": "{longAnswer}"
+      },
+      {
+        "q": "Danh sách này lấy từ đâu?",
+        "a": "{sourceAnswer}"
+      }
+    ]
+  },
+  "terms": {
+    "title": "24 tiết khí năm {y}: ngày giờ chính xác",
+    "description": "Ngày và giờ chính xác của 24 tiết khí năm 2026, 2027 và 2028, từ Lập xuân đến Đại hàn, kèm kinh độ mặt trời của từng tiết.",
+    "h1": "24 tiết khí",
+    "lede": "24 tiết khí chia đường đi của mặt trời trong năm thành từng bước 15°. Chúng định ra các tháng âm lịch và mùa vụ. Giờ tính theo {zone}.",
+    "faq": [
+      {
+        "q": "Đông chí năm {y} là ngày nào?",
+        "a": "{solsticeAnswer}"
+      },
+      {
+        "q": "Lập xuân năm {y} là khi nào?",
+        "a": "{springAnswer}"
+      },
+      {
+        "q": "Vì sao ngày tiết khí lệch một ngày?",
+        "a": "Mỗi tiết khí là thời điểm mặt trời tới một kinh độ nhất định. Năm dương lịch dài khoảng 365,24 ngày, nên thời điểm đó lùi khoảng sáu giờ mỗi năm và ngày lại dịch đi sau ngày nhuận; ngày cũng phụ thuộc vào múi giờ."
+      }
+    ]
+  },
+  "moon": {
+    "title": "Lịch trăng tròn {y}: tuần trăng 2026–2028",
+    "description": "Mọi ngày trăng tròn, trăng non, thượng huyền và hạ huyền của 2026, 2027 và 2028, kèm ngày giờ ({zone}).",
+    "h1": "Tuần trăng",
+    "lede": "Trăng non, thượng huyền, trăng tròn và hạ huyền với giờ chính xác theo {zone}.",
+    "faq": [
+      {
+        "q": "Năm {y} trăng tròn vào những ngày nào?",
+        "a": "{nextAnswer}"
+      },
+      {
+        "q": "Năm {y} có bao nhiêu lần trăng tròn?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "Vì sao giờ tuần trăng giữa các trang web lại khác nhau?",
+        "a": "Mỗi pha trăng là một thời khắc chung cho cả Trái Đất; ngày hiển thị phụ thuộc vào múi giờ. Trăng tròn lúc 23:30 UTC thì ở châu Á đã là ngày hôm sau."
+      }
+    ]
+  },
+  "ui": {
+    "week": "Tuần",
+    "weekShort": "Tuần",
+    "prev": "Tháng trước",
+    "next": "Tháng sau",
+    "prevYear": "Năm trước",
+    "nextYear": "Năm sau",
+    "date": "Ngày",
+    "weekday": "Thứ",
+    "name": "Ngày lễ",
+    "localName": "Tên chính thức",
+    "type": "Loại",
+    "types": {
+      "public": "Nghỉ lễ",
+      "substitute": "Nghỉ bù",
+      "workday": "Ngày làm bù",
+      "collective-leave": "Nghỉ tập thể",
+      "bridge": "Ngày nghỉ nối"
+    },
+    "longBreaks": "Đợt nghỉ dài (từ 3 ngày)",
+    "breakLine": "{from} – {to}: {n} ngày",
+    "noHolidays": "Tháng này không có ngày lễ.",
+    "notAnnounced": "{country} chưa công bố lịch nghỉ lễ năm {y}; sẽ bổ sung khi có danh sách chính thức.",
+    "holidaysIn": "Ngày lễ {country}",
+    "otherCountries": "Nước khác",
+    "festivals": "Lễ tết truyền thống",
+    "solarTerms": "Tiết khí",
+    "moonPhases": "Tuần trăng",
+    "term": "Tiết khí",
+    "longitude": "Kinh độ mặt trời",
+    "time": "Giờ",
+    "zoneUtc": "UTC",
+    "zoneOffset": "giờ Việt Nam",
+    "sources": "Nguồn",
+    "notes": "Ghi chú",
+    "dataNote": "Âm lịch, tiết khí và tuần trăng được tính bằng astronomy-engine (giấy phép MIT). Ngày lễ: nguồn chính thức ở trang của từng nước.",
+    "today": "Hôm nay",
+    "todayLunar": "Âm lịch",
+    "isoWeek": "Tuần ISO {n}",
+    "dayOfYear": "Ngày thứ {n}/{total}",
+    "daysLeft": "Còn {n} ngày nữa là hết năm",
+    "nextFull": "Trăng tròn kế tiếp",
+    "currentTerm": "Tiết khí",
+    "convert": "Đổi",
+    "solarDate": "Ngày dương lịch",
+    "lunarYear": "Năm âm lịch",
+    "lunarMonth": "Tháng âm lịch",
+    "lunarDay": "Ngày âm lịch",
+    "leap": "Tháng nhuận",
+    "reckoning": "Cách tính",
+    "reckonings": {
+      "cn": "Trung Quốc (UTC+8)",
+      "vn": "Việt Nam (UTC+7)",
+      "kr": "Hàn Quốc / Nhật Bản (UTC+9)"
+    },
+    "toLunar": "Dương → âm",
+    "toSolar": "Âm → dương",
+    "noSuchDate": "Ngày âm lịch này không tồn tại (tháng chỉ có 29 ngày hoặc năm đó không có tháng nhuận này).",
+    "outOfRange": "Chỉ hỗ trợ từ năm 1900 đến 2100.",
+    "lunarLine": "Ngày {ld} tháng {lm}{leap} năm {gz} âm lịch (năm con {animal})",
+    "leapMark": " nhuận",
+    "solarLine": "{date}",
+    "monthsOf": "Các tháng năm {y}",
+    "moreYears": "Năm khác",
+    "weekNumbers": "Số tuần theo ISO 8601 (tuần bắt đầu từ thứ Hai; tuần 1 là tuần chứa thứ Năm đầu tiên của năm).",
+    "printNote": "In trang này để có lịch giấy; phần đầu và chân trang của website sẽ được bỏ đi.",
+    "workShort": "Đi làm",
+    "daysLeftLabel": "Số ngày còn lại trong năm",
+    "lunarFull": "Ngày {ld} tháng {leap}{lm} năm {gz}",
+    "faq": "Câu hỏi thường gặp"
+  },
+  "countries": {
+    "china": "Trung Quốc",
+    "taiwan": "Đài Loan",
+    "hong-kong": "Hồng Kông",
+    "japan": "Nhật Bản",
+    "south-korea": "Hàn Quốc",
+    "vietnam": "Việt Nam",
+    "indonesia": "Indonesia",
+    "united-states": "Hoa Kỳ",
+    "united-kingdom": "Vương quốc Anh",
+    "spain": "Tây Ban Nha",
+    "mexico": "Mexico"
+  },
+  "quarters": [
+    "Trăng non",
+    "Trăng thượng huyền",
+    "Trăng tròn",
+    "Trăng hạ huyền"
+  ],
+  "animals": [
+    "Chuột",
+    "Trâu",
+    "Hổ",
+    "Mèo",
+    "Rồng",
+    "Rắn",
+    "Ngựa",
+    "Dê",
+    "Khỉ",
+    "Gà",
+    "Chó",
+    "Lợn"
+  ],
+  "solarTerms": [
+    "Lập xuân",
+    "Vũ thủy",
+    "Kinh trập",
+    "Xuân phân",
+    "Thanh minh",
+    "Cốc vũ",
+    "Lập hạ",
+    "Tiểu mãn",
+    "Mang chủng",
+    "Hạ chí",
+    "Tiểu thử",
+    "Đại thử",
+    "Lập thu",
+    "Xử thử",
+    "Bạch lộ",
+    "Thu phân",
+    "Hàn lộ",
+    "Sương giáng",
+    "Lập đông",
+    "Tiểu tuyết",
+    "Đại tuyết",
+    "Đông chí",
+    "Tiểu hàn",
+    "Đại hàn"
+  ],
+  "festivals": {
+    "spring": "Tết Xuân (Trung Quốc)",
+    "lantern": "Tết Nguyên tiêu",
+    "dragon-head": "Long Đài Đầu",
+    "dragon-boat": "Tết Đoan ngọ",
+    "qixi": "Thất tịch",
+    "ghost": "Tết Trung nguyên",
+    "mid-autumn": "Tết Trung thu",
+    "double-ninth": "Tết Trùng cửu",
+    "laba": "Lễ Lạp Bát",
+    "kitchen-god": "Tiểu niên",
+    "new-year-eve": "Đêm Giao thừa",
+    "tet": "Tết Nguyên Đán",
+    "ram-thang-gieng": "Rằm tháng Giêng",
+    "han-thuc": "Tết Hàn thực",
+    "hung-kings": "Giỗ Tổ Hùng Vương",
+    "doan-ngo": "Tết Đoan ngọ",
+    "vu-lan": "Lễ Vu Lan",
+    "trung-thu": "Tết Trung thu",
+    "ong-tao": "Ông Công Ông Táo",
+    "tat-nien": "Tất niên (Giao thừa)",
+    "seollal": "Seollal (Tết Hàn Quốc)",
+    "daeboreum": "Daeboreum (Rằm tháng Giêng)",
+    "dano": "Dano (Đoan ngọ)",
+    "chilseok": "Chilseok (Thất tịch)",
+    "chuseok": "Chuseok (Trung thu Hàn Quốc)"
+  },
+  "lunarMonths": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+  ],
+  "lunarDays": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30"
+  ],
+  "rokuyo": [
+    "Taian",
+    "Shakkō",
+    "Senshō",
+    "Tomobiki",
+    "Senbu",
+    "Butsumetsu"
+  ],
+  "pasaran": [
+    "Legi",
+    "Pahing",
+    "Pon",
+    "Wage",
+    "Kliwon"
+  ],
+  "holidayNames": {
+    "CN:new-year": "Tết Dương lịch",
+    "CN:lunar-new-year": "Tết Nguyên Đán",
+    "CN:qingming": "Tết Thanh minh",
+    "CN:labour-day": "Ngày Quốc tế Lao động",
+    "CN:dragon-boat": "Tết Đoan ngọ",
+    "CN:national-day": "Quốc khánh",
+    "CN:mid-autumn": "Tết Trung thu",
+    "TW:new-year": "Ngày Khai quốc",
+    "TW:lunar-new-year": "Tết Nguyên Đán",
+    "TW:peace-memorial-day": "Ngày Tưởng niệm Hòa bình",
+    "TW:childrens-day": "Ngày Thiếu nhi",
+    "TW:qingming": "Tết Thanh minh",
+    "TW:labour-day": "Ngày Quốc tế Lao động",
+    "TW:dragon-boat": "Tết Đoan ngọ",
+    "TW:mid-autumn": "Tết Trung thu",
+    "TW:teachers-day": "Ngày Nhà giáo",
+    "TW:national-day": "Ngày Song Thập",
+    "TW:retrocession-day": "Ngày Đài Loan Quang phục",
+    "TW:constitution-day": "Ngày Hành hiến",
+    "HK:new-year": "Tết Dương lịch",
+    "HK:lunar-new-year": "Tết Nguyên Đán",
+    "HK:good-friday": "Thứ Sáu Tuần Thánh",
+    "HK:day-after-good-friday": "Ngày sau Thứ Sáu Tuần Thánh",
+    "HK:qingming": "Tết Thanh minh",
+    "HK:easter-monday": "Thứ Hai Phục sinh",
+    "HK:labour-day": "Ngày Quốc tế Lao động",
+    "HK:buddhas-birthday": "Lễ Phật đản",
+    "HK:dragon-boat": "Tết Đoan ngọ",
+    "HK:hksar-establishment-day": "Ngày thành lập Đặc khu Hành chính Hồng Kông",
+    "HK:mid-autumn": "Ngày sau Tết Trung thu",
+    "HK:national-day": "Quốc khánh",
+    "HK:chung-yeung": "Tết Trùng cửu",
+    "HK:christmas": "Lễ Giáng sinh",
+    "HK:boxing-day": "Ngày làm việc đầu tiên sau Giáng sinh",
+    "JP:new-year": "Tết Dương lịch",
+    "JP:coming-of-age-day": "Ngày Thành nhân",
+    "JP:national-foundation-day": "Ngày Kiến quốc",
+    "JP:emperors-birthday": "Ngày sinh Thiên hoàng",
+    "JP:vernal-equinox-day": "Ngày Xuân phân",
+    "JP:showa-day": "Ngày Chiêu Hòa",
+    "JP:constitution-memorial-day": "Ngày Kỷ niệm Hiến pháp",
+    "JP:greenery-day": "Ngày Xanh",
+    "JP:childrens-day": "Ngày Thiếu nhi",
+    "JP:marine-day": "Ngày của Biển",
+    "JP:mountain-day": "Ngày của Núi",
+    "JP:respect-for-the-aged-day": "Ngày Kính lão",
+    "JP:citizens-holiday": "Ngày nghỉ quốc dân",
+    "JP:autumnal-equinox-day": "Ngày Thu phân",
+    "JP:sports-day": "Ngày Thể thao",
+    "JP:culture-day": "Ngày Văn hóa",
+    "JP:labour-thanksgiving-day": "Ngày Cảm tạ Lao động",
+    "KR:new-year": "Tết Dương lịch",
+    "KR:lunar-new-year": "Tết Seollal",
+    "KR:independence-movement-day": "Ngày Phong trào Độc lập",
+    "KR:labour-day": "Ngày Lao động",
+    "KR:childrens-day": "Ngày Thiếu nhi",
+    "KR:buddhas-birthday": "Lễ Phật đản",
+    "KR:local-election": "Ngày bầu cử địa phương toàn quốc",
+    "KR:memorial-day": "Ngày Tưởng niệm",
+    "KR:constitution-day": "Ngày Lập hiến",
+    "KR:liberation-day": "Ngày Giải phóng",
+    "KR:chuseok": "Tết Chuseok",
+    "KR:national-foundation-day": "Ngày Lập quốc",
+    "KR:hangeul-day": "Ngày Hangeul",
+    "KR:christmas": "Lễ Giáng sinh",
+    "ID:new-year": "Tết Dương lịch",
+    "ID:isra-miraj": "Lễ Isra và Mi'raj",
+    "ID:lunar-new-year": "Tết Nguyên Đán",
+    "ID:nyepi": "Lễ Nyepi",
+    "ID:eid-al-fitr": "Lễ Eid al-Fitr",
+    "ID:good-friday": "Thứ Sáu Tuần Thánh",
+    "ID:easter": "Lễ Phục sinh",
+    "ID:labour-day": "Ngày Quốc tế Lao động",
+    "ID:ascension-day": "Lễ Thăng thiên",
+    "ID:eid-al-adha": "Lễ Eid al-Adha",
+    "ID:vesak": "Lễ Phật đản",
+    "ID:pancasila-day": "Ngày Pancasila",
+    "ID:islamic-new-year": "Tết Hồi giáo",
+    "ID:independence-day": "Ngày Độc lập",
+    "ID:mawlid": "Lễ Mawlid",
+    "ID:christmas": "Lễ Giáng sinh",
+    "US:new-year": "Tết Dương lịch",
+    "US:mlk-day": "Ngày Martin Luther King",
+    "US:washingtons-birthday": "Ngày sinh Washington",
+    "US:memorial-day": "Ngày Tưởng niệm",
+    "US:juneteenth": "Ngày Juneteenth",
+    "US:independence-day": "Ngày Độc lập",
+    "US:labor-day": "Ngày Lao động",
+    "US:columbus-day": "Ngày Columbus",
+    "US:veterans-day": "Ngày Cựu chiến binh",
+    "US:thanksgiving": "Lễ Tạ ơn",
+    "US:christmas": "Lễ Giáng sinh",
+    "GB:new-year": "Tết Dương lịch",
+    "GB:good-friday": "Thứ Sáu Tuần Thánh",
+    "GB:easter-monday": "Thứ Hai Phục sinh",
+    "GB:early-may-bank-holiday": "Ngày nghỉ ngân hàng đầu tháng Năm",
+    "GB:spring-bank-holiday": "Ngày nghỉ ngân hàng mùa xuân",
+    "GB:summer-bank-holiday": "Ngày nghỉ ngân hàng mùa hè",
+    "GB:christmas": "Lễ Giáng sinh",
+    "GB:boxing-day": "Ngày Boxing Day",
+    "ES:new-year": "Tết Dương lịch",
+    "ES:epiphany": "Lễ Hiển linh",
+    "ES:good-friday": "Thứ Sáu Tuần Thánh",
+    "ES:labour-day": "Ngày Quốc tế Lao động",
+    "ES:assumption": "Lễ Đức Mẹ Lên Trời",
+    "ES:national-day": "Quốc khánh Tây Ban Nha",
+    "ES:immaculate-conception": "Lễ Đức Mẹ Vô nhiễm Nguyên tội",
+    "ES:christmas": "Lễ Giáng sinh",
+    "ES:all-saints": "Lễ Các Thánh",
+    "ES:constitution-day": "Ngày Hiến pháp",
+    "MX:new-year": "Tết Dương lịch",
+    "MX:constitution-day": "Ngày Hiến pháp",
+    "MX:benito-juarez": "Ngày sinh Benito Juárez",
+    "MX:labour-day": "Ngày Quốc tế Lao động",
+    "MX:independence-day": "Ngày Độc lập",
+    "MX:revolution-day": "Ngày Cách mạng",
+    "MX:christmas": "Lễ Giáng sinh",
+    "MX:election-day": "Ngày bầu cử liên bang"
+  },
+  "answers": {
+    "countLine": "Theo danh sách chính thức, năm {y} {country} có {n} ngày nghỉ lễ{work}.",
+    "workdays": ", cùng {n} ngày làm bù",
+    "monthHolidays": "{country}: {list}.",
+    "monthNone": "Tháng {m} năm {y} {country} không có ngày lễ.",
+    "monthFull": "Trăng tròn: {time} ({zone}).",
+    "monthNoFull": "Tháng {m} năm {y} không có trăng tròn; lần tiếp theo là {time} ({zone}).",
+    "monthLunar": "Ngày 1 tháng {m} năm {y} dương lịch: {lunar}.",
+    "longLine": "Các đợt nghỉ dài năm {y}: {list}.",
+    "longNone": "Năm {y} không có đợt nghỉ nào từ ba ngày trở lên.",
+    "sourceLine": "{title}, ban hành {date}. Các ngày được chép từ văn bản đó.",
+    "termLine": "{time} ({zone}).",
+    "moonList": "Các ngày trăng tròn năm {y} ({zone}): {list}.",
+    "moonCount": "Năm {y} có {n} lần trăng tròn."
+  },
+  "leapPrefix": "nhuận ",
+  "stems": [
+    "Giáp",
+    "Ất",
+    "Bính",
+    "Đinh",
+    "Mậu",
+    "Kỷ",
+    "Canh",
+    "Tân",
+    "Nhâm",
+    "Quý"
+  ],
+  "stemJoin": " ",
+  "branches": [
+    "Tý",
+    "Sửu",
+    "Dần",
+    "Mão",
+    "Thìn",
+    "Tỵ",
+    "Ngọ",
+    "Mùi",
+    "Thân",
+    "Dậu",
+    "Tuất",
+    "Hợi"
+  ],
+  "termHan": [
+    "立春",
+    "雨水",
+    "惊蛰",
+    "春分",
+    "清明",
+    "谷雨",
+    "立夏",
+    "小满",
+    "芒种",
+    "夏至",
+    "小暑",
+    "大暑",
+    "立秋",
+    "处暑",
+    "白露",
+    "秋分",
+    "寒露",
+    "霜降",
+    "立冬",
+    "小雪",
+    "大雪",
+    "冬至",
+    "小寒",
+    "大寒"
+  ],
+  "countryNotes": {
+    "china": [
+      "Lịch do Văn phòng Quốc vụ viện sắp xếp cho các cơ quan nhà nước; doanh nghiệp thường làm theo. Danh sách có cả các ngày cuối tuần trong kỳ nghỉ và ngày làm bù (调休)."
+    ],
+    "taiwan": [
+      "Lịch làm việc của các cơ quan nhà nước do DGPA công bố. Doanh nghiệp tư nhân áp dụng Luật Tiêu chuẩn Lao động nên có thể khác."
+    ],
+    "hong-kong": [
+      "Các ngày nghỉ chung do chính quyền công bố trên công báo. Mọi Chủ Nhật cũng là ngày nghỉ chung; ngày nghỉ luật định của người lao động là một danh sách riêng, ngắn hơn."
+    ],
+    "japan": [
+      "Các ngày lễ quốc gia theo Luật Ngày lễ Quốc dân, gồm cả ngày nghỉ bù (振替休日) và ngày nghỉ quốc dân (国民の休日)."
+    ],
+    "south-korea": [
+      "Các ngày nghỉ của cơ quan nhà nước (관공서의 공휴일), gồm cả ngày nghỉ bù (대체공휴일), theo niên lịch do KASA công bố."
+    ],
+    "vietnam": [
+      "Các ngày nghỉ lễ theo Bộ luật Lao động 2019. Lịch nghỉ Tết và Quốc khánh ở đây là phương án của Bộ Nội vụ cho cán bộ, công chức; doanh nghiệp tự chọn cách chia."
+    ],
+    "indonesia": [
+      "Các ngày lễ quốc gia và ngày nghỉ tập thể (cuti bersama) theo quyết định liên tịch của ba bộ trưởng. Ngày của các lễ Hồi giáo vẫn có thể được điều chỉnh bằng quyết định của Bộ trưởng Tôn giáo."
+    ],
+    "united-states": [
+      "Các ngày lễ liên bang theo danh sách của Văn phòng Quản lý Nhân sự; khi ngày lễ rơi vào cuối tuần, ngày nghỉ bù trong tuần cũng được liệt kê. Các bang và chủ lao động tư nhân có thể khác."
+    ],
+    "united-kingdom": [
+      "Các ngày nghỉ ngân hàng ở Anh và xứ Wales theo GOV.UK. Scotland và Bắc Ireland có danh sách khác."
+    ],
+    "spain": [
+      "Chỉ gồm các ngày lễ áp dụng ở mọi cộng đồng tự trị (BOE). Mỗi vùng thêm ngày lễ riêng, và mỗi thị trấn thêm hai ngày lễ địa phương."
+    ],
+    "mexico": [
+      "Các ngày nghỉ bắt buộc theo Điều 74 Luật Lao động Liên bang. Những ngày như Tuần Thánh chỉ là theo thông lệ, không bắt buộc."
+    ]
+  }
+}

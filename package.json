@@ -25,6 +25,7 @@
     "deploy": "npm run build && wrangler deploy"
   },
   "devDependencies": {
+    "astronomy-engine": "^2.1.19",
     "esbuild": "^0.25.9",
     "happy-dom": "^20.14.5",
     "sharp": "^0.35.2",

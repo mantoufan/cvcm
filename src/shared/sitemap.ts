@@ -13,8 +13,9 @@ import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_E
 import { COUNTRY_LIST, COUNTRIES_UPDATED } from "./countries";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
 import { CALORIES_SNAPSHOT, FOODS, type FoodId } from "./calories";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 import { ELEMENT_SLUGS, ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT, type ElementSlug } from "./elements";
+import { CALENDAR_PAGES, CALENDAR_UPDATED, type CalendarPage } from "./calendar";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -49,7 +50,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "nostalgia"; entry: NostalgiaId | null }
   | { locale: Locale; kind: "countries"; entry: string | null }
   | { locale: Locale; kind: "calories"; food: FoodId | null }
-  | { locale: Locale; kind: "elements"; entry: ElementSlug | null };
+  | { locale: Locale; kind: "elements"; entry: ElementSlug | null }
+  | { locale: Locale; kind: "calendar"; page: CalendarPage };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -91,6 +93,7 @@ export function sitemapPages(): SitemapPage[] {
     for (const food of FOODS) pages.push({ locale, kind: "calories", food });
     pages.push({ locale, kind: "elements", entry: null });
     for (const entry of ELEMENT_SLUGS) pages.push({ locale, kind: "elements", entry });
+    for (const page of CALENDAR_PAGES) pages.push({ locale, kind: "calendar", page });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -115,6 +118,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(page.locale, page.entry)}`;
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(page.locale, page.food)}`;
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(page.locale, page.entry)}`;
+  if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(page.locale, page.page)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -141,6 +145,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(locale, page.entry)}`;
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(locale, page.food)}`;
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(locale, page.entry)}`;
+  if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(locale, page.page)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -170,6 +175,7 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "countries") return "countries";
   if (page.kind === "calories") return "calories";
   if (page.kind === "elements") return "elements";
+  if (page.kind === "calendar") return "calendar";
   return "pages";
 }
 
@@ -212,6 +218,8 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "calories") return CALORIES_SNAPSHOT;
   // Periodic table pages show the PubChem / Wikidata snapshot: the later of its date and the day the channel went live.
   if (page.kind === "elements") return [ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT].sort().at(-1)!;
+  // Calendar pages change when their holiday lists or tables do (CALENDAR_UPDATED, set by hand with that change).
+  if (page.kind === "calendar") return CALENDAR_UPDATED;
   return null;
 }
 
