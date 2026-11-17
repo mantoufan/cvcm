@@ -1,0 +1,185 @@
+{
+  "crumbHome": "Inicio",
+  "hub": {
+    "title": "Tabla periódica de los elementos: nombres, símbolos y masa atómica",
+    "h1": "Tabla periódica de los elementos",
+    "lede": "Los 118 elementos ordenados por número atómico y coloreados por categoría. Abra un elemento para ver su masa atómica, configuración electrónica, puntos de fusión y ebullición y densidad.",
+    "description": "Tabla periódica interactiva con los {n} elementos: símbolos, números atómicos, masas atómicas y categorías. Abra cualquier elemento para ver su configuración electrónica, puntos de fusión y ebullición y densidad.",
+    "tableLabel": "Tabla periódica de los {n} elementos",
+    "fRow": "{from}–{to}",
+    "legend": "Categorías",
+    "listTitle": "Todos los elementos",
+    "filterCategory": "Categoría",
+    "allCategories": "Todas las categorías",
+    "search": "Buscar un elemento",
+    "searchPlaceholder": "Nombre, símbolo o número",
+    "shown": "{n} de {total} elementos",
+    "sortBy": "Ordenar por {column}",
+    "aboutTitle": "Cómo está organizada la tabla",
+    "about": [
+      "La tabla ordena los elementos por número atómico, es decir, por el número de protones del núcleo. Cada fila es un período y cada columna un grupo; los elementos de un mismo grupo tienen el mismo número de electrones externos, por eso suelen reaccionar de forma parecida.",
+      "Los lantánidos (57–71) y los actínidos (89–103) aparecen en dos filas debajo de la tabla, como en la tabla de la IUPAC, para que quepa en una página. Su lugar está marcado en el grupo 3 de los períodos 6 y 7."
+    ],
+    "faq": [
+      {
+        "q": "¿Cuántos elementos tiene la tabla periódica?",
+        "a": "La tabla periódica tiene {n} elementos conocidos, desde el hidrógeno (número atómico 1) hasta el oganesón (118), en siete filas llamadas períodos."
+      },
+      {
+        "q": "¿Qué significan los colores?",
+        "a": "Cada color es una categoría de elementos según la clasificación de PubChem: metales alcalinos, metales alcalinotérreos, metales de transición, metales del bloque p, metaloides, no metales, halógenos, gases nobles, lantánidos y actínidos. La leyenda nombra cada color y la página de cada elemento indica su categoría por escrito."
+      },
+      {
+        "q": "¿De dónde salen los datos?",
+        "a": "De PubChem, la base de datos de química de la Biblioteca Nacional de Medicina de EE. UU., que los recopila de la IUPAC, el OIEA, el NIST y laboratorios nacionales de EE. UU. Una masa entre corchetes corresponde a un elemento sin isótopos estables. Un guion significa que PubChem no da ningún valor."
+      }
+    ]
+  },
+  "page": {
+    "title": "{name} ({symbol}): masa atómica, configuración electrónica y propiedades",
+    "description": "{name} ({symbol}): elemento {z}, {categoryIn}. Masa atómica {mass} u, configuración electrónica {config}.",
+    "descriptionMelting": " Punto de fusión: {mp} K ({mpC} °C).",
+    "descriptionDensity": " Densidad: {density} g/cm³.",
+    "h1": "{name} ({symbol})",
+    "answer": "El elemento {z} de la tabla periódica es {nameText} ({symbol}): {categoryIn} del grupo {group}, período {period}. Su masa atómica es {mass} u y en condiciones estándar es {state}.",
+    "answerFBlock": "El elemento {z} de la tabla periódica es {nameText} ({symbol}): {categoryIn} del bloque f, período {period}. Su masa atómica es {mass} u y en condiciones estándar es {state}.",
+    "factsTitle": "Datos de {nameText}",
+    "configTitle": "Configuración electrónica",
+    "configText": "Número de electrones de {nameText}: {z}. En notación abreviada, con el gas noble anterior entre corchetes, su configuración es {config}.",
+    "configPlain": "Número de electrones de {nameText}: {z}, distribuidos así: {config}.",
+    "configPredicted": "Esta configuración es una predicción, no una medida.",
+    "configCalculated": "Esta configuración es un cálculo, no una medida.",
+    "configFull": "Desarrollada por completo",
+    "shells": "Electrones por capa",
+    "positionTitle": "Posición en la tabla periódica",
+    "positionText": "Grupo {group}, período {period}, bloque {block}.",
+    "positionFBlock": "Período {period}, bloque f (fila aparte bajo la tabla principal: {category}).",
+    "mapLabel": "Posición de {nameText} en la tabla periódica",
+    "neighboursTitle": "Elementos vecinos",
+    "previous": "Elemento anterior",
+    "next": "Elemento siguiente",
+    "sameGroup": "Grupo {group}",
+    "sameRow": "Fila: {category}",
+    "faqTitle": "Preguntas frecuentes",
+    "faqMass": {
+      "q": "¿Cuál es la masa atómica de {nameText}?",
+      "a": "La masa atómica de {nameText} ({symbol}) es {mass} u (unidades de masa atómica unificadas); su masa molar es el mismo número en g/mol."
+    },
+    "faqMassIsotope": {
+      "q": "¿Cuál es la masa atómica de {nameText}?",
+      "a": "{name} ({symbol}) no tiene isótopos estables ni peso atómico estándar. PubChem indica {mass} u, la masa de uno de sus isótopos; por eso se escribe entre corchetes."
+    },
+    "faqConfig": {
+      "q": "¿Cuál es la configuración electrónica de {nameText}?",
+      "a": "La configuración electrónica de {nameText} es {config}; desarrollada, {full}. Sus electrones ({z} en total) se reparten en las capas así: {shells}."
+    },
+    "faqConfigPlain": {
+      "q": "¿Cuál es la configuración electrónica de {nameText}?",
+      "a": "La configuración electrónica de {nameText} es {config}. Sus electrones ({z} en total) se reparten en las capas así: {shells}."
+    },
+    "faqMeltBoil": {
+      "q": "¿Cuál es el punto de fusión de {nameText}?",
+      "a": "Punto de fusión de {nameText}: {mp} K ({mpC} °C); punto de ebullición: {bp} K ({bpC} °C)."
+    },
+    "faqMelt": {
+      "q": "¿Cuál es el punto de fusión de {nameText}?",
+      "a": "Punto de fusión de {nameText}: {mp} K ({mpC} °C). PubChem no indica su punto de ebullición."
+    },
+    "faqSymbol": {
+      "q": "¿Cuál es el símbolo de {nameText}?",
+      "a": "El símbolo químico de {nameText} es {symbol} y su número atómico es {z}. PubChem no indica sus puntos de fusión ni de ebullición."
+    }
+  },
+  "labels": {
+    "atomicNumber": "Número atómico",
+    "symbol": "Símbolo",
+    "name": "Nombre",
+    "englishName": "Nombre en inglés",
+    "mass": "Masa atómica",
+    "category": "Categoría",
+    "group": "Grupo",
+    "period": "Período",
+    "block": "Bloque",
+    "state": "Estado estándar",
+    "config": "Configuración electrónica",
+    "electronegativity": "Electronegatividad (Pauling)",
+    "radius": "Radio atómico (van der Waals)",
+    "ionization": "Primera energía de ionización",
+    "affinity": "Afinidad electrónica",
+    "oxidation": "Estados de oxidación",
+    "melting": "Punto de fusión",
+    "boiling": "Punto de ebullición",
+    "density": "Densidad",
+    "year": "Descubrimiento",
+    "cpk": "Color CPK",
+    "number": "N.º"
+  },
+  "values": {
+    "none": "—",
+    "ancient": "Conocido desde la Antigüedad",
+    "fBlockGroup": "— (bloque f)",
+    "block": "bloque {block}",
+    "massIsotope": "Entre corchetes: no hay isótopos estables, así que es la masa de un isótopo según PubChem, no un peso atómico estándar.",
+    "expected": "previsto: {state}",
+    "predicted": "predicción",
+    "calculated": "cálculo"
+  },
+  "states": {
+    "solid": "sólido",
+    "liquid": "líquido",
+    "gas": "gas"
+  },
+  "statePhrase": {
+    "solid": "sólido",
+    "liquid": "líquido",
+    "gas": "gaseoso",
+    "expectedSolid": "previsiblemente sólido",
+    "expectedLiquid": "previsiblemente líquido",
+    "expectedGas": "previsiblemente gaseoso"
+  },
+  "categories": {
+    "alkali-metal": "Metal alcalino",
+    "alkaline-earth-metal": "Metal alcalinotérreo",
+    "transition-metal": "Metal de transición",
+    "post-transition-metal": "Metal del bloque p",
+    "metalloid": "Metaloide",
+    "nonmetal": "No metal",
+    "halogen": "Halógeno",
+    "noble-gas": "Gas noble",
+    "lanthanide": "Lantánido",
+    "actinide": "Actínido"
+  },
+  "categoryPlural": {
+    "alkali-metal": "Metales alcalinos",
+    "alkaline-earth-metal": "Metales alcalinotérreos",
+    "transition-metal": "Metales de transición",
+    "post-transition-metal": "Metales del bloque p",
+    "metalloid": "Metaloides",
+    "nonmetal": "No metales",
+    "halogen": "Halógenos",
+    "noble-gas": "Gases nobles",
+    "lanthanide": "Lantánidos",
+    "actinide": "Actínidos"
+  },
+  "categoryIn": {
+    "alkali-metal": "un metal alcalino",
+    "alkaline-earth-metal": "un metal alcalinotérreo",
+    "transition-metal": "un metal de transición",
+    "post-transition-metal": "un metal del bloque p",
+    "metalloid": "un metaloide",
+    "nonmetal": "un no metal",
+    "halogen": "un halógeno",
+    "noble-gas": "un gas noble",
+    "lanthanide": "un lantánido",
+    "actinide": "un actínido"
+  },
+  "sources": {
+    "title": "Fuentes",
+    "data": "Datos: {pubchem}, la base de datos de química de la Biblioteca Nacional de Medicina de EE. UU. (dominio público), que recopila los valores de IUPAC CIAAW, el Centro de Datos de Masas Atómicas del OIEA, el NIST, el Laboratorio Nacional de Los Álamos y Jefferson Lab.",
+    "names": "Nombres de los elementos: {wikidata} (CC0).",
+    "snapshot": "Datos a fecha de {date}. Un guion significa que PubChem no da ningún valor; aquí no se estima nada.",
+    "pubchem": "PubChem",
+    "wikidata": "Wikidata",
+    "element": "{name} en PubChem"
+  }
+}

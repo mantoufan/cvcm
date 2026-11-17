@@ -1,0 +1,185 @@
+{
+  "crumbHome": "Beranda",
+  "hub": {
+    "title": "Tabel Periodik Unsur Lengkap: Nama, Lambang, dan Massa Atom",
+    "h1": "Tabel periodik unsur",
+    "lede": "Ke-118 unsur menurut nomor atom, diwarnai menurut kategori. Buka sebuah unsur untuk melihat massa atom, konfigurasi elektron, titik leleh dan titik didih, serta massa jenisnya.",
+    "description": "Tabel periodik interaktif berisi {n} unsur lengkap dengan lambang, nomor atom, massa atom, dan kategori. Buka unsur mana pun untuk melihat konfigurasi elektron, titik leleh dan titik didih, serta massa jenisnya.",
+    "tableLabel": "Tabel periodik {n} unsur",
+    "fRow": "{from}–{to}",
+    "legend": "Kategori",
+    "listTitle": "Semua unsur",
+    "filterCategory": "Kategori",
+    "allCategories": "Semua kategori",
+    "search": "Cari unsur",
+    "searchPlaceholder": "Nama, lambang, atau nomor",
+    "shown": "{n} dari {total} unsur",
+    "sortBy": "Urutkan menurut {column}",
+    "aboutTitle": "Cara tabel ini disusun",
+    "about": [
+      "Tabel ini mengurutkan unsur menurut nomor atom, yaitu jumlah proton di dalam inti. Setiap baris adalah periode dan setiap kolom adalah golongan; unsur dalam satu golongan memiliki jumlah elektron valensi yang sama, sehingga sering bereaksi dengan cara serupa.",
+      "Lantanida (57–71) dan aktinida (89–103) ditempatkan dalam dua baris di bawah tabel, seperti pada tabel IUPAC, agar tabel muat dalam satu halaman. Tempat mereka ditandai di golongan 3 periode 6 dan 7."
+    ],
+    "faq": [
+      {
+        "q": "Ada berapa unsur dalam tabel periodik?",
+        "a": "Tabel periodik memuat {n} unsur yang dikenal, dari hidrogen (nomor atom 1) hingga oganeson (118), dalam tujuh baris yang disebut periode."
+      },
+      {
+        "q": "Apa arti warna-warnanya?",
+        "a": "Setiap warna adalah kategori unsur menurut pengelompokan PubChem: logam alkali, logam alkali tanah, logam transisi, logam pasca-transisi, metaloid, nonlogam, halogen, gas mulia, lantanida, dan aktinida. Keterangan warna menyebutkan nama setiap warna, dan halaman setiap unsur menuliskan kategorinya dengan kata-kata."
+      },
+      {
+        "q": "Dari mana angka-angkanya berasal?",
+        "a": "Dari PubChem, basis data kimia milik Perpustakaan Kedokteran Nasional Amerika Serikat, yang menghimpunnya dari IUPAC, IAEA, NIST, dan laboratorium nasional AS. Massa dalam kurung siku adalah milik unsur yang tidak memiliki isotop stabil. Tanda pisah berarti PubChem tidak mencantumkan nilainya."
+      }
+    ]
+  },
+  "page": {
+    "title": "{name} ({symbol}): Massa Atom, Konfigurasi Elektron, Sifat",
+    "description": "{name} ({symbol}) adalah unsur nomor {z} dan termasuk {categoryIn}. Massa atom relatif {mass} u, konfigurasi elektron {config}.",
+    "descriptionMelting": " Titik leleh {mp} K ({mpC} °C).",
+    "descriptionDensity": " Massa jenis {density} g/cm³.",
+    "h1": "{name} ({symbol})",
+    "answer": "{name} ({symbol}) adalah unsur nomor {z} dalam tabel periodik dan termasuk {categoryIn}, terletak di golongan {group}, periode {period}. Massa atomnya {mass} u, dan pada kondisi standar {state}.",
+    "answerFBlock": "{name} ({symbol}) adalah unsur nomor {z} dalam tabel periodik dan termasuk {categoryIn}, terletak di blok f periode {period}. Massa atomnya {mass} u, dan pada kondisi standar {state}.",
+    "factsTitle": "Data {nameText}",
+    "configTitle": "Konfigurasi elektron",
+    "configText": "{name} memiliki {z} elektron. Dalam bentuk singkat, dengan gas mulia sebelumnya di dalam kurung siku, konfigurasinya adalah {config}.",
+    "configPlain": "{name} memiliki {z} elektron dengan susunan {config}.",
+    "configPredicted": "Konfigurasi ini adalah prediksi, bukan hasil pengukuran.",
+    "configCalculated": "Konfigurasi ini adalah hasil perhitungan, bukan hasil pengukuran.",
+    "configFull": "Ditulis lengkap",
+    "shells": "Elektron per kulit",
+    "positionTitle": "Letak dalam tabel periodik",
+    "positionText": "Golongan {group}, periode {period}, blok {block}.",
+    "positionFBlock": "Periode {period}, blok f (baris {category} di bawah tabel utama).",
+    "mapLabel": "Letak {nameText} dalam tabel periodik",
+    "neighboursTitle": "Unsur di sekitarnya",
+    "previous": "Unsur sebelumnya",
+    "next": "Unsur berikutnya",
+    "sameGroup": "Golongan {group}",
+    "sameRow": "Baris {category}",
+    "faqTitle": "Pertanyaan umum",
+    "faqMass": {
+      "q": "Berapa massa atom {nameText}?",
+      "a": "Massa atom {nameText} ({symbol}) adalah {mass} u (satuan massa atom terpadu); massa molarnya bernilai sama dalam g/mol."
+    },
+    "faqMassIsotope": {
+      "q": "Berapa massa atom {nameText}?",
+      "a": "{name} ({symbol}) tidak memiliki isotop stabil dan tidak memiliki massa atom standar. PubChem mencantumkan {mass} u, yaitu massa salah satu isotopnya, sehingga angka ini ditulis dalam kurung siku."
+    },
+    "faqConfig": {
+      "q": "Bagaimana konfigurasi elektron {nameText}?",
+      "a": "Konfigurasi elektron {nameText} adalah {config}, jika ditulis lengkap {full}. Sebanyak {z} elektronnya mengisi kulit dengan susunan {shells}."
+    },
+    "faqConfigPlain": {
+      "q": "Bagaimana konfigurasi elektron {nameText}?",
+      "a": "Konfigurasi elektron {nameText} adalah {config}. Sebanyak {z} elektronnya mengisi kulit dengan susunan {shells}."
+    },
+    "faqMeltBoil": {
+      "q": "Berapa titik leleh {nameText}?",
+      "a": "{name} meleleh pada {mp} K ({mpC} °C) dan mendidih pada {bp} K ({bpC} °C)."
+    },
+    "faqMelt": {
+      "q": "Berapa titik leleh {nameText}?",
+      "a": "{name} meleleh pada {mp} K ({mpC} °C). PubChem tidak mencantumkan titik didihnya."
+    },
+    "faqSymbol": {
+      "q": "Apa lambang unsur {nameText}?",
+      "a": "Lambang kimia {nameText} adalah {symbol}, dan nomor atomnya {z}. PubChem tidak mencantumkan titik leleh maupun titik didihnya."
+    }
+  },
+  "labels": {
+    "atomicNumber": "Nomor atom",
+    "symbol": "Lambang",
+    "name": "Nama",
+    "englishName": "Nama dalam bahasa Inggris",
+    "mass": "Massa atom",
+    "category": "Kategori",
+    "group": "Golongan",
+    "period": "Periode",
+    "block": "Blok",
+    "state": "Wujud standar",
+    "config": "Konfigurasi elektron",
+    "electronegativity": "Keelektronegatifan (Pauling)",
+    "radius": "Jari-jari atom (van der Waals)",
+    "ionization": "Energi ionisasi pertama",
+    "affinity": "Afinitas elektron",
+    "oxidation": "Bilangan oksidasi",
+    "melting": "Titik leleh",
+    "boiling": "Titik didih",
+    "density": "Massa jenis",
+    "year": "Ditemukan",
+    "cpk": "Warna CPK",
+    "number": "No."
+  },
+  "values": {
+    "none": "—",
+    "ancient": "Dikenal sejak zaman kuno",
+    "fBlockGroup": "— (blok f)",
+    "block": "blok {block}",
+    "massIsotope": "Dalam kurung siku: tidak ada isotop stabil, jadi ini adalah massa salah satu isotop menurut PubChem, bukan massa atom standar.",
+    "expected": "perkiraan: {state}",
+    "predicted": "prediksi",
+    "calculated": "perhitungan"
+  },
+  "states": {
+    "solid": "padat",
+    "liquid": "cair",
+    "gas": "gas"
+  },
+  "statePhrase": {
+    "solid": "berwujud padat",
+    "liquid": "berwujud cair",
+    "gas": "berwujud gas",
+    "expectedSolid": "diperkirakan berwujud padat",
+    "expectedLiquid": "diperkirakan berwujud cair",
+    "expectedGas": "diperkirakan berwujud gas"
+  },
+  "categories": {
+    "alkali-metal": "Logam alkali",
+    "alkaline-earth-metal": "Logam alkali tanah",
+    "transition-metal": "Logam transisi",
+    "post-transition-metal": "Logam pasca-transisi",
+    "metalloid": "Metaloid",
+    "nonmetal": "Nonlogam",
+    "halogen": "Halogen",
+    "noble-gas": "Gas mulia",
+    "lanthanide": "Lantanida",
+    "actinide": "Aktinida"
+  },
+  "categoryPlural": {
+    "alkali-metal": "Logam alkali",
+    "alkaline-earth-metal": "Logam alkali tanah",
+    "transition-metal": "Logam transisi",
+    "post-transition-metal": "Logam pasca-transisi",
+    "metalloid": "Metaloid",
+    "nonmetal": "Nonlogam",
+    "halogen": "Halogen",
+    "noble-gas": "Gas mulia",
+    "lanthanide": "Lantanida",
+    "actinide": "Aktinida"
+  },
+  "categoryIn": {
+    "alkali-metal": "logam alkali",
+    "alkaline-earth-metal": "logam alkali tanah",
+    "transition-metal": "logam transisi",
+    "post-transition-metal": "logam pasca-transisi",
+    "metalloid": "metaloid",
+    "nonmetal": "nonlogam",
+    "halogen": "halogen",
+    "noble-gas": "gas mulia",
+    "lanthanide": "lantanida",
+    "actinide": "aktinida"
+  },
+  "sources": {
+    "title": "Sumber",
+    "data": "Data: {pubchem}, basis data kimia milik Perpustakaan Kedokteran Nasional Amerika Serikat (domain publik), yang menghimpun nilai-nilainya dari IUPAC CIAAW, IAEA Atomic Mass Data Center, NIST, Los Alamos National Laboratory, dan Jefferson Lab.",
+    "names": "Nama unsur: {wikidata} (CC0).",
+    "snapshot": "Data per {date}. Tanda pisah berarti PubChem tidak mencantumkan nilainya; tidak ada yang diperkirakan di sini.",
+    "pubchem": "PubChem",
+    "wikidata": "Wikidata",
+    "element": "{name} di PubChem"
+  }
+}

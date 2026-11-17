@@ -5,7 +5,7 @@
  */
 
 /** Channels a result can belong to; the label is the core-pack key `nav.<SEARCH_CHANNEL_NAV[channel]>`. */
-export const SEARCH_CHANNELS = ["tool", "learn", "kb", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "calories", "games", "countries"] as const;
+export const SEARCH_CHANNELS = ["tool", "learn", "kb", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "calories", "games", "countries", "elements"] as const;
 export type SearchChannel = (typeof SEARCH_CHANNELS)[number];
 
 export const SEARCH_CHANNEL_NAV = {
@@ -22,6 +22,7 @@ export const SEARCH_CHANNEL_NAV = {
   calories: "calories",
   games: "games",
   countries: "countries",
+  elements: "elements",
 } as const satisfies Record<SearchChannel, string>;
 
 /** One page in a locale's index: channel, href, name, blurb, and the English name as extra keywords. */

@@ -13,7 +13,8 @@ import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_E
 import { COUNTRY_LIST, COUNTRIES_UPDATED } from "./countries";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
 import { CALORIES_SNAPSHOT, FOODS, type FoodId } from "./calories";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { ELEMENT_SLUGS, ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT, type ElementSlug } from "./elements";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -47,7 +48,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "ideas"; entry: IdeaId | null }
   | { locale: Locale; kind: "nostalgia"; entry: NostalgiaId | null }
   | { locale: Locale; kind: "countries"; entry: string | null }
-  | { locale: Locale; kind: "calories"; food: FoodId | null };
+  | { locale: Locale; kind: "calories"; food: FoodId | null }
+  | { locale: Locale; kind: "elements"; entry: ElementSlug | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -87,6 +89,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const entry of COUNTRY_LIST) pages.push({ locale, kind: "countries", entry });
     pages.push({ locale, kind: "calories", food: null });
     for (const food of FOODS) pages.push({ locale, kind: "calories", food });
+    pages.push({ locale, kind: "elements", entry: null });
+    for (const entry of ELEMENT_SLUGS) pages.push({ locale, kind: "elements", entry });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -110,6 +114,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(page.locale, page.entry)}`;
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(page.locale, page.entry)}`;
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(page.locale, page.food)}`;
+  if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(page.locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -135,6 +140,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(locale, page.entry)}`;
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(locale, page.entry)}`;
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(locale, page.food)}`;
+  if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -163,6 +169,7 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "nostalgia") return "nostalgia";
   if (page.kind === "countries") return "countries";
   if (page.kind === "calories") return "calories";
+  if (page.kind === "elements") return "elements";
   return "pages";
 }
 
@@ -203,6 +210,8 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "countries") return COUNTRIES_UPDATED;
   // Calories pages show the USDA snapshot: they change when scripts/fetch-calories.mjs writes a new one.
   if (page.kind === "calories") return CALORIES_SNAPSHOT;
+  // Periodic table pages show the PubChem / Wikidata snapshot: the later of its date and the day the channel went live.
+  if (page.kind === "elements") return [ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT].sort().at(-1)!;
   return null;
 }
 

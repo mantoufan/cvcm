@@ -6,8 +6,9 @@ import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
 import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, TUTORIAL_DIAGRAMS, TUTORIAL_SOURCES, tutorialSteps } from "../../shared/learn";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, kbGroupsOf } from "../../shared/kb";
+import { ELEMENTS_FOCUS } from "../../shared/elements";
 import { kbLinkItems } from "../../shared/kb-i18n";
-import { appHref, isConvertJobId, kbHref, learnHref, TUTORIAL_GROUPS, type ToolId, type TutorialGroupId, type TutorialId } from "../../shared/path";
+import { appHref, elementsHref, isConvertJobId, kbHref, learnHref, TUTORIAL_GROUPS, type ToolId, type TutorialGroupId, type TutorialId } from "../../shared/path";
 
 export function mountLearnHub(host: HTMLElement): void {
   const loc = locale();
@@ -56,6 +57,18 @@ export function mountLearnHub(host: HTMLElement): void {
         linkList(kbLinkItems(loc, group.articles)),
       ]).flat(),
       h("p", { class: "more" }, h("a", { href: kbHref(loc, "code"), "data-nav": "coding" }, t("kb.code.all"))),
+    ),
+    // The periodic table channel: the hub plus the elements whose names are in the core pack (periodicTable.focus).
+    h("section", { class: "wall", id: "periodic-table" },
+      h("h2", null, h("a", { href: elementsHref(loc), "data-nav": "elements" }, t("nav.elements"))),
+      h("p", { class: "lede" }, t("periodicTable.lead")),
+      h("p", { class: "slang-jump" },
+        ...ELEMENTS_FOCUS.flatMap((slug, i) => [
+          i ? " · " : "",
+          h("a", { href: elementsHref(loc, slug), "data-nav": `element-${slug}` }, t(`periodicTable.focus.${slug}`)),
+        ]),
+      ),
+      h("p", { class: "more" }, h("a", { href: elementsHref(loc), "data-nav": "elements" }, t("periodicTable.all"))),
     ),
   );
 }
