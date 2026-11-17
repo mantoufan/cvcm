@@ -1,3 +1,4 @@
+import { coverUrl } from "./covers";
 import type { Locale } from "./locale";
 import { PUBLISHER, type KbBlock } from "./kb-i18n";
 import { refEntryMessages, refMessages, type RefMessages } from "./messages";
@@ -113,7 +114,7 @@ export function refArticleJsonLd(locale: Locale, id: RefId | null): Record<strin
   const url = `${ORIGIN}${refHref(locale, id)}`;
   const mannequins = (REF_MANNEQUINS[id] ?? []).map((angle) => ({
     "@type": "ImageObject",
-    contentUrl: `${ORIGIN}${refMannequinUrl(id, angle, 900)}`,
+    contentUrl: coverUrl(refMannequinUrl(id, angle, 900)),
     ...SHISEI_IMAGE_META,
   }));
   // Only cv.cm's own CC0 mannequins are article images. Third-party mfan8 photos stay out of the

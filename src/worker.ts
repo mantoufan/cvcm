@@ -651,7 +651,7 @@ function coverRedirect(url: URL, method: string): Response | null {
   }
   return new Response(null, {
     status: 301,
-    headers: { Location: `${COVER_ORIGIN}/covers/${rest}${url.search}`, "Cache-Control": "public, max-age=86400" },
+    headers: { Location: `${COVER_ORIGIN}/covers/${rest}${url.search}` },
   });
 }
 

@@ -85,7 +85,8 @@ async function sync(path: string): Promise<void> {
     try {
       let exists = false;
       if (!before[rel]) {
-        const head = await fetch(objectUrl(key), { method: "HEAD" });
+        // identity: a compressed answer (SVG) carries no Content-Length to compare.
+        const head = await fetch(objectUrl(key), { method: "HEAD", headers: { "Accept-Encoding": "identity" } });
         exists = head.ok;
         // Put there before the manifest existed: trust a file of the same size.
         if (head.ok && Number(head.headers.get("content-length")) === body.length) {
@@ -112,7 +113,10 @@ await Promise.all(Array.from({ length: CONCURRENCY }, async () => {
 
 // Files removed from public/covers stay in the bucket (older pages and image search may still link them); they only
 // leave the manifest.
-const changed = uploaded.length > 0 || Object.keys(before).some((rel) => !(rel in after));
+const changed =
+  uploaded.length > 0 ||
+  Object.keys(after).some((rel) => before[rel] !== after[rel]) ||
+  Object.keys(before).some((rel) => !(rel in after));
 if (!dryRun && changed && !failed.length) {
   const sorted = Object.fromEntries(Object.entries(after).sort(([a], [b]) => a.localeCompare(b)));
   await put(MANIFEST, Buffer.from(JSON.stringify(sorted)), "application/json");
