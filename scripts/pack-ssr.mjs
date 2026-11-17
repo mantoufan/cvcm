@@ -20,7 +20,10 @@ function pages(dir) {
   for (const name of readdirSync(dir)) {
     const full = join(dir, name);
     if (statSync(full).isDirectory()) out.push(...pages(full));
-    else if (name === "index.html") out.push(["/" + relative(ssrDir, dir).split(sep).join("/") + "/", readFileSync(full, "utf8")]);
+    else if (name === "index.html") {
+      const rel = relative(ssrDir, dir);
+      out.push([rel ? `/${rel.split(sep).join("/")}/` : "/", readFileSync(full, "utf8")]);
+    }
   }
   return out;
 }
