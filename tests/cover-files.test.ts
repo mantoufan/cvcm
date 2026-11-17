@@ -5,6 +5,7 @@ import { LEARN_COVER, LEARN_FIG } from "../src/shared/covers";
 import memeImages from "../src/shared/meme-images.json";
 import nostalgiaImages from "../src/shared/nostalgia-images.json";
 import { isPublishedTutorial, type TutorialId } from "../src/shared/path";
+import { catalog } from "../src/shared/portrait-sim";
 import { REF_MANNEQUINS, refMannequinUrl, type RefId } from "../src/shared/ref";
 
 // Covers live only on s3.cv.cm, and scripts/sync-covers.mjs --prune deletes what leaves public/covers: every cover the
@@ -31,6 +32,19 @@ it("has a file in public/covers for every cover path written in src/", () => {
     }
   }
   expect(missing).toEqual([]);
+});
+
+/** Every "/covers/…" string anywhere inside a value (catalog objects built from template literals). */
+function coverStrings(value: unknown): string[] {
+  if (typeof value === "string") return value.startsWith("/covers/") ? [value] : [];
+  if (value && typeof value === "object") return Object.values(value).flatMap(coverStrings);
+  return [];
+}
+
+it("has a file for every portrait simulator plate, cutout and thumbnail", () => {
+  const paths = coverStrings(catalog);
+  expect(paths.length).toBeGreaterThan(30);
+  expect(paths.filter((path) => !exists(path))).toEqual([]);
 });
 
 it("has a file for every meme, nostalgia and mannequin picture", () => {

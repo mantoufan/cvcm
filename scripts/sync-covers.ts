@@ -12,7 +12,7 @@
  */
 import { createHash } from "node:crypto";
 import { readdir, readFile } from "node:fs/promises";
-import { join, relative, resolve } from "node:path";
+import { join, relative, resolve, sep } from "node:path";
 import { presignS3Put, s3Delete, type S3Config } from "../src/s3-sign";
 import { COVER_ORIGIN } from "../src/shared/covers";
 import { dueForPrune, nextManifest, parseManifest, planSync, PRUNE_AFTER_DAYS, type Manifest } from "./covers-manifest";
@@ -109,7 +109,7 @@ const before = await loadManifest();
  */
 async function stillLinkedIn(rels: string[]): Promise<Set<string> | null> {
   const root = resolve(process.cwd());
-  const coversDir = join(root, "dist", "covers");
+  const coversDir = join(root, "dist", "covers") + sep;
   let files: string[];
   try {
     files = [...(await walk(join(root, "dist"))).filter((path) => !path.startsWith(coversDir)), ...(await walk(join(root, "public/sitemaps")))];
@@ -158,7 +158,7 @@ if (prune) {
   });
   if (deleted.length) {
     const removed = { ...before.removed };
-    for (const rel of deleted) delete removed[rel];
+    for (const rel of deleted) removed[rel] = { ...removed[rel], deleted: true };
     await saveManifest({ files: before.files, removed });
     await purge(deleted.map((rel) => `covers/${rel}`));
   }
@@ -212,22 +212,25 @@ async function upload(rel: string, known: boolean): Promise<void> {
   try {
     let exists = known;
     if (!known) {
-      // identity: a compressed answer (SVG) carries no Content-Length to compare.
-      const head = await fetch(objectUrl(key), { method: "HEAD", headers: { "Accept-Encoding": "identity" } });
-      exists = head.ok;
-      if (head.ok) {
-        // On the bucket but not in the manifest (uploaded before it, or removed before removals were tracked):
-        // the same bytes are fine, other bytes would change a published URL in place.
+      // On the bucket but not in the manifest (uploaded before it, or removed before removals were tracked)? The same
+      // bytes are fine, other bytes would change a published URL in place. One GET, past the edge cache (`?t=`: the
+      // edge keeps 404s a day and files a year) and uncompressed. Assumes Cloudflare does not rewrite these files
+      // (no Polish or minify on s3.cv.cm); turning that on would make every such check a conflict.
+      let there: string | null = null;
+      await retry(async () => {
         const res = await fetch(`${objectUrl(key)}?t=${Date.now()}`, { headers: { "Accept-Encoding": "identity" } });
-        const there = res.ok ? createHash("sha256").update(Buffer.from(await res.arrayBuffer())).digest("hex") : "";
-        if (there === createHash("sha256").update(body).digest("hex")) {
-          alreadyThere++;
-          return;
-        }
-        if (!allowOverwrite) {
-          conflicts.push(key);
-          return;
-        }
+        if (res.status === 404) return;
+        if (!res.ok) throw new Error(`GET HTTP ${res.status}`);
+        there = createHash("sha256").update(Buffer.from(await res.arrayBuffer())).digest("hex");
+      });
+      exists = there !== null;
+      if (there === createHash("sha256").update(body).digest("hex")) {
+        alreadyThere++;
+        return;
+      }
+      if (exists && !allowOverwrite) {
+        conflicts.push(key);
+        return;
       }
     }
     if (!dryRun) await retry(() => put(key, body, type));

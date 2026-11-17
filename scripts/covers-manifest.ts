@@ -16,7 +16,11 @@ export type Manifest = {
   removed: Record<string, Removed>;
 };
 
-export type Removed = { at: string; hash: string };
+/**
+ * `deleted`: pruned from the bucket. The entry is kept for good, so the name can never come back with other bytes
+ * (returning visitors would keep the old ones for a year).
+ */
+export type Removed = { at: string; hash: string; deleted?: boolean };
 
 /** The stored manifest; the first version was a bare path → hash map. */
 export function parseManifest(json: unknown): Manifest {
@@ -51,10 +55,13 @@ export function planSync(before: Manifest, local: Record<string, string>): SyncP
   // A known hash of "" (a removal recorded before hashes were kept) cannot be compared: treat the file as added.
   const plan: SyncPlan = { unchanged: [], added: [], edited: [], removed: [] };
   for (const [rel, hash] of Object.entries(local)) {
-    const known = before.files[rel] ?? (before.removed[rel]?.hash || undefined);
+    const gone = before.removed[rel];
+    const known = before.files[rel] ?? (gone?.hash || undefined);
     if (known === undefined) plan.added.push(rel);
-    else if (known === hash) plan.unchanged.push(rel);
-    else plan.edited.push(rel);
+    else if (known !== hash) plan.edited.push(rel);
+    // Pruned: same bytes, but no longer on the bucket.
+    else if (!(rel in before.files) && gone?.deleted) plan.added.push(rel);
+    else plan.unchanged.push(rel);
   }
   for (const rel of Object.keys(before.files)) if (!(rel in local)) plan.removed.push(rel);
   return plan;
@@ -63,18 +70,22 @@ export function planSync(before: Manifest, local: Record<string, string>): SyncP
 /** The manifest after a sync: `files` is what public/covers holds now; removals keep their first date. */
 export function nextManifest(before: Manifest, local: Record<string, string>, now: Date): Manifest {
   const removed: Record<string, Removed> = {};
-  for (const [rel, entry] of Object.entries(before.removed)) if (!(rel in local)) removed[rel] = entry;
+  for (const [rel, entry] of Object.entries(before.removed)) {
+    // Back in public/covers: forget a pending removal, keep a pruned name's tombstone.
+    if (!(rel in local) || entry.deleted) removed[rel] = entry;
+  }
   for (const [rel, hash] of Object.entries(before.files)) {
-    if (!(rel in local) && !(rel in removed)) removed[rel] = { at: now.toISOString(), hash };
+    // A fresh removal (a pruned name that came back and left again starts its week anew).
+    if (!(rel in local) && (!(rel in removed) || removed[rel].deleted)) removed[rel] = { at: now.toISOString(), hash };
   }
   return { files: sortKeys(local), removed: sortKeys(removed) };
 }
 
-/** Removed files old enough to delete from the bucket. */
+/** Removed files old enough to delete from the bucket (not deleted yet). */
 export function dueForPrune(manifest: Manifest, now: Date, days = PRUNE_AFTER_DAYS): string[] {
   const cutoff = now.getTime() - days * 86_400_000;
   return Object.entries(manifest.removed)
-    .filter(([rel, entry]) => !(rel in manifest.files) && Date.parse(entry.at) <= cutoff)
+    .filter(([rel, entry]) => !(rel in manifest.files) && !entry.deleted && Date.parse(entry.at) <= cutoff)
     .map(([rel]) => rel)
     .sort();
 }

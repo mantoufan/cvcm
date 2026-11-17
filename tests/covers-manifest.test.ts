@@ -46,3 +46,18 @@ it("deletes only covers gone for seven days or more", () => {
   };
   expect(dueForPrune(manifest, NOW)).toEqual(["old.jpg", "week.jpg"]);
 });
+
+it("keeps a pruned name's hash for good: same bytes upload again, other bytes are an in-place edit", () => {
+  const pruned: Manifest = { files: {}, removed: { "a.jpg": { at: daysAgo(30), hash: "h1", deleted: true } } };
+  expect(dueForPrune(pruned, NOW)).toEqual([]);
+  expect(planSync(pruned, { "a.jpg": "h1" }).added).toEqual(["a.jpg"]);
+  expect(planSync(pruned, { "a.jpg": "h2" }).edited).toEqual(["a.jpg"]);
+  // Back with the same bytes, then removed again: a new week, then pruned again.
+  const back = nextManifest(pruned, { "a.jpg": "h1" }, NOW);
+  expect(back.files).toEqual({ "a.jpg": "h1" });
+  expect(planSync(back, { "a.jpg": "h1" }).unchanged).toEqual(["a.jpg"]);
+  const later = new Date(NOW.getTime() + 86_400_000);
+  const goneAgain = nextManifest(back, {}, later);
+  expect(goneAgain.removed["a.jpg"]).toEqual({ at: later.toISOString(), hash: "h1" });
+  expect(dueForPrune(goneAgain, new Date(later.getTime() + 8 * 86_400_000))).toEqual(["a.jpg"]);
+});
