@@ -1,6 +1,7 @@
 import * as esbuild from "esbuild";
 import { readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
+import { coverOriginEsbuild } from "./cover-origin.mjs";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./game-names.mjs";
 import { fileURLToPath } from "node:url";
 
@@ -140,7 +141,7 @@ await esbuild.build({
   // Raw UTF-8 instead of \uXXXX escapes: CJK copy is 3 bytes a character, not 6, which keeps the Worker small.
   charset: "utf8",
   define: { __LOCALE_PACKS__: JSON.stringify(localePacks), __PAGE_CHUNKS__: JSON.stringify(pageChunks) },
-  plugins: [{
+  plugins: [coverOriginEsbuild, {
     name: "game-names",
     setup(build) {
       build.onResolve({ filter: NAMES_FILTER }, (args) => ({
@@ -152,7 +153,8 @@ await esbuild.build({
   }],
 });
 
-// The Worker script is deployed as `main`, not as a static asset (an asset may be at most 25 MiB).
-writeFileSync(resolve(root, "dist/.assetsignore"), "_worker.js\n");
+// The Worker script is deployed as `main`, not as a static asset (an asset may be at most 25 MiB). Covers are served
+// from s3.cv.cm (scripts/sync-covers.mjs puts them there), so they are not uploaded as assets either.
+writeFileSync(resolve(root, "dist/.assetsignore"), "_worker.js\n/covers/\n");
 
 console.log("wrote dist/_worker.js");

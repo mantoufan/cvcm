@@ -6,6 +6,7 @@ import { appHref, nostalgiaHref } from "./path";
 import { NOSTALGIA_ENTRIES, nostalgiaGroupOf, nostalgiaPublished, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
 import { HREFLANG } from "./sitemap";
 import type { NostalgiaMeta } from "./nostalgia-meta";
+import { coverUrl } from "./covers";
 import { nostalgiaImage, nostalgiaImagePath } from "./nostalgia-images";
 
 /** One entry's copy, `src/locales/nostalgia/<locale>/<id>.json`. Blocks are the kb blocks. */
@@ -72,7 +73,7 @@ export function nostalgiaMeta(locale: Locale, id: NostalgiaId): NostalgiaMeta {
 function imageJsonLd(locale: Locale, id: NostalgiaId): Record<string, unknown> | null {
   const image = nostalgiaImage(id);
   if (!image) return null;
-  const url = `${ORIGIN}${nostalgiaImagePath(id)}`;
+  const url = coverUrl(nostalgiaImagePath(id)!);
   const by = image.author ? `${image.author} / ` : "";
   return {
     "@type": "ImageObject",

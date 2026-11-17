@@ -5,5 +5,6 @@ export {
   MARKET_COVER,
   LEARN_FIG,
   DEVICE_COVER,
+  coverUrl,
   localizedTutorialSrc,
 } from "../shared/covers";

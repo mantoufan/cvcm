@@ -2,7 +2,7 @@ import { mustStay } from "./leave-guard";
 import { h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
-import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER } from "./covers";
+import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, coverUrl } from "./covers";
 import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { pageCopyOf, type PageCopy } from "../shared/page-copy";
 import { negotiateLocale } from "../shared/locale";
@@ -956,10 +956,10 @@ export function render(): void {
           : slangPage && slangPage !== "hub"
             ? memeImagePath(slangPage)
             : null;
-  upsertMeta("property", "og:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
+  upsertMeta("property", "og:image", image ? coverUrl(image) : null);
   upsertMeta("name", "twitter:title", pageTitle(loc, seo));
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
-  upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
+  upsertMeta("name", "twitter:image", image ? coverUrl(image) : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
   syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage);
 

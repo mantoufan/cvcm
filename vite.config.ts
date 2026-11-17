@@ -3,6 +3,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
 import { defineConfig } from "vitest/config";
+import { coverOriginVite } from "./scripts/cover-origin.mjs";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./scripts/game-names.mjs";
 import { COPY_BUCKETS, copyLoadersSource, pageCopyModule } from "./src/shared/page-copy";
 
@@ -93,7 +94,7 @@ export default defineConfig({
       this.addWatchFile(file);
       return `export default ${gameNamesSource(file)};`;
     },
-  }, seedrandomNoEval],
+  }, seedrandomNoEval, coverOriginVite],
   resolve: {
     alias: [
       // ONNX Runtime's default web bundle pulls its 27 MB .wasm into dist/ (over Pages' 25 MiB file limit).
@@ -102,7 +103,7 @@ export default defineConfig({
     ],
   },
   // The music generator's model worker bundles TensorFlow.js too: same transform there.
-  worker: { format: "es", plugins: () => [seedrandomNoEval] },
+  worker: { format: "es", plugins: () => [seedrandomNoEval, coverOriginVite] },
   publicDir: "public",
   build: {
     outDir: "dist",

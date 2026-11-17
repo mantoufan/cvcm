@@ -41,11 +41,11 @@ import { BRANDED_TOOLS, faqJsonLd, flashHubHowToJsonLd, flashHubSoftwareJsonLd, 
 function ogImage(seo: SeoInput): string | null {
   if (seo.slang && seo.slangId) {
     const path = memeImagePath(seo.slangId);
-    return path ? `https://cv.cm${path}` : null;
+    return path ? coverUrl(path) : null;
   }
   if (seo.nostalgia && seo.nostalgiaId) {
     const path = nostalgiaImagePath(seo.nostalgiaId);
-    return path ? `https://cv.cm${path}` : null;
+    return path ? coverUrl(path) : null;
   }
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
   if (seo.games && seo.game) return coverUrl(GAME_COVER[seo.game]);

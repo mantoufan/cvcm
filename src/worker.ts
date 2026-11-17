@@ -9,7 +9,7 @@ import { isIpAddress } from "./shared/device";
 import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, STATIC_FILE, toolJob } from "./shared/path";
 import { rankingRowsChunk } from "./shared/rankings";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
-import { thumbOriginal } from "./shared/covers";
+import { COVER_ORIGIN, thumbOriginal } from "./shared/covers";
 import { aiContentType, upstreamUrl } from "./shared/ai-models";
 import { preloadLocalePack, preloadPageChunk } from "./shared/locale-preload";
 import { copyChunkKey, pageCopyOf } from "./shared/page-copy";
@@ -77,7 +77,7 @@ const EMU_CSP = [
 const EMU_PROXY = /^\/emu\/(data|assets|roms)\/([A-Za-z0-9._/-]+)$/;
 /** AI model weights and ONNX Runtime's WebAssembly, mirrored on s3.cv.cm (scripts/ai/mirror.mjs). Paths are versioned. */
 const AI_PROXY = /^\/ai\/(models|ort)\/([A-Za-z0-9._/-]+)$/;
-const COVER_PROXY = /^\/covers\/([A-Za-z0-9._/-]+)$/;
+const COVER_PATH = /^\/covers\/([A-Za-z0-9._/-]+)$/;
 
 const ALLOWED = "GET, HEAD";
 
@@ -157,7 +157,7 @@ export default {
     if (path === "/api/device/ip") return withHeaders(deviceIpResponse(request), path);
     const emu = await proxyEmu(path, request.method);
     if (emu) return withHeaders(emu, path);
-    const cover = await proxyCovers(path, request.method);
+    const cover = coverRedirect(url, request.method);
     if (cover) return withHeaders(cover, path);
     const ai = await proxyAi(path, request.method);
     if (ai) return withHeaders(ai, path);
@@ -344,20 +344,6 @@ export default {
     // Page HTML is rebuilt per request (locale, prerendered body), so index.html's ETag must not answer for it:
     // drop the conditional headers on page routes and the validators from the page response below.
     let assetResponse = await assetsFetch(env, STATIC_FILE.test(path) ? request : unconditional(request));
-    if (COVER_PROXY.test(path)) {
-      const type = assetResponse.headers.get("content-type") || "";
-      const image = type.startsWith("image/") || type.includes("octet-stream");
-      if (!image) {
-        return new Response(request.method === "HEAD" ? null : "Not Found", {
-          status: 404,
-          headers: {
-            "Cache-Control": "no-store",
-            "CDN-Cache-Control": "no-store",
-            "Content-Type": "text/plain; charset=utf-8",
-          },
-        });
-      }
-    }
     const thumbFallback = thumbOriginal(path);
     // Missing files come back as the SPA's index.html (or a 404); a 304 revalidation is passed through.
     const thumbMissing = assetResponse.status === 404 || (assetResponse.headers.get("content-type") || "").includes("text/html");
@@ -649,8 +635,12 @@ function aiResponse(upstream: Response, path: string, method: string): Response 
   return new Response(method === "HEAD" ? null : upstream.body, { status: 200, headers });
 }
 
-async function proxyCovers(pathname: string, method: string): Promise<Response | null> {
-  const match = COVER_PROXY.exec(pathname);
+/**
+ * Covers live on s3.cv.cm only (not as Worker assets): built pages link there directly (scripts/cover-origin.mjs).
+ * Older /covers/ URLs (cached pages, image search, shared og:image links) are sent on, keeping the ?v=.
+ */
+function coverRedirect(url: URL, method: string): Response | null {
+  const match = COVER_PATH.exec(url.pathname);
   if (!match) return null;
   if (method !== "GET" && method !== "HEAD") {
     return new Response("Method Not Allowed", { status: 405, headers: { Allow: ALLOWED } });
@@ -659,19 +649,10 @@ async function proxyCovers(pathname: string, method: string): Promise<Response |
   if (!rest || rest.includes("..") || rest.includes("//")) {
     return new Response("Bad Request", { status: 400 });
   }
-  try {
-    const upstream = await fetch(`https://s3.cv.cm/files/covers/${rest}`);
-    if (!upstream.ok) return null;
-    const headers = new Headers(upstream.headers);
-    headers.delete("Access-Control-Allow-Origin");
-    headers.set("Cache-Control", "public, max-age=86400");
-    if (method === "HEAD") {
-      return new Response(null, { status: 200, headers });
-    }
-    return new Response(upstream.body, { status: 200, headers });
-  } catch {
-    return null;
-  }
+  return new Response(null, {
+    status: 301,
+    headers: { Location: `${COVER_ORIGIN}/covers/${rest}${url.search}` },
+  });
 }
 
 function withHeaders(res: Response, pathname: string): Response {

@@ -539,8 +539,16 @@ export const LEARN_FIG: Partial<Record<TutorialId, string>> = {
 
 export const DEVICE_COVER = "/covers/device-sweet.jpg?v=1";
 
+/**
+ * Where covers are served: the s3.cv.cm bucket, not the Worker's assets. Paths in this file stay "/covers/…" (the dev
+ * server serves them from public/); production builds rewrite them to this origin (scripts/cover-origin.mjs).
+ */
+export const COVER_ORIGIN = "https://s3.cv.cm/files";
+
+/** Absolute URL of a cover, for og:image, JSON-LD and sitemaps. */
 export function coverUrl(path: string): string {
-  return `https://cv.cm${path.split("?")[0]}`;
+  const bare = path.split("?")[0];
+  return bare.startsWith("/") ? `${COVER_ORIGIN}${bare}` : bare;
 }
 
 /** English diagrams live in /covers/tutorials/. Other locales use /covers/tutorials/{locale}/. */

@@ -5,6 +5,7 @@ import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, rmSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { coverOriginEsbuild } from "./cover-origin.mjs";
 import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./game-names.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
@@ -28,7 +29,7 @@ await esbuild.build({
     "import.meta.env.DEV": "false",
     __PRERENDER_ROOT__: JSON.stringify(root),
   },
-  plugins: [{
+  plugins: [coverOriginEsbuild, {
     name: "game-names",
     setup(build) {
       build.onResolve({ filter: NAMES_FILTER }, (args) => ({
