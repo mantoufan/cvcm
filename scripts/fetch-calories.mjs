@@ -251,21 +251,40 @@ const NUTRIENTS = {
 const cacheDir = process.env.FDC_DIR ?? join(tmpdir(), "cvcm-fdc");
 mkdirSync(cacheDir, { recursive: true });
 
-async function jsonFile(url) {
-  const name = url.split("/").at(-1).replace(/\.zip$/, ".json");
-  const found = readdirSync(cacheDir, { recursive: true }).find((f) => String(f).endsWith(name));
-  if (found) return JSON.parse(readFileSync(join(cacheDir, String(found)), "utf8"));
-  const zip = join(cacheDir, url.split("/").at(-1));
-  if (!existsSync(zip)) {
-    console.log(`fetch-calories: downloading ${url}`);
-    const res = await fetch(url, { signal: AbortSignal.timeout(600_000) });
-    if (!res.ok) throw new Error(`${res.status} ${url}`);
-    writeFileSync(zip, Buffer.from(await res.arrayBuffer()));
+/** The .json files under a directory (any depth). */
+function jsonFilesIn(dir) {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { recursive: true }).map(String).filter((f) => f.toLowerCase().endsWith(".json")).map((f) => join(dir, f));
+}
+
+/**
+ * The JSON inside one FDC bulk zip. FDC names the file inside differently from the zip, so each zip is unzipped into
+ * its own folder and the single .json there is used. With FDC_DIR set, an already unzipped file anywhere under it whose
+ * name names the dataset (`kind`: "foundation" or "sr_legacy") is used without downloading.
+ */
+async function jsonFile(url, kind) {
+  if (process.env.FDC_DIR) {
+    const found = jsonFilesIn(cacheDir).filter((f) => f.split("/").at(-1).toLowerCase().includes(kind));
+    if (found.length === 1) return JSON.parse(readFileSync(found[0], "utf8"));
+    if (found.length > 1) throw new Error(`fetch-calories: several ${kind} JSON files under ${cacheDir}: ${found.join(", ")}`);
   }
-  execFileSync("unzip", ["-o", "-q", zip, "-d", cacheDir]);
-  const unzipped = readdirSync(cacheDir, { recursive: true }).find((f) => String(f).endsWith(name));
-  if (!unzipped) throw new Error(`fetch-calories: ${name} not found in ${zip}`);
-  return JSON.parse(readFileSync(join(cacheDir, String(unzipped)), "utf8"));
+  const zipName = url.split("/").at(-1);
+  const dir = join(cacheDir, zipName.replace(/\.zip$/, ""));
+  let files = jsonFilesIn(dir);
+  if (!files.length) {
+    const zip = join(cacheDir, zipName);
+    if (!existsSync(zip)) {
+      console.log(`fetch-calories: downloading ${url}`);
+      const res = await fetch(url, { signal: AbortSignal.timeout(600_000) });
+      if (!res.ok) throw new Error(`${res.status} ${url}`);
+      writeFileSync(zip, Buffer.from(await res.arrayBuffer()));
+    }
+    mkdirSync(dir, { recursive: true });
+    execFileSync("unzip", ["-o", "-q", zip, "-d", dir]);
+    files = jsonFilesIn(dir);
+  }
+  if (files.length !== 1) throw new Error(`fetch-calories: expected one .json in ${dir}, found ${files.length}`);
+  return JSON.parse(readFileSync(files[0], "utf8"));
 }
 
 const round = (value, digits = 3) => (value == null ? null : Math.round(value * 10 ** digits) / 10 ** digits);
@@ -303,8 +322,8 @@ function pickPortion(slug, spec, sr) {
   return { unit: spec.unit, n: spec.n ?? amount, g: round(hit.gramWeight, 1), usda: `${hit.amount ?? 1} ${portionText(hit)}` };
 }
 
-const foundation = (await jsonFile(FOUNDATION_ZIP)).FoundationFoods;
-const sr = (await jsonFile(SR_ZIP)).SRLegacyFoods;
+const foundation = (await jsonFile(FOUNDATION_ZIP, "foundation")).FoundationFoods;
+const sr = (await jsonFile(SR_ZIP, "sr_legacy")).SRLegacyFoods;
 const srByNdb = new Map(sr.map((f) => [String(f.ndbNumber), f]));
 const foundationByNdb = new Map();
 for (const f of foundation) {
@@ -316,7 +335,9 @@ for (const f of foundation) {
 
 const catalog = readFileSync(join(root, "src/shared/calories.ts"), "utf8");
 const groupsSrc = /export const CALORIE_GROUPS = \[([\s\S]*?)\] as const;/.exec(catalog)?.[1] ?? "";
-const slugs = [...groupsSrc.matchAll(/"([a-z0-9-]+)"/g)].map((m) => m[1]).filter((s) => !/^(fruits|vegetables|grains|meat|seafood|dairy|legumes|nuts|fats|drinks|sweets)$/.test(s));
+// The ids are the strings inside each group's `foods: [ … ]` array (group ids sit outside them).
+const slugs = [...groupsSrc.matchAll(/foods:\s*\[([\s\S]*?)\]/g)].flatMap((m) => [...m[1].matchAll(/"([a-z0-9-]+)"/g)].map((q) => q[1]));
+if (!slugs.length || new Set(slugs).size !== slugs.length) throw new Error("fetch-calories: could not read the food ids from CALORIE_GROUPS in calories.ts");
 for (const slug of slugs) if (!FOODS[slug]) throw new Error(`fetch-calories: ${slug} is in calories.ts but not in FOODS`);
 for (const slug of Object.keys(FOODS)) if (!slugs.includes(slug)) throw new Error(`fetch-calories: ${slug} is in FOODS but not in calories.ts`);
 
@@ -357,10 +378,21 @@ for (const slug of slugs) {
 }
 if (problems.length) throw new Error(problems.join("\n"));
 
-const today = new Date().toISOString().slice(0, 10);
+// The committed snapshot keeps its date while the numbers are unchanged, so a refresh that changes nothing does not
+// move every page's sitemap lastmod. Git, not the file on disk: a run that died halfway may have rewritten it.
+const committed = (() => {
+  try {
+    return JSON.parse(execFileSync("git", ["show", "HEAD:src/shared/calories-data.json"], { cwd: root, encoding: "utf8", maxBuffer: 1 << 26, stdio: ["ignore", "pipe", "ignore"] }));
+  } catch {
+    return null;
+  }
+})();
+const releases = { foundation: FOUNDATION_RELEASE, sr: SR_RELEASE };
+const unchanged = committed && JSON.stringify(committed.foods) === JSON.stringify(foods) && JSON.stringify(committed.releases) === JSON.stringify(releases);
+const today = unchanged ? committed.snapshot : new Date().toISOString().slice(0, 10);
 const out = {
   snapshot: today,
-  releases: { foundation: FOUNDATION_RELEASE, sr: SR_RELEASE },
+  releases,
   foods,
 };
 writeFileSync(join(root, "src/shared/calories-data.json"), `${JSON.stringify(out, null, 1)}\n`);
@@ -368,4 +400,4 @@ writeFileSync(
   join(root, "src/shared/calories.ts"),
   catalog.replace(/export const CALORIES_SNAPSHOT = "[^"]*";/, `export const CALORIES_SNAPSHOT = "${today}";`),
 );
-console.log(`fetch-calories: ${slugs.length} foods (${fromFoundation} from Foundation Foods ${FOUNDATION_RELEASE}, ${slugs.length - fromFoundation} from SR Legacy ${SR_RELEASE}), snapshot ${today}`);
+console.log(`fetch-calories: ${unchanged ? "no change, " : ""}${slugs.length} foods (${fromFoundation} from Foundation Foods ${FOUNDATION_RELEASE}, ${slugs.length - fromFoundation} from SR Legacy ${SR_RELEASE}), snapshot ${today}`);

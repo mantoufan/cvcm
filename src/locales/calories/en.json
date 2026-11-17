@@ -62,21 +62,54 @@
     "large": "{n} large",
     "whole": "{n} whole",
     "half": "half a fruit",
-    "piece": { "one": "{n} piece", "other": "{n} pieces" },
-    "cup": { "one": "{n} cup", "other": "{n} cups" },
+    "piece": {
+      "one": "{n} piece",
+      "other": "{n} pieces"
+    },
+    "cup": {
+      "one": "{n} cup",
+      "other": "{n} cups"
+    },
     "tbsp": "{n} tbsp",
     "tsp": "{n} tsp",
     "oz": "{n} oz",
-    "slice": { "one": "{n} slice", "other": "{n} slices" },
-    "clove": { "one": "{n} clove", "other": "{n} cloves" },
-    "ear": { "one": "{n} ear", "other": "{n} ears" },
-    "stalk": { "one": "{n} stalk", "other": "{n} stalks" },
-    "fillet": { "one": "{n} fillet", "other": "{n} fillets" },
-    "can": { "one": "{n} can", "other": "{n} cans" },
-    "container": { "one": "{n} container", "other": "{n} containers" },
-    "patty": { "one": "{n} patty", "other": "{n} patties" },
-    "bar": { "one": "{n} bar", "other": "{n} bars" },
-    "glass": "{n} glass (5 fl oz)",
+    "slice": {
+      "one": "{n} slice",
+      "other": "{n} slices"
+    },
+    "clove": {
+      "one": "{n} clove",
+      "other": "{n} cloves"
+    },
+    "ear": {
+      "one": "{n} ear",
+      "other": "{n} ears"
+    },
+    "stalk": {
+      "one": "{n} stalk",
+      "other": "{n} stalks"
+    },
+    "fillet": {
+      "one": "{n} fillet",
+      "other": "{n} fillets"
+    },
+    "can": {
+      "one": "{n} can",
+      "other": "{n} cans"
+    },
+    "container": {
+      "one": "{n} container",
+      "other": "{n} containers"
+    },
+    "patty": {
+      "one": "{n} patty",
+      "other": "{n} patties"
+    },
+    "bar": {
+      "one": "{n} bar",
+      "other": "{n} bars"
+    },
+    "glass": "{n} glass, 5 fl oz",
     "block": "{n} noodle block, without the seasoning",
     "half-breast": "half a breast"
   },
@@ -127,8 +160,10 @@
   "food": {
     "title": "Calories in {name}: {kcal} kcal per 100 g, Nutrition Facts",
     "description": "{Name} has {kcal} kcal per 100 g and about {skcal} kcal in {serving} ({g} g). Per 100 g: protein {protein} g, fat {fat} g, carbs {carbs} g. USDA data with a serving calculator.",
+    "description100": "{Name} has {kcal} kcal per 100 g. Per 100 g: protein {protein} g, fat {fat} g, carbs {carbs} g. USDA data with a gram calculator.",
     "h1": "Calories in {name}",
     "answer": "{Name}: 100 g has {kcal} kcal ({kj} kJ). {Serving} ({g} g) has about {skcal} kcal.",
+    "answer100": "{Name}: 100 g has {kcal} kcal ({kj} kJ).",
     "q1": "How many calories are in a serving of {name}?",
     "a1": "About {skcal} kcal in {serving} ({g} g), and {kcal} kcal per 100 g, according to USDA FoodData Central.",
     "q2": "How much protein, fat and carbohydrate is in {name}?",

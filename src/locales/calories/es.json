@@ -58,25 +58,67 @@
     "alcohol": "Alcohol"
   },
   "units": {
-    "medium": { "one": "{n} unidad mediana", "other": "{n} unidades medianas" },
-    "large": { "one": "{n} unidad grande", "other": "{n} unidades grandes" },
-    "whole": { "one": "{n} unidad", "other": "{n} unidades" },
+    "medium": {
+      "one": "{n} unidad mediana",
+      "other": "{n} unidades medianas"
+    },
+    "large": {
+      "one": "{n} unidad grande",
+      "other": "{n} unidades grandes"
+    },
+    "whole": {
+      "one": "{n} unidad",
+      "other": "{n} unidades"
+    },
     "half": "media pieza",
-    "piece": { "one": "{n} pieza", "other": "{n} piezas" },
-    "cup": { "one": "{n} taza (EE. UU.)", "other": "{n} tazas (EE. UU.)" },
+    "piece": {
+      "one": "{n} pieza",
+      "other": "{n} piezas"
+    },
+    "cup": {
+      "one": "{n} taza de EE. UU.",
+      "other": "{n} tazas de EE. UU."
+    },
     "tbsp": "{n} cda.",
     "tsp": "{n} cdta.",
     "oz": "{n} oz",
-    "slice": { "one": "{n} rebanada", "other": "{n} rebanadas" },
-    "clove": { "one": "{n} diente", "other": "{n} dientes" },
-    "ear": { "one": "{n} mazorca", "other": "{n} mazorcas" },
-    "stalk": { "one": "{n} tallo", "other": "{n} tallos" },
-    "fillet": { "one": "{n} filete", "other": "{n} filetes" },
-    "can": { "one": "{n} lata", "other": "{n} latas" },
-    "container": { "one": "{n} envase", "other": "{n} envases" },
-    "patty": { "one": "{n} hamburguesa", "other": "{n} hamburguesas" },
-    "bar": { "one": "{n} barra", "other": "{n} barras" },
-    "glass": "{n} copa (5 fl oz)",
+    "slice": {
+      "one": "{n} rebanada",
+      "other": "{n} rebanadas"
+    },
+    "clove": {
+      "one": "{n} diente",
+      "other": "{n} dientes"
+    },
+    "ear": {
+      "one": "{n} mazorca",
+      "other": "{n} mazorcas"
+    },
+    "stalk": {
+      "one": "{n} tallo",
+      "other": "{n} tallos"
+    },
+    "fillet": {
+      "one": "{n} filete",
+      "other": "{n} filetes"
+    },
+    "can": {
+      "one": "{n} lata",
+      "other": "{n} latas"
+    },
+    "container": {
+      "one": "{n} envase",
+      "other": "{n} envases"
+    },
+    "patty": {
+      "one": "{n} hamburguesa",
+      "other": "{n} hamburguesas"
+    },
+    "bar": {
+      "one": "{n} barra",
+      "other": "{n} barras"
+    },
+    "glass": "{n} copa, 5 fl oz",
     "block": "{n} bloque de fideos, sin el sazonador",
     "half-breast": "media pechuga"
   },
@@ -127,8 +169,10 @@
   "food": {
     "title": "Calorías de {name}: {kcal} kcal por 100 g e información nutricional",
     "description": "{Name}: {kcal} kcal por 100 g y unas {skcal} kcal en {serving} ({g} g). Por 100 g: proteínas {protein} g, grasas {fat} g, carbohidratos {carbs} g. Datos del USDA con calculadora por ración.",
+    "description100": "{Name}: {kcal} kcal por 100 g. Por 100 g: proteínas {protein} g, grasas {fat} g, carbohidratos {carbs} g. Datos del USDA con calculadora por gramos.",
     "h1": "Calorías de {name}",
     "answer": "{Name}: 100 g aportan {kcal} kcal ({kj} kJ). {Serving} ({g} g) aporta unas {skcal} kcal.",
+    "answer100": "{Name}: 100 g aportan {kcal} kcal ({kj} kJ).",
     "q1": "¿Cuántas calorías tiene una ración de {name}?",
     "a1": "Unas {skcal} kcal en {serving} ({g} g) y {kcal} kcal por 100 g, según USDA FoodData Central.",
     "q2": "Valor nutricional de {name}: ¿cuántas proteínas, grasas y carbohidratos tiene?",

@@ -26,6 +26,7 @@ import {
   kcalPer100,
   nutrientText,
   servingLabel,
+  usableServing,
   type FoodData,
   type NutrientKey,
 } from "./calories-i18n";
@@ -89,7 +90,8 @@ function hubTableHtml(locale: Locale): string {
     const group = foodGroupOf(id);
     const label = foodLabel(locale, id);
     const query = `${label} ${id.replaceAll("-", " ")}`.toLocaleLowerCase();
-    const num = (key: NutrientKey): string => `<td class="num" data-v="${food.n[key] ?? -1}">${escapeHtml(nutrientText(locale, food, key))}</td>`;
+    // A value the record lacks has an empty data-v: the client sorts it last either way.
+    const num = (key: NutrientKey): string => `<td class="num" data-v="${food.n[key] ?? ""}">${escapeHtml(nutrientText(locale, food, key))}</td>`;
     return `<tr data-group="${group}" data-q="${escapeHtml(query)}">`
       + `<th scope="row" data-v="${escapeHtml(label)}"><a href="${escapeHtml(caloriesHref(locale, id))}" data-nav="food-${id}">${escapeHtml(label)}</a></th>`
       + `<td data-v="${CALORIE_GROUPS.findIndex((g) => g.id === group)}">${escapeHtml(groupLabel(locale, group))}</td>`
@@ -169,12 +171,13 @@ export function calcOutHtml(locale: Locale, id: FoodId, grams: number): string {
 
 function calcHtml(locale: Locale, id: FoodId, food: FoodData): string {
   const m = caloriesMessages(locale);
-  const grams = food.serving?.g ?? 100;
+  const serving = usableServing(locale, food);
+  const grams = serving?.g ?? 100;
   const label = servingLabel(locale, food);
   return `<section class="cal-calc" aria-labelledby="cal-calc-title"><h2 id="cal-calc-title">${escapeHtml(m.ui.calc)}</h2>`
     + `<p class="cal-calc-row"><label>${escapeHtml(m.ui.calcLabel)} <input type="number" class="cal-grams" inputmode="decimal" min="0" max="100000" step="any" value="${grams}"></label> `
     + `<button type="button" class="btn ghost" data-grams="100">100 ${escapeHtml(m.g)}</button>`
-    + (food.serving && label ? ` <button type="button" class="btn ghost" data-grams="${food.serving.g}">${escapeHtml(label)}</button>` : "")
+    + (serving && label ? ` <button type="button" class="btn ghost" data-grams="${serving.g}">${escapeHtml(label)}</button>` : "")
     + `</p><div class="cal-out" aria-live="polite">${calcOutHtml(locale, id, grams)}</div></section>`;
 }
 
@@ -182,7 +185,7 @@ function factsHtml(locale: Locale, food: FoodData): string {
   const m = caloriesMessages(locale);
   const ui = m.ui;
   const label = servingLabel(locale, food);
-  const grams = food.serving?.g ?? null;
+  const grams = usableServing(locale, food)?.g ?? null;
   const rows = NUTRIENT_ROWS.filter((key) => key !== "alcohol" || food.n.alcohol).map((key) => {
     // "Energy" + " (kJ)" unless the locale's label already names the unit ("エネルギー（kJ）").
     const name = key === "kj" && !m.nutrients.kj.includes(m.kj) ? `${m.nutrients.kj} (${m.kj})` : m.nutrients[key];

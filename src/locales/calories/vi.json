@@ -63,7 +63,7 @@
     "whole": "{n} quả",
     "half": "nửa quả",
     "piece": "{n} miếng",
-    "cup": "{n} cốc (chuẩn Mỹ)",
+    "cup": "{n} cốc chuẩn Mỹ",
     "tbsp": "{n} thìa canh",
     "tsp": "{n} thìa cà phê",
     "oz": "{n} oz",
@@ -76,8 +76,8 @@
     "container": "{n} hộp",
     "patty": "{n} miếng chả",
     "bar": "{n} thanh",
-    "glass": "{n} ly (5 fl oz)",
-    "block": "{n} vắt mì (không gồm gói gia vị)",
+    "glass": "{n} ly, 5 fl oz",
+    "block": "{n} vắt mì, không gồm gói gia vị",
     "half-breast": "nửa miếng ức"
   },
   "ui": {
@@ -127,8 +127,10 @@
   "food": {
     "title": "Lượng calo trong {name}: {kcal} kcal/100 g và thành phần dinh dưỡng",
     "description": "{Name} có {kcal} kcal trong 100 g và khoảng {skcal} kcal trong {serving} ({g} g). Trong 100 g: protein {protein} g, chất béo {fat} g, carbohydrate {carbs} g. Dữ liệu USDA kèm công cụ tính theo khẩu phần.",
+    "description100": "{Name} có {kcal} kcal trong 100 g. Trong 100 g: protein {protein} g, chất béo {fat} g, carbohydrate {carbs} g. Dữ liệu USDA kèm công cụ tính theo gam.",
     "h1": "Lượng calo trong {name}",
     "answer": "{Name}: 100 g có {kcal} kcal ({kj} kJ). {Serving} ({g} g) có khoảng {skcal} kcal.",
+    "answer100": "{Name}: 100 g có {kcal} kcal ({kj} kJ).",
     "q1": "Một khẩu phần {name} có bao nhiêu calo?",
     "a1": "Theo USDA FoodData Central, {serving} ({g} g) có khoảng {skcal} kcal, và 100 g có {kcal} kcal.",
     "q2": "Trong {name} có bao nhiêu protein, chất béo và carbohydrate?",

@@ -95,6 +95,28 @@ describe("calories: catalog and data", () => {
     expect(calcOutHtml("en", "egg", Number.NaN)).toContain("—");
   });
 
+  it("has a label for every serving unit in every locale, with one bracket pair at most", () => {
+    const used = new Set(FOODS.map((id) => snapshot.foods[id].serving!.unit));
+    for (const locale of LOCALES) {
+      const units = caloriesMessages(locale).units;
+      for (const unit of used) {
+        expect(units[unit], `${locale} ${unit}`).toBeTruthy();
+        for (const text of strings(units[unit])) expect(text, `${locale} ${unit}`).not.toMatch(/[()（）]/);
+      }
+      for (const id of FOODS) expect(servingLabel(locale, foodData(locale, id)), `${locale} ${id}`).toBeTruthy();
+    }
+    // A unit with no label falls back to per 100 g instead of throwing.
+    const odd = { ...foodData("en", "apple"), serving: { ...foodData("en", "apple").serving!, unit: "nope" } };
+    expect(servingLabel("en", odd)).toBeNull();
+    expect(caloriesPageHtml("en", "apple")).not.toMatch(/\) \(/);
+  });
+
+  it("leaves a missing value's sort key empty", () => {
+    const hub = caloriesPageHtml("en", null);
+    // Every food has protein, fat and carbs today; the rule still holds for a future record without one.
+    expect(hub).not.toContain('data-v="-1"');
+  });
+
   it("splits energy into shares that add up to 100, or not at all", () => {
     for (const id of FOODS) {
       const split = macroSplit(foodData("en", id));

@@ -413,7 +413,13 @@ function prefetchGamePack(e: Event): void {
     if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="food-"], a[data-nav="calories"]')) {
     // data-nav is "food-<food id>" on a food link, "calories" on a hub link (not "calories-…": that is the calories-burned tool).
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, "hub")) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, "hub").catch(() => {});
+    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, "hub")) return;
+    const load = (): void => {
+      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, "hub").catch(() => {});
+    };
+    // The pack carries every food's numbers: under a pointer, wait until it rests on a link, as test links do.
+    if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
+    else load();
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {

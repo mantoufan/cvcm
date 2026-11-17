@@ -63,7 +63,7 @@
     "whole": "{n}个",
     "half": "半个",
     "piece": "{n}个",
-    "cup": "{n}杯（美制）",
+    "cup": "美制{n}杯",
     "tbsp": "{n}汤匙",
     "tsp": "{n}茶匙",
     "oz": "{n}盎司",
@@ -76,8 +76,8 @@
     "container": "{n}盒",
     "patty": "{n}块肉饼",
     "bar": "{n}块",
-    "glass": "{n}杯（5液量盎司）",
-    "block": "面饼{n}块（不含调料包）",
+    "glass": "{n}杯，5液量盎司",
+    "block": "面饼{n}块，不含调料包",
     "half-breast": "半块鸡胸"
   },
   "ui": {
@@ -127,8 +127,10 @@
   "food": {
     "title": "{name}热量：每100克{kcal}千卡、营养成分",
     "description": "{Name}每100克含{kcal}千卡，{serving}（{g}克）约含{skcal}千卡。每100克含蛋白质{protein}克、脂肪{fat}克、碳水化合物{carbs}克。美国农业部数据，附分量计算器。",
+    "description100": "{Name}每100克含{kcal}千卡。每100克含蛋白质{protein}克、脂肪{fat}克、碳水化合物{carbs}克。美国农业部数据，附克数计算器。",
     "h1": "{name}热量",
     "answer": "{Name}：每100克含{kcal}千卡（{kj}千焦）。{Serving}（{g}克）约含{skcal}千卡。",
+    "answer100": "{Name}：每100克含{kcal}千卡（{kj}千焦）。",
     "q1": "一份{name}有多少热量？",
     "a1": "根据USDA FoodData Central，{serving}（{g}克）约含{skcal}千卡，每100克含{kcal}千卡。",
     "q2": "{name}含多少蛋白质、脂肪和碳水化合物？",

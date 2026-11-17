@@ -117,6 +117,11 @@ export function kcalPer100(food: FoodData): number {
   return Math.round(food.n.kcal);
 }
 
+/** The food's serving when this locale can name it, else null (the page then shows per 100 g only). */
+export function usableServing(locale: Locale, food: FoodData): FoodData["serving"] {
+  return food.serving && servingLabel(locale, food) != null ? food.serving : null;
+}
+
 export function servingKcal(food: FoodData): number | null {
   return food.serving ? Math.round((food.n.kcal * food.serving.g) / 100) : null;
 }
@@ -133,7 +138,8 @@ export function servingLabel(locale: Locale, food: FoodData): string | null {
   if (!food.serving) return null;
   const units = caloriesMessages(locale).units as Record<string, string | { one: string; other: string }>;
   const unit = units[food.serving.unit];
-  if (!unit) throw new Error(`calories: no unit ${food.serving.unit} in ${locale}`);
+  // A unit without a label in this locale (tests/calories.test.ts guards against it) falls back to per-100 g only.
+  if (!unit) return null;
   const n = food.serving.n;
   const text = typeof unit === "string" ? unit : n === 1 || n < 1 ? unit.one : unit.other;
   return fill(text, { n: countText(locale, n) });
@@ -175,7 +181,7 @@ export function caloriesTitle(locale: Locale, id: FoodId | null): string {
 export function caloriesDescription(locale: Locale, id: FoodId | null): string {
   const m = caloriesMessages(locale);
   if (!id) return fill(m.hub.description, { n: FOODS.length });
-  return fill(m.food.description, foodVars(locale, id));
+  return fill(usableServing(locale, foodData(locale, id)) ? m.food.description : m.food.description100, foodVars(locale, id));
 }
 
 export function caloriesH1(locale: Locale, id: FoodId): string {
@@ -183,7 +189,8 @@ export function caloriesH1(locale: Locale, id: FoodId): string {
 }
 
 export function caloriesAnswer(locale: Locale, id: FoodId): string {
-  return fill(caloriesMessages(locale).food.answer, foodVars(locale, id));
+  const m = caloriesMessages(locale);
+  return fill(usableServing(locale, foodData(locale, id)) ? m.food.answer : m.food.answer100, foodVars(locale, id));
 }
 
 /** Foods of the group ordered from the most to the fewest calories per 100 g (ties keep catalog order). */
@@ -207,7 +214,7 @@ export function caloriesFaqItems(locale: Locale, id: FoodId | null): { q: string
   if (food.n.fiber != null) a2 += fill(m.food.a2fiber, vars);
   if (food.n.sugars != null) a2 += fill(m.food.a2sugars, vars);
   const items = [
-    ...(food.serving ? [{ q: fill(m.food.q1, vars), a: fill(m.food.a1, vars) }] : []),
+    ...(usableServing(locale, food) ? [{ q: fill(m.food.q1, vars), a: fill(m.food.a1, vars) }] : []),
     { q: fill(m.food.q2, vars), a: a2 },
     {
       q: fill(m.food.q3, vars),

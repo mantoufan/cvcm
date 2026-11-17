@@ -47,6 +47,8 @@ function wireHub(host: HTMLElement, locale: Locale): void {
       const sorted = [...rows].sort((a, b) => {
         const x = value(a.el);
         const y = value(b.el);
+        // Missing values (empty data-v) go last in both directions.
+        if (!x || !y) return (x ? 0 : 1) - (y ? 0 : 1) || a.index - b.index;
         const diff = numeric ? Number(x) - Number(y) : collator.compare(x, y);
         return diff * dir || a.index - b.index;
       });

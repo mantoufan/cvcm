@@ -3,8 +3,7 @@ import { t } from "./i18n";
 import { lessonsForTool } from "../shared/learn";
 import { KB_SHELVES, kbForTool } from "../shared/kb";
 import type { Locale } from "../shared/locale";
-import { kbHref, learnHref, type ToolId } from "../shared/path";
-import { caloriesHref } from "../shared/path";
+import { caloriesHref, kbHref, learnHref, type ToolId } from "../shared/path";
 import { CALORIES_FOCUS, CALORIES_TOOLS } from "../shared/calories";
 
 export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | null {

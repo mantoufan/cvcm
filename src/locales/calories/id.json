@@ -63,7 +63,7 @@
     "whole": "{n} buah",
     "half": "setengah buah",
     "piece": "{n} potong",
-    "cup": "{n} cangkir (ukuran AS)",
+    "cup": "{n} cangkir ukuran AS",
     "tbsp": "{n} sdm",
     "tsp": "{n} sdt",
     "oz": "{n} oz",
@@ -76,8 +76,8 @@
     "container": "{n} wadah",
     "patty": "{n} patty",
     "bar": "{n} batang",
-    "glass": "{n} gelas (5 fl oz)",
-    "block": "{n} keping mi (tanpa bumbu)",
+    "glass": "{n} gelas, 5 fl oz",
+    "block": "{n} keping mi, tanpa bumbu",
     "half-breast": "setengah dada"
   },
   "ui": {
@@ -127,8 +127,10 @@
   "food": {
     "title": "Kalori {name}: {kcal} kkal per 100 g dan Informasi Gizi",
     "description": "{Name} mengandung {kcal} kkal per 100 g dan sekitar {skcal} kkal dalam {serving} ({g} g). Per 100 g: protein {protein} g, lemak {fat} g, karbohidrat {carbs} g. Data USDA dengan kalkulator porsi.",
+    "description100": "{Name} mengandung {kcal} kkal per 100 g. Per 100 g: protein {protein} g, lemak {fat} g, karbohidrat {carbs} g. Data USDA dengan kalkulator gram.",
     "h1": "Kalori {name}",
     "answer": "{Name}: 100 g mengandung {kcal} kkal ({kj} kJ). {Serving} ({g} g) mengandung sekitar {skcal} kkal.",
+    "answer100": "{Name}: 100 g mengandung {kcal} kkal ({kj} kJ).",
     "q1": "Berapa kalori dalam satu porsi {name}?",
     "a1": "Sekitar {skcal} kkal dalam {serving} ({g} g), dan {kcal} kkal per 100 g, menurut USDA FoodData Central.",
     "q2": "Berapa kandungan protein, lemak, dan karbohidrat {name}?",
