@@ -1,4 +1,5 @@
 import { expect, it } from "vitest";
+import { encodePack, ssrPackPath } from "../src/shared/ssr-pack";
 import worker from "../src/worker";
 
 const assets = {
@@ -52,12 +53,20 @@ it("allows same-origin workers for in-tab PDF rendering", async () => {
 
 const shell = '<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /></head><body><div id="app"></div></body></html>';
 
+/** ASSETS with the given prerendered bodies ("/_ssr/<page path>" → body) packed the way the build packs them. */
 function ssrAssets(fragments: Record<string, string>) {
+  const packs = new Map<string, Array<[string, string]>>();
+  for (const [key, body] of Object.entries(fragments)) {
+    const page = key.slice("/_ssr".length);
+    const file = ssrPackPath(page);
+    packs.set(file, [...(packs.get(file) ?? []), [page, body]]);
+  }
   return {
     fetch: async (input: Request | string) => {
       const path = new URL(typeof input === "string" ? input : input.url).pathname;
-      const body = fragments[path] ?? shell;
-      return new Response(body, { headers: { "Content-Type": "text/html; charset=utf-8" } });
+      const entries = packs.get(path);
+      if (entries) return new Response(encodePack(entries), { headers: { "Content-Type": "application/octet-stream" } });
+      return new Response(shell, { headers: { "Content-Type": "text/html; charset=utf-8" } });
     },
   };
 }
