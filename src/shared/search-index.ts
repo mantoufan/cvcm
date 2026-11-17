@@ -28,7 +28,8 @@ function isHub(page: SitemapPage): boolean {
     case "calories":
       return page.food === null;
     case "games":
-      return page.console === null && page.game === null;
+      // The main hub and the free online games hub (/games/mini/), not the console or game pages.
+      return (page.console === null || page.console === "mini") && page.game === null;
     default:
       return false;
   }

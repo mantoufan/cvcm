@@ -49,6 +49,8 @@ const assets = {
 describe("games catalog", () => {
   it("lists keyboard controls for every console", () => {
     for (const id of GAME_CONSOLES) {
+      // `mini` is the hub of cv.cm's own browser games, not an emulated console.
+      if (id === "mini") continue;
       expect(CONSOLE_CONTROLS[id].length, id).toBeGreaterThanOrEqual(4);
       expect(CONSOLE_CONTROLS[id].some((row) => row.action === "start"), id).toBe(true);
     }
@@ -56,7 +58,7 @@ describe("games catalog", () => {
 
   it("covers every console and gives every game an S3 ROM filename", () => {
     for (const id of GAME_CONSOLES) {
-      if (id === "flash") continue;
+      if (id === "flash" || id === "mini") continue;
       expect(gamesFor(id).length, id).toBeGreaterThan(0);
     }
     expect(GAME_CONSOLES).toContain("flash");

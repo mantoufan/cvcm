@@ -719,7 +719,9 @@
     "titleCalculateBac": "Cara menghitung kadar alkohol dalam darah (BAC) dengan rumus Widmark | cv.cm",
     "descCalculateBac": "Perkirakan BAC langkah demi langkah: gram alkohol dalam minuman, rumus Widmark, seberapa cepat tubuh membuangnya, dan arti 0,08 %, 0,5 ‰, dan 80 mg/100 mL. Hanya perkiraan, bukan alasan untuk menyetir.",
     "titleCalculateSimpleInterest": "Cara menghitung bunga sederhana (bunga tunggal): I = P × r × t dengan contoh | cv.cm",
-    "descCalculateSimpleInterest": "Bunga sederhana dalam enam langkah: rumusnya, suku bunga sebagai desimal, bulan dan hari (tahun 365 atau 360 hari), mencari pokok, suku bunga, atau waktu, dan perbedaannya dengan bunga majemuk."
+    "descCalculateSimpleInterest": "Bunga sederhana dalam enam langkah: rumusnya, suku bunga sebagai desimal, bulan dan hari (tahun 365 atau 360 hari), mencari pokok, suku bunga, atau waktu, dan perbedaannya dengan bunga majemuk.",
+    "titleGamesMini": "Game online gratis — solitaire, minesweeper, catur, dan lainnya — cv.cm",
+    "descGamesMini": "Main game online gratis di browser tanpa unduhan: solitaire, spider solitaire, FreeCell, minesweeper, game ular, catur, catur Cina, gomoku, mahjong, 2048, cari kata, dan lainnya. Bisa di ponsel."
   },
   "brand": "cv.cm",
   "nav": {
@@ -6016,6 +6018,16 @@
       "a4": "Pelajaran tombol ditujukan untuk keyboard fisik, tetapi Anda juga bisa mengetuk tombol di layar. Pelajaran kata bisa dipakai dengan keyboard apa pun, termasuk keyboard ponsel Anda.",
       "q5": "Apa bedanya dengan tes mengetik?",
       "a5": "Tes mengetik mengukur kecepatan Anda pada sebuah teks dalam waktu tertentu. Belajar mengetik mengajarkan tombol satu baris demi satu baris dan menunjukkan tombol yang paling sering Anda salah ketik."
+    },
+    "gamesMini": {
+      "q1": "Apakah game ini benar-benar gratis?",
+      "a1": "Ya. Semua game gratis, tanpa daftar dan tanpa unduhan. Progres Anda hanya tersimpan di browser ini.",
+      "q2": "Apakah bisa dimainkan di ponsel?",
+      "a2": "Bisa. Semua game bisa dimainkan dengan sentuhan, dan game papan serta teka-teki pas di layar ponsel. Game mengetik lebih nyaman dengan keyboard.",
+      "q3": "Ada game apa saja?",
+      "a3": "Game kartu (solitaire, spider solitaire, FreeCell), teka-teki (minesweeper, sudoku, nonogram, 2048, mahjong), game papan melawan komputer (catur, catur Cina, dam, reversi, gomoku, dam Cina), permainan kata, dan game arkade seperti game ular dan game dinosaurus.",
+      "q4": "Apakah bisa dimainkan tanpa internet?",
+      "a4": "Sebagian besar game tetap jalan walau koneksi terputus setelah halaman terbuka. Catur dan catur Cina mengunduh mesinnya saat komputer melangkah pertama kali, jadi mulai dulu permainannya sebelum offline."
     }
   },
   "qr": {
@@ -10011,6 +10023,7 @@
       "all": "Lihat semua"
     },
     "consoles": {
+      "mini": "Game online gratis",
       "fc": "FC / NES",
       "sfc": "SFC / SNES",
       "gb": "Game Boy",
@@ -10084,9 +10097,10 @@
         "rerelease": "Rilis ulang, versinya bisa berbeda"
       }
     },
-    "openSource": {
-      "title": "Game browser",
-      "lead": "Game gratis yang langsung dimainkan di halaman ini, tanpa unduhan. Game yang berbasis proyek lain mencantumkan sumbernya di halamannya."
+    "mini": {
+      "title": "Game online gratis",
+      "lead": "Game klasik yang langsung dimainkan di browser: solitaire, minesweeper, catur, mahjong, 2048, permainan kata, dan lainnya. Gratis, tanpa unduhan, dan skor dan permainan yang sedang berjalan tersimpan di browser ini.",
+      "all": "Lihat semua {n} game online gratis"
     }
   },
   "reverse": {

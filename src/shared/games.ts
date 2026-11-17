@@ -1,4 +1,8 @@
-export const GAME_CONSOLES = ["fc", "sfc", "gb", "gbc", "gba", "md", "flash"] as const;
+/**
+ * Console hubs under /games/. `mini` is not a console: it is the hub of cv.cm's own browser games (tool pages listed
+ * in BROWSER_GAMES), shown as the first filter; no catalog game uses it.
+ */
+export const GAME_CONSOLES = ["mini", "fc", "sfc", "gb", "gbc", "gba", "md", "flash"] as const;
 export type GameConsoleId = (typeof GAME_CONSOLES)[number];
 
 export const GAME_GENRES = [
@@ -1845,6 +1849,7 @@ const ROM_EXT: Record<GameConsoleId, string> = {
   gba: ".gba",
   md: ".md",
   flash: ".swf",
+  mini: "",
 };
 
 /** S3 object name under `/emu/roms/`. Hosted when that object exists; every page still accepts a local file. */

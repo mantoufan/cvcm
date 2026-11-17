@@ -719,7 +719,9 @@
     "titleCalculateBac": "Cách tính nồng độ cồn trong máu (BAC) bằng công thức Widmark | cv.cm",
     "descCalculateBac": "Ước tính BAC từng bước: số gam cồn trong một ly, công thức Widmark, tốc độ cơ thể đào thải cồn và ý nghĩa của 0,08 %, 0,5 ‰ và 80 mg/100 mL. Chỉ là ước tính, không bao giờ là lý do để lái xe.",
     "titleCalculateSimpleInterest": "Cách tính lãi đơn: I = P × r × t kèm ví dụ | cv.cm",
-    "descCalculateSimpleInterest": "Lãi đơn trong sáu bước: công thức, đổi lãi suất sang số thập phân, tháng và ngày (năm 365 hoặc 360 ngày), tìm vốn gốc, lãi suất hoặc thời gian, và so sánh với lãi kép."
+    "descCalculateSimpleInterest": "Lãi đơn trong sáu bước: công thức, đổi lãi suất sang số thập phân, tháng và ngày (năm 365 hoặc 360 ngày), tìm vốn gốc, lãi suất hoặc thời gian, và so sánh với lãi kép.",
+    "titleGamesMini": "Game mini miễn phí — xếp bài, dò mìn, cờ vua và nhiều game online — cv.cm",
+    "descGamesMini": "Chơi game miễn phí trên trình duyệt, không cần tải: xếp bài, xếp bài nhện, FreeCell, dò mìn, rắn săn mồi, cờ vua, cờ tướng, cờ caro, mạt chược, 2048, tìm chữ và nhiều hơn. Chơi được trên điện thoại."
   },
   "brand": "cv.cm",
   "nav": {
@@ -6016,6 +6018,16 @@
       "a4": "Các bài luyện phím dành cho bàn phím vật lý, nhưng bạn cũng có thể chạm vào phím trên màn hình. Bài gõ từ dùng được với mọi bàn phím, kể cả bàn phím điện thoại.",
       "q5": "Công cụ này khác bài kiểm tra tốc độ gõ thế nào?",
       "a5": "Bài kiểm tra tốc độ gõ đo tốc độ của bạn trên một đoạn văn trong thời gian cố định. Luyện gõ phím dạy từng hàng phím một và cho thấy những phím bạn gõ sai nhiều nhất."
+    },
+    "gamesMini": {
+      "q1": "Các game này có thật sự miễn phí không?",
+      "a1": "Có. Tất cả đều miễn phí, không cần đăng ký hay tải về. Tiến trình chỉ lưu trong trình duyệt này.",
+      "q2": "Chơi trên điện thoại được không?",
+      "a2": "Được. Mọi game đều chơi bằng cảm ứng, game cờ và game giải đố vừa màn hình điện thoại. Trò chơi gõ phím chơi với bàn phím sẽ tiện hơn.",
+      "q3": "Có những game nào?",
+      "a3": "Game bài (xếp bài, xếp bài nhện, FreeCell), giải đố (dò mìn, sudoku, nonogram, 2048, mạt chược solitaire), cờ đấu với máy (cờ vua, cờ tướng, cờ đam, cờ lật, cờ caro, cờ nhảy), trò chơi chữ và game arcade như rắn săn mồi, khủng long.",
+      "q4": "Không có mạng có chơi được không?",
+      "a4": "Hầu hết game vẫn chơi tiếp được nếu mất mạng sau khi trang đã tải xong. Cờ vua và cờ tướng tải engine khi máy đi nước đầu tiên, nên hãy bắt đầu ván trước khi ngắt mạng."
     }
   },
   "qr": {
@@ -10011,6 +10023,7 @@
       "all": "Xem tất cả"
     },
     "consoles": {
+      "mini": "Game mini miễn phí",
       "fc": "FC / NES",
       "sfc": "SFC / SNES",
       "gb": "Game Boy",
@@ -10084,9 +10097,10 @@
         "rerelease": "Phát hành lại, phiên bản có thể khác"
       }
     },
-    "openSource": {
-      "title": "Game trên trình duyệt",
-      "lead": "Game miễn phí chơi ngay trên trang, không cần tải về. Game dựa trên dự án khác đều ghi nguồn ở trang riêng."
+    "mini": {
+      "title": "Game mini miễn phí",
+      "lead": "Những trò chơi kinh điển chơi ngay trên trình duyệt: xếp bài, dò mìn, cờ vua, mạt chược, 2048, trò chơi chữ và nhiều hơn nữa. Miễn phí, không cần tải về, điểm số và ván đang chơi được lưu trong trình duyệt này.",
+      "all": "Xem tất cả {n} game mini miễn phí"
     }
   },
   "reverse": {
