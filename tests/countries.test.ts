@@ -9,16 +9,17 @@ import { messages } from "../src/shared/messages";
 import "../src/shared/messages-all";
 import { preloadLocalePack } from "../src/shared/locale-preload";
 import { countriesHref, parseAppPath } from "../src/shared/path";
-import { COUNTRIES_FOCUS, COUNTRIES_UPDATED, COUNTRY_BUCKETS, COUNTRY_LIST, countryBucket, countryCode, isCountrySlug } from "../src/shared/countries";
+import { COUNTRIES_FOCUS, COUNTRIES_UPDATED, COUNTRY_LIST, countryBucket, countryCode, isCountrySlug } from "../src/shared/countries";
+import { COUNTRY_BUCKET_LOADERS } from "../src/shared/countries/loaders";
 import { countriesMessages, countryDetail } from "../src/shared/countries-store";
-import { countriesCollectionJsonLd, countryDescription, countryFaqItems, countryTitle } from "../src/shared/countries-i18n";
-import { countriesPageHtml } from "../src/shared/countries-page";
+import { countriesCollectionJsonLd, countryDescription, countryFaqItems, countryName, countryTitle } from "../src/shared/countries-i18n";
+import { countriesPageHtml, zonesText } from "../src/shared/countries-page";
 import { pageCanonical, pageTitle } from "../src/shared/seo";
 import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml, sitemapPages } from "../src/shared/sitemap";
 import { DATASETS } from "../src/shared/datasets";
 // @ts-expect-error plain ESM script without types
-import { buildCountries, countryBucket as scriptBucket, COUNTRY_BUCKETS as SCRIPT_BUCKETS, serialize } from "../scripts/countries-sync.mjs";
+import { buildCountries, COUNTRY_BUCKETS, serialize } from "../scripts/countries-sync.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SHELL = `<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`;
@@ -45,11 +46,11 @@ describe("countries: data (run `npm run countries:sync` after a data refresh)", 
     buckets.forEach((bucket: unknown, n: number) => expect(read(`src/shared/countries/b${n}.json`)).toBe(serialize(bucket)));
   });
 
-  it("buckets countries the same way in the script and the pages", () => {
-    expect(SCRIPT_BUCKETS).toBe(COUNTRY_BUCKETS);
+  it("loads every bucket the sync writes, and finds each country in its bucket", () => {
+    expect(COUNTRY_BUCKET_LOADERS.length).toBe(COUNTRY_BUCKETS);
     for (const slug of COUNTRY_LIST) {
       const code = countryCode(slug);
-      expect(scriptBucket(code)).toBe(countryBucket(code));
+      expect(Object.keys(JSON.parse(read(`src/shared/countries/b${countryBucket(code)}.json`)))).toContain(code);
       expect(countryDetail(code).v.population ?? countryDetail(code).v.gdp, slug).toBeTruthy();
     }
   });
@@ -59,18 +60,24 @@ describe("countries: data (run `npm run countries:sync` after a data refresh)", 
     for (const slug of COUNTRY_LIST) expect(slug).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
     expect(countryCode("japan")).toBe("JP");
     expect(countryCode("united-states")).toBe("US");
+    expect(countryCode("us-virgin-islands")).toBe("VI");
+    expect(countryCode("dr-congo")).toBe("CD");
+    expect(countryCode("republic-of-the-congo")).toBe("CG");
     expect(COUNTRIES_FOCUS.every(isCountrySlug)).toBe(true);
   });
 
   it("names no capital where it is disputed, and every flag it lists exists", () => {
     const summary = countriesMessages("en").summary.countries;
-    for (const code of ["IL", "PS", "XK"]) expect(summary[code].cap).toEqual([]);
+    for (const code of ["IL", "PS", "XK", "YE"]) expect(summary[code].cap).toEqual([]);
+    expect(summary.ZA.cap.length).toBe(3);
+    expect(summary.BO.cap.length).toBe(2);
     expect(summary.TW).toBeUndefined();
     expect(summary.JP.cap[0]).toMatchObject({ en: "Tokyo" });
     for (const [code, c] of Object.entries(summary)) {
-      if (c.flag) expect(() => read(`public/assets/flags/${code.toLowerCase()}.svg`), code).not.toThrow();
+      if (c.flag) expect(() => read(`public/flags/${code.toLowerCase()}.svg`), code).not.toThrow();
     }
-    expect(read("public/assets/flags/LICENSE")).toContain("MIT");
+    expect(read("public/flags/LICENSE")).toContain("MIT");
+    expect(parseAppPath("/flags/jp.svg")).toEqual({ kind: "static" });
   });
 
   it("leaves self-harm figures out and keeps every other indicator", () => {
@@ -181,7 +188,17 @@ describe("countries: pages", () => {
     const html = countriesPageHtml("en", "japan");
     expect(html).toContain("The capital of Japan is Tokyo.");
     expect(html).toMatch(/The population of Japan was [\d.]+ million in \d{4}, \d+(st|nd|rd|th) of \d+ in the world\./);
-    expect(html).toContain('src="/assets/flags/jp.svg"');
+    expect(html).toContain('src="/flags/jp.svg"');
+    expect(html.match(/<img /g)?.length).toBe(1);
+    // Lists are text (rule 7): no flags on the hub.
+    expect(countriesPageHtml("en", null)).not.toContain("<img");
+    expect(zonesText("en", countryDetail("AR"))).toBe("1 time zone (UTC-03:00)");
+    expect(zonesText("en", countryDetail("DE"))).toBe("1 time zone (UTC+01:00, summer UTC+02:00)");
+    expect(zonesText("en", countryDetail("US"))).toMatch(/^\d+ time zones: UTC-1\d:00 to UTC-0\d:00$/);
+    expect(countryName("en", "CD")).toBe("DR Congo");
+    expect(countryName("zh-CN", "HK")).toBe("中国香港");
+    expect(countriesPageHtml("en", "isle-of-man")).toContain("the Isle of Man");
+    expect(countriesPageHtml("en", "united-states")).toContain("Washington, D.C. The population");
     expect(countriesPageHtml("en", "netherlands")).toContain("The capital of the Netherlands is Amsterdam.");
     expect(countryFaqItems("en", "israel").map((f) => f.q)).not.toContain("What is the capital of Israel?");
     expect(countryTitle("en", "japan")).toMatch(/^Japan: Population, GDP, Capital, Flag \(\d{4} Data\) — cv\.cm$/);

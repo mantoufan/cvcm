@@ -4,7 +4,7 @@
  * beyond the templates in src/locales/countries/<locale>.json.
  */
 import type { Locale } from "./locale";
-import { fill, fill as fillText } from "./fill";
+import { fill } from "./fill";
 import { formatIndicator, currencyName, regionName } from "./datasets-i18n";
 import type { IndicatorId } from "./datasets";
 import { appHref, countriesHref } from "./path";
@@ -24,13 +24,17 @@ export function countrySummary(locale: Locale, code: string): CountrySummary {
   return countriesMessages(locale).summary.countries[code];
 }
 
-/** The place's name in the page language (Intl), or the World Bank's English name where Intl has none. */
+/**
+ * The place's name in the page language: the copy's `names` where Intl's reads badly in a sentence ("Congo - Kinshasa",
+ * "Hong Kong SAR China", "Myanmar (Burma)"), else Intl, else the World Bank's English name (Channel Islands).
+ */
 export function countryName(locale: Locale, code: string): string {
-  return regionName(locale, code, countrySummary(locale, code)?.en ?? code);
+  const own = (countriesMessages(locale).names as Record<string, string>)[code];
+  return own ?? regionName(locale, code, countrySummary(locale, code)?.en ?? code);
 }
 
 /** English names that take "the" inside a sentence ("the capital of the Netherlands"). */
-const EN_THE = new Set(["US", "GB", "NL", "PH", "BS", "GM", "AE", "CF", "CD", "CG", "DO", "MH", "SB", "KY", "VG", "VI", "TC", "FO", "MP", "MV", "SC", "KM", "JG"]);
+const EN_THE = new Set(["US", "GB", "NL", "PH", "BS", "GM", "AE", "CF", "CG", "DO", "MH", "SB", "KY", "VG", "VI", "TC", "FO", "MP", "MV", "SC", "KM", "JG", "IM"]);
 
 /** {the} / {The}: the name as it reads inside / at the start of a sentence (only English adds an article). */
 function articleVars(locale: Locale, code: string): { name: string; the: string; The: string } {
@@ -118,14 +122,14 @@ export function countrySentences(locale: Locale, code: string): { capital: strin
   const cur = currencies(locale, code);
   const dial = firstDial(code);
   // "Washington, D.C." ends a sentence with its own full stop.
-  const fill = (text: string, vars: Record<string, string | number>): string => fillText(text, vars).replace(/(?<!\.)\.\.(?!\.)/g, ".");
+  const sentence = (text: string, vars: Record<string, string | number>): string => fill(text, vars).replace(/(?<!\.)\.\.(?!\.)/g, ".");
   return {
-    capital: caps.length === 1 ? fill(s.capital, { ...vars, capital: caps[0] }) : caps.length > 1 ? fill(s.capitals, { ...vars, n: caps.length, capitals: listText(locale, caps) }) : null,
-    population: pop ? fill(s.population, { ...vars, pop: peopleLong(locale, pop[0]), year: pop[1], rank: ordinal(locale, pop[2]), n: formatCount(locale, copy.summary.rows.population) }) : null,
-    gdp: gdp ? fill(s.gdp, { ...vars, gdp: usdLong(locale, gdp[0]), year: gdp[1], rank: ordinal(locale, gdp[2]), n: formatCount(locale, copy.summary.rows.gdp) }) : null,
-    perCapita: pc ? fill(s.perCapita, { ...vars, pc: figureText(locale, "gdp-per-capita", pc), year: pc[1] }) : null,
-    currency: cur.length === 1 ? fill(s.currency, { ...vars, currency: cur[0].name, code: cur[0].code }) : cur.length > 1 ? fill(s.currencies, { ...vars, list: listText(locale, cur.map((c) => `${c.name} (${c.code})`)) }) : null,
-    dial: dial ? fill(s.dial, { ...vars, dial }) : null,
+    capital: caps.length === 1 ? sentence(s.capital, { ...vars, capital: caps[0] }) : caps.length > 1 ? sentence(s.capitals, { ...vars, n: caps.length, capitals: listText(locale, caps) }) : null,
+    population: pop ? sentence(s.population, { ...vars, pop: peopleLong(locale, pop[0]), year: pop[1], rank: ordinal(locale, pop[2]), n: formatCount(locale, copy.summary.rows.population) }) : null,
+    gdp: gdp ? sentence(s.gdp, { ...vars, gdp: usdLong(locale, gdp[0]), year: gdp[1], rank: ordinal(locale, gdp[2]), n: formatCount(locale, copy.summary.rows.gdp) }) : null,
+    perCapita: pc ? sentence(s.perCapita, { ...vars, pc: figureText(locale, "gdp-per-capita", pc), year: pc[1] }) : null,
+    currency: cur.length === 1 ? sentence(s.currency, { ...vars, currency: cur[0].name, code: cur[0].code }) : cur.length > 1 ? sentence(s.currencies, { ...vars, list: listText(locale, cur.map((c) => `${c.name} (${c.code})`)) }) : null,
+    dial: dial ? sentence(s.dial, { ...vars, dial }) : null,
   };
 }
 

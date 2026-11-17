@@ -69,7 +69,6 @@
     "kicker": "国・地域のプロフィール",
     "answer": "要点",
     "facts": "基本データ",
-    "flag": "国旗",
     "flagAlt": "{name}の旗",
     "capital": "首都",
     "continent": "大陸",
@@ -109,7 +108,8 @@
     "ord": "{n}位",
     "usdLong": "{v}米ドル",
     "join": "",
-    "datasets": "すべてのデータ表"
+    "datasets": "すべてのデータ表",
+    "zoneOne": "タイムゾーン 1 つ（{offset}）"
   },
   "groups": {
     "economy": "経済",
@@ -178,5 +178,12 @@
     "alcohol-consumption": "アルコール消費量（1 人あたりリットル）",
     "tobacco-use": "たばこ使用率（成人 %）",
     "air-pollution": "大気汚染、PM2.5（µg/m³）"
+  },
+  "names": {
+    "CD": "コンゴ民主共和国",
+    "CG": "コンゴ共和国",
+    "HK": "香港",
+    "MO": "マカオ",
+    "MM": "ミャンマー"
   }
 }

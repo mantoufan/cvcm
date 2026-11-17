@@ -69,7 +69,6 @@
     "kicker": "國家和地區概況",
     "answer": "簡要回答",
     "facts": "主要數據",
-    "flag": "旗幟",
     "flagAlt": "{name}的旗幟",
     "capital": "首都",
     "continent": "大洲",
@@ -109,7 +108,8 @@
     "ord": "第{n}",
     "usdLong": "{v}美元",
     "join": "",
-    "datasets": "全部資料表"
+    "datasets": "全部資料表",
+    "zoneOne": "1 個時區（{offset}）"
   },
   "groups": {
     "economy": "經濟",
@@ -178,5 +178,12 @@
     "alcohol-consumption": "酒精消費（每人公升數）",
     "tobacco-use": "菸草使用率（成人 %）",
     "air-pollution": "空氣汙染，PM2.5（µg/m³）"
+  },
+  "names": {
+    "CD": "剛果民主共和國",
+    "CG": "剛果共和國",
+    "HK": "香港",
+    "MO": "澳門",
+    "MM": "緬甸"
   }
 }

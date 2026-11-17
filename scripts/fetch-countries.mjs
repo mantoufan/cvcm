@@ -1,7 +1,7 @@
 // Snapshots what the country profiles (/{locale}/countries/) need beyond the data tables in src/data/:
 //   capitals: Wikidata (CC0), property P36 on the item with the ISO 3166-1 alpha-2 code (P297), labels in the eight
 //             site languages through wbgetentities with language fallback → src/shared/countries-capitals.json
-//   flags:    the flag-icons npm package (MIT, pinned below), 4:3 SVGs → public/assets/flags/<code>.svg + LICENSE
+//   flags:    the flag-icons npm package (MIT, pinned below), 4:3 SVGs → public/flags/<code>.svg + LICENSE
 // Run by hand (`node scripts/fetch-countries.mjs`), then `npm run countries:sync` and commit. Pages never call these.
 import { execFileSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from "node:fs";
@@ -15,10 +15,12 @@ const UA = "cv.cm country profiles (https://cv.cm; m@cv.cm)";
 const LANGS = { en: "en", "zh-CN": "zh-cn", "zh-TW": "zh-tw", ja: "ja", ko: "ko", vi: "vi", id: "id", es: "es" };
 
 /**
- * No capital is shown where naming one would take a side: Taiwan, Israel (Jerusalem), Palestine and Kosovo. Taiwan
+ * No capital is shown where naming one would take a side: Taiwan, Israel (Jerusalem), Palestine, Kosovo and Yemen
+ * (Sanaa and Aden are held by rival governments). Several capitals that are a constitutional fact stay (South Africa,
+ * Bolivia, Sri Lanka, Eswatini). Taiwan
  * also gets no flag. The pages state no sovereignty either way; they show the World Bank figures and codes only.
  */
-export const NO_CAPITAL = ["TW", "IL", "PS", "XK"];
+export const NO_CAPITAL = ["TW", "IL", "PS", "XK", "YE"];
 export const NO_FLAG = ["TW"];
 
 /** Every economy with at least one World Bank figure in src/data: the pages the channel has. */
@@ -89,7 +91,7 @@ function flags(list) {
     execFileSync("curl", ["-sSfL", "-o", tgz, `https://registry.npmjs.org/flag-icons/-/flag-icons-${FLAG_ICONS}.tgz`]);
     execFileSync("tar", ["xzf", tgz, "-C", work]);
     const src = join(work, "package/flags/4x3");
-    const out = join(root, "public/assets/flags");
+    const out = join(root, "public/flags");
     rmSync(out, { recursive: true, force: true });
     mkdirSync(out, { recursive: true });
     const have = new Set(readdirSync(src));

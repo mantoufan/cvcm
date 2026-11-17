@@ -11,7 +11,7 @@ import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-/** Same as `countryBucket` in src/shared/countries.ts (a test keeps them equal). */
+/** How many data chunks the profiles are split into; each code's bucket is written to countries-index.json. */
 export const COUNTRY_BUCKETS = 16;
 export function countryBucket(code) {
   return (code.charCodeAt(0) * 31 + code.charCodeAt(1)) % COUNTRY_BUCKETS;
@@ -28,7 +28,7 @@ const SHARE_RANKINGS = ["browser-market-share", "os-market-share", "search-engin
 /** Economies the World Bank lists without an ISO 3166 row (no continent in countries.json). */
 const CONTINENT = { XK: "EU", JG: "EU" };
 /** URL names fixed by hand where the English short name reads badly in a URL. Existing slugs never change. */
-const SLUG = { HK: "hong-kong", MO: "macao", PS: "palestine", MM: "myanmar", JG: "channel-islands", CD: "congo-kinshasa", CG: "congo-brazzaville" };
+const SLUG = { HK: "hong-kong", MO: "macao", PS: "palestine", MM: "myanmar", JG: "channel-islands", CD: "dr-congo", CG: "republic-of-the-congo", VI: "us-virgin-islands" };
 
 function slugify(name) {
   return name
@@ -97,6 +97,9 @@ export function buildCountries() {
   const buckets = Array.from({ length: COUNTRY_BUCKETS }, () => ({}));
   for (const code of codes) {
     const r = iso.get(code);
+    const continent = r?.[4] || CONTINENT[code];
+    // Every place must sit under a continent, or the hub would silently leave it out.
+    if (!continent) throw new Error(`countries-sync: no continent for ${code}; add it to CONTINENT`);
     const tz = zones.filter((z) => z[3] === code).map((z) => [z[0], z[1], z[2]]);
     const cur = r?.[6] ? r[6].split(",").filter(Boolean) : [];
     const rk = { ...(ranked.get(code) ?? {}) };
@@ -104,7 +107,7 @@ export function buildCountries() {
     if (cur.some((c) => currencyRanked.has(c))) rk["currency-strength"] = 1;
     summary[code] = {
       en: english.get(code),
-      c: r?.[4] || CONTINENT[code],
+      c: continent,
       flag: caps.flags.includes(code),
       cap: (caps.capitals[code] ?? []).map(({ q, ...labels }) => labels),
       ...(values.get(code).population ? { pop: values.get(code).population } : {}),
@@ -120,7 +123,7 @@ export function buildCountries() {
   const used = [...ids, "country-codes", "calling-codes", "currency-codes", "time-zones"];
   const updated = [...used.map((id) => meta.sets[id].updated), caps.updated].sort().at(-1);
   return {
-    index: { updated, slugs },
+    index: { updated, slugs, bucket: Object.fromEntries(codes.map((code) => [code, countryBucket(code)])) },
     summary: { updated, rows, countries: summary },
     buckets,
   };

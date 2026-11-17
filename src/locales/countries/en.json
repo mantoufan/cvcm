@@ -69,7 +69,6 @@
     "kicker": "Country profile",
     "answer": "Quick answer",
     "facts": "Key facts",
-    "flag": "Flag",
     "flagAlt": "Flag of {name}",
     "capital": "Capital",
     "continent": "Continent",
@@ -109,7 +108,8 @@
     "ord": "{n}",
     "usdLong": "${v}",
     "join": " ",
-    "datasets": "All data tables"
+    "datasets": "All data tables",
+    "zoneOne": "1 time zone ({offset})"
   },
   "groups": {
     "economy": "Economy",
@@ -178,5 +178,12 @@
     "alcohol-consumption": "Alcohol (litres per person)",
     "tobacco-use": "Tobacco use (% of adults)",
     "air-pollution": "Air pollution, PM2.5 (µg/m³)"
+  },
+  "names": {
+    "CD": "DR Congo",
+    "CG": "Republic of the Congo",
+    "HK": "Hong Kong",
+    "MO": "Macao",
+    "MM": "Myanmar"
   }
 }

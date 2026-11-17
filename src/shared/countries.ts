@@ -35,8 +35,7 @@ export function countrySlug(code: string): string | undefined {
 /** Linked from the site footer (names come from Intl, so no copy is needed). The most searched profiles. */
 export const COUNTRIES_FOCUS: readonly string[] = ["japan", "china", "united-states", "australia", "south-korea", "vietnam", "india"];
 
-/** The data of the countries is split into this many chunks; `countryBucket` picks one (same as scripts/countries-sync.mjs). */
-export const COUNTRY_BUCKETS = 16;
+/** The data chunk (`src/shared/countries/b<n>.json`) holding a country's figures, as countries:sync wrote it. */
 export function countryBucket(code: string): number {
-  return (code.charCodeAt(0) * 31 + code.charCodeAt(1)) % COUNTRY_BUCKETS;
+  return (index.bucket as Record<string, number>)[code];
 }

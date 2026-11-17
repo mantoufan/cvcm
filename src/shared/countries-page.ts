@@ -31,14 +31,15 @@ import {
 const CONTINENTS = ["AS", "EU", "AF", "NA", "SA", "OC"] as const;
 
 export function flagPath(code: string): string {
-  return `/assets/flags/${code.toLowerCase()}.svg`;
+  // Not under /assets/ (cached immutable for a year): a flag that changes upstream keeps its URL.
+  return `/flags/${code.toLowerCase()}.svg`;
 }
 
-/** A 4:3 flag with its size set (no layout shift); lazy unless it is the page's own flag at the top. */
-function flagImg(locale: Locale, code: string, width: number, eager = false): string {
+/** The profile's own flag (4:3, size set, the likely LCP element); lists show no flags (rule 7). */
+function flagFigure(locale: Locale, code: string): string {
   if (!countrySummary(locale, code).flag) return "";
   const alt = fill(countriesUi(locale).flagAlt, { name: countryName(locale, code) });
-  return `<img class="country-flag" src="${flagPath(code)}" width="${width}" height="${Math.round((width * 3) / 4)}" alt="${escapeHtml(alt)}" ${eager ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`;
+  return `<figure class="country-figure"><img class="country-flag" src="${flagPath(code)}" width="240" height="180" alt="${escapeHtml(alt)}" fetchpriority="high" decoding="async"></figure>`;
 }
 
 function crumbHtml(locale: Locale, slug: string | null): string {
@@ -79,18 +80,21 @@ function continentOf(locale: Locale, code: string): string {
   return countrySummary(locale, code).c;
 }
 
-/** "UTC+09:00", "UTC−05:00 (summer UTC−04:00)", or "6 time zones: UTC−10:00 to UTC−05:00" for wide countries. */
-function zonesText(locale: Locale, detail: CountryDetail): string {
+/**
+ * Time zones as distinct standard offsets (the lower of January and July, so summer time is not a zone of its own;
+ * twelve IANA ids in Argentina are one zone): "1 time zone (UTC+01:00, summer UTC+02:00)" or "6 time zones: UTC−10:00
+ * to UTC−05:00".
+ */
+export function zonesText(locale: Locale, detail: CountryDetail): string {
   const ui = countriesUi(locale);
   if (!detail.tz.length) return "";
-  if (detail.tz.length === 1) {
-    const [, jan, jul] = detail.tz[0];
-    const summer = Math.max(jan, jul);
-    const winter = Math.min(jan, jul);
-    return winter === summer ? utcOffset(winter) : `${utcOffset(winter)} (${fill(ui.dst, { offset: utcOffset(summer) })})`;
+  const standard = [...new Set(detail.tz.map(([, jan, jul]) => Math.min(jan, jul)))].sort((a, b) => a - b);
+  if (standard.length === 1) {
+    const summer = [...new Set(detail.tz.map(([, jan, jul]) => Math.max(jan, jul)).filter((o) => o !== standard[0]))];
+    const offset = utcOffset(standard[0]) + (summer.length === 1 ? `${ui.sep}${fill(ui.dst, { offset: utcOffset(summer[0]) })}` : "");
+    return fill(ui.zoneOne, { offset });
   }
-  const offsets = detail.tz.flatMap(([, jan, jul]) => [jan, jul]);
-  return `${fill(ui.zonesCount, { n: detail.tz.length })}: ${fill(ui.zoneRange, { from: utcOffset(Math.min(...offsets)), to: utcOffset(Math.max(...offsets)) })}`;
+  return `${fill(ui.zonesCount, { n: standard.length })}: ${fill(ui.zoneRange, { from: utcOffset(standard[0]), to: utcOffset(standard.at(-1)!) })}`;
 }
 
 function row(head: string, cell: string): string {
@@ -226,14 +230,14 @@ function hubHtml(locale: Locale): string {
   const continents = copy.continents as Record<string, string>;
   const codes = COUNTRY_LIST.map(countryCode);
   const jump = CONTINENTS.map((c) => `<a href="#c-${c.toLowerCase()}">${escapeHtml(continents[c])}</a>`).join(" · ");
-  const head = `<thead><tr><th scope="col">${escapeHtml(ui.flag)}</th><th scope="col">${escapeHtml(copy.hub.name)}</th><th scope="col">${escapeHtml(ui.capital)}</th><th scope="col" class="num">${escapeHtml(ui.population)}</th></tr></thead>`;
+  const head = `<thead><tr><th scope="col">${escapeHtml(copy.hub.name)}</th><th scope="col">${escapeHtml(ui.capital)}</th><th scope="col" class="num">${escapeHtml(ui.population)}</th></tr></thead>`;
   const sections = CONTINENTS.map((continent) => {
     const list = byName(locale, codes.filter((c) => continentOf(locale, c) === continent));
     if (!list.length) return "";
     const body = list.map((c) => {
       const pop = countrySummary(locale, c).pop;
       const caps = capitalNames(locale, c);
-      return `<tr><td>${flagImg(locale, c, 40)}</td><th scope="row">${countryLink(locale, c)}</th><td>${escapeHtml(caps.length ? caps.join(ui.sep) : ui.noCapital)}</td><td class="num">${pop ? escapeHtml(formatCount(locale, pop[0])) : ""}</td></tr>`;
+      return `<tr><th scope="row">${countryLink(locale, c)}</th><td>${escapeHtml(caps.length ? caps.join(ui.sep) : ui.noCapital)}</td><td class="num">${pop ? escapeHtml(formatCount(locale, pop[0])) : ""}</td></tr>`;
     }).join("");
     return `<section class="wall" id="c-${continent.toLowerCase()}"><h2>${escapeHtml(continents[continent])} <span class="pill">${escapeHtml(fill(ui.count, { n: list.length }))}</span></h2><div class="kb-table country-list"><table>${head}<tbody>${body}</tbody></table></div></section>`;
   }).join("");
@@ -263,7 +267,7 @@ export function countriesPageHtml(locale: Locale, slug: string | null): string {
     `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)}${continent ? ` · ${escapeHtml(continent)}` : ""}</p>`,
     `<h1>${escapeHtml(countryH1(locale, code))}</h1>`,
     `</header>`,
-    flagImg(locale, code, 240, true) ? `<figure class="country-figure">${flagImg(locale, code, 240, true)}</figure>` : "",
+    flagFigure(locale, code),
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${escapeHtml(answer)}</p></section>`,
     factsHtml(locale, code),
     figuresHtml(locale, code),
