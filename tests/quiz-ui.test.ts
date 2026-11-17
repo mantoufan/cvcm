@@ -253,18 +253,22 @@ describe("test page UI", () => {
     expect(named).toHaveLength(3);
   });
 
-  it("names a plain top tie as tied, not as a runner-up", () => {
+  it("names a plain top tie as tied, not as a runner-up, in every locale", () => {
     // Every conflict-style statement answered in the middle: all five styles tie, and list order puts compromising first.
-    const main = mount("conflict-style");
-    answer(main, () => 2);
-    submit(main);
-    const lines = [...main.querySelectorAll("#result p.muted")].map((p) => p.textContent ?? "");
-    const tied = lines.find((text) => text.startsWith("Tied with"));
-    expect(tied).toBeTruthy();
-    expect(lines.some((text) => text.startsWith("Runner-up"))).toBe(false);
-    const results = quizCopy("en", "conflict-style").results ?? {};
-    for (const dim of ["collab", "accommodate", "avoid", "compete"]) expect(tied, dim).toContain(results[dim].name);
-    expect(tied).not.toContain(results.compromise.name);
+    for (const locale of LOCALES) {
+      const ui = quizUi(locale);
+      expect(ui.tiedWith, locale).toBeTruthy();
+      const main = mount("conflict-style", locale);
+      answer(main, () => 2);
+      submit(main);
+      const lines = [...main.querySelectorAll("#result p.muted")].map((p) => p.textContent ?? "");
+      const tied = lines.find((text) => text.startsWith(`${ui.tiedWith}: `));
+      expect(tied, locale).toBeTruthy();
+      expect(lines.some((text) => text.startsWith(ui.runnerUp)), locale).toBe(false);
+      const results = quizCopy(locale, "conflict-style").results ?? {};
+      for (const dim of ["collab", "accommodate", "avoid", "compete"]) expect(tied, `${locale} ${dim}`).toContain(results[dim].name);
+      expect(tied, locale).not.toContain(results.compromise.name);
+    }
   });
 
   it("shows the real number of tests in every hub lede", () => {

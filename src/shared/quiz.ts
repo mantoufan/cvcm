@@ -57,7 +57,8 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
  *            scored by small whole numbers, ties are common, and any fixed order would favor some results. The same
  *            answers always give the same result. (Likert quizzes hash which statements scored and how much.) With
  *            `tie: "mixed"` a tie at the top gives the extra result `mixed` instead, for self-reflection quizzes where
- *            neither a fixed order nor a hash should pick a label the answers don't support.
+ *            neither a fixed order nor a hash should pick a label the answers don't support. Whatever leads, the page
+ *            names every result tied with it exactly ("Tied with"), never as a runner-up.
  * code     — like top, but the result is the first three letters (Holland RIASEC).
  * quadrant — two dimensions, each high or low, give one of four results (attachment).
  * areas    — overall percentage picks a band (a band's `floor` also needs the weakest area that high);
@@ -1028,7 +1029,8 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     id: "conflict-style",
     type: "likert",
     scale: "agree5",
-    // Ties go to the earlier style, so a flat profile reads as compromising, never as competing.
+    // Ties go to the earlier style, so a flat profile leads with compromising, never competing (the page still names
+    // the styles it is tied with).
     dims: ["compromise", "collab", "accommodate", "avoid", "compete"],
     items: CONFLICT,
     result: { kind: "top" },

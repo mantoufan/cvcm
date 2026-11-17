@@ -334,7 +334,8 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       // Name every result tied with the winner: the hash (spread) or list order (plain top) only picked which one leads,
       // so an exact tie is never shown as a runner-up. A mixed result names all the tied results.
       const mixed = rule.kind === "top" && rule.tie === "mixed" && result.key === "mixed";
-      const tied = mixed ? topTied(result.ranked) : topTied(result.ranked).filter((s) => s !== first);
+      const top = topTied(result.ranked);
+      const tied = mixed ? top : top.filter((s) => s !== first);
       const tiedLine = tied.length ? `${mixed ? ui.tiedTop : ui.tiedWith}: ${listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)))}` : "";
       if (tiedLine) {
         nodes.push(h("p", { class: "muted" }, tiedLine));
@@ -347,7 +348,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       }
       nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
       const name = results[result.key]?.name ?? result.key;
-      return { nodes, summary: mixed ? `${name} · ${tiedLine}` : name };
+      return { nodes, summary: tiedLine ? `${name} · ${tiedLine}` : name };
     }
     case "code": {
       const top3 = result.ranked.slice(0, 3);
