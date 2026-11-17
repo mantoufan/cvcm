@@ -162,7 +162,7 @@ if (prune) {
     await saveManifest({ files: before.files, removed });
     await purge(deleted.map((rel) => `covers/${rel}`));
   }
-  const waiting = Object.keys(before.removed).length - due.length;
+  const waiting = Object.values(before.removed).filter((entry) => !entry.deleted).length - due.length - stillLinked.length;
   console.log(`covers prune: ${deleted.length} ${dryRun ? "to delete" : "deleted"}, ${waiting} waiting out ${PRUNE_AFTER_DAYS} days, ${failed.length} failed`);
   if (deleted.length) console.log(deleted.map((rel) => `covers/${rel}`).join("\n"));
   // The site no longer links these: a failed delete only leaves a file behind, retried on the next deploy.
