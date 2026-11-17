@@ -26,13 +26,15 @@ import { caloriesDescription, caloriesTitle } from "./calories-i18n";
 import type { FoodId } from "./calories";
 import { elementsDescription, elementsTitle } from "./elements-i18n";
 import type { ElementSlug } from "./elements";
+import { calendarDescription, calendarTitle } from "./calendar-i18n";
+import type { CalendarPage } from "./calendar";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -94,6 +96,9 @@ export type SeoInput = {
   /** The periodic table under /periodic-table/; `elementSlug` null is the hub. */
   elements?: boolean;
   elementSlug?: ElementSlug | null;
+  /** The calendar channel under /calendar/; `calendarPage` "hub" is the hub. */
+  calendar?: boolean;
+  calendarPage?: CalendarPage;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -824,6 +829,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   if (seo.countries) return countryTitle(locale, seo.countryId ?? null);
   if (seo.nostalgia) return nostalgiaTitle(locale, seo.nostalgiaId ?? null);
   if (seo.elements) return elementsTitle(locale, seo.elementSlug ?? null);
+  if (seo.calendar) return calendarTitle(locale, seo.calendarPage ?? "hub");
   if (seo.slang) return slangTitle(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaTitle(locale, seo.ideaId ?? null);
   if (seo.ref) return refTitle(locale, seo.refId ?? null);
@@ -853,6 +859,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   if (seo.countries) return countryDescription(locale, seo.countryId ?? null);
   if (seo.nostalgia) return nostalgiaDescription(locale, seo.nostalgiaId ?? null);
   if (seo.elements) return elementsDescription(locale, seo.elementSlug ?? null);
+  if (seo.calendar) return calendarDescription(locale, seo.calendarPage ?? "hub");
   if (seo.slang) return slangDescription(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaDescription(locale, seo.ideaId ?? null);
   if (seo.ref) return refDescription(locale, seo.refId ?? null);
@@ -899,6 +906,7 @@ export function pageCanonical(
   if (seo.countries) return `https://cv.cm${countriesHref(locale, seo.countryId ?? null)}`;
   if (seo.nostalgia) return `https://cv.cm${nostalgiaHref(locale, seo.nostalgiaId ?? null)}`;
   if (seo.elements) return `https://cv.cm${elementsHref(locale, seo.elementSlug ?? null)}`;
+  if (seo.calendar) return `https://cv.cm${calendarHref(locale, seo.calendarPage ?? "hub")}`;
   if (seo.slang) return `https://cv.cm${slangHref(locale, seo.slangId ?? null)}`;
   if (seo.ideas) return `https://cv.cm${ideasHref(locale, seo.ideaId ?? null)}`;
   if (seo.ref) return `https://cv.cm${refHref(locale, seo.refId ?? null)}`;

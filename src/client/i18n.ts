@@ -50,6 +50,9 @@ import {
   hasNostalgiaMessages,
   registerNostalgiaEntry,
   registerNostalgiaMessages,
+  hasCalendarMessages,
+  registerCalendarMessages,
+  type CalendarMessages,
 } from "../shared/messages";
 import type { KbArticleCopy } from "../shared/kb-i18n";
 import { kbArticleOf, type KbId, type KbPage } from "../shared/kb";
@@ -348,6 +351,18 @@ const NOSTALGIA_PACKS: Record<Locale, () => Promise<{ default: NostalgiaMessages
   es: () => import("../locales/packs/nostalgia-es"),
 };
 
+// Calendar copy and data, only for /calendar/ pages.
+const CALENDAR_PACKS: Record<Locale, () => Promise<{ default: CalendarMessages }>> = {
+  en: () => import("../locales/packs/calendar-en"),
+  "zh-CN": () => import("../locales/packs/calendar-zh-CN"),
+  "zh-TW": () => import("../locales/packs/calendar-zh-TW"),
+  ja: () => import("../locales/packs/calendar-ja"),
+  ko: () => import("../locales/packs/calendar-ko"),
+  vi: () => import("../locales/packs/calendar-vi"),
+  id: () => import("../locales/packs/calendar-id"),
+  es: () => import("../locales/packs/calendar-es"),
+};
+
 // One chunk per nostalgia entry and locale, through that locale's generated loader table.
 const NOSTALGIA_LOADER_TABLES: Record<Locale, () => Promise<{ NOSTALGIA_LOADERS: Record<NostalgiaId, () => Promise<unknown>> }>> = {
   en: () => import("../locales/nostalgia/loaders/en"),
@@ -407,7 +422,7 @@ const CALORIES_PACKS: Record<Locale, () => Promise<{ default: CaloriesMessages }
 };
 
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
@@ -422,10 +437,11 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!nostalgia || (hasNostalgiaMessages(next) && (!memory || hasNostalgiaEntry(next, memory))))
     && (!countries || (hasCountriesMessages(next) && (countryBucketOf(countries) === null || hasCountryBucket(countryBucketOf(countries)!))))
     && (!calories || hasCaloriesMessages(next))
-    && (!elements || hasElementsMessages(next));
+    && (!elements || hasElementsMessages(next))
+    && (!calendar || hasCalendarMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false): Promise<void> {
   const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
@@ -454,6 +470,7 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     bucket === null || hasCountryBucket(bucket) ? null : COUNTRY_BUCKET_LOADERS[bucket]().then((m) => registerCountryBucket(bucket, m.default as Record<string, CountryDetail>)),
     !calories || hasCaloriesMessages(next) ? null : CALORIES_PACKS[next]().then((m) => registerCaloriesMessages(next, m.default)),
     !elements || hasElementsMessages(next) ? null : ELEMENTS_PACKS[next]().then((m) => registerElementsMessages(next, m.default)),
+    !calendar || hasCalendarMessages(next) ? null : CALENDAR_PACKS[next]().then((m) => registerCalendarMessages(next, m.default)),
   ]);
 }
 

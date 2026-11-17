@@ -77,6 +77,14 @@ import zhTWIdeas from "../locales/packs/ideas-zh-TW";
 import { IDEAS_ALL } from "../locales/ideas/all";
 import type { IdeaId } from "./ideas";
 import type { SlangId } from "./slang";
+import enCalendar from "../locales/packs/calendar-en";
+import esCalendar from "../locales/packs/calendar-es";
+import idCalendar from "../locales/packs/calendar-id";
+import jaCalendar from "../locales/packs/calendar-ja";
+import koCalendar from "../locales/packs/calendar-ko";
+import viCalendar from "../locales/packs/calendar-vi";
+import zhCNCalendar from "../locales/packs/calendar-zh-CN";
+import zhTWCalendar from "../locales/packs/calendar-zh-TW";
 import enNostalgia from "../locales/packs/nostalgia-en";
 import esNostalgia from "../locales/packs/nostalgia-es";
 import idNostalgia from "../locales/packs/nostalgia-id";
@@ -109,6 +117,7 @@ import {
   registerIdeasMessages,
   registerNostalgiaEntry,
   registerNostalgiaMessages,
+  registerCalendarMessages,
   type GameMessages,
   type KbMessages,
   type LegalMessages,
@@ -119,6 +128,7 @@ import {
   type SlangMessages,
   type IdeasMessages,
   type NostalgiaMessages,
+  type CalendarMessages,
 } from "./messages";
 
 const ALL: Record<Locale, LocaleMessages> = { en, "zh-CN": zhCN, "zh-TW": zhTW, ja, ko, vi, id, es };
@@ -246,6 +256,17 @@ const NOSTALGIA: Record<Locale, NostalgiaMessages> = {
   es: esNostalgia,
 };
 for (const [locale, pack] of Object.entries(NOSTALGIA)) registerNostalgiaMessages(locale as Locale, pack);
+const CALENDAR: Record<Locale, CalendarMessages> = {
+  en: enCalendar,
+  "zh-CN": zhCNCalendar,
+  "zh-TW": zhTWCalendar,
+  ja: jaCalendar,
+  ko: koCalendar,
+  vi: viCalendar,
+  id: idCalendar,
+  es: esCalendar,
+};
+for (const [locale, pack] of Object.entries(CALENDAR)) registerCalendarMessages(locale as Locale, pack);
 for (const [locale, entries] of Object.entries(NOSTALGIA_ALL)) {
   for (const [id, copy] of Object.entries(entries)) registerNostalgiaEntry(locale as Locale, id as NostalgiaId, copy);
 }

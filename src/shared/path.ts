@@ -19,10 +19,11 @@ import { NOSTALGIA_SEGMENT, isNostalgiaId, type NostalgiaId } from "./nostalgia"
 import { COUNTRIES_SEGMENT, isCountrySlug } from "./countries";
 import { CALORIES_SEGMENT, isFoodId, type FoodId } from "./calories";
 import { ELEMENTS_SEGMENT, isElementSlug, type ElementSlug } from "./elements";
+import { CALENDAR_SEGMENT, calendarPageOf, type CalendarPage } from "./calendar";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "countries", "calories", "elements"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "countries", "calories", "elements", "calendar"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -576,6 +577,7 @@ export type AppPath =
   | { kind: "bare-countries"; entry: string | null }
   | { kind: "bare-calories"; food: FoodId | null }
   | { kind: "bare-elements"; entry: ElementSlug | null }
+  | { kind: "bare-calendar"; page: CalendarPage }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -593,6 +595,7 @@ export type AppPath =
   | { kind: "countries"; locale: Locale; entry: string | null }
   | { kind: "calories"; locale: Locale; food: FoodId | null }
   | { kind: "elements"; locale: Locale; entry: ElementSlug | null }
+  | { kind: "calendar"; locale: Locale; page: CalendarPage }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -748,6 +751,10 @@ export function parseAppPath(pathname: string): AppPath {
       if (isElementSlug(third)) return { kind: "elements", locale, entry: third };
       return { kind: "unknown" };
     }
+    if (second === CALENDAR_SEGMENT) {
+      const page = calendarPageOf([third, ...rest].filter(Boolean) as string[]);
+      return page ? { kind: "calendar", locale, page } : { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -846,6 +853,10 @@ export function parseAppPath(pathname: string): AppPath {
     if (!second) return { kind: "bare-elements", entry: null };
     if (isElementSlug(second) && !third) return { kind: "bare-elements", entry: second };
     return { kind: "unknown" };
+  }
+  if (first === CALENDAR_SEGMENT) {
+    const page = calendarPageOf([second, third, ...rest].filter(Boolean) as string[]);
+    return page ? { kind: "bare-calendar", page } : { kind: "unknown" };
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
@@ -951,6 +962,12 @@ export function caloriesHref(locale: Locale, food: FoodId | null = null): string
 export function elementsHref(locale: Locale, entry: ElementSlug | null = null): string {
   const base = `/${localePath(locale)}/${ELEMENTS_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The calendar channel: `/{locale}/calendar/` (hub), `/calendar/2027/`, `/calendar/2027-02/`, `/calendar/holidays/japan/`, … */
+export function calendarHref(locale: Locale, page: CalendarPage | null = null): string {
+  const base = `/${localePath(locale)}/${CALENDAR_SEGMENT}`;
+  return page && page !== "hub" ? `${base}/${page}/` : `${base}/`;
 }
 
 export function legalHref(locale: Locale, page: LegalPageId): string {

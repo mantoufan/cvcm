@@ -1,0 +1,530 @@
+{
+  "crumbHome": "首頁",
+  "hub": {
+    "title": "萬年曆 2026–2028：農曆、國定假日、二十四節氣、月相",
+    "description": "免費線上萬年曆：2026、2027、2028 年行事曆，含農曆、二十四節氣、滿月新月時間、週數、國曆農曆換算，以及 11 個國家和地區依官方公告整理的國定假日。",
+    "h1": "萬年曆",
+    "lede": "年曆和月曆，標示國定假日、農曆、節氣和月相，另有國曆農曆換算。假日照錄各國政府公告原文。",
+    "today": "今天",
+    "years": "年曆",
+    "months": "月曆",
+    "holidays": "各國國定假日",
+    "more": "節氣與月相",
+    "converter": "國曆農曆換算",
+    "about": [
+      "這些頁面上的每個日期都由事先算好的表格在你的瀏覽器裡推算：農曆月份依每次朔（新月）的時刻，二十四節氣依太陽的位置（以開源天文庫 astronomy-engine 計算），並採用各國的標準時間。閱讀時不需另外查詢。",
+      "假日直接照錄官方公告：中國國務院、台灣行政院人事行政總處、香港憲報、日本內閣府、韓國宇宙航空廳、越南內務部、印尼三部會聯合決定、美國人事管理局、英國政府網站 GOV.UK、西班牙國家公報（BOE）和墨西哥《聯邦勞動法》。每個國家頁面都列出來源。"
+    ],
+    "faq": [
+      {
+        "q": "2027年農曆新年是哪一天？",
+        "a": "在中國、台灣、香港和越南是2027年2月6日（星期六），進入丁未羊年。韓國以UTC+9推算農曆，由於朔恰好落在北京時間午夜前不久，韓國的春節（설날）是2027年2月7日（星期日）。"
+      },
+      {
+        "q": "農曆日期是怎麼算出來的？",
+        "a": "農曆每月從朔日（依該國標準時間，新月所在的那一天）開始；含冬至的月份是十一月；一年有13次朔時，第一個不含中氣的月份為閏月。所以越南（UTC+7）、中國（UTC+8）和韓國（UTC+9）偶爾會在不同的日子開始同一個月。"
+      },
+      {
+        "q": "假日資料是官方的嗎？",
+        "a": "是的，每個國家頁面列出的年份都照錄政府正式公告，包括補班日（中國的調休）和印尼的集體休假（cuti bersama）。政府尚未公布的年份不做猜測，公布後再補上。"
+      }
+    ]
+  },
+  "year": {
+    "title": "{y}年行事曆（民國{minguo}年）含農曆、國定假日、節氣",
+    "description": "{y}年行事曆全年12個月：週數、{country}國定假日、農曆新年（{lny}）、二十四節氣和{y}年每次滿月的日期。",
+    "h1": "{y}年行事曆",
+    "lede": "{y}年1月1日是{first}，全年{days}天。農曆新年在{lny}，進入{gz}年（屬{animal}）。",
+    "faq": [
+      {
+        "q": "{y}年1月1日是星期幾？",
+        "a": "{y}年1月1日是{first}，12月31日是{last}。全年{days}天，共{weeks}個ISO週。"
+      },
+      {
+        "q": "{y}年農曆新年是哪一天？",
+        "a": "{lny}，進入{gz}年，生肖屬{animal}。"
+      },
+      {
+        "q": "{y}年{country}有幾天國定假日？",
+        "a": "{holidayAnswer}"
+      }
+    ]
+  },
+  "month": {
+    "title": "{y}年{m}月行事曆（農曆、國定假日）",
+    "description": "{y}年{m}月行事曆：週數、{country}國定假日、節氣、每天的農曆日期和滿月日期（{full}）。",
+    "h1": "{y}年{m}月行事曆",
+    "lede": "{y}年{m}月共{days}天，1日是{first}。",
+    "faq": [
+      {
+        "q": "{y}年{m}月有哪些假日？",
+        "a": "{holidayAnswer}"
+      },
+      {
+        "q": "{y}年{m}月滿月是哪一天？",
+        "a": "{fullAnswer}"
+      },
+      {
+        "q": "{y}年{m}月1日是農曆幾號？",
+        "a": "{lunarAnswer}"
+      }
+    ]
+  },
+  "holidays": {
+    "title": "{y}年{country}國定假日與連假（附{prev}年）",
+    "description": "{y}年{country}全部國定假日：日期、星期、補假或補班日和連假，照錄官方公告（{source}），並附{prev}年資料。",
+    "h1": "{y}年{country}國定假日",
+    "lede": "依官方公告，{y}年共放假{n}天。下方的連假把與假日相連的週末也算在內。",
+    "faq": [
+      {
+        "q": "{y}年{country}有幾天國定假日？",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "{country}下一個連假是什麼時候？",
+        "a": "{longAnswer}"
+      },
+      {
+        "q": "這份資料出自哪裡？",
+        "a": "{sourceAnswer}"
+      }
+    ]
+  },
+  "terms": {
+    "title": "{y}年二十四節氣時間表（日期與交節時刻）",
+    "description": "2026、2027、2028年二十四節氣的日期和精確交節時刻，從立春到大寒，附每個節氣的太陽黃經。",
+    "h1": "二十四節氣",
+    "lede": "二十四節氣把太陽一年的運行路徑分成每段15°，決定農曆的月份，也是農事的時間表。時間為{zone}。",
+    "faq": [
+      {
+        "q": "{y}年冬至是哪一天？",
+        "a": "{solsticeAnswer}"
+      },
+      {
+        "q": "{y}年立春是什麼時候？",
+        "a": "{springAnswer}"
+      },
+      {
+        "q": "為什麼節氣日期會差一天？",
+        "a": "節氣是太陽到達某個黃經的那一刻。曆年約365.24天，所以這個時刻每年推後約6小時，遇到閏日後日期又會移動；日期也取決於所用的時區。"
+      }
+    ]
+  },
+  "moon": {
+    "title": "{y}年滿月日期表：2026–2028月相時間",
+    "description": "2026、2027、2028年每次新月、上弦、滿月和下弦的日期與時刻（{zone}）。",
+    "h1": "月相",
+    "lede": "新月、上弦、滿月和下弦的精確時刻，時間為{zone}。",
+    "faq": [
+      {
+        "q": "{y}年滿月是哪幾天？",
+        "a": "{nextAnswer}"
+      },
+      {
+        "q": "{y}年有幾次滿月？",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "為什麼不同網站的月相時間不一樣？",
+        "a": "月相是全球同一個瞬間發生的，顯示的日期取決於時區。UTC 23：30 的滿月，在亞洲已經是隔天。"
+      }
+    ]
+  },
+  "ui": {
+    "week": "週",
+    "weekShort": "週",
+    "prev": "上個月",
+    "next": "下個月",
+    "prevYear": "上一年",
+    "nextYear": "下一年",
+    "date": "日期",
+    "weekday": "星期",
+    "name": "假日",
+    "localName": "官方名稱",
+    "type": "類型",
+    "types": {
+      "public": "放假",
+      "substitute": "補假",
+      "workday": "補班",
+      "collective-leave": "集體休假",
+      "bridge": "彈性放假"
+    },
+    "longBreaks": "連假（3天以上）",
+    "breakLine": "{from}至{to}：{n}天",
+    "noHolidays": "本月沒有國定假日。",
+    "notAnnounced": "{country}尚未公布{y}年的假日，官方公布後會補上。",
+    "holidaysIn": "{country}假日",
+    "otherCountries": "其他國家和地區",
+    "festivals": "傳統節日",
+    "solarTerms": "節氣",
+    "moonPhases": "月相",
+    "term": "節氣",
+    "longitude": "太陽黃經",
+    "time": "時間",
+    "zoneUtc": "UTC",
+    "zoneOffset": "台北時間",
+    "sources": "來源",
+    "notes": "說明",
+    "dataNote": "農曆、節氣和月相以 astronomy-engine（MIT 授權）計算；假日來源見各國家頁面。",
+    "today": "今天",
+    "todayLunar": "農曆",
+    "isoWeek": "第{n}週（ISO）",
+    "dayOfYear": "今年第{n}天，共{total}天",
+    "daysLeft": "今年還剩{n}天",
+    "nextFull": "下次滿月",
+    "currentTerm": "目前節氣",
+    "convert": "換算",
+    "solarDate": "國曆日期",
+    "lunarYear": "農曆年",
+    "lunarMonth": "月",
+    "lunarDay": "日",
+    "leap": "閏月",
+    "reckoning": "曆法",
+    "reckonings": {
+      "cn": "中國農曆（UTC+8）",
+      "vn": "越南陰曆（UTC+7）",
+      "kr": "韓國／日本舊曆（UTC+9）"
+    },
+    "toLunar": "國曆轉農曆",
+    "toSolar": "農曆轉國曆",
+    "noSuchDate": "這個農曆日期不存在（該月只有29天，或當年沒有這個閏月）。",
+    "outOfRange": "只支援1900年到2100年。",
+    "lunarLine": "農曆{gz}年{leap}{lm}{ld}（屬{animal}）",
+    "leapMark": "閏",
+    "solarLine": "{date}",
+    "monthsOf": "{y}年各月",
+    "moreYears": "其他年份",
+    "weekNumbers": "週數依 ISO 8601（週一為一週開始，含當年第一個星期四的那週為第1週）。",
+    "printNote": "列印本頁即可得到紙本行事曆，列印時不含網站頁首頁尾。",
+    "workShort": "補班",
+    "daysLeftLabel": "今年剩餘天數",
+    "lunarFull": "農曆{gz}年{leap}{lm}{ld}",
+    "faq": "常見問題"
+  },
+  "countries": {
+    "china": "中國",
+    "taiwan": "台灣",
+    "hong-kong": "香港",
+    "japan": "日本",
+    "south-korea": "南韓",
+    "vietnam": "越南",
+    "indonesia": "印尼",
+    "united-states": "美國",
+    "united-kingdom": "英國",
+    "spain": "西班牙",
+    "mexico": "墨西哥"
+  },
+  "quarters": [
+    "新月（朔）",
+    "上弦",
+    "滿月（望）",
+    "下弦"
+  ],
+  "animals": [
+    "鼠",
+    "牛",
+    "虎",
+    "兔",
+    "龍",
+    "蛇",
+    "馬",
+    "羊",
+    "猴",
+    "雞",
+    "狗",
+    "豬"
+  ],
+  "solarTerms": [
+    "立春",
+    "雨水",
+    "驚蟄",
+    "春分",
+    "清明",
+    "穀雨",
+    "立夏",
+    "小滿",
+    "芒種",
+    "夏至",
+    "小暑",
+    "大暑",
+    "立秋",
+    "處暑",
+    "白露",
+    "秋分",
+    "寒露",
+    "霜降",
+    "立冬",
+    "小雪",
+    "大雪",
+    "冬至",
+    "小寒",
+    "大寒"
+  ],
+  "festivals": {
+    "spring": "春節",
+    "lantern": "元宵節",
+    "dragon-head": "龍抬頭",
+    "dragon-boat": "端午節",
+    "qixi": "七夕",
+    "ghost": "中元節",
+    "mid-autumn": "中秋節",
+    "double-ninth": "重陽節",
+    "laba": "臘八節",
+    "kitchen-god": "小年",
+    "new-year-eve": "除夕",
+    "tet": "越南春節",
+    "ram-thang-gieng": "上元節",
+    "han-thuc": "寒食節",
+    "hung-kings": "雄王祭",
+    "doan-ngo": "端午節",
+    "vu-lan": "盂蘭節",
+    "trung-thu": "中秋節",
+    "ong-tao": "灶君節",
+    "tat-nien": "除夕",
+    "seollal": "韓國春節",
+    "daeboreum": "正月十五",
+    "dano": "端午",
+    "chilseok": "七夕",
+    "chuseok": "中秋（秋夕）"
+  },
+  "lunarMonths": [
+    "正月",
+    "二月",
+    "三月",
+    "四月",
+    "五月",
+    "六月",
+    "七月",
+    "八月",
+    "九月",
+    "十月",
+    "冬月",
+    "臘月"
+  ],
+  "lunarDays": [
+    "初一",
+    "初二",
+    "初三",
+    "初四",
+    "初五",
+    "初六",
+    "初七",
+    "初八",
+    "初九",
+    "初十",
+    "十一",
+    "十二",
+    "十三",
+    "十四",
+    "十五",
+    "十六",
+    "十七",
+    "十八",
+    "十九",
+    "二十",
+    "廿一",
+    "廿二",
+    "廿三",
+    "廿四",
+    "廿五",
+    "廿六",
+    "廿七",
+    "廿八",
+    "廿九",
+    "三十"
+  ],
+  "rokuyo": [
+    "大安",
+    "赤口",
+    "先勝",
+    "友引",
+    "先負",
+    "佛滅"
+  ],
+  "pasaran": [
+    "Legi",
+    "Pahing",
+    "Pon",
+    "Wage",
+    "Kliwon"
+  ],
+  "holidayNames": {
+    "CN:new-year": "元旦",
+    "CN:lunar-new-year": "春節",
+    "CN:qingming": "清明節",
+    "CN:labour-day": "勞動節",
+    "CN:dragon-boat": "端午節",
+    "CN:national-day": "國慶日",
+    "CN:mid-autumn": "中秋節",
+    "JP:new-year": "元旦",
+    "JP:coming-of-age-day": "成人節",
+    "JP:national-foundation-day": "建國紀念日",
+    "JP:emperors-birthday": "天皇誕辰",
+    "JP:vernal-equinox-day": "春分之日",
+    "JP:showa-day": "昭和之日",
+    "JP:constitution-memorial-day": "憲法紀念日",
+    "JP:greenery-day": "綠之日",
+    "JP:childrens-day": "兒童節",
+    "JP:marine-day": "海之日",
+    "JP:mountain-day": "山之日",
+    "JP:respect-for-the-aged-day": "敬老之日",
+    "JP:citizens-holiday": "國民休息日",
+    "JP:autumnal-equinox-day": "秋分之日",
+    "JP:sports-day": "體育日",
+    "JP:culture-day": "文化之日",
+    "JP:labour-thanksgiving-day": "勤勞感謝日",
+    "KR:new-year": "元旦",
+    "KR:lunar-new-year": "春節",
+    "KR:independence-movement-day": "三一節",
+    "KR:labour-day": "勞動節",
+    "KR:childrens-day": "兒童節",
+    "KR:buddhas-birthday": "佛誕日",
+    "KR:local-election": "全國同步地方選舉日",
+    "KR:memorial-day": "顯忠日",
+    "KR:constitution-day": "制憲節",
+    "KR:liberation-day": "光復節",
+    "KR:chuseok": "秋夕",
+    "KR:national-foundation-day": "開天節",
+    "KR:hangeul-day": "韓文日",
+    "KR:christmas": "聖誕節",
+    "VN:new-year": "元旦",
+    "VN:lunar-new-year": "越南春節",
+    "VN:hung-kings": "雄王祭",
+    "VN:reunification-day": "統一日",
+    "VN:labour-day": "國際勞動節",
+    "VN:national-day": "國慶日",
+    "VN:culture-day": "越南文化日",
+    "ID:new-year": "元旦",
+    "ID:isra-miraj": "登霄節",
+    "ID:lunar-new-year": "春節",
+    "ID:nyepi": "靜居日",
+    "ID:eid-al-fitr": "開齋節",
+    "ID:good-friday": "耶穌受難日",
+    "ID:easter": "復活節",
+    "ID:labour-day": "國際勞動節",
+    "ID:ascension-day": "耶穌升天節",
+    "ID:eid-al-adha": "宰牲節",
+    "ID:vesak": "衛塞節",
+    "ID:pancasila-day": "建國五原則日",
+    "ID:islamic-new-year": "伊斯蘭新年",
+    "ID:independence-day": "獨立紀念日",
+    "ID:mawlid": "聖紀節",
+    "ID:christmas": "聖誕節",
+    "US:new-year": "元旦",
+    "US:mlk-day": "馬丁·路德·金紀念日",
+    "US:washingtons-birthday": "華盛頓誕辰紀念日",
+    "US:memorial-day": "陣亡將士紀念日",
+    "US:juneteenth": "六月節",
+    "US:independence-day": "獨立紀念日",
+    "US:labor-day": "勞動節",
+    "US:columbus-day": "哥倫布日",
+    "US:veterans-day": "退伍軍人節",
+    "US:thanksgiving": "感恩節",
+    "US:christmas": "聖誕節",
+    "GB:new-year": "元旦",
+    "GB:good-friday": "耶穌受難日",
+    "GB:easter-monday": "復活節星期一",
+    "GB:early-may-bank-holiday": "五月初銀行假日",
+    "GB:spring-bank-holiday": "春季銀行假日",
+    "GB:summer-bank-holiday": "夏季銀行假日",
+    "GB:christmas": "聖誕節",
+    "GB:boxing-day": "節禮日",
+    "ES:new-year": "元旦",
+    "ES:epiphany": "主顯節",
+    "ES:good-friday": "耶穌受難日",
+    "ES:labour-day": "勞動節",
+    "ES:assumption": "聖母升天節",
+    "ES:national-day": "西班牙國慶日",
+    "ES:immaculate-conception": "聖母無原罪始胎節",
+    "ES:christmas": "聖誕節",
+    "ES:all-saints": "諸聖節",
+    "ES:constitution-day": "憲法日",
+    "MX:new-year": "元旦",
+    "MX:constitution-day": "憲法日",
+    "MX:benito-juarez": "貝尼托·華雷斯誕辰紀念日",
+    "MX:labour-day": "勞動節",
+    "MX:independence-day": "獨立紀念日",
+    "MX:revolution-day": "革命紀念日",
+    "MX:christmas": "聖誕節",
+    "MX:election-day": "聯邦選舉日"
+  },
+  "answers": {
+    "countLine": "依官方公告，{y}年{country}共放假{n}天{work}。",
+    "workdays": "，另有{n}個補班日",
+    "monthHolidays": "{country}：{list}。",
+    "monthNone": "{y}年{m}月{country}沒有國定假日。",
+    "monthFull": "滿月：{time}（{zone}）。",
+    "monthNoFull": "{y}年{m}月沒有滿月，下一次在{time}（{zone}）。",
+    "monthLunar": "{y}年{m}月1日是{lunar}。",
+    "longLine": "{y}年的連假：{list}。",
+    "longNone": "{y}年沒有3天以上的連假。",
+    "sourceLine": "{title}，{date}發布，日期照錄該公告。",
+    "termLine": "{time}（{zone}）。",
+    "moonList": "{y}年滿月（{zone}）：{list}。",
+    "moonCount": "{y}年共有{n}次滿月。"
+  },
+  "leapPrefix": "閏",
+  "stems": [
+    "甲",
+    "乙",
+    "丙",
+    "丁",
+    "戊",
+    "己",
+    "庚",
+    "辛",
+    "壬",
+    "癸"
+  ],
+  "stemJoin": "",
+  "branches": [
+    "子",
+    "丑",
+    "寅",
+    "卯",
+    "辰",
+    "巳",
+    "午",
+    "未",
+    "申",
+    "酉",
+    "戌",
+    "亥"
+  ],
+  "termHan": [],
+  "countryNotes": {
+    "china": [
+      "國務院辦公廳為政府機關所作的安排，企業一般比照辦理。列出了假期內的週末和補班日（调休）。"
+    ],
+    "taiwan": [
+      "行政院人事行政總處公布的政府機關辦公日曆表。民間企業依《勞動基準法》辦理，可能有所不同。"
+    ],
+    "hong-kong": [
+      "香港特區政府於憲報公布的公眾假期。每個星期日也是公眾假期；僱員享有的法定假日是另一份較短的清單。"
+    ],
+    "japan": [
+      "依《國民祝日法》規定的國定假日，包括補假（振替休日）和國民休息日（国民の休日）。"
+    ],
+    "south-korea": [
+      "政府機關的公休日（관공서의 공휴일），包括補假（대체공휴일），依據宇宙航空廳（KASA）發布的曆書。"
+    ],
+    "vietnam": [
+      "依據2019年《勞動法》的法定假日。所列春節和國慶的假期是內務部為公務員所作的安排，企業可自行調配。"
+    ],
+    "indonesia": [
+      "依據三部會首長聯合決定的全國假日和集體休假（cuti bersama）。伊斯蘭節日的日期仍可能由宗教事務部長決定調整。"
+    ],
+    "united-states": [
+      "美國人事管理局公布的聯邦假日；假日逢週末時，也列出實際放假的平日。各州和民間雇主可能不同。"
+    ],
+    "united-kingdom": [
+      "英格蘭和威爾斯的銀行假日，來自 GOV.UK。蘇格蘭和北愛爾蘭另有不同的清單。"
+    ],
+    "spain": [
+      "僅列出所有自治區共同的節日（國家公報 BOE）。各自治區另有自己的節日，各市鎮還有兩天地方節日。"
+    ],
+    "mexico": [
+      "依據《聯邦勞動法》第74條規定的法定休息日。聖週等日子屬於習慣性休假，並非法定。"
+    ]
+  }
+}

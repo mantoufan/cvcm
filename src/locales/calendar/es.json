@@ -1,0 +1,564 @@
+{
+  "crumbHome": "Inicio",
+  "hub": {
+    "title": "Calendario 2026–2028: festivos, calendario lunar y fases de la luna",
+    "description": "Calendario online gratis de 2026, 2027 y 2028: festivos de 11 países según los anuncios oficiales, fechas del calendario lunar chino, los 24 términos solares, lunas llenas y nuevas, números de semana y un conversor de fechas solares y lunares.",
+    "h1": "Calendario",
+    "lede": "Calendarios anuales y mensuales con festivos, fechas lunares, términos solares y fases de la luna, además de un conversor de fechas lunares. Los festivos se copian del anuncio oficial de cada gobierno.",
+    "today": "Hoy",
+    "years": "Calendarios anuales",
+    "months": "Calendarios mensuales",
+    "holidays": "Festivos por país",
+    "more": "Cielo y estaciones",
+    "converter": "Conversor de fechas solares y lunares",
+    "about": [
+      "Cada fecha de estas páginas se calcula en tu navegador a partir de tablas preparadas de antemano: los meses lunares, a partir del instante de cada luna nueva, y los 24 términos solares, a partir de la posición del sol (calculados con la biblioteca astronómica de código abierto astronomy-engine), en la hora oficial de cada país. No se consulta nada mientras lees.",
+      "Los festivos proceden de los propios avisos oficiales: el Consejo de Estado de China, la DGPA de Taiwán, la Gaceta de Hong Kong, la Oficina del Gabinete de Japón, la KASA de Corea, el Ministerio del Interior de Vietnam, el decreto ministerial conjunto de Indonesia, la Office of Personnel Management de EE. UU., GOV.UK, el BOE y la Ley Federal del Trabajo de México. La página de cada país enlaza sus fuentes."
+    ],
+    "faq": [
+      {
+        "q": "¿Cuándo es el Año Nuevo lunar 2027?",
+        "a": "El sábado 6 de febrero de 2027 en China, Taiwán, Hong Kong y Vietnam; ese día empieza el año de la Cabra (丁未). En Corea, que calcula el calendario lunar en UTC+9, Seollal es el domingo 7 de febrero de 2027, porque la luna nueva cae justo antes de la medianoche de Pekín."
+      },
+      {
+        "q": "¿Cómo se calcula la fecha lunar?",
+        "a": "Un mes lunar empieza el día de la luna nueva según la hora oficial del país; el mes que contiene el solsticio de invierno es el 11.º; en un año con 13 lunas nuevas, el primer mes sin un término solar principal es un mes intercalar (bisiesto). Por eso Vietnam (UTC+7), China (UTC+8) y Corea (UTC+9) a veces empiezan un mes en días distintos."
+      },
+      {
+        "q": "¿Los festivos son oficiales?",
+        "a": "Sí, para los años que figuran en la página de cada país: están copiados del anuncio del gobierno, incluidos los días laborables de recuperación (el 调休 de China) y las vacaciones colectivas (cuti bersama de Indonesia). Los años que un gobierno aún no ha anunciado se dejan fuera en lugar de suponerlos."
+      }
+    ]
+  },
+  "year": {
+    "title": "Calendario {y} con festivos, semanas y fases lunares",
+    "description": "Calendario {y}: los 12 meses con números de semana, festivos de {country}, el Año Nuevo lunar ({lny}), los 24 términos solares y todas las lunas llenas de {y}.",
+    "h1": "Calendario {y}",
+    "lede": "{y} empieza un {first} y tiene {days} días. El Año Nuevo lunar cae el {lny}, inicio del año {gz} ({animal} en el zodiaco chino).",
+    "faq": [
+      {
+        "q": "¿Qué día de la semana empieza {y}?",
+        "a": "El 1 de enero de {y} es {first} y el 31 de diciembre de {y} es {last}. El año tiene {days} días y {weeks} semanas ISO."
+      },
+      {
+        "q": "¿Cuándo es el Año Nuevo lunar {y}?",
+        "a": "El {lny}. Empieza el año {gz} ({animal} en el zodiaco chino)."
+      },
+      {
+        "q": "¿Cuántos festivos tiene {country} en {y}?",
+        "a": "{holidayAnswer}"
+      }
+    ]
+  },
+  "month": {
+    "title": "Calendario {month} {y} con festivos y fases lunares",
+    "description": "Calendario de {month} de {y} con números de semana, festivos de {country}, términos solares, fechas lunares y la luna llena ({full}).",
+    "h1": "Calendario de {month} {y}",
+    "lede": "El mes de {month} de {y} tiene {days} días y empieza un {first}.",
+    "faq": [
+      {
+        "q": "¿Qué festivos hay en {month} de {y}?",
+        "a": "{holidayAnswer}"
+      },
+      {
+        "q": "¿Cuándo es la luna llena de {month} de {y}?",
+        "a": "{fullAnswer}"
+      },
+      {
+        "q": "¿Qué fecha lunar es el 1 de {month} de {y}?",
+        "a": "{lunarAnswer}"
+      }
+    ]
+  },
+  "holidays": {
+    "title": "Festivos {y} en {country} (y {prev})",
+    "description": "Festivos de {country} en {y}: cada fecha con su día de la semana, traslados y puentes, según el anuncio oficial ({source}). Incluye la lista de {prev}.",
+    "h1": "Festivos en {country} {y}",
+    "lede": "{n} días festivos en {y}, según el anuncio oficial. Los fines de semana que se unen a un festivo se cuentan en los puentes de abajo.",
+    "faq": [
+      {
+        "q": "¿Cuántos festivos tiene {country} en {y}?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "¿Cuál es el próximo puente en {country}?",
+        "a": "{longAnswer}"
+      },
+      {
+        "q": "¿De dónde sale esta lista?",
+        "a": "{sourceAnswer}"
+      }
+    ]
+  },
+  "terms": {
+    "title": "24 términos solares {y}: fechas y horas (jieqi)",
+    "description": "Fechas y horas exactas de los 24 términos solares (节气) de 2026, 2027 y 2028, del Inicio de la primavera al Frío mayor, con la longitud solar de cada uno.",
+    "h1": "Los 24 términos solares",
+    "lede": "Los 24 términos solares dividen el recorrido anual del sol en tramos de 15°. Marcan los meses del calendario chino y el año agrícola. Horas en {zone}.",
+    "faq": [
+      {
+        "q": "¿Cuándo es el solsticio de invierno de {y}?",
+        "a": "{solsticeAnswer}"
+      },
+      {
+        "q": "¿Cuándo empieza el Inicio de la primavera (Lichun) de {y}?",
+        "a": "{springAnswer}"
+      },
+      {
+        "q": "¿Por qué las fechas se mueven un día?",
+        "a": "Un término es el instante en que el sol alcanza una longitud fija. El año del calendario dura unos 365,24 días, así que ese instante se retrasa unas seis horas cada año y la fecha cambia tras los días bisiestos; también depende de la zona horaria."
+      }
+    ]
+  },
+  "moon": {
+    "title": "Calendario lunar {y}: lunas llenas y fases 2026–2028",
+    "description": "Todas las lunas llenas, lunas nuevas y cuartos de 2026, 2027 y 2028, con fecha y hora ({zone}).",
+    "h1": "Fases de la luna",
+    "lede": "Luna nueva, cuarto creciente, luna llena y cuarto menguante con la hora exacta en {zone}.",
+    "faq": [
+      {
+        "q": "¿Cuándo hay luna llena en {y}?",
+        "a": "{nextAnswer}"
+      },
+      {
+        "q": "¿Cuántas lunas llenas hay en {y}?",
+        "a": "{countAnswer}"
+      },
+      {
+        "q": "¿Por qué las horas de las fases lunares cambian entre webs?",
+        "a": "La fase es un mismo instante para toda la Tierra; la fecha que se muestra depende de la zona horaria. Una luna llena a las 23:30 UTC ya es el día siguiente en Asia."
+      }
+    ]
+  },
+  "ui": {
+    "week": "Semana",
+    "weekShort": "Sem",
+    "prev": "Mes anterior",
+    "next": "Mes siguiente",
+    "prevYear": "Año anterior",
+    "nextYear": "Año siguiente",
+    "date": "Fecha",
+    "weekday": "Día",
+    "name": "Festivo",
+    "localName": "Nombre oficial",
+    "type": "Tipo",
+    "types": {
+      "public": "Festivo",
+      "substitute": "Festivo trasladado",
+      "workday": "Día laborable (recuperación)",
+      "collective-leave": "Vacaciones colectivas",
+      "bridge": "Día puente"
+    },
+    "longBreaks": "Puentes (3 días o más)",
+    "breakLine": "{from} – {to}: {n} días",
+    "noHolidays": "No hay festivos este mes.",
+    "notAnnounced": "{country} aún no ha anunciado sus festivos de {y}; se añadirán cuando se publique la lista oficial.",
+    "holidaysIn": "Festivos de {country}",
+    "otherCountries": "Otros países",
+    "festivals": "Fiestas tradicionales",
+    "solarTerms": "Términos solares",
+    "moonPhases": "Fases de la luna",
+    "term": "Término",
+    "longitude": "Longitud solar",
+    "time": "Hora",
+    "zoneUtc": "UTC",
+    "zoneOffset": "UTC{sign}{h}",
+    "sources": "Fuentes",
+    "notes": "Notas",
+    "dataNote": "Las fechas lunares, los términos solares y las fases de la luna se calculan con astronomy-engine (licencia MIT). Festivos: fuentes oficiales en la página de cada país.",
+    "today": "Hoy",
+    "todayLunar": "Fecha lunar",
+    "isoWeek": "Semana ISO {n}",
+    "dayOfYear": "Día {n} de {total}",
+    "daysLeft": "Quedan {n} días para terminar el año",
+    "nextFull": "Próxima luna llena",
+    "currentTerm": "Término solar",
+    "convert": "Convertir",
+    "solarDate": "Fecha",
+    "lunarYear": "Año lunar",
+    "lunarMonth": "Mes lunar",
+    "lunarDay": "Día lunar",
+    "leap": "Mes bisiesto",
+    "reckoning": "Cómputo",
+    "reckonings": {
+      "cn": "China (UTC+8)",
+      "vn": "Vietnam (UTC+7)",
+      "kr": "Corea / Japón (UTC+9)"
+    },
+    "toLunar": "Solar → lunar",
+    "toSolar": "Lunar → solar",
+    "noSuchDate": "Esa fecha lunar no existe (el mes tiene 29 días o ese año no hay ese mes bisiesto).",
+    "outOfRange": "Solo fechas de 1900 a 2100.",
+    "lunarLine": "{ly} ({gz}, {animal}), mes {lm}{leap}, día {ld}",
+    "leapMark": " (bisiesto)",
+    "solarLine": "{date}",
+    "monthsOf": "{y} mes a mes",
+    "moreYears": "Otros años",
+    "weekNumbers": "Los números de semana siguen la ISO 8601 (la semana empieza el lunes; la semana 1 contiene el primer jueves).",
+    "printNote": "Imprime esta página para tener un calendario en papel; la cabecera y el pie del sitio no se imprimen.",
+    "workShort": "Laborable",
+    "daysLeftLabel": "Días que quedan este año",
+    "lunarFull": "año {gz}, mes {leap}{lm}, día {ld}",
+    "faq": "Preguntas"
+  },
+  "countries": {
+    "china": "China",
+    "taiwan": "Taiwán",
+    "hong-kong": "Hong Kong",
+    "japan": "Japón",
+    "south-korea": "Corea del Sur",
+    "vietnam": "Vietnam",
+    "indonesia": "Indonesia",
+    "united-states": "Estados Unidos",
+    "united-kingdom": "Reino Unido",
+    "spain": "España",
+    "mexico": "México"
+  },
+  "quarters": [
+    "Luna nueva",
+    "Cuarto creciente",
+    "Luna llena",
+    "Cuarto menguante"
+  ],
+  "animals": [
+    "Rata",
+    "Buey",
+    "Tigre",
+    "Conejo",
+    "Dragón",
+    "Serpiente",
+    "Caballo",
+    "Cabra",
+    "Mono",
+    "Gallo",
+    "Perro",
+    "Cerdo"
+  ],
+  "solarTerms": [
+    "Inicio de la primavera",
+    "Agua de lluvia",
+    "Despertar de los insectos",
+    "Equinoccio de primavera",
+    "Claridad pura",
+    "Lluvia de grano",
+    "Inicio del verano",
+    "Grano lleno",
+    "Grano en espiga",
+    "Solsticio de verano",
+    "Calor menor",
+    "Calor mayor",
+    "Inicio del otoño",
+    "Fin del calor",
+    "Rocío blanco",
+    "Equinoccio de otoño",
+    "Rocío frío",
+    "Descenso de la escarcha",
+    "Inicio del invierno",
+    "Nieve menor",
+    "Nieve mayor",
+    "Solsticio de invierno",
+    "Frío menor",
+    "Frío mayor"
+  ],
+  "festivals": {
+    "spring": "Fiesta de la Primavera",
+    "lantern": "Festival de los Faroles",
+    "dragon-head": "Día del Dragón que alza la cabeza",
+    "dragon-boat": "Festival del Bote del Dragón",
+    "qixi": "Festival Qixi",
+    "ghost": "Festival de los Fantasmas",
+    "mid-autumn": "Festival del Medio Otoño",
+    "double-ninth": "Festival del Doble Nueve",
+    "laba": "Festival Laba",
+    "kitchen-god": "Día del Dios de la Cocina",
+    "new-year-eve": "Nochevieja del Año Nuevo lunar",
+    "tet": "Tết (Año Nuevo lunar)",
+    "ram-thang-gieng": "Primera luna llena",
+    "han-thuc": "Festival de la Comida Fría",
+    "hung-kings": "Día de los Reyes Hùng",
+    "doan-ngo": "Đoan Ngọ (Doble Cinco)",
+    "vu-lan": "Vu Lan",
+    "trung-thu": "Festival del Medio Otoño",
+    "ong-tao": "Día de los Dioses de la Cocina",
+    "tat-nien": "Nochevieja del Año Nuevo lunar",
+    "seollal": "Seollal",
+    "daeboreum": "Daeboreum",
+    "dano": "Dano",
+    "chilseok": "Chilseok",
+    "chuseok": "Chuseok"
+  },
+  "lunarMonths": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12"
+  ],
+  "lunarDays": [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "28",
+    "29",
+    "30"
+  ],
+  "rokuyo": [
+    "Taian",
+    "Shakkō",
+    "Senshō",
+    "Tomobiki",
+    "Senbu",
+    "Butsumetsu"
+  ],
+  "pasaran": [
+    "Legi",
+    "Pahing",
+    "Pon",
+    "Wage",
+    "Kliwon"
+  ],
+  "holidayNames": {
+    "CN:new-year": "Año Nuevo",
+    "CN:lunar-new-year": "Año Nuevo chino",
+    "CN:qingming": "Festival de Qingming",
+    "CN:labour-day": "Día del Trabajo",
+    "CN:dragon-boat": "Festival del Bote del Dragón",
+    "CN:national-day": "Día Nacional",
+    "CN:mid-autumn": "Festival del Medio Otoño",
+    "TW:new-year": "Día de la Fundación de la República de China",
+    "TW:lunar-new-year": "Año Nuevo lunar",
+    "TW:peace-memorial-day": "Día Conmemorativo de la Paz",
+    "TW:childrens-day": "Día del Niño",
+    "TW:qingming": "Festival de Qingming",
+    "TW:labour-day": "Día del Trabajo",
+    "TW:dragon-boat": "Festival del Bote del Dragón",
+    "TW:mid-autumn": "Festival del Medio Otoño",
+    "TW:teachers-day": "Día del Maestro",
+    "TW:national-day": "Día del Doble Diez",
+    "TW:retrocession-day": "Día de la Retrocesión de Taiwán",
+    "TW:constitution-day": "Día de la Constitución",
+    "HK:new-year": "Año Nuevo",
+    "HK:lunar-new-year": "Año Nuevo lunar",
+    "HK:good-friday": "Viernes Santo",
+    "HK:day-after-good-friday": "Día siguiente al Viernes Santo",
+    "HK:qingming": "Festival de Qingming",
+    "HK:easter-monday": "Lunes de Pascua",
+    "HK:labour-day": "Día del Trabajo",
+    "HK:buddhas-birthday": "Cumpleaños de Buda",
+    "HK:dragon-boat": "Festival del Bote del Dragón",
+    "HK:hksar-establishment-day": "Día del Establecimiento de la Región Administrativa Especial de Hong Kong",
+    "HK:mid-autumn": "Día siguiente al Festival del Medio Otoño",
+    "HK:national-day": "Día Nacional",
+    "HK:chung-yeung": "Festival del Doble Nueve",
+    "HK:christmas": "Navidad",
+    "HK:boxing-day": "Primer día laborable después de Navidad",
+    "JP:new-year": "Año Nuevo",
+    "JP:coming-of-age-day": "Día de la Mayoría de Edad",
+    "JP:national-foundation-day": "Día de la Fundación Nacional",
+    "JP:emperors-birthday": "Cumpleaños del Emperador",
+    "JP:vernal-equinox-day": "Día del Equinoccio de Primavera",
+    "JP:showa-day": "Día de Shōwa",
+    "JP:constitution-memorial-day": "Día de la Constitución",
+    "JP:greenery-day": "Día del Verde",
+    "JP:childrens-day": "Día del Niño",
+    "JP:marine-day": "Día del Mar",
+    "JP:mountain-day": "Día de la Montaña",
+    "JP:respect-for-the-aged-day": "Día del Respeto a los Mayores",
+    "JP:citizens-holiday": "Día de Descanso Nacional",
+    "JP:autumnal-equinox-day": "Día del Equinoccio de Otoño",
+    "JP:sports-day": "Día del Deporte",
+    "JP:culture-day": "Día de la Cultura",
+    "JP:labour-thanksgiving-day": "Día de Acción de Gracias por el Trabajo",
+    "KR:new-year": "Año Nuevo",
+    "KR:lunar-new-year": "Seollal",
+    "KR:independence-movement-day": "Día del Movimiento de Independencia",
+    "KR:labour-day": "Día del Trabajo",
+    "KR:childrens-day": "Día del Niño",
+    "KR:buddhas-birthday": "Cumpleaños de Buda",
+    "KR:local-election": "Día de las Elecciones Locales",
+    "KR:memorial-day": "Día de los Caídos",
+    "KR:constitution-day": "Día de la Constitución",
+    "KR:liberation-day": "Día de la Liberación",
+    "KR:chuseok": "Chuseok",
+    "KR:national-foundation-day": "Día de la Fundación Nacional",
+    "KR:hangeul-day": "Día del Hangul",
+    "KR:christmas": "Navidad",
+    "VN:new-year": "Año Nuevo",
+    "VN:lunar-new-year": "Tết",
+    "VN:hung-kings": "Día de los Reyes Hùng",
+    "VN:reunification-day": "Día de la Reunificación",
+    "VN:labour-day": "Día Internacional del Trabajo",
+    "VN:national-day": "Día Nacional",
+    "VN:culture-day": "Día de la Cultura de Vietnam",
+    "ID:new-year": "Año Nuevo",
+    "ID:isra-miraj": "Isra y Mi'raj",
+    "ID:lunar-new-year": "Año Nuevo chino",
+    "ID:nyepi": "Día del Silencio",
+    "ID:eid-al-fitr": "Fiesta del Fin del Ramadán",
+    "ID:good-friday": "Viernes Santo",
+    "ID:easter": "Domingo de Pascua",
+    "ID:labour-day": "Día Internacional del Trabajo",
+    "ID:ascension-day": "Ascensión de Jesucristo",
+    "ID:eid-al-adha": "Fiesta del Sacrificio",
+    "ID:vesak": "Vesak",
+    "ID:pancasila-day": "Día de la Pancasila",
+    "ID:islamic-new-year": "Año Nuevo islámico",
+    "ID:independence-day": "Día de la Independencia",
+    "ID:mawlid": "Nacimiento del Profeta Mahoma",
+    "ID:christmas": "Navidad",
+    "US:new-year": "Año Nuevo",
+    "US:mlk-day": "Día de Martin Luther King Jr.",
+    "US:washingtons-birthday": "Natalicio de Washington",
+    "US:memorial-day": "Día de los Caídos",
+    "US:juneteenth": "Juneteenth",
+    "US:independence-day": "Día de la Independencia",
+    "US:labor-day": "Día del Trabajo",
+    "US:columbus-day": "Día de Colón",
+    "US:veterans-day": "Día de los Veteranos",
+    "US:thanksgiving": "Día de Acción de Gracias",
+    "US:christmas": "Navidad",
+    "GB:new-year": "Año Nuevo",
+    "GB:good-friday": "Viernes Santo",
+    "GB:easter-monday": "Lunes de Pascua",
+    "GB:early-may-bank-holiday": "Festivo bancario de principios de mayo",
+    "GB:spring-bank-holiday": "Festivo bancario de primavera",
+    "GB:summer-bank-holiday": "Festivo bancario de verano",
+    "GB:christmas": "Navidad",
+    "GB:boxing-day": "Día de San Esteban"
+  },
+  "answers": {
+    "countLine": "{country} tiene {n} días festivos en {y}{work}, según la lista oficial.",
+    "workdays": ", más {n} días laborables de recuperación",
+    "monthHolidays": "{country}: {list}.",
+    "monthNone": "No hay festivos en {country} en {month} de {y}.",
+    "monthFull": "Luna llena: {time} ({zone}).",
+    "monthNoFull": "No hay luna llena en {month} de {y}; la siguiente es el {time} ({zone}).",
+    "monthLunar": "El 1 de {month} de {y} corresponde a {lunar} en el calendario lunar.",
+    "longLine": "Puentes en {y}: {list}.",
+    "longNone": "No hay ningún puente de tres días o más en {y}.",
+    "sourceLine": "{title}, publicado el {date}. Las fechas se copian de ese anuncio.",
+    "termLine": "{time} ({zone}).",
+    "moonList": "Lunas llenas de {y} ({zone}): {list}.",
+    "moonCount": "{y} tiene {n} lunas llenas."
+  },
+  "leapPrefix": "bisiesto ",
+  "stems": [
+    "甲",
+    "乙",
+    "丙",
+    "丁",
+    "戊",
+    "己",
+    "庚",
+    "辛",
+    "壬",
+    "癸"
+  ],
+  "stemJoin": "",
+  "branches": [
+    "子",
+    "丑",
+    "寅",
+    "卯",
+    "辰",
+    "巳",
+    "午",
+    "未",
+    "申",
+    "酉",
+    "戌",
+    "亥"
+  ],
+  "termHan": [
+    "立春",
+    "雨水",
+    "惊蛰",
+    "春分",
+    "清明",
+    "谷雨",
+    "立夏",
+    "小满",
+    "芒种",
+    "夏至",
+    "小暑",
+    "大暑",
+    "立秋",
+    "处暑",
+    "白露",
+    "秋分",
+    "寒露",
+    "霜降",
+    "立冬",
+    "小雪",
+    "大雪",
+    "冬至",
+    "小寒",
+    "大寒"
+  ],
+  "countryNotes": {
+    "china": [
+      "Calendario de la Oficina General del Consejo de Estado para los organismos públicos; las empresas suelen seguirlo. Se incluyen los fines de semana dentro de cada periodo y los días laborables de recuperación (调休)."
+    ],
+    "taiwan": [
+      "Calendario de la DGPA para las oficinas públicas. Las empresas privadas se rigen por la Ley de Normas Laborales, que puede diferir."
+    ],
+    "hong-kong": [
+      "Festivos generales publicados por el gobierno en la Gaceta. Todos los domingos también son festivos generales; los festivos legales de los trabajadores son una lista aparte y más corta."
+    ],
+    "japan": [
+      "Festivos nacionales según la Ley de Festivos Nacionales, incluidos los festivos trasladados (振替休日) y los días de descanso nacional (国民の休日)."
+    ],
+    "south-korea": [
+      "Festivos de las oficinas públicas (관공서의 공휴일), incluidos los festivos sustitutos (대체공휴일), según el almanaque de la KASA."
+    ],
+    "vietnam": [
+      "Festivos legales según el Código del Trabajo de 2019. Los periodos de Tết y del Día Nacional que se muestran son la distribución del Ministerio del Interior para los funcionarios; las empresas eligen la suya."
+    ],
+    "indonesia": [
+      "Festivos nacionales y vacaciones colectivas (cuti bersama) según el decreto conjunto de tres ministros. Las fechas de las fiestas islámicas aún pueden ajustarse por decreto del Ministro de Asuntos Religiosos."
+    ],
+    "united-states": [
+      "Festivos federales según la Office of Personnel Management; cuando un festivo cae en fin de semana, también se indica el día laborable en que se observa. Los estados y los empleadores privados pueden diferir."
+    ],
+    "united-kingdom": [
+      "Festivos bancarios de Inglaterra y Gales según GOV.UK. Escocia e Irlanda del Norte tienen listas distintas."
+    ],
+    "spain": [
+      "Solo las fiestas comunes a todas las comunidades autónomas (BOE). Cada comunidad añade sus propios días y cada municipio, dos fiestas locales."
+    ],
+    "mexico": [
+      "Días de descanso obligatorio según el artículo 74 de la Ley Federal del Trabajo. Días como los de Semana Santa son costumbre, no obligatorios."
+    ]
+  }
+}

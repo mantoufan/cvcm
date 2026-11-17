@@ -30,6 +30,8 @@ function isHub(page: SitemapPage): boolean {
       return page.entry === null;
     case "calories":
       return page.food === null;
+    case "calendar":
+      return page.page === "hub";
     case "games":
       // The main hub and the free online games hub (/games/mini/), not the console or game pages.
       return (page.console === null || page.console === "mini") && page.game === null;
@@ -87,6 +89,8 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
       return { channel: "calories", seo: { calories: true, foodId: page.food } };
     case "elements":
       return { channel: "elements", seo: { elements: true, elementSlug: page.entry } };
+    case "calendar":
+      return { channel: "calendar", seo: { calendar: true, calendarPage: page.page } };
     case "games":
       return { channel: "games", seo: { games: true, console: page.console, game: page.game } };
     case "countries":
