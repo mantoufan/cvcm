@@ -56,6 +56,7 @@ const FLASH: ControlRow[] = [
 ];
 
 export const CONSOLE_CONTROLS: Record<GameConsoleId, ControlRow[]> = {
+  mini: [],
   fc: NES,
   sfc: SNES,
   gb: GB,

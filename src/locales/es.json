@@ -719,7 +719,9 @@
     "titleCalculateBac": "Cómo calcular la alcoholemia (tasa de alcohol en sangre) con la fórmula de Widmark | cv.cm",
     "descCalculateBac": "Calcule su tasa de alcohol en sangre paso a paso: los gramos de alcohol de una bebida, la fórmula de Widmark, a qué ritmo lo elimina el cuerpo y qué significan 0,08 %, 0,5 ‰ y 80 mg/100 mL. Una estimación, nunca un motivo para conducir.",
     "titleCalculateSimpleInterest": "Cómo calcular el interés simple: I = P × r × t con ejemplos | cv.cm",
-    "descCalculateSimpleInterest": "El interés simple en seis pasos: la fórmula, la tasa en decimal, meses y días (año de 365 o 360 días), cómo despejar el capital, la tasa o el tiempo, y en qué se diferencia del interés compuesto."
+    "descCalculateSimpleInterest": "El interés simple en seis pasos: la fórmula, la tasa en decimal, meses y días (año de 365 o 360 días), cómo despejar el capital, la tasa o el tiempo, y en qué se diferencia del interés compuesto.",
+    "titleGamesMini": "Minijuegos gratis — solitario, buscaminas, ajedrez y más online — cv.cm",
+    "descGamesMini": "Juega gratis en el navegador sin descargar nada: solitario, solitario spider, carta blanca, buscaminas, la serpiente, ajedrez, ajedrez chino, damas, mahjong, 2048, sopa de letras y más. Funciona en el móvil."
   },
   "brand": "cv.cm",
   "nav": {
@@ -6016,6 +6018,16 @@
       "a4": "Las lecciones de teclas están pensadas para un teclado físico, pero también puedes tocar las teclas en pantalla. La lección de palabras funciona con cualquier teclado, incluido el de tu móvil.",
       "q5": "¿En qué se diferencia del test de mecanografía?",
       "a5": "El test de mecanografía mide tu velocidad con un texto en un tiempo fijo. Esta práctica te enseña las teclas fila por fila y te muestra qué teclas fallas más."
+    },
+    "gamesMini": {
+      "q1": "¿Estos juegos son gratis de verdad?",
+      "a1": "Sí. Todos son gratis, sin registro ni descargas. Tu progreso se guarda solo en este navegador.",
+      "q2": "¿Funcionan en el móvil?",
+      "a2": "Sí. Todos se juegan con el dedo, y los juegos de mesa y los rompecabezas caben en la pantalla del móvil. El juego de mecanografía es más cómodo con teclado.",
+      "q3": "¿Qué juegos hay?",
+      "a3": "Juegos de cartas (solitario, solitario spider, carta blanca), rompecabezas (buscaminas, sudoku, nonograma, 2048, mahjong), juegos de mesa contra la computadora (ajedrez, ajedrez chino, damas, reversi, gomoku, damas chinas), juegos de palabras y juegos arcade como la serpiente y el dinosaurio.",
+      "q4": "¿Puedo jugar sin internet?",
+      "a4": "La mayoría de los juegos siguen funcionando si se corta la conexión después de cargar la página. El ajedrez y el ajedrez chino descargan su motor la primera vez que juega la computadora, así que empieza la partida antes de quedarte sin conexión."
     }
   },
   "qr": {
@@ -10011,6 +10023,7 @@
       "all": "Ver todo"
     },
     "consoles": {
+      "mini": "Minijuegos gratis",
       "fc": "FC / NES",
       "sfc": "SFC / SNES",
       "gb": "Game Boy",
@@ -10084,9 +10097,10 @@
         "rerelease": "Reedición; la versión puede variar"
       }
     },
-    "openSource": {
-      "title": "Juegos en el navegador",
-      "lead": "Juegos gratis que se juegan en esta misma página, sin descargar nada. Los que se basan en otros proyectos los citan en su página."
+    "mini": {
+      "title": "Minijuegos gratis",
+      "lead": "Juegos clásicos que se juegan aquí mismo, en el navegador: solitario, buscaminas, ajedrez, mahjong, 2048, juegos de palabras y más. Gratis, sin descargas y con tus puntuaciones y partidas en curso guardadas en este navegador.",
+      "all": "Ver los {n} minijuegos gratis"
     }
   },
   "reverse": {

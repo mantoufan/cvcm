@@ -719,7 +719,9 @@
     "titleCalculateBac": "How to calculate BAC (blood alcohol content), step by step | cv.cm",
     "descCalculateBac": "Estimate BAC step by step: grams of alcohol in a drink, the Widmark formula, how fast the body clears it, and what 0.08 %, 0.5 ‰ and 80 mg/100 mL mean. An estimate, never a reason to drive.",
     "titleCalculateSimpleInterest": "How to calculate simple interest: I = P × r × t with examples | cv.cm",
-    "descCalculateSimpleInterest": "Simple interest in six steps: the formula, rates as decimals, months and days (365 or 360-day year), finding the principal, rate or time, and how it compares with compound interest."
+    "descCalculateSimpleInterest": "Simple interest in six steps: the formula, rates as decimals, months and days (365 or 360-day year), finding the principal, rate or time, and how it compares with compound interest.",
+    "titleGamesMini": "Free online games — solitaire, minesweeper, chess and more — cv.cm",
+    "descGamesMini": "Play free online games in your browser with no download: solitaire, spider solitaire, FreeCell, minesweeper, snake, chess, checkers, mahjong, 2048, word search and more. Works on phones."
   },
   "brand": "cv.cm",
   "nav": {
@@ -9005,6 +9007,16 @@
       "a4": "The key lessons are meant for a physical keyboard, but you can tap the on-screen keys too. The word lesson works with any keyboard, including your phone's.",
       "q5": "How is this different from the typing test?",
       "a5": "The typing test measures your speed on a passage in a set time. Typing practice teaches the keys one row at a time and shows which keys you miss most."
+    },
+    "gamesMini": {
+      "q1": "Are these games really free?",
+      "a1": "Yes. Every game is free to play, with no sign-up and no download. Your progress stays in this browser.",
+      "q2": "Do they work on a phone?",
+      "a2": "Yes. Every game works with touch, and the board games and puzzles fit a phone screen. A keyboard helps in the typing game.",
+      "q3": "Which games are there?",
+      "a3": "Card games (solitaire, spider solitaire, FreeCell), puzzles (minesweeper, sudoku, nonogram, 2048, mahjong solitaire), board games against the computer (chess, Chinese chess, checkers, reversi, gomoku, Chinese checkers), word games and arcade games such as snake and the dinosaur game.",
+      "q4": "Can I play offline?",
+      "a4": "Most games keep working if the connection drops after the page has loaded. Chess and Chinese chess download their engine the first time the computer moves, so start that game before you go offline."
     }
   },
   "qr": {
@@ -10011,6 +10023,7 @@
       "all": "See all"
     },
     "consoles": {
+      "mini": "Free online games",
       "fc": "FC / NES",
       "sfc": "SFC / SNES",
       "gb": "Game Boy",
@@ -10084,9 +10097,10 @@
         "rerelease": "Re-release, version may differ"
       }
     },
-    "openSource": {
-      "title": "Browser games",
-      "lead": "Free games that play right in this page, with nothing to download. Games based on other projects credit them on their own page."
+    "mini": {
+      "title": "Free online games",
+      "lead": "Classic browser games that play right here: solitaire, minesweeper, chess, mahjong, 2048, word games and more. Free, nothing to download, scores and games in progress kept in this browser.",
+      "all": "All {n} free online games"
     }
   },
   "reverse": {

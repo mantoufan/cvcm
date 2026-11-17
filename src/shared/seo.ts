@@ -945,8 +945,8 @@ export function learnFaqItems(locale: Locale, tutorial: TutorialId): FaqItem[] {
 }
 
 export function gamesHubFaqItems(locale: Locale, consoleId?: GameConsoleId | null): FaqItem[] {
-  if (consoleId === "flash") {
-    const specific = faqFrom(locale, "faq.gamesFlash");
+  if (consoleId === "flash" || consoleId === "mini") {
+    const specific = faqFrom(locale, consoleId === "flash" ? "faq.gamesFlash" : "faq.gamesMini");
     if (specific.length) return specific;
   }
   return faqFrom(locale, "faq.games");
