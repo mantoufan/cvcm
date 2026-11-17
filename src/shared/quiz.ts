@@ -56,7 +56,7 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
  *            `tie: "spread"` to one picked by a hash of the answers that scored the tied results: with many results
  *            scored by small whole numbers, ties are common, and any fixed order would favor some results. The same
  *            answers always give the same result. (Likert quizzes hash which statements scored and how much.) With
- *            `tie: "mixed"` a tie at the top gives the extra result `mixed` instead, for self-reflection quizzes where
+ *            `tie: "mixed"` leaders whose shown percentages are equal give the extra result `mixed` instead, for self-reflection quizzes where
  *            neither a fixed order nor a hash should pick a label the answers don't support. The page never passes an
  *            exact tie off as a runner-up: it names the results tied with the leader ("Tied with"), or for a mixed
  *            result every tied result ("Tied at the top"); a close second place names every result tied for it.
@@ -1680,24 +1680,17 @@ function shareCmp(a: DimScore, b: DimScore): number {
 }
 
 /**
- * The results tied for the highest exact share (see `shareCmp`), in ranked order: a mixed result's tied styles and a
- * spread result's winner plus the results it was tied with.
- */
-export function topTied(ranked: readonly DimScore[]): DimScore[] {
-  const best = ranked.reduce((top, s) => (shareCmp(s, top) > 0 ? s : top), ranked[0]);
-  return ranked.filter((s) => shareCmp(s, best) === 0);
-}
-
-/**
- * The line a top result shows under its headline, as result keys in ranked order. A mixed result lists the results
- * tied for the top by exact share (as scoring decided). Otherwise results whose bars show the leader's percentage are
- * "tied with" it, whatever order or hash picked the leader; failing that, a close second place (within 10 points)
- * names the results shown at its percentage, unless three or more share it, which says nothing about a runner-up.
+ * The line a top result shows under its headline, as result keys in ranked order, grouped by the percentage the bars
+ * show. A mixed result (whose leaders show the same percentage) lists all of them. Otherwise results shown at the
+ * leader's percentage are "tied with" it, whatever order or hash picked the leader; failing that, a close second place
+ * (within 10 points) names the results shown at its percentage, unless three or more share it, which says nothing
+ * about a runner-up.
  */
 export function resultSideLine(ranked: readonly DimScore[], mixed: boolean): { kind: "tiedTop" | "tiedWith" | "runnerUp"; dims: string[] } | null {
-  if (mixed) return { kind: "tiedTop", dims: topTied(ranked).map((s) => s.dim) };
   const [first, ...rest] = ranked;
-  if (!first || !rest.length) return null;
+  if (!first) return null;
+  if (mixed) return { kind: "tiedTop", dims: ranked.filter((s) => s.pct === first.pct).map((s) => s.dim) };
+  if (!rest.length) return null;
   const same = rest.filter((s) => s.pct === first.pct);
   if (same.length) return { kind: "tiedWith", dims: same.map((s) => s.dim) };
   if (first.pct - rest[0].pct > 10) return null;
@@ -1811,7 +1804,8 @@ function resultKey(rule: ResultRule, scores: DimScore[], ranked: DimScore[], tot
       return scores.map((s) => (s.pct > 50 ? s.dim[0] : s.dim[1])).join("");
     case "top":
       if (rule.tie === "mixed") {
-        return topTied(ranked).length > 1 ? "mixed" : ranked[0].dim;
+        // Mixed when the leaders' bars show the same percentage, the same rule the page uses to say "tied".
+        return ranked.length > 1 && ranked[1].pct === ranked[0].pct ? "mixed" : ranked[0].dim;
       }
       return ranked[0].dim;
     case "code":

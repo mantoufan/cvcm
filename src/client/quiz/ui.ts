@@ -333,8 +333,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       // Ties and a close second place: see resultSideLine (never an exact tie passed off as a runner-up).
       const mixed = rule.kind === "top" && rule.tie === "mixed" && result.key === "mixed";
       const side = resultSideLine(result.ranked, mixed);
-      const sideLabel = side ? { tiedTop: ui.tiedTop, tiedWith: ui.tiedWith, runnerUp: ui.runnerUp }[side.kind] : "";
-      const sideLine = side ? `${sideLabel}: ${listNames(locale, side.dims.map((dim) => results[dim]?.name ?? label(dim)))}` : "";
+      const sideLine = side ? `${ui[side.kind]}: ${listNames(locale, side.dims.map((dim) => results[dim]?.name ?? label(dim)))}` : "";
       if (sideLine) nodes.push(h("p", { class: "muted" }, sideLine));
       if (result.excluded.length) {
         const names = listNames(locale, result.excluded.map((dim) => label(dim)));
