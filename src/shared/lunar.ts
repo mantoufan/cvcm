@@ -113,7 +113,7 @@ export function toLunar(n: number, zone: LunarZone = "cn"): LunarDate | null {
 /** Day number of a lunar date (the leap month when `leap`), or null when that date does not exist. */
 export function fromLunar(year: number, month: number, day: number, leap = false, zone: LunarZone = "cn"): number | null {
   const y = years(zone).find((item) => item.year === year);
-  if (!y || month < 1 || month > 12 || day < 1) return null;
+  if (!y || !Number.isInteger(month) || !Number.isInteger(day) || month < 1 || month > 12 || day < 1) return null;
   if (leap && y.leap !== month) return null;
   const k = y.leap > 0 && (month > y.leap || (leap && month === y.leap)) ? month : month - 1;
   if (day > y.lengths[k]) return null;

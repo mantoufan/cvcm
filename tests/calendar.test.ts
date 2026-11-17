@@ -75,6 +75,14 @@ describe("calendar pages", () => {
     expect(weeks(calendarPageHtml("zh-CN", "2026-12"))).toEqual([49, 50, 51, 52, 53]);
   });
 
+  it("keeps one holiday in one run and counts the US federal holidays of the year", () => {
+    const feb = calendarFaqItems("zh-CN", "2026-02")[0].a;
+    expect(feb).toContain("2月15日–2月23日");
+    expect(daysOffCount("united-states", 2027)).toEqual({ off: 11, work: 0 });
+    // Friday 31 December 2027 (observed New Year's Day 2028) plus the weekend is a long break of 2027.
+    expect(longBreaks("united-states", 2027).at(-1)).toMatchObject({ from: dayNumber(2027, 12, 31), to: dayNumber(2028, 1, 2) });
+  });
+
   it("marks China's 2027 makeup working days and the Spring Festival break", () => {
     const html = calendarPageHtml("zh-CN", "2027-02");
     expect(html).toMatch(/data-day="\d+"><span class="cal-n">14<\/span>/);

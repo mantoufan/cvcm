@@ -53,6 +53,8 @@ describe("lunar tables", () => {
       const l = toLunar(n)!;
       expect(fromLunar(l.year, l.month, l.day, l.leap)).toBe(n);
     }
+    expect(fromLunar(2027, 1.5, 1)).toBeNull();
+    expect(fromLunar(2027, 1, 1.5)).toBeNull();
     expect(ganzhi(2026)).toBe("丙午");
     expect(ganzhi(2027)).toBe("丁未");
   });

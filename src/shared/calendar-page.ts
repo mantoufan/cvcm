@@ -12,16 +12,16 @@ import { calendarMessages, messages } from "./messages";
 import { appHref, calendarHref } from "./path";
 import { HREFLANG } from "./sitemap";
 import {
-  CALENDAR_LOCALE, CALENDAR_YEARS, COUNTRY_ZONE, HOLIDAY_COUNTRIES, LUNAR_FESTIVALS, calendarView, monthPage,
+  CALENDAR_LOCALE, CALENDAR_YEARS, HOLIDAY_COUNTRIES, LUNAR_FESTIVALS, calendarView, monthPage,
   type CalendarPage, type HolidayCountry,
 } from "./calendar";
 import {
-  animalIndex, moonPhases, solarTerms, civilDate, dayAt, dayNumber, ganzhi, rokuyo, toLunar, weekday,
+  animalIndex, moonPhases, solarTerms, civilDate, dayAt, dayNumber, rokuyo, toLunar, weekday,
   type LunarDate,
 } from "./lunar";
 import {
   calendarCopy, calendarFaqItems, calendarHeading, calendarLede, countryName, holidayDays, holidayName, holidayYears, holidaysByDay,
-  isoWeek, longBreaks, lunarText, offsetLabel, type HolidayDay,
+  cycleLabel, isoWeek, longBreaks, lunarText, termOffset, type HolidayDay,
 } from "./calendar-i18n";
 
 const lang = (locale: Locale): string => HREFLANG[locale];
@@ -77,22 +77,12 @@ export function lunarLabel(locale: Locale, l: LunarDate): string {
   const month = style === "zh" ? c.lunarMonths[l.month - 1] : String(l.month);
   const day = style === "zh" ? c.lunarDays[l.day - 1] : String(l.day);
   return fill(c.ui.lunarFull, {
-    gz: cycleName(locale, l.year),
+    gz: cycleLabel(locale, l.year),
     animal: c.animals[animalIndex(l.year)],
     lm: month,
     ld: day,
     leap: l.leap ? c.leapPrefix : "",
   });
-}
-
-/** The year's cycle name in the locale's own reading (Vietnamese Bính Ngọ, Korean 병오, else 丙午). */
-export function cycleName(locale: Locale, year: number): string {
-  const c = calendarMessages(locale);
-  const gz = ganzhi(year);
-  if (!c.stems.length) return gz;
-  const i = "甲乙丙丁戊己庚辛壬癸".indexOf(gz[0]);
-  const j = "子丑寅卯辰巳午未申酉戌亥".indexOf(gz[1]);
-  return `${c.stems[i]}${c.stemJoin}${c.branches[j]}`;
 }
 
 function festivalOn(locale: Locale, n: number): string | null {
@@ -110,14 +100,11 @@ function festivalOn(locale: Locale, n: number): string | null {
 
 /** Name of the solar term starting on day `n` in the locale's zone, or null. */
 function termOn(locale: Locale, n: number): string | null {
-  const offset = CALENDAR_LOCALE[locale].lunar ? zoneOffset(CALENDAR_LOCALE[locale].zone) : CALENDAR_LOCALE[locale].offset;
+  const offset = termOffset(locale);
   const term = solarTerms().find((t) => dayAt(t.at, offset) === n);
   return term ? calendarMessages(locale).solarTerms[term.index] : null;
 }
 
-function zoneOffset(zone: "vn" | "cn" | "kr"): number {
-  return zone === "vn" ? 7 : zone === "cn" ? 8 : 9;
-}
 
 const MOON_MARK = ["●", "◐", "○", "◑"];
 
@@ -225,7 +212,7 @@ function breaksHtml(locale: Locale, country: HolidayCountry, year: number): stri
 
 function termsTableHtml(locale: Locale, years: readonly number[]): string {
   const c = calendarMessages(locale);
-  const offset = CALENDAR_LOCALE[locale].lunar ? zoneOffset(CALENDAR_LOCALE[locale].zone) : CALENDAR_LOCALE[locale].offset;
+  const offset = termOffset(locale);
   const head = `<th scope="col">${escapeHtml(c.ui.term)}</th><th scope="col">${escapeHtml(c.ui.longitude)}</th>${years.map((y) => `<th scope="col">${y}</th>`).join("")}`;
   const rows = Array.from({ length: 24 }, (_, index) => {
     const cells = years.map((y) => {
@@ -257,10 +244,7 @@ function festivalsHtml(locale: Locale, from: number, to: number): string {
 
 function termsInRangeHtml(locale: Locale, from: number, to: number): string {
   const c = calendarMessages(locale);
-  if (!CALENDAR_LOCALE[locale].lunar && locale !== "en") {
-    /* other locales still list the terms: they are searched in every language */
-  }
-  const offset = CALENDAR_LOCALE[locale].lunar ? zoneOffset(CALENDAR_LOCALE[locale].zone) : CALENDAR_LOCALE[locale].offset;
+  const offset = termOffset(locale);
   const list = solarTerms().filter((t) => { const n = dayAt(t.at, offset); return n >= from && n <= to; });
   if (!list.length) return "";
   return `<h3>${link(locale, "solar-terms", c.ui.solarTerms)}</h3><ul class="cal-breaks">${list.map((t) => `<li>${escapeHtml(timeAt(locale, t.at, offset))} · ${escapeHtml(c.solarTerms[t.index])}</li>`).join("")}</ul>`;
@@ -305,7 +289,7 @@ function hubHtml(locale: Locale): string {
   const converter = `<section class="wall cal-convert" id="convert"><h2>${escapeHtml(c.hub.converter)}</h2>`
     + `<div class="row"><label>${escapeHtml(c.ui.reckoning)} <select data-in="zone">${reck}</select></label></div>`
     + `<h3>${escapeHtml(c.ui.toLunar)}</h3><div class="row"><label>${escapeHtml(c.ui.solarDate)} <input type="date" data-in="solar" value="2027-02-06" min="1900-02-01" max="2100-12-31" data-fixed-date=""></label></div>`
-    + `<p class="cal-out" data-out="lunar-result">${escapeHtml(lunarLine(locale, sample, cfg.zone))}</p>`
+    + `<p class="cal-out" data-out="lunar-result">${escapeHtml(lunarText(locale, sample, cfg.zone))}</p>`
     + `<h3>${escapeHtml(c.ui.toSolar)}</h3><div class="row">`
     + `<label>${escapeHtml(c.ui.lunarYear)} <input type="number" data-in="ly" value="2027" min="1900" max="2100" inputmode="numeric"></label>`
     + `<label>${escapeHtml(c.ui.lunarMonth)} <input type="number" data-in="lm" value="1" min="1" max="12" inputmode="numeric"></label>`
@@ -327,11 +311,6 @@ function hubHtml(locale: Locale): string {
     `<section class="kb-about">${c.hub.about.map((p) => `<p>${inline(p)}</p>`).join("")}</section>`,
     faqHtml(locale, "hub"),
   ].join("");
-}
-
-/** The full lunar date of a day, or the out-of-range note. */
-export function lunarLine(locale: Locale, n: number, zone: "cn" | "vn" | "kr"): string {
-  return lunarText(locale, n, zone);
 }
 
 function yearHtml(locale: Locale, year: number): string {
@@ -392,7 +371,7 @@ function holidaysHtml(locale: Locale, country: HolidayCountry): string {
   const page = `holidays/${country}` as CalendarPage;
   const years = holidayYears(country).map((y) => y.year).sort((a, b) => b - a);
   const sections = years.map((y) => (
-    `<section class="wall" id="y${y}"><h2>${escapeHtml(fill(c.holidays.h1, { country: countryName(locale, country), y }))}</h2>${holidayTableHtml(locale, country, holidayDays(country, y) ?? [])}${breaksHtml(locale, country, y)}<p class="slang-jump">${link(locale, `${y}` as CalendarPage, calendarHeading(locale, `${y}` as CalendarPage))}</p></section>`
+    `<section class="wall" id="y${y}"><h2>${escapeHtml(fill(c.holidays.h1, { country: countryName(locale, country), y }))}</h2>${holidayTableHtml(locale, country, holidayDays(country, y) ?? [])}${breaksHtml(locale, country, y)}${(CALENDAR_YEARS as readonly number[]).includes(y) ? `<p class="slang-jump">${link(locale, `${y}` as CalendarPage, calendarHeading(locale, `${y}` as CalendarPage))}</p>` : ""}</section>`
   )).join("");
   return [
     crumbHtml(locale, page),
@@ -442,4 +421,3 @@ export function calendarPageHtml(locale: Locale, page: CalendarPage): string {
   }
 }
 
-export { COUNTRY_ZONE, offsetLabel };

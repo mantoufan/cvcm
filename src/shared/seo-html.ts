@@ -241,7 +241,7 @@ export function applyHtmlSeo(
     ? null
     : seo.learn && seo.tutorial
       ? howToJsonLd(locale, seo.tutorial)
-      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.elements && seo.tool && !seo.calendar && seo.tool
+      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.elements && !seo.calendar && seo.tool
         ? toolHowToJsonLd(locale, seo.tool)
         : null;
   if (howTo) {
@@ -249,7 +249,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howTo).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.elements && seo.tool && !seo.clipId && !seo.calendar && seo.tool && !seo.clipId;
+  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.elements && !seo.calendar && seo.tool && !seo.clipId;
   if (isToolPage && seo.tool) {
     tags.push(
       `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(toolSoftwareJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,

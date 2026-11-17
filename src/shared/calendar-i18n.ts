@@ -37,6 +37,7 @@ export function calendarCopy(locale: Locale): CalendarMessages {
   if (holidayData !== c.holidayData) {
     holidayData = c.holidayData as HolidayData;
     byDayCache.clear();
+    countryCache.clear();
   }
   return c;
 }
@@ -49,12 +50,17 @@ const SAME_LANG: Record<string, Locale> = { CN: "zh-CN", TW: "zh-TW", HK: "zh-TW
 
 const byDayCache = new Map<HolidayCountry, Map<number, HolidayDay[]>>();
 
+const countryCache = new Map<HolidayCountry, { sources: HolidaySource[]; days: HolidayDay[] }>();
+
 function countryData(country: HolidayCountry): { sources: HolidaySource[]; days: HolidayDay[] } {
+  const hit = countryCache.get(country);
+  if (hit) return hit;
   const code = COUNTRY_CODE[country];
   if (!holidayData) throw new Error("calendar holidays not registered");
   const raw = holidayData[code];
-  if (!raw) return { sources: [], days: [] };
-  return { sources: raw.sources, days: raw.days.map((d) => ({ ...d, lang: OFFICIAL_LANG[code] })) };
+  const data = raw ? { sources: raw.sources, days: raw.days.map((d) => ({ ...d, lang: OFFICIAL_LANG[code] })) } : { sources: [], days: [] };
+  countryCache.set(country, data);
+  return data;
 }
 
 /** The years with an official list, newest first, with their sources. */
@@ -126,7 +132,9 @@ export function daysOffCount(country: HolidayCountry, year: number): { off: numb
     const wd = weekday(n);
     return (wd === 6 && observed.has(`${d.key} ${n - 1}`)) || (wd === 0 && observed.has(`${d.key} ${n + 1}`));
   };
-  const off = days.filter((d) => isOff(d) && !replaced(d));
+  // The US observes a Saturday New Year's Day on the Friday before: 31 December belongs to the next year's holiday.
+  const nextYear = (d: HolidayDay): boolean => d.key === "new-year" && d.date.endsWith("-12-31");
+  const off = days.filter((d) => isOff(d) && !replaced(d) && !nextYear(d));
   return { off: new Set(off.map((d) => d.date)).size, work: days.filter((d) => d.type === "workday").length };
 }
 
@@ -146,8 +154,9 @@ export function longBreaks(country: HolidayCountry, year: number): { from: numbe
   let n = start;
   while (n <= end) {
     if (!off(n)) { n++; continue; }
+    // A break that starts this year may run into the next one (31 December observed for New Year's Day).
     let to = n;
-    while (to + 1 <= end && off(to + 1)) to++;
+    while (to + 1 <= end + 14 && off(to + 1)) to++;
     const names: HolidayDay[] = [];
     for (let k = n; k <= to; k++) for (const h of map.get(k) ?? []) if (isOff(h) && !names.some((x) => x.key === h.key)) names.push(h);
     if (to - n + 1 >= 3 && names.length) out.push({ from: n, to, names });
@@ -164,17 +173,19 @@ export function isoWeek(n: number): number {
   return Math.floor((thursday - dayNumber(y, 1, 1)) / 7) + 1;
 }
 
-export function offsetLabel(locale: Locale): string {
-  const c = calendarMessages(locale);
+/** UTC offset (hours) of each lunar reckoning's standard time. */
+export const ZONE_OFFSET: Record<"vn" | "cn" | "kr", number> = { vn: 7, cn: 8, kr: 9 };
+
+/** The fixed offset (hours) a locale shows solar terms in: its lunar zone's standard time, else its moon offset. */
+export function termOffset(locale: Locale): number {
   const cfg = CALENDAR_LOCALE[locale];
-  const offset = cfg.lunar ? { vn: 7, cn: 8, kr: 9 }[cfg.zone] : cfg.offset;
-  return offset ? fill(c.ui.zoneOffset, { sign: "+", h: offset }) : c.ui.zoneUtc;
+  return cfg.lunar ? ZONE_OFFSET[cfg.zone] : cfg.offset;
 }
 
-/** The fixed offset (hours) the locale shows solar terms in, and moon phases in. */
-function termOffset(locale: Locale): number {
-  const cfg = CALENDAR_LOCALE[locale];
-  return cfg.lunar ? { vn: 7, cn: 8, kr: 9 }[cfg.zone] : cfg.offset;
+export function offsetLabel(locale: Locale): string {
+  const c = calendarMessages(locale);
+  const offset = termOffset(locale);
+  return offset ? fill(c.ui.zoneOffset, { sign: "+", h: offset }) : c.ui.zoneUtc;
 }
 
 function fmt(locale: Locale, n: number, opts: Intl.DateTimeFormatOptions): string {
@@ -184,7 +195,8 @@ const dateLong = (locale: Locale, n: number): string => fmt(locale, n, { year: "
 const dateShort = (locale: Locale, n: number): string => fmt(locale, n, { month: "short", day: "numeric" });
 const weekdayLong = (locale: Locale, n: number): string => fmt(locale, n, { weekday: "long" });
 const monthLong = (locale: Locale, y: number, m: number): string => fmt(locale, dayNumber(y, m, 1), { month: "long" });
-function stamp(locale: Locale, at: number, offset: number): string {
+/** "Saturday, 20 February 2027 23:24" for an instant (Unix minutes) shown at a fixed UTC offset. */
+export function stamp(locale: Locale, at: number, offset: number): string {
   const d = new Date((at + offset * 60) * 60000);
   return `${dateLong(locale, Math.floor(d.getTime() / 86400000))} ${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}`;
 }
@@ -338,7 +350,8 @@ function holidayRuns(locale: Locale, country: HolidayCountry, days: HolidayDay[]
     const [y, m, d] = h.date.split("-").map(Number);
     const n = dayNumber(y, m, d);
     const last = runs[runs.length - 1];
-    if (last && last.h.key === h.key && last.h.type === h.type && last.to === n - 1) last.to = n;
+    // One run per holiday and shown name: China's statutory and swapped days are one break, Indonesia's cuti bersama its own.
+    if (last && last.h.key === h.key && holidayName(locale, country, last.h) === holidayName(locale, country, h) && last.to === n - 1) last.to = n;
     else if (!(last && last.h.key === h.key && last.to === n)) runs.push({ from: n, to: n, h });
   }
   return runs.map((r) => `${dateShort(locale, r.from)}${r.to > r.from ? `–${dateShort(locale, r.to)}` : ""} ${holidayName(locale, country, r.h)}`);

@@ -1,8 +1,8 @@
 import { fill } from "../../shared/fill";
 import type { Locale } from "../../shared/locale";
 import { CALENDAR_LOCALE, type CalendarPage } from "../../shared/calendar";
-import { calendarCopy, isoWeek, offsetLabel } from "../../shared/calendar-i18n";
-import { calendarPageHtml, longDate, lunarLine } from "../../shared/calendar-page";
+import { calendarCopy, isoWeek, lunarText, offsetLabel, stamp, termOffset } from "../../shared/calendar-i18n";
+import { calendarPageHtml, longDate } from "../../shared/calendar-page";
 import { dayAt, dayNumber, fromLunar, moonPhases, solarTerms, type LunarZone } from "../../shared/lunar";
 
 /** The build's prerender (happy-dom) identifies itself; it must not bake the build day in as "today". */
@@ -12,11 +12,6 @@ const PRERENDER = typeof navigator !== "undefined" && navigator.userAgent === "c
 function today(): number {
   const d = new Date();
   return dayNumber(d.getFullYear(), d.getMonth() + 1, d.getDate());
-}
-
-function stamp(locale: Locale, at: number, offset: number): string {
-  const d = new Date((at + offset * 60) * 60000);
-  return `${longDate(locale, Math.floor(d.getTime() / 86400000))} ${String(d.getUTCHours()).padStart(2, "0")}:${String(d.getUTCMinutes()).padStart(2, "0")}`;
 }
 
 function markToday(host: HTMLElement): void {
@@ -37,10 +32,9 @@ function fillToday(host: HTMLElement, locale: Locale): void {
     if (el) el.textContent = text;
   };
   out("date", longDate(locale, n));
-  if (cfg.lunar) out("lunar", lunarLine(locale, n, cfg.zone));
+  if (cfg.lunar) out("lunar", lunarText(locale, n, cfg.zone));
   out("week", fill(c.ui.isoWeek, { n: isoWeek(n) }));
-  const termOffset = cfg.lunar ? { vn: 7, cn: 8, kr: 9 }[cfg.zone] : cfg.offset;
-  const current = [...solarTerms()].reverse().find((t) => dayAt(t.at, termOffset) <= n);
+  const current = [...solarTerms()].reverse().find((t) => dayAt(t.at, termOffset(locale)) <= n);
   out("term", current ? c.solarTerms[current.index] : "—");
   const now = Math.floor(Date.now() / 60000);
   const full = moonPhases().find((p) => p.quarter === 2 && p.at >= now);
@@ -65,8 +59,11 @@ function wireConverter(host: HTMLElement, locale: Locale): void {
   const toLunarNow = (): void => {
     if (!solar || !lunarOut) return;
     const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(solar.value);
-    if (!m) return;
-    lunarOut.textContent = lunarLine(locale, dayNumber(Number(m[1]), Number(m[2]), Number(m[3])), (zone?.value ?? "cn") as LunarZone);
+    if (!m) {
+      lunarOut.textContent = "";
+      return;
+    }
+    lunarOut.textContent = lunarText(locale, dayNumber(Number(m[1]), Number(m[2]), Number(m[3])), (zone?.value ?? "cn") as LunarZone);
   };
   const toSolarNow = (): void => {
     if (!ly || !lm || !ld || !solarOut) return;
