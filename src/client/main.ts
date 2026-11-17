@@ -32,6 +32,7 @@ import {
   nostalgiaHref,
   countriesHref,
   caloriesHref,
+  elementsHref,
   toolJob,
   withSearch,
   type ConvertJobId,
@@ -56,6 +57,7 @@ import { NOSTALGIA_FOCUS, isNostalgiaId, type NostalgiaId, type NostalgiaPage } 
 import { COUNTRIES_FOCUS, countryCode, isCountrySlug, type CountryPage } from "../shared/countries";
 import { regionName } from "../shared/datasets-i18n";
 import { CALORIES_FOCUS, type CaloriesPage, type FoodId } from "../shared/calories";
+import { ELEMENTS_FOCUS, type ElementSlug, type ElementsPage } from "../shared/elements";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -110,6 +112,8 @@ let nostalgiaPage: NostalgiaPage = null;
 let countriesPage: CountryPage = null;
 /** A calories page: "hub" for /calories/, else the food id. */
 let caloriesPage: CaloriesPage = null;
+/** A periodic table page: "hub" for /periodic-table/, else the element slug. Reset at the start of every render(). */
+let elementsPage: ElementsPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -319,6 +323,18 @@ export function boot(): void {
     setLocale(loc);
     applyCalories(parsed.food);
     history.replaceState(null, "", withSearch(caloriesHref(loc, parsed.food), location.search));
+  } else if (parsed.kind === "elements") {
+    setLocale(parsed.locale);
+    applyElements(parsed.entry);
+    const canonical = elementsHref(parsed.locale, parsed.entry);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-elements") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyElements(parsed.entry);
+    history.replaceState(null, "", withSearch(elementsHref(loc, parsed.entry), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -420,6 +436,9 @@ function prefetchGamePack(e: Event): void {
     // The pack carries every food's numbers: under a pointer, wait until it rests on a link, as test links do.
     if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
     else load();
+  } else if (target?.closest?.('a[data-nav^="element-"], a[data-nav="elements"]')) {
+    // One pack serves the hub and every element page.
+    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true).catch(() => {});
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {
@@ -685,6 +704,10 @@ function applyCalories(id: FoodId | null): void {
   applyTool(null, null);
   caloriesPage = id ?? "hub";
 }
+function applyElements(slug: ElementSlug | null): void {
+  applyTool(null, null);
+  elementsPage = slug ?? "hub";
+}
 
 function unmountTools(): void {
   const unmount = unmountCurrent;
@@ -694,7 +717,7 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
@@ -712,9 +735,10 @@ export function render(): void {
   const countries: CountryPage = parsed.kind === "countries" || parsed.kind === "bare-countries" ? parsed.entry ?? "hub" : null;
   const copy = pageCopyOf(parsed);
   const calories: CaloriesPage = parsed.kind === "calories" || parsed.kind === "bare-calories" ? parsed.food ?? "hub" : null;
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories)) {
+  const elements = parsed.kind === "elements" || parsed.kind === "bare-elements";
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -734,6 +758,7 @@ export function render(): void {
   }
   pageGen += 1;
   unmountTools();
+  elementsPage = null;
   convertJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.convertJob ?? null : null;
   resizeJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.resizeJob ?? null : null;
   if (parsed.kind === "app") {
@@ -822,13 +847,20 @@ export function render(): void {
     applyCalories(parsed.food);
   } else if (parsed.kind === "bare-calories") {
     applyCalories(parsed.food);
+  } else if (parsed.kind === "elements") {
+    setLocale(parsed.locale);
+    applyElements(parsed.entry);
+  } else if (parsed.kind === "bare-elements") {
+    applyElements(parsed.entry);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
     applyTool(null, null);
   }
 
-  const seo = countriesPage
+  const seo = elementsPage
+    ? { elements: true as const, elementSlug: elementsPage === "hub" ? null : elementsPage }
+    : countriesPage
     ? { countries: true as const, countryId: countriesPage === "hub" ? null : countriesPage }
     : caloriesPage
     ? { calories: true as const, foodId: caloriesPage === "hub" ? null : caloriesPage }
@@ -871,7 +903,7 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub") || (nostalgiaPage && nostalgiaPage !== "hub")) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub") || (nostalgiaPage && nostalgiaPage !== "hub") || (elementsPage && elementsPage !== "hub")) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
@@ -891,7 +923,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? `https://cv.cm${image.split("?")[0]}` : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -1029,7 +1061,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage);
   const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
   const gamesOn = gamesHub || Boolean(gameId);
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
@@ -1175,6 +1207,16 @@ function toolDirectory(loc: Locale): HTMLElement {
         ),
       ),
     ),
+    // Element names live in the elements pack, so the footer links the hub and the ELEMENTS_FOCUS elements, whose
+    // names are also in the core pack (periodicTable.focus.*).
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: elementsHref(loc), "data-nav": "elements", "aria-current": elementsPage === "hub" ? "page" : undefined }, t("nav.elements"))),
+      h("p", null,
+        ...ELEMENTS_FOCUS.map((slug) =>
+          h("a", { href: elementsHref(loc, slug), "data-nav": `element-${slug}`, "aria-current": elementsPage === slug ? "page" : undefined }, t(`periodicTable.focus.${slug}`)),
+        ),
+      ),
+    ),
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: kbHref(loc), "data-nav": "knowledge" }, t("kb.label"))),
       h("p", null,
@@ -1302,6 +1344,11 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./calories/ui");
     if (!alive()) return;
     m.mountCalories(main, loc, caloriesPage === "hub" ? null : caloriesPage);
+  } else if (elementsPage) {
+    const page = elementsPage;
+    const m = await import("./elements/ui");
+    if (!alive()) return;
+    m.mountElements(main, loc, page === "hub" ? null : page);
   } else if (legalPage) {
     main.innerHTML = legalStaticHtml(loc, legalPage);
   } else if (marketId || marketsHub) {
@@ -1453,7 +1500,9 @@ function localeHref(next: Locale): string {
 
 /** The page on screen in another locale, without the query. */
 function localePath(next: Locale): string {
-  return devicePage
+  return elementsPage
+    ? elementsHref(next, elementsPage === "hub" ? null : elementsPage)
+    : devicePage
     ? deviceHref(next, devicePage)
     : quizPage
     ? quizHref(next, quizPage === "hub" ? null : quizPage)

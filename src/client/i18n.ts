@@ -62,6 +62,7 @@ import type { IdeaEntryCopy } from "../shared/ideas-i18n";
 import type { IdeaId, IdeaPage } from "../shared/ideas";
 import type { NostalgiaEntryCopy } from "../shared/nostalgia-i18n";
 import type { NostalgiaId, NostalgiaPage } from "../shared/nostalgia";
+import { hasElementsMessages, registerElementsMessages, type ElementsMessages } from "../shared/messages";
 import type { QuizId, QuizPage } from "../shared/quiz";
 import type { QuizCopy } from "../shared/quiz-i18n";
 import { countryBucket, countryCode, type CountryPage } from "../shared/countries";
@@ -359,6 +360,18 @@ const NOSTALGIA_LOADER_TABLES: Record<Locale, () => Promise<{ NOSTALGIA_LOADERS:
   es: () => import("../locales/nostalgia/loaders/es"),
 };
 
+// Periodic table copy, element names and the PubChem rows, only for /periodic-table/ pages.
+const ELEMENTS_PACKS: Record<Locale, () => Promise<{ default: ElementsMessages }>> = {
+  en: () => import("../locales/packs/elements-en"),
+  "zh-CN": () => import("../locales/packs/elements-zh-CN"),
+  "zh-TW": () => import("../locales/packs/elements-zh-TW"),
+  ja: () => import("../locales/packs/elements-ja"),
+  ko: () => import("../locales/packs/elements-ko"),
+  vi: () => import("../locales/packs/elements-vi"),
+  id: () => import("../locales/packs/elements-id"),
+  es: () => import("../locales/packs/elements-es"),
+};
+
 async function loadNostalgiaEntry(next: Locale, id: NostalgiaId): Promise<void> {
   const { NOSTALGIA_LOADERS } = await NOSTALGIA_LOADER_TABLES[next]();
   const m = (await NOSTALGIA_LOADERS[id]()) as { default: NostalgiaEntryCopy };
@@ -394,7 +407,7 @@ const CALORIES_PACKS: Record<Locale, () => Promise<{ default: CaloriesMessages }
 };
 
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
@@ -408,10 +421,11 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!ideas || (hasIdeasMessages(next) && (!idea || hasIdeaEntry(next, idea))))
     && (!nostalgia || (hasNostalgiaMessages(next) && (!memory || hasNostalgiaEntry(next, memory))))
     && (!countries || (hasCountriesMessages(next) && (countryBucketOf(countries) === null || hasCountryBucket(countryBucketOf(countries)!))))
-    && (!calories || hasCaloriesMessages(next));
+    && (!calories || hasCaloriesMessages(next))
+    && (!elements || hasElementsMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false): Promise<void> {
   const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
@@ -439,6 +453,7 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !countries || hasCountriesMessages(next) ? null : COUNTRIES_PACKS[next]().then((m) => registerCountriesMessages(next, m.default)),
     bucket === null || hasCountryBucket(bucket) ? null : COUNTRY_BUCKET_LOADERS[bucket]().then((m) => registerCountryBucket(bucket, m.default as Record<string, CountryDetail>)),
     !calories || hasCaloriesMessages(next) ? null : CALORIES_PACKS[next]().then((m) => registerCaloriesMessages(next, m.default)),
+    !elements || hasElementsMessages(next) ? null : ELEMENTS_PACKS[next]().then((m) => registerElementsMessages(next, m.default)),
   ]);
 }
 

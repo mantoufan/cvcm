@@ -1,0 +1,185 @@
+{
+  "crumbHome": "Trang chủ",
+  "hub": {
+    "title": "Bảng tuần hoàn các nguyên tố hóa học: ký hiệu, tên, nguyên tử khối",
+    "h1": "Bảng tuần hoàn các nguyên tố hóa học",
+    "lede": "Cả 118 nguyên tố xếp theo số hiệu nguyên tử, tô màu theo loại. Mở một nguyên tố để xem nguyên tử khối, cấu hình electron, nhiệt độ nóng chảy, nhiệt độ sôi và khối lượng riêng.",
+    "description": "Bảng tuần hoàn tương tác gồm {n} nguyên tố với ký hiệu, số hiệu nguyên tử, nguyên tử khối và phân loại. Mở bất kỳ nguyên tố nào để xem cấu hình electron, nhiệt độ nóng chảy, nhiệt độ sôi và khối lượng riêng.",
+    "tableLabel": "Bảng tuần hoàn {n} nguyên tố",
+    "fRow": "{from}–{to}",
+    "legend": "Phân loại",
+    "listTitle": "Tất cả nguyên tố",
+    "filterCategory": "Loại",
+    "allCategories": "Tất cả các loại",
+    "search": "Tìm nguyên tố",
+    "searchPlaceholder": "Tên, ký hiệu hoặc số hiệu",
+    "shown": "{n} / {total} nguyên tố",
+    "sortBy": "Sắp xếp theo {column}",
+    "aboutTitle": "Cách sắp xếp bảng",
+    "about": [
+      "Bảng xếp các nguyên tố theo số hiệu nguyên tử, tức số proton trong hạt nhân. Mỗi hàng là một chu kỳ, mỗi cột là một nhóm; các nguyên tố cùng nhóm có cùng số electron lớp ngoài cùng, nên thường phản ứng giống nhau.",
+      "Họ lantan (57–71) và họ actini (89–103) được đặt thành hai hàng bên dưới bảng, giống bảng của IUPAC, để bảng vừa một trang. Vị trí của chúng được đánh dấu ở nhóm 3 của chu kỳ 6 và 7."
+    ],
+    "faq": [
+      {
+        "q": "Bảng tuần hoàn có bao nhiêu nguyên tố?",
+        "a": "Bảng tuần hoàn có {n} nguyên tố đã biết, từ hydrogen (số hiệu nguyên tử 1) đến oganesson (118), xếp thành bảy hàng gọi là chu kỳ."
+      },
+      {
+        "q": "Các màu có ý nghĩa gì?",
+        "a": "Mỗi màu là một loại nguyên tố theo cách phân nhóm của PubChem: kim loại kiềm, kim loại kiềm thổ, kim loại chuyển tiếp, kim loại sau chuyển tiếp, á kim, phi kim, halogen, khí hiếm, họ lantan và họ actini. Chú giải ghi tên từng màu, và trang của mỗi nguyên tố đều ghi rõ loại của nó bằng chữ."
+      },
+      {
+        "q": "Các số liệu lấy từ đâu?",
+        "a": "Từ PubChem, cơ sở dữ liệu hóa học của Thư viện Y khoa Quốc gia Hoa Kỳ, nơi tổng hợp số liệu từ IUPAC, IAEA, NIST và các phòng thí nghiệm quốc gia Hoa Kỳ. Nguyên tử khối đặt trong ngoặc vuông là của nguyên tố không có đồng vị bền. Dấu gạch ngang nghĩa là PubChem không có giá trị."
+      }
+    ]
+  },
+  "page": {
+    "title": "{name} ({symbol}): nguyên tử khối, cấu hình electron, tính chất",
+    "description": "{name} ({symbol}) là nguyên tố số {z}, {categoryIn}. Nguyên tử khối {mass} u, cấu hình electron {config}.",
+    "descriptionMelting": " Nhiệt độ nóng chảy {mp} K ({mpC} °C).",
+    "descriptionDensity": " Khối lượng riêng {density} g/cm³.",
+    "h1": "{name} ({symbol})",
+    "answer": "{name} ({symbol}) là nguyên tố số {z} trong bảng tuần hoàn: {categoryIn}, thuộc nhóm {group}, chu kỳ {period}. Nguyên tử khối của nó là {mass} u, và ở điều kiện tiêu chuẩn nó {state}.",
+    "answerFBlock": "{name} ({symbol}) là nguyên tố số {z} trong bảng tuần hoàn: {categoryIn}, thuộc khối f của chu kỳ {period}. Nguyên tử khối của nó là {mass} u, và ở điều kiện tiêu chuẩn nó {state}.",
+    "factsTitle": "Thông tin về {nameText}",
+    "configTitle": "Cấu hình electron",
+    "configText": "{name} có {z} electron. Viết gọn, với khí hiếm đứng trước đặt trong ngoặc vuông, cấu hình của nó là {config}.",
+    "configPlain": "{name} có {z} electron, phân bố là {config}.",
+    "configPredicted": "Cấu hình này là dự đoán, không phải đo được.",
+    "configCalculated": "Cấu hình này là tính toán, không phải đo được.",
+    "configFull": "Viết đầy đủ",
+    "shells": "Số electron mỗi lớp",
+    "positionTitle": "Vị trí trong bảng tuần hoàn",
+    "positionText": "Nhóm {group}, chu kỳ {period}, khối {block}.",
+    "positionFBlock": "Chu kỳ {period}, khối f (hàng {category} bên dưới bảng chính).",
+    "mapLabel": "Vị trí của {nameText} trong bảng tuần hoàn",
+    "neighboursTitle": "Các nguyên tố lân cận",
+    "previous": "Nguyên tố trước",
+    "next": "Nguyên tố sau",
+    "sameGroup": "Nhóm {group}",
+    "sameRow": "Hàng {category}",
+    "faqTitle": "Câu hỏi thường gặp",
+    "faqMass": {
+      "q": "Nguyên tử khối của {nameText} là bao nhiêu?",
+      "a": "Nguyên tử khối của {nameText} ({symbol}) là {mass} u (đơn vị khối lượng nguyên tử); khối lượng mol của nó có cùng giá trị, tính bằng g/mol."
+    },
+    "faqMassIsotope": {
+      "q": "Nguyên tử khối của {nameText} là bao nhiêu?",
+      "a": "{name} ({symbol}) không có đồng vị bền nên không có nguyên tử khối chuẩn. PubChem ghi {mass} u, là khối lượng của một đồng vị của nó, vì vậy số này được đặt trong ngoặc vuông."
+    },
+    "faqConfig": {
+      "q": "Cấu hình electron của {nameText} là gì?",
+      "a": "Cấu hình electron của {nameText} là {config}, viết đầy đủ là {full}. {z} electron của nó phân bố vào các lớp như sau: {shells}."
+    },
+    "faqConfigPlain": {
+      "q": "Cấu hình electron của {nameText} là gì?",
+      "a": "Cấu hình electron của {nameText} là {config}. {z} electron của nó phân bố vào các lớp như sau: {shells}."
+    },
+    "faqMeltBoil": {
+      "q": "Nhiệt độ nóng chảy của {nameText} là bao nhiêu?",
+      "a": "{name} nóng chảy ở {mp} K ({mpC} °C) và sôi ở {bp} K ({bpC} °C)."
+    },
+    "faqMelt": {
+      "q": "Nhiệt độ nóng chảy của {nameText} là bao nhiêu?",
+      "a": "{name} nóng chảy ở {mp} K ({mpC} °C). PubChem không ghi nhiệt độ sôi của nó."
+    },
+    "faqSymbol": {
+      "q": "Ký hiệu hóa học của {nameText} là gì?",
+      "a": "Ký hiệu hóa học của {nameText} là {symbol}, số hiệu nguyên tử là {z}. PubChem không ghi nhiệt độ nóng chảy hay nhiệt độ sôi của nó."
+    }
+  },
+  "labels": {
+    "atomicNumber": "Số hiệu nguyên tử",
+    "symbol": "Ký hiệu",
+    "name": "Tên",
+    "englishName": "Tên tiếng Anh",
+    "mass": "Nguyên tử khối",
+    "category": "Loại",
+    "group": "Nhóm",
+    "period": "Chu kỳ",
+    "block": "Khối",
+    "state": "Trạng thái chuẩn",
+    "config": "Cấu hình electron",
+    "electronegativity": "Độ âm điện (Pauling)",
+    "radius": "Bán kính nguyên tử (van der Waals)",
+    "ionization": "Năng lượng ion hóa thứ nhất",
+    "affinity": "Ái lực electron",
+    "oxidation": "Số oxi hóa",
+    "melting": "Nhiệt độ nóng chảy",
+    "boiling": "Nhiệt độ sôi",
+    "density": "Khối lượng riêng",
+    "year": "Năm phát hiện",
+    "cpk": "Màu CPK",
+    "number": "STT"
+  },
+  "values": {
+    "none": "—",
+    "ancient": "Đã biết từ thời cổ đại",
+    "fBlockGroup": "— (khối f)",
+    "block": "khối {block}",
+    "massIsotope": "Trong ngoặc vuông: không có đồng vị bền, nên đây là khối lượng của một đồng vị theo PubChem, không phải nguyên tử khối chuẩn.",
+    "expected": "dự đoán: {state}",
+    "predicted": "dự đoán",
+    "calculated": "tính toán"
+  },
+  "states": {
+    "solid": "rắn",
+    "liquid": "lỏng",
+    "gas": "khí"
+  },
+  "statePhrase": {
+    "solid": "là chất rắn",
+    "liquid": "là chất lỏng",
+    "gas": "là chất khí",
+    "expectedSolid": "được dự đoán là chất rắn",
+    "expectedLiquid": "được dự đoán là chất lỏng",
+    "expectedGas": "được dự đoán là chất khí"
+  },
+  "categories": {
+    "alkali-metal": "Kim loại kiềm",
+    "alkaline-earth-metal": "Kim loại kiềm thổ",
+    "transition-metal": "Kim loại chuyển tiếp",
+    "post-transition-metal": "Kim loại sau chuyển tiếp",
+    "metalloid": "Á kim",
+    "nonmetal": "Phi kim",
+    "halogen": "Halogen",
+    "noble-gas": "Khí hiếm",
+    "lanthanide": "Họ lantan",
+    "actinide": "Họ actini"
+  },
+  "categoryPlural": {
+    "alkali-metal": "Kim loại kiềm",
+    "alkaline-earth-metal": "Kim loại kiềm thổ",
+    "transition-metal": "Kim loại chuyển tiếp",
+    "post-transition-metal": "Kim loại sau chuyển tiếp",
+    "metalloid": "Á kim",
+    "nonmetal": "Phi kim",
+    "halogen": "Halogen",
+    "noble-gas": "Khí hiếm",
+    "lanthanide": "Họ lantan",
+    "actinide": "Họ actini"
+  },
+  "categoryIn": {
+    "alkali-metal": "một kim loại kiềm",
+    "alkaline-earth-metal": "một kim loại kiềm thổ",
+    "transition-metal": "một kim loại chuyển tiếp",
+    "post-transition-metal": "một kim loại sau chuyển tiếp",
+    "metalloid": "một á kim",
+    "nonmetal": "một phi kim",
+    "halogen": "một halogen",
+    "noble-gas": "một khí hiếm",
+    "lanthanide": "một nguyên tố họ lantan",
+    "actinide": "một nguyên tố họ actini"
+  },
+  "sources": {
+    "title": "Nguồn",
+    "data": "Dữ liệu: {pubchem}, cơ sở dữ liệu hóa học của Thư viện Y khoa Quốc gia Hoa Kỳ (phạm vi công cộng), tổng hợp các giá trị từ IUPAC CIAAW, Trung tâm Dữ liệu Khối lượng Nguyên tử của IAEA, NIST, Phòng thí nghiệm Quốc gia Los Alamos và Jefferson Lab.",
+    "names": "Tên nguyên tố: {wikidata} (CC0).",
+    "snapshot": "Dữ liệu tại ngày {date}. Dấu gạch ngang nghĩa là PubChem không có giá trị; ở đây không ước tính gì.",
+    "pubchem": "PubChem",
+    "wikidata": "Wikidata",
+    "element": "{name} trên PubChem"
+  }
+}

@@ -6,6 +6,8 @@ import { nostalgiaName } from "./nostalgia-i18n";
 import { countryName } from "./countries-i18n";
 import { countryCode } from "./countries";
 import { foodLabel } from "./calories-i18n";
+import { elementName } from "./elements-i18n";
+import { atomicNumberOf } from "./elements";
 import { nameFromTitle, SEARCH_CHANNEL_NAV, shortBlurb, type SearchChannel, type SearchEntry } from "./search";
 
 /** A channel's front page (/tests/, /rankings/ …): listed under the channel's own name, not its SEO title. */
@@ -24,6 +26,7 @@ function isHub(page: SitemapPage): boolean {
     case "ideas":
     case "nostalgia":
     case "countries":
+    case "elements":
       return page.entry === null;
     case "calories":
       return page.food === null;
@@ -45,6 +48,8 @@ function pageName(locale: Locale, page: SitemapPage, channel: SearchChannel, seo
   if (page.kind === "countries" && page.entry) return countryName(locale, countryCode(page.entry));
   // Calories titles carry numbers ("Calories in Banana: 97 kcal per 100 g…"): use the food's own name.
   if (page.kind === "calories" && page.food) return foodLabel(locale, page.food);
+  // Element titles are long ("Carbon (C): Atomic Mass, …"): the element's own name.
+  if (page.kind === "elements" && page.entry) return elementName(locale, atomicNumberOf(page.entry));
   return nameFromTitle(pageTitle(locale, seo));
 }
 
@@ -79,6 +84,8 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
       return { channel: "nostalgia", seo: { nostalgia: true, nostalgiaId: page.entry } };
     case "calories":
       return { channel: "calories", seo: { calories: true, foodId: page.food } };
+    case "elements":
+      return { channel: "elements", seo: { elements: true, elementSlug: page.entry } };
     case "games":
       return { channel: "games", seo: { games: true, console: page.console, game: page.game } };
     case "countries":

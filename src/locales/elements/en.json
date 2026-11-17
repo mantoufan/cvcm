@@ -1,0 +1,185 @@
+{
+  "crumbHome": "Home",
+  "hub": {
+    "title": "Periodic Table of Elements: Names, Symbols and Atomic Masses",
+    "h1": "Periodic table of elements",
+    "lede": "All 118 elements by atomic number, coloured by category. Open an element for its atomic mass, electron configuration, melting and boiling points and density.",
+    "description": "Interactive periodic table of all {n} elements with symbols, atomic numbers, atomic masses and categories. Open any element for its electron configuration, melting and boiling points and density.",
+    "tableLabel": "Periodic table of the {n} elements",
+    "fRow": "{from}–{to}",
+    "legend": "Categories",
+    "listTitle": "All elements",
+    "filterCategory": "Category",
+    "allCategories": "All categories",
+    "search": "Find an element",
+    "searchPlaceholder": "Name, symbol or number",
+    "shown": "{n} of {total} elements",
+    "sortBy": "Sort by {column}",
+    "aboutTitle": "How the table is arranged",
+    "about": [
+      "The table orders the elements by atomic number, the number of protons in the nucleus. Each row is a period and each column a group; elements in the same group have the same number of outer electrons, which is why they often react alike.",
+      "The lanthanides (57–71) and actinides (89–103) sit in two rows under the table, as on the IUPAC table, so that it fits on a page. Their place is marked in group 3 of periods 6 and 7."
+    ],
+    "faq": [
+      {
+        "q": "How many elements are in the periodic table?",
+        "a": "The periodic table has {n} known elements, from hydrogen (atomic number 1) to oganesson (118), in seven rows called periods."
+      },
+      {
+        "q": "What do the colours mean?",
+        "a": "Each colour is a category of element as PubChem groups them: alkali metals, alkaline earth metals, transition metals, post-transition metals, metalloids, nonmetals, halogens, noble gases, lanthanides and actinides. The legend names each colour, and every element's page states its category in words."
+      },
+      {
+        "q": "Where do the numbers come from?",
+        "a": "From PubChem, the chemistry database of the U.S. National Library of Medicine, which compiles them from IUPAC, the IAEA, NIST and U.S. national laboratories. A mass in brackets belongs to an element with no stable isotope. A dash means PubChem lists no value."
+      }
+    ]
+  },
+  "page": {
+    "title": "{name} ({symbol}): Atomic Mass, Electron Configuration, Properties",
+    "description": "{name} ({symbol}) is element {z}, {categoryIn}. Atomic mass {mass} u, electron configuration {config}.",
+    "descriptionMelting": " Melting point {mp} K ({mpC} °C).",
+    "descriptionDensity": " Density {density} g/cm³.",
+    "h1": "{name} ({symbol})",
+    "answer": "{name} ({symbol}) is element {z} of the periodic table: {categoryIn} in group {group}, period {period}. Its atomic mass is {mass} u, and it is {state} under standard conditions.",
+    "answerFBlock": "{name} ({symbol}) is element {z} of the periodic table: {categoryIn} in the f-block of period {period}. Its atomic mass is {mass} u, and it is {state} under standard conditions.",
+    "factsTitle": "{name} facts",
+    "configTitle": "Electron configuration",
+    "configText": "{name} has {z} electrons. In shorthand, with the previous noble gas in brackets, its configuration is {config}.",
+    "configPlain": "{name} has {z} electrons, arranged as {config}.",
+    "configPredicted": "This configuration is predicted, not measured.",
+    "configCalculated": "This configuration is calculated, not measured.",
+    "configFull": "Written out in full",
+    "shells": "Electrons per shell",
+    "positionTitle": "Position in the periodic table",
+    "positionText": "Group {group}, period {period}, {block}-block.",
+    "positionFBlock": "Period {period}, f-block (the row of {category} under the main table).",
+    "mapLabel": "Where {nameText} sits in the periodic table",
+    "neighboursTitle": "Neighbouring elements",
+    "previous": "Previous element",
+    "next": "Next element",
+    "sameGroup": "Group {group}",
+    "sameRow": "Row: {category}",
+    "faqTitle": "Frequently asked questions",
+    "faqMass": {
+      "q": "What is the atomic mass of {nameText}?",
+      "a": "The atomic mass of {nameText} ({symbol}) is {mass} u (unified atomic mass units); its molar mass is the same number in g/mol."
+    },
+    "faqMassIsotope": {
+      "q": "What is the atomic mass of {nameText}?",
+      "a": "{name} ({symbol}) has no stable isotope and no standard atomic weight. PubChem lists {mass} u, the mass of one of its isotopes, which is why it is written in brackets."
+    },
+    "faqConfig": {
+      "q": "What is the electron configuration of {nameText}?",
+      "a": "The electron configuration of {nameText} is {config}, written out {full}. Its {z} electrons fill the shells as {shells}."
+    },
+    "faqConfigPlain": {
+      "q": "What is the electron configuration of {nameText}?",
+      "a": "The electron configuration of {nameText} is {config}. Its {z} electrons fill the shells as {shells}."
+    },
+    "faqMeltBoil": {
+      "q": "What is the melting point of {nameText}?",
+      "a": "{name} melts at {mp} K ({mpC} °C) and boils at {bp} K ({bpC} °C)."
+    },
+    "faqMelt": {
+      "q": "What is the melting point of {nameText}?",
+      "a": "{name} melts at {mp} K ({mpC} °C). PubChem lists no boiling point for it."
+    },
+    "faqSymbol": {
+      "q": "What is the symbol of {nameText}?",
+      "a": "The chemical symbol of {nameText} is {symbol}, and its atomic number is {z}. PubChem lists no melting or boiling point for it."
+    }
+  },
+  "labels": {
+    "atomicNumber": "Atomic number",
+    "symbol": "Symbol",
+    "name": "Name",
+    "englishName": "English name",
+    "mass": "Atomic mass",
+    "category": "Category",
+    "group": "Group",
+    "period": "Period",
+    "block": "Block",
+    "state": "Standard state",
+    "config": "Electron configuration",
+    "electronegativity": "Electronegativity (Pauling)",
+    "radius": "Atomic radius (van der Waals)",
+    "ionization": "First ionization energy",
+    "affinity": "Electron affinity",
+    "oxidation": "Oxidation states",
+    "melting": "Melting point",
+    "boiling": "Boiling point",
+    "density": "Density",
+    "year": "Discovered",
+    "cpk": "CPK colour",
+    "number": "No."
+  },
+  "values": {
+    "none": "—",
+    "ancient": "Known since ancient times",
+    "fBlockGroup": "— (f-block)",
+    "block": "{block}-block",
+    "massIsotope": "In brackets: no stable isotope, so this is the mass of one isotope as listed by PubChem, not a standard atomic weight.",
+    "expected": "expected: {state}",
+    "predicted": "predicted",
+    "calculated": "calculated"
+  },
+  "states": {
+    "solid": "solid",
+    "liquid": "liquid",
+    "gas": "gas"
+  },
+  "statePhrase": {
+    "solid": "a solid",
+    "liquid": "a liquid",
+    "gas": "a gas",
+    "expectedSolid": "expected to be a solid",
+    "expectedLiquid": "expected to be a liquid",
+    "expectedGas": "expected to be a gas"
+  },
+  "categories": {
+    "alkali-metal": "Alkali metal",
+    "alkaline-earth-metal": "Alkaline earth metal",
+    "transition-metal": "Transition metal",
+    "post-transition-metal": "Post-transition metal",
+    "metalloid": "Metalloid",
+    "nonmetal": "Nonmetal",
+    "halogen": "Halogen",
+    "noble-gas": "Noble gas",
+    "lanthanide": "Lanthanide",
+    "actinide": "Actinide"
+  },
+  "categoryPlural": {
+    "alkali-metal": "Alkali metals",
+    "alkaline-earth-metal": "Alkaline earth metals",
+    "transition-metal": "Transition metals",
+    "post-transition-metal": "Post-transition metals",
+    "metalloid": "Metalloids",
+    "nonmetal": "Nonmetals",
+    "halogen": "Halogens",
+    "noble-gas": "Noble gases",
+    "lanthanide": "Lanthanides",
+    "actinide": "Actinides"
+  },
+  "categoryIn": {
+    "alkali-metal": "an alkali metal",
+    "alkaline-earth-metal": "an alkaline earth metal",
+    "transition-metal": "a transition metal",
+    "post-transition-metal": "a post-transition metal",
+    "metalloid": "a metalloid",
+    "nonmetal": "a nonmetal",
+    "halogen": "a halogen",
+    "noble-gas": "a noble gas",
+    "lanthanide": "a lanthanide",
+    "actinide": "an actinide"
+  },
+  "sources": {
+    "title": "Sources",
+    "data": "Data: {pubchem}, the chemistry database of the U.S. National Library of Medicine (public domain), which compiles the values from IUPAC CIAAW, the IAEA Atomic Mass Data Center, NIST, Los Alamos National Laboratory and Jefferson Lab.",
+    "names": "Element names: {wikidata} (CC0).",
+    "snapshot": "Snapshot of {date}. A dash means PubChem lists no value; nothing is estimated here.",
+    "pubchem": "PubChem",
+    "wikidata": "Wikidata",
+    "element": "{name} on PubChem"
+  }
+}

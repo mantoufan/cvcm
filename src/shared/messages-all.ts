@@ -274,3 +274,25 @@ const CALORIES: Record<Locale, CaloriesMessages> = {
   es: esCalories,
 };
 for (const [locale, pack] of Object.entries(CALORIES)) registerCaloriesMessages(locale as Locale, pack);
+// Periodic table packs (copy, names and PubChem rows).
+import enElements from "../locales/packs/elements-en";
+import esElements from "../locales/packs/elements-es";
+import idElements from "../locales/packs/elements-id";
+import jaElements from "../locales/packs/elements-ja";
+import koElements from "../locales/packs/elements-ko";
+import viElements from "../locales/packs/elements-vi";
+import zhCNElements from "../locales/packs/elements-zh-CN";
+import zhTWElements from "../locales/packs/elements-zh-TW";
+import { registerElementsMessages, type ElementsMessages } from "./messages";
+
+const ELEMENTS: Record<Locale, ElementsMessages> = {
+  en: enElements,
+  "zh-CN": zhCNElements,
+  "zh-TW": zhTWElements,
+  ja: jaElements,
+  ko: koElements,
+  vi: viElements,
+  id: idElements,
+  es: esElements,
+};
+for (const [locale, pack] of Object.entries(ELEMENTS)) registerElementsMessages(locale as Locale, pack);

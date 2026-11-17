@@ -12,7 +12,7 @@ const LOCALE_PACKS: Record<string, string[]> = typeof __LOCALE_PACKS__ === "unde
  * `kb` "hub", "code", "ai", "photo" or the article id, `ref`, `slang`, `idea` and `nostalgia` "hub" or the entry id; `copy` the key of the page's copy bucket) in
  * parallel with the entry script instead of after it runs.
  */
-export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz: QuizPage | false = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, copy: string | null = null, idea: string | null = null, nostalgia: string | null = null, countries: string | null = null, calories = false): string {
+export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz: QuizPage | false = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, copy: string | null = null, idea: string | null = null, nostalgia: string | null = null, countries: string | null = null, calories = false, elements = false): string {
   const files = [...new Set([
     ...(packs[locale] ?? []),
     // The page's own copy bucket (`copyChunkKey`: a tool's FAQ and how-to, or a tutorial's text) and the locale's loader table.
@@ -36,6 +36,8 @@ export function preloadLocalePack(html: string, locale: Locale, game = false, pa
     ...(countries && countries !== "hub" ? packs[`countries-data/${countries}`] ?? [] : []),
     // One calories pack per locale (copy, names and the USDA snapshot) serves the hub and every food.
     ...(calories ? packs[`calories-${locale}`] ?? [] : []),
+    // The periodic table pack (one for the hub and every element page) and the PubChem rows chunk it imports.
+    ...(elements ? packs[`elements-${locale}`] ?? [] : []),
   ])];
   if (!files.length) return html;
   const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");

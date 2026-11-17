@@ -43,6 +43,8 @@ import { countriesCollectionJsonLd, countryBreadcrumbJsonLd, countryFaqJsonLd } 
 import type { CountryPage } from "../shared/countries";
 import { caloriesBreadcrumbJsonLd, caloriesFaqJsonLd, caloriesPageJsonLd } from "../shared/calories-i18n";
 import type { CaloriesPage } from "../shared/calories";
+import { elementsBreadcrumbJsonLd, elementsFaqJsonLd, elementsPageJsonLd } from "../shared/elements-i18n";
+import type { ElementsPage } from "../shared/elements";
 import type { DevicePageId } from "../shared/device";
 import { legalBreadcrumbJsonLd } from "../shared/legal";
 import type { ConvertJobId, LegalPageId, ResizeJobId, ToolId, TutorialId } from "../shared/path";
@@ -108,7 +110,16 @@ export function syncPageJsonLd(
   nostalgiaPage: NostalgiaPage = null,
   countriesPage: CountryPage = null,
   caloriesPage: CaloriesPage = null,
+  elementsPage: ElementsPage = null,
 ): void {
+  if (elementsPage) {
+    const slug = elementsPage === "hub" ? null : elementsPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("article-jsonld", elementsPageJsonLd(locale, slug));
+    writeJsonLd("faq-jsonld", elementsFaqJsonLd(locale, slug));
+    writeJsonLd("breadcrumb-jsonld", elementsBreadcrumbJsonLd(locale, slug));
+    return;
+  }
   const refId = refPage === "hub" ? null : refPage;
   const slangId = slangPage === "hub" ? null : slangPage;
   const ideaId = ideasPage === "hub" ? null : ideasPage;

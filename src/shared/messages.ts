@@ -56,6 +56,15 @@ export type NostalgiaMessages = typeof import("../locales/nostalgia/en.json") & 
   meta: Record<NostalgiaId, import("./nostalgia-meta").NostalgiaMeta>;
 };
 
+/** Periodic table copy plus this locale's element names, the English names and the PubChem rows (one pack per locale). */
+export type ElementsMessages = typeof import("../locales/elements/en.json") & {
+  /** Names by atomic number − 1 (Wikidata labels). */
+  names: string[];
+  /** English (IUPAC) names, shown next to the local name outside English. */
+  english: string[];
+  data: import("./elements-i18n").ElementRow[];
+};
+
 /** Strings every page of one locale needs. The client loads only the active locale's pack. */
 export type LocaleMessages = {
   ui: UiMessages;
@@ -93,6 +102,7 @@ const loadedIdeas: Partial<Record<Locale, IdeasMessages>> = {};
 const loadedIdeaEntries: Partial<Record<Locale, Partial<Record<IdeaId, IdeaEntryCopy>>>> = {};
 const loadedNostalgia: Partial<Record<Locale, NostalgiaMessages>> = {};
 const loadedNostalgiaEntries: Partial<Record<Locale, Partial<Record<NostalgiaId, NostalgiaEntryCopy>>>> = {};
+const loadedElements: Partial<Record<Locale, ElementsMessages>> = {};
 
 function pick<T>(table: Partial<Record<Locale, T>>, locale: Locale, what: string): T {
   const pack = table[locale] ?? table.en ?? Object.values(table)[0];
@@ -339,4 +349,16 @@ export function hasCaloriesMessages(locale: Locale): boolean {
 /** Calories copy, food names and numbers; on the client only after the calories pack is loaded (calories pages). */
 export function caloriesMessages(locale: Locale): CaloriesMessages {
   return pick(loadedCalories, locale, "calories messages");
+}
+export function registerElementsMessages(locale: Locale, pack: ElementsMessages): void {
+  loadedElements[locale] = pack;
+}
+
+export function hasElementsMessages(locale: Locale): boolean {
+  return Boolean(loadedElements[locale]);
+}
+
+/** Periodic table copy, names and rows; on the client only after the elements pack is loaded (periodic table pages). */
+export function elementsMessages(locale: Locale): ElementsMessages {
+  return pick(loadedElements, locale, "elements messages");
 }

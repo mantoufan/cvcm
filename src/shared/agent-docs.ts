@@ -12,11 +12,12 @@ import { IDEA_ENTRIES } from "./ideas";
 import { NOSTALGIA_ENTRIES } from "./nostalgia";
 import { COUNTRY_LIST } from "./countries";
 import { FOODS } from "./calories";
+import { ELEMENT_SLUGS } from "./elements";
 import { LOCALES, localePath } from "./locale";
 import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
 import { MUSIC_BARS, MUSIC_STYLES, STYLE_PRESETS, SURPRISE_IDS } from "./music-gen";
 import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
-import { AI_TOOLS, CATEGORIES, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, type CategoryId, type ToolId } from "./path";
+import { AI_TOOLS, CATEGORIES, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
 
 const CATEGORY_TITLE: Record<CategoryId, string> = {
@@ -243,6 +244,7 @@ export function buildLlmsTxt(): string {
     `- [Nostalgia](${SITE_ORIGIN}${nostalgiaHref("en", null)}): ${NOSTALGIA_ENTRIES.length} things from 1980s–2000s childhoods (Famicom, Tamagotchi, pagers, Walkman, Y2K, White Rabbit candy, Chinese snacks and playground games): what each was, when it was around, what it cost, what happened to it and whether it is still sold, in eight languages.`,
     `- [Countries](${SITE_ORIGIN}${countriesHref("en", null)}): ${COUNTRY_LIST.length} country and territory profiles: flag, capital, population, GDP, currency, calling code, time zones and about 50 World Bank figures, each with its world rank and a link to its ranked table, in eight languages.`,
     `- [Food calories](${SITE_ORIGIN}${caloriesHref("en", null)}): calories, protein, fat, carbohydrate, fibre, sugars and minerals per 100 g and per typical serving for ${FOODS.length} common foods (fruit, vegetables, rice, noodles and bread, meat, fish, eggs and dairy, tofu and beans, nuts, oils, drinks, sweets), from USDA FoodData Central (public domain, CC0 1.0), each with a gram calculator, in eight languages.`,
+    `- [Periodic table](${SITE_ORIGIN}${elementsHref("en", null)}): all ${ELEMENT_SLUGS.length} elements as a clickable table and one page each (for example ${SITE_ORIGIN}${elementsHref("en", "carbon")}): atomic number, atomic mass, category, group and period, electron configuration, melting and boiling points in K and °C, density, electronegativity, ionization energy and oxidation states from PubChem (NCBI, public domain), names in eight languages from Wikidata (CC0).`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,
     `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): free homebrew games playable in the browser.`,
     `- [Sitemap](${SITE_ORIGIN}/sitemap.xml)`,

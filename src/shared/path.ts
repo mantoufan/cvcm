@@ -18,10 +18,11 @@ import { IDEAS_SEGMENT, isIdeaId, type IdeaId } from "./ideas";
 import { NOSTALGIA_SEGMENT, isNostalgiaId, type NostalgiaId } from "./nostalgia";
 import { COUNTRIES_SEGMENT, isCountrySlug } from "./countries";
 import { CALORIES_SEGMENT, isFoodId, type FoodId } from "./calories";
+import { ELEMENTS_SEGMENT, isElementSlug, type ElementSlug } from "./elements";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "countries", "calories"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "countries", "calories", "elements"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -574,6 +575,7 @@ export type AppPath =
   | { kind: "bare-nostalgia"; entry: NostalgiaId | null }
   | { kind: "bare-countries"; entry: string | null }
   | { kind: "bare-calories"; food: FoodId | null }
+  | { kind: "bare-elements"; entry: ElementSlug | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -590,6 +592,7 @@ export type AppPath =
   | { kind: "nostalgia"; locale: Locale; entry: NostalgiaId | null }
   | { kind: "countries"; locale: Locale; entry: string | null }
   | { kind: "calories"; locale: Locale; food: FoodId | null }
+  | { kind: "elements"; locale: Locale; entry: ElementSlug | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -739,6 +742,12 @@ export function parseAppPath(pathname: string): AppPath {
       if (isFoodId(third.toLowerCase())) return { kind: "calories", locale, food: third.toLowerCase() as FoodId };
       return { kind: "unknown" };
     }
+    if (second === ELEMENTS_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "elements", locale, entry: null };
+      if (isElementSlug(third)) return { kind: "elements", locale, entry: third };
+      return { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -831,6 +840,11 @@ export function parseAppPath(pathname: string): AppPath {
   if (first === CALORIES_SEGMENT) {
     if (!second) return { kind: "bare-calories", food: null };
     if (isFoodId(second.toLowerCase()) && !third) return { kind: "bare-calories", food: second.toLowerCase() as FoodId };
+    return { kind: "unknown" };
+  }
+  if (first === ELEMENTS_SEGMENT) {
+    if (!second) return { kind: "bare-elements", entry: null };
+    if (isElementSlug(second) && !third) return { kind: "bare-elements", entry: second };
     return { kind: "unknown" };
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
@@ -932,6 +946,11 @@ export function countriesHref(locale: Locale, entry: string | null = null): stri
 export function caloriesHref(locale: Locale, food: FoodId | null = null): string {
   const base = `/${localePath(locale)}/${CALORIES_SEGMENT}`;
   return food ? `${base}/${food}/` : `${base}/`;
+}
+/** The periodic table channel: `/{locale}/periodic-table/` (hub) and `/{locale}/periodic-table/{slug}/`. */
+export function elementsHref(locale: Locale, entry: ElementSlug | null = null): string {
+  const base = `/${localePath(locale)}/${ELEMENTS_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
 }
 
 export function legalHref(locale: Locale, page: LegalPageId): string {
