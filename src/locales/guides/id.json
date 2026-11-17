@@ -1785,6 +1785,69 @@
       "s2b": "Tekan tombol yang disorot dengan jari yang ditunjukkan. Salah ketik tidak membuat Anda maju.",
       "s3t": "Periksa hasil Anda",
       "s3b": "Lihat tombol per menit, akurasi, dan tombol terlemah Anda. Capai 90% untuk mencentang pelajaran."
+    },
+    "standard-deviation": {
+      "lead": "Cari standar deviasi dalam tiga langkah.",
+      "s1t": "Tempel angka Anda",
+      "s1b": "Ketik atau tempel nilai yang dipisahkan spasi, koma, atau baris baru, atau satu kolom dari spreadsheet.",
+      "s2t": "Pilih sampel atau populasi",
+      "s2b": "Sampel (n − 1) untuk data dari kelompok yang lebih besar, populasi (n) bila Anda punya semua nilai.",
+      "s3t": "Baca dan salin",
+      "s3b": "Lihat standar deviasi, varians, rata-rata, dan galat baku, rumus yang sudah diisi, serta setiap langkah di tabel."
+    },
+    "sample-size": {
+      "lead": "Hitung ukuran sampel survei dalam tiga langkah.",
+      "s1t": "Pilih metode",
+      "s1b": "Cochran untuk proporsi, rumus Slovin, atau rata-rata dengan standar deviasi yang diketahui.",
+      "s2t": "Atur ketelitian",
+      "s2b": "Pilih tingkat kepercayaan dan margin of error, lalu tambahkan ukuran populasi dan tingkat respons yang diharapkan bila Anda tahu.",
+      "s3t": "Baca ukuran sampel",
+      "s3b": "Ukuran sampel dibulatkan ke atas, dengan rumus yang sudah dihitung dan tabel untuk margin lain."
+    },
+    "cronbach-alpha": {
+      "lead": "Uji reliabilitas skala dalam tiga langkah.",
+      "s1t": "Salin skor item Anda",
+      "s1b": "Pilih kolom-kolom item di Excel, Sheets, atau SPSS: satu baris per responden, dengan atau tanpa judul.",
+      "s2t": "Tempelkan",
+      "s2b": "Tempel ke dalam kotak. Alpha, alpha terstandar, dan tabel item diperbarui saat Anda mengetik.",
+      "s3t": "Periksa item-itemnya",
+      "s3b": "Cari korelasi item-total yang rendah atau alpha if item deleted yang lebih tinggi (↑), lalu salin baris APA."
+    },
+    "t-test": {
+      "lead": "Lakukan uji t dalam tiga langkah.",
+      "s1t": "Pilih uji",
+      "s1b": "Satu sampel, sampel independen (Welch atau Student), atau berpasangan.",
+      "s2t": "Tempel data",
+      "s2b": "Tempel angka setiap kelompok, atau nilai sebelum dan sesudah dengan urutan yang sama.",
+      "s3t": "Baca hasilnya",
+      "s3b": "Lihat t, df, p-value, selang kepercayaan, dan Cohen's d, lalu salin baris gaya APA."
+    },
+    "chi-square": {
+      "lead": "Lakukan uji chi square dalam tiga langkah.",
+      "s1t": "Pilih uji",
+      "s1b": "Independensi untuk tabel dua variabel, atau goodness of fit untuk satu variabel terhadap proporsi yang diharapkan.",
+      "s2t": "Masukkan frekuensi",
+      "s2b": "Atur jumlah baris dan kolom (atau kategori) lalu ketik frekuensi observasi.",
+      "s3t": "Baca hasilnya",
+      "s3b": "Lihat χ², df, p-value, Cramér's V, dan frekuensi harapan, dengan peringatan bila terlalu kecil."
+    },
+    "p-value": {
+      "lead": "Cari p-value atau nilai kritis dalam tiga langkah.",
+      "s1t": "Pilih distribusi",
+      "s1b": "z, t, chi square, atau F, sesuai distribusi statistik uji Anda.",
+      "s2t": "Masukkan angka",
+      "s2b": "Ketik statistik (atau taraf signifikansi α untuk nilai kritis) dan derajat kebebasan, lalu pilih arahnya.",
+      "s3t": "Baca jawabannya",
+      "s3b": "P-value beserta perbandingannya dengan 0,1, 0,05, 0,01, dan 0,001, atau nilai kritis dan kapan menolak H₀."
+    },
+    "z-score": {
+      "lead": "Gunakan z-score dalam tiga langkah.",
+      "s1t": "Pilih yang dicari",
+      "s1b": "Z-score suatu nilai, nilai pada suatu persentil, atau peluang di antara dua nilai.",
+      "s2t": "Masukkan rata-rata dan SD",
+      "s2b": "Ketik rata-rata (μ) dan standar deviasi (σ); biarkan 0 dan 1 untuk normal baku.",
+      "s3t": "Baca luasnya",
+      "s3b": "Lihat z, bagian di bawah dan di atas, serta luas yang diarsir pada kurva lonceng."
     }
   }
 }

@@ -1192,4 +1192,46 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountBusinessValuation(host);
     return m.unmountBusinessValuation;
   },
+  "standard-deviation": async (host, ctx) => {
+    const m = await import("./standard-deviation/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountStandardDeviation(host);
+    return m.unmountStandardDeviation;
+  },
+  "sample-size": async (host, ctx) => {
+    const m = await import("./sample-size/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountSampleSize(host);
+    return m.unmountSampleSize;
+  },
+  "cronbach-alpha": async (host, ctx) => {
+    const m = await import("./cronbach-alpha/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCronbach(host);
+    return m.unmountCronbach;
+  },
+  "t-test": async (host, ctx) => {
+    const m = await import("./t-test/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTTest(host);
+    return m.unmountTTest;
+  },
+  "chi-square": async (host, ctx) => {
+    const m = await import("./chi-square/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountChiSquare(host);
+    return m.unmountChiSquare;
+  },
+  "p-value": async (host, ctx) => {
+    const m = await import("./p-value/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPValue(host);
+    return m.unmountPValue;
+  },
+  "z-score": async (host, ctx) => {
+    const m = await import("./z-score/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountZScore(host);
+    return m.unmountZScore;
+  },
 };

@@ -39,6 +39,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   games: "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, checkers, reversi, gomoku, nonogram, memory game, Chinese checkers, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF",
   assets: "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)",
   wordgames: "Word games: word search, hangman, typing game, typing practice (touch-typing lessons)",
+  academic: "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines",
   valuation: "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)",
 };
 

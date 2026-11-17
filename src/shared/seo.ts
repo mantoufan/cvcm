@@ -299,6 +299,13 @@ const TITLE: Record<ToolId, string> = {
   v: "meta.titleV",
   "ai-image-generator": "meta.titleImageGen",
   "ai-music-generator": "meta.titleMusicGen",
+  "standard-deviation": "meta.titleStandardDeviation",
+  "sample-size": "meta.titleSampleSize",
+  "cronbach-alpha": "meta.titleCronbachAlpha",
+  "t-test": "meta.titleTTest",
+  "chi-square": "meta.titleChiSquare",
+  "p-value": "meta.titlePValue",
+  "z-score": "meta.titleZScore",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -526,6 +533,13 @@ const DESC: Record<ToolId, string> = {
   v: "meta.descV",
   "ai-image-generator": "meta.descImageGen",
   "ai-music-generator": "meta.descMusicGen",
+  "standard-deviation": "meta.descStandardDeviation",
+  "sample-size": "meta.descSampleSize",
+  "cronbach-alpha": "meta.descCronbachAlpha",
+  "t-test": "meta.descTTest",
+  "chi-square": "meta.descChiSquare",
+  "p-value": "meta.descPValue",
+  "z-score": "meta.descZScore",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {
@@ -1127,6 +1141,7 @@ const APP_CATEGORY: Partial<Record<CategoryId, string>> = {
   wordgames: "GameApplication",
   fun: "EntertainmentApplication",
   valuation: "FinanceApplication",
+  academic: "EducationalApplication",
 };
 /** Tools sold under their own name (watermark + mosaic share the ID Watermark & Redact brand). */
 export const BRANDED_TOOLS = new Set<ToolId>(["watermark", "mosaic"]);

@@ -201,6 +201,13 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   v: 3,
   "ai-image-generator": 3,
   "ai-music-generator": 3,
+  "standard-deviation": 3,
+  "sample-size": 3,
+  "cronbach-alpha": 3,
+  "t-test": 3,
+  "chi-square": 3,
+  "p-value": 3,
+  "z-score": 3,
 };
 
 export function guideSteps(tool: ToolId): number {
