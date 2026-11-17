@@ -12,16 +12,22 @@ export const PRUNE_AFTER_DAYS = 7;
 export type Manifest = {
   /** Path under covers/ → SHA-256 of what was uploaded. */
   files: Record<string, string>;
-  /** Path under covers/ → when it left public/covers (ISO time). */
-  removed: Record<string, string>;
+  /** Path under covers/ → when it left public/covers (ISO time) and the hash it had. */
+  removed: Record<string, Removed>;
 };
+
+export type Removed = { at: string; hash: string };
 
 /** The stored manifest; the first version was a bare path → hash map. */
 export function parseManifest(json: unknown): Manifest {
   if (!json || typeof json !== "object") return { files: {}, removed: {} };
   const value = json as Partial<Manifest> & Record<string, unknown>;
   if (value.files && typeof value.files === "object") {
-    return { files: { ...value.files }, removed: { ...(value.removed ?? {}) } };
+    const removed: Record<string, Removed> = {};
+    for (const [rel, entry] of Object.entries(value.removed ?? {})) {
+      removed[rel] = typeof entry === "string" ? { at: entry, hash: "" } : entry;
+    }
+    return { files: { ...value.files }, removed };
   }
   return { files: { ...(json as Record<string, string>) }, removed: {} };
 }
@@ -31,7 +37,10 @@ export type SyncPlan = {
   unchanged: string[];
   /** Not in the manifest: check the bucket (HEAD) and upload unless the same file is already there. */
   added: string[];
-  /** In the manifest with other content: published files never change, so this is an error. */
+  /**
+   * In the manifest (or removed but not yet deleted) with other content: published files never change, so this is
+   * an error. A removed file that comes back with the same content is unchanged.
+   */
   edited: string[];
   /** In the manifest but no longer in public/covers: newly marked removed. */
   removed: string[];
@@ -39,9 +48,10 @@ export type SyncPlan = {
 
 /** Compare public/covers (path → hash) with the manifest. */
 export function planSync(before: Manifest, local: Record<string, string>): SyncPlan {
+  // A known hash of "" (a removal recorded before hashes were kept) cannot be compared: treat the file as added.
   const plan: SyncPlan = { unchanged: [], added: [], edited: [], removed: [] };
   for (const [rel, hash] of Object.entries(local)) {
-    const known = before.files[rel];
+    const known = before.files[rel] ?? (before.removed[rel]?.hash || undefined);
     if (known === undefined) plan.added.push(rel);
     else if (known === hash) plan.unchanged.push(rel);
     else plan.edited.push(rel);
@@ -52,9 +62,11 @@ export function planSync(before: Manifest, local: Record<string, string>): SyncP
 
 /** The manifest after a sync: `files` is what public/covers holds now; removals keep their first date. */
 export function nextManifest(before: Manifest, local: Record<string, string>, now: Date): Manifest {
-  const removed: Record<string, string> = {};
-  for (const [rel, at] of Object.entries(before.removed)) if (!(rel in local)) removed[rel] = at;
-  for (const rel of Object.keys(before.files)) if (!(rel in local) && !(rel in removed)) removed[rel] = now.toISOString();
+  const removed: Record<string, Removed> = {};
+  for (const [rel, entry] of Object.entries(before.removed)) if (!(rel in local)) removed[rel] = entry;
+  for (const [rel, hash] of Object.entries(before.files)) {
+    if (!(rel in local) && !(rel in removed)) removed[rel] = { at: now.toISOString(), hash };
+  }
   return { files: sortKeys(local), removed: sortKeys(removed) };
 }
 
@@ -62,7 +74,7 @@ export function nextManifest(before: Manifest, local: Record<string, string>, no
 export function dueForPrune(manifest: Manifest, now: Date, days = PRUNE_AFTER_DAYS): string[] {
   const cutoff = now.getTime() - days * 86_400_000;
   return Object.entries(manifest.removed)
-    .filter(([rel, at]) => !(rel in manifest.files) && Date.parse(at) <= cutoff)
+    .filter(([rel, entry]) => !(rel in manifest.files) && Date.parse(entry.at) <= cutoff)
     .map(([rel]) => rel)
     .sort();
 }

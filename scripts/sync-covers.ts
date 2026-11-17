@@ -74,7 +74,9 @@ async function loadManifest(): Promise<Manifest> {
   await retry(async () => {
     // The query string skips any edge copy: the manifest changes on every sync that changes something.
     const res = await fetch(`${objectUrl(MANIFEST)}?t=${Date.now()}`);
-    if (res.status === 404) manifest = parseManifest(null);
+    // Only the very first sync starts without one: anywhere else a 404 would forget every pending removal.
+    if (res.status === 404 && process.env.COVERS_NEW_MANIFEST === "1") manifest = parseManifest(null);
+    else if (res.status === 404) throw new Error(`${MANIFEST} is missing (COVERS_NEW_MANIFEST=1 starts a new one)`);
     else if (!res.ok) throw new Error(`${MANIFEST}: HTTP ${res.status}`);
     else manifest = parseManifest(await res.json());
   });
@@ -101,8 +103,42 @@ async function purge(keys: string[]): Promise<void> {
 
 const before = await loadManifest();
 
+/**
+ * Which of `rels` the built pages, scripts and sitemaps still link, read one file at a time (dist/ is ~1 GB).
+ * Null when there is no build to check.
+ */
+async function stillLinkedIn(rels: string[]): Promise<Set<string> | null> {
+  const root = resolve(process.cwd());
+  const coversDir = join(root, "dist", "covers");
+  let files: string[];
+  try {
+    files = [...(await walk(join(root, "dist"))).filter((path) => !path.startsWith(coversDir)), ...(await walk(join(root, "public/sitemaps")))];
+  } catch {
+    return null;
+  }
+  const found = new Set<string>();
+  for (const path of files) {
+    if (!/\.(html|js|mjs|xml|json|txt|css)$/.test(path)) continue;
+    const text = await readFile(path, "utf8");
+    for (const rel of rels) if (!found.has(rel) && text.includes(`covers/${rel}`)) found.add(rel);
+    if (found.size === rels.length) break;
+  }
+  return found;
+}
+
 if (prune) {
-  const due = dueForPrune(before, new Date());
+  let due = dueForPrune(before, new Date());
+  const stillLinked: string[] = [];
+  if (due.length) {
+    // Never delete what the deployed build still links (a file dropped from public/covers while the code kept it).
+    const linked = await stillLinkedIn(due);
+    if (!linked) {
+      console.warn("covers prune: no dist/ to check links against; run after `npm run build`. Nothing deleted.");
+      process.exit(0);
+    }
+    stillLinked.push(...linked);
+    due = due.filter((rel) => !linked.has(rel));
+  }
   const deleted: string[] = [];
   const failed: string[] = [];
   await pool(due, async (rel) => {
@@ -131,6 +167,10 @@ if (prune) {
   if (deleted.length) console.log(deleted.map((rel) => `covers/${rel}`).join("\n"));
   // The site no longer links these: a failed delete only leaves a file behind, retried on the next deploy.
   if (failed.length) console.warn(failed.join("\n"));
+  if (stillLinked.length) {
+    console.warn(`covers prune: kept ${stillLinked.length} removed cover(s) the build still links; put them back or fix the links:`);
+    console.warn(stillLinked.map((rel) => `  covers/${rel}`).join("\n"));
+  }
   process.exit(0);
 }
 
@@ -162,6 +202,7 @@ if (plan.edited.length && !allowOverwrite) {
 
 const uploaded: string[] = [];
 const replaced: string[] = [];
+const conflicts: string[] = [];
 let alreadyThere = 0;
 async function upload(rel: string, known: boolean): Promise<void> {
   const key = `covers/${rel}`;
@@ -174,10 +215,19 @@ async function upload(rel: string, known: boolean): Promise<void> {
       // identity: a compressed answer (SVG) carries no Content-Length to compare.
       const head = await fetch(objectUrl(key), { method: "HEAD", headers: { "Accept-Encoding": "identity" } });
       exists = head.ok;
-      // Uploaded before the manifest knew it: trust a file of the same size.
-      if (head.ok && Number(head.headers.get("content-length")) === body.length) {
-        alreadyThere++;
-        return;
+      if (head.ok) {
+        // On the bucket but not in the manifest (uploaded before it, or removed before removals were tracked):
+        // the same bytes are fine, other bytes would change a published URL in place.
+        const res = await fetch(`${objectUrl(key)}?t=${Date.now()}`, { headers: { "Accept-Encoding": "identity" } });
+        const there = res.ok ? createHash("sha256").update(Buffer.from(await res.arrayBuffer())).digest("hex") : "";
+        if (there === createHash("sha256").update(body).digest("hex")) {
+          alreadyThere++;
+          return;
+        }
+        if (!allowOverwrite) {
+          conflicts.push(key);
+          return;
+        }
       }
     }
     if (!dryRun) await retry(() => put(key, body, type));
@@ -190,6 +240,13 @@ async function upload(rel: string, known: boolean): Promise<void> {
 await pool(plan.added, (rel) => upload(rel, false));
 await pool(plan.edited, (rel) => upload(rel, true));
 
+if (conflicts.length) {
+  console.error(
+    `covers: ${conflicts.length} new cover(s) reuse a name already on the bucket with other content. Pick a new ` +
+      `versioned name (COVERS_ALLOW_OVERWRITE=1 replaces them anyway):\n${conflicts.map((key) => `  ${key}`).join("\n")}`,
+  );
+  process.exit(1);
+}
 if (failed.length) {
   console.error(failed.slice(0, 20).join("\n"));
   // A cover missing from the bucket would 404 on the site. The manifest is left as it was, so the next run retries.
