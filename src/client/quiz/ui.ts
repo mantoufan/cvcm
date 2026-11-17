@@ -328,7 +328,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       return { nodes, summary };
     }
     case "top": {
-      const [first, second] = result.ranked;
+      const [first] = result.ranked;
       const nodes = [...headline(results[result.key])];
       const rule = QUIZ_DEFS[id].result;
       // Name every result tied with the winner: the hash (spread) or list order (plain top) only picked which one leads,
@@ -337,8 +337,11 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const top = topTied(result.ranked);
       const tied = mixed ? top : top.filter((s) => s !== first);
       const nameOf = (s: (typeof result.ranked)[number]): string => results[s.dim]?.name ?? label(s.dim);
-      // Otherwise a close second place (within 10 points), every result tied for it, not just the first in order.
-      const seconds = !tied.length && second && first.pct - second.pct <= 10 ? topTied(result.ranked.filter((s) => !top.includes(s))) : [];
+      // Otherwise a close second place (within 10 points): the results whose bars show the same percentage, all of them
+      // rather than the first in order. Three or more alike say nothing about a runner-up, so then there is no line.
+      const rest = result.ranked.filter((s) => !top.includes(s));
+      const near = !tied.length && rest[0] && first.pct - rest[0].pct <= 10 ? rest.filter((s) => s.pct === rest[0].pct) : [];
+      const seconds = near.length <= 2 ? near : [];
       const sideLine = tied.length
         ? `${mixed ? ui.tiedTop : ui.tiedWith}: ${listNames(locale, tied.map(nameOf))}`
         : seconds.length
