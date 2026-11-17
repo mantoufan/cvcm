@@ -36,17 +36,10 @@ export function quizUi(locale: Locale): QuizUi {
   return quizMessages(locale).ui;
 }
 
-const filledHubs = new WeakMap<QuizHubCopy, QuizHubCopy>();
-
 /** Hub copy. The lede's `{n}` is the number of tests, so adding one never leaves a stale count in any locale. */
 export function quizHub(locale: Locale): QuizHubCopy {
   const hub = quizMessages(locale).hub;
-  let filled = filledHubs.get(hub);
-  if (!filled) {
-    filled = { ...hub, lede: fill(hub.lede, { n: QUIZZES.length }) };
-    filledHubs.set(hub, filled);
-  }
-  return filled;
+  return { ...hub, lede: fill(hub.lede, { n: QUIZZES.length }) };
 }
 
 export function quizCopy(locale: Locale, id: QuizId): QuizCopy {

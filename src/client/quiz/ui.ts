@@ -336,19 +336,22 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const mixed = rule.kind === "top" && rule.tie === "mixed" && result.key === "mixed";
       const top = topTied(result.ranked);
       const tied = mixed ? top : top.filter((s) => s !== first);
-      const tiedLine = tied.length ? `${mixed ? ui.tiedTop : ui.tiedWith}: ${listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)))}` : "";
-      if (tiedLine) {
-        nodes.push(h("p", { class: "muted" }, tiedLine));
-      } else if (second && first.pct - second.pct <= 10 && results[second.dim]) {
-        nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
-      }
+      const nameOf = (s: (typeof result.ranked)[number]): string => results[s.dim]?.name ?? label(s.dim);
+      // Otherwise a close second place (within 10 points), every result tied for it, not just the first in order.
+      const seconds = !tied.length && second && first.pct - second.pct <= 10 ? topTied(result.ranked.filter((s) => !top.includes(s))) : [];
+      const sideLine = tied.length
+        ? `${mixed ? ui.tiedTop : ui.tiedWith}: ${listNames(locale, tied.map(nameOf))}`
+        : seconds.length
+          ? `${ui.runnerUp}: ${listNames(locale, seconds.map(nameOf))}`
+          : "";
+      if (sideLine) nodes.push(h("p", { class: "muted" }, sideLine));
       if (result.excluded.length) {
         const names = listNames(locale, result.excluded.map((dim) => label(dim)));
         nodes.push(h("p", { class: "muted" }, `${ui.ruledOut}: ${names}`));
       }
       nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
       const name = results[result.key]?.name ?? result.key;
-      return { nodes, summary: tiedLine ? `${name} · ${tiedLine}` : name };
+      return { nodes, summary: sideLine ? `${name} · ${sideLine}` : name };
     }
     case "code": {
       const top3 = result.ranked.slice(0, 3);

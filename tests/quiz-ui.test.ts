@@ -276,6 +276,8 @@ describe("test page UI", () => {
       const lede = quizHub(locale).lede;
       expect(lede, locale).toContain(String(QUIZZES.length));
       expect(lede, locale).not.toMatch(/\{n\}/);
+      // Latin-script ledes don't open a sentence with a numeral.
+      if (["en", "es", "id", "vi"].includes(locale)) expect(lede, locale).not.toMatch(/^\d/);
       document.body.innerHTML = "<main></main>";
       mountQuizHub(document.querySelector("main")!, locale);
       expect(document.querySelector("main .lede")?.textContent, locale).toBe(lede);

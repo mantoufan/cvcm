@@ -57,8 +57,9 @@ export type ChoiceItem = { options: Record<string, number>[]; exclude?: readonly
  *            scored by small whole numbers, ties are common, and any fixed order would favor some results. The same
  *            answers always give the same result. (Likert quizzes hash which statements scored and how much.) With
  *            `tie: "mixed"` a tie at the top gives the extra result `mixed` instead, for self-reflection quizzes where
- *            neither a fixed order nor a hash should pick a label the answers don't support. Whatever leads, the page
- *            names every result tied with it exactly ("Tied with"), never as a runner-up.
+ *            neither a fixed order nor a hash should pick a label the answers don't support. The page never passes an
+ *            exact tie off as a runner-up: it names the results tied with the leader ("Tied with"), or for a mixed
+ *            result every tied result ("Tied at the top"); a close second place names every result tied for it.
  * code     — like top, but the result is the first three letters (Holland RIASEC).
  * quadrant — two dimensions, each high or low, give one of four results (attachment).
  * areas    — overall percentage picks a band (a band's `floor` also needs the weakest area that high);
