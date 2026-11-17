@@ -345,6 +345,10 @@ describe("test pages: scoring", () => {
     const raw = Object.fromEntries(pet.scores.map((x) => [x.dim, `${x.raw}/${x.max}`]));
     expect(raw).toMatchObject({ fish: "12/23", reptile: "11/21" });
     expect(pet.key).toBe("reptile");
+    // A real tie in a plain top quiz still goes to the earlier result: a flat conflict-style profile is compromising.
+    const flat = scoreQuiz("conflict-style", QUIZ_DEFS["conflict-style"].items.map(() => 2));
+    expect(new Set(flat.scores.map((x) => x.raw)).size).toBe(1);
+    expect(flat.key).toBe("compromise");
   });
 
   it("gives a communication style tie at the top the mixed result, never a hash-picked style", () => {

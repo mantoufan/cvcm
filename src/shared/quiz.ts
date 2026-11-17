@@ -1691,12 +1691,11 @@ export function topTied(ranked: readonly DimScore[]): DimScore[] {
  * so answers that only touch other results never change who wins the tie.
  */
 function rank(scores: DimScore[], hits?: ReadonlyMap<string, readonly string[]>): DimScore[] {
-  const exact = (a: DimScore, b: DimScore): number => shareCmp(b, a);
-  const ranked = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s.pct - a.s.pct || exact(a.s, b.s) || a.i - b.i).map(({ s }) => s);
+  const ranked = scores.map((s, i) => ({ s, i })).sort((a, b) => shareCmp(b.s, a.s) || a.i - b.i).map(({ s }) => s);
   if (!hits) return ranked;
   for (let start = 0; start < ranked.length; ) {
     let end = start + 1;
-    while (end < ranked.length && exact(ranked[start], ranked[end]) === 0) end++;
+    while (end < ranked.length && shareCmp(ranked[start], ranked[end]) === 0) end++;
     if (end - start > 1) {
       const group = ranked.slice(start, end);
       const seed = group.map((g) => `${g.dim}=${(hits.get(g.dim) ?? []).join(".")}`).join(";");
