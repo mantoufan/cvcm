@@ -2,7 +2,25 @@ import { h } from "../dom";
 import { linkList } from "../links";
 import type { Locale } from "../../shared/locale";
 import { appHref, quizHref } from "../../shared/path";
-import { FAN_GROUPS, FOLLOW_UP, QUIZ_DEFS, QUIZ_GROUPS, QUIZZES, SCALE_POINTS, SUPPORT, isComplete, maxTotal, questionCount, quizGroupOf, quizMinutes, scoreQuiz, topTied, traitLevel, type QuizId, type QuizResult } from "../../shared/quiz";
+import {
+  FAN_GROUPS,
+  FOLLOW_UP,
+  QUIZ_DEFS,
+  QUIZ_GROUPS,
+  QUIZZES,
+  SCALE_POINTS,
+  SUPPORT,
+  isComplete,
+  maxTotal,
+  questionCount,
+  quizGroupOf,
+  quizMinutes,
+  scoreQuiz,
+  topTied,
+  traitLevel,
+  type QuizId,
+  type QuizResult,
+} from "../../shared/quiz";
 import {
   fill,
   quizCopy,
@@ -316,7 +334,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       // Spread ties: name every result tied with the winner (the hash only picked which one leads). A mixed result
       // names all the tied results.
       const mixed = result.key === "mixed";
-      const tied = mixed ? topTied(result.ranked) : rule.kind === "top" && rule.tie === "spread" ? result.ranked.slice(1).filter((s) => s.raw === first.raw) : [];
+      const tied = mixed ? topTied(result.ranked) : rule.kind === "top" && rule.tie === "spread" ? topTied(result.ranked).filter((s) => s !== first) : [];
       if (tied.length) {
         const names = listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)));
         nodes.push(h("p", { class: "muted" }, `${mixed ? ui.tiedTop : ui.tiedWith}: ${names}`));
@@ -328,7 +346,8 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
         nodes.push(h("p", { class: "muted" }, `${ui.ruledOut}: ${names}`));
       }
       nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
-      return { nodes, summary: results[result.key]?.name ?? result.key };
+      const name = results[result.key]?.name ?? result.key;
+      return { nodes, summary: mixed ? `${name} (${listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)))})` : name };
     }
     case "code": {
       const top3 = result.ranked.slice(0, 3);

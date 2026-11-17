@@ -1666,22 +1666,32 @@ function tieHash(text: string): number {
 }
 
 /**
- * Highest first; a tie keeps definition order. With `hits` (see `top`), each group of tied results is reordered by a
- * hash of the answers that scored them, so answers that only touch other results never change who wins the tie.
+ * Compares exact shares (raw within each result's own range, not the rounded percentage): above 0 when `a` is ahead.
+ * Two results whose percentages only round to the same number are not tied. A result with no range has share 0.
  */
-/**
- * The results tied for the highest exact share (raw against each result's own range, not the rounded percentage), in
- * ranked order. Used by `tie: "mixed"`, where a rounding tie must not count and a real tie must never be missed.
- */
-export function topTied(ranked: readonly DimScore[]): DimScore[] {
-  const cmp = (a: DimScore, b: DimScore): number => (a.raw - a.min) * (b.max - b.min) - (b.raw - b.min) * (a.max - a.min);
-  const best = ranked.reduce((top, s) => (cmp(s, top) > 0 ? s : top), ranked[0]);
-  return ranked.filter((s) => cmp(s, best) === 0);
+function shareCmp(a: DimScore, b: DimScore): number {
+  const ra = a.max - a.min;
+  const rb = b.max - b.min;
+  if (!ra || !rb) return (ra ? (a.raw - a.min) / ra : 0) - (rb ? (b.raw - b.min) / rb : 0);
+  return (a.raw - a.min) * rb - (b.raw - b.min) * ra;
 }
 
-function rank(scores: DimScore[], hits?: ReadonlyMap<string, readonly string[]>): DimScore[] {
-  // With hits, compare exact shares: two results whose percentages only round to the same number are not tied.
-  const exact = (a: DimScore, b: DimScore): number => (hits ? b.raw * a.max - a.raw * b.max : 0);
+/**
+ * The results tied for the highest exact share (see `shareCmp`), in ranked order: a mixed result's tied styles and a
+ * spread result's winner plus the results it was tied with.
+ */
+export function topTied(ranked: readonly DimScore[]): DimScore[] {
+  const best = ranked.reduce((top, s) => (shareCmp(s, top) > 0 ? s : top), ranked[0]);
+  return ranked.filter((s) => shareCmp(s, best) === 0);
+}
+
+/**
+ * Highest first; a tie keeps definition order. With `exact` (spread and mixed ties), percentages that only round to
+ * the same number are ordered by exact share. With `hits` (see `top`), each group of tied results is reordered by a
+ * hash of the answers that scored them, so answers that only touch other results never change who wins the tie.
+ */
+function rank(scores: DimScore[], hits?: ReadonlyMap<string, readonly string[]>, exactOrder = Boolean(hits)): DimScore[] {
+  const exact = (a: DimScore, b: DimScore): number => (exactOrder ? shareCmp(b, a) : 0);
   const ranked = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s.pct - a.s.pct || exact(a.s, b.s) || a.i - b.i).map(({ s }) => s);
   if (!hits) return ranked;
   for (let start = 0; start < ranked.length; ) {
@@ -1757,7 +1767,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   for (const s of scores) s.pct = pct(s.raw, s.min, s.max);
   // If the answers rule out every result, ignore the exclusions rather than show nothing.
   if (def.dims.every((dim) => excluded.has(dim))) excluded.clear();
-  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), hits);
+  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), hits, Boolean(hits) || (rule.kind === "top" && rule.tie === "mixed"));
   const sumRaw = scores.reduce((a, s) => a + s.raw, 0);
   const sumMax = scores.reduce((a, s) => a + s.max, 0);
   const overall = pct(sumRaw, 0, sumMax);
@@ -1782,8 +1792,7 @@ function resultKey(rule: ResultRule, scores: DimScore[], ranked: DimScore[], tot
       return scores.map((s) => (s.pct > 50 ? s.dim[0] : s.dim[1])).join("");
     case "top":
       if (rule.tie === "mixed") {
-        const tied = topTied(ranked);
-        return tied.length > 1 ? "mixed" : tied[0].dim;
+        return topTied(ranked).length > 1 ? "mixed" : ranked[0].dim;
       }
       return ranked[0].dim;
     case "code":

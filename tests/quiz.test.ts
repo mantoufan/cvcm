@@ -22,6 +22,8 @@ import {
   isComplete,
   maxTotal,
   resultKeys,
+  topTied,
+  type DimScore,
   scoreQuiz,
   type ChoiceItem,
   type QuizId,
@@ -326,6 +328,18 @@ describe("test pages: scoring", () => {
         }
       }
     }
+  });
+
+  it("finds top ties by exact share, never by rounding, across different ranges and with an empty range", () => {
+    const s = (dim: string, raw: number, max: number, min = 0): DimScore => ({ dim, raw, min, max, pct: Math.round(((raw - min) / (max - min || 1)) * 100) });
+    // 1/3 and 33/100 both round to 33%, but only the first is the top.
+    expect(topTied([s("a", 1, 3), s("b", 33, 100)]).map((x) => x.dim)).toEqual(["a"]);
+    // 2 of 4 and 3 of 6 are the same share.
+    expect(topTied([s("a", 2, 4), s("b", 3, 6)]).map((x) => x.dim)).toEqual(["a", "b"]);
+    // Minimums count: 3 within 2–4 is 50%, like 2 of 4.
+    expect(topTied([s("a", 2, 4), s("b", 3, 4, 2)]).map((x) => x.dim)).toEqual(["a", "b"]);
+    // A result nothing can score is not tied with the leader.
+    expect(topTied([s("a", 2, 4), s("z", 0, 0)]).map((x) => x.dim)).toEqual(["a"]);
   });
 
   it("gives a communication style tie at the top the mixed result, never a hash-picked style", () => {
