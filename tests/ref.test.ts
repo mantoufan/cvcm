@@ -80,11 +80,11 @@ describe("reference: mannequins and footer entries", () => {
   it("marks mannequin entries as edited and credits their images", () => {
     const ld = refArticleJsonLd("en", "standing-pose") as { dateModified: string; image: { contentUrl: string; license?: string }[] };
     expect(ld.dateModified).toBe(REF_UPDATED["standing-pose"]);
-    expect(ld.image[0].contentUrl).toBe("https://cv.cm/covers/ref/standing-pose-front-900.webp");
+    expect(ld.image[0].contentUrl).toBe("https://s3.cv.cm/files/covers/ref/standing-pose-front-900.webp");
     expect(ld.image[0].license).toContain("publicdomain/zero");
     // Google image-metadata: all four recommended fields on every mannequin image of every entry.
     for (const id of Object.keys(REF_MANNEQUINS) as RefId[]) {
-      const objects = (refArticleJsonLd("en", id) as { image: { contentUrl: string }[] }).image.filter((item) => item.contentUrl.startsWith("https://cv.cm/covers/ref/"));
+      const objects = (refArticleJsonLd("en", id) as { image: { contentUrl: string }[] }).image.filter((item) => item.contentUrl.startsWith("https://s3.cv.cm/files/covers/ref/"));
       expect(objects.length, id).toBe(REF_MANNEQUINS[id]!.length);
       for (const image of objects) {
         for (const key of ["creator", "copyrightNotice", "license", "acquireLicensePage"]) expect(image, `${id} ${key}`).toHaveProperty(key);
