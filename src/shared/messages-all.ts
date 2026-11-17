@@ -249,3 +249,6 @@ for (const [locale, pack] of Object.entries(NOSTALGIA)) registerNostalgiaMessage
 for (const [locale, entries] of Object.entries(NOSTALGIA_ALL)) {
   for (const [id, copy] of Object.entries(entries)) registerNostalgiaEntry(locale as Locale, id as NostalgiaId, copy);
 }
+
+// Country profiles keep their own store (countries-store.ts).
+import "./countries-all";

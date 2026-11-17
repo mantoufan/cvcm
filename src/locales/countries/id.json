@@ -1,0 +1,189 @@
+{
+  "crumbHome": "Beranda",
+  "hub": {
+    "title": "Negara-Negara di Dunia: Bendera, Ibu Kota, Penduduk, dan PDB",
+    "description": "Profil {n} negara dan wilayah dengan bendera, ibu kota, jumlah penduduk, PDB, mata uang, kode telepon, dan zona waktu: data Bank Dunia beserta peringkat dunia.",
+    "h1": "Negara-negara di dunia: bendera, ibu kota, dan penduduk",
+    "lede": "Semua negara dan wilayah dengan data Bank Dunia, per benua: bendera, ibu kota, dan jumlah penduduk. Buka salah satunya untuk melihat PDB, mata uang, kode telepon, zona waktu, dan sekitar 50 data lainnya, masing-masing dengan peringkat dunianya.",
+    "about": [
+      "Data berasal dari World Development Indicators Bank Dunia, cuplikan yang sama dengan tabel data di situs ini, sehingga peringkat di profil sama dengan peringkat di tabel yang ditautkannya. Ibu kota berasal dari Wikidata dan bendera dari proyek flag-icons.",
+      "Nama mengikuti daftar Unicode yang digunakan browser Anda untuk bahasa Anda. Daftar ini mencakup semua ekonomi yang datanya dilaporkan Bank Dunia, termasuk beberapa wilayah, jadi ini bukan daftar anggota Perserikatan Bangsa-Bangsa."
+    ],
+    "faq": [
+      {
+        "q": "Berapa banyak negara dalam daftar ini?",
+        "a": "{n} negara dan wilayah: semua ekonomi yang datanya dilaporkan Bank Dunia. Beberapa di antaranya, seperti Hong Kong, Puerto Riko, atau Greenland, adalah wilayah, bukan negara merdeka."
+      },
+      {
+        "q": "Dari mana data ibu kota dan bendera berasal?",
+        "a": "Ibu kota adalah yang tercantum di Wikidata untuk setiap tempat (CC0). Jika ibu kotanya disengketakan, ibu kota tidak ditampilkan. Bendera adalah gambar SVG dari proyek flag-icons (lisensi MIT)."
+      },
+      {
+        "q": "Seberapa baru angkanya?",
+        "a": "Setiap profil menampilkan tahun setiap data dan tanggal cuplikannya. Bank Dunia menerbitkan sebagian besar data satu atau dua tahun kemudian, jadi beberapa nilai lebih lama daripada yang lain."
+      }
+    ],
+    "name": "Negara atau wilayah"
+  },
+  "title": "{name}: Jumlah Penduduk, PDB, Ibu Kota, Bendera (Data {year})",
+  "titleShort": "{name}: Jumlah Penduduk, PDB, dan Data Utama (Data {year})",
+  "h1": "{name}: jumlah penduduk, PDB, ibu kota, dan bendera",
+  "h1Short": "{name}: jumlah penduduk, PDB, dan data utama",
+  "description": "Sekilas tentang {name}: {facts}. Data Bank Dunia beserta peringkat dunia, ditambah zona waktu dan kode ISO.",
+  "descFacts": {
+    "capital": "ibu kota {v}",
+    "population": "penduduk {v} ({year})",
+    "gdp": "PDB {v}",
+    "perCapita": "PDB per kapita {v}",
+    "currency": "mata uang {v}",
+    "dial": "kode telepon {v}"
+  },
+  "sentences": {
+    "capital": "Ibu kota {the} adalah {capital}.",
+    "capitals": "{The} memiliki {n} ibu kota: {capitals}.",
+    "population": "Jumlah penduduk {the} pada {year} adalah {pop}, peringkat {rank} dari {n} di dunia.",
+    "gdp": "PDB-nya pada {year} sebesar {gdp}, peringkat {rank} dari {n}.",
+    "perCapita": "PDB per kapita sebesar {pc} ({year}).",
+    "currency": "Mata uangnya adalah {currency} ({code}).",
+    "currencies": "Mata uang yang digunakan: {list}.",
+    "dial": "Kode telepon internasionalnya adalah {dial}."
+  },
+  "faq": {
+    "capital": {
+      "q": "Apa ibu kota {the}?"
+    },
+    "population": {
+      "q": "Berapa jumlah penduduk {the}?"
+    },
+    "gdp": {
+      "q": "Berapa PDB {the}?"
+    },
+    "currency": {
+      "q": "Mata uang apa yang digunakan {the}?"
+    },
+    "dial": {
+      "q": "Berapa kode telepon {the}?"
+    }
+  },
+  "ui": {
+    "kicker": "Profil negara",
+    "answer": "Jawaban singkat",
+    "facts": "Data utama",
+    "flagAlt": "Bendera {name}",
+    "capital": "Ibu kota",
+    "continent": "Benua",
+    "population": "Jumlah penduduk",
+    "currency": "Mata uang",
+    "dial": "Kode telepon",
+    "zones": "Zona waktu",
+    "tld": "Domain internet",
+    "iso": "Kode ISO 3166",
+    "rankOf": "{rank} dari {n}",
+    "indicator": "Data",
+    "value": "Nilai",
+    "year": "Tahun",
+    "rank": "Peringkat dunia",
+    "figures": "Semua data",
+    "figuresNote": "Setiap data tertaut ke tabelnya, tempat semua negara diberi peringkat. Peringkat 1 adalah nilai tertinggi.",
+    "codes": "Kode, mata uang, dan waktu",
+    "zonesCount": "{n} zona waktu",
+    "zoneRange": "{from} hingga {to}",
+    "dst": "musim panas {offset}",
+    "rankings": "Dalam peringkat",
+    "rankingCount": "{n} entri",
+    "rankingShare": "dengan data untuk {name}",
+    "rankingCurrency": "mencakup {currency}",
+    "related": "Lainnya di {continent}",
+    "all": "Semua negara dan wilayah",
+    "sources": "Sumber",
+    "sourceWb": "Data: Bank Dunia, World Development Indicators (CC BY 4.0)",
+    "sourceCodes": "Kode: ISO 3166, ITU-T E.164, ISO 4217 melalui datahub.io (ODC-PDDL); zona waktu: basis data IANA tz (domain publik)",
+    "sourceCapital": "Ibu kota: Wikidata (CC0)",
+    "sourceFlag": "Bendera: flag-icons oleh Panayiotis Lipiridis (MIT)",
+    "snapshot": "Data per {date}",
+    "faq": "Tanya jawab",
+    "count": "{n} tempat",
+    "noCapital": "–",
+    "sep": ", ",
+    "ord": "ke-{n}",
+    "usdLong": "{v} dolar AS",
+    "join": " ",
+    "datasets": "Semua tabel data",
+    "zoneOne": "1 zona waktu ({offset})"
+  },
+  "groups": {
+    "economy": "Ekonomi",
+    "people": "Penduduk dan kesehatan",
+    "planet": "Lahan, energi, dan internet"
+  },
+  "continents": {
+    "AF": "Afrika",
+    "AN": "Antartika",
+    "AS": "Asia",
+    "EU": "Eropa",
+    "NA": "Amerika Utara",
+    "OC": "Oseania",
+    "SA": "Amerika Selatan"
+  },
+  "labels": {
+    "population": "Penduduk",
+    "gdp": "PDB (US$)",
+    "gdp-per-capita": "PDB per kapita (US$)",
+    "life-expectancy": "Harapan hidup (tahun)",
+    "fertility-rate": "Fertilitas (anak per perempuan)",
+    "internet-users": "Pengguna internet (%)",
+    "gdp-ppp-per-capita": "PDB per kapita, PPP (Int$)",
+    "gdp-growth": "Pertumbuhan PDB (%)",
+    "inflation": "Inflasi (%)",
+    "unemployment": "Pengangguran (%)",
+    "land-area": "Luas daratan (km²)",
+    "population-density": "Kepadatan penduduk (jiwa per km²)",
+    "urban-population": "Penduduk perkotaan (%)",
+    "aged-65-plus": "Penduduk usia 65+ (%)",
+    "birth-rate": "Angka kelahiran (per 1.000 penduduk)",
+    "infant-mortality": "Kematian bayi (per 1.000 kelahiran)",
+    "co2-per-capita": "CO2 per orang (t)",
+    "electricity-access": "Akses listrik (%)",
+    "population-growth": "Pertumbuhan penduduk (%)",
+    "death-rate": "Angka kematian (per 1.000 penduduk)",
+    "life-expectancy-male": "Harapan hidup laki-laki (tahun)",
+    "life-expectancy-female": "Harapan hidup perempuan (tahun)",
+    "maternal-mortality": "Kematian ibu (per 100.000 kelahiran)",
+    "exports": "Ekspor (US$)",
+    "imports": "Impor (US$)",
+    "health-spending-per-capita": "Belanja kesehatan per orang (US$)",
+    "female-labor-force": "Perempuan dalam angkatan kerja (%)",
+    "forest-area": "Luas hutan (% daratan)",
+    "renewable-energy": "Energi terbarukan (% penggunaan energi)",
+    "gni-per-capita": "GNI per kapita (US$)",
+    "youth-unemployment": "Pengangguran usia muda (%)",
+    "remittances": "Remitansi (% PDB)",
+    "foreign-reserves": "Cadangan devisa (US$)",
+    "military-spending": "Belanja militer (US$)",
+    "military-spending-gdp": "Belanja militer (% PDB)",
+    "rd-spending": "Belanja R&D (% PDB)",
+    "aged-0-14": "Anak usia 0–14 (%)",
+    "international-migrants": "Migran internasional (% penduduk)",
+    "physicians": "Dokter (per 1.000 penduduk)",
+    "education-spending": "Belanja pendidikan (% PDB)",
+    "co2-emissions": "Emisi CO2 (Mt)",
+    "electricity-consumption": "Konsumsi listrik (kWh per orang)",
+    "mobile-subscriptions": "Langganan seluler (per 100 penduduk)",
+    "broadband-subscriptions": "Pita lebar tetap (per 100 penduduk)",
+    "gdp-ppp": "PDB, PPP (Int$)",
+    "gini-index": "Ketimpangan pendapatan (indeks Gini)",
+    "poverty-rate": "Kemiskinan: di bawah US$3,00 per hari (%)",
+    "homicide-rate": "Pembunuhan (per 100.000 penduduk)",
+    "literacy-rate": "Tingkat melek huruf (%)",
+    "alcohol-consumption": "Alkohol (liter per orang)",
+    "tobacco-use": "Pengguna tembakau (% dewasa)",
+    "air-pollution": "Polusi udara, PM2.5 (µg/m³)"
+  },
+  "names": {
+    "CD": "Republik Demokratik Kongo",
+    "CG": "Republik Kongo",
+    "HK": "Hong Kong",
+    "MO": "Makau",
+    "MM": "Myanmar"
+  }
+}

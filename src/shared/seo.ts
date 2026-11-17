@@ -21,13 +21,14 @@ import { ideaDescription, ideaTitle } from "./ideas-i18n";
 import type { IdeaId } from "./ideas";
 import { nostalgiaDescription, nostalgiaTitle } from "./nostalgia-i18n";
 import type { NostalgiaId } from "./nostalgia";
+import { countryDescription, countryTitle } from "./countries-i18n";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -80,6 +81,9 @@ export type SeoInput = {
   /** The nostalgia channel under /nostalgia/; `nostalgiaId` null is the hub. */
   nostalgia?: boolean;
   nostalgiaId?: NostalgiaId | null;
+  /** Country profiles under /countries/; `countryId` is the slug, null the hub. */
+  countries?: boolean;
+  countryId?: string | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -807,6 +811,7 @@ const LEARN_DESC: Record<TutorialId, string> = {
 
 export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}): string {
   const seo = normalizeSeo(input);
+  if (seo.countries) return countryTitle(locale, seo.countryId ?? null);
   if (seo.nostalgia) return nostalgiaTitle(locale, seo.nostalgiaId ?? null);
   if (seo.slang) return slangTitle(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaTitle(locale, seo.ideaId ?? null);
@@ -833,6 +838,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
 
 export function pageDescription(locale: Locale, input: SeoInput | ToolId | null = {}): string {
   const seo = normalizeSeo(input);
+  if (seo.countries) return countryDescription(locale, seo.countryId ?? null);
   if (seo.nostalgia) return nostalgiaDescription(locale, seo.nostalgiaId ?? null);
   if (seo.slang) return slangDescription(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaDescription(locale, seo.ideaId ?? null);
@@ -876,6 +882,7 @@ export function pageCanonical(
   clipId?: string | null,
 ): string {
   const seo = normalizeSeo(input, clipId);
+  if (seo.countries) return `https://cv.cm${countriesHref(locale, seo.countryId ?? null)}`;
   if (seo.nostalgia) return `https://cv.cm${nostalgiaHref(locale, seo.nostalgiaId ?? null)}`;
   if (seo.slang) return `https://cv.cm${slangHref(locale, seo.slangId ?? null)}`;
   if (seo.ideas) return `https://cv.cm${ideasHref(locale, seo.ideaId ?? null)}`;

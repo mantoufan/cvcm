@@ -64,6 +64,9 @@ import type { NostalgiaEntryCopy } from "../shared/nostalgia-i18n";
 import type { NostalgiaId, NostalgiaPage } from "../shared/nostalgia";
 import type { QuizId, QuizPage } from "../shared/quiz";
 import type { QuizCopy } from "../shared/quiz-i18n";
+import { countryBucket, countryCode, type CountryPage } from "../shared/countries";
+import { hasCountriesMessages, hasCountryBucket, registerCountriesMessages, registerCountryBucket, type CountriesMessages, type CountryDetail } from "../shared/countries-store";
+import { COUNTRY_BUCKET_LOADERS } from "../shared/countries/loaders";
 
 export type { PageCopy };
 
@@ -360,8 +363,24 @@ async function loadNostalgiaEntry(next: Locale, id: NostalgiaId): Promise<void> 
   registerNostalgiaEntry(next, id, m.default);
 }
 
+// Countries copy and the list data, only for /countries/ pages; a profile also loads the data bucket holding its figures.
+const COUNTRIES_PACKS: Record<Locale, () => Promise<{ default: CountriesMessages }>> = {
+  en: () => import("../locales/packs/countries-en"),
+  "zh-CN": () => import("../locales/packs/countries-zh-CN"),
+  "zh-TW": () => import("../locales/packs/countries-zh-TW"),
+  ja: () => import("../locales/packs/countries-ja"),
+  ko: () => import("../locales/packs/countries-ko"),
+  vi: () => import("../locales/packs/countries-vi"),
+  id: () => import("../locales/packs/countries-id"),
+  es: () => import("../locales/packs/countries-es"),
+};
+
+function countryBucketOf(page: CountryPage): number | null {
+  return page && page !== "hub" ? countryBucket(countryCode(page)) : null;
+}
+
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
@@ -373,10 +392,12 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))))
     && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))))
     && (!ideas || (hasIdeasMessages(next) && (!idea || hasIdeaEntry(next, idea))))
-    && (!nostalgia || (hasNostalgiaMessages(next) && (!memory || hasNostalgiaEntry(next, memory))));
+    && (!nostalgia || (hasNostalgiaMessages(next) && (!memory || hasNostalgiaEntry(next, memory))))
+    && (!countries || (hasCountriesMessages(next) && (countryBucketOf(countries) === null || hasCountryBucket(countryBucketOf(countries)!))));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null): Promise<void> {
+  const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
@@ -400,6 +421,8 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !idea || hasIdeaEntry(next, idea) ? null : loadIdeaEntry(next, idea),
     !nostalgia || hasNostalgiaMessages(next) ? null : NOSTALGIA_PACKS[next]().then((m) => registerNostalgiaMessages(next, m.default)),
     !memory || hasNostalgiaEntry(next, memory) ? null : loadNostalgiaEntry(next, memory),
+    !countries || hasCountriesMessages(next) ? null : COUNTRIES_PACKS[next]().then((m) => registerCountriesMessages(next, m.default)),
+    bucket === null || hasCountryBucket(bucket) ? null : COUNTRY_BUCKET_LOADERS[bucket]().then((m) => registerCountryBucket(bucket, m.default as Record<string, CountryDetail>)),
   ]);
 }
 

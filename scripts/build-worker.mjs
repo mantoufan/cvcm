@@ -51,6 +51,9 @@ for (const [src, chunk] of Object.entries(manifest)) {
   if (quizTest) localePacks[`quiz-${quizTest[1]}/${quizTest[2]}`] = [`/${chunk.file}`];
   const quizLoaders = /^src\/locales\/quiz\/loaders\/([^/]+)\.ts$/.exec(src);
   if (quizLoaders) localePacks[`quiz-${quizLoaders[1]}/loaders`] = [`/${chunk.file}`];
+  // Country data buckets (language-neutral): "countries-data/<n>" (the pack itself is "countries-<locale>").
+  const countryBucket = /^src\/shared\/countries\/b(\d+)\.json$/.exec(src);
+  if (countryBucket) localePacks[`countries-data/${countryBucket[1]}`] = [`/${chunk.file}`];
 }
 if (!Object.keys(localePacks).length) throw new Error("no locale packs in Vite manifest");
 // Page-copy buckets (a tool's FAQ and how-to, a tutorial's text): "copy-<locale>/<tools|tutorials>-<bucket>", written
@@ -88,6 +91,7 @@ const pageModules = {
   slang: "src/client/slang/ui.ts",
   ideas: "src/client/ideas/ui.ts",
   nostalgia: "src/client/nostalgia/ui.ts",
+  countries: "src/client/countries/ui.ts",
 };
 const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");

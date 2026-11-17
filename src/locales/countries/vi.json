@@ -1,0 +1,189 @@
+{
+  "crumbHome": "Trang chủ",
+  "hub": {
+    "title": "Các quốc gia trên thế giới: quốc kỳ, thủ đô, dân số và GDP",
+    "description": "Hồ sơ {n} quốc gia và vùng lãnh thổ với quốc kỳ, thủ đô, dân số, GDP, tiền tệ, mã điện thoại và múi giờ: số liệu của Ngân hàng Thế giới kèm thứ hạng thế giới.",
+    "h1": "Các quốc gia trên thế giới: quốc kỳ, thủ đô và dân số",
+    "lede": "Mọi quốc gia và vùng lãnh thổ với số liệu của Ngân hàng Thế giới, theo từng châu lục: quốc kỳ, thủ đô và dân số. Mở một nơi để xem GDP, tiền tệ, mã điện thoại, múi giờ và khoảng 50 chỉ số khác, mỗi chỉ số đều kèm thứ hạng thế giới.",
+    "about": [
+      "Số liệu lấy từ bộ Chỉ số Phát triển Thế giới (World Development Indicators) của Ngân hàng Thế giới, cùng bản chụp dữ liệu với các bảng số liệu trên trang này, nên thứ hạng trong hồ sơ khớp với thứ hạng trong bảng được liên kết. Thủ đô lấy từ Wikidata, quốc kỳ lấy từ dự án flag-icons.",
+      "Tên gọi theo danh sách Unicode mà trình duyệt của bạn dùng cho ngôn ngữ của bạn. Danh sách bao gồm mọi nền kinh tế mà Ngân hàng Thế giới công bố số liệu, kể cả một số vùng lãnh thổ, nên đây không phải danh sách các thành viên Liên Hợp Quốc."
+    ],
+    "faq": [
+      {
+        "q": "Danh sách này có bao nhiêu quốc gia?",
+        "a": "{n} quốc gia và vùng lãnh thổ: mọi nền kinh tế mà Ngân hàng Thế giới công bố số liệu. Một số nơi, như Hồng Kông, Puerto Rico hay Greenland, là vùng lãnh thổ chứ không phải quốc gia độc lập."
+      },
+      {
+        "q": "Thủ đô và quốc kỳ lấy từ đâu?",
+        "a": "Thủ đô là thủ đô mà Wikidata ghi cho từng nơi (CC0). Nơi nào có thủ đô đang tranh chấp thì không hiển thị thủ đô. Quốc kỳ là ảnh SVG từ dự án flag-icons (giấy phép MIT)."
+      },
+      {
+        "q": "Số liệu mới đến mức nào?",
+        "a": "Mỗi hồ sơ ghi rõ năm của từng chỉ số và ngày chụp dữ liệu. Ngân hàng Thế giới công bố hầu hết số liệu sau một đến hai năm, nên có giá trị cũ hơn các giá trị khác."
+      }
+    ],
+    "name": "Quốc gia hoặc vùng lãnh thổ"
+  },
+  "title": "{name}: dân số, GDP, thủ đô, quốc kỳ (số liệu {year})",
+  "titleShort": "{name}: dân số, GDP và thông tin chính (số liệu {year})",
+  "h1": "{name}: dân số, GDP, thủ đô và quốc kỳ",
+  "h1Short": "{name}: dân số, GDP và thông tin chính",
+  "description": "Tổng quan về {name}: {facts}. Số liệu của Ngân hàng Thế giới kèm thứ hạng thế giới, cùng múi giờ và mã ISO.",
+  "descFacts": {
+    "capital": "thủ đô {v}",
+    "population": "dân số {v} ({year})",
+    "gdp": "GDP {v}",
+    "perCapita": "GDP bình quân đầu người {v}",
+    "currency": "tiền tệ {v}",
+    "dial": "mã điện thoại {v}"
+  },
+  "sentences": {
+    "capital": "Thủ đô của {the} là {capital}.",
+    "capitals": "{The} có {n} thủ đô: {capitals}.",
+    "population": "Dân số của {the} năm {year} là {pop}, đứng {rank} trong {n} quốc gia và vùng lãnh thổ trên thế giới.",
+    "gdp": "GDP năm {year} là {gdp}, đứng {rank} trong {n}.",
+    "perCapita": "GDP bình quân đầu người là {pc} ({year}).",
+    "currency": "Đơn vị tiền tệ là {currency} ({code}).",
+    "currencies": "Các loại tiền tệ đang dùng: {list}.",
+    "dial": "Mã điện thoại quốc tế là {dial}."
+  },
+  "faq": {
+    "capital": {
+      "q": "Thủ đô của {the} là gì?"
+    },
+    "population": {
+      "q": "Dân số của {the} là bao nhiêu?"
+    },
+    "gdp": {
+      "q": "GDP của {the} là bao nhiêu?"
+    },
+    "currency": {
+      "q": "{the} dùng đồng tiền nào?"
+    },
+    "dial": {
+      "q": "Mã điện thoại của {the} là gì?"
+    }
+  },
+  "ui": {
+    "kicker": "Hồ sơ quốc gia và vùng lãnh thổ",
+    "answer": "Trả lời nhanh",
+    "facts": "Thông tin chính",
+    "flagAlt": "Lá cờ của {name}",
+    "capital": "Thủ đô",
+    "continent": "Châu lục",
+    "population": "Dân số",
+    "currency": "Tiền tệ",
+    "dial": "Mã điện thoại",
+    "zones": "Múi giờ",
+    "tld": "Tên miền internet",
+    "iso": "Mã ISO 3166",
+    "rankOf": "{rank}/{n}",
+    "indicator": "Chỉ số",
+    "value": "Giá trị",
+    "year": "Năm",
+    "rank": "Thứ hạng thế giới",
+    "figures": "Tất cả chỉ số",
+    "figuresNote": "Mỗi chỉ số liên kết đến bảng của nó, nơi mọi quốc gia và vùng lãnh thổ được xếp hạng. Hạng 1 là giá trị cao nhất.",
+    "codes": "Mã, tiền tệ và thời gian",
+    "zonesCount": "{n} múi giờ",
+    "zoneRange": "{from} đến {to}",
+    "dst": "giờ mùa hè {offset}",
+    "rankings": "Trong các bảng xếp hạng",
+    "rankingCount": "{n} mục",
+    "rankingShare": "có số liệu của {name}",
+    "rankingCurrency": "bao gồm {currency}",
+    "related": "Thêm ở {continent}",
+    "all": "Tất cả quốc gia và vùng lãnh thổ",
+    "sources": "Nguồn",
+    "sourceWb": "Số liệu: Ngân hàng Thế giới, Chỉ số Phát triển Thế giới (CC BY 4.0)",
+    "sourceCodes": "Mã: ISO 3166, ITU-T E.164, ISO 4217 qua datahub.io (ODC-PDDL); múi giờ: cơ sở dữ liệu IANA tz (phạm vi công cộng)",
+    "sourceCapital": "Thủ đô: Wikidata (CC0)",
+    "sourceFlag": "Quốc kỳ: flag-icons của Panayiotis Lipiridis (MIT)",
+    "snapshot": "Dữ liệu tính đến {date}",
+    "faq": "Hỏi và đáp",
+    "count": "{n} nơi",
+    "noCapital": "–",
+    "sep": ", ",
+    "ord": "thứ {n}",
+    "usdLong": "{v} USD",
+    "join": " ",
+    "datasets": "Tất cả bảng số liệu",
+    "zoneOne": "1 múi giờ ({offset})"
+  },
+  "groups": {
+    "economy": "Kinh tế",
+    "people": "Dân số và sức khỏe",
+    "planet": "Đất đai, năng lượng và internet"
+  },
+  "continents": {
+    "AF": "Châu Phi",
+    "AN": "Châu Nam Cực",
+    "AS": "Châu Á",
+    "EU": "Châu Âu",
+    "NA": "Bắc Mỹ",
+    "OC": "Châu Đại Dương",
+    "SA": "Nam Mỹ"
+  },
+  "labels": {
+    "population": "Dân số",
+    "gdp": "GDP (USD)",
+    "gdp-per-capita": "GDP bình quân đầu người (USD)",
+    "life-expectancy": "Tuổi thọ (năm)",
+    "fertility-rate": "Mức sinh (số con mỗi phụ nữ)",
+    "internet-users": "Người dùng internet (%)",
+    "gdp-ppp-per-capita": "GDP bình quân đầu người, PPP (Int$)",
+    "gdp-growth": "Tăng trưởng GDP (%)",
+    "inflation": "Lạm phát (%)",
+    "unemployment": "Thất nghiệp (%)",
+    "land-area": "Diện tích đất (km²)",
+    "population-density": "Mật độ dân số (người/km²)",
+    "urban-population": "Dân số đô thị (%)",
+    "aged-65-plus": "Người từ 65 tuổi (%)",
+    "birth-rate": "Tỷ suất sinh (trên 1.000 dân)",
+    "infant-mortality": "Tử vong trẻ sơ sinh (trên 1.000 ca sinh)",
+    "co2-per-capita": "CO2 mỗi người (tấn)",
+    "electricity-access": "Tiếp cận điện (%)",
+    "population-growth": "Tăng dân số (%)",
+    "death-rate": "Tỷ suất chết (trên 1.000 dân)",
+    "life-expectancy-male": "Tuổi thọ nam (năm)",
+    "life-expectancy-female": "Tuổi thọ nữ (năm)",
+    "maternal-mortality": "Tử vong mẹ (trên 100.000 ca sinh)",
+    "exports": "Xuất khẩu (USD)",
+    "imports": "Nhập khẩu (USD)",
+    "health-spending-per-capita": "Chi tiêu y tế mỗi người (USD)",
+    "female-labor-force": "Phụ nữ trong lực lượng lao động (%)",
+    "forest-area": "Diện tích rừng (% đất)",
+    "renewable-energy": "Năng lượng tái tạo (% năng lượng sử dụng)",
+    "gni-per-capita": "GNI bình quân đầu người (USD)",
+    "youth-unemployment": "Thất nghiệp thanh niên (%)",
+    "remittances": "Kiều hối (% GDP)",
+    "foreign-reserves": "Dự trữ ngoại hối (USD)",
+    "military-spending": "Chi tiêu quân sự (USD)",
+    "military-spending-gdp": "Chi tiêu quân sự (% GDP)",
+    "rd-spending": "Chi tiêu R&D (% GDP)",
+    "aged-0-14": "Trẻ em từ 0–14 tuổi (%)",
+    "international-migrants": "Người di cư quốc tế (% dân số)",
+    "physicians": "Bác sĩ (trên 1.000 dân)",
+    "education-spending": "Chi tiêu giáo dục (% GDP)",
+    "co2-emissions": "Phát thải CO2 (triệu tấn)",
+    "electricity-consumption": "Tiêu thụ điện (kWh mỗi người)",
+    "mobile-subscriptions": "Thuê bao di động (trên 100 dân)",
+    "broadband-subscriptions": "Băng thông rộng cố định (trên 100 dân)",
+    "gdp-ppp": "GDP, PPP (Int$)",
+    "gini-index": "Bất bình đẳng thu nhập (chỉ số Gini)",
+    "poverty-rate": "Nghèo: dưới 3,00 USD mỗi ngày (%)",
+    "homicide-rate": "Giết người (trên 100.000 dân)",
+    "literacy-rate": "Tỷ lệ biết chữ (%)",
+    "alcohol-consumption": "Rượu bia (lít mỗi người)",
+    "tobacco-use": "Dùng thuốc lá (% người lớn)",
+    "air-pollution": "Ô nhiễm không khí, PM2.5 (µg/m³)"
+  },
+  "names": {
+    "CD": "Cộng hòa Dân chủ Congo",
+    "CG": "Cộng hòa Congo",
+    "HK": "Hồng Kông",
+    "MO": "Ma Cao",
+    "MM": "Myanmar"
+  }
+}

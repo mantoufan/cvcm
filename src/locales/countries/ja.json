@@ -1,0 +1,189 @@
+{
+  "crumbHome": "ホーム",
+  "hub": {
+    "title": "世界の国と地域：国旗・首都・人口・GDP",
+    "description": "{n}の国と地域のプロフィール。国旗、首都、人口、GDP、通貨、国際電話番号、タイムゾーンを掲載。世界銀行のデータと世界順位付き。",
+    "h1": "世界の国と地域：国旗・首都・人口",
+    "lede": "すべての国と地域を大陸別に、世界銀行のデータとともに国旗・首都・人口で一覧にしています。開くと、GDP、通貨、国際電話番号、タイムゾーンのほか約50項目のデータを、それぞれの世界順位とともに確認できます。",
+    "about": [
+      "データは世界銀行の世界開発指標（World Development Indicators）によるもので、当サイトのデータ表と同じスナップショットを使っています。そのため、プロフィールの順位はリンク先の表の順位と一致します。首都は Wikidata、国旗は flag-icons プロジェクトによるものです。",
+      "名称は、ブラウザーがお使いの言語に対して用いる Unicode の名称リストに従っています。この一覧は世界銀行がデータを公表しているすべての経済圏を対象とし、一部の地域も含むため、国際連合加盟国の一覧ではありません。"
+    ],
+    "faq": [
+      {
+        "q": "この一覧には何か国が載っていますか？",
+        "a": "{n}の国と地域です。世界銀行がデータを公表しているすべての経済圏にあたります。香港、プエルトリコ、グリーンランドなど一部は、独立国ではなく地域です。"
+      },
+      {
+        "q": "首都と国旗の出典は？",
+        "a": "首都は Wikidata が各地について挙げているものです（CC0）。首都に争いがある場合は表示していません。国旗は flag-icons プロジェクトの SVG 画像です（MIT ライセンス）。"
+      },
+      {
+        "q": "数値はどのくらい新しいですか？",
+        "a": "各プロフィールには、すべての数値の年とスナップショットの日付を示しています。世界銀行はほとんどの数値を1〜2年遅れで公表するため、ほかより古い値もあります。"
+      }
+    ],
+    "name": "国・地域"
+  },
+  "title": "{name}の人口・GDP・首都・国旗（{year}年データ）",
+  "titleShort": "{name}の人口・GDP・基本データ（{year}年データ）",
+  "h1": "{name}の人口・GDP・首都・国旗",
+  "h1Short": "{name}の人口・GDP・基本データ",
+  "description": "{name}の概要：{facts}。世界銀行のデータと世界順位、タイムゾーンや ISO コードも掲載。",
+  "descFacts": {
+    "capital": "首都{v}",
+    "population": "人口{v}（{year}年）",
+    "gdp": "GDP {v}",
+    "perCapita": "1人あたりGDP {v}",
+    "currency": "通貨{v}",
+    "dial": "国際電話番号{v}"
+  },
+  "sentences": {
+    "capital": "{the}の首都は{capital}です。",
+    "capitals": "{The}には首都が{n}つあります：{capitals}。",
+    "population": "{year}年の{the}の人口は{pop}で、世界{n}の国と地域のうち{rank}です。",
+    "gdp": "{year}年のGDPは{gdp}で、{n}の国と地域のうち{rank}です。",
+    "perCapita": "1人あたりGDPは{pc}です（{year}年）。",
+    "currency": "通貨は{currency}（{code}）です。",
+    "currencies": "使われている通貨：{list}。",
+    "dial": "国際電話の国番号は{dial}です。"
+  },
+  "faq": {
+    "capital": {
+      "q": "{the}の首都はどこですか？"
+    },
+    "population": {
+      "q": "{the}の人口はどのくらいですか？"
+    },
+    "gdp": {
+      "q": "{the}のGDPはいくらですか？"
+    },
+    "currency": {
+      "q": "{the}ではどの通貨が使われていますか？"
+    },
+    "dial": {
+      "q": "{the}の国際電話の国番号は？"
+    }
+  },
+  "ui": {
+    "kicker": "国・地域のプロフィール",
+    "answer": "要点",
+    "facts": "基本データ",
+    "flagAlt": "{name}の旗",
+    "capital": "首都",
+    "continent": "大陸",
+    "population": "人口",
+    "currency": "通貨",
+    "dial": "国際電話番号",
+    "zones": "タイムゾーン",
+    "tld": "インターネットドメイン",
+    "iso": "ISO 3166 コード",
+    "rankOf": "{rank}／{n}",
+    "indicator": "指標",
+    "value": "値",
+    "year": "年",
+    "rank": "世界順位",
+    "figures": "すべてのデータ",
+    "figuresNote": "各項目はそのデータ表にリンクしており、表ではすべての国と地域が順位付けされています。1位が最も大きい値です。",
+    "codes": "コード・通貨・時間",
+    "zonesCount": "{n}つのタイムゾーン",
+    "zoneRange": "{from}〜{to}",
+    "dst": "夏時間 {offset}",
+    "rankings": "ランキング",
+    "rankingCount": "{n}件",
+    "rankingShare": "{name}のデータあり",
+    "rankingCurrency": "{currency}を含む",
+    "related": "{continent}のほかの国と地域",
+    "all": "すべての国と地域",
+    "sources": "出典",
+    "sourceWb": "データ：世界銀行、世界開発指標（CC BY 4.0）",
+    "sourceCodes": "コード：ISO 3166、ITU-T E.164、ISO 4217（datahub.io 経由、ODC-PDDL）、タイムゾーン：IANA tz データベース（パブリックドメイン）",
+    "sourceCapital": "首都：Wikidata（CC0）",
+    "sourceFlag": "国旗：flag-icons（Panayiotis Lipiridis 作、MIT）",
+    "snapshot": "{date}時点のデータ",
+    "faq": "よくある質問",
+    "count": "{n}件",
+    "noCapital": "–",
+    "sep": "、",
+    "ord": "{n}位",
+    "usdLong": "{v}米ドル",
+    "join": "",
+    "datasets": "すべてのデータ表",
+    "zoneOne": "タイムゾーン 1 つ（{offset}）"
+  },
+  "groups": {
+    "economy": "経済",
+    "people": "人口と健康",
+    "planet": "国土・エネルギー・インターネット"
+  },
+  "continents": {
+    "AF": "アフリカ",
+    "AN": "南極",
+    "AS": "アジア",
+    "EU": "ヨーロッパ",
+    "NA": "北アメリカ",
+    "OC": "オセアニア",
+    "SA": "南アメリカ"
+  },
+  "labels": {
+    "population": "人口",
+    "gdp": "GDP（米ドル）",
+    "gdp-per-capita": "1 人あたり GDP（米ドル）",
+    "life-expectancy": "平均寿命（歳）",
+    "fertility-rate": "出生率（女性 1 人あたりの出生数）",
+    "internet-users": "インターネット利用者（%）",
+    "gdp-ppp-per-capita": "1 人あたり GDP、PPP（国際ドル）",
+    "gdp-growth": "GDP 成長率（%）",
+    "inflation": "インフレ率（%）",
+    "unemployment": "失業率（%）",
+    "land-area": "陸地面積（km²）",
+    "population-density": "人口密度（1 km² あたりの人口）",
+    "urban-population": "都市人口（%）",
+    "aged-65-plus": "65 歳以上の人口（%）",
+    "birth-rate": "出生率（1,000 人あたり）",
+    "infant-mortality": "乳児死亡率（出生 1,000 人あたり）",
+    "co2-per-capita": "1 人あたり CO2（トン）",
+    "electricity-access": "電気を利用できる人口（%）",
+    "population-growth": "人口増加率（%）",
+    "death-rate": "死亡率（1,000 人あたり）",
+    "life-expectancy-male": "男性の平均寿命（歳）",
+    "life-expectancy-female": "女性の平均寿命（歳）",
+    "maternal-mortality": "妊産婦死亡率（出生 10 万人あたり）",
+    "exports": "輸出額（米ドル）",
+    "imports": "輸入額（米ドル）",
+    "health-spending-per-capita": "1 人あたり医療費（米ドル）",
+    "female-labor-force": "女性の労働参加率（%）",
+    "forest-area": "森林率（国土比 %）",
+    "renewable-energy": "再生可能エネルギー（エネルギー消費比 %）",
+    "gni-per-capita": "1 人あたり GNI（米ドル）",
+    "youth-unemployment": "若者の失業率（%）",
+    "remittances": "送金受取額（GDP 比 %）",
+    "foreign-reserves": "外貨準備高（米ドル）",
+    "military-spending": "軍事費（米ドル）",
+    "military-spending-gdp": "軍事費（GDP 比 %）",
+    "rd-spending": "研究開発費（GDP 比 %）",
+    "aged-0-14": "0〜14 歳の子ども（%）",
+    "international-migrants": "国際移民（人口比 %）",
+    "physicians": "医師数（1,000 人あたり）",
+    "education-spending": "教育支出（GDP 比 %）",
+    "co2-emissions": "CO2 排出量（百万トン）",
+    "electricity-consumption": "電力消費量（1 人あたり kWh）",
+    "mobile-subscriptions": "携帯電話契約数（100 人あたり）",
+    "broadband-subscriptions": "固定ブロードバンド（100 人あたり）",
+    "gdp-ppp": "GDP、PPP（国際ドル）",
+    "gini-index": "所得格差（ジニ係数）",
+    "poverty-rate": "貧困：1 日 $3.00 未満（%）",
+    "homicide-rate": "殺人件数（10 万人あたり）",
+    "literacy-rate": "識字率（%）",
+    "alcohol-consumption": "アルコール消費量（1 人あたりリットル）",
+    "tobacco-use": "たばこ使用率（成人 %）",
+    "air-pollution": "大気汚染、PM2.5（µg/m³）"
+  },
+  "names": {
+    "CD": "コンゴ民主共和国",
+    "CG": "コンゴ共和国",
+    "HK": "香港",
+    "MO": "マカオ",
+    "MM": "ミャンマー"
+  }
+}
