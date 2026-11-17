@@ -333,11 +333,11 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const rule = QUIZ_DEFS[id].result;
       // Spread ties: name every result tied with the winner (the hash only picked which one leads). A mixed result
       // names all the tied results.
-      const mixed = result.key === "mixed";
+      const mixed = rule.kind === "top" && rule.tie === "mixed" && result.key === "mixed";
       const tied = mixed ? topTied(result.ranked) : rule.kind === "top" && rule.tie === "spread" ? topTied(result.ranked).filter((s) => s !== first) : [];
-      if (tied.length) {
-        const names = listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)));
-        nodes.push(h("p", { class: "muted" }, `${mixed ? ui.tiedTop : ui.tiedWith}: ${names}`));
+      const tiedLine = tied.length ? `${mixed ? ui.tiedTop : ui.tiedWith}: ${listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)))}` : "";
+      if (tiedLine) {
+        nodes.push(h("p", { class: "muted" }, tiedLine));
       } else if (second && first.pct - second.pct <= 10 && results[second.dim]) {
         nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
       }
@@ -347,7 +347,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       }
       nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
       const name = results[result.key]?.name ?? result.key;
-      return { nodes, summary: mixed ? `${name} (${listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)))})` : name };
+      return { nodes, summary: mixed ? `${name} · ${tiedLine}` : name };
     }
     case "code": {
       const top3 = result.ranked.slice(0, 3);

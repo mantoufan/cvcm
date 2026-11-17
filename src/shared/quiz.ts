@@ -1686,12 +1686,12 @@ export function topTied(ranked: readonly DimScore[]): DimScore[] {
 }
 
 /**
- * Highest first; a tie keeps definition order. With `exact` (spread and mixed ties), percentages that only round to
- * the same number are ordered by exact share. With `hits` (see `top`), each group of tied results is reordered by a
- * hash of the answers that scored them, so answers that only touch other results never change who wins the tie.
+ * Highest exact share first (percentages that only round to the same number are not tied); a real tie keeps definition
+ * order. With `hits` (see `top`), each group of tied results is reordered by a hash of the answers that scored them,
+ * so answers that only touch other results never change who wins the tie.
  */
-function rank(scores: DimScore[], hits?: ReadonlyMap<string, readonly string[]>, exactOrder = Boolean(hits)): DimScore[] {
-  const exact = (a: DimScore, b: DimScore): number => (exactOrder ? shareCmp(b, a) : 0);
+function rank(scores: DimScore[], hits?: ReadonlyMap<string, readonly string[]>): DimScore[] {
+  const exact = (a: DimScore, b: DimScore): number => shareCmp(b, a);
   const ranked = scores.map((s, i) => ({ s, i })).sort((a, b) => b.s.pct - a.s.pct || exact(a.s, b.s) || a.i - b.i).map(({ s }) => s);
   if (!hits) return ranked;
   for (let start = 0; start < ranked.length; ) {
@@ -1767,7 +1767,7 @@ export function scoreQuiz(id: QuizId, answers: readonly number[]): QuizResult {
   for (const s of scores) s.pct = pct(s.raw, s.min, s.max);
   // If the answers rule out every result, ignore the exclusions rather than show nothing.
   if (def.dims.every((dim) => excluded.has(dim))) excluded.clear();
-  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), hits, Boolean(hits) || (rule.kind === "top" && rule.tie === "mixed"));
+  const ranked = rank(scores.filter((s) => !excluded.has(s.dim)), hits);
   const sumRaw = scores.reduce((a, s) => a + s.raw, 0);
   const sumMax = scores.reduce((a, s) => a + s.max, 0);
   const overall = pct(sumRaw, 0, sumMax);

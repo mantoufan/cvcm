@@ -340,6 +340,11 @@ describe("test pages: scoring", () => {
     expect(topTied([s("a", 2, 4), s("b", 3, 4, 2)]).map((x) => x.dim)).toEqual(["a", "b"]);
     // A result nothing can score is not tied with the leader.
     expect(topTied([s("a", 2, 4), s("z", 0, 0)]).map((x) => x.dim)).toEqual(["a"]);
+    // Through scoreQuiz: fish 12 of 23 (52.17%) and reptile 11 of 21 (52.38%) both round to 52%; reptile leads.
+    const pet = scoreQuiz("pet", [1, 1, 1, 0, 1, 0, 0, 1, 3, 0, 2, 0, 2, 0]);
+    const raw = Object.fromEntries(pet.scores.map((x) => [x.dim, `${x.raw}/${x.max}`]));
+    expect(raw).toMatchObject({ fish: "12/23", reptile: "11/21" });
+    expect(pet.key).toBe("reptile");
   });
 
   it("gives a communication style tie at the top the mixed result, never a hash-picked style", () => {
