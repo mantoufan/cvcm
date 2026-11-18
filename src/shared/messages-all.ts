@@ -95,18 +95,28 @@ import zhCNNostalgia from "../locales/packs/nostalgia-zh-CN";
 import zhTWNostalgia from "../locales/packs/nostalgia-zh-TW";
 import { NOSTALGIA_ALL } from "../locales/nostalgia/all";
 import enSummaries from "../locales/packs/summaries-en";
+import enScripts from "../locales/packs/scripts-en";
 import esSummaries from "../locales/packs/summaries-es";
+import esScripts from "../locales/packs/scripts-es";
 import idSummaries from "../locales/packs/summaries-id";
+import idScripts from "../locales/packs/scripts-id";
 import jaSummaries from "../locales/packs/summaries-ja";
+import jaScripts from "../locales/packs/scripts-ja";
 import koSummaries from "../locales/packs/summaries-ko";
+import koScripts from "../locales/packs/scripts-ko";
 import viSummaries from "../locales/packs/summaries-vi";
+import viScripts from "../locales/packs/scripts-vi";
 import zhCNSummaries from "../locales/packs/summaries-zh-CN";
+import zhCNScripts from "../locales/packs/scripts-zh-CN";
 import zhTWSummaries from "../locales/packs/summaries-zh-TW";
+import zhTWScripts from "../locales/packs/scripts-zh-TW";
 import { SUMMARIES_ALL } from "../locales/summaries/all";
+import { SCRIPTS_ALL } from "../locales/scripts/all";
 import { QUIZ_ALL } from "../locales/quiz/all";
 import type { QuizId } from "./quiz";
 import type { NostalgiaId } from "./nostalgia";
 import type { SummaryId } from "./summaries";
+import type { ScriptId } from "./scripts";
 import type { RefId } from "./ref";
 import type { KbId } from "./kb";
 import type { Locale } from "./locale";
@@ -128,7 +138,9 @@ import {
   registerNostalgiaEntry,
   registerNostalgiaMessages,
   registerSummaryEntry,
+  registerScriptEntry,
   registerSummariesMessages,
+  registerScriptsMessages,
   registerCalendarMessages,
   type GameMessages,
   type KbMessages,
@@ -141,6 +153,7 @@ import {
   type IdeasMessages,
   type NostalgiaMessages,
   type SummariesMessages,
+  type ScriptsMessages,
   type CalendarMessages,
 } from "./messages";
 
@@ -297,6 +310,21 @@ const SUMMARIES: Record<Locale, SummariesMessages> = {
 for (const [locale, pack] of Object.entries(SUMMARIES)) registerSummariesMessages(locale as Locale, pack);
 for (const [locale, entries] of Object.entries(SUMMARIES_ALL)) {
   for (const [id, copy] of Object.entries(entries)) registerSummaryEntry(locale as Locale, id as SummaryId, copy);
+}
+
+const SCRIPTS: Record<Locale, ScriptsMessages> = {
+  en: enScripts,
+  "zh-CN": zhCNScripts,
+  "zh-TW": zhTWScripts,
+  ja: jaScripts,
+  ko: koScripts,
+  vi: viScripts,
+  id: idScripts,
+  es: esScripts,
+};
+for (const [locale, pack] of Object.entries(SCRIPTS)) registerScriptsMessages(locale as Locale, pack);
+for (const [locale, entries] of Object.entries(SCRIPTS_ALL)) {
+  for (const [id, copy] of Object.entries(entries)) registerScriptEntry(locale as Locale, id as ScriptId, copy);
 }
 
 // Country profiles keep their own store (countries-store.ts).
