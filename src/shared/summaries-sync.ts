@@ -21,7 +21,6 @@ export function summariesSyncFiles(read: (path: string) => string | null): { fil
   for (const id of SUMMARY_ENTRIES) {
     if (read(`src/locales/summaries/en/${id}.json`) === null) throw new Error(`summaries:sync: missing src/locales/summaries/en/${id}.json`);
   }
-  const entries = SUMMARY_ENTRIES;
   /** Which locale's file stands in for `<locale>/<id>.json` (or `<locale>.json` when id is null). */
   const sourceLocale = (locale: Locale, id: string | null): Locale => {
     const path = id ? `src/locales/summaries/${locale}/${id}.json` : `src/locales/summaries/${locale}.json`;
@@ -34,22 +33,22 @@ export function summariesSyncFiles(read: (path: string) => string | null): { fil
     return { name: copy.name, blurb: copy.blurb };
   };
 
-  const sources = Object.fromEntries(LOCALES.map((locale) => [locale, Object.fromEntries(entries.map((id) => [id, sourceLocale(locale, id)]))])) as Record<Locale, Record<string, Locale>>;
+  const sources = Object.fromEntries(LOCALES.map((locale) => [locale, Object.fromEntries(SUMMARY_ENTRIES.map((id) => [id, sourceLocale(locale, id)]))])) as Record<Locale, Record<string, Locale>>;
   for (const locale of LOCALES) {
-    const list = Object.fromEntries(entries.map((id) => [id, entryOf(sources[locale][id], id)]));
+    const list = Object.fromEntries(SUMMARY_ENTRIES.map((id) => [id, entryOf(sources[locale][id], id)]));
     files[`src/locales/summaries/index/${locale}.json`] = JSON.stringify(list, null, 2) + "\n";
   }
 
   const ident = (locale: string, id: string): string => `${locale.replace("-", "")}_${id.replace(/-/g, "_")}`;
   files["src/locales/summaries/all.ts"] = [
     `${header} Every work in every locale, for the Worker, prerender and tests; the client loads one at a time.`,
-    ...LOCALES.flatMap((locale) => entries.map((id) => `import ${ident(locale, id)} from "./${sources[locale][id]}/${id}.json";`)),
+    ...LOCALES.flatMap((locale) => SUMMARY_ENTRIES.map((id) => `import ${ident(locale, id)} from "./${sources[locale][id]}/${id}.json";`)),
     'import type { SummaryEntryCopy } from "../../shared/summaries-i18n";',
     'import type { SummaryId } from "../../shared/summaries";',
     'import type { Locale } from "../../shared/locale";',
     "",
     "const all = {",
-    ...LOCALES.map((locale) => `  ${JSON.stringify(locale)}: { ${entries.map((id) => `${JSON.stringify(id)}: ${ident(locale, id)}`).join(", ")} },`),
+    ...LOCALES.map((locale) => `  ${JSON.stringify(locale)}: { ${SUMMARY_ENTRIES.map((id) => `${JSON.stringify(id)}: ${ident(locale, id)}`).join(", ")} },`),
     "} satisfies Record<Locale, Record<SummaryId, unknown>>;",
     "",
     "// JSON imports type each block union loosely; the shape is checked by tests/summaries.test.ts.",
@@ -64,7 +63,7 @@ export function summariesSyncFiles(read: (path: string) => string | null): { fil
       'import type { SummaryId } from "../../../shared/summaries";',
       "",
       "export const SUMMARY_LOADERS = {",
-      ...entries.map((id) => `  ${JSON.stringify(id)}: () => import("../${sources[locale][id]}/${id}.json"),`),
+      ...SUMMARY_ENTRIES.map((id) => `  ${JSON.stringify(id)}: () => import("../${sources[locale][id]}/${id}.json"),`),
       "} satisfies Record<SummaryId, () => Promise<unknown>>;",
       "",
     ].join("\n");

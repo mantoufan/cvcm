@@ -61,8 +61,10 @@ function sourcesHtml(locale: Locale, id: SummaryId): string {
 
 /** "Answer: {option}" with the option rendered exactly as in the list above (inline spans, not escaped source). */
 function answerHtml(template: string, option: string): string {
-  const [before, after = ""] = template.split("{option}");
-  return `${escapeHtml(before)}${inline(option)}${escapeHtml(after)}`;
+  // A template that lost its placeholder still shows the option, after the label, rather than dropping it.
+  const at = template.indexOf("{option}");
+  if (at < 0) return `${escapeHtml(template)} ${inline(option)}`;
+  return `${escapeHtml(template.slice(0, at))}${inline(option)}${escapeHtml(template.slice(at + "{option}".length))}`;
 }
 
 /**
