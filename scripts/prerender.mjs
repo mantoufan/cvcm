@@ -54,9 +54,10 @@ await esbuild.build({
 // a set number of pages, however large the sitemap grows. Several shards run at once, one per core while memory
 // allows: MEMORY_PER_PROCESS is what one child of PAGES_PER_PARALLEL_PROCESS pages needs (peak RSS 3.33 GiB measured
 // in November 2026), so a "16 GB" runner, which reports about 15.6 GiB, takes 4. PRERENDER_JOBS overrides the
-// count. Shards are halved only when they run side by side; one at a time, fewer processes start faster. Each child gets this process's heap limit and its
-// own report; the counts are added up here, in shard order, into one summary.
+// count. Each child gets this process's heap limit and its own report; the counts are added up here, in shard order,
+// into one summary.
 const PAGES_PER_PROCESS = 2000;
+// Shards are halved only when they run side by side; one at a time, fewer processes start faster.
 const PAGES_PER_PARALLEL_PROCESS = 1000;
 const MEMORY_PER_PROCESS = 3.5 * 1024 ** 3;
 const reportBase = join(root, "node_modules/.cache", `cvcm-prerender-${process.pid}`);
@@ -77,7 +78,8 @@ for (const signal of ["SIGINT", "SIGTERM"]) {
   process.once(signal, () => (interrupted ??= (async () => {
     const exits = [...running].map((run) => new Promise((exited) => run.once("exit", exited)));
     for (const run of running) run.kill();
-    await Promise.race([Promise.all(exits), new Promise((late) => setTimeout(late, 5000))]);
+    const late = await Promise.race([Promise.all(exits).then(() => false), new Promise((r) => setTimeout(r, 5000, true))]);
+    if (late) for (const run of running) run.kill("SIGKILL");
     rmSync(outfile, { force: true });
     for (const report of reports) rmSync(report, { force: true });
     process.exit(signal === "SIGINT" ? 130 : 143);
@@ -85,6 +87,8 @@ for (const signal of ["SIGINT", "SIGTERM"]) {
 }
 
 function child(label, env) {
+  // Once interrupted, no new shard starts: the signal handler only stops the ones already running.
+  if (interrupted) return Promise.reject(new Error(`prerender: interrupted before ${label}`));
   const report = `${reportBase}-${reports.length}.json`;
   reports.push(report);
   rmSync(report, { force: true });
@@ -128,7 +132,7 @@ try {
   const { total } = await child("the page count", { PRERENDER_COUNT_ONLY: "1" });
   // Side by side, a whole number of rounds: no core sits idle while the last few shards finish.
   const shards = limit > 1
-    ? limit * Math.ceil(total / (limit * PAGES_PER_PARALLEL_PROCESS))
+    ? limit * Math.max(1, Math.ceil(total / (limit * PAGES_PER_PARALLEL_PROCESS)))
     : Math.max(1, Math.ceil(total / PAGES_PER_PROCESS));
   const jobs = Math.min(shards, limit);
   console.log(`prerender: ${total} pages in ${shards} shards, ${jobs} at a time`);
@@ -139,8 +143,9 @@ try {
     while (!stopped && next < shards) {
       const shard = next++;
       const shardStarted = Date.now();
+      let part;
       try {
-        parts[shard] = await child(`shard ${shard + 1}/${shards}`, { PRERENDER_SHARD: `${shard}/${shards}` });
+        part = await child(`shard ${shard + 1}/${shards}`, { PRERENDER_SHARD: `${shard}/${shards}` });
       } catch (error) {
         // One failed shard fails the build: stop the others rather than let them finish for nothing.
         if (!stopped) {
@@ -149,7 +154,7 @@ try {
         }
         return;
       }
-      const part = parts[shard];
+      parts[shard] = part;
       console.log(`prerender: shard ${shard + 1}/${shards}: ${part.written} pages, ${part.failed.length} skipped in ${((Date.now() - shardStarted) / 1000).toFixed(1)}s`);
     }
   }
