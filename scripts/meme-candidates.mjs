@@ -70,7 +70,7 @@ async function trackedTitles() {
   const raw = new Set(Object.values(SOURCES).flatMap((s) => (s.wiki?.startsWith("en:") ? [s.wiki.slice(3)] : [])));
   for (const m of SLANG_TS.matchAll(/https:\/\/en\.wikipedia\.org\/wiki\/([^"#?\s]+)/g)) raw.add(decodeURIComponent(m[1]));
   const titles = [...raw].map((t) => t.replaceAll("_", " "));
-  return new Set([...titles, ...(await resolveTitles(titles))].map(key));
+  return new Set([...titles, ...(await resolveTitles(titles)).values()].map(key));
 }
 
 /** Run `fn` over `list` with a few requests in flight (Wikimedia asks clients to keep it modest). */
@@ -86,7 +86,7 @@ async function pool(list, fn, size = 4) {
   return out;
 }
 
-/** Category members resolved through redirects (a category may list a redirect such as "Nothing beats a Jet2 holiday"). */
+/** Each title mapped to the article it ends at through redirects (a category may list a redirect page). */
 async function resolveTitles(titles) {
   const to = new Map(titles.map((t) => [t, t]));
   for (let i = 0; i < titles.length; i += 50) {
@@ -101,14 +101,21 @@ async function resolveTitles(titles) {
       to.set(t, n);
     }
   }
-  return [...new Set(to.values())];
+  return to;
 }
 
 async function wikipediaCandidates() {
   const year = new Date().getUTCFullYear();
-  const [tracked, end] = await Promise.all([trackedTitles(), lastPublishedDay()]);
-  const members = [...new Set((await Promise.all([year, year - 1].map((y) => categoryPages(`Category:Internet memes introduced in ${y}`)))).flat())];
-  const titles = (await resolveTitles(members)).filter((title) => !tracked.has(key(title)) && !DECIDED.has(title) && !title.startsWith("List of "));
+  const [tracked, end, ...lists] = await Promise.all([trackedTitles(), lastPublishedDay(), ...[year, year - 1].map((y) => categoryPages(`Category:Internet memes introduced in ${y}`))]);
+  const members = new Set(lists.flat());
+  const resolved = await resolveTitles([...members]);
+  // A member that redirects into a broader article (a meme title pointing at a film, a person, a section) would be
+  // ranked by that article's views, so it is kept only when its target is itself in the category.
+  const own = [...members].flatMap((title) => {
+    const to = resolved.get(title) ?? title;
+    return to === title || members.has(to) ? [to] : [];
+  });
+  const titles = [...new Set(own)].filter((title) => !tracked.has(key(title)) && !DECIDED.has(title) && !title.startsWith("List of "));
   const counts = await pool(titles, (title) => views(title, end).catch((error) => {
     console.warn(`views ${title}: ${error.message}`);
     return null;
