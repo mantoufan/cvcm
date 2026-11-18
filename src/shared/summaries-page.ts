@@ -2,7 +2,7 @@
  * The summaries page HTML (hub and works), shared by the client page and the Worker's crawler copy. Kept out of
  * summaries-i18n so the main bundle, which needs only titles, descriptions and JSON-LD, does not carry it.
  */
-import type { Locale } from "./locale";
+import { CJK_LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
@@ -10,8 +10,6 @@ import { messages, summariesMessages } from "./messages";
 import { appHref, summariesHref } from "./path";
 import { SUMMARY_GROUPS, summaryGroupOf, summaryUpdated, type SummaryId } from "./summaries";
 import { summariesUi, summariesHub, summaryCopy, summaryName, summariesFaqItems, summaryMeta, summaryCreators } from "./summaries-i18n";
-
-const CJK = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
 
 function crumbHtml(locale: Locale, id: SummaryId | null): string {
   const m = summariesMessages(locale);
@@ -105,7 +103,7 @@ export function summariesPageHtml(locale: Locale, id: SummaryId | null): string 
   }
   const copy = summaryCopy(locale, id);
   const meta = summaryMeta(locale, id);
-  const cjk = CJK.has(locale);
+  const cjk = CJK_LOCALES.has(locale);
   const kinds = ui.kinds as Record<string, string>;
   const badge = `<span class="pill summary-spoiler">${escapeHtml(ui.spoiler)}</span>`;
   const firstSpoiler = copy.sections.findIndex((s) => s.spoiler);

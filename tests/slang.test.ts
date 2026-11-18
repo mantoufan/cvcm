@@ -150,8 +150,9 @@ describe("slang: content", () => {
     // Words are searched as "X是什么意思", memes as "X是什么梗", songs as "X是什么歌".
     for (const id of SLANG_ENTRIES) {
       const kind = SLANG_META[id].song ? "歌" : "(意思|梗)";
-      expect(slangCopy("zh-CN", id).title, id).toMatch(new RegExp(`是什么${kind}`));
-      expect(slangCopy("zh-TW", id).title, id).toMatch(new RegExp(`是什麼${kind}`));
+      // The phrase sits in the title's first clause, right after the term (before any ？ or ：).
+      expect(slangCopy("zh-CN", id).title, id).toMatch(new RegExp(`^[^？：]{1,40}?是什么${kind}`));
+      expect(slangCopy("zh-TW", id).title, id).toMatch(new RegExp(`^[^？：]{1,40}?是什麼${kind}`));
     }
   });
 

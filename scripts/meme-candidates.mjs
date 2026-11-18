@@ -221,8 +221,11 @@ wiki.list.forEach((c, i) => {
 });
 if (wiki.failed.length) lines.push("", `Views unavailable this week (check by hand): ${wiki.failed.map(code).join(", ")}`);
 
-if (tiktok) {
-  const { tags, sounds } = await tiktokHints(process.env.SCRAPECREATORS_API_KEY);
+// A TikTok failure (an exhausted key, a 4xx) must not lose the Wikipedia table already built.
+const hints = tiktok ? await tiktokHints(process.env.SCRAPECREATORS_API_KEY).catch((error) => ({ error })) : null;
+if (hints?.error) lines.push("", `TikTok trending feed unavailable: ${hints.error.message}`);
+else if (hints) {
+  const { tags, sounds } = hints;
   lines.push("", `## TikTok trending feed (${TIKTOK_REGIONS.join(", ")}; hints only, not for publishing)`, "", `Hashtags: ${tags.map(([t, n]) => `${t} (${n})`).join(", ") || "none"}`, "", `Sounds: ${sounds.map(([t, n]) => `${t} (${n})`).join("; ") || "none"}`);
 }
 
