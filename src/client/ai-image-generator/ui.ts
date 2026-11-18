@@ -68,9 +68,6 @@ export async function mountImageGenerator(host: HTMLElement): Promise<void> {
       controls(),
     ),
   );
-  // Opened with a prompt (?prompt=…, e.g. a script page's "draw the opening frame"): fill it in, never start on its own.
-  const preset = new URLSearchParams(location.search).get("prompt")?.trim();
-  if (preset && promptEl) promptEl.value = preset.slice(0, PROMPT_MAX);
 }
 
 export function unmountImageGenerator(): void {

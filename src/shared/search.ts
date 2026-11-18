@@ -5,7 +5,7 @@
  */
 
 /** Channels a result can belong to; the label is the core-pack key `nav.<SEARCH_CHANNEL_NAV[channel]>`. */
-export const SEARCH_CHANNELS = ["tool", "learn", "kb", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "summaries", "scripts", "calories", "calendar", "games", "countries", "elements", "emoji", "currency"] as const;
+export const SEARCH_CHANNELS = ["tool", "learn", "kb", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "summaries", "calories", "calendar", "games", "countries", "elements", "emoji", "currency"] as const;
 export type SearchChannel = (typeof SEARCH_CHANNELS)[number];
 
 export const SEARCH_CHANNEL_NAV = {
@@ -20,7 +20,6 @@ export const SEARCH_CHANNEL_NAV = {
   ideas: "ideas",
   nostalgia: "nostalgia",
   summaries: "summaries",
-  scripts: "scripts",
   calories: "calories",
   calendar: "calendar",
   games: "games",

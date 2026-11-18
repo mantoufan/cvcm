@@ -11,7 +11,6 @@ import { SLANG_ENTRIES } from "./slang";
 import { IDEA_ENTRIES } from "./ideas";
 import { NOSTALGIA_ENTRIES } from "./nostalgia";
 import { SUMMARY_ENTRIES } from "./summaries";
-import { SCRIPT_ENTRIES, scriptEntryKind, scriptPlayCount } from "./scripts";
 import { COUNTRY_LIST } from "./countries";
 import { FOODS } from "./calories";
 import { ELEMENT_SLUGS } from "./elements";
@@ -23,7 +22,7 @@ import { LOCALES, localePath } from "./locale";
 import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
 import { MUSIC_BARS, MUSIC_STYLES, STYLE_PRESETS, SURPRISE_IDS } from "./music-gen";
 import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
-import { AI_TOOLS, CATEGORIES, LOOKUP_TOOLS, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, scriptsHref, categoryLinks, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type CategoryId, type ToolId } from "./path";
+import { AI_TOOLS, CATEGORIES, LOOKUP_TOOLS, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, categoryLinks, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
 
 const CATEGORY_TITLE: Record<CategoryId, string> = {
@@ -263,7 +262,6 @@ export function buildLlmsTxt(): string {
     `- [Business ideas](${SITE_ORIGIN}${ideasHref("en", null)}): ${IDEA_ENTRIES.length} business and side-hustle ideas (AI agency, Amazon FBA, TikTok Shop, vending machines, cleaning, food trucks…), each with a 0-100 outlook score from four years of Google Ads Keyword Planner search data in eight languages, a 12-month forecast, a startup-cost level, and a guide to how it makes money, what it takes, the risks and how to test the idea cheaply (no income or cost figures).`,
     `- [Nostalgia](${SITE_ORIGIN}${nostalgiaHref("en", null)}): ${NOSTALGIA_ENTRIES.length} things from 1980s–2000s childhoods (Famicom, Tamagotchi, pagers, Walkman, Y2K, White Rabbit candy, Chinese snacks and playground games): what each was, when it was around, what it cost, what happened to it and whether it is still sold, in eight languages.`,
     `- [Summaries](${SITE_ORIGIN}${summariesHref("en", null)}): ${SUMMARY_ENTRIES.length} plot summaries of well-known books, films, TV series and anime (Hamlet, Macbeth, Nineteen Eighty-Four, The Little Prince, Shutter Island, Inception, Stranger Things, Squid Game, Attack on Titan, The Tale of Kieu…): main characters, the plot in order, the ending explained, themes and a three-question self-check, checked against cited sources, in eight languages. Pages contain spoilers from the plot section on.`,
-    `- [Scripts & Ideas](${SITE_ORIGIN}${scriptsHref("en", null)}): ${scriptPlayCount()} original short scripts, ${SCRIPT_ENTRIES.filter((id) => scriptEntryKind(id) === "ideas").length} video idea lists and a plot generator for creators, in eight languages: 30–60 second vertical sketches, short-drama pilot episodes, 4–7 minute stage skits for 3–6 people, duets, monologues and a voice drama, each with roles, the full script, a shot list or staging notes, performance tips, variations and AI shot prompts. All scripts are free to perform and film under CC BY 4.0 (credit "Script: cv.cm").`,
     `- [Countries](${SITE_ORIGIN}${countriesHref("en", null)}): ${COUNTRY_LIST.length} country and territory profiles: flag, capital, population, GDP, currency, calling code, time zones and about 50 World Bank figures, each with its world rank and a link to its ranked table, in eight languages.`,
     `- [Food calories](${SITE_ORIGIN}${caloriesHref("en", null)}): calories, protein, fat, carbohydrate, fibre, sugars and minerals per 100 g and per typical serving for ${FOODS.length} common foods (fruit, vegetables, rice, noodles and bread, meat, fish, eggs and dairy, tofu and beans, nuts, oils, drinks, sweets), from USDA FoodData Central (public domain, CC0 1.0), each with a gram calculator, in eight languages.`,
     `- [Periodic table](${SITE_ORIGIN}${elementsHref("en", null)}): all ${ELEMENT_SLUGS.length} elements as a clickable table and one page each (for example ${SITE_ORIGIN}${elementsHref("en", "carbon")}): atomic number, atomic mass, category, group and period, electron configuration, melting and boiling points in K and °C, density, electronegativity, ionization energy and oxidation states from PubChem (NCBI, public domain), names in eight languages from Wikidata (CC0).`,
