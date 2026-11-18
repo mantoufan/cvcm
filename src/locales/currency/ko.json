@@ -1,6 +1,5 @@
 {
   "crumbHome": "홈",
-  "names": { "KRW": "원", "JPY": "엔화", "CNY": "위안화" },
   "titles": {
     "usd-krw": "달러 환율 (USD/KRW): 오늘의 원/달러 환율, 과거 추이와 환율 계산기",
     "eur-krw": "유로 환율 (EUR/KRW): 오늘의 원/유로 환율, 과거 추이와 환율 계산기",
@@ -57,6 +56,7 @@
     "chartDaily": "최근 90일 일별",
     "chartLabel": "{fromCode}/{toCode} 꺾은선 차트: {firstDate} {first}, {lastDate} {last}, 최고 {high}, 최저 {low}.",
     "method": "ECB는 모든 통화를 1유로당 금액으로 발표하므로 {fromCode}/{toCode} = (1유로당 {toCode}) ÷ (1유로당 {fromCode})로 계산하고, 유효숫자 6자리로 표시합니다.",
+    "monthlyNote": "월별 값은 두 통화 각각의 월평균 유로 환율의 비율입니다.",
     "reverse": "반대로: {toCode} → {fromCode}",
     "related": "다른 통화쌍",
     "faqTitle": "자주 묻는 질문",

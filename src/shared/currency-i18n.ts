@@ -8,6 +8,7 @@ import { fill } from "./fill";
 import { currencyMessages, type CurrencyMessages } from "./messages";
 import { appHref, currencyHref } from "./path";
 import { dataCrumbItem } from "./channel-parent";
+import { currencyName } from "./currency-names";
 import { HREFLANG } from "./sitemap";
 import { CURRENCY_PAIRS, CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT, pairCodes, type CurrencyPair } from "./currency";
 
@@ -18,22 +19,31 @@ export type CurrencyStats = { from: string; open: number; hi: number; hiOn: stri
 export const CURRENCY_WINDOWS = ["d30", "y1", "y5", "all"] as const;
 export type CurrencyWindow = (typeof CURRENCY_WINDOWS)[number];
 
-/** One pair in the snapshot: latest rate, first day, monthly averages from `m0`, daily rates on `days`. */
-export type CurrencyPairData = {
-  rate: number;
-  start: string;
-  m0: string;
-  monthly: number[];
-  daily: (number | null)[];
-  stats: Record<CurrencyWindow, CurrencyStats>;
-};
+/** Per-pair window stats from the snapshot, and the day the pair's series begins. */
+export type CurrencyPairStats = { start: string } & Record<CurrencyWindow, CurrencyStats>;
 
-/** src/shared/currency-data.json: units per 1 EUR for every ECB currency on `asOf`, the daily dates and the pairs. */
+/**
+ * src/shared/currency-data.json: rates once per currency, as the ECB publishes them (units per 1 EUR): every ECB
+ * currency on `asOf`, the pairs' currencies on each day of the last 90 days and as monthly averages; and the window
+ * stats per pair (they need the whole daily history, so scripts/currency-snapshot.mjs works them out).
+ */
 export type CurrencyData = {
   asOf: string;
   latest: Record<string, number>;
-  days: string[];
-  pairs: Record<CurrencyPair, CurrencyPairData>;
+  stats: Record<CurrencyPair, CurrencyPairStats>;
+  days: Record<string, Record<string, number>>;
+  months: Record<string, Record<string, number>>;
+};
+
+/** One pair, derived from the per-currency rates: the latest rate (six digits), its stats, and chart points. */
+export type CurrencyPairData = {
+  rate: number;
+  start: string;
+  stats: Record<CurrencyWindow, CurrencyStats>;
+  /** Every month from the pair's first to the last, with null where either currency had no rate that month. */
+  monthly: [month: string, value: number | null][];
+  /** Every ECB day of the last 90 days, null where either currency had no rate. */
+  daily: [day: string, value: number | null][];
 };
 
 const ORIGIN = "https://cv.cm";
@@ -46,8 +56,53 @@ export function currencyData(locale: Locale): CurrencyData {
   return currencyMessages(locale).data;
 }
 
+const sig6 = (value: number): number => Number(value.toPrecision(6));
+
+/** units of `to` per unit of `from`, from two per-EUR rate tables; null when either is missing. */
+function cross(rates: Record<string, number> | undefined, from: string, to: string): number | null {
+  const a = from === "EUR" ? 1 : rates?.[from];
+  const b = to === "EUR" ? 1 : rates?.[to];
+  return a && b ? b / a : null;
+}
+
+const PAIRS = new WeakMap<CurrencyData, Map<CurrencyPair, CurrencyPairData>>();
+
 export function pairData(locale: Locale, pair: CurrencyPair): CurrencyPairData {
-  return currencyData(locale).pairs[pair];
+  const data = currencyData(locale);
+  let byPair = PAIRS.get(data);
+  if (!byPair) PAIRS.set(data, byPair = new Map());
+  let out = byPair.get(pair);
+  if (!out) byPair.set(pair, out = buildPair(data, pair));
+  return out;
+}
+
+function buildPair(data: CurrencyData, pair: CurrencyPair): CurrencyPairData {
+  const [from, to] = pairCodes(pair);
+  const { start, ...stats } = data.stats[pair];
+  const months = Object.keys(data.months).sort();
+  const first = start.slice(0, 7);
+  return {
+    rate: sig6(cross(data.latest, from, to)!),
+    start,
+    stats,
+    // Months are stored by key, so a month with no rate is a gap here, never a shift.
+    monthly: monthRange(first, months.at(-1)!).map((month) => {
+      const v = cross(data.months[month], from, to);
+      return [month, v === null ? null : Number(v.toPrecision(5))];
+    }),
+    daily: Object.keys(data.days).sort().map((day) => {
+      const v = cross(data.days[day], from, to);
+      return [day, v === null ? null : sig6(v)];
+    }),
+  };
+}
+
+/** Every "YYYY-MM" from `first` to `last`, both included. */
+export function monthRange(first: string, last: string): string[] {
+  const at = (m: string): number => Number(m.slice(0, 4)) * 12 + Number(m.slice(5, 7)) - 1;
+  const out: string[] = [];
+  for (let i = at(first); i <= at(last); i += 1) out.push(`${Math.floor(i / 12)}-${String((i % 12) + 1).padStart(2, "0")}`);
+  return out;
 }
 
 /** Every ECB currency on the snapshot day, EUR first, then by code. */
@@ -65,23 +120,7 @@ export function crossRate(locale: Locale, from: string, to: string): number {
   return perEur(locale, to) / perEur(locale, from);
 }
 
-const DISPLAY = new Map<Locale, Intl.DisplayNames | null>();
-
-/** The currency's name in this locale: the copy's override, else Intl, else the code. */
-export function currencyName(locale: Locale, code: string): string {
-  const own = (currencyMessages(locale).names as Record<string, string>)[code];
-  if (own) return own;
-  if (!DISPLAY.has(locale)) {
-    let names: Intl.DisplayNames | null = null;
-    try {
-      names = new Intl.DisplayNames([HREFLANG[locale]], { type: "currency" });
-    } catch {
-      names = null;
-    }
-    DISPLAY.set(locale, names);
-  }
-  return DISPLAY.get(locale)?.of(code) ?? code;
-}
+export { currencyName };
 
 const FORMATS = new Map<string, Intl.NumberFormat>();
 function numberFormat(locale: Locale, key: string, options: Intl.NumberFormatOptions): Intl.NumberFormat {
@@ -96,15 +135,15 @@ export function formatRate(locale: Locale, value: number): string {
   return numberFormat(locale, "rate", { maximumSignificantDigits: 6 }).format(value);
 }
 
-/** A converted amount: two decimals, or four significant digits below 1. */
+/** A converted amount: two decimals from 1 up, else four significant digits (0.001 USD → 0.006666 CNY, never 0). */
 export function formatMoney(locale: Locale, value: number): string {
   if (Math.abs(value) >= 1 || value === 0) return numberFormat(locale, "money", { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
   return numberFormat(locale, "small", { maximumSignificantDigits: 4 }).format(value);
 }
 
-/** An amount typed or listed (whole numbers, grouped; up to two decimals when typed). */
+/** An amount typed or listed, grouped, with every decimal it was typed with (up to ten). */
 export function formatAmount(locale: Locale, value: number): string {
-  return numberFormat(locale, "amount", { maximumFractionDigits: 2 }).format(value);
+  return numberFormat(locale, "amount", { maximumFractionDigits: 10 }).format(value);
 }
 
 export function formatPercent(locale: Locale, value: number): string {

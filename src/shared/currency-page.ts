@@ -175,7 +175,7 @@ function pairConverterHtml(locale: Locale, pair: CurrencyPair): string {
   const [from, to] = pairCodes(pair);
   const rate = pairData(locale, pair).rate;
   const vars = pairVars(locale, pair);
-  return `<section class="fx-converter" aria-labelledby="fx-conv-title" data-rate="${rate}"><h2 id="fx-conv-title">${escapeHtml(fill(m.converterTitle, vars))}</h2>`
+  return `<section class="fx-converter" aria-labelledby="fx-conv-title"><h2 id="fx-conv-title">${escapeHtml(fill(m.converterTitle, vars))}</h2>`
     + `<div class="fx-form">`
     + `<label class="field"><span>${escapeHtml(`${from} · ${currencyName(locale, from)}`)}</span><input class="fx-a" type="text" inputmode="decimal" autocomplete="off" value="1"></label>`
     + `<label class="field"><span>${escapeHtml(`${to} · ${currencyName(locale, to)}`)}</span><input class="fx-b" type="text" inputmode="decimal" autocomplete="off" value="${escapeHtml(formatMoney(locale, rate))}"></label>`
@@ -267,15 +267,6 @@ export function lineChartSvg(locale: Locale, points: ChartPoint[], ticks: { inde
     + `${grid}<line class="fx-axis" x1="${PAD.left}" x2="${W - PAD.right}" y1="${H - PAD.bottom}" y2="${H - PAD.bottom}"/>${xs}<path class="fx-line" d="${path}"/></svg>`;
 }
 
-/** Months from "YYYY-MM", n of them. */
-function monthsFrom(m0: string, n: number): string[] {
-  const [y, m] = m0.split("-").map(Number);
-  return Array.from({ length: n }, (_, i) => {
-    const at = y * 12 + (m - 1) + i;
-    return `${Math.floor(at / 12)}-${String((at % 12) + 1).padStart(2, "0")}`;
-  });
-}
-
 function chartLabel(locale: Locale, pair: CurrencyPair, points: ChartPoint[], when: (at: string) => string): string {
   const shown = points.filter((p): p is { at: string; v: number } => p.v !== null);
   const values = shown.map((p) => p.v);
@@ -290,26 +281,30 @@ function chartLabel(locale: Locale, pair: CurrencyPair, points: ChartPoint[], wh
   });
 }
 
+/** Chart points and x labels from the stored months and days: each point keeps its own month or day, so a gap never moves a label. */
+export function chartSeries(locale: Locale, pair: CurrencyPair): { monthly: ChartPoint[]; yearTicks: { index: number; label: string }[]; daily: ChartPoint[]; dayTicks: { index: number; label: string }[] } {
+  const d = pairData(locale, pair);
+  const monthly: ChartPoint[] = d.monthly.map(([at, v]) => ({ at, v }));
+  // A year label every 1–5 years, at January.
+  const years = Number(monthly.at(-1)!.at.slice(0, 4)) - Number(monthly[0].at.slice(0, 4));
+  const step = years > 20 ? 5 : years > 10 ? 3 : years > 5 ? 2 : 1;
+  const yearTicks = monthly.flatMap((p, index) => (p.at.endsWith("-01") && Number(p.at.slice(0, 4)) % step === 0 ? [{ index, label: p.at.slice(0, 4) }] : []));
+  const daily: ChartPoint[] = d.daily.map(([at, v]) => ({ at, v }));
+  const monthNames = new Intl.DateTimeFormat(HREFLANG[locale], { month: "short", timeZone: "UTC" });
+  const dayTicks = daily.flatMap((p, index) => (index > 0 && p.at.slice(0, 7) !== daily[index - 1].at.slice(0, 7) ? [{ index, label: monthNames.format(new Date(`${p.at}T00:00:00Z`)) }] : []));
+  return { monthly, yearTicks, daily, dayTicks };
+}
+
 function chartsHtml(locale: Locale, pair: CurrencyPair): string {
   const m = currencyMessages(locale).page;
-  const d = pairData(locale, pair);
-  const data = currencyData(locale);
   const vars = pairVars(locale, pair);
-  const months = monthsFrom(d.m0, d.monthly.length);
-  const monthly: ChartPoint[] = months.map((at, i) => ({ at, v: d.monthly[i] }));
-  // A year label every 2–5 years, at January (or the first month).
-  const years = Number(months.at(-1)!.slice(0, 4)) - Number(months[0].slice(0, 4));
-  const step = years > 20 ? 5 : years > 10 ? 3 : years > 5 ? 2 : 1;
-  const yearTicks = months.flatMap((at, index) => (at.endsWith("-01") && Number(at.slice(0, 4)) % step === 0 ? [{ index, label: at.slice(0, 4) }] : []));
-  const daily: ChartPoint[] = data.days.map((at, i) => ({ at, v: d.daily[i] }));
-  const monthNames = new Intl.DateTimeFormat(HREFLANG[locale], { month: "short", timeZone: "UTC" });
-  const dayTicks = data.days.flatMap((at, index) => (index > 0 && at.slice(0, 7) !== data.days[index - 1].slice(0, 7) ? [{ index, label: monthNames.format(new Date(`${at}T00:00:00Z`)) }] : []));
+  const { monthly, yearTicks, daily, dayTicks } = chartSeries(locale, pair);
   return `<section class="fx-history" aria-labelledby="fx-chart-title"><h2 id="fx-chart-title">${escapeHtml(fill(m.chartTitle, vars))}</h2>`
-    + `<h3>${escapeHtml(fill(m.chartMonthly, { start: formatMonth(locale, d.m0) }))}</h3>`
+    + `<h3>${escapeHtml(fill(m.chartMonthly, { start: formatMonth(locale, monthly[0].at) }))}</h3>`
     + lineChartSvg(locale, monthly, yearTicks, chartLabel(locale, pair, monthly, (at) => formatMonth(locale, at)))
     + `<h3>${escapeHtml(m.chartDaily)}</h3>`
     + lineChartSvg(locale, daily, dayTicks, chartLabel(locale, pair, daily, (at) => formatDate(locale, at)))
-    + `<p class="muted">${escapeHtml(fill(m.method, vars))}</p></section>`;
+    + `<p class="muted">${escapeHtml(fill(m.method, vars))} ${escapeHtml(fill(m.monthlyNote, vars))}</p></section>`;
 }
 
 /** Pairs sharing a currency with this one (the reverse first when there is one). */

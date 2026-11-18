@@ -20,7 +20,7 @@ import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS,
 import { ELEMENT_SLUGS, ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT, type ElementSlug } from "./elements";
 import { EMOJI_SLUGS, emojiUpdated, type EmojiSlug } from "./emoji";
 import { CALENDAR_PAGES, CALENDAR_UPDATED, type CalendarPage } from "./calendar";
-import { CURRENCY_PAIRS, CURRENCY_SNAPSHOT, type CurrencyPair } from "./currency";
+import { CURRENCY_PAIRS, CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT, type CurrencyPair } from "./currency";
 import { currencyHref } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
@@ -260,8 +260,8 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "calendar") return CALENDAR_UPDATED;
   // Emoji pages show the Unicode snapshot and the usage sentences: the latest of launch, snapshot and copy edit.
   if (page.kind === "emoji") return emojiUpdated();
-  // Exchange-rate pages show the ECB snapshot: they change when scripts/fetch-currency.mjs writes a new one.
-  if (page.kind === "currency") return CURRENCY_SNAPSHOT;
+  // Exchange-rate pages show the ECB snapshot: the later of its date and the day the channel went live (= JSON-LD dateModified).
+  if (page.kind === "currency") return [CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT].sort().at(-1)!;
   return null;
 }
 

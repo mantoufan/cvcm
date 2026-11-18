@@ -544,7 +544,13 @@ function prefetchGamePack(e: Event): void {
     if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="currency"]')) {
     // data-nav is "currency" on a hub link, "currency-<pair>" on a pair link: one pack (copy and the ECB snapshot) serves them all.
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, null, null, false, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, null, null, false, true).catch(() => {});
+    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, null, null, false, true)) return;
+    const load = (): void => {
+      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, null, null, false, true).catch(() => {});
+    };
+    // The pack carries the rate snapshot: under a pointer, wait until it rests on a link, as food links do.
+    if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
+    else load();
   } else if (target?.closest?.('a[data-nav^="calendar"]')) {
     // data-nav is "calendar" on a hub link, "calendar-<page id>" on a page link: one pack serves them all.
     if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true).catch(() => {});

@@ -1,6 +1,5 @@
 {
   "crumbHome": "首頁",
-  "names": {},
   "titles": {},
   "notice": "歐洲央行參考匯率，於工作日歐洲中部時間 16:00 左右公布：僅供參考，並非交易報價，也不構成投資建議。",
   "hub": {
@@ -52,6 +51,7 @@
     "chartDaily": "近 90 天每日匯率",
     "chartLabel": "{fromCode}/{toCode} 折線圖：{firstDate} 為 {first}，{lastDate} 為 {last}，最高 {high}，最低 {low}。",
     "method": "歐洲央行公布的都是 1 歐元可兌多少該貨幣，所以 {fromCode}/{toCode} =（{toCode} 兌歐元）÷（{fromCode} 兌歐元），保留六位有效數字。",
+    "monthlyNote": "月度值為兩種貨幣各自月平均兌歐元匯率之比。",
     "reverse": "反向：{toCode} 兌 {fromCode}",
     "related": "其他貨幣對",
     "faqTitle": "常見問題",

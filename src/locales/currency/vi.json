@@ -1,6 +1,5 @@
 {
   "crumbHome": "Trang chủ",
-  "names": { "CHF": "Franc Thụy Sĩ", "PHP": "Peso Philippines", "AUD": "Đô la Úc", "THB": "Baht Thái Lan" },
   "titles": {},
   "notice": "Tỷ giá tham chiếu của ECB, công bố khoảng 16:00 giờ CET vào các ngày làm việc: chỉ để tham khảo, không phải giá giao dịch và không phải lời khuyên đầu tư.",
   "hub": {
@@ -52,6 +51,7 @@
     "chartDaily": "Hằng ngày, 90 ngày gần nhất",
     "chartLabel": "Biểu đồ đường {fromCode}/{toCode}: {first} vào {firstDate}, {last} vào {lastDate}, cao nhất {high}, thấp nhất {low}.",
     "method": "ECB công bố mọi loại tiền theo 1 euro, nên {fromCode}/{toCode} = ({toCode} mỗi EUR) ÷ ({fromCode} mỗi EUR), hiển thị với sáu chữ số có nghĩa.",
+    "monthlyNote": "Giá trị theo tháng là tỷ lệ giữa tỷ giá trung bình tháng so với euro của hai loại tiền.",
     "reverse": "Chiều ngược lại: {toCode} sang {fromCode}",
     "related": "Các cặp tiền khác",
     "faqTitle": "Câu hỏi thường gặp",

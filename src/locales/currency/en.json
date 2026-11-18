@@ -1,6 +1,5 @@
 {
   "crumbHome": "Home",
-  "names": {},
   "titles": {},
   "notice": "ECB reference rates, published around 16:00 CET on working days: for information, not a quote for trading. Not investment advice.",
   "hub": {
@@ -52,6 +51,7 @@
     "chartDaily": "Daily, last 90 days",
     "chartLabel": "Line chart of {fromCode}/{toCode}: {first} on {firstDate}, {last} on {lastDate}, high {high}, low {low}.",
     "method": "The ECB publishes every currency per euro, so {fromCode}/{toCode} = ({toCode} per EUR) ÷ ({fromCode} per EUR), shown to six significant digits.",
+    "monthlyNote": "Monthly values divide the two currencies' monthly average euro rates.",
     "reverse": "The other way: {toCode} to {fromCode}",
     "related": "Other currency pairs",
     "faqTitle": "Questions",

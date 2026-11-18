@@ -5,7 +5,7 @@ import worker from "../src/worker";
 import en from "../src/locales/currency/en.json";
 import { LOCALES, type Locale } from "../src/shared/locale";
 import { currencyHref, parseAppPath, STATIC_FILE } from "../src/shared/path";
-import { CURRENCY_PAIRS, CURRENCY_SNAPSHOT, isCurrencyPair, pairCodes, reversePair } from "../src/shared/currency";
+import { CURRENCY_PAIRS, CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT, isCurrencyPair, pairCodes, reversePair } from "../src/shared/currency";
 import {
   crossRate,
   currencyData,
@@ -17,13 +17,28 @@ import {
   currencyTitle,
   ecbCodes,
   formatMoney,
+  monthRange,
+  pairData,
   tableAmounts,
+  type CurrencyData,
 } from "../src/shared/currency-i18n";
-import { currencyPageHtml } from "../src/shared/currency-page";
+import { registerCurrencyMessages, currencyMessages as packOf } from "../src/shared/messages";
+import { currencyPageHtml, resultText } from "../src/shared/currency-page";
 import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSectionSitemaps } from "../src/shared/sitemap";
 // @ts-expect-error plain ES module without types
 import { buildCurrencySnapshot, parseEcbCsv, snapshotText } from "../scripts/currency-snapshot.mjs";
+
+/** pairData on a stand-in snapshot: registered under a spare pack object and read back, then the real pack restored. */
+function buildPairForTest(data: CurrencyData, pair: string) {
+  const real = packOf("vi");
+  registerCurrencyMessages("vi", { ...real, data });
+  try {
+    return pairData("vi", pair);
+  } finally {
+    registerCurrencyMessages("vi", real);
+  }
+}
 
 const SHELL = `<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`;
 const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
@@ -53,23 +68,21 @@ describe("currency: snapshot math", () => {
     expect(days[1].rates).toEqual({ USD: 1, JPY: 170 });
   });
 
-  it("computes cross rates through the euro, windows and monthly averages", () => {
+  it("stores rates once per currency and works out cross-rate windows through the euro", () => {
     const snap = buildCurrencySnapshot(CSV, ["usd-jpy", "eur-usd", "jpy-cny"]);
     expect(snap.asOf).toBe("2026-11-17");
-    const usdJpy = snap.pairs["usd-jpy"];
-    expect(usdJpy.rate).toBe(160); // 176 / 1.1
+    expect(snap.latest).toEqual({ CNY: 7.7, JPY: 176, USD: 1.1 });
+    // Only the pairs' currencies, per EUR, by day (last 90 days) and month; N/A cells are left out.
+    expect(snap.days).toEqual({ "2026-11-16": { JPY: 170, USD: 1 }, "2026-11-17": { CNY: 7.7, JPY: 176, USD: 1.1 } });
+    expect(snap.months).toEqual({ "2025-11": { CNY: 8, JPY: 150, USD: 1.25 }, "2026-11": { CNY: 7.7, JPY: 173, USD: 1.05 } });
+    const usdJpy = snap.stats["usd-jpy"];
     expect(usdJpy.start).toBe("2025-11-14");
-    expect(usdJpy.stats.all).toMatchObject({ hi: 170, hiOn: "2026-11-16", lo: 120, loOn: "2025-11-14", avg: 150, n: 3, open: 120 });
+    expect(usdJpy.all).toMatchObject({ hi: 170, hiOn: "2026-11-16", lo: 120, loOn: "2025-11-14", avg: 150, n: 3, open: 120 });
     // 30 days and one year leave out 2025-11-14.
-    expect(usdJpy.stats.d30).toMatchObject({ hi: 170, lo: 160, avg: 165, n: 2 });
-    expect(usdJpy.stats.y1.n).toBe(2);
-    expect(usdJpy.m0).toBe("2025-11");
-    expect(usdJpy.monthly).toEqual([120, 165]);
-    expect(snap.pairs["eur-usd"].rate).toBe(1.1);
-    // A missing day is null in the daily list, and left out of the stats.
-    expect(snap.days).toEqual(["2026-11-16", "2026-11-17"]);
-    expect(snap.pairs["jpy-cny"].daily).toEqual([null, Number((7.7 / 176).toPrecision(6))]);
-    expect(snap.pairs["jpy-cny"].stats.d30.n).toBe(1);
+    expect(usdJpy.d30).toMatchObject({ hi: 170, lo: 160, avg: 165, n: 2 });
+    expect(usdJpy.y1.n).toBe(2);
+    // A day with no CNY rate is left out of the JPY/CNY stats.
+    expect(snap.stats["jpy-cny"].d30.n).toBe(1);
   });
 
   it("writes the same bytes for the same file, and refuses a pair with no latest rate", () => {
@@ -78,24 +91,46 @@ describe("currency: snapshot math", () => {
     expect(() => buildCurrencySnapshot(CSV.replace("1.1000,176.00", "N/A,176.00"), ["usd-jpy"])).toThrow(/no USD\/JPY/);
   });
 
+  it("a new ECB day changes only a few lines of the file", () => {
+    const pairs = ["usd-jpy", "eur-usd"];
+    const before = snapshotText(buildCurrencySnapshot(CSV, pairs)).split("\n");
+    const next = CSV.replace("Date,USD,JPY,CNY,\n", "Date,USD,JPY,CNY,\n2026-11-18,1.1100,177.00,7.7100,\n");
+    const after = snapshotText(buildCurrencySnapshot(next, pairs)).split("\n");
+    const added = after.filter((line: string) => !before.includes(line));
+    // asOf, latest, the two pairs' stats, the new day, the day before it (now with a comma), this month.
+    expect(added.length).toBeLessThanOrEqual(7);
+  });
+
+  it("draws monthly gaps as gaps, keeping every label on its own month", () => {
+    const gap = buildCurrencySnapshot(["Date,USD,JPY,", "2026-03-02,1.1,160,", "2026-02-02,N/A,150,", "2026-01-02,1.0,140,"].join("\n"), ["usd-jpy"]);
+    const data = { ...currencyData("en"), ...gap };
+    const pair = buildPairForTest(data, "usd-jpy");
+    expect(pair.monthly).toEqual([["2026-01", 140], ["2026-02", null], ["2026-03", Number((160 / 1.1).toPrecision(5))]]);
+    expect(monthRange("2025-11", "2026-02")).toEqual(["2025-11", "2025-12", "2026-01", "2026-02"]);
+  });
+
   it("the committed snapshot covers every pair, ends on its date and has no TWD or VND", () => {
     const data = currencyData("en");
     expect(data.asOf).toBe(CURRENCY_SNAPSHOT);
-    expect(Object.keys(data.pairs).sort()).toEqual([...CURRENCY_PAIRS].sort());
+    expect(Object.keys(data.stats).sort()).toEqual([...CURRENCY_PAIRS].sort());
     expect(new Set(CURRENCY_PAIRS).size).toBe(CURRENCY_PAIRS.length);
     expect(ecbCodes("en")).not.toContain("TWD");
     expect(ecbCodes("en")).not.toContain("VND");
+    expect(Object.keys(data.days).sort().at(-1)).toBe(data.asOf);
     for (const pair of CURRENCY_PAIRS) {
-      const d = data.pairs[pair];
+      const d = pairData("en", pair);
       const [from, to] = pairCodes(pair);
-      // The pair's latest rate is the cross rate of the latest euro rates, to six digits.
       expect(d.rate).toBe(Number(crossRate("en", from, to).toPrecision(6)));
-      expect(d.daily.length).toBe(data.days.length);
-      expect(d.daily.at(-1)).toBe(d.rate);
+      expect(d.daily.at(-1)).toEqual([data.asOf, d.rate]);
+      expect(d.monthly[0][0]).toBe(d.start.slice(0, 7));
+      expect(d.monthly[0][1]).not.toBeNull();
       for (const key of ["d30", "y1", "y5", "all"] as const) {
         expect(d.stats[key].lo).toBeLessThanOrEqual(d.stats[key].avg);
         expect(d.stats[key].avg).toBeLessThanOrEqual(d.stats[key].hi);
       }
+      // The stats' last day agrees with the derived rate.
+      expect(d.stats.d30.lo).toBeLessThanOrEqual(d.rate);
+      expect(d.stats.d30.hi).toBeGreaterThanOrEqual(d.rate);
     }
   });
 
@@ -106,12 +141,14 @@ describe("currency: snapshot math", () => {
     expect(text).toBe(readFileSync(resolve(__dirname, "../src/shared/currency-data.json"), "utf8"));
   });
 
-  it("scales the conversion tables for small rates", () => {
+  it("scales the conversion tables and echoes small typed amounts", () => {
     expect(tableAmounts(7.3)[0]).toBe(1);
     expect(tableAmounts(0.0067)[0]).toBe(100);
     expect(tableAmounts(0.00005)[0]).toBe(10_000);
     expect(formatMoney("en", 1234.5)).toBe("1,234.50");
     expect(formatMoney("en", 0.006278)).toBe("0.006278");
+    expect(resultText("en", 0.001, "USD", "CNY", 6.66612)).toBe("0.001 USD = 0.006666 CNY");
+    expect(resultText("es", 1234.5678, "USD", "MXN", 18.4635)).toBe("1234,5678 USD = 22.794,44 MXN");
   });
 });
 
@@ -185,7 +222,9 @@ describe("currency: routes and SEO", () => {
   it("has its own sitemap with the snapshot as lastmod", () => {
     const xml = buildSectionSitemaps().currency;
     expect(xml.match(/<url>/g)?.length).toBe(LOCALES.length * (1 + CURRENCY_PAIRS.length));
-    expect(xml).toContain(`<lastmod>${CURRENCY_SNAPSHOT}</lastmod>`);
+    expect(xml).toContain(`<lastmod>${[CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT].sort().at(-1)}</lastmod>`);
+    // The same day as the pages' JSON-LD dateModified.
+    expect(currencyPageJsonLd("en", "usd-cny").dateModified).toBe([CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT].sort().at(-1));
     expect(xml).toContain("https://cv.cm/zh-cn/currency/usd-cny/");
     expect(xml).not.toContain("/zh-CN/");
   });

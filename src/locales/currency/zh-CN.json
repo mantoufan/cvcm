@@ -1,6 +1,5 @@
 {
   "crumbHome": "首页",
-  "names": { "IDR": "印尼盾", "AUD": "澳元", "CAD": "加元" },
   "titles": {},
   "notice": "欧洲央行参考汇率，于工作日欧洲中部时间 16:00 左右发布：仅供参考，不是交易报价，也不构成投资建议。",
   "hub": {
@@ -52,6 +51,7 @@
     "chartDaily": "近 90 天每日汇率",
     "chartLabel": "{fromCode}/{toCode} 折线图：{firstDate} 为 {first}，{lastDate} 为 {last}，最高 {high}，最低 {low}。",
     "method": "欧洲央行公布的都是 1 欧元可兑多少该货币，所以 {fromCode}/{toCode} =（{toCode} 兑欧元）÷（{fromCode} 兑欧元），保留六位有效数字。",
+    "monthlyNote": "月度值为两种货币各自月平均兑欧元汇率之比。",
     "reverse": "反向：{toCode} 兑 {fromCode}",
     "related": "其他货币对",
     "faqTitle": "常见问题",

@@ -1,6 +1,6 @@
 // Builds the exchange-rate channel's snapshot (src/shared/currency-data.json) from the ECB's eurofxref-hist.csv.
 // Pure: the same CSV always gives the same bytes, so a day without new ECB data changes nothing.
-// Cross rates go through the euro: 1 FROM = (TO per EUR) / (FROM per EUR) TO.
+// Rates are stored per currency (units per EUR); cross rates go through the euro: 1 FROM = (TO per EUR) / (FROM per EUR) TO.
 
 /** Daily points shown on the pages: ECB working days in the last 90 calendar days. */
 export const DAILY_DAYS = 90;
@@ -57,20 +57,32 @@ export function windowStats(points) {
   return { from: points[0].date, open: sig(points[0].v, 6), hi: sig(hi.v, 6), hiOn: hi.date, lo: sig(lo.v, 6), loOn: lo.date, avg: sig(sum / points.length, 6), n: points.length };
 }
 
-/** The snapshot object for these pairs ("usd-cny" …). Throws when a pair has no rate on the latest ECB day. */
+/** Currencies the pairs use, other than the euro, sorted. */
+function pairCurrencies(pairs) {
+  return [...new Set(pairs.flatMap((pair) => pair.toUpperCase().split("-")))].filter((code) => code !== "EUR").sort();
+}
+
+const sorted = (object) => Object.fromEntries(Object.entries(object).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)));
+
+/**
+ * The snapshot for these pairs ("usd-cny" …). Rates are stored once per currency, as the ECB publishes them (units per
+ * 1 EUR): every currency on the latest day, the pairs' currencies for each day of the last 90 days and as monthly
+ * averages. Cross rates are derived from those at render time; only the window stats (high, low, average over every
+ * day in the window) are worked out here per pair, as they need the whole daily history.
+ * Throws when a pair has no rate on the latest ECB day.
+ */
 export function buildCurrencySnapshot(csvText, pairs) {
   const days = parseEcbCsv(csvText);
   if (!days.length) throw new Error("ecb: no rows");
   const latest = days.at(-1);
   const asOf = latest.date;
   const dailyFrom = shift(asOf, { days: -DAILY_DAYS });
-  const recent = days.filter((day) => day.date > dailyFrom);
   const windows = {
     d30: shift(asOf, { days: -30 }),
     y1: shift(asOf, { years: -1 }),
     y5: shift(asOf, { years: -5 }),
   };
-  const out = {};
+  const stats = {};
   for (const pair of pairs) {
     const [from, to] = pair.toUpperCase().split("-");
     const series = [];
@@ -79,35 +91,36 @@ export function buildCurrencySnapshot(csvText, pairs) {
       if (v !== undefined) series.push({ date: day.date, v });
     }
     if (!series.length || series.at(-1).date !== asOf) throw new Error(`ecb: no ${from}/${to} rate on ${asOf}`);
-    const months = new Map();
-    for (const point of series) {
-      const key = point.date.slice(0, 7);
-      const month = months.get(key) ?? { sum: 0, n: 0 };
-      month.sum += point.v;
-      month.n += 1;
-      months.set(key, month);
-    }
-    const stats = {};
-    for (const [key, after] of Object.entries(windows)) stats[key] = windowStats(series.filter((point) => point.date > after));
-    stats.all = windowStats(series);
-    out[pair] = {
-      rate: sig(series.at(-1).v, 6),
-      start: series[0].date,
-      m0: series[0].date.slice(0, 7),
-      monthly: [...months.values()].map((month) => sig(month.sum / month.n, 5)),
-      daily: recent.map((day) => {
-        const v = crossRate(day, from, to);
-        return v === undefined ? null : sig(v, 6);
-      }),
-      stats,
-    };
+    const own = { start: series[0].date };
+    for (const [key, after] of Object.entries(windows)) own[key] = windowStats(series.filter((point) => point.date > after));
+    own.all = windowStats(series);
+    stats[pair] = own;
   }
-  const rates = Object.fromEntries(Object.entries(latest.rates).sort(([a], [b]) => (a < b ? -1 : 1)));
-  return { asOf, latest: rates, days: recent.map((day) => day.date), pairs: out };
+  const codes = pairCurrencies(pairs);
+  const pick = (rates) => Object.fromEntries(codes.filter((code) => rates[code] !== undefined).map((code) => [code, rates[code]]));
+  const daily = {};
+  for (const day of days) if (day.date > dailyFrom) daily[day.date] = pick(day.rates);
+  const sums = new Map();
+  for (const day of days) {
+    const key = day.date.slice(0, 7);
+    const month = sums.get(key) ?? {};
+    for (const code of codes) {
+      const v = day.rates[code];
+      if (v === undefined) continue;
+      const cell = month[code] ?? { sum: 0, n: 0 };
+      cell.sum += v;
+      cell.n += 1;
+      month[code] = cell;
+    }
+    sums.set(key, month);
+  }
+  const months = {};
+  for (const [key, month] of sums) months[key] = Object.fromEntries(Object.entries(month).map(([code, cell]) => [code, sig(cell.sum / cell.n, 6)]));
+  return { asOf, latest: sorted(latest.rates), stats, days: daily, months };
 }
 
-/** The snapshot as file text: one line per pair, so a daily update is a small diff. */
+/** The snapshot as file text: one line per pair, day and month, so a daily update changes a few lines (new day, oldest day, this month, the pairs' stats). */
 export function snapshotText(snapshot) {
-  const pairs = Object.entries(snapshot.pairs).map(([pair, data]) => `  ${JSON.stringify(pair)}: ${JSON.stringify(data)}`);
-  return `{\n "asOf": ${JSON.stringify(snapshot.asOf)},\n "latest": ${JSON.stringify(snapshot.latest)},\n "days": ${JSON.stringify(snapshot.days)},\n "pairs": {\n${pairs.join(",\n")}\n }\n}\n`;
+  const block = (object) => Object.entries(object).map(([key, value]) => `  ${JSON.stringify(key)}: ${JSON.stringify(value)}`).join(",\n");
+  return `{\n "asOf": ${JSON.stringify(snapshot.asOf)},\n "latest": ${JSON.stringify(snapshot.latest)},\n "stats": {\n${block(snapshot.stats)}\n },\n "days": {\n${block(snapshot.days)}\n },\n "months": {\n${block(snapshot.months)}\n }\n}\n`;
 }
