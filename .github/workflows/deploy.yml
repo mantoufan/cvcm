@@ -20,7 +20,6 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
-      actions: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -30,12 +29,6 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run typecheck
-      # A failure stops the build too instead of letting it finish for nothing; the deploy job never deploys it.
-      - name: Cancel the deploy
-        if: failure()
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh run cancel ${{ github.run_id }} -R ${{ github.repository }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -51,19 +44,26 @@ jobs:
       - run: npm ci
       - run: npm run build
       - name: Wait for tests and typecheck
-        timeout-minutes: 30
+        # The check job's own limit is 20 minutes; the rest is room for it to wait for a runner.
+        timeout-minutes: 40
         env:
           GH_TOKEN: ${{ github.token }}
         # filter=latest also lists a job a partial re-run ("Re-run failed jobs") did not run again, with its last result.
         run: |
+          errors=0
           while true; do
             if ! state=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs?filter=latest&per_page=100" \
               -q '.jobs[] | select(.name == "Tests and typecheck") | "\(.status) \(.conclusion)"'); then
+              # A passing blip is retried; an API that keeps failing (permissions, auth) fails the deploy within a minute.
+              errors=$((errors + 1))
+              if [ "$errors" -ge 6 ]; then echo "::error::could not read this run's jobs 6 times in a row"; exit 1; fi
               echo "::warning::could not read this run's jobs; trying again"
               sleep 10
               continue
             fi
+            errors=0
             case "$state" in
+              *$'\n'*) echo "::error::more than one 'Tests and typecheck' job in this run"; exit 1 ;;
               "completed success") echo "Tests and typecheck passed"; break ;;
               completed*) echo "::error::Tests and typecheck did not pass ($state); nothing deployed"; exit 1 ;;
               "") echo "::error::no 'Tests and typecheck' job in this run"; exit 1 ;;
