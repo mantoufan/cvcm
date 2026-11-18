@@ -3,7 +3,7 @@ import { fill } from "./fill";
 import { escapeHtml } from "./device-i18n";
 import { messages, quizMessages, quizTestMessages, type QuizMessages } from "./messages";
 import { appHref, quizHref } from "./path";
-import { QUIZ_DEFS, QUIZ_GROUPS, questionCount, type QuizId } from "./quiz";
+import { QUIZ_DEFS, QUIZ_GROUPS, QUIZZES, questionCount, type QuizId } from "./quiz";
 
 export type QuizChoice = { q: string; options: string[] };
 export type QuizResultCopy = { name: string; body: string };
@@ -36,8 +36,10 @@ export function quizUi(locale: Locale): QuizUi {
   return quizMessages(locale).ui;
 }
 
+/** Hub copy. The lede's `{n}` is the number of tests, so adding one never leaves a stale count in any locale. */
 export function quizHub(locale: Locale): QuizHubCopy {
-  return quizMessages(locale).hub;
+  const hub = quizMessages(locale).hub;
+  return { ...hub, lede: fill(hub.lede, { n: QUIZZES.length }) };
 }
 
 export function quizCopy(locale: Locale, id: QuizId): QuizCopy {

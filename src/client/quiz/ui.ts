@@ -15,8 +15,8 @@ import {
   questionCount,
   quizGroupOf,
   quizMinutes,
+  resultSideLine,
   scoreQuiz,
-  topTied,
   traitLevel,
   type QuizId,
   type QuizResult,
@@ -328,26 +328,20 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       return { nodes, summary };
     }
     case "top": {
-      const [first, second] = result.ranked;
       const nodes = [...headline(results[result.key])];
       const rule = QUIZ_DEFS[id].result;
-      // Spread ties: name every result tied with the winner (the hash only picked which one leads). A mixed result
-      // names all the tied results.
+      // Ties and a close second place: see resultSideLine (never an exact tie passed off as a runner-up).
       const mixed = rule.kind === "top" && rule.tie === "mixed" && result.key === "mixed";
-      const tied = mixed ? topTied(result.ranked) : rule.kind === "top" && rule.tie === "spread" ? topTied(result.ranked).filter((s) => s !== first) : [];
-      const tiedLine = tied.length ? `${mixed ? ui.tiedTop : ui.tiedWith}: ${listNames(locale, tied.map((s) => results[s.dim]?.name ?? label(s.dim)))}` : "";
-      if (tiedLine) {
-        nodes.push(h("p", { class: "muted" }, tiedLine));
-      } else if (second && first.pct - second.pct <= 10 && results[second.dim]) {
-        nodes.push(h("p", { class: "muted" }, `${ui.runnerUp}: ${results[second.dim].name}`));
-      }
+      const side = resultSideLine(result.ranked, mixed);
+      const sideLine = side ? `${ui[side.kind]}: ${listNames(locale, side.dims.map((dim) => results[dim]?.name ?? label(dim)))}` : "";
+      if (sideLine) nodes.push(h("p", { class: "muted" }, sideLine));
       if (result.excluded.length) {
         const names = listNames(locale, result.excluded.map((dim) => label(dim)));
         nodes.push(h("p", { class: "muted" }, `${ui.ruledOut}: ${names}`));
       }
       nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
       const name = results[result.key]?.name ?? result.key;
-      return { nodes, summary: mixed ? `${name} · ${tiedLine}` : name };
+      return { nodes, summary: sideLine ? `${name} · ${sideLine}` : name };
     }
     case "code": {
       const top3 = result.ranked.slice(0, 3);

@@ -22,7 +22,7 @@ import {
   isComplete,
   maxTotal,
   resultKeys,
-  topTied,
+  resultSideLine,
   type DimScore,
   scoreQuiz,
   type ChoiceItem,
@@ -330,16 +330,7 @@ describe("test pages: scoring", () => {
     }
   });
 
-  it("finds top ties by exact share, never by rounding, across different ranges and with an empty range", () => {
-    const s = (dim: string, raw: number, max: number, min = 0): DimScore => ({ dim, raw, min, max, pct: Math.round(((raw - min) / (max - min || 1)) * 100) });
-    // 1/3 and 33/100 both round to 33%, but only the first is the top.
-    expect(topTied([s("a", 1, 3), s("b", 33, 100)]).map((x) => x.dim)).toEqual(["a"]);
-    // 2 of 4 and 3 of 6 are the same share.
-    expect(topTied([s("a", 2, 4), s("b", 3, 6)]).map((x) => x.dim)).toEqual(["a", "b"]);
-    // Minimums count: 3 within 2–4 is 50%, like 2 of 4.
-    expect(topTied([s("a", 2, 4), s("b", 3, 4, 2)]).map((x) => x.dim)).toEqual(["a", "b"]);
-    // A result nothing can score is not tied with the leader.
-    expect(topTied([s("a", 2, 4), s("z", 0, 0)]).map((x) => x.dim)).toEqual(["a"]);
+  it("ranks by exact share, never by rounding, and keeps list order for real ties", () => {
     // Through scoreQuiz: fish 12 of 23 (52.17%) and reptile 11 of 21 (52.38%) both round to 52%; reptile leads.
     const pet = scoreQuiz("pet", [1, 1, 1, 0, 1, 0, 0, 1, 3, 0, 2, 0, 2, 0]);
     const raw = Object.fromEntries(pet.scores.map((x) => [x.dim, `${x.raw}/${x.max}`]));
@@ -349,6 +340,28 @@ describe("test pages: scoring", () => {
     const flat = scoreQuiz("conflict-style", QUIZ_DEFS["conflict-style"].items.map(() => 2));
     expect(new Set(flat.scores.map((x) => x.raw)).size).toBe(1);
     expect(flat.key).toBe("compromise");
+  });
+
+  it("puts the same shown percentage as the leader down as tied, and a close second as a runner-up of at most two", () => {
+    const s = (dim: string, raw: number, max: number, min = 0): DimScore => ({ dim, raw, min, max, pct: max > min ? Math.round(((raw - min) / (max - min)) * 100) : 0 });
+    // An exact tie, and a three-way one: every other result shown at the leader's percentage is named.
+    expect(resultSideLine([s("a", 4, 12), s("b", 4, 12), s("c", 1, 12)], false)).toEqual({ kind: "tiedWith", dims: ["b"] });
+    expect(resultSideLine([s("a", 4, 12), s("b", 4, 12), s("c", 4, 12), s("d", 1, 12)], false)).toEqual({ kind: "tiedWith", dims: ["b", "c"] });
+    // 5/13 and 6/16 both show 38%: tied on the page, though the exact shares differ.
+    expect(resultSideLine([s("tsundere", 5, 13), s("genki", 6, 16), s("kuudere", 3, 13)], false)).toEqual({ kind: "tiedWith", dims: ["genki"] });
+    // One close second.
+    expect(resultSideLine([s("a", 6, 10), s("b", 5, 10), s("c", 2, 10)], false)).toEqual({ kind: "runnerUp", dims: ["b"] });
+    // Two alike in second place: both named, not the first in order.
+    expect(resultSideLine([s("a", 6, 10), s("b", 5, 10), s("c", 5, 10), s("d", 1, 10)], false)).toEqual({ kind: "runnerUp", dims: ["b", "c"] });
+    // Three alike: no runner-up line.
+    expect(resultSideLine([s("a", 6, 10), s("b", 5, 10), s("c", 5, 10), s("d", 5, 10)], false)).toBeNull();
+    // A single result, or none: no line.
+    expect(resultSideLine([s("a", 3, 10)], false)).toBeNull();
+    expect(resultSideLine([], false)).toBeNull();
+    // More than 10 points behind: no line.
+    expect(resultSideLine([s("a", 8, 10), s("b", 5, 10)], false)).toBeNull();
+    // Mixed: every result shown at the top percentage, including one that only rounds to it.
+    expect(resultSideLine([s("a", 5, 13), s("b", 5, 13), s("c", 6, 16), s("d", 2, 12)], true)).toEqual({ kind: "tiedTop", dims: ["a", "b", "c"] });
   });
 
   it("gives a communication style tie at the top the mixed result, never a hash-picked style", () => {

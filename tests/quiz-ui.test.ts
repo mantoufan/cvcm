@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { mountQuiz, mountQuizHub } from "../src/client/quiz/ui";
 import { LOCALES } from "../src/shared/locale";
 import { FAN_GROUPS, QUIZ_DEFS, QUIZ_GROUPS, QUIZZES, quizGroupOf, type QuizId } from "../src/shared/quiz";
-import { quizUi } from "../src/shared/quiz-i18n";
+import { quizCopy, quizHub, quizUi } from "../src/shared/quiz-i18n";
 
 function mount(id: Parameters<typeof mountQuiz>[2], locale: Parameters<typeof mountQuiz>[1] = "en"): HTMLElement {
   document.body.innerHTML = "";
@@ -251,6 +251,37 @@ describe("test page UI", () => {
     const line = [...main.querySelectorAll("#result p.muted")].map((p) => p.textContent ?? "").find((text) => text.startsWith("Tied with"));
     const named = ["Waterbender", "Earthbender", "Firebender", "Airbender"].filter((name) => line?.includes(name));
     expect(named).toHaveLength(3);
+  });
+
+  it("names a plain top tie as tied, not as a runner-up, in every locale", () => {
+    // Every conflict-style statement answered in the middle: all five styles tie, and list order puts compromising first.
+    for (const locale of LOCALES) {
+      const ui = quizUi(locale);
+      expect(ui.tiedWith, locale).toBeTruthy();
+      const main = mount("conflict-style", locale);
+      answer(main, () => 2);
+      submit(main);
+      const lines = [...main.querySelectorAll("#result p.muted")].map((p) => p.textContent ?? "");
+      const tied = lines.find((text) => text.startsWith(`${ui.tiedWith}: `));
+      expect(tied, locale).toBeTruthy();
+      expect(lines.some((text) => text.startsWith(ui.runnerUp)), locale).toBe(false);
+      const results = quizCopy(locale, "conflict-style").results ?? {};
+      for (const dim of ["collab", "accommodate", "avoid", "compete"]) expect(tied, `${locale} ${dim}`).toContain(results[dim].name);
+      expect(tied, locale).not.toContain(results.compromise.name);
+    }
+  });
+
+  it("shows the real number of tests in every hub lede", () => {
+    for (const locale of LOCALES) {
+      const lede = quizHub(locale).lede;
+      expect(lede, locale).toContain(String(QUIZZES.length));
+      expect(lede, locale).not.toMatch(/\{n\}/);
+      // Only the CJK ledes may open with the numeral; elsewhere a sentence doesn't start with one.
+      if (!["ja", "ko", "zh-CN", "zh-TW"].includes(locale)) expect(lede, locale).not.toMatch(/^\d/);
+      document.body.innerHTML = "<main></main>";
+      mountQuizHub(document.querySelector("main")!, locale);
+      expect(document.querySelector("main .lede")?.textContent, locale).toBe(lede);
+    }
   });
 
   it("lists every test on the hub", () => {
