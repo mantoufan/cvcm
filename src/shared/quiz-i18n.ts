@@ -2,7 +2,8 @@ import type { Locale } from "./locale";
 import { fill } from "./fill";
 import { escapeHtml } from "./device-i18n";
 import { messages, quizMessages, quizTestMessages, type QuizMessages } from "./messages";
-import { appHref, quizHref } from "./path";
+import { appHref, kbHref, quizHref } from "./path";
+import { loveForQuiz } from "./kb-love";
 import { QUIZ_DEFS, QUIZ_GROUPS, QUIZZES, questionCount, type QuizId } from "./quiz";
 
 export type QuizChoice = { q: string; options: string[] };
@@ -44,6 +45,14 @@ export function quizHub(locale: Locale): QuizHubCopy {
 
 export function quizCopy(locale: Locale, id: QuizId): QuizCopy {
   return quizTestMessages(locale, id);
+}
+
+/** Relationship guides that point to a test (src/shared/kb-love.ts), as a list for the crawler copy. */
+function guidesHtml(locale: Locale, id: QuizId, label: string): string {
+  const guides = loveForQuiz(id);
+  if (!guides.length) return "";
+  const names = messages(locale).ui.kb as unknown as Record<string, { name: string }>;
+  return `<section><h2>${escapeHtml(label)}</h2><ul>${guides.map((guide) => `<li><a href="${escapeHtml(kbHref(locale, guide))}">${escapeHtml(names[guide].name)}</a></li>`).join("")}</ul></section>`;
 }
 
 /** Name and one-line blurb, from the core pack: home and footer links need them without the quiz pack. */
@@ -142,6 +151,7 @@ export function quizStaticHtml(locale: Locale, id: QuizId | null): string {
     `<p>${escapeHtml(hint)}</p>`,
     `<ol>${questions}</ol>`,
     `<section><h2>${escapeHtml(ui.about)}</h2>${copy.about.map((p) => `<p>${escapeHtml(p)}</p>`).join("")}</section>`,
+    guidesHtml(locale, id, ui.guides),
     faqHtml(locale, id),
     `<p><a href="${escapeHtml(quizHref(locale))}">${escapeHtml(ui.all)}</a> · ${escapeHtml(fill(messages(locale).ui.quiz.questions, { n: questionCount(id) }))}</p>`,
   ].join("");

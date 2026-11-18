@@ -8,7 +8,8 @@ import { fill } from "./fill";
 import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
 import { KB_SHELVES, kbArticleOf, kbHubOf, kbGroupOf, kbGroupsOf, kbMeta, kbMinutesOf, kbShelfOfPage, type KbId, type KbPage, type KbShelf } from "./kb";
 import { kbMessages, messages } from "./messages";
-import { appHref, kbHref, learnHref, type ToolId } from "./path";
+import { appHref, kbHref, learnHref, quizHref, type ToolId } from "./path";
+import type { QuizId } from "./quiz";
 import { type KbUi, kbHub, kbCopy, kbName, kbFaqItems, kbUpdated, kbLinkItems } from "./kb-i18n";
 
 function kbUi(locale: Locale): KbUi {
@@ -59,6 +60,12 @@ function tutorialLinkItems(locale: Locale, id: KbId): { href: string; name: stri
   return kbMeta(id).tutorials.map((tutorial) => ({ href: learnHref(locale, tutorial), name: learn[tutorial].name, blurb: learn[tutorial].blurb, nav: `learn-${tutorial}` }));
 }
 
+/** Tests an article points to (relationships shelf), names from the core pack. */
+function quizLinkItems(locale: Locale, quizzes: readonly QuizId[]): { href: string; name: string; blurb: string; nav: string }[] {
+  const names = messages(locale).ui.quiz as unknown as Record<QuizId, { name: string; blurb: string }>;
+  return quizzes.map((quiz) => ({ href: quizHref(locale, quiz), name: names[quiz].name, blurb: names[quiz].blurb, nav: `test-${quiz}` }));
+}
+
 /** A kb hub or one article as HTML: the client mounts it as is, and the Worker serves it to crawlers. */
 export function kbPageHtml(locale: Locale, page: KbPage): string {
   const ui = kbUi(locale);
@@ -88,6 +95,9 @@ export function kbPageHtml(locale: Locale, page: KbPage): string {
   const [mainTool] = meta.tools;
   const toolName = mainTool ? (messages(locale).ui.tools as unknown as Record<string, { name: string }>)[mainTool].name : "";
   const tutorials = tutorialLinkItems(locale, id);
+  const quizzes = quizLinkItems(locale, meta.quizzes ?? []);
+  // Without a tool, the first test is the call to action.
+  const [mainQuiz] = mainTool ? [] : quizzes;
   return [
     crumbHtml(locale, page),
     `<article class="kb">`,
@@ -96,13 +106,15 @@ export function kbPageHtml(locale: Locale, page: KbPage): string {
     `<p class="kb-meta"><span class="pill">${escapeHtml(fill(ui.minutes, { n: kbMinutes(locale, id) }))}</span> <time datetime="${kbUpdated(locale, id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, kbUpdated(locale, id)) }))}</time></p></header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p>`,
     mainTool ? `<a class="btn" href="${escapeHtml(appHref(locale, mainTool))}" data-nav="${escapeHtml(mainTool)}">${escapeHtml(fill(ui.open, { name: toolName }))}</a>` : "",
+    mainQuiz ? `<a class="btn" href="${escapeHtml(mainQuiz.href)}" data-nav="${escapeHtml(mainQuiz.nav)}">${escapeHtml(fill(ui.takeTest, { name: mainQuiz.name }))}</a>` : "",
     `</section>`,
     `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
     sections,
     faqHtml(locale, page),
     meta.tools.length ? `<section class="learn-related"><h2>${escapeHtml(ui.tools)}</h2>${linkListHtml(toolLinkItems(locale, meta.tools))}</section>` : "",
     tutorials.length ? `<section class="learn-related"><h2>${escapeHtml(ui.tutorials)}</h2>${linkListHtml(tutorials)}</section>` : "",
-    meta.related.length ? `<section class="learn-related"><h2>${escapeHtml(ui.related)}</h2>${linkListHtml(kbLinkItems(locale, meta.related))}</section>` : "",
+    quizzes.length ? `<section class="learn-related"><h2>${escapeHtml(ui.tests)}</h2>${linkListHtml(quizzes)}</section>` : "",
+    meta.related.length ? `<section class="learn-related"><h2>${escapeHtml(hub.related ?? ui.related)}</h2>${linkListHtml(kbLinkItems(locale, meta.related))}</section>` : "",
     meta.sources.length
       ? `<section class="learn-related kb-sources"><h2>${escapeHtml(ui.sources)}</h2><ul>${meta.sources.map((s) => `<li><a href="${escapeHtml(s.href)}" target="_blank" rel="noopener noreferrer">${escapeHtml(s.title)}</a></li>`).join("")}</ul></section>`
       : "",

@@ -9,13 +9,15 @@ import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
 import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
-import { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
+import { AI_ARTICLES, CODE_ARTICLES, LOVE_ARTICLES, PHOTO_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
 import { kbArticleJsonLd, kbCopy, kbUpdated, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
 import { kbMinutes, kbPageHtml } from "../src/shared/kb-page";
 import { pageCanonical, pageTitle } from "../src/shared/seo";
 import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml } from "../src/shared/sitemap";
 import { isTrackedPath } from "../src/shared/analytics";
+import { LOVE_ARTICLE_QUIZZES, loveForQuiz } from "../src/shared/kb-love";
+import { QUIZZES } from "../src/shared/quiz";
 
 const SHELL = `<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`;
 
@@ -105,6 +107,37 @@ describe("knowledge: routes", () => {
     expect(article).toContain('href="/ko/collage/"');
   });
 
+  it("parses the relationships shelf under /learn/relationships/ and keeps each article on its own shelf", () => {
+    expect(parseAppPath("/en/learn/relationships/")).toEqual({ kind: "kb", locale: "en", article: "love" });
+    expect(parseAppPath("/ja/learn/relationships/how-to-get-your-ex-back/")).toEqual({ kind: "kb", locale: "ja", article: "how-to-get-your-ex-back" });
+    expect(parseAppPath("/learn/relationships/")).toEqual({ kind: "bare-kb", article: "love" });
+    expect(parseAppPath("/en/learn/photography/signs-he-likes-you/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/learn/love/")).toEqual({ kind: "unknown" });
+    expect(kbHref("en", "love")).toBe("/en/learn/relationships/");
+    expect(kbHref("zh-CN", "what-girls-mean-when-they-say")).toBe("/zh-cn/learn/relationships/what-girls-mean-when-they-say/");
+    for (const id of LOVE_ARTICLES) expect(kbShelfOf(id)).toBe("love");
+    expect(kbForTool("crop", "love")).toEqual([]);
+  });
+
+  it("builds the relationships hub, gives every article a test or none, and links guides from test pages", () => {
+    const hub = kbPageHtml("en", "love");
+    for (const group of KB_GROUPS.filter((g) => g.shelf === "love")) expect(hub).toContain(`<section class="wall" id="${group.id}">`);
+    const ld = kbArticleJsonLd("en", "love") as { url: string; mainEntity: { itemListElement: unknown[] } };
+    expect(ld.url).toBe("https://cv.cm/en/learn/relationships/");
+    expect(ld.mainEntity.itemListElement.length).toBe(LOVE_ARTICLES.length);
+    for (const id of LOVE_ARTICLES) {
+      expect(kbMeta(id).tools).toEqual([]);
+      expect(kbMeta(id).quizzes).toEqual([...(LOVE_ARTICLE_QUIZZES[id] ?? [])]);
+      for (const quiz of kbMeta(id).quizzes ?? []) expect(QUIZZES).toContain(quiz);
+    }
+    const withQuiz = LOVE_ARTICLES.find((id) => LOVE_ARTICLE_QUIZZES[id]?.length)!;
+    const [quiz] = LOVE_ARTICLE_QUIZZES[withQuiz]!;
+    const article = kbPageHtml("ko", withQuiz);
+    expect(article).toContain('href="/ko/learn/relationships/" data-nav="love-learn"');
+    expect(article).toContain(`<a class="btn" href="/ko/tests/${quiz}/" data-nav="test-${quiz}">`);
+    expect(loveForQuiz(quiz!)).toContain(withQuiz);
+  });
+
   it("builds the AI hub with every group and links AI articles from AI tool pages", () => {
     const hub = kbPageHtml("en", "ai");
     for (const group of KB_GROUPS.filter((g) => g.shelf === "ai")) expect(hub).toContain(`<section class="wall" id="${group.id}">`);
@@ -170,6 +203,22 @@ describe("knowledge: routes", () => {
     expect((await worker.fetch(new Request("https://cv.cm/en/learn/photography/nope/"), { ASSETS: assets })).status).toBe(404);
   });
 
+  it("serves the relationships hub and articles with test links, and redirects bare paths", async () => {
+    const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
+    const bare = await worker.fetch(new Request("https://cv.cm/learn/relationships/no-contact-rule/", { headers: { "Accept-Language": "ja" } }), { ASSETS: assets });
+    expect(bare.status).toBe(302);
+    expect(bare.headers.get("Location")).toBe("https://cv.cm/ja/learn/relationships/no-contact-rule/");
+    const hub = await worker.fetch(new Request("https://cv.cm/zh-cn/learn/relationships/"), { ASSETS: assets });
+    expect(hub.status).toBe(200);
+    expect(await hub.text()).toContain(`<title>${pageTitle("zh-CN", { kb: true, kbId: "love" })}</title>`);
+    const page = await worker.fetch(new Request("https://cv.cm/en/learn/relationships/what-girls-mean-when-they-say/"), { ASSETS: assets });
+    expect(page.status).toBe(200);
+    const html = await page.text();
+    expect(html).toContain('<link rel="canonical" href="https://cv.cm/en/learn/relationships/what-girls-mean-when-they-say/"');
+    expect(html).toContain('href="/en/tests/crush/"');
+    expect((await worker.fetch(new Request("https://cv.cm/en/learn/relationships/nope/"), { ASSETS: assets })).status).toBe(404);
+  });
+
   it("redirects bare paths, adds the slash, 404s unknown articles and serves the page", async () => {
     const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
     const bare = await worker.fetch(new Request("https://cv.cm/learn/knowledge/what-is-uuid/", { headers: { "Accept-Language": "vi" } }), { ASSETS: assets });
@@ -195,6 +244,7 @@ describe("knowledge: routes", () => {
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "code")}</loc>`);
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "ai")}</loc>`);
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "photo")}</loc>`);
+      expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "love")}</loc>`);
       for (const id of KB_ARTICLES) expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, id)}</loc>`);
     }
   });

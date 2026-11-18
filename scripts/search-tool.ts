@@ -13,6 +13,7 @@ import "../src/shared/messages-all";
 import "../src/shared/kb-code-meta";
 import "../src/shared/kb-ai-meta";
 import "../src/shared/kb-photo-meta";
+import "../src/shared/kb-love-meta";
 import { isLocale, LOCALES, type Locale } from "../src/shared/locale";
 import { searchEntries, type SearchEntry } from "../src/shared/search";
 import { buildAllSearchIndexes } from "../src/shared/search-index";

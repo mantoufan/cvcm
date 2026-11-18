@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import "../src/shared/kb-code-meta";
 import "../src/shared/kb-ai-meta";
 import "../src/shared/kb-photo-meta";
+import "../src/shared/kb-love-meta";
 import { LOCALES } from "../src/shared/locale";
 import {
   isRecordableQuery,
