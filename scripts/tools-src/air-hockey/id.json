@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "titleAirHockey": "Air hockey — main hoki meja online melawan komputer dalam 3D — cv.cm",
+    "descAirHockey": "Main air hockey gratis di meja 3D: geser pemukul dengan mouse, jari, atau tombol panah dan kalahkan komputer di tiga tingkat. Yang lebih dulu mencetak 7 gol menang. Bisa di HP."
+  },
+  "tools": {
+    "air-hockey": {
+      "name": "Air hockey (hoki meja)",
+      "blurb": "Geser pemukul dan cetak gol ke gawang komputer."
+    }
+  },
+  "faq": {
+    "air-hockey": {
+      "q1": "Bagaimana cara main air hockey?",
+      "a1": "Gerakkan pemukul di separuh meja Anda dan masukkan keping ke gawang komputer di ujung jauh. Jaga gawang Anda di ujung dekat. Yang lebih dulu mencetak 7 gol menang.",
+      "q2": "Bagaimana menggerakkan pemukul?",
+      "a2": "Gerakkan mouse di atas meja, atau geser jari di HP atau tablet: pemukul akan mengikuti. Dengan keyboard, pakai tombol panah atau W A S D. Pemukul tidak bisa melewati garis tengah.",
+      "q3": "Seberapa kuat komputernya?",
+      "a3": "Mudah bereaksi lambat dan bidikannya longgar, Normal lebih cepat, dan Sulit bergerak cepat serta membidik sudut gawang Anda. Mengganti tingkat memulai pertandingan baru.",
+      "q4": "Bagaimana memukul lebih keras?",
+      "a4": "Keping mengambil kecepatan pemukul saat bertabrakan, jadi songsong kepingnya, jangan menunggu. Tembakan pantul dari dinding samping sulit ditahan.",
+      "q5": "Apakah rekor saya disimpan?",
+      "a5": "Ya. Menang dan kalah di setiap tingkat hanya disimpan di browser ini."
+    }
+  },
+  "guides": {
+    "air-hockey": {
+      "lead": "Main air hockey dalam tiga langkah.",
+      "s1t": "Mulai pertandingan",
+      "s1b": "Pilih tingkat lalu tekan Main. Keping menunggu di tengah separuh meja Anda.",
+      "s2t": "Pukul kepingnya",
+      "s2b": "Gerakkan pemukul dengan mouse, jari, atau tombol panah dan pukul keping ke gawang jauh.",
+      "s3t": "Pertama ke tujuh",
+      "s3b": "Tahan tembakan komputer dan cetak 7 gol untuk menang. Tekan lagi untuk pertandingan ulang."
+    }
+  },
+  "ui": {
+    "airHockey": {
+      "title": "Air hockey (hoki meja)",
+      "privacyNote": "Main air hockey melawan komputer di meja 3D. Rekor Anda tersimpan di browser ini.",
+      "stage": "Meja air hockey",
+      "intro": "Gerakkan pemukul dengan mouse, jari, atau tombol panah dan cetak 7 gol sebelum komputer.",
+      "hud": "Anda {you} : {cpu} Komputer",
+      "record": "Di tingkat ini: {w} menang, {l} kalah",
+      "youWin": "Anda menang {you}–{cpu}!",
+      "cpuWins": "Komputer menang {cpu}–{you}.",
+      "again": "Main lagi",
+      "goalYou": "Gol! Anda {you}, komputer {cpu}.",
+      "goalCpu": "Komputer mencetak gol. Anda {you}, komputer {cpu}.",
+      "level": "Tingkat",
+      "l_0": "Mudah",
+      "l_1": "Normal (sedang)",
+      "l_2": "Sulit",
+      "restart": "Pertandingan baru",
+      "you": "Anda",
+      "computer": "Komputer",
+      "hint": "Mouse atau jari: pemukul mengikuti penunjuk di separuh meja Anda. Keyboard: tombol panah atau W A S D. Spasi atau Enter di meja memulai pertandingan ulang."
+    }
+  }
+}

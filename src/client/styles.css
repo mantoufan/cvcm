@@ -1969,3 +1969,61 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .fx-chart .fx-grid { stroke: var(--line); stroke-width: 1; }
 .fx-chart .fx-axis { stroke: var(--ink-soft); stroke-width: 1; }
 .fx-chart text { fill: var(--ink-soft); font-size: 11px; font-family: var(--sans); }
+/* Air hockey (src/client/air-hockey/ui.ts) */
+.ah-hud { justify-content: center; font-size: 1.05rem; font-weight: 700; }
+.ah-score { margin-left: auto; }
+.ah-status { min-height: 1.6em; margin: 0.5rem 0 0; }
+.ah-record { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
+.ah-root .g3d-stage { cursor: none; }
+
+/* Darts (src/client/darts/) */
+.dt-root .g3d-stage { cursor: crosshair; }
+.dt-hud { font-weight: 600; }
+.dt-turn { margin: 0.6rem 0 0.2rem; font-weight: 600; }
+.dt-status { min-height: 1.5em; margin: 0 0 0.6rem; color: var(--ink-soft); }
+.dt-score { width: 100%; max-width: 32rem; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.dt-score th, .dt-score td { padding: 0.35rem 0.6rem; border-bottom: 1px solid var(--line); text-align: left; }
+.dt-score thead th { color: var(--ink-soft); font-weight: 500; font-size: 0.85rem; }
+.dt-score tr.dt-now th { color: var(--pink-deep); }
+.dt-score tr.dt-now th::before { content: "▸ "; }
+.dt-best { margin-top: 0.4rem; }
+
+/* Pool game (src/client/pool-game/) */
+.pl-root { aspect-ratio: 16 / 10; }
+.pl-bar { gap: 0.6rem 0.75rem; }
+.pl-power { display: flex; align-items: center; gap: 0.5rem; flex: 1 1 14rem; }
+.pl-power input[type="range"] { flex: 1 1 auto; min-width: 8rem; accent-color: var(--pink-deep); }
+.pl-power-out { min-width: 3.2em; font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+.pl-status { margin: 0.4rem 0 0.2rem; min-height: 1.6em; font-weight: 600; }
+.pl-groups { margin: 0 0 0.6rem; color: var(--ink-soft); font-size: 0.92rem; }
+.pl-settings { margin-top: 0.4rem; }
+.pl-record { margin: 0.4rem 0; }
+.pl-record[hidden] { display: none; }
+
+/* Cube solver (src/client/cube-solver/): colour palette, unfolded net (9 × 12 grid), solution steps */
+.cs-palette { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+.cs-swatch { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 40px; padding: 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink); font: inherit; font-size: 0.9rem; cursor: pointer; }
+.cs-swatch[aria-pressed="true"] { border-color: var(--pink-deep); box-shadow: inset 0 0 0 1px var(--pink-deep); }
+.cs-dot { width: 1rem; height: 1rem; border-radius: 3px; border: 1px solid rgba(0, 0, 0, 0.25); }
+.cs-count { color: var(--ink-soft); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.cs-count.cs-off { color: var(--pink-deep); font-weight: 700; }
+.cs-net { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(9, auto); gap: 2px; width: 100%; max-width: 36rem; margin: 0.5rem 0; }
+.cs-sticker { aspect-ratio: 1; min-width: 0; padding: 0; border: 1px solid #1d1a1f; border-radius: 4px; background: var(--gray); cursor: pointer; }
+.cs-sticker[data-c="?"] { background: var(--white); border-style: dashed; border-color: var(--ink-soft); }
+.cs-sticker.cs-centre { cursor: default; box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25); }
+.cs-sticker:focus-visible { outline: 3px solid var(--pink-deep); outline-offset: 1px; z-index: 1; }
+.cs-status { min-height: 1.6em; font-weight: 600; }
+.cs-solution { margin: 1rem 0; }
+.cs-moves { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0; margin: 0.5rem 0; list-style: none; }
+.cs-moves li { min-width: 2.6rem; padding: 0.2rem 0.45rem; border: 1px solid var(--line); border-radius: 6px; text-align: center; font-family: var(--mono); }
+.cs-moves li.on { border-color: var(--pink-deep); background: var(--pink-soft); color: var(--pink-deep); font-weight: 700; }
+.cs-step { min-height: 1.4em; font-variant-numeric: tabular-nums; }
+/* Pinball (src/client/pinball/ui.ts) */
+.pb-bar { justify-content: space-between; }
+.pb-stats { margin: 0; }
+.pb-hud { justify-content: space-between; align-items: baseline; }
+.pb-hud-score { font-size: 1.6rem; font-weight: 800; color: var(--pink-deep); }
+.pb-hud-ball, .pb-hud-mult { font-weight: 700; }
+.pb-hud-mult { color: var(--pink-deep); }
+.pb-status { min-height: 1.6em; margin: 0.5rem 0 0; color: var(--pink-deep); font-weight: 600; }
+.pb-pad .g3d-plunger { align-self: flex-end; }

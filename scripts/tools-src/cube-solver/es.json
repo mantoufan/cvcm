@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "titleCubeSolver": "Resolver cubo 3×3 online — solucionador paso a paso — cv.cm",
+    "descCubeSolver": "Solucionador gratis del cubo 3×3: pinta los colores de tu cubo en el desplegable y obtén una solución corta (normalmente menos de 22 movimientos) en notación estándar, con cada giro en 3D. No se sube nada."
+  },
+  "tools": {
+    "cube-solver": {
+      "name": "Solucionador de cubo",
+      "blurb": "Pinta tu 3×3 y obtén una solución corta, giro a giro."
+    }
+  },
+  "faq": {
+    "cube-solver": {
+      "q1": "¿Cómo introduzco mi cubo?",
+      "a1": "Sujeta el cubo con el centro blanco arriba y el centro verde hacia ti. Elige un color y toca cada pegatina del desplegable hasta que cada cara sea igual que tu cubo. Los centros son fijos e indican qué cara es cada una.",
+      "q2": "¿Qué color va en cada cara?",
+      "a2": "Cada cara se nombra por su centro: blanco arriba, amarillo abajo, verde delante, azul detrás, rojo a la derecha y naranja a la izquierda. Copia cada cara tal como la ves de frente; la de arriba, con el lado verde más cerca de ti.",
+      "q3": "¿Por qué dice que mi cubo es imposible?",
+      "a3": "Un cubo real solo puede llegar a ciertas posiciones. Si sobra o falta un color, una esquina o arista tiene colores que ninguna pieza tiene, una sola esquina está girada, una sola arista está volteada o dos piezas están intercambiadas, las pegatinas se copiaron mal (o el cubo se desmontó). El mensaje indica qué tipo de error revisar.",
+      "q4": "¿Cuántos movimientos tiene la solución?",
+      "a4": "Usa el algoritmo de dos fases de Herbert Kociemba y da una solución de 22 movimientos como máximo, normalmente entre 19 y 21. Es corta, aunque no siempre la más corta posible.",
+      "q5": "¿Cómo se leen los movimientos?",
+      "a5": "U, D, R, L, F y B giran un cuarto de vuelta en sentido horario la cara de arriba, abajo, derecha, izquierda, delante y detrás, mirando esa cara de frente. ' es antihorario y 2 es media vuelta. Mantén siempre el blanco arriba y el verde delante."
+    }
+  },
+  "guides": {
+    "cube-solver": {
+      "lead": "Resuelve un cubo 3×3 en tres pasos.",
+      "s1t": "Pinta las pegatinas",
+      "s1b": "Sujeta el cubo con el blanco arriba y el verde delante. Elige un color y toca las pegatinas del desplegable hasta que todas las caras coincidan con tu cubo.",
+      "s2t": "Pulsa Resolver",
+      "s2b": "Primero se comprueba que el cubo pueda existir. Si es así, el solucionador da una lista corta de movimientos.",
+      "s3t": "Sigue los movimientos",
+      "s3b": "Avanza giro a giro o pulsa Jugar para verlos en un cubo 3D, y gira tu cubo de la misma forma."
+    }
+  },
+  "ui": {
+    "cubeSolver": {
+      "title": "Solucionador de cubo",
+      "privacyNote": "Pinta tu cubo 3×3 y obtén una solución corta. Todo funciona en esta página.",
+      "palette": "Colores",
+      "net": "Desplegable del cubo",
+      "c_U": "Blanco",
+      "c_R": "Rojo",
+      "c_F": "Verde",
+      "c_D": "Amarillo",
+      "c_L": "Naranja",
+      "c_B": "Azul",
+      "f_U": "Arriba",
+      "f_R": "Derecha",
+      "f_F": "Delante",
+      "f_D": "Abajo",
+      "f_L": "Izquierda",
+      "f_B": "Detrás",
+      "blank": "sin pintar",
+      "stickerLabel": "Cara {face}, pegatina {n}: {colour}",
+      "centreLabel": "Centro de la cara {face}: {colour} (fijo)",
+      "count": "{n} de 9",
+      "solve": "Resolver",
+      "random": "Cubo aleatorio",
+      "clear": "Borrar",
+      "reset": "Cubo resuelto",
+      "e_blank": "Faltan {n} pegatinas por pintar.",
+      "e_count": "Hay {n} pegatinas de color {colour}; cada color necesita exactamente 9.",
+      "e_corner": "Una esquina tiene colores que ninguna esquina real tiene, o aparece dos veces. Revisa las pegatinas de las esquinas.",
+      "e_edge": "Una arista tiene colores que ninguna arista real tiene, o aparece dos veces. Revisa las pegatinas de las aristas.",
+      "e_twist": "Una sola esquina está girada, y eso un cubo real no puede hacerlo. Revisa las esquinas.",
+      "e_flip": "Una sola arista está volteada, y eso un cubo real no puede hacerlo. Revisa las aristas.",
+      "e_parity": "Dos piezas están intercambiadas, y eso un cubo real no puede hacerlo. Comprueba que copiaste bien cada cara.",
+      "preparing": "Preparando el solucionador… (unos segundos la primera vez)",
+      "solving": "Resolviendo…",
+      "solved": "Solución encontrada: {n} movimientos.",
+      "already": "Este cubo ya está resuelto.",
+      "failed": "El solucionador no puede funcionar aquí. Recarga la página e inténtalo de nuevo.",
+      "solutionTitle": "Solución",
+      "holdNote": "Sujeta el cubo con el blanco arriba y el verde hacia ti, sin cambiarlo en todo el proceso.",
+      "movesLabel": "Movimientos de la solución",
+      "toStart": "Volver al inicio",
+      "prev": "Movimiento anterior",
+      "next": "Movimiento siguiente",
+      "playMoves": "Reproducir",
+      "pauseMoves": "Pausa",
+      "stepStart": "Tu cubo: faltan {n} movimientos.",
+      "step": "Movimiento {k} de {n}: {move}",
+      "stage": "Vista 3D de la solución",
+      "intro": "Pulsa Jugar para ver la solución en un cubo 3D.",
+      "hint": "Elige un color y toca las pegatinas. Teclas: 1–6 eligen color, las flechas mueven entre pegatinas, Intro o Espacio pinta.",
+      "practise": "Practica con el cubo mágico 3D",
+      "credit": "Solucionador: {name} (licencia MIT), algoritmo de dos fases de Herbert Kociemba."
+    }
+  }
+}

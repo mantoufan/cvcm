@@ -1,0 +1,12 @@
+
+/* Pool game (src/client/pool-game/) */
+.pl-root { aspect-ratio: 16 / 10; }
+.pl-bar { gap: 0.6rem 0.75rem; }
+.pl-power { display: flex; align-items: center; gap: 0.5rem; flex: 1 1 14rem; }
+.pl-power input[type="range"] { flex: 1 1 auto; min-width: 8rem; accent-color: var(--pink-deep); }
+.pl-power-out { min-width: 3.2em; font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+.pl-status { margin: 0.4rem 0 0.2rem; min-height: 1.6em; font-weight: 600; }
+.pl-groups { margin: 0 0 0.6rem; color: var(--ink-soft); font-size: 0.92rem; }
+.pl-settings { margin-top: 0.4rem; }
+.pl-record { margin: 0.4rem 0; }
+.pl-record[hidden] { display: none; }

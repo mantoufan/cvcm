@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "titlePinball": "Pinball — play 3D pinball online for free — cv.cm",
+    "descPinball": "Play free 3D pinball online with no download: launch the ball, flip it up the table, hit the bumpers and light the lanes for a score multiplier. Three balls, ball save, works on phones."
+  },
+  "tools": {
+    "pinball": {
+      "name": "Pinball",
+      "blurb": "Flip, bump and score on a 3D pinball table."
+    }
+  },
+  "faq": {
+    "pinball": {
+      "q1": "How do you play pinball?",
+      "a1": "Pull the plunger to launch the ball, then keep it in play with the two flippers at the bottom. Bumpers, slingshots, targets and lanes all score. You have three balls; a ball that falls between the flippers is lost.",
+      "q2": "What are the controls?",
+      "a2": "Left arrow or Z works the left flipper, right arrow or / the right one (both Shift keys work too). Hold Space or the down arrow to pull the plunger and let go to launch: the longer you hold, the harder the shot.",
+      "q3": "How does the multiplier work?",
+      "a3": "Roll over all three lights at the top of the table to raise the multiplier by one, up to ×5. Every point after that is multiplied. Hitting all three targets on the left wall gives a big bonus.",
+      "q4": "What is ball save?",
+      "a4": "If a new ball drains within the first few seconds after you launch it, you get it back once. The status line says when a ball was saved.",
+      "q5": "Can I play on my phone?",
+      "a5": "Yes. Tap the left or right half of the table for the flippers, and hold the middle button to pull the plunger. Full screen gives you the biggest table. Your best score stays in this browser."
+    }
+  },
+  "guides": {
+    "pinball": {
+      "lead": "Play pinball in three steps.",
+      "s1t": "Launch the ball",
+      "s1b": "Hold Space, the down arrow or the middle button to pull the plunger, then let go.",
+      "s2t": "Work the flippers",
+      "s2b": "Flip with the left and right arrows (or Z and /), or tap the two halves of the table, to send the ball back up.",
+      "s3t": "Score big",
+      "s3b": "Hit bumpers and targets, and light the three top lanes to raise the multiplier. Three balls per game."
+    }
+  },
+  "ui": {
+    "pinball": {
+      "title": "Pinball",
+      "privacyNote": "An original 3D pinball table that runs in this page. Your best score stays in this browser.",
+      "stage": "Pinball table",
+      "intro": "Launch the ball with the plunger and keep it in play with the flippers.",
+      "score": "Score",
+      "ball": "Ball",
+      "best": "Best",
+      "ballOf": "Ball {n}/{of}",
+      "newGame": "New game",
+      "leftFlipper": "Left flipper",
+      "rightFlipper": "Right flipper",
+      "plunger": "Plunger",
+      "saved": "Ball saved! Launch again.",
+      "lost": "Ball lost. {n} left.",
+      "multiplier": "Multiplier up: ×{n}!",
+      "targets": "All targets hit: bonus!",
+      "over": "Game over. Score: {score}.",
+      "again": "Play again",
+      "newBest": "New best: {score}!",
+      "ready": "Hold Space to pull the plunger, let go to launch.",
+      "hint": "Flippers: left and right arrows, Z and /, or tap the two halves of the table. Plunger: hold Space, the down arrow or the middle button, then let go."
+    }
+  }
+}

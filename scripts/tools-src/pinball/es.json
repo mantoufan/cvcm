@@ -1,0 +1,62 @@
+{
+  "meta": {
+    "titlePinball": "Pinball online gratis — juega al pinball 3D en el navegador — cv.cm",
+    "descPinball": "Juega gratis al pinball 3D online sin descargar nada: lanza la bola, devuélvela con los flippers, golpea los bumpers y enciende los carriles para multiplicar la puntuación. Tres bolas, salvabolas y funciona en el móvil."
+  },
+  "tools": {
+    "pinball": {
+      "name": "Pinball 3D",
+      "blurb": "Golpea con los flippers y suma puntos en una mesa 3D."
+    }
+  },
+  "faq": {
+    "pinball": {
+      "q1": "¿Cómo se juega al pinball?",
+      "a1": "Tira del lanzador para sacar la bola y mantenla en juego con los dos flippers de abajo. Los bumpers, las gomas, las dianas y los carriles dan puntos. Tienes tres bolas; si una cae entre los flippers, la pierdes.",
+      "q2": "¿Cuáles son los controles?",
+      "a2": "Flecha izquierda o Z para el flipper izquierdo, flecha derecha o / para el derecho (también las dos Mayús). Mantén Espacio o la flecha abajo para tensar el lanzador y suelta para lanzar: cuanto más tiempo, más fuerte.",
+      "q3": "¿Cómo funciona el multiplicador?",
+      "a3": "Pasa por las tres luces de arriba para subir el multiplicador en uno, hasta ×5. Todos los puntos siguientes se multiplican. Si aciertas las tres dianas de la pared izquierda, ganas un gran bonus.",
+      "q4": "¿Qué es el salvabolas?",
+      "a4": "Si una bola nueva cae en los primeros segundos tras lanzarla, te la devuelve una vez. La línea de estado avisa cuando se salva.",
+      "q5": "¿Se puede jugar en el móvil?",
+      "a5": "Sí. Toca la mitad izquierda o derecha de la mesa para los flippers y mantén el botón central para el lanzador. A pantalla completa la mesa se ve más grande. Tu mejor puntuación se guarda en este navegador."
+    }
+  },
+  "guides": {
+    "pinball": {
+      "lead": "Juega al pinball en tres pasos.",
+      "s1t": "Lanza la bola",
+      "s1b": "Mantén Espacio, la flecha abajo o el botón central para tensar el lanzador y suelta.",
+      "s2t": "Usa los flippers",
+      "s2b": "Devuelve la bola con las flechas izquierda y derecha (o Z y /), o tocando las dos mitades de la mesa.",
+      "s3t": "Suma a lo grande",
+      "s3b": "Golpea bumpers y dianas, y enciende los tres carriles de arriba para subir el multiplicador. Tres bolas por partida."
+    }
+  },
+  "ui": {
+    "pinball": {
+      "title": "Pinball 3D",
+      "privacyNote": "Una mesa de pinball 3D original que funciona en esta página. Tu mejor puntuación se guarda en este navegador.",
+      "stage": "Mesa de pinball",
+      "intro": "Lanza la bola con el lanzador y mantenla en juego con los flippers.",
+      "score": "Puntos",
+      "ball": "Bola",
+      "best": "Récord",
+      "ballOf": "Bola {n}/{of}",
+      "newGame": "Nueva partida",
+      "leftFlipper": "Flipper izquierdo",
+      "rightFlipper": "Flipper derecho",
+      "plunger": "Lanzador",
+      "saved": "¡Bola salvada! Lanza otra vez.",
+      "lost": "Bola perdida. Quedan {n}.",
+      "multiplier": "¡Multiplicador: ×{n}!",
+      "targets": "¡Todas las dianas: bonus!",
+      "over": "Fin de la partida. Puntos: {score}.",
+      "again": "Jugar otra vez",
+      "newBest": "¡Nuevo récord: {score}!",
+      "ready": "Mantén Espacio para tensar el lanzador y suelta para lanzar.",
+      "hint": "Flippers: flechas izquierda y derecha, Z y /, o toca las dos mitades de la mesa. Lanzador: mantén Espacio, la flecha abajo o el botón central y suelta."
+    }
+  }
+}

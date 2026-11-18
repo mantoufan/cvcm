@@ -181,3 +181,17 @@ Keyword Planner (MCC `7007031245`, `generateKeywordIdeas` + `generateKeywordHist
 | `flight-simulator` | flight simulator 246k, plane game 49.5k (40.5k → 90.5k), airplane games 40.5k, flight sim 40.5k, flight simulator online 33.1k | Arcade model; no simulator brand |
 
 Next candidates (same group, KP 2026-11-18): darts 49.5k, 8 ball pool online 33.1k / pool game 165k, bowling game 27.1k, 3d pinball 27.1k, 3d mahjong 8.1k, 3d snake 18.1k, marble run 6.6k. Skip named games even when large: snow rider 3d 823k, slope 368k, run 3 1M, crossy road 450k, helix jump 22.2k, 3d tetris 5.4k. Game CPCs are low ($0.1–0.9), so the value is traffic and time on site, not ad price.
+
+## 3D games, second batch (2026-11-18)
+
+Keyword Planner, same MCC, `generateKeywordHistoricalMetrics` per language. Same `games3d` group (now 10 pages) and `/games/3d/` hub.
+
+| Slug | Evidence (monthly) | Notes |
+|---|---|---|
+| `cube-solver` | cube solver 246k, 3x3 cube solver 22.2k; ko 큐브 공식 5.4k, 큐브 맞추는 법 6.6k; zh-CN 魔方公式 6.6k; vi giải rubik 8.1k; es resolver cubo de rubik 3.6k | Kociemba two-phase via `cubejs` (MIT) in a worker; "rubiks cube solver" 550k is the trademark form, never used in en/es/ja/ko/zh |
+| `pinball` | es pinball 246k; ko 핀볼 60.5k; 3d pinball 27.1k; vi/id game pinball 27.1k; ja ピンボール 14.8k; zh 弹珠台 8.1k | Own table theme; no "Space Cadet" |
+| `pool-game` | pool game 165k; id game billiard 74k; 8 ball pool online 33.1k; es juego de billar 18.1k; vi game bida 9.9k | "8 Ball Pool" is a trademark; "8-ball" as the rules name only |
+| `air-hockey` | air hockey 90.5k (en/es); ja エアホッケー 14.8k | |
+| `darts` | darts game 49.5k; id game dart 49.5k; darts online 14.8k | 501, around the clock, practice |
+
+Third-batch candidates: archery game 40.5k, ping pong game 33.1k (ja 卓球 ゲーム 14.8k), bowling game 27.1k (ja ボウリング ゲーム 6.6k), basketball games 246k (broad, crowded).

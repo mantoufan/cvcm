@@ -218,6 +218,11 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "apa-citation-generator": 3,
   "mla-citation-generator": 3,
   "harvard-referencing-generator": 3,
+  "cube-solver": 3,
+  "pinball": 3,
+  "pool-game": 3,
+  "air-hockey": 3,
+  "darts": 3,
 };
 
 export function guideSteps(tool: ToolId): number {

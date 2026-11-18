@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "titleAirHockey": "Air hockey — play air hockey online against the computer in 3D — cv.cm",
+    "descAirHockey": "Play free air hockey online on a 3D table: slide your mallet with the mouse, a finger or the arrow keys and beat the computer at three levels. First to 7 wins. Works on phones."
+  },
+  "tools": {
+    "air-hockey": {
+      "name": "Air hockey",
+      "blurb": "Slide your mallet and score past the computer."
+    }
+  },
+  "faq": {
+    "air-hockey": {
+      "q1": "How do you play air hockey?",
+      "a1": "Move your mallet in your half of the table and hit the puck into the computer's goal at the far end. Keep the puck out of your own goal at the near end. The first player to 7 goals wins.",
+      "q2": "How do I move my mallet?",
+      "a2": "Move the mouse over the table, or drag a finger on a phone or tablet: the mallet follows. With a keyboard, use the arrow keys or W A S D. The mallet cannot cross the centre line.",
+      "q3": "How hard is the computer?",
+      "a3": "Easy reacts slowly and aims loosely, Normal is quicker, and Hard moves fast and aims at the corners of your goal. Changing the level starts a new match.",
+      "q4": "How do I hit the puck harder?",
+      "a4": "The puck takes the speed of your mallet when they meet, so swing into it instead of waiting for it. Bank shots off the side rails are hard to stop.",
+      "q5": "Is my record saved?",
+      "a5": "Yes. Your wins and losses at each level stay in this browser only."
+    }
+  },
+  "guides": {
+    "air-hockey": {
+      "lead": "Play air hockey in three steps.",
+      "s1t": "Start a match",
+      "s1b": "Choose a level and press Play. The puck waits in the middle of your half.",
+      "s2t": "Hit the puck",
+      "s2b": "Move your mallet with the mouse, a finger or the arrow keys and strike the puck toward the far goal.",
+      "s3t": "First to seven",
+      "s3b": "Block the computer's shots and score seven goals to win. Press Play again for a rematch."
+    }
+  },
+  "ui": {
+    "airHockey": {
+      "title": "Air hockey",
+      "privacyNote": "Play air hockey against the computer on a 3D table. Your record stays in this browser.",
+      "stage": "Air hockey table",
+      "intro": "Move your mallet with the mouse, a finger or the arrow keys and score seven goals before the computer does.",
+      "hud": "You {you} : {cpu} Computer",
+      "record": "At this level: {w} wins, {l} losses",
+      "youWin": "You win {you}–{cpu}!",
+      "cpuWins": "The computer wins {cpu}–{you}.",
+      "again": "Play again",
+      "goalYou": "Goal! You {you}, computer {cpu}.",
+      "goalCpu": "The computer scores. You {you}, computer {cpu}.",
+      "level": "Level",
+      "l_0": "Easy",
+      "l_1": "Normal",
+      "l_2": "Hard",
+      "restart": "New match",
+      "you": "You",
+      "computer": "Computer",
+      "hint": "Mouse or finger: the mallet follows the pointer in your half. Keyboard: arrow keys or W A S D. Space or Enter on the table starts a rematch."
+    }
+  }
+}

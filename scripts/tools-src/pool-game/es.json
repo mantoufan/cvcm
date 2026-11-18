@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "titlePoolGame": "Juego de billar — bola 8 online en 3D gratis — cv.cm",
+    "descPoolGame": "Juega gratis al billar de bola 8 online: mesa en 3D, guía de tiro, tres niveles contra la computadora o dos jugadores en el mismo dispositivo. En el navegador, sin instalar nada."
+  },
+  "tools": {
+    "pool-game": {
+      "name": "Juego de billar",
+      "blurb": "Bola 8 en una mesa 3D, contra la computadora o un amigo."
+    }
+  },
+  "faq": {
+    "pool-game": {
+      "q1": "¿Cómo se juega a la bola 8?",
+      "a1": "Rompe el triángulo y luego mete todo tu grupo —lisas (1–7) o rayadas (9–15)— y por último la 8 negra. Tu grupo lo decide la primera bola que metas después del saque. Meter la 8 antes de terminar tu grupo, o con falta, pierde la partida.",
+      "q2": "¿Cómo apunto y tiro?",
+      "a2": "Mueve el ratón sobre la mesa o arrastra con el dedo para apuntar; la línea blanca muestra dónde golpeará la bola blanca y la amarilla hacia dónde irá la bola objetivo. Elige la fuerza con el control deslizante o las flechas arriba y abajo, y pulsa Tirar o la barra espaciadora. Izquierda y derecha afinan la dirección (con Mayús, pasos mínimos).",
+      "q3": "¿Qué es falta?",
+      "a3": "Meter la bola blanca, no tocar ninguna bola, tocar primero el grupo contrario (o la 8 antes de tiempo) y un tiro en el que no entra ninguna bola ni ninguna llega a una banda tras el primer contacto. Tras una falta, el rival tiene bola en mano y coloca la blanca donde quiera.",
+      "q4": "¿Qué tan fuerte es la computadora?",
+      "a4": "Fácil, Medio y Difícil prueban los tiros posibles con la misma física que tú; los niveles fáciles prueban menos tiros y apuntan con menos precisión.",
+      "q5": "¿Se guarda la partida?",
+      "a5": "Sí. La mesa, el marcador y tus victorias y derrotas contra la computadora se guardan en este navegador para seguir más tarde."
+    }
+  },
+  "guides": {
+    "pool-game": {
+      "lead": "Juega a la bola 8 en tres pasos.",
+      "s1t": "Rompe el triángulo",
+      "s1b": "Pulsa Jugar, apunta al triángulo y tira fuerte para abrir las bolas.",
+      "s2t": "Mete tu grupo",
+      "s2b": "Apunta con el ratón o el dedo, elige la fuerza y tira. Tu primera bola metida tras el saque decide lisas o rayadas.",
+      "s3t": "Termina con la 8",
+      "s3b": "Con tu grupo limpio, mete la 8 negra para ganar. Evita las faltas: dan bola en mano al rival."
+    }
+  },
+  "ui": {
+    "poolGame": {
+      "title": "Juego de billar",
+      "privacyNote": "Juega a la bola 8 en una mesa 3D contra la computadora o un amigo. El juego funciona en esta página.",
+      "stage": "Mesa de billar",
+      "intro": "Bola 8: mete tu grupo y luego la 8 negra.",
+      "you": "Tú",
+      "computer": "Computadora",
+      "player": "Jugador {n}",
+      "open": "mesa abierta",
+      "groupLeft": "{group}, quedan {n}",
+      "solids": "lisas",
+      "stripes": "rayadas",
+      "wins": "Victorias",
+      "losses": "Derrotas",
+      "vsComputer": "Contra la computadora",
+      "twoPlayers": "Dos jugadores",
+      "level": "Nivel de la computadora",
+      "l_0": "Fácil",
+      "l_1": "Medio",
+      "l_2": "Difícil",
+      "players": "Jugadores",
+      "power": "Fuerza",
+      "shoot": "Tirar",
+      "turnView": "Girar la vista",
+      "newGame": "Nueva partida",
+      "thinking": "La computadora está pensando…",
+      "yourShot": "Te toca tirar.",
+      "playerShot": "Le toca tirar a {who}.",
+      "breakShot": "Saque: apunta al triángulo y tira fuerte.",
+      "ballInHand": "Bola en mano: arrastra la blanca a donde quieras.",
+      "win_eight": "Gana {who}: ¡la 8 entró!",
+      "win_eightEarly": "Gana {who}: la 8 entró antes de tiempo.",
+      "win_eightFoul": "Gana {who}: la 8 entró con falta.",
+      "again_shot": "¡Buena! Vuelve a tirar.",
+      "foul_scratch": "Falta: la bola blanca entró.",
+      "foul_noContact": "Falta: la blanca no tocó ninguna bola.",
+      "foul_wrongBall": "Falta: tocó primero la bola equivocada.",
+      "foul_noRail": "Falta: ninguna bola llegó a una banda.",
+      "again": "Jugar otra vez",
+      "hint": "Apunta con el ratón o arrastrando sobre la mesa, izquierda y derecha afinan (Mayús para pasos mínimos), arriba y abajo cambian la fuerza, la barra espaciadora tira."
+    }
+  }
+}

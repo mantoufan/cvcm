@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "titleDarts": "Game phi tiêu — chơi 501 online trên bảng phi tiêu 3D — cv.cm",
+    "descDarts": "Chơi phi tiêu online miễn phí: 501 kết thúc bằng ô đôi, Vòng quanh bảng hoặc luyện tập trên bảng 3D, đấu với máy hoặc chơi một mình. Gợi ý kết thúc, điểm trung bình và ván tốt nhất. Chơi được trên điện thoại."
+  },
+  "tools": {
+    "darts": {
+      "name": "Phi tiêu",
+      "blurb": "Chơi 501 hoặc Vòng quanh bảng trên bảng 3D."
+    }
+  },
+  "faq": {
+    "darts": {
+      "q1": "Ném phi tiêu thế nào?",
+      "a1": "Nhấn giữ trên bảng: tâm ngắm sẽ rung rồi ổn định sau khoảng một giây. Di chuyển để ngắm và thả tay để ném. Giữ quá lâu tay sẽ run trở lại. Trên bàn phím, phím mũi tên để ngắm, phím cách để ném.",
+      "q2": "Luật 501 là gì?",
+      "a2": "Mỗi người bắt đầu với 501 và trừ dần điểm mỗi phi tiêu. Phải về đúng 0 bằng ô đôi hoặc hồng tâm. Âm điểm, còn 1 hoặc về 0 bằng ô đơn là quá điểm (bust): điểm của lượt đó bị hủy.",
+      "q3": "Kết thúc (checkout) là gì?",
+      "a3": "Cách hạ số điểm từ 170 trở xuống trong tối đa ba phi tiêu, kết thúc ở ô đôi. Khi có thể kết thúc, trang hiện đường quen thuộc, như T20 T20 Hồng tâm cho 170 hay D20 cho 40.",
+      "q4": "Máy chơi giỏi đến đâu?",
+      "a4": "Ba mức dễ, vừa, khó đều nhắm ô ba 20 hoặc đường kết thúc, mức càng dễ càng lệch nhiều. Mức khó trung bình trên 60 điểm.",
+      "q5": "Thành tích có được lưu không?",
+      "a5": "Điểm trung bình ba phi tiêu tốt nhất, số phi tiêu ít nhất cho một ván 501 và kết quả Vòng quanh bảng tốt nhất được lưu trong trình duyệt này. Không có gì được tải lên."
+    }
+  },
+  "guides": {
+    "darts": {
+      "lead": "Chơi phi tiêu trong ba bước.",
+      "s1t": "Chọn trò chơi",
+      "s1b": "Chọn 501, Vòng quanh bảng hoặc luyện tập, đấu với máy hoặc chơi một mình. Bấm Chơi.",
+      "s2t": "Giữ để ngắm",
+      "s2b": "Nhấn giữ trên bảng. Tâm ngắm rung rồi ổn định sau khoảng một giây; đưa nó vào mục tiêu.",
+      "s3t": "Thả tay để ném",
+      "s3b": "Thả tay để ném. Ba phi tiêu là một lượt; với 501 phải kết thúc đúng ở ô đôi."
+    }
+  },
+  "ui": {
+    "darts": {
+      "title": "Phi tiêu",
+      "privacyNote": "Chơi 501 hoặc Vòng quanh bảng trên bảng phi tiêu 3D. Chạy ngay trong trang, không tải gì lên.",
+      "stage": "Bảng phi tiêu 3D",
+      "intro": "Nhấn giữ trên bảng để ngắm vững, thả tay để ném.",
+      "mode": "Trò chơi",
+      "m_x01": "501 (kết thúc ô đôi)",
+      "m_clock": "Vòng quanh bảng",
+      "m_practice": "Luyện tập",
+      "opponent": "Đối thủ",
+      "o_solo": "Chơi một mình",
+      "o_cpu0": "Máy: dễ",
+      "o_cpu1": "Máy: vừa",
+      "o_cpu2": "Máy: khó",
+      "newGame": "Ván mới",
+      "you": "Bạn",
+      "cpu": "Máy",
+      "player": "Người chơi",
+      "remaining": "Còn lại",
+      "target": "Tiếp theo",
+      "points": "Điểm",
+      "darts": "Số phi tiêu",
+      "avg": "TB 3 phi tiêu",
+      "checkout": "Kết thúc: {route}",
+      "noCheckout": "Không kết thúc được từ điểm này",
+      "turnYou": "Đến lượt bạn",
+      "turnCpu": "Máy đang ném",
+      "thisTurn": "Lượt này",
+      "bust": "Quá điểm! {name} trở về {n}.",
+      "scored": "{name}: {hit} ({n} điểm)",
+      "cpuWins": "Máy thắng ván này.",
+      "youWin": "Bạn thắng ván với {n} phi tiêu (trung bình {avg})!",
+      "clockDone": "Hoàn thành Vòng quanh bảng với {n} phi tiêu!",
+      "again": "Chơi lại",
+      "bestAvg": "Trung bình tốt nhất {n}",
+      "bestLeg": "Ván tốt nhất {n} phi tiêu",
+      "bestClock": "Vòng quanh bảng tốt nhất {n} phi tiêu",
+      "bull": "Hồng tâm",
+      "outerBull": "25",
+      "miss": "Trượt",
+      "hint": "Di chuột để ngắm, giữ để ổn định và thả để ném. Bàn phím: phím mũi tên để ngắm (Shift để bước lớn), giữ phím cách rồi thả để ném.",
+      "hintTouch": "Nhấn giữ trên bảng để ngắm (tâm ngắm nằm ngay trên ngón tay), trượt để chỉnh và nhấc tay để ném."
+    }
+  }
+}

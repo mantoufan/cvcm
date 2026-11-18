@@ -1,0 +1,7 @@
+
+/* Air hockey (src/client/air-hockey/ui.ts) */
+.ah-hud { justify-content: center; font-size: 1.05rem; font-weight: 700; }
+.ah-score { margin-left: auto; }
+.ah-status { min-height: 1.6em; margin: 0.5rem 0 0; }
+.ah-record { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
+.ah-root .g3d-stage { cursor: none; }
