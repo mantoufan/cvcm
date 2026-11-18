@@ -355,6 +355,9 @@ describe("test pages: scoring", () => {
     expect(resultSideLine([s("a", 6, 10), s("b", 5, 10), s("c", 5, 10), s("d", 1, 10)], false)).toEqual({ kind: "runnerUp", dims: ["b", "c"] });
     // Three alike: no runner-up line.
     expect(resultSideLine([s("a", 6, 10), s("b", 5, 10), s("c", 5, 10), s("d", 5, 10)], false)).toBeNull();
+    // A single result, or none: no line.
+    expect(resultSideLine([s("a", 3, 10)], false)).toBeNull();
+    expect(resultSideLine([], false)).toBeNull();
     // More than 10 points behind: no line.
     expect(resultSideLine([s("a", 8, 10), s("b", 5, 10)], false)).toBeNull();
     // Mixed: every result shown at the top percentage, including one that only rounds to it.
