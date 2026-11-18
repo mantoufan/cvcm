@@ -17,6 +17,5 @@ for (const [path, content] of Object.entries(files)) {
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, content);
 }
-const others = missing;
-if (others.length) console.warn(`summaries:sync: ${others.length} locale files missing, English stands in: ${others.slice(0, 10).join(" ")}${others.length > 10 ? " …" : ""}`);
+if (missing.length) console.warn(`summaries:sync: ${missing.length} locale files missing, English stands in: ${missing.slice(0, 10).join(" ")}${missing.length > 10 ? " …" : ""}`);
 console.log(`summaries:sync: wrote ${Object.keys(files).length} files`);

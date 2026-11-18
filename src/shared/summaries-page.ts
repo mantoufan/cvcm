@@ -47,7 +47,7 @@ export function summaryLinkItems(locale: Locale, ids: readonly SummaryId[]): { h
   return ids.map((id) => ({
     href: summariesHref(locale, id),
     ...summaryName(locale, id),
-    meta: `${summaryCreators(locale, summaryMeta(locale, id).creator)} · ${summaryYears(locale, id)}`,
+    meta: `${summaryCreators(locale, summaryMeta(locale, id))} · ${summaryYears(locale, id)}`,
     nav: `summaries-${id}`,
   }));
 }
@@ -57,6 +57,12 @@ function sourcesHtml(locale: Locale, id: SummaryId): string {
   if (!sources.length) return "";
   const items = sources.map((s) => `<li><a href="${escapeHtml(s.url)}" target="_blank" rel="noopener">${escapeHtml(s.name)}</a></li>`).join("");
   return `<section class="learn-related"><h2>${escapeHtml(summariesUi(locale).sources)}</h2><ul>${items}</ul></section>`;
+}
+
+/** "Answer: {option}" with the option rendered exactly as in the list above (inline spans, not escaped source). */
+function answerHtml(template: string, option: string): string {
+  const [before, after = ""] = template.split("{option}");
+  return `${escapeHtml(before)}${inline(option)}${escapeHtml(after)}`;
 }
 
 /**
@@ -69,7 +75,7 @@ function checkHtml(locale: Locale, id: SummaryId): string {
     `<li><p class="summary-q">${inline(item.q)}</p>`
     + `<ol class="summary-options" type="A">${item.options.map((o) => `<li>${inline(o)}</li>`).join("")}</ol>`
     + `<details><summary>${escapeHtml(ui.checkShow)}</summary>`
-    + `<p><strong>${escapeHtml(fill(ui.checkAnswer, { option: item.options[item.answer] ?? "" }))}</strong> ${inline(item.why)}</p></details></li>`
+    + `<p><strong>${answerHtml(ui.checkAnswer, item.options[item.answer] ?? "")}</strong> ${inline(item.why)}</p></details></li>`
   )).join("");
   return `<section class="summary-check" aria-labelledby="summary-check-title"><h2 id="summary-check-title">${escapeHtml(ui.check)}</h2>`
     + `<p>${escapeHtml(ui.checkLede)}</p><ol>${items}</ol></section>`;
@@ -108,7 +114,7 @@ export function summariesPageHtml(locale: Locale, id: SummaryId | null): string 
     + `<section class="kb-section" id="summary-${i + 1}"><h2>${inline(s.h)}${s.spoiler ? ` ${badge}` : ""}</h2>${s.body.map(blockHtml).join("")}</section>`
   )).join("");
   const facts = [
-    `<span>${escapeHtml(summaryCreators(locale, meta.creator))}</span>`,
+    `<span>${escapeHtml(summaryCreators(locale, meta))}</span>`,
     `<span>${escapeHtml(summaryYears(locale, id))}</span>`,
     meta.original && meta.original !== copy.name ? `<span>${escapeHtml(fill(ui.original, { title: meta.original }))}</span>` : "",
     `<time datetime="${summaryUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, summaryUpdated(id)) }))}</time>`,

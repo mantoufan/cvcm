@@ -75,14 +75,24 @@ export function creatorNames(creator: string): string[] {
   return creator.split(/\s*,\s*|\s+(?:and|&)\s+/).map((n) => n.trim()).filter(Boolean);
 }
 
-/** A creator credit for display, joined the locale's way ("A、B和C", "A, B y C") instead of with the English "and". */
-export function summaryCreators(locale: Locale, creator: string): string {
-  const names = creatorNames(creator);
-  try {
-    return new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }).format(names);
-  } catch {
-    return names.join(", ");
+const listFormats = new Map<Locale, Intl.ListFormat | null>();
+
+/** Joins names the locale's way ("A、B和C", "A, B y C"); one cached formatter per locale. */
+function joinNames(locale: Locale, names: string[]): string {
+  if (!listFormats.has(locale)) {
+    try {
+      listFormats.set(locale, new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }));
+    } catch {
+      listFormats.set(locale, null);
+    }
   }
+  return listFormats.get(locale)?.format(names) ?? names.join(", ");
+}
+
+/** A creator credit for display: the locale's own form of the names when known, else the English names joined the locale's way. */
+export function summaryCreators(locale: Locale, meta: Pick<SummaryMeta, "creator" | "creators">): string {
+  if (locale === "en") return meta.creator;
+  return meta.creators[locale] ?? joinNames(locale, creatorNames(meta.creator));
 }
 
 /** One Person per name in the credit. */

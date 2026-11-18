@@ -80,6 +80,8 @@ describe("summaries: catalog", () => {
       expect(SUMMARY_KINDS, id).toContain(meta.kind);
       for (const key of ["original", "creator", "language"] as const) expect(meta[key].trim(), `${id} ${key}`).toBeTruthy();
       expect(meta.language, id).toMatch(/^[a-z]{2}$/);
+      // Every other locale shows the credit in its own form (莎士比亚, シェイクスピア), never the English names.
+      for (const locale of LOCALES.filter((l) => l !== "en")) expect(meta.creators[locale]?.trim(), `${id} creators.${locale}`).toBeTruthy();
       expect(meta.year, id).toMatch(/^-?\d{1,4}$/);
       const series = meta.kind === "series" || meta.kind === "anime-series";
       if (meta.end !== null) {
