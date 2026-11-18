@@ -395,3 +395,25 @@ const EMOJI: Record<Locale, EmojiMessages> = {
   es: esEmoji,
 };
 for (const [locale, pack] of Object.entries(EMOJI)) registerEmojiMessages(locale as Locale, pack);
+
+import enCurrency from "../locales/packs/currency-en";
+import esCurrency from "../locales/packs/currency-es";
+import idCurrency from "../locales/packs/currency-id";
+import jaCurrency from "../locales/packs/currency-ja";
+import koCurrency from "../locales/packs/currency-ko";
+import viCurrency from "../locales/packs/currency-vi";
+import zhCNCurrency from "../locales/packs/currency-zh-CN";
+import zhTWCurrency from "../locales/packs/currency-zh-TW";
+import { registerCurrencyMessages, type CurrencyMessages } from "./messages";
+
+const CURRENCY: Record<Locale, CurrencyMessages> = {
+  en: enCurrency,
+  "zh-CN": zhCNCurrency,
+  "zh-TW": zhTWCurrency,
+  ja: jaCurrency,
+  ko: koCurrency,
+  vi: viCurrency,
+  id: idCurrency,
+  es: esCurrency,
+};
+for (const [locale, pack] of Object.entries(CURRENCY)) registerCurrencyMessages(locale as Locale, pack);

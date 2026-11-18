@@ -81,6 +81,7 @@ import type { SummaryId, SummaryPage } from "../shared/summaries";
 import type { ScriptId, ScriptPage } from "../shared/scripts";
 import { hasElementsMessages, registerElementsMessages, type ElementsMessages } from "../shared/messages";
 import { hasEmojiMessages, registerEmojiMessages, type EmojiMessages } from "../shared/messages";
+import { hasCurrencyMessages, registerCurrencyMessages, type CurrencyMessages } from "../shared/messages";
 import type { QuizId, QuizPage } from "../shared/quiz";
 import type { QuizCopy } from "../shared/quiz-i18n";
 import { countryBucket, countryCode, type CountryPage } from "../shared/countries";
@@ -505,8 +506,20 @@ const CALORIES_PACKS: Record<Locale, () => Promise<{ default: CaloriesMessages }
   es: () => import("../locales/packs/calories-es"),
 };
 
+// Exchange-rate copy and the ECB snapshot, only for /currency/ pages.
+const CURRENCY_PACKS: Record<Locale, () => Promise<{ default: CurrencyMessages }>> = {
+  en: () => import("../locales/packs/currency-en"),
+  "zh-CN": () => import("../locales/packs/currency-zh-CN"),
+  "zh-TW": () => import("../locales/packs/currency-zh-TW"),
+  ja: () => import("../locales/packs/currency-ja"),
+  ko: () => import("../locales/packs/currency-ko"),
+  vi: () => import("../locales/packs/currency-vi"),
+  id: () => import("../locales/packs/currency-id"),
+  es: () => import("../locales/packs/currency-es"),
+};
+
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null, emoji = false): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null, emoji = false, currency = false): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
@@ -527,10 +540,11 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!calories || hasCaloriesMessages(next))
     && (!elements || hasElementsMessages(next))
     && (!calendar || hasCalendarMessages(next))
-    && (!emoji || hasEmojiMessages(next));
+    && (!emoji || hasEmojiMessages(next))
+    && (!currency || hasCurrencyMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null, emoji = false): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null, emoji = false, currency = false): Promise<void> {
   const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
@@ -567,6 +581,7 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !elements || hasElementsMessages(next) ? null : ELEMENTS_PACKS[next]().then((m) => registerElementsMessages(next, m.default)),
     !calendar || hasCalendarMessages(next) ? null : CALENDAR_PACKS[next]().then((m) => registerCalendarMessages(next, m.default)),
     !emoji || hasEmojiMessages(next) ? null : EMOJI_PACKS[next]().then((m) => registerEmojiMessages(next, m.default)),
+    !currency || hasCurrencyMessages(next) ? null : CURRENCY_PACKS[next]().then((m) => registerCurrencyMessages(next, m.default)),
   ]);
 }
 

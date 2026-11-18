@@ -16,6 +16,8 @@ import { COUNTRY_LIST } from "./countries";
 import { FOODS } from "./calories";
 import { ELEMENT_SLUGS } from "./elements";
 import { EMOJI_SLUGS } from "./emoji";
+import { CURRENCY_PAIRS } from "./currency";
+import { currencyHref } from "./path";
 import { CALENDAR_YEARS, HOLIDAY_COUNTRIES } from "./calendar";
 import { LOCALES, localePath } from "./locale";
 import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
@@ -267,6 +269,7 @@ export function buildLlmsTxt(): string {
     `- [Periodic table](${SITE_ORIGIN}${elementsHref("en", null)}): all ${ELEMENT_SLUGS.length} elements as a clickable table and one page each (for example ${SITE_ORIGIN}${elementsHref("en", "carbon")}): atomic number, atomic mass, category, group and period, electron configuration, melting and boiling points in K and °C, density, electronegativity, ionization energy and oxidation states from PubChem (NCBI, public domain), names in eight languages from Wikidata (CC0).`,
     `- [Emoji meanings](${SITE_ORIGIN}${emojiHref("en", null)}): ${EMOJI_SLUGS.length} of the most-used emoji, one page each (for example ${SITE_ORIGIN}${emojiHref("en", "loudly-crying-face")}): what people use it for (written by cv.cm), the official Unicode CLDR name and keywords in eight languages, code points, emoji version and year added, Unicode group and subgroup, skin-tone and gender forms, with one-tap copy; data from Unicode emoji-test.txt and CLDR (Unicode License v3).`,
     `- [Calendar](${SITE_ORIGIN}${calendarHref("en", null)}): year and month calendars for ${CALENDAR_YEARS.join(", ")} with ISO week numbers, public holidays for ${HOLIDAY_COUNTRIES.length} countries copied from the official government announcements (China incl. makeup working days, Taiwan, Hong Kong, Japan, South Korea, Vietnam, Indonesia, United States, United Kingdom, Spain, Mexico), Chinese / Vietnamese / Korean lunar dates and Japanese rokuyō computed from new moons, the 24 solar terms and moon phases with times, and a solar–lunar date converter (1900–2100).`,
+    `- [Exchange rates](${SITE_ORIGIN}${currencyHref("en", null)}): a converter for every currency in the ECB euro foreign exchange reference rates and ${CURRENCY_PAIRS.length} currency pairs (for example ${SITE_ORIGIN}${currencyHref("en", "usd-cny")}): the latest reference rate both ways, conversion tables, high, low and average over 30 days, 1 year, 5 years and since the series began (1999 for most), and charts of monthly averages and the last 90 days. Cross rates are computed through the euro; a daily snapshot (ECB, reuse with the source named), for information only, never a live quote or investment advice. The ECB has no TWD or VND rate.`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,
     `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): free homebrew games playable in the browser.`,
     `- [Sitemap](${SITE_ORIGIN}/sitemap.xml)`,

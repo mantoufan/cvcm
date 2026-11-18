@@ -1943,3 +1943,29 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .emoji-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0; padding: 0; list-style: none; }
 .emoji-tags li { padding: 0.15rem 0.55rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.85rem; }
 .emoji-notice pre { white-space: pre-wrap; font-size: 0.75rem; }
+
+/* Exchange rates (/currency/) */
+.fx-converter { margin: 1rem 0; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius); }
+.fx-converter h2 { margin: 0 0 0.6rem; font-size: 1.05rem; }
+.fx-form { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: flex-end; }
+.fx-form .field { display: flex; flex-direction: column; gap: 0.2rem; min-width: 10rem; flex: 1 1 10rem; }
+.fx-form .field span { font-size: 0.85rem; color: var(--ink-soft); }
+.fx-form input, .fx-form select { font: inherit; padding: 0.45rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink); max-width: 100%; }
+.fx-out { margin: 0.75rem 0 0.2rem; font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.fx-big { margin: 0 0 0.4rem !important; font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.fx-notice { margin: 0.5rem 0; font-size: 0.85rem; color: var(--ink-soft); }
+.fx-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+.fx-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.fx-table caption { padding: 0.45rem 0.7rem; text-align: left; font-weight: 600; }
+.fx-table th, .fx-table td { padding: 0.4rem 0.7rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.fx-table thead th { background: var(--pink-soft); white-space: nowrap; }
+.fx-table .num { text-align: right; }
+.fx-table tbody tr:last-child > * { border-bottom: 0; }
+.fx-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.8rem; }
+.fx-pairs { list-style: none; padding: 0; margin: 0 0 0.8rem; columns: 2 16rem; }
+.fx-pairs li { margin: 0 0 0.3rem; break-inside: avoid; }
+.fx-chart { display: block; width: 100%; max-width: 640px; height: auto; margin: 0.3rem 0 0.8rem; }
+.fx-chart .fx-line { fill: none; stroke: var(--pink-deep); stroke-width: 1.6; stroke-linejoin: round; }
+.fx-chart .fx-grid { stroke: var(--line); stroke-width: 1; }
+.fx-chart .fx-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.fx-chart text { fill: var(--ink-soft); font-size: 11px; font-family: var(--sans); }

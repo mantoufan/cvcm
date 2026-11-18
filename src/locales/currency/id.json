@@ -1,0 +1,70 @@
+{
+  "crumbHome": "Beranda",
+  "titles": {
+    "usd-idr": "Kurs Dolar ke Rupiah Hari Ini (USD/IDR): Kurs Referensi ECB, Riwayat & Kalkulator"
+  },
+  "notice": "Kurs referensi ECB, diterbitkan sekitar pukul 16.00 CET pada hari kerja: hanya untuk informasi, bukan kuotasi untuk transaksi, dan bukan saran investasi.",
+  "hub": {
+    "title": "Kurs Mata Uang Hari Ini: Kalkulator Kurs & Riwayat (Kurs Referensi ECB)",
+    "h1": "Kurs mata uang",
+    "lede": "Konversi antara {n} mata uang dengan kurs referensi Bank Sentral Eropa tanggal {date}, atau buka pasangan mata uang untuk tabel konversi, kurs tertinggi, terendah, rata-rata, dan riwayatnya.",
+    "description": "Kalkulator kurs untuk {n} mata uang dengan kurs referensi ECB tanggal {date}, serta {pairs} pasangan mata uang dengan tabel konversi, kurs tertinggi, terendah, rata-rata, dan grafik riwayat.",
+    "converterTitle": "Kalkulator kurs",
+    "amount": "Jumlah",
+    "from": "Dari",
+    "to": "Ke",
+    "swap": "Tukar",
+    "invalid": "Ketik jumlah, misalnya 100.",
+    "pairsTitle": "Pasangan mata uang",
+    "pairsFrom": "Dari {name} ({code})",
+    "tableTitle": "Kurs referensi ECB tanggal {date}",
+    "colCurrency": "Mata uang",
+    "colPerEur": "Per 1 EUR",
+    "colPerUsd": "Per 1 USD",
+    "missing": "ECB tidak menerbitkan kurs referensi untuk banyak mata uang, antara lain dolar Taiwan baru (TWD) dan dong Vietnam (VND), sehingga keduanya tidak tercantum.",
+    "faq": [
+      { "q": "Dari mana kurs ini berasal?", "a": "Dari kurs referensi valuta asing euro yang diterbitkan Bank Sentral Eropa (ECB). ECB menerbitkan setiap mata uang terhadap euro; kurs antara dua mata uang lain dihitung melalui euro." },
+      { "q": "Kapan kurs diperbarui?", "a": "ECB menerbitkan kurs referensi sekitar pukul 16.00 CET pada hari kerja. Situs ini menyimpan satu salinan per hari, jadi ini bukan kurs langsung; salinan saat ini bertanggal {date}." },
+      { "q": "Mengapa dolar Taiwan dan dong Vietnam tidak ada?", "a": "ECB tidak menerbitkan kurs referensi untuk keduanya, dan situs ini tidak mengambil kurs dari sumber lain atau memperkirakannya." }
+    ]
+  },
+  "page": {
+    "title": "Kurs {fromName} ke {toName} ({fromCode}/{toCode}) Hari Ini, Riwayat & Kalkulator",
+    "h1": "{fromName} ke {toName} ({fromCode}/{toCode})",
+    "description": "1 {fromCode} = {rate} {toCode} (kurs referensi ECB, {date}). Tabel konversi, kalkulator, kurs tertinggi, terendah, dan rata-rata selama 30 hari, 1 tahun, 5 tahun, dan sejak {startYear}, serta grafik riwayat.",
+    "answer": "Pada {date}, menurut kurs referensi ECB, 1 {fromName} ({fromCode}) = {rate} {toName} ({toCode}), dan 1 {toCode} = {inverse} {fromCode}.",
+    "converterTitle": "Kalkulator {fromCode} dan {toCode}",
+    "tableTitle": "{fromCode} ke {toCode}",
+    "tableBackTitle": "{toCode} ke {fromCode}",
+    "tablesTitle": "Tabel konversi",
+    "statsTitle": "Tertinggi, terendah, dan rata-rata",
+    "period": "Periode",
+    "high": "Tertinggi",
+    "low": "Terendah",
+    "average": "Rata-rata",
+    "change": "Perubahan",
+    "d30": "30 hari",
+    "y1": "1 tahun",
+    "y5": "5 tahun",
+    "all": "Sejak {year}",
+    "statsNote": "Berdasarkan kurs referensi harian ECB dari {from} hingga {date}; perubahan membandingkan hari pertama dan terakhir setiap periode.",
+    "chartTitle": "Riwayat {fromCode}/{toCode}",
+    "chartMonthly": "Rata-rata bulanan sejak {start}",
+    "chartDaily": "Harian, 90 hari terakhir",
+    "chartLabel": "Grafik garis {fromCode}/{toCode}: {first} pada {firstDate}, {last} pada {lastDate}, tertinggi {high}, terendah {low}.",
+    "method": "ECB menerbitkan setiap mata uang per euro, jadi {fromCode}/{toCode} = ({toCode} per EUR) ÷ ({fromCode} per EUR), ditampilkan dengan enam angka penting.",
+    "monthlyNote": "Nilai bulanan adalah rasio kurs rata-rata bulanan terhadap euro dari kedua mata uang.",
+    "reverse": "Arah sebaliknya: {toCode} ke {fromCode}",
+    "related": "Pasangan mata uang lain",
+    "faqTitle": "Pertanyaan",
+    "faqToday": { "q": "Berapa kurs {fromCode} ke {toCode} hari ini?", "a": "Pada {date}, menurut kurs referensi euro ECB, 1 {fromCode} = {rate} {toCode} dan 1 {toCode} = {inverse} {fromCode}. Bank dan tempat penukaran uang memakai kurs mereka sendiri." },
+    "faqAmount": { "q": "Berapa {amount} {fromCode} dalam {toCode}?", "a": "Dengan kurs referensi ECB tanggal {date}, {amount} {fromCode} = {value} {toCode}. Tabel konversi mencantumkan jumlah lain untuk kedua arah." },
+    "faqRange": { "q": "Berapa kurs {fromCode}/{toCode} tertinggi?", "a": "Dalam setahun hingga {date}, {fromCode}/{toCode} berkisar dari {y1Low} ({y1LowOn}) sampai {y1High} ({y1HighOn}), dengan rata-rata {y1Avg}. Sejak {start}, kurs tertinggi adalah {allHigh} pada {allHighOn} dan terendah {allLow} pada {allLowOn}." }
+  },
+  "sources": {
+    "title": "Sumber",
+    "ecb": "Bank Sentral Eropa: kurs referensi valuta asing euro",
+    "license": "ECB mengizinkan penggunaan ulang kurs referensinya dengan menyebut sumber.",
+    "snapshot": "Salinan tanggal {date}. Halaman ini tidak pernah memanggil ECB; salinan diperbarui sekali sehari."
+  }
+}

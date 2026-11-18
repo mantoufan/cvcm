@@ -22,12 +22,13 @@ import { SCRIPTS_SEGMENT, isScriptId, type ScriptId } from "./scripts";
 import { COUNTRIES_SEGMENT, isCountrySlug } from "./countries";
 import { CALORIES_SEGMENT, isFoodId, type FoodId } from "./calories";
 import { ELEMENTS_SEGMENT, isElementSlug, type ElementSlug } from "./elements";
+import { CURRENCY_SEGMENT, isCurrencyPair, type CurrencyPair } from "./currency";
 import { CALENDAR_SEGMENT, calendarPageOf, type CalendarPage } from "./calendar";
 import { EMOJI_SEGMENT, isEmojiSlug, type EmojiSlug } from "./emoji";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "summaries", "scripts", "countries", "calories", "elements", "calendar", "emoji"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "summaries", "scripts", "countries", "calories", "elements", "calendar", "emoji", "currency"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -651,6 +652,7 @@ export type AppPath =
   | { kind: "bare-countries"; entry: string | null }
   | { kind: "bare-calories"; food: FoodId | null }
   | { kind: "bare-elements"; entry: ElementSlug | null }
+  | { kind: "bare-currency"; pair: CurrencyPair | null }
   | { kind: "bare-calendar"; page: CalendarPage }
   | { kind: "bare-emoji"; entry: EmojiSlug | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
@@ -672,6 +674,7 @@ export type AppPath =
   | { kind: "countries"; locale: Locale; entry: string | null }
   | { kind: "calories"; locale: Locale; food: FoodId | null }
   | { kind: "elements"; locale: Locale; entry: ElementSlug | null }
+  | { kind: "currency"; locale: Locale; pair: CurrencyPair | null }
   | { kind: "calendar"; locale: Locale; page: CalendarPage }
   | { kind: "emoji"; locale: Locale; entry: EmojiSlug | null }
   | { kind: "clip"; id: string }
@@ -841,6 +844,13 @@ export function parseAppPath(pathname: string): AppPath {
       if (isElementSlug(third)) return { kind: "elements", locale, entry: third };
       return { kind: "unknown" };
     }
+    if (second === CURRENCY_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "currency", locale, pair: null };
+      // Parts are lowercased above, so /currency/USD-CNY/ parses as usd-cny and the Worker 301s to it.
+      if (isCurrencyPair(third)) return { kind: "currency", locale, pair: third };
+      return { kind: "unknown" };
+    }
     if (second === CALENDAR_SEGMENT) {
       const page = calendarPageOf([third, ...rest].filter(Boolean) as string[]);
       return page ? { kind: "calendar", locale, page } : { kind: "unknown" };
@@ -958,6 +968,11 @@ export function parseAppPath(pathname: string): AppPath {
   if (first === ELEMENTS_SEGMENT) {
     if (!second) return { kind: "bare-elements", entry: null };
     if (isElementSlug(second) && !third) return { kind: "bare-elements", entry: second };
+    return { kind: "unknown" };
+  }
+  if (first === CURRENCY_SEGMENT) {
+    if (!second) return { kind: "bare-currency", pair: null };
+    if (isCurrencyPair(second) && !third) return { kind: "bare-currency", pair: second };
     return { kind: "unknown" };
   }
   if (first === CALENDAR_SEGMENT) {
@@ -1091,6 +1106,12 @@ export function elementsHref(locale: Locale, entry: ElementSlug | null = null): 
 export function emojiHref(locale: Locale, entry: EmojiSlug | null = null): string {
   const base = `/${localePath(locale)}/${EMOJI_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The exchange-rate channel: `/{locale}/currency/` (hub) and `/{locale}/currency/{from}-{to}/`. */
+export function currencyHref(locale: Locale, pair: CurrencyPair | null = null): string {
+  const base = `/${localePath(locale)}/${CURRENCY_SEGMENT}`;
+  return pair ? `${base}/${pair}/` : `${base}/`;
 }
 
 /** The calendar channel: `/{locale}/calendar/` (hub), `/calendar/2027/`, `/calendar/2027-02/`, `/calendar/holidays/japan/`, … */

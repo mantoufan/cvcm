@@ -11,6 +11,7 @@ import { foodLabel } from "./calories-i18n";
 import { elementName } from "./elements-i18n";
 import { atomicNumberOf } from "./elements";
 import { emojiWithName } from "./emoji-i18n";
+import { currencyPairName } from "./currency-i18n";
 import { nameFromTitle, SEARCH_CHANNEL_NAV, shortBlurb, type SearchChannel, type SearchEntry } from "./search";
 
 /** A channel's front page (/tests/, /rankings/ …): listed under the channel's own name, not its SEO title. */
@@ -38,6 +39,8 @@ function isHub(page: SitemapPage): boolean {
       return page.food === null;
     case "calendar":
       return page.page === "hub";
+    case "currency":
+      return page.pair === null;
     case "games":
       // The main hub and the hubs of cv.cm's own games (/games/mini/, /games/3d/), not the console or game pages.
       return (page.console === null || page.console === "mini" || page.console === "3d") && page.game === null;
@@ -64,6 +67,8 @@ function pageName(locale: Locale, page: SitemapPage, channel: SearchChannel, seo
   if (page.kind === "elements" && page.entry) return elementName(locale, atomicNumberOf(page.entry));
   // Emoji titles add "Emoji Meaning": the emoji and its CLDR name.
   if (page.kind === "emoji" && page.entry) return emojiWithName(locale, page.entry);
+  // Pair titles carry what the page answers ("USD to CNY: … Today, History…"): the pair's heading.
+  if (page.kind === "currency" && page.pair) return currencyPairName(locale, page.pair);
   return nameFromTitle(pageTitle(locale, seo));
 }
 
@@ -112,6 +117,8 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
       return { channel: "games", seo: { games: true, console: page.console, game: page.game } };
     case "countries":
       return { channel: "countries", seo: { countries: true, countryId: page.entry } };
+    case "currency":
+      return { channel: "currency", seo: { currency: true, currencyPair: page.pair } };
     default:
       return null;
   }

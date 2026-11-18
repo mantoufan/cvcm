@@ -1,5 +1,6 @@
 import { h } from "../dom";
-import { t } from "../i18n";
+import { locale, t } from "../i18n";
+import { currencyHref } from "../../shared/path";
 import {
   DEFAULT_PAIR,
   UNIT_IDS,
@@ -60,6 +61,8 @@ export function mountUnits(host: HTMLElement): void {
         h("h2", null, t("units.result")),
         outEl,
         formulaEl,
+        // Money is not a unit here: exchange rates have their own pages.
+        h("p", { class: "muted" }, h("a", { href: currencyHref(locale()), "data-nav": "currency" }, t("nav.currency"))),
       ),
     ),
   );

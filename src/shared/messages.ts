@@ -495,3 +495,23 @@ export function hasEmojiMessages(locale: Locale): boolean {
 export function emojiMessages(locale: Locale): EmojiMessages {
   return pick(loadedEmoji, locale, "emoji messages");
 }
+
+/** Exchange-rate copy (`src/locales/currency/<locale>.json`) plus the ECB snapshot (`data`, the same in every locale's pack). */
+export type CurrencyMessages = typeof import("../locales/currency/en.json") & {
+  data: import("./currency-i18n").CurrencyData;
+};
+
+const loadedCurrency: Partial<Record<Locale, CurrencyMessages>> = {};
+
+export function registerCurrencyMessages(locale: Locale, pack: CurrencyMessages): void {
+  loadedCurrency[locale] = pack;
+}
+
+export function hasCurrencyMessages(locale: Locale): boolean {
+  return Boolean(loadedCurrency[locale]);
+}
+
+/** Exchange-rate copy and the ECB snapshot; on the client only after the currency pack is loaded (currency pages). */
+export function currencyMessages(locale: Locale): CurrencyMessages {
+  return pick(loadedCurrency, locale, "currency messages");
+}

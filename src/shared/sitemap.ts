@@ -20,6 +20,8 @@ import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS,
 import { ELEMENT_SLUGS, ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT, type ElementSlug } from "./elements";
 import { EMOJI_SLUGS, emojiUpdated, type EmojiSlug } from "./emoji";
 import { CALENDAR_PAGES, CALENDAR_UPDATED, type CalendarPage } from "./calendar";
+import { CURRENCY_PAIRS, CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT, type CurrencyPair } from "./currency";
+import { currencyHref } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -58,7 +60,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "calories"; food: FoodId | null }
   | { locale: Locale; kind: "elements"; entry: ElementSlug | null }
   | { locale: Locale; kind: "calendar"; page: CalendarPage }
-  | { locale: Locale; kind: "emoji"; entry: EmojiSlug | null };
+  | { locale: Locale; kind: "emoji"; entry: EmojiSlug | null }
+  | { locale: Locale; kind: "currency"; pair: CurrencyPair | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -107,6 +110,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const page of CALENDAR_PAGES) pages.push({ locale, kind: "calendar", page });
     pages.push({ locale, kind: "emoji", entry: null });
     for (const entry of EMOJI_SLUGS) pages.push({ locale, kind: "emoji", entry });
+    pages.push({ locale, kind: "currency", pair: null });
+    for (const pair of CURRENCY_PAIRS) pages.push({ locale, kind: "currency", pair });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -135,6 +140,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(page.locale, page.entry)}`;
   if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(page.locale, page.page)}`;
   if (page.kind === "emoji") return `${SITE_ORIGIN}${emojiHref(page.locale, page.entry)}`;
+  if (page.kind === "currency") return `${SITE_ORIGIN}${currencyHref(page.locale, page.pair)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -165,6 +171,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(locale, page.entry)}`;
   if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(locale, page.page)}`;
   if (page.kind === "emoji") return `${SITE_ORIGIN}${emojiHref(locale, page.entry)}`;
+  if (page.kind === "currency") return `${SITE_ORIGIN}${currencyHref(locale, page.pair)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -198,6 +205,7 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "elements") return "elements";
   if (page.kind === "calendar") return "calendar";
   if (page.kind === "emoji") return "emoji";
+  if (page.kind === "currency") return "currency";
   return "pages";
 }
 
@@ -252,6 +260,8 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "calendar") return CALENDAR_UPDATED;
   // Emoji pages show the Unicode snapshot and the usage sentences: the latest of launch, snapshot and copy edit.
   if (page.kind === "emoji") return emojiUpdated();
+  // Exchange-rate pages show the ECB snapshot: the later of its date and the day the channel went live (= JSON-LD dateModified).
+  if (page.kind === "currency") return [CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT].sort().at(-1)!;
   return null;
 }
 

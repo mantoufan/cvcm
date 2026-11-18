@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       only:
-        description: "Refresh only these tables (comma-separated ids, e.g. tallest-mountains; memes = the meme trends and coins); empty = all"
+        description: "Refresh only these tables (comma-separated ids, e.g. tallest-mountains; memes = the meme trends and coins; currency = the exchange-rate snapshot); empty = all"
         required: false
         default: ""
 
@@ -43,13 +43,19 @@ jobs:
           COINMARKETCAP_API_KEY: ${{ secrets.COINMARKETCAP_API_KEY }}
           RANKINGS_FAILURES_FILE: ${{ runner.temp }}/rankings-failures.txt
           RANKINGS_ONLY: ${{ inputs.only }}
+      # ECB reference rates for /currency/; skips itself on a manual run whose `only` does not list "currency".
+      - name: Fetch exchange-rate snapshot
+        run: node scripts/fetch-currency.mjs
+        env:
+          RANKINGS_FAILURES_FILE: ${{ runner.temp }}/rankings-failures.txt
+          RANKINGS_ONLY: ${{ inputs.only }}
       - run: node scripts/write-sitemap.mjs
       # The same checks as the deploy, so data that would break it never reaches main.
       - run: npm test
       - run: npm run typecheck
       - name: Commit changed data and deploy
         run: |
-          git add src/shared/meme-trends.json src/shared/meme-coins.json src/shared/rankings-rows.json src/shared/rankings-geo src/shared/rankings-meta.json public/rankings public/sitemaps/rankings.xml
+          git add src/shared/meme-trends.json src/shared/meme-coins.json src/shared/rankings-rows.json src/shared/rankings-geo src/shared/rankings-meta.json public/rankings public/sitemaps/rankings.xml src/shared/currency-data.json src/shared/currency-asof.ts public/sitemaps/currency.xml
           if git diff --cached --quiet; then
             echo "No new data."
             exit 0
