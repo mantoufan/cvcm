@@ -777,6 +777,66 @@ export const TUTORIAL_META: Record<TutorialId, TutorialMeta> = {
     openAt: 1,
     related: ["bac-calculator", "calories-burned", "water-intake"],
   },
+  "calculate-standard-deviation": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["standard-deviation", "average", "z-score"],
+  },
+  "calculate-sample-size": {
+    minutes: 6,
+    steps: 6,
+    openAt: 1,
+    related: ["sample-size", "percent", "random"],
+  },
+  "calculate-cronbach-alpha": {
+    minutes: 6,
+    steps: 6,
+    openAt: 1,
+    related: ["cronbach-alpha", "standard-deviation", "average"],
+  },
+  "run-t-test": {
+    minutes: 7,
+    steps: 6,
+    openAt: 1,
+    related: ["t-test", "p-value", "standard-deviation"],
+  },
+  "run-chi-square-test": {
+    minutes: 7,
+    steps: 6,
+    openAt: 1,
+    related: ["chi-square", "p-value", "percent"],
+  },
+  "find-p-value": {
+    minutes: 6,
+    steps: 6,
+    openAt: 1,
+    related: ["p-value", "t-test", "z-score"],
+  },
+  "calculate-z-score": {
+    minutes: 5,
+    steps: 6,
+    openAt: 1,
+    related: ["z-score", "standard-deviation", "p-value"],
+  },
+  "cite-apa": {
+    minutes: 7,
+    steps: 6,
+    openAt: 1,
+    related: ["apa-citation-generator", "citation-generator", "word-count"],
+  },
+  "cite-mla": {
+    minutes: 7,
+    steps: 6,
+    openAt: 1,
+    related: ["mla-citation-generator", "citation-generator", "word-count"],
+  },
+  "cite-harvard": {
+    minutes: 7,
+    steps: 6,
+    openAt: 1,
+    related: ["harvard-referencing-generator", "citation-generator", "word-count"],
+  },
   "calculate-simple-interest": {
     minutes: 5,
     steps: 6,
@@ -1489,5 +1549,45 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   "test-regex": [
     { step: 1, src: "/covers/tutorials/test-regex-tokens.svg" },
     { step: 4, src: "/covers/tutorials/test-regex-flags.svg" },
+  ],
+  "calculate-standard-deviation": [
+    { step: 3, src: "/covers/tutorials/calculate-standard-deviation-deviations.svg" },
+    { step: 5, src: "/covers/tutorials/calculate-standard-deviation-divide.svg" },
+  ],
+  "calculate-sample-size": [
+    { step: 2, src: "/covers/tutorials/calculate-sample-size-margins.svg" },
+    { step: 3, src: "/covers/tutorials/calculate-sample-size-cochran.svg" },
+  ],
+  "calculate-cronbach-alpha": [
+    { step: 3, src: "/covers/tutorials/calculate-cronbach-alpha-matrix.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-cronbach-alpha-bands.svg" },
+  ],
+  "run-t-test": [
+    { step: 1, src: "/covers/tutorials/run-t-test-choose.svg" },
+    { step: 4, src: "/covers/tutorials/run-t-test-curve.svg" },
+  ],
+  "run-chi-square-test": [
+    { step: 3, src: "/covers/tutorials/run-chi-square-test-tables.svg" },
+    { step: 5, src: "/covers/tutorials/run-chi-square-test-curve.svg" },
+  ],
+  "find-p-value": [
+    { step: 4, src: "/covers/tutorials/find-p-value-tails.svg" },
+    { step: 5, src: "/covers/tutorials/find-p-value-two-tailed.svg" },
+  ],
+  "calculate-z-score": [
+    { step: 2, src: "/covers/tutorials/calculate-z-score-formula.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-z-score-rule.svg" },
+  ],
+  "cite-apa": [
+    { step: 4, src: "/covers/tutorials/cite-apa-parts.svg" },
+    { step: 6, src: "/covers/tutorials/cite-apa-in-text.svg" },
+  ],
+  "cite-mla": [
+    { step: 2, src: "/covers/tutorials/cite-mla-elements.svg" },
+    { step: 6, src: "/covers/tutorials/cite-mla-in-text.svg" },
+  ],
+  "cite-harvard": [
+    { step: 4, src: "/covers/tutorials/cite-harvard-parts.svg" },
+    { step: 6, src: "/covers/tutorials/cite-harvard-in-text.svg" },
   ],
 };

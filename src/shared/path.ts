@@ -499,10 +499,20 @@ export const TUTORIALS = [
   "one-page-site",
   "healthy-boundaries",
   "read-character",
+  "calculate-standard-deviation",
+  "calculate-sample-size",
+  "calculate-cronbach-alpha",
+  "run-t-test",
+  "run-chi-square-test",
+  "find-p-value",
+  "calculate-z-score",
+  "cite-apa",
+  "cite-mla",
+  "cite-harvard",
 ] as const;
 export type TutorialId = (typeof TUTORIALS)[number];
 
-export type TutorialGroupId = "codes" | "files" | "photo" | "audio" | "text" | "dev" | "time" | "money" | "health" | "math" | "court" | "water" | "code" | "mind" | "course" | "games";
+export type TutorialGroupId = "academic" | "codes" | "files" | "photo" | "audio" | "text" | "dev" | "time" | "money" | "health" | "math" | "court" | "water" | "code" | "mind" | "course" | "games";
 
 // New how-tos are published. Legacy ids still parse so old URLs 301 to the hub.
 export const TUTORIAL_GROUPS: readonly {
@@ -520,6 +530,7 @@ export const TUTORIAL_GROUPS: readonly {
   { id: "money", tutorials: ["calculate-percent", "percent-off", "vat-price", "split-tip", "profit-margin", "hourly-pay", "loan-payment", "compound-interest", "trip-fuel-cost", "electricity-cost", "calculate-mortgage", "calculate-simple-interest"] },
   { id: "health", tutorials: ["calculate-bmi", "measure-body-fat", "find-ideal-weight", "calculate-tdee", "calculate-macros", "calories-burned-exercise", "daily-water", "calculate-pace", "find-bedtime", "find-due-date", "find-fertile-window", "test-color-blindness", "predict-child-height", "calculate-bac"] },
   { id: "math", tutorials: ["simplify-fraction", "aspect-ratio", "calculate-final-grade", "calculate-gpa", "calculate-average", "pick-random-name", "use-tally-counter", "use-scientific-calculator", "flip-coin", "find-factors", "find-lcm-gcf", "solve-quadratic", "make-random-teams", "solve-triangle", "calculate-area", "calculate-volume", "pick-random-letter", "unscramble-words", "calculate-concrete", "graph-functions", "find-slope"] },
+  { id: "academic", tutorials: ["calculate-standard-deviation", "calculate-sample-size", "calculate-cronbach-alpha", "run-t-test", "run-chi-square-test", "find-p-value", "calculate-z-score", "cite-apa", "cite-mla", "cite-harvard"] },
 ];
 export const FEATURED_TUTORIALS: readonly TutorialId[] = TUTORIAL_GROUPS.flatMap(
   (group) => [...group.tutorials],
