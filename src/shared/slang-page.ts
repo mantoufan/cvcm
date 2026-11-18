@@ -13,7 +13,7 @@ import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, isSong, slangGroupOf, type Sla
 import { memeImage, memeImagePath } from "./meme-images";
 import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
-import { memeImageAlt, songArtistsLabel, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
+import { memeImageAlt, songArtists, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
 
 /**
  * The picture right under the answer, near the top of the page: loaded eagerly as the likely LCP element, with its size
@@ -26,6 +26,26 @@ function imageHtml(locale: Locale, id: SlangId): string {
   const credit = image.author ? fill(ui.imageCredit, { author: image.author }) : ui.imageCreditAnon;
   return `<figure class="meme-figure"><img src="${escapeHtml(memeImagePath(id)!)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(memeImageAlt(locale, id))}" fetchpriority="high" decoding="async">`
     + `<figcaption><a href="${escapeHtml(image.page)}" target="_blank" rel="noopener">${escapeHtml(credit)}</a> · <a href="${escapeHtml(image.licenseUrl)}" target="_blank" rel="noopener license">${escapeHtml(image.license)}</a></figcaption></figure>`;
+}
+
+const artistLists = new Map<Locale, Intl.ListFormat | null>();
+
+/**
+ * Artists as a list in the reader's language ("A, B y C", "A、B和C"). Korean takes commas: its conjunction format uses
+ * the formal 및, which reads like a document in a page label. One formatter per locale; where Intl.ListFormat is missing
+ * (Safari < 14.1, old WebViews: this also runs in the client) the names are joined with commas.
+ */
+export function songArtistsLabel(locale: Locale, id: SlangId): string {
+  const names = songArtists(locale, id);
+  if (locale === "ko") return names.join(", ");
+  if (!artistLists.has(locale)) {
+    try {
+      artistLists.set(locale, new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }));
+    } catch {
+      artistLists.set(locale, null);
+    }
+  }
+  return artistLists.get(locale)?.format(names) ?? names.join(CJK_LOCALES.has(locale) ? "、" : ", ");
 }
 
 /** The snapshot comes with the slang pack (not the main bundle, which it would re-hash every day). */

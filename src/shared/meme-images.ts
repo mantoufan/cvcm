@@ -1,3 +1,4 @@
+import type { Locale } from "./locale";
 import images from "./meme-images.json";
 
 /**
@@ -18,9 +19,9 @@ export type MemeImage = {
   /**
    * The person in the picture when that person is the meme (John Cena for Bing Chilling), named in the alt text. A song's
    * picture of its first credited artist leaves this out (the name comes from `SLANG_META[id].song`, localized); set it
-   * when the photo shows anyone else.
+   * when the photo shows anyone else. One name, or names by locale with `en` as the fallback.
    */
-  who?: string;
+  who?: string | Partial<Record<Locale, string>>;
 };
 
 const MEME_IMAGES: Partial<Record<string, MemeImage>> = images satisfies Record<string, MemeImage>;

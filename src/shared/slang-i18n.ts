@@ -1,4 +1,4 @@
-import { CJK_LOCALES, type Locale } from "./locale";
+import type { Locale } from "./locale";
 import { fill } from "./fill";
 import { PUBLISHER, type KbBlock } from "./kb-i18n";
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
@@ -69,33 +69,15 @@ export function songArtists(locale: Locale, id: SlangId): string[] {
   });
 }
 
-const artistLists = new Map<Locale, Intl.ListFormat | null>();
-
-/**
- * Artists as a list in the reader's language ("A, B y C", "A、B和C"). Korean takes commas: its conjunction format uses
- * the formal 및, which reads like a document in a page label. One formatter per locale; where Intl.ListFormat is missing
- * (Safari < 14.1, old WebViews: this also runs in the client) the names are joined with commas.
- */
-export function songArtistsLabel(locale: Locale, id: SlangId): string {
-  const names = songArtists(locale, id);
-  if (locale === "ko") return names.join(", ");
-  if (!artistLists.has(locale)) {
-    try {
-      artistLists.set(locale, new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }));
-    } catch {
-      artistLists.set(locale, null);
-    }
-  }
-  return artistLists.get(locale)?.format(names) ?? names.join(CJK_LOCALES.has(locale) ? "、" : ", ");
-}
-
 /**
  * Alt text and caption of an entry's picture: "<name> meme", or "<who> (<name>)" for a photo of a person: the image's
  * `who` when set, else for a song its first credited artist (named as the page names them).
  */
 export function memeImageAlt(locale: Locale, id: SlangId): string {
   const name = slangName(locale, id).name;
-  const person = memeImage(id)?.who ?? (isSong(id) ? songArtists(locale, id)[0] : undefined);
+  const who = memeImage(id)?.who;
+  const named = typeof who === "string" ? who : who ? who[locale] ?? who.en : undefined;
+  const person = named ?? (isSong(id) ? songArtists(locale, id)[0] : undefined);
   return person ? fill(slangUi(locale).imageAltWho, { who: person, name }) : fill(slangUi(locale).imageAlt, { name });
 }
 
@@ -181,9 +163,9 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
           url: `${ORIGIN}${slangHref(locale, entry)}`,
         })),
       },
-      // The song pages are part of the collection too: articles about a recording, not terms.
+      // The song pages are part of the collection too: pages about a recording, not terms.
       hasPart: songs.map((entry) => ({
-        "@type": "Article",
+        "@type": "WebPage",
         url: `${ORIGIN}${slangHref(locale, entry)}`,
         about: { "@type": "MusicRecording", name: slangName(locale, entry).name },
       })),

@@ -12,6 +12,8 @@ export function jsonGetter(userAgent) {
       if (res.status === 404) return null;
       const final = attempt >= 3 || (res.status >= 400 && res.status < 500 && res.status !== 429);
       if (final) throw new Error(`${res.status || res.error?.message} ${url}${res.text ? `: ${(await res.text()).slice(0, 300)}` : ""}`);
+      // Release the failed response before waiting, so a rate-limit burst does not hold connections open.
+      await res.body?.cancel?.().catch(() => {});
       await new Promise((r) => setTimeout(r, 2000 * attempt));
     }
   };

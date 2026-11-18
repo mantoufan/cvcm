@@ -318,7 +318,7 @@ describe("slang: page HTML and SEO", () => {
     expect(hub.mainEntity.hasDefinedTerm.length).toBe(SLANG_ENTRIES.filter((id) => !SLANG_META[id].song).length);
     const hubParts = (slangArticleJsonLd("en", null) as { hasPart: { "@type": string; url: string; about: { "@type": string } }[] }).hasPart;
     expect(hubParts.map((p) => p.url)).toEqual(SLANG_ENTRIES.filter((id) => SLANG_META[id].song).map((id) => `https://cv.cm${slangHref("en", id)}`));
-    expect(new Set(hubParts.map((p) => `${p["@type"]}/${p.about["@type"]}`))).toEqual(new Set(["Article/MusicRecording"]));
+    expect(new Set(hubParts.map((p) => `${p["@type"]}/${p.about["@type"]}`))).toEqual(new Set(["WebPage/MusicRecording"]));
     // Artists read in the page's script: Traditional in zh-TW, romanized in English, joined with 、 in CJK.
     expect(slangPageHtml("zh-TW", "guyongzhe")).toContain("· 陳奕迅</p>");
     expect(slangPageHtml("en", "guyongzhe")).toContain("· Eason Chan</p>");
@@ -383,6 +383,7 @@ describe("slang: page HTML and SEO", () => {
     // The alt names a song's artist the way the kicker does.
     expect(slangPageHtml("vi", "guyongzhe")).toContain(`alt="Trần Dịch Tấn (${slangCopy("vi", "guyongzhe").name})"`);
     expect(slangPageHtml("en", "bing-chilling")).toContain(`alt="John Cena (${slangCopy("en", "bing-chilling").name})"`);
+    expect(slangPageHtml("zh-CN", "bing-chilling")).toContain(`alt="约翰·塞纳（${slangCopy("zh-CN", "bing-chilling").name}）"`);
     expect(slangPageHtml("en", "dubai-chocolate")).toContain(`alt="${fill(slangMessages("en").ui.imageAlt, { name: slangCopy("en", "dubai-chocolate").name })}"`);
     expect(slangPageHtml("en", "yyds")).not.toContain("meme-figure");
     expect(buildSitemapXml(sitemapPages().filter((p) => p.kind === "slang"))).toContain("<image:loc>https://s3.cv.cm/files/covers/memes/doge-meme.webp</image:loc>");

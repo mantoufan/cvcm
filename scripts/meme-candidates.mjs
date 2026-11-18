@@ -117,8 +117,8 @@ async function wikipediaCandidates() {
   // The channel takes no politics or tragedies (AGENTS.md) and the list is public, so only articles whose categories
   // were checked can make it: the top LIMIT × 2 are checked and the list is cut from those.
   const checked = ranked.slice(0, LIMIT * 2);
-  const off = await offTopic(checked.map((c) => c.title));
-  return { list: checked.filter((c) => !off.has(c.title)).slice(0, LIMIT), failed };
+  const off = await offTopic([...checked.map((c) => c.title), ...failed]);
+  return { list: checked.filter((c) => !off.has(c.title)).slice(0, LIMIT), failed: failed.filter((t) => !off.has(t)) };
 }
 
 /**
@@ -181,13 +181,15 @@ const tiktok = process.argv.includes("--tiktok");
 // Check the key before the Wikipedia pass, so a missing key costs no requests.
 if (tiktok && !process.env.SCRAPECREATORS_API_KEY) throw new Error("--tiktok needs SCRAPECREATORS_API_KEY");
 const fmt = (n) => n.toLocaleString("en-US");
+/** A title as inline code, so "@name", "#123", "_" or "*" in it cannot ping a user, link an issue or turn into emphasis. */
+const code = (title) => `\`${title.replaceAll("`", "'")}\``;
 const lines = [`# Meme candidates (${new Date().toISOString().slice(0, 10)})`, "", "Wikipedia articles in *Internet memes introduced in* this year or last that /memes/ does not track yet, by views over the last 28 days. Check Keyword Planner before writing one up.", "", "| # | Article | 28 days | Change |", "|---|---|---|---|"];
 const wiki = await wikipediaCandidates();
 wiki.list.forEach((c, i) => {
   const change = c.prior ? `${c.recent >= c.prior ? "+" : ""}${Math.round((c.recent / c.prior - 1) * 100)}%` : "new";
-  lines.push(`| ${i + 1} | [${c.title}](https://en.wikipedia.org/wiki/${encodeURIComponent(key(c.title))}) | ${fmt(c.recent)} | ${change} |`);
+  lines.push(`| ${i + 1} | [${code(c.title)}](https://en.wikipedia.org/wiki/${encodeURIComponent(key(c.title))}) | ${fmt(c.recent)} | ${change} |`);
 });
-if (wiki.failed.length) lines.push("", `Views unavailable this week (check by hand): ${wiki.failed.join(", ")}`);
+if (wiki.failed.length) lines.push("", `Views unavailable this week (check by hand): ${wiki.failed.map(code).join(", ")}`);
 
 if (tiktok) {
   const { tags, sounds } = await tiktokHints(process.env.SCRAPECREATORS_API_KEY);
