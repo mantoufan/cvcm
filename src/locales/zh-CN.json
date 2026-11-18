@@ -749,7 +749,15 @@
     "titleFlightSimulator": "飞行模拟器在线玩 — 免费3D开飞机游戏 — cv.cm",
     "descFlightSimulator": "免费在线3D飞行模拟器：从跑道起飞，飞过低多边形小岛再降落，或者计时穿越12个圆环。不用下载，键盘和手机都能玩。",
     "titleGames3d": "免费3D小游戏在线玩 — 3D国际象棋、魔方、赛车、飞行 — cv.cm",
-    "descGames3d": "免费在线玩3D小游戏，不用下载：3D国际象棋、魔方、叠方块、3D赛车漂移、飞行模拟。手机也能玩。"
+    "descGames3d": "免费在线玩3D小游戏，不用下载：3D国际象棋、魔方、叠方块、3D赛车漂移、飞行模拟。手机也能玩。",
+    "titleCitationGenerator": "参考文献生成器 — APA、MLA、Chicago、哈佛、IEEE、Vancouver、GB/T 7714 引用格式 — cv.cm",
+    "descCitationGenerator": "免费参考文献生成器：用 DOI 查找期刊论文、用 ISBN 查找图书，或自己填写信息，即可生成 APA 第 7 版、MLA 第 9 版、Chicago、哈佛、IEEE、Vancouver 或 GB/T 7714 参考文献格式及文中引用。可整理参考文献列表，支持导入导出 BibTeX 和 RIS。",
+    "titleApaCitationGenerator": "APA 格式生成器 — APA 第 7 版参考文献与文中引用 — cv.cm",
+    "descApaCitationGenerator": "免费 APA 第 7 版引用格式生成器：用 DOI 引用期刊论文、用 ISBN 引用图书，也可引用书中章节或网页。生成斜体正确的参考文献条目和（作者, 年份）文中引用，可直接复制到 Word 或 Google 文档。",
+    "titleMlaCitationGenerator": "MLA 格式生成器 — MLA 第 9 版引用文献（Works Cited） — cv.cm",
+    "descMlaCitationGenerator": "免费 MLA 第 9 版引用格式生成器：根据 DOI、ISBN 或你填写的信息，为论文、图书、章节和网站生成 Works Cited 条目，并给出（作者 页码）文中引用，复制时保留斜体。",
+    "titleHarvardReferencingGenerator": "哈佛引用格式生成器 — Cite Them Right 版本 — cv.cm",
+    "descHarvardReferencingGenerator": "免费哈佛引用格式生成器（Cite Them Right）：用 DOI 引用期刊论文、用 ISBN 引用图书，也可引用章节和网站（附 Available at 与 Accessed 日期），并生成正文中的（作者, 年份）引用。"
   },
   "brand": "cv.cm",
   "nav": {
@@ -1665,6 +1673,22 @@
     "flight-simulator": {
       "name": "飞行模拟器",
       "blurb": "从跑道起飞、飞越小岛再降落，或者计时穿圆环。"
+    },
+    "citation-generator": {
+      "name": "参考文献生成器",
+      "blurb": "APA、MLA、Chicago、哈佛等格式。"
+    },
+    "apa-citation-generator": {
+      "name": "APA 格式生成器",
+      "blurb": "用 DOI 或 ISBN 生成 APA 第 7 版参考文献。"
+    },
+    "mla-citation-generator": {
+      "name": "MLA 格式生成器",
+      "blurb": "生成 MLA 第 9 版 Works Cited 条目。"
+    },
+    "harvard-referencing-generator": {
+      "name": "哈佛引用格式生成器",
+      "blurb": "Cite Them Right 版哈佛参考文献。"
     }
   },
   "watermark": {
@@ -6280,6 +6304,54 @@
       "a3": "3D引擎（three.js）和图形上下文要等你开始玩才启动，这样网页打开得快，手机也不会为一个你只是看看的游戏占用内存。",
       "q4": "提示3D不可用怎么办？",
       "a4": "这些游戏需要 WebGL。请更新浏览器、在设置里打开硬件加速，或者换一个浏览器。有些公司或学校的电脑会禁用 WebGL。"
+    },
+    "citation-generator": {
+      "q1": "怎样自动生成引用？",
+      "a1": "粘贴论文的 DOI（10.xxxx/…）或图书的 ISBN，然后点「查找」。信息会从 Crossref/DataCite 或 Open Library 自动填好；核对无误后选择格式，复制参考文献即可。",
+      "q2": "支持哪些引用格式？",
+      "a2": "APA 第 7 版、MLA 第 9 版、Chicago 第 17 版（注释—参考文献体系）、哈佛格式（Cite Them Right）、IEEE、Vancouver，以及中国国家标准 GB/T 7714-2015。",
+      "q3": "我的数据会被发送出去吗？",
+      "a3": "只有点「查找」时，查找框里的 DOI 或 ISBN 会发送给 Crossref/DataCite 或 Open Library。表单里填写的所有内容都在浏览器中排版，你的参考文献列表也只保存在这个浏览器里。",
+      "q4": "能从 Zotero、Mendeley 或 EndNote 导入吗？",
+      "a4": "可以。把文献库导出为 BibTeX（.bib）或 RIS（.ris），用文本编辑器打开后粘贴到「导入」里。你也可以把列表再以 BibTeX 或 RIS 复制出来。",
+      "q5": "为什么标题的大小写没有自动改？",
+      "a5": "标题会按你输入的原样保留，因为只有你知道哪些词是专有名词。APA、哈佛和 Vancouver 的论文和书名用句首大写（sentence case）；MLA、Chicago 和 IEEE 用标题式大写（title case）。"
+    },
+    "apa-citation-generator": {
+      "q1": "APA 第 7 版怎么引用期刊论文？",
+      "a1": "Author, A. A., & Author, B. B. (Year). Title of the article. Journal Name, Volume(Issue), pages. https://doi.org/… 其中期刊名和卷号用斜体。",
+      "q2": "APA 的文中引用是什么样子？",
+      "a2": "（作者, 年份）：一位作者写 (Smith, 2020)，两位写 (Smith & Lee, 2020)，三位及以上从第一次引用起就写 (Smith et al., 2020)。",
+      "q3": "APA 第 7 版最多列出几位作者？",
+      "a3": "参考文献里最多列 20 位。21 位及以上时，列出前 19 位，加省略号（. . .），再写最后一位作者。",
+      "q4": "APA 怎么引用网页？",
+      "a4": "Author. (Year, Month Day). Title of the page. Site Name. URL. 网页标题用斜体；网站名与作者相同时省略网站名。",
+      "q5": "没有日期或没有作者怎么办？",
+      "a5": "没有日期写 (n.d.)。没有作者时，把标题移到作者的位置，放在日期前面。"
+    },
+    "mla-citation-generator": {
+      "q1": "MLA 第 9 版怎么引用期刊论文？",
+      "a1": "Last, First. \"Title of the Article.\" Journal Name, vol. 12, no. 3, 2020, pp. 45-67. 期刊名用斜体，DOI 放在最后。",
+      "q2": "MLA 有多位作者时怎么写？",
+      "a2": "两位作者：Last, First, and First Last。三位及以上：写第一位作者，后接 et al.。",
+      "q3": "MLA 的文中引用是什么样子？",
+      "a3": "作者姓氏加页码，中间不加逗号：(Smith 45)。两位作者：(Smith and Lee 45)。三位及以上：(Smith et al. 45)。",
+      "q4": "MLA 怎么引用网站？",
+      "a4": "Author. \"Title of the Page.\" Website Name, day Month year, URL. MLA 的网址省略 https://。",
+      "q5": "什么是 Works Cited 页？",
+      "a5": "论文末尾列出所有引用来源的清单，按每条第一个词的字母顺序排列，使用悬挂缩进。"
+    },
+    "harvard-referencing-generator": {
+      "q1": "哈佛格式怎么引用期刊论文？",
+      "a1": "Surname, Initials. (Year) 'Title of article', Journal Name, Volume(Issue), pp. pages. Available at: https://doi.org/…（Cite Them Right 第 12 版）。",
+      "q2": "哈佛格式的文中引用怎么写？",
+      "a2": "（姓氏, 年份）：(Smith, 2020)、(Smith and Lee, 2020)、(Smith, Lee and Park, 2020)，四位及以上作者写 (Smith et al., 2020)。",
+      "q3": "哈佛格式怎么引用网站？",
+      "a3": "Author or organization (Year) Title of page. Available at: URL (Accessed: day Month year). 要加上你阅读该网页的日期。",
+      "q4": "哈佛格式只有一种吗？",
+      "a4": "不是。哈佛格式是一类「作者—年份」体系，各大学的细节不尽相同。本工具采用英国和澳大利亚多数大学使用的 Cite Them Right 版本，请以你的课程手册为准。",
+      "q5": "参考文献列表怎么排序？",
+      "a5": "按第一作者的姓氏字母顺序排列，再按年份排。列表标题为 Reference list（或 References）。"
     }
   },
   "qr": {
@@ -16364,5 +16436,80 @@
     "exitFullscreen": "退出全屏",
     "pad": "游戏按键",
     "credit": "3D画面由 {name} 绘制（MIT 许可）。"
+  },
+  "cite": {
+    "title_main": "参考文献生成器",
+    "title_apa": "APA 格式生成器",
+    "title_mla": "MLA 格式生成器",
+    "title_harvard": "哈佛引用格式生成器",
+    "privacyNote": "七种格式的参考文献和文中引用。排版在你的浏览器中完成；只有「查找」会联系 Crossref/DataCite 或 Open Library。",
+    "lookupTitle": "用 DOI 或 ISBN 查找",
+    "lookupLabel": "DOI 或 ISBN",
+    "lookupPlaceholder": "10.1038/nature14539 或 ISBN",
+    "find": "查找",
+    "searching": "正在查找…",
+    "found": "已找到，请核对下方信息。",
+    "lookup_invalid": "这不是 DOI（10.xxxx/…），也不是有效的 ISBN-10/13。",
+    "lookup_notFound": "没有找到这个 DOI 或 ISBN，请在下方填写信息。",
+    "lookup_network": "查询服务没有响应。请重试，或在下方填写信息。",
+    "lookupPrivacy": "「查找」只会把这个 DOI 发给 Crossref/DataCite，或把这个 ISBN 发给 Open Library，其他内容都不会离开你的浏览器。",
+    "detailsTitle": "来源信息",
+    "type": "来源类型",
+    "type_article": "期刊论文",
+    "type_book": "图书",
+    "type_chapter": "书中章节",
+    "type_webpage": "网页",
+    "authors": "作者（每行一位）",
+    "authorsHint": "写成「姓, 名」或「名 姓」。机构作者用花括号括起来：{World Health Organization}。中文姓名直接写，如 张三。",
+    "titleField": "标题",
+    "container_article": "期刊",
+    "container_book": "丛书",
+    "container_chapter": "书名",
+    "container_webpage": "网站名称",
+    "editors": "图书编者（每行一位）",
+    "year": "年份",
+    "month": "月",
+    "day": "日",
+    "volume": "卷",
+    "issue": "期",
+    "pages": "页码",
+    "edition": "版次（数字）",
+    "publisher": "出版者",
+    "place": "出版地",
+    "accessed": "访问日期",
+    "importTitle": "导入 BibTeX 或 RIS",
+    "importLabel": "BibTeX 或 RIS 文本",
+    "import": "导入",
+    "importNone": "没有找到完整的条目。请粘贴 BibTeX（@article{…}）或 RIS（TY  - JOUR …）。",
+    "imported": "已导入 {n} 条。第一条已填入表单；有多条时全部加入你的列表。",
+    "style": "引用格式",
+    "style_apa": "APA 第 7 版",
+    "style_mla": "MLA 第 9 版",
+    "style_chicago": "Chicago 第 17 版（注释—参考文献）",
+    "style_harvard": "哈佛格式（Cite Them Right）",
+    "style_ieee": "IEEE",
+    "style_vancouver": "Vancouver",
+    "style_gbt": "GB/T 7714-2015",
+    "result": "参考文献",
+    "inText": "文中引用：",
+    "note": "简短注释：",
+    "caseSentence": "此格式的标题用句首大写：只大写第一个词、冒号后的第一个词和专有名词。",
+    "caseTitle": "此格式的标题用标题式大写：标题中的实词首字母大写。",
+    "needTitle_title": "填写标题后即可看到参考文献。",
+    "needTitle_container": "填写标题和期刊名或书名后即可看到参考文献。",
+    "copy": "复制参考文献",
+    "copied": "已复制",
+    "copyFailed": "复制失败",
+    "add": "加入列表",
+    "listTitle": "你的参考文献列表（{n}）",
+    "listEmpty": "加入的参考文献会显示在这里，并按所选格式排序。列表保存在这个浏览器中。",
+    "copyList": "复制列表",
+    "copyBibtex": "复制 BibTeX",
+    "copyRis": "复制 RIS",
+    "clearList": "清空列表",
+    "clearConfirm": "再点一次清空",
+    "remove": "从列表中移除",
+    "listFull": "列表最多保存 {max} 条参考文献，有 {n} 条未能加入。",
+    "edited": "以上是本书的编者（主编）"
   }
 }

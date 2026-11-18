@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "titleCitationGenerator": "참고문헌 생성기 — APA·MLA·시카고·하버드·IEEE·밴쿠버·GB/T 7714 — cv.cm",
+    "descCitationGenerator": "무료 참고문헌 생성기: 논문은 DOI, 책은 ISBN으로 찾거나 정보를 직접 입력해 APA 7판, MLA 9판, 시카고, 하버드, IEEE, 밴쿠버, GB/T 7714 양식의 참고문헌과 본문 인용을 만듭니다. 참고문헌 목록을 만들고 BibTeX·RIS로 가져오기와 내보내기를 할 수 있습니다.",
+    "titleApaCitationGenerator": "APA 인용 생성기 — APA 7판 참고문헌과 본문 인용 — cv.cm",
+    "descApaCitationGenerator": "무료 APA 7판 인용 생성기: DOI로 학술지 논문, ISBN으로 책을 찾고 책의 장이나 웹페이지도 인용합니다. 기울임꼴이 맞는 참고문헌 항목과 (저자, 연도) 본문 인용을 만들어 Word나 Google 문서에 바로 붙여 넣으세요.",
+    "titleMlaCitationGenerator": "MLA 인용 생성기 — MLA 9판 Works Cited — cv.cm",
+    "descMlaCitationGenerator": "무료 MLA 9판 인용 생성기: 논문, 책, 장, 웹사이트를 DOI, ISBN 또는 직접 입력한 정보로 Works Cited 항목으로 만듭니다. (저자 쪽수) 본문 인용도 함께 보여 주며 복사해도 기울임꼴이 유지됩니다.",
+    "titleHarvardReferencingGenerator": "하버드 양식 참고문헌 생성기 — Cite Them Right 기준 — cv.cm",
+    "descHarvardReferencingGenerator": "무료 하버드 양식(Cite Them Right) 참고문헌 생성기: DOI로 논문, ISBN으로 책, 장과 웹사이트도 'Available at'·'Accessed' 날짜와 함께 만들고 본문용 (저자, 연도) 인용도 보여 줍니다."
+  },
+  "tools": {
+    "citation-generator": {
+      "name": "참고문헌 생성기",
+      "blurb": "APA, MLA, 시카고, 하버드 등."
+    },
+    "apa-citation-generator": {
+      "name": "APA 인용 생성기",
+      "blurb": "DOI나 ISBN으로 APA 7판 참고문헌."
+    },
+    "mla-citation-generator": {
+      "name": "MLA 인용 생성기",
+      "blurb": "MLA 9판 Works Cited 항목."
+    },
+    "harvard-referencing-generator": {
+      "name": "하버드 양식 참고문헌 생성기",
+      "blurb": "Cite Them Right 하버드 양식."
+    }
+  },
+  "faq": {
+    "citation-generator": {
+      "q1": "출처 인용을 자동으로 만들려면?",
+      "a1": "논문의 DOI(10.xxxx/…)나 책의 ISBN을 붙여 넣고 찾기를 누르세요. Crossref/DataCite나 Open Library에서 정보가 채워지면 내용을 확인하고 양식을 골라 참고문헌을 복사하면 됩니다.",
+      "q2": "어떤 인용 양식을 지원하나요?",
+      "a2": "APA 7판, MLA 9판, 시카고 17판(주석·참고문헌 방식), 하버드(Cite Them Right), IEEE, 밴쿠버, 중국 국가표준 GB/T 7714-2015입니다.",
+      "q3": "입력한 데이터가 어딘가로 전송되나요?",
+      "a3": "찾기를 누를 때만 그 칸의 DOI는 Crossref/DataCite로, ISBN은 Open Library로 전송됩니다. 양식에 입력한 내용은 브라우저 안에서 정리되고 참고문헌 목록도 이 브라우저에만 저장됩니다.",
+      "q4": "Zotero, Mendeley, EndNote에서 가져올 수 있나요?",
+      "a4": "네. 라이브러리를 BibTeX(.bib)나 RIS(.ris)로 내보낸 뒤 텍스트 편집기로 열어 가져오기 칸에 붙여 넣으세요. 목록을 다시 BibTeX나 RIS로 복사할 수도 있습니다.",
+      "q5": "제목의 대소문자가 바뀌지 않는 이유는?",
+      "a5": "어떤 단어가 고유명사인지는 작성자만 알기 때문에 제목은 입력한 그대로 둡니다. APA, 하버드, 밴쿠버는 논문과 책 제목을 문장형 대소문자로, MLA, 시카고, IEEE는 제목형 대소문자로 씁니다."
+    },
+    "apa-citation-generator": {
+      "q1": "APA 7판에서 학술지 논문은 어떻게 인용하나요?",
+      "a1": "Author, A. A., & Author, B. B. (Year). Title of the article. Journal Name, Volume(Issue), pages. https://doi.org/… 형식입니다. 학술지 이름과 권은 기울임꼴로 씁니다.",
+      "q2": "APA 본문 인용은 어떻게 쓰나요?",
+      "a2": "(저자, 연도) 형식입니다. 저자가 한 명이면 (Smith, 2020), 두 명이면 (Smith & Lee, 2020), 세 명 이상이면 첫 인용부터 (Smith et al., 2020)로 씁니다.",
+      "q3": "APA 7판은 저자를 몇 명까지 적나요?",
+      "a3": "참고문헌 목록에는 20명까지 적습니다. 21명 이상이면 처음 19명, 줄임표(. . .), 마지막 저자 순서로 적습니다.",
+      "q4": "APA에서 웹사이트는 어떻게 인용하나요?",
+      "a4": "Author. (Year, Month Day). Title of the page. Site Name. URL 형식입니다. 페이지 제목은 기울임꼴로 쓰고, 사이트 이름이 저자와 같으면 생략합니다.",
+      "q5": "날짜나 저자가 없으면?",
+      "a5": "날짜가 없으면 (n.d.)로 씁니다. 저자가 없으면 제목을 저자 자리, 즉 날짜 앞으로 옮깁니다."
+    },
+    "mla-citation-generator": {
+      "q1": "MLA 9판에서 학술지 논문은 어떻게 인용하나요?",
+      "a1": "Last, First. \"Title of the Article.\" Journal Name, vol. 12, no. 3, 2020, pp. 45-67. 형식입니다. 학술지 이름은 기울임꼴로 쓰고 DOI는 맨 끝에 붙입니다.",
+      "q2": "MLA에서 저자가 여러 명이면?",
+      "a2": "두 명이면 Last, First, and First Last로, 세 명 이상이면 첫 번째 저자 뒤에 et al.을 씁니다.",
+      "q3": "MLA 본문 인용은 어떻게 쓰나요?",
+      "a3": "저자의 성과 쪽수를 쉼표 없이 씁니다: (Smith 45). 두 명이면 (Smith and Lee 45), 세 명 이상이면 (Smith et al. 45)입니다.",
+      "q4": "MLA에서 웹사이트는 어떻게 인용하나요?",
+      "a4": "Author. \"Title of the Page.\" Website Name, day Month year, URL. 형식입니다. MLA에서는 URL의 https://를 뺍니다.",
+      "q5": "Works Cited 페이지란?",
+      "a5": "논문 끝에 붙이는, 인용한 모든 출처의 목록입니다. 각 항목의 첫 단어 기준 알파벳순으로 정렬하고 둘째 줄부터 내어쓰기를 합니다."
+    },
+    "harvard-referencing-generator": {
+      "q1": "하버드 양식에서 학술지 논문은 어떻게 적나요?",
+      "a1": "Surname, Initials. (Year) 'Title of article', Journal Name, Volume(Issue), pp. pages. Available at: https://doi.org/… 형식입니다(Cite Them Right 12판).",
+      "q2": "하버드 양식 본문 인용은 어떻게 하나요?",
+      "a2": "(성, 연도) 형식입니다: (Smith, 2020), (Smith and Lee, 2020), (Smith, Lee and Park, 2020). 저자가 네 명 이상이면 (Smith et al., 2020)로 씁니다.",
+      "q3": "하버드 양식에서 웹사이트는 어떻게 적나요?",
+      "a3": "Author or organization (Year) Title of page. Available at: URL (Accessed: day Month year). 형식입니다. 페이지를 읽은 날짜를 추가합니다.",
+      "q4": "하버드 양식은 하나뿐인가요?",
+      "a4": "아닙니다. 하버드는 저자-연도 방식의 여러 양식을 통틀어 부르는 이름이고 대학마다 세부가 다릅니다. 이 생성기는 영국과 호주의 많은 대학이 쓰는 Cite Them Right를 따릅니다. 수업 안내서도 확인하세요.",
+      "q5": "참고문헌 목록은 어떤 순서로 정렬하나요?",
+      "a5": "첫 번째 저자의 성 기준 알파벳순, 그다음 연도순입니다. 목록 제목은 Reference list(또는 References)로 씁니다."
+    }
+  },
+  "guides": {
+    "citation-generator": {
+      "lead": "세 단계로 출처를 인용하세요.",
+      "s1t": "출처 찾기 또는 입력",
+      "s1b": "DOI나 ISBN을 붙여 넣고 찾기를 누르거나, BibTeX·RIS를 붙여 넣거나, 양식을 직접 채웁니다.",
+      "s2t": "양식 고르기",
+      "s2b": "APA, MLA, 시카고, 하버드, IEEE, 밴쿠버, GB/T 7714 중에서 고르면 참고문헌과 본문 인용이 바로 바뀝니다.",
+      "s3t": "복사하거나 목록 만들기",
+      "s3b": "기울임꼴을 유지한 채 참고문헌을 복사하거나, 목록에 추가해 전체 목록·BibTeX·RIS를 복사합니다."
+    },
+    "apa-citation-generator": {
+      "lead": "세 단계로 APA 7판 참고문헌을 만드세요.",
+      "s1t": "출처 찾기",
+      "s1b": "DOI나 ISBN을 붙여 넣고 찾기를 누르거나, 저자·제목·학술지·연도를 입력합니다.",
+      "s2t": "내용 확인",
+      "s2b": "제목은 문장형 대소문자로 쓰고 저자가 모두 들어갔는지 확인합니다.",
+      "s3t": "참고문헌 복사",
+      "s3b": "참고문헌 목록에 붙여 넣고 본문에서는 (저자, 연도) 인용을 씁니다."
+    },
+    "mla-citation-generator": {
+      "lead": "세 단계로 MLA 9판 Works Cited 항목을 만드세요.",
+      "s1t": "출처 찾기",
+      "s1b": "DOI나 ISBN을 붙여 넣고 찾기를 누르거나, 논문·책·장·웹사이트 정보를 입력합니다.",
+      "s2t": "내용 확인",
+      "s2b": "제목형 대소문자로 쓰고 논문과 장에는 쪽수 범위를 넣습니다.",
+      "s3t": "항목 복사",
+      "s3b": "Works Cited 페이지에 붙여 넣고 본문에서는 (저자 쪽수)로 인용합니다."
+    },
+    "harvard-referencing-generator": {
+      "lead": "세 단계로 하버드 양식 참고문헌을 만드세요.",
+      "s1t": "출처 찾기",
+      "s1b": "DOI나 ISBN을 붙여 넣고 찾기를 누르거나, 정보를 직접 입력합니다.",
+      "s2t": "열람일 추가",
+      "s2b": "웹페이지는 페이지를 읽은 날짜를 넣으면 Accessed로 표시됩니다.",
+      "s3t": "참고문헌 복사",
+      "s3b": "참고문헌 목록에 붙여 넣고 본문에서는 (성, 연도)로 인용합니다."
+    }
+  },
+  "ui": {
+    "cite": {
+      "title_main": "참고문헌 생성기",
+      "title_apa": "APA 인용 생성기",
+      "title_mla": "MLA 인용 생성기",
+      "title_harvard": "하버드 양식 참고문헌 생성기",
+      "privacyNote": "7가지 양식의 참고문헌과 본문 인용. 정리는 브라우저 안에서 하며, 찾기를 누를 때만 Crossref/DataCite나 Open Library에 조회합니다.",
+      "lookupTitle": "DOI·ISBN으로 찾기",
+      "lookupLabel": "DOI 또는 ISBN",
+      "lookupPlaceholder": "10.1038/nature14539 또는 ISBN",
+      "find": "찾기",
+      "searching": "찾는 중…",
+      "found": "찾았습니다. 아래 내용을 확인하세요.",
+      "lookup_invalid": "DOI(10.xxxx/…)나 올바른 ISBN-10/13이 아닙니다.",
+      "lookup_notFound": "해당 DOI·ISBN으로 찾지 못했습니다. 아래에 정보를 입력하세요.",
+      "lookup_network": "조회 서비스가 응답하지 않았습니다. 다시 시도하거나 아래에 정보를 입력하세요.",
+      "lookupPrivacy": "찾기는 이 DOI를 Crossref/DataCite로, 이 ISBN을 Open Library로만 보냅니다. 다른 내용은 브라우저 밖으로 나가지 않습니다.",
+      "detailsTitle": "출처 정보",
+      "type": "출처 유형",
+      "type_article": "학술지 논문",
+      "type_book": "책",
+      "type_chapter": "책의 장",
+      "type_webpage": "웹페이지",
+      "authors": "저자 (한 줄에 한 명)",
+      "authorsHint": "'성, 이름' 또는 '이름 성'으로 쓰세요. 단체 저자는 {World Health Organization}처럼 중괄호로 감쌉니다.",
+      "titleField": "제목",
+      "container_article": "학술지",
+      "container_book": "총서",
+      "container_chapter": "책 제목",
+      "container_webpage": "웹사이트 이름",
+      "editors": "책의 편집자 (한 줄에 한 명)",
+      "year": "연도",
+      "month": "월",
+      "day": "일",
+      "volume": "권",
+      "issue": "호",
+      "pages": "쪽",
+      "edition": "판 (숫자)",
+      "publisher": "출판사",
+      "place": "출판 지역",
+      "accessed": "열람일",
+      "importTitle": "BibTeX·RIS 가져오기",
+      "importLabel": "BibTeX 또는 RIS 텍스트",
+      "import": "가져오기",
+      "importNone": "완전한 항목을 찾지 못했습니다. BibTeX(@article{…})나 RIS(TY  - JOUR …)를 붙여 넣으세요.",
+      "imported": "가져온 항목: {n}개. 첫 항목은 양식에 들어가고, 여러 개면 모두 목록에 추가됩니다.",
+      "style": "인용 양식",
+      "style_apa": "APA 7판",
+      "style_mla": "MLA 9판",
+      "style_chicago": "시카고 17판 (주석·참고문헌 방식)",
+      "style_harvard": "하버드 (Cite Them Right)",
+      "style_ieee": "IEEE",
+      "style_vancouver": "밴쿠버",
+      "style_gbt": "GB/T 7714-2015",
+      "result": "참고문헌",
+      "inText": "본문 인용:",
+      "note": "약식 주석:",
+      "caseSentence": "이 양식은 제목을 문장형 대소문자로 씁니다. 첫 단어, 콜론 다음 첫 단어, 고유명사만 대문자로 시작합니다.",
+      "caseTitle": "이 양식은 제목형 대소문자를 씁니다. 제목의 주요 단어를 대문자로 시작합니다.",
+      "needTitle_title": "제목을 입력하면 참고문헌이 보입니다.",
+      "needTitle_container": "제목과 학술지 또는 책 이름을 입력하면 참고문헌이 보입니다.",
+      "copy": "참고문헌 복사",
+      "copied": "복사했습니다",
+      "copyFailed": "복사하지 못했습니다",
+      "add": "목록에 추가",
+      "listTitle": "내 참고문헌 목록 (항목 수: {n})",
+      "listEmpty": "추가한 참고문헌이 양식에 맞게 정렬되어 여기에 나타납니다. 목록은 이 브라우저에 저장됩니다.",
+      "copyList": "목록 복사",
+      "copyBibtex": "BibTeX 복사",
+      "copyRis": "RIS 복사",
+      "clearList": "목록 지우기",
+      "clearConfirm": "한 번 더 누르면 지웁니다",
+      "remove": "목록에서 삭제",
+      "listFull": "목록에는 참고문헌을 최대 {max}개까지 넣을 수 있습니다. 추가되지 않은 항목: {n}개.",
+      "edited": "이들은 책의 편저자입니다"
+    }
+  },
+  "legal": {
+    "h": "참고문헌 조회",
+    "p": [
+      "참고문헌 생성기는 브라우저 안에서 참고문헌을 정리하고, 참고문헌 목록은 이 브라우저의 로컬 저장소에 보관합니다. 찾기를 누를 때만 입력한 DOI는 Crossref/DataCite(api.crossref.org, api.datacite.org)로, ISBN은 Open Library(openlibrary.org)로 보내 출처 정보를 가져옵니다. 입력한 다른 내용은 전송되지 않고, 요청에는 쿠키나 페이지 주소가 포함되지 않으며, 저희는 이를 받거나 저장하지 않습니다. 요청은 Crossref/DataCite와 Open Library가 각자의 개인정보 처리방침에 따라 처리합니다."
+    ]
+  }
+}

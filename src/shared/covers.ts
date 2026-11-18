@@ -214,6 +214,10 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "stack-game": "/covers/stack-game-sweet.jpg?v=1",
   "driving-game": "/covers/driving-game-sweet.jpg?v=1",
   "flight-simulator": "/covers/flight-simulator-sweet.jpg?v=1",
+  "citation-generator": "/covers/citation-generator-sweet.jpg?v=1",
+  "apa-citation-generator": "/covers/apa-citation-generator-sweet.jpg?v=1",
+  "mla-citation-generator": "/covers/mla-citation-generator-sweet.jpg?v=1",
+  "harvard-referencing-generator": "/covers/harvard-referencing-generator-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {

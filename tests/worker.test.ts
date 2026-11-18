@@ -50,6 +50,17 @@ it("allows same-origin workers for in-tab PDF rendering", async () => {
   expect(response.headers.get("Content-Security-Policy")).toContain("worker-src 'self' blob:");
 });
 
+it("lets only citation pages reach the lookup hosts", async () => {
+  const csp = async (path: string) => (await worker.fetch(new Request(`https://cv.cm${path}`), { ASSETS: ssrAssets({}) })).headers.get("Content-Security-Policy") ?? "";
+  for (const path of ["/en/citation-generator/", "/zh-cn/apa-citation-generator/"]) {
+    const c = await csp(path);
+    expect(c).toContain("https://api.crossref.org https://api.datacite.org https://openlibrary.org");
+    expect(c).toContain("googletagmanager");
+  }
+  for (const path of ["/en/t-test/", "/en/remove-background/"]) expect(await csp(path)).not.toContain("api.crossref.org");
+  expect(await csp("/en/remove-background/")).toContain("'wasm-unsafe-eval'");
+});
+
 const shell = '<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /></head><body><div id="app"></div></body></html>';
 
 function ssrAssets(fragments: Record<string, string>) {

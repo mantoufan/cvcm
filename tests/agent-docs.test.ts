@@ -5,7 +5,7 @@ import worker from "../src/worker";
 import { AI_DETAIL_TOOLS, DATA_HANDLING_GROUPS, agentTools, buildLlmsTxt, buildPoppyJson, buildToolsJson, dataHandling } from "../src/shared/agent-docs";
 import { AI_MODELS, formatMb } from "../src/shared/ai-models";
 import { UNTRACKED_TOOLS } from "../src/shared/analytics";
-import { AGENT_DOC_PATHS, AI_TOOLS, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
+import { LOOKUP_TOOLS, AGENT_DOC_PATHS, AI_TOOLS, STATIC_FILE, TOOLS, appHref } from "../src/shared/path";
 
 const root = resolve(__dirname, "..");
 
@@ -87,7 +87,10 @@ describe("agent discovery files", () => {
     expect(dataHandling("text-to-speech")).toContain("online voices");
     expect(dataHandling("signature")).toBe("Runs in the page. Inputs are not uploaded.");
     expect(dataHandling("crop")).toBe("Processes files in the page. Files are not uploaded.");
-    for (const tool of TOOLS.filter((t) => t !== "clip" && t !== "text-to-speech")) {
+    // The citation pages say exactly what Find sends, and only those pages' CSP allows the lookup hosts.
+    expect([...DATA_HANDLING_GROUPS.LOOKUPS].sort()).toEqual([...LOOKUP_TOOLS].sort());
+    expect(dataHandling("citation-generator")).toContain("Only when you press Find is the DOI or ISBN you typed sent to Crossref");
+    for (const tool of TOOLS.filter((t) => t !== "clip" && t !== "text-to-speech" && !LOOKUP_TOOLS.has(t))) {
       expect(dataHandling(tool)).toMatch(/not uploaded\.$/);
     }
   });
@@ -121,6 +124,7 @@ describe("agent discovery files", () => {
       "src/client/analytics.ts": "loads Google Analytics on tracked pages (src/shared/analytics.ts)",
       "src/client/search.ts": "site search: posts a query only when it found nothing (no emails)",
       "src/client/nostalgia/ui.ts": "nostalgia: posts the page id and a yes/no only when the reader presses an answer",
+      "src/client/citation-generator/lookup.ts": "citation lookup: on Find, GETs only the typed DOI from Crossref or ISBN from Open Library (no cookies, no Referer)",
     };
     const files = [...sourceFiles(join(root, "src/client")), ...sourceFiles(join(root, "src/shared"))]
       .map((file) => file.slice(root.length + 1).split("\\").join("/"))

@@ -749,7 +749,15 @@
     "titleFlightSimulator": "Simulator pesawat online — game pesawat 3D gratis — cv.cm",
     "descFlightSimulator": "Simulator pesawat 3D gratis di browser: lepas landas dari landasan, terbang di atas pulau low-poly lalu mendarat lagi, atau lewati 12 cincin melawan waktu. Tanpa unduhan; bisa dengan keyboard atau di HP.",
     "titleGames3d": "Game 3D online gratis — catur 3D, rubik, mobil, pesawat — cv.cm",
-    "descGames3d": "Main game 3D gratis di browser tanpa unduhan: catur 3D, kubus rubik, game menumpuk balok, game mobil dengan drift, dan simulator pesawat. Bisa di HP juga."
+    "descGames3d": "Main game 3D gratis di browser tanpa unduhan: catur 3D, kubus rubik, game menumpuk balok, game mobil dengan drift, dan simulator pesawat. Bisa di HP juga.",
+    "titleCitationGenerator": "Generator daftar pustaka & sitasi — APA, MLA, Chicago, Harvard, IEEE, Vancouver — cv.cm",
+    "descCitationGenerator": "Generator daftar pustaka gratis: cari artikel jurnal lewat DOI atau buku lewat ISBN, atau ketik datanya, lalu dapatkan daftar pustaka dan sitasi dalam teks gaya APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver atau GB/T 7714. Susun daftar pustaka skripsi; impor dan ekspor BibTeX dan RIS.",
+    "titleApaCitationGenerator": "Generator sitasi APA — daftar pustaka APA 7 dan sitasi dalam teks — cv.cm",
+    "descApaCitationGenerator": "Generator sitasi APA 7 gratis: kutip artikel jurnal dari DOI, buku dari ISBN, bab buku atau halaman web. Dapatkan entri daftar pustaka dengan huruf miring yang benar dan sitasi (Penulis, Tahun), lalu salin ke Word atau Google Docs.",
+    "titleMlaCitationGenerator": "Generator sitasi MLA — works cited MLA edisi ke-9 — cv.cm",
+    "descMlaCitationGenerator": "Generator sitasi MLA 9 gratis: kutip artikel, buku, bab buku dan situs web untuk halaman works cited dari DOI, ISBN atau data yang Anda ketik, lengkap dengan sitasi (Penulis halaman) dan huruf miring yang tetap terjaga saat disalin.",
+    "titleHarvardReferencingGenerator": "Generator referensi Harvard — gaya Cite Them Right — cv.cm",
+    "descHarvardReferencingGenerator": "Generator referensi Harvard (Cite Them Right) gratis: artikel jurnal dari DOI, buku dari ISBN, bab buku dan situs web dengan 'Available at' dan tanggal 'Accessed', plus sitasi (Penulis, Tahun) untuk teks Anda."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1665,6 +1673,22 @@
     "flight-simulator": {
       "name": "Simulator pesawat",
       "blurb": "Lepas landas, terbang di atas pulau dan mendarat, atau lewati cincin melawan waktu."
+    },
+    "citation-generator": {
+      "name": "Generator daftar pustaka",
+      "blurb": "APA, MLA, Chicago, Harvard, dan lainnya."
+    },
+    "apa-citation-generator": {
+      "name": "Generator sitasi APA",
+      "blurb": "Daftar pustaka APA 7 dari DOI atau ISBN."
+    },
+    "mla-citation-generator": {
+      "name": "Generator sitasi MLA",
+      "blurb": "Entri works cited MLA 9."
+    },
+    "harvard-referencing-generator": {
+      "name": "Generator referensi Harvard",
+      "blurb": "Referensi Harvard gaya Cite Them Right."
     }
   },
   "watermark": {
@@ -6280,6 +6304,54 @@
       "a3": "Mesin 3D (three.js) dan konteks grafis baru berjalan saat Anda bermain, jadi halaman cepat terbuka dan HP tidak memakai memori untuk game yang hanya Anda baca.",
       "q4": "Game bilang 3D tidak tersedia. Apa yang bisa dilakukan?",
       "a4": "Game ini butuh WebGL. Perbarui browser, nyalakan akselerasi perangkat keras di pengaturannya, atau coba browser lain. Beberapa komputer kantor atau sekolah memblokir WebGL."
+    },
+    "citation-generator": {
+      "q1": "Bagaimana cara membuat daftar pustaka secara otomatis?",
+      "a1": "Tempel DOI artikel (10.xxxx/…) atau ISBN buku lalu tekan Cari. Datanya diisi dari Crossref/DataCite atau Open Library; periksa, pilih gaya, lalu salin referensinya. Ini sitasi otomatis untuk skripsi dan makalah.",
+      "q2": "Gaya sitasi apa saja yang didukung?",
+      "a2": "APA edisi ke-7, MLA edisi ke-9, Chicago edisi ke-17 (catatan dan bibliografi), Harvard (Cite Them Right), IEEE, Vancouver, dan standar nasional Tiongkok GB/T 7714-2015.",
+      "q3": "Apakah data saya dikirim ke mana pun?",
+      "a3": "Hanya saat Anda menekan Cari: DOI atau ISBN di kotak itu dikirim ke Crossref/DataCite atau Open Library. Semua yang Anda ketik di formulir diformat di browser Anda, dan daftar pustaka Anda tetap tersimpan di browser ini.",
+      "q4": "Bisakah saya mengimpor dari Mendeley, Zotero, atau EndNote?",
+      "a4": "Bisa. Ekspor pustaka Anda dari Mendeley, Zotero, atau EndNote sebagai BibTeX (.bib) atau RIS (.ris), buka filenya di editor teks lalu tempel di bagian Impor. Anda juga bisa menyalin daftar kembali sebagai BibTeX atau RIS.",
+      "q5": "Mengapa kapitalisasi judul saya tidak diubah?",
+      "a5": "Judul dibiarkan persis seperti yang Anda ketik, karena hanya Anda yang tahu kata mana yang nama diri. APA, Harvard, dan Vancouver memakai sentence case untuk judul artikel dan buku; MLA, Chicago, dan IEEE memakai title case."
+    },
+    "apa-citation-generator": {
+      "q1": "Bagaimana cara menulis sitasi artikel jurnal dalam APA 7?",
+      "a1": "Author, A. A., & Author, B. B. (Year). Title of the article. Journal Name, Volume(Issue), pages. https://doi.org/… Nama jurnal dan volume ditulis miring.",
+      "q2": "Seperti apa sitasi APA dalam teks?",
+      "a2": "(Penulis, Tahun): (Smith, 2020) untuk satu penulis, (Smith & Lee, 2020) untuk dua penulis, dan (Smith et al., 2020) untuk tiga penulis atau lebih, sejak sitasi pertama.",
+      "q3": "Berapa banyak penulis yang dicantumkan APA 7?",
+      "a3": "Hingga 20 di daftar pustaka. Untuk 21 penulis atau lebih, tulis 19 penulis pertama, elipsis (. . .), lalu penulis terakhir.",
+      "q4": "Bagaimana cara mengutip situs web dalam APA?",
+      "a4": "Author. (Year, Month Day). Title of the page. Site Name. URL. Judul halaman ditulis miring, dan nama situs dihilangkan bila sama dengan penulisnya.",
+      "q5": "Bagaimana jika tidak ada tanggal atau penulis?",
+      "a5": "Tulis (n.d.) bila tidak ada tanggal. Bila tidak ada penulis, judul pindah ke posisi penulis, sebelum tanggal."
+    },
+    "mla-citation-generator": {
+      "q1": "Bagaimana cara mengutip artikel jurnal dalam MLA 9?",
+      "a1": "Last, First. \"Title of the Article.\" Journal Name, vol. 12, no. 3, 2020, pp. 45-67. Nama jurnal ditulis miring; DOI diletakkan di akhir.",
+      "q2": "Bagaimana MLA menangani beberapa penulis?",
+      "a2": "Dua penulis: Last, First, and First Last. Tiga penulis atau lebih: penulis pertama diikuti et al.",
+      "q3": "Seperti apa sitasi MLA dalam teks?",
+      "a3": "Nama belakang penulis dan halaman, tanpa koma: (Smith 45). Dua penulis: (Smith and Lee 45). Tiga atau lebih: (Smith et al. 45).",
+      "q4": "Bagaimana cara mengutip situs web dalam MLA?",
+      "a4": "Author. \"Title of the Page.\" Website Name, day Month year, URL. MLA menghilangkan https:// dari URL.",
+      "q5": "Apa itu halaman works cited?",
+      "a5": "Daftar semua sumber yang Anda kutip, di akhir tulisan, diurutkan menurut abjad kata pertama setiap entri, dengan indentasi gantung."
+    },
+    "harvard-referencing-generator": {
+      "q1": "Bagaimana cara menulis referensi artikel jurnal gaya Harvard?",
+      "a1": "Surname, Initials. (Year) 'Title of article', Journal Name, Volume(Issue), pp. pages. Available at: https://doi.org/… (Cite Them Right, edisi ke-12).",
+      "q2": "Bagaimana sitasi Harvard dalam teks?",
+      "a2": "(Nama belakang, Tahun): (Smith, 2020), (Smith and Lee, 2020), (Smith, Lee and Park, 2020), dan (Smith et al., 2020) untuk empat penulis atau lebih.",
+      "q3": "Bagaimana cara mengutip situs web gaya Harvard?",
+      "a3": "Author or organization (Year) Title of page. Available at: URL (Accessed: day Month year). Tambahkan tanggal Anda membaca halaman itu.",
+      "q4": "Apakah gaya Harvard hanya ada satu?",
+      "a4": "Tidak. Harvard adalah keluarga gaya penulis–tahun dan rinciannya berbeda antarkampus. Generator ini mengikuti Cite Them Right, versi yang dipakai sebagian besar universitas di Inggris dan Australia; periksa pedoman penulisan kampus Anda.",
+      "q5": "Bagaimana urutan daftar referensinya?",
+      "a5": "Menurut abjad nama belakang penulis pertama, lalu menurut tahun. Daftarnya diberi judul Reference list (atau References)."
     }
   },
   "qr": {
@@ -16364,5 +16436,80 @@
     "exitFullscreen": "Keluar dari layar penuh",
     "pad": "Tombol game",
     "credit": "Grafis 3D dengan {name} (lisensi MIT)."
+  },
+  "cite": {
+    "title_main": "Generator daftar pustaka",
+    "title_apa": "Generator sitasi APA",
+    "title_mla": "Generator sitasi MLA",
+    "title_harvard": "Generator referensi Harvard",
+    "privacyNote": "Daftar pustaka dan sitasi dalam teks dalam tujuh gaya. Pemformatan berlangsung di browser Anda; hanya tombol Cari yang menghubungi Crossref/DataCite atau Open Library.",
+    "lookupTitle": "Cari lewat DOI atau ISBN",
+    "lookupLabel": "DOI atau ISBN",
+    "lookupPlaceholder": "10.1038/nature14539 atau ISBN",
+    "find": "Cari",
+    "searching": "Mencari…",
+    "found": "Ditemukan. Periksa datanya di bawah.",
+    "lookup_invalid": "Itu bukan DOI (10.xxxx/…) atau ISBN-10/13 yang valid.",
+    "lookup_notFound": "Tidak ada hasil untuk DOI atau ISBN itu. Isi datanya di bawah.",
+    "lookup_network": "Layanan pencarian tidak merespons. Coba lagi, atau isi datanya di bawah.",
+    "lookupPrivacy": "Cari hanya mengirim DOI ini ke Crossref/DataCite atau ISBN ini ke Open Library. Tidak ada data lain yang keluar dari browser Anda.",
+    "detailsTitle": "Data sumber",
+    "type": "Jenis sumber",
+    "type_article": "Artikel jurnal",
+    "type_book": "Buku",
+    "type_chapter": "Bab buku",
+    "type_webpage": "Halaman web",
+    "authors": "Penulis (satu per baris)",
+    "authorsHint": "Tulis Belakang, Depan atau Depan Belakang. Tulis penulis lembaga dalam kurung kurawal: {World Health Organization}.",
+    "titleField": "Judul",
+    "container_article": "Jurnal",
+    "container_book": "Seri",
+    "container_chapter": "Judul buku",
+    "container_webpage": "Nama situs web",
+    "editors": "Editor buku (satu per baris)",
+    "year": "Tahun",
+    "month": "Bulan",
+    "day": "Tanggal",
+    "volume": "Volume",
+    "issue": "Nomor",
+    "pages": "Halaman",
+    "edition": "Edisi (angka)",
+    "publisher": "Penerbit",
+    "place": "Kota terbit",
+    "accessed": "Tanggal diakses",
+    "importTitle": "Impor BibTeX atau RIS",
+    "importLabel": "Teks BibTeX atau RIS",
+    "import": "Impor",
+    "importNone": "Tidak ada entri lengkap. Tempel BibTeX (@article{…}) atau RIS (TY  - JOUR …).",
+    "imported": "{n} entri diimpor. Entri pertama ada di formulir; bila lebih dari satu, semuanya masuk ke daftar Anda.",
+    "style": "Gaya sitasi",
+    "style_apa": "APA edisi ke-7",
+    "style_mla": "MLA edisi ke-9",
+    "style_chicago": "Chicago edisi ke-17 (catatan dan bibliografi)",
+    "style_harvard": "Harvard (Cite Them Right)",
+    "style_ieee": "IEEE",
+    "style_vancouver": "Vancouver",
+    "style_gbt": "GB/T 7714-2015",
+    "result": "Referensi",
+    "inText": "Sitasi dalam teks:",
+    "note": "Catatan singkat:",
+    "caseSentence": "Gaya ini memakai sentence case untuk judul: huruf kapital hanya pada kata pertama, kata pertama setelah titik dua, dan nama diri.",
+    "caseTitle": "Gaya ini memakai title case: kata-kata utama judul diawali huruf kapital.",
+    "needTitle_title": "Tambahkan judul untuk melihat referensinya.",
+    "needTitle_container": "Tambahkan judul dan nama jurnal atau buku untuk melihat referensinya.",
+    "copy": "Salin referensi",
+    "copied": "Tersalin",
+    "copyFailed": "Gagal menyalin",
+    "add": "Tambahkan ke daftar",
+    "listTitle": "Daftar pustaka Anda ({n})",
+    "listEmpty": "Referensi yang ditambahkan muncul di sini, diurutkan sesuai gaya. Daftar ini disimpan di browser ini.",
+    "copyList": "Salin daftar",
+    "copyBibtex": "Salin BibTeX",
+    "copyRis": "Salin RIS",
+    "clearList": "Kosongkan daftar",
+    "clearConfirm": "Ketuk lagi untuk mengosongkan",
+    "remove": "Hapus dari daftar",
+    "listFull": "Daftar Anda menampung paling banyak {max} referensi; {n} tidak ditambahkan.",
+    "edited": "Ini adalah editor buku"
   }
 }

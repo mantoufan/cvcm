@@ -749,7 +749,15 @@
     "titleFlightSimulator": "Simulador de vuelo online — juego de aviones 3D gratis — cv.cm",
     "descFlightSimulator": "Simulador de vuelo 3D gratis en el navegador: despega de la pista, vuela sobre una isla low-poly y vuelve a aterrizar, o pasa por 12 aros contra el reloj. Sin descargas; con teclado o en el móvil.",
     "titleGames3d": "Juegos 3D gratis online — ajedrez, cubo mágico, coches y avión — cv.cm",
-    "descGames3d": "Juega gratis a juegos 3D en el navegador sin descargar nada: ajedrez 3D, cubo mágico, juego de apilar, juego de coches con derrape y simulador de vuelo. También en el móvil."
+    "descGames3d": "Juega gratis a juegos 3D en el navegador sin descargar nada: ajedrez 3D, cubo mágico, juego de apilar, juego de coches con derrape y simulador de vuelo. También en el móvil.",
+    "titleCitationGenerator": "Generador de citas — APA, MLA, Chicago, Harvard, IEEE, Vancouver, GB/T 7714 — cv.cm",
+    "descCitationGenerator": "Generador de citas y referencias gratis: busca un artículo por DOI o un libro por ISBN, o escribe los datos, y obtén la referencia y la cita en el texto en APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver o GB/T 7714. Arma tu bibliografía; importa y exporta BibTeX y RIS.",
+    "titleApaCitationGenerator": "Generador de citas APA — referencias y citas según normas APA 7 — cv.cm",
+    "descApaCitationGenerator": "Generador de citas APA 7 gratis: cita un artículo de revista con su DOI, un libro con su ISBN, un capítulo de libro o una página web. Obtén la entrada de la lista de referencias con las cursivas correctas y la cita (Autor, Año), y cópiala en Word o Google Docs.",
+    "titleMlaCitationGenerator": "Generador de citas MLA — obras citadas según MLA 9 — cv.cm",
+    "descMlaCitationGenerator": "Generador de citas MLA 9 gratis: cita artículos, libros, capítulos y sitios web para tu lista de obras citadas a partir de un DOI, un ISBN o los datos que escribas, con la cita (Autor página) en el texto y las cursivas al copiar.",
+    "titleHarvardReferencingGenerator": "Generador de referencias Harvard — estilo Cite Them Right — cv.cm",
+    "descHarvardReferencingGenerator": "Generador de referencias Harvard gratis (Cite Them Right): artículos desde un DOI, libros desde un ISBN, capítulos y sitios web con «Available at» y fecha de consulta, más la cita (Apellido, Año) para tu texto."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1665,6 +1673,22 @@
     "flight-simulator": {
       "name": "Simulador de vuelo",
       "blurb": "Despega, vuela sobre una isla y aterriza, o pasa por los aros contra el reloj."
+    },
+    "citation-generator": {
+      "name": "Generador de citas",
+      "blurb": "APA, MLA, Chicago, Harvard y más."
+    },
+    "apa-citation-generator": {
+      "name": "Generador de citas APA",
+      "blurb": "Referencias APA 7 desde un DOI o ISBN."
+    },
+    "mla-citation-generator": {
+      "name": "Generador de citas MLA",
+      "blurb": "Entradas de obras citadas MLA 9."
+    },
+    "harvard-referencing-generator": {
+      "name": "Generador de referencias Harvard",
+      "blurb": "Referencias Harvard estilo Cite Them Right."
     }
   },
   "watermark": {
@@ -6280,6 +6304,54 @@
       "a3": "El motor 3D (three.js) y el contexto gráfico arrancan solo cuando juegas, así la página abre rápido y el móvil no gasta memoria en un juego que solo estás mirando.",
       "q4": "El juego dice que el 3D no está disponible. ¿Qué hago?",
       "a4": "Los juegos necesitan WebGL. Actualiza el navegador, activa la aceleración por hardware en su configuración o prueba otro navegador. Algunos ordenadores del trabajo o del colegio bloquean WebGL."
+    },
+    "citation-generator": {
+      "q1": "¿Cómo cito una fuente automáticamente?",
+      "a1": "Pega el DOI del artículo (10.xxxx/…) o el ISBN del libro y pulsa Buscar. Los datos se completan desde Crossref/DataCite u Open Library; revísalos, elige un estilo y copia la referencia.",
+      "q2": "¿Qué estilos de cita admite?",
+      "a2": "APA 7.ª edición, MLA 9.ª edición, Chicago 17.ª (notas y bibliografía), Harvard (Cite Them Right), IEEE, Vancouver y la norma nacional china GB/T 7714-2015.",
+      "q3": "¿Se envían mis datos a algún lugar?",
+      "a3": "Solo cuando pulsas Buscar: el DOI o ISBN de ese campo se envía a Crossref/DataCite u Open Library. Todo lo que escribes en el formulario se formatea en tu navegador, y tu lista de referencias se queda en este navegador.",
+      "q4": "¿Puedo importar desde Zotero, Mendeley o EndNote?",
+      "a4": "Sí. Exporta tu biblioteca como BibTeX (.bib) o RIS (.ris), abre el archivo en un editor de texto y pégalo en Importar. También puedes copiar tu lista de vuelta como BibTeX o RIS.",
+      "q5": "¿Por qué no cambia el uso de mayúsculas en mi título?",
+      "a5": "Los títulos se mantienen tal como los escribes, porque solo tú sabes qué palabras son nombres propios. APA, Harvard y Vancouver usan mayúscula solo al inicio en títulos de artículos y libros; MLA, Chicago e IEEE ponen en mayúscula las palabras principales (title case)."
+    },
+    "apa-citation-generator": {
+      "q1": "¿Cómo se cita un artículo de revista en APA 7?",
+      "a1": "Author, A. A., & Author, B. B. (Year). Title of the article. Journal Name, Volume(Issue), pages. https://doi.org/… El nombre de la revista y el volumen van en cursiva.",
+      "q2": "¿Cómo es una cita en el texto en APA?",
+      "a2": "(Autor, Año): (Smith, 2020) con un autor, (Smith & Lee, 2020) con dos y (Smith et al., 2020) con tres o más, desde la primera cita.",
+      "q3": "¿Cuántos autores se incluyen en APA 7?",
+      "a3": "Hasta 20 en la lista de referencias. Con 21 o más, se escriben los primeros 19, puntos suspensivos (. . .) y el último autor.",
+      "q4": "¿Cómo se cita una página web en APA?",
+      "a4": "Author. (Year, Month Day). Title of the page. Site Name. URL. El título de la página va en cursiva, y el nombre del sitio se omite cuando coincide con el autor.",
+      "q5": "¿Y si no hay fecha o no hay autor?",
+      "a5": "Escribe (n.d.) cuando no hay fecha. Sin autor, el título pasa al lugar del autor, antes de la fecha."
+    },
+    "mla-citation-generator": {
+      "q1": "¿Cómo se cita un artículo de revista en MLA 9?",
+      "a1": "Last, First. \"Title of the Article.\" Journal Name, vol. 12, no. 3, 2020, pp. 45-67. El nombre de la revista va en cursiva; el DOI va al final.",
+      "q2": "¿Cómo trata MLA a varios autores?",
+      "a2": "Dos autores: Last, First, and First Last. Tres o más: el primer autor seguido de et al.",
+      "q3": "¿Cómo es una cita en el texto en MLA?",
+      "a3": "El apellido del autor y la página, sin coma: (Smith 45). Dos autores: (Smith and Lee 45). Tres o más: (Smith et al. 45).",
+      "q4": "¿Cómo se cita un sitio web en MLA?",
+      "a4": "Author. \"Title of the Page.\" Website Name, day Month year, URL. MLA omite https:// en las URL.",
+      "q5": "¿Qué es la lista de obras citadas?",
+      "a5": "La lista de todas las fuentes que citas, al final del trabajo, en orden alfabético por la primera palabra de cada entrada y con sangría francesa."
+    },
+    "harvard-referencing-generator": {
+      "q1": "¿Cómo se referencia un artículo de revista en estilo Harvard?",
+      "a1": "Surname, Initials. (Year) 'Title of article', Journal Name, Volume(Issue), pp. pages. Available at: https://doi.org/… (Cite Them Right, 12.ª edición).",
+      "q2": "¿Cómo funcionan las citas en el texto en Harvard?",
+      "a2": "(Apellido, Año): (Smith, 2020), (Smith and Lee, 2020), (Smith, Lee and Park, 2020) y (Smith et al., 2020) con cuatro o más autores.",
+      "q3": "¿Cómo se referencia un sitio web en Harvard?",
+      "a3": "Author or organization (Year) Title of page. Available at: URL (Accessed: day Month year). Añade la fecha en que consultaste la página.",
+      "q4": "¿Existe un único estilo Harvard?",
+      "a4": "No. Harvard es una familia de estilos autor–fecha y cada universidad cambia detalles. Este generador sigue Cite Them Right, la versión que usan la mayoría de las universidades del Reino Unido y Australia; revisa la guía de tu curso.",
+      "q5": "¿Cómo se ordena la lista de referencias?",
+      "a5": "Alfabéticamente por el apellido del primer autor y luego por año. La lista se titula Reference list (o References)."
     }
   },
   "qr": {
@@ -16364,5 +16436,80 @@
     "exitFullscreen": "Salir de pantalla completa",
     "pad": "Controles del juego",
     "credit": "Gráficos 3D con {name} (licencia MIT)."
+  },
+  "cite": {
+    "title_main": "Generador de citas",
+    "title_apa": "Generador de citas APA",
+    "title_mla": "Generador de citas MLA",
+    "title_harvard": "Generador de referencias Harvard",
+    "privacyNote": "Referencias y citas en el texto en siete estilos. El formato se hace en tu navegador; solo Buscar consulta a Crossref/DataCite u Open Library.",
+    "lookupTitle": "Buscar por DOI o ISBN",
+    "lookupLabel": "DOI o ISBN",
+    "lookupPlaceholder": "10.1038/nature14539 o ISBN",
+    "find": "Buscar",
+    "searching": "Buscando…",
+    "found": "Encontrado. Revisa los datos abajo.",
+    "lookup_invalid": "Eso no es un DOI (10.xxxx/…) ni un ISBN-10/13 válido.",
+    "lookup_notFound": "No se encontró nada para ese DOI o ISBN. Completa los datos abajo.",
+    "lookup_network": "El servicio de búsqueda no respondió. Inténtalo de nuevo o completa los datos abajo.",
+    "lookupPrivacy": "Buscar envía solo este DOI a Crossref/DataCite o este ISBN a Open Library. Nada más sale de tu navegador.",
+    "detailsTitle": "Datos de la fuente",
+    "type": "Tipo de fuente",
+    "type_article": "Artículo de revista",
+    "type_book": "Libro",
+    "type_chapter": "Capítulo de libro",
+    "type_webpage": "Página web",
+    "authors": "Autores (uno por línea)",
+    "authorsHint": "Escribe Apellido, Nombre o Nombre Apellido. Pon un autor institucional entre llaves: {Organización Mundial de la Salud}.",
+    "titleField": "Título",
+    "container_article": "Revista",
+    "container_book": "Serie",
+    "container_chapter": "Título del libro",
+    "container_webpage": "Nombre del sitio web",
+    "editors": "Editores del libro (uno por línea)",
+    "year": "Año",
+    "month": "Mes",
+    "day": "Día",
+    "volume": "Volumen",
+    "issue": "Número",
+    "pages": "Páginas",
+    "edition": "Edición (número)",
+    "publisher": "Editorial",
+    "place": "Lugar de publicación",
+    "accessed": "Fecha de consulta",
+    "importTitle": "Importar BibTeX o RIS",
+    "importLabel": "Texto BibTeX o RIS",
+    "import": "Importar",
+    "importNone": "No se encontraron entradas completas. Pega BibTeX (@article{…}) o RIS (TY  - JOUR …).",
+    "imported": "Entradas importadas: {n}. La primera está en el formulario; si hay varias, todas están en tu lista.",
+    "style": "Estilo de cita",
+    "style_apa": "APA 7.ª edición",
+    "style_mla": "MLA 9.ª edición",
+    "style_chicago": "Chicago 17.ª (notas y bibliografía)",
+    "style_harvard": "Harvard (Cite Them Right)",
+    "style_ieee": "IEEE",
+    "style_vancouver": "Vancouver",
+    "style_gbt": "GB/T 7714-2015",
+    "result": "Referencia",
+    "inText": "Cita en el texto:",
+    "note": "Nota breve:",
+    "caseSentence": "Este estilo escribe los títulos con mayúscula solo al inicio: la primera palabra, la primera después de dos puntos y los nombres propios.",
+    "caseTitle": "Este estilo usa title case: mayúscula en las palabras principales de los títulos.",
+    "needTitle_title": "Añade un título para ver la referencia.",
+    "needTitle_container": "Añade un título y el nombre de la revista o del libro para ver la referencia.",
+    "copy": "Copiar referencia",
+    "copied": "Copiado",
+    "copyFailed": "No se pudo copiar",
+    "add": "Agregar a la lista",
+    "listTitle": "Tu lista de referencias ({n})",
+    "listEmpty": "Las referencias que agregues aparecen aquí, ordenadas según el estilo. La lista se guarda en este navegador.",
+    "copyList": "Copiar lista",
+    "copyBibtex": "Copiar BibTeX",
+    "copyRis": "Copiar RIS",
+    "clearList": "Borrar lista",
+    "clearConfirm": "Toca de nuevo para borrar",
+    "remove": "Quitar de la lista",
+    "listFull": "Tu lista admite hasta {max} referencias. Sin agregar: {n}.",
+    "edited": "Son los editores del libro"
   }
 }

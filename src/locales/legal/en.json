@@ -53,6 +53,13 @@
           ]
         },
         {
+          "id": "citation-lookups",
+          "h": "Citation lookups",
+          "p": [
+            "The citation generator formats references in your browser and keeps your reference list in this browser's local storage. When you press Find, the DOI you typed is sent to Crossref/DataCite (api.crossref.org, api.datacite.org) or the ISBN to Open Library (openlibrary.org) to fetch the source's details. Nothing else you typed is sent, the request carries no cookies or page address, and we do not receive or store it. Crossref/DataCite and Open Library handle the request under their own privacy policies."
+          ]
+        },
+        {
           "h": "Hosting and server logs",
           "p": [
             "cv.cm is served by Cloudflare. To deliver and protect the site, Cloudflare processes request data such as IP address, browser user agent, and requested URL under its own privacy policy. Our storage server at s3.cv.cm keeps standard web server logs (IP address, time, requested path) for security and troubleshooting. We do not use these logs to build profiles."

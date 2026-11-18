@@ -6,7 +6,7 @@ import { d1NostalgiaStore, handleNostalgiaApi } from "./nostalgia-api";
 import { countryBucket, countryCode } from "./shared/countries";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isLookupToolPath, LOOKUP_HOSTS, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, STATIC_FILE, toolJob } from "./shared/path";
 import { rankingRowsChunk } from "./shared/rankings";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { COVER_ORIGIN, thumbOriginal } from "./shared/covers";
@@ -28,7 +28,8 @@ export interface Env {
   S3_REGION?: string;
 }
 
-function siteCsp(analytics: boolean, wasm = false): string {
+/** A page CSP: GA hosts on tracked pages, WebAssembly on AI pages, and any extra hosts the page may fetch from. */
+function siteCsp({ analytics = false, wasm = false, connect = [] as readonly string[] } = {}): string {
   return [
     "default-src 'self'",
     analytics
@@ -38,7 +39,7 @@ function siteCsp(analytics: boolean, wasm = false): string {
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' blob: data: https:",
     "font-src 'self'",
-    analytics ? `connect-src 'self' https://s3.cv.cm ${GA_CONNECT_HOSTS.join(" ")}` : "connect-src 'self' https://s3.cv.cm",
+    ["connect-src 'self' https://s3.cv.cm", ...(analytics ? GA_CONNECT_HOSTS : []), ...connect].join(" "),
     "media-src blob: https:",
     "worker-src 'self' blob:",
     "frame-src 'self'",
@@ -50,11 +51,18 @@ function siteCsp(analytics: boolean, wasm = false): string {
   ].join("; ");
 }
 
-// File tools and clip notes get a CSP without the analytics hosts (AGENTS.md rule 1).
-const CSP = siteCsp(false);
-const CSP_ANALYTICS = siteCsp(true);
-// AI tool pages, and scripts (a worker takes its CSP from its own script's response, not the page's).
-const CSP_AI = siteCsp(false, true);
+/**
+ * The CSP for a page's flags, built once per combination: file tools and clip notes have no analytics hosts (AGENTS.md
+ * rule 1), AI pages WebAssembly, citation pages the lookup hosts.
+ */
+const cspCache = new Map<string, string>();
+function cspFor(flags: { analytics: boolean; wasm: boolean; lookup: boolean }): string {
+  const key = `${+flags.analytics}${+flags.wasm}${+flags.lookup}`;
+  let csp = cspCache.get(key);
+  if (!csp) cspCache.set(key, (csp = siteCsp({ analytics: flags.analytics, wasm: flags.wasm, connect: flags.lookup ? LOOKUP_HOSTS : [] })));
+  return csp;
+}
+
 
 const EMU_CSP = [
   "default-src 'self'",
@@ -702,7 +710,9 @@ function withHeaders(res: Response, pathname: string): Response {
     // capture the screen; every other page keeps them off.
     `camera=(${devices.includes("camera") ? "self" : ""}), microphone=(${devices.includes("microphone") ? "self" : ""}), display-capture=(${devices.includes("display-capture") ? "self" : ""}), geolocation=(), interest-cohort=(), usb=()`,
   );
-  headers.set("Content-Security-Policy", player ? EMU_CSP : aiPage || script ? CSP_AI : isTrackedPath(pathname) ? CSP_ANALYTICS : CSP);
+  // AI pages and scripts get WebAssembly and no GA hosts (as before); citation pages add the lookup hosts.
+  const wasm = aiPage || script;
+  headers.set("Content-Security-Policy", player ? EMU_CSP : cspFor({ analytics: !wasm && isTrackedPath(pathname), wasm, lookup: !wasm && isLookupToolPath(pathname) }));
   if (pathname === "/api/device/ip") {
     headers.set("Cache-Control", "private, no-store");
     headers.set("CDN-Cache-Control", "no-store");

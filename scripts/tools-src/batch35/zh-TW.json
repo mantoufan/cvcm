@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "titleCitationGenerator": "參考文獻產生器 — APA、MLA、Chicago、哈佛、IEEE、Vancouver、GB/T 7714 引用格式 — cv.cm",
+    "descCitationGenerator": "免費參考文獻產生器：用 DOI 查詢期刊論文、用 ISBN 查詢書籍，或自行填寫資料，即可產生 APA 第七版、MLA 第九版、Chicago、哈佛、IEEE、Vancouver 或 GB/T 7714 參考文獻與文中引用。可整理參考文獻清單，支援匯入、匯出 BibTeX 和 RIS。",
+    "titleApaCitationGenerator": "APA 格式產生器 — APA 第七版參考文獻與文中引用 — cv.cm",
+    "descApaCitationGenerator": "免費 APA 第七版格式產生器：用 DOI 引用期刊論文、用 ISBN 引用書籍，也可引用書中章節或網頁。產生斜體正確的參考文獻條目與（作者, 年份）文中引用，可直接複製到 Word 或 Google 文件。",
+    "titleMlaCitationGenerator": "MLA 格式產生器 — MLA 第九版引用文獻（Works Cited） — cv.cm",
+    "descMlaCitationGenerator": "免費 MLA 第九版格式產生器：依 DOI、ISBN 或你填寫的資料，為論文、書籍、章節和網站產生 Works Cited 條目，並提供（作者 頁碼）文中引用，複製時保留斜體。",
+    "titleHarvardReferencingGenerator": "哈佛格式產生器 — Cite Them Right 版本 — cv.cm",
+    "descHarvardReferencingGenerator": "免費哈佛格式參考文獻產生器（Cite Them Right）：用 DOI 引用期刊論文、用 ISBN 引用書籍，也可引用章節和網站（附 Available at 與 Accessed 日期），並產生內文中的（作者, 年份）引用。"
+  },
+  "tools": {
+    "citation-generator": {
+      "name": "參考文獻產生器",
+      "blurb": "APA、MLA、Chicago、哈佛等格式。"
+    },
+    "apa-citation-generator": {
+      "name": "APA 格式產生器",
+      "blurb": "用 DOI 或 ISBN 產生 APA 第七版參考文獻。"
+    },
+    "mla-citation-generator": {
+      "name": "MLA 格式產生器",
+      "blurb": "產生 MLA 第九版 Works Cited 條目。"
+    },
+    "harvard-referencing-generator": {
+      "name": "哈佛格式產生器",
+      "blurb": "Cite Them Right 版哈佛參考文獻。"
+    }
+  },
+  "faq": {
+    "citation-generator": {
+      "q1": "要怎麼自動產生引用？",
+      "a1": "貼上論文的 DOI（10.xxxx/…）或書籍的 ISBN，再按「查詢」。資料會從 Crossref/DataCite 或 Open Library 自動填入；確認無誤後選擇格式，複製參考文獻即可。",
+      "q2": "支援哪些引用格式？",
+      "a2": "APA 第七版、MLA 第九版、Chicago 第 17 版（註釋—書目體系）、哈佛格式（Cite Them Right）、IEEE、Vancouver，以及中國國家標準 GB/T 7714-2015。",
+      "q3": "我的資料會被傳送出去嗎？",
+      "a3": "只有按「查詢」時，查詢框中的 DOI 或 ISBN 會傳送給 Crossref/DataCite 或 Open Library。表單中填寫的所有內容都在瀏覽器裡排版，你的參考文獻清單也只儲存在這個瀏覽器中。",
+      "q4": "可以從 Zotero、Mendeley 或 EndNote 匯入嗎？",
+      "a4": "可以。把文獻庫匯出為 BibTeX（.bib）或 RIS（.ris），用文字編輯器開啟後貼到「匯入」中。你也可以把清單再以 BibTeX 或 RIS 複製出來。",
+      "q5": "為什麼標題的大小寫沒有自動修改？",
+      "a5": "標題會照你輸入的原樣保留，因為只有你知道哪些字是專有名詞。APA、哈佛和 Vancouver 的論文與書名採句首大寫（sentence case）；MLA、Chicago 和 IEEE 採標題式大寫（title case）。"
+    },
+    "apa-citation-generator": {
+      "q1": "APA 第七版要怎麼引用期刊論文？",
+      "a1": "Author, A. A., & Author, B. B. (Year). Title of the article. Journal Name, Volume(Issue), pages. https://doi.org/… 其中期刊名稱和卷號用斜體。",
+      "q2": "APA 的文中引用長什麼樣子？",
+      "a2": "（作者, 年份）：一位作者寫 (Smith, 2020)，兩位寫 (Smith & Lee, 2020)，三位以上從第一次引用起就寫 (Smith et al., 2020)。",
+      "q3": "APA 第七版最多列出幾位作者？",
+      "a3": "參考文獻中最多列 20 位。21 位以上時，列出前 19 位，加上刪節號（. . .），再寫最後一位作者。",
+      "q4": "APA 要怎麼引用網頁？",
+      "a4": "Author. (Year, Month Day). Title of the page. Site Name. URL. 網頁標題用斜體；網站名稱與作者相同時省略網站名稱。",
+      "q5": "沒有日期或沒有作者怎麼辦？",
+      "a5": "沒有日期寫 (n.d.)。沒有作者時，把標題移到作者的位置，放在日期前面。"
+    },
+    "mla-citation-generator": {
+      "q1": "MLA 第九版要怎麼引用期刊論文？",
+      "a1": "Last, First. \"Title of the Article.\" Journal Name, vol. 12, no. 3, 2020, pp. 45-67. 期刊名稱用斜體，DOI 放在最後。",
+      "q2": "MLA 有多位作者時要怎麼寫？",
+      "a2": "兩位作者：Last, First, and First Last。三位以上：寫第一位作者，後接 et al.。",
+      "q3": "MLA 的文中引用長什麼樣子？",
+      "a3": "作者姓氏加頁碼，中間不加逗號：(Smith 45)。兩位作者：(Smith and Lee 45)。三位以上：(Smith et al. 45)。",
+      "q4": "MLA 要怎麼引用網站？",
+      "a4": "Author. \"Title of the Page.\" Website Name, day Month year, URL. MLA 的網址省略 https://。",
+      "q5": "什麼是 Works Cited 頁？",
+      "a5": "論文末尾列出所有引用來源的清單，依每筆第一個字的字母順序排列，並使用凸排（懸掛縮排）。"
+    },
+    "harvard-referencing-generator": {
+      "q1": "哈佛格式要怎麼引用期刊論文？",
+      "a1": "Surname, Initials. (Year) 'Title of article', Journal Name, Volume(Issue), pp. pages. Available at: https://doi.org/…（Cite Them Right 第 12 版）。",
+      "q2": "哈佛格式的文中引用怎麼寫？",
+      "a2": "（姓氏, 年份）：(Smith, 2020)、(Smith and Lee, 2020)、(Smith, Lee and Park, 2020)，四位以上作者寫 (Smith et al., 2020)。",
+      "q3": "哈佛格式要怎麼引用網站？",
+      "a3": "Author or organization (Year) Title of page. Available at: URL (Accessed: day Month year). 要加上你閱讀該網頁的日期。",
+      "q4": "哈佛格式只有一種嗎？",
+      "a4": "不是。哈佛格式是一類「作者—年份」體系，各大學的細節不盡相同。本工具採用英國與澳洲多數大學使用的 Cite Them Right 版本，請以你的課程手冊為準。",
+      "q5": "參考文獻清單要怎麼排序？",
+      "a5": "依第一作者姓氏的字母順序排列，再依年份排。清單標題為 Reference list（或 References）。"
+    }
+  },
+  "guides": {
+    "citation-generator": {
+      "lead": "三步產生一筆引用。",
+      "s1t": "查詢或填寫來源",
+      "s1b": "貼上 DOI 或 ISBN 後按「查詢」，或貼上 BibTeX、RIS，也可以自行填寫表單。",
+      "s2t": "選擇格式",
+      "s2b": "APA、MLA、Chicago、哈佛、IEEE、Vancouver 或 GB/T 7714，參考文獻與文中引用會立即更新。",
+      "s3t": "複製或整理清單",
+      "s3b": "複製含斜體的參考文獻，或加入清單後複製整份清單、BibTeX 或 RIS。"
+    },
+    "apa-citation-generator": {
+      "lead": "三步產生一筆 APA 第七版參考文獻。",
+      "s1t": "查詢來源",
+      "s1b": "貼上 DOI 或 ISBN 後按「查詢」，或填寫作者、標題、期刊和年份。",
+      "s2t": "確認資料",
+      "s2b": "標題採句首大寫，並確認所有作者都已列出。",
+      "s3t": "複製參考文獻",
+      "s3b": "把條目複製到參考文獻清單，內文中使用（作者, 年份）引用。"
+    },
+    "mla-citation-generator": {
+      "lead": "三步產生一筆 MLA 第九版 Works Cited 條目。",
+      "s1t": "查詢來源",
+      "s1b": "貼上 DOI 或 ISBN 後按「查詢」，或填寫論文、書籍、章節或網站的資料。",
+      "s2t": "確認資料",
+      "s2b": "採標題式大寫，論文和章節要加上頁碼範圍。",
+      "s3t": "複製條目",
+      "s3b": "複製到 Works Cited 頁，內文中寫成（作者 頁碼）。"
+    },
+    "harvard-referencing-generator": {
+      "lead": "三步產生一筆哈佛格式參考文獻。",
+      "s1t": "查詢來源",
+      "s1b": "貼上 DOI 或 ISBN 後按「查詢」，或自行填寫資料。",
+      "s2t": "加上存取日期",
+      "s2b": "網頁要填寫你閱讀的日期，會顯示為 Accessed。",
+      "s3t": "複製參考文獻",
+      "s3b": "複製到參考文獻清單，內文中寫成（姓氏, 年份）。"
+    }
+  },
+  "ui": {
+    "cite": {
+      "title_main": "參考文獻產生器",
+      "title_apa": "APA 格式產生器",
+      "title_mla": "MLA 格式產生器",
+      "title_harvard": "哈佛格式產生器",
+      "privacyNote": "七種格式的參考文獻與文中引用。排版在你的瀏覽器中完成；只有「查詢」會連線到 Crossref/DataCite 或 Open Library。",
+      "lookupTitle": "用 DOI 或 ISBN 查詢",
+      "lookupLabel": "DOI 或 ISBN",
+      "lookupPlaceholder": "10.1038/nature14539 或 ISBN",
+      "find": "查詢",
+      "searching": "查詢中…",
+      "found": "已找到，請確認下方資料。",
+      "lookup_invalid": "這不是 DOI（10.xxxx/…），也不是有效的 ISBN-10/13。",
+      "lookup_notFound": "找不到這個 DOI 或 ISBN，請在下方填寫資料。",
+      "lookup_network": "查詢服務沒有回應。請再試一次，或在下方填寫資料。",
+      "lookupPrivacy": "「查詢」只會把這個 DOI 傳給 Crossref/DataCite，或把這個 ISBN 傳給 Open Library，其他內容都不會離開你的瀏覽器。",
+      "detailsTitle": "來源資料",
+      "type": "來源類型",
+      "type_article": "期刊論文",
+      "type_book": "書籍",
+      "type_chapter": "書中章節",
+      "type_webpage": "網頁",
+      "authors": "作者（每行一位）",
+      "authorsHint": "寫成「姓, 名」或「名 姓」。機構作者用大括號括起來：{World Health Organization}。中文姓名直接寫，如 王小明。",
+      "titleField": "標題",
+      "container_article": "期刊",
+      "container_book": "叢書",
+      "container_chapter": "書名",
+      "container_webpage": "網站名稱",
+      "editors": "書籍編者（每行一位）",
+      "year": "年份",
+      "month": "月",
+      "day": "日",
+      "volume": "卷",
+      "issue": "期",
+      "pages": "頁碼",
+      "edition": "版次（數字）",
+      "publisher": "出版者",
+      "place": "出版地",
+      "accessed": "存取日期",
+      "importTitle": "匯入 BibTeX 或 RIS",
+      "importLabel": "BibTeX 或 RIS 文字",
+      "import": "匯入",
+      "importNone": "沒有找到完整的條目。請貼上 BibTeX（@article{…}）或 RIS（TY  - JOUR …）。",
+      "imported": "已匯入 {n} 筆。第一筆已填入表單；有多筆時全部加入你的清單。",
+      "style": "引用格式",
+      "style_apa": "APA 第七版",
+      "style_mla": "MLA 第九版",
+      "style_chicago": "Chicago 第 17 版（註釋—書目）",
+      "style_harvard": "哈佛格式（Cite Them Right）",
+      "style_ieee": "IEEE",
+      "style_vancouver": "Vancouver",
+      "style_gbt": "GB/T 7714-2015",
+      "result": "參考文獻",
+      "inText": "文中引用：",
+      "note": "簡短註釋：",
+      "caseSentence": "此格式的標題採句首大寫：只大寫第一個字、冒號後的第一個字和專有名詞。",
+      "caseTitle": "此格式的標題採標題式大寫：標題中的實詞首字母大寫。",
+      "needTitle_title": "填寫標題後即可看到參考文獻。",
+      "needTitle_container": "填寫標題和期刊名稱或書名後即可看到參考文獻。",
+      "copy": "複製參考文獻",
+      "copied": "已複製",
+      "copyFailed": "複製失敗",
+      "add": "加入清單",
+      "listTitle": "你的參考文獻清單（{n}）",
+      "listEmpty": "加入的參考文獻會顯示在這裡，並依所選格式排序。清單儲存在這個瀏覽器中。",
+      "copyList": "複製清單",
+      "copyBibtex": "複製 BibTeX",
+      "copyRis": "複製 RIS",
+      "clearList": "清空清單",
+      "clearConfirm": "再按一次清空",
+      "remove": "從清單中移除",
+      "listFull": "清單最多保存 {max} 筆參考文獻，有 {n} 筆未加入。",
+      "edited": "以上是本書的編者（主編）"
+    }
+  },
+  "legal": {
+    "h": "參考文獻查詢",
+    "p": [
+      "參考文獻產生器在你的瀏覽器中排版，參考文獻清單儲存在這個瀏覽器的本機儲存空間。按「查詢」時，你輸入的 DOI 會傳送給 Crossref/DataCite（api.crossref.org, api.datacite.org），或把 ISBN 傳送給 Open Library（openlibrary.org），用來取得來源資料。你輸入的其他內容都不會傳送，請求不帶 Cookie，也不帶頁面網址，我們不會收到或儲存這些請求。Crossref/DataCite 和 Open Library 依各自的隱私權政策處理請求。"
+    ]
+  }
+}

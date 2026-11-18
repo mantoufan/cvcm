@@ -179,6 +179,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Chi-square calculator** / 卡方检验计算器 — independence (up to 8 × 8) or goodness of fit, Cramér's V. [Open](https://cv.cm/en/chi-square/)
 - **P-value calculator** / p 值计算器 — p from z, t, χ² or F, and critical values. [Open](https://cv.cm/en/p-value/)
 - **Z-score calculator** / z 分数计算器 — z, percentiles and normal probabilities. [Open](https://cv.cm/en/z-score/)
+- **Citation generator** / 参考文献生成器 — APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver, GB/T 7714; DOI/ISBN lookup, BibTeX/RIS. [Open](https://cv.cm/en/citation-generator/) · [APA](https://cv.cm/en/apa-citation-generator/) · [MLA](https://cv.cm/en/mla-citation-generator/) · [Harvard](https://cv.cm/en/harvard-referencing-generator/)
 - **QR code** / 二维码 — text or URL to PNG, on-device. [Open](https://cv.cm/en/qr/)
 - **Barcode generator** / 条码生成 — Code 128, Code 39, EAN-13. [Open](https://cv.cm/en/barcode/)
 - **Password generator** / 密码生成. [Open](https://cv.cm/en/password/)

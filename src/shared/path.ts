@@ -66,7 +66,7 @@ export const CATEGORIES = [
   // Three.js games: the renderer and three itself load only when a game starts (Play), never during prerender.
   { id: "games3d", tools: ["3d-chess", "magic-cube", "stack-game", "driving-game", "flight-simulator"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
-  { id: "academic", tools: ["standard-deviation", "sample-size", "cronbach-alpha", "t-test", "chi-square", "p-value", "z-score"] },
+  { id: "academic", tools: ["standard-deviation", "sample-size", "cronbach-alpha", "t-test", "chi-square", "p-value", "z-score", "citation-generator", "apa-citation-generator", "mla-citation-generator", "harvard-referencing-generator"] },
   { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation", "idea-validator"] },
 ] as const;
 
@@ -296,6 +296,10 @@ export const TOOLS = [
   "stack-game",
   "driving-game",
   "flight-simulator",
+  "citation-generator",
+  "apa-citation-generator",
+  "mla-citation-generator",
+  "harvard-referencing-generator",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
@@ -536,30 +540,52 @@ export function isAiToolPath(pathname: string): boolean {
 /** Tools that record from the microphone. Only their pages allow it (Permissions-Policy), so links into one load a fresh document. */
 export const MIC_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(["speech-to-text", "mic-test", "guitar-tuner", "decibel-meter", "voice-recorder", "screen-recorder"]);
 
-export function isMicToolPath(pathname: string): boolean {
+/** Whether a path is the page of one of `tools` (app or bare locale path). */
+function isToolPathIn(tools: ReadonlySet<ToolId>, pathname: string): boolean {
   const parsed = parseAppPath(pathname);
-  return (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool !== null && MIC_TOOLS.has(parsed.tool);
+  return (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool !== null && tools.has(parsed.tool);
+}
+
+export function isMicToolPath(pathname: string): boolean {
+  return isToolPathIn(MIC_TOOLS, pathname);
 }
 
 /** Tools that use the camera. Only their pages allow it (Permissions-Policy), so links into one load a fresh document. */
 export const CAMERA_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(["webcam-test"]);
 
 export function isCameraToolPath(pathname: string): boolean {
-  const parsed = parseAppPath(pathname);
-  return (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool !== null && CAMERA_TOOLS.has(parsed.tool);
+  return isToolPathIn(CAMERA_TOOLS, pathname);
 }
 
 /** Tools that capture the screen (getDisplayMedia). Only their pages allow it (Permissions-Policy). */
 export const SCREEN_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(["screen-recorder"]);
 
 export function isScreenToolPath(pathname: string): boolean {
-  const parsed = parseAppPath(pathname);
-  return (parsed.kind === "app" || parsed.kind === "bare") && parsed.tool !== null && SCREEN_TOOLS.has(parsed.tool);
+  return isToolPathIn(SCREEN_TOOLS, pathname);
+}
+
+/**
+ * Tools whose page may call an outside lookup service when the visitor asks (the citation generator: Crossref for a
+ * DOI, Open Library for an ISBN). Only their CSP allows those hosts, so links into or out of one load a new document.
+ */
+export const LOOKUP_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(["citation-generator", "apa-citation-generator", "mla-citation-generator", "harvard-referencing-generator"]);
+export const LOOKUP_HOSTS = ["https://api.crossref.org", "https://api.datacite.org", "https://openlibrary.org"] as const;
+
+export function isLookupToolPath(pathname: string): boolean {
+  return isToolPathIn(LOOKUP_TOOLS, pathname);
 }
 
 /** The devices a page's Permissions-Policy allows ("", "microphone", "camera", "display-capture"); pages with different ones need a fresh document. */
 export function devicePolicyOf(pathname: string): string {
   return [isMicToolPath(pathname) && "microphone", isCameraToolPath(pathname) && "camera", isScreenToolPath(pathname) && "display-capture"].filter(Boolean).join(" ");
+}
+
+/**
+ * Everything about a page that comes from its own response headers (cross-origin isolation, device permissions, the
+ * lookup hosts in its CSP). Two pages with different keys cannot share a document: links between them load a new one.
+ */
+export function documentPolicyKey(pathname: string): string {
+  return [isAiToolPath(pathname) ? "ai" : "", devicePolicyOf(pathname), isLookupToolPath(pathname) ? "lookup" : ""].join("|");
 }
 
 export function categoryOf(tool: ToolId): CategoryId {
