@@ -114,7 +114,8 @@ export function locate(track: Track, x: number, z: number, hint = -1): Located {
   if (hint >= 0) for (let o = -40; o <= 40; o++) scan((hint + o + SAMPLES) % SAMPLES);
   if (hint < 0 || bestD > (TRACK_WIDTH + RUNOFF * 2) ** 2) for (let s = 0; s < SAMPLES; s++) scan(s);
   const p = track.points[best]!, tg = track.tangents[best]!;
-  // Right of the direction (tx, tz) is (tz, -tx).
+  // Signed offset along (tz, -tx), which is the driver's LEFT in three's right-handed y-up frame (screen left for
+  // the chase camera). Walls and kerbs are symmetric, so only the size matters today.
   const lateral = (x - p.x) * tg.z - (z - p.z) * tg.x;
   return { index: best, lateral };
 }

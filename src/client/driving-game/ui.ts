@@ -272,6 +272,7 @@ export function mountDrivingGame(host: HTMLElement): void {
     const camPos = new THREE.Vector3();
     const look = new THREE.Vector3();
     const scratchWant = new THREE.Vector3();
+    let lastHud = "";
     const scratchLook = new THREE.Vector3();
     let camReady = false;
 
@@ -372,8 +373,11 @@ export function mountDrivingGame(host: HTMLElement): void {
         sun.position.set(c.x + 30, 60, c.z + 15);
         sun.target.position.set(c.x, 0, c.z);
       }
-      // HUD.
+      // HUD, rebuilt only when something shown changes (cheap key first: no i18n work per frame).
       const kmh = Math.round(speedOf(c) * 3.6);
+      const hudKey = `${kmh}|${mode}|${laps.lap}|${Math.floor((clock - lapStart) * 100)}|${driftScore(drift)}|${Math.ceil(DRIFT_SECONDS - clock)}|${world.onRoad}|${bests.lap[k] ?? 0}`;
+      if (hudKey === lastHud) return;
+      lastHud = hudKey;
       const parts = [t("drivingGame.speed", { n: kmh })];
       if (mode === "time") {
         parts.push(t("drivingGame.lap", { n: Math.min(LAPS, laps.lap + 1), of: LAPS }));

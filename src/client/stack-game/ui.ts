@@ -59,7 +59,8 @@ export function mountStackGame(host: HTMLElement): void {
     resume: () => game?.restart(),
   });
   const hud = h("div", { class: "g3d-hud sk-hud", "aria-hidden": "true" }, hudScore);
-  shell.root.insertBefore(hud, shell.root.lastChild);
+  // Right after the stage, under the cover (Play / game over) and the full screen exit button.
+  shell.root.insertBefore(hud, shell.stage.nextSibling);
 
   const setScore = (n: number) => {
     score = n;
@@ -224,8 +225,14 @@ export function mountStackGame(host: HTMLElement): void {
     const onStage = target === shell.stage;
     // Enter or Space on a button (Play, full screen) or link keeps its own meaning.
     if (!onStage && target instanceof HTMLElement && target.closest("button, a, summary")) return;
-    if (!game || !playing) return;
     if (!onStage && !onScreen(shell.root)) return;
+    // Space or Enter on the stage after a game over plays again, like the cover's button.
+    if (onStage && shell.covered() && game && !playing) {
+      e.preventDefault();
+      if (!e.repeat) shell.root.querySelector<HTMLButtonElement>('[data-act="play"]')?.click();
+      return;
+    }
+    if (!game || !playing) return;
     e.preventDefault();
     if (!e.repeat) game.drop();
   };

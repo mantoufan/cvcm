@@ -86,6 +86,8 @@ export async function createStage(host: HTMLElement, opts: StageOptions): Promis
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
     dirty = true;
+    // setSize clears the canvas; behind a cover no frame redraws it, so draw the scene once now.
+    if (opts.active && !opts.active()) renderer.render(scene, camera);
     schedule();
   };
 
@@ -331,7 +333,6 @@ export function gameShell(opts: ShellOptions): Shell {
       return;
     }
     cleanup = built;
-    btn.disabled = false;
     if (!cleanup) {
       shell.cover(t("game3d.noWebgl"), t("game3d.retry"));
       return;

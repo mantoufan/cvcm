@@ -198,6 +198,8 @@ export function mountMagicCube(host: HTMLElement): void {
     const face = /^Key([UDLRFB])$/.exec(e.code)?.[1] as Face | undefined;
     if (face) {
       e.preventDefault();
+      // A held key auto-repeats: one press is one turn.
+      if (e.repeat) return;
       turn(faceMove(size, face, e.shiftKey));
       return;
     }
@@ -257,8 +259,24 @@ export function mountMagicCube(host: HTMLElement): void {
   if (timing && history.length) statusEl.textContent = t("magicCube.resumed");
   render();
 
+  // A reload or closed tab does not unmount: keep the running clock's time then too.
+  // Bank the running clock and save it, then keep it running (hiding the tab does not pause a solve).
+  const onPageHide = () => {
+    if (!clockFrom) return;
+    stopClock();
+    save();
+    startClock();
+  };
+  const onHide = () => {
+    if (document.hidden) onPageHide();
+  };
+  window.addEventListener("pagehide", onPageHide);
+  document.addEventListener("visibilitychange", onHide);
+
   mounted = {
     cleanup() {
+      window.removeEventListener("pagehide", onPageHide);
+      document.removeEventListener("visibilitychange", onHide);
       stopClock();
       // Keep the time since the last turn: the clock resumes from the saved elapsed on the next visit.
       save();
@@ -343,8 +361,12 @@ function buildView(stage: Stage, el: HTMLElement, getCube: () => Cube, turn: (mv
   let theta = 0.62;
   let phi = 1.02;
   let radius = 9;
+  let fitAspect = 0;
   const updateCamera = () => {
-    camera.position.set(radius * Math.sin(phi) * Math.sin(theta), radius * Math.cos(phi), radius * Math.sin(phi) * Math.cos(theta));
+    // Further back on a narrow (portrait) stage, e.g. full screen on a phone, so the whole cube stays in view.
+    fitAspect = camera.aspect;
+    const r = radius * Math.max(1, 1 / (fitAspect || 1));
+    camera.position.set(r * Math.sin(phi) * Math.sin(theta), r * Math.cos(phi), r * Math.sin(phi) * Math.cos(theta));
     camera.lookAt(0, 0, 0);
     stage.invalidate();
   };
@@ -379,6 +401,7 @@ function buildView(stage: Stage, el: HTMLElement, getCube: () => Cube, turn: (mv
   };
 
   stage.onFrame(() => {
+    if (camera.aspect !== fitAspect) updateCamera();
     if (!anim) return;
     const dur = anim.mv.turns === 2 ? TURN_MS * 1.5 : TURN_MS;
     const p = Math.min(1, (performance.now() - anim.start) / dur);
