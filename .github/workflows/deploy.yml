@@ -14,10 +14,13 @@ jobs:
   # it changes anything (D1, s3.cv.cm, the Worker). Handing dist/ (about 1 GB) from one job to another would cost
   # more than it saves.
   check:
+    # The deploy job's "Wait for tests and typecheck" step looks this job up by this name: rename both together.
     name: Tests and typecheck
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
+      actions: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,6 +30,12 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run typecheck
+      # A failure stops the build too instead of letting it finish for nothing; the deploy job never deploys it.
+      - name: Cancel the deploy
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run cancel ${{ github.run_id }} -R ${{ github.repository }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -45,10 +54,15 @@ jobs:
         timeout-minutes: 30
         env:
           GH_TOKEN: ${{ github.token }}
+        # filter=latest also lists a job a partial re-run ("Re-run failed jobs") did not run again, with its last result.
         run: |
           while true; do
-            state=$(gh run view ${{ github.run_id }} --attempt ${{ github.run_attempt }} -R ${{ github.repository }} --json jobs \
-              -q '.jobs[] | select(.name == "Tests and typecheck") | "\(.status) \(.conclusion)"')
+            if ! state=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs?filter=latest&per_page=100" \
+              -q '.jobs[] | select(.name == "Tests and typecheck") | "\(.status) \(.conclusion)"'); then
+              echo "::warning::could not read this run's jobs; trying again"
+              sleep 10
+              continue
+            fi
             case "$state" in
               "completed success") echo "Tests and typecheck passed"; break ;;
               completed*) echo "::error::Tests and typecheck did not pass ($state); nothing deployed"; exit 1 ;;
