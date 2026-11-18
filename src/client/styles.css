@@ -34,12 +34,22 @@ img { max-width: 100%; }
 .page.ssr :is(button, select, input[type="file"], input[type="range"], input[type="color"], .drop, .chip) { pointer-events: none; }
 .page { width: min(var(--max), calc(100% - 2rem)); margin: 0 auto; padding-bottom: env(safe-area-inset-bottom); }
 .top { position: relative; display: flex; align-items: center; gap: 0.75rem; padding: calc(0.4rem + env(safe-area-inset-top)) 0 0.4rem; border-bottom: 1px solid var(--line); }
-.brand { color: var(--pink-deep); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; text-decoration: none; white-space: nowrap; }
-.nav { display: flex; flex-wrap: wrap; gap: 0.15rem; min-width: 0; }
+.brand { flex-shrink: 0; color: var(--pink-deep); font-weight: 800; font-size: 1.15rem; letter-spacing: -0.02em; text-decoration: none; white-space: nowrap; }
+/* One row: links that do not fit go under "More" (navRow() in main.ts); the markup keeps all of them. */
+.nav-row { display: flex; align-items: center; flex: 1 1 auto; min-width: 0; gap: 0.15rem; }
+.nav { display: flex; flex-wrap: nowrap; gap: 0.15rem; min-width: 0; overflow: hidden; }
+.nav-more { position: relative; flex-shrink: 0; }
+.nav-more-btn { display: inline-flex; align-items: center; gap: 0.2rem; padding: 0.4rem 0.6rem; border: 0; border-radius: 8px; background: none; color: var(--ink-soft); font: inherit; font-size: 0.92rem; cursor: pointer; white-space: nowrap; }
+.nav-more-btn:hover, .nav-more-btn[aria-expanded="true"] { color: var(--pink-deep); background: var(--pink-soft); }
+.nav-more-caret { font-size: 0.7em; }
+.nav-more[hidden], .nav-more-pop[hidden], .nav a[hidden] { display: none; }
+.nav-more-pop { position: absolute; top: calc(100% + 0.35rem); left: 0; z-index: 50; display: flex; flex-direction: column; min-width: 9rem; padding: 0.3rem; border: 1px solid var(--pink); border-radius: var(--radius); background: var(--white); }
+.nav-more-pop a { padding: 0.45rem 0.6rem; border-radius: 8px; color: var(--ink-soft); text-decoration: none; font-size: 0.92rem; white-space: nowrap; }
+.nav-more-pop a:hover, .nav-more-pop a.on { color: var(--pink-deep); background: var(--pink-soft); }
 .nav a { color: var(--ink-soft); text-decoration: none; font-size: 0.92rem; padding: 0.4rem 0.6rem; border-radius: 8px; white-space: nowrap; }
 .nav a:hover, .nav a.on { color: var(--pink-deep); background: var(--pink-soft); }
 /* Site search: a button in the header, a panel under it (src/client/search.ts). */
-.search-btn { display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto; min-height: 36px; padding: 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink-soft); font: inherit; font-size: 0.88rem; cursor: pointer; white-space: nowrap; }
+.search-btn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto; min-height: 36px; padding: 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink-soft); font: inherit; font-size: 0.88rem; cursor: pointer; white-space: nowrap; }
 .search-btn:hover, .search-btn[aria-expanded="true"] { color: var(--pink-deep); border-color: var(--pink); }
 .search-pop { position: absolute; top: calc(100% + 0.35rem); right: 0; z-index: 50; width: min(34rem, 100%); max-height: min(70vh, 34rem); overflow-y: auto; padding: 0.6rem; border: 1px solid var(--pink); border-radius: var(--radius); background: var(--white); }
 /* The panel's pink border is the field's frame; a second border on the input read as a double outline. */
@@ -60,7 +70,7 @@ img { max-width: 100%; }
 .search-empty p { margin: 0.4rem 0; }
 .search-none { font-weight: 600; }
 /* Own chevron so it sits inside the box with room on the right (the native arrow hugs the edge). */
-.lang { width: auto; max-width: 9.5rem; min-height: 36px; padding: 0.3rem 1.9rem 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%2377606c' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5'/%3E%3C/svg%3E") no-repeat right 0.65rem center / 12px; color: var(--ink); font-size: 0.88rem; -webkit-appearance: none; appearance: none; cursor: pointer; }
+.lang { flex-shrink: 0; width: auto; max-width: 9.5rem; min-height: 36px; padding: 0.3rem 1.9rem 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12' fill='none' stroke='%2377606c' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 4.5 6 7.5 9 4.5'/%3E%3C/svg%3E") no-repeat right 0.65rem center / 12px; color: var(--ink); font-size: 0.88rem; -webkit-appearance: none; appearance: none; cursor: pointer; }
 .lang:hover { border-color: var(--pink); }
 .foot { margin-top: 3rem; padding: 1.5rem 0 2rem; border-top: 1px solid var(--line); color: var(--ink-soft); font-size: 0.85rem; }
 .foot p { margin: 0; }
@@ -211,11 +221,10 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
   .page { width: calc(100% - 2rem); }
   .top { gap: 0.4rem; flex-wrap: wrap; }
   .brand { font-size: 1.05rem; }
-  /* The sections and the language picker do not fit one phone row: the links get their own rows, all in view. */
-  .nav { order: 3; flex: 1 0 100%; margin: 0 -0.4rem; }
-  /* Emulator and Flash game pages keep one scrolling row: the console stays on the first screen. */
-  .page.is-game .nav { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-  .nav a { padding: 0.35rem 0.4rem; font-size: 0.86rem; }
+  /* The sections and the language picker do not fit one phone row: the links get the second row, still one line. */
+  .nav-row { order: 3; flex: 1 0 100%; margin: 0 -0.4rem; }
+  .nav a, .nav-more-btn { padding: 0.35rem 0.4rem; font-size: 0.86rem; }
+  .nav-more-pop { left: auto; right: 0; }
   .lang { max-width: 7.5rem; font-size: 0.8rem; padding: 0.25rem 1.5rem 0.25rem 0.45rem; background-position: right 0.45rem center; }
   .search-btn { padding: 0.25rem 0.45rem; }
   .search-btn-text { display: none; }
