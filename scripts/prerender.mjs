@@ -52,13 +52,13 @@ await esbuild.build({
 
 // Fresh processes: memory grows with every page a process renders (see prerender.ts), so no process takes more than
 // a set number of pages, however large the sitemap grows. Several shards run at once, one per core while memory
-// allows: MEMORY_PER_PROCESS is what one child of PAGES_PER_PARALLEL_PROCESS pages needs (about 3.4 GB RSS measured
-// in November 2026), so a 16 GB runner takes 4. PRERENDER_JOBS overrides the count. Shards are halved only when they
+// allows: MEMORY_PER_PROCESS is what one child of PAGES_PER_PARALLEL_PROCESS pages needs (peak RSS 3.33 GiB measured
+// in November 2026), so a "16 GB" runner, which reports about 15.6 GiB, takes 4. PRERENDER_JOBS overrides the count. Shards are halved only when they
 // run side by side; one at a time, fewer processes start faster. Each child gets this process's heap limit and its
 // own report; the counts are added up here, in shard order, into one summary.
 const PAGES_PER_PROCESS = 2000;
 const PAGES_PER_PARALLEL_PROCESS = 1000;
-const MEMORY_PER_PROCESS = 4 * 1024 ** 3;
+const MEMORY_PER_PROCESS = 3.5 * 1024 ** 3;
 const reportBase = join(root, "node_modules/.cache", `cvcm-prerender-${process.pid}`);
 const started = Date.now();
 let written = 0;
@@ -70,6 +70,15 @@ const errors = new Set();
 const childFlags = process.execArgv.filter((flag) => !/^--(inspect|debug)/.test(flag));
 const running = new Set();
 const reports = new Set();
+// Stopping the build (Ctrl+C, a cancelled CI job) stops the shards too instead of leaving them rendering.
+for (const signal of ["SIGINT", "SIGTERM"]) {
+  process.once(signal, () => {
+    for (const run of running) run.kill();
+    rmSync(outfile, { force: true });
+    for (const report of reports) rmSync(report, { force: true });
+    process.exit(signal === "SIGINT" ? 130 : 143);
+  });
+}
 
 function child(label, env) {
   const report = `${reportBase}-${reports.size}.json`;
