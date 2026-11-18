@@ -132,6 +132,8 @@ export interface Pin {
   charge: number;
   prevPlunger: boolean;
   saveArmed: boolean;
+  /** Launched from the plunger and not yet out of the lane: the ball save starts when it leaves. */
+  savePending: boolean;
   saveUntil: number;
   /** Last hit time per part ("b0", "s1", "t2", "f-left"), for the lights. */
   hits: Record<string, number>;
@@ -159,7 +161,7 @@ export function newGame(): Pin {
     t: 0, acc: 0,
     score: 0, balls: BALLS, multiplier: 1, combo: 0, comboUntil: 0,
     rollovers: [false, false, false], targets: [false, false, false], inRoll: [false, false, false],
-    charge: 0, prevPlunger: false, saveArmed: true, saveUntil: 0,
+    charge: 0, prevPlunger: false, saveArmed: true, savePending: false, saveUntil: 0,
     hits: {}, notice: { kind: "", t: 0 }, over: false,
   };
   placeOnPlunger(s);
@@ -337,6 +339,7 @@ function drain(s: Pin): void {
   }
   s.notice = { kind: "lost", t: s.t };
   s.saveArmed = true;
+  s.savePending = false;
   placeOnPlunger(s);
 }
 
@@ -353,13 +356,19 @@ function substep(s: Pin, input: Input, h: number): void {
       s.vx = 0;
       s.charge = 0;
       s.notice = { kind: "launch", t: s.t };
-      if (s.saveArmed) {
-        s.saveArmed = false;
-        s.saveUntil = s.t + BALL_SAVE;
-      }
+      s.savePending = true;
     }
   } else {
     s.charge = 0;
+  }
+  // The ball save starts when the ball leaves the launch lane, not on release: a weak pull that falls back onto
+  // the plunger must not use it up.
+  if (s.savePending && s.x < LANE_X) {
+    s.savePending = false;
+    if (s.saveArmed) {
+      s.saveArmed = false;
+      s.saveUntil = s.t + BALL_SAVE;
+    }
   }
   s.prevPlunger = input.plunger;
 

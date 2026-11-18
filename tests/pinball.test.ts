@@ -148,6 +148,10 @@ describe("pinball physics", () => {
   it("gives the ball back once if it drains right after the launch, then not again", () => {
     let s = run(newGame(), { ...NO_INPUT, plunger: true }, 0.2);
     s = step(s, NO_INPUT, SUBSTEP);
+    // Still in the launch lane: the save has not started yet.
+    expect(s.saveUntil).toBe(0);
+    // Out of the lane: now it runs.
+    s = step(withBall(s, 4.6, 12, 0, 0), NO_INPUT, SUBSTEP);
     expect(s.saveUntil).toBeCloseTo(s.t + BALL_SAVE, 3);
     // Teleport it to the drain while the save is on.
     s = run(withBall(s, 4.6, 0.2, 0, -10), NO_INPUT, 0.2);
@@ -197,5 +201,14 @@ describe("pinball page", () => {
     expect(host.querySelector<HTMLElement>(".g3d-cover")!.hidden).toBe(false);
     unmountPinball();
     host.remove();
+  });
+
+  it("keeps the ball save for a weak pull that falls back onto the plunger", () => {
+    // A tap barely moves the ball, which falls back into the lane: the save is still there for the real launch.
+    let s = run(newGame(), { ...NO_INPUT, plunger: true }, 0.05);
+    s = run(s, NO_INPUT, 6);
+    expect(onPlunger(s)).toBe(true);
+    expect(s.saveArmed).toBe(true);
+    expect(s.saveUntil).toBe(0);
   });
 });

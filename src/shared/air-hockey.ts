@@ -53,7 +53,16 @@ export interface Match {
   aiThink: number;
   /** Count of computer decisions, the source of its (deterministic) aim error. */
   aiShots: number;
+  /** Seconds the puck has sat almost still in the computer's half (see STALL_NUDGE). */
+  still: number;
 }
+
+/**
+ * A puck resting in the computer's half where its mallet cannot get behind it (pinned in a back corner) would stay
+ * there for good, since the player may not cross the centre line. After this many seconds it gets a gentle push
+ * toward the centre, like the table's air flow; on a real table a player would reach in and free it.
+ */
+const STALL_NUDGE = 1.5;
 
 const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v));
 
@@ -86,6 +95,7 @@ export function newMatch(): Match {
     aiTarget: { ...AI_HOME },
     aiThink: 0,
     aiShots: 0,
+    still: 0,
   };
 }
 
@@ -143,7 +153,10 @@ export function aiDecide(m: Match, level: Level): { x: number; y: number } {
   const cfg = AI[level];
   if (puck.y > 0) {
     if (puck.y > ai.y - 0.01) {
-      // The puck slipped behind the mallet: go round it, staying off its line to the goal.
+      // The puck slipped behind the mallet: go round it, staying off its line to the goal. Pinned against the
+      // end rail there is no room behind it: stand clear toward the centre so the stall nudge (STALL_NUDGE) can
+      // free it, then strike it as usual.
+      if (puck.y + 0.12 > TABLE_L / 2 - MALLET_R) return clampAi(puck.x * 0.3, puck.y - 0.3);
       const side = puck.x > ai.x ? -1 : 1;
       return clampAi(puck.x + side * (PUCK_R + MALLET_R + 0.04), puck.y + 0.12);
     }
@@ -163,6 +176,7 @@ export function aiDecide(m: Match, level: Level): { x: number; y: number } {
 function placeForServe(m: Match, conceded: "player" | "ai"): void {
   m.puck = { x: 0, y: conceded === "player" ? -0.25 : 0.25, vx: 0, vy: 0 };
   m.serve = SERVE_PAUSE;
+  m.still = 0;
   // The computer walks back to guard its goal (no teleport).
   m.aiTarget = { ...AI_HOME };
   m.aiThink = SERVE_PAUSE;
@@ -196,6 +210,18 @@ function substep(m: Match, target: { x: number; y: number }, level: Level, h: nu
   p.vy *= drag;
   collide(p, m.player);
   collide(p, m.ai);
+  if (p.y > 0 && Math.hypot(p.vx, p.vy) < 0.05) {
+    m.still += h;
+    if (m.still > STALL_NUDGE) {
+      m.still = 0;
+      const dx = -p.x, dy = -p.y;
+      const d = Math.hypot(dx, dy) || 1;
+      p.vx = (dx / d) * 0.6;
+      p.vy = (dy / d) * 0.6;
+    }
+  } else {
+    m.still = 0;
+  }
   // Side rails.
   const xMax = TABLE_W / 2 - PUCK_R;
   if (p.x > xMax) {

@@ -1,18 +1,12 @@
 // @vitest-environment happy-dom
-import { createRequire } from "node:module";
 import { afterEach, describe, expect, it } from "vitest";
 import { SOLVED, cleanFacelets, colourCounts, faceletsOf, parseSolution, randomState, solvedCube, validate } from "../src/shared/cube-solver";
 import { applyMoves, isSolved, parseSequence } from "../src/shared/magic-cube";
 import { seeded } from "../src/shared/random";
 import { mountCubeSolver, unmountCubeSolver } from "../src/client/cube-solver/ui";
+import Cube from "../src/vendor/cubejs/cube.js";
 
-const require = createRequire(import.meta.url);
-// cubejs is CommonJS; the page runs it in a worker, the tests call it directly.
-const Cube = require("cubejs") as {
-  new (): { move(alg: string): { asString(): string }; asString(): string };
-  fromString(s: string): { solve(): string };
-  initSolver(): void;
-};
+// The page runs the vendored cubejs in a worker; the tests call it directly.
 
 const FACE_MOVES = ["U", "R", "F", "D", "L", "B"];
 function randomAlg(rand: () => number, n = 25): string {

@@ -230,9 +230,10 @@ export function mountPoolGame(host: HTMLElement): void {
       // Try a grid of places and keep the one with the most makeable shots.
       let bestPos: { x: number; y: number } | null = null;
       let bestN = -1;
-      for (let ix = -5; ix <= 5; ix++) {
-        for (let iy = -2; iy <= 2; iy++) {
-          const x = (ix / 5.6) * (TABLE_L / 2), y = (iy / 2.6) * (TABLE_W / 2);
+      // 7 × 3 spots keeps the main-thread search short on phones (each spot lists candidate shots).
+      for (let ix = -3; ix <= 3; ix++) {
+        for (let iy = -1; iy <= 1; iy++) {
+          const x = (ix / 3.6) * (TABLE_L / 2), y = (iy / 1.8) * (TABLE_W / 2);
           if (!canPlace(game.balls, x, y)) continue;
           const balls = cloneBalls(game.balls);
           Object.assign(balls[0]!, { x, y });
@@ -272,7 +273,8 @@ export function mountPoolGame(host: HTMLElement): void {
     phase = "aim";
     save();
     view?.sync(game.balls);
-    shell.uncover();
+    // Before Play the cover holds the only Play button: keep it until the 3D view exists.
+    if (view) shell.uncover();
     afterTurnChange();
   };
 
@@ -289,12 +291,9 @@ export function mountPoolGame(host: HTMLElement): void {
         stage.dispose();
         throw err;
       }
+      // A saved game that was already won has nothing left to play: start a fresh rack.
+      if (game.winner !== null) newGameNow();
       view.sync(game.balls);
-      if (game.winner !== null) {
-        phase = "over";
-        paintText();
-        return () => teardown(stage);
-      }
       phase = "aim";
       afterTurnChange();
       return () => teardown(stage);

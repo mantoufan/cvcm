@@ -5,6 +5,7 @@ import { creditLine, readStore, typingTarget, writeStore } from "../game-input";
 import { coarsePointer, createStage, gameShell, heldKeys, holdPad, lostContext, type Stage } from "../three-stage";
 import {
   BALL_R,
+  BALLS,
   BUMPERS,
   FLIPPER_LEN,
   FLIPPER_R,
@@ -112,11 +113,11 @@ export function mountPinball(host: HTMLElement): void {
     const key = `${s.score}|${s.balls}|${s.multiplier}`;
     if (key === shownKey) return;
     shownKey = key;
-    const ballNo = Math.max(1, 3 - s.balls + 1);
+    const ballNo = Math.max(1, BALLS - s.balls + 1);
     scoreEl.textContent = String(s.score);
     hudScore.textContent = String(s.score);
-    ballEl.textContent = s.over ? "—" : t("pinball.ballOf", { n: ballNo, of: 3 });
-    hudBall.textContent = s.over ? "" : t("pinball.ballOf", { n: ballNo, of: 3 });
+    ballEl.textContent = s.over ? "—" : t("pinball.ballOf", { n: ballNo, of: BALLS });
+    hudBall.textContent = s.over ? "" : t("pinball.ballOf", { n: ballNo, of: BALLS });
     hudMult.textContent = s.multiplier > 1 ? `×${s.multiplier}` : "";
   };
 

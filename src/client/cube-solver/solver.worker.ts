@@ -5,7 +5,7 @@
  * request (a few seconds). In: { id, facelets }. Out: { id, solution } or { id, error }; { ready: true } once the
  * tables exist.
  */
-import Cube from "cubejs";
+import Cube from "../../vendor/cubejs/cube.js";
 
 let ready = false;
 

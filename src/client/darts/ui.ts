@@ -165,6 +165,8 @@ export function mountDarts(host: HTMLElement): void {
   };
 
   const newGame = () => {
+    // A win's "Play again" cover is shown 0.9 s late; a new game started before then must not get it.
+    window.clearTimeout(coverTimer);
     match = newMatch(mode, opp !== "solo");
     statusEl.textContent = "";
     game?.reset();

@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import { mountAirHockey, unmountAirHockey } from "../src/client/air-hockey/ui";
 import {
   GOAL_W,
+  LEVELS,
   MALLET_R,
   PUCK_R,
   TABLE_L,
@@ -141,4 +142,20 @@ describe("air hockey page", () => {
     unmountAirHockey();
     host.remove();
   });
+
+  it("never leaves a resting puck stuck in the computer's back corners", () => {
+    for (const start of [{ x: 0.42, y: 0.75 }, { x: -0.44, y: 0.74 }, { x: 0.45, y: 0.76 }, { x: -0.3, y: 0.76 }]) {
+      for (const level of LEVELS) {
+        let m = newMatch();
+        m = { ...m, serve: 0, puck: { ...start, vx: 0, vy: 0 } };
+        let moved = false;
+        for (let i = 0; i < 600 && !moved; i++) {
+          m = step(m, { x: 0, y: -0.6 }, level, 1 / 60);
+          moved = Math.hypot(m.puck.x - start.x, m.puck.y - start.y) > 0.1 || m.score[0] + m.score[1] > 0;
+        }
+        expect(moved, `${JSON.stringify(start)} level ${level}`).toBe(true);
+      }
+    }
+  });
 });
+
