@@ -71,7 +71,14 @@ async function views(title, end) {
  */
 async function trackedTitles() {
   const raw = new Set(Object.values(SOURCES).flatMap((s) => [...(s.wiki?.startsWith("en:") ? [s.wiki.slice(3)] : []), ...(s.also ?? [])]));
-  for (const m of SLANG_TS.matchAll(/https:\/\/en\.wikipedia\.org\/wiki\/([^"#?\s]+)/g)) raw.add(decodeURIComponent(m[1]));
+  for (const m of SLANG_TS.matchAll(/https:\/\/en\.wikipedia\.org\/wiki\/([^"#?\s]+)/g)) {
+    // A malformed escape (a literal "%") must not stop the weekly run: keep the raw title then.
+    try {
+      raw.add(decodeURIComponent(m[1]));
+    } catch {
+      raw.add(m[1]);
+    }
+  }
   const titles = [...raw].map((t) => t.replaceAll("_", " "));
   return new Set([...titles, ...(await resolveTitles(titles)).values()].map(key));
 }
@@ -140,6 +147,7 @@ async function wikipediaCandidates() {
  */
 const DECIDED = new Set([
   "Clanker", "Kirkification",
+  "Jet2.com", "Jet2 plc", "Jet2holidays", // the airline and its brands, not the meme (jet2-holiday)
   "Internet meme", "4chan", "Wikipedia mascots", // general articles, not a meme to write up
 ]);
 

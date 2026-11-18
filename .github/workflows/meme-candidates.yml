@@ -33,7 +33,7 @@ jobs:
         run: |
           gh label create meme-candidates --color FBCA04 --description "Weekly /memes/ shortlist" 2>/dev/null || true
           # Only the bot's own issue: someone else's issue with the same label is never overwritten.
-          number=$(gh issue list --label meme-candidates --state open --author app/github-actions --json number --jq '.[0].number')
+          number=$(gh issue list --label meme-candidates --state open --json number,author --jq '[.[] | select(.author.is_bot and (.author.login | test("github-actions")))][0].number // empty')
           if [ -n "$number" ]; then
             gh issue edit "$number" --body-file "$BODY"
           else
