@@ -14,7 +14,6 @@ import {
   SECTORS,
   TRIPLE_IN,
   TRIPLE_OUT,
-  X01_START,
   applyHit,
   checkout,
   cleanStats,
@@ -206,7 +205,7 @@ export function mountDarts(host: HTMLElement): void {
     let msg: string;
     if (p.cpu) msg = t("darts.cpuWins");
     else if (match.mode === "x01") {
-      const avg = (X01_START / p.darts) * 3;
+      const avg = threeDartAverage(p);
       const record = !stats.bestLeg || p.darts < stats.bestLeg;
       stats = { ...stats, bestAvg: Math.max(stats.bestAvg, Math.round(avg * 10) / 10), bestLeg: record ? p.darts : stats.bestLeg };
       save();

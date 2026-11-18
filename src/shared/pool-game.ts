@@ -359,9 +359,9 @@ export const LEVELS: readonly { noise: number; powers: readonly number[] }[] = [
 ];
 
 /** Candidate shots: each legal target into each pocket with a clear path and a makeable cut. */
-export function candidates(state: PoolState, powers: readonly number[]): Shot[] {
+export function candidates(state: PoolState, powers: readonly number[]): (Shot & { ease: number })[] {
   const cue = state.balls.find((b) => b.id === 0)!;
-  const out: Shot[] = [];
+  const out: (Shot & { ease: number })[] = [];
   for (const id of legalTargets(state, state.turn)) {
     const t = state.balls.find((b) => b.id === id)!;
     for (const pk of POCKETS) {
@@ -376,14 +376,16 @@ export function candidates(state: PoolState, powers: readonly number[]): Shot[] 
       if (cut > (78 * Math.PI) / 180) continue;
       if (!clear(state.balls, cue.x, cue.y, gx, gy, [0, id])) continue;
       if (!clear(state.balls, t.x, t.y, pk.ax, pk.ay, [0, id])) continue;
-      for (const power of powers) out.push({ angle: Math.atan2(ay, ax), power });
+      // Thinner cuts and longer distances are harder: the search simulates the easiest first.
+      const ease = Math.cos(cut) / (1 + alen + dist);
+      for (const power of powers) out.push({ angle: Math.atan2(ay, ax), power, ease });
     }
   }
   return out;
 }
 
 /** A plain fallback: straight at the nearest legal ball at medium power. */
-function nearestShot(state: PoolState): Shot {
+export function nearestShot(state: PoolState): Shot {
   const cue = state.balls.find((b) => b.id === 0)!;
   let best: Ball | null = null;
   let bd = Infinity;
@@ -415,6 +417,9 @@ function score(state: PoolState, after: Ball[], ev: ShotEvents): number {
  * The computer's shot: the break goes at the apex at full power; otherwise every candidate is simulated with the
  * real physics and the best kept, then the level's aim error is added (`rand` gives uniform [0, 1)).
  */
+/** At most this many candidate shots are simulated per computer turn. */
+const MAX_SIMULATED = 12;
+
 export function chooseShot(state: PoolState, level: Level, rand: () => number): Shot {
   const lv = LEVELS[level]!;
   const noisy = (s: Shot): Shot => {
@@ -429,7 +434,10 @@ export function chooseShot(state: PoolState, level: Level, rand: () => number): 
   }
   let best: Shot | null = null;
   let bestScore = -Infinity;
-  for (const shot of candidates(state, lv.powers)) {
+  // Only the easiest shots are simulated: each simulation is a full shot of physics, and this runs on the page's
+  // main thread on the computer's turn (phones are several times slower than a desktop).
+  const shortlist = candidates(state, lv.powers).sort((a, b) => b.ease - a.ease).slice(0, MAX_SIMULATED);
+  for (const shot of shortlist) {
     const { balls, ev } = simulate(state.balls, shot);
     const sc = score(state, balls, ev);
     if (sc > bestScore) {

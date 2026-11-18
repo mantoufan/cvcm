@@ -156,7 +156,8 @@ export function aiDecide(m: Match, level: Level): { x: number; y: number } {
       // The puck slipped behind the mallet: go round it, staying off its line to the goal. Pinned against the
       // end rail there is no room behind it: stand clear toward the centre so the stall nudge (STALL_NUDGE) can
       // free it, then strike it as usual.
-      if (puck.y + 0.12 > TABLE_L / 2 - MALLET_R) return clampAi(puck.x * 0.3, puck.y - 0.3);
+      const resting = Math.hypot(puck.vx, puck.vy) < 0.05;
+      if (resting && puck.y + 0.12 > TABLE_L / 2 - MALLET_R) return clampAi(puck.x * 0.3, puck.y - 0.3);
       const side = puck.x > ai.x ? -1 : 1;
       return clampAi(puck.x + side * (PUCK_R + MALLET_R + 0.04), puck.y + 0.12);
     }
@@ -233,6 +234,19 @@ function substep(m: Match, target: { x: number; y: number }, level: Level, h: nu
   }
   // End rails, open where the goals are.
   const yMax = TABLE_L / 2 - PUCK_R;
+  // Already past the end line last substep: the puck is inside a goal, between the posts. It stays in there
+  // (bouncing off the posts' sides) instead of being snapped back onto the line through a post.
+  const prevY = p.y - p.vy * h;
+  if (Math.abs(prevY) > yMax && Math.abs(p.y) > yMax) {
+    const inner = GOAL_W / 2 - PUCK_R * 0.5;
+    if (p.x > inner) {
+      p.x = inner;
+      p.vx = -Math.abs(p.vx) * WALL_KEEP;
+    } else if (p.x < -inner) {
+      p.x = -inner;
+      p.vx = Math.abs(p.vx) * WALL_KEEP;
+    }
+  }
   const inMouth = Math.abs(p.x) < GOAL_W / 2 - PUCK_R * 0.5;
   if (p.y < -yMax) {
     if (inMouth) {

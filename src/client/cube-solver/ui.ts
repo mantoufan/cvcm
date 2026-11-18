@@ -5,7 +5,7 @@ import { creditLine, cryptoRand, readStore, typingTarget, writeStore } from "../
 import { createStage, gameShell, lostContext, type Shell, type Stage } from "../three-stage";
 import { appHref } from "../../shared/path";
 import {
-  applyMove, applyMoves, cloneCube, CUBE_COLORS, inverse, type Cube, type Move,
+  applyMove, applyMoves, cloneCube, CUBE_COLORS, inverse, movedCubies, type Cube, type Move,
 } from "../../shared/magic-cube";
 import {
   FACE_COLOR, FACE_ORDER, SOLVED, centreIndex, cleanFacelets, colourCounts, parseSolution, randomState, solvedCube, validate,
@@ -469,9 +469,7 @@ function buildView(stage: Stage, el: HTMLElement): SolveView {
   const startNext = () => {
     const mv = queue.shift();
     if (!mv) return;
-    const c = 2 * mv.layer - 2;
-    const members: number[] = [];
-    shown.cubies.forEach((q, i) => { if (mv.layer < 0 || q.pos[mv.axis] === c) members.push(i); });
+    const members = movedCubies(shown, mv);
     const pivot = new THREE.Group();
     root.add(pivot);
     for (const i of members) pivot.attach(groups[i]!);

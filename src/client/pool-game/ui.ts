@@ -16,7 +16,7 @@ import {
   cloneBalls,
   emptyEvents,
   groupOf,
-  legalTargets,
+  nearestShot,
   moving,
   newGame,
   parseSaved,
@@ -194,19 +194,7 @@ export function mountPoolGame(host: HTMLElement): void {
 
   /** Points the cue at something sensible for the player whose turn it is. */
   const defaultAim = () => {
-    const cue = game.balls[0]!;
-    const targets = legalTargets(game, game.turn);
-    let best: Ball | null = null;
-    let bd = Infinity;
-    for (const id of targets) {
-      const b = game.balls[id]!;
-      const d = Math.hypot(b.x - cue.x, b.y - cue.y);
-      if (d < bd) {
-        bd = d;
-        best = b;
-      }
-    }
-    aim = best ? Math.atan2(best.y - cue.y, best.x - cue.x) : 0;
+    aim = nearestShot(game).angle;
   };
 
   const afterTurnChange = () => {
@@ -291,8 +279,12 @@ export function mountPoolGame(host: HTMLElement): void {
         stage.dispose();
         throw err;
       }
-      // A saved game that was already won has nothing left to play: start a fresh rack.
-      if (game.winner !== null) newGameNow();
+      // A saved game that was already won has nothing left to play: start a fresh rack (newGameNow syncs the view
+      // and starts the turn).
+      if (game.winner !== null) {
+        newGameNow();
+        return () => teardown(stage);
+      }
       view.sync(game.balls);
       phase = "aim";
       afterTurnChange();
@@ -686,8 +678,22 @@ export function mountPoolGame(host: HTMLElement): void {
   defaultAim();
   paintText();
 
+  // Reloading or closing the tab mid-shot must not restore the table from before the shot (a free retry): play the
+  // shot out and save the result at rest.
+  const onLeave = () => {
+    if (phase !== "rolling") return;
+    settleNow();
+  };
+  const onHidden = () => {
+    if (document.hidden) onLeave();
+  };
+  window.addEventListener("pagehide", onLeave);
+  document.addEventListener("visibilitychange", onHidden);
+
   mounted = {
     cleanup: () => {
+      window.removeEventListener("pagehide", onLeave);
+      document.removeEventListener("visibilitychange", onHidden);
       window.removeEventListener("keydown", onKey);
       window.clearTimeout(thinkTimer);
       window.clearTimeout(aimTimer);

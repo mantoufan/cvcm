@@ -258,7 +258,8 @@ export function mountAirHockey(host: HTMLElement): void {
   const levelSel = h("select", { "data-in": "level" },
     ...LEVELS.map((l) => h("option", { value: String(l), selected: l === level }, t(`airHockey.l_${l}`)))) as HTMLSelectElement;
   levelSel.addEventListener("change", () => {
-    level = (Number(levelSel.value) as Level) ?? 1;
+    const n = Number(levelSel.value);
+    level = (LEVELS as readonly number[]).includes(n) ? (n as Level) : 1;
     record.level = level;
     save();
     showRecord();

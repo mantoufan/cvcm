@@ -157,5 +157,20 @@ describe("air hockey page", () => {
       }
     }
   });
+
+  it("keeps a puck that is already in the goal mouth inside the goal", () => {
+    // Just past the line near a post, drifting sideways: it goes in, it is not thrown back through the post.
+    let m = live({ puck: { x: GOAL_W / 2 - PUCK_R, y: -TABLE_L / 2 + PUCK_R - 0.005, vx: 0.4, vy: -0.25 } });
+    for (let i = 0; i < 120 && m.score[1] === 0; i++) m = step(m, { x: 0, y: -0.6 }, 0, 1 / 60);
+    expect(m.score[1]).toBe(1);
+  });
+
+  it("does not walk away from a slow puck rolling toward its own goal", () => {
+    for (const level of LEVELS) {
+      let m = live({ puck: { x: 0.05, y: 0.6, vx: 0, vy: 0.4 } });
+      for (let i = 0; i < 240 && m.score[0] === 0; i++) m = step(m, { x: 0, y: -0.6 }, level, 1 / 60);
+      expect(m.score[0], `level ${level}`).toBe(0);
+    }
+  });
 });
 
