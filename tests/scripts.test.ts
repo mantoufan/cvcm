@@ -8,13 +8,12 @@ import { LOCALES, type Locale } from "../src/shared/locale";
 import { preloadLocalePack } from "../src/shared/locale-preload";
 import { messages, scriptsMessages } from "../src/shared/messages";
 import { appHref, scriptsHref, parseAppPath } from "../src/shared/path";
-import { SCRIPT_ENTRIES, SCRIPTS_FOCUS, SCRIPT_GROUPS, isScriptId, scriptEntryKind, scriptGroupOf, scriptUpdated, type ScriptId } from "../src/shared/scripts";
+import { SCRIPT_ENTRIES, SCRIPTS_FOCUS, SCRIPT_GROUPS, isScriptId, scriptEntryKind, scriptGroupOf, scriptPlayCount, scriptUpdated, type ScriptId } from "../src/shared/scripts";
 import { SCRIPTS_META, SCRIPT_FORMATS, SCRIPT_GENRES, SCRIPT_USES } from "../src/shared/scripts-meta";
 import {
   SCRIPTS_LICENSE_URL,
   isoDuration,
   scriptCopy,
-  scriptPlayCount,
   scriptsArticleJsonLd,
   scriptsTitle,
   type GeneratorCopy,

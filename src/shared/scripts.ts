@@ -60,6 +60,11 @@ export function isScriptId(value: string): value is ScriptId {
   return (SCRIPT_ENTRIES as readonly string[]).includes(value);
 }
 
+/** Scripts only (not idea lists or the generator). */
+export function scriptPlayCount(): number {
+  return SCRIPT_ENTRIES.filter((id) => scriptEntryKind(id) === "script").length;
+}
+
 export function scriptGroupOf(id: ScriptId): ScriptGroupId {
   return SCRIPT_GROUPS.find((group) => (group.entries as readonly string[]).includes(id))!.id;
 }

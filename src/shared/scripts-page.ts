@@ -70,7 +70,7 @@ export function scriptFacts(locale: Locale, id: ScriptId): string {
     const copy = scriptsMessages(locale).list[id] as { name: string; blurb: string; ideas?: number };
     return copy.ideas ? fill(ui.ideasCount, { n: copy.ideas }) : (ui.formats as Record<string, string>).list;
   }
-  const cast = meta.cast === 1 ? ui.castOne : fill(ui.castMany, { n: meta.cast });
+  const cast = (meta.cast === 1 ? ui.castOne : fill(ui.castMany, { n: meta.cast })) + (meta.flexible ? ` (${ui.flexible})` : "");
   return [cast, runtimeLabel(locale, meta.seconds), ...meta.genres.map((g) => genres[g] ?? g)].join(" · ");
 }
 
@@ -110,23 +110,22 @@ function lineHtml(locale: Locale, line: ScriptLine): string {
     + `<span class="sc-say">${inline(line.say)}</span></p>`;
 }
 
-function copyButton(locale: Locale, target: string, label: string): string {
-  const ui = scriptsUi(locale);
-  return `<button type="button" class="chip" data-copy="${escapeHtml(target)}" data-copied="${escapeHtml(ui.copied)}" hidden>${escapeHtml(label)}</button>`;
+function copyButton(target: string, label: string): string {
+  return `<button type="button" class="chip" data-copy="${escapeHtml(target)}" hidden>${escapeHtml(label)}</button>`;
 }
 
 function promptsHtml(locale: Locale, copy: ScriptPlayCopy): string {
   const ui = scriptsUi(locale);
   const image = `${appHref(locale, "ai-image-generator")}?prompt=${encodeURIComponent(copy.prompts.keyframe)}`;
   const items = [
-    `<li><p><strong>${escapeHtml(ui.keyframe)}</strong></p><p class="script-prompt" id="script-prompt-0">${inline(copy.prompts.keyframe)}</p>${copyButton(locale, "script-prompt-0", ui.copy)}</li>`,
+    `<li><p><strong>${escapeHtml(ui.keyframe)}</strong></p><p class="script-prompt" id="script-prompt-0">${inline(copy.prompts.keyframe)}</p>${copyButton("script-prompt-0", ui.copy)}</li>`,
     ...copy.prompts.shots.map((shot, i) => (
-      `<li><p><strong>${escapeHtml(fill(ui.shot, { n: i + 1 }))}</strong></p><p class="script-prompt" id="script-prompt-${i + 1}">${inline(shot)}</p>${copyButton(locale, `script-prompt-${i + 1}`, ui.copy)}</li>`
+      `<li><p><strong>${escapeHtml(fill(ui.shot, { n: i + 1 }))}</strong></p><p class="script-prompt" id="script-prompt-${i + 1}">${inline(shot)}</p>${copyButton(`script-prompt-${i + 1}`, ui.copy)}</li>`
     )),
   ].join("");
   return `<section class="kb-section script-prompts" id="script-prompts"><h2>${escapeHtml(ui.prompts)}</h2><p>${escapeHtml(ui.promptsLede)}</p>`
     + `<ol class="script-prompt-list">${items}</ol>`
-    + `<p class="stage-actions"><a class="btn" href="${escapeHtml(image)}" data-nav="tool-ai-image-generator">${escapeHtml(ui.drawFrame)}</a> `
+    + `<p class="script-actions"><a class="btn" href="${escapeHtml(image)}" data-nav="tool-ai-image-generator">${escapeHtml(ui.drawFrame)}</a> `
     + `<a class="btn ghost" href="${escapeHtml(appHref(locale, "v"))}" data-nav="tool-v">${escapeHtml(ui.animate)}</a></p></section>`;
 }
 
@@ -179,7 +178,7 @@ function playHtml(locale: Locale, copy: ScriptPlayCopy): string {
       + `<p class="muted"><strong>${escapeHtml(ui.setting)}:</strong> ${inline(copy.setting)}</p></section>`,
     toc,
     `<section class="kb-section" id="script-roles"><h2>${escapeHtml(ui.roles)}</h2><div class="kb-table"><table><tbody>${roles}</tbody></table></div></section>`,
-    `<section class="kb-section" id="script-text"><h2>${escapeHtml(ui.script)} ${copyButton(locale, "script-body", ui.copyScript)}</h2>`
+    `<section class="kb-section" id="script-text"><h2>${escapeHtml(ui.script)} ${copyButton("script-body", ui.copyScript)}</h2>`
       + `<div class="script-body" id="script-body" lang="${HREFLANG[locale]}">${copy.script.map((l) => lineHtml(locale, l)).join("")}</div></section>`,
     licenseHtml(locale),
     sectionsHtml(copy.sections, 1),
@@ -213,10 +212,14 @@ function ideasHtml(locale: Locale, copy: IdeasListCopy): string {
   ].join("");
 }
 
+/** The premise shown first (crawler copy and before any click): the client starts from the same picks. */
+export const GEN_START = { hero: 0, want: 3, obstacle: 5, twist: 2, setting: 4, format: 0 } as const;
+
 /** A premise from the template: each part picked by index (wrapping), so the crawler copy is stable. */
 export function premise(template: string, pools: GeneratorPools, pick: Record<"hero" | "want" | "obstacle" | "twist" | "setting", number>): string {
+  // A replacer function, so a "$" in translated copy is never read as a replacement pattern; every placeholder is filled.
   return (["hero", "want", "obstacle", "twist", "setting"] as const).reduce(
-    (text, part) => text.replace(`{${part}}`, pools[part][pick[part] % pools[part].length]),
+    (text, part) => text.replaceAll(`{${part}}`, () => pools[part][pick[part] % pools[part].length]),
     template,
   ).replace(/^(\p{Ll})/u, (c) => c.toUpperCase());
 }
@@ -225,7 +228,8 @@ function generatorHtml(locale: Locale, copy: GeneratorCopy): string {
   const ui = scriptsUi(locale);
   const gen = ui.gen;
   // Five fixed examples, spread over the pools with co-prime strides so no two share a part.
-  const examples = [0, 1, 2, 3, 4].map((i) => {
+  // i from 1, so none repeats the premise shown above (i = 0 would be GEN_START).
+  const examples = [1, 2, 3, 4, 5].map((i) => {
     const text = premise(copy.template, copy.pools, { hero: i * 7, want: i * 11 + 3, obstacle: i * 13 + 5, twist: i * 17 + 2, setting: i * 19 + 4 });
     return `<li><p>${escapeHtml(text)}</p><p class="muted">${escapeHtml(copy.pools.format[(i * 3) % copy.pools.format.length])}</p></li>`;
   }).join("");
@@ -235,11 +239,11 @@ function generatorHtml(locale: Locale, copy: GeneratorCopy): string {
   return [
     `<section class="kb-answer"><p>${inline(copy.answer)}</p></section>`,
     `<section class="script-gen" data-scripts-gen aria-live="polite"><h2>${escapeHtml(gen.title)}</h2>`
-      + `<p class="script-gen-out" data-gen-out>${escapeHtml(premise(copy.template, copy.pools, { hero: 0, want: 3, obstacle: 5, twist: 2, setting: 4 }))}</p>`
-      + `<p class="muted"><strong>${escapeHtml(gen.formatLabel)}:</strong> <span data-gen-format>${escapeHtml(copy.pools.format[0])}</span></p>`
-      + `<p class="stage-actions" data-gen-controls hidden><button type="button" class="btn" data-gen-roll>${escapeHtml(gen.roll)}</button> `
-      + `<button type="button" class="btn ghost" data-gen-copy data-copied="${escapeHtml(ui.copied)}">${escapeHtml(gen.copy)}</button></p>`
-      + `<p class="convert-chips" data-gen-controls hidden>${rerolls}</p>`
+      + `<p class="script-gen-out" data-gen-out>${escapeHtml(premise(copy.template, copy.pools, GEN_START))}</p>`
+      + `<p class="muted"><strong>${escapeHtml(gen.formatLabel)}:</strong> <span data-gen-format>${escapeHtml(copy.pools.format[GEN_START.format])}</span></p>`
+      + `<p class="script-actions" data-gen-controls hidden><button type="button" class="btn" data-gen-roll>${escapeHtml(gen.roll)}</button> `
+      + `<button type="button" class="btn ghost" data-gen-copy>${escapeHtml(gen.copy)}</button></p>`
+      + `<p class="script-actions" data-gen-controls hidden>${rerolls}</p>`
       + `<noscript><p class="muted">${escapeHtml(gen.noScript)}</p></noscript></section>`,
     `<section class="kb-section"><h2>${escapeHtml(gen.examples)}</h2><ol class="idea-list">${examples}</ol></section>`,
     sectionsHtml(copy.sections, 1),

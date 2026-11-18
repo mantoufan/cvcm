@@ -3,7 +3,7 @@ import { fill } from "./fill";
 import { PUBLISHER, type KbBlock } from "./kb-i18n";
 import { scriptEntryMessages, scriptsMessages, type ScriptsMessages } from "./messages";
 import { appHref, scriptsHref } from "./path";
-import { SCRIPT_ENTRIES, scriptEntryKind, scriptGroupOf, scriptPublished, scriptUpdated, type ScriptId } from "./scripts";
+import { SCRIPT_ENTRIES, scriptGroupOf, scriptPlayCount, scriptPublished, scriptUpdated, type ScriptId } from "./scripts";
 import { HREFLANG } from "./sitemap";
 import type { ScriptMeta } from "./scripts-meta";
 
@@ -85,11 +85,6 @@ export function scriptName(locale: Locale, id: ScriptId): { name: string; blurb:
 /** Cast, runtime, genres, format, uses and related ids, from the scripts pack. */
 export function scriptMeta(locale: Locale, id: ScriptId): ScriptMeta {
   return scriptsMessages(locale).meta[id];
-}
-
-/** Scripts only (not idea lists or the generator). */
-export function scriptPlayCount(): number {
-  return SCRIPT_ENTRIES.filter((id) => scriptEntryKind(id) === "script").length;
 }
 
 export function scriptsTitle(locale: Locale, id: ScriptId | null): string {

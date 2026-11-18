@@ -2,7 +2,7 @@ import { copyWithFlash } from "../copy";
 import type { Locale } from "../../shared/locale";
 import type { ScriptId } from "../../shared/scripts";
 import { isGenerator, scriptCopy, scriptsUi, type GeneratorPools } from "../../shared/scripts-i18n";
-import { premise, scriptsPageHtml } from "../../shared/scripts-page";
+import { GEN_START, premise, scriptsPageHtml } from "../../shared/scripts-page";
 
 type Part = keyof GeneratorPools;
 const PARTS: readonly Part[] = ["hero", "want", "obstacle", "twist", "setting", "format"];
@@ -50,7 +50,8 @@ function wireGenerator(root: HTMLElement, template: string, pools: GeneratorPool
   const out = root.querySelector<HTMLElement>("[data-gen-out]");
   const format = root.querySelector<HTMLElement>("[data-gen-format]");
   if (!out || !format) return;
-  const pick = { hero: 0, want: 3, obstacle: 5, twist: 2, setting: 4, format: 0 } as Record<Part, number>;
+  // Same picks as the server-rendered premise, so nothing changes until the reader asks for a new one.
+  const pick: Record<Part, number> = { ...GEN_START };
   const paint = (): void => {
     out.textContent = premise(template, pools, pick);
     format.textContent = pools.format[pick.format % pools.format.length];
@@ -75,7 +76,4 @@ function wireGenerator(root: HTMLElement, template: string, pools: GeneratorPool
   copyBtn?.addEventListener("click", () => {
     void copyWithFlash(copyBtn, `${out.textContent ?? ""}\n${format.textContent ?? ""}`, labels);
   });
-  // A fresh premise on every visit; the crawler copy keeps the fixed first one.
-  for (const part of PARTS) reroll(part);
-  paint();
 }

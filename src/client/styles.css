@@ -721,6 +721,8 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .script-prompt-list p { margin: 0 0 0.3rem; }
 .script-prompt { font-family: var(--mono, ui-monospace, monospace); font-size: 0.88rem; }
 .idea-list > li { margin: 0.5rem 0; }
+.script-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.6rem 0; }
+.script-actions[hidden] { display: none; }
 .script-gen { margin: 1.2rem 0; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 12px; }
 .script-gen h2 { margin: 0 0 0.5rem; font-size: 1.05rem; }
 .script-gen-out { margin: 0 0 0.5rem; font-size: 1.15rem; line-height: 1.5; font-weight: 600; }
