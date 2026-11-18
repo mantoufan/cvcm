@@ -376,6 +376,9 @@ describe("slang: page HTML and SEO", () => {
     // A photo of a singer is described as that person, not as a "meme picture".
     expect(slangPageHtml("en", "apt")).toContain(`alt="ROSÉ (${slangCopy("en", "apt").name})"`);
     expect(slangPageHtml("zh-TW", "guyongzhe")).toContain(`alt="陳奕迅（${slangCopy("zh-TW", "guyongzhe").name}）"`);
+    // The alt names a song's artist the way the kicker does.
+    expect(slangPageHtml("vi", "guyongzhe")).toContain(`alt="Trần Dịch Tấn (${slangCopy("vi", "guyongzhe").name})"`);
+    expect(slangPageHtml("en", "bing-chilling")).toContain(`alt="John Cena (${slangCopy("en", "bing-chilling").name})"`);
     expect(slangPageHtml("en", "dubai-chocolate")).toContain(`alt="${fill(slangMessages("en").ui.imageAlt, { name: slangCopy("en", "dubai-chocolate").name })}"`);
     expect(slangPageHtml("en", "yyds")).not.toContain("meme-figure");
     expect(buildSitemapXml(sitemapPages().filter((p) => p.kind === "slang"))).toContain("<image:loc>https://s3.cv.cm/files/covers/memes/doge-meme.webp</image:loc>");

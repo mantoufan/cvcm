@@ -3,7 +3,7 @@ import { fill } from "./fill";
 import { PUBLISHER, type KbBlock } from "./kb-i18n";
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
-import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, SLANG_UPDATED, slangGroupOf, slangPublished, type SlangId } from "./slang";
+import { SLANG_ENTRIES, SLANG_META, SLANG_UPDATED, slangGroupOf, slangPublished, type SlangId } from "./slang";
 import { coverUrl } from "./covers";
 import { memeImage, memeImagePath } from "./meme-images";
 import { HREFLANG } from "./sitemap";
@@ -59,25 +59,26 @@ export function slangUpdated(id: SlangId): string {
   return SLANG_UPDATED[id] ?? slangPublished(id);
 }
 
-/** A song's credited artists as this locale writes them (zh-CN keeps the credit; Chinese and Japanese fall back to it too). */
+/** Chinese and Japanese: their own list punctuation, and they read a Chinese artist's credit as written. */
+export const CJK_LOCALES: ReadonlySet<Locale> = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
+
+/** A song's credited artists as this locale writes them (CJK falls back to the credit, others to the English name). */
 export function songArtists(locale: Locale, id: SlangId): string[] {
-  return (SLANG_META[id].song?.by ?? []).map((artist) => {
-    const own = artist.names?.[locale];
-    if (own) return own;
-    return locale === "zh-CN" || locale === "zh-TW" || locale === "ja" ? artist.name : artist.names?.en ?? artist.name;
-  });
+  return (SLANG_META[id].song?.by ?? []).map((artist) => artist.names?.[locale] ?? (CJK_LOCALES.has(locale) ? artist.name : artist.names?.en ?? artist.name));
 }
 
 /** Artists joined for display: "A、B" in Chinese and Japanese, "A & B" elsewhere. */
 export function songArtistsLabel(locale: Locale, id: SlangId): string {
-  return songArtists(locale, id).join(locale === "zh-CN" || locale === "zh-TW" || locale === "ja" ? "、" : " & ");
+  return songArtists(locale, id).join(CJK_LOCALES.has(locale) ? "、" : " & ");
 }
 
-/** Alt text and caption of an entry's picture: "<name> meme" or, for a photo of a person, "<who> (<name>)". */
+/**
+ * Alt text and caption of an entry's picture: "<name> meme", or "<who> (<name>)" for a photo of a person: a song's
+ * picture always shows its first credited artist (named as the page names them), any other one names the image's `who`.
+ */
 export function memeImageAlt(locale: Locale, id: SlangId): string {
   const name = slangName(locale, id).name;
-  const who = memeImage(id)?.who;
-  const person = typeof who === "string" ? who : who ? who[locale] ?? who.en : undefined;
+  const person = SLANG_META[id].song ? songArtists(locale, id)[0] : memeImage(id)?.who;
   return person ? fill(slangUi(locale).imageAltWho, { who: person, name }) : fill(slangUi(locale).imageAlt, { name });
 }
 
@@ -139,10 +140,15 @@ function termSetRef(locale: Locale): Record<string, unknown> {
   return { "@type": "DefinedTermSet", "@id": `${ORIGIN}${slangHref(locale)}#terms`, name: slangHub(locale).h1 };
 }
 
-/** Article about a DefinedTerm for an entry; CollectionPage whose main entity is the DefinedTermSet for the hub. */
+/**
+ * Article about a DefinedTerm (a song: about a MusicRecording) for an entry; for the hub, a CollectionPage whose main
+ * entity is the DefinedTermSet of the terms, with the songs as `hasPart`.
+ */
 export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<string, unknown> {
   if (!id) {
     const hub = slangHub(locale);
+    const songs = SLANG_ENTRIES.filter((entry) => SLANG_META[entry].song);
+    const terms = SLANG_ENTRIES.filter((entry) => !SLANG_META[entry].song);
     return {
       "@context": "https://schema.org",
       "@type": "CollectionPage",
@@ -152,15 +158,14 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
       inLanguage: HREFLANG[locale],
       mainEntity: {
         ...termSetRef(locale),
-        // Songs are MusicRecordings, not terms.
-        hasDefinedTerm: SLANG_GROUPS.flatMap((group) => group.entries).filter((entry) => !SLANG_META[entry].song).map((entry) => ({
+        hasDefinedTerm: terms.map((entry) => ({
           "@type": "DefinedTerm",
           name: slangName(locale, entry).name,
           url: `${ORIGIN}${slangHref(locale, entry)}`,
         })),
       },
       // The songs are pages of the collection too, as recordings rather than terms.
-      hasPart: SLANG_ENTRIES.filter((entry) => SLANG_META[entry].song).map((entry) => ({
+      hasPart: songs.map((entry) => ({
         "@type": "MusicRecording",
         name: slangName(locale, entry).name,
         url: `${ORIGIN}${slangHref(locale, entry)}`,
@@ -172,6 +177,7 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
   const answer = copy.answer.replaceAll("`", "");
   const image = imageJsonLd(locale, id);
   const song = SLANG_META[id].song;
+  const artists = songArtists(locale, id);
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -193,7 +199,7 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
       description: answer,
       ...(copy.aka.length ? { alternateName: copy.aka } : {}),
       ...(song
-        ? { "@type": "MusicRecording", byArtist: song.by.map((artist, i) => ({ "@type": artist.type, name: songArtists(locale, id)[i] })) }
+        ? { "@type": "MusicRecording", byArtist: song.by.map((artist, i) => ({ "@type": artist.type, name: artists[i] })) }
         : { "@type": "DefinedTerm", inDefinedTermSet: termSetRef(locale) }),
     },
     ...(SLANG_META[id].sources.length ? { citation: SLANG_META[id].sources.map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url })) } : {}),

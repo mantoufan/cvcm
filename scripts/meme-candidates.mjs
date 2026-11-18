@@ -97,11 +97,34 @@ async function wikipediaCandidates() {
   const [tracked, end] = await Promise.all([trackedTitles(), lastPublishedDay()]);
   const titles = [...new Set((await Promise.all([year, year - 1].map((y) => categoryPages(`Category:Internet memes introduced in ${y}`)))).flat())]
     .filter((title) => !tracked.has(key(title)));
-  const counts = await pool(titles, (title) => views(title, end));
-  return titles
-    .map((title, i) => ({ title, ...counts[i] }))
-    .sort((a, b) => b.recent - a.recent)
-    .slice(0, LIMIT);
+  // One article that keeps failing (5xx, an odd title) is listed as unknown instead of stopping the week's shortlist.
+  const counts = await pool(titles, (title) => views(title, end).catch((error) => {
+    console.warn(`views ${title}: ${error.message}`);
+    return { recent: 0, prior: 0, failed: true };
+  }));
+  const ranked = titles.map((title, i) => ({ title, ...counts[i] })).filter((c) => !DECIDED.has(c.title)).sort((a, b) => b.recent - a.recent);
+  // The channel takes no politics or tragedies (AGENTS.md), and the shortlist is posted publicly: drop such articles.
+  const off = await offTopic(ranked.slice(0, LIMIT * 2).map((c) => c.title));
+  return ranked.filter((c) => !off.has(c.title)).slice(0, LIMIT);
+}
+
+/** Articles already decided on: left out on purpose (Clanker is a slur, Kirkification is politics; AGENTS.md) or covered under another article. */
+const DECIDED = new Set(["Clanker", "Jet2.com", "Kirkification"]);
+
+/** Wikipedia categories that mark an article as politics, a crime or a disaster rather than a meme to write up. */
+const OFF_TOPIC = /politic|charlie kirk|election|government|president|parliament|protest|war\b|military|terror|assassinat|murder|killing|shooting|deaths?\b|disaster|scandal|controvers|sex/i;
+
+async function offTopic(titles) {
+  const off = new Set();
+  for (let i = 0; i < titles.length; i += 50) {
+    const batch = titles.slice(i, i + 50);
+    const body = await getJson(`https://en.wikipedia.org/w/api.php?action=query&prop=categories&clshow=!hidden&cllimit=max&format=json&titles=${encodeURIComponent(batch.join("|"))}`).catch(() => null);
+    const norm = new Map((body?.query?.normalized ?? []).map((n) => [n.to, n.from]));
+    for (const page of Object.values(body?.query?.pages ?? {})) {
+      if ((page.categories ?? []).some((c) => OFF_TOPIC.test(c.title))) off.add(norm.get(page.title) ?? page.title);
+    }
+  }
+  return off;
 }
 
 /** Hashtags and sounds seen in TikTok's trending feed, most frequent first. */
@@ -124,7 +147,7 @@ const fmt = (n) => n.toLocaleString("en-US");
 const lines = [`# Meme candidates (${new Date().toISOString().slice(0, 10)})`, "", "Wikipedia articles in *Internet memes introduced in* this year or last that /memes/ does not track yet, by views over the last 28 days. Check Keyword Planner before writing one up.", "", "| # | Article | 28 days | Change |", "|---|---|---|---|"];
 const wiki = await wikipediaCandidates();
 wiki.forEach((c, i) => {
-  const change = c.prior ? `${c.recent >= c.prior ? "+" : ""}${Math.round((c.recent / c.prior - 1) * 100)}%` : "new";
+  const change = c.failed ? "views unavailable" : c.prior ? `${c.recent >= c.prior ? "+" : ""}${Math.round((c.recent / c.prior - 1) * 100)}%` : "new";
   lines.push(`| ${i + 1} | [${c.title}](https://en.wikipedia.org/wiki/${encodeURIComponent(key(c.title))}) | ${fmt(c.recent)} | ${change} |`);
 });
 

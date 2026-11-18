@@ -16,10 +16,10 @@ export type MemeImage = {
   licenseUrl: string;
   page: string;
   /**
-   * Who is in the picture when it is not the meme itself (a song's singer, the person in the clip), so the alt text names
-   * them: one name, or names by locale with "en" as the fallback.
+   * The person in the picture when that person is the meme (John Cena for Bing Chilling), named in the alt text. A song's
+   * picture always shows its first credited artist, whose name comes from `SLANG_META[id].song`, so songs leave this out.
    */
-  who?: string | Partial<Record<string, string>>;
+  who?: string;
 };
 
 const MEME_IMAGES: Partial<Record<string, MemeImage>> = images satisfies Record<string, MemeImage>;

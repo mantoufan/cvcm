@@ -13,7 +13,7 @@ import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, slangGroupOf, type SlangId } f
 import { memeImage, memeImagePath } from "./meme-images";
 import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
-import { memeImageAlt, songArtistsLabel, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
+import { CJK_LOCALES, memeImageAlt, songArtistsLabel, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
 
 /**
  * The picture right under the answer, near the top of the page: loaded eagerly as the likely LCP element, with its size
@@ -186,8 +186,6 @@ function hubCoinsHtml(locale: Locale): string {
     + `<p class="meme-note">${escapeHtml(ui.coinNote)}</p><p class="meme-note">${coinSourceHtml(locale, "https://coinmarketcap.com/view/memes/")}</p></section>`;
 }
 
-const CJK = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
-
 function crumbHtml(locale: Locale, id: SlangId | null): string {
   const m = slangMessages(locale);
   const sep = ` <span aria-hidden="true">/</span> `;
@@ -244,7 +242,7 @@ export function slangPageHtml(locale: Locale, id: SlangId | null): string {
   }
   const copy = slangCopy(locale, id);
   const meta = SLANG_META[id];
-  const cjk = CJK.has(locale);
+  const cjk = CJK_LOCALES.has(locale);
   const toc = copy.sections.map((s, i) => `<li><a href="#slang-${i + 1}">${inline(s.h)}</a></li>`).join("");
   const sections = copy.sections.map((s, i) => (
     `<section class="kb-section" id="slang-${i + 1}"><h2>${inline(s.h)}</h2>${s.body.map(blockHtml).join("")}</section>`
