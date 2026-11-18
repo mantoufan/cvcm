@@ -68,7 +68,7 @@ export function scriptFacts(locale: Locale, id: ScriptId): string {
   const genres = ui.genres as Record<string, string>;
   if (meta.format === "tool") return (ui.formats as Record<string, string>).tool;
   if (meta.format === "list") {
-    const copy = scriptsMessages(locale).list[id] as { name: string; blurb: string; ideas?: number };
+    const copy = scriptsMessages(locale).list[id];
     return copy.ideas ? fill(ui.ideasCount, { n: copy.ideas }) : (ui.formats as Record<string, string>).list;
   }
   const cast = (meta.cast === 1 ? ui.castOne : fill(ui.castMany, { n: meta.cast })) + (meta.flexible ? ` (${ui.flexible})` : "");

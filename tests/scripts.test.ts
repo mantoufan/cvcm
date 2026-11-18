@@ -164,7 +164,8 @@ describe("scripts: content", () => {
           expect(Object.keys(copy.script[0]), where).toEqual(["scene"]);
           const roles = copy.roles.map((r) => r.name.toUpperCase());
           for (const line of copy.script) {
-            if ("who" in line) expect(roles.some((r) => line.who.toUpperCase().startsWith(r)), `${where}: ${line.who}`).toBe(true);
+            // A speaker is a role name, optionally followed by a suffix in brackets ("COWORKER (MANAGER)", "同事（经理）").
+            if ("who" in line) expect(roles.some((r) => new RegExp(`^${r.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(\\s*[(（].*)?$`).test(line.who.toUpperCase())), `${where}: ${line.who}`).toBe(true);
           }
           expect(copy.prompts.keyframe.trim(), where).toBeTruthy();
         } else if ("groups" in copy) {
