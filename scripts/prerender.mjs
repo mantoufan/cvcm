@@ -76,7 +76,8 @@ const reports = [];
 let interrupted;
 for (const signal of ["SIGINT", "SIGTERM"]) {
   process.once(signal, () => (interrupted ??= (async () => {
-    const exits = [...running].map((run) => new Promise((exited) => run.once("exit", exited)));
+    // A process that never started emits no "exit".
+    const exits = [...running].filter((run) => run.pid !== undefined).map((run) => new Promise((exited) => run.once("exit", exited)));
     for (const run of running) run.kill();
     const late = await Promise.race([Promise.all(exits).then(() => false), new Promise((r) => setTimeout(r, 5000, true))]);
     if (late) for (const run of running) run.kill("SIGKILL");
@@ -134,7 +135,7 @@ try {
   const shards = limit > 1
     ? limit * Math.max(1, Math.ceil(total / (limit * PAGES_PER_PARALLEL_PROCESS)))
     : Math.max(1, Math.ceil(total / PAGES_PER_PROCESS));
-  const jobs = Math.min(shards, limit);
+  const jobs = limit;
   console.log(`prerender: ${total} pages in ${shards} shards, ${jobs} at a time`);
   const parts = [];
   let next = 0;
@@ -169,7 +170,9 @@ try {
   // Every page is either written or skipped by exactly one shard; anything else means the shards missed pages.
   if (written + failed.length !== total) throw new Error(`prerender: shards covered ${written + failed.length} of ${total} pages`);
 } catch (error) {
-  // Shards killed by an interrupt are not the build failing: let the signal handler finish and exit.
+  // Shards killed by an interrupt are not the build failing: let the signal handler finish and exit. Ctrl+C reaches the
+  // shards too, so one may die before this process runs its handler: give the handler a moment to start.
+  if (!interrupted) await new Promise((r) => setTimeout(r, 100));
   if (interrupted) await interrupted;
   throw error;
 } finally {
