@@ -1552,7 +1552,7 @@ export const TUTORIAL_DIAGRAMS: Partial<Record<TutorialId, { step: number; src: 
   ],
   "calculate-standard-deviation": [
     { step: 3, src: "/covers/tutorials/calculate-standard-deviation-deviations.svg" },
-    { step: 5, src: "/covers/tutorials/calculate-standard-deviation-divide.svg" },
+    { step: 4, src: "/covers/tutorials/calculate-standard-deviation-divide.svg" },
   ],
   "calculate-sample-size": [
     { step: 2, src: "/covers/tutorials/calculate-sample-size-margins.svg" },

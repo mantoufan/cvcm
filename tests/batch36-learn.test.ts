@@ -56,6 +56,9 @@ describe("batch 36 tutorials stay in step with the tools", () => {
   });
 
   it("sample size: Cochran, the population correction, Slovin and the margin chart", () => {
+    // The worked line uses the rounded z it prints: 1.96² × 0.5 × 0.5 ÷ 0.05² = 384.16.
+    expect(svg("calculate-sample-size-cochran")).toContain("= 384.2<");
+    expect(copy("calculate-sample-size")).toContain("384.2");
     const base = { method: "proportion" as const, confidence: 95, proportion: 50 };
     expect(sampleSize({ ...base, margin: 5 })!.n).toBe(385);
     expect(sampleSize({ ...base, margin: 5, population: 1000 })!.n).toBe(278);
@@ -73,6 +76,7 @@ describe("batch 36 tutorials stay in step with the tools", () => {
     expect(matrix).toContain(r.sumItemVariance.toFixed(2));
     expect(matrix).toContain(r.totalVariance.toFixed(2));
     expect(copy("calculate-cronbach-alpha")).toContain(r.alpha.toFixed(3));
+    expect(svg("calculate-cronbach-alpha-bands")).toContain(`α = ${r.alpha.toFixed(3)}`);
   });
 
   it("t-test: the two example groups", () => {
@@ -104,6 +108,16 @@ describe("batch 36 tutorials stay in step with the tools", () => {
     const rule = svg("calculate-z-score-rule");
     for (const k of [1, 2, 3]) expect(rule).toContain(`${(between(-k, k, 0, 1)!.p * 100).toFixed(2)} %`);
     expect(copy("calculate-z-score")).toContain(`${(z.below * 100).toFixed(2)} %`);
+  });
+
+  it("MLA examples use title case, the year and a doi.org link, as the steps say", () => {
+    for (const name of ["cite-mla-elements", "cite-mla-in-text"]) {
+      const s = svg(name);
+      expect(s).toContain("Deep Learning.");
+      expect(s).not.toContain("May 2015");
+    }
+    expect(svg("cite-mla-in-text")).toContain("https://doi.org/");
+    expect(svg("find-p-value-tails")).not.toContain("0.050");
   });
 
   it("writes decimals with each locale's mark in the diagrams", () => {

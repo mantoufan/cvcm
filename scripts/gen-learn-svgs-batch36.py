@@ -113,11 +113,11 @@ def sd_divide(t) -> str:
 
 # --- sample size -----------------------------------------------------------------------------------------------------
 
-Z95 = 1.959963984540054
 
 
 def ss_cochran(t) -> str:
-    n0 = Z95 ** 2 * 0.25 / 0.05 ** 2
+    # Worked with the rounded z the diagram prints, so the line reads 1.96² × … = 384.2.
+    n0 = 1.96 ** 2 * 0.25 / 0.05 ** 2
     out = box(60, 50, 840, 250, CARD, LINE, 22)
     out += text(480, 150, "n₀ = z² · p (1 − p) ÷ e²", 56, INK, 800, "middle", MATH)
     for x, label in ((350, f'z = {num(1.96, 2)}'), (520, f'p = 50 %'), (720, f'e = 5 %')):
@@ -127,7 +127,7 @@ def ss_cochran(t) -> str:
         out += wrapped(x, 255, t[key], 18, MUTED, 700, "middle", 14, 22)
     out += box(60, 330, 840, 170, SOFT, PINK, 22)
     out += text(480, 395, f'{num(1.96, 2)}² × {num(0.5, 1)} × {num(0.5, 1)} ÷ {num(0.05, 2)}² = {num(n0, 1)}', 32, INK, 800, "middle", MONO)
-    out += text(480, 460, f'{t["roundUp"]} → 385 {t["people"]}', 34, DEEP, 800, "middle")
+    out += text(480, 460, f'{t["roundUp"]} → {math.ceil(n0)} {t["people"]}', 34, DEEP, 800, "middle")
     return out
 
 
@@ -158,6 +158,13 @@ def var(xs) -> float:
     return sum((x - m) ** 2 for x in xs) / (len(xs) - 1)
 
 
+def alpha_of(rows) -> tuple[float, float, float]:
+    k = len(rows[0])
+    cols = [[r[j] for r in rows] for j in range(k)]
+    sv, tv = sum(var(c) for c in cols), var([sum(r) for r in rows])
+    return k / (k - 1) * (1 - sv / tv), sv, tv
+
+
 def ca_matrix(t) -> str:
     x0, y0, cw, rh = 70, 70, 62, 29
     out = text(x0 - 10, y0 - 20, t["respondent"], 16, MUTED, 700)
@@ -177,8 +184,7 @@ def ca_matrix(t) -> str:
         out += text(x0 + 70 + j * cw, vy + 6, num(var(c), 2), 17, PINK, 800, "middle", MONO)
     totals = [sum(r) for r in SAMPLE]
     out += text(x0 + 70 + 5 * cw + 10, vy + 6, num(var(totals), 2), 17, LILAC, 800, "middle", MONO)
-    sv, tv = sum(var(c) for c in cols), var(totals)
-    alpha = 5 / 4 * (1 - sv / tv)
+    alpha, sv, tv = alpha_of(SAMPLE)
     out += box(510, 70, 400, 400, SOFT, PINK, 22)
     out += text(710, 140, "α = k ÷ (k − 1)", 30, INK, 800, "middle", MATH)
     out += text(710, 185, "× (1 − Σσᵢ² ÷ σₜ²)", 30, INK, 800, "middle", MATH)
@@ -201,7 +207,7 @@ def ca_bands(t) -> str:
         out += wrapped((X(a) + X(b)) / 2, 380 + (i % 2) * 52, t[key], 19, INK if i < 4 else DEEP, 800, "middle", 11)
     for v in (0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0):
         out += line(X(v), 240, X(v), 340, WHITE if 0.4 < v < 1.0 else MUTED, 3) + text(X(v), 230, num(v, 1), 22, MUTED, 700, "middle")
-    a = 0.935
+    a = alpha_of(SAMPLE)[0]
     out += f'<path d="M{X(a):.1f} 245 l-14 -32 h28 z" fill="{LILAC}"/>'
     out += text(X(a), 150, f'{t["example"]}', 22, LILAC, 800, "middle")
     out += text(X(a), 190, f"α = {num(a, 3)}", 28, LILAC, 800, "middle", MONO)
@@ -228,15 +234,33 @@ def tt_choose(t) -> str:
     return out
 
 
+GROUP_A = [5.1, 4.9, 6.2, 5.8, 6.0, 5.5, 5.3, 6.1]
+GROUP_B = [4.8, 4.7, 5.9, 5.0, 5.6, 5.2, 4.9, 5.4]
+
+
+def upper_tail(pdf, x: float, steps: int = 4000) -> float:
+    """∫ pdf from x to ∞, by Simpson's rule on u = x / t (so the infinite tail becomes 0 < u ≤ 1)."""
+    f = lambda u: 0.0 if u <= 0 else pdf(x / u) * x / (u * u)
+    h = 1 / steps
+    return h / 3 * sum((1 if i in (0, steps) else 4 if i % 2 else 2) * f(i * h) for i in range(steps + 1))
+
+
+def welch(a, b) -> tuple[float, float, float]:
+    va, vb = var(a) / len(a), var(b) / len(b)
+    tv = (sum(a) / len(a) - sum(b) / len(b)) / math.sqrt(va + vb)
+    df = (va + vb) ** 2 / (va ** 2 / (len(a) - 1) + vb ** 2 / (len(b) - 1))
+    return tv, df, 2 * upper_tail(lambda x: t_pdf(x, df), abs(tv))
+
+
 def tt_curve(t) -> str:
-    df, tv = 13.70796105023928, 1.8748877753846245
+    tv, df, p = welch(GROUP_A, GROUP_B)
     out = curve(lambda x: t_pdf(x, df), -4, 4, 80, 880, 430, 340, shade=((-4, -tv), (tv, 4)))
     X = lambda v: 80 + (v + 4) / 8 * 800
     for v in (-tv, tv):
         out += line(X(v), 430, X(v), 300, DEEP, 3) + text(X(v), 470, ("−" if v < 0 else "") + num(abs(v), 2), 24, DEEP, 800, "middle", MONO)
     out += text(480, 470, "0", 22, MUTED, 700, "middle")
-    out += text(130, 330, f'{num(0.041, 3)} {t["tail"]}', 20, MUTED, 700) + text(830, 330, f'{num(0.041, 3)} {t["tail"]}', 20, MUTED, 700, "end")
-    out += box(320, 40, 320, 56, SOFT, PINK, 16) + text(480, 78, f't({num(df, 2)}) → p = {num(0.082, 3)}', 26, DEEP, 800, "middle", MONO)
+    out += text(130, 330, f'{num(p / 2, 3)} {t["tail"]}', 20, MUTED, 700) + text(830, 330, f'{num(p / 2, 3)} {t["tail"]}', 20, MUTED, 700, "end")
+    out += box(320, 40, 320, 56, SOFT, PINK, 16) + text(480, 78, f't({num(df, 2)}) → p = {num(p, 3)}', 26, DEEP, 800, "middle", MONO)
     return out
 
 
@@ -245,11 +269,30 @@ def tt_curve(t) -> str:
 OBS = [[20, 15], [30, 35]]
 
 
+def chi_of(obs) -> tuple[float, list]:
+    rows = [sum(r) for r in obs]
+    cols = [obs[0][j] + obs[1][j] for j in range(2)]
+    n = sum(rows)
+    exp = [[rows[i] * cols[j] / n for j in range(2)] for i in range(2)]
+    return sum((obs[i][j] - exp[i][j]) ** 2 / exp[i][j] for i in range(2) for j in range(2)), exp
+
+
+chi1_p = lambda x: math.erfc(math.sqrt(x / 2))  # upper tail of χ² with 1 df
+
+
+def chi1_critical(alpha: float = 0.05) -> float:
+    lo, hi = 0.0, 50.0
+    for _ in range(100):
+        mid = (lo + hi) / 2
+        lo, hi = (mid, hi) if chi1_p(mid) > alpha else (lo, mid)
+    return (lo + hi) / 2
+
+
 def chi_tables(t) -> str:
     rows = [sum(r) for r in OBS]
     cols = [OBS[0][j] + OBS[1][j] for j in range(2)]
     n = sum(rows)
-    exp = [[rows[i] * cols[j] / n for j in range(2)] for i in range(2)]
+    chi2, exp = chi_of(OBS)
     out = ""
     for k, (title, cells, x0) in enumerate(((t["observed"], OBS, 40), (t["expected"], exp, 500))):
         out += text(x0 + 210, 60, title, 30, DEEP, 800, "middle")
@@ -266,20 +309,20 @@ def chi_tables(t) -> str:
         for j in range(2):
             out += text(x0 + 200 + j * 100, 380, str(cols[j]), 24, MUTED, 700, "middle", MONO)
         out += text(x0 + 380, 380, str(n), 24, MUTED, 700, "middle", MONO)
-    out += text(480, 470, f'E = 35 × 50 ÷ 100 = {num(17.5, 1)}', 28, LILAC, 800, "middle", MONO)
-    out += text(480, 515, f'χ² = Σ (O − E)² ÷ E = {num(1.099, 2)}', 26, DEEP, 800, "middle", MONO)
+    out += text(480, 470, f'E = {rows[0]} × {cols[0]} ÷ {n} = {num(exp[0][0], 1)}', 28, LILAC, 800, "middle", MONO)
+    out += text(480, 515, f'χ² = Σ (O − E)² ÷ E = {num(chi2, 2)}', 26, DEEP, 800, "middle", MONO)
     return out
 
 
 def chi_curve(t) -> str:
-    crit, yours = 3.841458820694124, 1.098901098901099
+    crit, yours = chi1_critical(), chi_of(OBS)[0]
     # Drawn from 0.2 on a 0–8 axis: the density rises without bound towards 0, so it starts where it fits.
     out = curve(chi1_pdf, 0.2, 8, 100, 880, 430, 340, shade=((crit, 8),)) + line(80, 430, 100, 430, MUTED, 3)
     X = lambda v: 80 + v / 8 * 800
     out += line(X(crit), 430, X(crit), 150, DEEP, 3) + text(X(crit), 140, f'{num(crit, 2)} · {t["critical"]}', 20, DEEP, 800, "middle")
     out += line(X(yours), 430, X(yours), 220, LILAC, 4) + text(X(yours), 210, f'χ² = {num(yours, 2)} · {t["yours"]}', 22, LILAC, 800, "start")
     out += text(X(6), 400, "5 %", 24, DEEP, 800, "middle")
-    out += box(560, 40, 340, 56, SOFT, PINK, 16) + text(730, 78, f'df = 1 → p = {num(0.295, 3)}', 26, DEEP, 800, "middle", MONO)
+    out += box(560, 40, 340, 56, SOFT, PINK, 16) + text(730, 78, f'df = 1 → p = {num(chi1_p(yours), 3)}', 26, DEEP, 800, "middle", MONO)
     for v in range(0, 9, 2):
         out += text(X(v), 465, str(v), 20, MUTED, 700, "middle")
     return out
@@ -308,7 +351,7 @@ def pv_one_two(t) -> str:
         out += text(x0 + 205, 95, label, 28, DEEP, 800, "middle")
         out += curve(norm_pdf, -4, 4, x0 + 25, x0 + 385, 380, 220, shade=shade)
         out += text(x0 + 205, 420, f'z = {num(1.96, 2)}', 22, MUTED, 700, "middle", MONO)
-        out += text(x0 + 205, 465, f'p = {num(p, 3)}', 30, DEEP, 800, "middle", MONO)
+        out += text(x0 + 205, 465, f'p = {num(p, len(repr(p).split(".")[1]))}', 30, DEEP, 800, "middle", MONO)
     return out
 
 
@@ -395,8 +438,8 @@ def apa_intext(t) -> str:
 
 
 def mla_elements(t) -> str:
-    rows = [("author", "LeCun, Yann, et al."), ("title", '"Deep learning."'), ("container", "Nature,"), ("contributors", "—"),
-            ("version", "—"), ("number", "vol. 521, no. 7553,"), ("publisher", "—"), ("date", "27 May 2015,"), ("location", "pp. 436-444.")]
+    rows = [("author", "LeCun, Yann, et al."), ("title", '"Deep Learning."'), ("container", "Nature,"), ("contributors", "—"),
+            ("version", "—"), ("number", "vol. 521, no. 7553,"), ("publisher", "—"), ("date", "2015,"), ("location", "pp. 436-444.")]
     out = ""
     for i, (key, example) in enumerate(rows):
         y = 50 + i * 52
@@ -430,7 +473,7 @@ def citation_link(t, left_title, left, right_title, right_lines, italic_word) ->
 
 def mla_intext(t) -> str:
     return citation_link(t, t["inText"], "(LeCun et al. 437)", t["worksCited"], [
-        'LeCun, Yann, et al. "Deep learning."', "Nature, vol. 521, no. 7553, 27 May", "2015, pp. 436-444, https://doi.org/", "10.1038/nature14539."], "Nature")
+        'LeCun, Yann, et al. "Deep Learning."', "Nature, vol. 521, no. 7553, 2015,", "pp. 436-444, https://doi.org/", "10.1038/nature14539."], "Nature")
 
 
 def harvard_intext(t) -> str:
