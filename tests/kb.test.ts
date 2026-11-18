@@ -336,7 +336,8 @@ describe("knowledge: catalog and copy", () => {
         expect(kbMinutes(locale, id), where).toBeGreaterThanOrEqual(2);
       }
     }
-  });
+    // Every article in every locale: seconds on a CI runner, beyond vitest's 5 s default.
+  }, 60_000);
 });
 
 describe("knowledge: sync (run `npm run kb:sync` after editing any article or its sources)", () => {
