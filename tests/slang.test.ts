@@ -324,6 +324,7 @@ describe("slang: page HTML and SEO", () => {
     expect(slangPageHtml("en", "guyongzhe")).toContain("· Eason Chan</p>");
     expect(slangPageHtml("ja", "pedro")).toContain("· Jaxomy、Agatino Romero、Raffaella Carrà</p>");
     expect(slangPageHtml("es", "pedro")).toContain("· Jaxomy, Agatino Romero y Raffaella Carrà</p>");
+    expect(slangPageHtml("ko", "apt")).toContain("· ROSÉ, Bruno Mars</p>");
     // Japanese reads a Chinese credit in Traditional characters when zh-TW has its own form.
     expect(slangPageHtml("ja", "yixiao-jianghu")).toContain("· 聞人聽書_</p>");
     expect(slangPageHtml("en", "rickroll")).toContain(`alt="Rick Astley (${slangCopy("en", "rickroll").name})"`);

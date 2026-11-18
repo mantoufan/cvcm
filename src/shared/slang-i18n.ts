@@ -1,4 +1,4 @@
-import type { Locale } from "./locale";
+import { CJK_LOCALES, type Locale } from "./locale";
 import { fill } from "./fill";
 import { PUBLISHER, type KbBlock } from "./kb-i18n";
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
@@ -69,9 +69,24 @@ export function songArtists(locale: Locale, id: SlangId): string[] {
   });
 }
 
-/** Artists as a list in the reader's language ("A, B y C", "A、B和C"). */
+const artistLists = new Map<Locale, Intl.ListFormat | null>();
+
+/**
+ * Artists as a list in the reader's language ("A, B y C", "A、B和C"). Korean takes commas: its conjunction format uses
+ * the formal 및, which reads like a document in a page label. One formatter per locale; where Intl.ListFormat is missing
+ * (Safari < 14.1, old WebViews: this also runs in the client) the names are joined with commas.
+ */
 export function songArtistsLabel(locale: Locale, id: SlangId): string {
-  return new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }).format(songArtists(locale, id));
+  const names = songArtists(locale, id);
+  if (locale === "ko") return names.join(", ");
+  if (!artistLists.has(locale)) {
+    try {
+      artistLists.set(locale, new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }));
+    } catch {
+      artistLists.set(locale, null);
+    }
+  }
+  return artistLists.get(locale)?.format(names) ?? names.join(CJK_LOCALES.has(locale) ? "、" : ", ");
 }
 
 /**

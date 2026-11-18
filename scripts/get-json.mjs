@@ -1,6 +1,9 @@
-// JSON GET with retries, shared by the meme scripts (fetch-meme.mjs, meme-candidates.mjs).
+// JSON GET with retries and the pageviews date key, shared by the meme scripts (fetch-meme.mjs, meme-candidates.mjs).
 // 404 → null. Network errors, 429 and 5xx are retried twice with backoff; any other client error (bad id, bad key) will
 // not fix itself, so it throws at once with the start of the response body.
+/** A UTC date as Wikimedia pageviews' YYYYMMDD. */
+export const pageviewsDay = (d) => d.toISOString().slice(0, 10).replaceAll("-", "");
+
 export function jsonGetter(userAgent) {
   return async function getJson(url, headers = {}) {
     for (let attempt = 1; ; attempt += 1) {

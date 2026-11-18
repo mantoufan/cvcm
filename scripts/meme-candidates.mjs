@@ -5,11 +5,11 @@
 //   that src/shared/meme-sources.json does not track yet, ranked by views over the last four weeks.
 //   --tiktok (local only, needs SCRAPECREATORS_API_KEY; 1 credit per region): hashtags and sounds in TikTok's trending
 //   feed. A third-party scrape, so it is only read here as a hint and never published.
-// Next step for a candidate is a Keyword Planner check, then an entry (see .slang-work/SPEC.md).
+// Next step for a candidate is a Keyword Planner check, then an entry (see the Memes channel section of AGENTS.md).
 import { appendFileSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { jsonGetter } from "./get-json.mjs";
+import { jsonGetter, pageviewsDay } from "./get-json.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const UA = "cv.cm meme candidates (https://cv.cm/)";
@@ -21,7 +21,7 @@ const TIKTOK_REGIONS = ["US", "ID", "VN"];
 
 const getJson = jsonGetter(UA);
 
-const day = (d) => d.toISOString().slice(0, 10).replaceAll("-", "");
+const day = pageviewsDay;
 const key = (title) => title.replaceAll(" ", "_");
 
 /** Articles (namespace 0) in a category, following continuation. */
@@ -70,13 +70,7 @@ async function trackedTitles() {
   const raw = new Set(Object.values(SOURCES).flatMap((s) => (s.wiki?.startsWith("en:") ? [s.wiki.slice(3)] : [])));
   for (const m of SLANG_TS.matchAll(/https:\/\/en\.wikipedia\.org\/wiki\/([^"#?\s]+)/g)) raw.add(decodeURIComponent(m[1]));
   const titles = [...raw].map((t) => t.replaceAll("_", " "));
-  const tracked = new Set(titles.map(key));
-  for (let i = 0; i < titles.length; i += 50) {
-    const batch = titles.slice(i, i + 50).join("|");
-    const body = await getJson(`https://en.wikipedia.org/w/api.php?action=query&redirects=1&format=json&titles=${encodeURIComponent(batch)}`);
-    for (const r of [...(body?.query?.normalized ?? []), ...(body?.query?.redirects ?? [])]) tracked.add(key(r.to));
-  }
-  return tracked;
+  return new Set([...titles, ...(await resolveTitles(titles))].map(key));
 }
 
 /** Run `fn` over `list` with a few requests in flight (Wikimedia asks clients to keep it modest). */
@@ -152,11 +146,8 @@ async function offTopic(titles) {
       let cont = "";
       do {
         const body = await getJson(`https://en.wikipedia.org/w/api.php?action=query&prop=categories&clshow=!hidden&cllimit=max&format=json&titles=${encodeURIComponent(batch.join("|"))}${cont}`);
-        const norm = new Map((body?.query?.normalized ?? []).map((n) => [n.to, n.from]));
-        for (const page of Object.values(body?.query?.pages ?? {})) {
-          const title = norm.get(page.title) ?? page.title;
-          categories.get(title)?.push(...(page.categories ?? []).map((c) => c.title));
-        }
+        // Titles come from resolveTitles, already canonical, so each page's title is the key.
+        for (const page of Object.values(body?.query?.pages ?? {})) categories.get(page.title)?.push(...(page.categories ?? []).map((c) => c.title));
         // The 500-category cap is per request, not per page: follow clcontinue until every page's list is complete.
         cont = body?.continue?.clcontinue ? `&clcontinue=${encodeURIComponent(body.continue.clcontinue)}` : "";
       } while (cont);
