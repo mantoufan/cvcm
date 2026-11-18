@@ -10,8 +10,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  # Tests and the typecheck run on their own runner while the deploy job builds; the deploy job waits for them before
+  # it changes anything (D1, s3.cv.cm, the Worker). Handing dist/ (about 1 GB) from one job to another would cost
+  # more than it saves.
+  check:
+    # The deploy job's "Wait for tests and typecheck" step looks this job up by this name: rename both together.
+    # After a flaky failure use "Re-run failed jobs": re-running only this job leaves the failed deploy job as it is.
+    name: Tests and typecheck
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
     steps:
@@ -23,7 +30,47 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run typecheck
+
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
       - run: npm run build
+      - name: Wait for tests and typecheck
+        # The check job's own limit is 20 minutes; the rest is room for it to wait for a runner.
+        timeout-minutes: 40
+        env:
+          GH_TOKEN: ${{ github.token }}
+        # filter=latest also lists a job a partial re-run ("Re-run failed jobs") did not run again, with its last result.
+        run: |
+          errors=0
+          while true; do
+            if ! state=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs?filter=latest&per_page=100" \
+              -q '.jobs[] | select(.name == "Tests and typecheck") | "\(.status) \(.conclusion)"'); then
+              # A passing blip is retried; an API that keeps failing (permissions, auth) fails the deploy within a minute.
+              errors=$((errors + 1))
+              if [ "$errors" -ge 6 ]; then echo "::error::could not read this run's jobs 6 times in a row"; exit 1; fi
+              echo "::warning::could not read this run's jobs; trying again"
+              sleep 10
+              continue
+            fi
+            errors=0
+            case "$state" in
+              *$'\n'*) echo "::error::more than one 'Tests and typecheck' job in this run"; exit 1 ;;
+              "completed success") echo "Tests and typecheck passed"; break ;;
+              completed*) echo "::error::Tests and typecheck did not pass ($state); nothing deployed"; exit 1 ;;
+              "") echo "::error::no 'Tests and typecheck' job in this run"; exit 1 ;;
+            esac
+            sleep 10
+          done
       - name: Apply D1 migrations
         run: npx wrangler d1 migrations apply cvcm --remote
         env:
