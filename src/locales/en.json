@@ -737,7 +737,19 @@
     "titleZScore": "Z-score calculator — z from a value, percentile and normal probability — cv.cm",
     "descZScore": "Free z-score calculator: find z = (x − μ) / σ and the share of a normal distribution below, above or between values, or the z-score and value at a percentile, with the area shaded on the bell curve.",
     "titleLunarConverter": "Lunar calendar converter — Chinese lunar date to solar and back — cv.cm",
-    "descLunarConverter": "Free lunar calendar converter: turn a solar date into its Chinese lunar date (with the cyclical year and zodiac animal), or a lunar date, leap months included, into the solar date. Chinese, Vietnamese and Korean / Japanese reckonings, 1900–2100."
+    "descLunarConverter": "Free lunar calendar converter: turn a solar date into its Chinese lunar date (with the cyclical year and zodiac animal), or a lunar date, leap months included, into the solar date. Chinese, Vietnamese and Korean / Japanese reckonings, 1900–2100.",
+    "titleChess3d": "3D chess — play chess online on a 3D board — cv.cm",
+    "descChess3d": "Play 3D chess online for free: a real 3D board you can turn and tilt, against the computer at five levels or with a friend. No download, works on phones.",
+    "titleMagicCube": "Magic cube online — turn and solve a 3×3 cube in 3D — cv.cm",
+    "descMagicCube": "Play a magic cube online in 3D: scramble a 2×2, 3×3 or 4×4 cube, turn layers by dragging or with the keyboard, and time your solve. Free, works on phones.",
+    "titleStackGame": "Stack game — stack the blocks as high as you can — cv.cm",
+    "descStackGame": "Play a free 3D stack game online: drop each sliding block onto the tower, trim the overhang and build as high as you can. Perfect drops grow the block back. Works on phones.",
+    "titleDrivingGame": "Driving game — 3D car racing and drift online — cv.cm",
+    "descDrivingGame": "Free 3D driving game in your browser: race three laps against the clock or slide through corners in drift mode. Three tracks, keyboard or touch controls, no download.",
+    "titleFlightSimulator": "Flight simulator online — fly a plane in 3D for free — cv.cm",
+    "descFlightSimulator": "Free online flight simulator in 3D: take off from the runway, fly over a low-poly island and land again, or race through 12 rings against the clock. No download; works with a keyboard or on a phone.",
+    "titleGames3d": "Free 3D games online — chess, magic cube, driving, flight — cv.cm",
+    "descGames3d": "Play free 3D games in your browser with no download: 3D chess, a magic cube, a stack game, a driving and drift game and a flight simulator. Works on phones too."
   },
   "brand": "cv.cm",
   "nav": {
@@ -778,7 +790,8 @@
     "elements": "Periodic table",
     "calendar": "Calendar",
     "academic": "Academic & statistics",
-    "more": "More"
+    "more": "More",
+    "games3d": "3D games"
   },
   "lang": {
     "label": "Language",
@@ -4621,6 +4634,26 @@
     "lunar-converter": {
       "name": "Lunar calendar converter",
       "blurb": "Chinese lunar date to solar date and back."
+    },
+    "3d-chess": {
+      "name": "3D chess",
+      "blurb": "Chess on a 3D board you can turn, against the computer or a friend."
+    },
+    "magic-cube": {
+      "name": "Magic cube",
+      "blurb": "Scramble a 3D cube and solve it against the clock."
+    },
+    "stack-game": {
+      "name": "Stack game",
+      "blurb": "Drop the sliding blocks and build the tallest tower."
+    },
+    "driving-game": {
+      "name": "Driving game",
+      "blurb": "Race a 3D car round three tracks, or drift for points."
+    },
+    "flight-simulator": {
+      "name": "Flight simulator",
+      "blurb": "Take off, fly over an island and land, or race through rings."
     }
   },
   "watermark": {
@@ -9166,6 +9199,76 @@
       "a4": "Saturday, 6 February 2027 in the Chinese and Vietnamese reckonings; Korea's Seollal is Sunday, 7 February 2027.",
       "q5": "Is anything uploaded?",
       "a5": "No. The tables are part of the page and the date stays in this tab."
+    },
+    "3d-chess": {
+      "q1": "How do I move a piece in 3D chess?",
+      "a1": "Tap or click a piece, then tap one of the marked squares. Small dots show legal moves and rings show captures. Tap the piece again to drop it.",
+      "q2": "How strong is the computer?",
+      "a2": "There are five levels, from a beginner who blunders to a strong club player. The computer is the Stockfish engine, slowed down and capped on the easier levels.",
+      "q3": "How do I turn the board on a phone?",
+      "a3": "Drag across the board with one finger, or with two, to turn and tilt the view; a short tap picks a square. Turn the board flips it to the other side, and full screen gives you the most room.",
+      "q4": "Is my game saved?",
+      "a4": "Yes. Every move is saved in this browser, so the game is waiting for you when you come back. Nothing is uploaded.",
+      "q5": "Why does it say 3D is not available?",
+      "a5": "3D chess needs WebGL. Update the browser, turn on hardware acceleration or try another browser. The flat chess board on cv.cm works without it."
+    },
+    "magic-cube": {
+      "q1": "How do I turn a layer?",
+      "a1": "Press Play, then drag a sticker in the direction you want its row or column to move. Drag anywhere off the cube to look around it. On a keyboard, U D L R F B turn the outer faces and Shift turns them the other way.",
+      "q2": "What does the notation mean?",
+      "a2": "Each letter is a face: U up, D down, L left, R right, F front, B back. A letter alone is a quarter turn clockwise as you look at that face, an apostrophe (R') is anticlockwise, and a 2 (R2) is a half turn.",
+      "q3": "How do beginners solve a 3×3?",
+      "a3": "Layer by layer. Make a cross on one face with the edge colours matching the centres, put the four corners of that face in, then the middle-layer edges. Finally solve the last face: form its cross, orient its corners, and move the corners and edges into place.",
+      "q4": "Which sizes can I play?",
+      "a4": "2×2, 3×3 and 4×4. The 2×2 is only corners, so it is a good warm-up; the 4×4 has no fixed centres, so you pair centres and edges before solving it like a 3×3.",
+      "q5": "Is my cube saved?",
+      "a5": "Yes. The scramble, your turns, the clock and your best time for each size are kept in this browser, so you can close the page and carry on later."
+    },
+    "stack-game": {
+      "q1": "How do you play the stack game?",
+      "a1": "A block slides over the top of the tower. Tap, click or press Space to drop it. The part that hangs over the edge is cut off and falls, so the next block is only as big as what stayed. Miss the tower completely and the game is over.",
+      "q2": "What is a perfect drop?",
+      "a2": "Drop a block almost exactly on the one below and it snaps into place with nothing cut off. Three or more perfect drops in a row make the block grow back a little, up to its starting size.",
+      "q3": "Does it get faster?",
+      "a3": "Yes. Blocks slide a little faster as the tower grows, and they come in from alternating sides, so keep your eye on the edges.",
+      "q4": "Can I play on my phone?",
+      "a4": "Yes. Tap anywhere on the game to drop a block. Full screen gives you the biggest view, and the 3D view runs at a lower resolution on phones to stay smooth.",
+      "q5": "Is my best score saved?",
+      "a5": "Yes, in this browser only. Nothing is sent anywhere."
+    },
+    "driving-game": {
+      "q1": "How do I drive?",
+      "a1": "Arrow keys or W A S D: up accelerates, down brakes and then reverses, left and right steer. Space is the handbrake and R puts you back at the last checkpoint.",
+      "q2": "How does drift scoring work?",
+      "a2": "Points build up while the car slides more than 15 degrees sideways at speed; faster and wider slides score more. A slide is banked when you straighten up. Hitting the tyre wall or staying on the grass for over a second loses the slide in progress. A drift run lasts 60 seconds.",
+      "q3": "Can I play on a phone?",
+      "a3": "Yes. Steering buttons sit bottom left, and brake, handbrake and accelerator bottom right. Turn the phone sideways and use full screen for the biggest view.",
+      "q4": "Which tracks are there, and are my times saved?",
+      "a4": "There are three fixed circuits, so a lap time is comparable every time. Your best lap and best drift score on each track are kept in this browser only.",
+      "q5": "Why is it slow or blank on my device?",
+      "a5": "The game needs WebGL. On phones it draws at a lower resolution and without shadows; closing other tabs helps. If the 3D view stops, press Start again."
+    },
+    "flight-simulator": {
+      "q1": "How do I fly the plane?",
+      "a1": "W and S set the throttle. The arrow keys steer: Left and Right roll the wings, Up pushes the nose down and Down pulls it up, as on a real stick (tick Invert pitch to swap them). A and D turn the rudder. R starts over.",
+      "q2": "How do I take off and land?",
+      "a2": "In Free flight you start on the runway. Hold W for full throttle, and once you pass about 145 km/h pull the nose up gently. To land, line up with the runway, slow to about 150 km/h, keep the wings level and let the plane sink slowly onto it. Touch down too fast, in a bank or off the runway and you crash.",
+      "q3": "What is the rings mode?",
+      "a3": "You start in the air and fly through 12 rings in order: the bright pink one is next. The clock runs from the start, and your best time is kept in this browser.",
+      "q4": "Can I play on a phone?",
+      "a4": "Yes. On a touch screen buttons appear on the view: ▲ and ▼ for the nose, + and − for the throttle, ◀ and ▶ to roll. Full screen gives you the most room.",
+      "q5": "Is it a realistic flight simulator?",
+      "a5": "No, it is an arcade flight game with simplified physics: lift, drag, stalling below about 110 km/h and coordinated turns are modelled, but the plane is forgiving so anyone can fly it in a minute."
+    },
+    "games3d": {
+      "q1": "Are these 3D games free?",
+      "a1": "Yes. They are free to play with no sign-up and no download. Best scores and times stay in this browser.",
+      "q2": "Do they work on a phone?",
+      "a2": "Yes. Each game has touch controls, and the 3D view runs at a lower resolution on phones so it stays smooth. Full screen gives you the most room.",
+      "q3": "Why does nothing load until I press Play?",
+      "a3": "The 3D engine (three.js) and the graphics context start only when you play, so the page opens fast and your phone does not spend memory on a game you are only reading about.",
+      "q4": "The game says 3D is not available. What can I do?",
+      "a4": "The games need WebGL. Update the browser, turn on hardware acceleration in its settings, or try another browser. Some work or school computers block WebGL."
     }
   },
   "qr": {
@@ -10173,6 +10276,7 @@
     },
     "consoles": {
       "mini": "Free online games",
+      "3d": "3D games",
       "fc": "FC / NES",
       "sfc": "SFC / SNES",
       "gb": "Game Boy",
@@ -10250,6 +10354,11 @@
       "title": "Free online games",
       "lead": "Classic browser games that play right here: solitaire, minesweeper, chess, mahjong, 2048, word games and more. Free, nothing to download, scores and games in progress kept in this browser.",
       "all": "All {n} free online games"
+    },
+    "g3d": {
+      "title": "Free 3D games",
+      "lead": "3D browser games that play right here: chess on a 3D board, a magic cube to turn and solve, a stack game, a driving and drift game and a flight simulator. Free, nothing to install; the 3D part loads only when you press Play.",
+      "all": "All {n} free 3D games"
     }
   },
   "reverse": {
@@ -16130,5 +16239,130 @@
   },
   "lunarConverter": {
     "lede": "Solar ↔ lunar dates for 1900–2100, in the Chinese (UTC+8), Vietnamese (UTC+7) or Korean / Japanese (UTC+9) reckoning. Worked out in this tab."
+  },
+  "chess3d": {
+    "title": "3D chess",
+    "privacyNote": "Play chess on a 3D board against the computer or a friend. The game runs in this page and is saved in this browser.",
+    "stage": "3D chess board",
+    "intro": "A 3D board, ready when you are. The computer's engine and the 3D view load when you press Play.",
+    "flip": "Turn the board",
+    "hint": "Tap a piece, then a marked square. Drag to turn and tilt the view. Keyboard: arrow keys move the cursor, Enter or Space picks a square, Esc lets go of a piece.",
+    "cursor": "{square}: {piece}"
+  },
+  "magicCube": {
+    "title": "Magic cube",
+    "privacyNote": "A 3D cube to scramble, turn and solve. It runs in the page and nothing is uploaded.",
+    "stage": "Magic cube, drag to turn",
+    "intro": "Turn and solve a 3D cube. Press Play to load it.",
+    "size": "Size",
+    "size2": "2×2",
+    "size3": "3×3",
+    "size4": "4×4",
+    "scramble": "Scramble",
+    "undo": "Undo",
+    "reset": "Reset",
+    "time": "Time",
+    "moves": "Moves",
+    "best": "Best",
+    "solved": "Solved in {time} with {moves} moves.",
+    "solvedBest": "New best! Solved in {time} with {moves} moves.",
+    "scrambled": "Scrambled. The clock starts with your first turn.",
+    "resumed": "Your last cube is back where you left it.",
+    "buttons": "Turn buttons",
+    "hint": "Drag a sticker to turn its layer, drag the background to look around. Keys: U D L R F B turn faces, Shift + key turns back, arrow keys rotate the view."
+  },
+  "stackGame": {
+    "title": "Stack game",
+    "privacyNote": "Drop each sliding block onto the tower and build as high as you can.",
+    "stage": "Stack game tower",
+    "intro": "Drop each sliding block onto the tower. Whatever hangs over the edge is cut off.",
+    "score": "Score",
+    "best": "Best",
+    "over": "Game over. Score: {score}.",
+    "again": "Play again",
+    "perfect": "Perfect! ×{n}",
+    "newBest": "New best: {score}!",
+    "hint": "Tap the game, click or press Space or Enter to drop a block. Line it up exactly for a perfect drop."
+  },
+  "drivingGame": {
+    "title": "Driving game",
+    "privacyNote": "Race a 3D car round a circuit or drift for points. Best times stay in this browser.",
+    "stage": "3D driving game",
+    "intro": "Pick a track and mode, then press Play. Arrow keys drive, Space is the handbrake.",
+    "track": "Track",
+    "track1": "Track 1 — Gentle bends",
+    "track2": "Track 2 — Long sweepers",
+    "track3": "Track 3 — Big ring",
+    "mode": "Mode",
+    "modeTime": "Time trial (3 laps)",
+    "modeDrift": "Drift (60 seconds)",
+    "best": "Best on this track",
+    "restart": "Restart",
+    "again": "Race again",
+    "go": "Go!",
+    "finished": "Finished! Total {total}, best lap {best}.",
+    "driftDone": "Time! Drift score: {score}.",
+    "speed": "Speed {n} km/h",
+    "lap": "Lap {n}/{of}",
+    "current": "Lap time {time}",
+    "bestLap": "Best {time}",
+    "drift": "Drift points {n}",
+    "timeLeft": "{n} s left",
+    "offRoad": "Off the road",
+    "left": "Steer left",
+    "right": "Steer right",
+    "brake": "Brake / reverse",
+    "handbrake": "Handbrake",
+    "gas": "Accelerate",
+    "hint": "Up or W accelerates, down or S brakes and reverses, left and right steer, Space is the handbrake, R goes back to the last checkpoint. A lap counts only after every checkpoint."
+  },
+  "flightSim": {
+    "title": "Flight simulator",
+    "privacyNote": "Take off from the runway, fly over the island and land again, or race through the rings. Nothing is uploaded.",
+    "stage": "Flight simulator view",
+    "intro": "Fly a small plane over a low-poly island. Press Play to load the 3D view.",
+    "mode": "Mode",
+    "m_free": "Free flight",
+    "m_rings": "Rings (12)",
+    "restart": "Restart",
+    "c_cockpit": "Cockpit view",
+    "c_chase": "Chase view",
+    "invert": "Invert pitch",
+    "best": "Best rings time",
+    "stall": "STALL",
+    "hint": "W / S throttle · ← → roll · ↑ nose down, ↓ nose up (like a stick) · A / D rudder · R restart. On a phone use the buttons on the view.",
+    "p_noseUp": "Nose up",
+    "p_noseDown": "Nose down",
+    "p_thrUp": "More throttle",
+    "p_thrDown": "Less throttle",
+    "p_rollLeft": "Roll left",
+    "p_rollRight": "Roll right",
+    "again": "Fly again",
+    "freeGo": "On the runway: hold W for full throttle, then pull up past about 145 km/h.",
+    "ringsGo": "Fly through the pink ring. The clock is running.",
+    "ringPassed": "Ring {n} of {total}.",
+    "finished": "All rings in {time}.",
+    "newBest": "New best: all rings in {time}!",
+    "crashWater": "Splash! You went into the sea.",
+    "crashHard": "Crash! You hit the ground too hard.",
+    "crashTerrain": "Crash! You hit the terrain.",
+    "landed": "Landed. Nicely done! Throttle up to take off again.",
+    "airborne": "Airborne.",
+    "hudSpeed": "Speed {n} km/h",
+    "hudAlt": "Altitude {n} m",
+    "hudThrottle": "Throttle {n}%",
+    "hudRings": "Ring {n}/{total} · {time}"
+  },
+  "game3d": {
+    "play": "Play",
+    "loading": "Loading the 3D view…",
+    "noWebgl": "3D graphics (WebGL) are not available in this browser. Turn on hardware acceleration or try another browser.",
+    "retry": "Try again",
+    "lost": "The 3D view stopped (the graphics card was reset). Start again to keep playing.",
+    "restart": "Start again",
+    "fullscreen": "Full screen",
+    "exitFullscreen": "Exit full screen",
+    "pad": "Game controls",
+    "credit": "3D graphics by {name} (MIT licence)."
   }
 }

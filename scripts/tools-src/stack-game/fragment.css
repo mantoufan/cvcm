@@ -1,0 +1,7 @@
+/* Stack game (src/client/stack-game/ui.ts) */
+.sk-bar { justify-content: space-between; }
+.sk-score { margin: 0; }
+.sk-hud { justify-content: center; top: 0.8rem; }
+.sk-hud-score { font-size: 2.4rem; font-weight: 800; color: var(--pink-deep); }
+.sk-status { min-height: 1.6em; margin: 0.5rem 0 0; color: var(--pink-deep); font-weight: 600; }
+.sk-root .g3d-stage { cursor: pointer; }

@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "titleGames3d": "Juegos 3D gratis online — ajedrez, cubo mágico, coches y avión — cv.cm",
+    "descGames3d": "Juega gratis a juegos 3D en el navegador sin descargar nada: ajedrez 3D, cubo mágico, juego de apilar, juego de coches con derrape y simulador de vuelo. También en el móvil."
+  },
+  "nav": "Juegos 3D",
+  "console": "Juegos 3D",
+  "g3d": {
+    "title": "Juegos 3D gratis",
+    "lead": "Juegos 3D que se juegan aquí mismo: ajedrez en un tablero 3D, un cubo mágico para girar y resolver, un juego de apilar, un juego de coches con derrapes y un simulador de vuelo. Gratis y sin instalar; la parte 3D se carga solo al pulsar Jugar.",
+    "all": "Los {n} juegos 3D gratis"
+  },
+  "faq": {
+    "q1": "¿Estos juegos 3D son gratis?",
+    "a1": "Sí. Se juegan gratis, sin registro ni descarga. Las mejores puntuaciones y tiempos se guardan en este navegador.",
+    "q2": "¿Funcionan en el móvil?",
+    "a2": "Sí. Cada juego tiene controles táctiles y en el móvil la vista 3D baja la resolución para ir fluida. A pantalla completa tienes más espacio.",
+    "q3": "¿Por qué no se carga nada hasta pulsar Jugar?",
+    "a3": "El motor 3D (three.js) y el contexto gráfico arrancan solo cuando juegas, así la página abre rápido y el móvil no gasta memoria en un juego que solo estás mirando.",
+    "q4": "El juego dice que el 3D no está disponible. ¿Qué hago?",
+    "a4": "Los juegos necesitan WebGL. Actualiza el navegador, activa la aceleración por hardware en su configuración o prueba otro navegador. Algunos ordenadores del trabajo o del colegio bloquean WebGL."
+  },
+  "ui": {
+    "play": "Jugar",
+    "loading": "Cargando la vista 3D…",
+    "noWebgl": "Este navegador no puede mostrar gráficos 3D (WebGL). Activa la aceleración por hardware o prueba otro navegador.",
+    "retry": "Reintentar",
+    "lost": "La vista 3D se detuvo (se reinició la tarjeta gráfica). Empieza de nuevo para seguir jugando.",
+    "restart": "Empezar de nuevo",
+    "fullscreen": "Pantalla completa",
+    "exitFullscreen": "Salir de pantalla completa",
+    "pad": "Controles del juego",
+    "credit": "Gráficos 3D con {name} (licencia MIT)."
+  }
+}

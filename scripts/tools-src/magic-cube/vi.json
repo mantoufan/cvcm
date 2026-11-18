@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "titleMagicCube": "Chơi rubik online — xoay và giải khối rubik 3×3 3D — cv.cm",
+    "descMagicCube": "Chơi khối rubik 3D online: xáo trộn khối 2×2, 3×3 hoặc 4×4, xoay các tầng bằng cách kéo hoặc bàn phím và bấm giờ khi giải. Miễn phí, chơi được trên điện thoại."
+  },
+  "tools": {
+    "magic-cube": {
+      "name": "Khối rubik",
+      "blurb": "Xáo trộn khối rubik 3D và giải nó với đồng hồ."
+    }
+  },
+  "faq": {
+    "magic-cube": {
+      "q1": "Xoay một tầng thế nào?",
+      "a1": "Bấm Chơi, rồi kéo một ô màu theo hướng bạn muốn hàng hoặc cột đó di chuyển. Kéo ra ngoài khối để xoay góc nhìn. Trên bàn phím, U D L R F B xoay các mặt ngoài, giữ Shift để xoay ngược lại.",
+      "q2": "Ký hiệu nghĩa là gì?",
+      "a2": "Mỗi chữ là một mặt: U trên, D dưới, L trái, R phải, F trước, B sau. Chữ đơn là xoay 90 độ theo chiều kim đồng hồ khi nhìn vào mặt đó, có dấu phẩy trên (R') là ngược chiều, có số 2 (R2) là xoay 180 độ.",
+      "q3": "Người mới giải rubik 3×3 thế nào?",
+      "a3": "Giải theo từng tầng. Làm dấu cộng trên một mặt sao cho màu cạnh khớp với tâm, đặt bốn góc của mặt đó, rồi đến các cạnh tầng giữa. Mặt cuối: tạo dấu cộng, xoay đúng hướng các góc, rồi đưa góc và cạnh về đúng chỗ.",
+      "q4": "Có những cỡ nào?",
+      "a4": "2×2, 3×3 và 4×4. Khối 2×2 chỉ có góc nên hợp để khởi động; khối 4×4 không có tâm cố định nên bạn ghép tâm và cạnh trước rồi giải như 3×3.",
+      "q5": "Khối của tôi có được lưu không?",
+      "a5": "Có. Lần xáo trộn, các bước xoay, đồng hồ và thời gian tốt nhất của mỗi cỡ được lưu trong trình duyệt này, nên bạn có thể đóng trang và chơi tiếp sau."
+    }
+  },
+  "guides": {
+    "magic-cube": {
+      "lead": "Giải khối rubik trong ba bước.",
+      "s1t": "Xáo trộn",
+      "s1b": "Chọn cỡ và bấm Xáo trộn. Đồng hồ chạy từ lần xoay đầu tiên.",
+      "s2t": "Xoay các tầng",
+      "s2b": "Kéo ô màu để xoay hàng và cột, kéo nền để nhìn xung quanh, hoặc dùng U D L R F B trên bàn phím.",
+      "s3t": "Giải xong",
+      "s3b": "Khi mọi mặt cùng một màu, đồng hồ dừng và thời gian tốt nhất được lưu."
+    }
+  },
+  "ui": {
+    "magicCube": {
+      "title": "Khối rubik",
+      "privacyNote": "Khối rubik 3D để xáo trộn, xoay và giải. Chạy ngay trong trang, không tải gì lên.",
+      "stage": "Khối rubik, kéo để xoay",
+      "intro": "Xoay và giải khối rubik 3D. Bấm Chơi để tải.",
+      "size": "Cỡ",
+      "size2": "2×2",
+      "size3": "3×3",
+      "size4": "4×4",
+      "scramble": "Xáo trộn",
+      "undo": "Hoàn tác",
+      "reset": "Đặt lại",
+      "time": "Thời gian",
+      "moves": "Số bước",
+      "best": "Tốt nhất",
+      "solved": "Giải xong trong {time} với {moves} bước!",
+      "solvedBest": "Kỷ lục mới! Giải xong trong {time} với {moves} bước.",
+      "scrambled": "Đã xáo trộn. Đồng hồ chạy từ lần xoay đầu tiên.",
+      "resumed": "Khối lần trước đã được khôi phục.",
+      "buttons": "Nút xoay",
+      "hint": "Kéo một ô màu để xoay tầng đó, kéo nền để nhìn xung quanh. Phím: U D L R F B xoay mặt, Shift + phím xoay ngược, phím mũi tên xoay góc nhìn."
+    }
+  }
+}

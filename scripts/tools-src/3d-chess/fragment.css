@@ -1,0 +1,13 @@
+/* 3D chess (src/client/3d-chess/) */
+.c3-tool { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem); gap: 1rem; align-items: start; }
+@media (max-width: 760px) { .c3-tool { grid-template-columns: minmax(0, 1fr); } }
+.c3-main { min-width: 0; }
+.c3-status { margin: 0.5rem 0 0; font-weight: 600; min-height: 1.6em; }
+.c3-hud { justify-content: center; }
+.c3-root:not(:fullscreen):not(.g3d-full) .c3-hud { display: none; }
+.c3-moves { max-height: 12rem; overflow-y: auto; margin: 0; padding-left: 1.8rem; font-variant-numeric: tabular-nums; font-size: 0.92rem; }
+.c3-promo { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; padding: 0.6rem; border: 1px solid var(--pink); border-radius: var(--radius); background: var(--white); }
+.c3-promo[hidden] { display: none; }
+.c3-promo-btn { width: 56px; height: 56px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--pink-soft); cursor: pointer; }
+.c3-promo-btn:hover, .c3-promo-btn:focus-visible { border-color: var(--pink-deep); }
+.c3-promo-btn img { width: 100%; height: 100%; }

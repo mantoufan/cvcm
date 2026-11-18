@@ -737,7 +737,19 @@
     "titleZScore": "Kalkulator z-score — z dari nilai, persentil, dan peluang normal — cv.cm",
     "descZScore": "Kalkulator z-score gratis: hitung z = (x − μ) / σ dan bagian distribusi normal di bawah, di atas, atau di antara nilai, atau z-score dan nilai pada suatu persentil, dengan luas daerah diarsir pada kurva lonceng.",
     "titleLunarConverter": "Konversi kalender Imlek ke Masehi dan sebaliknya (1900–2100) — cv.cm",
-    "descLunarConverter": "Konversi kalender Imlek gratis: ubah tanggal Masehi ke tanggal Imlek (dengan tahun siklus dan shio), atau tanggal Imlek, termasuk bulan kabisat, ke Masehi. Perhitungan Tiongkok (UTC+8), Vietnam (UTC+7), Korea / Jepang (UTC+9), 1900–2100."
+    "descLunarConverter": "Konversi kalender Imlek gratis: ubah tanggal Masehi ke tanggal Imlek (dengan tahun siklus dan shio), atau tanggal Imlek, termasuk bulan kabisat, ke Masehi. Perhitungan Tiongkok (UTC+8), Vietnam (UTC+7), Korea / Jepang (UTC+9), 1900–2100.",
+    "titleChess3d": "Catur 3D — main catur online di papan 3D — cv.cm",
+    "descChess3d": "Main catur 3D online gratis: papan 3D sungguhan yang bisa diputar dan dimiringkan, melawan komputer di lima level atau dengan teman. Tanpa unduhan, bisa di HP.",
+    "titleMagicCube": "Main kubus rubik online — putar dan selesaikan kubus 3×3 3D — cv.cm",
+    "descMagicCube": "Main kubus rubik 3D online: acak kubus 2×2, 3×3 atau 4×4, putar lapisannya dengan menyeret atau keyboard, dan catat waktu penyelesaian Anda. Gratis, bisa di HP.",
+    "titleStackGame": "Game menumpuk balok 3D — bangun menara setinggi mungkin — cv.cm",
+    "descStackGame": "Main gratis game menumpuk balok 3D di browser: jatuhkan setiap balok yang bergeser ke atas menara, bagian yang menjorok terpotong, dan lihat seberapa tinggi Anda bisa menumpuk. Jatuhan sempurna membuat balok membesar lagi. Bisa di HP.",
+    "titleDrivingGame": "Game mobil 3D — balap dan drift online gratis — cv.cm",
+    "descDrivingGame": "Game menyetir 3D gratis di browser: balap tiga putaran melawan waktu atau drift di tikungan untuk mengumpulkan poin. Tiga sirkuit, kontrol keyboard atau sentuh, tanpa unduhan.",
+    "titleFlightSimulator": "Simulator pesawat online — game pesawat 3D gratis — cv.cm",
+    "descFlightSimulator": "Simulator pesawat 3D gratis di browser: lepas landas dari landasan, terbang di atas pulau low-poly lalu mendarat lagi, atau lewati 12 cincin melawan waktu. Tanpa unduhan; bisa dengan keyboard atau di HP.",
+    "titleGames3d": "Game 3D online gratis — catur 3D, rubik, mobil, pesawat — cv.cm",
+    "descGames3d": "Main game 3D gratis di browser tanpa unduhan: catur 3D, kubus rubik, game menumpuk balok, game mobil dengan drift, dan simulator pesawat. Bisa di HP juga."
   },
   "brand": "cv.cm",
   "nav": {
@@ -778,7 +790,8 @@
     "elements": "Tabel periodik",
     "calendar": "Kalender",
     "academic": "Akademik & statistik",
-    "more": "Lainnya"
+    "more": "Lainnya",
+    "games3d": "Game 3D"
   },
   "lang": {
     "label": "Bahasa",
@@ -1632,6 +1645,26 @@
     "lunar-converter": {
       "name": "Konversi kalender Imlek",
       "blurb": "Tanggal Imlek ke Masehi dan sebaliknya."
+    },
+    "3d-chess": {
+      "name": "Catur 3D",
+      "blurb": "Catur di papan 3D yang bisa diputar, melawan komputer atau teman."
+    },
+    "magic-cube": {
+      "name": "Kubus rubik",
+      "blurb": "Acak kubus 3D dan selesaikan melawan waktu."
+    },
+    "stack-game": {
+      "name": "Game menumpuk balok",
+      "blurb": "Jatuhkan balok yang bergeser dan bangun menara tertinggi."
+    },
+    "driving-game": {
+      "name": "Game mobil 3D",
+      "blurb": "Kemudikan mobil 3D di tiga sirkuit atau drift untuk poin."
+    },
+    "flight-simulator": {
+      "name": "Simulator pesawat",
+      "blurb": "Lepas landas, terbang di atas pulau dan mendarat, atau lewati cincin melawan waktu."
     }
   },
   "watermark": {
@@ -6177,6 +6210,76 @@
       "a4": "Bulan Imlek dimulai pada hari bulan baru menurut waktu standar tiap negara. Jika bulan baru jatuh dekat tengah malam, UTC+7, UTC+8, dan UTC+9 bisa memberi hari yang berbeda.",
       "q5": "Apakah ada yang diunggah?",
       "a5": "Tidak. Tabel kalender ada di halaman dan tanggal hanya dihitung di tab ini."
+    },
+    "3d-chess": {
+      "q1": "Bagaimana cara menggerakkan bidak di catur 3D?",
+      "a1": "Ketuk atau klik bidak, lalu ketuk salah satu petak yang ditandai. Titik kecil menunjukkan langkah sah dan cincin menunjukkan makan bidak. Ketuk bidak itu lagi untuk batal memilih.",
+      "q2": "Seberapa kuat komputernya?",
+      "a2": "Ada lima level, dari pemula yang sering blunder sampai pemain klub yang kuat. Komputernya memakai mesin Stockfish, dengan waktu dan kedalaman berpikir dibatasi di level mudah.",
+      "q3": "Bagaimana memutar papan di HP?",
+      "a3": "Seret papan dengan satu atau dua jari untuk memutar dan memiringkan pandangan; ketukan singkat memilih petak. Putar papan membawa Anda ke sisi seberang, dan layar penuh memberi ruang paling luas.",
+      "q4": "Apakah permainan saya disimpan?",
+      "a4": "Ya. Setiap langkah disimpan di browser ini, jadi permainan menunggu saat Anda kembali. Tidak ada yang diunggah.",
+      "q5": "Kenapa muncul pesan 3D tidak tersedia?",
+      "a5": "Catur 3D butuh WebGL. Perbarui browser, nyalakan akselerasi perangkat keras, atau coba browser lain. Catur papan datar di cv.cm bisa dimainkan tanpa WebGL."
+    },
+    "magic-cube": {
+      "q1": "Bagaimana cara memutar satu lapisan?",
+      "a1": "Tekan Main, lalu seret satu stiker ke arah baris atau kolomnya ingin Anda gerakkan. Seret di luar kubus untuk melihat dari sisi lain. Di keyboard, U D L R F B memutar sisi luar dan Shift memutarnya ke arah sebaliknya.",
+      "q2": "Apa arti notasinya?",
+      "a2": "Setiap huruf adalah satu sisi: U atas, D bawah, L kiri, R kanan, F depan, B belakang. Huruf saja berarti seperempat putaran searah jarum jam saat melihat sisi itu, dengan apostrof (R') berlawanan arah, dan dengan angka 2 (R2) setengah putaran.",
+      "q3": "Bagaimana pemula menyelesaikan 3×3?",
+      "a3": "Lapis demi lapis. Buat tanda tambah di satu sisi dengan warna tepi yang cocok dengan pusatnya, masukkan empat sudut sisi itu, lalu tepi lapisan tengah. Untuk sisi terakhir: bentuk tanda tambah, atur arah sudut, lalu pindahkan sudut dan tepi ke tempatnya.",
+      "q4": "Ukuran apa saja yang ada?",
+      "a4": "2×2, 3×3 dan 4×4. 2×2 hanya berisi sudut, cocok untuk pemanasan; 4×4 tidak punya pusat tetap, jadi Anda pasangkan pusat dan tepi dulu lalu selesaikan seperti 3×3.",
+      "q5": "Apakah kubus saya disimpan?",
+      "a5": "Ya. Acakan, putaran Anda, jam, dan waktu terbaik tiap ukuran disimpan di browser ini, jadi Anda bisa menutup halaman dan melanjutkan nanti."
+    },
+    "stack-game": {
+      "q1": "Bagaimana cara main game menumpuk balok?",
+      "a1": "Sebuah balok bergeser bolak-balik di atas menara. Ketuk, klik, atau tekan Spasi untuk menjatuhkannya. Bagian yang menjorok keluar terpotong dan jatuh, jadi balok berikutnya hanya sebesar bagian yang tersisa. Kalau meleset sama sekali dari menara, permainan selesai.",
+      "q2": "Apa itu jatuhan sempurna?",
+      "a2": "Jika balok jatuh hampir tepat di atas balok di bawahnya, balok langsung pas tanpa terpotong. Tiga kali sempurna berturut-turut atau lebih membuat balok membesar sedikit demi sedikit, sampai ukuran awalnya.",
+      "q3": "Apakah makin lama makin cepat?",
+      "a3": "Ya. Balok bergeser sedikit lebih cepat seiring menara meninggi, dan datang bergantian dari dua arah, jadi perhatikan tepinya.",
+      "q4": "Bisakah dimainkan di HP?",
+      "a4": "Bisa. Ketuk di mana saja pada layar game untuk menjatuhkan balok. Layar penuh memberi tampilan terbesar, dan di HP tampilan 3D memakai resolusi lebih rendah agar tetap lancar.",
+      "q5": "Apakah skor terbaik saya disimpan?",
+      "a5": "Ya, hanya di browser ini. Tidak dikirim ke mana pun."
+    },
+    "driving-game": {
+      "q1": "Bagaimana cara menyetir?",
+      "a1": "Tombol panah atau W A S D: atas untuk gas, bawah untuk rem lalu mundur, kiri dan kanan untuk berbelok. Spasi adalah rem tangan dan R mengembalikan Anda ke titik periksa terakhir.",
+      "q2": "Bagaimana skor drift dihitung?",
+      "a2": "Poin bertambah selama mobil meluncur menyamping lebih dari 15 derajat dengan cepat; makin cepat dan makin lebar luncurannya, makin banyak poinnya. Poin satu luncuran disimpan saat Anda meluruskan mobil. Menabrak dinding ban atau berada di rumput lebih dari satu detik menghapus luncuran yang sedang berjalan. Satu sesi drift berlangsung 60 detik.",
+      "q3": "Apakah bisa dimainkan di HP?",
+      "a3": "Bisa. Tombol setir ada di kiri bawah, sedangkan rem, rem tangan, dan gas di kanan bawah. Miringkan HP dan gunakan layar penuh agar tampilannya paling luas.",
+      "q4": "Ada sirkuit apa saja, dan apakah waktu saya disimpan?",
+      "a4": "Ada tiga sirkuit tetap, jadi waktu per putaran selalu bisa dibandingkan. Putaran terbaik dan skor drift terbaik di tiap sirkuit hanya disimpan di browser ini.",
+      "q5": "Kenapa lambat atau layarnya hitam di perangkat saya?",
+      "a5": "Game ini butuh WebGL. Di HP gambar dibuat dengan resolusi lebih rendah dan tanpa bayangan; menutup tab lain membantu. Jika tampilan 3D berhenti, mulai lagi."
+    },
+    "flight-simulator": {
+      "q1": "Bagaimana cara menerbangkan pesawat?",
+      "a1": "W dan S mengatur gas. Tombol panah untuk mengemudi: kiri dan kanan memiringkan sayap, atas menurunkan hidung dan bawah menaikkannya, seperti tongkat kemudi sungguhan (centang Balik naik-turun untuk menukarnya). A dan D menggerakkan kemudi arah. R mengulang.",
+      "q2": "Bagaimana cara lepas landas dan mendarat?",
+      "a2": "Di Terbang bebas Anda mulai di landasan. Tahan W untuk gas penuh, dan setelah melewati sekitar 145 km/h tarik hidung pesawat pelan-pelan. Untuk mendarat, luruskan dengan landasan, pelankan sampai sekitar 150 km/h, jaga sayap tetap datar dan biarkan pesawat turun perlahan. Menyentuh tanah terlalu cepat, miring, atau di luar landasan berarti jatuh.",
+      "q3": "Apa itu mode cincin?",
+      "a3": "Anda mulai di udara dan melewati 12 cincin berurutan: cincin merah muda terang adalah berikutnya. Waktu berjalan sejak awal, dan waktu terbaik Anda disimpan di browser ini.",
+      "q4": "Apakah bisa dimainkan di HP?",
+      "a4": "Bisa. Di layar sentuh muncul tombol di atas tampilan: ▲ dan ▼ untuk hidung pesawat, + dan − untuk gas, ◀ dan ▶ untuk memiringkan. Layar penuh memberi ruang paling luas.",
+      "q5": "Apakah ini simulator penerbangan yang realistis?",
+      "a5": "Bukan, ini game pesawat bergaya arkade dengan fisika yang disederhanakan: ada gaya angkat, hambatan, stall di bawah sekitar 110 km/h dan belokan terkoordinasi, tapi pesawatnya mudah sehingga siapa pun bisa terbang dalam semenit."
+    },
+    "games3d": {
+      "q1": "Apakah game 3D ini gratis?",
+      "a1": "Ya. Gratis dimainkan tanpa daftar dan tanpa unduhan. Skor dan waktu terbaik disimpan di browser ini.",
+      "q2": "Apakah bisa dimainkan di HP?",
+      "a2": "Bisa. Setiap game punya tombol sentuh, dan di HP tampilan 3D memakai resolusi lebih rendah agar tetap lancar. Layar penuh memberi ruang paling luas.",
+      "q3": "Kenapa tidak ada yang dimuat sebelum menekan Main?",
+      "a3": "Mesin 3D (three.js) dan konteks grafis baru berjalan saat Anda bermain, jadi halaman cepat terbuka dan HP tidak memakai memori untuk game yang hanya Anda baca.",
+      "q4": "Game bilang 3D tidak tersedia. Apa yang bisa dilakukan?",
+      "a4": "Game ini butuh WebGL. Perbarui browser, nyalakan akselerasi perangkat keras di pengaturannya, atau coba browser lain. Beberapa komputer kantor atau sekolah memblokir WebGL."
     }
   },
   "qr": {
@@ -10173,6 +10276,7 @@
     },
     "consoles": {
       "mini": "Game online gratis",
+      "3d": "Game 3D",
       "fc": "FC / NES",
       "sfc": "SFC / SNES",
       "gb": "Game Boy",
@@ -10250,6 +10354,11 @@
       "title": "Game online gratis",
       "lead": "Game klasik yang langsung dimainkan di browser: solitaire, minesweeper, catur, mahjong, 2048, permainan kata, dan lainnya. Gratis, tanpa unduhan, dan skor dan permainan yang sedang berjalan tersimpan di browser ini.",
       "all": "Lihat semua {n} game online gratis"
+    },
+    "g3d": {
+      "title": "Game 3D gratis",
+      "lead": "Game 3D yang langsung dimainkan di sini: catur di papan 3D, kubus rubik untuk diputar dan diselesaikan, game menumpuk balok, game mobil dengan drift, dan simulator pesawat. Gratis tanpa instal; bagian 3D baru dimuat saat Anda menekan Main.",
+      "all": "Semua {n} game 3D gratis"
     }
   },
   "reverse": {
@@ -16130,5 +16239,130 @@
   },
   "lunarConverter": {
     "lede": "Ubah tanggal Masehi ↔ Imlek untuk 1900–2100, menurut perhitungan Tiongkok (UTC+8), Vietnam (UTC+7) atau Korea / Jepang (UTC+9). Dihitung di tab ini, tidak ada yang diunggah."
+  },
+  "chess3d": {
+    "title": "Catur 3D",
+    "privacyNote": "Main catur di papan 3D melawan komputer atau teman. Permainan berjalan di halaman ini dan disimpan di browser ini.",
+    "stage": "Papan catur 3D",
+    "intro": "Papan 3D siap kapan pun Anda mau. Mesin komputer dan tampilan 3D baru dimuat saat Anda menekan Main.",
+    "flip": "Putar papan",
+    "hint": "Ketuk bidak, lalu petak yang ditandai. Seret untuk memutar dan memiringkan pandangan. Keyboard: panah menggeser kursor, Enter atau Spasi memilih petak, Esc melepas bidak.",
+    "cursor": "Petak {square}: {piece}"
+  },
+  "magicCube": {
+    "title": "Kubus rubik",
+    "privacyNote": "Kubus 3D untuk diacak, diputar dan diselesaikan. Berjalan di halaman ini dan tidak ada yang diunggah.",
+    "stage": "Kubus rubik, seret untuk memutar",
+    "intro": "Putar dan selesaikan kubus 3D. Tekan Main untuk memuatnya.",
+    "size": "Ukuran",
+    "size2": "2×2",
+    "size3": "3×3",
+    "size4": "4×4",
+    "scramble": "Acak",
+    "undo": "Urungkan",
+    "reset": "Atur ulang",
+    "time": "Waktu",
+    "moves": "Langkah",
+    "best": "Terbaik",
+    "solved": "Selesai dalam {time} dengan {moves} langkah!",
+    "solvedBest": "Rekor baru! Selesai dalam {time} dengan {moves} langkah.",
+    "scrambled": "Sudah diacak. Jam mulai saat putaran pertama Anda.",
+    "resumed": "Kubus terakhir Anda kembali seperti semula.",
+    "buttons": "Tombol putar",
+    "hint": "Seret stiker untuk memutar lapisannya, seret latar untuk melihat sekeliling. Tombol: U D L R F B memutar sisi, Shift + tombol memutar balik, tombol panah memutar tampilan."
+  },
+  "stackGame": {
+    "title": "Game menumpuk balok",
+    "privacyNote": "Jatuhkan setiap balok yang bergeser ke menara dan lihat seberapa tinggi Anda bisa menumpuk.",
+    "stage": "Menara game menumpuk balok",
+    "intro": "Jatuhkan setiap balok yang bergeser ke menara. Bagian yang menjorok keluar tepi akan terpotong.",
+    "score": "Skor",
+    "best": "Terbaik",
+    "over": "Permainan selesai. Skor: {score}.",
+    "again": "Main lagi",
+    "perfect": "Sempurna! ×{n}",
+    "newBest": "Rekor baru: {score}!",
+    "hint": "Ketuk layar game, klik, atau tekan Spasi atau Enter untuk menjatuhkan balok. Luruskan dengan tepat untuk jatuhan sempurna."
+  },
+  "drivingGame": {
+    "title": "Game mobil 3D",
+    "privacyNote": "Kemudikan mobil 3D di sirkuit atau drift untuk poin. Waktu terbaik Anda hanya disimpan di browser ini.",
+    "stage": "Layar game mobil 3D",
+    "intro": "Pilih sirkuit dan mode, lalu tekan Main. Tombol panah untuk menyetir, Spasi untuk rem tangan.",
+    "track": "Sirkuit",
+    "track1": "Sirkuit 1 — Tikungan landai",
+    "track2": "Sirkuit 2 — Tikungan panjang",
+    "track3": "Sirkuit 3 — Lingkar besar",
+    "mode": "Mode permainan",
+    "modeTime": "Uji waktu (3 putaran)",
+    "modeDrift": "Mode drift (60 detik)",
+    "best": "Terbaik di sirkuit ini",
+    "restart": "Ulangi",
+    "again": "Balap lagi",
+    "go": "Mulai!",
+    "finished": "Finis! Total {total}, putaran terbaik {best}.",
+    "driftDone": "Waktu habis! Skor drift: {score}.",
+    "speed": "Kecepatan {n} km/jam",
+    "lap": "Putaran {n}/{of}",
+    "current": "Putaran ini {time}",
+    "bestLap": "Terbaik {time}",
+    "drift": "Poin drift {n}",
+    "timeLeft": "Sisa {n} detik",
+    "offRoad": "Keluar lintasan",
+    "left": "Belok kiri",
+    "right": "Belok kanan",
+    "brake": "Rem / mundur",
+    "handbrake": "Rem tangan",
+    "gas": "Gas",
+    "hint": "Atas atau W untuk gas, bawah atau S untuk rem dan mundur, kiri dan kanan untuk belok, Spasi rem tangan, R kembali ke titik periksa terakhir. Satu putaran baru dihitung setelah melewati semua titik periksa."
+  },
+  "flightSim": {
+    "title": "Simulator pesawat",
+    "privacyNote": "Lepas landas dari landasan, terbang di atas pulau lalu mendarat, atau lewati cincin melawan waktu. Tidak ada yang diunggah.",
+    "stage": "Tampilan simulator pesawat",
+    "intro": "Terbangkan pesawat kecil di atas pulau low-poly. Tekan Main untuk memuat tampilan 3D.",
+    "mode": "Pilih mode",
+    "m_free": "Terbang bebas",
+    "m_rings": "Cincin (12)",
+    "restart": "Ulangi",
+    "c_cockpit": "Tampilan kokpit",
+    "c_chase": "Tampilan belakang",
+    "invert": "Balik naik-turun",
+    "best": "Waktu cincin terbaik",
+    "stall": "STALL!",
+    "hint": "W / S gas · ← → miring · ↑ hidung turun, ↓ hidung naik (seperti tongkat kemudi) · A / D kemudi arah · R ulangi. Di HP gunakan tombol di tampilan.",
+    "p_noseUp": "Hidung naik",
+    "p_noseDown": "Hidung turun",
+    "p_thrUp": "Tambah gas",
+    "p_thrDown": "Kurangi gas",
+    "p_rollLeft": "Miring ke kiri",
+    "p_rollRight": "Miring ke kanan",
+    "again": "Terbang lagi",
+    "freeGo": "Di landasan: tahan W untuk gas penuh, lalu tarik naik setelah sekitar 145 km/h.",
+    "ringsGo": "Lewati cincin merah muda. Waktu sedang berjalan.",
+    "ringPassed": "Cincin {n} dari {total}.",
+    "finished": "Semua cincin dalam {time}.",
+    "newBest": "Rekor baru: semua cincin dalam {time}!",
+    "crashWater": "Byur! Anda jatuh ke laut.",
+    "crashHard": "Jatuh! Menghantam tanah terlalu keras.",
+    "crashTerrain": "Jatuh! Menabrak daratan.",
+    "landed": "Mendarat dengan mulus, hebat! Tambah gas untuk lepas landas lagi.",
+    "airborne": "Mengudara.",
+    "hudSpeed": "Kecepatan {n} km/h",
+    "hudAlt": "Ketinggian {n} m",
+    "hudThrottle": "Gas {n}%",
+    "hudRings": "Cincin {n}/{total} · {time}"
+  },
+  "game3d": {
+    "play": "Main",
+    "loading": "Memuat tampilan 3D…",
+    "noWebgl": "Browser ini tidak bisa menampilkan grafis 3D (WebGL). Nyalakan akselerasi perangkat keras atau coba browser lain.",
+    "retry": "Coba lagi",
+    "lost": "Tampilan 3D berhenti (kartu grafis direset). Mulai lagi untuk lanjut bermain.",
+    "restart": "Mulai lagi",
+    "fullscreen": "Layar penuh",
+    "exitFullscreen": "Keluar dari layar penuh",
+    "pad": "Tombol game",
+    "credit": "Grafis 3D dengan {name} (lisensi MIT)."
   }
 }

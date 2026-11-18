@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "titleChess3d": "Ajedrez 3D — juega al ajedrez online en un tablero 3D — cv.cm",
+    "descChess3d": "Juega gratis al ajedrez 3D online: un tablero 3D de verdad que puedes girar e inclinar, contra el ordenador en cinco niveles o con un amigo. Sin descargas y también en el móvil."
+  },
+  "tools": {
+    "3d-chess": {
+      "name": "Ajedrez 3D",
+      "blurb": "Ajedrez en un tablero 3D que puedes girar, contra el ordenador o un amigo."
+    }
+  },
+  "faq": {
+    "3d-chess": {
+      "q1": "¿Cómo muevo una pieza en el ajedrez 3D?",
+      "a1": "Toca o haz clic en una pieza y luego en una de las casillas marcadas. Los puntos indican jugadas legales y los anillos, capturas. Vuelve a tocar la pieza para soltarla.",
+      "q2": "¿Qué tan fuerte es el ordenador?",
+      "a2": "Tiene cinco niveles, desde un principiante que se equivoca hasta un jugador de club fuerte. El ordenador es el motor Stockfish, con tiempo y profundidad limitados en los niveles fáciles.",
+      "q3": "¿Cómo giro el tablero en el móvil?",
+      "a3": "Arrastra sobre el tablero con uno o dos dedos para girar e inclinar la vista; un toque corto elige una casilla. Girar el tablero lo pasa al otro lado y la pantalla completa te da más espacio.",
+      "q4": "¿Se guarda mi partida?",
+      "a4": "Sí. Cada jugada se guarda en este navegador, así que la partida te espera cuando vuelvas. No se sube nada.",
+      "q5": "¿Por qué dice que el 3D no está disponible?",
+      "a5": "El ajedrez 3D necesita WebGL. Actualiza el navegador, activa la aceleración por hardware o prueba otro navegador. El ajedrez plano de cv.cm funciona sin él."
+    }
+  },
+  "guides": {
+    "3d-chess": {
+      "lead": "Juega al ajedrez en un tablero 3D en tres pasos.",
+      "s1t": "Pulsa Jugar",
+      "s1b": "Elige jugar contra el ordenador o con un amigo, tu color y un nivel, y pulsa Jugar para preparar el tablero 3D.",
+      "s2t": "Haz tus jugadas",
+      "s2b": "Toca una pieza y luego una casilla marcada. Con teclado, las flechas mueven el cursor y Enter elige la casilla.",
+      "s3t": "Gira la vista",
+      "s3b": "Arrastra para girar e inclinar el tablero o pulsa Girar el tablero. Deshacer retira tu última jugada."
+    }
+  },
+  "ui": {
+    "chess3d": {
+      "title": "Ajedrez 3D",
+      "privacyNote": "Juega al ajedrez en un tablero 3D contra el ordenador o un amigo. La partida se juega en esta página y se guarda en este navegador.",
+      "stage": "Tablero de ajedrez 3D",
+      "intro": "El tablero 3D está listo cuando quieras. El motor del ordenador y la vista 3D se cargan al pulsar Jugar.",
+      "flip": "Girar el tablero",
+      "hint": "Toca una pieza y luego una casilla marcada. Arrastra para girar e inclinar la vista. Teclado: las flechas mueven el cursor, Enter o Espacio eligen casilla y Esc suelta la pieza.",
+      "cursor": "Casilla {square}: {piece}"
+    }
+  }
+}

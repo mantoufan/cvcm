@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "titleChess3d": "Catur 3D — main catur online di papan 3D — cv.cm",
+    "descChess3d": "Main catur 3D online gratis: papan 3D sungguhan yang bisa diputar dan dimiringkan, melawan komputer di lima level atau dengan teman. Tanpa unduhan, bisa di HP."
+  },
+  "tools": {
+    "3d-chess": {
+      "name": "Catur 3D",
+      "blurb": "Catur di papan 3D yang bisa diputar, melawan komputer atau teman."
+    }
+  },
+  "faq": {
+    "3d-chess": {
+      "q1": "Bagaimana cara menggerakkan bidak di catur 3D?",
+      "a1": "Ketuk atau klik bidak, lalu ketuk salah satu petak yang ditandai. Titik kecil menunjukkan langkah sah dan cincin menunjukkan makan bidak. Ketuk bidak itu lagi untuk batal memilih.",
+      "q2": "Seberapa kuat komputernya?",
+      "a2": "Ada lima level, dari pemula yang sering blunder sampai pemain klub yang kuat. Komputernya memakai mesin Stockfish, dengan waktu dan kedalaman berpikir dibatasi di level mudah.",
+      "q3": "Bagaimana memutar papan di HP?",
+      "a3": "Seret papan dengan satu atau dua jari untuk memutar dan memiringkan pandangan; ketukan singkat memilih petak. Putar papan membawa Anda ke sisi seberang, dan layar penuh memberi ruang paling luas.",
+      "q4": "Apakah permainan saya disimpan?",
+      "a4": "Ya. Setiap langkah disimpan di browser ini, jadi permainan menunggu saat Anda kembali. Tidak ada yang diunggah.",
+      "q5": "Kenapa muncul pesan 3D tidak tersedia?",
+      "a5": "Catur 3D butuh WebGL. Perbarui browser, nyalakan akselerasi perangkat keras, atau coba browser lain. Catur papan datar di cv.cm bisa dimainkan tanpa WebGL."
+    }
+  },
+  "guides": {
+    "3d-chess": {
+      "lead": "Main catur di papan 3D dalam tiga langkah.",
+      "s1t": "Tekan Main",
+      "s1b": "Pilih lawan komputer atau teman, warna bidak, dan level, lalu tekan Main untuk menyiapkan papan 3D.",
+      "s2t": "Jalankan bidak",
+      "s2b": "Ketuk bidak, lalu petak yang ditandai. Dengan keyboard, tombol panah menggeser kursor dan Enter memilih petak.",
+      "s3t": "Putar pandangan",
+      "s3b": "Seret untuk memutar dan memiringkan papan, atau tekan Putar papan. Urungkan menarik kembali langkah terakhir Anda."
+    }
+  },
+  "ui": {
+    "chess3d": {
+      "title": "Catur 3D",
+      "privacyNote": "Main catur di papan 3D melawan komputer atau teman. Permainan berjalan di halaman ini dan disimpan di browser ini.",
+      "stage": "Papan catur 3D",
+      "intro": "Papan 3D siap kapan pun Anda mau. Mesin komputer dan tampilan 3D baru dimuat saat Anda menekan Main.",
+      "flip": "Putar papan",
+      "hint": "Ketuk bidak, lalu petak yang ditandai. Seret untuk memutar dan memiringkan pandangan. Keyboard: panah menggeser kursor, Enter atau Spasi memilih petak, Esc melepas bidak.",
+      "cursor": "Petak {square}: {piece}"
+    }
+  }
+}

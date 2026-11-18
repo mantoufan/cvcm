@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "titleMagicCube": "Main kubus rubik online — putar dan selesaikan kubus 3×3 3D — cv.cm",
+    "descMagicCube": "Main kubus rubik 3D online: acak kubus 2×2, 3×3 atau 4×4, putar lapisannya dengan menyeret atau keyboard, dan catat waktu penyelesaian Anda. Gratis, bisa di HP."
+  },
+  "tools": {
+    "magic-cube": {
+      "name": "Kubus rubik",
+      "blurb": "Acak kubus 3D dan selesaikan melawan waktu."
+    }
+  },
+  "faq": {
+    "magic-cube": {
+      "q1": "Bagaimana cara memutar satu lapisan?",
+      "a1": "Tekan Main, lalu seret satu stiker ke arah baris atau kolomnya ingin Anda gerakkan. Seret di luar kubus untuk melihat dari sisi lain. Di keyboard, U D L R F B memutar sisi luar dan Shift memutarnya ke arah sebaliknya.",
+      "q2": "Apa arti notasinya?",
+      "a2": "Setiap huruf adalah satu sisi: U atas, D bawah, L kiri, R kanan, F depan, B belakang. Huruf saja berarti seperempat putaran searah jarum jam saat melihat sisi itu, dengan apostrof (R') berlawanan arah, dan dengan angka 2 (R2) setengah putaran.",
+      "q3": "Bagaimana pemula menyelesaikan 3×3?",
+      "a3": "Lapis demi lapis. Buat tanda tambah di satu sisi dengan warna tepi yang cocok dengan pusatnya, masukkan empat sudut sisi itu, lalu tepi lapisan tengah. Untuk sisi terakhir: bentuk tanda tambah, atur arah sudut, lalu pindahkan sudut dan tepi ke tempatnya.",
+      "q4": "Ukuran apa saja yang ada?",
+      "a4": "2×2, 3×3 dan 4×4. 2×2 hanya berisi sudut, cocok untuk pemanasan; 4×4 tidak punya pusat tetap, jadi Anda pasangkan pusat dan tepi dulu lalu selesaikan seperti 3×3.",
+      "q5": "Apakah kubus saya disimpan?",
+      "a5": "Ya. Acakan, putaran Anda, jam, dan waktu terbaik tiap ukuran disimpan di browser ini, jadi Anda bisa menutup halaman dan melanjutkan nanti."
+    }
+  },
+  "guides": {
+    "magic-cube": {
+      "lead": "Selesaikan kubus rubik dalam tiga langkah.",
+      "s1t": "Acak",
+      "s1b": "Pilih ukuran lalu tekan Acak. Jam mulai saat putaran pertama Anda.",
+      "s2t": "Putar lapisan",
+      "s2b": "Seret stiker untuk memutar baris dan kolom, seret latar untuk melihat sekeliling, atau gunakan U D L R F B di keyboard.",
+      "s3t": "Selesaikan",
+      "s3b": "Saat setiap sisi berwarna sama, jam berhenti dan waktu terbaik Anda disimpan."
+    }
+  },
+  "ui": {
+    "magicCube": {
+      "title": "Kubus rubik",
+      "privacyNote": "Kubus 3D untuk diacak, diputar dan diselesaikan. Berjalan di halaman ini dan tidak ada yang diunggah.",
+      "stage": "Kubus rubik, seret untuk memutar",
+      "intro": "Putar dan selesaikan kubus 3D. Tekan Main untuk memuatnya.",
+      "size": "Ukuran",
+      "size2": "2×2",
+      "size3": "3×3",
+      "size4": "4×4",
+      "scramble": "Acak",
+      "undo": "Urungkan",
+      "reset": "Atur ulang",
+      "time": "Waktu",
+      "moves": "Langkah",
+      "best": "Terbaik",
+      "solved": "Selesai dalam {time} dengan {moves} langkah!",
+      "solvedBest": "Rekor baru! Selesai dalam {time} dengan {moves} langkah.",
+      "scrambled": "Sudah diacak. Jam mulai saat putaran pertama Anda.",
+      "resumed": "Kubus terakhir Anda kembali seperti semula.",
+      "buttons": "Tombol putar",
+      "hint": "Seret stiker untuk memutar lapisannya, seret latar untuk melihat sekeliling. Tombol: U D L R F B memutar sisi, Shift + tombol memutar balik, tombol panah memutar tampilan."
+    }
+  }
+}

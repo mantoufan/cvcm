@@ -1,0 +1,8 @@
+/* flight simulator (src/client/flight-simulator/ui.ts) */
+.fs-hud span, .fs-hud strong { padding: 0.1rem 0.45rem; border-radius: 6px; background: rgba(255, 255, 255, 0.72); }
+.fs-stall { color: #fff; background: var(--pink-deep) !important; }
+.fs-stall[hidden], .fs-hud [hidden] { display: none; }
+.fs-pad .g3d-key { min-width: 46px; }
+.fs-status { min-height: 1.6em; margin: 0.25rem 0; color: var(--ink-soft); }
+.fs-mode { display: inline-flex; align-items: center; gap: 0.4rem; margin: 0; }
+.fs-best { margin: 0.25rem 0 0.75rem; }

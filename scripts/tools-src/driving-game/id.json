@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "titleDrivingGame": "Game mobil 3D — balap dan drift online gratis — cv.cm",
+    "descDrivingGame": "Game menyetir 3D gratis di browser: balap tiga putaran melawan waktu atau drift di tikungan untuk mengumpulkan poin. Tiga sirkuit, kontrol keyboard atau sentuh, tanpa unduhan."
+  },
+  "tools": {
+    "driving-game": {
+      "name": "Game mobil 3D",
+      "blurb": "Kemudikan mobil 3D di tiga sirkuit atau drift untuk poin."
+    }
+  },
+  "faq": {
+    "driving-game": {
+      "q1": "Bagaimana cara menyetir?",
+      "a1": "Tombol panah atau W A S D: atas untuk gas, bawah untuk rem lalu mundur, kiri dan kanan untuk berbelok. Spasi adalah rem tangan dan R mengembalikan Anda ke titik periksa terakhir.",
+      "q2": "Bagaimana skor drift dihitung?",
+      "a2": "Poin bertambah selama mobil meluncur menyamping lebih dari 15 derajat dengan cepat; makin cepat dan makin lebar luncurannya, makin banyak poinnya. Poin satu luncuran disimpan saat Anda meluruskan mobil. Menabrak dinding ban atau berada di rumput lebih dari satu detik menghapus luncuran yang sedang berjalan. Satu sesi drift berlangsung 60 detik.",
+      "q3": "Apakah bisa dimainkan di HP?",
+      "a3": "Bisa. Tombol setir ada di kiri bawah, sedangkan rem, rem tangan, dan gas di kanan bawah. Miringkan HP dan gunakan layar penuh agar tampilannya paling luas.",
+      "q4": "Ada sirkuit apa saja, dan apakah waktu saya disimpan?",
+      "a4": "Ada tiga sirkuit tetap, jadi waktu per putaran selalu bisa dibandingkan. Putaran terbaik dan skor drift terbaik di tiap sirkuit hanya disimpan di browser ini.",
+      "q5": "Kenapa lambat atau layarnya hitam di perangkat saya?",
+      "a5": "Game ini butuh WebGL. Di HP gambar dibuat dengan resolusi lebih rendah dan tanpa bayangan; menutup tab lain membantu. Jika tampilan 3D berhenti, mulai lagi."
+    }
+  },
+  "guides": {
+    "driving-game": {
+      "lead": "Menyetir mobil 3D dalam tiga langkah.",
+      "s1t": "Pilih sirkuit dan mode",
+      "s1b": "Pilih salah satu dari tiga sirkuit, lalu Uji waktu (tiga putaran) atau Mode drift (60 detik), dan tekan Main.",
+      "s2t": "Menyetir",
+      "s2b": "Tunggu hitungan 3-2-1, injak gas dengan atas atau W dan belok dengan tombol panah. Di HP, gunakan tombol di layar.",
+      "s3t": "Kalahkan rekor",
+      "s3b": "Lewati semua titik periksa agar satu putaran dihitung. Putaran terbaik dan skor drift terbaik di tiap sirkuit disimpan."
+    }
+  },
+  "ui": {
+    "drivingGame": {
+      "title": "Game mobil 3D",
+      "privacyNote": "Kemudikan mobil 3D di sirkuit atau drift untuk poin. Waktu terbaik Anda hanya disimpan di browser ini.",
+      "stage": "Layar game mobil 3D",
+      "intro": "Pilih sirkuit dan mode, lalu tekan Main. Tombol panah untuk menyetir, Spasi untuk rem tangan.",
+      "track": "Sirkuit",
+      "track1": "Sirkuit 1 — Tikungan landai",
+      "track2": "Sirkuit 2 — Tikungan panjang",
+      "track3": "Sirkuit 3 — Lingkar besar",
+      "mode": "Mode permainan",
+      "modeTime": "Uji waktu (3 putaran)",
+      "modeDrift": "Mode drift (60 detik)",
+      "best": "Terbaik di sirkuit ini",
+      "restart": "Ulangi",
+      "again": "Balap lagi",
+      "go": "Mulai!",
+      "finished": "Finis! Total {total}, putaran terbaik {best}.",
+      "driftDone": "Waktu habis! Skor drift: {score}.",
+      "speed": "Kecepatan {n} km/jam",
+      "lap": "Putaran {n}/{of}",
+      "current": "Putaran ini {time}",
+      "bestLap": "Terbaik {time}",
+      "drift": "Poin drift {n}",
+      "timeLeft": "Sisa {n} detik",
+      "offRoad": "Keluar lintasan",
+      "left": "Belok kiri",
+      "right": "Belok kanan",
+      "brake": "Rem / mundur",
+      "handbrake": "Rem tangan",
+      "gas": "Gas",
+      "hint": "Atas atau W untuk gas, bawah atau S untuk rem dan mundur, kiri dan kanan untuk belok, Spasi rem tangan, R kembali ke titik periksa terakhir. Satu putaran baru dihitung setelah melewati semua titik periksa."
+    }
+  }
+}

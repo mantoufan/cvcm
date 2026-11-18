@@ -1240,4 +1240,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountZScore(host);
     return m.unmountZScore;
   },
+  "3d-chess": async (host, ctx) => {
+    const m = await import("./3d-chess/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountChess3d(host);
+    return m.unmountChess3d;
+  },
+  "magic-cube": async (host, ctx) => {
+    const m = await import("./magic-cube/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMagicCube(host);
+    return m.unmountMagicCube;
+  },
+  "stack-game": async (host, ctx) => {
+    const m = await import("./stack-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountStackGame(host);
+    return m.unmountStackGame;
+  },
+  "driving-game": async (host, ctx) => {
+    const m = await import("./driving-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDrivingGame(host);
+    return m.unmountDrivingGame;
+  },
+  "flight-simulator": async (host, ctx) => {
+    const m = await import("./flight-simulator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountFlightSimulator(host);
+    return m.unmountFlightSimulator;
+  },
 };

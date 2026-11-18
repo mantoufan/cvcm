@@ -35,8 +35,8 @@ function isHub(page: SitemapPage): boolean {
     case "calendar":
       return page.page === "hub";
     case "games":
-      // The main hub and the free online games hub (/games/mini/), not the console or game pages.
-      return (page.console === null || page.console === "mini") && page.game === null;
+      // The main hub and the hubs of cv.cm's own games (/games/mini/, /games/3d/), not the console or game pages.
+      return (page.console === null || page.console === "mini" || page.console === "3d") && page.game === null;
     default:
       return false;
   }

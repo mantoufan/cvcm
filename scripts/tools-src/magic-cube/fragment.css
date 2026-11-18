@@ -1,0 +1,8 @@
+/* magic-cube (src/client/magic-cube/ui.ts) */
+.mc-stats { margin: 0 0 0.75rem; }
+.mc-stats dd { font-variant-numeric: tabular-nums; }
+.mc-status { min-height: 1.6em; margin: 0.6rem 0 0; font-weight: 600; color: var(--pink-deep); }
+.mc-notation { margin: 0.5rem 0; }
+.mc-notation summary { cursor: pointer; color: var(--ink-soft); }
+.mc-keys { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.4rem; margin-top: 0.5rem; max-width: 30rem; }
+.mc-key { min-height: 44px; padding: 0.3rem; font-family: var(--mono); touch-action: manipulation; }

@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "titleMagicCube": "Cubo mágico online — gira y resuelve un cubo 3×3 en 3D — cv.cm",
+    "descMagicCube": "Juega al cubo mágico online en 3D: mezcla un cubo 2×2, 3×3 o 4×4, gira las capas arrastrando o con el teclado y cronometra tu resolución. Gratis y en el móvil."
+  },
+  "tools": {
+    "magic-cube": {
+      "name": "Cubo mágico",
+      "blurb": "Mezcla un cubo 3D y resuélvelo contra el reloj."
+    }
+  },
+  "faq": {
+    "magic-cube": {
+      "q1": "¿Cómo giro una capa?",
+      "a1": "Pulsa Jugar y arrastra una pegatina en la dirección en la que quieras mover su fila o columna. Arrastra fuera del cubo para mirarlo desde otro lado. Con teclado, U D L R F B giran las caras exteriores y con Mayús giran al revés.",
+      "q2": "¿Qué significa la notación?",
+      "a2": "Cada letra es una cara: U arriba, D abajo, L izquierda, R derecha, F delante, B detrás. La letra sola es un cuarto de vuelta en sentido horario mirando esa cara, con apóstrofo (R') es antihorario y con un 2 (R2) es media vuelta.",
+      "q3": "¿Cómo resuelve un principiante el 3×3?",
+      "a3": "Por capas. Haz una cruz en una cara con los colores de las aristas iguales a los centros, coloca las cuatro esquinas de esa cara y luego las aristas de la capa media. Para la última cara: forma la cruz, orienta las esquinas y lleva esquinas y aristas a su sitio.",
+      "q4": "¿Qué tamaños hay?",
+      "a4": "2×2, 3×3 y 4×4. El 2×2 solo tiene esquinas y sirve de calentamiento; el 4×4 no tiene centros fijos, así que primero juntas centros y aristas y luego lo resuelves como un 3×3.",
+      "q5": "¿Se guarda mi cubo?",
+      "a5": "Sí. La mezcla, tus giros, el reloj y tu mejor tiempo en cada tamaño se guardan en este navegador, así que puedes cerrar la página y seguir después."
+    }
+  },
+  "guides": {
+    "magic-cube": {
+      "lead": "Resuelve el cubo mágico en tres pasos.",
+      "s1t": "Mezcla",
+      "s1b": "Elige un tamaño y pulsa Mezclar. El reloj empieza con tu primer giro.",
+      "s2t": "Gira las capas",
+      "s2b": "Arrastra pegatinas para girar filas y columnas, arrastra el fondo para mirar alrededor o usa U D L R F B en el teclado.",
+      "s3t": "Resuélvelo",
+      "s3b": "Cuando cada cara es de un solo color, el reloj se para y se guarda tu mejor tiempo."
+    }
+  },
+  "ui": {
+    "magicCube": {
+      "title": "Cubo mágico",
+      "privacyNote": "Un cubo 3D para mezclar, girar y resolver. Funciona en la página y no se sube nada.",
+      "stage": "Cubo mágico, arrastra para girar",
+      "intro": "Gira y resuelve un cubo 3D. Pulsa Jugar para cargarlo.",
+      "size": "Tamaño",
+      "size2": "2×2",
+      "size3": "3×3",
+      "size4": "4×4",
+      "scramble": "Mezclar",
+      "undo": "Deshacer",
+      "reset": "Reiniciar",
+      "time": "Tiempo",
+      "moves": "Movimientos",
+      "best": "Mejor",
+      "solved": "¡Resuelto en {time} con {moves} movimientos!",
+      "solvedBest": "¡Nuevo récord! Resuelto en {time} con {moves} movimientos.",
+      "scrambled": "Mezclado. El reloj empieza con tu primer giro.",
+      "resumed": "Tu último cubo está como lo dejaste.",
+      "buttons": "Botones de giro",
+      "hint": "Arrastra una pegatina para girar su capa y el fondo para mirar alrededor. Teclas: U D L R F B giran caras, Mayús + tecla gira al revés, las flechas rotan la vista."
+    }
+  }
+}

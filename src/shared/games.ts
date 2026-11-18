@@ -1,9 +1,23 @@
 /**
- * Console hubs under /games/. `mini` is not a console: it is the hub of cv.cm's own browser games (tool pages listed
- * in BROWSER_GAMES), shown as the first filter; no catalog game uses it.
+ * Console hubs under /games/. `mini` and `3d` are not consoles: they are hubs of cv.cm's own browser games (tool
+ * pages listed in BROWSER_GAMES and GAMES_3D), shown as the first filters; no catalog game uses them.
  */
-export const GAME_CONSOLES = ["mini", "fc", "sfc", "gb", "gbc", "gba", "md", "flash"] as const;
+export const GAME_CONSOLES = ["mini", "3d", "fc", "sfc", "gb", "gbc", "gba", "md", "flash"] as const;
 export type GameConsoleId = (typeof GAME_CONSOLES)[number];
+
+/** The hubs that list cv.cm's own game pages instead of emulator catalog games. */
+export type ToolGameHubId = "mini" | "3d";
+export function isToolGameHub(id: GameConsoleId | null | undefined): id is ToolGameHubId {
+  return id === "mini" || id === "3d";
+}
+
+/** The FAQ copy namespace of a games hub page (shared by the page and its FAQPage JSON-LD). */
+export function gamesFaqBase(consoleId: GameConsoleId | null | undefined): string {
+  if (consoleId === "flash") return "faq.gamesFlash";
+  if (consoleId === "mini") return "faq.gamesMini";
+  if (consoleId === "3d") return "faq.games3d";
+  return "faq.games";
+}
 
 export const GAME_GENRES = [
   "platform",
@@ -1850,6 +1864,7 @@ const ROM_EXT: Record<GameConsoleId, string> = {
   md: ".md",
   flash: ".swf",
   mini: "",
+  "3d": "",
 };
 
 /** S3 object name under `/emu/roms/`. Hosted when that object exists; every page still accepts a local file. */

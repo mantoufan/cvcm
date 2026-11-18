@@ -36,6 +36,7 @@ import {
   elementsHref,
   calendarHref,
   toolJob,
+  gameHubOf,
   withSearch,
   categoryLinks,
   type ConvertJobId,
@@ -1146,8 +1147,10 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   });
   const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || summariesPage || countriesPage || caloriesPage || elementsPage || calendarPage);
   // The calendar sits under Tools (time group on the home tool wall); countries, calories and the periodic table under Data.
-  const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId) || Boolean(calendarPage);
-  const gamesOn = gamesHub || Boolean(gameId);
+  // Game tool pages sit under Games (their games hub), not Tools.
+  const gameTool = Boolean(tool && gameHubOf(tool));
+  const toolsOn = (Boolean(tool) && !gameTool) || Boolean(devicePage) || Boolean(marketsHub || marketId) || Boolean(calendarPage);
+  const gamesOn = gamesHub || Boolean(gameId) || gameTool;
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
   const testsOn = Boolean(quizPage);
   const dataOn = Boolean(datasetPage) || Boolean(countriesPage) || Boolean(caloriesPage) || Boolean(elementsPage);
@@ -1438,9 +1441,16 @@ function toolDirectory(loc: Locale): HTMLElement {
  * A shared clip is a page inside the clipboard, so there the tool's name links back to the clipboard itself.
  */
 function toolCrumb(loc: Locale, id: ToolId, clip: string | null): HTMLElement {
+  const hub = gameHubOf(id);
   return crumbNav([
     homeCrumb(loc),
-    toolsCrumb(loc),
+    // Game pages sit under their games hub (Home / Games / 3D games / Driving game), not the tool wall.
+    ...(hub
+      ? [
+        { label: t("nav.games"), href: gamesHref(loc, null), nav: "games" },
+        { label: t(`games.consoles.${hub}`), href: gamesHref(loc, hub), nav: `games-${hub}` },
+      ]
+      : [toolsCrumb(loc)]),
     id === "clip" && clip
       ? { label: t(`tools.${id}.name`), href: appHref(loc, id), nav: id }
       : { label: t(`tools.${id}.name`) },

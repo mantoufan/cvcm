@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "titleStackGame": "Game menumpuk balok 3D — bangun menara setinggi mungkin — cv.cm",
+    "descStackGame": "Main gratis game menumpuk balok 3D di browser: jatuhkan setiap balok yang bergeser ke atas menara, bagian yang menjorok terpotong, dan lihat seberapa tinggi Anda bisa menumpuk. Jatuhan sempurna membuat balok membesar lagi. Bisa di HP."
+  },
+  "tools": {
+    "stack-game": {
+      "name": "Game menumpuk balok",
+      "blurb": "Jatuhkan balok yang bergeser dan bangun menara tertinggi."
+    }
+  },
+  "faq": {
+    "stack-game": {
+      "q1": "Bagaimana cara main game menumpuk balok?",
+      "a1": "Sebuah balok bergeser bolak-balik di atas menara. Ketuk, klik, atau tekan Spasi untuk menjatuhkannya. Bagian yang menjorok keluar terpotong dan jatuh, jadi balok berikutnya hanya sebesar bagian yang tersisa. Kalau meleset sama sekali dari menara, permainan selesai.",
+      "q2": "Apa itu jatuhan sempurna?",
+      "a2": "Jika balok jatuh hampir tepat di atas balok di bawahnya, balok langsung pas tanpa terpotong. Tiga kali sempurna berturut-turut atau lebih membuat balok membesar sedikit demi sedikit, sampai ukuran awalnya.",
+      "q3": "Apakah makin lama makin cepat?",
+      "a3": "Ya. Balok bergeser sedikit lebih cepat seiring menara meninggi, dan datang bergantian dari dua arah, jadi perhatikan tepinya.",
+      "q4": "Bisakah dimainkan di HP?",
+      "a4": "Bisa. Ketuk di mana saja pada layar game untuk menjatuhkan balok. Layar penuh memberi tampilan terbesar, dan di HP tampilan 3D memakai resolusi lebih rendah agar tetap lancar.",
+      "q5": "Apakah skor terbaik saya disimpan?",
+      "a5": "Ya, hanya di browser ini. Tidak dikirim ke mana pun."
+    }
+  },
+  "guides": {
+    "stack-game": {
+      "lead": "Main dalam tiga langkah.",
+      "s1t": "Mulai",
+      "s1b": "Tekan Main. Sebuah balok mulai bergeser di atas menara.",
+      "s2t": "Jatuhkan balok",
+      "s2b": "Ketuk, klik, atau tekan Spasi saat balok tepat di atas menara. Bagian yang menjorok terpotong.",
+      "s3t": "Makin tinggi",
+      "s3b": "Terus menumpuk saat balok makin cepat. Sempurna berturut-turut membuat balok membesar; meleset dari menara berarti selesai."
+    }
+  },
+  "ui": {
+    "stackGame": {
+      "title": "Game menumpuk balok",
+      "privacyNote": "Jatuhkan setiap balok yang bergeser ke menara dan lihat seberapa tinggi Anda bisa menumpuk.",
+      "stage": "Menara game menumpuk balok",
+      "intro": "Jatuhkan setiap balok yang bergeser ke menara. Bagian yang menjorok keluar tepi akan terpotong.",
+      "score": "Skor",
+      "best": "Terbaik",
+      "over": "Permainan selesai. Skor: {score}.",
+      "again": "Main lagi",
+      "perfect": "Sempurna! ×{n}",
+      "newBest": "Rekor baru: {score}!",
+      "hint": "Ketuk layar game, klik, atau tekan Spasi atau Enter untuk menjatuhkan balok. Luruskan dengan tepat untuk jatuhan sempurna."
+    }
+  }
+}

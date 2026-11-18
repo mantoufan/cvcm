@@ -1,0 +1,48 @@
+{
+  "meta": {
+    "titleChess3d": "3D chess — play chess online on a 3D board — cv.cm",
+    "descChess3d": "Play 3D chess online for free: a real 3D board you can turn and tilt, against the computer at five levels or with a friend. No download, works on phones."
+  },
+  "tools": {
+    "3d-chess": {
+      "name": "3D chess",
+      "blurb": "Chess on a 3D board you can turn, against the computer or a friend."
+    }
+  },
+  "faq": {
+    "3d-chess": {
+      "q1": "How do I move a piece in 3D chess?",
+      "a1": "Tap or click a piece, then tap one of the marked squares. Small dots show legal moves and rings show captures. Tap the piece again to drop it.",
+      "q2": "How strong is the computer?",
+      "a2": "There are five levels, from a beginner who blunders to a strong club player. The computer is the Stockfish engine, slowed down and capped on the easier levels.",
+      "q3": "How do I turn the board on a phone?",
+      "a3": "Drag across the board with one finger, or with two, to turn and tilt the view; a short tap picks a square. Turn the board flips it to the other side, and full screen gives you the most room.",
+      "q4": "Is my game saved?",
+      "a4": "Yes. Every move is saved in this browser, so the game is waiting for you when you come back. Nothing is uploaded.",
+      "q5": "Why does it say 3D is not available?",
+      "a5": "3D chess needs WebGL. Update the browser, turn on hardware acceleration or try another browser. The flat chess board on cv.cm works without it."
+    }
+  },
+  "guides": {
+    "3d-chess": {
+      "lead": "Play chess on a 3D board in three steps.",
+      "s1t": "Press Play",
+      "s1b": "Choose to play the computer or a friend, your colour and a level, then press Play to set up the 3D board.",
+      "s2t": "Make your moves",
+      "s2b": "Tap a piece, then a marked square. With a keyboard, arrow keys move the cursor and Enter picks a square.",
+      "s3t": "Turn the view",
+      "s3b": "Drag to turn and tilt the board, or press Turn the board. Undo takes back your last move."
+    }
+  },
+  "ui": {
+    "chess3d": {
+      "title": "3D chess",
+      "privacyNote": "Play chess on a 3D board against the computer or a friend. The game runs in this page and is saved in this browser.",
+      "stage": "3D chess board",
+      "intro": "A 3D board, ready when you are. The computer's engine and the 3D view load when you press Play.",
+      "flip": "Turn the board",
+      "hint": "Tap a piece, then a marked square. Drag to turn and tilt the view. Keyboard: arrow keys move the cursor, Enter or Space picks a square, Esc lets go of a piece.",
+      "cursor": "{square}: {piece}"
+    }
+  }
+}

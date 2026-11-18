@@ -1,9 +1,12 @@
 /*! @license Uses chess.js (https://github.com/jhlywa/chess.js) — Copyright (c) 2025, Jeff Hlywa. BSD-2-Clause. Chess pieces by Colin M.L. Burnett (Wikimedia Commons), BSD. THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES ARE DISCLAIMED. */
-import { Chess, type Move, type PieceSymbol, type Square } from "chess.js";
+import { Chess, type PieceSymbol, type Square } from "chess.js";
 import { h } from "../dom";
 import { t } from "../i18n";
 import { creditLine, readStore, writeStore } from "../game-input";
 import { Engine, LEVELS, type LevelIndex } from "./engine";
+import { endReason, replay, uci } from "./rules";
+
+export { endReason, replay, uci };
 
 /**
  * Chess against Stockfish or a friend. Rules, check, mate and draws come from chess.js (BSD-2-Clause,
@@ -22,32 +25,6 @@ let mounted: { cleanup: () => void } | null = null;
 
 const pieceSrc = (color: Side, type: PieceSymbol) => `${PIECES}/${type}${color === "w" ? "l" : "d"}.svg`;
 const squareAt = (file: number, rank: number) => `${FILES[file]}${rank + 1}` as Square;
-
-/** Replays saved UCI moves; stops at the first one that is not legal. */
-export function replay(moves: readonly string[]): Chess {
-  const game = new Chess();
-  for (const m of moves) {
-    try {
-      game.move({ from: m.slice(0, 2), to: m.slice(2, 4), promotion: m[4] });
-    } catch {
-      break;
-    }
-  }
-  return game;
-}
-
-export const uci = (m: Pick<Move, "from" | "to" | "promotion">) => `${m.from}${m.to}${m.promotion ?? ""}`;
-
-/** The reason the game ended, as a locale key under chess.*, or null while it goes on. */
-export function endReason(game: Chess): string | null {
-  if (game.isCheckmate()) return game.turn() === "w" ? "blackMates" : "whiteMates";
-  if (game.isStalemate()) return "stalemate";
-  if (game.isInsufficientMaterial()) return "insufficient";
-  if (game.isThreefoldRepetition()) return "repetition";
-  if (game.isDrawByFiftyMoves()) return "fifty";
-  if (game.isDraw()) return "draw";
-  return null;
-}
 
 export function mountChess(host: HTMLElement): void {
   unmountChess();

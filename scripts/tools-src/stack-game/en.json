@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "titleStackGame": "Stack game — stack the blocks as high as you can — cv.cm",
+    "descStackGame": "Play a free 3D stack game online: drop each sliding block onto the tower, trim the overhang and build as high as you can. Perfect drops grow the block back. Works on phones."
+  },
+  "tools": {
+    "stack-game": {
+      "name": "Stack game",
+      "blurb": "Drop the sliding blocks and build the tallest tower."
+    }
+  },
+  "faq": {
+    "stack-game": {
+      "q1": "How do you play the stack game?",
+      "a1": "A block slides over the top of the tower. Tap, click or press Space to drop it. The part that hangs over the edge is cut off and falls, so the next block is only as big as what stayed. Miss the tower completely and the game is over.",
+      "q2": "What is a perfect drop?",
+      "a2": "Drop a block almost exactly on the one below and it snaps into place with nothing cut off. Three or more perfect drops in a row make the block grow back a little, up to its starting size.",
+      "q3": "Does it get faster?",
+      "a3": "Yes. Blocks slide a little faster as the tower grows, and they come in from alternating sides, so keep your eye on the edges.",
+      "q4": "Can I play on my phone?",
+      "a4": "Yes. Tap anywhere on the game to drop a block. Full screen gives you the biggest view, and the 3D view runs at a lower resolution on phones to stay smooth.",
+      "q5": "Is my best score saved?",
+      "a5": "Yes, in this browser only. Nothing is sent anywhere."
+    }
+  },
+  "guides": {
+    "stack-game": {
+      "lead": "Play the stack game in three steps.",
+      "s1t": "Start",
+      "s1b": "Press Play. A block starts sliding over the top of the tower.",
+      "s2t": "Drop the block",
+      "s2b": "Tap, click or press Space when it is right above the tower. The overhang is cut off.",
+      "s3t": "Build higher",
+      "s3b": "Keep stacking as the blocks speed up. Perfect drops in a row grow the block back; missing the tower ends the game."
+    }
+  },
+  "ui": {
+    "stackGame": {
+      "title": "Stack game",
+      "privacyNote": "Drop each sliding block onto the tower and build as high as you can.",
+      "stage": "Stack game tower",
+      "intro": "Drop each sliding block onto the tower. Whatever hangs over the edge is cut off.",
+      "score": "Score",
+      "best": "Best",
+      "over": "Game over. Score: {score}.",
+      "again": "Play again",
+      "perfect": "Perfect! ×{n}",
+      "newBest": "New best: {score}!",
+      "hint": "Tap the game, click or press Space or Enter to drop a block. Line it up exactly for a perfect drop."
+    }
+  }
+}

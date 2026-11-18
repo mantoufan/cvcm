@@ -166,3 +166,18 @@ Keyword Planner, same MCC and markets. Separate from the /typing/ speed test (ti
 | zh-TW | 打字練習 / 英打練習 | 33.1k / 8.1k |
 | id | belajar mengetik | 40.5k |
 | vi | luyện gõ phím | 8.1k |
+
+## 3D games (2026-11-18)
+
+Keyword Planner (MCC `7007031245`, `generateKeywordIdeas` + `generateKeywordHistoricalMetrics`, language only, all locations, so near variants are merged and vi/id rows repeat the English totals). Semrush had no units left, so there is no difficulty column. Generic "3d games" is owned by the big portals; what cv.cm can win are mechanic queries, so each game is one URL titled with its query and the hub is `/games/3d/` (a `GAME_CONSOLES` hub like `/games/mini/`), not a "Web3D" channel: webgl games 1.9k, three.js games 1.6k and browser 3d games 720 are developer searches. "vibe coding games" grew 720 → 6.6k over 12 months but is developer intent too (a code-column article, not a channel name).
+
+| Slug | Evidence (monthly) | Notes |
+|---|---|---|
+| `/games/3d/` hub | 3d games 90.5k (74k → 90.5k), free 3d games 9.9k, 3d games online 6.6k; ja 3d ゲーム 4.4k; es juegos 3d 8.1k; zh 3d 游戏 720 | Title "Free 3D games online" |
+| `3d-chess` | 3d chess 22.2k, chess 3d 8.1k, 3d chess game 8.1k, 3d chess online 3.6k | Reuses chess.js + Stockfish |
+| `magic-cube` | magic cube 27.1k, magic cube online 12.1k (9.9k → 22.2k), rubiks cube game 12.1k; ko 큐브 맞추기 3.6k, 큐브 맞추는 법 6.6k; vi/id rubik online 12.1k | Never "Rubik's" in en/es/ja/ko/zh (trademark, as Reversi not Othello); vi/id use the generic local noun "rubik". cube solver 246k and 3x3 cube solver 22.2k are a separate tool for a later batch |
+| `stack-game` | stack game 60.5k, stacking game 60.5k, stack tower game 9.9k | No app names |
+| `driving-game` | driving game 135k, car games online 201k, drift game 90.5k, 3d car games 60.5k, car driving game 60.5k, 3d driving game 14.8k | No car makes or game names |
+| `flight-simulator` | flight simulator 246k, plane game 49.5k (40.5k → 90.5k), airplane games 40.5k, flight sim 40.5k, flight simulator online 33.1k | Arcade model; no simulator brand |
+
+Next candidates (same group, KP 2026-11-18): darts 49.5k, 8 ball pool online 33.1k / pool game 165k, bowling game 27.1k, 3d pinball 27.1k, 3d mahjong 8.1k, 3d snake 18.1k, marble run 6.6k. Skip named games even when large: snow rider 3d 823k, slope 368k, run 3 1M, crossy road 450k, helix jump 22.2k, 3d tetris 5.4k. Game CPCs are low ($0.1–0.9), so the value is traffic and time on site, not ad price.

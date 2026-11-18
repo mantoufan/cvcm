@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "titleDrivingGame": "Driving game — 3D car racing and drift online — cv.cm",
+    "descDrivingGame": "Free 3D driving game in your browser: race three laps against the clock or slide through corners in drift mode. Three tracks, keyboard or touch controls, no download."
+  },
+  "tools": {
+    "driving-game": {
+      "name": "Driving game",
+      "blurb": "Race a 3D car round three tracks, or drift for points."
+    }
+  },
+  "faq": {
+    "driving-game": {
+      "q1": "How do I drive?",
+      "a1": "Arrow keys or W A S D: up accelerates, down brakes and then reverses, left and right steer. Space is the handbrake and R puts you back at the last checkpoint.",
+      "q2": "How does drift scoring work?",
+      "a2": "Points build up while the car slides more than 15 degrees sideways at speed; faster and wider slides score more. A slide is banked when you straighten up. Hitting the tyre wall or staying on the grass for over a second loses the slide in progress. A drift run lasts 60 seconds.",
+      "q3": "Can I play on a phone?",
+      "a3": "Yes. Steering buttons sit bottom left, and brake, handbrake and accelerator bottom right. Turn the phone sideways and use full screen for the biggest view.",
+      "q4": "Which tracks are there, and are my times saved?",
+      "a4": "There are three fixed circuits, so a lap time is comparable every time. Your best lap and best drift score on each track are kept in this browser only.",
+      "q5": "Why is it slow or blank on my device?",
+      "a5": "The game needs WebGL. On phones it draws at a lower resolution and without shadows; closing other tabs helps. If the 3D view stops, press Start again."
+    }
+  },
+  "guides": {
+    "driving-game": {
+      "lead": "Drive a 3D car in three steps.",
+      "s1t": "Pick a track and mode",
+      "s1b": "Choose one of three tracks, then Time trial (three laps) or Drift (60 seconds), and press Play.",
+      "s2t": "Drive",
+      "s2b": "Wait for the 3-2-1, then accelerate with up or W and steer with the arrows. On a phone, use the buttons on the screen.",
+      "s3t": "Beat your best",
+      "s3b": "Pass every checkpoint to count a lap. Your best lap and best drift score on each track are saved."
+    }
+  },
+  "ui": {
+    "drivingGame": {
+      "title": "Driving game",
+      "privacyNote": "Race a 3D car round a circuit or drift for points. Best times stay in this browser.",
+      "stage": "3D driving game",
+      "intro": "Pick a track and mode, then press Play. Arrow keys drive, Space is the handbrake.",
+      "track": "Track",
+      "track1": "Track 1 — Gentle bends",
+      "track2": "Track 2 — Long sweepers",
+      "track3": "Track 3 — Big ring",
+      "mode": "Mode",
+      "modeTime": "Time trial (3 laps)",
+      "modeDrift": "Drift (60 seconds)",
+      "best": "Best on this track",
+      "restart": "Restart",
+      "again": "Race again",
+      "go": "Go!",
+      "finished": "Finished! Total {total}, best lap {best}.",
+      "driftDone": "Time! Drift score: {score}.",
+      "speed": "Speed {n} km/h",
+      "lap": "Lap {n}/{of}",
+      "current": "Lap time {time}",
+      "bestLap": "Best {time}",
+      "drift": "Drift points {n}",
+      "timeLeft": "{n} s left",
+      "offRoad": "Off the road",
+      "left": "Steer left",
+      "right": "Steer right",
+      "brake": "Brake / reverse",
+      "handbrake": "Handbrake",
+      "gas": "Accelerate",
+      "hint": "Up or W accelerates, down or S brakes and reverses, left and right steer, Space is the handbrake, R goes back to the last checkpoint. A lap counts only after every checkpoint."
+    }
+  }
+}

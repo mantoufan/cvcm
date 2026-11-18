@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "titleGames3d": "Free 3D games online — chess, magic cube, driving, flight — cv.cm",
+    "descGames3d": "Play free 3D games in your browser with no download: 3D chess, a magic cube, a stack game, a driving and drift game and a flight simulator. Works on phones too."
+  },
+  "nav": "3D games",
+  "console": "3D games",
+  "g3d": {
+    "title": "Free 3D games",
+    "lead": "3D browser games that play right here: chess on a 3D board, a magic cube to turn and solve, a stack game, a driving and drift game and a flight simulator. Free, nothing to install; the 3D part loads only when you press Play.",
+    "all": "All {n} free 3D games"
+  },
+  "faq": {
+    "q1": "Are these 3D games free?",
+    "a1": "Yes. They are free to play with no sign-up and no download. Best scores and times stay in this browser.",
+    "q2": "Do they work on a phone?",
+    "a2": "Yes. Each game has touch controls, and the 3D view runs at a lower resolution on phones so it stays smooth. Full screen gives you the most room.",
+    "q3": "Why does nothing load until I press Play?",
+    "a3": "The 3D engine (three.js) and the graphics context start only when you play, so the page opens fast and your phone does not spend memory on a game you are only reading about.",
+    "q4": "The game says 3D is not available. What can I do?",
+    "a4": "The games need WebGL. Update the browser, turn on hardware acceleration in its settings, or try another browser. Some work or school computers block WebGL."
+  },
+  "ui": {
+    "play": "Play",
+    "loading": "Loading the 3D view…",
+    "noWebgl": "3D graphics (WebGL) are not available in this browser. Turn on hardware acceleration or try another browser.",
+    "retry": "Try again",
+    "lost": "The 3D view stopped (the graphics card was reset). Start again to keep playing.",
+    "restart": "Start again",
+    "fullscreen": "Full screen",
+    "exitFullscreen": "Exit full screen",
+    "pad": "Game controls",
+    "credit": "3D graphics by {name} (MIT licence)."
+  }
+}
