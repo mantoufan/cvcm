@@ -1,0 +1,157 @@
+{
+  "crumbHome": "Beranda",
+  "copy": "Salin",
+  "copied": "Tersalin",
+  "copyFailed": "Gagal menyalin",
+  "copyLabel": "Salin {emoji}",
+  "hub": {
+    "title": "Arti Emoji: Makna {n} Emoji Populer",
+    "h1": "Arti emoji",
+    "lede": "Arti {n} emoji yang paling sering dipakai, dikelompokkan menurut grup Unicode. Ketuk Salin untuk menyalin emoji, atau buka salah satunya untuk melihat nama resmi, titik kode, tahun ditambahkannya, serta varian warna kulit dan gendernya.",
+    "description": "Arti {n} emoji populer, lengkap dengan nama resmi Unicode, titik kode, tahun ditambahkannya, dan salin sekali ketuk: 😂 ❤️ 😭 💀 🥺 🙏 🔥 dan lainnya.",
+    "search": "Cari emoji",
+    "searchPlaceholder": "Nama, kata kunci, atau emoji",
+    "shown": "{n} dari {total} emoji",
+    "none": "Tidak ada emoji yang cocok dengan pencarian itu.",
+    "aboutTitle": "Tentang halaman ini",
+    "about": [
+      "Setiap emoji memiliki nama pendek resmi dan kata kunci dari Unicode Common Locale Data Repository (CLDR), yang diterjemahkan oleh kontributor Unicode untuk setiap bahasa yang ditampilkan di sini. Grup, urutan, dan versi emoji berasal dari emoji-test.txt milik Unicode.",
+      "Kalimat tentang kegunaan setiap emoji ditulis oleh cv.cm, bukan oleh Unicode. Emoji ditampilkan dengan font emoji bawaan perangkatmu, jadi tampilannya sedikit berbeda di setiap ponsel atau komputer."
+    ],
+    "faq": [
+      {
+        "q": "Emoji apa saja yang tercantum di sini?",
+        "a": "{n} emoji yang paling sering dipakai: urutan teratas dari peringkat frekuensi emoji yang diterbitkan Unicode tanpa bendera negara, ditambah beberapa emoji populer yang ditambahkan sejak 2018, yang peringkatnya di hitungan itu terlalu rendah karena masih lebih baru."
+      },
+      {
+        "q": "Bagaimana cara menyalin emoji?",
+        "a": "Tekan Salin di samping emoji, lalu tempelkan ke pesan, postingan, atau dokumen. Emoji disalin sebagai teks, jadi tampilannya mengikuti font di tempat kamu menempelkannya."
+      },
+      {
+        "q": "Mengapa emoji terlihat berbeda di ponsel saya?",
+        "a": "Unicode menentukan apa itu setiap emoji (titik kode dan namanya), sedangkan setiap perusahaan (Apple, Google, Samsung, Microsoft, dan lainnya) menggambar versinya sendiri. Artinya sama; gambarnya yang berbeda."
+      }
+    ]
+  },
+  "page": {
+    "title": "{emoji} Arti Emoji {name}",
+    "h1": "{emoji} Arti emoji {name}",
+    "description": "{emoji} {Name}: {usage} Unicode {cp}, menjadi emoji sejak {year}. Salin sekali ketuk.",
+    "meaning": "Arti",
+    "factsTitle": "Detail {emoji}",
+    "keywordsTitle": "Kata kunci",
+    "keywordsText": "Kata-kata yang dicantumkan Unicode untuk menemukan {emoji} lewat pencarian di keyboard emoji:",
+    "variantsTitle": "Varian warna kulit dan gender",
+    "variantsText": "{emoji} juga tersedia dalam {n} varian lain, masing-masing merupakan emoji tersendiri:",
+    "similarTitle": "Emoji serupa",
+    "similarText": "Emoji lain dalam kelompok {subgroup}:",
+    "faqTitle": "Pertanyaan yang sering diajukan",
+    "faqMeaning": {
+      "q": "Apa arti emoji {emoji}?",
+      "a": "{usage} Nama resminya di Unicode adalah “{name}”."
+    },
+    "faqYear": {
+      "q": "Kapan emoji {emoji} ditambahkan?",
+      "a": "{emoji} menjadi emoji pada tahun {year}, bersama Emoji {v}. Titik kodenya adalah {cp}."
+    },
+    "faqYearSequence": {
+      "q": "Kapan emoji {emoji} ditambahkan?",
+      "a": "{emoji} menjadi emoji pada tahun {year}, bersama Emoji {v}. Emoji ini merupakan rangkaian titik kode: {cp}."
+    },
+    "faqCopy": {
+      "q": "Bagaimana cara mengetik atau menyalin {emoji}?",
+      "a": "Tekan Salin di halaman ini lalu tempelkan di mana saja. Di keyboard emoji ponsel, kamu juga bisa mencari “{keyword}”."
+    },
+    "faqCopyVariants": {
+      "q": "Bagaimana cara mengetik atau menyalin {emoji}?",
+      "a": "Tekan Salin di halaman ini lalu tempelkan di mana saja. Di keyboard emoji ponsel, kamu juga bisa mencari “{keyword}”. Emoji ini memiliki {n} varian warna kulit atau gender, masing-masing dengan tombol Salin sendiri di atas."
+    }
+  },
+  "labels": {
+    "emoji": "Emoji",
+    "name": "Nama resmi",
+    "englishName": "Nama dalam bahasa Inggris",
+    "codepoint": "Titik kode",
+    "codepoints": "Titik kode",
+    "html": "Kode HTML",
+    "version": "Versi emoji",
+    "year": "Ditambahkan sebagai emoji",
+    "group": "Grup",
+    "subgroup": "Subgrup"
+  },
+  "values": {
+    "version": "Emoji {v}"
+  },
+  "sources": {
+    "title": "Sumber",
+    "names": "Nama dan kata kunci: {cldr} (CLDR {version}).",
+    "cldr": "Anotasi emoji Unicode CLDR",
+    "data": "Grup, urutan, dan versi emoji: {test} (versi {version}).",
+    "test": "Unicode emoji-test.txt",
+    "usage": "Kalimat tentang kegunaan emoji ditulis oleh cv.cm.",
+    "notice": "© 1991–2026 Unicode, Inc. Berkas data Unicode digunakan berdasarkan {license}.",
+    "license": "Unicode License v3",
+    "noticeTitle": "Pemberitahuan hak cipta dan izin Unicode",
+    "snapshot": "Cuplikan data: {date}."
+  },
+  "groups": {
+    "smileys-emotion": "Smiley dan emosi",
+    "people-body": "Orang dan tubuh",
+    "animals-nature": "Hewan dan alam",
+    "food-drink": "Makanan dan minuman",
+    "travel-places": "Perjalanan dan tempat",
+    "activities": "Aktivitas",
+    "objects": "Benda",
+    "symbols": "Simbol"
+  },
+  "subgroups": {
+    "face-smiling": "wajah tersenyum",
+    "face-affection": "wajah penuh kasih sayang",
+    "face-tongue": "wajah menjulurkan lidah",
+    "face-hand": "wajah dengan tangan",
+    "face-neutral-skeptical": "wajah netral dan skeptis",
+    "face-sleepy": "wajah mengantuk",
+    "face-unwell": "wajah tidak enak badan",
+    "face-hat": "wajah bertopi",
+    "face-glasses": "wajah berkacamata",
+    "face-concerned": "wajah khawatir",
+    "face-negative": "wajah negatif",
+    "cat-face": "wajah kucing",
+    "monkey-face": "wajah monyet",
+    "heart": "hati",
+    "emotion": "simbol emosi",
+    "hand-fingers-open": "tangan terbuka",
+    "hand-fingers-partial": "isyarat tangan",
+    "hand-single-finger": "tangan menunjuk",
+    "hand-fingers-closed": "tangan tertutup",
+    "hands": "dua tangan",
+    "body-parts": "bagian tubuh",
+    "person": "orang",
+    "person-gesture": "gerakan orang",
+    "person-activity": "aktivitas orang",
+    "person-symbol": "simbol orang",
+    "animal-mammal": "mamalia",
+    "animal-bug": "serangga",
+    "plant-flower": "bunga",
+    "plant-other": "tanaman lain",
+    "food-fruit": "buah",
+    "food-sweet": "makanan manis",
+    "drink": "minuman",
+    "transport-ground": "transportasi darat",
+    "transport-air": "transportasi udara",
+    "sky & weather": "langit dan cuaca",
+    "event": "acara",
+    "award-medal": "penghargaan",
+    "sport": "olahraga",
+    "game": "permainan",
+    "clothing": "pakaian",
+    "music": "musik",
+    "money": "uang",
+    "warning": "peringatan",
+    "arrow": "panah",
+    "av-symbol": "simbol audio dan video",
+    "punctuation": "tanda baca",
+    "other-symbol": "simbol lain",
+    "geometric": "bentuk"
+  }
+}

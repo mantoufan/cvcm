@@ -108,6 +108,7 @@ const pageModules = {
   calories: "src/client/calories/ui.ts",
   elements: "src/client/elements/ui.ts",
   calendar: "src/client/calendar/ui.ts",
+  emoji: "src/client/emoji/ui.ts",
 };
 const hubs = Object.keys(pageModules).length;
 const toolsSrc = readFileSync(resolve(root, "src/client/tools.ts"), "utf8");

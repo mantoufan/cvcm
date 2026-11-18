@@ -462,3 +462,36 @@ export function hasCalendarMessages(locale: Locale): boolean {
 export function calendarMessages(locale: Locale): CalendarMessages {
   return pick(loadedCalendar, locale, "calendar messages");
 }
+
+/**
+ * Emoji meanings copy plus this locale's CLDR names, keywords and variant names, the English names, the usage
+ * sentences and the emoji-test rows (one pack per locale).
+ */
+export type EmojiMessages = typeof import("../locales/emoji/en.json") & {
+  /** CLDR short names by slug. */
+  names: Record<string, string>;
+  /** CLDR keywords by slug (the name itself left out). */
+  keywords: Record<string, string[]>;
+  /** CLDR names of the skin-tone and gender forms, by emoji. */
+  variants: Record<string, string>;
+  /** English CLDR names by slug, shown next to the local name outside English. */
+  english: Record<string, string>;
+  /** What people use each emoji for (written by cv.cm), by slug. */
+  usage: Record<string, string>;
+  data: import("./emoji-i18n").EmojiRow[];
+};
+
+const loadedEmoji: Partial<Record<Locale, EmojiMessages>> = {};
+
+export function registerEmojiMessages(locale: Locale, pack: EmojiMessages): void {
+  loadedEmoji[locale] = pack;
+}
+
+export function hasEmojiMessages(locale: Locale): boolean {
+  return Boolean(loadedEmoji[locale]);
+}
+
+/** Emoji copy, names and rows; on the client only after the emoji pack is loaded (emoji pages). */
+export function emojiMessages(locale: Locale): EmojiMessages {
+  return pick(loadedEmoji, locale, "emoji messages");
+}

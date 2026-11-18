@@ -30,6 +30,8 @@ import { caloriesDescription, caloriesTitle } from "./calories-i18n";
 import type { FoodId } from "./calories";
 import { elementsDescription, elementsTitle } from "./elements-i18n";
 import type { ElementSlug } from "./elements";
+import { emojiDescription, emojiTitle } from "./emoji-i18n";
+import type { EmojiSlug } from "./emoji";
 import { calendarDescription, calendarTitle } from "./calendar-i18n";
 import type { CalendarPage } from "./calendar";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
@@ -38,7 +40,7 @@ import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, categoryOf, deviceHref, gameHubOf, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, scriptsHref, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, categoryOf, deviceHref, gameHubOf, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, scriptsHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -106,6 +108,9 @@ export type SeoInput = {
   /** The periodic table under /periodic-table/; `elementSlug` null is the hub. */
   elements?: boolean;
   elementSlug?: ElementSlug | null;
+  /** The emoji meanings channel under /emoji/; `emojiSlug` null is the hub. */
+  emoji?: boolean;
+  emojiSlug?: EmojiSlug | null;
   /** The calendar channel under /calendar/; `calendarPage` "hub" is the hub. */
   calendar?: boolean;
   calendarPage?: CalendarPage;
@@ -875,6 +880,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   if (seo.summaries) return summariesTitle(locale, seo.summaryId ?? null);
   if (seo.scripts) return scriptsTitle(locale, seo.scriptId ?? null);
   if (seo.elements) return elementsTitle(locale, seo.elementSlug ?? null);
+  if (seo.emoji) return emojiTitle(locale, seo.emojiSlug ?? null);
   if (seo.calendar) return calendarTitle(locale, seo.calendarPage ?? "hub");
   if (seo.slang) return slangTitle(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaTitle(locale, seo.ideaId ?? null);
@@ -907,6 +913,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   if (seo.summaries) return summariesDescription(locale, seo.summaryId ?? null);
   if (seo.scripts) return scriptsDescription(locale, seo.scriptId ?? null);
   if (seo.elements) return elementsDescription(locale, seo.elementSlug ?? null);
+  if (seo.emoji) return emojiDescription(locale, seo.emojiSlug ?? null);
   if (seo.calendar) return calendarDescription(locale, seo.calendarPage ?? "hub");
   if (seo.slang) return slangDescription(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaDescription(locale, seo.ideaId ?? null);
@@ -956,6 +963,7 @@ export function pageCanonical(
   if (seo.summaries) return `https://cv.cm${summariesHref(locale, seo.summaryId ?? null)}`;
   if (seo.scripts) return `https://cv.cm${scriptsHref(locale, seo.scriptId ?? null)}`;
   if (seo.elements) return `https://cv.cm${elementsHref(locale, seo.elementSlug ?? null)}`;
+  if (seo.emoji) return `https://cv.cm${emojiHref(locale, seo.emojiSlug ?? null)}`;
   if (seo.calendar) return `https://cv.cm${calendarHref(locale, seo.calendarPage ?? "hub")}`;
   if (seo.slang) return `https://cv.cm${slangHref(locale, seo.slangId ?? null)}`;
   if (seo.ideas) return `https://cv.cm${ideasHref(locale, seo.ideaId ?? null)}`;

@@ -3,8 +3,9 @@ import { t } from "./i18n";
 import { lessonsForTool } from "../shared/learn";
 import { KB_SHELVES, kbForTool } from "../shared/kb";
 import type { Locale } from "../shared/locale";
-import { caloriesHref, kbHref, learnHref, type ToolId } from "../shared/path";
+import { caloriesHref, emojiHref, kbHref, learnHref, type ToolId } from "../shared/path";
 import { CALORIES_FOCUS, CALORIES_TOOLS } from "../shared/calories";
+import { EMOJI_FOCUS, EMOJI_TOOLS } from "../shared/emoji";
 
 export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | null {
   const ids = lessonsForTool(tool);
@@ -16,7 +17,9 @@ export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | nul
   ].filter((shelf) => shelf.articles.length);
   // The health calculators that work with food energy also point to the food calorie chart.
   const calories = (CALORIES_TOOLS as readonly string[]).includes(tool);
-  if (ids.length === 0 && shelves.length === 0 && !calories) return null;
+  // The fancy-text tool (dressing up messages) also points to the emoji meanings.
+  const emoji = (EMOJI_TOOLS as readonly string[]).includes(tool);
+  if (ids.length === 0 && shelves.length === 0 && !calories && !emoji) return null;
   return h("section", { class: "learn-related tool-lessons" },
     ids.length ? h("h2", null, t("learn.guides")) : null,
     ids.length ? h("ul", { class: "tool-lesson-list" },
@@ -40,6 +43,10 @@ export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | nul
     calories ? h("h2", null, h("a", { href: caloriesHref(loc), "data-nav": "calories" }, t("nav.calories"))) : null,
     calories ? h("ul", { class: "tool-lesson-list" },
       ...CALORIES_FOCUS.map((id) => h("li", null, h("a", { href: caloriesHref(loc, id), "data-nav": `food-${id}` }, t(`caloriesFocus.${id}`)))),
+    ) : null,
+    emoji ? h("h2", null, h("a", { href: emojiHref(loc), "data-nav": "emoji" }, t("nav.emoji"))) : null,
+    emoji ? h("ul", { class: "tool-lesson-list" },
+      ...EMOJI_FOCUS.map((slug) => h("li", null, h("a", { href: emojiHref(loc, slug), "data-nav": `emoji-${slug}` }, t(`emojiFocus.${slug}`)))),
     ) : null,
   );
 }

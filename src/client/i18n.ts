@@ -80,6 +80,7 @@ import type { ScriptEntryCopy } from "../shared/scripts-i18n";
 import type { SummaryId, SummaryPage } from "../shared/summaries";
 import type { ScriptId, ScriptPage } from "../shared/scripts";
 import { hasElementsMessages, registerElementsMessages, type ElementsMessages } from "../shared/messages";
+import { hasEmojiMessages, registerEmojiMessages, type EmojiMessages } from "../shared/messages";
 import type { QuizId, QuizPage } from "../shared/quiz";
 import type { QuizCopy } from "../shared/quiz-i18n";
 import { countryBucket, countryCode, type CountryPage } from "../shared/countries";
@@ -401,6 +402,18 @@ const ELEMENTS_PACKS: Record<Locale, () => Promise<{ default: ElementsMessages }
   es: () => import("../locales/packs/elements-es"),
 };
 
+// Emoji meanings copy, CLDR names and keywords, usage sentences and the emoji-test rows, only for /emoji/ pages.
+const EMOJI_PACKS: Record<Locale, () => Promise<{ default: EmojiMessages }>> = {
+  en: () => import("../locales/packs/emoji-en"),
+  "zh-CN": () => import("../locales/packs/emoji-zh-CN"),
+  "zh-TW": () => import("../locales/packs/emoji-zh-TW"),
+  ja: () => import("../locales/packs/emoji-ja"),
+  ko: () => import("../locales/packs/emoji-ko"),
+  vi: () => import("../locales/packs/emoji-vi"),
+  id: () => import("../locales/packs/emoji-id"),
+  es: () => import("../locales/packs/emoji-es"),
+};
+
 async function loadNostalgiaEntry(next: Locale, id: NostalgiaId): Promise<void> {
   const { NOSTALGIA_LOADERS } = await NOSTALGIA_LOADER_TABLES[next]();
   const m = (await NOSTALGIA_LOADERS[id]()) as { default: NostalgiaEntryCopy };
@@ -493,7 +506,7 @@ const CALORIES_PACKS: Record<Locale, () => Promise<{ default: CaloriesMessages }
 };
 
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null, emoji = false): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
@@ -513,10 +526,11 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!countries || (hasCountriesMessages(next) && (countryBucketOf(countries) === null || hasCountryBucket(countryBucketOf(countries)!))))
     && (!calories || hasCaloriesMessages(next))
     && (!elements || hasElementsMessages(next))
-    && (!calendar || hasCalendarMessages(next));
+    && (!calendar || hasCalendarMessages(next))
+    && (!emoji || hasEmojiMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null, emoji = false): Promise<void> {
   const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
@@ -552,6 +566,7 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !calories || hasCaloriesMessages(next) ? null : CALORIES_PACKS[next]().then((m) => registerCaloriesMessages(next, m.default)),
     !elements || hasElementsMessages(next) ? null : ELEMENTS_PACKS[next]().then((m) => registerElementsMessages(next, m.default)),
     !calendar || hasCalendarMessages(next) ? null : CALENDAR_PACKS[next]().then((m) => registerCalendarMessages(next, m.default)),
+    !emoji || hasEmojiMessages(next) ? null : EMOJI_PACKS[next]().then((m) => registerEmojiMessages(next, m.default)),
   ]);
 }
 

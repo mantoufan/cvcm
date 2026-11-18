@@ -16,8 +16,9 @@ import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgi
 import { SUMMARY_ENTRIES, SUMMARIES_HUB_UPDATED, SUMMARIES_PUBLISHED, summaryUpdated, type SummaryId } from "./summaries";
 import { SCRIPT_ENTRIES, SCRIPTS_HUB_UPDATED, SCRIPTS_PUBLISHED, scriptUpdated, type ScriptId } from "./scripts";
 import { CALORIES_SNAPSHOT, FOODS, type FoodId } from "./calories";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, scriptsHref, countriesHref, caloriesHref, elementsHref, calendarHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, scriptsHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 import { ELEMENT_SLUGS, ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT, type ElementSlug } from "./elements";
+import { EMOJI_SLUGS, emojiUpdated, type EmojiSlug } from "./emoji";
 import { CALENDAR_PAGES, CALENDAR_UPDATED, type CalendarPage } from "./calendar";
 
 export const SITE_ORIGIN = "https://cv.cm";
@@ -56,7 +57,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "countries"; entry: string | null }
   | { locale: Locale; kind: "calories"; food: FoodId | null }
   | { locale: Locale; kind: "elements"; entry: ElementSlug | null }
-  | { locale: Locale; kind: "calendar"; page: CalendarPage };
+  | { locale: Locale; kind: "calendar"; page: CalendarPage }
+  | { locale: Locale; kind: "emoji"; entry: EmojiSlug | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -103,6 +105,8 @@ export function sitemapPages(): SitemapPage[] {
     pages.push({ locale, kind: "elements", entry: null });
     for (const entry of ELEMENT_SLUGS) pages.push({ locale, kind: "elements", entry });
     for (const page of CALENDAR_PAGES) pages.push({ locale, kind: "calendar", page });
+    pages.push({ locale, kind: "emoji", entry: null });
+    for (const entry of EMOJI_SLUGS) pages.push({ locale, kind: "emoji", entry });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -130,6 +134,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(page.locale, page.food)}`;
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(page.locale, page.entry)}`;
   if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(page.locale, page.page)}`;
+  if (page.kind === "emoji") return `${SITE_ORIGIN}${emojiHref(page.locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -159,6 +164,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(locale, page.food)}`;
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(locale, page.entry)}`;
   if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(locale, page.page)}`;
+  if (page.kind === "emoji") return `${SITE_ORIGIN}${emojiHref(locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -191,6 +197,7 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "calories") return "calories";
   if (page.kind === "elements") return "elements";
   if (page.kind === "calendar") return "calendar";
+  if (page.kind === "emoji") return "emoji";
   return "pages";
 }
 
@@ -243,6 +250,8 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "elements") return [ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT].sort().at(-1)!;
   // Calendar pages change when their holiday lists or tables do (CALENDAR_UPDATED, set by hand with that change).
   if (page.kind === "calendar") return CALENDAR_UPDATED;
+  // Emoji pages show the Unicode snapshot and the usage sentences: the latest of launch, snapshot and copy edit.
+  if (page.kind === "emoji") return emojiUpdated();
   return null;
 }
 

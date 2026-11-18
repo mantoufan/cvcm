@@ -10,6 +10,7 @@ import { countryCode } from "./countries";
 import { foodLabel } from "./calories-i18n";
 import { elementName } from "./elements-i18n";
 import { atomicNumberOf } from "./elements";
+import { emojiWithName } from "./emoji-i18n";
 import { nameFromTitle, SEARCH_CHANNEL_NAV, shortBlurb, type SearchChannel, type SearchEntry } from "./search";
 
 /** A channel's front page (/tests/, /rankings/ …): listed under the channel's own name, not its SEO title. */
@@ -31,6 +32,7 @@ function isHub(page: SitemapPage): boolean {
     case "scripts":
     case "countries":
     case "elements":
+    case "emoji":
       return page.entry === null;
     case "calories":
       return page.food === null;
@@ -60,6 +62,8 @@ function pageName(locale: Locale, page: SitemapPage, channel: SearchChannel, seo
   if (page.kind === "calories" && page.food) return foodLabel(locale, page.food);
   // Element titles are long ("Carbon (C): Atomic Mass, …"): the element's own name.
   if (page.kind === "elements" && page.entry) return elementName(locale, atomicNumberOf(page.entry));
+  // Emoji titles add "Emoji Meaning": the emoji and its CLDR name.
+  if (page.kind === "emoji" && page.entry) return emojiWithName(locale, page.entry);
   return nameFromTitle(pageTitle(locale, seo));
 }
 
@@ -100,6 +104,8 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
       return { channel: "calories", seo: { calories: true, foodId: page.food } };
     case "elements":
       return { channel: "elements", seo: { elements: true, elementSlug: page.entry } };
+    case "emoji":
+      return { channel: "emoji", seo: { emoji: true, emojiSlug: page.entry } };
     case "calendar":
       return { channel: "calendar", seo: { calendar: true, calendarPage: page.page } };
     case "games":

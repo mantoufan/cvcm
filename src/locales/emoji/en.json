@@ -1,0 +1,157 @@
+{
+  "crumbHome": "Home",
+  "copy": "Copy",
+  "copied": "Copied",
+  "copyFailed": "Copy failed",
+  "copyLabel": "Copy {emoji}",
+  "hub": {
+    "title": "Emoji Meanings: What {n} Popular Emoji Mean",
+    "h1": "Emoji meanings",
+    "lede": "What {n} of the most-used emoji mean, by Unicode group. Tap Copy to copy an emoji, or open one for its official name, code point, the year it was added and its skin-tone and gender forms.",
+    "description": "What {n} popular emoji mean, with official Unicode names, code points, the year each was added and one-tap copy: 😂 ❤️ 😭 💀 🥺 🙏 🔥 and more.",
+    "search": "Find an emoji",
+    "searchPlaceholder": "Name, keyword or emoji",
+    "shown": "{n} of {total} emoji",
+    "none": "No emoji matches that search.",
+    "aboutTitle": "About these pages",
+    "about": [
+      "Each emoji has an official short name and keywords from the Unicode Common Locale Data Repository (CLDR), translated by Unicode's contributors for every language shown here. The groups, the order and the emoji version come from Unicode's emoji-test.txt.",
+      "The sentence on what people use an emoji for is written by cv.cm, not by Unicode. Emoji are shown in your device's own emoji font, so they look a little different on each phone or computer."
+    ],
+    "faq": [
+      {
+        "q": "Which emoji are listed here?",
+        "a": "{n} of the most-used emoji: the top of Unicode's published emoji frequency ranking without country flags, plus a few popular emoji added since 2018, which that count ranks too low because they are newer."
+      },
+      {
+        "q": "How do I copy an emoji?",
+        "a": "Press Copy next to the emoji, then paste it into a message, a post or a document. The emoji itself is copied as text, so it shows in the font of wherever you paste it."
+      },
+      {
+        "q": "Why does an emoji look different on my phone?",
+        "a": "Unicode defines what each emoji is (its code point and name), and each company (Apple, Google, Samsung, Microsoft and others) draws its own pictures. The meaning is the same; the drawing differs."
+      }
+    ]
+  },
+  "page": {
+    "title": "{emoji} {title} Emoji Meaning",
+    "h1": "{emoji} {Name} emoji meaning",
+    "description": "{emoji} {Name}: {usage} Unicode {cp}, emoji since {year}. Copy it in one tap.",
+    "meaning": "Meaning",
+    "factsTitle": "{emoji} details",
+    "keywordsTitle": "Keywords",
+    "keywordsText": "Words Unicode lists for finding {emoji} in an emoji keyboard search:",
+    "variantsTitle": "Skin-tone and gender forms",
+    "variantsText": "{emoji} also comes in {n} other forms, each its own emoji:",
+    "similarTitle": "Similar emoji",
+    "similarText": "Other emoji in the {subgroup} set:",
+    "faqTitle": "Frequently asked questions",
+    "faqMeaning": {
+      "q": "What does the {emoji} emoji mean?",
+      "a": "{usage} Its official Unicode name is “{name}”."
+    },
+    "faqYear": {
+      "q": "When was the {emoji} emoji added?",
+      "a": "{emoji} became an emoji in {year}, with Emoji {v}. Its code point is {cp}."
+    },
+    "faqYearSequence": {
+      "q": "When was the {emoji} emoji added?",
+      "a": "{emoji} became an emoji in {year}, with Emoji {v}. It is a sequence of code points: {cp}."
+    },
+    "faqCopy": {
+      "q": "How do I type or copy {emoji}?",
+      "a": "Press Copy on this page and paste it anywhere. In a phone's emoji keyboard you can also search for “{keyword}”."
+    },
+    "faqCopyVariants": {
+      "q": "How do I type or copy {emoji}?",
+      "a": "Press Copy on this page and paste it anywhere. In a phone's emoji keyboard you can also search for “{keyword}”. It has {n} skin-tone or gender forms, each with its own Copy button above."
+    }
+  },
+  "labels": {
+    "emoji": "Emoji",
+    "name": "Official name",
+    "englishName": "English name",
+    "codepoint": "Code point",
+    "codepoints": "Code points",
+    "html": "HTML code",
+    "version": "Emoji version",
+    "year": "Added as emoji",
+    "group": "Group",
+    "subgroup": "Subgroup"
+  },
+  "values": {
+    "version": "Emoji {v}"
+  },
+  "sources": {
+    "title": "Sources",
+    "names": "Names and keywords: {cldr} (CLDR {version}).",
+    "cldr": "Unicode CLDR emoji annotations",
+    "data": "Groups, order and emoji versions: {test} (version {version}).",
+    "test": "Unicode emoji-test.txt",
+    "usage": "The usage sentences are written by cv.cm.",
+    "notice": "© 1991–2026 Unicode, Inc. Unicode data files used under the {license}.",
+    "license": "Unicode License v3",
+    "noticeTitle": "Unicode copyright and permission notice",
+    "snapshot": "Data snapshot: {date}."
+  },
+  "groups": {
+    "smileys-emotion": "Smileys and emotion",
+    "people-body": "People and body",
+    "animals-nature": "Animals and nature",
+    "food-drink": "Food and drink",
+    "travel-places": "Travel and places",
+    "activities": "Activities",
+    "objects": "Objects",
+    "symbols": "Symbols"
+  },
+  "subgroups": {
+    "face-smiling": "smiling faces",
+    "face-affection": "affectionate faces",
+    "face-tongue": "faces with tongue",
+    "face-hand": "faces with hands",
+    "face-neutral-skeptical": "neutral and skeptical faces",
+    "face-sleepy": "sleepy faces",
+    "face-unwell": "unwell faces",
+    "face-hat": "faces with hats",
+    "face-glasses": "faces with glasses",
+    "face-concerned": "concerned faces",
+    "face-negative": "negative faces",
+    "cat-face": "cat faces",
+    "monkey-face": "monkey faces",
+    "heart": "hearts",
+    "emotion": "emotion symbols",
+    "hand-fingers-open": "open hands",
+    "hand-fingers-partial": "hand signs",
+    "hand-single-finger": "pointing hands",
+    "hand-fingers-closed": "closed hands",
+    "hands": "two hands",
+    "body-parts": "body parts",
+    "person": "people",
+    "person-gesture": "person gestures",
+    "person-activity": "person activities",
+    "person-symbol": "person symbols",
+    "animal-mammal": "mammals",
+    "animal-bug": "bugs",
+    "plant-flower": "flowers",
+    "plant-other": "other plants",
+    "food-fruit": "fruit",
+    "food-sweet": "sweets",
+    "drink": "drinks",
+    "transport-ground": "ground transport",
+    "transport-air": "air transport",
+    "sky & weather": "sky and weather",
+    "event": "events",
+    "award-medal": "awards",
+    "sport": "sport",
+    "game": "games",
+    "clothing": "clothing",
+    "music": "music",
+    "money": "money",
+    "warning": "warnings",
+    "arrow": "arrows",
+    "av-symbol": "audio and video symbols",
+    "punctuation": "punctuation",
+    "other-symbol": "other symbols",
+    "geometric": "shapes"
+  }
+}
