@@ -46,7 +46,11 @@ img { max-width: 100%; }
 .nav-more-pop { position: absolute; top: calc(100% + 0.35rem); left: 0; z-index: 50; display: flex; flex-direction: column; min-width: 9rem; padding: 0.3rem; border: 1px solid var(--pink); border-radius: var(--radius); background: var(--white); }
 .nav-more-pop a { padding: 0.45rem 0.6rem; border-radius: 8px; color: var(--ink-soft); text-decoration: none; font-size: 0.92rem; white-space: nowrap; }
 .nav-more-pop a:hover, .nav-more-pop a.on { color: var(--pink-deep); background: var(--pink-soft); }
-.nav a { color: var(--ink-soft); text-decoration: none; font-size: 0.92rem; padding: 0.4rem 0.6rem; border-radius: 8px; white-space: nowrap; }
+.nav { --nav-fs: 0.92rem; --nav-py: 0.4rem; --nav-px: 0.6rem; }
+.nav a { color: var(--ink-soft); text-decoration: none; font-size: var(--nav-fs); line-height: 1.6; padding: var(--nav-py) var(--nav-px); border-radius: 8px; white-space: nowrap; }
+/* Server HTML, before navRow() runs: no "More" yet, so links that do not fit wrap onto a second line that is clipped
+   away. The row shows whole links only (never one cut mid-word), and every link is still in the markup. */
+.page.ssr .nav { flex-wrap: wrap; height: calc(var(--nav-fs) * 1.6 + 2 * var(--nav-py)); }
 .nav a:hover, .nav a.on { color: var(--pink-deep); background: var(--pink-soft); }
 /* Site search: a button in the header, a panel under it (src/client/search.ts). */
 .search-btn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto; min-height: 36px; padding: 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink-soft); font: inherit; font-size: 0.88rem; cursor: pointer; white-space: nowrap; }
@@ -223,7 +227,8 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
   .brand { font-size: 1.05rem; }
   /* The sections and the language picker do not fit one phone row: the links get the second row, still one line. */
   .nav-row { order: 3; flex: 1 0 100%; margin: 0 -0.4rem; }
-  .nav a, .nav-more-btn { padding: 0.35rem 0.4rem; font-size: 0.86rem; }
+  .nav { --nav-fs: 0.86rem; --nav-py: 0.35rem; --nav-px: 0.4rem; }
+  .nav-more-btn { padding: 0.35rem 0.4rem; font-size: 0.86rem; }
   .nav-more-pop { left: auto; right: 0; }
   .lang { max-width: 7.5rem; font-size: 0.8rem; padding: 0.25rem 1.5rem 0.25rem 0.45rem; background-position: right 0.45rem center; }
   .search-btn { padding: 0.25rem 0.45rem; }
