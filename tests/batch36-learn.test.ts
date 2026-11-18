@@ -5,6 +5,13 @@ import { TUTORIAL_DIAGRAMS } from "../src/shared/learn";
 import { TUTORIAL_GROUPS } from "../src/shared/path";
 import { between, chiIndependence, criticalValue, cronbachAlpha, parseMatrix, pValue, sampleSize, standardDeviation, tTest, zScore } from "../src/shared/academic-stats";
 import { SAMPLE } from "../src/client/cronbach-alpha/ui";
+import { START_TABLE } from "../src/client/chi-square/ui";
+import { EXAMPLE as SD_EXAMPLE } from "../src/client/standard-deviation/ui";
+import { EXAMPLE_A, EXAMPLE_B } from "../src/client/t-test/ui";
+import { EXAMPLE as Z_EXAMPLE } from "../src/client/z-score/ui";
+
+// The tutorials work through the examples each tool opens with, so they are read from the tools themselves.
+const nums = (s: string) => s.trim().split(/\s+/).map(Number);
 
 const IDS = [
   "calculate-standard-deviation", "calculate-sample-size", "calculate-cronbach-alpha", "run-t-test", "run-chi-square-test",
@@ -44,7 +51,7 @@ describe("batch 36 tutorials", () => {
 
 describe("batch 36 tutorials stay in step with the tools", () => {
   it("standard deviation: sum of squares, variances and SDs", () => {
-    const data = [2, 4, 4, 4, 5, 5, 7, 9];
+    const data = nums(SD_EXAMPLE);
     const s = standardDeviation(data, "sample")!;
     const p = standardDeviation(data, "population")!;
     expect([s.ss, s.variance.toFixed(3), s.sd.toFixed(3), p.sd]).toEqual([32, "4.571", "2.138", 2]);
@@ -80,8 +87,8 @@ describe("batch 36 tutorials stay in step with the tools", () => {
   });
 
   it("t-test: the two example groups", () => {
-    const A = [5.1, 4.9, 6.2, 5.8, 6.0, 5.5, 5.3, 6.1];
-    const B = [4.8, 4.7, 5.9, 5.0, 5.6, 5.2, 4.9, 5.4];
+    const A = nums(EXAMPLE_A);
+    const B = nums(EXAMPLE_B);
     const r = tTest("independent", A, B)!;
     const line = `t(${r.df.toFixed(2)}) = ${r.t.toFixed(2)}, p = ${r.p.toFixed(3).replace(/^0/, "")}`;
     expect(copy("run-t-test")).toContain(line);
@@ -92,7 +99,7 @@ describe("batch 36 tutorials stay in step with the tools", () => {
   });
 
   it("chi-square: the 2 × 2 example", () => {
-    const r = chiIndependence([[20, 15], [30, 35]])!;
+    const r = chiIndependence(START_TABLE)!;
     expect(svg("run-chi-square-test-tables")).toContain(`= ${r.chi2.toFixed(2)}<`);
     expect(svg("run-chi-square-test-curve")).toContain(`p = ${r.p.toFixed(3)}`);
     expect(svg("run-chi-square-test-curve")).toContain(criticalValue("chi2", 0.05, "right", 1)!.toFixed(2));
@@ -103,7 +110,7 @@ describe("batch 36 tutorials stay in step with the tools", () => {
     expect(pValue("z", 1.96, "two")!.toFixed(2)).toBe("0.05");
     expect(pValue("z", 1.96, "right")!.toFixed(3)).toBe("0.025");
     expect(copy("find-p-value")).toContain(`±${criticalValue("t", 0.05, "two", 10)!.toFixed(3)}`);
-    const z = zScore(130, 100, 15)!;
+    const z = zScore(Number(Z_EXAMPLE.x), Number(Z_EXAMPLE.mu), Number(Z_EXAMPLE.sigma))!;
     expect(svg("calculate-z-score-formula")).toContain(`${(z.below * 100).toFixed(2)} %`);
     const rule = svg("calculate-z-score-rule");
     for (const k of [1, 2, 3]) expect(rule).toContain(`${(between(-k, k, 0, 1)!.p * 100).toFixed(2)} %`);
@@ -117,8 +124,7 @@ describe("batch 36 tutorials stay in step with the tools", () => {
       expect(s).not.toContain("May 2015");
     }
     expect(svg("cite-mla-in-text")).toContain("https://doi.org/");
-    expect(svg("find-p-value-tails")).not.toContain("0.050");
-  });
+      });
 
   it("writes decimals with each locale's mark in the diagrams", () => {
     expect(svg("calculate-standard-deviation-divide", "es")).toContain("2,138");

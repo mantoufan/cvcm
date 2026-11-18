@@ -114,7 +114,7 @@
         "s5t": "Periksa item-itemnya",
         "s5b": "Lihat corrected item-total correlation (di bawah sekitar 0,3 tergolong lemah) dan alpha if item deleted. Item yang jika dihapus menaikkan alpha (bertanda ↑) mungkin tidak cocok dengan skala, atau belum di-recode.",
         "s6t": "Laporkan",
-        "s6b": "Tulis jumlah item dan responden bersamanya: \"The scale showed excellent internal consistency, Cronbach's α = .93 (5 items, n = 10).\" Laporkan alpha untuk setiap subskala secara terpisah.",
+        "s6b": "Tulis jumlah item dan responden bersamanya: \"The scale showed excellent internal consistency, Cronbach's α = .93 (5 items, n = 10).\" APA memakai dua desimal, dan 0,93499 dibulatkan ke bawah menjadi .93. Laporkan alpha untuk setiap subskala secara terpisah.",
         "diagram1": "Skor item dalam baris dan kolom: alpha membandingkan varians item dengan varians skor total.",
         "diagram2": "Ambang batas umum Cronbach alpha, dengan skala contoh pada 0,935."
       },
@@ -162,7 +162,7 @@
         "q3": "Apa itu Cohen's d?",
         "a3": "Besarnya selisih rata-rata dalam satuan standar deviasi. Sekitar 0,2 kecil, 0,5 sedang dan 0,8 besar. Laporkan bersama setiap uji t.",
         "q4": "Satu sisi atau dua sisi?",
-        "a4": "Gunakan dua sisi kecuali Anda sudah menyatakan sebelum mengumpulkan data bahwa hanya satu arah yang penting. p satu sisi adalah setengah dari p dua sisi, karena itu penguji akan menanyakan alasannya.",
+        "a4": "Gunakan dua sisi kecuali Anda sudah menyatakan sebelum mengumpulkan data bahwa hanya satu arah yang penting. Jika efeknya searah prediksi, p satu sisi adalah setengah dari p dua sisi (jika berlawanan, 1 dikurangi setengah itu), karena itu penguji akan menanyakan alasannya.",
         "q5": "Bagaimana jika data saya tidak normal?",
         "a5": "Dengan 30 atau lebih per kelompok, uji t biasanya tetap andal. Untuk sampel kecil yang miring, gunakan uji Mann-Whitney U (independen) atau uji peringkat bertanda Wilcoxon (berpasangan)."
       }
@@ -218,7 +218,7 @@
         "s3t": "Masukkan statistik dan derajat kebebasan",
         "s3b": "z tidak memerlukan derajat kebebasan. t memerlukan satu (n − 1 untuk satu sampel), chi square satu, dan F dua: pembilang dan penyebut, misalnya 2 dan 27 pada ANOVA tiga kelompok dengan 30 orang.",
         "s4t": "Pilih sisinya",
-        "s4b": "Dua sisi menguji selisih ke arah mana pun dan merupakan pilihan yang biasa. p satu sisi besarnya setengah dan memerlukan alasan yang dinyatakan sejak awal. Uji chi square dan F selalu sisi kanan.",
+        "s4b": "Dua sisi menguji selisih ke arah mana pun dan merupakan pilihan yang biasa. Jika efeknya searah dengan prediksi, p satu sisi besarnya setengah; ini memerlukan alasan yang dinyatakan sejak awal. Uji chi square untuk tabel dan kecocokan, serta uji F dalam ANOVA, memakai sisi kanan.",
         "s5t": "Bandingkan p dengan α",
         "s5b": "z = 1,96 dua sisi menghasilkan p = 0,05: dua ekor yang diarsir masing-masing berisi 2,5 %. Jika p di bawah α Anda (biasanya 0,05), hasilnya signifikan secara statistik; kalkulator juga menandai 0,1, 0,01 dan 0,001.",
         "s6t": "Cari nilai kritis",
@@ -328,7 +328,7 @@
         "s4t": "Format judulnya",
         "s4b": "Gunakan title case. Beri tanda kutip pada judul artikel, bab dan halaman web, dan cetak miring judul buku, jurnal dan situs web (container-nya).",
         "s5t": "Tambahkan nomor, tanggal dan lokasi",
-        "s5b": "Untuk jurnal: vol. 521, no. 7553, 2015, pp. 436-444. Akhiri dengan DOI yang ditulis sebagai https://doi.org/…, atau URL lain tanpa https://. Halaman web tanpa tanggal diakhiri dengan Accessed dan tanggal Anda membacanya.",
+        "s5b": "Untuk jurnal: vol. 521, no. 7553, 2015, pp. 436-44 (di atas 99, halaman kedua hanya ditulis dua digit terakhirnya). Akhiri dengan DOI yang ditulis sebagai https://doi.org/…, atau URL lain tanpa https://. Halaman web tanpa tanggal diakhiri dengan Accessed dan tanggal Anda membacanya.",
         "s6t": "Buat sitasi dalam teks dan susun works cited",
         "s6b": "Dalam teks tulis penulis dan halaman tanpa koma: (LeCun et al. 437). Halaman works cited mencantumkan semua sumber menurut abjad kata pertamanya, spasi ganda dengan hanging indent.",
         "diagram1": "Elemen inti MLA 9 secara berurutan, diisi dengan contoh artikel jurnal.",
@@ -437,7 +437,7 @@
       "yes": "Ya",
       "no": "Tidak",
       "total": "Total",
-      "critical": "nilai kritis pada α = .05",
+      "critical": "nilai kritis pada α = 0,05",
       "yours": "contoh"
     },
     "find-p-value": {

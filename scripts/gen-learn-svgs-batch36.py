@@ -44,6 +44,10 @@ def t_pdf(x: float, df: float) -> float:
     return c * (1 + x * x / df) ** (-(df + 1) / 2)
 
 
+def norm_below(z: float) -> float:
+    return 0.5 * math.erfc(-z / math.sqrt(2))
+
+
 def chi1_pdf(x: float) -> float:
     return 0 if x <= 0 else math.exp(-x / 2) / math.sqrt(2 * math.pi * x)
 
@@ -131,7 +135,9 @@ def ss_cochran(t) -> str:
     return out
 
 
-SS_MARGINS = [(10, 97), (5, 385), (4, 601), (3, 1068), (2, 2401)]
+Z95 = 1.959963984540054  # the exact two-sided 95 % z the calculator uses
+# Cochran's n at 95 % and p = 50 % for each margin, as the calculator gives it: 97, 385, 601, 1,068, 2,401.
+SS_MARGINS = [(m, math.ceil(Z95 ** 2 * 0.25 / (m / 100) ** 2)) for m in (10, 5, 4, 3, 2)]
 
 
 def ss_margins(t) -> str:
@@ -345,13 +351,13 @@ def pv_two(t) -> str:
 def pv_one_two(t) -> str:
     z = 1.959963984540054
     out = ""
-    for i, (label, shade, p) in enumerate(((t["oneTailed"], ((z, 4),), 0.025), (t["twoTailed"], ((-4, -z), (z, 4)), 0.05))):
+    for i, (label, shade, p, places) in enumerate(((t["oneTailed"], ((z, 4),), 0.025, 3), (t["twoTailed"], ((-4, -z), (z, 4)), 0.05, 2))):
         x0 = 50 + i * 450
         out += box(x0, 40, 410, 460, CARD, LINE if i == 0 else PINK, 22)
         out += text(x0 + 205, 95, label, 28, DEEP, 800, "middle")
         out += curve(norm_pdf, -4, 4, x0 + 25, x0 + 385, 380, 220, shade=shade)
         out += text(x0 + 205, 420, f'z = {num(1.96, 2)}', 22, MUTED, 700, "middle", MONO)
-        out += text(x0 + 205, 465, f'p = {num(p, len(repr(p).split(".")[1]))}', 30, DEEP, 800, "middle", MONO)
+        out += text(x0 + 205, 465, f'p = {num(p, places)}', 30, DEEP, 800, "middle", MONO)
     return out
 
 
@@ -364,14 +370,14 @@ def z_formula(t) -> str:
         out += wrapped(x, 240, label, 20, DEEP, 800, "middle", 12, 24)
     out += box(60, 330, 840, 170, SOFT, PINK, 22)
     out += text(480, 380, t["example"], 24, MUTED, 700, "middle")
-    out += text(480, 450, f'(130 − 100) ÷ 15 = 2 → {num(97.72, 2)} % {t["below"]}', 32, DEEP, 800, "middle", MONO)
+    out += text(480, 450, f'(130 − 100) ÷ 15 = 2 → {num(norm_below(2) * 100, 2)} % {t["below"]}', 32, DEEP, 800, "middle", MONO)
     return out
 
 
 def z_rule(t) -> str:
     out = ""
     X = lambda v: 80 + (v + 4) / 8 * 800
-    shades = ((3, "#f7d7e4", 99.73), (2, "#efb0c9", 95.45), (1, "#d96f9a", 68.27))
+    shades = tuple((k, colour, (norm_below(k) - norm_below(-k)) * 100) for k, colour in ((3, "#f7d7e4"), (2, "#efb0c9"), (1, "#d96f9a")))
     for k, colour, _ in shades:
         out += curve(norm_pdf, -4, 4, 80, 880, 430, 300, shade=((-k, k),), fill=colour).replace('opacity="0.55"', 'opacity="1"')
     out += curve(norm_pdf, -4, 4, 80, 880, 430, 300)
@@ -439,7 +445,7 @@ def apa_intext(t) -> str:
 
 def mla_elements(t) -> str:
     rows = [("author", "LeCun, Yann, et al."), ("title", '"Deep Learning."'), ("container", "Nature,"), ("contributors", "—"),
-            ("version", "—"), ("number", "vol. 521, no. 7553,"), ("publisher", "—"), ("date", "2015,"), ("location", "pp. 436-444.")]
+            ("version", "—"), ("number", "vol. 521, no. 7553,"), ("publisher", "—"), ("date", "2015,"), ("location", "pp. 436-44.")]
     out = ""
     for i, (key, example) in enumerate(rows):
         y = 50 + i * 52
@@ -473,7 +479,7 @@ def citation_link(t, left_title, left, right_title, right_lines, italic_word) ->
 
 def mla_intext(t) -> str:
     return citation_link(t, t["inText"], "(LeCun et al. 437)", t["worksCited"], [
-        'LeCun, Yann, et al. "Deep Learning."', "Nature, vol. 521, no. 7553, 2015,", "pp. 436-444, https://doi.org/", "10.1038/nature14539."], "Nature")
+        'LeCun, Yann, et al. "Deep Learning."', "Nature, vol. 521, no. 7553, 2015,", "pp. 436-44, https://doi.org/", "10.1038/nature14539."], "Nature")
 
 
 def harvard_intext(t) -> str:

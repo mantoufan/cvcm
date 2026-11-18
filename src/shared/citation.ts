@@ -165,6 +165,21 @@ const EN_DASH = "–";
 const pageRange = (pages: string, dash: string) => pages.trim().replace(/\s*[-–—]+\s*/g, dash);
 const isRange = (pages: string) => /[-–—]/.test(pages);
 
+/**
+ * MLA 9 inclusive numbers: past 99 the second page keeps only its last two digits, or more when the
+ * hundreds change ("436-444" → "436-44", "395-401" stays, "1608-1702" → "1608-702"). Other ranges are kept.
+ */
+function mlaPages(pages: string): string {
+  const r = pageRange(pages, "-");
+  const m = /^(\d+)-(\d+)$/.exec(r);
+  if (!m) return r;
+  const [, a, b] = m;
+  if (a.length !== b.length || Number(b) <= 99 || Number(b) <= Number(a)) return r;
+  let keep = 2;
+  while (keep < b.length && a.slice(0, b.length - keep) !== b.slice(0, b.length - keep)) keep++;
+  return `${a}-${b.slice(b.length - keep)}`;
+}
+
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const MLA_MONTHS = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "June", "July", "Aug.", "Sept.", "Oct.", "Nov.", "Dec."];
 const IEEE_MONTHS = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."];
@@ -333,7 +348,7 @@ function mla(w: Work): Out {
   const mlaEds = isEdited(w) ? `, ${w.authors.length > 1 ? "editors" : "editor"}` : "";
   if (w.authors.length) out.push(seg(`${stop(mlaAuthors(w.authors) + mlaEds)} `));
   const link = w.doi ? doiUrl(w.doi) : w.url ? noProtocol(w.url) : "";
-  const pp = w.pages ? `${isRange(w.pages) ? "pp." : "p."} ${pageRange(w.pages, "-")}` : "";
+  const pp = w.pages ? `${isRange(w.pages) ? "pp." : "p."} ${mlaPages(w.pages)}` : "";
   if (w.type === "book") {
     out.push(seg(w.title, true), seg(`${endMark(w.title)} `));
     // Edition, publisher, year and link, each only when given; with none the title's own period ends the entry.

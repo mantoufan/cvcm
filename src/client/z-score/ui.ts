@@ -6,13 +6,16 @@ import { copyButton, curve, field, fmt, fmtP, layout, numInput, pct, readNum, ro
 const S = "zScore";
 type Mode = "value" | "percentile" | "between";
 
+/** The example the page opens with: a score of 130 on a scale with mean 100 and SD 15 (used by the z-score tutorial). */
+export const EXAMPLE = { x: "130", mu: "100", sigma: "15" } as const;
+
 export function mountZScore(host: HTMLElement): void {
   let last = "";
   const paint = () => draw();
   const modeSel = select<Mode>("mode", ["value", "percentile", "between"], (m) => t(`${S}.m_${m}`), () => { sync(); paint(); }, "value");
-  const xEl = numInput("x", "130", paint, { inputmode: "text" });
-  const muEl = numInput("mu", "100", paint, { inputmode: "text" });
-  const sigmaEl = numInput("sigma", "15", paint);
+  const xEl = numInput("x", EXAMPLE.x, paint, { inputmode: "text" });
+  const muEl = numInput("mu", EXAMPLE.mu, paint, { inputmode: "text" });
+  const sigmaEl = numInput("sigma", EXAMPLE.sigma, paint);
   const pctEl = numInput("percentile", "90", paint);
   const aEl = numInput("a", "85", paint, { inputmode: "text" });
   const bEl = numInput("b", "115", paint, { inputmode: "text" });

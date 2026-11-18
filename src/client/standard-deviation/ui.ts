@@ -7,13 +7,16 @@ import { copyButton, decimalSelect, field, fmt, layout, rowsTo, select, table } 
 const S = "stdDev";
 /** The step-by-step table lists at most this many values (the totals always cover all of them). */
 const STEP_ROWS = 50;
+/** The example numbers the page opens with (the standard deviation tutorial works through them). */
+export const EXAMPLE = "2 4 4 4 5 5 7 9";
+
 let timer = 0;
 
 export function mountStandardDeviation(host: HTMLElement): void {
   let last = "";
   const schedule = () => { window.clearTimeout(timer); timer = window.setTimeout(paint, 150); };
   const input = h("textarea", { class: "average-input", rows: "7", "data-field": "numbers", spellcheck: "false", "aria-label": t(`${S}.numbers`), onInput: schedule });
-  input.value = "2 4 4 4 5 5 7 9";
+  input.value = EXAMPLE;
   const kindSel = select<SdKind>("kind", ["sample", "population"], (k) => t(`${S}.k_${k}`), () => paint(), "sample");
   const decimal = decimalSelect(() => paint());
   const out = h("dl", { class: "stats-grid", "data-out": "result" });

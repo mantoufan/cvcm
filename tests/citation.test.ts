@@ -22,7 +22,7 @@ const EXPECTED: Record<string, string[]> = {
     "(World Health Organization, 2023)"
   ],
   "mla": [
-    "LeCun, Yann, et al. \"Deep learning.\" <i>Nature</i>, vol. 521, no. 7553, 27 May 2015, pp. 436-444, https://doi.org/10.1038/nature14539.",
+    "LeCun, Yann, et al. \"Deep learning.\" <i>Nature</i>, vol. 521, no. 7553, 27 May 2015, pp. 436-44, https://doi.org/10.1038/nature14539.",
     "(LeCun et al. 436)",
     "Kahneman, Daniel. <i>Thinking, fast and slow</i>. 2nd ed., Farrar, Straus and Giroux, 2011.",
     "(Kahneman)",
@@ -87,6 +87,15 @@ describe("citation styles", () => {
   it.each(STYLES)("%s", (style) => {
     const got = [art, book, chap, web].flatMap((w) => [html(formatReference(w, style)), html(formatInText(w, style))]);
     expect(got).toEqual(EXPECTED[style]);
+  });
+
+  it("shortens MLA page ranges past 99 to the last two digits, or more when the hundreds change", () => {
+    const pages = (p: string) => html(formatReference({ ...art, pages: p }, "mla")).match(/pp?\. [^,]+/)?.[0];
+    expect(["436-444", "395-401", "1608-1702", "1186-1189", "99-104", "10-25", "200-200", "A12-A15", "436"].map(pages)).toEqual([
+      "pp. 436-44", "pp. 395-401", "pp. 1608-702", "pp. 1186-89", "pp. 99-104", "pp. 10-25", "pp. 200-200", "pp. A12-A15", "p. 436",
+    ]);
+    // Other styles keep the full range.
+    expect(html(formatReference(art, "apa"))).toContain("436–444");
   });
 
   it("handles many authors per style", () => {
