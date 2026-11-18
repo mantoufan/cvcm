@@ -53,8 +53,8 @@ await esbuild.build({
 // Fresh processes: memory grows with every page a process renders (see prerender.ts), so no process takes more than
 // a set number of pages, however large the sitemap grows. Several shards run at once, one per core while memory
 // allows: MEMORY_PER_PROCESS is what one child of PAGES_PER_PARALLEL_PROCESS pages needs (peak RSS 3.33 GiB measured
-// in November 2026), so a "16 GB" runner, which reports about 15.6 GiB, takes 4. PRERENDER_JOBS overrides the count. Shards are halved only when they
-// run side by side; one at a time, fewer processes start faster. Each child gets this process's heap limit and its
+// in November 2026), so a "16 GB" runner, which reports about 15.6 GiB, takes 4. PRERENDER_JOBS overrides the
+// count. Shards are halved only when they run side by side; one at a time, fewer processes start faster. Each child gets this process's heap limit and its
 // own report; the counts are added up here, in shard order, into one summary.
 const PAGES_PER_PROCESS = 2000;
 const PAGES_PER_PARALLEL_PROCESS = 1000;
@@ -69,11 +69,13 @@ const errors = new Set();
 // would wait for a debugger, and with --inspect they would clash on the port.
 const childFlags = process.execArgv.filter((flag) => !/^--(inspect|debug)/.test(flag));
 const running = new Set();
-const reports = new Set();
+const reports = [];
 // Stopping the build (Ctrl+C, a cancelled CI job) stops the shards too instead of leaving them rendering.
 for (const signal of ["SIGINT", "SIGTERM"]) {
-  process.once(signal, () => {
+  process.once(signal, async () => {
+    const exits = [...running].map((run) => new Promise((exited) => run.once("exit", exited)));
     for (const run of running) run.kill();
+    await Promise.race([Promise.all(exits), new Promise((late) => setTimeout(late, 5000))]);
     rmSync(outfile, { force: true });
     for (const report of reports) rmSync(report, { force: true });
     process.exit(signal === "SIGINT" ? 130 : 143);
@@ -81,15 +83,17 @@ for (const signal of ["SIGINT", "SIGTERM"]) {
 }
 
 function child(label, env) {
-  const report = `${reportBase}-${reports.size}.json`;
-  reports.add(report);
+  const report = `${reportBase}-${reports.length}.json`;
+  reports.push(report);
   rmSync(report, { force: true });
   // The prerender variables are set here for each child, never inherited from the shell that ran the build.
   const base = Object.fromEntries(Object.entries(process.env).filter(([key]) => !key.startsWith("PRERENDER_")));
   return new Promise((done, fail) => {
     const run = spawn(process.execPath, [...childFlags, outfile], { stdio: "inherit", env: { ...base, ...env, PRERENDER_REPORT: report } });
     running.add(run);
+    // An error once the process is up (a failed kill) is not its end: its "exit" still settles the promise.
     run.on("error", (error) => {
+      if (run.pid !== undefined) return;
       running.delete(run);
       fail(new Error(`prerender: could not start the process for ${label}: ${error.message}`));
     });
@@ -105,10 +109,16 @@ function child(label, env) {
   });
 }
 
+// The machine's memory, or less when a container or cgroup caps this process (0 or a huge number means no cap).
+function memory() {
+  const cap = process.constrainedMemory?.() ?? 0;
+  return cap > 0 ? Math.min(cap, totalmem()) : totalmem();
+}
+
 function jobLimit() {
   const set = process.env.PRERENDER_JOBS;
   if (set && !/^[1-9]\d*$/.test(set)) throw new Error(`prerender: PRERENDER_JOBS=${set} is not a positive integer`);
-  return set ? Number(set) : Math.max(1, Math.min(availableParallelism(), Math.floor(totalmem() / MEMORY_PER_PROCESS)));
+  return set ? Number(set) : Math.max(1, Math.min(availableParallelism(), Math.floor(memory() / MEMORY_PER_PROCESS)));
 }
 
 try {
