@@ -13,7 +13,7 @@ import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, slangGroupOf, type SlangId } f
 import { memeImage, memeImagePath } from "./meme-images";
 import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
-import { slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
+import { memeImageAlt, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
 
 /**
  * The picture right under the answer, near the top of the page: loaded eagerly as the likely LCP element, with its size
@@ -23,9 +23,8 @@ function imageHtml(locale: Locale, id: SlangId): string {
   const image = memeImage(id);
   if (!image) return "";
   const ui = slangUi(locale);
-  const name = slangName(locale, id).name;
   const credit = image.author ? fill(ui.imageCredit, { author: image.author }) : ui.imageCreditAnon;
-  return `<figure class="meme-figure"><img src="${escapeHtml(memeImagePath(id)!)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(fill(ui.imageAlt, { name }))}" fetchpriority="high" decoding="async">`
+  return `<figure class="meme-figure"><img src="${escapeHtml(memeImagePath(id)!)}" width="${image.width}" height="${image.height}" alt="${escapeHtml(memeImageAlt(locale, id))}" fetchpriority="high" decoding="async">`
     + `<figcaption><a href="${escapeHtml(image.page)}" target="_blank" rel="noopener">${escapeHtml(credit)}</a> · <a href="${escapeHtml(image.licenseUrl)}" target="_blank" rel="noopener license">${escapeHtml(image.license)}</a></figcaption></figure>`;
 }
 
@@ -250,13 +249,17 @@ export function slangPageHtml(locale: Locale, id: SlangId | null): string {
   const sections = copy.sections.map((s, i) => (
     `<section class="kb-section" id="slang-${i + 1}"><h2>${inline(s.h)}</h2>${s.body.map(blockHtml).join("")}</section>`
   )).join("");
-  const origin = { zh: ui.originZh, en: ui.originEn, yue: ui.originYue, web: ui.originWeb }[meta.origin];
+  // A song names its artists where other entries name the language they come from.
+  const origin = meta.song
+    ? meta.song.by.map((artist) => artist.name).join(" & ")
+    : { zh: ui.originZh, en: ui.originEn, yue: ui.originYue, web: ui.originWeb }[meta.origin];
+  const platform = meta.platform ? { douyin: ui.platformDouyin, tiktok: ui.platformTiktok, both: ui.platformBoth }[meta.platform] : null;
   return [
     crumbHtml(locale, id),
     `<article class="kb slang">`,
     `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(groupLabels[slangGroupOf(id)])} · ${escapeHtml(origin)}</p>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
-    `<p class="kb-meta">${meta.born ? `<span class="meme-born">${escapeHtml(fill(ui.born, { date: bornLabel(locale, meta.born) }))}</span> · ` : ""}<time datetime="${slangUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, slangUpdated(id)) }))}</time></p>`,
+    `<p class="kb-meta">${platform ? `<span class="meme-platform">${escapeHtml(platform)}</span> · ` : ""}${meta.born ? `<span class="meme-born">${escapeHtml(fill(meta.song ? ui.released : ui.born, { date: bornLabel(locale, meta.born) }))}</span> · ` : ""}<time datetime="${slangUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, slangUpdated(id)) }))}</time></p>`,
     copy.aka.length ? `<p class="ref-aka">${escapeHtml(ui.also)}${cjk ? "：" : ": "}${escapeHtml(copy.aka.join(cjk ? "、" : ", "))}</p>` : "",
     `</header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p></section>`,

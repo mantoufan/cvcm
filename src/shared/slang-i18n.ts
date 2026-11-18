@@ -59,11 +59,18 @@ export function slangUpdated(id: SlangId): string {
   return SLANG_UPDATED[id] ?? slangPublished(id);
 }
 
+/** Alt text and caption of an entry's picture: "<name> meme" or, for a photo of a person, "<who> (<name>)". */
+export function memeImageAlt(locale: Locale, id: SlangId): string {
+  const name = slangName(locale, id).name;
+  const who = memeImage(id)?.who;
+  const person = typeof who === "string" ? who : who ? who[locale] ?? who.en : undefined;
+  return person ? fill(slangUi(locale).imageAltWho, { who: person, name }) : fill(slangUi(locale).imageAlt, { name });
+}
+
 /** ImageObject with the license fields Google Images reads (license, acquireLicensePage, creditText, creator). */
 function imageJsonLd(locale: Locale, id: SlangId): Record<string, unknown> | null {
   const image = memeImage(id);
   if (!image) return null;
-  const name = slangName(locale, id).name;
   const url = coverUrl(memeImagePath(id)!);
   const by = image.author ? `${image.author} / ` : "";
   return {
@@ -72,7 +79,7 @@ function imageJsonLd(locale: Locale, id: SlangId): Record<string, unknown> | nul
     url,
     width: image.width,
     height: image.height,
-    caption: fill(slangUi(locale).imageAlt, { name }),
+    caption: memeImageAlt(locale, id),
     ...(image.author && image.creatorType ? { creator: { "@type": image.creatorType, name: image.author } } : {}),
     creditText: `${by}${image.license} / Wikimedia Commons`,
     copyrightNotice: `${by}${image.license}`,
@@ -131,7 +138,8 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
       inLanguage: HREFLANG[locale],
       mainEntity: {
         ...termSetRef(locale),
-        hasDefinedTerm: SLANG_GROUPS.flatMap((group) => group.entries).map((entry) => ({
+        // Songs are MusicRecordings, not terms.
+        hasDefinedTerm: SLANG_GROUPS.flatMap((group) => group.entries).filter((entry) => !SLANG_META[entry].song).map((entry) => ({
           "@type": "DefinedTerm",
           name: slangName(locale, entry).name,
           url: `${ORIGIN}${slangHref(locale, entry)}`,
@@ -159,13 +167,21 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
     isAccessibleForFree: true,
     articleSection: (slangHub(locale).groups as Record<string, string>)[slangGroupOf(id)],
     ...(image ? { image } : {}),
-    about: {
-      "@type": "DefinedTerm",
-      name: copy.name,
-      description: answer,
-      ...(copy.aka.length ? { alternateName: copy.aka } : {}),
-      inDefinedTermSet: termSetRef(locale),
-    },
+    about: SLANG_META[id].song
+      ? {
+        "@type": "MusicRecording",
+        name: copy.name,
+        description: answer,
+        ...(copy.aka.length ? { alternateName: copy.aka } : {}),
+        byArtist: SLANG_META[id].song!.by.map((artist) => ({ "@type": artist.type, name: artist.name })),
+      }
+      : {
+        "@type": "DefinedTerm",
+        name: copy.name,
+        description: answer,
+        ...(copy.aka.length ? { alternateName: copy.aka } : {}),
+        inDefinedTermSet: termSetRef(locale),
+      },
     ...(SLANG_META[id].sources.length ? { citation: SLANG_META[id].sources.map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url })) } : {}),
   };
 }

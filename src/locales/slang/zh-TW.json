@@ -16,6 +16,10 @@
     "originYue": "粵語歌詞",
     "originWeb": "全球網路迷因",
     "born": "最早出現於 {date}",
+    "released": "發行於 {date}",
+    "platformDouyin": "在抖音爆紅",
+    "platformTiktok": "在 TikTok 爆紅",
+    "platformBoth": "在抖音和 TikTok 爆紅",
     "trend": "現在還紅嗎？",
     "trendNote": "維基百科條目每週瀏覽量，近 {n} 週（截至 {date}）。",
     "trendUp": "正在上升",
@@ -37,14 +41,15 @@
     "maker": "用免費迷因產生器做自己的梗圖",
     "recent": "近 4 週瀏覽",
     "imageAlt": "{name}迷因圖",
+    "imageAltWho": "{who}（{name}）",
     "imageCredit": "圖片：{author}，來自維基共享資源（已縮放）",
     "imageCreditAnon": "圖片來自維基共享資源（已縮放）"
   },
   "hub": {
     "title": "迷因百科：網路迷因、梗是什麼意思、出處和爆紅時間",
-    "description": "Tung Tung Tung Sahur、Chill Guy、Pepe 青蛙、aura、67 是什麼梗？收錄 {n} 個中外網路迷因和流行語：意思、出處、爆紅時間線和現在的熱度。",
+    "description": "Labubu、科目三、Tung Tung Tung Sahur、Chill Guy、67 是什麼梗？〈APT.〉〈孤勇者〉是什麼歌？收錄 {n} 個中外網路迷因和流行語：意思、出處、爆紅時間線和現在的熱度。",
     "h1": "迷因百科",
-    "lede": "中外網路迷因和流行語，一個一頁：它是什麼、在哪裡什麼時候紅起來、大家怎麼用、現在還紅不紅。義大利腦腐、經典迷因、爆紅動物、α世代俚語和中國網路梗都有。",
+    "lede": "中外網路迷因和流行語，一個一頁：它是什麼、在哪裡什麼時候紅起來、大家怎麼用、現在還紅不紅。義大利腦腐、經典迷因、爆紅動物、α世代俚語、中國網路梗，還有抖音和 TikTok 上的短影音迷因與抖音神曲。",
     "groups": {
       "numbers": "數字梗",
       "abbreviations": "拼音縮寫",
@@ -56,7 +61,9 @@
       "classic": "經典迷因",
       "viral": "爆紅動物與角色",
       "gen-alpha": "Z世代與α世代俚語",
-      "zh-memes": "中國網路梗"
+      "zh-memes": "中國網路梗",
+      "short-video": "短影音迷因",
+      "viral-songs": "抖音神曲"
     },
     "about": [
       "每個條目先回答「是什麼梗」，再用帶日期的時間線說明它從哪裡來、怎麼傳開，舉出常見用法，並說明現在的熱度。",

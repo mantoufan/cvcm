@@ -1,0 +1,40 @@
+name: Meme candidates
+
+# Weekly shortlist of memes and songs /memes/ does not cover yet (scripts/meme-candidates.mjs). Nothing is published:
+# the list goes to the run summary and replaces the body of one open issue labelled meme-candidates.
+on:
+  schedule:
+    - cron: "41 3 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: meme-candidates
+  cancel-in-progress: true
+
+jobs:
+  candidates:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: List candidates
+        run: node scripts/meme-candidates.mjs
+        env:
+          CANDIDATES_FILE: ${{ runner.temp }}/candidates.md
+      - name: Update the candidates issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BODY: ${{ runner.temp }}/candidates.md
+        run: |
+          gh label create meme-candidates --color FBCA04 --description "Weekly /memes/ shortlist" 2>/dev/null || true
+          number=$(gh issue list --label meme-candidates --state open --json number --jq '.[0].number')
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file "$BODY"
+          else
+            gh issue create --title "Meme candidates (weekly)" --label meme-candidates --body-file "$BODY"
+          fi

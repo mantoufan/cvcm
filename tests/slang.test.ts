@@ -7,6 +7,7 @@ import coinsSnapshot from "../src/shared/meme-coins.json";
 import memeImagesJson from "../src/shared/meme-images.json";
 import worker from "../src/worker";
 import { LOCALES, type Locale } from "../src/shared/locale";
+import { fill } from "../src/shared/fill";
 import { preloadLocalePack } from "../src/shared/locale-preload";
 import { messages, slangMessages } from "../src/shared/messages";
 import { parseAppPath, slangHref } from "../src/shared/path";
@@ -57,6 +58,19 @@ function structure(copy: SlangEntryCopy): { sections: number; faq: number; kinds
 }
 
 describe("slang: catalog", () => {
+  it("gives every short-video meme and viral song its platform, and every song its artists and release", () => {
+    for (const group of SLANG_GROUPS.filter((g) => g.id === "short-video" || g.id === "viral-songs")) {
+      for (const id of group.entries as readonly SlangId[]) {
+        const meta = SLANG_META[id];
+        expect(meta.platform, id).toBeTruthy();
+        expect(meta.born, id).toMatch(/^\d{4}(-\d{2})?$/);
+        expect(Boolean(meta.song), id).toBe(group.id === "viral-songs");
+        for (const artist of meta.song?.by ?? []) expect(artist.name.trim(), id).toBeTruthy();
+      }
+    }
+    expect(SLANG_ENTRIES.filter((id) => SLANG_META[id].song).every((id) => slangGroupOf(id) === "viral-songs")).toBe(true);
+  });
+
   it("puts every entry in exactly one group, with meta and valid related ids", () => {
     const grouped = SLANG_GROUPS.flatMap((g) => g.entries as readonly string[]);
     expect(new Set(grouped).size).toBe(grouped.length);
@@ -133,10 +147,11 @@ describe("slang: content", () => {
   }, 30_000);
 
   it("puts the searched phrase at the start of each Chinese title", () => {
-    // Words are searched as "X是什么意思", memes as "X是什么梗".
+    // Words are searched as "X是什么意思", memes as "X是什么梗", songs as "X是什么歌".
     for (const id of SLANG_ENTRIES) {
-      expect(slangCopy("zh-CN", id).title, id).toMatch(/是什么(意思|梗)/);
-      expect(slangCopy("zh-TW", id).title, id).toMatch(/是什麼(意思|梗)/);
+      const kind = SLANG_META[id].song ? "歌" : "(意思|梗)";
+      expect(slangCopy("zh-CN", id).title, id).toMatch(new RegExp(`是什么${kind}`));
+      expect(slangCopy("zh-TW", id).title, id).toMatch(new RegExp(`是什麼${kind}`));
     }
   });
 
@@ -267,6 +282,7 @@ describe("slang: page HTML and SEO", () => {
         expect(html.match(/<section class="kb-section"/g)?.length).toBe(copy.sections.length);
         for (const other of SLANG_META[id].related) expect(html).toContain(`href="${slangHref(locale, other)}"`);
         for (const source of SLANG_META[id].sources) expect(html).toContain(`href="${source.url.replace(/&/g, "&amp;")}"`);
+        expect(html.includes('class="meme-platform"'), `${locale} ${id} platform`).toBe(Boolean(SLANG_META[id].platform));
         expect(html).not.toMatch(/<(script|iframe)/i);
         expect(html).not.toMatch(/\{[a-z]+\}/);
       }
@@ -298,7 +314,11 @@ describe("slang: page HTML and SEO", () => {
     expect(hub["@type"]).toBe("CollectionPage");
     expect(hub.mainEntity["@type"]).toBe("DefinedTermSet");
     expect(hub.mainEntity["@id"]).toBe("https://cv.cm/en/memes/#terms");
-    expect(hub.mainEntity.hasDefinedTerm.length).toBe(SLANG_ENTRIES.length);
+    // Songs are MusicRecordings, not terms of the set.
+    expect(hub.mainEntity.hasDefinedTerm.length).toBe(SLANG_ENTRIES.filter((id) => !SLANG_META[id].song).length);
+    const song = slangArticleJsonLd("ja", "apt") as { about: Record<string, unknown> };
+    expect(song.about).toMatchObject({ "@type": "MusicRecording", name: slangCopy("ja", "apt").name });
+    expect(song.about.byArtist).toEqual(SLANG_META.apt.song!.by.map((a) => ({ "@type": a.type, name: a.name })));
     const html = applyHtmlSeo(SHELL, "id", { slang: true, slangId: "yyds" });
     expect(html).toContain('<div id="app"><nav class="device-crumb"');
     expect(html).toContain('<section class="kb-answer"');
@@ -344,6 +364,10 @@ describe("slang: page HTML and SEO", () => {
         expect(ld.image?.acquireLicensePage, `${locale} ${id}`).toBe(image.page);
       }
     }
+    // A photo of a singer is described as that person, not as a "meme picture".
+    expect(slangPageHtml("en", "apt")).toContain(`alt="ROSÉ (${slangCopy("en", "apt").name})"`);
+    expect(slangPageHtml("zh-TW", "guyongzhe")).toContain(`alt="陳奕迅（${slangCopy("zh-TW", "guyongzhe").name}）"`);
+    expect(slangPageHtml("en", "dubai-chocolate")).toContain(`alt="${fill(slangMessages("en").ui.imageAlt, { name: slangCopy("en", "dubai-chocolate").name })}"`);
     expect(slangPageHtml("en", "yyds")).not.toContain("meme-figure");
     expect(buildSitemapXml(sitemapPages().filter((p) => p.kind === "slang"))).toContain("<image:loc>https://s3.cv.cm/files/covers/memes/doge-meme.webp</image:loc>");
   });

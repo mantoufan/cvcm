@@ -15,6 +15,11 @@ export type MemeImage = {
   license: string;
   licenseUrl: string;
   page: string;
+  /**
+   * Who is in the picture when it is not the meme itself (a song's singer, the person in the clip), so the alt text names
+   * them: one name, or names by locale with "en" as the fallback.
+   */
+  who?: string | Partial<Record<string, string>>;
 };
 
 const MEME_IMAGES: Partial<Record<string, MemeImage>> = images satisfies Record<string, MemeImage>;
