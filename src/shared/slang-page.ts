@@ -13,7 +13,7 @@ import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, slangGroupOf, type SlangId } f
 import { memeImage, memeImagePath } from "./meme-images";
 import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
-import { memeImageAlt, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
+import { memeImageAlt, songArtistsLabel, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
 
 /**
  * The picture right under the answer, near the top of the page: loaded eagerly as the likely LCP element, with its size
@@ -251,7 +251,7 @@ export function slangPageHtml(locale: Locale, id: SlangId | null): string {
   )).join("");
   // A song names its artists where other entries name the language they come from.
   const origin = meta.song
-    ? meta.song.by.map((artist) => artist.name).join(" & ")
+    ? songArtistsLabel(locale, id)
     : { zh: ui.originZh, en: ui.originEn, yue: ui.originYue, web: ui.originWeb }[meta.origin];
   const platform = meta.platform ? { douyin: ui.platformDouyin, tiktok: ui.platformTiktok, both: ui.platformBoth }[meta.platform] : null;
   return [

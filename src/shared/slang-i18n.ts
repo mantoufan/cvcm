@@ -59,6 +59,20 @@ export function slangUpdated(id: SlangId): string {
   return SLANG_UPDATED[id] ?? slangPublished(id);
 }
 
+/** A song's credited artists as this locale writes them (zh-CN keeps the credit; Chinese and Japanese fall back to it too). */
+export function songArtists(locale: Locale, id: SlangId): string[] {
+  return (SLANG_META[id].song?.by ?? []).map((artist) => {
+    const own = artist.names?.[locale];
+    if (own) return own;
+    return locale === "zh-CN" || locale === "zh-TW" || locale === "ja" ? artist.name : artist.names?.en ?? artist.name;
+  });
+}
+
+/** Artists joined for display: "A、B" in Chinese and Japanese, "A & B" elsewhere. */
+export function songArtistsLabel(locale: Locale, id: SlangId): string {
+  return songArtists(locale, id).join(locale === "zh-CN" || locale === "zh-TW" || locale === "ja" ? "、" : " & ");
+}
+
 /** Alt text and caption of an entry's picture: "<name> meme" or, for a photo of a person, "<who> (<name>)". */
 export function memeImageAlt(locale: Locale, id: SlangId): string {
   const name = slangName(locale, id).name;
@@ -145,12 +159,19 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
           url: `${ORIGIN}${slangHref(locale, entry)}`,
         })),
       },
+      // The songs are pages of the collection too, as recordings rather than terms.
+      hasPart: SLANG_ENTRIES.filter((entry) => SLANG_META[entry].song).map((entry) => ({
+        "@type": "MusicRecording",
+        name: slangName(locale, entry).name,
+        url: `${ORIGIN}${slangHref(locale, entry)}`,
+      })),
     };
   }
   const copy = slangCopy(locale, id);
   const url = `${ORIGIN}${slangHref(locale, id)}`;
   const answer = copy.answer.replaceAll("`", "");
   const image = imageJsonLd(locale, id);
+  const song = SLANG_META[id].song;
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -167,21 +188,14 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
     isAccessibleForFree: true,
     articleSection: (slangHub(locale).groups as Record<string, string>)[slangGroupOf(id)],
     ...(image ? { image } : {}),
-    about: SLANG_META[id].song
-      ? {
-        "@type": "MusicRecording",
-        name: copy.name,
-        description: answer,
-        ...(copy.aka.length ? { alternateName: copy.aka } : {}),
-        byArtist: SLANG_META[id].song!.by.map((artist) => ({ "@type": artist.type, name: artist.name })),
-      }
-      : {
-        "@type": "DefinedTerm",
-        name: copy.name,
-        description: answer,
-        ...(copy.aka.length ? { alternateName: copy.aka } : {}),
-        inDefinedTermSet: termSetRef(locale),
-      },
+    about: {
+      name: copy.name,
+      description: answer,
+      ...(copy.aka.length ? { alternateName: copy.aka } : {}),
+      ...(song
+        ? { "@type": "MusicRecording", byArtist: song.by.map((artist, i) => ({ "@type": artist.type, name: songArtists(locale, id)[i] })) }
+        : { "@type": "DefinedTerm", inDefinedTermSet: termSetRef(locale) }),
+    },
     ...(SLANG_META[id].sources.length ? { citation: SLANG_META[id].sources.map((s) => ({ "@type": "CreativeWork", name: s.name, url: s.url })) } : {}),
   };
 }

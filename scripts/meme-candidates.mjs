@@ -9,22 +9,17 @@
 import { appendFileSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { jsonGetter } from "./get-json.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const UA = "cv.cm meme candidates (https://cv.cm/)";
 const SOURCES = JSON.parse(readFileSync(join(root, "src/shared/meme-sources.json"), "utf8"));
+/** slang.ts cites the articles of entries whose own trend article is null (a person, a song page), so read those too. */
+const SLANG_TS = readFileSync(join(root, "src/shared/slang.ts"), "utf8");
 const LIMIT = 40;
 const TIKTOK_REGIONS = ["US", "ID", "VN"];
 
-async function getJson(url, headers = {}) {
-  for (let attempt = 1; ; attempt += 1) {
-    const res = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(60_000) }).catch((error) => ({ ok: false, status: 0, error }));
-    if (res.ok) return res.json();
-    if (res.status === 404) return null;
-    if (attempt >= 3 || (res.status >= 400 && res.status < 500 && res.status !== 429)) throw new Error(`${res.status || res.error?.message} ${url}`);
-    await new Promise((r) => setTimeout(r, 2000 * attempt));
-  }
-}
+const getJson = jsonGetter(UA);
 
 const day = (d) => d.toISOString().slice(0, 10).replaceAll("-", "");
 const key = (title) => title.replaceAll(" ", "_");
@@ -42,9 +37,18 @@ async function categoryPages(category) {
   return titles;
 }
 
-/** Views in the 28 days up to yesterday, and in the 28 days before. */
-async function views(title) {
-  const end = new Date(Date.now() - 86_400_000);
+/**
+ * The last day whose pageviews Wikimedia has published: yesterday, or the day before when yesterday's are not out yet
+ * (an early-morning run). Checked on the busiest article, since a quiet one simply has no row for a day with no views.
+ */
+async function lastPublishedDay() {
+  const yesterday = new Date(Date.now() - 86_400_000);
+  const probe = await getJson(`https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Main_Page/daily/${day(yesterday)}/${day(yesterday)}`);
+  return probe?.items?.length ? yesterday : new Date(yesterday.getTime() - 86_400_000);
+}
+
+/** Views in the 28 days up to `end`, and in the 28 days before. */
+async function views(title, end) {
   const start = new Date(end.getTime() - 55 * 86_400_000);
   const url = `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/${encodeURIComponent(key(title))}/daily/${day(start)}/${day(end)}`;
   const items = (await getJson(url))?.items ?? [];
@@ -56,6 +60,23 @@ async function views(title) {
     else prior += item.views;
   }
   return { recent, prior };
+}
+
+/**
+ * English Wikipedia articles the channel already covers: each entry's trend article plus every en.wikipedia source it
+ * cites, resolved through redirects (a source may link "Apt. (song)" while the category lists "APT. (song)").
+ */
+async function trackedTitles() {
+  const raw = new Set(Object.values(SOURCES).flatMap((s) => (s.wiki?.startsWith("en:") ? [s.wiki.slice(3)] : [])));
+  for (const m of SLANG_TS.matchAll(/https:\/\/en\.wikipedia\.org\/wiki\/([^"#?\s]+)/g)) raw.add(decodeURIComponent(m[1]));
+  const titles = [...raw].map((t) => t.replaceAll("_", " "));
+  const tracked = new Set(titles.map(key));
+  for (let i = 0; i < titles.length; i += 50) {
+    const batch = titles.slice(i, i + 50).join("|");
+    const body = await getJson(`https://en.wikipedia.org/w/api.php?action=query&redirects=1&format=json&titles=${encodeURIComponent(batch)}`);
+    for (const r of [...(body?.query?.normalized ?? []), ...(body?.query?.redirects ?? [])]) tracked.add(key(r.to));
+  }
+  return tracked;
 }
 
 /** Run `fn` over `list` with a few requests in flight (Wikimedia asks clients to keep it modest). */
@@ -73,10 +94,10 @@ async function pool(list, fn, size = 4) {
 
 async function wikipediaCandidates() {
   const year = new Date().getUTCFullYear();
-  const tracked = new Set(Object.values(SOURCES).flatMap((s) => (s.wiki?.startsWith("en:") ? [key(s.wiki.slice(3))] : [])));
+  const [tracked, end] = await Promise.all([trackedTitles(), lastPublishedDay()]);
   const titles = [...new Set((await Promise.all([year, year - 1].map((y) => categoryPages(`Category:Internet memes introduced in ${y}`)))).flat())]
     .filter((title) => !tracked.has(key(title)));
-  const counts = await pool(titles, views);
+  const counts = await pool(titles, (title) => views(title, end));
   return titles
     .map((title, i) => ({ title, ...counts[i] }))
     .sort((a, b) => b.recent - a.recent)

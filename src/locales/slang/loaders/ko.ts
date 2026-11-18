@@ -91,7 +91,6 @@ export const SLANG_LOADERS = {
   "dubai-chocolate": () => import("../ko/dubai-chocolate.json"),
   "demure": () => import("../ko/demure.json"),
   "bing-chilling": () => import("../ko/bing-chilling.json"),
-  "clanker": () => import("../ko/clanker.json"),
   "brat-summer": () => import("../ko/brat-summer.json"),
   "mob-wife": () => import("../ko/mob-wife.json"),
   "jet2-holiday": () => import("../ko/jet2-holiday.json"),
