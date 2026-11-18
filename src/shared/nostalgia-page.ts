@@ -60,7 +60,6 @@ function statusLabel(locale: Locale, id: NostalgiaId): string | null {
   return { available: ui.statusAvailable, revived: ui.statusRevived, discontinued: ui.statusDiscontinued }[status];
 }
 
-
 function crumbHtml(locale: Locale, id: NostalgiaId | null): string {
   const m = nostalgiaMessages(locale);
   const sep = ` <span aria-hidden="true">/</span> `;

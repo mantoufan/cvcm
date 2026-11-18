@@ -316,9 +316,9 @@ describe("slang: page HTML and SEO", () => {
     expect(hub.mainEntity["@id"]).toBe("https://cv.cm/en/memes/#terms");
     // Songs are MusicRecordings, not terms of the set.
     expect(hub.mainEntity.hasDefinedTerm.length).toBe(SLANG_ENTRIES.filter((id) => !SLANG_META[id].song).length);
-    const hubParts = (slangArticleJsonLd("en", null) as { hasPart: { "@type": string; url: string }[] }).hasPart;
+    const hubParts = (slangArticleJsonLd("en", null) as { hasPart: { "@type": string; url: string; about: { "@type": string } }[] }).hasPart;
     expect(hubParts.map((p) => p.url)).toEqual(SLANG_ENTRIES.filter((id) => SLANG_META[id].song).map((id) => `https://cv.cm${slangHref("en", id)}`));
-    expect(new Set(hubParts.map((p) => p["@type"]))).toEqual(new Set(["MusicRecording"]));
+    expect(new Set(hubParts.map((p) => `${p["@type"]}/${p.about["@type"]}`))).toEqual(new Set(["Article/MusicRecording"]));
     // Artists read in the page's script: Traditional in zh-TW, romanized in English, joined with 、 in CJK.
     expect(slangPageHtml("zh-TW", "guyongzhe")).toContain("· 陳奕迅</p>");
     expect(slangPageHtml("en", "guyongzhe")).toContain("· Eason Chan</p>");

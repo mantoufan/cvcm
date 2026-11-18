@@ -17,7 +17,8 @@ export type MemeImage = {
   page: string;
   /**
    * The person in the picture when that person is the meme (John Cena for Bing Chilling), named in the alt text. A song's
-   * picture always shows its first credited artist, whose name comes from `SLANG_META[id].song`, so songs leave this out.
+   * picture of its first credited artist leaves this out (the name comes from `SLANG_META[id].song`, localized); set it
+   * when the photo shows anyone else.
    */
   who?: string;
 };

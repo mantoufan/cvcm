@@ -75,12 +75,12 @@ export function songArtistsLabel(locale: Locale, id: SlangId): string {
 }
 
 /**
- * Alt text and caption of an entry's picture: "<name> meme", or "<who> (<name>)" for a photo of a person: a song's
- * picture always shows its first credited artist (named as the page names them), any other one names the image's `who`.
+ * Alt text and caption of an entry's picture: "<name> meme", or "<who> (<name>)" for a photo of a person: the image's
+ * `who` when set, else for a song its first credited artist (named as the page names them).
  */
 export function memeImageAlt(locale: Locale, id: SlangId): string {
   const name = slangName(locale, id).name;
-  const person = isSong(id) ? songArtists(locale, id)[0] : memeImage(id)?.who;
+  const person = memeImage(id)?.who ?? (isSong(id) ? songArtists(locale, id)[0] : undefined);
   return person ? fill(slangUi(locale).imageAltWho, { who: person, name }) : fill(slangUi(locale).imageAlt, { name });
 }
 
@@ -166,11 +166,11 @@ export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<s
           url: `${ORIGIN}${slangHref(locale, entry)}`,
         })),
       },
-      // The songs are pages of the collection too, as recordings rather than terms.
+      // The song pages are part of the collection too: articles about a recording, not terms.
       hasPart: songs.map((entry) => ({
-        "@type": "MusicRecording",
-        name: slangName(locale, entry).name,
+        "@type": "Article",
         url: `${ORIGIN}${slangHref(locale, entry)}`,
+        about: { "@type": "MusicRecording", name: slangName(locale, entry).name },
       })),
     };
   }

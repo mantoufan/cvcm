@@ -174,7 +174,6 @@ function panelHtml(locale: Locale, id: IdeaId): string {
     + `<p class="idea-note">${escapeHtml(ui.disclaimer)}</p></section>`;
 }
 
-
 function crumbHtml(locale: Locale, id: IdeaId | null): string {
   const m = ideasMessages(locale);
   const sep = ` <span aria-hidden="true">/</span> `;

@@ -92,27 +92,52 @@ async function pool(list, fn, size = 4) {
   return out;
 }
 
+/** Category members resolved through redirects (a category may list a redirect such as "Nothing beats a Jet2 holiday"). */
+async function resolveTitles(titles) {
+  const to = new Map(titles.map((t) => [t, t]));
+  for (let i = 0; i < titles.length; i += 50) {
+    const batch = titles.slice(i, i + 50);
+    const body = await getJson(`https://en.wikipedia.org/w/api.php?action=query&redirects=1&format=json&titles=${encodeURIComponent(batch.join("|"))}`);
+    const norm = new Map((body?.query?.normalized ?? []).map((n) => [n.from, n.to]));
+    const redirect = new Map((body?.query?.redirects ?? []).map((r) => [r.from, r.to]));
+    for (const t of batch) {
+      const n = norm.get(t) ?? t;
+      to.set(t, redirect.get(n) ?? n);
+    }
+  }
+  return [...new Set(to.values())];
+}
+
 async function wikipediaCandidates() {
   const year = new Date().getUTCFullYear();
   const [tracked, end] = await Promise.all([trackedTitles(), lastPublishedDay()]);
-  const titles = [...new Set((await Promise.all([year, year - 1].map((y) => categoryPages(`Category:Internet memes introduced in ${y}`)))).flat())]
-    .filter((title) => !tracked.has(key(title)));
-  // One article that keeps failing (5xx, an odd title) is listed as unknown instead of stopping the week's shortlist.
+  const members = [...new Set((await Promise.all([year, year - 1].map((y) => categoryPages(`Category:Internet memes introduced in ${y}`)))).flat())];
+  const titles = (await resolveTitles(members)).filter((title) => !tracked.has(key(title)) && !DECIDED.has(title));
   const counts = await pool(titles, (title) => views(title, end).catch((error) => {
     console.warn(`views ${title}: ${error.message}`);
-    return { recent: 0, prior: 0, failed: true };
+    return null;
   }));
-  const ranked = titles.map((title, i) => ({ title, ...counts[i] })).filter((c) => !DECIDED.has(c.title)).sort((a, b) => b.recent - a.recent);
-  // The channel takes no politics or tragedies (AGENTS.md), and the shortlist is posted publicly: drop such articles.
-  const off = await offTopic(ranked.slice(0, LIMIT * 2).map((c) => c.title));
-  return ranked.filter((c) => !off.has(c.title)).slice(0, LIMIT);
+  // An article whose views could not be read is named separately instead of sinking to the bottom unseen.
+  const failed = titles.filter((_, i) => counts[i] === null);
+  const ranked = titles.flatMap((title, i) => (counts[i] ? [{ title, ...counts[i] }] : [])).sort((a, b) => b.recent - a.recent);
+  // The channel takes no politics or tragedies (AGENTS.md) and the list is public, so only articles whose categories
+  // were checked can make it: the top LIMIT × 2 are checked and the list is cut from those.
+  const checked = ranked.slice(0, LIMIT * 2);
+  const off = await offTopic(checked.map((c) => c.title));
+  return { list: checked.filter((c) => !off.has(c.title)).slice(0, LIMIT), failed };
 }
 
-/** Articles already decided on: left out on purpose (Clanker is a slur, Kirkification is politics; AGENTS.md) or covered under another article. */
-const DECIDED = new Set(["Clanker", "Jet2.com", "Kirkification"]);
+/**
+ * Articles already decided on: left out on purpose (Clanker is a slur, Kirkification is politics; AGENTS.md) or covered
+ * by an entry that tracks no English article of its own (jet2-holiday: the airline, its holiday brand and the song).
+ */
+const DECIDED = new Set(["Clanker", "Kirkification", "Jet2.com", "Jet2 plc", "Jet2holidays", "Hold My Hand (Jess Glynne song)"]);
 
-/** Wikipedia categories (whole words) that mark an article as politics, a crime or a disaster rather than a meme to write up. */
-const OFF_TOPIC = /\b(politic\w*|elections?|government|presidents?|parliament|protests?|wars?|military|terror\w*|assassinat\w*|murders?|killings?|shootings?|deaths?|disasters?|sex|sexual\w*)\b|charlie kirk/i;
+/**
+ * Wikipedia categories (whole words) that mark an article as politics, a crime or a disaster rather than a meme to write
+ * up. Kept narrow: "Star Wars memes" or a "2025 deaths" category alone must not hide a meme.
+ */
+const OFF_TOPIC = /\b(politic\w*|elections?|parliament\w*|protests?|terroris\w*|assassinat\w*|murders?|killings?|homicides?|shootings?|disasters?|sexual\w*|pornograph\w*)\b|charlie kirk/i;
 
 /**
  * Titles whose categories mark them off-topic. A batch whose categories cannot be read is dropped whole (and warned
@@ -153,7 +178,7 @@ async function tiktokHints(apiKey) {
     const body = await getJson(`https://api.scrapecreators.com/v1/tiktok/get-trending-feed?region=${region}&trim=true`, { "x-api-key": apiKey });
     for (const video of body?.aweme_list ?? []) {
       for (const tag of (video.desc ?? "").match(/#[\p{L}\p{N}_]+/gu) ?? []) tags.set(tag.toLowerCase(), (tags.get(tag.toLowerCase()) ?? 0) + 1);
-      const music = video.music?.title && !/original sound|suara asli|âm thanh gốc/i.test(video.music.title) ? `${video.music.title} — ${video.music.author ?? ""}`.trim() : null;
+      const music = video.music?.title && !/original sound|suara asli|âm thanh gốc/i.test(video.music.title) ? [video.music.title, video.music.author].filter(Boolean).join(" — ") : null;
       if (music) sounds.set(music, (sounds.get(music) ?? 0) + 1);
     }
   }
@@ -167,10 +192,11 @@ if (tiktok && !process.env.SCRAPECREATORS_API_KEY) throw new Error("--tiktok nee
 const fmt = (n) => n.toLocaleString("en-US");
 const lines = [`# Meme candidates (${new Date().toISOString().slice(0, 10)})`, "", "Wikipedia articles in *Internet memes introduced in* this year or last that /memes/ does not track yet, by views over the last 28 days. Check Keyword Planner before writing one up.", "", "| # | Article | 28 days | Change |", "|---|---|---|---|"];
 const wiki = await wikipediaCandidates();
-wiki.forEach((c, i) => {
-  const change = c.failed ? "views unavailable" : c.prior ? `${c.recent >= c.prior ? "+" : ""}${Math.round((c.recent / c.prior - 1) * 100)}%` : "new";
+wiki.list.forEach((c, i) => {
+  const change = c.prior ? `${c.recent >= c.prior ? "+" : ""}${Math.round((c.recent / c.prior - 1) * 100)}%` : "new";
   lines.push(`| ${i + 1} | [${c.title}](https://en.wikipedia.org/wiki/${encodeURIComponent(key(c.title))}) | ${fmt(c.recent)} | ${change} |`);
 });
+if (wiki.failed.length) lines.push("", `Views unavailable this week (check by hand): ${wiki.failed.join(", ")}`);
 
 if (tiktok) {
   const { tags, sounds } = await tiktokHints(process.env.SCRAPECREATORS_API_KEY);

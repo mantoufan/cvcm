@@ -34,7 +34,6 @@ export function refPhotoPage(photo: RefPhoto): string {
   return `https://www.mfan8.com/${encodeURIComponent(photo.item)}`;
 }
 
-
 function crumbHtml(locale: Locale, id: RefId | null): string {
   const m = refMessages(locale);
   const sep = ` <span aria-hidden="true">/</span> `;
