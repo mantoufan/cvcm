@@ -373,3 +373,25 @@ const ELEMENTS: Record<Locale, ElementsMessages> = {
   es: esElements,
 };
 for (const [locale, pack] of Object.entries(ELEMENTS)) registerElementsMessages(locale as Locale, pack);
+// Emoji meanings packs (copy, CLDR names and keywords, usage sentences, emoji-test rows).
+import enEmoji from "../locales/packs/emoji-en";
+import esEmoji from "../locales/packs/emoji-es";
+import idEmoji from "../locales/packs/emoji-id";
+import jaEmoji from "../locales/packs/emoji-ja";
+import koEmoji from "../locales/packs/emoji-ko";
+import viEmoji from "../locales/packs/emoji-vi";
+import zhCNEmoji from "../locales/packs/emoji-zh-CN";
+import zhTWEmoji from "../locales/packs/emoji-zh-TW";
+import { registerEmojiMessages, type EmojiMessages } from "./messages";
+
+const EMOJI: Record<Locale, EmojiMessages> = {
+  en: enEmoji,
+  "zh-CN": zhCNEmoji,
+  "zh-TW": zhTWEmoji,
+  ja: jaEmoji,
+  ko: koEmoji,
+  vi: viEmoji,
+  id: idEmoji,
+  es: esEmoji,
+};
+for (const [locale, pack] of Object.entries(EMOJI)) registerEmojiMessages(locale as Locale, pack);

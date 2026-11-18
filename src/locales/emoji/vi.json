@@ -1,0 +1,157 @@
+{
+  "crumbHome": "Trang chủ",
+  "copy": "Sao chép",
+  "copied": "Đã sao chép",
+  "copyFailed": "Sao chép thất bại",
+  "copyLabel": "Sao chép {emoji}",
+  "hub": {
+    "title": "Ý nghĩa emoji: {n} biểu tượng cảm xúc phổ biến",
+    "h1": "Ý nghĩa emoji",
+    "lede": "Ý nghĩa của {n} emoji được dùng nhiều nhất, xếp theo nhóm Unicode. Nhấn Sao chép để sao chép một emoji, hoặc mở từng emoji để xem tên chính thức, điểm mã, năm được thêm vào và các biến thể màu da, giới tính.",
+    "description": "Ý nghĩa của {n} emoji phổ biến, kèm tên Unicode chính thức, điểm mã, năm mỗi emoji được thêm vào và sao chép bằng một chạm: 😂 ❤️ 😭 💀 🥺 🙏 🔥 và nhiều hơn nữa.",
+    "search": "Tìm emoji",
+    "searchPlaceholder": "Tên, từ khóa hoặc emoji",
+    "shown": "{n} / {total} emoji",
+    "none": "Không có emoji nào khớp với tìm kiếm này.",
+    "aboutTitle": "Về các trang này",
+    "about": [
+      "Mỗi emoji có một tên ngắn chính thức và các từ khóa từ Kho dữ liệu ngôn ngữ chung của Unicode (CLDR), được các cộng tác viên của Unicode dịch cho từng ngôn ngữ hiển thị ở đây. Các nhóm, thứ tự và phiên bản emoji lấy từ tệp emoji-test.txt của Unicode.",
+      "Câu mô tả mọi người dùng emoji để làm gì do cv.cm viết, không phải Unicode. Emoji được hiển thị bằng phông emoji của chính thiết bị bạn, nên trông hơi khác nhau trên mỗi điện thoại hoặc máy tính."
+    ],
+    "faq": [
+      {
+        "q": "Những emoji nào được liệt kê ở đây?",
+        "a": "{n} emoji được dùng nhiều nhất: nhóm đầu bảng xếp hạng tần suất emoji do Unicode công bố (không tính cờ quốc gia), cùng một vài emoji phổ biến được thêm từ năm 2018, vốn bị bảng xếp hạng đó đánh giá quá thấp vì chúng mới hơn."
+      },
+      {
+        "q": "Làm sao để sao chép emoji?",
+        "a": "Nhấn Sao chép bên cạnh emoji, rồi dán vào tin nhắn, bài đăng hoặc tài liệu. Emoji được sao chép dưới dạng văn bản, nên nó hiển thị theo phông chữ của nơi bạn dán."
+      },
+      {
+        "q": "Vì sao emoji trông khác trên điện thoại của tôi?",
+        "a": "Unicode quy định mỗi emoji là gì (điểm mã và tên của nó), còn mỗi công ty (Apple, Google, Samsung, Microsoft và các hãng khác) tự vẽ hình riêng. Ý nghĩa vẫn như nhau; chỉ hình vẽ là khác."
+      }
+    ]
+  },
+  "page": {
+    "title": "{emoji} Ý nghĩa emoji {name}",
+    "h1": "{emoji} Ý nghĩa emoji {name}",
+    "description": "{emoji} {Name}: {usage} Unicode {cp}, là emoji từ năm {year}. Sao chép bằng một chạm.",
+    "meaning": "Ý nghĩa",
+    "factsTitle": "Thông tin về {emoji}",
+    "keywordsTitle": "Từ khóa",
+    "keywordsText": "Các từ Unicode liệt kê để tìm {emoji} trên bàn phím emoji:",
+    "variantsTitle": "Biến thể màu da và giới tính",
+    "variantsText": "{emoji} còn có {n} biến thể khác, mỗi biến thể là một emoji riêng:",
+    "similarTitle": "Emoji tương tự",
+    "similarText": "Các emoji khác trong nhóm {subgroup}:",
+    "faqTitle": "Câu hỏi thường gặp",
+    "faqMeaning": {
+      "q": "Emoji {emoji} có nghĩa là gì?",
+      "a": "{usage} Tên Unicode chính thức của nó là “{name}”."
+    },
+    "faqYear": {
+      "q": "Emoji {emoji} được thêm vào khi nào?",
+      "a": "{emoji} trở thành emoji vào năm {year}, trong Emoji {v}. Điểm mã của nó là {cp}."
+    },
+    "faqYearSequence": {
+      "q": "Emoji {emoji} được thêm vào khi nào?",
+      "a": "{emoji} trở thành emoji vào năm {year}, trong Emoji {v}. Nó là một chuỗi điểm mã: {cp}."
+    },
+    "faqCopy": {
+      "q": "Làm sao để gõ hoặc sao chép {emoji}?",
+      "a": "Nhấn Sao chép trên trang này và dán vào bất cứ đâu. Trên bàn phím emoji của điện thoại, bạn cũng có thể tìm “{keyword}”."
+    },
+    "faqCopyVariants": {
+      "q": "Làm sao để gõ hoặc sao chép {emoji}?",
+      "a": "Nhấn Sao chép trên trang này và dán vào bất cứ đâu. Trên bàn phím emoji của điện thoại, bạn cũng có thể tìm “{keyword}”. Emoji này có {n} biến thể màu da hoặc giới tính, mỗi biến thể có nút Sao chép riêng ở phía trên."
+    }
+  },
+  "labels": {
+    "emoji": "Emoji",
+    "name": "Tên chính thức",
+    "englishName": "Tên tiếng Anh",
+    "codepoint": "Điểm mã",
+    "codepoints": "Các điểm mã",
+    "html": "Mã HTML",
+    "version": "Phiên bản emoji",
+    "year": "Năm thêm vào",
+    "group": "Nhóm",
+    "subgroup": "Nhóm con"
+  },
+  "values": {
+    "version": "Emoji {v}"
+  },
+  "sources": {
+    "title": "Nguồn",
+    "names": "Tên và từ khóa: {cldr} (CLDR {version}).",
+    "cldr": "Chú thích emoji Unicode CLDR",
+    "data": "Nhóm, thứ tự và phiên bản emoji: {test} (phiên bản {version}).",
+    "test": "Unicode emoji-test.txt",
+    "usage": "Các câu mô tả cách dùng do cv.cm viết.",
+    "notice": "© 1991–2026 Unicode, Inc. Các tệp dữ liệu Unicode được sử dụng theo {license}.",
+    "license": "Giấy phép Unicode v3",
+    "noticeTitle": "Thông báo bản quyền và cấp phép của Unicode",
+    "snapshot": "Dữ liệu chốt ngày: {date}."
+  },
+  "groups": {
+    "smileys-emotion": "Mặt cười và cảm xúc",
+    "people-body": "Con người và cơ thể",
+    "animals-nature": "Động vật và thiên nhiên",
+    "food-drink": "Đồ ăn và đồ uống",
+    "travel-places": "Du lịch và địa điểm",
+    "activities": "Hoạt động",
+    "objects": "Đồ vật",
+    "symbols": "Ký hiệu"
+  },
+  "subgroups": {
+    "face-smiling": "mặt cười",
+    "face-affection": "mặt trìu mến",
+    "face-tongue": "mặt lè lưỡi",
+    "face-hand": "mặt có tay",
+    "face-neutral-skeptical": "mặt trung lập và hoài nghi",
+    "face-sleepy": "mặt buồn ngủ",
+    "face-unwell": "mặt không khỏe",
+    "face-hat": "mặt đội mũ",
+    "face-glasses": "mặt đeo kính",
+    "face-concerned": "mặt lo âu",
+    "face-negative": "mặt tiêu cực",
+    "cat-face": "mặt mèo",
+    "monkey-face": "mặt khỉ",
+    "heart": "trái tim",
+    "emotion": "ký hiệu cảm xúc",
+    "hand-fingers-open": "bàn tay mở",
+    "hand-fingers-partial": "ký hiệu tay",
+    "hand-single-finger": "tay chỉ",
+    "hand-fingers-closed": "bàn tay nắm",
+    "hands": "hai bàn tay",
+    "body-parts": "bộ phận cơ thể",
+    "person": "con người",
+    "person-gesture": "cử chỉ của người",
+    "person-activity": "hoạt động của người",
+    "person-symbol": "ký hiệu người",
+    "animal-mammal": "động vật có vú",
+    "animal-bug": "côn trùng",
+    "plant-flower": "hoa",
+    "plant-other": "cây cối khác",
+    "food-fruit": "trái cây",
+    "food-sweet": "đồ ngọt",
+    "drink": "đồ uống",
+    "transport-ground": "phương tiện mặt đất",
+    "transport-air": "phương tiện hàng không",
+    "sky & weather": "bầu trời và thời tiết",
+    "event": "sự kiện",
+    "award-medal": "giải thưởng",
+    "sport": "thể thao",
+    "game": "trò chơi",
+    "clothing": "quần áo",
+    "music": "âm nhạc",
+    "money": "tiền bạc",
+    "warning": "cảnh báo",
+    "arrow": "mũi tên",
+    "av-symbol": "ký hiệu âm thanh và video",
+    "punctuation": "dấu câu",
+    "other-symbol": "ký hiệu khác",
+    "geometric": "hình khối"
+  }
+}

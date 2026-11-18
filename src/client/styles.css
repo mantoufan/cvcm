@@ -1926,3 +1926,20 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .cite-list li.cite-empty { padding-left: 0; text-indent: 0; border-bottom: 0; }
 .cite-list .cite-remove { min-height: 28px; padding: 0 0.5rem; text-indent: 0; }
 .cite-import summary { cursor: pointer; margin: 0.5rem 0; }
+
+/* Emoji meanings (/emoji/): emoji are text in the reader's emoji font. */
+.emoji-group h2 { margin: 1.4rem 0 0.5rem; font-size: 1.05rem; }
+.emoji-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.35rem 1rem; margin: 0; padding: 0; list-style: none; }
+.emoji-list li { display: flex; align-items: center; gap: 0.5rem; min-height: 40px; }
+.emoji-list li > a { flex: 1 1 auto; min-width: 0; }
+.emoji-glyph { font-size: 1.35rem; line-height: 1; vertical-align: -0.15rem; }
+.emoji-copy { flex: 0 0 auto; min-height: 32px; padding: 0.2rem 0.6rem; border: 1px solid var(--line); border-radius: 999px; background: var(--white); color: var(--ink); font: inherit; font-size: 0.8rem; cursor: pointer; }
+.emoji-copy:hover, .emoji-copy:focus-visible { border-color: var(--pink-deep); }
+.emoji-answer { display: flex; gap: 1rem; align-items: center; }
+.emoji-answer p { margin: 0 0 0.5rem; }
+.emoji-big { flex: 0 0 auto; font-size: 4rem; line-height: 1; }
+.emoji-page { max-width: 52rem; }
+.emoji-page .kb-section h2, .emoji-facts h2 { margin: 1.5rem 0 0.5rem; font-size: 1.15rem; }
+.emoji-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0; padding: 0; list-style: none; }
+.emoji-tags li { padding: 0.15rem 0.55rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.85rem; }
+.emoji-notice pre { white-space: pre-wrap; font-size: 0.75rem; }

@@ -1,0 +1,157 @@
+{
+  "crumbHome": "首页",
+  "copy": "复制",
+  "copied": "已复制",
+  "copyFailed": "复制失败",
+  "copyLabel": "复制 {emoji}",
+  "hub": {
+    "title": "表情符号含义大全：{n} 个常用 emoji 是什么意思",
+    "h1": "Emoji 表情含义",
+    "lede": "按 Unicode 分组列出 {n} 个最常用的 emoji 及其含义。点“复制”即可复制表情，打开某个表情可查看它的官方名称、码位、加入年份以及肤色和性别变体。",
+    "description": "{n} 个常用 emoji 是什么意思，附 Unicode 官方名称、码位、加入年份，一键复制：😂 ❤️ 😭 💀 🥺 🙏 🔥 等。",
+    "search": "查找表情",
+    "searchPlaceholder": "名称、关键词或表情",
+    "shown": "{n} / {total} 个表情",
+    "none": "没有与搜索内容匹配的表情。",
+    "aboutTitle": "关于这些页面",
+    "about": [
+      "每个表情的官方简称和关键词都来自 Unicode 通用区域数据库（CLDR），由 Unicode 的贡献者译成这里显示的各种语言。分组、排列顺序和表情版本来自 Unicode 的 emoji-test.txt。",
+      "关于人们用某个表情来表达什么的说明由 cv.cm 撰写，并非出自 Unicode。表情以你设备自带的表情字体显示，因此在不同手机或电脑上看起来会略有不同。"
+    ],
+    "faq": [
+      {
+        "q": "这里收录了哪些表情？",
+        "a": "{n} 个最常用的表情：Unicode 公布的表情使用频率排名中靠前的表情（不含国旗），另加几个 2018 年以后新增的热门表情——它们因为较新，在该排名中位置偏低。"
+      },
+      {
+        "q": "怎样复制表情？",
+        "a": "点击表情旁的“复制”，然后粘贴到消息、帖子或文档中。复制的是表情本身的文本，所以它会以粘贴位置所用的字体显示。"
+      },
+      {
+        "q": "为什么表情在我的手机上看起来不一样？",
+        "a": "Unicode 规定每个表情是什么（它的码位和名称），而各家公司（苹果、谷歌、三星、微软等）各自绘制图案。含义相同，画法不同。"
+      }
+    ]
+  },
+  "page": {
+    "title": "{emoji} {name} 表情含义",
+    "h1": "{emoji} {Name} 表情是什么意思",
+    "description": "{emoji} {Name}：{usage}Unicode {cp}，{year} 年起成为表情。一键复制。",
+    "meaning": "含义",
+    "factsTitle": "{emoji} 详细信息",
+    "keywordsTitle": "关键词",
+    "keywordsText": "Unicode 为在表情键盘中搜索 {emoji} 列出的词：",
+    "variantsTitle": "肤色和性别变体",
+    "variantsText": "{emoji} 还有 {n} 种其他形式，每种都是独立的表情：",
+    "similarTitle": "相似表情",
+    "similarText": "同属“{subgroup}”的其他表情：",
+    "faqTitle": "常见问题",
+    "faqMeaning": {
+      "q": "{emoji} 表情是什么意思？",
+      "a": "{usage}它的 Unicode 官方名称是“{name}”。"
+    },
+    "faqYear": {
+      "q": "{emoji} 表情是什么时候加入的？",
+      "a": "{emoji} 于 {year} 年随 Emoji {v} 成为表情。它的码位是 {cp}。"
+    },
+    "faqYearSequence": {
+      "q": "{emoji} 表情是什么时候加入的？",
+      "a": "{emoji} 于 {year} 年随 Emoji {v} 成为表情。它由一串码位组成：{cp}。"
+    },
+    "faqCopy": {
+      "q": "怎样输入或复制 {emoji}？",
+      "a": "点击本页的“复制”，然后粘贴到任何地方。也可以在手机的表情键盘中搜索“{keyword}”。"
+    },
+    "faqCopyVariants": {
+      "q": "怎样输入或复制 {emoji}？",
+      "a": "点击本页的“复制”，然后粘贴到任何地方。也可以在手机的表情键盘中搜索“{keyword}”。它有 {n} 种肤色或性别变体，上方每种都有各自的“复制”按钮。"
+    }
+  },
+  "labels": {
+    "emoji": "表情",
+    "name": "官方名称",
+    "englishName": "英文名称",
+    "codepoint": "码位",
+    "codepoints": "码位",
+    "html": "HTML 字符引用",
+    "version": "表情版本",
+    "year": "加入年份",
+    "group": "分组",
+    "subgroup": "子分组"
+  },
+  "values": {
+    "version": "Emoji {v}"
+  },
+  "sources": {
+    "title": "数据来源",
+    "names": "名称和关键词：{cldr}（CLDR {version}）。",
+    "cldr": "Unicode CLDR 表情注释",
+    "data": "分组、顺序和表情版本：{test}（版本 {version}）。",
+    "test": "Unicode emoji-test.txt",
+    "usage": "用法说明由 cv.cm 撰写。",
+    "notice": "© 1991–2026 Unicode, Inc. Unicode 数据文件依据 {license} 使用。",
+    "license": "Unicode 许可证 v3",
+    "noticeTitle": "Unicode 版权与许可声明",
+    "snapshot": "数据快照：{date}。"
+  },
+  "groups": {
+    "smileys-emotion": "笑脸与情感",
+    "people-body": "人物与身体",
+    "animals-nature": "动物与自然",
+    "food-drink": "食物与饮料",
+    "travel-places": "旅行与地点",
+    "activities": "活动",
+    "objects": "物品",
+    "symbols": "符号"
+  },
+  "subgroups": {
+    "face-smiling": "笑脸",
+    "face-affection": "亲昵表情",
+    "face-tongue": "吐舌表情",
+    "face-hand": "带手的表情",
+    "face-neutral-skeptical": "中性与怀疑表情",
+    "face-sleepy": "困倦表情",
+    "face-unwell": "不适表情",
+    "face-hat": "戴帽表情",
+    "face-glasses": "戴眼镜表情",
+    "face-concerned": "担忧表情",
+    "face-negative": "负面表情",
+    "cat-face": "猫脸",
+    "monkey-face": "猴脸",
+    "heart": "爱心",
+    "emotion": "情感符号",
+    "hand-fingers-open": "张开的手",
+    "hand-fingers-partial": "手势",
+    "hand-single-finger": "手指指向",
+    "hand-fingers-closed": "握拳的手",
+    "hands": "双手",
+    "body-parts": "身体部位",
+    "person": "人物",
+    "person-gesture": "人物手势",
+    "person-activity": "人物活动",
+    "person-symbol": "人物符号",
+    "animal-mammal": "哺乳动物",
+    "animal-bug": "虫子",
+    "plant-flower": "花",
+    "plant-other": "其他植物",
+    "food-fruit": "水果",
+    "food-sweet": "甜食",
+    "drink": "饮料",
+    "transport-ground": "陆地交通",
+    "transport-air": "空中交通",
+    "sky & weather": "天空与天气",
+    "event": "节庆活动",
+    "award-medal": "奖项",
+    "sport": "体育",
+    "game": "游戏",
+    "clothing": "服饰",
+    "music": "音乐",
+    "money": "钱",
+    "warning": "警告",
+    "arrow": "箭头",
+    "av-symbol": "音视频符号",
+    "punctuation": "标点",
+    "other-symbol": "其他符号",
+    "geometric": "形状"
+  }
+}

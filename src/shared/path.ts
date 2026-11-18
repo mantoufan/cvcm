@@ -23,10 +23,11 @@ import { COUNTRIES_SEGMENT, isCountrySlug } from "./countries";
 import { CALORIES_SEGMENT, isFoodId, type FoodId } from "./calories";
 import { ELEMENTS_SEGMENT, isElementSlug, type ElementSlug } from "./elements";
 import { CALENDAR_SEGMENT, calendarPageOf, type CalendarPage } from "./calendar";
+import { EMOJI_SEGMENT, isEmojiSlug, type EmojiSlug } from "./emoji";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "summaries", "scripts", "countries", "calories", "elements", "calendar"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "summaries", "scripts", "countries", "calories", "elements", "calendar", "emoji"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -651,6 +652,7 @@ export type AppPath =
   | { kind: "bare-calories"; food: FoodId | null }
   | { kind: "bare-elements"; entry: ElementSlug | null }
   | { kind: "bare-calendar"; page: CalendarPage }
+  | { kind: "bare-emoji"; entry: EmojiSlug | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -671,6 +673,7 @@ export type AppPath =
   | { kind: "calories"; locale: Locale; food: FoodId | null }
   | { kind: "elements"; locale: Locale; entry: ElementSlug | null }
   | { kind: "calendar"; locale: Locale; page: CalendarPage }
+  | { kind: "emoji"; locale: Locale; entry: EmojiSlug | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -842,6 +845,12 @@ export function parseAppPath(pathname: string): AppPath {
       const page = calendarPageOf([third, ...rest].filter(Boolean) as string[]);
       return page ? { kind: "calendar", locale, page } : { kind: "unknown" };
     }
+    if (second === EMOJI_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "emoji", locale, entry: null };
+      if (isEmojiSlug(third)) return { kind: "emoji", locale, entry: third };
+      return { kind: "unknown" };
+    }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
       return { kind: "legal", locale, page: second };
@@ -954,6 +963,11 @@ export function parseAppPath(pathname: string): AppPath {
   if (first === CALENDAR_SEGMENT) {
     const page = calendarPageOf([second, third, ...rest].filter(Boolean) as string[]);
     return page ? { kind: "bare-calendar", page } : { kind: "unknown" };
+  }
+  if (first === EMOJI_SEGMENT) {
+    if (!second) return { kind: "bare-emoji", entry: null };
+    if (isEmojiSlug(second) && !third) return { kind: "bare-emoji", entry: second };
+    return { kind: "unknown" };
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
@@ -1070,6 +1084,12 @@ export function caloriesHref(locale: Locale, food: FoodId | null = null): string
 /** The periodic table channel: `/{locale}/periodic-table/` (hub) and `/{locale}/periodic-table/{slug}/`. */
 export function elementsHref(locale: Locale, entry: ElementSlug | null = null): string {
   const base = `/${localePath(locale)}/${ELEMENTS_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The emoji meanings channel: `/{locale}/emoji/` (hub) and `/{locale}/emoji/{slug}/`. */
+export function emojiHref(locale: Locale, entry: EmojiSlug | null = null): string {
+  const base = `/${localePath(locale)}/${EMOJI_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
 }
 

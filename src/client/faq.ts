@@ -49,6 +49,8 @@ import { caloriesBreadcrumbJsonLd, caloriesFaqJsonLd, caloriesPageJsonLd } from 
 import type { CaloriesPage } from "../shared/calories";
 import { elementsBreadcrumbJsonLd, elementsFaqJsonLd, elementsPageJsonLd } from "../shared/elements-i18n";
 import type { ElementsPage } from "../shared/elements";
+import { emojiBreadcrumbJsonLd, emojiFaqJsonLd, emojiPageJsonLd } from "../shared/emoji-i18n";
+import type { EmojiPage } from "../shared/emoji";
 import { calendarBreadcrumbJsonLd, calendarFaqJsonLd, calendarPageJsonLd } from "../shared/calendar-i18n";
 import type { CalendarPage } from "../shared/calendar";
 import type { DevicePageId } from "../shared/device";
@@ -120,7 +122,16 @@ export function syncPageJsonLd(
   calendarPage: CalendarPage | null = null,
   summariesPage: SummaryPage = null,
   scriptsPage: ScriptPage = null,
+  emojiPage: EmojiPage = null,
 ): void {
+  if (emojiPage) {
+    const slug = emojiPage === "hub" ? null : emojiPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("article-jsonld", emojiPageJsonLd(locale, slug));
+    writeJsonLd("faq-jsonld", emojiFaqJsonLd(locale, slug));
+    writeJsonLd("breadcrumb-jsonld", emojiBreadcrumbJsonLd(locale, slug));
+    return;
+  }
   if (elementsPage) {
     const slug = elementsPage === "hub" ? null : elementsPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);

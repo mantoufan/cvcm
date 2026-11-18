@@ -1,0 +1,157 @@
+{
+  "crumbHome": "ホーム",
+  "copy": "コピー",
+  "copied": "コピーしました",
+  "copyFailed": "コピーできませんでした",
+  "copyLabel": "{emoji} をコピー",
+  "hub": {
+    "title": "絵文字の意味一覧：よく使われる{n}個の絵文字",
+    "h1": "絵文字の意味",
+    "lede": "よく使われる{n}個の絵文字の意味を、Unicode のグループ別に紹介します。「コピー」を押すと絵文字をコピーでき、絵文字を開くと公式名、コードポイント、追加された年、肌の色や性別のバリエーションを確認できます。",
+    "description": "よく使われる{n}個の絵文字の意味を、Unicode の公式名、コードポイント、追加された年とともに紹介。ワンタップでコピーできます：😂 ❤️ 😭 💀 🥺 🙏 🔥 など。",
+    "search": "絵文字を探す",
+    "searchPlaceholder": "名前、キーワード、絵文字",
+    "shown": "{total}個中{n}個の絵文字",
+    "none": "検索に一致する絵文字はありません。",
+    "aboutTitle": "このページについて",
+    "about": [
+      "各絵文字の公式の短い名前とキーワードは、Unicode Common Locale Data Repository（CLDR）のもので、ここに掲載している各言語へ Unicode の協力者が翻訳しています。グループ、並び順、絵文字のバージョンは Unicode の emoji-test.txt に基づいています。",
+      "絵文字の使われ方を説明する文は、Unicode ではなく cv.cm が書いたものです。絵文字はお使いの端末の絵文字フォントで表示されるため、スマートフォンやパソコンごとに見た目が少し異なります。"
+    ],
+    "faq": [
+      {
+        "q": "ここにはどの絵文字が載っていますか？",
+        "a": "よく使われる{n}個の絵文字です。Unicode が公開している絵文字の使用頻度ランキングの上位（国旗を除く）に加え、2018年以降に追加された人気の絵文字をいくつか載せています。これらは新しいため、そのランキングでは順位が低く出ます。"
+      },
+      {
+        "q": "絵文字はどうやってコピーしますか？",
+        "a": "絵文字の横にある「コピー」を押し、メッセージや投稿、文書に貼り付けてください。絵文字そのものがテキストとしてコピーされるため、貼り付けた先のフォントで表示されます。"
+      },
+      {
+        "q": "自分のスマートフォンでは絵文字の見た目が違うのはなぜですか？",
+        "a": "Unicode は各絵文字が何であるか（コードポイントと名前）を定め、各企業（Apple、Google、Samsung、Microsoft など）がそれぞれ独自に絵を描いています。意味は同じで、絵柄が異なるのです。"
+      }
+    ]
+  },
+  "page": {
+    "title": "{emoji} {name}の絵文字の意味",
+    "h1": "{emoji} {name}の絵文字の意味",
+    "description": "{emoji} {name}：{usage} Unicode {cp}、{year}年に絵文字として追加。ワンタップでコピーできます。",
+    "meaning": "意味",
+    "factsTitle": "{emoji} の詳細",
+    "keywordsTitle": "キーワード",
+    "keywordsText": "絵文字キーボードで {emoji} を検索するために Unicode が定めている言葉：",
+    "variantsTitle": "肌の色と性別のバリエーション",
+    "variantsText": "{emoji} にはほかに{n}種類の形があり、それぞれが独立した絵文字です：",
+    "similarTitle": "似ている絵文字",
+    "similarText": "「{subgroup}」のほかの絵文字：",
+    "faqTitle": "よくある質問",
+    "faqMeaning": {
+      "q": "{emoji} の絵文字はどういう意味ですか？",
+      "a": "{usage} Unicode の公式名は「{name}」です。"
+    },
+    "faqYear": {
+      "q": "{emoji} の絵文字はいつ追加されましたか？",
+      "a": "{emoji} は{year}年、Emoji {v} で絵文字になりました。コードポイントは {cp} です。"
+    },
+    "faqYearSequence": {
+      "q": "{emoji} の絵文字はいつ追加されましたか？",
+      "a": "{emoji} は{year}年、Emoji {v} で絵文字になりました。複数のコードポイントの並び（{cp}）でできています。"
+    },
+    "faqCopy": {
+      "q": "{emoji} はどうやって入力・コピーしますか？",
+      "a": "このページの「コピー」を押せば、どこにでも貼り付けられます。スマートフォンの絵文字キーボードで「{keyword}」と検索することもできます。"
+    },
+    "faqCopyVariants": {
+      "q": "{emoji} はどうやって入力・コピーしますか？",
+      "a": "このページの「コピー」を押せば、どこにでも貼り付けられます。スマートフォンの絵文字キーボードで「{keyword}」と検索することもできます。肌の色や性別のバリエーションが{n}種類あり、それぞれ上に専用の「コピー」ボタンがあります。"
+    }
+  },
+  "labels": {
+    "emoji": "絵文字",
+    "name": "公式名",
+    "englishName": "英語名",
+    "codepoint": "コードポイント",
+    "codepoints": "コードポイント",
+    "html": "HTML コード",
+    "version": "絵文字のバージョン",
+    "year": "絵文字として追加",
+    "group": "グループ",
+    "subgroup": "サブグループ"
+  },
+  "values": {
+    "version": "Emoji {v}"
+  },
+  "sources": {
+    "title": "出典",
+    "names": "名前とキーワード：{cldr}（CLDR {version}）。",
+    "cldr": "Unicode CLDR 絵文字アノテーション",
+    "data": "グループ、並び順、絵文字のバージョン：{test}（バージョン {version}）。",
+    "test": "Unicode emoji-test.txt",
+    "usage": "使われ方の説明文は cv.cm が書いたものです。",
+    "notice": "© 1991–2026 Unicode, Inc. Unicode のデータファイルは {license} に基づいて使用しています。",
+    "license": "Unicode License v3",
+    "noticeTitle": "Unicode の著作権および許諾に関する表示",
+    "snapshot": "データ取得日：{date}。"
+  },
+  "groups": {
+    "smileys-emotion": "スマイリーと感情",
+    "people-body": "人と体",
+    "animals-nature": "動物と自然",
+    "food-drink": "食べ物と飲み物",
+    "travel-places": "旅行と場所",
+    "activities": "アクティビティ",
+    "objects": "物",
+    "symbols": "記号"
+  },
+  "subgroups": {
+    "face-smiling": "笑顔",
+    "face-affection": "愛情を表す顔",
+    "face-tongue": "舌を出した顔",
+    "face-hand": "手を添えた顔",
+    "face-neutral-skeptical": "真顔・疑いの顔",
+    "face-sleepy": "眠そうな顔",
+    "face-unwell": "具合の悪い顔",
+    "face-hat": "帽子をかぶった顔",
+    "face-glasses": "眼鏡をかけた顔",
+    "face-concerned": "心配・困惑の顔",
+    "face-negative": "ネガティブな顔",
+    "cat-face": "猫の顔",
+    "monkey-face": "サルの顔",
+    "heart": "ハート",
+    "emotion": "感情の記号",
+    "hand-fingers-open": "開いた手",
+    "hand-fingers-partial": "手のサイン",
+    "hand-single-finger": "指差し",
+    "hand-fingers-closed": "握った手",
+    "hands": "両手",
+    "body-parts": "体の部位",
+    "person": "人",
+    "person-gesture": "人のジェスチャー",
+    "person-activity": "人の動作",
+    "person-symbol": "人の記号",
+    "animal-mammal": "哺乳類",
+    "animal-bug": "虫",
+    "plant-flower": "花",
+    "plant-other": "その他の植物",
+    "food-fruit": "果物",
+    "food-sweet": "お菓子",
+    "drink": "飲み物",
+    "transport-ground": "陸上の乗り物",
+    "transport-air": "空の乗り物",
+    "sky & weather": "空と天気",
+    "event": "イベント",
+    "award-medal": "賞",
+    "sport": "スポーツ",
+    "game": "ゲーム",
+    "clothing": "服飾",
+    "music": "音楽",
+    "money": "お金",
+    "warning": "警告",
+    "arrow": "矢印",
+    "av-symbol": "音声・映像の記号",
+    "punctuation": "句読点・符号",
+    "other-symbol": "その他の記号",
+    "geometric": "図形"
+  }
+}
