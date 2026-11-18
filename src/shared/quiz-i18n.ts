@@ -4,6 +4,7 @@ import { escapeHtml } from "./device-i18n";
 import { messages, quizMessages, quizTestMessages, type QuizMessages } from "./messages";
 import { appHref, kbHref, quizHref } from "./path";
 import { loveForQuiz } from "./kb-love";
+import { kbName } from "./kb-i18n";
 import { QUIZ_DEFS, QUIZ_GROUPS, QUIZZES, questionCount, type QuizId } from "./quiz";
 
 export type QuizChoice = { q: string; options: string[] };
@@ -51,8 +52,7 @@ export function quizCopy(locale: Locale, id: QuizId): QuizCopy {
 function guidesHtml(locale: Locale, id: QuizId, label: string): string {
   const guides = loveForQuiz(id);
   if (!guides.length) return "";
-  const names = messages(locale).ui.kb as unknown as Record<string, { name: string }>;
-  return `<section><h2>${escapeHtml(label)}</h2><ul>${guides.map((guide) => `<li><a href="${escapeHtml(kbHref(locale, guide))}">${escapeHtml(names[guide].name)}</a></li>`).join("")}</ul></section>`;
+  return `<section><h2>${escapeHtml(label)}</h2><ul>${guides.map((guide) => `<li><a href="${escapeHtml(kbHref(locale, guide))}">${escapeHtml(kbName(locale, guide).name)}</a></li>`).join("")}</ul></section>`;
 }
 
 /** Name and one-line blurb, from the core pack: home and footer links need them without the quiz pack. */

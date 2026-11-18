@@ -252,6 +252,14 @@ describe("knowledge: routes", () => {
   it("is tracked by analytics (no personal data on these pages)", () => {
     expect(isTrackedPath("/en/learn/knowledge/what-is-exif/")).toBe(true);
   });
+
+  it("keeps abuse-pattern and crisis relationship guides out of analytics, and tracks the rest", () => {
+    expect(isTrackedPath("/en/learn/relationships/gaslighting-in-relationships/")).toBe(false);
+    expect(isTrackedPath("/learn/relationships/what-is-love-bombing/")).toBe(false);
+    expect(isTrackedPath("/ja/learn/relationships/how-to-get-over-a-breakup/")).toBe(false);
+    expect(isTrackedPath("/en/learn/relationships/first-date-tips/")).toBe(true);
+    expect(isTrackedPath("/en/learn/relationships/")).toBe(true);
+  });
 });
 
 describe("knowledge: SEO", () => {

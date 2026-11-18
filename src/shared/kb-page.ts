@@ -62,7 +62,7 @@ function tutorialLinkItems(locale: Locale, id: KbId): { href: string; name: stri
 
 /** Tests an article points to (relationships shelf), names from the core pack. */
 function quizLinkItems(locale: Locale, quizzes: readonly QuizId[]): { href: string; name: string; blurb: string; nav: string }[] {
-  const names = messages(locale).ui.quiz as unknown as Record<QuizId, { name: string; blurb: string }>;
+  const names = messages(locale).ui.quiz;
   return quizzes.map((quiz) => ({ href: quizHref(locale, quiz), name: names[quiz].name, blurb: names[quiz].blurb, nav: `test-${quiz}` }));
 }
 

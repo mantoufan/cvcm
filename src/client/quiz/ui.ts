@@ -1,8 +1,9 @@
 import { h } from "../dom";
 import { linkList } from "../links";
 import type { Locale } from "../../shared/locale";
-import { appHref, kbHref, quizHref } from "../../shared/path";
+import { appHref, quizHref } from "../../shared/path";
 import { loveForQuiz } from "../../shared/kb-love";
+import { kbLinkItems } from "../../shared/kb-i18n";
 import {
   FAN_GROUPS,
   FOLLOW_UP,
@@ -66,10 +67,9 @@ function faq(locale: Locale, id: QuizId | null): HTMLElement {
 function guideLinks(locale: Locale, id: QuizId): HTMLElement[] {
   const guides = loveForQuiz(id);
   if (!guides.length) return [];
-  const names = messages(locale).ui.kb as unknown as Record<string, { name: string; blurb: string }>;
   return [h("section", { class: "wall" },
     h("h2", null, quizUi(locale).guides),
-    linkList(guides.map((guide) => ({ href: kbHref(locale, guide), name: names[guide].name, blurb: names[guide].blurb, nav: `kb-${guide}` }))),
+    linkList(kbLinkItems(locale, guides)),
   )];
 }
 

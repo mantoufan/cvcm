@@ -92,6 +92,9 @@ export const KB_SHELVES: Record<KbShelf, { segment: string; hub: KbHub; nav: str
   love: { segment: LOVE_SEGMENT, hub: "love", nav: "love-learn" },
 };
 
+/** Shelves whose home, tutorials-hub and footer-directory blocks list their groups (copy under `kb.<shelf>.*` in the core packs). */
+export const GROUPED_SHELVES = ["ai", "photo", "love"] as const satisfies readonly Exclude<KbShelf, "knowledge">[];
+
 export type KbSource = { title: string; href: string };
 
 export type KbMeta = {
@@ -392,9 +395,16 @@ export function kbGroupsOf(shelf: KbShelf): readonly { id: KbGroupId; shelf: KbS
 
 /** Articles of a shelf that use this tool, in hub order: tool pages link to them. */
 export function kbForTool(tool: ToolId, shelf: KbShelf = "knowledge"): KbId[] {
-  if (shelf === "code") return CODE_ARTICLES.filter((id) => CODE_TOOLS[id]?.includes(tool));
-  if (shelf === "ai") return AI_ARTICLES.filter((id) => AI_ARTICLE_TOOLS[id]?.includes(tool));
-  if (shelf === "photo") return PHOTO_ARTICLES.filter((id) => PHOTO_ARTICLE_TOOLS[id]?.includes(tool));
-  if (shelf === "love") return [];
-  return KNOWLEDGE_ARTICLES.filter((id) => KNOWLEDGE_META[id].tools.includes(tool));
+  const tools = SHELF_TOOLS[shelf];
+  return kbGroupsOf(shelf).flatMap((group) => group.articles).filter((id) => tools(id)?.includes(tool));
 }
+
+/** Tools each article uses, readable without the lazily loaded shelf meta (tool pages ship with the entry chunk). */
+const SHELF_TOOLS: Record<KbShelf, (id: KbId) => readonly ToolId[] | undefined> = {
+  knowledge: (id) => KNOWLEDGE_META[id as KnowledgeId].tools,
+  code: (id) => CODE_TOOLS[id as CodeId],
+  ai: (id) => AI_ARTICLE_TOOLS[id as AiId],
+  photo: (id) => PHOTO_ARTICLE_TOOLS[id as PhotoId],
+  // Relationship guides use tests, not tools (LOVE_ARTICLE_QUIZZES).
+  love: () => undefined,
+};

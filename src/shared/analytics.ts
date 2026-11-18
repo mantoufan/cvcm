@@ -1,5 +1,6 @@
 import { parseAppPath, type ToolId } from "./path";
 import type { QuizId } from "./quiz";
+import type { KbId } from "./kb";
 
 /** GA4 property 538063843 (cv.cm). */
 export const GA_ID = "G-5X2J6QT5KK";
@@ -34,6 +35,16 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
  */
 export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd", "narcissist", "dark-triad", "codependency"]);
 
+/**
+ * Relationship guides about abuse patterns or crisis after a breakup: they end with domestic-violence or crisis help
+ * notes, so a visit says something about the reader's situation and is kept out of GA (and its Ads audiences), like the
+ * self-checks above.
+ */
+export const UNTRACKED_KB: ReadonlySet<KbId> = new Set<KbId>([
+  "what-is-love-bombing", "silent-treatment", "gaslighting-in-relationships", "red-flags-in-a-relationship",
+  "how-to-get-over-a-breakup", "how-to-break-up-with-someone",
+]);
+
 /** Whether this page may report to GA. A clip URL is its own access key, so clip notes are never reported. */
 export function isTrackedPath(pathname: string): boolean {
   // Any /clip/<id> path, valid id or not, stays out (a mistyped id is still someone's key).
@@ -41,6 +52,7 @@ export function isTrackedPath(pathname: string): boolean {
   const parsed = parseAppPath(pathname);
   if (parsed.kind === "clip") return false;
   if ((parsed.kind === "quiz" || parsed.kind === "bare-quiz") && parsed.quiz && UNTRACKED_QUIZZES.has(parsed.quiz)) return false;
+  if ((parsed.kind === "kb" || parsed.kind === "bare-kb") && parsed.article && UNTRACKED_KB.has(parsed.article as KbId)) return false;
   if (parsed.kind === "app" || parsed.kind === "bare") {
     if (parsed.tool && UNTRACKED_TOOLS.has(parsed.tool)) return false;
     if (parsed.tool === "clip" && parsed.clipId) return false;

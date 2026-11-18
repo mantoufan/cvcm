@@ -47,7 +47,6 @@ export const LOVE_GROUPS: readonly { id: LoveGroupId; articles: readonly LoveId[
 
 /** Tests an article points to (first is its call to action); test pages list these, so they ship with the ids. */
 export const LOVE_ARTICLE_QUIZZES: Partial<Record<LoveId, readonly QuizId[]>> = {
-  // QUIZZES-START
   "what-is-love-bombing": ["codependency", "attachment"],
   "what-is-breadcrumbing": ["attachment", "self-esteem"],
   "silent-treatment": ["conflict-style", "communication-style"],
@@ -78,7 +77,6 @@ export const LOVE_ARTICLE_QUIZZES: Partial<Record<LoveId, readonly QuizId[]>> = 
   "how-to-apologize-to-your-partner": ["conflict-style", "codependency"],
   "relationship-slump": ["love-language", "love-style"],
   "emotional-value": ["eq", "codependency"],
-  // QUIZZES-END
 };
 
 /** Relationship articles that point to this test, in hub order: test pages link to them. */

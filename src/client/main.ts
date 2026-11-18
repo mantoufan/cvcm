@@ -52,7 +52,7 @@ import type { MarketId } from "../shared/markets";
 import { QUIZZES, isQuizId, type QuizId, type QuizPage } from "../shared/quiz";
 import { DATASETS, type DatasetId } from "../shared/datasets";
 import { RANKINGS, type RankingId } from "../shared/rankings";
-import { KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
+import { GROUPED_SHELVES, KB_SHELVES, KNOWLEDGE_ARTICLES, isKbId, kbArticleOf, kbGroupsOf, kbHubOfNav, type KbPage } from "../shared/kb";
 import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
 import { SLANG_FOCUS, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
 import { memeImagePath } from "../shared/meme-images";
@@ -1468,27 +1468,13 @@ function toolDirectory(loc: Locale): HTMLElement {
         ),
       ),
     ),
-    h("div", { class: "dir-group" },
-      h("h2", null, h("a", { href: kbHref(loc, "ai"), "data-nav": KB_SHELVES.ai.nav }, t("kb.ai.label"))),
-      h("p", null,
-        ...kbGroupsOf("ai").map((group) =>
-          h("a", { href: `${kbHref(loc, "ai")}#${group.id}`, "data-nav": KB_SHELVES.ai.nav }, t(`kb.ai.groups.${group.id}`)),
-        ),
-      ),
-    ),
-    h("div", { class: "dir-group" },
-      h("h2", null, h("a", { href: kbHref(loc, "photo"), "data-nav": KB_SHELVES.photo.nav }, t("kb.photo.label"))),
-      h("p", null,
-        ...kbGroupsOf("photo").map((group) =>
-          h("a", { href: `${kbHref(loc, "photo")}#${group.id}`, "data-nav": KB_SHELVES.photo.nav }, t(`kb.photo.groups.${group.id}`)),
-        ),
-      ),
-    ),
-    h("div", { class: "dir-group" },
-      h("h2", null, h("a", { href: kbHref(loc, "love"), "data-nav": KB_SHELVES.love.nav }, t("kb.love.label"))),
-      h("p", null,
-        ...kbGroupsOf("love").map((group) =>
-          h("a", { href: `${kbHref(loc, "love")}#${group.id}`, "data-nav": KB_SHELVES.love.nav }, t(`kb.love.groups.${group.id}`)),
+    ...GROUPED_SHELVES.map((shelf) =>
+      h("div", { class: "dir-group" },
+        h("h2", null, h("a", { href: kbHref(loc, shelf), "data-nav": KB_SHELVES[shelf].nav }, t(`kb.${shelf}.label`))),
+        h("p", null,
+          ...kbGroupsOf(shelf).map((group) =>
+            h("a", { href: `${kbHref(loc, shelf)}#${group.id}`, "data-nav": KB_SHELVES[shelf].nav }, t(`kb.${shelf}.groups.${group.id}`)),
+          ),
         ),
       ),
     ),
