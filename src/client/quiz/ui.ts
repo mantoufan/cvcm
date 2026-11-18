@@ -1,7 +1,8 @@
 import { h } from "../dom";
 import { linkList } from "../links";
 import type { Locale } from "../../shared/locale";
-import { appHref, quizHref } from "../../shared/path";
+import { appHref, breedsHref, quizHref } from "../../shared/path";
+import { BREED_QUIZ, breedOfQuizResult } from "../../shared/breeds";
 import {
   FAN_GROUPS,
   FOLLOW_UP,
@@ -225,6 +226,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
   } else {
     siblings = [...same, ...others];
   }
+  const breedQuiz = Object.hasOwn(BREED_QUIZ, id);
   host.append(
     crumb(locale, id),
     h("div", { class: "tool-head" },
@@ -240,6 +242,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
       h("h2", null, ui.more),
       testLinks(locale, siblings.slice(0, MORE_LINKS)),
       h("p", { class: "more" }, h("a", { href: quizHref(locale), "data-nav": "tests" }, ui.all)),
+      breedQuiz ? h("p", { class: "more" }, h("a", { href: breedsHref(locale), "data-nav": "breeds" }, ui.breedsAll)) : null,
     ),
     faq(locale, id),
   );
@@ -341,6 +344,9 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       }
       nodes.push(...result.ranked.map((s) => bar(label(s.dim), s.pct)));
       const name = results[result.key]?.name ?? result.key;
+      // The dog and cat breed tests link the breed page of their result.
+      const breed = breedOfQuizResult(id, result.key);
+      if (breed) nodes.push(h("p", { class: "more" }, h("a", { href: breedsHref(locale, breed), "data-nav": `breed-${breed}` }, `${name}: ${ui.breedPage}`)));
       return { nodes, summary: sideLine ? `${name} · ${sideLine}` : name };
     }
     case "code": {

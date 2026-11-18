@@ -47,6 +47,11 @@ for (const [src, chunk] of Object.entries(manifest)) {
   if (nostalgiaEntry && nostalgiaEntry[1] !== "index") localePacks[`nostalgia-${nostalgiaEntry[1]}/${nostalgiaEntry[2]}`] = [`/${chunk.file}`];
   const nostalgiaLoaders = /^src\/locales\/nostalgia\/loaders\/([^/]+)\.ts$/.exec(src);
   if (nostalgiaLoaders) localePacks[`nostalgia-${nostalgiaLoaders[1]}/loaders`] = [`/${chunk.file}`];
+  // Breeds and loader tables: "breeds-<locale>/<kind>/<slug>" and "breeds-<locale>/loaders" (the pack is "breeds-<locale>").
+  const breedEntry = /^src\/locales\/breeds\/([a-zA-Z-]+)\/(dogs|cats)\/([a-z0-9-]+)\.json$/.exec(src);
+  if (breedEntry) localePacks[`breeds-${breedEntry[1]}/${breedEntry[2]}/${breedEntry[3]}`] = [`/${chunk.file}`];
+  const breedLoaders = /^src\/locales\/breeds\/loaders\/([^/]+)\.ts$/.exec(src);
+  if (breedLoaders) localePacks[`breeds-${breedLoaders[1]}/loaders`] = [`/${chunk.file}`];
   // One test's copy and the loader tables: "quiz-<locale>/<id>" and "quiz-<locale>/loaders" (the pack is "quiz-<locale>").
   const quizTest = /^src\/locales\/quiz\/([a-zA-Z-]+)\/([a-z0-9-]+)\.json$/.exec(src);
   if (quizTest) localePacks[`quiz-${quizTest[1]}/${quizTest[2]}`] = [`/${chunk.file}`];
@@ -92,6 +97,7 @@ const pageModules = {
   slang: "src/client/slang/ui.ts",
   ideas: "src/client/ideas/ui.ts",
   nostalgia: "src/client/nostalgia/ui.ts",
+  breeds: "src/client/breeds/ui.ts",
   countries: "src/client/countries/ui.ts",
   calories: "src/client/calories/ui.ts",
   elements: "src/client/elements/ui.ts",

@@ -14,12 +14,14 @@ import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_E
 import { COUNTRY_LIST, COUNTRIES_UPDATED } from "./countries";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
 import { CALORIES_SNAPSHOT, FOODS, type FoodId } from "./calories";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, breedsHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 import { ELEMENT_SLUGS, ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT, type ElementSlug } from "./elements";
 import { EMOJI_SLUGS, emojiUpdated, type EmojiSlug } from "./emoji";
 import { CALENDAR_PAGES, CALENDAR_UPDATED, type CalendarPage } from "./calendar";
 import { CURRENCY_PAIRS, CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT, type CurrencyPair } from "./currency";
 import { currencyHref } from "./path";
+import { BREED_IDS, BREEDS_PUBLISHED, BREEDS_SNAPSHOT, breedUpdated, type BreedId } from "./breeds";
+import { breedsMessages } from "./breeds-store";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -57,7 +59,8 @@ export type SitemapPage =
   | { locale: Locale; kind: "elements"; entry: ElementSlug | null }
   | { locale: Locale; kind: "calendar"; page: CalendarPage }
   | { locale: Locale; kind: "emoji"; entry: EmojiSlug | null }
-  | { locale: Locale; kind: "currency"; pair: CurrencyPair | null };
+  | { locale: Locale; kind: "currency"; pair: CurrencyPair | null }
+  | { locale: Locale; kind: "breeds"; entry: BreedId | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -104,6 +107,8 @@ export function sitemapPages(): SitemapPage[] {
     for (const entry of EMOJI_SLUGS) pages.push({ locale, kind: "emoji", entry });
     pages.push({ locale, kind: "currency", pair: null });
     for (const pair of CURRENCY_PAIRS) pages.push({ locale, kind: "currency", pair });
+    pages.push({ locale, kind: "breeds", entry: null });
+    for (const entry of BREED_IDS) pages.push({ locale, kind: "breeds", entry });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -131,6 +136,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(page.locale, page.page)}`;
   if (page.kind === "emoji") return `${SITE_ORIGIN}${emojiHref(page.locale, page.entry)}`;
   if (page.kind === "currency") return `${SITE_ORIGIN}${currencyHref(page.locale, page.pair)}`;
+  if (page.kind === "breeds") return `${SITE_ORIGIN}${breedsHref(page.locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -160,6 +166,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(locale, page.page)}`;
   if (page.kind === "emoji") return `${SITE_ORIGIN}${emojiHref(locale, page.entry)}`;
   if (page.kind === "currency") return `${SITE_ORIGIN}${currencyHref(locale, page.pair)}`;
+  if (page.kind === "breeds") return `${SITE_ORIGIN}${breedsHref(locale, page.entry)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -192,6 +199,7 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "calendar") return "calendar";
   if (page.kind === "emoji") return "emoji";
   if (page.kind === "currency") return "currency";
+  if (page.kind === "breeds") return "breeds";
   return "pages";
 }
 
@@ -240,12 +248,15 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "emoji") return emojiUpdated();
   // Exchange-rate pages show the ECB snapshot: the later of its date and the day the channel went live (= JSON-LD dateModified).
   if (page.kind === "currency") return [CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT].sort().at(-1)!;
+  // Breed pages: the later of the channel's start, the Wikidata / FCI snapshot and a copy edit (BREEDS_UPDATED).
+  if (page.kind === "breeds") return page.entry ? breedUpdated(page.entry, BREEDS_SNAPSHOT) : [BREEDS_PUBLISHED, BREEDS_SNAPSHOT, ...BREED_IDS.map((id) => breedUpdated(id, BREEDS_SNAPSHOT))].sort().at(-1)!;
   return null;
 }
 
 /** A page's own picture for the image sitemap: a meme or nostalgia entry's freely licensed image. */
 function pageImage(page: SitemapPage): string | null {
-  const path = page.kind === "slang" ? memeImagePath(page.entry) : page.kind === "nostalgia" ? nostalgiaImagePath(page.entry) : null;
+  const breed = page.kind === "breeds" && page.entry ? breedsMessages("en").images[page.entry] : null;
+  const path = page.kind === "slang" ? memeImagePath(page.entry) : page.kind === "nostalgia" ? nostalgiaImagePath(page.entry) : breed ? `/covers/${breed.src}` : null;
   return path ? coverUrl(path) : null;
 }
 

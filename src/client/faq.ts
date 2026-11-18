@@ -39,6 +39,8 @@ import { ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd } from "../sh
 import type { IdeaPage } from "../shared/ideas";
 import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaFaqJsonLd } from "../shared/nostalgia-i18n";
 import type { NostalgiaPage } from "../shared/nostalgia";
+import { breedsArticleJsonLd, breedsBreadcrumbJsonLd, breedsFaqJsonLd } from "../shared/breeds-i18n";
+import type { BreedsPage } from "../shared/breeds";
 import { countriesCollectionJsonLd, countryBreadcrumbJsonLd, countryFaqJsonLd } from "../shared/countries-i18n";
 import type { CountryPage } from "../shared/countries";
 import { caloriesBreadcrumbJsonLd, caloriesFaqJsonLd, caloriesPageJsonLd } from "../shared/calories-i18n";
@@ -120,6 +122,7 @@ export function syncPageJsonLd(
   calendarPage: CalendarPage | null = null,
   emojiPage: EmojiPage = null,
   currencyPage: CurrencyPage = null,
+  breedsPage: BreedsPage = null,
 ): void {
   if (currencyPage) {
     const pair = currencyPage === "hub" ? null : currencyPage;
@@ -135,6 +138,14 @@ export function syncPageJsonLd(
     writeJsonLd("article-jsonld", emojiPageJsonLd(locale, slug));
     writeJsonLd("faq-jsonld", emojiFaqJsonLd(locale, slug));
     writeJsonLd("breadcrumb-jsonld", emojiBreadcrumbJsonLd(locale, slug));
+    return;
+  }
+  if (breedsPage) {
+    const id = breedsPage === "hub" ? null : breedsPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("article-jsonld", breedsArticleJsonLd(locale, id));
+    writeJsonLd("faq-jsonld", breedsFaqJsonLd(locale, id));
+    writeJsonLd("breadcrumb-jsonld", breedsBreadcrumbJsonLd(locale, id));
     return;
   }
   if (elementsPage) {

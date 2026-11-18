@@ -1,0 +1,133 @@
+{
+  "crumbHome": "Beranda",
+  "hub": {
+    "title": "Jenis Anjing dan Jenis Kucing: Ukuran, Sifat, Asal",
+    "description": "{dogs} ras anjing dan {cats} ras kucing lengkap dengan ukuran, berat, harapan hidup, negara asal, kelompok FCI, temperamen, dan perawatan, masing-masing dengan foto dan sumber.",
+    "h1": "Ras anjing dan kucing",
+    "lede": "Ras anjing dan kucing yang paling banyak dibaca, satu halaman untuk tiap ras: asal-usulnya, ukuran dewasanya, bulu dan temperamennya menurut klub anjing dan kucing, serta apa saja yang diperlukan untuk merawatnya.",
+    "dogs": "Ras anjing",
+    "cats": "Ras kucing",
+    "search": "Cari ras",
+    "searchPlaceholder": "Nama, dalam bahasa apa pun",
+    "size": "Ukuran",
+    "group": "Kelompok FCI",
+    "origin": "Asal",
+    "any": "Semua",
+    "shown": "{n} dari {total}",
+    "none": "Tidak ada ras yang cocok.",
+    "notFci": "Tidak ada kelompok FCI",
+    "sizeRule": "Kelompok ukuran berdasarkan tinggi terbesar (anjing) atau berat terbesar (kucing) yang tercatat di Wikidata untuk ras tersebut. Anjing: kecil di bawah 41 cm pada gumba, sedang hingga 57 cm, besar hingga 70 cm, raksasa di atasnya (menurut berat bila tinggi tidak tercatat: di bawah 10 kg, hingga 25 kg, hingga 45 kg, di atasnya). Kucing: kecil di bawah 5 kg, sedang hingga 7 kg, besar di atasnya.",
+    "about": [
+      "Fakta seperti negara asal, tinggi, berat, harapan hidup, dan kelompok FCI berasal dari Wikidata (CC0) dan daftar ras Fédération Cynologique Internationale; nilai yang tidak tercatat di Wikidata ditampilkan sebagai tanda strip, tidak pernah diperkirakan. Teks pada setiap halaman merangkum artikel Wikipedia bahasa Inggris tentang ras tersebut dan standar ras yang ditautkannya, dan setiap halaman mencantumkan sumbernya.",
+      "Foto adalah berkas berlisensi bebas dari Wikimedia Commons, dengan kredit di bawah setiap gambar. Ras dipilih berdasarkan seberapa sering artikel Wikipedia-nya dibaca dalam delapan bahasa situs ini. Catatan kesehatan hanya memuat hal yang umumnya dilaporkan sumber; bukan saran dokter hewan."
+    ],
+    "faq": [
+      {
+        "q": "Ada berapa ras di cv.cm?",
+        "a": "{dogs} ras anjing dan {cats} ras kucing, dipilih berdasarkan seberapa sering artikel Wikipedia-nya dibaca dalam bahasa Inggris, Mandarin, Jepang, Korea, Vietnam, Indonesia, dan Spanyol selama setahun terakhir."
+      },
+      {
+        "q": "Apa itu kelompok FCI?",
+        "a": "Fédération Cynologique Internationale mengelompokkan ras yang diakuinya ke dalam sepuluh kelompok menurut tipe dan fungsi aslinya, dari anjing gembala (kelompok 1) hingga sighthound (kelompok 10). Beberapa ras populer, seperti American Pit Bull Terrier, tidak diakui oleh FCI."
+      },
+      {
+        "q": "Dari mana ukuran dan umur ras berasal?",
+        "a": "Dari Wikidata, basis pengetahuan bebas di balik Wikipedia. Bila Wikidata tidak memiliki angka, halaman menampilkan tanda strip; ulasan tertulis dapat mengutip kisaran yang diberikan standar ras atau Wikipedia."
+      }
+    ]
+  },
+  "ui": {
+    "kicker": {
+      "dogs": "Ras anjing",
+      "cats": "Ras kucing"
+    },
+    "titleDog": "{name}: Ukuran, Sifat, Umur",
+    "titleCat": "{name}: Ukuran, Sifat, Umur",
+    "english": "Nama Inggris: {name}",
+    "answer": "Singkatnya",
+    "facts": "Fakta ras",
+    "origin": "Asal",
+    "height": "Tinggi pada gumba",
+    "weight": "Berat",
+    "life": "Harapan hidup",
+    "size": "Kelompok ukuran",
+    "fci": "FCI",
+    "fciGroup": "Kelompok {group}: {name} · standar no. {n}",
+    "notFci": "— (Wikidata tidak mencantumkan nomor standar FCI)",
+    "standards": "Standar ras",
+    "cm": "{min}–{max} cm",
+    "cmOne": "{v} cm",
+    "kg": "{min}–{max} kg",
+    "kgOne": "{v} kg",
+    "years": "{min}–{max} tahun",
+    "yearsOne": "{v} tahun",
+    "none": "—",
+    "factsNote": "Dari Wikidata (CC0) dan daftar ras FCI; — berarti Wikidata tidak mencantumkan angka.",
+    "toc": "Di halaman ini",
+    "faq": "FAQ",
+    "related": "Ras serupa",
+    "relatedGroup": "Lainnya dalam kelompok FCI {group}",
+    "sources": "Sumber",
+    "sourceWikipedia": "Wikipedia: {name}",
+    "sourceFci": "Standar ras FCI no. {n}",
+    "sourceStandard": "Standar ras {club}",
+    "sourceWikidata": "Wikidata: {qid}",
+    "updated": "Diperbarui {date}",
+    "imageAlt": "Foto {name}",
+    "imageCredit": "Foto: {author}, melalui Wikimedia Commons (ukuran diubah)",
+    "imageCreditAnon": "Foto melalui Wikimedia Commons (ukuran diubah)",
+    "notAdvice": "Informasi umum, bukan saran dokter hewan.",
+    "quiz": {
+      "dogs": "Kamu ras anjing apa?",
+      "cats": "Kamu ras kucing apa?"
+    },
+    "quizText": {
+      "dogs": "Ikuti tes kepribadian singkat ras anjing.",
+      "cats": "Ikuti tes kepribadian singkat ras kucing."
+    },
+    "quizResult": "Ras ini adalah salah satu dari delapan hasil tes.",
+    "all": "Semua ras anjing dan kucing",
+    "sizes": {
+      "small": "Kecil",
+      "medium": "Sedang",
+      "large": "Besar",
+      "giant": "Raksasa"
+    },
+    "fciGroups": {
+      "1": "Anjing gembala dan anjing ternak (kecuali anjing ternak Swiss)",
+      "2": "Pinscher dan Schnauzer, Molossoid, serta anjing gunung dan anjing ternak Swiss",
+      "3": "Terrier",
+      "4": "Dachshund",
+      "5": "Spitz dan tipe primitif",
+      "6": "Anjing pemburu pelacak bau dan ras terkait",
+      "7": "Anjing penunjuk",
+      "8": "Retriever, anjing pengusir buruan, anjing air",
+      "9": "Anjing pendamping dan anjing mungil",
+      "10": "Sighthound"
+    },
+    "registries": {
+      "FCI": "FCI",
+      "AKC": "American Kennel Club",
+      "KC": "The Kennel Club (Inggris)",
+      "UKC": "United Kennel Club",
+      "CKC": "Canadian Kennel Club",
+      "ANKC": "Dogs Australia (ANKC)",
+      "NZKC": "Dogs New Zealand",
+      "JKC": "Japan Kennel Club",
+      "KUSA": "Kennel Union of Southern Africa",
+      "CFA": "CFA",
+      "FIFe": "FIFe",
+      "TICA": "TICA",
+      "GCCF": "GCCF",
+      "WCF": "WCF",
+      "ACFA": "ACFA",
+      "ACF": "ACF",
+      "CCA": "CCA-AFC",
+      "NZCF": "NZCF",
+      "CFF": "CFF",
+      "LOOF": "LOOF",
+      "SACC": "SACC",
+      "AACE": "AACE"
+    }
+  }
+}

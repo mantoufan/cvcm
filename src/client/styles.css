@@ -1996,3 +1996,10 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .pb-hud-mult { color: var(--pink-deep); }
 .pb-status { min-height: 1.6em; margin: 0.5rem 0 0; color: var(--pink-deep); font-weight: 600; }
 .pb-pad .g3d-plunger { align-self: flex-end; }
+/* Breeds channel (/breeds/): facts table, hub filters, English name under the local one. */
+.breed-facts h2 { margin: 1.5rem 0 0.5rem; font-size: 1.15rem; }
+.breed-facts-table { width: 100%; border-collapse: collapse; }
+.breed-facts-table th, .breed-facts-table td { padding: 0.4rem 0.6rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.breed-facts-table th { width: 40%; font-weight: 600; }
+.breed-tools select { min-height: 42px; max-width: 100%; }
+.links .breed-en { color: var(--ink-soft); font-size: 0.78rem; -webkit-line-clamp: 1; }

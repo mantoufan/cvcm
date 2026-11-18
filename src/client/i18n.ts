@@ -73,6 +73,8 @@ import type { QuizCopy } from "../shared/quiz-i18n";
 import { countryBucket, countryCode, type CountryPage } from "../shared/countries";
 import { hasCountriesMessages, hasCountryBucket, registerCountriesMessages, registerCountryBucket, type CountriesMessages, type CountryDetail } from "../shared/countries-store";
 import { COUNTRY_BUCKET_LOADERS } from "../shared/countries/loaders";
+import type { BreedId, BreedsPage } from "../shared/breeds";
+import { hasBreedEntry, hasBreedsMessages, registerBreedEntry, registerBreedsMessages, type BreedEntryCopy, type BreedsMessages } from "../shared/breeds-store";
 import { hasCaloriesMessages, registerCaloriesMessages, type CaloriesMessages } from "../shared/messages";
 import type { CaloriesPage } from "../shared/calories";
 
@@ -407,6 +409,36 @@ async function loadNostalgiaEntry(next: Locale, id: NostalgiaId): Promise<void> 
   registerNostalgiaEntry(next, id, m.default);
 }
 
+
+
+
+// Breeds hub copy, names, blurbs and facts (`npm run breeds:sync`), only for /breeds/ pages.
+const BREEDS_PACKS: Record<Locale, () => Promise<{ default: BreedsMessages }>> = {
+  en: () => import("../locales/packs/breeds-en"),
+  "zh-CN": () => import("../locales/packs/breeds-zh-CN"),
+  "zh-TW": () => import("../locales/packs/breeds-zh-TW"),
+  ja: () => import("../locales/packs/breeds-ja"),
+  ko: () => import("../locales/packs/breeds-ko"),
+  vi: () => import("../locales/packs/breeds-vi"),
+  id: () => import("../locales/packs/breeds-id"),
+  es: () => import("../locales/packs/breeds-es"),
+
+// One chunk per breed and locale, through that locale's generated loader table.
+const BREED_LOADER_TABLES: Record<Locale, () => Promise<{ BREED_LOADERS: Record<BreedId, () => Promise<unknown>> }>> = {
+  en: () => import("../locales/breeds/loaders/en"),
+  "zh-CN": () => import("../locales/breeds/loaders/zh-CN"),
+  "zh-TW": () => import("../locales/breeds/loaders/zh-TW"),
+  ja: () => import("../locales/breeds/loaders/ja"),
+  ko: () => import("../locales/breeds/loaders/ko"),
+  vi: () => import("../locales/breeds/loaders/vi"),
+  id: () => import("../locales/breeds/loaders/id"),
+  es: () => import("../locales/breeds/loaders/es"),
+
+async function loadBreedEntry(next: Locale, id: BreedId): Promise<void> {
+  const { BREED_LOADERS } = await BREED_LOADER_TABLES[next]();
+  const m = (await BREED_LOADERS[id]()) as { default: BreedEntryCopy };
+  registerBreedEntry(next, id, m.default);
+
 // Countries copy and the list data, only for /countries/ pages; a profile also loads the data bucket holding its figures.
 const COUNTRIES_PACKS: Record<Locale, () => Promise<{ default: CountriesMessages }>> = {
   en: () => import("../locales/packs/countries-en"),
@@ -448,7 +480,7 @@ const CURRENCY_PACKS: Record<Locale, () => Promise<{ default: CurrencyMessages }
 };
 
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false, breeds: BreedsPage = null): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
@@ -466,10 +498,11 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!elements || hasElementsMessages(next))
     && (!calendar || hasCalendarMessages(next))
     && (!emoji || hasEmojiMessages(next))
-    && (!currency || hasCurrencyMessages(next));
+    && (!currency || hasCurrencyMessages(next))
+    && (!breeds || (hasBreedsMessages(next) && (breeds === "hub" || hasBreedEntry(next, breeds))));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false, breeds: BreedsPage = null): Promise<void> {
   const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
@@ -501,6 +534,8 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !calendar || hasCalendarMessages(next) ? null : CALENDAR_PACKS[next]().then((m) => registerCalendarMessages(next, m.default)),
     !emoji || hasEmojiMessages(next) ? null : EMOJI_PACKS[next]().then((m) => registerEmojiMessages(next, m.default)),
     !currency || hasCurrencyMessages(next) ? null : CURRENCY_PACKS[next]().then((m) => registerCurrencyMessages(next, m.default)),
+    !breeds || hasBreedsMessages(next) ? null : BREEDS_PACKS[next]().then((m) => registerBreedsMessages(next, m.default)),
+    !breeds || breeds === "hub" || hasBreedEntry(next, breeds) ? null : loadBreedEntry(next, breeds),
   ]);
 }
 

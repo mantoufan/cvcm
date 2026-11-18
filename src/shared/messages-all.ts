@@ -273,6 +273,8 @@ for (const [locale, entries] of Object.entries(NOSTALGIA_ALL)) {
 
 // Country profiles keep their own store (countries-store.ts).
 import "./countries-all";
+// Breed pages keep their own store too (breeds-store.ts).
+import "./breeds-all";
 
 import enCalories from "../locales/packs/calories-en";
 import esCalories from "../locales/packs/calories-es";

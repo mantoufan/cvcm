@@ -33,13 +33,15 @@ import type { CurrencyPair } from "./currency";
 import { currencyHref } from "./path";
 import { calendarDescription, calendarTitle } from "./calendar-i18n";
 import type { CalendarPage } from "./calendar";
+import { breedsDescription, breedsTitle } from "./breeds-i18n";
+import type { BreedId } from "./breeds";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
 import { DEFAULT_LOCALE, LOCALES, type Locale } from "./locale";
 import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, categoryOf, deviceHref, gameHubOf, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, categoryOf, deviceHref, gameHubOf, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, breedsHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -110,6 +112,9 @@ export type SeoInput = {
   /** The exchange-rate channel under /currency/; `currencyPair` null is the hub. */
   currency?: boolean;
   currencyPair?: CurrencyPair | null;
+  /** The breeds channel under /breeds/; `breedId` null is the hub. */
+  breeds?: boolean;
+  breedId?: BreedId | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -907,6 +912,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   if (seo.elements) return elementsTitle(locale, seo.elementSlug ?? null);
   if (seo.emoji) return emojiTitle(locale, seo.emojiSlug ?? null);
   if (seo.calendar) return calendarTitle(locale, seo.calendarPage ?? "hub");
+  if (seo.breeds) return breedsTitle(locale, seo.breedId ?? null);
   if (seo.slang) return slangTitle(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaTitle(locale, seo.ideaId ?? null);
   if (seo.ref) return refTitle(locale, seo.refId ?? null);
@@ -939,6 +945,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   if (seo.elements) return elementsDescription(locale, seo.elementSlug ?? null);
   if (seo.emoji) return emojiDescription(locale, seo.emojiSlug ?? null);
   if (seo.calendar) return calendarDescription(locale, seo.calendarPage ?? "hub");
+  if (seo.breeds) return breedsDescription(locale, seo.breedId ?? null);
   if (seo.slang) return slangDescription(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaDescription(locale, seo.ideaId ?? null);
   if (seo.ref) return refDescription(locale, seo.refId ?? null);
@@ -988,6 +995,7 @@ export function pageCanonical(
   if (seo.elements) return `https://cv.cm${elementsHref(locale, seo.elementSlug ?? null)}`;
   if (seo.emoji) return `https://cv.cm${emojiHref(locale, seo.emojiSlug ?? null)}`;
   if (seo.calendar) return `https://cv.cm${calendarHref(locale, seo.calendarPage ?? "hub")}`;
+  if (seo.breeds) return `https://cv.cm${breedsHref(locale, seo.breedId ?? null)}`;
   if (seo.slang) return `https://cv.cm${slangHref(locale, seo.slangId ?? null)}`;
   if (seo.ideas) return `https://cv.cm${ideasHref(locale, seo.ideaId ?? null)}`;
   if (seo.ref) return `https://cv.cm${refHref(locale, seo.refId ?? null)}`;

@@ -21,12 +21,13 @@ import { COUNTRIES_SEGMENT, isCountrySlug } from "./countries";
 import { CALORIES_SEGMENT, isFoodId, type FoodId } from "./calories";
 import { ELEMENTS_SEGMENT, isElementSlug, type ElementSlug } from "./elements";
 import { CURRENCY_SEGMENT, isCurrencyPair, type CurrencyPair } from "./currency";
+import { BREEDS_SEGMENT, breedIdOf, type BreedId } from "./breeds";
 import { CALENDAR_SEGMENT, calendarPageOf, type CalendarPage } from "./calendar";
 import { EMOJI_SEGMENT, isEmojiSlug, type EmojiSlug } from "./emoji";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "countries", "calories", "elements", "calendar", "emoji", "currency"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "countries", "calories", "elements", "calendar", "emoji", "currency", "breeds"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -667,6 +668,7 @@ export type AppPath =
   | { kind: "bare-currency"; pair: CurrencyPair | null }
   | { kind: "bare-calendar"; page: CalendarPage }
   | { kind: "bare-emoji"; entry: EmojiSlug | null }
+  | { kind: "bare-breeds"; entry: BreedId | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -687,6 +689,7 @@ export type AppPath =
   | { kind: "currency"; locale: Locale; pair: CurrencyPair | null }
   | { kind: "calendar"; locale: Locale; page: CalendarPage }
   | { kind: "emoji"; locale: Locale; entry: EmojiSlug | null }
+  | { kind: "breeds"; locale: Locale; entry: BreedId | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -849,6 +852,12 @@ export function parseAppPath(pathname: string): AppPath {
       if (isCurrencyPair(third)) return { kind: "currency", locale, pair: third };
       return { kind: "unknown" };
     }
+    if (second === BREEDS_SEGMENT) {
+      if (!third) return { kind: "breeds", locale, entry: null };
+      // Typed in capitals (/breeds/dogs/Pug/): parse as the lowercase id so the Worker 301s.
+      const entry = rest.length === 1 ? breedIdOf(third.toLowerCase(), rest[0].toLowerCase()) : null;
+      return entry ? { kind: "breeds", locale, entry } : { kind: "unknown" };
+    }
     if (second === CALENDAR_SEGMENT) {
       const page = calendarPageOf([third, ...rest].filter(Boolean) as string[]);
       return page ? { kind: "calendar", locale, page } : { kind: "unknown" };
@@ -962,6 +971,11 @@ export function parseAppPath(pathname: string): AppPath {
     if (!second) return { kind: "bare-currency", pair: null };
     if (isCurrencyPair(second) && !third) return { kind: "bare-currency", pair: second };
     return { kind: "unknown" };
+  }
+  if (first === BREEDS_SEGMENT) {
+    if (!second) return { kind: "bare-breeds", entry: null };
+    const entry = third && rest.length === 0 ? breedIdOf(second.toLowerCase(), third.toLowerCase()) : null;
+    return entry ? { kind: "bare-breeds", entry } : { kind: "unknown" };
   }
   if (first === CALENDAR_SEGMENT) {
     const page = calendarPageOf([second, third, ...rest].filter(Boolean) as string[]);
@@ -1088,6 +1102,12 @@ export function emojiHref(locale: Locale, entry: EmojiSlug | null = null): strin
 export function currencyHref(locale: Locale, pair: CurrencyPair | null = null): string {
   const base = `/${localePath(locale)}/${CURRENCY_SEGMENT}`;
   return pair ? `${base}/${pair}/` : `${base}/`;
+}
+
+/** The breeds channel: `/{locale}/breeds/` (hub) and `/{locale}/breeds/{dogs|cats}/{slug}/`. */
+export function breedsHref(locale: Locale, entry: BreedId | null = null): string {
+  const base = `/${localePath(locale)}/${BREEDS_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
 }
 
 /** The calendar channel: `/{locale}/calendar/` (hub), `/calendar/2027/`, `/calendar/2027-02/`, `/calendar/holidays/japan/`, … */

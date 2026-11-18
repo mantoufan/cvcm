@@ -1,12 +1,12 @@
 /**
  * Where the reference channels sit in the site's tree, for their breadcrumb trails (HTML and BreadcrumbList JSON-LD):
- * country profiles, food calories, the periodic table and emoji meanings belong to Data (`/datasets/`, whose hub links them); the
+ * country profiles, food calories, the periodic table, emoji meanings, exchange rates and dog and cat breeds belong to Data (`/datasets/`, whose hub links them); the
  * calendar belongs to Tools (the home page's tool wall lists it under Time). The URLs stay short and top-level.
  */
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { messages } from "./messages";
-import { appHref, caloriesHref, countriesHref, datasetHref, elementsHref, emojiHref, currencyHref } from "./path";
+import { appHref, breedsHref, caloriesHref, countriesHref, datasetHref, elementsHref, emojiHref, currencyHref } from "./path";
 
 const ORIGIN = "https://cv.cm";
 
@@ -17,6 +17,7 @@ export const DATA_REFERENCE = [
   { copy: "elements", nav: "elements", href: (locale: Locale): string => elementsHref(locale) },
   { copy: "emoji", nav: "emoji", href: (locale: Locale): string => emojiHref(locale) },
   { copy: "currency", nav: "currency", href: (locale: Locale): string => currencyHref(locale) },
+  { copy: "breeds", nav: "breeds", href: (locale: Locale): string => breedsHref(locale) },
 ] as const;
 
 /** The Tools step of a trail: the home page's tool wall. Shared by tool pages (main.ts) and the calendar. */
