@@ -1,5 +1,5 @@
 import { mustStay } from "./leave-guard";
-import { h } from "./dom";
+import { clear, h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
 import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, coverUrl } from "./covers";
@@ -1117,7 +1117,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
-      h("nav", { class: "nav", "aria-label": t("nav.tools") },
+      navRow(h("nav", { class: "nav", "aria-label": t("nav.tools") },
         navLink(`${appHref(loc, null)}#tools`, t("nav.tools"), toolsOn, "tools"),
         navLink(quizHref(loc), t("nav.tests"), testsOn, "tests"),
         navLink(rankingHref(loc), t("nav.rankings"), rankingsOn, "rankings"),
@@ -1128,7 +1128,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
-      ),
+      )),
       searchButton(),
       langSwitch(loc),
     ),
@@ -1147,6 +1147,81 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
     ),
   );
   return { page, ready };
+}
+
+/**
+ * The channel links on one row. Every link stays in the nav's markup (the prerendered HTML and crawlers see all of
+ * them); in the browser the ones that do not fit are hidden from the row and listed under a "More" button instead.
+ * The current channel stays on the row. Refitted whenever the header changes width.
+ */
+function navRow(nav: HTMLElement): HTMLElement {
+  const pop = h("div", { class: "nav-more-pop", hidden: true });
+  const button: HTMLButtonElement = h("button", {
+    type: "button",
+    class: "nav-more-btn",
+    "aria-haspopup": "true",
+    "aria-expanded": "false",
+    onClick: () => setOpen(button.getAttribute("aria-expanded") !== "true"),
+  }, t("nav.more"), h("span", { class: "nav-more-caret", "aria-hidden": "true" }, "▾"));
+  const more = h("div", { class: "nav-more", hidden: true }, button, pop);
+  const row = h("div", { class: "nav-row" }, nav, more);
+
+  const onDocClick = (event: MouseEvent): void => {
+    if (!more.contains(event.target as Node)) setOpen(false);
+  };
+  const onKey = (event: KeyboardEvent): void => {
+    if (event.key !== "Escape") return;
+    setOpen(false);
+    button.focus();
+  };
+  function setOpen(open: boolean): void {
+    if ((button.getAttribute("aria-expanded") === "true") === open) return;
+    button.setAttribute("aria-expanded", String(open));
+    pop.hidden = !open;
+    if (open) {
+      document.addEventListener("click", onDocClick, true);
+      document.addEventListener("keydown", onKey);
+    } else {
+      document.removeEventListener("click", onDocClick, true);
+      document.removeEventListener("keydown", onKey);
+    }
+  }
+  // A link in the menu navigates through the shared click handler; the menu closes either way (same-page #tools too).
+  pop.addEventListener("click", (event) => {
+    if ((event.target as Element).closest?.("a")) setOpen(false);
+  });
+
+  function fit(): void {
+    const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>(":scope > a"));
+    for (const a of links) a.hidden = false;
+    more.hidden = true;
+    // No layout (detached, or the build-time prerender): leave every link on the row.
+    if (nav.clientWidth === 0 || nav.scrollWidth <= nav.clientWidth + 1) {
+      setOpen(false);
+      clear(pop);
+      return;
+    }
+    more.hidden = false;
+    for (let i = links.length - 1; i >= 0 && nav.scrollWidth > nav.clientWidth + 1; i--) {
+      if (!links[i].classList.contains("on")) links[i].hidden = true;
+    }
+    clear(pop);
+    for (const a of links) {
+      if (!a.hidden) continue;
+      const copy = a.cloneNode(true) as HTMLAnchorElement;
+      copy.hidden = false;
+      pop.append(copy);
+    }
+    if (pop.childElementCount === 0) {
+      more.hidden = true;
+      setOpen(false);
+    }
+  }
+  if (typeof ResizeObserver === "function") {
+    // Watch the row, not the nav: hiding links changes the nav's own width.
+    new ResizeObserver(() => fit()).observe(row);
+  }
+  return row;
 }
 
 function navLink(href: string, label: string, on: boolean, nav: string): HTMLElement {
