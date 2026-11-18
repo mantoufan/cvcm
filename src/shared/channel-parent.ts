@@ -6,9 +6,21 @@
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { messages } from "./messages";
-import { appHref, datasetHref } from "./path";
+import { appHref, caloriesHref, countriesHref, datasetHref, elementsHref } from "./path";
 
 const ORIGIN = "https://cv.cm";
+
+/** The reference channels the Data hub lists under "Reference", in order; `copy` names their hub copy in the datasets pack. */
+export const DATA_REFERENCE = [
+  { copy: "countries", nav: "countries", href: (locale: Locale): string => countriesHref(locale) },
+  { copy: "calories", nav: "calories", href: (locale: Locale): string => caloriesHref(locale) },
+  { copy: "elements", nav: "elements", href: (locale: Locale): string => elementsHref(locale) },
+] as const;
+
+/** The Tools step of a trail: the home page's tool wall. Shared by tool pages (main.ts) and the calendar. */
+export function toolsCrumb(locale: Locale): { label: string; href: string; nav: "tools" } {
+  return { label: messages(locale).ui.nav.tools, href: `${appHref(locale, null)}#tools`, nav: "tools" };
+}
 
 /** "Data" as a breadcrumb link (HTML). */
 export function dataCrumbHtml(locale: Locale): string {
@@ -25,5 +37,6 @@ export function dataCrumbItem(locale: Locale): { name: string; item: string } {
  * (it is an anchor on the home page, not a page of its own), and so does the calendar.
  */
 export function toolsCrumbHtml(locale: Locale): string {
-  return `<a href="${escapeHtml(`${appHref(locale, null)}#tools`)}" data-nav="tools">${escapeHtml(messages(locale).ui.nav.tools)}</a>`;
+  const crumb = toolsCrumb(locale);
+  return `<a href="${escapeHtml(crumb.href)}" data-nav="${crumb.nav}">${escapeHtml(crumb.label)}</a>`;
 }

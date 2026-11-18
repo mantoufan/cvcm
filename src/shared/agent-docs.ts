@@ -18,7 +18,7 @@ import { LOCALES, localePath } from "./locale";
 import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
 import { MUSIC_BARS, MUSIC_STYLES, STYLE_PRESETS, SURPRISE_IDS } from "./music-gen";
 import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
-import { AI_TOOLS, CATEGORIES, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ToolId } from "./path";
+import { AI_TOOLS, CATEGORIES, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, categoryLinks, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
 
 const CATEGORY_TITLE: Record<CategoryId, string> = {
@@ -155,6 +155,13 @@ export function aiToolDetails(tool: ToolId) {
 export const AI_DETAIL_TOOLS = Object.keys(AI_DETAILS) as ToolId[];
 
 type ToolStrings = { name: string; blurb: string };
+
+/** An English core-pack string by dotted key ("nav.calendar"). */
+function lookupEn(key: string): string {
+  let node: unknown = en;
+  for (const part of key.split(".")) node = (node as Record<string, unknown> | undefined)?.[part];
+  return typeof node === "string" ? node : key;
+}
 const TOOL_STRINGS = en.tools as Record<string, ToolStrings>;
 
 export type AgentTool = {
@@ -228,6 +235,8 @@ export function buildLlmsTxt(): string {
         lines.push(`  - Model download: ${sizes.join("; ")}.`, `  - Options on the page: ${tool.ai.options}`);
       }
     }
+    // Channel pages listed with this category's tools (CATEGORY_LINKS), e.g. the calendar under Time.
+    for (const link of categoryLinks(category.id)) lines.push(`- [${lookupEn(link.nameKey)}](${SITE_ORIGIN}${link.href("en")}): ${lookupEn(link.blurbKey)}`);
     lines.push("");
   }
   lines.push(

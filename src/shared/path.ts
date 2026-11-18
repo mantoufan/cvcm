@@ -68,6 +68,19 @@ export const CATEGORIES = [
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
 
+/**
+ * Channel pages that readers look for among a category's tools, listed after its tools wherever categories are shown
+ * (home tool wall, footer directory, a tool page's related links, the Worker's text copy, llms.txt). Names and blurbs
+ * are core-pack keys. The calendar is a Time tool for readers, though its pages form a channel of their own.
+ */
+export const CATEGORY_LINKS: Partial<Record<CategoryId, readonly { nav: string; nameKey: string; blurbKey: string; href: (locale: Locale) => string }[]>> = {
+  time: [{ nav: "calendar", nameKey: "nav.calendar", blurbKey: "calendarBlurb", href: (locale) => calendarHref(locale) }],
+};
+
+export function categoryLinks(id: CategoryId): readonly { nav: string; nameKey: string; blurbKey: string; href: (locale: Locale) => string }[] {
+  return CATEGORY_LINKS[id] ?? [];
+}
+
 export const TOOLS = [
   "clip",
   "qr",

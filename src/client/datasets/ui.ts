@@ -2,7 +2,8 @@ import { h } from "../dom";
 import { linkList } from "../links";
 import { t } from "../i18n";
 import type { Locale } from "../../shared/locale";
-import { appHref, caloriesHref, countriesHref, datasetHref, elementsHref } from "../../shared/path";
+import { appHref, datasetHref } from "../../shared/path";
+import { DATA_REFERENCE } from "../../shared/channel-parent";
 import {
   DATASET_GROUPS,
   DATASET_SENSITIVE,
@@ -67,11 +68,7 @@ export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
     // the tables), food calories and the periodic table. Their breadcrumbs run Home / Data / … (channel-parent.ts).
     h("section", { class: "wall" },
       h("h2", null, hub.reference),
-      linkList([
-        { href: countriesHref(locale), name: hub.countries.title, blurb: hub.countries.text, nav: "countries" },
-        { href: caloriesHref(locale), name: hub.calories.title, blurb: hub.calories.text, nav: "calories" },
-        { href: elementsHref(locale), name: hub.elements.title, blurb: hub.elements.text, nav: "elements" },
-      ]),
+      linkList(DATA_REFERENCE.map((item) => ({ href: item.href(locale), name: hub[item.copy].title, blurb: hub[item.copy].text, nav: item.nav }))),
     ),
     h("section", { class: "wall quiz-hub" },
       ...DATASET_GROUPS.map((group) => h("div", { class: "group" }, h("h2", null, hub.groups[group.id]), setLinks(locale, group.sets))),

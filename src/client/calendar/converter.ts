@@ -1,6 +1,5 @@
 import type { Locale } from "../../shared/locale";
-import { calendarCopy, lunarText } from "../../shared/calendar-i18n";
-import { longDate } from "../../shared/calendar-page";
+import { calendarCopy, longDate, lunarText } from "../../shared/calendar-i18n";
 import { dayNumber, fromLunar, type LunarZone } from "../../shared/lunar";
 
 /** Wires the converter markup from `converterHtml` (calendar-page.ts): solar → lunar and lunar → solar, per reckoning. */

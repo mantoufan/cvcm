@@ -191,7 +191,11 @@ export function offsetLabel(locale: Locale): string {
 function fmt(locale: Locale, n: number, opts: Intl.DateTimeFormatOptions): string {
   return new Intl.DateTimeFormat(HREFLANG[locale], { timeZone: "UTC", ...opts }).format(new Date(n * 86400000));
 }
-const dateLong = (locale: Locale, n: number): string => fmt(locale, n, { year: "numeric", month: "long", day: "numeric", weekday: "long" });
+/** "Saturday, 6 February 2027" (UTC day number). */
+export function longDate(locale: Locale, n: number): string {
+  return fmt(locale, n, { year: "numeric", month: "long", day: "numeric", weekday: "long" });
+}
+const dateLong = longDate;
 const dateShort = (locale: Locale, n: number): string => fmt(locale, n, { month: "short", day: "numeric" });
 const weekdayLong = (locale: Locale, n: number): string => fmt(locale, n, { weekday: "long" });
 const monthLong = (locale: Locale, y: number, m: number): string => fmt(locale, dayNumber(y, m, 1), { month: "long" });

@@ -22,7 +22,8 @@ import {
 } from "./datasets";
 import type { Locale } from "./locale";
 import { datasetMessages, messages, type DatasetMessages } from "./messages";
-import { appHref, caloriesHref, countriesHref, datasetHref, elementsHref } from "./path";
+import { appHref, datasetHref } from "./path";
+import { DATA_REFERENCE } from "./channel-parent";
 
 export type DatasetHubCopy = DatasetMessages["hub"];
 export type DatasetUi = DatasetMessages["ui"];
@@ -428,11 +429,7 @@ export function datasetStaticHtml(locale: Locale, id: DatasetId | null): string 
       `<nav class="device-crumb">${home} <span aria-hidden="true">/</span> <span>${escapeHtml(hub.h1)}</span></nav>`,
       `<h1>${escapeHtml(hub.h1)}</h1>`,
       `<p class="lede">${escapeHtml(hub.lede)}</p>`,
-      `<h2>${escapeHtml(hub.reference)}</h2><ul>${[
-        [countriesHref(locale), hub.countries],
-        [caloriesHref(locale), hub.calories],
-        [elementsHref(locale), hub.elements],
-      ].map(([href, item]) => `<li><a href="${escapeHtml(href as string)}">${escapeHtml((item as { title: string }).title)}</a> ${escapeHtml((item as { text: string }).text)}</li>`).join("")}</ul>`,
+      `<h2>${escapeHtml(hub.reference)}</h2><ul>${DATA_REFERENCE.map((item) => `<li><a href="${escapeHtml(item.href(locale))}">${escapeHtml(hub[item.copy].title)}</a> ${escapeHtml(hub[item.copy].text)}</li>`).join("")}</ul>`,
       groups,
       hub.about.map((p) => `<p>${escapeHtml(p)}</p>`).join(""),
       faqHtml(locale, null),

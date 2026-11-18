@@ -39,7 +39,7 @@ import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHre
 
 export type FaqItem = { q: string; a: string };
 
-function lookup(locale: Locale, path: string): string {
+export function lookup(locale: Locale, path: string): string {
   const parts = path.split(".");
   let node: unknown = messages(locale).ui;
   for (const part of parts) {

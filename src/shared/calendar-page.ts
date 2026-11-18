@@ -22,7 +22,7 @@ import {
 } from "./lunar";
 import {
   calendarCopy, calendarFaqItems, calendarHeading, calendarLede, countryName, holidayDays, holidayName, holidayYears, holidaysByDay,
-  cycleLabel, isoWeek, longBreaks, lunarText, termOffset, type HolidayDay,
+  cycleLabel, isoWeek, longBreaks, longDate, termOffset, type HolidayDay,
 } from "./calendar-i18n";
 
 const lang = (locale: Locale): string => HREFLANG[locale];
@@ -31,9 +31,6 @@ function fmt(locale: Locale, n: number, opts: Intl.DateTimeFormatOptions): strin
   return new Intl.DateTimeFormat(lang(locale), { timeZone: "UTC", ...opts }).format(new Date(n * 86400000));
 }
 
-export function longDate(locale: Locale, n: number): string {
-  return fmt(locale, n, { year: "numeric", month: "long", day: "numeric", weekday: "long" });
-}
 function shortDate(locale: Locale, n: number): string {
   return fmt(locale, n, { month: "short", day: "numeric" });
 }
@@ -296,32 +293,10 @@ function hubHtml(locale: Locale): string {
       { href: calendarHref(locale, "solar-terms"), name: calendarHeading(locale, "solar-terms"), nav: "calendar-solar-terms" },
       { href: calendarHref(locale, "moon-phases"), name: calendarHeading(locale, "moon-phases"), nav: "calendar-moon-phases" },
     ])}</section>`,
-    `<section class="wall"><h2>${escapeHtml(c.hub.converter)}</h2>${linkListHtml([{ href: appHref(locale, "lunar-converter"), name: messages(locale).ui.tools["lunar-converter"].name, blurb: messages(locale).ui.tools["lunar-converter"].blurb, nav: "lunar-converter" }])}</section>`,
+    `<section class="wall" id="convert"><h2>${escapeHtml(c.hub.converter)}</h2>${linkListHtml([{ href: appHref(locale, "lunar-converter"), name: messages(locale).ui.tools["lunar-converter"].name, blurb: messages(locale).ui.tools["lunar-converter"].blurb, nav: "lunar-converter" }])}</section>`,
     `<section class="kb-about">${c.hub.about.map((p) => `<p>${inline(p)}</p>`).join("")}</section>`,
     faqHtml(locale, "hub"),
   ].join("");
-}
-
-/**
- * The solar ↔ lunar converter (the /lunar-converter/ tool), wired by src/client/calendar/converter.ts. The sample
- * (Lunar New Year 2027) is fixed, so the prerendered page and the mounted one match.
- */
-export function converterHtml(locale: Locale): string {
-  calendarCopy(locale);
-  const c = calendarMessages(locale);
-  const cfg = CALENDAR_LOCALE[locale];
-  const sample = dayNumber(2027, 2, 6);
-  const reck = (["cn", "vn", "kr"] as const).map((z) => `<option value="${z}"${z === cfg.zone ? " selected" : ""}>${escapeHtml((c.ui.reckonings as Record<string, string>)[z])}</option>`).join("");
-  return `<section class="wall cal-convert" id="convert">`
-    + `<div class="row"><label>${escapeHtml(c.ui.reckoning)} <select data-in="zone">${reck}</select></label></div>`
-    + `<h3>${escapeHtml(c.ui.toLunar)}</h3><div class="row"><label>${escapeHtml(c.ui.solarDate)} <input type="date" data-in="solar" value="2027-02-06" min="1900-02-01" max="2100-12-31" data-fixed-date=""></label></div>`
-    + `<p class="cal-out" data-out="lunar-result">${escapeHtml(lunarText(locale, sample, cfg.zone))}</p>`
-    + `<h3>${escapeHtml(c.ui.toSolar)}</h3><div class="row">`
-    + `<label>${escapeHtml(c.ui.lunarYear)} <input type="number" data-in="ly" value="2027" min="1900" max="2100" inputmode="numeric"></label>`
-    + `<label>${escapeHtml(c.ui.lunarMonth)} <input type="number" data-in="lm" value="1" min="1" max="12" inputmode="numeric"></label>`
-    + `<label>${escapeHtml(c.ui.lunarDay)} <input type="number" data-in="ld" value="1" min="1" max="30" inputmode="numeric"></label>`
-    + `<label class="check"><input type="checkbox" data-in="leap"> ${escapeHtml(c.ui.leap)}</label></div>`
-    + `<p class="cal-out" data-out="solar-result">${escapeHtml(longDate(locale, sample))}</p></section>`;
 }
 
 function yearHtml(locale: Locale, year: number): string {
@@ -432,3 +407,6 @@ export function calendarPageHtml(locale: Locale, page: CalendarPage): string {
   }
 }
 
+
+// Kept for modules that took the date formatter from here.
+export { longDate };

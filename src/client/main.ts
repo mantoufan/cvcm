@@ -36,6 +36,7 @@ import {
   calendarHref,
   toolJob,
   withSearch,
+  categoryLinks,
   type ConvertJobId,
   type LegalPageId,
   type ResizeJobId,
@@ -54,6 +55,7 @@ import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
 import { SLANG_FOCUS, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
 import { memeImagePath } from "../shared/meme-images";
 import { IDEAS_FOCUS, isIdeaId, type IdeaId, type IdeaPage } from "../shared/ideas";
+import { toolsCrumb } from "../shared/channel-parent";
 import { NOSTALGIA_FOCUS, isNostalgiaId, type NostalgiaId, type NostalgiaPage } from "../shared/nostalgia";
 import { COUNTRIES_FOCUS, countryCode, isCountrySlug, type CountryPage } from "../shared/countries";
 import { regionName } from "../shared/datasets-i18n";
@@ -1161,6 +1163,7 @@ function toolDirectory(loc: Locale): HTMLElement {
           ...cat.tools.map((id) =>
             h("a", { href: appHref(loc, id), "data-nav": id, "aria-current": tool === id ? "page" : undefined }, t(`tools.${id}.name`)),
           ),
+          ...categoryLinks(cat.id).map((x) => h("a", { href: x.href(loc), "data-nav": x.nav }, t(x.nameKey))),
         ),
       ),
     ),
@@ -1309,7 +1312,7 @@ function toolDirectory(loc: Locale): HTMLElement {
 function toolCrumb(loc: Locale, id: ToolId, clip: string | null): HTMLElement {
   return crumbNav([
     homeCrumb(loc),
-    { label: t("nav.tools"), href: `${appHref(loc, null)}#tools`, nav: "tools" },
+    toolsCrumb(loc),
     id === "clip" && clip
       ? { label: t(`tools.${id}.name`), href: appHref(loc, id), nav: id }
       : { label: t(`tools.${id}.name`) },

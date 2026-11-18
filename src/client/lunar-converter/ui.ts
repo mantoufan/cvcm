@@ -2,7 +2,7 @@ import { h } from "../dom";
 import { locale as currentLocale, t } from "../i18n";
 import { calendarHref } from "../../shared/path";
 import { CALENDAR_YEARS } from "../../shared/calendar";
-import { converterHtml } from "../../shared/calendar-page";
+import { converterHtml } from "../../shared/lunar-converter-page";
 import { wireConverter } from "../calendar/converter";
 
 /**
