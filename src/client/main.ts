@@ -1159,7 +1159,6 @@ function navRow(nav: HTMLElement): HTMLElement {
   const button: HTMLButtonElement = h("button", {
     type: "button",
     class: "nav-more-btn",
-    "aria-haspopup": "true",
     "aria-expanded": "false",
     onClick: () => setOpen(button.getAttribute("aria-expanded") !== "true"),
   }, t("nav.more"), h("span", { class: "nav-more-caret", "aria-hidden": "true" }, "▾"));
