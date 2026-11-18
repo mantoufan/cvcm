@@ -16,6 +16,7 @@ import {
   SCRIPTS_LICENSE_URL,
   isGenerator,
   isIdeasList,
+  isPlay,
   scriptCopy,
   scriptMeta,
   scriptName,
@@ -125,8 +126,8 @@ function promptsHtml(locale: Locale, copy: ScriptPlayCopy): string {
   ].join("");
   return `<section class="kb-section script-prompts" id="script-prompts"><h2>${escapeHtml(ui.prompts)}</h2><p>${escapeHtml(ui.promptsLede)}</p>`
     + `<ol class="script-prompt-list">${items}</ol>`
-    + `<p class="script-actions"><a class="btn" href="${escapeHtml(image)}" data-nav="tool-ai-image-generator">${escapeHtml(ui.drawFrame)}</a> `
-    + `<a class="btn ghost" href="${escapeHtml(appHref(locale, "v"))}" data-nav="tool-v">${escapeHtml(ui.animate)}</a></p></section>`;
+    + `<p class="script-actions"><a class="btn" href="${escapeHtml(image)}" data-nav="ai-image-generator" rel="nofollow">${escapeHtml(ui.drawFrame)}</a> `
+    + `<a class="btn ghost" href="${escapeHtml(appHref(locale, "v"))}" data-nav="v">${escapeHtml(ui.animate)}</a></p></section>`;
 }
 
 function licenseHtml(locale: Locale): string {
@@ -178,7 +179,7 @@ function playHtml(locale: Locale, copy: ScriptPlayCopy): string {
       + `<p class="muted"><strong>${escapeHtml(ui.setting)}:</strong> ${inline(copy.setting)}</p></section>`,
     toc,
     `<section class="kb-section" id="script-roles"><h2>${escapeHtml(ui.roles)}</h2><div class="kb-table"><table><tbody>${roles}</tbody></table></div></section>`,
-    `<section class="kb-section" id="script-text"><h2>${escapeHtml(ui.script)} ${copyButton("script-body", ui.copyScript)}</h2>`
+    `<section class="kb-section" id="script-text"><h2>${escapeHtml(ui.script)}</h2><p>${copyButton("script-body", ui.copyScript)}</p>`
       + `<div class="script-body" id="script-body" lang="${HREFLANG[locale]}">${copy.script.map((l) => lineHtml(locale, l)).join("")}</div></section>`,
     licenseHtml(locale),
     sectionsHtml(copy.sections, 1),
@@ -255,7 +256,7 @@ export function scriptsPageHtml(locale: Locale, id: ScriptId | null): string {
   if (!id) return hubHtml(locale);
   const ui = scriptsUi(locale);
   const copy = scriptCopy(locale, id);
-  const body = isGenerator(copy) ? generatorHtml(locale, copy) : isIdeasList(copy) ? ideasHtml(locale, copy) : playHtml(locale, copy as ScriptPlayCopy);
+  const body = isGenerator(copy) ? generatorHtml(locale, copy) : isIdeasList(copy) ? ideasHtml(locale, copy) : isPlay(copy) ? playHtml(locale, copy) : "";
   return [
     crumbHtml(locale, id),
     `<article class="kb script">`,

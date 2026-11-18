@@ -203,7 +203,8 @@ export function scriptsArticleJsonLd(locale: Locale, id: ScriptId | null): Recor
       },
     };
   }
-  const play = copy as ScriptPlayCopy;
+  if (!isPlay(copy)) return base;
+  const play = copy;
   const meta = scriptMeta(locale, id);
   const genres = ui.genres as Record<string, string>;
   return {
