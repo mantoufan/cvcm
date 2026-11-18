@@ -1,0 +1,71 @@
+{
+  "crumbHome": "Inicio",
+  "names": { "CNY": "yuan chino", "THB": "baht tailandés" },
+  "titles": {
+    "usd-mxn": "Dólar a peso mexicano: tipo de cambio hoy (USD/MXN), historial y conversor",
+    "eur-mxn": "Euro a peso mexicano: tipo de cambio hoy (EUR/MXN), historial y conversor"
+  },
+  "notice": "Tipos de referencia del BCE, publicados hacia las 16:00 CET en días hábiles: solo informativos, no son una cotización para operar ni asesoramiento de inversión.",
+  "hub": {
+    "title": "Tipo de cambio hoy: conversor de divisas e historial (tipos de referencia del BCE)",
+    "h1": "Tipos de cambio",
+    "lede": "Convierte entre {n} divisas con los tipos de referencia del Banco Central Europeo del {date}, o abre un par de divisas para ver su tabla de conversión, máximo, mínimo, promedio e historial.",
+    "description": "Conversor de {n} divisas con los tipos de referencia del BCE del {date}, y {pairs} pares de divisas con tablas de conversión, máximo, mínimo, promedio y gráficos de su historial.",
+    "converterTitle": "Conversor de divisas",
+    "amount": "Cantidad",
+    "from": "De",
+    "to": "A",
+    "swap": "Invertir",
+    "invalid": "Escribe una cantidad, por ejemplo 100.",
+    "pairsTitle": "Pares de divisas",
+    "pairsFrom": "Desde {name} ({code})",
+    "tableTitle": "Tipos de referencia del BCE del {date}",
+    "colCurrency": "Divisa",
+    "colPerEur": "Por 1 EUR",
+    "colPerUsd": "Por 1 USD",
+    "missing": "El BCE no publica tipo de referencia para muchas divisas, entre ellas el nuevo dólar taiwanés (TWD) y el dong vietnamita (VND), por eso no aparecen.",
+    "faq": [
+      { "q": "¿De dónde salen estos tipos de cambio?", "a": "De los tipos de cambio de referencia del euro que publica el Banco Central Europeo (BCE). El BCE publica cada divisa frente al euro; el tipo entre otras dos divisas se calcula a través del euro." },
+      { "q": "¿Cuándo se actualizan?", "a": "El BCE publica sus tipos de referencia hacia las 16:00 CET en días hábiles. Este sitio guarda una copia al día, así que no son cotizaciones en tiempo real; la copia actual es del {date}." },
+      { "q": "¿Por qué no están el dólar taiwanés ni el dong vietnamita?", "a": "El BCE no publica tipo de referencia para ellos, y este sitio no toma tipos de otras fuentes ni los estima." }
+    ]
+  },
+  "page": {
+    "title": "{fromNameCap} a {toName}: tipo de cambio {fromCode}/{toCode} hoy, historial y conversor",
+    "h1": "{fromNameCap} a {toName} ({fromCode}/{toCode})",
+    "description": "1 {fromCode} = {rate} {toCode} (tipo de referencia del BCE, {date}). Tabla de conversión, conversor, máximo, mínimo y promedio en 30 días, 1 año, 5 años y desde {startYear}, y gráfico del historial.",
+    "answer": "El {date}, según los tipos de referencia del BCE, 1 {fromCode} ({fromName}) = {rate} {toCode} ({toName}), y 1 {toCode} = {inverse} {fromCode}.",
+    "converterTitle": "Conversor de {fromCode} y {toCode}",
+    "tableTitle": "{fromCode} a {toCode}",
+    "tableBackTitle": "{toCode} a {fromCode}",
+    "tablesTitle": "Tablas de conversión",
+    "statsTitle": "Máximo, mínimo y promedio",
+    "period": "Periodo",
+    "high": "Máximo",
+    "low": "Mínimo",
+    "average": "Promedio",
+    "change": "Variación",
+    "d30": "30 días",
+    "y1": "1 año",
+    "y5": "5 años",
+    "all": "Desde {year}",
+    "statsNote": "Tipos de referencia diarios del BCE del {from} al {date}; la variación compara el primer y el último día de cada periodo.",
+    "chartTitle": "Historial de {fromCode}/{toCode}",
+    "chartMonthly": "Promedio mensual desde {start}",
+    "chartDaily": "Diario, últimos 90 días",
+    "chartLabel": "Gráfico de líneas de {fromCode}/{toCode}: {first} el {firstDate}, {last} el {lastDate}, máximo {high}, mínimo {low}.",
+    "method": "El BCE publica cada divisa por euro, así que {fromCode}/{toCode} = ({toCode} por EUR) ÷ ({fromCode} por EUR), con seis cifras significativas.",
+    "reverse": "Al revés: {toCode} a {fromCode}",
+    "related": "Otros pares de divisas",
+    "faqTitle": "Preguntas",
+    "faqToday": { "q": "¿Cuál es el tipo de cambio de {fromCode} a {toCode} hoy?", "a": "El {date}, según los tipos de referencia del euro del BCE, 1 {fromCode} = {rate} {toCode} y 1 {toCode} = {inverse} {fromCode}. Los bancos y casas de cambio aplican sus propios tipos." },
+    "faqAmount": { "q": "¿Cuánto son {amount} {fromCode} en {toCode}?", "a": "Con el tipo de referencia del BCE del {date}, {amount} {fromCode} = {value} {toCode}. Las tablas de conversión muestran más cantidades en ambos sentidos." },
+    "faqRange": { "q": "¿Cuál ha sido el tipo {fromCode}/{toCode} más alto?", "a": "En el año hasta el {date}, el {fromCode}/{toCode} osciló entre {y1Low} ({y1LowOn}) y {y1High} ({y1HighOn}), con un promedio de {y1Avg}. Desde el {start}, el máximo fue {allHigh} el {allHighOn} y el mínimo {allLow} el {allLowOn}." }
+  },
+  "sources": {
+    "title": "Fuente",
+    "ecb": "Banco Central Europeo: tipos de cambio de referencia del euro",
+    "license": "El BCE permite reutilizar sus tipos de referencia citando la fuente.",
+    "snapshot": "Copia del {date}. Estas páginas nunca consultan al BCE; la copia se actualiza una vez al día."
+  }
+}

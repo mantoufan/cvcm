@@ -3,6 +3,7 @@ import { t } from "../i18n";
 import { linkList } from "../links";
 import type { Locale } from "../../shared/locale";
 import { appHref, datasetHref, rankingHref } from "../../shared/path";
+import { currencyHref } from "../../shared/path";
 import { datasetMessages } from "../../shared/messages";
 import { fill } from "../../shared/datasets-i18n";
 import { RANKING_GROUPS, RANKING_SOURCE, RANKING_TOOLS, rankingCsvHref, rankingGroupOf, rankingMeta, type RankingId } from "../../shared/rankings";
@@ -112,6 +113,8 @@ export async function mountRanking(host: HTMLElement, locale: Locale, id: Rankin
     ),
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
     faq(locale, id),
+    // The exchange-rate channel has the pairs, tables and history behind these ECB rates.
+    ...(id === "currency-strength" ? [h("p", { class: "more" }, h("a", { href: currencyHref(locale), "data-nav": "currency" }, t("nav.currency")))] : []),
     h("section", { class: "wall" }, h("h2", null, ui.related), setLinks(locale, related)),
     ...(RANKING_TOOLS[id]?.length
       ? [h("section", { class: "wall" },

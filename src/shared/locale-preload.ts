@@ -12,7 +12,7 @@ const LOCALE_PACKS: Record<string, string[]> = typeof __LOCALE_PACKS__ === "unde
  * `kb` "hub", "code", "ai", "photo" or the article id, `ref`, `slang`, `idea`, `nostalgia`, `summaries` and `scripts` "hub" or the entry id; `copy` the key of the page's copy bucket) in
  * parallel with the entry script instead of after it runs.
  */
-export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz: QuizPage | false = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, copy: string | null = null, idea: string | null = null, nostalgia: string | null = null, countries: string | null = null, calories = false, elements = false, calendar = false, summaries: string | null = null, scripts: string | null = null, emoji = false): string {
+export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz: QuizPage | false = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, copy: string | null = null, idea: string | null = null, nostalgia: string | null = null, countries: string | null = null, calories = false, elements = false, calendar = false, summaries: string | null = null, scripts: string | null = null, emoji = false, currency = false): string {
   const files = [...new Set([
     ...(packs[locale] ?? []),
     // The page's own copy bucket (`copyChunkKey`: a tool's FAQ and how-to, or a tutorial's text) and the locale's loader table.
@@ -45,6 +45,8 @@ export function preloadLocalePack(html: string, locale: Locale, game = false, pa
     ...(calendar ? packs[`calendar-${locale}`] ?? [] : []),
     // One emoji pack per locale (copy, CLDR names, usage sentences and the emoji-test rows) serves the hub and every emoji.
     ...(emoji ? packs[`emoji-${locale}`] ?? [] : []),
+    // One currency pack per locale (copy and the ECB snapshot chunk it imports) serves the hub and every pair.
+    ...(currency ? packs[`currency-${locale}`] ?? [] : []),
   ])];
   if (!files.length) return html;
   const links = files.map((href) => `<link rel="modulepreload" crossorigin href="${href}">`).join("\n  ");

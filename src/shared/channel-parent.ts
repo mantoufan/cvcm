@@ -6,7 +6,7 @@
 import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { messages } from "./messages";
-import { appHref, caloriesHref, countriesHref, datasetHref, elementsHref, emojiHref } from "./path";
+import { appHref, caloriesHref, countriesHref, datasetHref, elementsHref, emojiHref, currencyHref } from "./path";
 
 const ORIGIN = "https://cv.cm";
 
@@ -16,6 +16,7 @@ export const DATA_REFERENCE = [
   { copy: "calories", nav: "calories", href: (locale: Locale): string => caloriesHref(locale) },
   { copy: "elements", nav: "elements", href: (locale: Locale): string => elementsHref(locale) },
   { copy: "emoji", nav: "emoji", href: (locale: Locale): string => emojiHref(locale) },
+  { copy: "currency", nav: "currency", href: (locale: Locale): string => currencyHref(locale) },
 ] as const;
 
 /** The Tools step of a trail: the home page's tool wall. Shared by tool pages (main.ts) and the calendar. */

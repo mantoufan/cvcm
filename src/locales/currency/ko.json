@@ -1,0 +1,73 @@
+{
+  "crumbHome": "홈",
+  "names": { "KRW": "원", "JPY": "엔화", "CNY": "위안화" },
+  "titles": {
+    "usd-krw": "달러 환율 (USD/KRW): 오늘의 원/달러 환율, 과거 추이와 환율 계산기",
+    "eur-krw": "유로 환율 (EUR/KRW): 오늘의 원/유로 환율, 과거 추이와 환율 계산기",
+    "jpy-krw": "엔화 환율 (JPY/KRW): 오늘의 원/엔 환율, 100엔 환산과 과거 추이",
+    "cny-krw": "위안화 환율 (CNY/KRW): 오늘의 원/위안 환율, 과거 추이와 환율 계산기"
+  },
+  "notice": "유럽중앙은행(ECB) 기준환율로, 영업일 중앙유럽시간 16:00 무렵 발표됩니다. 참고용이며 거래 호가가 아니고, 투자 조언도 아닙니다.",
+  "hub": {
+    "title": "오늘 환율 조회: 환율 계산기와 과거 환율 (ECB 기준환율)",
+    "h1": "환율",
+    "lede": "유럽중앙은행의 {date} 기준환율로 {n}개 통화를 환산하거나, 통화쌍을 열어 환산표, 최고·최저·평균 환율과 과거 추이를 확인하세요.",
+    "description": "{n}개 통화 환율 계산기(ECB {date} 기준환율)와 {pairs}개 통화쌍의 환산표, 최고·최저·평균 환율, 과거 추이 차트.",
+    "converterTitle": "환율 계산기",
+    "amount": "금액",
+    "from": "보유 통화",
+    "to": "바꿀 통화",
+    "swap": "바꾸기",
+    "invalid": "금액을 입력하세요. 예: 100",
+    "pairsTitle": "통화쌍",
+    "pairsFrom": "{name}({code}) 기준",
+    "tableTitle": "ECB 기준환율 ({date})",
+    "colCurrency": "통화",
+    "colPerEur": "1유로당",
+    "colPerUsd": "1달러당",
+    "missing": "ECB는 많은 통화의 기준환율을 발표하지 않으며, 신대만달러(TWD)와 베트남 동(VND)도 그중 하나라서 여기에 없습니다.",
+    "faq": [
+      { "q": "이 환율은 어디서 나온 건가요?", "a": "유럽중앙은행(ECB)의 유로 외환 기준환율입니다. ECB는 각 통화의 유로 대비 환율을 발표하며, 유로가 아닌 두 통화 사이의 환율은 유로를 거쳐 계산합니다." },
+      { "q": "환율은 언제 업데이트되나요?", "a": "ECB는 영업일 중앙유럽시간 16:00 무렵 기준환율을 발표합니다. 이 사이트는 하루에 한 번 스냅숏을 저장하므로 실시간 시세가 아닙니다. 현재 스냅숏은 {date} 자료입니다." },
+      { "q": "대만 달러와 베트남 동은 왜 없나요?", "a": "ECB가 이 통화들의 기준환율을 발표하지 않기 때문입니다. 이 사이트는 다른 출처에서 가져오거나 추정하지 않습니다." }
+    ]
+  },
+  "page": {
+    "title": "{fromName}/{toName} 환율 ({fromCode}/{toCode}): 오늘 환율, 과거 추이와 환율 계산기",
+    "h1": "{fromName}/{toName} 환율 ({fromCode}/{toCode})",
+    "description": "1 {fromCode} = {rate} {toCode} (ECB 기준환율, {date}). 환산표, 환율 계산기, 30일·1년·5년·{startYear}년 이후 최고·최저·평균 환율과 과거 추이 차트.",
+    "answer": "{date} ECB 기준환율로 1 {fromName}({fromCode}) = {rate} {toName}({toCode}), 1 {toCode} = {inverse} {fromCode}입니다.",
+    "converterTitle": "{fromCode}·{toCode} 환율 계산기",
+    "tableTitle": "{fromCode} → {toCode}",
+    "tableBackTitle": "{toCode} → {fromCode}",
+    "tablesTitle": "환산표",
+    "statsTitle": "최고·최저·평균",
+    "period": "기간",
+    "high": "최고",
+    "low": "최저",
+    "average": "평균",
+    "change": "변동률",
+    "d30": "30일",
+    "y1": "1년",
+    "y5": "5년",
+    "all": "{year}년 이후",
+    "statsNote": "{from}부터 {date}까지 ECB 일별 기준환율 기준이며, 변동률은 각 기간의 첫날과 마지막 날을 비교한 값입니다.",
+    "chartTitle": "{fromCode}/{toCode} 과거 추이",
+    "chartMonthly": "{start} 이후 월평균",
+    "chartDaily": "최근 90일 일별",
+    "chartLabel": "{fromCode}/{toCode} 꺾은선 차트: {firstDate} {first}, {lastDate} {last}, 최고 {high}, 최저 {low}.",
+    "method": "ECB는 모든 통화를 1유로당 금액으로 발표하므로 {fromCode}/{toCode} = (1유로당 {toCode}) ÷ (1유로당 {fromCode})로 계산하고, 유효숫자 6자리로 표시합니다.",
+    "reverse": "반대로: {toCode} → {fromCode}",
+    "related": "다른 통화쌍",
+    "faqTitle": "자주 묻는 질문",
+    "faqToday": { "q": "오늘 {fromCode}/{toCode} 환율은 얼마인가요?", "a": "{date} ECB 유로 기준환율로 1 {fromCode} = {rate} {toCode}, 1 {toCode} = {inverse} {fromCode}입니다. 은행과 환전소는 각자 고시하는 환율을 적용합니다." },
+    "faqAmount": { "q": "{amount} {fromCode}는 몇 {toCode}인가요?", "a": "{date} ECB 기준환율로 {amount} {fromCode} = {value} {toCode}입니다. 환산표에 양방향의 다른 금액도 있습니다." },
+    "faqRange": { "q": "{fromCode}/{toCode} 최고 환율은 얼마였나요?", "a": "{date}까지 1년 동안 {fromCode}/{toCode}는 {y1Low}({y1LowOn})에서 {y1High}({y1HighOn}) 사이였고 평균은 {y1Avg}였습니다. {start} 이후 최고는 {allHigh}({allHighOn}), 최저는 {allLow}({allLowOn})입니다." }
+  },
+  "sources": {
+    "title": "출처",
+    "ecb": "유럽중앙은행: 유로 외환 기준환율",
+    "license": "ECB는 출처를 밝히면 기준환율의 재사용을 허용합니다.",
+    "snapshot": "{date} 스냅숏. 이 페이지들은 ECB를 호출하지 않으며, 스냅숏은 하루 한 번 갱신됩니다."
+  }
+}

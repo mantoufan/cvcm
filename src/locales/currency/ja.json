@@ -1,0 +1,71 @@
+{
+  "crumbHome": "ホーム",
+  "names": { "JPY": "円", "CNY": "人民元", "IDR": "インドネシアルピア", "MXN": "メキシコペソ", "SGD": "シンガポールドル", "AUD": "豪ドル", "CAD": "カナダドル", "CHF": "スイスフラン", "INR": "インドルピー", "THB": "タイバーツ", "MYR": "マレーシアリンギット", "PHP": "フィリピンペソ", "NZD": "ニュージーランドドル", "ZAR": "南アフリカランド", "SEK": "スウェーデンクローナ", "NOK": "ノルウェークローネ", "DKK": "デンマーククローネ", "PLN": "ポーランドズウォティ", "CZK": "チェココルナ", "HUF": "ハンガリーフォリント", "RON": "ルーマニアレウ", "ISK": "アイスランドクローナ", "TRY": "トルコリラ", "BRL": "ブラジルレアル" },
+  "titles": {
+    "usd-jpy": "ドル円（USD/JPY）の為替レート：今日の米ドル/円・過去の推移と換算",
+    "eur-jpy": "ユーロ円（EUR/JPY）の為替レート：今日のユーロ/円・過去の推移と換算"
+  },
+  "notice": "欧州中央銀行（ECB）の参照レートで、営業日の中央ヨーロッパ時間 16:00 ごろに公表されます。参考情報であり、取引のための気配値ではありません。投資助言でもありません。",
+  "hub": {
+    "title": "為替レート一覧：今日の為替と通貨換算・過去の推移（ECB参照レート）",
+    "h1": "為替レート",
+    "lede": "欧州中央銀行の {date} の参照レートで {n} 通貨を換算できます。通貨ペアを開くと、換算表、高値・安値・平均、過去の推移を確認できます。",
+    "description": "{n} 通貨の為替換算ツール（ECB の {date} の参照レート）と、{pairs} の通貨ペアの換算表、高値・安値・平均、過去の推移チャート。",
+    "converterTitle": "通貨換算",
+    "amount": "金額",
+    "from": "換算元",
+    "to": "換算先",
+    "swap": "入れ替え",
+    "invalid": "金額を入力してください（例：100）。",
+    "pairsTitle": "通貨ペア",
+    "pairsFrom": "{name}（{code}）から",
+    "tableTitle": "ECB 参照レート（{date}）",
+    "colCurrency": "通貨",
+    "colPerEur": "1 ユーロあたり",
+    "colPerUsd": "1 米ドルあたり",
+    "missing": "ECB は多くの通貨について参照レートを公表していません。新台湾ドル（TWD）やベトナムドン（VND）もその一つなので、ここには載せていません。",
+    "faq": [
+      { "q": "この為替レートの出典は？", "a": "欧州中央銀行（ECB）のユーロ外国為替参照レートです。ECB は各通貨の対ユーロレートを公表しており、ユーロ以外の 2 通貨間のレートはユーロを介して計算しています。" },
+      { "q": "レートはいつ更新されますか？", "a": "ECB は営業日の中央ヨーロッパ時間 16:00 ごろに参照レートを公表します。このサイトは 1 日 1 回スナップショットを保存するため、リアルタイムの気配値ではありません。現在のスナップショットは {date} のものです。" },
+      { "q": "新台湾ドルやベトナムドンがないのはなぜですか？", "a": "ECB がこれらの参照レートを公表していないためです。このサイトでは他の情報源から取得したり推計したりはしていません。" }
+    ]
+  },
+  "page": {
+    "title": "{fromName}/{toName}の為替レート（{fromCode}/{toCode}）：今日のレート・過去の推移と換算",
+    "h1": "{fromName}/{toName}（{fromCode}/{toCode}）の為替レート",
+    "description": "1 {fromCode} = {rate} {toCode}（ECB 参照レート、{date}）。換算表、換算ツール、30 日・1 年・5 年・{startYear} 年以降の高値・安値・平均と、過去の推移チャート。",
+    "answer": "{date} の ECB 参照レートでは、1 {fromName}（{fromCode}）= {rate} {toName}（{toCode}）、1 {toCode} = {inverse} {fromCode} です。",
+    "converterTitle": "{fromCode} と {toCode} の換算",
+    "tableTitle": "{fromCode} → {toCode}",
+    "tableBackTitle": "{toCode} → {fromCode}",
+    "tablesTitle": "換算表",
+    "statsTitle": "高値・安値・平均",
+    "period": "期間",
+    "high": "高値",
+    "low": "安値",
+    "average": "平均",
+    "change": "変化率",
+    "d30": "30 日",
+    "y1": "1 年",
+    "y5": "5 年",
+    "all": "{year} 年以降",
+    "statsNote": "{from} から {date} までの ECB の毎日の参照レートによる値です。変化率は各期間の初日と最終日を比べたものです。",
+    "chartTitle": "{fromCode}/{toCode} の推移",
+    "chartMonthly": "{start}以降の月平均",
+    "chartDaily": "直近 90 日の日次",
+    "chartLabel": "{fromCode}/{toCode} の折れ線グラフ：{firstDate} は {first}、{lastDate} は {last}、高値 {high}、安値 {low}。",
+    "method": "ECB はすべての通貨を 1 ユーロあたりで公表しているため、{fromCode}/{toCode} =（1 ユーロあたりの {toCode}）÷（1 ユーロあたりの {fromCode}）とし、有効数字 6 桁で表示しています。",
+    "reverse": "逆方向：{toCode} → {fromCode}",
+    "related": "ほかの通貨ペア",
+    "faqTitle": "よくある質問",
+    "faqToday": { "q": "今日の {fromCode}/{toCode} のレートは？", "a": "{date} の ECB ユーロ参照レートでは、1 {fromCode} = {rate} {toCode}、1 {toCode} = {inverse} {fromCode} です。銀行や両替業者はそれぞれ独自のレートを提示します。" },
+    "faqAmount": { "q": "{amount} {fromCode} は何 {toCode}？", "a": "{date} の ECB 参照レートで、{amount} {fromCode} = {value} {toCode} です。換算表に両方向のほかの金額も載せています。" },
+    "faqRange": { "q": "{fromCode}/{toCode} の最高値はいくら？", "a": "{date} までの 1 年間、{fromCode}/{toCode} は {y1Low}（{y1LowOn}）から {y1High}（{y1HighOn}）の範囲で、平均は {y1Avg} でした。{start} 以降の高値は {allHigh}（{allHighOn}）、安値は {allLow}（{allLowOn}）です。" }
+  },
+  "sources": {
+    "title": "出典",
+    "ecb": "欧州中央銀行：ユーロ外国為替参照レート",
+    "license": "ECB は出典を明記すれば参照レートの再利用を認めています。",
+    "snapshot": "{date} のスナップショット。これらのページは ECB を呼び出さず、スナップショットは 1 日 1 回更新されます。"
+  }
+}

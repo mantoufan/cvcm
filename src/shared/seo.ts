@@ -32,6 +32,9 @@ import { elementsDescription, elementsTitle } from "./elements-i18n";
 import type { ElementSlug } from "./elements";
 import { emojiDescription, emojiTitle } from "./emoji-i18n";
 import type { EmojiSlug } from "./emoji";
+import { currencyDescription, currencyTitle } from "./currency-i18n";
+import type { CurrencyPair } from "./currency";
+import { currencyHref } from "./path";
 import { calendarDescription, calendarTitle } from "./calendar-i18n";
 import type { CalendarPage } from "./calendar";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
@@ -114,6 +117,9 @@ export type SeoInput = {
   /** The calendar channel under /calendar/; `calendarPage` "hub" is the hub. */
   calendar?: boolean;
   calendarPage?: CalendarPage;
+  /** The exchange-rate channel under /currency/; `currencyPair` null is the hub. */
+  currency?: boolean;
+  currencyPair?: CurrencyPair | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -879,6 +885,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   if (seo.nostalgia) return nostalgiaTitle(locale, seo.nostalgiaId ?? null);
   if (seo.summaries) return summariesTitle(locale, seo.summaryId ?? null);
   if (seo.scripts) return scriptsTitle(locale, seo.scriptId ?? null);
+  if (seo.currency) return currencyTitle(locale, seo.currencyPair ?? null);
   if (seo.elements) return elementsTitle(locale, seo.elementSlug ?? null);
   if (seo.emoji) return emojiTitle(locale, seo.emojiSlug ?? null);
   if (seo.calendar) return calendarTitle(locale, seo.calendarPage ?? "hub");
@@ -912,6 +919,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   if (seo.nostalgia) return nostalgiaDescription(locale, seo.nostalgiaId ?? null);
   if (seo.summaries) return summariesDescription(locale, seo.summaryId ?? null);
   if (seo.scripts) return scriptsDescription(locale, seo.scriptId ?? null);
+  if (seo.currency) return currencyDescription(locale, seo.currencyPair ?? null);
   if (seo.elements) return elementsDescription(locale, seo.elementSlug ?? null);
   if (seo.emoji) return emojiDescription(locale, seo.emojiSlug ?? null);
   if (seo.calendar) return calendarDescription(locale, seo.calendarPage ?? "hub");
@@ -962,6 +970,7 @@ export function pageCanonical(
   if (seo.nostalgia) return `https://cv.cm${nostalgiaHref(locale, seo.nostalgiaId ?? null)}`;
   if (seo.summaries) return `https://cv.cm${summariesHref(locale, seo.summaryId ?? null)}`;
   if (seo.scripts) return `https://cv.cm${scriptsHref(locale, seo.scriptId ?? null)}`;
+  if (seo.currency) return `https://cv.cm${currencyHref(locale, seo.currencyPair ?? null)}`;
   if (seo.elements) return `https://cv.cm${elementsHref(locale, seo.elementSlug ?? null)}`;
   if (seo.emoji) return `https://cv.cm${emojiHref(locale, seo.emojiSlug ?? null)}`;
   if (seo.calendar) return `https://cv.cm${calendarHref(locale, seo.calendarPage ?? "hub")}`;

@@ -51,6 +51,8 @@ import { elementsBreadcrumbJsonLd, elementsFaqJsonLd, elementsPageJsonLd } from 
 import type { ElementsPage } from "../shared/elements";
 import { emojiBreadcrumbJsonLd, emojiFaqJsonLd, emojiPageJsonLd } from "../shared/emoji-i18n";
 import type { EmojiPage } from "../shared/emoji";
+import { currencyBreadcrumbJsonLd, currencyFaqJsonLd, currencyPageJsonLd } from "../shared/currency-i18n";
+import type { CurrencyPage } from "../shared/currency";
 import { calendarBreadcrumbJsonLd, calendarFaqJsonLd, calendarPageJsonLd } from "../shared/calendar-i18n";
 import type { CalendarPage } from "../shared/calendar";
 import type { DevicePageId } from "../shared/device";
@@ -123,7 +125,16 @@ export function syncPageJsonLd(
   summariesPage: SummaryPage = null,
   scriptsPage: ScriptPage = null,
   emojiPage: EmojiPage = null,
+  currencyPage: CurrencyPage = null,
 ): void {
+  if (currencyPage) {
+    const pair = currencyPage === "hub" ? null : currencyPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("article-jsonld", currencyPageJsonLd(locale, pair));
+    writeJsonLd("faq-jsonld", currencyFaqJsonLd(locale, pair));
+    writeJsonLd("breadcrumb-jsonld", currencyBreadcrumbJsonLd(locale, pair));
+    return;
+  }
   if (emojiPage) {
     const slug = emojiPage === "hub" ? null : emojiPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
