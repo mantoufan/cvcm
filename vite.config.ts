@@ -115,9 +115,10 @@ export default defineConfig({
     manifest: true,
     rollupOptions: {
       output: {
-        // The music generator's page and its lazy model / synth chunks share this module. Left to Rollup it is
-        // folded into the page chunk, which then loses its own manifest entry (build-worker needs it to preload).
-        manualChunks: (id) => (id.endsWith("/src/shared/music-gen.ts") ? "music-gen" : undefined),
+        // The music generator's page and its lazy model / synth chunks share music-gen.ts, and the citation pages and
+        // their on-demand lookup chunk share citation.ts. Left to Rollup such a module is folded into the page chunk,
+        // which then loses its own manifest entry (build-worker needs it to preload).
+        manualChunks: (id) => (id.endsWith("/src/shared/music-gen.ts") ? "music-gen" : id.endsWith("/src/shared/citation.ts") ? "citation" : undefined),
         // A page-copy bucket would otherwise be named after its last path segment ("3-<hash>.js").
         chunkFileNames: (chunk) => {
           const id = chunk.facadeModuleId;

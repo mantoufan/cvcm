@@ -9,16 +9,6 @@ export type ToolContext = {
 /** Mounts one tool into host and returns its unmount. Each tool is its own chunk, so a page downloads only its tool. */
 export type ToolLoader = (host: HTMLElement, ctx: ToolContext) => Promise<(() => void) | undefined>;
 
-/** The citation generator and its style landing pages share one UI; the page picks the default style and heading. */
-function citationLoader(style: "apa" | "mla" | "harvard", variant: "main" | "apa" | "mla" | "harvard"): ToolLoader {
-  return async (host, ctx) => {
-    const m = await import("./citation-generator/ui");
-    if (!ctx.alive()) return undefined;
-    m.mountCitation(host, style, variant);
-    return m.unmountCitation;
-  };
-}
-
 export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
   "clip": async (host, ctx) => {
     const m = await import("./clip/ui");
@@ -1280,8 +1270,28 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountFlightSimulator(host);
     return m.unmountFlightSimulator;
   },
-  "citation-generator": citationLoader("apa", "main"),
-  "apa-citation-generator": citationLoader("apa", "apa"),
-  "mla-citation-generator": citationLoader("mla", "mla"),
-  "harvard-referencing-generator": citationLoader("harvard", "harvard"),
+  "citation-generator": async (host, ctx) => {
+    const m = await import("./citation-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCitation(host, "apa", "main");
+    return m.unmountCitation;
+  },
+  "apa-citation-generator": async (host, ctx) => {
+    const m = await import("./citation-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCitation(host, "apa", "apa");
+    return m.unmountCitation;
+  },
+  "mla-citation-generator": async (host, ctx) => {
+    const m = await import("./citation-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCitation(host, "mla", "mla");
+    return m.unmountCitation;
+  },
+  "harvard-referencing-generator": async (host, ctx) => {
+    const m = await import("./citation-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCitation(host, "harvard", "harvard");
+    return m.unmountCitation;
+  },
 };
