@@ -16,6 +16,10 @@
     "originYue": "粤语歌词",
     "originWeb": "全球网络梗",
     "born": "最早出现于 {date}",
+    "released": "发行于 {date}",
+    "platformDouyin": "在抖音走红",
+    "platformTiktok": "在 TikTok 走红",
+    "platformBoth": "在抖音和 TikTok 走红",
     "trend": "现在还火吗？",
     "trendNote": "维基百科条目每周浏览量，近 {n} 周（截至 {date}）。",
     "trendUp": "正在上升",
@@ -37,14 +41,15 @@
     "maker": "用免费表情包生成器做自己的梗图",
     "recent": "近 4 周浏览",
     "imageAlt": "{name}梗图",
+    "imageAltWho": "{who}（{name}）",
     "imageCredit": "图片：{author}，来自维基共享资源（已缩放）",
     "imageCreditAnon": "图片来自维基共享资源（已缩放）"
   },
   "hub": {
     "title": "热梗百科：网络热梗是什么梗、出处和走红时间",
-    "description": "Tung Tung Tung Sahur、Chill Guy、Pepe青蛙、aura、67、哈基米是什么梗？收录 {n} 个中外网络热梗和流行语：意思、出处、走红时间线和现在的热度。",
+    "description": "Labubu、科目三、Tung Tung Tung Sahur、Chill Guy、67、哈基米是什么梗？《APT.》《孤勇者》是什么歌？收录 {n} 个中外网络热梗、流行语和神曲：意思、出处、走红时间线和现在的热度。",
     "h1": "热梗百科",
-    "lede": "中外网络热梗和流行语，一个梗一页：它是什么、在哪里什么时候火起来的、大家怎么用，现在还火不火。意大利脑腐、经典梗、爆红动物、α世代俚语和中文热梗都有。",
+    "lede": "中外网络热梗和流行语，一个梗一页：它是什么、在哪里什么时候火起来的、大家怎么用，现在还火不火。意大利脑腐、经典梗、爆红动物、α世代俚语、中文热梗，还有抖音和 TikTok 上的短视频热梗与抖音神曲。",
     "groups": {
       "numbers": "数字梗",
       "abbreviations": "拼音缩写",
@@ -56,7 +61,9 @@
       "classic": "经典梗",
       "viral": "爆红动物与角色",
       "gen-alpha": "Z世代与α世代俚语",
-      "zh-memes": "中文热梗"
+      "zh-memes": "中文热梗",
+      "short-video": "短视频热梗",
+      "viral-songs": "抖音神曲与TikTok热歌"
     },
     "about": [
       "每个词条先回答「是什么梗」，再用带日期的时间线讲清它从哪里来、怎么传开，举出常见用法，并说明它现在的热度。",

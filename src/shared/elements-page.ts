@@ -3,7 +3,7 @@
  * out of elements-i18n so the main bundle, which needs only titles, descriptions and JSON-LD, does not carry it.
  * Everything here is templated from the PubChem / Wikidata snapshot: no prose about history or uses.
  */
-import type { Locale } from "./locale";
+import { CJK_LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { messages } from "./messages";
@@ -35,7 +35,7 @@ import {
 const sep = ` <span aria-hidden="true">/</span> `;
 
 /** A label's colon: full-width in Chinese and Japanese. */
-const colon = (locale: Locale): string => (locale === "zh-CN" || locale === "zh-TW" || locale === "ja" ? "：" : ": ");
+const colon = (locale: Locale): string => (CJK_LOCALES.has(locale) ? "：" : ": ");
 
 function crumbHtml(locale: Locale, slug: ElementSlug | null): string {
   const m = elementsMessages(locale);

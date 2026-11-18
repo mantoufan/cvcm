@@ -1,6 +1,9 @@
 export const LOCALES = ["en", "zh-CN", "zh-TW", "ja", "ko", "vi", "id", "es"] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = "en";
+
+/** Locales written in Chinese characters or Japanese: their own punctuation (、：), no spaces between words. */
+export const CJK_LOCALES: ReadonlySet<Locale> = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
 export const LOCALE_COOKIE = "cvcm_locale";
 
 export function isLocale(value: string): value is Locale {

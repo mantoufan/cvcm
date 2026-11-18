@@ -16,6 +16,10 @@
     "originYue": "広東語の歌の歌詞",
     "originWeb": "世界のネットミーム",
     "born": "初出 {date}",
+    "released": "リリース {date}",
+    "platformDouyin": "抖音（中国版TikTok）で流行",
+    "platformTiktok": "TikTokで流行",
+    "platformBoth": "TikTokと抖音で流行",
     "trend": "今も流行っている？",
     "trendNote": "Wikipedia記事の週間閲覧数、直近{n}週（{date}まで）。",
     "trendUp": "上昇中",
@@ -37,14 +41,15 @@
     "maker": "無料のミームジェネレーターで自分のミームを作る",
     "recent": "直近4週間の閲覧数",
     "imageAlt": "{name}のミーム画像",
+    "imageAltWho": "{who}（{name}）",
     "imageCredit": "画像：{author}、ウィキメディア・コモンズより（縮小）",
     "imageCreditAnon": "画像：ウィキメディア・コモンズより（縮小）"
   },
   "hub": {
     "title": "ミーム百科：ネットミームの意味・元ネタ・流行の推移",
-    "description": "Tung Tung Tung Sahur、Chill Guy、Pepe、aura、6 7とは？バズったネットミームとスラング{n}件を、意味・元ネタ・流行した時期・今の人気度で解説。",
+    "description": "ラブブ（Labubu）、Tung Tung Tung Sahur、Chill Guy、6 7とは？Bling-Bang-Bang-BornやAPT.はなぜバズった？バズったネットミーム・スラング・曲{n}件を、意味・元ネタ・流行した時期・今の人気度で解説。",
     "h1": "ミーム百科：意味・元ネタ・トレンド",
-    "lede": "バズったネットミームとスラングを1ページずつ。それが何か、いつどこで始まったか、どう使われるか、今も伸びているか。イタリアンブレインロット、定番ミーム、話題の動物、α世代スラング、中国のネットミームまで。",
+    "lede": "バズったネットミームとスラングを1ページずつ。それが何か、いつどこで始まったか、どう使われるか、今も伸びているか。イタリアンブレインロット、定番ミーム、話題の動物、α世代スラング、中国のネットミーム、TikTokトレンドとTikTokでバズった曲まで。",
     "groups": {
       "numbers": "数字スラング",
       "abbreviations": "ピンインの略語",
@@ -56,7 +61,9 @@
       "classic": "定番ミーム",
       "viral": "バズった動物とキャラ",
       "gen-alpha": "Z世代・α世代スラング",
-      "zh-memes": "中国のネットミーム"
+      "zh-memes": "中国のネットミーム",
+      "short-video": "TikTok・抖音トレンド",
+      "viral-songs": "TikTok・抖音でバズった曲"
     },
     "about": [
       "各項目はまず答えを示し、日付入りの年表で元ネタと広まり方を説明し、使い方の例と今の状況を紹介します。",

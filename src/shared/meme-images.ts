@@ -1,3 +1,4 @@
+import type { Locale } from "./locale";
 import images from "./meme-images.json";
 
 /**
@@ -15,6 +16,12 @@ export type MemeImage = {
   license: string;
   licenseUrl: string;
   page: string;
+  /**
+   * Who is in a photo of a person, named in the alt text: one name, names by locale (`en` as the fallback), or for a song
+   * `{ artist }`, the credited `name` of the artist shown (the alt then names them as the page does). Every song picture
+   * must set it (tests check), so the alt never guesses who is shown.
+   */
+  who?: string | Partial<Record<Locale, string>> | { artist: string };
 };
 
 const MEME_IMAGES: Partial<Record<string, MemeImage>> = images satisfies Record<string, MemeImage>;

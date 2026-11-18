@@ -78,7 +78,7 @@ export function creatorNames(creator: string): string[] {
 const listFormats = new Map<Locale, Intl.ListFormat | null>();
 
 /** Joins names the locale's way ("A、B和C", "A, B y C"); one cached formatter per locale. */
-function joinNames(locale: Locale, names: string[]): string {
+export function joinNames(locale: Locale, names: string[]): string {
   if (!listFormats.has(locale)) {
     try {
       listFormats.set(locale, new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }));

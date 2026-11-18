@@ -2,7 +2,7 @@
  * The nostalgia page HTML (hub and entries) and the vote result, shared by the client page and the Worker's crawler
  * copy. Kept out of nostalgia-i18n so the main bundle, which needs only titles, descriptions and JSON-LD, does not carry it.
  */
-import type { Locale } from "./locale";
+import { CJK_LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
@@ -59,8 +59,6 @@ function statusLabel(locale: Locale, id: NostalgiaId): string | null {
   const ui = nostalgiaUi(locale);
   return { available: ui.statusAvailable, revived: ui.statusRevived, discontinued: ui.statusDiscontinued }[status];
 }
-
-const CJK = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
 
 function crumbHtml(locale: Locale, id: NostalgiaId | null): string {
   const m = nostalgiaMessages(locale);
@@ -182,7 +180,7 @@ export function nostalgiaPageHtml(locale: Locale, id: NostalgiaId | null): strin
   }
   const copy = nostalgiaCopy(locale, id);
   const meta = nostalgiaMeta(locale, id);
-  const cjk = CJK.has(locale);
+  const cjk = CJK_LOCALES.has(locale);
   const status = statusLabel(locale, id);
   const toc = copy.sections.map((s, i) => `<li><a href="#nostalgia-${i + 1}">${inline(s.h)}</a></li>`).join("");
   const sections = copy.sections.map((s, i) => (

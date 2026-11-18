@@ -9,6 +9,7 @@ import { appendFileSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { jsonGetter, pageviewsDay as compact } from "./get-json.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES_FILE = process.env.RANKINGS_FAILURES_FILE ?? join(tmpdir(), "rankings-failures.txt");
@@ -31,20 +32,9 @@ const readOr = (path, fallback) => {
 const old = { ...readOr(TRENDS, { trend: {} }), ...readOr(COINS, { coins: {}, coinsAsOf: null }) };
 const failures = [];
 
-async function getJson(url, headers = {}) {
-  for (let attempt = 1; ; attempt += 1) {
-    const res = await fetch(url, { headers: { "User-Agent": UA, ...headers }, signal: AbortSignal.timeout(60_000) }).catch((error) => ({ ok: false, status: 0, error }));
-    if (res.ok) return res.json();
-    if (res.status === 404) return null;
-    // A client error (bad id, bad key) will not fix itself: report the body instead of spending two more calls.
-    const final = attempt >= 3 || (res.status >= 400 && res.status < 500 && res.status !== 429);
-    if (final) throw new Error(`${res.status || res.error?.message} ${url}${res.text ? `: ${(await res.text()).slice(0, 300)}` : ""}`);
-    await new Promise((r) => setTimeout(r, 2000 * attempt));
-  }
-}
+const getJson = jsonGetter(UA);
 
 const day = (d) => d.toISOString().slice(0, 10);
-const compact = (d) => day(d).replaceAll("-", "");
 
 /**
  * The last day whose pageviews Wikimedia has published: the most recent Sunday, or the one before when that Sunday's

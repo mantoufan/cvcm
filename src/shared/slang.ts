@@ -1,3 +1,5 @@
+import type { Locale } from "./locale";
+
 /**
  * The Memes channel under `/{locale}/memes/{id}/` (the slang dictionary until 2026-11-13; `/slang/` 301s here): what a
  * meme or an internet word means, where and when it started and how people use it, written for "what is X" searches. Entries were chosen from Google Ads
@@ -23,6 +25,8 @@ export const SLANG_GROUPS = [
   { id: "viral", entries: ["chill-guy", "moo-deng", "popcat", "huh-cat", "banana-cat", "grimace-shake"] },
   { id: "gen-alpha", entries: ["aura", "mewing", "sigma", "bussin", "unc", "mog", "brainrot", "sus", "chopped", "ohio", "fanum-tax"] },
   { id: "zh-memes", entries: ["aoligei", "huaji", "goutou", "xiaochou", "jinitaimei", "yaoyao-lingxian", "songchigan", "xianyanbao", "juejuezi"] },
+  { id: "short-video", entries: ["labubu", "dubai-chocolate", "demure", "bing-chilling", "brat-summer", "mob-wife", "jet2-holiday", "kemusan", "city-bu-city", "duobaan-chuanda", "yingkong", "banwei", "tuituitui"] },
+  { id: "viral-songs", entries: ["apt", "golden", "soda-pop", "pedro", "sigma-boy", "bling-bang-bang-born", "see-tinh", "gata-only", "gnarly", "moye-moye", "bac-bling", "ojo-dibandingke", "guyongzhe", "yelang-disco", "xue-mao-jiao", "yixiao-jianghu"] },
 ] as const;
 
 export type SlangGroupId = (typeof SLANG_GROUPS)[number]["id"];
@@ -35,14 +39,26 @@ export type SlangPage = SlangId | "hub" | null;
 
 export type SlangSource = { name: string; url: string };
 
+export type SlangPlatform = "douyin" | "tiktok" | "both";
+
+/**
+ * A credited artist: `name` as credited (shown in zh-CN) and `names` by locale. Without its own name a locale falls back:
+ * zh-TW and ja to `names["zh-TW"]` then `name` (Chinese characters, closest to their own script), others to `names.en`.
+ */
+export type SlangArtist = { name: string; names?: Partial<Record<Locale, string>>; type: "Person" | "MusicGroup" };
+
 export type SlangMeta = {
   /** The term as written where it comes from (the catalog key readers search; pages show each locale's `name`). */
   term: string;
   /** Where it comes from: Chinese internet, English internet, a Cantonese song lyric, or a meme spread worldwide. */
   origin: "zh" | "en" | "yue" | "web";
-  /** When it first appeared ("YYYY-MM" or "YYYY"), shown on meme entries. */
+  /** When it first appeared ("YYYY-MM" or "YYYY"), shown on meme entries; for a song, its release (shown as "Released"). */
   born?: string;
   related: SlangId[];
+  /** The short-video platform where it took off, shown next to the date (short-video memes and viral songs). */
+  platform?: SlangPlatform;
+  /** A viral song: the credited artists, for the kicker and the MusicRecording the article is about. */
+  song?: { by: SlangArtist[] };
   /** Primary or well-known references; every URL was opened and checked. */
   sources: SlangSource[];
 };
@@ -62,6 +78,12 @@ export const SLANG_ADDED: Partial<Record<SlangId, string>> = {
   sus: "2026-11-13", chopped: "2026-11-13", ohio: "2026-11-13", "fanum-tax": "2026-11-13", aoligei: "2026-11-13",
   huaji: "2026-11-13", goutou: "2026-11-13", xiaochou: "2026-11-13", jinitaimei: "2026-11-13",
   "yaoyao-lingxian": "2026-11-13", songchigan: "2026-11-13", xianyanbao: "2026-11-13", juejuezi: "2026-11-13",
+  // 2026-11-18: short-video memes and viral songs.
+  labubu: "2026-11-18", "dubai-chocolate": "2026-11-18", demure: "2026-11-18", "bing-chilling": "2026-11-18", "brat-summer": "2026-11-18",
+  "mob-wife": "2026-11-18", "jet2-holiday": "2026-11-18", kemusan: "2026-11-18", "city-bu-city": "2026-11-18", "duobaan-chuanda": "2026-11-18", yingkong: "2026-11-18",
+  banwei: "2026-11-18", tuituitui: "2026-11-18", apt: "2026-11-18", golden: "2026-11-18", "soda-pop": "2026-11-18", pedro: "2026-11-18",
+  "sigma-boy": "2026-11-18", "bling-bang-bang-born": "2026-11-18", "see-tinh": "2026-11-18", "gata-only": "2026-11-18", gnarly: "2026-11-18", "moye-moye": "2026-11-18",
+  "bac-bling": "2026-11-18", "ojo-dibandingke": "2026-11-18", guyongzhe: "2026-11-18", "yelang-disco": "2026-11-18", "xue-mao-jiao": "2026-11-18", "yixiao-jianghu": "2026-11-18",
 };
 
 /** When an entry went live. */
@@ -72,7 +94,9 @@ export function slangPublished(id: SlangId): string {
 /** Entries edited after they were published, for dateModified and the sitemap. */
 export const SLANG_UPDATED: Partial<Record<SlangId, string>> = {
   // 2026-11-14: freely licensed pictures added.
-  "ballerina-cappuccina": "2026-11-14", "brr-brr-patapim": "2026-11-14", "cappuccino-assassino": "2026-11-14", doge: "2026-11-14", goutou: "2026-11-14", "grimace-shake": "2026-11-14", harambe: "2026-11-14", huaji: "2026-11-14", "italian-brainrot": "2026-11-14", mewing: "2026-11-14", "moo-deng": "2026-11-14", rickroll: "2026-11-14", "skibidi-toilet": "2026-11-14", stonks: "2026-11-14", "tralalero-tralala": "2026-11-14", trollface: "2026-11-14", "tung-tung-tung-sahur": "2026-11-14",
+  "ballerina-cappuccina": "2026-11-14", "brr-brr-patapim": "2026-11-14", "cappuccino-assassino": "2026-11-14", doge: "2026-11-14", goutou: "2026-11-14", "grimace-shake": "2026-11-14", harambe: "2026-11-14", huaji: "2026-11-14", "italian-brainrot": "2026-11-14", mewing: "2026-11-14", "moo-deng": "2026-11-14", "skibidi-toilet": "2026-11-14", stonks: "2026-11-14", "tralalero-tralala": "2026-11-14", trollface: "2026-11-14", "tung-tung-tung-sahur": "2026-11-14",
+  // 2026-11-18: the picture's alt names Rick Astley.
+  rickroll: "2026-11-18",
 };
 
 /** Entries the site footer links directly (highest Keyword Planner volume); their names are core-pack `slangFocus.*`. */
@@ -175,7 +199,41 @@ export const SLANG_META: Record<SlangId, SlangMeta> = {
   xianyanbao: { term: "显眼包", origin: "zh", born: "2023", related: ["sheniu", "i-ren-e-ren", "juejuezi"], sources: [{ name: "光明网: 2023年十大流行语发布", url: "https://m.gmw.cn/2023-12/04/content_1303590844.htm" }, { name: "光明网: 2023年度十大网络用语发布", url: "https://m.gmw.cn/2023-12/13/content_1303599315.htm" }, { name: "东方网（腾讯新闻）: 2023年10大网络流行语出炉", url: "https://news.qq.com/rain/a/20231208A04OQR00" }] },
   juejuezi: { term: "绝绝子", origin: "zh", born: "2020", related: ["yyds", "xswl", "awsl"], sources: [{ name: "新华网: 2021年度十大网络用语发布", url: "https://www.news.cn/politics/2021-12/07/c_1128137881.htm" }, { name: "中国新闻网: 《咬文嚼字》：年度流行语为何不选「YYDS」和「绝绝子」", url: "https://www.chinanews.com.cn/cul/2021/12-08/9625066.shtml" }] },
   "no-cap": { term: "no cap", origin: "en", related: ["smh", "iykyk", "rizz"], sources: [{ name: "Dictionary.com: no cap", url: "https://www.dictionary.com/culture/slang/no-cap" }, { name: "Cambridge Dictionary: no cap", url: "https://dictionary.cambridge.org/dictionary/english/no-cap" }] },
+  labubu: { term: "Labubu (拉布布)", origin: "web", born: "2015", platform: "both", related: ["dubai-chocolate", "moo-deng", "chill-guy"], sources: [{ name: "Wikipedia: Labubu", url: "https://en.wikipedia.org/wiki/Labubu" }, { name: "维基百科：拉布布", url: "https://zh.wikipedia.org/zh-cn/Labubu" }] },
+  "dubai-chocolate": { term: "Dubai chocolate", origin: "web", born: "2023-12", platform: "tiktok", related: ["labubu", "grimace-shake", "mob-wife"], sources: [{ name: "Wikipedia: Dubai chocolate", url: "https://en.wikipedia.org/wiki/Dubai_chocolate" }, { name: "Daily Meal: The Viral Dubai Chocolate Bar, Explained", url: "https://www.thedailymeal.com/1674281/viral-dubai-chocolate-bar-explained/" }] },
+  demure: { term: "very demure, very mindful", origin: "en", born: "2024-08", platform: "tiktok", related: ["brat-summer", "aura", "mob-wife"], sources: [{ name: "Dictionary.com: Word of the Year 2024", url: "https://www.dictionary.com/e/word-of-the-year-2024/" }, { name: "Wikipedia: Jools Lebron", url: "https://en.wikipedia.org/wiki/Jools_Lebron" }, { name: "Know Your Meme: Very Demure, Very Mindful", url: "https://knowyourmeme.com/memes/very-demure-very-mindful" }] },
+  "bing-chilling": { term: "Bing Chilling (冰淇淋)", origin: "web", born: "2021-05", platform: "tiktok", related: ["kemusan", "huaji", "rickroll"], sources: [{ name: "Know Your Meme: John Cena Speaking Chinese and Eating Ice Cream / Bing Chilling", url: "https://knowyourmeme.com/memes/john-cena-speaking-chinese-and-eating-ice-cream-bing-chilling" }] },
+  "brat-summer": { term: "Brat Summer", origin: "en", born: "2024-06", platform: "tiktok", related: ["demure", "mob-wife", "apt"], sources: [{ name: "Wikipedia: Brat (album)", url: "https://en.wikipedia.org/wiki/Brat_(album)" }, { name: "CBS News: Collins Dictionary's 2024 word of the year is brat", url: "https://www.cbsnews.com/news/collins-dictionarys-2024-word-of-year-brat" }, { name: "Wikipedia: Apple (song)", url: "https://en.wikipedia.org/wiki/Apple_(song)" }] },
+  "mob-wife": { term: "mob wife aesthetic", origin: "en", born: "2024-01", platform: "tiktok", related: ["demure", "brat-summer", "duobaan-chuanda"], sources: [{ name: "Refinery29: What's Behind TikTok's Mob Wife Aesthetic Trend", url: "https://www.refinery29.com/en-us/mob-wife-aesthetic-fashion-trend-tiktok" }, { name: "TODAY: What is Mob Wife Winter? The Latest TikTok Aesthetic, Explained", url: "https://www.today.com/popculture/mob-wife-winter-aesthetic-tiktok-trend-rcna134377" }] },
+  "jet2-holiday": { term: "Nothing beats a Jet2 holiday", origin: "web", born: "2024-11", platform: "tiktok", related: ["rickroll", "chill-guy", "pedro"], sources: [{ name: "Know Your Meme: Nothing Beats a Jet2 Holiday", url: "https://knowyourmeme.com/memes/nothing-beats-a-jet2-holiday" }, { name: "NBC News: 'Nothing beats a Jet2 holiday.' Except maybe viral fame.", url: "https://www.nbcnews.com/pop-culture/pop-culture-news/nothing-beats-jet2-holiday-viral-tiktok-audio-voice-actress-zoe-lister-rcna220620" }] },
+  kemusan: { term: "科目三", origin: "zh", born: "2023-10", platform: "both", related: ["yixiao-jianghu", "city-bu-city", "see-tinh"], sources: [{ name: "维基百科：廣西科目三", url: "https://zh.wikipedia.org/wiki/%E5%BB%A3%E8%A5%BF%E7%A7%91%E7%9B%AE%E4%B8%89" }, { name: "新华网：中国故事｜“科目三”掀起“摇摆热潮”", url: "https://www.news.cn/local/20240112/6d933ae3e7f04ae6bf22e16f0af21f7d/c.html" }, { name: "China Daily: Haidilao's 'Subject Three' sparks debate", url: "https://www.chinadaily.com.cn/a/202311/30/WS65689257a31090682a5f0d42.html" }] },
+  "city-bu-city": { term: "city不city", origin: "zh", born: "2024-06", platform: "douyin", related: ["kemusan", "bing-chilling", "yingkong"], sources: [{ name: "澎湃新闻：2024年“十大流行语”发布，“数智化”“city不city”等入选", url: "https://m.thepaper.cn/newsDetail_forward_29523813" }, { name: "澎湃新闻：“City不City”，美国小伙用混搭幽默演绎跨文化故事", url: "https://m.thepaper.cn/newsDetail_forward_29705105" }, { name: "21财经：互联网挤满了“City”的老外", url: "https://m.21jingji.com/article/20240712/herald/f5b4d5c12f5d3f03838179fba5daf758.html" }] },
+  "duobaan-chuanda": { term: "多巴胺穿搭", origin: "zh", born: "2023", platform: "douyin", related: ["mob-wife", "banwei", "songchigan"], sources: [{ name: "光明网：2023年度十大网络用语出炉", url: "https://m.gmw.cn/2023-12/13/content_1303599593.htm" }, { name: "澎湃新闻：“多巴胺穿搭”爆火，消费市场需要简单的快乐", url: "https://m.thepaper.cn/newsDetail_forward_23728939" }] },
+  yingkong: { term: "硬控", origin: "zh", born: "2024-04", platform: "douyin", related: ["banwei", "city-bu-city", "pofang"], sources: [{ name: "南方+：“硬控”是什么梗？", url: "https://static.nfnews.com/content/202404/11/c8774995.html" }, { name: "新华网：《咬文嚼字》“2024年十大流行语”", url: "http://www.news.cn/politics/20241202/59496b2d344b4382b6c12d03d78b8f13/c.html" }] },
+  banwei: { term: "班味", origin: "zh", born: "2024", platform: "douyin", related: ["niuma", "yingkong", "neijuan"], sources: [{ name: "澎湃新闻：2024年“十大流行语”发布", url: "https://m.thepaper.cn/newsDetail_forward_29523813" }, { name: "海丝商报：“班味”背后的三重意蕴", url: "https://hssb.fjdaily.com/pad/con/202412/09/content_416727.html" }] },
+  tuituitui: { term: "退！退！退！", origin: "zh", born: "2022-05", platform: "douyin", related: ["aoligei", "yingkong", "jinitaimei"], sources: [{ name: "封面新闻：“退退退”到底是一个怎样的网络热梗", url: "https://finance.sina.cn/2022-05-25/detail-imizirau4670127.d.html" }, { name: "海峡网：抖音退退退是什么梗和意思", url: "http://www.hxnews.com/news/yule/202205/24/2069326.shtml" }, { name: "网易：一夜4亿播放，全网模仿的“退退退”到底是什么？", url: "https://c.m.163.com/news/a/H8B0PJT70529SM26.html" }] },
+  apt: { term: "APT.", origin: "web", born: "2024-10", platform: "both", song: { by: [{ name: "ROSÉ", type: "Person" }, { name: "Bruno Mars", type: "Person" }] }, related: ["golden", "soda-pop", "brat-summer"], sources: [{ name: "Wikipedia: APT. (song)", url: "https://en.wikipedia.org/wiki/APT._(song)" }, { name: "Food Republic: How To Play Korea's Trendy APT Drinking Game", url: "https://www.foodrepublic.com/1698747/korea-apt-drinking-game-explained/" }, { name: "太平洋科技: 播放量超70亿，《APT.》为何全网爆红？", url: "https://www.pconline.com.cn/focus/1837/18377728.html" }] },
+  golden: { term: "Golden", origin: "web", born: "2025-06", platform: "tiktok", song: { by: [{ name: "HUNTR/X", type: "MusicGroup" }] }, related: ["soda-pop", "apt", "bling-bang-bang-born"], sources: [{ name: "Wikipedia: Golden (Huntrix song)", url: "https://en.wikipedia.org/wiki/Golden_(Huntrix_song)" }, { name: "Wikipedia（中文）: 灿金 (歌曲)", url: "https://zh.wikipedia.org/wiki/燦金_(歌曲)" }] },
+  "soda-pop": { term: "Soda Pop", origin: "web", born: "2025-06", platform: "tiktok", song: { by: [{ name: "Saja Boys", type: "MusicGroup" }] }, related: ["golden", "apt", "gnarly"], sources: [{ name: "Wikipedia: Soda Pop (song)", url: "https://en.wikipedia.org/wiki/Soda_Pop_(song)" }, { name: "Wikipedia: KPop Demon Hunters", url: "https://en.wikipedia.org/wiki/KPop_Demon_Hunters" }] },
+  pedro: { term: "Pedro", origin: "web", born: "2024-02", platform: "tiktok", song: { by: [{ name: "Jaxomy", type: "Person" }, { name: "Agatino Romero", type: "Person" }, { name: "Raffaella Carrà", type: "Person" }] }, related: ["moye-moye", "sigma-boy", "jet2-holiday"], sources: [{ name: "Know Your Meme: Raccoon Dancing in a Circle / \"Pedro Pedro Pedro\"", url: "https://knowyourmeme.com/memes/raccoon-dancing-in-a-circle-pedro-pedro-pedro" }, { name: "Wikipedia: Pedro (song)", url: "https://en.wikipedia.org/wiki/Pedro_(song)" }, { name: "Daily Dot: Pedro Raccoon Is TikTok's Favorite Dancer", url: "https://www.dailydot.com/memes/pedro-raccoon/" }] },
+  "sigma-boy": { term: "Sigma Boy", origin: "web", born: "2024-10", platform: "tiktok", song: { by: [{ name: "Betsy", type: "Person" }, { name: "Maria Yankovskaya", type: "Person" }] }, related: ["sigma", "pedro", "gata-only"], sources: [{ name: "Wikipedia: Sigma Boy", url: "https://en.wikipedia.org/wiki/Sigma_Boy" }, { name: "Meduza: The Russian brainrot coming for your children", url: "https://meduza.io/en/feature/2025/02/08/the-russian-brainrot-coming-for-your-children" }] },
+  "bling-bang-bang-born": { term: "Bling-Bang-Bang-Born", origin: "web", born: "2024-01", platform: "tiktok", song: { by: [{ name: "Creepy Nuts", type: "MusicGroup" }] }, related: ["golden", "apt", "gnarly"], sources: [{ name: "Wikipedia: Bling-Bang-Bang-Born", url: "https://en.wikipedia.org/wiki/Bling-Bang-Bang-Born" }, { name: "Know Your Meme: Bling-Bang-Bang-Born", url: "https://knowyourmeme.com/memes/bling-bang-bang-born" }, { name: "ComicBook.com: Mashle Season 2 Marks One of Anime's Most Viral Songs", url: "https://comicbook.com/anime/news/mashle-season-2-opening-creepy-nuts/" }] },
+  "see-tinh": { term: "See tình", origin: "web", born: "2022-02", platform: "both", song: { by: [{ name: "Hoàng Thùy Linh", type: "Person" }] }, related: ["bac-bling", "kemusan", "xue-mao-jiao"], sources: [{ name: "Wikipedia: See Tình", url: "https://en.wikipedia.org/wiki/See_T%C3%ACnh" }, { name: "腾讯新闻：越南流行歌曲为何在短视频平台成爆款", url: "https://news.qq.com/rain/a/20220919A0059400" }, { name: "中時新聞網：連蔡依林都忍不住嗨跳 越南抖音神曲", url: "https://www.chinatimes.com/realtimenews/20230208003189-260404" }] },
+  "gata-only": { term: "Gata Only", origin: "web", born: "2024-02", platform: "tiktok", song: { by: [{ name: "FloyyMenor", type: "Person" }, { name: "Cris MJ", type: "Person" }] }, related: ["pedro", "sigma-boy", "moye-moye"], sources: [{ name: "Wikipedia: Gata Only", url: "https://en.wikipedia.org/wiki/Gata_Only" }] },
+  gnarly: { term: "Gnarly", origin: "web", born: "2025-04", platform: "tiktok", song: { by: [{ name: "Katseye", type: "MusicGroup" }] }, related: ["soda-pop", "golden", "bling-bang-bang-born"], sources: [{ name: "Wikipedia: Gnarly (song)", url: "https://en.wikipedia.org/wiki/Gnarly_(song)" }, { name: "Capital FM: What does 'Gnarly' mean? Katseye explain", url: "https://www.capitalfm.com/news/music/katseye-gnarly-lyrics-meaning/" }, { name: "Wikipedia: Katseye", url: "https://en.wikipedia.org/wiki/Katseye" }] },
+  "moye-moye": { term: "Moye Moye (Džanum)", origin: "web", born: "2023", platform: "tiktok", song: { by: [{ name: "Teya Dora", type: "Person" }] }, related: ["pedro", "sigma-boy", "ojo-dibandingke"], sources: [{ name: "Wikipedia: Moye moye", url: "https://en.wikipedia.org/wiki/Moye_moye" }, { name: "Wikipedia: Džanum", url: "https://en.wikipedia.org/wiki/D%C5%BEanum" }] },
+  "bac-bling": { term: "Bắc Bling", origin: "web", born: "2025-03", platform: "tiktok", song: { by: [{ name: "Hòa Minzy", type: "Person" }, { name: "Xuân Hinh", type: "Person" }, { name: "Tuấn Cry", type: "Person" }] }, related: ["see-tinh", "ojo-dibandingke", "apt"], sources: [{ name: "Wikipedia: Bắc Bling", url: "https://en.wikipedia.org/wiki/B%E1%BA%AFc_Bling" }, { name: "VTC News: Trào lưu 'biến hình' thành liền chị quan họ sau MV 'Bắc Bling'", url: "https://vtcnews.vn/trao-luu-bien-hinh-thanh-lien-chi-quan-ho-sau-mv-bac-bling-cua-hoa-minzy-ar929542.html" }] },
+  "ojo-dibandingke": { term: "Ojo Dibandingke", origin: "web", born: "2022", platform: "tiktok", song: { by: [{ name: "Abah Lala", type: "Person" }, { name: "Denny Caknan", type: "Person" }] }, related: ["bac-bling", "moye-moye", "see-tinh"], sources: [{ name: "CNN Indonesia: Haru Pencipta Lagu 'Ojo Dibandingke' yang Dinyanyikan Farel di Istana", url: "https://www.cnnindonesia.com/hiburan/20220817181500-227-835780/haru-pencipta-lagu-ojo-dibandingke-yang-dinyanyikan-farel-di-istana" }, { name: "Kompas: Mengenal Farel Prayoga, Bocah Asal Banyuwangi", url: "https://regional.kompas.com/read/2022/08/17/144905778/mengenal-farel-prayoga-bocah-asal-banyuwangi-yang-goyang-istana-dengan-lagu" }, { name: "detikJateng: Perjalanan Lagu 'Ojo Dibandingke'", url: "https://www.detik.com/jateng/berita/d-6246556/perjalanan-lagu-ojo-dibandingke-dibikin-di-warung-hingga-ngetop-di-istana" }] },
+  guyongzhe: { term: "孤勇者", origin: "zh", born: "2021-11", platform: "douyin", song: { by: [{ name: "陈奕迅", names: { en: "Eason Chan", "zh-TW": "陳奕迅", ja: "イーソン・チャン", vi: "Trần Dịch Tấn" }, type: "Person" }] }, related: ["yelang-disco", "xue-mao-jiao", "yixiao-jianghu"], sources: [{ name: "维基百科：孤勇者", url: "https://zh.wikipedia.org/wiki/%E5%AD%A4%E5%8B%87%E8%80%85" }, { name: "搜狐（《财经》）：《孤勇者》是如何征服小学生的？", url: "https://www.sohu.com/a/565966430_115571" }] },
+  "yelang-disco": { term: "野狼disco", origin: "zh", born: "2019-09", platform: "douyin", song: { by: [{ name: "宝石Gem", names: { en: "Gem", "zh-TW": "寶石Gem" }, type: "Person" }] }, related: ["guyongzhe", "xue-mao-jiao", "yixiao-jianghu"], sources: [{ name: "维基百科：野狼disco", url: "https://zh.wikipedia.org/wiki/%E9%87%8E%E7%8B%BCdisco" }, { name: "新浪娱乐（界面新闻）：《野狼disco》老舅：对着镜头啃大肘子很可笑吗？", url: "https://ent.sina.cn/zy/2019-09-25/detail-iicezueu8255409.d.html" }, { name: "澎湃新闻：别再问我什么是《野狼disco》", url: "https://m.thepaper.cn/baijiahao_4837981" }] },
+  "xue-mao-jiao": { term: "学猫叫", origin: "zh", born: "2018-04", platform: "douyin", song: { by: [{ name: "小潘潘", names: { en: "Xiao Panpan" }, type: "Person" }, { name: "小峰峰", names: { en: "Xiao Fengfeng" }, type: "Person" }] }, related: ["yelang-disco", "guyongzhe", "hajimi"], sources: [{ name: "Wikipedia（中文）: 学猫叫", url: "https://zh.wikipedia.org/wiki/学猫叫" }, { name: "搜狐（转载人民网）: 主播小潘潘《学猫叫》引发全民卖萌热潮", url: "https://www.sohu.com/a/240296366_652038" }] },
+  "yixiao-jianghu": { term: "一笑江湖", origin: "zh", born: "2020-02", platform: "douyin", song: { by: [{ name: "闻人听書_", names: { en: "Wenren Tingshu_", "zh-TW": "聞人聽書_" }, type: "Person" }] }, related: ["kemusan", "guyongzhe", "yelang-disco"], sources: [{ name: "Wikipedia（中文）: 一笑江湖", url: "https://zh.wikipedia.org/wiki/一笑江湖" }, { name: "Wikipedia（中文）: 科目三 (舞蹈)", url: "https://zh.wikipedia.org/wiki/科目三_(舞蹈)" }] },
 };
+
+/** A viral song (it has credited artists), not a meme or a word. */
+export function isSong(id: SlangId): boolean {
+  return Boolean(SLANG_META[id].song);
+}
 
 export function isSlangId(value: string): value is SlangId {
   return (SLANG_ENTRIES as readonly string[]).includes(value);
