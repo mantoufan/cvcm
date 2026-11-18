@@ -267,21 +267,22 @@ export function legalTargets(state: PoolState, player: 0 | 1, balls: readonly Ba
 }
 
 /** True if (x, y) is a free place for the cue ball (ball in hand). */
-export function canPlace(balls: readonly Ball[], x: number, y: number): boolean {
+/** Whether ball `placing` (the cue ball unless said) fits at (x, y): on the cloth and clear of every other ball. */
+export function canPlace(balls: readonly Ball[], x: number, y: number, placing = 0): boolean {
   if (Math.abs(x) > HL - R || Math.abs(y) > HW - R) return false;
-  return balls.every((b) => b.id === 0 || !b.on || (b.x - x) ** 2 + (b.y - y) ** 2 >= 4 * R * R * 1.01);
+  return balls.every((b) => b.id === placing || !b.on || (b.x - x) ** 2 + (b.y - y) ** 2 >= 4 * R * R * 1.01);
 }
 
 /** The free place nearest to (x, y) along the table's long axis (for re-spotting). */
-function spotNear(balls: readonly Ball[], x: number, y: number, dir: 1 | -1): { x: number; y: number } {
+function spotNear(balls: readonly Ball[], x: number, y: number, dir: 1 | -1, placing = 0): { x: number; y: number } {
   for (let k = 0; k < 200; k++) {
     const px = x + dir * k * R * 0.5;
     if (Math.abs(px) > HL - R) break;
-    if (canPlace(balls, px, y)) return { x: px, y };
+    if (canPlace(balls, px, y, placing)) return { x: px, y };
   }
   for (let k = 0; k < 400; k++) {
     const px = x - dir * k * R * 0.5;
-    if (canPlace(balls, px, y)) return { x: px, y };
+    if (canPlace(balls, px, y, placing)) return { x: px, y };
   }
   return { x, y };
 }
@@ -313,7 +314,8 @@ export function resolve(state: PoolState, after: Ball[], ev: ShotEvents): { stat
     if (isBreak) {
       // The 8 on the break is spotted again; play goes on.
       const eight = balls.find((b) => b.id === 8)!;
-      const s = spotNear(balls, FOOT_SPOT.x, FOOT_SPOT.y, 1);
+      // Clear of every ball, the cue ball included.
+      const s = spotNear(balls, FOOT_SPOT.x, FOOT_SPOT.y, 1, 8);
       Object.assign(eight, { x: s.x, y: s.y, vx: 0, vy: 0, on: true });
     } else {
       const g = state.groups[p];

@@ -256,7 +256,11 @@ export function mountPinball(host: HTMLElement): void {
     let state: Pin = newGame();
     let noticeAt = -1;
 
+    let fitAspect = 0;
     const placeCamera = () => {
+      // Only when the stage's shape changed (resize, full screen), not every frame.
+      if (camera.aspect === fitAspect) return;
+      fitAspect = camera.aspect;
       const { width, height } = stage.size();
       const aspect = width / Math.max(1, height);
       // Further back on a narrow stage so the whole width of the table stays in view.

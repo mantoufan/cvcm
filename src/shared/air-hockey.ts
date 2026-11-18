@@ -204,6 +204,7 @@ function substep(m: Match, target: { x: number; y: number }, level: Level, h: nu
     return;
   }
   const p = m.puck;
+  const prevY = p.y;
   p.x += p.vx * h;
   p.y += p.vy * h;
   const drag = 1 - FRICTION * h;
@@ -236,7 +237,6 @@ function substep(m: Match, target: { x: number; y: number }, level: Level, h: nu
   const yMax = TABLE_L / 2 - PUCK_R;
   // Already past the end line last substep: the puck is inside a goal, between the posts. It stays in there
   // (bouncing off the posts' sides) instead of being snapped back onto the line through a post.
-  const prevY = p.y - p.vy * h;
   if (Math.abs(prevY) > yMax && Math.abs(p.y) > yMax) {
     const inner = GOAL_W / 2 - PUCK_R * 0.5;
     if (p.x > inner) {

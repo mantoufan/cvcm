@@ -72,6 +72,8 @@ function label(hit: Hit | Target): string {
 export function mountDarts(host: HTMLElement): void {
   unmountDarts();
   const saved = loadSaved();
+  /** The delayed win cover (see afterHit); declared first so every handler can clear it. */
+  let coverTimer = 0;
   let mode: Mode = saved.mode;
   let opp: Opponent = saved.opp;
   let stats: Stats = { bestAvg: saved.bestAvg, bestLeg: saved.bestLeg, bestClock: saved.bestClock };
@@ -221,7 +223,6 @@ export function mountDarts(host: HTMLElement): void {
     window.clearTimeout(coverTimer);
     coverTimer = window.setTimeout(() => shell.cover(msg, t("darts.again")), 900);
   };
-  let coverTimer = 0;
 
   // ---------------------------------------------------------------- 3D
 
@@ -463,7 +464,8 @@ export function mountDarts(host: HTMLElement): void {
       launch(throwAt(aim.x + s.x, aim.y + s.y, PLAYER_SIGMA, cryptoRand), match.current);
     }
     const nudge = (dx: number, dy: number) => {
-      const max = DOUBLE_OUT + 40;
+      // Same limit as the pointer: the edge of the board.
+      const max = BOARD_R / MM;
       const x = aim.x + dx, y = aim.y + dy, r = Math.hypot(x, y);
       aim = r > max ? { x: (x / r) * max, y: (y / r) * max } : { x, y };
     };
