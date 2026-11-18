@@ -30,6 +30,7 @@ import {
 } from "../src/shared/quiz";
 import { escapeHtml } from "../src/shared/device-i18n";
 import { quizCopy, quizStaticHtml } from "../src/shared/quiz-i18n";
+import { loveForQuiz } from "../src/shared/kb-love";
 import { pageCanonical, pageTitle } from "../src/shared/seo";
 import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -133,6 +134,16 @@ describe("test pages: routes", () => {
     // The text fallback carries every question.
     const text = quizStaticHtml("en", "anxiety");
     for (const item of quizCopy("en", "anxiety").items as string[]) expect(text).toContain(item.replace(/&/g, "&amp;"));
+  });
+
+  it("links the relationship guides that point to a test", () => {
+    for (const id of QUIZZES) {
+      const guides = loveForQuiz(id);
+      const html = quizStaticHtml("en", id);
+      for (const guide of guides) expect(html).toContain(`href="/en/learn/relationships/${guide}/"`);
+      if (!guides.length) expect(html).not.toContain("/learn/relationships/");
+    }
+    expect(QUIZZES.some((id) => loveForQuiz(id).length)).toBe(true);
   });
 });
 

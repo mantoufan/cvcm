@@ -5,7 +5,7 @@ import { h } from "../dom";
 import { learnFaqSection } from "../faq";
 import { locale, t } from "../i18n";
 import { ALGO_SNIPPETS, ONE_PAGE_HTML, TUTORIAL_META, TUTORIAL_DIAGRAMS, TUTORIAL_SOURCES, tutorialSteps } from "../../shared/learn";
-import { KB_SHELVES, KNOWLEDGE_ARTICLES, kbGroupsOf } from "../../shared/kb";
+import { GROUPED_SHELVES, KB_SHELVES, KNOWLEDGE_ARTICLES, kbGroupsOf } from "../../shared/kb";
 import { ELEMENTS_FOCUS } from "../../shared/elements";
 import { kbLinkItems } from "../../shared/kb-i18n";
 import { appHref, elementsHref, isConvertJobId, kbHref, learnHref, TUTORIAL_GROUPS, type ToolId, type TutorialGroupId, type TutorialId } from "../../shared/path";
@@ -25,23 +25,16 @@ export function mountLearnHub(host: HTMLElement): void {
         linkList(group.tutorials.map((id) => learnLink(loc, id))),
       ),
     ),
-    h("section", { class: "wall", id: "ai" },
-      h("h2", null, h("a", { href: kbHref(loc, "ai"), "data-nav": KB_SHELVES.ai.nav }, t("kb.ai.label"))),
-      h("p", { class: "lede" }, t("kb.ai.lead")),
-      ...kbGroupsOf("ai").map((group) => [
-        h("h3", null, t(`kb.ai.groups.${group.id}`)),
-        linkList(kbLinkItems(loc, group.articles)),
-      ]).flat(),
-      h("p", { class: "more" }, h("a", { href: kbHref(loc, "ai"), "data-nav": KB_SHELVES.ai.nav }, t("kb.ai.all"))),
-    ),
-    h("section", { class: "wall", id: "photography" },
-      h("h2", null, h("a", { href: kbHref(loc, "photo"), "data-nav": KB_SHELVES.photo.nav }, t("kb.photo.label"))),
-      h("p", { class: "lede" }, t("kb.photo.lead")),
-      ...kbGroupsOf("photo").map((group) => [
-        h("h3", null, t(`kb.photo.groups.${group.id}`)),
-        linkList(kbLinkItems(loc, group.articles)),
-      ]).flat(),
-      h("p", { class: "more" }, h("a", { href: kbHref(loc, "photo"), "data-nav": KB_SHELVES.photo.nav }, t("kb.photo.all"))),
+    ...GROUPED_SHELVES.map((shelf) =>
+      h("section", { class: "wall", id: KB_SHELVES[shelf].segment },
+        h("h2", null, h("a", { href: kbHref(loc, shelf), "data-nav": KB_SHELVES[shelf].nav }, t(`kb.${shelf}.label`))),
+        h("p", { class: "lede" }, t(`kb.${shelf}.lead`)),
+        ...kbGroupsOf(shelf).map((group) => [
+          h("h3", null, t(`kb.${shelf}.groups.${group.id}`)),
+          linkList(kbLinkItems(loc, group.articles)),
+        ]).flat(),
+        h("p", { class: "more" }, h("a", { href: kbHref(loc, shelf), "data-nav": KB_SHELVES[shelf].nav }, t(`kb.${shelf}.all`))),
+      ),
     ),
     h("section", { class: "wall", id: "knowledge" },
       h("h2", null, h("a", { href: kbHref(loc), "data-nav": "knowledge" }, t("kb.label"))),

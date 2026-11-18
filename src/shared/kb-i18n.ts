@@ -25,12 +25,12 @@ export type KbArticleCopy = {
 };
 
 export type KbUi = KbMessages["ui"];
-export type KbHubCopy = Omit<KbMessages["hub"], "groups"> & { groups: Record<string, string>; kicker?: string; all?: string };
+export type KbHubCopy = Omit<KbMessages["hub"], "groups"> & { groups: Record<string, string>; kicker?: string; all?: string; related?: string };
 
 const ORIGIN = "https://cv.cm";
 
-/** Hub copy of a shelf: `hub` for knowledge, `codeHub` for coding, `aiHub` for AI, `photoHub` for photography. */
-const HUB_COPY_KEY: Record<KbShelf, "hub" | "codeHub" | "aiHub" | "photoHub"> = { knowledge: "hub", code: "codeHub", ai: "aiHub", photo: "photoHub" };
+/** Hub copy of a shelf: `hub` for knowledge, `codeHub` for coding, `aiHub` for AI, `photoHub` for photography, `loveHub` for relationships. */
+const HUB_COPY_KEY: Record<KbShelf, "hub" | "codeHub" | "aiHub" | "photoHub" | "loveHub"> = { knowledge: "hub", code: "codeHub", ai: "aiHub", photo: "photoHub", love: "loveHub" };
 
 export function kbHub(locale: Locale, shelf: KbShelf = "knowledge"): KbHubCopy {
   return kbMessages(locale)[HUB_COPY_KEY[shelf]];
@@ -105,7 +105,7 @@ export const PUBLISHER = {
   logo: `${ORIGIN}/favicon-512.png`,
 };
 
-/** TechArticle for an article; CollectionPage + ItemList for the hub. */
+/** TechArticle (Article on the relationships shelf) for an article; CollectionPage + ItemList for the hub. */
 export function kbArticleJsonLd(locale: Locale, page: KbPage): Record<string, unknown> {
   const id = kbArticleOf(page);
   if (!id) {
@@ -134,7 +134,8 @@ export function kbArticleJsonLd(locale: Locale, page: KbPage): Record<string, un
   const url = `${ORIGIN}${kbHref(locale, id)}`;
   return {
     "@context": "https://schema.org",
-    "@type": "TechArticle",
+    // Relationship guides are not technical how-tos.
+    "@type": kbShelfOf(id) === "love" ? "Article" : "TechArticle",
     headline: copy.h1,
     description: copy.description,
     abstract: copy.answer.replaceAll("`", ""),

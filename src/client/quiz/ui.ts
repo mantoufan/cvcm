@@ -2,6 +2,8 @@ import { h } from "../dom";
 import { linkList } from "../links";
 import type { Locale } from "../../shared/locale";
 import { appHref, quizHref } from "../../shared/path";
+import { loveForQuiz } from "../../shared/kb-love";
+import { kbLinkItems } from "../../shared/kb-i18n";
 import {
   FAN_GROUPS,
   FOLLOW_UP,
@@ -59,6 +61,16 @@ function faq(locale: Locale, id: QuizId | null): HTMLElement {
       h("details", index === 0 ? { open: true } : null, h("summary", null, item.q), h("p", null, item.a)),
     ),
   );
+}
+
+/** Relationship guides that point to this test (src/shared/kb-love.ts): one section, or none. */
+function guideLinks(locale: Locale, id: QuizId): HTMLElement[] {
+  const guides = loveForQuiz(id);
+  if (!guides.length) return [];
+  return [h("section", { class: "wall" },
+    h("h2", null, quizUi(locale).guides),
+    linkList(kbLinkItems(locale, guides)),
+  )];
 }
 
 function testLinks(locale: Locale, ids: readonly QuizId[]): HTMLElement {
@@ -236,6 +248,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
     form,
     resultBox,
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
+    ...guideLinks(locale, id),
     h("section", { class: "wall" },
       h("h2", null, ui.more),
       testLinks(locale, siblings.slice(0, MORE_LINKS)),
