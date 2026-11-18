@@ -19,6 +19,7 @@
     "ideas:sync": "node scripts/ideas-sync.mjs",
     "nostalgia:sync": "node scripts/nostalgia-sync.mjs",
     "summaries:sync": "node scripts/summaries-sync.mjs",
+    "scripts:sync": "node scripts/scripts-sync.mjs",
     "countries:sync": "node scripts/countries-sync.mjs",
     "quiz:sync": "node scripts/quiz-sync.mjs",
     "calories:fetch": "node --max-old-space-size=4096 scripts/fetch-calories.mjs",

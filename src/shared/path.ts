@@ -18,6 +18,7 @@ import { LEGACY_SLANG_SEGMENTS, SLANG_SEGMENT, isSlangId, type SlangId } from ".
 import { IDEAS_SEGMENT, isIdeaId, type IdeaId } from "./ideas";
 import { NOSTALGIA_SEGMENT, isNostalgiaId, type NostalgiaId } from "./nostalgia";
 import { SUMMARIES_SEGMENT, isSummaryId, type SummaryId } from "./summaries";
+import { SCRIPTS_SEGMENT, isScriptId, type ScriptId } from "./scripts";
 import { COUNTRIES_SEGMENT, isCountrySlug } from "./countries";
 import { CALORIES_SEGMENT, isFoodId, type FoodId } from "./calories";
 import { ELEMENTS_SEGMENT, isElementSlug, type ElementSlug } from "./elements";
@@ -25,7 +26,7 @@ import { CALENDAR_SEGMENT, calendarPageOf, type CalendarPage } from "./calendar"
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "summaries", "countries", "calories", "elements", "calendar"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "summaries", "scripts", "countries", "calories", "elements", "calendar"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -645,6 +646,7 @@ export type AppPath =
   | { kind: "bare-ideas"; entry: IdeaId | null }
   | { kind: "bare-nostalgia"; entry: NostalgiaId | null }
   | { kind: "bare-summaries"; entry: SummaryId | null }
+  | { kind: "bare-scripts"; entry: ScriptId | null }
   | { kind: "bare-countries"; entry: string | null }
   | { kind: "bare-calories"; food: FoodId | null }
   | { kind: "bare-elements"; entry: ElementSlug | null }
@@ -664,6 +666,7 @@ export type AppPath =
   | { kind: "ideas"; locale: Locale; entry: IdeaId | null }
   | { kind: "nostalgia"; locale: Locale; entry: NostalgiaId | null }
   | { kind: "summaries"; locale: Locale; entry: SummaryId | null }
+  | { kind: "scripts"; locale: Locale; entry: ScriptId | null }
   | { kind: "countries"; locale: Locale; entry: string | null }
   | { kind: "calories"; locale: Locale; food: FoodId | null }
   | { kind: "elements"; locale: Locale; entry: ElementSlug | null }
@@ -810,6 +813,12 @@ export function parseAppPath(pathname: string): AppPath {
       if (isSummaryId(third)) return { kind: "summaries", locale, entry: third };
       return { kind: "unknown" };
     }
+    if (second === SCRIPTS_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "scripts", locale, entry: null };
+      if (isScriptId(third)) return { kind: "scripts", locale, entry: third };
+      return { kind: "unknown" };
+    }
     if (second === COUNTRIES_SEGMENT) {
       if (rest.length > 0) return { kind: "unknown" };
       if (!third) return { kind: "countries", locale, entry: null };
@@ -920,6 +929,11 @@ export function parseAppPath(pathname: string): AppPath {
   if (first === SUMMARIES_SEGMENT) {
     if (!second) return { kind: "bare-summaries", entry: null };
     if (isSummaryId(second) && !third) return { kind: "bare-summaries", entry: second };
+    return { kind: "unknown" };
+  }
+  if (first === SCRIPTS_SEGMENT) {
+    if (!second) return { kind: "bare-scripts", entry: null };
+    if (isScriptId(second) && !third) return { kind: "bare-scripts", entry: second };
     return { kind: "unknown" };
   }
   if (first === COUNTRIES_SEGMENT) {
@@ -1033,6 +1047,12 @@ export function nostalgiaHref(locale: Locale, entry: NostalgiaId | null = null):
 /** The summaries channel: `/{locale}/summaries/` (hub) and `/{locale}/summaries/{id}/`. */
 export function summariesHref(locale: Locale, entry: SummaryId | null = null): string {
   const base = `/${localePath(locale)}/${SUMMARIES_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The scripts channel: `/{locale}/scripts/` (hub) and `/{locale}/scripts/{id}/` (scripts, idea lists, the generator). */
+export function scriptsHref(locale: Locale, entry: ScriptId | null = null): string {
+  const base = `/${localePath(locale)}/${SCRIPTS_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
 }
 

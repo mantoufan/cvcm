@@ -47,9 +47,9 @@ const isBuilder = (name: string): boolean => /(Html|Svg|VoteResult)$/.test(name)
 describe("bundle split", () => {
   it("keeps the channel page HTML builders and the Worker-only head module out of the main bundle", () => {
     const seen = reachableFromMain();
-    expect(PAGE_MODULES).toEqual(expect.arrayContaining([...["kb", "ref", "slang", "nostalgia", "summaries", "ideas", "calories"].map((m) => `src/shared/${m}-page.ts`), "src/shared/article-html.ts"]));
+    expect(PAGE_MODULES).toEqual(expect.arrayContaining([...["kb", "ref", "slang", "nostalgia", "summaries", "scripts", "ideas", "calories"].map((m) => `src/shared/${m}-page.ts`), "src/shared/article-html.ts"]));
     // The head helpers stay reachable (titles, descriptions, JSON-LD); the page modules and seo-html.ts do not.
-    for (const m of ["kb", "ref", "slang", "nostalgia", "summaries", "ideas", "calories"]) expect(seen.has(`src/shared/${m}-i18n.ts`), m).toBe(true);
+    for (const m of ["kb", "ref", "slang", "nostalgia", "summaries", "scripts", "ideas", "calories"]) expect(seen.has(`src/shared/${m}-i18n.ts`), m).toBe(true);
     expect(PAGE_MODULES.filter((f) => seen.has(f))).toEqual([]);
     expect(seen.has("src/shared/seo-html.ts")).toBe(false);
   });
@@ -57,7 +57,7 @@ describe("bundle split", () => {
   it("does not declare a page module's builders again in a module the main bundle reaches", () => {
     // Catches a renderer copied (or moved back) into an i18n module under its old name, not only an import of the page module.
     const builders = new Set(PAGE_MODULES.flatMap((file) => declared(file, true)).filter(isBuilder));
-    for (const name of ["kbPageHtml", "refPageHtml", "slangPageHtml", "nostalgiaPageHtml", "ideasPageHtml", "nostalgiaVoteResult", "summariesPageHtml", "caloriesPageHtml"]) expect(builders.has(name), name).toBe(true);
+    for (const name of ["kbPageHtml", "refPageHtml", "slangPageHtml", "nostalgiaPageHtml", "ideasPageHtml", "nostalgiaVoteResult", "summariesPageHtml", "scriptsPageHtml", "caloriesPageHtml"]) expect(builders.has(name), name).toBe(true);
     const clashes = [...reachableFromMain()].flatMap((file) => declared(file).filter((name) => builders.has(name)).map((name) => `${file}: ${name}`));
     expect(clashes).toEqual([]);
   });

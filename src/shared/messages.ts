@@ -14,7 +14,9 @@ import type { IdeaEntryCopy, IdeasData } from "./ideas-i18n";
 import type { NostalgiaId } from "./nostalgia";
 import type { NostalgiaEntryCopy } from "./nostalgia-i18n";
 import type { SummaryId } from "./summaries";
+import type { ScriptId } from "./scripts";
 import type { SummaryEntryCopy } from "./summaries-i18n";
+import type { ScriptEntryCopy } from "./scripts-i18n";
 import type { QuizId } from "./quiz";
 import type { QuizCopy } from "./quiz-i18n";
 
@@ -63,6 +65,13 @@ export type SummariesMessages = typeof import("../locales/summaries/en.json") & 
   list: Record<SummaryId, { name: string; blurb: string }>;
   /** src/shared/summaries-meta.json (kind, creator, years, related, sources): rides in the summaries pack, never the entry bundle. */
   meta: Record<SummaryId, import("./summaries-meta").SummaryMeta>;
+};
+
+/** Scripts hub copy plus every entry's name and blurb (`list`), from `npm run scripts:sync`. */
+export type ScriptsMessages = typeof import("../locales/scripts/en.json") & {
+  list: Record<ScriptId, { name: string; blurb: string; ideas?: number }>;
+  /** src/shared/scripts-meta.json (cast, runtime, genres, format, uses, related): rides in the scripts pack, never the entry bundle. */
+  meta: Record<ScriptId, import("./scripts-meta").ScriptMeta>;
 };
 
 /** Periodic table copy plus this locale's element names, the English names and the PubChem rows (one pack per locale). */
@@ -121,7 +130,9 @@ const loadedNostalgia: Partial<Record<Locale, NostalgiaMessages>> = {};
 const loadedCalendar: Partial<Record<Locale, CalendarMessages>> = {};
 const loadedNostalgiaEntries: Partial<Record<Locale, Partial<Record<NostalgiaId, NostalgiaEntryCopy>>>> = {};
 const loadedSummaries: Partial<Record<Locale, SummariesMessages>> = {};
+const loadedScripts: Partial<Record<Locale, ScriptsMessages>> = {};
 const loadedSummaryEntries: Partial<Record<Locale, Partial<Record<SummaryId, SummaryEntryCopy>>>> = {};
+const loadedScriptEntries: Partial<Record<Locale, Partial<Record<ScriptId, ScriptEntryCopy>>>> = {};
 const loadedElements: Partial<Record<Locale, ElementsMessages>> = {};
 
 function pick<T>(table: Partial<Record<Locale, T>>, locale: Locale, what: string): T {
@@ -374,6 +385,34 @@ export function hasSummaryEntry(locale: Locale, id: SummaryId): boolean {
 export function summaryEntryMessages(locale: Locale, id: SummaryId): SummaryEntryCopy {
   const copy = loadedSummaryEntries[locale]?.[id] ?? loadedSummaryEntries.en?.[id];
   if (!copy) throw new Error(`summary not loaded: ${locale} ${id}`);
+  return copy;
+}
+
+/** Scripts hub copy, labels and entry names and blurbs; on the client only after the scripts pack is loaded (scripts pages). */
+export function registerScriptsMessages(locale: Locale, pack: ScriptsMessages): void {
+  loadedScripts[locale] = pack;
+}
+
+export function hasScriptsMessages(locale: Locale): boolean {
+  return Boolean(loadedScripts[locale]);
+}
+
+export function scriptsMessages(locale: Locale): ScriptsMessages {
+  return pick(loadedScripts, locale, "scripts messages");
+}
+
+/** One scripts entry's copy. The client loads each entry on its own. */
+export function registerScriptEntry(locale: Locale, id: ScriptId, copy: ScriptEntryCopy): void {
+  (loadedScriptEntries[locale] ??= {})[id] = copy;
+}
+
+export function hasScriptEntry(locale: Locale, id: ScriptId): boolean {
+  return Boolean(loadedScriptEntries[locale]?.[id]);
+}
+
+export function scriptEntryMessages(locale: Locale, id: ScriptId): ScriptEntryCopy {
+  const copy = loadedScriptEntries[locale]?.[id] ?? loadedScriptEntries.en?.[id];
+  if (!copy) throw new Error(`script not loaded: ${locale} ${id}`);
   return copy;
 }
 

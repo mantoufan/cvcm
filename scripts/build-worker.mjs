@@ -52,6 +52,11 @@ for (const [src, chunk] of Object.entries(manifest)) {
   if (summaryEntry && summaryEntry[1] !== "index") localePacks[`summaries-${summaryEntry[1]}/${summaryEntry[2]}`] = [`/${chunk.file}`];
   const summaryLoaders = /^src\/locales\/summaries\/loaders\/([^/]+)\.ts$/.exec(src);
   if (summaryLoaders) localePacks[`summaries-${summaryLoaders[1]}/loaders`] = [`/${chunk.file}`];
+  // Scripts and loader tables: "scripts-<locale>/<id>" and "scripts-<locale>/loaders" (the pack is "scripts-<locale>").
+  const scriptEntry = /^src\/locales\/scripts\/([a-zA-Z-]+)\/([a-z0-9-]+)\.json$/.exec(src);
+  if (scriptEntry && scriptEntry[1] !== "index") localePacks[`scripts-${scriptEntry[1]}/${scriptEntry[2]}`] = [`/${chunk.file}`];
+  const scriptLoaders = /^src\/locales\/scripts\/loaders\/([^/]+)\.ts$/.exec(src);
+  if (scriptLoaders) localePacks[`scripts-${scriptLoaders[1]}/loaders`] = [`/${chunk.file}`];
   // One test's copy and the loader tables: "quiz-<locale>/<id>" and "quiz-<locale>/loaders" (the pack is "quiz-<locale>").
   const quizTest = /^src\/locales\/quiz\/([a-zA-Z-]+)\/([a-z0-9-]+)\.json$/.exec(src);
   if (quizTest) localePacks[`quiz-${quizTest[1]}/${quizTest[2]}`] = [`/${chunk.file}`];
@@ -98,6 +103,7 @@ const pageModules = {
   ideas: "src/client/ideas/ui.ts",
   nostalgia: "src/client/nostalgia/ui.ts",
   summaries: "src/client/summaries/ui.ts",
+  scripts: "src/client/scripts/ui.ts",
   countries: "src/client/countries/ui.ts",
   calories: "src/client/calories/ui.ts",
   elements: "src/client/elements/ui.ts",
