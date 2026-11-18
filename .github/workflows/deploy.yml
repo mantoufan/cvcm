@@ -10,7 +10,11 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  # Tests and the typecheck run on their own runner while the deploy job builds; the deploy job waits for them before
+  # it changes anything (D1, s3.cv.cm, the Worker). Handing dist/ (about 1 GB) from one job to another would cost
+  # more than it saves.
+  check:
+    name: Tests and typecheck
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -23,7 +27,35 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run typecheck
+
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
       - run: npm run build
+      - name: Wait for tests and typecheck
+        timeout-minutes: 30
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          while true; do
+            state=$(gh run view ${{ github.run_id }} --attempt ${{ github.run_attempt }} -R ${{ github.repository }} --json jobs \
+              -q '.jobs[] | select(.name == "Tests and typecheck") | "\(.status) \(.conclusion)"')
+            case "$state" in
+              "completed success") echo "Tests and typecheck passed"; break ;;
+              completed*) echo "::error::Tests and typecheck did not pass ($state); nothing deployed"; exit 1 ;;
+              "") echo "::error::no 'Tests and typecheck' job in this run"; exit 1 ;;
+            esac
+            sleep 10
+          done
       - name: Apply D1 migrations
         run: npx wrangler d1 migrations apply cvcm --remote
         env:
