@@ -2,7 +2,7 @@
 // Bundled first because happy-dom's globals break a live transformer such as vite-node.
 import * as esbuild from "esbuild";
 import { spawn } from "node:child_process";
-import { existsSync, readFileSync, rmSync } from "node:fs";
+import { readFileSync, rmSync } from "node:fs";
 import { availableParallelism, totalmem } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -51,10 +51,13 @@ await esbuild.build({
 });
 
 // Fresh processes: memory grows with every page a process renders (see prerender.ts), so no process takes more than
-// about PAGES_PER_PROCESS, however large the sitemap grows. Several shards run at once, one per core while memory
-// allows (each needs up to MEMORY_PER_PROCESS); PRERENDER_JOBS overrides that. Each child gets this process's heap
-// limit and its own report; the counts are added up here into one summary.
-const PAGES_PER_PROCESS = 1000;
+// a set number of pages, however large the sitemap grows. Several shards run at once, one per core while memory
+// allows: MEMORY_PER_PROCESS is what one child of PAGES_PER_PARALLEL_PROCESS pages needs (about 3.4 GB RSS measured
+// in November 2026), so a 16 GB runner takes 4. PRERENDER_JOBS overrides the count. Shards are halved only when they
+// run side by side; one at a time, fewer processes start faster. Each child gets this process's heap limit and its
+// own report; the counts are added up here, in shard order, into one summary.
+const PAGES_PER_PROCESS = 2000;
+const PAGES_PER_PARALLEL_PROCESS = 1000;
 const MEMORY_PER_PROCESS = 4 * 1024 ** 3;
 const reportBase = join(root, "node_modules/.cache", `cvcm-prerender-${process.pid}`);
 const started = Date.now();
@@ -84,42 +87,56 @@ function child(label, env) {
     run.on("exit", (status, signal) => {
       running.delete(run);
       if (status !== 0) return fail(new Error(`prerender: ${label} failed (${signal ?? `exit ${status}`})`));
-      if (!existsSync(report)) return fail(new Error(`prerender: ${label} exited without writing its report`));
-      done(JSON.parse(readFileSync(report, "utf8")));
+      try {
+        done(JSON.parse(readFileSync(report, "utf8")));
+      } catch (error) {
+        fail(new Error(`prerender: ${label} left no readable report: ${error.message}`));
+      }
     });
   });
 }
 
-function jobCount(shards) {
+function jobLimit() {
   const set = process.env.PRERENDER_JOBS;
-  if (set !== undefined && !/^[1-9]\d*$/.test(set)) throw new Error(`prerender: PRERENDER_JOBS=${set} is not a positive integer`);
-  const limit = set ? Number(set) : Math.min(availableParallelism(), Math.floor(totalmem() / MEMORY_PER_PROCESS));
-  return Math.max(1, Math.min(shards, limit));
+  if (set && !/^[1-9]\d*$/.test(set)) throw new Error(`prerender: PRERENDER_JOBS=${set} is not a positive integer`);
+  return set ? Number(set) : Math.max(1, Math.min(availableParallelism(), Math.floor(totalmem() / MEMORY_PER_PROCESS)));
 }
 
 try {
+  const limit = jobLimit();
   const { total } = await child("the page count", { PRERENDER_COUNT_ONLY: "1" });
-  const shards = Math.max(1, Math.ceil(total / PAGES_PER_PROCESS));
-  const jobs = jobCount(shards);
+  const shards = Math.max(1, Math.ceil(total / (limit > 1 ? PAGES_PER_PARALLEL_PROCESS : PAGES_PER_PROCESS)));
+  const jobs = Math.min(shards, limit);
   console.log(`prerender: ${total} pages in ${shards} shards, ${jobs} at a time`);
+  const parts = [];
   let next = 0;
+  let stopped;
   async function worker() {
-    while (next < shards) {
+    while (!stopped && next < shards) {
       const shard = next++;
       const shardStarted = Date.now();
-      const part = await child(`shard ${shard + 1}/${shards}`, { PRERENDER_SHARD: `${shard}/${shards}` });
+      try {
+        parts[shard] = await child(`shard ${shard + 1}/${shards}`, { PRERENDER_SHARD: `${shard}/${shards}` });
+      } catch (error) {
+        // One failed shard fails the build: stop the others rather than let them finish for nothing.
+        if (!stopped) {
+          stopped = error;
+          for (const run of running) run.kill();
+        }
+        return;
+      }
+      const part = parts[shard];
       console.log(`prerender: shard ${shard + 1}/${shards}: ${part.written} pages, ${part.failed.length} skipped in ${((Date.now() - shardStarted) / 1000).toFixed(1)}s`);
-      written += part.written;
-      failed.push(...part.failed);
-      for (const error of part.errors) errors.add(error);
     }
   }
-  // One failed shard fails the build: stop the others rather than let them finish for nothing.
-  await Promise.all(Array.from({ length: jobs }, worker)).catch((error) => {
-    next = shards;
-    for (const run of running) run.kill();
-    throw error;
-  });
+  // Every worker returns only once its child has exited, so nothing is still writing when this throws or cleans up.
+  await Promise.all(Array.from({ length: jobs }, worker));
+  if (stopped) throw stopped;
+  for (const part of parts) {
+    written += part.written;
+    failed.push(...part.failed);
+    for (const error of part.errors) errors.add(error);
+  }
   // Every page is either written or skipped by exactly one shard; anything else means the shards missed pages.
   if (written + failed.length !== total) throw new Error(`prerender: shards covered ${written + failed.length} of ${total} pages`);
 } finally {
