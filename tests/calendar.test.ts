@@ -49,7 +49,8 @@ describe("calendar pages", () => {
         for (const f of faq) expect(`${f.q} ${f.a}`, where).not.toMatch(LEFTOVER);
       }
     }
-  });
+    // 424 pages, each rendered with title, description and FAQ: seconds on a CI runner, beyond vitest's 5 s default.
+  }, 60_000);
 
   it("parses and links every page", () => {
     for (const page of CALENDAR_PAGES) {

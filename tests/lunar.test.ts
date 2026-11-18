@@ -27,7 +27,8 @@ describe("lunar tables", () => {
       if (ours.month !== ref.month || ours.day !== ref.day || ours.leap !== ref.leap) misses.push(`${civilDate(n).join("-")} ours ${ours.month}${ours.leap ? "L" : ""}/${ours.day} icu ${ref.month}${ref.leap ? "L" : ""}/${ref.day}`);
     }
     expect(misses).toEqual([]);
-  });
+    // Every day from 1929 to 2099 against ICU.
+  }, 60_000);
 
   it("knows lunar new year in each reckoning", () => {
     const iso = (n: number | null) => (n === null ? null : civilDate(n).map((v) => String(v).padStart(2, "0")).join("-"));
