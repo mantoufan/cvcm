@@ -70,16 +70,18 @@ const errors = new Set();
 const childFlags = process.execArgv.filter((flag) => !/^--(inspect|debug)/.test(flag));
 const running = new Set();
 const reports = [];
-// Stopping the build (Ctrl+C, a cancelled CI job) stops the shards too instead of leaving them rendering.
+// Stopping the build (Ctrl+C, a cancelled CI job) stops the shards too instead of leaving them rendering. The shards
+// it kills then look failed to the code below, which waits for this instead of reporting them.
+let interrupted;
 for (const signal of ["SIGINT", "SIGTERM"]) {
-  process.once(signal, async () => {
+  process.once(signal, () => (interrupted ??= (async () => {
     const exits = [...running].map((run) => new Promise((exited) => run.once("exit", exited)));
     for (const run of running) run.kill();
     await Promise.race([Promise.all(exits), new Promise((late) => setTimeout(late, 5000))]);
     rmSync(outfile, { force: true });
     for (const report of reports) rmSync(report, { force: true });
     process.exit(signal === "SIGINT" ? 130 : 143);
-  });
+  })()));
 }
 
 function child(label, env) {
@@ -124,7 +126,10 @@ function jobLimit() {
 try {
   const limit = jobLimit();
   const { total } = await child("the page count", { PRERENDER_COUNT_ONLY: "1" });
-  const shards = Math.max(1, Math.ceil(total / (limit > 1 ? PAGES_PER_PARALLEL_PROCESS : PAGES_PER_PROCESS)));
+  // Side by side, a whole number of rounds: no core sits idle while the last few shards finish.
+  const shards = limit > 1
+    ? limit * Math.ceil(total / (limit * PAGES_PER_PARALLEL_PROCESS))
+    : Math.max(1, Math.ceil(total / PAGES_PER_PROCESS));
   const jobs = Math.min(shards, limit);
   console.log(`prerender: ${total} pages in ${shards} shards, ${jobs} at a time`);
   const parts = [];
@@ -158,6 +163,10 @@ try {
   }
   // Every page is either written or skipped by exactly one shard; anything else means the shards missed pages.
   if (written + failed.length !== total) throw new Error(`prerender: shards covered ${written + failed.length} of ${total} pages`);
+} catch (error) {
+  // Shards killed by an interrupt are not the build failing: let the signal handler finish and exit.
+  if (interrupted) await interrupted;
+  throw error;
 } finally {
   rmSync(outfile, { force: true });
   for (const report of reports) rmSync(report, { force: true });
