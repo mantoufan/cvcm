@@ -323,7 +323,10 @@ describe("slang: page HTML and SEO", () => {
     expect(slangPageHtml("zh-TW", "guyongzhe")).toContain("· 陳奕迅</p>");
     expect(slangPageHtml("en", "guyongzhe")).toContain("· Eason Chan</p>");
     expect(slangPageHtml("ja", "pedro")).toContain("· Jaxomy、Agatino Romero、Raffaella Carrà</p>");
-    expect(slangPageHtml("es", "pedro")).toContain("· Jaxomy &amp; Agatino Romero &amp; Raffaella Carrà</p>");
+    expect(slangPageHtml("es", "pedro")).toContain("· Jaxomy, Agatino Romero y Raffaella Carrà</p>");
+    // Japanese reads a Chinese credit in Traditional characters when zh-TW has its own form.
+    expect(slangPageHtml("ja", "yixiao-jianghu")).toContain("· 聞人聽書_</p>");
+    expect(slangPageHtml("en", "rickroll")).toContain(`alt="Rick Astley (${slangCopy("en", "rickroll").name})"`);
     expect((slangArticleJsonLd("zh-TW", "guyongzhe") as { about: { byArtist: { name: string }[] } }).about.byArtist[0].name).toBe("陳奕迅");
     const song = slangArticleJsonLd("ja", "apt") as { about: Record<string, unknown> };
     expect(song.about).toMatchObject({ "@type": "MusicRecording", name: slangCopy("ja", "apt").name });

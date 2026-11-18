@@ -3,7 +3,7 @@ import { fill } from "./fill";
 import { PUBLISHER, type KbBlock } from "./kb-i18n";
 import { slangEntryMessages, slangMessages, type SlangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
-import { SLANG_ENTRIES, SLANG_META, SLANG_UPDATED, slangGroupOf, slangPublished, type SlangId } from "./slang";
+import { SLANG_ENTRIES, SLANG_META, isSong, SLANG_UPDATED, slangGroupOf, slangPublished, type SlangId } from "./slang";
 import { coverUrl } from "./covers";
 import { memeImage, memeImagePath } from "./meme-images";
 import { HREFLANG } from "./sitemap";
@@ -59,17 +59,19 @@ export function slangUpdated(id: SlangId): string {
   return SLANG_UPDATED[id] ?? slangPublished(id);
 }
 
-/** Chinese and Japanese: their own list punctuation, and they read a Chinese artist's credit as written. */
-export const CJK_LOCALES: ReadonlySet<Locale> = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
-
-/** A song's credited artists as this locale writes them (CJK falls back to the credit, others to the English name). */
+/** A song's credited artists as this locale writes them (fallbacks in `SlangArtist`). */
 export function songArtists(locale: Locale, id: SlangId): string[] {
-  return (SLANG_META[id].song?.by ?? []).map((artist) => artist.names?.[locale] ?? (CJK_LOCALES.has(locale) ? artist.name : artist.names?.en ?? artist.name));
+  return (SLANG_META[id].song?.by ?? []).map((artist) => {
+    const names = artist.names ?? {};
+    if (locale === "zh-CN") return names[locale] ?? artist.name;
+    if (locale === "zh-TW" || locale === "ja") return names[locale] ?? names["zh-TW"] ?? artist.name;
+    return names[locale] ?? names.en ?? artist.name;
+  });
 }
 
-/** Artists joined for display: "A、B" in Chinese and Japanese, "A & B" elsewhere. */
+/** Artists as a list in the reader's language ("A, B y C", "A、B和C"). */
 export function songArtistsLabel(locale: Locale, id: SlangId): string {
-  return songArtists(locale, id).join(CJK_LOCALES.has(locale) ? "、" : " & ");
+  return new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }).format(songArtists(locale, id));
 }
 
 /**
@@ -78,7 +80,7 @@ export function songArtistsLabel(locale: Locale, id: SlangId): string {
  */
 export function memeImageAlt(locale: Locale, id: SlangId): string {
   const name = slangName(locale, id).name;
-  const person = SLANG_META[id].song ? songArtists(locale, id)[0] : memeImage(id)?.who;
+  const person = isSong(id) ? songArtists(locale, id)[0] : memeImage(id)?.who;
   return person ? fill(slangUi(locale).imageAltWho, { who: person, name }) : fill(slangUi(locale).imageAlt, { name });
 }
 
@@ -147,8 +149,8 @@ function termSetRef(locale: Locale): Record<string, unknown> {
 export function slangArticleJsonLd(locale: Locale, id: SlangId | null): Record<string, unknown> {
   if (!id) {
     const hub = slangHub(locale);
-    const songs = SLANG_ENTRIES.filter((entry) => SLANG_META[entry].song);
-    const terms = SLANG_ENTRIES.filter((entry) => !SLANG_META[entry].song);
+    const songs = SLANG_ENTRIES.filter(isSong);
+    const terms = SLANG_ENTRIES.filter((entry) => !isSong(entry));
     return {
       "@context": "https://schema.org",
       "@type": "CollectionPage",

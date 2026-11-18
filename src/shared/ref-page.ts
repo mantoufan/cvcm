@@ -2,8 +2,7 @@
  * The pose-reference page HTML (hub and entries), shared by the client page and the Worker's crawler copy. Kept out of
  * ref-i18n so the main bundle, which needs only titles, descriptions and JSON-LD, does not carry it.
  */
-import type { Locale } from "./locale";
-import { LOCALES } from "./locale";
+import { CJK_LOCALES, LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { blockHtml, inline, linkListHtml } from "./article-html";
@@ -35,7 +34,6 @@ export function refPhotoPage(photo: RefPhoto): string {
   return `https://www.mfan8.com/${encodeURIComponent(photo.item)}`;
 }
 
-const CJK = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
 
 function crumbHtml(locale: Locale, id: RefId | null): string {
   const m = refMessages(locale);
@@ -148,7 +146,7 @@ export function refPageHtml(locale: Locale, id: RefId | null): string {
   }
   const copy = refCopy(locale, id);
   const meta = REF_META[id];
-  const cjk = CJK.has(locale);
+  const cjk = CJK_LOCALES.has(locale);
   const toc = copy.sections.map((s, i) => `<li><a href="#ref-${i + 1}">${inline(s.h)}</a></li>`).join("");
   const sections = copy.sections.map((s, i) => (
     `<section class="kb-section" id="ref-${i + 1}"><h2>${inline(s.h)}</h2>${s.body.map(blockHtml).join("")}</section>`

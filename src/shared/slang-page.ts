@@ -3,17 +3,17 @@
  * crawler copy. Kept out of slang-i18n so the main bundle, which needs only titles, descriptions and JSON-LD, does not
  * carry it.
  */
-import type { Locale } from "./locale";
+import { CJK_LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
 import { slangMessages } from "./messages";
 import { appHref, slangHref } from "./path";
-import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, slangGroupOf, type SlangId } from "./slang";
+import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, isSong, slangGroupOf, type SlangId } from "./slang";
 import { memeImage, memeImagePath } from "./meme-images";
 import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
-import { CJK_LOCALES, memeImageAlt, songArtistsLabel, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
+import { memeImageAlt, songArtistsLabel, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
 
 /**
  * The picture right under the answer, near the top of the page: loaded eagerly as the likely LCP element, with its size
@@ -248,7 +248,7 @@ export function slangPageHtml(locale: Locale, id: SlangId | null): string {
     `<section class="kb-section" id="slang-${i + 1}"><h2>${inline(s.h)}</h2>${s.body.map(blockHtml).join("")}</section>`
   )).join("");
   // A song names its artists where other entries name the language they come from.
-  const origin = meta.song
+  const origin = isSong(id)
     ? songArtistsLabel(locale, id)
     : { zh: ui.originZh, en: ui.originEn, yue: ui.originYue, web: ui.originWeb }[meta.origin];
   const platform = meta.platform ? { douyin: ui.platformDouyin, tiktok: ui.platformTiktok, both: ui.platformBoth }[meta.platform] : null;
@@ -257,7 +257,7 @@ export function slangPageHtml(locale: Locale, id: SlangId | null): string {
     `<article class="kb slang">`,
     `<header class="tool-head"><p class="kicker">${escapeHtml(ui.kicker)} · ${escapeHtml(groupLabels[slangGroupOf(id)])} · ${escapeHtml(origin)}</p>`,
     `<h1>${escapeHtml(copy.h1)}</h1>`,
-    `<p class="kb-meta">${platform ? `<span class="meme-platform">${escapeHtml(platform)}</span> · ` : ""}${meta.born ? `<span class="meme-born">${escapeHtml(fill(meta.song ? ui.released : ui.born, { date: bornLabel(locale, meta.born) }))}</span> · ` : ""}<time datetime="${slangUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, slangUpdated(id)) }))}</time></p>`,
+    `<p class="kb-meta">${platform ? `<span class="meme-platform">${escapeHtml(platform)}</span> · ` : ""}${meta.born ? `<span class="meme-born">${escapeHtml(fill(isSong(id) ? ui.released : ui.born, { date: bornLabel(locale, meta.born) }))}</span> · ` : ""}<time datetime="${slangUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, slangUpdated(id)) }))}</time></p>`,
     copy.aka.length ? `<p class="ref-aka">${escapeHtml(ui.also)}${cjk ? "：" : ": "}${escapeHtml(copy.aka.join(cjk ? "、" : ", "))}</p>` : "",
     `</header>`,
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p></section>`,

@@ -111,18 +111,36 @@ async function wikipediaCandidates() {
 /** Articles already decided on: left out on purpose (Clanker is a slur, Kirkification is politics; AGENTS.md) or covered under another article. */
 const DECIDED = new Set(["Clanker", "Jet2.com", "Kirkification"]);
 
-/** Wikipedia categories that mark an article as politics, a crime or a disaster rather than a meme to write up. */
-const OFF_TOPIC = /politic|charlie kirk|election|government|president|parliament|protest|war\b|military|terror|assassinat|murder|killing|shooting|deaths?\b|disaster|scandal|controvers|sex/i;
+/** Wikipedia categories (whole words) that mark an article as politics, a crime or a disaster rather than a meme to write up. */
+const OFF_TOPIC = /\b(politic\w*|elections?|government|presidents?|parliament|protests?|wars?|military|terror\w*|assassinat\w*|murders?|killings?|shootings?|deaths?|disasters?|sex|sexual\w*)\b|charlie kirk/i;
 
+/**
+ * Titles whose categories mark them off-topic. A batch whose categories cannot be read is dropped whole (and warned
+ * about): the list is public, so an unchecked article stays out rather than in.
+ */
 async function offTopic(titles) {
   const off = new Set();
   for (let i = 0; i < titles.length; i += 50) {
     const batch = titles.slice(i, i + 50);
-    const body = await getJson(`https://en.wikipedia.org/w/api.php?action=query&prop=categories&clshow=!hidden&cllimit=max&format=json&titles=${encodeURIComponent(batch.join("|"))}`).catch(() => null);
-    const norm = new Map((body?.query?.normalized ?? []).map((n) => [n.to, n.from]));
-    for (const page of Object.values(body?.query?.pages ?? {})) {
-      if ((page.categories ?? []).some((c) => OFF_TOPIC.test(c.title))) off.add(norm.get(page.title) ?? page.title);
+    const categories = new Map(batch.map((t) => [t, []]));
+    try {
+      let cont = "";
+      do {
+        const body = await getJson(`https://en.wikipedia.org/w/api.php?action=query&prop=categories&clshow=!hidden&cllimit=max&format=json&titles=${encodeURIComponent(batch.join("|"))}${cont}`);
+        const norm = new Map((body?.query?.normalized ?? []).map((n) => [n.to, n.from]));
+        for (const page of Object.values(body?.query?.pages ?? {})) {
+          const title = norm.get(page.title) ?? page.title;
+          categories.get(title)?.push(...(page.categories ?? []).map((c) => c.title));
+        }
+        // The 500-category cap is per request, not per page: follow clcontinue until every page's list is complete.
+        cont = body?.continue?.clcontinue ? `&clcontinue=${encodeURIComponent(body.continue.clcontinue)}` : "";
+      } while (cont);
+    } catch (error) {
+      console.warn(`categories for ${batch.length} articles: ${error.message}; leaving them out`);
+      for (const t of batch) off.add(t);
+      continue;
     }
+    for (const [title, cats] of categories) if (cats.some((c) => OFF_TOPIC.test(c))) off.add(title);
   }
   return off;
 }
@@ -143,6 +161,9 @@ async function tiktokHints(apiKey) {
   return { tags: top(tags), sounds: top(sounds) };
 }
 
+const tiktok = process.argv.includes("--tiktok");
+// Check the key before the Wikipedia pass, so a missing key costs no requests.
+if (tiktok && !process.env.SCRAPECREATORS_API_KEY) throw new Error("--tiktok needs SCRAPECREATORS_API_KEY");
 const fmt = (n) => n.toLocaleString("en-US");
 const lines = [`# Meme candidates (${new Date().toISOString().slice(0, 10)})`, "", "Wikipedia articles in *Internet memes introduced in* this year or last that /memes/ does not track yet, by views over the last 28 days. Check Keyword Planner before writing one up.", "", "| # | Article | 28 days | Change |", "|---|---|---|---|"];
 const wiki = await wikipediaCandidates();
@@ -151,10 +172,8 @@ wiki.forEach((c, i) => {
   lines.push(`| ${i + 1} | [${c.title}](https://en.wikipedia.org/wiki/${encodeURIComponent(key(c.title))}) | ${fmt(c.recent)} | ${change} |`);
 });
 
-if (process.argv.includes("--tiktok")) {
-  const apiKey = process.env.SCRAPECREATORS_API_KEY;
-  if (!apiKey) throw new Error("--tiktok needs SCRAPECREATORS_API_KEY");
-  const { tags, sounds } = await tiktokHints(apiKey);
+if (tiktok) {
+  const { tags, sounds } = await tiktokHints(process.env.SCRAPECREATORS_API_KEY);
   lines.push("", `## TikTok trending feed (${TIKTOK_REGIONS.join(", ")}; hints only, not for publishing)`, "", `Hashtags: ${tags.map(([t, n]) => `${t} (${n})`).join(", ") || "none"}`, "", `Sounds: ${sounds.map(([t, n]) => `${t} (${n})`).join("; ") || "none"}`);
 }
 

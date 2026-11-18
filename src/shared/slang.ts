@@ -1,3 +1,5 @@
+import type { Locale } from "./locale";
+
 /**
  * The Memes channel under `/{locale}/memes/{id}/` (the slang dictionary until 2026-11-13; `/slang/` 301s here): what a
  * meme or an internet word means, where and when it started and how people use it, written for "what is X" searches. Entries were chosen from Google Ads
@@ -39,8 +41,11 @@ export type SlangSource = { name: string; url: string };
 
 export type SlangPlatform = "douyin" | "tiktok" | "both";
 
-/** A credited artist: `name` as credited (shown in zh-CN), `names` by locale; other locales fall back to `names.en`, then `name`. */
-export type SlangArtist = { name: string; names?: Partial<Record<string, string>>; type: "Person" | "MusicGroup" };
+/**
+ * A credited artist: `name` as credited (shown in zh-CN) and `names` by locale. Without its own name a locale falls back:
+ * zh-TW and ja to `names["zh-TW"]` then `name` (Chinese characters, closest to their own script), others to `names.en`.
+ */
+export type SlangArtist = { name: string; names?: Partial<Record<Locale, string>>; type: "Person" | "MusicGroup" };
 
 export type SlangMeta = {
   /** The term as written where it comes from (the catalog key readers search; pages show each locale's `name`). */
@@ -222,6 +227,11 @@ export const SLANG_META: Record<SlangId, SlangMeta> = {
   "xue-mao-jiao": { term: "学猫叫", origin: "zh", born: "2018-04", platform: "douyin", song: { by: [{ name: "小潘潘", names: { en: "Xiao Panpan" }, type: "Person" }, { name: "小峰峰", names: { en: "Xiao Fengfeng" }, type: "Person" }] }, related: ["yelang-disco", "guyongzhe", "hajimi"], sources: [{ name: "Wikipedia（中文）: 学猫叫", url: "https://zh.wikipedia.org/wiki/学猫叫" }, { name: "搜狐（转载人民网）: 主播小潘潘《学猫叫》引发全民卖萌热潮", url: "https://www.sohu.com/a/240296366_652038" }] },
   "yixiao-jianghu": { term: "一笑江湖", origin: "zh", born: "2020-02", platform: "douyin", song: { by: [{ name: "闻人听書_", names: { en: "Wenren Tingshu_", "zh-TW": "聞人聽書_" }, type: "Person" }] }, related: ["kemusan", "guyongzhe", "yelang-disco"], sources: [{ name: "Wikipedia（中文）: 一笑江湖", url: "https://zh.wikipedia.org/wiki/一笑江湖" }, { name: "Wikipedia（中文）: 科目三 (舞蹈)", url: "https://zh.wikipedia.org/wiki/科目三_(舞蹈)" }] },
 };
+
+/** A viral song (it has credited artists), not a meme or a word. */
+export function isSong(id: SlangId): boolean {
+  return Boolean(SLANG_META[id].song);
+}
 
 export function isSlangId(value: string): value is SlangId {
   return (SLANG_ENTRIES as readonly string[]).includes(value);

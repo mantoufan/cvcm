@@ -3,7 +3,7 @@
  * JSON-LD), which the main bundle needs for every page's head: only the ideas UI chunk and the Worker's fallback body
  * (seo-html.ts) import this, so the renderers stay out of the main bundle.
  */
-import { LOCALES, type Locale } from "./locale";
+import { CJK_LOCALES, LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
@@ -174,7 +174,6 @@ function panelHtml(locale: Locale, id: IdeaId): string {
     + `<p class="idea-note">${escapeHtml(ui.disclaimer)}</p></section>`;
 }
 
-const CJK = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
 
 function crumbHtml(locale: Locale, id: IdeaId | null): string {
   const m = ideasMessages(locale);
@@ -259,7 +258,7 @@ export function ideasPageHtml(locale: Locale, id: IdeaId | null): string {
   )).join("");
   const startup = { 1: ui.startup1, 2: ui.startup2, 3: ui.startup3 }[meta.startup];
   const where = meta.where === "online" ? ui.online : ui.local;
-  const colon = CJK.has(locale) ? "：" : ": ";
+  const colon = CJK_LOCALES.has(locale) ? "：" : ": ";
   return [
     crumbHtml(locale, id),
     `<article class="kb idea">`,
