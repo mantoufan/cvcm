@@ -17,8 +17,6 @@ for (const [path, content] of Object.entries(files)) {
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, content);
 }
-const masters = missing.filter((path) => path.startsWith("src/locales/summaries/en/"));
-if (masters.length) console.warn(`summaries:sync: ${masters.length} English masters missing, those works are left out: ${masters.map((p) => p.slice(25, -5)).join(" ")}`);
-const others = missing.filter((path) => !masters.includes(path));
+const others = missing;
 if (others.length) console.warn(`summaries:sync: ${others.length} locale files missing, English stands in: ${others.slice(0, 10).join(" ")}${others.length > 10 ? " …" : ""}`);
 console.log(`summaries:sync: wrote ${Object.keys(files).length} files`);

@@ -1,7 +1,9 @@
 {
   "name": "Inception",
   "blurb": "Nolan's heist film about a team that plants an idea deep inside a man's dreams",
-  "aka": ["Inception (2010)"],
+  "aka": [
+    "Inception (2010)"
+  ],
   "title": "Inception Explained: Plot Summary and Ending",
   "description": "Inception explained: the team, the dream levels, kicks, limbo and totems, the full plot of the Fischer job, and what the spinning top at the end means.",
   "h1": "Inception Explained: Plot, Dream Levels and Ending",
@@ -12,17 +14,47 @@
       "body": [
         {
           "table": {
-            "head": ["Character", "Who they are"],
+            "head": [
+              "Character",
+              "Who they are"
+            ],
             "rows": [
-              ["Dom Cobb (Leonardo DiCaprio)", "An 'extractor' who steals secrets from dreams and cannot return to the United States"],
-              ["Arthur (Joseph Gordon-Levitt)", "Cobb's partner, who researches and organises each job"],
-              ["Ariadne (Elliot Page)", "An architecture student recruited to design the dream worlds"],
-              ["Eames (Tom Hardy)", "A forger who can impersonate other people inside dreams"],
-              ["Yusuf (Dileep Rao)", "A chemist who makes the sedatives the team needs"],
-              ["Saito (Ken Watanabe)", "A Japanese businessman who hires Cobb and joins the job himself"],
-              ["Robert Fischer (Cillian Murphy)", "Heir to his dying father's energy empire, and the target"],
-              ["Mal (Marion Cotillard)", "Cobb's late wife, who keeps appearing in his dreams"],
-              ["Peter Browning (Tom Berenger) and Professor Miles (Michael Caine)", "Robert's godfather and business adviser; Cobb's father-in-law and former teacher"]
+              [
+                "Dom Cobb (Leonardo DiCaprio)",
+                "An 'extractor' who steals secrets from dreams and cannot return to the United States"
+              ],
+              [
+                "Arthur (Joseph Gordon-Levitt)",
+                "Cobb's partner, who researches and organises each job"
+              ],
+              [
+                "Ariadne (Elliot Page)",
+                "An architecture student recruited to design the dream worlds"
+              ],
+              [
+                "Eames (Tom Hardy)",
+                "A forger who can impersonate other people inside dreams"
+              ],
+              [
+                "Yusuf (Dileep Rao)",
+                "A chemist who makes the sedatives the team needs"
+              ],
+              [
+                "Saito (Ken Watanabe)",
+                "A Japanese businessman who hires Cobb and joins the job himself"
+              ],
+              [
+                "Robert Fischer (Cillian Murphy)",
+                "Heir to his dying father's energy empire, and the target"
+              ],
+              [
+                "Mal (Marion Cotillard)",
+                "Cobb's late wife, who keeps appearing in his dreams"
+              ],
+              [
+                "Peter Browning (Tom Berenger) and Professor Miles (Michael Caine)",
+                "Robert's godfather and business adviser; Cobb's father-in-law and former teacher"
+              ]
             ]
           }
         },
@@ -87,20 +119,32 @@
   "check": [
     {
       "q": "What is 'inception' in the film?",
-      "options": ["Stealing a secret from a dream", "Planting an idea so the target thinks it is his own", "Waking someone from limbo"],
-      "answer": 1,
+      "options": [
+        "Stealing a secret from a dream",
+        "Waking someone from limbo",
+        "Planting an idea so the target thinks it is his own"
+      ],
+      "answer": 2,
       "why": "Saito asks Cobb to plant, not steal, an idea in Robert Fischer's mind."
     },
     {
       "q": "Why can't Cobb go home to the United States?",
-      "options": ["He is accused of killing his wife, Mal", "Saito has had him blacklisted", "He owes money to the dream-technology company"],
+      "options": [
+        "He is accused of killing his wife, Mal",
+        "Saito has had him blacklisted",
+        "He owes money to the dream-technology company"
+      ],
       "answer": 0,
       "why": "Mal staged her suicide so Cobb would be blamed, and he fled the country to avoid the charge."
     },
     {
       "q": "What idea does the team plant in Robert Fischer?",
-      "options": ["That Browning murdered his father", "That he should sell the company to Saito", "That his father wanted him to be his own man and break up the empire"],
-      "answer": 2,
+      "options": [
+        "That Browning murdered his father",
+        "That his father wanted him to be his own man and break up the empire",
+        "That he should sell the company to Saito"
+      ],
+      "answer": 1,
       "why": "In the vault his dying father tells him he wanted Robert to stop trying to be like him."
     }
   ],

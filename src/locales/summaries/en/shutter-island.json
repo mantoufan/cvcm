@@ -1,7 +1,9 @@
 {
   "name": "Shutter Island",
   "blurb": "Scorsese's 1954-set thriller about a marshal hunting a missing patient on an asylum island",
-  "aka": ["Shutter Island (2010)"],
+  "aka": [
+    "Shutter Island (2010)"
+  ],
   "title": "Shutter Island Explained: Plot Summary and Ending",
   "description": "Shutter Island (2010) explained: who is who, the full plot from the ferry to the lighthouse, the twist, and what Teddy's last question means.",
   "h1": "Shutter Island Explained: Plot Summary, Characters and Ending",
@@ -12,16 +14,43 @@
       "body": [
         {
           "table": {
-            "head": ["Character", "Who they are"],
+            "head": [
+              "Character",
+              "Who they are"
+            ],
             "rows": [
-              ["Teddy Daniels (Leonardo DiCaprio)", "A U.S. Marshal and World War II veteran investigating a disappearance at Ashecliffe"],
-              ["Chuck Aule (Mark Ruffalo)", "Teddy's newly assigned partner on the case"],
-              ["Dr. John Cawley (Ben Kingsley)", "The senior psychiatrist who runs Ashecliffe and favours talk therapy over surgery"],
-              ["Dr. Naehring (Max von Sydow)", "Cawley's colleague, a German psychiatrist Teddy distrusts"],
-              ["Dolores Chanal (Michelle Williams)", "Teddy's wife, who died in an apartment fire and appears in his dreams"],
-              ["Rachel Solando (Emily Mortimer)", "The missing patient, committed for drowning her three children"],
-              ["George Noyce (Jackie Earle Haley)", "A badly beaten patient held in Ward C, the ward for the most dangerous inmates"],
-              ["Andrew Laeddis", "The arsonist Teddy blames for the fire that killed Dolores, said to be held on the island"]
+              [
+                "Teddy Daniels (Leonardo DiCaprio)",
+                "A U.S. Marshal and World War II veteran investigating a disappearance at Ashecliffe"
+              ],
+              [
+                "Chuck Aule (Mark Ruffalo)",
+                "Teddy's newly assigned partner on the case"
+              ],
+              [
+                "Dr. John Cawley (Ben Kingsley)",
+                "The senior psychiatrist who runs Ashecliffe and favours talk therapy over surgery"
+              ],
+              [
+                "Dr. Naehring (Max von Sydow)",
+                "Cawley's colleague, a German psychiatrist Teddy distrusts"
+              ],
+              [
+                "Dolores Chanal (Michelle Williams)",
+                "Teddy's wife, who died in an apartment fire and appears in his dreams"
+              ],
+              [
+                "Rachel Solando (Emily Mortimer)",
+                "The missing patient, committed for drowning her three children"
+              ],
+              [
+                "George Noyce (Jackie Earle Haley)",
+                "A badly beaten patient held in Ward C, the ward for the most dangerous inmates"
+              ],
+              [
+                "Andrew Laeddis",
+                "The arsonist Teddy blames for the fire that killed Dolores, said to be held on the island"
+              ]
             ]
           }
         }
@@ -83,20 +112,32 @@
   "check": [
     {
       "q": "Who is Chuck Aule really?",
-      "options": ["Andrew's psychiatrist, Dr. Lester Sheehan", "A second U.S. Marshal sent from Boston", "Rachel Solando's husband"],
-      "answer": 0,
+      "options": [
+        "Rachel Solando's husband",
+        "A second U.S. Marshal sent from Boston",
+        "Andrew's psychiatrist, Dr. Lester Sheehan"
+      ],
+      "answer": 2,
       "why": "In the lighthouse, Chuck reveals he is Sheehan, who played the partner role as part of the staged role-play."
     },
     {
       "q": "What happened to Andrew's children?",
-      "options": ["They died in an apartment fire set by an arsonist", "Their mother Dolores drowned them in the lake", "They were taken from him and placed in care"],
+      "options": [
+        "They died in an apartment fire set by an arsonist",
+        "Their mother Dolores drowned them in the lake",
+        "They were taken from him and placed in care"
+      ],
       "answer": 1,
       "why": "Dolores, mentally ill, drowned their three children at the lake house, and Andrew then shot her."
     },
     {
       "q": "What does Cawley say will happen if Andrew slips back into the Teddy delusion?",
-      "options": ["He will be released into his family's care", "He will be transferred to a prison", "He will be lobotomized"],
-      "answer": 2,
+      "options": [
+        "He will be lobotomized",
+        "He will be transferred to a prison",
+        "He will be released into his family's care"
+      ],
+      "answer": 0,
       "why": "Cawley warns that this is the last chance before the board orders a lobotomy, which is why the final scene matters."
     }
   ],

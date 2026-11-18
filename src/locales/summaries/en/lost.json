@@ -1,7 +1,10 @@
 {
   "name": "Lost",
   "blurb": "Plane-crash survivors on a mysterious island face its secrets, its people and each other",
-  "aka": ["Lost TV series", "Oceanic 815"],
+  "aka": [
+    "Lost TV series",
+    "Oceanic 815"
+  ],
   "title": "Lost Recap: Every Season and the Ending Explained",
   "description": "Lost recap: the main characters, what happens in all six seasons of the island mystery, and the 2010 finale explained, including the flash-sideways church.",
   "h1": "Lost Recap: Every Season and the Ending Explained",
@@ -12,18 +15,51 @@
       "body": [
         {
           "table": {
-            "head": ["Character", "Who they are"],
+            "head": [
+              "Character",
+              "Who they are"
+            ],
             "rows": [
-              ["Jack Shephard", "A spinal surgeon who becomes the survivors' reluctant leader"],
-              ["Kate Austen", "A fugitive who was being escorted by a U.S. marshal when the plane went down"],
-              ["James \"Sawyer\" Ford", "A sarcastic con man who looks out for himself first"],
-              ["John Locke", "A man of faith who believes the island brought him there for a reason"],
-              ["Hugo \"Hurley\" Reyes", "A good-natured lottery winner who thinks his numbers are cursed"],
-              ["Sayid Jarrah", "A former Iraqi Republican Guard communications officer with a violent past"],
-              ["Charlie Pace", "A rock bassist trying to give up heroin"],
-              ["Sun and Jin Kwon", "A Korean couple whose marriage is strained by her father's criminal business"],
-              ["Desmond Hume", "A Scotsman the survivors find living underground on the island"],
-              ["Ben Linus", "A soft-spoken, manipulative man the survivors capture in season 2"]
+              [
+                "Jack Shephard",
+                "A spinal surgeon who becomes the survivors' reluctant leader"
+              ],
+              [
+                "Kate Austen",
+                "A fugitive who was being escorted by a U.S. marshal when the plane went down"
+              ],
+              [
+                "James \"Sawyer\" Ford",
+                "A sarcastic con man who looks out for himself first"
+              ],
+              [
+                "John Locke",
+                "A man of faith who believes the island brought him there for a reason"
+              ],
+              [
+                "Hugo \"Hurley\" Reyes",
+                "A good-natured lottery winner who thinks his numbers are cursed"
+              ],
+              [
+                "Sayid Jarrah",
+                "A former Iraqi Republican Guard communications officer with a violent past"
+              ],
+              [
+                "Charlie Pace",
+                "A rock bassist trying to give up heroin"
+              ],
+              [
+                "Sun and Jin Kwon",
+                "A Korean couple whose marriage is strained by her father's criminal business"
+              ],
+              [
+                "Desmond Hume",
+                "A Scotsman the survivors find living underground on the island"
+              ],
+              [
+                "Ben Linus",
+                "A soft-spoken, manipulative man the survivors capture in season 2"
+              ]
             ]
           }
         }
@@ -91,20 +127,32 @@
   "check": [
     {
       "q": "What is in the hatch the survivors open?",
-      "options": ["A DHARMA Initiative station where a code must be entered every 108 minutes", "The Others' main village", "The wreck of a second plane"],
-      "answer": 0,
+      "options": [
+        "The Others' main village",
+        "A DHARMA Initiative station where a code must be entered every 108 minutes",
+        "The wreck of a second plane"
+      ],
+      "answer": 1,
       "why": "The hatch is the Swan station, where Desmond has been entering a code every 108 minutes."
     },
     {
       "q": "Who becomes the island's protector at the very end?",
-      "options": ["Jack", "Ben", "Hurley"],
-      "answer": 2,
+      "options": [
+        "Hurley",
+        "Ben",
+        "Jack"
+      ],
+      "answer": 0,
       "why": "The dying Jack passes the role to Hurley, who asks Ben to help him."
     },
     {
       "q": "What does the flash-sideways turn out to be?",
-      "options": ["A timeline created by the hydrogen bomb", "A place the survivors made after death to find each other", "A dream of Desmond's"],
-      "answer": 1,
+      "options": [
+        "A timeline created by the hydrogen bomb",
+        "A dream of Desmond's",
+        "A place the survivors made after death to find each other"
+      ],
+      "answer": 2,
       "why": "Christian Shephard explains in the church that they are all dead and made this place to find each other and move on."
     }
   ],

@@ -1,7 +1,9 @@
 {
   "name": "Mulholland Drive",
   "blurb": "David Lynch's Hollywood mystery about a hopeful actress and a woman with amnesia",
-  "aka": ["Mulholland Dr."],
+  "aka": [
+    "Mulholland Dr."
+  ],
   "title": "Mulholland Drive Explained: Plot Summary and Ending",
   "description": "Mulholland Drive explained: who is who, the plot in order, the blue box, Club Silencio, Lynch's 10 clues and the ending explained.",
   "h1": "Mulholland Drive Explained: Plot, Characters and Ending",
@@ -12,17 +14,47 @@
       "body": [
         {
           "table": {
-            "head": ["Character", "Who they are"],
+            "head": [
+              "Character",
+              "Who they are"
+            ],
             "rows": [
-              ["Betty Elms (Naomi Watts)", "An aspiring actress from Deep River, Ontario, staying in her aunt Ruth's Hollywood apartment"],
-              ["Rita (Laura Harring)", "A woman with amnesia after a crash, who takes her name from a Rita Hayworth poster"],
-              ["Adam Kesher (Justin Theroux)", "A film director being pressured over who to cast as his lead"],
-              ["Camilla Rhodes (Melissa George)", "The blonde unknown actress Adam is told to cast"],
-              ["The Castigliane brothers and Mr. Roque", "Mob-like backers who control the film from behind the scenes"],
-              ["The Cowboy", "A quiet, menacing man who gives Adam instructions"],
-              ["Joe Messing (Mark Pellegrino)", "A hitman"],
-              ["Coco (Ann Miller)", "The manager of Betty's apartment building"],
-              ["Dan (Patrick Fischler)", "A man who describes a nightmare about the Winkie's diner on Sunset Boulevard"]
+              [
+                "Betty Elms (Naomi Watts)",
+                "An aspiring actress from Deep River, Ontario, staying in her aunt Ruth's Hollywood apartment"
+              ],
+              [
+                "Rita (Laura Harring)",
+                "A woman with amnesia after a crash, who takes her name from a Rita Hayworth poster"
+              ],
+              [
+                "Adam Kesher (Justin Theroux)",
+                "A film director being pressured over who to cast as his lead"
+              ],
+              [
+                "Camilla Rhodes (Melissa George)",
+                "The blonde unknown actress Adam is told to cast"
+              ],
+              [
+                "The Castigliane brothers and Mr. Roque",
+                "Mob-like backers who control the film from behind the scenes"
+              ],
+              [
+                "The Cowboy",
+                "A quiet, menacing man who gives Adam instructions"
+              ],
+              [
+                "Joe Messing (Mark Pellegrino)",
+                "A hitman"
+              ],
+              [
+                "Coco (Ann Miller)",
+                "The manager of Betty's apartment building"
+              ],
+              [
+                "Dan (Patrick Fischler)",
+                "A man who describes a nightmare about the Winkie's diner on Sunset Boulevard"
+              ]
             ]
           }
         }
@@ -84,20 +116,32 @@
   "check": [
     {
       "q": "What does Rita find in her purse?",
-      "options": ["A gun and a photograph", "A lot of cash and a blue key", "A script and a bus ticket"],
-      "answer": 1,
+      "options": [
+        "A lot of cash and a blue key",
+        "A gun and a photograph",
+        "A script and a bus ticket"
+      ],
+      "answer": 0,
       "why": "The cash and the blue key are her only clues to who she is."
     },
     {
       "q": "In the last part of the film, who is Diane Selwyn?",
-      "options": ["A struggling actress who was Camilla's lover", "Aunt Ruth's daughter", "A detective investigating the crash"],
-      "answer": 0,
+      "options": [
+        "A detective investigating the crash",
+        "Aunt Ruth's daughter",
+        "A struggling actress who was Camilla's lover"
+      ],
+      "answer": 2,
       "why": "Diane, played by Naomi Watts, is the bitter actress whose affair with Camilla has ended."
     },
     {
       "q": "What does the blue key on Diane's table mean?",
-      "options": ["She has been cast in Adam's film", "Aunt Ruth has come home", "The hitman has killed Camilla"],
-      "answer": 2,
+      "options": [
+        "She has been cast in Adam's film",
+        "The hitman has killed Camilla",
+        "Aunt Ruth has come home"
+      ],
+      "answer": 1,
       "why": "Joe told Diane that a blue key would be left for her when the job was done."
     }
   ],

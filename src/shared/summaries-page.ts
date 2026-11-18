@@ -9,7 +9,7 @@ import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
 import { messages, summariesMessages } from "./messages";
 import { appHref, summariesHref } from "./path";
 import { SUMMARY_GROUPS, summaryGroupOf, summaryUpdated, type SummaryId } from "./summaries";
-import { summariesUi, summariesHub, summaryCopy, summaryName, summariesFaqItems, summaryMeta } from "./summaries-i18n";
+import { summariesUi, summariesHub, summaryCopy, summaryName, summariesFaqItems, summaryMeta, summaryCreators } from "./summaries-i18n";
 
 const CJK = new Set<Locale>(["zh-CN", "zh-TW", "ja"]);
 
@@ -47,7 +47,7 @@ export function summaryLinkItems(locale: Locale, ids: readonly SummaryId[]): { h
   return ids.map((id) => ({
     href: summariesHref(locale, id),
     ...summaryName(locale, id),
-    meta: `${summaryMeta(locale, id).creator} · ${summaryYears(locale, id)}`,
+    meta: `${summaryCreators(locale, summaryMeta(locale, id).creator)} · ${summaryYears(locale, id)}`,
     nav: `summaries-${id}`,
   }));
 }
@@ -108,12 +108,13 @@ export function summariesPageHtml(locale: Locale, id: SummaryId | null): string 
     + `<section class="kb-section" id="summary-${i + 1}"><h2>${inline(s.h)}${s.spoiler ? ` ${badge}` : ""}</h2>${s.body.map(blockHtml).join("")}</section>`
   )).join("");
   const facts = [
-    `<span>${escapeHtml(meta.creator)}</span>`,
+    `<span>${escapeHtml(summaryCreators(locale, meta.creator))}</span>`,
     `<span>${escapeHtml(summaryYears(locale, id))}</span>`,
     meta.original && meta.original !== copy.name ? `<span>${escapeHtml(fill(ui.original, { title: meta.original }))}</span>` : "",
     `<time datetime="${summaryUpdated(id)}">${escapeHtml(fill(ui.updated, { date: dateLabel(locale, summaryUpdated(id)) }))}</time>`,
   ].filter(Boolean).join(" · ");
-  const aka = copy.aka.filter((a) => a !== copy.name);
+  // The original title already has its own line in the facts above.
+  const aka = copy.aka.filter((a) => a !== copy.name && a !== meta.original);
   return [
     crumbHtml(locale, id),
     `<article class="kb summary">`,

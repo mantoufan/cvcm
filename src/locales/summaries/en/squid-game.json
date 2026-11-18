@@ -1,7 +1,11 @@
 {
   "name": "Squid Game",
   "blurb": "Hundreds of people in debt play deadly children's games for a giant cash prize",
-  "aka": ["오징어 게임", "Ojingeo Geim", "Squid Game 3"],
+  "aka": [
+    "오징어 게임",
+    "Ojingeo Geim",
+    "Squid Game 3"
+  ],
   "title": "Squid Game Recap: Every Season and the Ending Explained",
   "description": "Squid Game recap: the main players, what happens in all three seasons of the Korean survival drama from 2021 to 2025, and the final ending explained.",
   "h1": "Squid Game Recap: Every Season and the Ending Explained",
@@ -12,18 +16,51 @@
       "body": [
         {
           "table": {
-            "head": ["Character", "Who they are"],
+            "head": [
+              "Character",
+              "Who they are"
+            ],
             "rows": [
-              ["Seong Gi-hun (Player 456)", "A kind-hearted but reckless gambler who needs money to keep seeing his daughter"],
-              ["Cho Sang-woo (Player 218)", "Gi-hun's childhood friend, a star student turned investment manager wanted for fraud"],
-              ["Kang Sae-byeok (Player 067)", "A guarded North Korean defector saving to bring her family to the South"],
-              ["Oh Il-nam (Player 001)", "A gentle elderly man with a brain tumor"],
-              ["Abdul Ali (Player 199)", "A Pakistani migrant worker whose boss has not paid him"],
-              ["Hwang Jun-ho", "A police detective who sneaks onto the island to find his missing brother"],
-              ["The Front Man", "The masked official who runs the games"],
-              ["The Recruiter", "A smiling salesman who invites players by challenging them to ddakji, a Korean paper-tile game"],
-              ["Kang No-eul", "A guard introduced in season 2, herself a North Korean defector"],
-              ["Kim Jun-hee (Player 222)", "A pregnant young woman who enters the games in season 2"]
+              [
+                "Seong Gi-hun (Player 456)",
+                "A kind-hearted but reckless gambler who needs money to keep seeing his daughter"
+              ],
+              [
+                "Cho Sang-woo (Player 218)",
+                "Gi-hun's childhood friend, a star student turned investment manager wanted for fraud"
+              ],
+              [
+                "Kang Sae-byeok (Player 067)",
+                "A guarded North Korean defector saving to bring her family to the South"
+              ],
+              [
+                "Oh Il-nam (Player 001)",
+                "A gentle elderly man with a brain tumor"
+              ],
+              [
+                "Abdul Ali (Player 199)",
+                "A Pakistani migrant worker whose boss has not paid him"
+              ],
+              [
+                "Hwang Jun-ho",
+                "A police detective who sneaks onto the island to find his missing brother"
+              ],
+              [
+                "The Front Man",
+                "The masked official who runs the games"
+              ],
+              [
+                "The Recruiter",
+                "A smiling salesman who invites players by challenging them to ddakji, a Korean paper-tile game"
+              ],
+              [
+                "Kang No-eul",
+                "A guard introduced in season 2, herself a North Korean defector"
+              ],
+              [
+                "Kim Jun-hee (Player 222)",
+                "A pregnant young woman who enters the games in season 2"
+              ]
             ]
           }
         }
@@ -90,20 +127,32 @@
   "check": [
     {
       "q": "What happens to players who lose a game?",
-      "options": ["They are sent home with nothing", "They are killed", "They become guards"],
-      "answer": 1,
+      "options": [
+        "They are killed",
+        "They are sent home with nothing",
+        "They become guards"
+      ],
+      "answer": 0,
       "why": "Losers are shot or die in the game itself, and each death adds 100 million won to the prize."
     },
     {
       "q": "Who is revealed to have created the games?",
-      "options": ["Sang-woo", "The Recruiter", "Oh Il-nam, Player 001"],
+      "options": [
+        "Sang-woo",
+        "The Recruiter",
+        "Oh Il-nam, Player 001"
+      ],
       "answer": 2,
       "why": "At the end of season 1, the dying Il-nam tells Gi-hun he created the games."
     },
     {
       "q": "Who wins the final game in season 3?",
-      "options": ["Jun-hee's baby, Player 222", "Gi-hun", "Myung-gi"],
-      "answer": 0,
+      "options": [
+        "Gi-hun",
+        "Jun-hee's baby, Player 222",
+        "Myung-gi"
+      ],
+      "answer": 1,
       "why": "Gi-hun sacrifices himself so the baby is the last player left."
     }
   ],

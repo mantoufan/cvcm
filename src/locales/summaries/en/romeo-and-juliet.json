@@ -1,7 +1,10 @@
 {
   "name": "Romeo and Juliet",
   "blurb": "Shakespeare's tragedy of two young lovers from feuding families in Verona",
-  "aka": ["The Most Excellent and Lamentable Tragedy of Romeo and Juliet", "Romeo & Juliet"],
+  "aka": [
+    "The Most Excellent and Lamentable Tragedy of Romeo and Juliet",
+    "Romeo & Juliet"
+  ],
   "title": "Romeo and Juliet Summary: Plot, Characters and Ending Explained",
   "description": "Romeo and Juliet summary: the feud, the secret marriage, Tybalt's death, Friar Laurence's plan and the tomb scene, act by act, with characters and themes.",
   "h1": "Romeo and Juliet: Summary, Characters and Ending Explained",
@@ -12,18 +15,51 @@
       "body": [
         {
           "table": {
-            "head": ["Character", "Who they are"],
+            "head": [
+              "Character",
+              "Who they are"
+            ],
             "rows": [
-              ["Romeo", "The only son of the Montague family, a romantic young man"],
-              ["Juliet", "The only daughter of the Capulets, not yet fourteen"],
-              ["Friar Laurence", "A Franciscan friar and Romeo's confidant, skilled with herbs and potions"],
-              ["The Nurse", "Juliet's lifelong nurse and go-between, talkative and fond of her"],
-              ["Mercutio", "Romeo's witty friend, a relative of the Prince"],
-              ["Benvolio", "Romeo's cousin, who tries to keep the peace"],
-              ["Tybalt", "Juliet's hot-tempered cousin, who hates the Montagues"],
-              ["Lord and Lady Capulet", "Juliet's parents"],
-              ["Paris", "A young count who wants to marry Juliet"],
-              ["Prince Escalus", "The ruler of Verona, tired of the families' street fights"]
+              [
+                "Romeo",
+                "The only son of the Montague family, a romantic young man"
+              ],
+              [
+                "Juliet",
+                "The only daughter of the Capulets, not yet fourteen"
+              ],
+              [
+                "Friar Laurence",
+                "A Franciscan friar and Romeo's confidant, skilled with herbs and potions"
+              ],
+              [
+                "The Nurse",
+                "Juliet's lifelong nurse and go-between, talkative and fond of her"
+              ],
+              [
+                "Mercutio",
+                "Romeo's witty friend, a relative of the Prince"
+              ],
+              [
+                "Benvolio",
+                "Romeo's cousin, who tries to keep the peace"
+              ],
+              [
+                "Tybalt",
+                "Juliet's hot-tempered cousin, who hates the Montagues"
+              ],
+              [
+                "Lord and Lady Capulet",
+                "Juliet's parents"
+              ],
+              [
+                "Paris",
+                "A young count who wants to marry Juliet"
+              ],
+              [
+                "Prince Escalus",
+                "The ruler of Verona, tired of the families' street fights"
+              ]
             ]
           }
         }
@@ -79,20 +115,32 @@
   "check": [
     {
       "q": "Why does Romeo refuse to fight Tybalt at first?",
-      "options": ["He is afraid of Tybalt", "He has just secretly married Juliet, Tybalt's cousin", "The Prince has ordered him not to"],
-      "answer": 1,
+      "options": [
+        "He is afraid of Tybalt",
+        "The Prince has ordered him not to",
+        "He has just secretly married Juliet, Tybalt's cousin"
+      ],
+      "answer": 2,
       "why": "Romeo now counts Tybalt as family, though no one else knows why."
     },
     {
       "q": "Why does Romeo not learn of Friar Laurence's plan?",
-      "options": ["Friar John is kept in quarantine because of the plague", "The Nurse forgets to deliver the letter", "Balthasar destroys the letter"],
+      "options": [
+        "Friar John is kept in quarantine because of the plague",
+        "The Nurse forgets to deliver the letter",
+        "Balthasar destroys the letter"
+      ],
       "answer": 0,
       "why": "Friar John is shut in a house suspected of plague, so the letter never leaves Verona."
     },
     {
       "q": "How does Juliet die?",
-      "options": ["She drinks the rest of Romeo's poison", "She takes a second sleeping potion", "She stabs herself with Romeo's dagger"],
-      "answer": 2,
+      "options": [
+        "She drinks the rest of Romeo's poison",
+        "She stabs herself with Romeo's dagger",
+        "She takes a second sleeping potion"
+      ],
+      "answer": 1,
       "why": "Romeo has left no poison in the vial, so she uses his dagger."
     }
   ],

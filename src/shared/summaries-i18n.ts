@@ -70,10 +70,24 @@ export function summaryWorkType(kind: SummaryKind): "Book" | "Movie" | "TVSeries
   return "Book";
 }
 
-/** "Matt Duffer and Ross Duffer", "Hayao Miyazaki" → one Person each. */
+/** The people in a creator credit: "Matt Duffer and Ross Duffer", "A, B and C", "Hayao Miyazaki" (meta is written in English). */
+export function creatorNames(creator: string): string[] {
+  return creator.split(/\s*,\s*|\s+(?:and|&)\s+/).map((n) => n.trim()).filter(Boolean);
+}
+
+/** A creator credit for display, joined the locale's way ("A、B和C", "A, B y C") instead of with the English "and". */
+export function summaryCreators(locale: Locale, creator: string): string {
+  const names = creatorNames(creator);
+  try {
+    return new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }).format(names);
+  } catch {
+    return names.join(", ");
+  }
+}
+
+/** One Person per name in the credit. */
 function people(creator: string): Record<string, string>[] | Record<string, string> {
-  const names = creator.split(/\s*,\s*|\s+(?:and|&)\s+/).map((n) => n.trim()).filter(Boolean);
-  const list = names.map((name) => ({ "@type": "Person", name }));
+  const list = creatorNames(creator).map((name) => ({ "@type": "Person", name }));
   return list.length === 1 ? list[0] : list;
 }
 

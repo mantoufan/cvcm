@@ -1,7 +1,9 @@
 {
   "name": "Stranger Things",
   "blurb": "Kids in a 1980s Indiana town fight monsters from a hidden dimension called the Upside Down",
-  "aka": ["Stranger Things 5"],
+  "aka": [
+    "Stranger Things 5"
+  ],
   "title": "Stranger Things Recap: Every Season and the Ending Explained",
   "description": "Stranger Things recap: who is who, what happens in all five seasons from Will's disappearance to the 2025 finale, and the ending explained.",
   "h1": "Stranger Things Recap: Every Season and the Ending Explained",
@@ -12,18 +14,51 @@
       "body": [
         {
           "table": {
-            "head": ["Character", "Who they are"],
+            "head": [
+              "Character",
+              "Who they are"
+            ],
             "rows": [
-              ["Eleven (Jane Hopper)", "A girl with telekinetic powers raised as a test subject in Hawkins National Laboratory"],
-              ["Mike Wheeler", "The leader of a group of Dungeons & Dragons friends who takes Eleven in"],
-              ["Will Byers", "Mike's quiet friend whose disappearance starts the story"],
-              ["Dustin Henderson and Lucas Sinclair", "Mike and Will's best friends: Dustin the joker and science fan, Lucas the skeptic"],
-              ["Max Mayfield", "A skateboarding newcomer to Hawkins who joins the group in season 2"],
-              ["Joyce Byers", "Will's mother, a single parent who refuses to give up on her son"],
-              ["Jim Hopper", "The town's police chief, gruff and grieving the loss of his daughter"],
-              ["Nancy Wheeler and Jonathan Byers", "Mike's older sister and Will's older brother, both drawn into the hunt for answers"],
-              ["Steve Harrington and Robin Buckley", "A popular older boy who becomes the kids' protector, and his sharp-tongued coworker"],
-              ["Dr. Martin Brenner", "The scientist who runs the experiments at Hawkins Lab"]
+              [
+                "Eleven (Jane Hopper)",
+                "A girl with telekinetic powers raised as a test subject in Hawkins National Laboratory"
+              ],
+              [
+                "Mike Wheeler",
+                "The leader of a group of Dungeons & Dragons friends who takes Eleven in"
+              ],
+              [
+                "Will Byers",
+                "Mike's quiet friend whose disappearance starts the story"
+              ],
+              [
+                "Dustin Henderson and Lucas Sinclair",
+                "Mike and Will's best friends: Dustin the joker and science fan, Lucas the skeptic"
+              ],
+              [
+                "Max Mayfield",
+                "A skateboarding newcomer to Hawkins who joins the group in season 2"
+              ],
+              [
+                "Joyce Byers",
+                "Will's mother, a single parent who refuses to give up on her son"
+              ],
+              [
+                "Jim Hopper",
+                "The town's police chief, gruff and grieving the loss of his daughter"
+              ],
+              [
+                "Nancy Wheeler and Jonathan Byers",
+                "Mike's older sister and Will's older brother, both drawn into the hunt for answers"
+              ],
+              [
+                "Steve Harrington and Robin Buckley",
+                "A popular older boy who becomes the kids' protector, and his sharp-tongued coworker"
+              ],
+              [
+                "Dr. Martin Brenner",
+                "The scientist who runs the experiments at Hawkins Lab"
+              ]
             ]
           }
         }
@@ -92,19 +127,31 @@
   "check": [
     {
       "q": "Who goes missing at the start of season 1?",
-      "options": ["Mike Wheeler", "Will Byers", "Steve Harrington"],
-      "answer": 1,
+      "options": [
+        "Will Byers",
+        "Mike Wheeler",
+        "Steve Harrington"
+      ],
+      "answer": 0,
       "why": "Will Byers vanishes on his way home in November 1983, and the search for him starts the story."
     },
     {
       "q": "Who is Vecna?",
-      "options": ["Henry Creel, Hawkins Lab's first test subject", "Dr. Brenner in disguise", "Billy Hargrove possessed by the Mind Flayer"],
-      "answer": 0,
+      "options": [
+        "Dr. Brenner in disguise",
+        "Henry Creel, Hawkins Lab's first test subject",
+        "Billy Hargrove possessed by the Mind Flayer"
+      ],
+      "answer": 1,
       "why": "Season 4 reveals Vecna as Henry Creel, the lab's first test subject, whom Eleven banished to the Upside Down."
     },
     {
       "q": "What does Eleven do at the end of the finale?",
-      "options": ["She moves to California with the Byers family", "She becomes a scientist at Hawkins Lab", "She stays behind in the collapsing Upside Down"],
+      "options": [
+        "She moves to California with the Byers family",
+        "She becomes a scientist at Hawkins Lab",
+        "She stays behind in the collapsing Upside Down"
+      ],
       "answer": 2,
       "why": "Eleven chooses to stay in the Upside Down as it is destroyed, and whether she survived is left open."
     }
