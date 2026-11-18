@@ -51,10 +51,8 @@ describe("sitemap", () => {
     expect(xml).toContain("https://cv.cm/zh-tw/");
     expect(xml).not.toContain("https://cv.cm/zh-CN/");
     expect(xml).not.toContain("https://cv.cm/zh-TW/");
-    // Only kb pages (every shelf hub and its articles), data tables, reference pages, slang, nostalgia, summaries, scripts, country, calories and periodic table pages have real edit dates.
-    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + Object.keys(KB_SHELVES).length + DATASETS.length + 1 + RANKINGS.length + 1 + Object.keys(REF_UPDATED).length + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + SUMMARY_ENTRIES.length + 1 + SCRIPT_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + 1 + CALENDAR_PAGES.length));
-    // Only kb pages (every shelf hub and its articles), data tables, reference pages, slang, nostalgia, summaries, country, calories and periodic table pages have real edit dates.
-    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + Object.keys(KB_SHELVES).length + DATASETS.length + 1 + RANKINGS.length + 1 + Object.keys(REF_UPDATED).length + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + SUMMARY_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + 1 + CALENDAR_PAGES.length + 1 + EMOJI_SLUGS.length));
+    // Only kb pages (every shelf hub and its articles), data tables, reference pages, slang, nostalgia, summaries, scripts, country, calories and periodic table and emoji pages have real edit dates.
+    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + Object.keys(KB_SHELVES).length + DATASETS.length + 1 + RANKINGS.length + 1 + Object.keys(REF_UPDATED).length + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + SUMMARY_ENTRIES.length + 1 + SCRIPT_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + 1 + CALENDAR_PAGES.length + 1 + EMOJI_SLUGS.length));
     expect(xml).toContain(`<lastmod>${DATASET_SNAPSHOT}</lastmod>`);
     const newest = KNOWLEDGE_ARTICLES.map((id) => kbUpdatedOn(id, "en")).sort().at(-1);
     expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", null)}</loc>\n    <lastmod>${newest}</lastmod>`);
