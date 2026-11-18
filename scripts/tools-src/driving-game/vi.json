@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "titleDrivingGame": "Game lái xe 3D — đua xe và drift online miễn phí — cv.cm",
+    "descDrivingGame": "Game lái xe 3D miễn phí trên trình duyệt: đua ba vòng tính giờ hoặc ôm cua trượt ngang ở chế độ drift để ghi điểm. Ba đường đua, điều khiển bằng bàn phím hoặc cảm ứng, không cần tải."
+  },
+  "tools": {
+    "driving-game": {
+      "name": "Game lái xe 3D",
+      "blurb": "Lái xe 3D trên ba đường đua hoặc drift để ghi điểm."
+    }
+  },
+  "faq": {
+    "driving-game": {
+      "q1": "Lái xe thế nào?",
+      "a1": "Phím mũi tên hoặc W A S D: lên để tăng ga, xuống để phanh rồi lùi, trái phải để đánh lái. Phím cách là phanh tay, R đưa bạn về điểm kiểm tra gần nhất.",
+      "q2": "Điểm drift được tính thế nào?",
+      "a2": "Điểm tăng khi xe trượt ngang hơn 15 độ ở tốc độ cao; càng nhanh và trượt càng rộng thì càng nhiều điểm. Khi bạn lái thẳng xe lại, điểm của pha trượt đó được cộng vào tổng. Đâm vào tường lốp hoặc ở trên cỏ quá một giây sẽ mất điểm của pha đang trượt. Mỗi lượt drift dài 60 giây.",
+      "q3": "Có chơi được trên điện thoại không?",
+      "a3": "Có. Nút đánh lái ở góc dưới bên trái, còn phanh, phanh tay và ga ở góc dưới bên phải. Xoay ngang điện thoại và bật toàn màn hình để thấy rõ nhất.",
+      "q4": "Có những đường đua nào, thành tích có được lưu không?",
+      "a4": "Có ba đường đua cố định nên thời gian mỗi vòng luôn so sánh được. Vòng nhanh nhất và điểm drift cao nhất của từng đường đua chỉ lưu trong trình duyệt này.",
+      "q5": "Sao máy của tôi bị giật hoặc màn hình đen?",
+      "a5": "Game cần WebGL. Trên điện thoại game vẽ ở độ phân giải thấp hơn và không có bóng; đóng bớt tab khác sẽ mượt hơn. Nếu hình 3D bị dừng, hãy bắt đầu lại."
+    }
+  },
+  "guides": {
+    "driving-game": {
+      "lead": "Lái xe 3D trong ba bước.",
+      "s1t": "Chọn đường đua và chế độ",
+      "s1b": "Chọn một trong ba đường đua, rồi chọn Đua tính giờ (ba vòng) hoặc Chế độ drift (60 giây), và bấm Chơi.",
+      "s2t": "Lái xe",
+      "s2b": "Chờ đếm 3-2-1, tăng ga bằng phím lên hoặc W và đánh lái bằng phím mũi tên. Trên điện thoại, dùng các nút trên màn hình.",
+      "s3t": "Phá kỷ lục",
+      "s3b": "Đi qua mọi điểm kiểm tra thì vòng mới được tính. Vòng nhanh nhất và điểm drift cao nhất của từng đường đua đều được lưu."
+    }
+  },
+  "ui": {
+    "drivingGame": {
+      "title": "Game lái xe 3D",
+      "privacyNote": "Lái xe 3D quanh đường đua hoặc drift để ghi điểm. Thành tích tốt nhất chỉ lưu trong trình duyệt này.",
+      "stage": "Màn hình game lái xe 3D",
+      "intro": "Chọn đường đua và chế độ rồi bấm Chơi. Phím mũi tên để lái, phím cách là phanh tay.",
+      "track": "Đường đua",
+      "track1": "Đường đua 1 — Cua nhẹ",
+      "track2": "Đường đua 2 — Cua dài",
+      "track3": "Đường đua 3 — Vòng lớn",
+      "mode": "Chế độ",
+      "modeTime": "Đua tính giờ (3 vòng)",
+      "modeDrift": "Chế độ drift (60 giây)",
+      "best": "Thành tích tốt nhất ở đường này",
+      "restart": "Chơi lại",
+      "again": "Đua lần nữa",
+      "go": "Xuất phát!",
+      "finished": "Về đích! Tổng {total}, vòng nhanh nhất {best}.",
+      "driftDone": "Hết giờ! Điểm drift: {score}.",
+      "speed": "Tốc độ {n} km/h",
+      "lap": "Vòng {n}/{of}",
+      "current": "Vòng này {time}",
+      "bestLap": "Nhanh nhất {time}",
+      "drift": "Điểm drift {n}",
+      "timeLeft": "Còn {n} giây",
+      "offRoad": "Ra khỏi đường",
+      "left": "Đánh lái trái",
+      "right": "Đánh lái phải",
+      "brake": "Phanh / lùi",
+      "handbrake": "Phanh tay",
+      "gas": "Tăng ga",
+      "hint": "Lên hoặc W tăng ga, xuống hoặc S phanh và lùi, trái phải đánh lái, phím cách là phanh tay, R về điểm kiểm tra gần nhất. Phải qua mọi điểm kiểm tra thì vòng mới được tính."
+    }
+  }
+}

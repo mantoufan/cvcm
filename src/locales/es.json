@@ -737,7 +737,19 @@
     "titleZScore": "Calculadora de puntuación z — z de un valor, percentil y probabilidad normal — cv.cm",
     "descZScore": "Calculadora de puntuación z gratis: calcula z = (x − μ) / σ y la proporción de una distribución normal por debajo, por encima o entre valores, o la puntuación z y el valor en un percentil, con el área sombreada en la campana.",
     "titleLunarConverter": "Convertidor de calendario lunar chino a gregoriano (1900–2100) — cv.cm",
-    "descLunarConverter": "Convertidor gratuito del calendario lunar: pasa una fecha gregoriana a su fecha lunar china (con el año del ciclo y el animal del zodiaco) o una fecha lunar, meses intercalares incluidos, a la gregoriana. Cómputo chino (UTC+8), vietnamita (UTC+7) y coreano / japonés (UTC+9), 1900–2100."
+    "descLunarConverter": "Convertidor gratuito del calendario lunar: pasa una fecha gregoriana a su fecha lunar china (con el año del ciclo y el animal del zodiaco) o una fecha lunar, meses intercalares incluidos, a la gregoriana. Cómputo chino (UTC+8), vietnamita (UTC+7) y coreano / japonés (UTC+9), 1900–2100.",
+    "titleChess3d": "Ajedrez 3D — juega al ajedrez online en un tablero 3D — cv.cm",
+    "descChess3d": "Juega gratis al ajedrez 3D online: un tablero 3D de verdad que puedes girar e inclinar, contra el ordenador en cinco niveles o con un amigo. Sin descargas y también en el móvil.",
+    "titleMagicCube": "Cubo mágico online — gira y resuelve un cubo 3×3 en 3D — cv.cm",
+    "descMagicCube": "Juega al cubo mágico online en 3D: mezcla un cubo 2×2, 3×3 o 4×4, gira las capas arrastrando o con el teclado y cronometra tu resolución. Gratis y en el móvil.",
+    "titleStackGame": "Juego de apilar bloques 3D — construye la torre más alta — cv.cm",
+    "descStackGame": "Juega gratis a un juego de apilar bloques en 3D: suelta cada bloque que se desliza sobre la torre, lo que sobresale se corta y la torre sigue subiendo. Los aciertos perfectos agrandan el bloque. Funciona en el móvil.",
+    "titleDrivingGame": "Juego de coches 3D — conducir y derrapar online — cv.cm",
+    "descDrivingGame": "Juego de conducir en 3D gratis en el navegador: corre tres vueltas contrarreloj o derrapa en las curvas para sumar puntos. Tres circuitos, teclado o controles táctiles y sin descargas.",
+    "titleFlightSimulator": "Simulador de vuelo online — juego de aviones 3D gratis — cv.cm",
+    "descFlightSimulator": "Simulador de vuelo 3D gratis en el navegador: despega de la pista, vuela sobre una isla low-poly y vuelve a aterrizar, o pasa por 12 aros contra el reloj. Sin descargas; con teclado o en el móvil.",
+    "titleGames3d": "Juegos 3D gratis online — ajedrez, cubo mágico, coches y avión — cv.cm",
+    "descGames3d": "Juega gratis a juegos 3D en el navegador sin descargar nada: ajedrez 3D, cubo mágico, juego de apilar, juego de coches con derrape y simulador de vuelo. También en el móvil."
   },
   "brand": "cv.cm",
   "nav": {
@@ -778,7 +790,8 @@
     "elements": "Tabla periódica",
     "calendar": "Calendario",
     "academic": "Académico y estadística",
-    "more": "Más"
+    "more": "Más",
+    "games3d": "Juegos 3D"
   },
   "lang": {
     "label": "Idioma",
@@ -1632,6 +1645,26 @@
     "lunar-converter": {
       "name": "Convertidor de calendario lunar",
       "blurb": "Fecha lunar china a gregoriana y al revés."
+    },
+    "3d-chess": {
+      "name": "Ajedrez 3D",
+      "blurb": "Ajedrez en un tablero 3D que puedes girar, contra el ordenador o un amigo."
+    },
+    "magic-cube": {
+      "name": "Cubo mágico",
+      "blurb": "Mezcla un cubo 3D y resuélvelo contra el reloj."
+    },
+    "stack-game": {
+      "name": "Juego de apilar",
+      "blurb": "Suelta los bloques que se deslizan y levanta la torre más alta."
+    },
+    "driving-game": {
+      "name": "Juego de coches 3D",
+      "blurb": "Conduce un coche 3D por tres circuitos o derrapa para sumar puntos."
+    },
+    "flight-simulator": {
+      "name": "Simulador de vuelo",
+      "blurb": "Despega, vuela sobre una isla y aterriza, o pasa por los aros contra el reloj."
     }
   },
   "watermark": {
@@ -6177,6 +6210,76 @@
       "a4": "Cada mes lunar empieza el día de la luna nueva en la hora oficial de cada país. Si la luna nueva cae cerca de la medianoche, UTC+7, UTC+8 y UTC+9 pueden dar días distintos.",
       "q5": "¿Se sube algún dato?",
       "a5": "No. Las tablas están en la página y la fecha se calcula en esta pestaña."
+    },
+    "3d-chess": {
+      "q1": "¿Cómo muevo una pieza en el ajedrez 3D?",
+      "a1": "Toca o haz clic en una pieza y luego en una de las casillas marcadas. Los puntos indican jugadas legales y los anillos, capturas. Vuelve a tocar la pieza para soltarla.",
+      "q2": "¿Qué tan fuerte es el ordenador?",
+      "a2": "Tiene cinco niveles, desde un principiante que se equivoca hasta un jugador de club fuerte. El ordenador es el motor Stockfish, con tiempo y profundidad limitados en los niveles fáciles.",
+      "q3": "¿Cómo giro el tablero en el móvil?",
+      "a3": "Arrastra sobre el tablero con uno o dos dedos para girar e inclinar la vista; un toque corto elige una casilla. Girar el tablero lo pasa al otro lado y la pantalla completa te da más espacio.",
+      "q4": "¿Se guarda mi partida?",
+      "a4": "Sí. Cada jugada se guarda en este navegador, así que la partida te espera cuando vuelvas. No se sube nada.",
+      "q5": "¿Por qué dice que el 3D no está disponible?",
+      "a5": "El ajedrez 3D necesita WebGL. Actualiza el navegador, activa la aceleración por hardware o prueba otro navegador. El ajedrez plano de cv.cm funciona sin él."
+    },
+    "magic-cube": {
+      "q1": "¿Cómo giro una capa?",
+      "a1": "Pulsa Jugar y arrastra una pegatina en la dirección en la que quieras mover su fila o columna. Arrastra fuera del cubo para mirarlo desde otro lado. Con teclado, U D L R F B giran las caras exteriores y con Mayús giran al revés.",
+      "q2": "¿Qué significa la notación?",
+      "a2": "Cada letra es una cara: U arriba, D abajo, L izquierda, R derecha, F delante, B detrás. La letra sola es un cuarto de vuelta en sentido horario mirando esa cara, con apóstrofo (R') es antihorario y con un 2 (R2) es media vuelta.",
+      "q3": "¿Cómo resuelve un principiante el 3×3?",
+      "a3": "Por capas. Haz una cruz en una cara con los colores de las aristas iguales a los centros, coloca las cuatro esquinas de esa cara y luego las aristas de la capa media. Para la última cara: forma la cruz, orienta las esquinas y lleva esquinas y aristas a su sitio.",
+      "q4": "¿Qué tamaños hay?",
+      "a4": "2×2, 3×3 y 4×4. El 2×2 solo tiene esquinas y sirve de calentamiento; el 4×4 no tiene centros fijos, así que primero juntas centros y aristas y luego lo resuelves como un 3×3.",
+      "q5": "¿Se guarda mi cubo?",
+      "a5": "Sí. La mezcla, tus giros, el reloj y tu mejor tiempo en cada tamaño se guardan en este navegador, así que puedes cerrar la página y seguir después."
+    },
+    "stack-game": {
+      "q1": "¿Cómo se juega a apilar bloques?",
+      "a1": "Un bloque se desliza sobre la torre. Toca, haz clic o pulsa Espacio para soltarlo. La parte que sobresale se corta y cae, así que el siguiente bloque solo mide lo que quedó. Si fallas la torre por completo, se acaba la partida.",
+      "q2": "¿Qué es un acierto perfecto?",
+      "a2": "Si sueltas el bloque casi justo encima del anterior, encaja sin cortar nada. Con tres o más perfectos seguidos el bloque vuelve a crecer un poco, hasta su tamaño inicial.",
+      "q3": "¿Va cada vez más rápido?",
+      "a3": "Sí. Los bloques se deslizan algo más rápido a medida que sube la torre y llegan alternando de dirección, así que vigila los bordes.",
+      "q4": "¿Puedo jugar en el móvil?",
+      "a4": "Sí. Toca en cualquier parte del juego para soltar un bloque. A pantalla completa se ve más grande, y en el móvil la vista 3D baja la resolución para ir fluida.",
+      "q5": "¿Se guarda mi mejor puntuación?",
+      "a5": "Sí, solo en este navegador. No se envía a ningún sitio."
+    },
+    "driving-game": {
+      "q1": "¿Cómo se conduce?",
+      "a1": "Flechas o W A S D: arriba acelera, abajo frena y luego da marcha atrás, izquierda y derecha giran. Espacio es el freno de mano y R te devuelve al último punto de control.",
+      "q2": "¿Cómo se puntúa el derrape?",
+      "a2": "Sumas puntos mientras el coche desliza más de 15 grados de lado a buena velocidad; cuanto más rápido y abierto, más puntos. El derrape se guarda al enderezar el coche. Si chocas con el muro de neumáticos o pasas más de un segundo en la hierba, pierdes el derrape en curso. Una partida de derrape dura 60 segundos.",
+      "q3": "¿Se puede jugar en el móvil?",
+      "a3": "Sí. Los botones de dirección están abajo a la izquierda, y freno, freno de mano y acelerador abajo a la derecha. Pon el móvil en horizontal y usa pantalla completa para verlo más grande.",
+      "q4": "¿Qué circuitos hay y se guardan mis tiempos?",
+      "a4": "Hay tres circuitos fijos, así que los tiempos por vuelta siempre se pueden comparar. Tu mejor vuelta y tu mejor derrape en cada circuito se guardan solo en este navegador.",
+      "q5": "¿Por qué va lento o se ve en negro en mi dispositivo?",
+      "a5": "El juego necesita WebGL. En el móvil dibuja a menos resolución y sin sombras; cerrar otras pestañas ayuda. Si la vista 3D se detiene, vuelve a empezar."
+    },
+    "flight-simulator": {
+      "q1": "¿Cómo se pilota el avión?",
+      "a1": "W y S mueven el acelerador. Las flechas son los mandos: izquierda y derecha inclinan las alas, arriba baja el morro y abajo lo sube, como una palanca real (marca Invertir cabeceo para cambiarlo). A y D mueven el timón. R vuelve a empezar.",
+      "q2": "¿Cómo despego y aterrizo?",
+      "a2": "En Vuelo libre empiezas en la pista. Mantén W para dar todo el acelerador y, al pasar de unos 145 km/h, sube el morro con suavidad. Para aterrizar, alinéate con la pista, baja a unos 150 km/h, mantén las alas niveladas y deja que el avión baje despacio. Si tocas tierra demasiado rápido, inclinado o fuera de la pista, te estrellas.",
+      "q3": "¿Qué es el modo aros?",
+      "a3": "Empiezas en el aire y pasas por 12 aros en orden: el rosa intenso es el siguiente. El reloj corre desde el principio y tu mejor tiempo se guarda en este navegador.",
+      "q4": "¿Se puede jugar en el móvil?",
+      "a4": "Sí. En pantallas táctiles aparecen botones sobre la vista: ▲ y ▼ para el morro, + y − para el acelerador, ◀ y ▶ para inclinar. A pantalla completa tienes más espacio.",
+      "q5": "¿Es un simulador de vuelo realista?",
+      "a5": "No, es un juego de aviones tipo arcade con física simplificada: hay sustentación, resistencia, pérdida por debajo de unos 110 km/h y virajes coordinados, pero el avión perdona mucho y cualquiera lo vuela en un minuto."
+    },
+    "games3d": {
+      "q1": "¿Estos juegos 3D son gratis?",
+      "a1": "Sí. Se juegan gratis, sin registro ni descarga. Las mejores puntuaciones y tiempos se guardan en este navegador.",
+      "q2": "¿Funcionan en el móvil?",
+      "a2": "Sí. Cada juego tiene controles táctiles y en el móvil la vista 3D baja la resolución para ir fluida. A pantalla completa tienes más espacio.",
+      "q3": "¿Por qué no se carga nada hasta pulsar Jugar?",
+      "a3": "El motor 3D (three.js) y el contexto gráfico arrancan solo cuando juegas, así la página abre rápido y el móvil no gasta memoria en un juego que solo estás mirando.",
+      "q4": "El juego dice que el 3D no está disponible. ¿Qué hago?",
+      "a4": "Los juegos necesitan WebGL. Actualiza el navegador, activa la aceleración por hardware en su configuración o prueba otro navegador. Algunos ordenadores del trabajo o del colegio bloquean WebGL."
     }
   },
   "qr": {
@@ -10173,6 +10276,7 @@
     },
     "consoles": {
       "mini": "Minijuegos gratis",
+      "3d": "Juegos 3D",
       "fc": "FC / NES",
       "sfc": "SFC / SNES",
       "gb": "Game Boy",
@@ -10250,6 +10354,11 @@
       "title": "Minijuegos gratis",
       "lead": "Juegos clásicos que se juegan aquí mismo, en el navegador: solitario, buscaminas, ajedrez, mahjong, 2048, juegos de palabras y más. Gratis, sin descargas y con tus puntuaciones y partidas en curso guardadas en este navegador.",
       "all": "Ver los {n} minijuegos gratis"
+    },
+    "g3d": {
+      "title": "Juegos 3D gratis",
+      "lead": "Juegos 3D que se juegan aquí mismo: ajedrez en un tablero 3D, un cubo mágico para girar y resolver, un juego de apilar, un juego de coches con derrapes y un simulador de vuelo. Gratis y sin instalar; la parte 3D se carga solo al pulsar Jugar.",
+      "all": "Los {n} juegos 3D gratis"
     }
   },
   "reverse": {
@@ -16130,5 +16239,130 @@
   },
   "lunarConverter": {
     "lede": "Fechas gregorianas ↔ lunares de 1900 a 2100, según el cómputo chino (UTC+8), vietnamita (UTC+7) o coreano / japonés (UTC+9). Se calcula en esta pestaña."
+  },
+  "chess3d": {
+    "title": "Ajedrez 3D",
+    "privacyNote": "Juega al ajedrez en un tablero 3D contra el ordenador o un amigo. La partida se juega en esta página y se guarda en este navegador.",
+    "stage": "Tablero de ajedrez 3D",
+    "intro": "El tablero 3D está listo cuando quieras. El motor del ordenador y la vista 3D se cargan al pulsar Jugar.",
+    "flip": "Girar el tablero",
+    "hint": "Toca una pieza y luego una casilla marcada. Arrastra para girar e inclinar la vista. Teclado: las flechas mueven el cursor, Enter o Espacio eligen casilla y Esc suelta la pieza.",
+    "cursor": "Casilla {square}: {piece}"
+  },
+  "magicCube": {
+    "title": "Cubo mágico",
+    "privacyNote": "Un cubo 3D para mezclar, girar y resolver. Funciona en la página y no se sube nada.",
+    "stage": "Cubo mágico, arrastra para girar",
+    "intro": "Gira y resuelve un cubo 3D. Pulsa Jugar para cargarlo.",
+    "size": "Tamaño",
+    "size2": "2×2",
+    "size3": "3×3",
+    "size4": "4×4",
+    "scramble": "Mezclar",
+    "undo": "Deshacer",
+    "reset": "Reiniciar",
+    "time": "Tiempo",
+    "moves": "Movimientos",
+    "best": "Mejor",
+    "solved": "¡Resuelto en {time} con {moves} movimientos!",
+    "solvedBest": "¡Nuevo récord! Resuelto en {time} con {moves} movimientos.",
+    "scrambled": "Mezclado. El reloj empieza con tu primer giro.",
+    "resumed": "Tu último cubo está como lo dejaste.",
+    "buttons": "Botones de giro",
+    "hint": "Arrastra una pegatina para girar su capa y el fondo para mirar alrededor. Teclas: U D L R F B giran caras, Mayús + tecla gira al revés, las flechas rotan la vista."
+  },
+  "stackGame": {
+    "title": "Juego de apilar bloques",
+    "privacyNote": "Suelta cada bloque sobre la torre y llega lo más alto que puedas.",
+    "stage": "Torre del juego de apilar",
+    "intro": "Suelta cada bloque sobre la torre. Lo que sobresale del borde se corta.",
+    "score": "Puntos",
+    "best": "Récord",
+    "over": "Fin de la partida. Puntos: {score}.",
+    "again": "Jugar otra vez",
+    "perfect": "¡Perfecto! ×{n}",
+    "newBest": "¡Nuevo récord: {score}!",
+    "hint": "Toca el juego, haz clic o pulsa Espacio o Intro para soltar un bloque. Alinéalo justo para un perfecto."
+  },
+  "drivingGame": {
+    "title": "Juego de coches 3D",
+    "privacyNote": "Corre con un coche 3D en un circuito o derrapa para sumar puntos. Tus mejores tiempos quedan en este navegador.",
+    "stage": "Juego de coches 3D",
+    "intro": "Elige circuito y modo y pulsa Jugar. Las flechas conducen, Espacio es el freno de mano.",
+    "track": "Circuito",
+    "track1": "Circuito 1 — Curvas suaves",
+    "track2": "Circuito 2 — Curvas largas",
+    "track3": "Circuito 3 — Gran anillo",
+    "mode": "Modo",
+    "modeTime": "Contrarreloj (3 vueltas)",
+    "modeDrift": "Derrape (60 segundos)",
+    "best": "Mejor marca en este circuito",
+    "restart": "Reiniciar",
+    "again": "Correr otra vez",
+    "go": "¡Ya!",
+    "finished": "¡Meta! Total {total}, mejor vuelta {best}.",
+    "driftDone": "¡Tiempo! Puntos de derrape: {score}.",
+    "speed": "Velocidad {n} km/h",
+    "lap": "Vuelta {n}/{of}",
+    "current": "Vuelta actual {time}",
+    "bestLap": "Mejor {time}",
+    "drift": "Derrape {n} puntos",
+    "timeLeft": "Quedan {n} s",
+    "offRoad": "Fuera de la pista",
+    "left": "Girar a la izquierda",
+    "right": "Girar a la derecha",
+    "brake": "Frenar / marcha atrás",
+    "handbrake": "Freno de mano",
+    "gas": "Acelerar",
+    "hint": "Arriba o W acelera, abajo o S frena y da marcha atrás, izquierda y derecha giran, Espacio es el freno de mano y R vuelve al último punto de control. Una vuelta solo cuenta tras pasar todos los puntos de control."
+  },
+  "flightSim": {
+    "title": "Simulador de vuelo",
+    "privacyNote": "Despega de la pista, vuela sobre la isla y vuelve a aterrizar, o compite pasando por los aros. No se sube nada.",
+    "stage": "Vista del simulador de vuelo",
+    "intro": "Pilota una avioneta sobre una isla low-poly. Pulsa Jugar para cargar la vista 3D.",
+    "mode": "Modo",
+    "m_free": "Vuelo libre",
+    "m_rings": "Aros (12)",
+    "restart": "Reiniciar",
+    "c_cockpit": "Vista de cabina",
+    "c_chase": "Vista exterior",
+    "invert": "Invertir cabeceo",
+    "best": "Mejor tiempo en aros",
+    "stall": "PÉRDIDA",
+    "hint": "W / S acelerador · ← → inclinar · ↑ morro abajo, ↓ morro arriba (como una palanca) · A / D timón · R reiniciar. En el móvil usa los botones de la vista.",
+    "p_noseUp": "Subir el morro",
+    "p_noseDown": "Bajar el morro",
+    "p_thrUp": "Más acelerador",
+    "p_thrDown": "Menos acelerador",
+    "p_rollLeft": "Inclinar a la izquierda",
+    "p_rollRight": "Inclinar a la derecha",
+    "again": "Volar otra vez",
+    "freeGo": "En la pista: mantén W para todo el acelerador y sube el morro al pasar de unos 145 km/h.",
+    "ringsGo": "Pasa por el aro rosa. El reloj está en marcha.",
+    "ringPassed": "Aro {n} de {total}.",
+    "finished": "Todos los aros en {time}.",
+    "newBest": "¡Nuevo récord: todos los aros en {time}!",
+    "crashWater": "¡Al agua! Has caído al mar.",
+    "crashHard": "¡Accidente! Has tocado tierra demasiado fuerte.",
+    "crashTerrain": "¡Accidente! Has chocado contra el terreno.",
+    "landed": "Aterrizaje perfecto. ¡Bien hecho! Acelera para volver a despegar.",
+    "airborne": "En el aire.",
+    "hudSpeed": "Velocidad {n} km/h",
+    "hudAlt": "Altitud {n} m",
+    "hudThrottle": "Acelerador {n} %",
+    "hudRings": "Aro {n}/{total} · {time}"
+  },
+  "game3d": {
+    "play": "Jugar",
+    "loading": "Cargando la vista 3D…",
+    "noWebgl": "Este navegador no puede mostrar gráficos 3D (WebGL). Activa la aceleración por hardware o prueba otro navegador.",
+    "retry": "Reintentar",
+    "lost": "La vista 3D se detuvo (se reinició la tarjeta gráfica). Empieza de nuevo para seguir jugando.",
+    "restart": "Empezar de nuevo",
+    "fullscreen": "Pantalla completa",
+    "exitFullscreen": "Salir de pantalla completa",
+    "pad": "Controles del juego",
+    "credit": "Gráficos 3D con {name} (licencia MIT)."
   }
 }

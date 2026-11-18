@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "titleFlightSimulator": "Flight simulator online — fly a plane in 3D for free — cv.cm",
+    "descFlightSimulator": "Free online flight simulator in 3D: take off from the runway, fly over a low-poly island and land again, or race through 12 rings against the clock. No download; works with a keyboard or on a phone."
+  },
+  "tools": {
+    "flight-simulator": {
+      "name": "Flight simulator",
+      "blurb": "Take off, fly over an island and land, or race through rings."
+    }
+  },
+  "faq": {
+    "flight-simulator": {
+      "q1": "How do I fly the plane?",
+      "a1": "W and S set the throttle. The arrow keys steer: Left and Right roll the wings, Up pushes the nose down and Down pulls it up, as on a real stick (tick Invert pitch to swap them). A and D turn the rudder. R starts over.",
+      "q2": "How do I take off and land?",
+      "a2": "In Free flight you start on the runway. Hold W for full throttle, and once you pass about 145 km/h pull the nose up gently. To land, line up with the runway, slow to about 150 km/h, keep the wings level and let the plane sink slowly onto it. Touch down too fast, in a bank or off the runway and you crash.",
+      "q3": "What is the rings mode?",
+      "a3": "You start in the air and fly through 12 rings in order: the bright pink one is next. The clock runs from the start, and your best time is kept in this browser.",
+      "q4": "Can I play on a phone?",
+      "a4": "Yes. On a touch screen buttons appear on the view: ▲ and ▼ for the nose, + and − for the throttle, ◀ and ▶ to roll. Full screen gives you the most room.",
+      "q5": "Is it a realistic flight simulator?",
+      "a5": "No, it is an arcade flight game with simplified physics: lift, drag, stalling below about 110 km/h and coordinated turns are modelled, but the plane is forgiving so anyone can fly it in a minute."
+    }
+  },
+  "guides": {
+    "flight-simulator": {
+      "lead": "Fly the plane in three steps.",
+      "s1t": "Take off",
+      "s1b": "Press Play, hold W for full throttle and pull the nose up once the speed passes about 145 km/h.",
+      "s2t": "Fly",
+      "s2b": "Roll with the left and right arrows to turn, keep the speed up and watch for the STALL warning.",
+      "s3t": "Land or race",
+      "s3b": "Line up with the runway and sink gently onto it, or switch to Rings and fly through all 12 for a best time."
+    }
+  },
+  "ui": {
+    "flightSim": {
+      "title": "Flight simulator",
+      "privacyNote": "Take off from the runway, fly over the island and land again, or race through the rings. Nothing is uploaded.",
+      "stage": "Flight simulator view",
+      "intro": "Fly a small plane over a low-poly island. Press Play to load the 3D view.",
+      "mode": "Mode",
+      "m_free": "Free flight",
+      "m_rings": "Rings (12)",
+      "restart": "Restart",
+      "c_cockpit": "Cockpit view",
+      "c_chase": "Chase view",
+      "invert": "Invert pitch",
+      "best": "Best rings time",
+      "stall": "STALL",
+      "hint": "W / S throttle · ← → roll · ↑ nose down, ↓ nose up (like a stick) · A / D rudder · R restart. On a phone use the buttons on the view.",
+      "p_noseUp": "Nose up",
+      "p_noseDown": "Nose down",
+      "p_thrUp": "More throttle",
+      "p_thrDown": "Less throttle",
+      "p_rollLeft": "Roll left",
+      "p_rollRight": "Roll right",
+      "again": "Fly again",
+      "freeGo": "On the runway: hold W for full throttle, then pull up past about 145 km/h.",
+      "ringsGo": "Fly through the pink ring. The clock is running.",
+      "ringPassed": "Ring {n} of {total}.",
+      "finished": "All rings in {time}.",
+      "newBest": "New best: all rings in {time}!",
+      "crashWater": "Splash! You went into the sea.",
+      "crashHard": "Crash! You hit the ground too hard.",
+      "crashTerrain": "Crash! You hit the terrain.",
+      "landed": "Landed. Nicely done! Throttle up to take off again.",
+      "airborne": "Airborne.",
+      "hudSpeed": "Speed {n} km/h",
+      "hudAlt": "Altitude {n} m",
+      "hudThrottle": "Throttle {n}%",
+      "hudRings": "Ring {n}/{total} · {time}"
+    }
+  }
+}

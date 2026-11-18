@@ -1,0 +1,71 @@
+{
+  "meta": {
+    "titleDrivingGame": "Juego de coches 3D — conducir y derrapar online — cv.cm",
+    "descDrivingGame": "Juego de conducir en 3D gratis en el navegador: corre tres vueltas contrarreloj o derrapa en las curvas para sumar puntos. Tres circuitos, teclado o controles táctiles y sin descargas."
+  },
+  "tools": {
+    "driving-game": {
+      "name": "Juego de coches 3D",
+      "blurb": "Conduce un coche 3D por tres circuitos o derrapa para sumar puntos."
+    }
+  },
+  "faq": {
+    "driving-game": {
+      "q1": "¿Cómo se conduce?",
+      "a1": "Flechas o W A S D: arriba acelera, abajo frena y luego da marcha atrás, izquierda y derecha giran. Espacio es el freno de mano y R te devuelve al último punto de control.",
+      "q2": "¿Cómo se puntúa el derrape?",
+      "a2": "Sumas puntos mientras el coche desliza más de 15 grados de lado a buena velocidad; cuanto más rápido y abierto, más puntos. El derrape se guarda al enderezar el coche. Si chocas con el muro de neumáticos o pasas más de un segundo en la hierba, pierdes el derrape en curso. Una partida de derrape dura 60 segundos.",
+      "q3": "¿Se puede jugar en el móvil?",
+      "a3": "Sí. Los botones de dirección están abajo a la izquierda, y freno, freno de mano y acelerador abajo a la derecha. Pon el móvil en horizontal y usa pantalla completa para verlo más grande.",
+      "q4": "¿Qué circuitos hay y se guardan mis tiempos?",
+      "a4": "Hay tres circuitos fijos, así que los tiempos por vuelta siempre se pueden comparar. Tu mejor vuelta y tu mejor derrape en cada circuito se guardan solo en este navegador.",
+      "q5": "¿Por qué va lento o se ve en negro en mi dispositivo?",
+      "a5": "El juego necesita WebGL. En el móvil dibuja a menos resolución y sin sombras; cerrar otras pestañas ayuda. Si la vista 3D se detiene, vuelve a empezar."
+    }
+  },
+  "guides": {
+    "driving-game": {
+      "lead": "Conduce un coche 3D en tres pasos.",
+      "s1t": "Elige circuito y modo",
+      "s1b": "Elige uno de los tres circuitos, luego Contrarreloj (tres vueltas) o Derrape (60 segundos), y pulsa Jugar.",
+      "s2t": "Conduce",
+      "s2b": "Espera al 3-2-1, acelera con arriba o W y gira con las flechas. En el móvil, usa los botones de la pantalla.",
+      "s3t": "Supera tu marca",
+      "s3b": "Pasa por todos los puntos de control para que cuente la vuelta. Se guardan tu mejor vuelta y tu mejor derrape en cada circuito."
+    }
+  },
+  "ui": {
+    "drivingGame": {
+      "title": "Juego de coches 3D",
+      "privacyNote": "Corre con un coche 3D en un circuito o derrapa para sumar puntos. Tus mejores tiempos quedan en este navegador.",
+      "stage": "Juego de coches 3D",
+      "intro": "Elige circuito y modo y pulsa Jugar. Las flechas conducen, Espacio es el freno de mano.",
+      "track": "Circuito",
+      "track1": "Circuito 1 — Curvas suaves",
+      "track2": "Circuito 2 — Curvas largas",
+      "track3": "Circuito 3 — Gran anillo",
+      "mode": "Modo",
+      "modeTime": "Contrarreloj (3 vueltas)",
+      "modeDrift": "Derrape (60 segundos)",
+      "best": "Mejor marca en este circuito",
+      "restart": "Reiniciar",
+      "again": "Correr otra vez",
+      "go": "¡Ya!",
+      "finished": "¡Meta! Total {total}, mejor vuelta {best}.",
+      "driftDone": "¡Tiempo! Puntos de derrape: {score}.",
+      "speed": "Velocidad {n} km/h",
+      "lap": "Vuelta {n}/{of}",
+      "current": "Vuelta actual {time}",
+      "bestLap": "Mejor {time}",
+      "drift": "Derrape {n} puntos",
+      "timeLeft": "Quedan {n} s",
+      "offRoad": "Fuera de la pista",
+      "left": "Girar a la izquierda",
+      "right": "Girar a la derecha",
+      "brake": "Frenar / marcha atrás",
+      "handbrake": "Freno de mano",
+      "gas": "Acelerar",
+      "hint": "Arriba o W acelera, abajo o S frena y da marcha atrás, izquierda y derecha giran, Espacio es el freno de mano y R vuelve al último punto de control. Una vuelta solo cuenta tras pasar todos los puntos de control."
+    }
+  }
+}

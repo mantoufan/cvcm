@@ -2,7 +2,7 @@ import { crumbNav, homeCrumb, type Crumb } from "../crumb";
 import { h } from "../dom";
 import { linkList, type LinkItem } from "../links";
 import { locale, t } from "../i18n";
-import { BROWSER_GAMES } from "../../shared/path";
+import { BROWSER_GAMES, GAMES_3D } from "../../shared/path";
 import {
   GAME_CONSOLES,
   GAME_GENRES,
@@ -12,14 +12,17 @@ import {
   gameRomFile,
   gamesFor,
   isGameGenreId,
+  gamesFaqBase,
+  isToolGameHub,
   type Game,
   type GameConsoleId,
   type GameGenreId,
   type GameId,
+  type ToolGameHubId,
 } from "../../shared/games";
 import { gameCheatLabels, gameCopy, gameFaqItems, gameName } from "../../shared/games-i18n";
 import { gameWalkthrough, walkthroughImage } from "../../shared/game-walkthrough";
-import { appHref, gamesHref } from "../../shared/path";
+import { appHref, gamesHref, type ToolId } from "../../shared/path";
 import { GAME_OFFICIAL, OFFICIAL_CHECKED, type OfficialWay } from "../../shared/game-official";
 import { player } from "./player";
 
@@ -45,7 +48,7 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
   const genre = currentGenre();
   const list = gamesFor(consoleId, genre);
   const flash = consoleId === "flash";
-  if (consoleId === "mini") return mountMiniHub(host, loc);
+  if (isToolGameHub(consoleId)) return mountToolHub(host, loc, consoleId);
   const catalog = list.length
     ? linkList(list.map((game) => gameLink(loc, game)))
     : h("p", { class: "learn-empty" }, flash && !genre ? t("games.flash.catalog") : t("games.empty"));
@@ -92,30 +95,40 @@ export function mountGamesHub(host: HTMLElement, consoleId: GameConsoleId | null
       h("h2", { id: "open-games-title" }, t("games.mini.title")),
       h("p", { class: "lede" }, t("games.mini.lead")),
       h("p", { class: "more" }, h("a", { href: gamesHref(loc, "mini"), "data-nav": "games-mini" }, t("games.mini.all", { n: BROWSER_GAMES.length }))),
+    ), h("section", { class: "wall", "aria-labelledby": "games-3d-title" },
+      h("h2", { id: "games-3d-title" }, t("games.g3d.title")),
+      h("p", { class: "lede" }, t("games.g3d.lead")),
+      h("p", { class: "more" }, h("a", { href: gamesHref(loc, "3d"), "data-nav": "games-3d" }, t("games.g3d.all", { n: GAMES_3D.length }))),
     )]),
     gamesFaq(loc, consoleId),
   );
 }
 
-/** /games/mini/: cv.cm's own browser games (tool pages), one list, no genre row (they are not catalog games). */
-function mountMiniHub(host: HTMLElement, loc: ReturnType<typeof locale>): void {
+/**
+ * /games/mini/ and /games/3d/: cv.cm's own browser games (tool pages), one list, no genre row (they are not catalog
+ * games). Copy lives under `games.mini` / `games.g3d` (a key cannot start with a digit in the copy tools).
+ */
+function mountToolHub(host: HTMLElement, loc: ReturnType<typeof locale>, hub: ToolGameHubId): void {
+  const ns = hub === "3d" ? "games.g3d" : "games.mini";
+  const list: readonly ToolId[] = hub === "3d" ? GAMES_3D : BROWSER_GAMES;
   host.append(
-    hubCrumb(loc, "mini"),
+    hubCrumb(loc, hub),
     h("header", { class: "tool-head" },
-      h("h1", null, t("games.mini.title")),
-      h("p", { class: "lede" }, t("games.mini.lead")),
+      h("h1", null, t(`${ns}.title`)),
+      h("p", { class: "lede" }, t(`${ns}.lead`)),
     ),
     h("nav", { class: "game-filters", "aria-label": t("nav.games") },
       h("div", { class: "game-filter-row" },
         chip(gamesHref(loc, null), false, t("games.filterAll"), "games"),
-        ...GAME_CONSOLES.map((id) => chip(gamesHref(loc, id), id === "mini", t(`games.consoles.${id}`), `games-${id}`)),
+        ...GAME_CONSOLES.map((id) => chip(gamesHref(loc, id), id === hub, t(`games.consoles.${id}`), `games-${id}`)),
       ),
     ),
     h("section", { class: "wall" },
-      h("h2", { class: "sr-only" }, t("games.mini.title")),
-      linkList(BROWSER_GAMES.map((id) => ({ href: appHref(loc, id), name: t(`tools.${id}.name`), blurb: t(`tools.${id}.blurb`), nav: id }))),
+      h("h2", { class: "sr-only" }, t(`${ns}.title`)),
+      linkList(list.map((id) => ({ href: appHref(loc, id), name: t(`tools.${id}.name`), blurb: t(`tools.${id}.blurb`), nav: id }))),
     ),
-    gamesFaq(loc, "mini"),
+    ...(hub === "mini" ? [h("p", { class: "more" }, h("a", { href: gamesHref(loc, "3d"), "data-nav": "games-3d" }, t("games.g3d.all", { n: GAMES_3D.length })))] : []),
+    gamesFaq(loc, hub),
   );
 }
 
@@ -300,7 +313,7 @@ function emulatorCheats(game: Game): { name: string; code: string }[] {
 
 function gamesFaq(loc: ReturnType<typeof locale>, consoleId: GameConsoleId | null = null): HTMLElement {
   void loc;
-  const base = consoleId === "flash" ? "faq.gamesFlash" : consoleId === "mini" ? "faq.gamesMini" : "faq.games";
+  const base = gamesFaqBase(consoleId);
   const items = [];
   for (let i = 1; i <= 5; i++) {
     const q = t(`${base}.q${i}`);

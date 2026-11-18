@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "titleFlightSimulator": "Simulador de vuelo online — juego de aviones 3D gratis — cv.cm",
+    "descFlightSimulator": "Simulador de vuelo 3D gratis en el navegador: despega de la pista, vuela sobre una isla low-poly y vuelve a aterrizar, o pasa por 12 aros contra el reloj. Sin descargas; con teclado o en el móvil."
+  },
+  "tools": {
+    "flight-simulator": {
+      "name": "Simulador de vuelo",
+      "blurb": "Despega, vuela sobre una isla y aterriza, o pasa por los aros contra el reloj."
+    }
+  },
+  "faq": {
+    "flight-simulator": {
+      "q1": "¿Cómo se pilota el avión?",
+      "a1": "W y S mueven el acelerador. Las flechas son los mandos: izquierda y derecha inclinan las alas, arriba baja el morro y abajo lo sube, como una palanca real (marca Invertir cabeceo para cambiarlo). A y D mueven el timón. R vuelve a empezar.",
+      "q2": "¿Cómo despego y aterrizo?",
+      "a2": "En Vuelo libre empiezas en la pista. Mantén W para dar todo el acelerador y, al pasar de unos 145 km/h, sube el morro con suavidad. Para aterrizar, alinéate con la pista, baja a unos 150 km/h, mantén las alas niveladas y deja que el avión baje despacio. Si tocas tierra demasiado rápido, inclinado o fuera de la pista, te estrellas.",
+      "q3": "¿Qué es el modo aros?",
+      "a3": "Empiezas en el aire y pasas por 12 aros en orden: el rosa intenso es el siguiente. El reloj corre desde el principio y tu mejor tiempo se guarda en este navegador.",
+      "q4": "¿Se puede jugar en el móvil?",
+      "a4": "Sí. En pantallas táctiles aparecen botones sobre la vista: ▲ y ▼ para el morro, + y − para el acelerador, ◀ y ▶ para inclinar. A pantalla completa tienes más espacio.",
+      "q5": "¿Es un simulador de vuelo realista?",
+      "a5": "No, es un juego de aviones tipo arcade con física simplificada: hay sustentación, resistencia, pérdida por debajo de unos 110 km/h y virajes coordinados, pero el avión perdona mucho y cualquiera lo vuela en un minuto."
+    }
+  },
+  "guides": {
+    "flight-simulator": {
+      "lead": "Pilota el avión en tres pasos.",
+      "s1t": "Despega",
+      "s1b": "Pulsa Jugar, mantén W para dar todo el acelerador y sube el morro al pasar de unos 145 km/h.",
+      "s2t": "Vuela",
+      "s2b": "Inclina con las flechas izquierda y derecha para girar, mantén la velocidad y atento al aviso de PÉRDIDA.",
+      "s3t": "Aterriza o compite",
+      "s3b": "Alinéate con la pista y baja despacio, o cambia a Aros y pasa los 12 para marcar tu mejor tiempo."
+    }
+  },
+  "ui": {
+    "flightSim": {
+      "title": "Simulador de vuelo",
+      "privacyNote": "Despega de la pista, vuela sobre la isla y vuelve a aterrizar, o compite pasando por los aros. No se sube nada.",
+      "stage": "Vista del simulador de vuelo",
+      "intro": "Pilota una avioneta sobre una isla low-poly. Pulsa Jugar para cargar la vista 3D.",
+      "mode": "Modo",
+      "m_free": "Vuelo libre",
+      "m_rings": "Aros (12)",
+      "restart": "Reiniciar",
+      "c_cockpit": "Vista de cabina",
+      "c_chase": "Vista exterior",
+      "invert": "Invertir cabeceo",
+      "best": "Mejor tiempo en aros",
+      "stall": "PÉRDIDA",
+      "hint": "W / S acelerador · ← → inclinar · ↑ morro abajo, ↓ morro arriba (como una palanca) · A / D timón · R reiniciar. En el móvil usa los botones de la vista.",
+      "p_noseUp": "Subir el morro",
+      "p_noseDown": "Bajar el morro",
+      "p_thrUp": "Más acelerador",
+      "p_thrDown": "Menos acelerador",
+      "p_rollLeft": "Inclinar a la izquierda",
+      "p_rollRight": "Inclinar a la derecha",
+      "again": "Volar otra vez",
+      "freeGo": "En la pista: mantén W para todo el acelerador y sube el morro al pasar de unos 145 km/h.",
+      "ringsGo": "Pasa por el aro rosa. El reloj está en marcha.",
+      "ringPassed": "Aro {n} de {total}.",
+      "finished": "Todos los aros en {time}.",
+      "newBest": "¡Nuevo récord: todos los aros en {time}!",
+      "crashWater": "¡Al agua! Has caído al mar.",
+      "crashHard": "¡Accidente! Has tocado tierra demasiado fuerte.",
+      "crashTerrain": "¡Accidente! Has chocado contra el terreno.",
+      "landed": "Aterrizaje perfecto. ¡Bien hecho! Acelera para volver a despegar.",
+      "airborne": "En el aire.",
+      "hudSpeed": "Velocidad {n} km/h",
+      "hudAlt": "Altitud {n} m",
+      "hudThrottle": "Acelerador {n} %",
+      "hudRings": "Aro {n}/{total} · {time}"
+    }
+  }
+}

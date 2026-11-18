@@ -83,6 +83,10 @@
       "name": "Word games: word search, hangman, typing game, typing practice (touch-typing lessons)"
     },
     {
+      "id": "games3d",
+      "name": "3D games: 3D chess against the computer, magic cube (3×3 and other sizes), stack game, driving and drift game, flight simulator"
+    },
+    {
       "id": "assets",
       "name": "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)"
     },
@@ -1779,6 +1783,46 @@
       "description": "Touch typing lessons, key by key.",
       "category": "wordgames",
       "url": "https://cv.cm/en/typing-practice/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "3d-chess",
+      "name": "3D chess",
+      "description": "Chess on a 3D board you can turn, against the computer or a friend.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/3d-chess/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "magic-cube",
+      "name": "Magic cube",
+      "description": "Scramble a 3D cube and solve it against the clock.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/magic-cube/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "stack-game",
+      "name": "Stack game",
+      "description": "Drop the sliding blocks and build the tallest tower.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/stack-game/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "driving-game",
+      "name": "Driving game",
+      "description": "Race a 3D car round three tracks, or drift for points.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/driving-game/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "flight-simulator",
+      "name": "Flight simulator",
+      "description": "Take off, fly over an island and land, or race through rings.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/flight-simulator/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

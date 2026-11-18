@@ -209,6 +209,11 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "p-value": "/covers/p-value-sweet.jpg?v=1",
   "z-score": "/covers/z-score-sweet.jpg?v=1",
   "lunar-converter": "/covers/lunar-converter-sweet.jpg?v=1",
+  "3d-chess": "/covers/3d-chess-sweet.jpg?v=1",
+  "magic-cube": "/covers/magic-cube-sweet.jpg?v=1",
+  "stack-game": "/covers/stack-game-sweet.jpg?v=1",
+  "driving-game": "/covers/driving-game-sweet.jpg?v=1",
+  "flight-simulator": "/covers/flight-simulator-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {

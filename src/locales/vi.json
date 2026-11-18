@@ -737,7 +737,19 @@
     "titleZScore": "Tính điểm z (z-score) — z từ giá trị, phân vị và xác suất chuẩn — cv.cm",
     "descZScore": "Công cụ tính điểm z (z-score) miễn phí: tính z = (x − μ) / σ và phần phân phối chuẩn nằm dưới, trên hoặc giữa các giá trị, hoặc điểm z và giá trị tại một phân vị, có tô vùng diện tích trên đường cong hình chuông.",
     "titleLunarConverter": "Đổi lịch âm sang dương và ngược lại (1900–2100) — cv.cm",
-    "descLunarConverter": "Công cụ đổi ngày âm dương miễn phí: đổi ngày dương lịch sang âm lịch (kèm năm can chi và con giáp), hoặc ngày âm lịch, kể cả tháng nhuận, sang dương lịch. Theo lịch Việt Nam (UTC+7), Trung Quốc (UTC+8), Hàn Quốc / Nhật Bản (UTC+9), 1900–2100."
+    "descLunarConverter": "Công cụ đổi ngày âm dương miễn phí: đổi ngày dương lịch sang âm lịch (kèm năm can chi và con giáp), hoặc ngày âm lịch, kể cả tháng nhuận, sang dương lịch. Theo lịch Việt Nam (UTC+7), Trung Quốc (UTC+8), Hàn Quốc / Nhật Bản (UTC+9), 1900–2100.",
+    "titleChess3d": "Cờ vua 3D — chơi cờ vua online trên bàn cờ 3D — cv.cm",
+    "descChess3d": "Chơi cờ vua 3D online miễn phí: bàn cờ 3D thật, xoay và nghiêng được, đấu với máy ở 5 cấp độ hoặc với bạn bè. Không cần tải, chơi được trên điện thoại.",
+    "titleMagicCube": "Chơi rubik online — xoay và giải khối rubik 3×3 3D — cv.cm",
+    "descMagicCube": "Chơi khối rubik 3D online: xáo trộn khối 2×2, 3×3 hoặc 4×4, xoay các tầng bằng cách kéo hoặc bàn phím và bấm giờ khi giải. Miễn phí, chơi được trên điện thoại.",
+    "titleStackGame": "Game xếp chồng khối 3D — xếp tháp cao nhất có thể — cv.cm",
+    "descStackGame": "Chơi miễn phí game xếp chồng khối 3D trên trình duyệt: thả từng khối đang trượt lên tháp, phần thừa bị cắt đi, xem bạn xếp được cao bao nhiêu. Thả hoàn hảo giúp khối to lại. Chơi được trên điện thoại.",
+    "titleDrivingGame": "Game lái xe 3D — đua xe và drift online miễn phí — cv.cm",
+    "descDrivingGame": "Game lái xe 3D miễn phí trên trình duyệt: đua ba vòng tính giờ hoặc ôm cua trượt ngang ở chế độ drift để ghi điểm. Ba đường đua, điều khiển bằng bàn phím hoặc cảm ứng, không cần tải.",
+    "titleFlightSimulator": "Game mô phỏng máy bay online — lái máy bay 3D miễn phí — cv.cm",
+    "descFlightSimulator": "Game mô phỏng máy bay 3D miễn phí trên trình duyệt: cất cánh từ đường băng, bay qua hòn đảo low-poly rồi hạ cánh, hoặc bay qua 12 vòng tròn tính giờ. Không cần tải; chơi bằng bàn phím hoặc trên điện thoại.",
+    "titleGames3d": "Game 3D online miễn phí — cờ vua 3D, rubik, đua xe, máy bay — cv.cm",
+    "descGames3d": "Chơi game 3D miễn phí trên trình duyệt, không cần tải: cờ vua 3D, khối rubik, game xếp chồng, game lái xe drift và mô phỏng máy bay. Chơi được trên điện thoại."
   },
   "brand": "cv.cm",
   "nav": {
@@ -778,7 +790,8 @@
     "elements": "Bảng tuần hoàn",
     "calendar": "Lịch",
     "academic": "Học thuật & thống kê",
-    "more": "Thêm"
+    "more": "Thêm",
+    "games3d": "Game 3D"
   },
   "lang": {
     "label": "Ngôn ngữ",
@@ -1632,6 +1645,26 @@
     "lunar-converter": {
       "name": "Đổi ngày âm dương",
       "blurb": "Đổi ngày âm lịch sang dương lịch và ngược lại."
+    },
+    "3d-chess": {
+      "name": "Cờ vua 3D",
+      "blurb": "Cờ vua trên bàn cờ 3D xoay được, đấu với máy hoặc với bạn."
+    },
+    "magic-cube": {
+      "name": "Khối rubik",
+      "blurb": "Xáo trộn khối rubik 3D và giải nó với đồng hồ."
+    },
+    "stack-game": {
+      "name": "Game xếp chồng khối",
+      "blurb": "Thả các khối đang trượt và xây tòa tháp cao nhất."
+    },
+    "driving-game": {
+      "name": "Game lái xe 3D",
+      "blurb": "Lái xe 3D trên ba đường đua hoặc drift để ghi điểm."
+    },
+    "flight-simulator": {
+      "name": "Mô phỏng máy bay",
+      "blurb": "Cất cánh, bay qua đảo và hạ cánh, hoặc bay qua các vòng tính giờ."
     }
   },
   "watermark": {
@@ -6177,6 +6210,76 @@
       "a4": "Thứ Bảy, 6/2/2027 (mùng 1 tháng Giêng năm Đinh Mùi).",
       "q5": "Có tải dữ liệu lên không?",
       "a5": "Không. Bảng lịch có sẵn trong trang và ngày chỉ được tính trong tab này."
+    },
+    "3d-chess": {
+      "q1": "Đi quân trong cờ vua 3D thế nào?",
+      "a1": "Chạm hoặc bấm vào một quân, rồi chạm vào ô được đánh dấu. Chấm nhỏ là nước đi hợp lệ, vòng tròn là nước ăn quân. Chạm lại quân đó để bỏ chọn.",
+      "q2": "Máy chơi mạnh cỡ nào?",
+      "a2": "Có 5 cấp độ, từ người mới hay đi hớ đến kỳ thủ câu lạc bộ mạnh. Máy dùng engine Stockfish, ở cấp dễ bị giới hạn thời gian và độ sâu suy nghĩ.",
+      "q3": "Xoay bàn cờ trên điện thoại thế nào?",
+      "a3": "Kéo một hoặc hai ngón tay trên bàn cờ để xoay và nghiêng góc nhìn; chạm nhanh là chọn ô. Nút Xoay bàn cờ đưa bạn sang phía bên kia, còn toàn màn hình cho nhiều chỗ nhất.",
+      "q4": "Ván cờ có được lưu không?",
+      "a4": "Có. Mỗi nước đi được lưu trong trình duyệt này, lần sau mở lại vẫn chơi tiếp được. Không có gì được tải lên.",
+      "q5": "Sao lại báo không dùng được 3D?",
+      "a5": "Cờ vua 3D cần WebGL. Hãy cập nhật trình duyệt, bật tăng tốc phần cứng hoặc thử trình duyệt khác. Cờ vua phẳng trên cv.cm không cần WebGL."
+    },
+    "magic-cube": {
+      "q1": "Xoay một tầng thế nào?",
+      "a1": "Bấm Chơi, rồi kéo một ô màu theo hướng bạn muốn hàng hoặc cột đó di chuyển. Kéo ra ngoài khối để xoay góc nhìn. Trên bàn phím, U D L R F B xoay các mặt ngoài, giữ Shift để xoay ngược lại.",
+      "q2": "Ký hiệu nghĩa là gì?",
+      "a2": "Mỗi chữ là một mặt: U trên, D dưới, L trái, R phải, F trước, B sau. Chữ đơn là xoay 90 độ theo chiều kim đồng hồ khi nhìn vào mặt đó, có dấu phẩy trên (R') là ngược chiều, có số 2 (R2) là xoay 180 độ.",
+      "q3": "Người mới giải rubik 3×3 thế nào?",
+      "a3": "Giải theo từng tầng. Làm dấu cộng trên một mặt sao cho màu cạnh khớp với tâm, đặt bốn góc của mặt đó, rồi đến các cạnh tầng giữa. Mặt cuối: tạo dấu cộng, xoay đúng hướng các góc, rồi đưa góc và cạnh về đúng chỗ.",
+      "q4": "Có những cỡ nào?",
+      "a4": "2×2, 3×3 và 4×4. Khối 2×2 chỉ có góc nên hợp để khởi động; khối 4×4 không có tâm cố định nên bạn ghép tâm và cạnh trước rồi giải như 3×3.",
+      "q5": "Khối của tôi có được lưu không?",
+      "a5": "Có. Lần xáo trộn, các bước xoay, đồng hồ và thời gian tốt nhất của mỗi cỡ được lưu trong trình duyệt này, nên bạn có thể đóng trang và chơi tiếp sau."
+    },
+    "stack-game": {
+      "q1": "Chơi game xếp chồng khối thế nào?",
+      "a1": "Một khối trượt qua lại trên đỉnh tháp. Chạm, nhấp chuột hoặc nhấn phím cách để thả. Phần thò ra ngoài mép bị cắt và rơi xuống, nên khối tiếp theo chỉ còn bằng phần giữ lại. Trượt hẳn khỏi tháp là thua.",
+      "q2": "Thả hoàn hảo là gì?",
+      "a2": "Thả gần như khít với khối bên dưới thì khối sẽ hít vào đúng chỗ, không bị cắt chút nào. Hoàn hảo từ ba lần liên tiếp trở lên thì khối to dần lại, tối đa bằng cỡ ban đầu.",
+      "q3": "Game có nhanh dần không?",
+      "a3": "Có. Tháp càng cao khối trượt càng nhanh hơn một chút, lại đến luân phiên từ hai hướng, nên hãy nhìn kỹ mép khối.",
+      "q4": "Chơi trên điện thoại được không?",
+      "a4": "Được. Chạm vào bất kỳ đâu trên màn chơi để thả khối. Bật toàn màn hình để nhìn rõ nhất; trên điện thoại hình 3D giảm độ phân giải để chạy mượt.",
+      "q5": "Điểm cao nhất có được lưu không?",
+      "a5": "Có, chỉ trong trình duyệt này. Không gửi đi đâu cả."
+    },
+    "driving-game": {
+      "q1": "Lái xe thế nào?",
+      "a1": "Phím mũi tên hoặc W A S D: lên để tăng ga, xuống để phanh rồi lùi, trái phải để đánh lái. Phím cách là phanh tay, R đưa bạn về điểm kiểm tra gần nhất.",
+      "q2": "Điểm drift được tính thế nào?",
+      "a2": "Điểm tăng khi xe trượt ngang hơn 15 độ ở tốc độ cao; càng nhanh và trượt càng rộng thì càng nhiều điểm. Khi bạn lái thẳng xe lại, điểm của pha trượt đó được cộng vào tổng. Đâm vào tường lốp hoặc ở trên cỏ quá một giây sẽ mất điểm của pha đang trượt. Mỗi lượt drift dài 60 giây.",
+      "q3": "Có chơi được trên điện thoại không?",
+      "a3": "Có. Nút đánh lái ở góc dưới bên trái, còn phanh, phanh tay và ga ở góc dưới bên phải. Xoay ngang điện thoại và bật toàn màn hình để thấy rõ nhất.",
+      "q4": "Có những đường đua nào, thành tích có được lưu không?",
+      "a4": "Có ba đường đua cố định nên thời gian mỗi vòng luôn so sánh được. Vòng nhanh nhất và điểm drift cao nhất của từng đường đua chỉ lưu trong trình duyệt này.",
+      "q5": "Sao máy của tôi bị giật hoặc màn hình đen?",
+      "a5": "Game cần WebGL. Trên điện thoại game vẽ ở độ phân giải thấp hơn và không có bóng; đóng bớt tab khác sẽ mượt hơn. Nếu hình 3D bị dừng, hãy bắt đầu lại."
+    },
+    "flight-simulator": {
+      "q1": "Lái máy bay thế nào?",
+      "a1": "W và S chỉnh ga. Phím mũi tên để lái: trái và phải nghiêng cánh, lên chúc mũi xuống và xuống ngóc mũi lên, giống cần lái thật (tích Đảo chiều lên xuống để đổi). A và D là bánh lái hướng. R chơi lại.",
+      "q2": "Cất cánh và hạ cánh thế nào?",
+      "a2": "Ở chế độ Bay tự do bạn bắt đầu trên đường băng. Giữ W để mở hết ga, khi vượt khoảng 145 km/h thì kéo mũi lên nhẹ nhàng. Khi hạ cánh, bay thẳng hàng với đường băng, giảm còn khoảng 150 km/h, giữ cánh thăng bằng và để máy bay hạ từ từ. Chạm đất quá nhanh, đang nghiêng hoặc ngoài đường băng sẽ rơi.",
+      "q3": "Chế độ vòng tròn là gì?",
+      "a3": "Bạn bắt đầu trên không và bay qua 12 vòng theo thứ tự: vòng màu hồng đậm là vòng tiếp theo. Đồng hồ chạy từ lúc bắt đầu, thời gian tốt nhất được lưu trong trình duyệt này.",
+      "q4": "Chơi trên điện thoại được không?",
+      "a4": "Được. Trên màn hình cảm ứng sẽ có nút trên khung hình: ▲ ▼ cho mũi máy bay, + − cho ga, ◀ ▶ để nghiêng. Bật toàn màn hình để có nhiều chỗ nhất.",
+      "q5": "Đây có phải mô phỏng bay thật không?",
+      "a5": "Không, đây là game lái máy bay kiểu arcade với vật lý đơn giản: có lực nâng, lực cản, thất tốc dưới khoảng 110 km/h và vòng liệng phối hợp, nhưng máy bay rất dễ lái, ai cũng bay được sau một phút."
+    },
+    "games3d": {
+      "q1": "Các game 3D này có miễn phí không?",
+      "a1": "Có. Chơi miễn phí, không cần đăng ký hay tải về. Điểm và thời gian tốt nhất được lưu trong trình duyệt này.",
+      "q2": "Có chơi được trên điện thoại không?",
+      "a2": "Có. Mỗi game đều có nút cảm ứng, và trên điện thoại hình 3D giảm độ phân giải để chạy mượt. Bật toàn màn hình để có nhiều chỗ nhất.",
+      "q3": "Sao chưa bấm Chơi thì chưa tải gì?",
+      "a3": "Engine 3D (three.js) và ngữ cảnh đồ họa chỉ khởi động khi bạn chơi, nên trang mở nhanh và điện thoại không tốn bộ nhớ cho game bạn chỉ đang xem.",
+      "q4": "Game báo không dùng được 3D thì làm sao?",
+      "a4": "Các game cần WebGL. Hãy cập nhật trình duyệt, bật tăng tốc phần cứng trong phần cài đặt hoặc thử trình duyệt khác. Một số máy ở cơ quan hoặc trường học chặn WebGL."
     }
   },
   "qr": {
@@ -10173,6 +10276,7 @@
     },
     "consoles": {
       "mini": "Game mini miễn phí",
+      "3d": "Game 3D",
       "fc": "FC / NES",
       "sfc": "SFC / SNES",
       "gb": "Game Boy",
@@ -10250,6 +10354,11 @@
       "title": "Game mini miễn phí",
       "lead": "Những trò chơi kinh điển chơi ngay trên trình duyệt: xếp bài, dò mìn, cờ vua, mạt chược, 2048, trò chơi chữ và nhiều hơn nữa. Miễn phí, không cần tải về, điểm số và ván đang chơi được lưu trong trình duyệt này.",
       "all": "Xem tất cả {n} game mini miễn phí"
+    },
+    "g3d": {
+      "title": "Game 3D miễn phí",
+      "lead": "Game 3D chơi ngay trên trình duyệt: cờ vua trên bàn cờ 3D, khối rubik để xoay và giải, game xếp chồng, lái xe và drift, mô phỏng máy bay. Miễn phí, không cần cài; phần 3D chỉ tải khi bạn bấm Chơi.",
+      "all": "Tất cả {n} game 3D miễn phí"
     }
   },
   "reverse": {
@@ -16130,5 +16239,130 @@
   },
   "lunarConverter": {
     "lede": "Đổi ngày dương lịch và âm lịch cho các năm 1900–2100, theo lịch Việt Nam (UTC+7), Trung Quốc (UTC+8) hoặc Hàn Quốc / Nhật Bản (UTC+9). Tính ngay trong trang, không tải gì lên."
+  },
+  "chess3d": {
+    "title": "Cờ vua 3D",
+    "privacyNote": "Chơi cờ vua trên bàn cờ 3D với máy hoặc với bạn. Ván cờ chạy trên trang này và được lưu trong trình duyệt này.",
+    "stage": "Bàn cờ vua 3D",
+    "intro": "Bàn cờ 3D đã sẵn sàng. Engine của máy và hình 3D chỉ tải khi bạn bấm Chơi.",
+    "flip": "Xoay bàn cờ",
+    "hint": "Chạm vào quân rồi chạm ô được đánh dấu. Kéo để xoay và nghiêng góc nhìn. Bàn phím: mũi tên di chuyển con trỏ, Enter hoặc Space chọn ô, Esc bỏ chọn quân.",
+    "cursor": "Ô {square}: {piece}"
+  },
+  "magicCube": {
+    "title": "Khối rubik",
+    "privacyNote": "Khối rubik 3D để xáo trộn, xoay và giải. Chạy ngay trong trang, không tải gì lên.",
+    "stage": "Khối rubik, kéo để xoay",
+    "intro": "Xoay và giải khối rubik 3D. Bấm Chơi để tải.",
+    "size": "Cỡ",
+    "size2": "2×2",
+    "size3": "3×3",
+    "size4": "4×4",
+    "scramble": "Xáo trộn",
+    "undo": "Hoàn tác",
+    "reset": "Đặt lại",
+    "time": "Thời gian",
+    "moves": "Số bước",
+    "best": "Tốt nhất",
+    "solved": "Giải xong trong {time} với {moves} bước!",
+    "solvedBest": "Kỷ lục mới! Giải xong trong {time} với {moves} bước.",
+    "scrambled": "Đã xáo trộn. Đồng hồ chạy từ lần xoay đầu tiên.",
+    "resumed": "Khối lần trước đã được khôi phục.",
+    "buttons": "Nút xoay",
+    "hint": "Kéo một ô màu để xoay tầng đó, kéo nền để nhìn xung quanh. Phím: U D L R F B xoay mặt, Shift + phím xoay ngược, phím mũi tên xoay góc nhìn."
+  },
+  "stackGame": {
+    "title": "Game xếp chồng khối",
+    "privacyNote": "Thả từng khối đang trượt lên tháp và xem bạn xếp được cao bao nhiêu.",
+    "stage": "Tháp trong game xếp chồng khối",
+    "intro": "Thả từng khối đang trượt lên tháp. Phần thò ra ngoài mép sẽ bị cắt.",
+    "score": "Điểm",
+    "best": "Cao nhất",
+    "over": "Hết lượt. Điểm: {score}.",
+    "again": "Chơi lại",
+    "perfect": "Hoàn hảo! ×{n}",
+    "newBest": "Kỷ lục mới: {score}!",
+    "hint": "Chạm vào màn chơi, nhấp chuột hoặc nhấn phím cách hay Enter để thả khối. Đặt thật khít để được hoàn hảo."
+  },
+  "drivingGame": {
+    "title": "Game lái xe 3D",
+    "privacyNote": "Lái xe 3D quanh đường đua hoặc drift để ghi điểm. Thành tích tốt nhất chỉ lưu trong trình duyệt này.",
+    "stage": "Màn hình game lái xe 3D",
+    "intro": "Chọn đường đua và chế độ rồi bấm Chơi. Phím mũi tên để lái, phím cách là phanh tay.",
+    "track": "Đường đua",
+    "track1": "Đường đua 1 — Cua nhẹ",
+    "track2": "Đường đua 2 — Cua dài",
+    "track3": "Đường đua 3 — Vòng lớn",
+    "mode": "Chế độ",
+    "modeTime": "Đua tính giờ (3 vòng)",
+    "modeDrift": "Chế độ drift (60 giây)",
+    "best": "Thành tích tốt nhất ở đường này",
+    "restart": "Chơi lại",
+    "again": "Đua lần nữa",
+    "go": "Xuất phát!",
+    "finished": "Về đích! Tổng {total}, vòng nhanh nhất {best}.",
+    "driftDone": "Hết giờ! Điểm drift: {score}.",
+    "speed": "Tốc độ {n} km/h",
+    "lap": "Vòng {n}/{of}",
+    "current": "Vòng này {time}",
+    "bestLap": "Nhanh nhất {time}",
+    "drift": "Điểm drift {n}",
+    "timeLeft": "Còn {n} giây",
+    "offRoad": "Ra khỏi đường",
+    "left": "Đánh lái trái",
+    "right": "Đánh lái phải",
+    "brake": "Phanh / lùi",
+    "handbrake": "Phanh tay",
+    "gas": "Tăng ga",
+    "hint": "Lên hoặc W tăng ga, xuống hoặc S phanh và lùi, trái phải đánh lái, phím cách là phanh tay, R về điểm kiểm tra gần nhất. Phải qua mọi điểm kiểm tra thì vòng mới được tính."
+  },
+  "flightSim": {
+    "title": "Mô phỏng máy bay",
+    "privacyNote": "Cất cánh từ đường băng, bay qua đảo rồi hạ cánh, hoặc bay qua các vòng để đua giờ. Không có gì được tải lên.",
+    "stage": "Khung hình mô phỏng máy bay",
+    "intro": "Lái chiếc máy bay nhỏ bay qua hòn đảo low-poly. Bấm Chơi để tải hình 3D.",
+    "mode": "Chế độ",
+    "m_free": "Bay tự do",
+    "m_rings": "Vòng tròn (12)",
+    "restart": "Chơi lại",
+    "c_cockpit": "Góc nhìn buồng lái",
+    "c_chase": "Góc nhìn phía sau",
+    "invert": "Đảo chiều lên xuống",
+    "best": "Kỷ lục vòng tròn",
+    "stall": "THẤT TỐC",
+    "hint": "W / S ga · ← → nghiêng · ↑ chúc mũi, ↓ ngóc mũi (như cần lái) · A / D bánh lái hướng · R chơi lại. Trên điện thoại dùng các nút trên khung hình.",
+    "p_noseUp": "Ngóc mũi lên",
+    "p_noseDown": "Chúc mũi xuống",
+    "p_thrUp": "Tăng ga",
+    "p_thrDown": "Giảm ga",
+    "p_rollLeft": "Nghiêng trái",
+    "p_rollRight": "Nghiêng phải",
+    "again": "Bay lại",
+    "freeGo": "Trên đường băng: giữ W để mở hết ga, vượt khoảng 145 km/h thì kéo mũi lên.",
+    "ringsGo": "Bay qua vòng màu hồng. Đồng hồ đang chạy.",
+    "ringPassed": "Vòng {n} / {total}.",
+    "finished": "Hết các vòng trong {time}.",
+    "newBest": "Kỷ lục mới: hết các vòng trong {time}!",
+    "crashWater": "Ùm! Máy bay rơi xuống biển.",
+    "crashHard": "Rơi! Chạm đất quá mạnh.",
+    "crashTerrain": "Rơi! Đâm vào địa hình.",
+    "landed": "Hạ cánh thành công, giỏi lắm! Tăng ga để cất cánh lại.",
+    "airborne": "Đã cất cánh.",
+    "hudSpeed": "Tốc độ {n} km/h",
+    "hudAlt": "Độ cao {n} m",
+    "hudThrottle": "Ga {n}%",
+    "hudRings": "Vòng {n}/{total} · {time}"
+  },
+  "game3d": {
+    "play": "Chơi",
+    "loading": "Đang tải hình 3D…",
+    "noWebgl": "Trình duyệt này không hiển thị được đồ họa 3D (WebGL). Hãy bật tăng tốc phần cứng hoặc thử trình duyệt khác.",
+    "retry": "Thử lại",
+    "lost": "Hình 3D đã dừng (card đồ họa bị đặt lại). Bắt đầu lại để chơi tiếp.",
+    "restart": "Bắt đầu lại",
+    "fullscreen": "Toàn màn hình",
+    "exitFullscreen": "Thoát toàn màn hình",
+    "pad": "Nút điều khiển",
+    "credit": "Đồ họa 3D bằng {name} (giấy phép MIT)."
   }
 }

@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "titleStackGame": "Game xếp chồng khối 3D — xếp tháp cao nhất có thể — cv.cm",
+    "descStackGame": "Chơi miễn phí game xếp chồng khối 3D trên trình duyệt: thả từng khối đang trượt lên tháp, phần thừa bị cắt đi, xem bạn xếp được cao bao nhiêu. Thả hoàn hảo giúp khối to lại. Chơi được trên điện thoại."
+  },
+  "tools": {
+    "stack-game": {
+      "name": "Game xếp chồng khối",
+      "blurb": "Thả các khối đang trượt và xây tòa tháp cao nhất."
+    }
+  },
+  "faq": {
+    "stack-game": {
+      "q1": "Chơi game xếp chồng khối thế nào?",
+      "a1": "Một khối trượt qua lại trên đỉnh tháp. Chạm, nhấp chuột hoặc nhấn phím cách để thả. Phần thò ra ngoài mép bị cắt và rơi xuống, nên khối tiếp theo chỉ còn bằng phần giữ lại. Trượt hẳn khỏi tháp là thua.",
+      "q2": "Thả hoàn hảo là gì?",
+      "a2": "Thả gần như khít với khối bên dưới thì khối sẽ hít vào đúng chỗ, không bị cắt chút nào. Hoàn hảo từ ba lần liên tiếp trở lên thì khối to dần lại, tối đa bằng cỡ ban đầu.",
+      "q3": "Game có nhanh dần không?",
+      "a3": "Có. Tháp càng cao khối trượt càng nhanh hơn một chút, lại đến luân phiên từ hai hướng, nên hãy nhìn kỹ mép khối.",
+      "q4": "Chơi trên điện thoại được không?",
+      "a4": "Được. Chạm vào bất kỳ đâu trên màn chơi để thả khối. Bật toàn màn hình để nhìn rõ nhất; trên điện thoại hình 3D giảm độ phân giải để chạy mượt.",
+      "q5": "Điểm cao nhất có được lưu không?",
+      "a5": "Có, chỉ trong trình duyệt này. Không gửi đi đâu cả."
+    }
+  },
+  "guides": {
+    "stack-game": {
+      "lead": "Chơi trong ba bước.",
+      "s1t": "Bắt đầu",
+      "s1b": "Bấm Chơi. Một khối bắt đầu trượt trên đỉnh tháp.",
+      "s2t": "Thả khối",
+      "s2b": "Chạm, nhấp chuột hoặc nhấn phím cách khi khối nằm ngay trên tháp. Phần thò ra bị cắt đi.",
+      "s3t": "Xếp cao hơn",
+      "s3b": "Khối sẽ nhanh dần. Thả hoàn hảo liên tiếp giúp khối to lại; trượt khỏi tháp là hết lượt."
+    }
+  },
+  "ui": {
+    "stackGame": {
+      "title": "Game xếp chồng khối",
+      "privacyNote": "Thả từng khối đang trượt lên tháp và xem bạn xếp được cao bao nhiêu.",
+      "stage": "Tháp trong game xếp chồng khối",
+      "intro": "Thả từng khối đang trượt lên tháp. Phần thò ra ngoài mép sẽ bị cắt.",
+      "score": "Điểm",
+      "best": "Cao nhất",
+      "over": "Hết lượt. Điểm: {score}.",
+      "again": "Chơi lại",
+      "perfect": "Hoàn hảo! ×{n}",
+      "newBest": "Kỷ lục mới: {score}!",
+      "hint": "Chạm vào màn chơi, nhấp chuột hoặc nhấn phím cách hay Enter để thả khối. Đặt thật khít để được hoàn hảo."
+    }
+  }
+}

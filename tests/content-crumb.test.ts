@@ -40,6 +40,19 @@ describe("content page breadcrumbs", () => {
     expect(page.ld).toEqual(["Home", "BMI calculator"]);
   });
 
+  it("puts Home / Games / hub / game above a game tool page and in its JSON-LD", async () => {
+    const driving = await open("/en/driving-game/");
+    expect(driving.trail).toEqual(["Home", "Games", "3D games", "Driving game"]);
+    expect(driving.links).toEqual(["/en/", "/en/games/", "/en/games/3d/"]);
+    expect(driving.ld).toEqual(driving.trail);
+    const snake = await open("/en/snake-game/");
+    expect(snake.trail).toEqual(["Home", "Games", "Free online games", "Snake game"]);
+    expect(snake.links).toEqual(["/en/", "/en/games/", "/en/games/mini/"]);
+    expect(snake.ld).toEqual(snake.trail);
+    expect(document.querySelector('.nav a[data-nav="games"]')?.classList.contains("on")).toBe(true);
+    expect(document.querySelector('.nav a[data-nav="tools"]')?.classList.contains("on")).toBe(false);
+  });
+
   it("puts Home / Lessons / tutorial above a tutorial and in its JSON-LD", async () => {
     const page = await open("/en/learn/add-watermark/");
     expect(page.trail.slice(0, 2)).toEqual(["Home", "Lessons"]);

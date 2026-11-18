@@ -6,6 +6,7 @@ import {
   isGameId,
   type GameConsoleId,
   type GameId,
+  type ToolGameHubId,
 } from "./games";
 import { isMarketId, type MarketId } from "./markets";
 import { isQuizId, type QuizId } from "./quiz";
@@ -62,6 +63,8 @@ export const CATEGORIES = [
   { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter", "rock-paper-scissors"] },
   { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "chinese-checkers"] },
   { id: "wordgames", tools: ["word-search", "hangman", "typing-game", "typing-practice"] },
+  // Three.js games: the renderer and three itself load only when a game starts (Play), never during prerender.
+  { id: "games3d", tools: ["3d-chess", "magic-cube", "stack-game", "driving-game", "flight-simulator"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
   { id: "academic", tools: ["standard-deviation", "sample-size", "cronbach-alpha", "t-test", "chi-square", "p-value", "z-score"] },
   { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation", "idea-validator"] },
@@ -288,11 +291,29 @@ export const TOOLS = [
   "p-value",
   "z-score",
   "lunar-converter",
+  "3d-chess",
+  "magic-cube",
+  "stack-game",
+  "driving-game",
+  "flight-simulator",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
 /** Browser games (tool pages) listed on the /games/ hub too, apart from the emulator catalogue. */
 export const BROWSER_GAMES = ["solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "sudoku", "tic-tac-toe", "chinese-checkers", "hangman", "word-search", "typing-game"] as const satisfies readonly ToolId[];
+
+/** The 3D games (tool pages) listed on the /games/3d/ hub. */
+export const GAMES_3D: readonly ToolId[] = CATEGORIES.find((c) => c.id === "games3d")!.tools;
+
+/**
+ * The games hub a game tool page belongs to (`/games/mini/` or `/games/3d/`), or null for every other tool. Those
+ * pages show Home / Games / hub / game instead of Home / Tools / tool, with matching BreadcrumbList JSON-LD.
+ */
+export function gameHubOf(tool: ToolId): ToolGameHubId | null {
+  if ((GAMES_3D as readonly string[]).includes(tool)) return "3d";
+  if ((BROWSER_GAMES as readonly string[]).includes(tool)) return "mini";
+  return null;
+}
 
 /** Exact-match converter URLs. Same engine as `/convert/`, unique title and FAQ. */
 export const CONVERT_JOBS = [

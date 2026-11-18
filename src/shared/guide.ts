@@ -209,6 +209,11 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "p-value": 3,
   "z-score": 3,
   "lunar-converter": 3,
+  "3d-chess": 3,
+  "magic-cube": 3,
+  "stack-game": 3,
+  "driving-game": 3,
+  "flight-simulator": 3,
 };
 
 export function guideSteps(tool: ToolId): number {

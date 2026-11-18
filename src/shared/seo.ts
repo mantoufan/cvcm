@@ -1,7 +1,7 @@
 import { GAME_COVER, LEARN_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
 import { devicePageCopy } from "./device-i18n";
 import type { DevicePageId } from "./device";
-import { gameById, type GameConsoleId, type GameId } from "./games";
+import { gameById, gamesFaqBase, type GameConsoleId, type GameId } from "./games";
 import { gameCopy, gameFaqItems } from "./games-i18n";
 import { gameGuideSteps, walkthroughImage } from "./game-walkthrough";
 import { legalPageCopy } from "./legal";
@@ -36,7 +36,7 @@ import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, categoryOf, deviceHref, gameHubOf, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -312,6 +312,11 @@ const TITLE: Record<ToolId, string> = {
   "p-value": "meta.titlePValue",
   "z-score": "meta.titleZScore",
   "lunar-converter": "meta.titleLunarConverter",
+  "3d-chess": "meta.titleChess3d",
+  "magic-cube": "meta.titleMagicCube",
+  "stack-game": "meta.titleStackGame",
+  "driving-game": "meta.titleDrivingGame",
+  "flight-simulator": "meta.titleFlightSimulator",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -547,6 +552,11 @@ const DESC: Record<ToolId, string> = {
   "p-value": "meta.descPValue",
   "z-score": "meta.descZScore",
   "lunar-converter": "meta.descLunarConverter",
+  "3d-chess": "meta.descChess3d",
+  "magic-cube": "meta.descMagicCube",
+  "stack-game": "meta.descStackGame",
+  "driving-game": "meta.descDrivingGame",
+  "flight-simulator": "meta.descFlightSimulator",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {
@@ -985,8 +995,9 @@ export function learnFaqItems(locale: Locale, tutorial: TutorialId): FaqItem[] {
 }
 
 export function gamesHubFaqItems(locale: Locale, consoleId?: GameConsoleId | null): FaqItem[] {
-  if (consoleId === "flash" || consoleId === "mini") {
-    const specific = faqFrom(locale, consoleId === "flash" ? "faq.gamesFlash" : "faq.gamesMini");
+  const base = gamesFaqBase(consoleId);
+  if (base !== "faq.games") {
+    const specific = faqFrom(locale, base);
     if (specific.length) return specific;
   }
   return faqFrom(locale, "faq.games");
@@ -1149,6 +1160,7 @@ const APP_CATEGORY: Partial<Record<CategoryId, string>> = {
   design: "DesignApplication",
   games: "GameApplication",
   wordgames: "GameApplication",
+  games3d: "GameApplication",
   fun: "EntertainmentApplication",
   valuation: "FinanceApplication",
   academic: "EducationalApplication",
@@ -1198,22 +1210,28 @@ export function tutorialBreadcrumbJsonLd(locale: Locale, tutorial: TutorialId | 
 
 /** Home / Games (/ console (/ game)): the trail shown above the games hub, a console hub or a game page. */
 export function gameBreadcrumbJsonLd(locale: Locale, consoleId: GameConsoleId | null, id: GameId | null = null): Record<string, unknown> {
+  const items = gamesTrail(locale, consoleId);
+  if (consoleId && id) items.push({ name: gameCopy(locale, id).name, url: pageCanonical(locale, { games: true, console: consoleId, game: id }) });
+  return breadcrumbList(items);
+}
+
+/** Home / Games (/ hub or console): the start of every games trail, game tool pages included. */
+function gamesTrail(locale: Locale, consoleId: GameConsoleId | null): { name: string; url: string }[] {
   const items = [
     { name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) },
     { name: lookup(locale, "nav.games"), url: pageCanonical(locale, { games: true }) },
   ];
   if (consoleId) items.push({ name: lookup(locale, `games.consoles.${consoleId}`), url: pageCanonical(locale, { games: true, console: consoleId }) });
-  if (consoleId && id) items.push({ name: gameCopy(locale, id).name, url: pageCanonical(locale, { games: true, console: consoleId, game: id }) });
-  return breadcrumbList(items);
+  return items;
 }
 
 /**
  * Home / this tool. The visible trail also shows "Tools", but that is an anchor on the home page, not a page of its
- * own, so it is left out of the structured data (a BreadcrumbList item should be a distinct URL).
+ * own, so it is left out of the structured data (a BreadcrumbList item should be a distinct URL). A game page lists
+ * Home / Games / its hub / the game, like the visible trail.
  */
 export function toolBreadcrumbJsonLd(locale: Locale, tool: ToolId): Record<string, unknown> {
-  return breadcrumbList([
-    { name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) },
-    { name: lookup(locale, `tools.${tool}.name`), url: pageCanonical(locale, tool) },
-  ]);
+  const hub = gameHubOf(tool);
+  const start = hub ? gamesTrail(locale, hub) : [{ name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) }];
+  return breadcrumbList([...start, { name: lookup(locale, `tools.${tool}.name`), url: pageCanonical(locale, tool) }]);
 }

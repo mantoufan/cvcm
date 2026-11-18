@@ -1,0 +1,52 @@
+{
+  "meta": {
+    "titleStackGame": "Juego de apilar bloques 3D — construye la torre más alta — cv.cm",
+    "descStackGame": "Juega gratis a un juego de apilar bloques en 3D: suelta cada bloque que se desliza sobre la torre, lo que sobresale se corta y la torre sigue subiendo. Los aciertos perfectos agrandan el bloque. Funciona en el móvil."
+  },
+  "tools": {
+    "stack-game": {
+      "name": "Juego de apilar",
+      "blurb": "Suelta los bloques que se deslizan y levanta la torre más alta."
+    }
+  },
+  "faq": {
+    "stack-game": {
+      "q1": "¿Cómo se juega a apilar bloques?",
+      "a1": "Un bloque se desliza sobre la torre. Toca, haz clic o pulsa Espacio para soltarlo. La parte que sobresale se corta y cae, así que el siguiente bloque solo mide lo que quedó. Si fallas la torre por completo, se acaba la partida.",
+      "q2": "¿Qué es un acierto perfecto?",
+      "a2": "Si sueltas el bloque casi justo encima del anterior, encaja sin cortar nada. Con tres o más perfectos seguidos el bloque vuelve a crecer un poco, hasta su tamaño inicial.",
+      "q3": "¿Va cada vez más rápido?",
+      "a3": "Sí. Los bloques se deslizan algo más rápido a medida que sube la torre y llegan alternando de dirección, así que vigila los bordes.",
+      "q4": "¿Puedo jugar en el móvil?",
+      "a4": "Sí. Toca en cualquier parte del juego para soltar un bloque. A pantalla completa se ve más grande, y en el móvil la vista 3D baja la resolución para ir fluida.",
+      "q5": "¿Se guarda mi mejor puntuación?",
+      "a5": "Sí, solo en este navegador. No se envía a ningún sitio."
+    }
+  },
+  "guides": {
+    "stack-game": {
+      "lead": "Juega en tres pasos.",
+      "s1t": "Empieza",
+      "s1b": "Pulsa Jugar. Un bloque empieza a deslizarse sobre la torre.",
+      "s2t": "Suelta el bloque",
+      "s2b": "Toca, haz clic o pulsa Espacio cuando esté justo encima de la torre. Lo que sobresale se corta.",
+      "s3t": "Sube más",
+      "s3b": "Sigue apilando mientras los bloques aceleran. Los perfectos seguidos agrandan el bloque; si fallas la torre, se acaba."
+    }
+  },
+  "ui": {
+    "stackGame": {
+      "title": "Juego de apilar bloques",
+      "privacyNote": "Suelta cada bloque sobre la torre y llega lo más alto que puedas.",
+      "stage": "Torre del juego de apilar",
+      "intro": "Suelta cada bloque sobre la torre. Lo que sobresale del borde se corta.",
+      "score": "Puntos",
+      "best": "Récord",
+      "over": "Fin de la partida. Puntos: {score}.",
+      "again": "Jugar otra vez",
+      "perfect": "¡Perfecto! ×{n}",
+      "newBest": "¡Nuevo récord: {score}!",
+      "hint": "Toca el juego, haz clic o pulsa Espacio o Intro para soltar un bloque. Alinéalo justo para un perfecto."
+    }
+  }
+}

@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "titleFlightSimulator": "Simulator pesawat online — game pesawat 3D gratis — cv.cm",
+    "descFlightSimulator": "Simulator pesawat 3D gratis di browser: lepas landas dari landasan, terbang di atas pulau low-poly lalu mendarat lagi, atau lewati 12 cincin melawan waktu. Tanpa unduhan; bisa dengan keyboard atau di HP."
+  },
+  "tools": {
+    "flight-simulator": {
+      "name": "Simulator pesawat",
+      "blurb": "Lepas landas, terbang di atas pulau dan mendarat, atau lewati cincin melawan waktu."
+    }
+  },
+  "faq": {
+    "flight-simulator": {
+      "q1": "Bagaimana cara menerbangkan pesawat?",
+      "a1": "W dan S mengatur gas. Tombol panah untuk mengemudi: kiri dan kanan memiringkan sayap, atas menurunkan hidung dan bawah menaikkannya, seperti tongkat kemudi sungguhan (centang Balik naik-turun untuk menukarnya). A dan D menggerakkan kemudi arah. R mengulang.",
+      "q2": "Bagaimana cara lepas landas dan mendarat?",
+      "a2": "Di Terbang bebas Anda mulai di landasan. Tahan W untuk gas penuh, dan setelah melewati sekitar 145 km/h tarik hidung pesawat pelan-pelan. Untuk mendarat, luruskan dengan landasan, pelankan sampai sekitar 150 km/h, jaga sayap tetap datar dan biarkan pesawat turun perlahan. Menyentuh tanah terlalu cepat, miring, atau di luar landasan berarti jatuh.",
+      "q3": "Apa itu mode cincin?",
+      "a3": "Anda mulai di udara dan melewati 12 cincin berurutan: cincin merah muda terang adalah berikutnya. Waktu berjalan sejak awal, dan waktu terbaik Anda disimpan di browser ini.",
+      "q4": "Apakah bisa dimainkan di HP?",
+      "a4": "Bisa. Di layar sentuh muncul tombol di atas tampilan: ▲ dan ▼ untuk hidung pesawat, + dan − untuk gas, ◀ dan ▶ untuk memiringkan. Layar penuh memberi ruang paling luas.",
+      "q5": "Apakah ini simulator penerbangan yang realistis?",
+      "a5": "Bukan, ini game pesawat bergaya arkade dengan fisika yang disederhanakan: ada gaya angkat, hambatan, stall di bawah sekitar 110 km/h dan belokan terkoordinasi, tapi pesawatnya mudah sehingga siapa pun bisa terbang dalam semenit."
+    }
+  },
+  "guides": {
+    "flight-simulator": {
+      "lead": "Terbangkan pesawat dalam tiga langkah.",
+      "s1t": "Lepas landas",
+      "s1b": "Tekan Main, tahan W untuk gas penuh dan tarik hidung pesawat setelah melewati sekitar 145 km/h.",
+      "s2t": "Terbang",
+      "s2b": "Miringkan dengan panah kiri dan kanan untuk berbelok, jaga kecepatan dan perhatikan peringatan STALL.",
+      "s3t": "Mendarat atau balapan",
+      "s3b": "Luruskan dengan landasan dan turun perlahan, atau pindah ke Cincin dan lewati ke-12 cincin untuk waktu terbaik."
+    }
+  },
+  "ui": {
+    "flightSim": {
+      "title": "Simulator pesawat",
+      "privacyNote": "Lepas landas dari landasan, terbang di atas pulau lalu mendarat, atau lewati cincin melawan waktu. Tidak ada yang diunggah.",
+      "stage": "Tampilan simulator pesawat",
+      "intro": "Terbangkan pesawat kecil di atas pulau low-poly. Tekan Main untuk memuat tampilan 3D.",
+      "mode": "Pilih mode",
+      "m_free": "Terbang bebas",
+      "m_rings": "Cincin (12)",
+      "restart": "Ulangi",
+      "c_cockpit": "Tampilan kokpit",
+      "c_chase": "Tampilan belakang",
+      "invert": "Balik naik-turun",
+      "best": "Waktu cincin terbaik",
+      "stall": "STALL!",
+      "hint": "W / S gas · ← → miring · ↑ hidung turun, ↓ hidung naik (seperti tongkat kemudi) · A / D kemudi arah · R ulangi. Di HP gunakan tombol di tampilan.",
+      "p_noseUp": "Hidung naik",
+      "p_noseDown": "Hidung turun",
+      "p_thrUp": "Tambah gas",
+      "p_thrDown": "Kurangi gas",
+      "p_rollLeft": "Miring ke kiri",
+      "p_rollRight": "Miring ke kanan",
+      "again": "Terbang lagi",
+      "freeGo": "Di landasan: tahan W untuk gas penuh, lalu tarik naik setelah sekitar 145 km/h.",
+      "ringsGo": "Lewati cincin merah muda. Waktu sedang berjalan.",
+      "ringPassed": "Cincin {n} dari {total}.",
+      "finished": "Semua cincin dalam {time}.",
+      "newBest": "Rekor baru: semua cincin dalam {time}!",
+      "crashWater": "Byur! Anda jatuh ke laut.",
+      "crashHard": "Jatuh! Menghantam tanah terlalu keras.",
+      "crashTerrain": "Jatuh! Menabrak daratan.",
+      "landed": "Mendarat dengan mulus, hebat! Tambah gas untuk lepas landas lagi.",
+      "airborne": "Mengudara.",
+      "hudSpeed": "Kecepatan {n} km/h",
+      "hudAlt": "Ketinggian {n} m",
+      "hudThrottle": "Gas {n}%",
+      "hudRings": "Cincin {n}/{total} · {time}"
+    }
+  }
+}

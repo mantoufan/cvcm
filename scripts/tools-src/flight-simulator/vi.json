@@ -1,0 +1,76 @@
+{
+  "meta": {
+    "titleFlightSimulator": "Game mô phỏng máy bay online — lái máy bay 3D miễn phí — cv.cm",
+    "descFlightSimulator": "Game mô phỏng máy bay 3D miễn phí trên trình duyệt: cất cánh từ đường băng, bay qua hòn đảo low-poly rồi hạ cánh, hoặc bay qua 12 vòng tròn tính giờ. Không cần tải; chơi bằng bàn phím hoặc trên điện thoại."
+  },
+  "tools": {
+    "flight-simulator": {
+      "name": "Mô phỏng máy bay",
+      "blurb": "Cất cánh, bay qua đảo và hạ cánh, hoặc bay qua các vòng tính giờ."
+    }
+  },
+  "faq": {
+    "flight-simulator": {
+      "q1": "Lái máy bay thế nào?",
+      "a1": "W và S chỉnh ga. Phím mũi tên để lái: trái và phải nghiêng cánh, lên chúc mũi xuống và xuống ngóc mũi lên, giống cần lái thật (tích Đảo chiều lên xuống để đổi). A và D là bánh lái hướng. R chơi lại.",
+      "q2": "Cất cánh và hạ cánh thế nào?",
+      "a2": "Ở chế độ Bay tự do bạn bắt đầu trên đường băng. Giữ W để mở hết ga, khi vượt khoảng 145 km/h thì kéo mũi lên nhẹ nhàng. Khi hạ cánh, bay thẳng hàng với đường băng, giảm còn khoảng 150 km/h, giữ cánh thăng bằng và để máy bay hạ từ từ. Chạm đất quá nhanh, đang nghiêng hoặc ngoài đường băng sẽ rơi.",
+      "q3": "Chế độ vòng tròn là gì?",
+      "a3": "Bạn bắt đầu trên không và bay qua 12 vòng theo thứ tự: vòng màu hồng đậm là vòng tiếp theo. Đồng hồ chạy từ lúc bắt đầu, thời gian tốt nhất được lưu trong trình duyệt này.",
+      "q4": "Chơi trên điện thoại được không?",
+      "a4": "Được. Trên màn hình cảm ứng sẽ có nút trên khung hình: ▲ ▼ cho mũi máy bay, + − cho ga, ◀ ▶ để nghiêng. Bật toàn màn hình để có nhiều chỗ nhất.",
+      "q5": "Đây có phải mô phỏng bay thật không?",
+      "a5": "Không, đây là game lái máy bay kiểu arcade với vật lý đơn giản: có lực nâng, lực cản, thất tốc dưới khoảng 110 km/h và vòng liệng phối hợp, nhưng máy bay rất dễ lái, ai cũng bay được sau một phút."
+    }
+  },
+  "guides": {
+    "flight-simulator": {
+      "lead": "Lái máy bay trong ba bước.",
+      "s1t": "Cất cánh",
+      "s1b": "Bấm Chơi, giữ W để mở hết ga và kéo mũi lên khi vượt khoảng 145 km/h.",
+      "s2t": "Bay",
+      "s2b": "Nghiêng bằng phím trái phải để rẽ, giữ tốc độ và chú ý cảnh báo THẤT TỐC.",
+      "s3t": "Hạ cánh hoặc đua giờ",
+      "s3b": "Bay thẳng hàng với đường băng và hạ từ từ, hoặc chuyển sang Vòng tròn và bay qua cả 12 vòng để lập kỷ lục."
+    }
+  },
+  "ui": {
+    "flightSim": {
+      "title": "Mô phỏng máy bay",
+      "privacyNote": "Cất cánh từ đường băng, bay qua đảo rồi hạ cánh, hoặc bay qua các vòng để đua giờ. Không có gì được tải lên.",
+      "stage": "Khung hình mô phỏng máy bay",
+      "intro": "Lái chiếc máy bay nhỏ bay qua hòn đảo low-poly. Bấm Chơi để tải hình 3D.",
+      "mode": "Chế độ",
+      "m_free": "Bay tự do",
+      "m_rings": "Vòng tròn (12)",
+      "restart": "Chơi lại",
+      "c_cockpit": "Góc nhìn buồng lái",
+      "c_chase": "Góc nhìn phía sau",
+      "invert": "Đảo chiều lên xuống",
+      "best": "Kỷ lục vòng tròn",
+      "stall": "THẤT TỐC",
+      "hint": "W / S ga · ← → nghiêng · ↑ chúc mũi, ↓ ngóc mũi (như cần lái) · A / D bánh lái hướng · R chơi lại. Trên điện thoại dùng các nút trên khung hình.",
+      "p_noseUp": "Ngóc mũi lên",
+      "p_noseDown": "Chúc mũi xuống",
+      "p_thrUp": "Tăng ga",
+      "p_thrDown": "Giảm ga",
+      "p_rollLeft": "Nghiêng trái",
+      "p_rollRight": "Nghiêng phải",
+      "again": "Bay lại",
+      "freeGo": "Trên đường băng: giữ W để mở hết ga, vượt khoảng 145 km/h thì kéo mũi lên.",
+      "ringsGo": "Bay qua vòng màu hồng. Đồng hồ đang chạy.",
+      "ringPassed": "Vòng {n} / {total}.",
+      "finished": "Hết các vòng trong {time}.",
+      "newBest": "Kỷ lục mới: hết các vòng trong {time}!",
+      "crashWater": "Ùm! Máy bay rơi xuống biển.",
+      "crashHard": "Rơi! Chạm đất quá mạnh.",
+      "crashTerrain": "Rơi! Đâm vào địa hình.",
+      "landed": "Hạ cánh thành công, giỏi lắm! Tăng ga để cất cánh lại.",
+      "airborne": "Đã cất cánh.",
+      "hudSpeed": "Tốc độ {n} km/h",
+      "hudAlt": "Độ cao {n} m",
+      "hudThrottle": "Ga {n}%",
+      "hudRings": "Vòng {n}/{total} · {time}"
+    }
+  }
+}

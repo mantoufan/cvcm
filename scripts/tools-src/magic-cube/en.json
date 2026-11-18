@@ -1,0 +1,61 @@
+{
+  "meta": {
+    "titleMagicCube": "Magic cube online — turn and solve a 3×3 cube in 3D — cv.cm",
+    "descMagicCube": "Play a magic cube online in 3D: scramble a 2×2, 3×3 or 4×4 cube, turn layers by dragging or with the keyboard, and time your solve. Free, works on phones."
+  },
+  "tools": {
+    "magic-cube": {
+      "name": "Magic cube",
+      "blurb": "Scramble a 3D cube and solve it against the clock."
+    }
+  },
+  "faq": {
+    "magic-cube": {
+      "q1": "How do I turn a layer?",
+      "a1": "Press Play, then drag a sticker in the direction you want its row or column to move. Drag anywhere off the cube to look around it. On a keyboard, U D L R F B turn the outer faces and Shift turns them the other way.",
+      "q2": "What does the notation mean?",
+      "a2": "Each letter is a face: U up, D down, L left, R right, F front, B back. A letter alone is a quarter turn clockwise as you look at that face, an apostrophe (R') is anticlockwise, and a 2 (R2) is a half turn.",
+      "q3": "How do beginners solve a 3×3?",
+      "a3": "Layer by layer. Make a cross on one face with the edge colours matching the centres, put the four corners of that face in, then the middle-layer edges. Finally solve the last face: form its cross, orient its corners, and move the corners and edges into place.",
+      "q4": "Which sizes can I play?",
+      "a4": "2×2, 3×3 and 4×4. The 2×2 is only corners, so it is a good warm-up; the 4×4 has no fixed centres, so you pair centres and edges before solving it like a 3×3.",
+      "q5": "Is my cube saved?",
+      "a5": "Yes. The scramble, your turns, the clock and your best time for each size are kept in this browser, so you can close the page and carry on later."
+    }
+  },
+  "guides": {
+    "magic-cube": {
+      "lead": "Solve a magic cube in three steps.",
+      "s1t": "Scramble",
+      "s1b": "Choose a size and press Scramble. The clock starts with your first turn.",
+      "s2t": "Turn the layers",
+      "s2b": "Drag stickers to turn rows and columns, drag the background to look around, or use U D L R F B on the keyboard.",
+      "s3t": "Solve it",
+      "s3b": "When every face is one colour the clock stops and your best time is kept."
+    }
+  },
+  "ui": {
+    "magicCube": {
+      "title": "Magic cube",
+      "privacyNote": "A 3D cube to scramble, turn and solve. It runs in the page and nothing is uploaded.",
+      "stage": "Magic cube, drag to turn",
+      "intro": "Turn and solve a 3D cube. Press Play to load it.",
+      "size": "Size",
+      "size2": "2×2",
+      "size3": "3×3",
+      "size4": "4×4",
+      "scramble": "Scramble",
+      "undo": "Undo",
+      "reset": "Reset",
+      "time": "Time",
+      "moves": "Moves",
+      "best": "Best",
+      "solved": "Solved in {time} with {moves} moves.",
+      "solvedBest": "New best! Solved in {time} with {moves} moves.",
+      "scrambled": "Scrambled. The clock starts with your first turn.",
+      "resumed": "Your last cube is back where you left it.",
+      "buttons": "Turn buttons",
+      "hint": "Drag a sticker to turn its layer, drag the background to look around. Keys: U D L R F B turn faces, Shift + key turns back, arrow keys rotate the view."
+    }
+  }
+}

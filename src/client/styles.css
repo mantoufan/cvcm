@@ -1822,3 +1822,70 @@ tr.is-work > * { color: var(--ink-soft); }
 .ac-grid .ac-cell { width: 5.5rem; min-height: 36px; box-sizing: border-box; padding: 0.3rem 0.45rem; border: 1px solid var(--line); border-radius: 8px; background: var(--gray); font: inherit; text-align: right; font-variant-numeric: tabular-nums; }
 .ac-grid .ac-cell:focus { outline: none; border-color: var(--pink-deep); }
 .field.ac-check { display: flex; align-items: center; gap: 0.5rem; }
+
+/* 3D games shell (src/client/three-stage.ts): stage box, Play cover, full screen, hold pad */
+.g3d-root { position: relative; width: 100%; aspect-ratio: 16 / 10; max-height: 78vh; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--pink-soft); }
+.g3d-root.g3d-tall { aspect-ratio: 4 / 5; max-width: 34rem; margin-inline: auto; }
+.g3d-root.g3d-square { aspect-ratio: 1; max-width: 40rem; margin-inline: auto; }
+.g3d-stage { position: absolute; inset: 0; touch-action: none; }
+.g3d-stage:focus-visible { outline-offset: -3px; }
+.g3d-canvas { display: block; width: 100%; height: 100%; }
+.g3d-cover { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; padding: 1rem; text-align: center; background: rgba(253, 240, 245, 0.9); }
+.g3d-cover[hidden] { display: none; }
+/* The cover lets the page scroll (a swipe over a game that is not running is meant for the page). */
+.g3d-cover { touch-action: pan-y; }
+.g3d-exit { display: none; position: absolute; top: calc(0.5rem + env(safe-area-inset-top)); right: calc(0.5rem + env(safe-area-inset-right)); z-index: 2; min-width: 44px; min-height: 44px; }
+.g3d-root.g3d-full .g3d-exit { display: inline-flex; align-items: center; justify-content: center; }
+.g3d-msg { margin: 0; max-width: 28rem; color: var(--ink); }
+.g3d-play { min-width: 8rem; min-height: 44px; font-size: 1.05rem; }
+.g3d-root:fullscreen { max-height: none; border-radius: 0; border: 0; aspect-ratio: auto; }
+.g3d-root.g3d-full { position: fixed; inset: 0; z-index: 100; max-height: none; max-width: none; border-radius: 0; border: 0; aspect-ratio: auto; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+.g3d-hud { position: absolute; top: 0.5rem; left: 0.6rem; right: 0.6rem; display: flex; flex-wrap: wrap; gap: 0.3rem 1rem; pointer-events: none; color: var(--ink); font-size: 0.9rem; font-variant-numeric: tabular-nums; text-shadow: 0 0 3px #fff; }
+.g3d-pad { position: absolute; bottom: 0.6rem; left: 0.6rem; right: 0.6rem; display: flex; justify-content: space-between; gap: 0.5rem; pointer-events: none; }
+.g3d-pad .g3d-key { pointer-events: auto; min-width: 52px; min-height: 52px; font-size: 1.2rem; touch-action: none; user-select: none; -webkit-user-select: none; background: rgba(255, 255, 255, 0.75); }
+@media (pointer: fine) { .g3d-pad.g3d-touch-only { display: none; } }
+.g3d-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center; margin: 0.75rem 0; }
+/* Stack game (src/client/stack-game/ui.ts) */
+.sk-bar { justify-content: space-between; }
+.sk-score { margin: 0; }
+.sk-hud { justify-content: center; top: 0.8rem; }
+.sk-hud-score { font-size: 2.4rem; font-weight: 800; color: var(--pink-deep); }
+.sk-status { min-height: 1.6em; margin: 0.5rem 0 0; color: var(--pink-deep); font-weight: 600; }
+.sk-root .g3d-stage { cursor: pointer; }
+
+/* Driving game (src/client/driving-game/) */
+.dg-tool { display: grid; gap: 0.25rem; }
+.dg-count { position: absolute; top: 38%; left: 0; right: 0; text-align: center; font-size: clamp(2.5rem, 9vw, 5rem); font-weight: 800; color: var(--pink-deep); text-shadow: 0 0 6px #fff; pointer-events: none; }
+.dg-pad-l { right: auto; }
+.dg-pad-r { left: auto; }
+.dg-status { margin: 0.25rem 0; min-height: 1.5em; }
+.dg-best { margin: 0; }
+/* magic-cube (src/client/magic-cube/ui.ts) */
+.mc-stats { margin: 0 0 0.75rem; }
+.mc-stats dd { font-variant-numeric: tabular-nums; }
+.mc-status { min-height: 1.6em; margin: 0.6rem 0 0; font-weight: 600; color: var(--pink-deep); }
+.mc-notation { margin: 0.5rem 0; }
+.mc-notation summary { cursor: pointer; color: var(--ink-soft); }
+.mc-keys { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 0.4rem; margin-top: 0.5rem; max-width: 30rem; }
+.mc-key { min-height: 44px; padding: 0.3rem; font-family: var(--mono); touch-action: manipulation; }
+/* 3D chess (src/client/3d-chess/) */
+.c3-tool { display: grid; grid-template-columns: minmax(0, 1fr) minmax(14rem, 18rem); gap: 1rem; align-items: start; }
+@media (max-width: 760px) { .c3-tool { grid-template-columns: minmax(0, 1fr); } }
+.c3-main { min-width: 0; }
+.c3-status { margin: 0.5rem 0 0; font-weight: 600; min-height: 1.6em; }
+.c3-hud { justify-content: center; }
+.c3-root:not(:fullscreen):not(.g3d-full) .c3-hud { display: none; }
+.c3-moves { max-height: 12rem; overflow-y: auto; margin: 0; padding-left: 1.8rem; font-variant-numeric: tabular-nums; font-size: 0.92rem; }
+.c3-promo { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.4rem; padding: 0.6rem; border: 1px solid var(--pink); border-radius: var(--radius); background: var(--white); }
+.c3-promo[hidden] { display: none; }
+.c3-promo-btn { width: 56px; height: 56px; padding: 4px; border: 1px solid var(--line); border-radius: 8px; background: var(--pink-soft); cursor: pointer; }
+.c3-promo-btn:hover, .c3-promo-btn:focus-visible { border-color: var(--pink-deep); }
+.c3-promo-btn img { width: 100%; height: 100%; }
+/* flight simulator (src/client/flight-simulator/ui.ts) */
+.fs-hud span, .fs-hud strong { padding: 0.1rem 0.45rem; border-radius: 6px; background: rgba(255, 255, 255, 0.72); }
+.fs-stall { color: #fff; background: var(--pink-deep) !important; }
+.fs-stall[hidden], .fs-hud [hidden] { display: none; }
+.fs-pad .g3d-key { min-width: 46px; }
+.fs-status { min-height: 1.6em; margin: 0.25rem 0; color: var(--ink-soft); }
+.fs-mode { display: inline-flex; align-items: center; gap: 0.4rem; margin: 0; }
+.fs-best { margin: 0.25rem 0 0.75rem; }
