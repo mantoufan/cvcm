@@ -1848,6 +1848,15 @@
       "s2b": "Escribe la media (μ) y la desviación estándar (σ); deja 0 y 1 para la normal estándar.",
       "s3t": "Lee las áreas",
       "s3b": "Mira z, la proporción por debajo y por encima, y el área sombreada en la campana."
+    },
+    "lunar-converter": {
+      "lead": "Convierte fechas gregorianas y lunares de 1900 a 2100. No se sube nada.",
+      "s1t": "Elige el cómputo",
+      "s1b": "Por defecto se usa el chino (UTC+8); las páginas en vietnamita empiezan con UTC+7 y las de coreano y japonés con UTC+9.",
+      "s2t": "Solar → lunar",
+      "s2b": "Elige una fecha. Abajo aparecen el año lunar (nombre del ciclo y animal), el mes (marcado si es intercalar) y el día.",
+      "s3t": "Lunar → solar",
+      "s3b": "Escribe el año, el mes y el día lunares, y marca Mes bisiesto para una fecha de un mes intercalar. Aparece la fecha gregoriana con su día de la semana, o un aviso si esa fecha lunar no existe."
     }
   }
 }

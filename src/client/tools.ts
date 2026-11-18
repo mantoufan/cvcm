@@ -724,6 +724,12 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountKeyboardTest(host);
     return m.unmountKeyboardTest;
   },
+  "lunar-converter": async (host, ctx) => {
+    const m = await import("./lunar-converter/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountLunarConverter(host);
+    return m.unmountLunarConverter;
+  },
   "zodiac": async (host, ctx) => {
     const m = await import("./zodiac/ui");
     if (!ctx.alive()) return undefined;

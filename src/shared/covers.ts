@@ -208,6 +208,8 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "chi-square": "/covers/chi-square-sweet.jpg?v=1",
   "p-value": "/covers/p-value-sweet.jpg?v=1",
   "z-score": "/covers/z-score-sweet.jpg?v=1",
+  // Shares the zodiac cover (a lunar-calendar subject) until it has its own.
+  "lunar-converter": "/covers/zodiac-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {

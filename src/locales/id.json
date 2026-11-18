@@ -735,7 +735,9 @@
     "titlePValue": "Kalkulator p-value — dari z, t, chi square, atau F, dan nilai kritis — cv.cm",
     "descPValue": "Kalkulator p-value gratis: ubah z-score, statistik t, nilai chi square, atau F beserta derajat kebebasannya menjadi p-value satu atau dua arah, atau cari nilai kritis untuk taraf signifikansi α.",
     "titleZScore": "Kalkulator z-score — z dari nilai, persentil, dan peluang normal — cv.cm",
-    "descZScore": "Kalkulator z-score gratis: hitung z = (x − μ) / σ dan bagian distribusi normal di bawah, di atas, atau di antara nilai, atau z-score dan nilai pada suatu persentil, dengan luas daerah diarsir pada kurva lonceng."
+    "descZScore": "Kalkulator z-score gratis: hitung z = (x − μ) / σ dan bagian distribusi normal di bawah, di atas, atau di antara nilai, atau z-score dan nilai pada suatu persentil, dengan luas daerah diarsir pada kurva lonceng.",
+    "titleLunarConverter": "Konversi kalender Imlek ke Masehi dan sebaliknya (1900–2100) — cv.cm",
+    "descLunarConverter": "Konversi kalender Imlek gratis: ubah tanggal Masehi ke tanggal Imlek (dengan tahun siklus dan shio), atau tanggal Imlek, termasuk bulan kabisat, ke Masehi. Perhitungan Tiongkok (UTC+8), Vietnam (UTC+7), Korea / Jepang (UTC+9), 1900–2100."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1624,6 +1626,10 @@
     "z-score": {
       "name": "Kalkulator z-score",
       "blurb": "Z, persentil, dan luas kurva normal."
+    },
+    "lunar-converter": {
+      "name": "Konversi kalender Imlek",
+      "blurb": "Tanggal Imlek ke Masehi dan sebaliknya."
     }
   },
   "watermark": {
@@ -6157,6 +6163,18 @@
       "a4": "Pilih Persentil → nilai, ketik persentil, rata-rata, dan standar deviasi. Misalnya persentil ke-90 dari N(100, 15) sekitar 119,2.",
       "q5": "Apakah data saya harus berdistribusi normal?",
       "a5": "Persentasenya mengasumsikan distribusi normal. Z-score sendiri hanyalah jarak dalam satuan standar deviasi, tetapi persentilnya hanya akurat bila data kira-kira berbentuk lonceng."
+    },
+    "lunar-converter": {
+      "q1": "Bagaimana mengubah tanggal Masehi ke Imlek?",
+      "a1": "Pilih tanggal di bagian Masehi → Imlek. Tahun Imlek (nama siklus dan shio), bulan, dan tanggalnya langsung tampil.",
+      "q2": "Bagaimana mengubah ulang tahun Imlek ke Masehi?",
+      "a2": "Isi tahun, bulan, dan tanggal Imlek di bagian Imlek → Masehi. Centang Bulan kabisat hanya jika tanggalnya di bulan kabisat; alat ini memberi tahu jika bulan atau tanggal itu tidak ada pada tahun tersebut.",
+      "q3": "Kapan Imlek 2027?",
+      "a3": "Sabtu, 6 Februari 2027, tahun Kambing (丁未).",
+      "q4": "Mengapa tanggal Imlek bisa berbeda antarnegara?",
+      "a4": "Bulan Imlek dimulai pada hari bulan baru menurut waktu standar tiap negara. Jika bulan baru jatuh dekat tengah malam, UTC+7, UTC+8, dan UTC+9 bisa memberi hari yang berbeda.",
+      "q5": "Apakah ada yang diunggah?",
+      "a5": "Tidak. Tabel kalender ada di halaman dan tanggal hanya dihitung di tab ini."
     }
   },
   "qr": {
@@ -15820,6 +15838,7 @@
     "sweet-potato-baked": "Ubi jalar (dipanggang)"
   },
   "calendarHolidays": "Libur nasional",
+  "calendarBlurb": "Kalender tahunan dan bulanan dengan libur nasional, pasaran Jawa dan fase bulan.",
   "stdDev": {
     "title": "Kalkulator standar deviasi",
     "privacyNote": "Standar deviasi sampel atau populasi, varians, dan galat baku, dihitung langkah demi langkah. Angka Anda tetap di tab ini.",
@@ -16094,5 +16113,8 @@
     "copy": "Salin hasil",
     "copied": "Tersalin",
     "copyFailed": "Gagal menyalin"
+  },
+  "lunarConverter": {
+    "lede": "Ubah tanggal Masehi ↔ Imlek untuk 1900–2100, menurut perhitungan Tiongkok (UTC+8), Vietnam (UTC+7) atau Korea / Jepang (UTC+9). Dihitung di tab ini, tidak ada yang diunggah."
   }
 }

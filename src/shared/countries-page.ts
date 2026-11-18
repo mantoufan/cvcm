@@ -10,6 +10,7 @@ import { messages } from "./messages";
 import { DATASET_GROUPS } from "./datasets";
 import { currencySymbol, utcOffset, zoneName } from "./datasets-i18n";
 import { appHref, countriesHref, datasetHref, rankingHref } from "./path";
+import { dataCrumbHtml } from "./channel-parent";
 import { RANKINGS } from "./rankings";
 import { COUNTRY_LIST, countryCode, countrySlug } from "./countries";
 import { countriesMessages, countryDetail, type CountryDetail } from "./countries-store";
@@ -47,6 +48,7 @@ function crumbHtml(locale: Locale, slug: string | null): string {
   const sep = ` <span aria-hidden="true">/</span> `;
   const parts = [
     `<a href="${escapeHtml(appHref(locale, null))}" data-nav="home">${escapeHtml(copy.crumbHome)}</a>`,
+    dataCrumbHtml(locale),
     slug
       ? `<a href="${escapeHtml(countriesHref(locale))}" data-nav="countries">${escapeHtml(copy.hub.h1)}</a>`
       : `<span>${escapeHtml(copy.hub.h1)}</span>`,

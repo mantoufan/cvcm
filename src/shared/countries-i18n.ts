@@ -8,6 +8,7 @@ import { fill } from "./fill";
 import { formatIndicator, currencyName, regionName } from "./datasets-i18n";
 import type { IndicatorId } from "./datasets";
 import { appHref, countriesHref } from "./path";
+import { dataCrumbItem } from "./channel-parent";
 import { HREFLANG } from "./sitemap";
 import { COUNTRY_LIST, countryCode } from "./countries";
 import { countriesMessages, countryDetail, type CountriesMessages, type CountryFigure, type CountrySummary } from "./countries-store";
@@ -204,6 +205,7 @@ export function countryBreadcrumbJsonLd(locale: Locale, slug: string | null): Re
   const copy = countriesMessages(locale);
   const items = [
     { name: copy.crumbHome, item: `${ORIGIN}${appHref(locale, null)}` },
+    dataCrumbItem(locale),
     { name: copy.hub.h1, item: `${ORIGIN}${countriesHref(locale)}` },
   ];
   if (slug) items.push({ name: countryName(locale, countryCode(slug)), item: `${ORIGIN}${countriesHref(locale, slug)}` });

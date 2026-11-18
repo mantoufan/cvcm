@@ -36,6 +36,7 @@ import {
   calendarHref,
   toolJob,
   withSearch,
+  categoryLinks,
   type ConvertJobId,
   type LegalPageId,
   type ResizeJobId,
@@ -54,6 +55,7 @@ import { REF_FOCUS, isRefId, type RefId, type RefPage } from "../shared/ref";
 import { SLANG_FOCUS, isSlangId, type SlangId, type SlangPage } from "../shared/slang";
 import { memeImagePath } from "../shared/meme-images";
 import { IDEAS_FOCUS, isIdeaId, type IdeaId, type IdeaPage } from "../shared/ideas";
+import { toolsCrumb } from "../shared/channel-parent";
 import { NOSTALGIA_FOCUS, isNostalgiaId, type NostalgiaId, type NostalgiaPage } from "../shared/nostalgia";
 import { COUNTRIES_FOCUS, countryCode, isCountrySlug, type CountryPage } from "../shared/countries";
 import { regionName } from "../shared/datasets-i18n";
@@ -766,7 +768,8 @@ export function render(): void {
   const copy = pageCopyOf(parsed);
   const calories: CaloriesPage = parsed.kind === "calories" || parsed.kind === "bare-calories" ? parsed.food ?? "hub" : null;
   const elements = parsed.kind === "elements" || parsed.kind === "bare-elements";
-  const calendar = parsed.kind === "calendar" || parsed.kind === "bare-calendar";
+  // The lunar converter tool reads the calendar pack (lunar month names, cycle years) too.
+  const calendar = parsed.kind === "calendar" || parsed.kind === "bare-calendar" || ((parsed.kind === "app" || parsed.kind === "bare") && parsed.tool === "lunar-converter");
   if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
     loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar).then(
@@ -1100,17 +1103,17 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
     console.error(err);
   });
   const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage || calendarPage);
-  const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId);
+  // The calendar sits under Tools (time group on the home tool wall); countries, calories and the periodic table under Data.
+  const toolsOn = Boolean(tool) || Boolean(devicePage) || Boolean(marketsHub || marketId) || Boolean(calendarPage);
   const gamesOn = gamesHub || Boolean(gameId);
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
   const testsOn = Boolean(quizPage);
-  const dataOn = Boolean(datasetPage);
+  const dataOn = Boolean(datasetPage) || Boolean(countriesPage) || Boolean(caloriesPage) || Boolean(elementsPage);
   const rankingsOn = Boolean(rankingPage);
   const refOn = Boolean(refPage);
   const slangOn = Boolean(slangPage);
   const ideasOn = Boolean(ideasPage);
   const nostalgiaOn = Boolean(nostalgiaPage);
-  const calendarOn = Boolean(calendarPage);
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
@@ -1123,7 +1126,6 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
         navLink(ideasHref(loc), t("nav.ideas"), ideasOn, "ideas"),
         navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
-        navLink(calendarHref(loc), t("nav.calendar"), calendarOn, "calendar"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       ),
@@ -1161,6 +1163,7 @@ function toolDirectory(loc: Locale): HTMLElement {
           ...cat.tools.map((id) =>
             h("a", { href: appHref(loc, id), "data-nav": id, "aria-current": tool === id ? "page" : undefined }, t(`tools.${id}.name`)),
           ),
+          ...categoryLinks(cat.id).map((x) => h("a", { href: x.href(loc), "data-nav": x.nav }, t(x.nameKey))),
         ),
       ),
     ),
@@ -1309,7 +1312,7 @@ function toolDirectory(loc: Locale): HTMLElement {
 function toolCrumb(loc: Locale, id: ToolId, clip: string | null): HTMLElement {
   return crumbNav([
     homeCrumb(loc),
-    { label: t("nav.tools"), href: `${appHref(loc, null)}#tools`, nav: "tools" },
+    toolsCrumb(loc),
     id === "clip" && clip
       ? { label: t(`tools.${id}.name`), href: appHref(loc, id), nav: id }
       : { label: t(`tools.${id}.name`) },

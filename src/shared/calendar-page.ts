@@ -10,6 +10,7 @@ import { fill } from "./fill";
 import { inline, linkListHtml } from "./article-html";
 import { calendarMessages, messages } from "./messages";
 import { appHref, calendarHref } from "./path";
+import { toolsCrumbHtml } from "./channel-parent";
 import { HREFLANG } from "./sitemap";
 import {
   CALENDAR_LOCALE, CALENDAR_YEARS, HOLIDAY_COUNTRIES, LUNAR_FESTIVALS, calendarView, monthPage,
@@ -21,7 +22,7 @@ import {
 } from "./lunar";
 import {
   calendarCopy, calendarFaqItems, calendarHeading, calendarLede, countryName, holidayDays, holidayName, holidayYears, holidaysByDay,
-  cycleLabel, isoWeek, longBreaks, lunarText, termOffset, type HolidayDay,
+  cycleLabel, isoWeek, longBreaks, longDate, termOffset, type HolidayDay,
 } from "./calendar-i18n";
 
 const lang = (locale: Locale): string => HREFLANG[locale];
@@ -30,9 +31,6 @@ function fmt(locale: Locale, n: number, opts: Intl.DateTimeFormatOptions): strin
   return new Intl.DateTimeFormat(lang(locale), { timeZone: "UTC", ...opts }).format(new Date(n * 86400000));
 }
 
-export function longDate(locale: Locale, n: number): string {
-  return fmt(locale, n, { year: "numeric", month: "long", day: "numeric", weekday: "long" });
-}
 function shortDate(locale: Locale, n: number): string {
   return fmt(locale, n, { month: "short", day: "numeric" });
 }
@@ -167,7 +165,7 @@ export function monthGridHtml(locale: Locale, year: number, month: number, big: 
 function crumbHtml(locale: Locale, page: CalendarPage): string {
   const c = calendarMessages(locale);
   const sep = ` <span aria-hidden="true">/</span> `;
-  const parts = [`<a href="${escapeHtml(appHref(locale, null))}" data-nav="home">${escapeHtml(c.crumbHome)}</a>`];
+  const parts = [`<a href="${escapeHtml(appHref(locale, null))}" data-nav="home">${escapeHtml(c.crumbHome)}</a>`, toolsCrumbHtml(locale)];
   if (page === "hub") parts.push(`<span>${escapeHtml(c.hub.h1)}</span>`);
   else {
     parts.push(`<a href="${escapeHtml(calendarHref(locale))}" data-nav="calendar">${escapeHtml(c.hub.h1)}</a>`);
@@ -276,7 +274,6 @@ function hubHtml(locale: Locale): string {
   const years = CALENDAR_YEARS.map((y) => ({ href: calendarHref(locale, `${y}`), name: calendarHeading(locale, `${y}`), nav: `calendar-${y}` }));
   const months = CALENDAR_YEARS.map((y) => `<h3>${y}</h3>${monthLinksHtml(locale, y)}`).join("");
   const countries = HOLIDAY_COUNTRIES.map((x) => ({ href: calendarHref(locale, `holidays/${x}`), name: calendarHeading(locale, `holidays/${x}`), nav: `calendar-holidays/${x}` }));
-  const sample = dayNumber(2027, 2, 6);
   const today = `<section class="wall cal-today" id="today"><h2>${escapeHtml(c.hub.today)}</h2><dl class="stats-grid">`
     + `<dt>${escapeHtml(c.ui.today)}</dt><dd data-volatile="" data-out="date">…</dd>`
     + (cfg.lunar ? `<dt>${escapeHtml(c.ui.todayLunar)}</dt><dd data-volatile="" data-out="lunar">…</dd>` : "")
@@ -285,17 +282,6 @@ function hubHtml(locale: Locale): string {
     + `<dt>${escapeHtml(c.ui.nextFull)}</dt><dd data-volatile="" data-out="full">…</dd>`
     + `<dt>${escapeHtml(c.ui.daysLeftLabel)}</dt><dd data-volatile="" data-out="left">…</dd>`
     + `</dl></section>`;
-  const reck = (["cn", "vn", "kr"] as const).map((z) => `<option value="${z}"${z === cfg.zone ? " selected" : ""}>${escapeHtml((c.ui.reckonings as Record<string, string>)[z])}</option>`).join("");
-  const converter = `<section class="wall cal-convert" id="convert"><h2>${escapeHtml(c.hub.converter)}</h2>`
-    + `<div class="row"><label>${escapeHtml(c.ui.reckoning)} <select data-in="zone">${reck}</select></label></div>`
-    + `<h3>${escapeHtml(c.ui.toLunar)}</h3><div class="row"><label>${escapeHtml(c.ui.solarDate)} <input type="date" data-in="solar" value="2027-02-06" min="1900-02-01" max="2100-12-31" data-fixed-date=""></label></div>`
-    + `<p class="cal-out" data-out="lunar-result">${escapeHtml(lunarText(locale, sample, cfg.zone))}</p>`
-    + `<h3>${escapeHtml(c.ui.toSolar)}</h3><div class="row">`
-    + `<label>${escapeHtml(c.ui.lunarYear)} <input type="number" data-in="ly" value="2027" min="1900" max="2100" inputmode="numeric"></label>`
-    + `<label>${escapeHtml(c.ui.lunarMonth)} <input type="number" data-in="lm" value="1" min="1" max="12" inputmode="numeric"></label>`
-    + `<label>${escapeHtml(c.ui.lunarDay)} <input type="number" data-in="ld" value="1" min="1" max="30" inputmode="numeric"></label>`
-    + `<label class="check"><input type="checkbox" data-in="leap"> ${escapeHtml(c.ui.leap)}</label></div>`
-    + `<p class="cal-out" data-out="solar-result">${escapeHtml(longDate(locale, sample))}</p></section>`;
   return [
     crumbHtml(locale, "hub"),
     `<header class="tool-head"><h1>${escapeHtml(c.hub.h1)}</h1><p class="lede">${escapeHtml(c.hub.lede)}</p></header>`,
@@ -307,7 +293,7 @@ function hubHtml(locale: Locale): string {
       { href: calendarHref(locale, "solar-terms"), name: calendarHeading(locale, "solar-terms"), nav: "calendar-solar-terms" },
       { href: calendarHref(locale, "moon-phases"), name: calendarHeading(locale, "moon-phases"), nav: "calendar-moon-phases" },
     ])}</section>`,
-    converter,
+    `<section class="wall" id="convert"><h2>${escapeHtml(c.hub.converter)}</h2>${linkListHtml([{ href: appHref(locale, "lunar-converter"), name: messages(locale).ui.tools["lunar-converter"].name, blurb: messages(locale).ui.tools["lunar-converter"].blurb, nav: "lunar-converter" }])}</section>`,
     `<section class="kb-about">${c.hub.about.map((p) => `<p>${inline(p)}</p>`).join("")}</section>`,
     faqHtml(locale, "hub"),
   ].join("");
@@ -421,3 +407,6 @@ export function calendarPageHtml(locale: Locale, page: CalendarPage): string {
   }
 }
 
+
+// Kept for modules that took the date formatter from here.
+export { longDate };

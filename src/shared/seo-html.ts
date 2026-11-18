@@ -30,13 +30,13 @@ import { elementsBreadcrumbJsonLd, elementsFaqJsonLd, elementsPageJsonLd } from 
 import { elementsPageHtml } from "./elements-page";
 import { lessonsForTool } from "./learn";
 import { type Locale } from "./locale";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, type ToolId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, categoryLinks, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, type ToolId } from "./path";
 import { calendarBreadcrumbJsonLd, calendarFaqJsonLd, calendarPageJsonLd } from "./calendar-i18n";
 import { calendarPageHtml } from "./calendar-page";
 import { ideasPageHtml } from "./ideas-page";
 import { memeImagePath } from "./meme-images";
 import { nostalgiaImagePath } from "./nostalgia-images";
-import { BRANDED_TOOLS, faqJsonLd, flashHubHowToJsonLd, flashHubSoftwareJsonLd, gameBreadcrumbJsonLd, gameHowToJsonLd, gameVideoGameJsonLd, howToJsonLd, hreflangAlternates, marketBreadcrumbJsonLd, pageCanonical, pageDescription, pageTitle, toolBreadcrumbJsonLd, toolSoftwareJsonLd, tutorialBreadcrumbJsonLd, normalizeSeo, type SeoInput } from "./seo";
+import { BRANDED_TOOLS, faqJsonLd, flashHubHowToJsonLd, flashHubSoftwareJsonLd, gameBreadcrumbJsonLd, gameHowToJsonLd, gameVideoGameJsonLd, howToJsonLd, lookup, hreflangAlternates, marketBreadcrumbJsonLd, pageCanonical, pageDescription, pageTitle, toolBreadcrumbJsonLd, toolSoftwareJsonLd, tutorialBreadcrumbJsonLd, normalizeSeo, type SeoInput } from "./seo";
 
 function ogImage(seo: SeoInput): string | null {
   if (seo.slang && seo.slangId) {
@@ -347,9 +347,10 @@ function staticPageHtml(
     const cat = categoryOf(seo.tool);
     const siblings = (CATEGORIES.find((c) => c.id === cat)?.tools ?? []).filter((id) => id !== seo.tool) as ToolId[];
     const lessons = lessonsForTool(seo.tool).map((id) => ({ href: learnHref(locale, id), text: linkText(pageTitle(locale, { learn: true, tutorial: id })) }));
-    parts.push(linkList([home, ...toolLinks(locale, siblings), ...lessons]));
+    const extras = categoryLinks(cat).map((x) => ({ href: x.href(locale), text: lookup(locale, x.nameKey) }));
+    parts.push(linkList([home, ...toolLinks(locale, siblings), ...extras, ...lessons]));
   } else {
-    for (const cat of CATEGORIES) parts.push(linkList(toolLinks(locale, cat.tools as readonly ToolId[])));
+    for (const cat of CATEGORIES) parts.push(linkList([...toolLinks(locale, cat.tools as readonly ToolId[]), ...categoryLinks(cat.id).map((x) => ({ href: x.href(locale), text: lookup(locale, x.nameKey) }))]));
     parts.push(linkList([
       { href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) },
       { href: gamesHref(locale, null, null), text: linkText(pageTitle(locale, { games: true })) },

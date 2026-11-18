@@ -735,7 +735,9 @@
     "titlePValue": "P-value calculator — from z, t, chi-square or F, and critical values — cv.cm",
     "descPValue": "Free p-value calculator: turn a z-score, t statistic, chi-square or F value and its degrees of freedom into a one- or two-tailed p-value, or find the critical value for a significance level α.",
     "titleZScore": "Z-score calculator — z from a value, percentile and normal probability — cv.cm",
-    "descZScore": "Free z-score calculator: find z = (x − μ) / σ and the share of a normal distribution below, above or between values, or the z-score and value at a percentile, with the area shaded on the bell curve."
+    "descZScore": "Free z-score calculator: find z = (x − μ) / σ and the share of a normal distribution below, above or between values, or the z-score and value at a percentile, with the area shaded on the bell curve.",
+    "titleLunarConverter": "Lunar calendar converter — Chinese lunar date to solar and back — cv.cm",
+    "descLunarConverter": "Free lunar calendar converter: turn a solar date into its Chinese lunar date (with the cyclical year and zodiac animal), or a lunar date, leap months included, into the solar date. Chinese, Vietnamese and Korean / Japanese reckonings, 1900–2100."
   },
   "brand": "cv.cm",
   "nav": {
@@ -4613,6 +4615,10 @@
     "z-score": {
       "name": "Z-score calculator",
       "blurb": "Z, percentiles and normal areas."
+    },
+    "lunar-converter": {
+      "name": "Lunar calendar converter",
+      "blurb": "Chinese lunar date to solar date and back."
     }
   },
   "watermark": {
@@ -9146,6 +9152,18 @@
       "a4": "Choose Percentile → value, type the percentile, the mean and the standard deviation. For example the 90th percentile of N(100, 15) is about 119.2.",
       "q5": "Do my data have to be normal?",
       "a5": "The percentages assume a normal distribution. A z-score itself is just a distance in standard deviations, but its percentile is only accurate when the data are roughly bell-shaped."
+    },
+    "lunar-converter": {
+      "q1": "How do I convert a solar date to the lunar calendar?",
+      "a1": "Pick the date under Solar → lunar. The lunar year (with its cyclical name and zodiac animal), month and day appear at once.",
+      "q2": "How do I find the solar date of a lunar birthday?",
+      "a2": "Enter the lunar year, month and day under Lunar → solar. Tick Leap month only if the birthday is in a leap month; the converter says when that month does not exist that year.",
+      "q3": "Why can Vietnam's or Korea's lunar date differ from China's?",
+      "a3": "A lunar month starts on the day of the new moon in each country's standard time. When a new moon falls near midnight, UTC+7, UTC+8 and UTC+9 put it on different days; Vietnam's Tết in 1985 came a month before China's Spring Festival.",
+      "q4": "When is Lunar New Year 2027?",
+      "a4": "Saturday, 6 February 2027 in the Chinese and Vietnamese reckonings; Korea's Seollal is Sunday, 7 February 2027.",
+      "q5": "Is anything uploaded?",
+      "a5": "No. The tables are part of the page and the date stays in this tab."
     }
   },
   "qr": {
@@ -15820,6 +15838,7 @@
     "sweet-potato-baked": "Sweet potato (baked)"
   },
   "calendarHolidays": "Public holidays",
+  "calendarBlurb": "Year and month calendars with holidays, lunar dates and moon phases.",
   "stdDev": {
     "title": "Standard deviation calculator",
     "privacyNote": "Sample or population standard deviation, variance and standard error, worked out step by step. Your numbers stay in this tab.",
@@ -16094,5 +16113,8 @@
     "copy": "Copy result",
     "copied": "Copied",
     "copyFailed": "Copy failed"
+  },
+  "lunarConverter": {
+    "lede": "Solar ↔ lunar dates for 1900–2100, in the Chinese (UTC+8), Vietnamese (UTC+7) or Korean / Japanese (UTC+9) reckoning. Worked out in this tab."
   }
 }

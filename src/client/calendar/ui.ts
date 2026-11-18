@@ -3,7 +3,7 @@ import type { Locale } from "../../shared/locale";
 import { CALENDAR_LOCALE, type CalendarPage } from "../../shared/calendar";
 import { calendarCopy, isoWeek, lunarText, offsetLabel, stamp, termOffset } from "../../shared/calendar-i18n";
 import { calendarPageHtml, longDate } from "../../shared/calendar-page";
-import { dayAt, dayNumber, fromLunar, moonPhases, solarTerms, type LunarZone } from "../../shared/lunar";
+import { dayAt, dayNumber, moonPhases, solarTerms } from "../../shared/lunar";
 
 /** The build's prerender (happy-dom) identifies itself; it must not bake the build day in as "today". */
 const PRERENDER = typeof navigator !== "undefined" && navigator.userAgent === "cv.cm prerender";
@@ -43,49 +43,8 @@ function fillToday(host: HTMLElement, locale: Locale): void {
   out("left", String(dayNumber(y, 12, 31) - n));
 }
 
-function wireConverter(host: HTMLElement, locale: Locale): void {
-  const box = host.querySelector<HTMLElement>(".cal-convert");
-  if (!box) return;
-  const c = calendarCopy(locale);
-  const field = <T extends HTMLElement>(key: string): T | null => box.querySelector<T>(`[data-in="${key}"]`);
-  const zone = field<HTMLSelectElement>("zone");
-  const solar = field<HTMLInputElement>("solar");
-  const ly = field<HTMLInputElement>("ly");
-  const lm = field<HTMLInputElement>("lm");
-  const ld = field<HTMLInputElement>("ld");
-  const leap = field<HTMLInputElement>("leap");
-  const lunarOut = box.querySelector<HTMLElement>('[data-out="lunar-result"]');
-  const solarOut = box.querySelector<HTMLElement>('[data-out="solar-result"]');
-  const toLunarNow = (): void => {
-    if (!solar || !lunarOut) return;
-    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(solar.value);
-    if (!m) {
-      lunarOut.textContent = "";
-      return;
-    }
-    lunarOut.textContent = lunarText(locale, dayNumber(Number(m[1]), Number(m[2]), Number(m[3])), (zone?.value ?? "cn") as LunarZone);
-  };
-  const toSolarNow = (): void => {
-    if (!ly || !lm || !ld || !solarOut) return;
-    const y = Number(ly.value);
-    if (!Number.isInteger(y) || y < 1900 || y > 2100) {
-      solarOut.textContent = c.ui.outOfRange;
-      return;
-    }
-    const n = fromLunar(y, Number(lm.value), Number(ld.value), Boolean(leap?.checked), (zone?.value ?? "cn") as LunarZone);
-    solarOut.textContent = n === null ? c.ui.noSuchDate : longDate(locale, n);
-  };
-  solar?.addEventListener("input", toLunarNow);
-  for (const el of [ly, lm, ld, leap]) el?.addEventListener("input", toSolarNow);
-  zone?.addEventListener("change", () => {
-    toLunarNow();
-    toSolarNow();
-  });
-}
-
 export function mountCalendar(host: HTMLElement, locale: Locale, page: CalendarPage): void {
   host.innerHTML = calendarPageHtml(locale, page);
-  wireConverter(host, locale);
   if (PRERENDER) return;
   markToday(host);
   fillToday(host, locale);

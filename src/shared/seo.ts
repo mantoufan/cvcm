@@ -39,7 +39,7 @@ import { appHref, categoryOf, deviceHref, gamesHref, learnHref, kbHref, legalHre
 
 export type FaqItem = { q: string; a: string };
 
-function lookup(locale: Locale, path: string): string {
+export function lookup(locale: Locale, path: string): string {
   const parts = path.split(".");
   let node: unknown = messages(locale).ui;
   for (const part of parts) {
@@ -306,6 +306,7 @@ const TITLE: Record<ToolId, string> = {
   "chi-square": "meta.titleChiSquare",
   "p-value": "meta.titlePValue",
   "z-score": "meta.titleZScore",
+  "lunar-converter": "meta.titleLunarConverter",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -540,6 +541,7 @@ const DESC: Record<ToolId, string> = {
   "chi-square": "meta.descChiSquare",
   "p-value": "meta.descPValue",
   "z-score": "meta.descZScore",
+  "lunar-converter": "meta.descLunarConverter",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

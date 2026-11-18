@@ -55,7 +55,7 @@ export const CATEGORIES = [
   { id: "math", tools: ["calculator", "percent", "fraction", "average", "factors", "lcm-gcf", "quadratic", "triangle", "area", "volume", "slope", "graphing-calculator", "concrete", "radix", "roman", "words", "aspect", "units", "gpa", "grade"] },
   { id: "finance", tools: ["loan", "mortgage", "compound", "discount", "tip", "vat", "margin", "hourly", "time-card", "fuel-cost", "electricity", "simple-interest"] },
   { id: "health", tools: ["bmi", "tdee", "body-fat", "ideal-weight", "water-intake", "macro", "calories-burned", "pace", "sleep", "due-date", "ovulation", "color-blindness-test", "height-calculator", "bac-calculator"] },
-  { id: "time", tools: ["timezone", "countdown", "stopwatch", "alarm", "pomodoro", "days", "add-days", "workdays", "week", "duration", "age", "military-time"] },
+  { id: "time", tools: ["timezone", "countdown", "stopwatch", "alarm", "pomodoro", "days", "add-days", "workdays", "week", "duration", "age", "military-time", "lunar-converter"] },
   { id: "design", tools: ["color", "hex-rgb", "contrast", "gradient"] },
   { id: "hardware", tools: ["mic-test", "decibel-meter", "webcam-test", "keyboard-test", "gamepad-test", "touch-test", "dead-pixel", "refresh-rate", "screen-resolution"] },
   { id: "fun", tools: ["random", "dice", "coin-flip", "wheel", "team-generator", "names", "random-letter", "word-unscrambler", "zodiac", "typing", "click-test", "reaction-time", "tally-counter", "rock-paper-scissors"] },
@@ -67,6 +67,19 @@ export const CATEGORIES = [
 ] as const;
 
 export type CategoryId = (typeof CATEGORIES)[number]["id"];
+
+/**
+ * Channel pages that readers look for among a category's tools, listed after its tools wherever categories are shown
+ * (home tool wall, footer directory, a tool page's related links, the Worker's text copy, llms.txt). Names and blurbs
+ * are core-pack keys. The calendar is a Time tool for readers, though its pages form a channel of their own.
+ */
+export const CATEGORY_LINKS: Partial<Record<CategoryId, readonly { nav: string; nameKey: string; blurbKey: string; href: (locale: Locale) => string }[]>> = {
+  time: [{ nav: "calendar", nameKey: "nav.calendar", blurbKey: "calendarBlurb", href: (locale) => calendarHref(locale) }],
+};
+
+export function categoryLinks(id: CategoryId): readonly { nav: string; nameKey: string; blurbKey: string; href: (locale: Locale) => string }[] {
+  return CATEGORY_LINKS[id] ?? [];
+}
 
 export const TOOLS = [
   "clip",
@@ -273,6 +286,7 @@ export const TOOLS = [
   "chi-square",
   "p-value",
   "z-score",
+  "lunar-converter",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 

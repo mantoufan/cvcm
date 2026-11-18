@@ -5,7 +5,7 @@ import { linkList } from "./links";
 import type { Locale } from "../shared/locale";
 import { GAMES } from "../shared/games";
 import { gameName } from "../shared/games-i18n";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, deviceHref, gamesHref, kbHref, learnHref, quizHref, datasetHref, refHref } from "../shared/path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryLinks, deviceHref, gamesHref, kbHref, learnHref, quizHref, datasetHref, refHref } from "../shared/path";
 import { REF_FOCUS } from "../shared/ref";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, kbGroupsOf } from "../shared/kb";
 import { kbLinkItems } from "../shared/kb-i18n";
@@ -33,7 +33,10 @@ export function mountHome(host: HTMLElement, locale: Locale): () => void {
       ...CATEGORIES.map((cat) =>
         h("div", { class: "group" },
           h("h3", null, t(`nav.${cat.id}`)),
-          linkList(cat.tools.map((id) => ({ href: appHref(locale, id), name: t(`tools.${id}.name`), blurb: t(`tools.${id}.blurb`), nav: id }))),
+          linkList([
+            ...cat.tools.map((id) => ({ href: appHref(locale, id), name: t(`tools.${id}.name`), blurb: t(`tools.${id}.blurb`), nav: id })),
+            ...categoryLinks(cat.id).map((x) => ({ href: x.href(locale), name: t(x.nameKey), blurb: t(x.blurbKey), nav: x.nav })),
+          ]),
         ),
       ),
       h("div", { class: "group" },

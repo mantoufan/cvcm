@@ -735,7 +735,9 @@
     "titlePValue": "Tính giá trị p (p-value) — từ z, t, chi bình phương hoặc F, và giá trị tới hạn — cv.cm",
     "descPValue": "Công cụ tính giá trị p (p-value) miễn phí: đổi điểm z, thống kê t, chi bình phương hoặc F cùng bậc tự do thành p một phía hoặc hai phía, hoặc tìm giá trị tới hạn cho mức ý nghĩa α.",
     "titleZScore": "Tính điểm z (z-score) — z từ giá trị, phân vị và xác suất chuẩn — cv.cm",
-    "descZScore": "Công cụ tính điểm z (z-score) miễn phí: tính z = (x − μ) / σ và phần phân phối chuẩn nằm dưới, trên hoặc giữa các giá trị, hoặc điểm z và giá trị tại một phân vị, có tô vùng diện tích trên đường cong hình chuông."
+    "descZScore": "Công cụ tính điểm z (z-score) miễn phí: tính z = (x − μ) / σ và phần phân phối chuẩn nằm dưới, trên hoặc giữa các giá trị, hoặc điểm z và giá trị tại một phân vị, có tô vùng diện tích trên đường cong hình chuông.",
+    "titleLunarConverter": "Đổi lịch âm sang dương và ngược lại (1900–2100) — cv.cm",
+    "descLunarConverter": "Công cụ đổi ngày âm dương miễn phí: đổi ngày dương lịch sang âm lịch (kèm năm can chi và con giáp), hoặc ngày âm lịch, kể cả tháng nhuận, sang dương lịch. Theo lịch Việt Nam (UTC+7), Trung Quốc (UTC+8), Hàn Quốc / Nhật Bản (UTC+9), 1900–2100."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1624,6 +1626,10 @@
     "z-score": {
       "name": "Tính điểm z",
       "blurb": "Điểm z, phân vị và diện tích chuẩn."
+    },
+    "lunar-converter": {
+      "name": "Đổi ngày âm dương",
+      "blurb": "Đổi ngày âm lịch sang dương lịch và ngược lại."
     }
   },
   "watermark": {
@@ -6157,6 +6163,18 @@
       "a4": "Chọn Phân vị → giá trị, nhập phân vị, trung bình và độ lệch chuẩn. Ví dụ phân vị thứ 90 của N(100, 15) xấp xỉ 119,2.",
       "q5": "Dữ liệu có phải phân phối chuẩn không?",
       "a5": "Các tỷ lệ phần trăm giả định phân phối chuẩn. Bản thân điểm z chỉ là khoảng cách tính bằng độ lệch chuẩn, nhưng phân vị của nó chỉ chính xác khi dữ liệu gần hình chuông."
+    },
+    "lunar-converter": {
+      "q1": "Đổi ngày dương lịch sang âm lịch thế nào?",
+      "a1": "Chọn ngày ở mục Dương → âm. Năm âm lịch (can chi, con giáp), tháng và ngày hiện ra ngay.",
+      "q2": "Đổi ngày sinh âm lịch sang dương lịch thế nào?",
+      "a2": "Nhập năm, tháng, ngày âm lịch ở mục Âm → dương. Chỉ đánh dấu Tháng nhuận khi ngày sinh rơi vào tháng nhuận; công cụ báo khi năm đó không có tháng hay ngày ấy.",
+      "q3": "Vì sao âm lịch Việt Nam có khi khác Trung Quốc?",
+      "a3": "Tháng âm lịch bắt đầu từ ngày sóc theo giờ chuẩn của từng nước. Khi sóc rơi gần nửa đêm, UTC+7 và UTC+8 cho hai ngày khác nhau; năm 1985 Tết Việt Nam sớm hơn Trung Quốc một tháng.",
+      "q4": "Tết 2027 là ngày nào?",
+      "a4": "Thứ Bảy, 6/2/2027 (mùng 1 tháng Giêng năm Đinh Mùi).",
+      "q5": "Có tải dữ liệu lên không?",
+      "a5": "Không. Bảng lịch có sẵn trong trang và ngày chỉ được tính trong tab này."
     }
   },
   "qr": {
@@ -15820,6 +15838,7 @@
     "sweet-potato-baked": "Khoai lang (nướng)"
   },
   "calendarHolidays": "Ngày lễ",
+  "calendarBlurb": "Lịch năm, lịch tháng có ngày lễ, âm lịch và tuần trăng.",
   "stdDev": {
     "title": "Tính độ lệch chuẩn",
     "privacyNote": "Độ lệch chuẩn mẫu hoặc tổng thể, phương sai và sai số chuẩn, tính từng bước. Dữ liệu chỉ ở trong tab này.",
@@ -16094,5 +16113,8 @@
     "copy": "Sao chép kết quả",
     "copied": "Đã sao chép",
     "copyFailed": "Không sao chép được"
+  },
+  "lunarConverter": {
+    "lede": "Đổi ngày dương lịch và âm lịch cho các năm 1900–2100, theo lịch Việt Nam (UTC+7), Trung Quốc (UTC+8) hoặc Hàn Quốc / Nhật Bản (UTC+9). Tính ngay trong trang, không tải gì lên."
   }
 }
