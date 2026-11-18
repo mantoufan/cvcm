@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "titleCubeSolver": "Cube solver — solve a 3×3 cube step by step online — cv.cm",
+    "descCubeSolver": "Free 3×3 cube solver: paint your cube's colours on the net and get a short solution (usually under 22 moves) in standard notation, with a 3D view of every move. Nothing is uploaded."
+  },
+  "tools": {
+    "cube-solver": {
+      "name": "Cube solver",
+      "blurb": "Paint your 3×3 and get a short solution, move by move."
+    }
+  },
+  "faq": {
+    "cube-solver": {
+      "q1": "How do I enter my cube?",
+      "a1": "Hold the cube with the white centre on top and the green centre facing you. Pick a colour, then tap each sticker on the net to match your cube, face by face. The centres are fixed and show which face is which.",
+      "q2": "Which colour goes where?",
+      "a2": "Each face of the net is named by its centre: white top, yellow bottom, green front, blue back, red right, orange left. Copy each face as you see it from straight in front of it; the top face is copied with the green side nearest you.",
+      "q3": "Why does it say my cube is impossible?",
+      "a3": "A real cube can only reach certain arrangements. If a colour count is off, a corner or edge has colours no piece has, a single corner is twisted, a single edge is flipped or two pieces are swapped, the stickers were copied wrong (or the cube was taken apart). The message says which kind of mistake to look for.",
+      "q4": "How many moves does the solution take?",
+      "a4": "The solver uses Herbert Kociemba's two-phase algorithm and returns a solution of at most 22 moves, usually around 19–21. It is short, not necessarily the shortest possible.",
+      "q5": "How do I read the moves?",
+      "a5": "U, D, R, L, F and B turn the up, down, right, left, front and back face a quarter turn clockwise as you look at that face. A ' means anticlockwise and a 2 means a half turn. Keep white on top and green in front the whole time."
+    }
+  },
+  "guides": {
+    "cube-solver": {
+      "lead": "Solve a 3×3 cube in three steps.",
+      "s1t": "Paint the stickers",
+      "s1b": "Hold white on top and green in front. Pick a colour and tap the stickers on the net until every face matches your cube.",
+      "s2t": "Press Solve",
+      "s2b": "The cube is checked first. If it can exist, the solver returns a short list of moves.",
+      "s3t": "Follow the moves",
+      "s3b": "Step through the moves one by one, or press Play to watch them on a 3D cube, and turn your real cube the same way."
+    }
+  },
+  "ui": {
+    "cubeSolver": {
+      "title": "Cube solver",
+      "privacyNote": "Paint your 3×3 cube and get a short solution. Everything runs in this page.",
+      "palette": "Colours",
+      "net": "Cube net",
+      "c_U": "White",
+      "c_R": "Red",
+      "c_F": "Green",
+      "c_D": "Yellow",
+      "c_L": "Orange",
+      "c_B": "Blue",
+      "f_U": "Top",
+      "f_R": "Right",
+      "f_F": "Front",
+      "f_D": "Bottom",
+      "f_L": "Left",
+      "f_B": "Back",
+      "blank": "not painted",
+      "stickerLabel": "{face} face, sticker {n}: {colour}",
+      "centreLabel": "{face} face centre: {colour} (fixed)",
+      "count": "{n}/9",
+      "solve": "Solve",
+      "random": "Random cube",
+      "clear": "Clear",
+      "reset": "Solved cube",
+      "e_blank": "{n} stickers are not painted yet.",
+      "e_count": "There are {n} {colour} stickers; every colour needs exactly 9.",
+      "e_corner": "A corner has colours no real corner has, or appears twice. Check the corner stickers.",
+      "e_edge": "An edge has colours no real edge has, or appears twice. Check the edge stickers.",
+      "e_twist": "One corner is twisted in place, which a real cube cannot do. Check the corner stickers.",
+      "e_flip": "One edge is flipped in place, which a real cube cannot do. Check the edge stickers.",
+      "e_parity": "Two pieces are swapped, which a real cube cannot do. Check that every face was copied correctly.",
+      "preparing": "Preparing the solver… (a few seconds the first time)",
+      "solving": "Solving…",
+      "solved": "Solution found: {n} moves.",
+      "already": "This cube is already solved.",
+      "failed": "The solver could not run here. Reload the page and try again.",
+      "solutionTitle": "Solution",
+      "holdNote": "Hold the cube with white on top and green facing you, and keep it that way.",
+      "movesLabel": "Solution moves",
+      "toStart": "Back to start",
+      "prev": "Previous move",
+      "next": "Next move",
+      "playMoves": "Play moves",
+      "pauseMoves": "Pause",
+      "stepStart": "Your cube, {n} moves to go.",
+      "step": "Move {k} of {n}: {move}",
+      "stage": "3D view of the solution",
+      "intro": "Press Play to watch the solution on a 3D cube.",
+      "hint": "Pick a colour, then tap stickers. Keys: 1–6 pick a colour, arrows move between stickers, Enter or Space paints.",
+      "practise": "Practise on the 3D magic cube",
+      "credit": "Solver: {name} (MIT licence), Herbert Kociemba's two-phase algorithm."
+    }
+  }
+}

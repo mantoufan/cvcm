@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "titleDarts": "Juego de dardos — juega al 501 online en una diana 3D — cv.cm",
+    "descDarts": "Juega a los dardos online gratis: 501 con cierre en doble, Alrededor del reloj o práctica en una diana 3D, contra el ordenador o solo. Cierres sugeridos, promedios y mejores mangas. También en el móvil."
+  },
+  "tools": {
+    "darts": {
+      "name": "Dardos",
+      "blurb": "Juega al 501 o Alrededor del reloj en una diana 3D."
+    }
+  },
+  "faq": {
+    "darts": {
+      "q1": "¿Cómo se lanza un dardo?",
+      "a1": "Mantén pulsado sobre la diana: la mira se mueve y se estabiliza en un segundo. Apunta y suelta para lanzar. Si aguantas demasiado, el pulso vuelve a temblar. Con teclado, las flechas apuntan y Espacio lanza.",
+      "q2": "¿Cómo se juega al 501?",
+      "a2": "Cada jugador empieza con 501 y resta cada puntuación. Hay que llegar exactamente a cero con un doble o la diana. Pasarse, dejar 1 o cerrar con un sencillo es pasarse (bust): se anulan los puntos de ese turno.",
+      "q3": "¿Qué es un cierre?",
+      "a3": "Terminar 170 o menos en hasta tres dardos acabando en doble. Cuando puedes cerrar, la página muestra la ruta habitual, como T20 T20 Diana para 170 o D20 para 40.",
+      "q4": "¿Qué tal juega el ordenador?",
+      "a4": "Los niveles fácil, medio y difícil apuntan al triple 20 o a su cierre, con más dispersión cuanto más fácil. El difícil promedia más de 60.",
+      "q5": "¿Se guardan mis marcas?",
+      "a5": "Tu mejor promedio de tres dardos, tus menos dardos en una manga de 501 y tu mejor Alrededor del reloj se guardan en este navegador. No se sube nada."
+    }
+  },
+  "guides": {
+    "darts": {
+      "lead": "Juega a los dardos en tres pasos.",
+      "s1t": "Elige el juego",
+      "s1b": "Elige 501, Alrededor del reloj o práctica, contra el ordenador o solo. Pulsa Jugar.",
+      "s2t": "Mantén y apunta",
+      "s2b": "Mantén pulsado sobre la diana. La mira se mueve y se calma en un segundo; llévala al objetivo.",
+      "s3t": "Suelta para lanzar",
+      "s3b": "Suelta para lanzar. Tres dardos forman un turno; en 501 cierra justo en un doble."
+    }
+  },
+  "ui": {
+    "darts": {
+      "title": "Dardos",
+      "privacyNote": "Juega al 501 o Alrededor del reloj en una diana 3D. Funciona en la página; no se sube nada.",
+      "stage": "Diana 3D",
+      "intro": "Mantén pulsado sobre la diana para afinar la puntería y suelta para lanzar.",
+      "mode": "Juego",
+      "m_x01": "501 (cierre en doble)",
+      "m_clock": "Alrededor del reloj",
+      "m_practice": "Práctica",
+      "opponent": "Rival",
+      "o_solo": "Jugar solo",
+      "o_cpu0": "Ordenador: fácil",
+      "o_cpu1": "Ordenador: medio",
+      "o_cpu2": "Ordenador: difícil",
+      "newGame": "Nueva partida",
+      "you": "Tú",
+      "cpu": "Ordenador",
+      "player": "Jugador",
+      "remaining": "Quedan",
+      "target": "Siguiente",
+      "points": "Puntos",
+      "darts": "Dardos",
+      "avg": "Promedio (3 dardos)",
+      "checkout": "Cierre: {route}",
+      "noCheckout": "Sin cierre desde aquí",
+      "turnYou": "Te toca lanzar",
+      "turnCpu": "Lanza el ordenador",
+      "thisTurn": "Este turno",
+      "bust": "¡Te pasaste! {name} vuelve a {n}.",
+      "scored": "{name}: {hit} ({n} puntos)",
+      "cpuWins": "El ordenador gana la manga.",
+      "youWin": "¡Ganas la manga en {n} dardos (promedio {avg})!",
+      "clockDone": "¡Alrededor del reloj en {n} dardos!",
+      "again": "Jugar otra vez",
+      "bestAvg": "Mejor promedio {n}",
+      "bestLeg": "Mejor manga {n} dardos",
+      "bestClock": "Mejor Alrededor del reloj {n} dardos",
+      "bull": "Diana",
+      "outerBull": "25",
+      "miss": "Fallo",
+      "hint": "Mueve el ratón para apuntar, mantén pulsado para afinar y suelta para lanzar. Teclado: flechas para apuntar (Mayús para pasos grandes), mantén Espacio y suelta para lanzar.",
+      "hintTouch": "Mantén pulsado sobre la diana para apuntar (la mira queda justo encima del dedo), desliza para ajustar y levanta el dedo para lanzar."
+    }
+  }
+}

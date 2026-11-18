@@ -1,0 +1,9 @@
+/* Pinball (src/client/pinball/ui.ts) */
+.pb-bar { justify-content: space-between; }
+.pb-stats { margin: 0; }
+.pb-hud { justify-content: space-between; align-items: baseline; }
+.pb-hud-score { font-size: 1.6rem; font-weight: 800; color: var(--pink-deep); }
+.pb-hud-ball, .pb-hud-mult { font-weight: 700; }
+.pb-hud-mult { color: var(--pink-deep); }
+.pb-status { min-height: 1.6em; margin: 0.5rem 0 0; color: var(--pink-deep); font-weight: 600; }
+.pb-pad .g3d-plunger { align-self: flex-end; }

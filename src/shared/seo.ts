@@ -337,6 +337,11 @@ const TITLE: Record<ToolId, string> = {
   "apa-citation-generator": "meta.titleApaCitationGenerator",
   "mla-citation-generator": "meta.titleMlaCitationGenerator",
   "harvard-referencing-generator": "meta.titleHarvardReferencingGenerator",
+  "cube-solver": "meta.titleCubeSolver",
+  "pinball": "meta.titlePinball",
+  "pool-game": "meta.titlePoolGame",
+  "air-hockey": "meta.titleAirHockey",
+  "darts": "meta.titleDarts",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -581,6 +586,11 @@ const DESC: Record<ToolId, string> = {
   "apa-citation-generator": "meta.descApaCitationGenerator",
   "mla-citation-generator": "meta.descMlaCitationGenerator",
   "harvard-referencing-generator": "meta.descHarvardReferencingGenerator",
+  "cube-solver": "meta.descCubeSolver",
+  "pinball": "meta.descPinball",
+  "pool-game": "meta.descPoolGame",
+  "air-hockey": "meta.descAirHockey",
+  "darts": "meta.descDarts",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

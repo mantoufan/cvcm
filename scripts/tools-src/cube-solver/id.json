@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "titleCubeSolver": "Cara menyelesaikan rubik 3×3 — penyelesai kubus online langkah demi langkah — cv.cm",
+    "descCubeSolver": "Penyelesai kubus rubik 3×3 gratis: warnai kubus Anda di jaring kubus dan dapatkan solusi pendek (biasanya di bawah 22 langkah) dalam notasi standar, dengan tampilan 3D tiap langkah. Tidak ada yang diunggah."
+  },
+  "tools": {
+    "cube-solver": {
+      "name": "Penyelesai rubik 3×3",
+      "blurb": "Warnai kubus 3×3 Anda dan dapatkan solusi pendek, langkah demi langkah."
+    }
+  },
+  "faq": {
+    "cube-solver": {
+      "q1": "Bagaimana cara memasukkan kubus saya?",
+      "a1": "Pegang kubus dengan pusat putih di atas dan pusat hijau menghadap Anda. Pilih warna, lalu ketuk tiap stiker di jaring kubus hingga setiap sisi sama dengan kubus Anda. Pusat sisi tetap dan menunjukkan sisi mana.",
+      "q2": "Warna mana di sisi mana?",
+      "a2": "Setiap sisi dinamai menurut pusatnya: putih atas, kuning bawah, hijau depan, biru belakang, merah kanan, oranye kiri. Salin tiap sisi seperti terlihat dari depan sisi itu; sisi atas disalin dengan sisi hijau paling dekat dengan Anda.",
+      "q3": "Kenapa kubus saya disebut mustahil?",
+      "a3": "Kubus asli hanya bisa mencapai susunan tertentu. Jika jumlah suatu warna salah, ada sudut atau rusuk dengan kombinasi warna yang tidak ada, satu sudut terpelintir sendiri, satu rusuk terbalik sendiri, atau dua kepingan tertukar, berarti stiker salah disalin (atau kubus pernah dibongkar). Pesannya memberi tahu jenis kesalahan yang perlu Anda periksa.",
+      "q4": "Berapa langkah solusinya?",
+      "a4": "Alat ini memakai algoritme dua fase Herbert Kociemba dan memberi solusi paling banyak 22 langkah, biasanya 19–21. Solusinya pendek, tetapi belum tentu yang terpendek.",
+      "q5": "Bagaimana membaca langkahnya?",
+      "a5": "U, D, R, L, F, dan B memutar sisi atas, bawah, kanan, kiri, depan, dan belakang seperempat putaran searah jarum jam bila sisi itu dilihat dari depan. Tanda ' berarti berlawanan arah, angka 2 berarti setengah putaran. Selalu pertahankan putih di atas dan hijau di depan."
+    }
+  },
+  "guides": {
+    "cube-solver": {
+      "lead": "Selesaikan kubus 3×3 dalam tiga langkah.",
+      "s1t": "Warnai stiker",
+      "s1b": "Pegang kubus dengan putih di atas dan hijau di depan. Pilih warna dan ketuk stiker di jaring kubus sampai semua sisi sama dengan kubus Anda.",
+      "s2t": "Tekan Selesaikan",
+      "s2b": "Kubus diperiksa dulu. Jika bisa ada, penyelesai memberi daftar langkah yang pendek.",
+      "s3t": "Ikuti langkahnya",
+      "s3b": "Maju satu per satu atau tekan Main untuk melihatnya di kubus 3D, lalu putar kubus Anda dengan cara yang sama."
+    }
+  },
+  "ui": {
+    "cubeSolver": {
+      "title": "Penyelesai rubik 3×3",
+      "privacyNote": "Warnai kubus 3×3 Anda dan dapatkan solusi pendek. Semuanya berjalan di halaman ini.",
+      "palette": "Warna",
+      "net": "Jaring kubus",
+      "c_U": "Putih",
+      "c_R": "Merah",
+      "c_F": "Hijau",
+      "c_D": "Kuning",
+      "c_L": "Oranye",
+      "c_B": "Biru",
+      "f_U": "Atas",
+      "f_R": "Kanan",
+      "f_F": "Depan",
+      "f_D": "Bawah",
+      "f_L": "Kiri",
+      "f_B": "Belakang",
+      "blank": "belum diwarnai",
+      "stickerLabel": "Sisi {face}, stiker {n}: {colour}",
+      "centreLabel": "Pusat sisi {face}: {colour} (tetap)",
+      "count": "{n} dari 9",
+      "solve": "Selesaikan",
+      "random": "Kubus acak",
+      "clear": "Hapus",
+      "reset": "Kubus selesai",
+      "e_blank": "Masih ada {n} stiker yang belum diwarnai.",
+      "e_count": "Ada {n} stiker {colour}; setiap warna harus tepat 9.",
+      "e_corner": "Ada sudut dengan kombinasi warna yang tidak ada, atau muncul dua kali. Periksa stiker sudut.",
+      "e_edge": "Ada rusuk dengan kombinasi warna yang tidak ada, atau muncul dua kali. Periksa stiker rusuk.",
+      "e_twist": "Satu sudut terpelintir sendiri, hal yang tidak mungkin pada kubus asli. Periksa stiker sudut.",
+      "e_flip": "Satu rusuk terbalik sendiri, hal yang tidak mungkin pada kubus asli. Periksa stiker rusuk.",
+      "e_parity": "Dua kepingan tertukar, hal yang tidak mungkin pada kubus asli. Pastikan setiap sisi disalin dengan benar.",
+      "preparing": "Menyiapkan penyelesai… (beberapa detik pada kali pertama)",
+      "solving": "Menyelesaikan…",
+      "solved": "Solusi ditemukan: {n} langkah.",
+      "already": "Kubus ini sudah selesai.",
+      "failed": "Penyelesai tidak bisa berjalan di sini. Muat ulang halaman dan coba lagi.",
+      "solutionTitle": "Solusi",
+      "holdNote": "Pegang kubus dengan putih di atas dan hijau menghadap Anda, dan jangan ubah arahnya.",
+      "movesLabel": "Langkah solusi",
+      "toStart": "Kembali ke awal",
+      "prev": "Langkah sebelumnya",
+      "next": "Langkah berikutnya",
+      "playMoves": "Putar otomatis",
+      "pauseMoves": "Jeda",
+      "stepStart": "Kubus Anda, tinggal {n} langkah.",
+      "step": "Langkah {k} dari {n}: {move}",
+      "stage": "Tampilan 3D solusi",
+      "intro": "Tekan Main untuk melihat solusi di kubus 3D.",
+      "hint": "Pilih warna, lalu ketuk stiker. Tombol: 1–6 memilih warna, panah berpindah antarstiker, Enter atau Spasi mewarnai.",
+      "practise": "Berlatih di kubus rubik 3D",
+      "credit": "Penyelesai: {name} (lisensi MIT), algoritme dua fase Herbert Kociemba."
+    }
+  }
+}

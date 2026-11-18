@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "titlePoolGame": "Pool game — play 8-ball pool online in 3D — cv.cm",
+    "descPoolGame": "Play 8-ball pool online for free: a 3D table, aim guide, three computer levels or two players on one device. Runs in your browser, nothing to install."
+  },
+  "tools": {
+    "pool-game": {
+      "name": "Pool game",
+      "blurb": "8-ball on a 3D table, against the computer or a friend."
+    }
+  },
+  "faq": {
+    "pool-game": {
+      "q1": "How do I play 8-ball?",
+      "a1": "Break the rack, then pot all of your group — solids (1–7) or stripes (9–15) — and finally the black 8. Your group is set by the first ball you pot after the break. Potting the 8 before your group is cleared, or on a foul, loses the game.",
+      "q2": "How do I aim and shoot?",
+      "a2": "Move the mouse over the table, or drag on it with a finger, to aim; the white line shows where the cue ball will hit and the yellow line where the object ball goes. Set the power with the slider or the Up and Down keys, then press Shoot or Space. Left and Right fine-tune the aim (hold Shift for tiny steps).",
+      "q3": "What counts as a foul?",
+      "a3": "Potting the cue ball, missing every ball, hitting the other group (or the 8 too early) first, and a shot where no ball is potted and none reaches a cushion after the first contact. After a foul the other player has ball in hand and may place the cue ball anywhere.",
+      "q4": "How strong is the computer?",
+      "a4": "Easy, Normal and Hard try the makeable shots on the table with the same physics you play with; the easier levels look at fewer shots and aim less precisely.",
+      "q5": "Is my game saved?",
+      "a5": "Yes. The table, the score and your wins and losses against the computer stay in this browser, so you can come back to a game later."
+    }
+  },
+  "guides": {
+    "pool-game": {
+      "lead": "Play 8-ball in three steps.",
+      "s1t": "Break the rack",
+      "s1b": "Press Play, aim at the rack and shoot hard to spread the balls.",
+      "s2t": "Pot your group",
+      "s2b": "Aim with the mouse or a finger, set the power and shoot. Your first pot after the break decides solids or stripes.",
+      "s3t": "Finish on the 8",
+      "s3b": "Clear your group, then pot the black 8 to win. Avoid fouls: they give your opponent ball in hand."
+    }
+  },
+  "ui": {
+    "poolGame": {
+      "title": "Pool game",
+      "privacyNote": "Play 8-ball on a 3D table against the computer or a friend. The game runs in this page.",
+      "stage": "Pool table",
+      "intro": "8-ball: pot your group, then the black 8.",
+      "you": "You",
+      "computer": "Computer",
+      "player": "Player {n}",
+      "open": "open table",
+      "groupLeft": "{group}, {n} left",
+      "solids": "solids",
+      "stripes": "stripes",
+      "wins": "Wins",
+      "losses": "Losses",
+      "vsComputer": "Against the computer",
+      "twoPlayers": "Two players",
+      "level": "Computer level",
+      "l_0": "Easy",
+      "l_1": "Normal",
+      "l_2": "Hard",
+      "players": "Players",
+      "power": "Power",
+      "shoot": "Shoot",
+      "turnView": "Turn the view",
+      "newGame": "New game",
+      "thinking": "The computer is thinking…",
+      "yourShot": "Your shot.",
+      "playerShot": "{who} to shoot.",
+      "breakShot": "Break: aim at the rack and shoot hard.",
+      "ballInHand": "Ball in hand: drag the cue ball where you like.",
+      "win_eight": "{who} wins: the 8 is down!",
+      "win_eightEarly": "{who} wins: the 8 went down too early.",
+      "win_eightFoul": "{who} wins: the 8 went down on a foul.",
+      "again_shot": "Good pot, shoot again.",
+      "foul_scratch": "Foul: the cue ball dropped.",
+      "foul_noContact": "Foul: the cue ball hit nothing.",
+      "foul_wrongBall": "Foul: the wrong ball was hit first.",
+      "foul_noRail": "Foul: no ball reached a cushion.",
+      "again": "Play again",
+      "hint": "Aim with the mouse or by dragging on the table, Left and Right fine-tune it (Shift for tiny steps), Up and Down set the power, Space shoots."
+    }
+  }
+}
