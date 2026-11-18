@@ -15,6 +15,7 @@ jobs:
   # more than it saves.
   check:
     # The deploy job's "Wait for tests and typecheck" step looks this job up by this name: rename both together.
+    # After a flaky failure use "Re-run failed jobs": re-running only this job leaves the failed deploy job as it is.
     name: Tests and typecheck
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -52,7 +53,7 @@ jobs:
         run: |
           errors=0
           while true; do
-            if ! state=$(gh api "repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/jobs?filter=latest&per_page=100" \
+            if ! state=$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/jobs?filter=latest&per_page=100" \
               -q '.jobs[] | select(.name == "Tests and typecheck") | "\(.status) \(.conclusion)"'); then
               # A passing blip is retried; an API that keeps failing (permissions, auth) fails the deploy within a minute.
               errors=$((errors + 1))
