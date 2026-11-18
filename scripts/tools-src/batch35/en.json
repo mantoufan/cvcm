@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "titleCitationGenerator": "Citation generator — APA, MLA, Chicago, Harvard, IEEE, Vancouver, GB/T 7714 — cv.cm",
+    "descCitationGenerator": "Free citation generator: find a journal article by DOI or a book by ISBN, or type the details, and get the reference and in-text citation in APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver or GB/T 7714. Build a reference list; import and export BibTeX and RIS.",
+    "titleApaCitationGenerator": "APA citation generator — APA 7th edition references and in-text citations — cv.cm",
+    "descApaCitationGenerator": "Free APA 7 citation generator: cite a journal article from its DOI, a book from its ISBN, a book chapter or a web page. Get the reference list entry with the right italics and the (Author, Year) in-text citation, then copy it into Word or Google Docs.",
+    "titleMlaCitationGenerator": "MLA citation generator — MLA 9th edition works cited — cv.cm",
+    "descMlaCitationGenerator": "Free MLA 9 citation generator: cite articles, books, chapters and websites for your works cited page from a DOI, an ISBN or the details you type, with the (Author page) in-text citation and italics kept when you copy.",
+    "titleHarvardReferencingGenerator": "Harvard referencing generator — Cite Them Right style — cv.cm",
+    "descHarvardReferencingGenerator": "Free Harvard referencing generator (Cite Them Right): journal articles from a DOI, books from an ISBN, chapters and websites with 'Available at' and 'Accessed' dates, plus the (Author, Year) citation for your text."
+  },
+  "tools": {
+    "citation-generator": {
+      "name": "Citation generator",
+      "blurb": "APA, MLA, Chicago, Harvard and more."
+    },
+    "apa-citation-generator": {
+      "name": "APA citation generator",
+      "blurb": "APA 7 references from a DOI or ISBN."
+    },
+    "mla-citation-generator": {
+      "name": "MLA citation generator",
+      "blurb": "MLA 9 works cited entries."
+    },
+    "harvard-referencing-generator": {
+      "name": "Harvard referencing generator",
+      "blurb": "Cite Them Right Harvard references."
+    }
+  },
+  "faq": {
+    "citation-generator": {
+      "q1": "How do I cite a source automatically?",
+      "a1": "Paste the article's DOI (10.xxxx/…) or the book's ISBN and press Find. The details are filled in from Crossref/DataCite or Open Library; check them, pick a style and copy the reference.",
+      "q2": "Which citation styles are supported?",
+      "a2": "APA 7th edition, MLA 9th edition, Chicago 17th (notes and bibliography), Harvard (Cite Them Right), IEEE, Vancouver and the Chinese national standard GB/T 7714-2015.",
+      "q3": "Is my data sent anywhere?",
+      "a3": "Only when you press Find: the DOI or ISBN in that box goes to Crossref/DataCite or Open Library. Everything you type in the form is formatted in your browser, and your reference list stays in this browser.",
+      "q4": "Can I import from Zotero, Mendeley or EndNote?",
+      "a4": "Yes. Export your library as BibTeX (.bib) or RIS (.ris), open the file in a text editor and paste it under Import. You can also copy your list back out as BibTeX or RIS.",
+      "q5": "Why is the capitalization of my title not changed?",
+      "a5": "Titles are kept exactly as you type them, because only you know which words are proper nouns. APA, Harvard and Vancouver use sentence case for article and book titles; MLA, Chicago and IEEE use title case."
+    },
+    "apa-citation-generator": {
+      "q1": "How do you cite a journal article in APA 7?",
+      "a1": "Author, A. A., & Author, B. B. (Year). Title of the article. Journal Name, Volume(Issue), pages. https://doi.org/… The journal name and volume are in italics.",
+      "q2": "What does an APA in-text citation look like?",
+      "a2": "(Author, Year): (Smith, 2020) for one author, (Smith & Lee, 2020) for two, and (Smith et al., 2020) for three or more, from the first citation on.",
+      "q3": "How many authors does APA 7 list?",
+      "a3": "Up to 20 in the reference list. With 21 or more, list the first 19, an ellipsis (. . .) and the last author.",
+      "q4": "How do I cite a website in APA?",
+      "a4": "Author. (Year, Month Day). Title of the page. Site Name. URL. The page title is in italics, and the site name is left out when it is the same as the author.",
+      "q5": "What if there is no date or no author?",
+      "a5": "Write (n.d.) for no date. With no author, the title moves to the author's place, before the date."
+    },
+    "mla-citation-generator": {
+      "q1": "How do you cite a journal article in MLA 9?",
+      "a1": "Last, First. \"Title of the Article.\" Journal Name, vol. 12, no. 3, 2020, pp. 45-67. The journal name is in italics; a DOI goes at the end.",
+      "q2": "How does MLA handle several authors?",
+      "a2": "Two authors: Last, First, and First Last. Three or more: the first author followed by et al.",
+      "q3": "What does an MLA in-text citation look like?",
+      "a3": "The author's last name and the page, with no comma: (Smith 45). Two authors: (Smith and Lee 45). Three or more: (Smith et al. 45).",
+      "q4": "How do I cite a website in MLA?",
+      "a4": "Author. \"Title of the Page.\" Website Name, day Month year, URL. MLA leaves out https:// from URLs.",
+      "q5": "What is a works cited page?",
+      "a5": "The list of every source you cite, at the end of the paper, in alphabetical order by the first word of each entry, with a hanging indent."
+    },
+    "harvard-referencing-generator": {
+      "q1": "How do you reference a journal article in Harvard style?",
+      "a1": "Surname, Initials. (Year) 'Title of article', Journal Name, Volume(Issue), pp. pages. Available at: https://doi.org/… (Cite Them Right, 12th edition).",
+      "q2": "How do Harvard in-text citations work?",
+      "a2": "(Surname, Year): (Smith, 2020), (Smith and Lee, 2020), (Smith, Lee and Park, 2020), and (Smith et al., 2020) for four or more authors.",
+      "q3": "How do I reference a website in Harvard?",
+      "a3": "Author or organization (Year) Title of page. Available at: URL (Accessed: day Month year). Add the date you read the page.",
+      "q4": "Is there one Harvard style?",
+      "a4": "No. Harvard is a family of author–date styles and universities vary in details. This generator follows Cite Them Right, the version most UK and Australian universities use; check your course handbook.",
+      "q5": "How is the reference list ordered?",
+      "a5": "Alphabetically by the first author's surname, then by year. The list is titled Reference list (or References)."
+    }
+  },
+  "guides": {
+    "citation-generator": {
+      "lead": "Cite a source in three steps.",
+      "s1t": "Find or type the source",
+      "s1b": "Paste a DOI or ISBN and press Find, paste BibTeX or RIS, or fill in the form yourself.",
+      "s2t": "Pick a style",
+      "s2b": "APA, MLA, Chicago, Harvard, IEEE, Vancouver or GB/T 7714; the reference and in-text citation update at once.",
+      "s3t": "Copy or build a list",
+      "s3b": "Copy the reference with its italics, or add it to your list and copy the whole list, BibTeX or RIS."
+    },
+    "apa-citation-generator": {
+      "lead": "Make an APA 7 reference in three steps.",
+      "s1t": "Find the source",
+      "s1b": "Paste the DOI or ISBN and press Find, or type the authors, title, journal and year.",
+      "s2t": "Check the details",
+      "s2b": "Use sentence case for the title and make sure every author is listed.",
+      "s3t": "Copy the reference",
+      "s3b": "Copy the entry into your reference list and use the (Author, Year) citation in your text."
+    },
+    "mla-citation-generator": {
+      "lead": "Make an MLA 9 works cited entry in three steps.",
+      "s1t": "Find the source",
+      "s1b": "Paste the DOI or ISBN and press Find, or type the details of the article, book, chapter or website.",
+      "s2t": "Check the details",
+      "s2b": "Use title case and add the page range for articles and chapters.",
+      "s3t": "Copy the entry",
+      "s3b": "Copy it into your works cited page and cite it as (Author page) in your text."
+    },
+    "harvard-referencing-generator": {
+      "lead": "Make a Harvard reference in three steps.",
+      "s1t": "Find the source",
+      "s1b": "Paste the DOI or ISBN and press Find, or type the details yourself.",
+      "s2t": "Add access dates",
+      "s2b": "For web pages, add the date you read the page; it is shown as Accessed.",
+      "s3t": "Copy the reference",
+      "s3b": "Copy it into your reference list and cite it as (Surname, Year) in your text."
+    }
+  },
+  "ui": {
+    "cite": {
+      "title_main": "Citation generator",
+      "title_apa": "APA citation generator",
+      "title_mla": "MLA citation generator",
+      "title_harvard": "Harvard referencing generator",
+      "privacyNote": "References and in-text citations in seven styles. Formatting happens in your browser; only Find contacts Crossref/DataCite or Open Library.",
+      "lookupTitle": "Find by DOI or ISBN",
+      "lookupLabel": "DOI or ISBN",
+      "lookupPlaceholder": "10.1038/nature14539 or ISBN",
+      "find": "Find",
+      "searching": "Searching…",
+      "found": "Found. Check the details below.",
+      "lookup_invalid": "That is not a DOI (10.xxxx/…) or a valid ISBN-10/13.",
+      "lookup_notFound": "Nothing found for that DOI or ISBN. Fill in the details below.",
+      "lookup_network": "The lookup service did not answer. Try again, or fill in the details below.",
+      "lookupPrivacy": "Find sends only this DOI to Crossref/DataCite or this ISBN to Open Library. Nothing else leaves your browser.",
+      "detailsTitle": "Source details",
+      "type": "Source type",
+      "type_article": "Journal article",
+      "type_book": "Book",
+      "type_chapter": "Book chapter",
+      "type_webpage": "Web page",
+      "authors": "Authors (one per line)",
+      "authorsHint": "Write Last, First or First Last. Put a group author in braces: {World Health Organization}.",
+      "titleField": "Title",
+      "container_article": "Journal",
+      "container_book": "Series",
+      "container_chapter": "Book title",
+      "container_webpage": "Website name",
+      "editors": "Editors of the book (one per line)",
+      "year": "Year",
+      "month": "Month",
+      "day": "Day",
+      "volume": "Volume",
+      "issue": "Issue",
+      "pages": "Pages",
+      "edition": "Edition (number)",
+      "publisher": "Publisher",
+      "place": "Place of publication",
+      "accessed": "Date accessed",
+      "importTitle": "Import BibTeX or RIS",
+      "importLabel": "BibTeX or RIS text",
+      "import": "Import",
+      "importNone": "No complete entries found. Paste BibTeX (@article{…}) or RIS (TY  - JOUR …).",
+      "imported": "Entries imported: {n}. The first is in the form; when there are several, all of them are in your list.",
+      "style": "Citation style",
+      "style_apa": "APA 7th edition",
+      "style_mla": "MLA 9th edition",
+      "style_chicago": "Chicago 17th (notes and bibliography)",
+      "style_harvard": "Harvard (Cite Them Right)",
+      "style_ieee": "IEEE",
+      "style_vancouver": "Vancouver",
+      "style_gbt": "GB/T 7714-2015",
+      "result": "Reference",
+      "inText": "In-text citation:",
+      "note": "Short note:",
+      "caseSentence": "This style uses sentence case for titles: capitalize only the first word, the first word after a colon and proper nouns.",
+      "caseTitle": "This style uses title case: capitalize the main words of titles.",
+      "needTitle_title": "Add a title to see the reference.",
+      "needTitle_container": "Add a title and the journal or book name to see the reference.",
+      "copy": "Copy reference",
+      "copied": "Copied",
+      "copyFailed": "Copy failed",
+      "add": "Add to list",
+      "listTitle": "Your reference list ({n})",
+      "listEmpty": "Added references appear here, sorted for the style. The list is kept in this browser.",
+      "copyList": "Copy list",
+      "copyBibtex": "Copy BibTeX",
+      "copyRis": "Copy RIS",
+      "clearList": "Clear list",
+      "clearConfirm": "Tap again to clear",
+      "remove": "Remove from list",
+      "listFull": "Your list holds up to {max} references. Not added: {n}.",
+      "edited": "These are the book's editors"
+    }
+  },
+  "legal": {
+    "h": "Citation lookups",
+    "p": [
+      "The citation generator formats references in your browser and keeps your reference list in this browser's local storage. When you press Find, the DOI you typed is sent to Crossref/DataCite (api.crossref.org, api.datacite.org) or the ISBN to Open Library (openlibrary.org) to fetch the source's details. Nothing else you typed is sent, the request carries no cookies or page address, and we do not receive or store it. Crossref/DataCite and Open Library handle the request under their own privacy policies."
+    ]
+  }
+}

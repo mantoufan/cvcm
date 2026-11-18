@@ -10,8 +10,7 @@ import {
   CATEGORIES,
   appHref,
   gamesHref,
-  isAiToolPath,
-  devicePolicyOf,
+  documentPolicyKey,
   isPublishedTutorial,
   isToolId,
   isTutorialId,
@@ -527,10 +526,9 @@ function onClick(e: MouseEvent): void {
   // With gtag running, open file tools and clip notes as a fresh page: their CSP has no GA hosts,
   // and gtag's automatic history tracking never sees the URL.
   if (analyticsActive() && !isTrackedPath(a.pathname)) return;
-  // AI tool pages are cross-origin isolated by their response headers: entering or leaving one loads a new document.
-  if (isAiToolPath(a.pathname) !== isAiToolPath(location.pathname)) return;
-  // The microphone and camera are allowed only by a mic or camera tool page's own response headers: entering or leaving one loads a new document.
-  if (devicePolicyOf(a.pathname) !== devicePolicyOf(location.pathname)) return;
+  // AI pages are cross-origin isolated, mic/camera/screen pages allow those devices, and citation pages allow the lookup
+  // hosts, each by the page's own response headers: entering or leaving one loads a new document.
+  if (documentPolicyKey(a.pathname) !== documentPolicyKey(location.pathname)) return;
   if (parseAppPath(a.pathname).kind === "static") return;
   // Unsaved work in this tab: a full navigation lets beforeunload ask before it is lost.
   if (mustStay()) return;

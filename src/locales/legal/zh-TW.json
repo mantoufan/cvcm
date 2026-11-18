@@ -53,6 +53,13 @@
           ]
         },
         {
+          "id": "citation-lookups",
+          "h": "參考文獻查詢",
+          "p": [
+            "參考文獻產生器在你的瀏覽器中排版，參考文獻清單儲存在這個瀏覽器的本機儲存空間。按「查詢」時，你輸入的 DOI 會傳送給 Crossref/DataCite（api.crossref.org, api.datacite.org），或把 ISBN 傳送給 Open Library（openlibrary.org），用來取得來源資料。你輸入的其他內容都不會傳送，請求不帶 Cookie，也不帶頁面網址，我們不會收到或儲存這些請求。Crossref/DataCite 和 Open Library 依各自的隱私權政策處理請求。"
+          ]
+        },
+        {
           "h": "託管與伺服器日誌",
           "p": [
             "cv.cm 由 Cloudflare 提供服務。為了傳遞和保護網站，Cloudflare 會依據其自身的隱私權政策處理請求資料，例如 IP 位址、瀏覽器 User-Agent 和所請求的 URL。我們位於 s3.cv.cm 的儲存伺服器會保留標準的 Web 伺服器日誌（IP 位址、時間、請求路徑），用於安全和疑難排解。我們不會用這些日誌建立使用者側寫。"

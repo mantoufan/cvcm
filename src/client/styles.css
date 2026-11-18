@@ -1894,3 +1894,13 @@ tr.is-work > * { color: var(--ink-soft); }
 .fs-status { min-height: 1.6em; margin: 0.25rem 0; color: var(--ink-soft); }
 .fs-mode { display: inline-flex; align-items: center; gap: 0.4rem; margin: 0; }
 .fs-best { margin: 0.25rem 0 0.75rem; }
+/* Citation generator: references as plain text with a hanging indent, no list markers (numbered styles write their own). */
+.cite-find { display: flex; gap: 0.5rem; }
+.cite-find input { flex: 1; min-width: 0; }
+.cite-ref { overflow-wrap: anywhere; }
+p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
+.cite-list { list-style: none; margin: 0.5rem 0 0.75rem; padding: 0; }
+.cite-list li { padding: 0.35rem 0 0.35rem 2em; text-indent: -2em; line-height: 1.6; border-bottom: 1px solid var(--line); }
+.cite-list li.cite-empty { padding-left: 0; text-indent: 0; border-bottom: 0; }
+.cite-list .cite-remove { min-height: 28px; padding: 0 0.5rem; text-indent: 0; }
+.cite-import summary { cursor: pointer; margin: 0.5rem 0; }

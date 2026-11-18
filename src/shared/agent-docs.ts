@@ -19,7 +19,7 @@ import { LOCALES, localePath } from "./locale";
 import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
 import { MUSIC_BARS, MUSIC_STYLES, STYLE_PRESETS, SURPRISE_IDS } from "./music-gen";
 import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
-import { AI_TOOLS, CATEGORIES, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, categoryLinks, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ToolId } from "./path";
+import { AI_TOOLS, CATEGORIES, LOOKUP_TOOLS, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, categoryLinks, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
 
 const CATEGORY_TITLE: Record<CategoryId, string> = {
@@ -41,7 +41,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   assets: "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)",
   wordgames: "Word games: word search, hangman, typing game, typing practice (touch-typing lessons)",
   games3d: "3D games: 3D chess against the computer, magic cube (3×3 and other sizes), stack game, driving and drift game, flight simulator",
-  academic: "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines",
+  academic: "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines; a citation generator (APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver, GB/T 7714) with DOI and ISBN lookup and BibTeX/RIS import and export",
   valuation: "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)",
 };
 
@@ -62,10 +62,12 @@ const FILES: readonly ToolId[] = [
 
 /** Text kept in this browser's localStorage between visits. */
 const NOTES: readonly ToolId[] = ["notepad"];
+/** Formats citations in the page; Find sends only the DOI or ISBN typed in the lookup box to Crossref/DataCite or Open Library. */
+const LOOKUPS: readonly ToolId[] = [...LOOKUP_TOOLS];
 /** Renders text in the page; images the text links to are loaded from their own sites. */
 const LINKED_IMAGES: readonly ToolId[] = ["markdown"];
 
-export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES, NOTES, LINKED_IMAGES } as const;
+export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES, NOTES, LINKED_IMAGES, LOOKUPS } as const;
 
 const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS | "LOCAL", string> = {
   STORES: `Stores the note on cv.cm (text in its database, files on its storage host s3.cv.cm) until ${CLIP_MAX_VIEWS} views or ${CLIP_TTL_MS / 3_600_000} hours. Anyone with the short link can open it, so it is not for secrets.`,
@@ -75,6 +77,7 @@ const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS | "LOCAL", st
   FILES: "Processes files in the page. Files are not uploaded.",
   NOTES: "Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded.",
   LINKED_IMAGES: "Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded.",
+  LOOKUPS: "Formats citations in the page and keeps the reference list in this browser's local storage. Only when you press Find is the DOI or ISBN you typed sent to Crossref (api.crossref.org, then DataCite at api.datacite.org for DOIs Crossref does not hold) or Open Library (openlibrary.org) to fetch the source's details; nothing else is uploaded.",
   LOCAL: "Runs in the page. Inputs are not uploaded.",
 };
 
@@ -220,7 +223,7 @@ export function buildLlmsTxt(): string {
     "Facts an assistant can rely on:",
     "",
     "- Price: every tool is free. There is no sign-up and no paid tier.",
-    `- Privacy: each tool below says what happens to the user's input. Image, PDF, audio and AI tools process files in the page and never upload them. ${names(STORES)} ${STORES.length === 1 ? "is the one tool that stores" : "are the tools that store"} data. ${names(NETWORK_VOICES)} can send text to the voice provider when the user picks an online voice. Other tools keep input in the page.`,
+    `- Privacy: each tool below says what happens to the user's input. Image, PDF, audio and AI tools process files in the page and never upload them. ${names(STORES)} ${STORES.length === 1 ? "is the one tool that stores" : "are the tools that store"} data. ${names(NETWORK_VOICES)} can send text to the voice provider when the user picks an online voice. ${names(LOOKUPS)} send only the DOI or ISBN typed in the lookup box to Crossref/DataCite or Open Library, and only when the user presses Find. Other tools keep input in the page.`,
     "- Analytics: Google Analytics counts visits to ordinary pages. Image, PDF, audio and AI tool pages and opened clipboard notes send nothing to it, and no page sends what the user types or uploads to it.",
     `- AI tools download their model once on first use (model weights of ${formatMb(Math.min(...MODEL_BYTES))} to ${formatMb(Math.max(...MODEL_BYTES))}; each AI tool below lists its sizes), then load it from the browser cache. ${AI_BACKEND_RULE}`,
     `- Languages: tool URLs follow \`${URL_PATTERN}\`, where \`{locale}\` is one of ${LOCALE_PATHS.map((l) => `\`${l}\``).join(", ")}. The links below use \`en\`.`,

@@ -53,6 +53,13 @@
           ]
         },
         {
+          "id": "citation-lookups",
+          "h": "Búsqueda de citas",
+          "p": [
+            "El generador de citas da formato a las referencias en tu navegador y guarda tu lista de referencias en el almacenamiento local de este navegador. Cuando pulsas Buscar, el DOI que escribiste se envía a Crossref/DataCite (api.crossref.org, api.datacite.org) o el ISBN a Open Library (openlibrary.org) para obtener los datos de la fuente. No se envía nada más de lo que escribiste, la solicitud no lleva cookies ni la dirección de la página, y nosotros no la recibimos ni la guardamos. Crossref/DataCite y Open Library tratan la solicitud según sus propias políticas de privacidad."
+          ]
+        },
+        {
           "h": "Alojamiento y registros del servidor",
           "p": [
             "cv.cm se sirve a través de Cloudflare. Para entregar y proteger el sitio, Cloudflare procesa datos de las solicitudes, como la dirección IP, el agente de usuario del navegador y la URL solicitada, conforme a su propia política de privacidad. Nuestro servidor de almacenamiento en s3.cv.cm conserva registros estándar de servidor web (dirección IP, hora y ruta solicitada) por motivos de seguridad y resolución de problemas. No usamos estos registros para elaborar perfiles."

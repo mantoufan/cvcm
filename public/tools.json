@@ -92,7 +92,7 @@
     },
     {
       "id": "academic",
-      "name": "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines"
+      "name": "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines; a citation generator (APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver, GB/T 7714) with DOI and ISBN lookup and BibTeX/RIS import and export"
     },
     {
       "id": "valuation",
@@ -1928,6 +1928,38 @@
       "category": "academic",
       "url": "https://cv.cm/en/z-score/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "citation-generator",
+      "name": "Citation generator",
+      "description": "APA, MLA, Chicago, Harvard and more.",
+      "category": "academic",
+      "url": "https://cv.cm/en/citation-generator/",
+      "data_handling": "Formats citations in the page and keeps the reference list in this browser's local storage. Only when you press Find is the DOI or ISBN you typed sent to Crossref (api.crossref.org, then DataCite at api.datacite.org for DOIs Crossref does not hold) or Open Library (openlibrary.org) to fetch the source's details; nothing else is uploaded."
+    },
+    {
+      "id": "apa-citation-generator",
+      "name": "APA citation generator",
+      "description": "APA 7 references from a DOI or ISBN.",
+      "category": "academic",
+      "url": "https://cv.cm/en/apa-citation-generator/",
+      "data_handling": "Formats citations in the page and keeps the reference list in this browser's local storage. Only when you press Find is the DOI or ISBN you typed sent to Crossref (api.crossref.org, then DataCite at api.datacite.org for DOIs Crossref does not hold) or Open Library (openlibrary.org) to fetch the source's details; nothing else is uploaded."
+    },
+    {
+      "id": "mla-citation-generator",
+      "name": "MLA citation generator",
+      "description": "MLA 9 works cited entries.",
+      "category": "academic",
+      "url": "https://cv.cm/en/mla-citation-generator/",
+      "data_handling": "Formats citations in the page and keeps the reference list in this browser's local storage. Only when you press Find is the DOI or ISBN you typed sent to Crossref (api.crossref.org, then DataCite at api.datacite.org for DOIs Crossref does not hold) or Open Library (openlibrary.org) to fetch the source's details; nothing else is uploaded."
+    },
+    {
+      "id": "harvard-referencing-generator",
+      "name": "Harvard referencing generator",
+      "description": "Cite Them Right Harvard references.",
+      "category": "academic",
+      "url": "https://cv.cm/en/harvard-referencing-generator/",
+      "data_handling": "Formats citations in the page and keeps the reference list in this browser's local storage. Only when you press Find is the DOI or ISBN you typed sent to Crossref (api.crossref.org, then DataCite at api.datacite.org for DOIs Crossref does not hold) or Open Library (openlibrary.org) to fetch the source's details; nothing else is uploaded."
     },
     {
       "id": "phone-number-value",

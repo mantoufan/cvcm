@@ -53,6 +53,13 @@
           ]
         },
         {
+          "id": "citation-lookups",
+          "h": "Pencarian sitasi",
+          "p": [
+            "Generator daftar pustaka memformat referensi di browser Anda dan menyimpan daftar pustaka Anda di penyimpanan lokal browser ini. Saat Anda menekan Cari, DOI yang Anda ketik dikirim ke Crossref/DataCite (api.crossref.org, api.datacite.org) atau ISBN ke Open Library (openlibrary.org) untuk mengambil data sumbernya. Tidak ada hal lain yang Anda ketik yang dikirim, permintaan itu tidak membawa cookie atau alamat halaman, dan kami tidak menerima maupun menyimpannya. Crossref/DataCite dan Open Library menangani permintaan itu sesuai kebijakan privasi mereka sendiri."
+          ]
+        },
+        {
           "h": "Hosting dan log server",
           "p": [
             "cv.cm dilayani oleh Cloudflare. Untuk menyajikan dan melindungi situs, Cloudflare memproses data permintaan seperti alamat IP, user agent browser, dan URL yang diminta berdasarkan kebijakan privasinya sendiri. Server penyimpanan kami di s3.cv.cm menyimpan log server web standar (alamat IP, waktu, jalur yang diminta) untuk keamanan dan pemecahan masalah. Kami tidak menggunakan log ini untuk membuat profil."

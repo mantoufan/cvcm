@@ -214,6 +214,10 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "stack-game": 3,
   "driving-game": 3,
   "flight-simulator": 3,
+  "citation-generator": 3,
+  "apa-citation-generator": 3,
+  "mla-citation-generator": 3,
+  "harvard-referencing-generator": 3,
 };
 
 export function guideSteps(tool: ToolId): number {

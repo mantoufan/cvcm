@@ -1270,4 +1270,28 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountFlightSimulator(host);
     return m.unmountFlightSimulator;
   },
+  "citation-generator": async (host, ctx) => {
+    const m = await import("./citation-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCitation(host, "apa", "main");
+    return m.unmountCitation;
+  },
+  "apa-citation-generator": async (host, ctx) => {
+    const m = await import("./citation-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCitation(host, "apa", "apa");
+    return m.unmountCitation;
+  },
+  "mla-citation-generator": async (host, ctx) => {
+    const m = await import("./citation-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCitation(host, "mla", "mla");
+    return m.unmountCitation;
+  },
+  "harvard-referencing-generator": async (host, ctx) => {
+    const m = await import("./citation-generator/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCitation(host, "harvard", "harvard");
+    return m.unmountCitation;
+  },
 };

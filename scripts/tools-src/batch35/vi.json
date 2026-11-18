@@ -1,0 +1,201 @@
+{
+  "meta": {
+    "titleCitationGenerator": "Tạo trích dẫn tài liệu tham khảo — APA, MLA, Chicago, Harvard, IEEE, Vancouver — cv.cm",
+    "descCitationGenerator": "Công cụ tạo trích dẫn miễn phí: tìm bài báo khoa học theo DOI hoặc sách theo ISBN, hoặc tự nhập thông tin, rồi nhận tài liệu tham khảo và trích dẫn trong bài theo APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver hoặc GB/T 7714. Lập danh mục tài liệu tham khảo cho luận văn; nhập và xuất BibTeX, RIS.",
+    "titleApaCitationGenerator": "Tạo trích dẫn APA — tài liệu tham khảo APA 7 và trích dẫn trong bài — cv.cm",
+    "descApaCitationGenerator": "Công cụ trích dẫn APA 7 miễn phí: trích dẫn bài báo từ DOI, sách từ ISBN, chương sách hoặc trang web. Nhận mục tài liệu tham khảo với chữ nghiêng đúng chuẩn và trích dẫn (Tác giả, Năm), rồi sao chép vào Word hoặc Google Docs.",
+    "titleMlaCitationGenerator": "Tạo trích dẫn MLA — danh mục works cited MLA 9 — cv.cm",
+    "descMlaCitationGenerator": "Công cụ trích dẫn MLA 9 miễn phí: trích dẫn bài báo, sách, chương sách và trang web cho trang works cited từ DOI, ISBN hoặc thông tin bạn nhập, kèm trích dẫn (Tác giả trang) và giữ nguyên chữ nghiêng khi sao chép.",
+    "titleHarvardReferencingGenerator": "Tạo tài liệu tham khảo Harvard — kiểu Cite Them Right — cv.cm",
+    "descHarvardReferencingGenerator": "Công cụ tạo tài liệu tham khảo Harvard (Cite Them Right) miễn phí: bài báo từ DOI, sách từ ISBN, chương sách và trang web có 'Available at' và ngày 'Accessed', kèm trích dẫn (Tác giả, Năm) trong bài."
+  },
+  "tools": {
+    "citation-generator": {
+      "name": "Tạo trích dẫn",
+      "blurb": "APA, MLA, Chicago, Harvard và nhiều kiểu khác."
+    },
+    "apa-citation-generator": {
+      "name": "Tạo trích dẫn APA",
+      "blurb": "Tài liệu tham khảo APA 7 từ DOI hoặc ISBN."
+    },
+    "mla-citation-generator": {
+      "name": "Tạo trích dẫn MLA",
+      "blurb": "Mục works cited theo MLA 9."
+    },
+    "harvard-referencing-generator": {
+      "name": "Tạo tài liệu tham khảo Harvard",
+      "blurb": "Tài liệu tham khảo Harvard kiểu Cite Them Right."
+    }
+  },
+  "faq": {
+    "citation-generator": {
+      "q1": "Cách trích dẫn tài liệu tham khảo tự động như thế nào?",
+      "a1": "Dán DOI của bài báo (10.xxxx/…) hoặc ISBN của sách rồi bấm Tìm. Thông tin được điền từ Crossref/DataCite hoặc Open Library; hãy kiểm tra lại, chọn kiểu trích dẫn và sao chép.",
+      "q2": "Công cụ hỗ trợ những kiểu trích dẫn nào?",
+      "a2": "APA ấn bản 7, MLA ấn bản 9, Chicago ấn bản 17 (chú thích và thư mục), Harvard (Cite Them Right), IEEE, Vancouver và tiêu chuẩn quốc gia Trung Quốc GB/T 7714-2015.",
+      "q3": "Dữ liệu của tôi có bị gửi đi đâu không?",
+      "a3": "Chỉ khi bạn bấm Tìm: DOI hoặc ISBN trong ô đó được gửi tới Crossref/DataCite hoặc Open Library. Mọi thứ bạn nhập vào biểu mẫu đều được định dạng ngay trong trình duyệt, và danh mục tài liệu tham khảo của bạn được lưu trong trình duyệt này.",
+      "q4": "Tôi có thể nhập từ Zotero, Mendeley hoặc EndNote không?",
+      "a4": "Có. Xuất thư viện dưới dạng BibTeX (.bib) hoặc RIS (.ris), mở tệp bằng trình soạn thảo văn bản rồi dán vào phần Nhập. Bạn cũng có thể sao chép danh mục ra lại dạng BibTeX hoặc RIS.",
+      "q5": "Vì sao cách viết hoa tiêu đề của tôi không được đổi?",
+      "a5": "Tiêu đề được giữ nguyên như bạn nhập, vì chỉ bạn biết từ nào là danh từ riêng. APA, Harvard và Vancouver viết hoa kiểu câu (sentence case) cho tiêu đề bài báo và sách; MLA, Chicago và IEEE viết hoa kiểu tiêu đề (title case)."
+    },
+    "apa-citation-generator": {
+      "q1": "Cách trích dẫn bài báo khoa học theo APA 7?",
+      "a1": "Author, A. A., & Author, B. B. (Year). Title of the article. Journal Name, Volume(Issue), pages. https://doi.org/… Tên tạp chí và số tập được in nghiêng.",
+      "q2": "Trích dẫn APA trong bài trông như thế nào?",
+      "a2": "(Tác giả, Năm): (Smith, 2020) với một tác giả, (Smith & Lee, 2020) với hai tác giả, và (Smith et al., 2020) với ba tác giả trở lên, ngay từ lần trích dẫn đầu tiên.",
+      "q3": "APA 7 liệt kê tối đa bao nhiêu tác giả?",
+      "a3": "Tối đa 20 tác giả trong danh mục tài liệu tham khảo. Từ 21 tác giả trở lên, ghi 19 tác giả đầu, dấu ba chấm (. . .) rồi tác giả cuối cùng.",
+      "q4": "Cách trích dẫn trang web theo APA?",
+      "a4": "Author. (Year, Month Day). Title of the page. Site Name. URL. Tiêu đề trang được in nghiêng, và bỏ tên trang web nếu trùng với tác giả.",
+      "q5": "Nếu không có ngày hoặc không có tác giả thì sao?",
+      "a5": "Ghi (n.d.) khi không có ngày. Khi không có tác giả, tiêu đề được đưa lên vị trí tác giả, trước ngày."
+    },
+    "mla-citation-generator": {
+      "q1": "Cách trích dẫn bài báo khoa học theo MLA 9?",
+      "a1": "Last, First. \"Title of the Article.\" Journal Name, vol. 12, no. 3, 2020, pp. 45-67. Tên tạp chí được in nghiêng; DOI đặt ở cuối.",
+      "q2": "MLA xử lý nhiều tác giả thế nào?",
+      "a2": "Hai tác giả: Last, First, and First Last. Ba tác giả trở lên: tác giả đầu tiên kèm et al.",
+      "q3": "Trích dẫn MLA trong bài trông như thế nào?",
+      "a3": "Họ của tác giả và số trang, không có dấu phẩy: (Smith 45). Hai tác giả: (Smith and Lee 45). Ba tác giả trở lên: (Smith et al. 45).",
+      "q4": "Cách trích dẫn trang web theo MLA?",
+      "a4": "Author. \"Title of the Page.\" Website Name, day Month year, URL. MLA bỏ phần https:// trong URL.",
+      "q5": "Trang works cited là gì?",
+      "a5": "Danh sách mọi nguồn bạn trích dẫn, đặt cuối bài, xếp theo thứ tự chữ cái của từ đầu tiên mỗi mục, có thụt lề treo."
+    },
+    "harvard-referencing-generator": {
+      "q1": "Cách ghi tài liệu tham khảo bài báo theo kiểu Harvard?",
+      "a1": "Surname, Initials. (Year) 'Title of article', Journal Name, Volume(Issue), pp. pages. Available at: https://doi.org/… (Cite Them Right, ấn bản 12).",
+      "q2": "Trích dẫn Harvard trong bài hoạt động thế nào?",
+      "a2": "(Họ, Năm): (Smith, 2020), (Smith and Lee, 2020), (Smith, Lee and Park, 2020), và (Smith et al., 2020) với bốn tác giả trở lên.",
+      "q3": "Cách ghi tài liệu tham khảo trang web theo Harvard?",
+      "a3": "Author or organization (Year) Title of page. Available at: URL (Accessed: day Month year). Thêm ngày bạn đọc trang đó.",
+      "q4": "Harvard có phải chỉ có một kiểu duy nhất?",
+      "a4": "Không. Harvard là một họ các kiểu tác giả–năm và chi tiết khác nhau giữa các trường. Công cụ này theo Cite Them Right, phiên bản được phần lớn các trường đại học ở Anh và Úc sử dụng; hãy kiểm tra hướng dẫn viết luận văn của trường bạn.",
+      "q5": "Danh mục tài liệu tham khảo được sắp xếp thế nào?",
+      "a5": "Theo thứ tự chữ cái họ của tác giả đầu tiên, rồi theo năm. Danh mục có tiêu đề Reference list (hoặc References)."
+    }
+  },
+  "guides": {
+    "citation-generator": {
+      "lead": "Tạo trích dẫn trong ba bước.",
+      "s1t": "Tìm hoặc nhập nguồn",
+      "s1b": "Dán DOI hoặc ISBN rồi bấm Tìm, dán BibTeX hoặc RIS, hoặc tự điền biểu mẫu.",
+      "s2t": "Chọn kiểu trích dẫn",
+      "s2b": "APA, MLA, Chicago, Harvard, IEEE, Vancouver hoặc GB/T 7714; tài liệu tham khảo và trích dẫn trong bài được cập nhật ngay.",
+      "s3t": "Sao chép hoặc lập danh mục",
+      "s3b": "Sao chép tài liệu tham khảo kèm chữ nghiêng, hoặc thêm vào danh mục rồi sao chép cả danh mục, BibTeX hoặc RIS."
+    },
+    "apa-citation-generator": {
+      "lead": "Tạo tài liệu tham khảo APA 7 trong ba bước.",
+      "s1t": "Tìm nguồn",
+      "s1b": "Dán DOI hoặc ISBN rồi bấm Tìm, hoặc nhập tác giả, tiêu đề, tạp chí và năm.",
+      "s2t": "Kiểm tra thông tin",
+      "s2b": "Viết hoa tiêu đề kiểu câu và bảo đảm đã ghi đủ mọi tác giả.",
+      "s3t": "Sao chép tài liệu tham khảo",
+      "s3b": "Sao chép mục này vào danh mục tài liệu tham khảo và dùng trích dẫn (Tác giả, Năm) trong bài."
+    },
+    "mla-citation-generator": {
+      "lead": "Tạo mục works cited MLA 9 trong ba bước.",
+      "s1t": "Tìm nguồn",
+      "s1b": "Dán DOI hoặc ISBN rồi bấm Tìm, hoặc nhập thông tin bài báo, sách, chương sách hay trang web.",
+      "s2t": "Kiểm tra thông tin",
+      "s2b": "Viết hoa kiểu tiêu đề và thêm khoảng trang cho bài báo và chương sách.",
+      "s3t": "Sao chép mục",
+      "s3b": "Sao chép vào trang works cited và trích dẫn dạng (Tác giả trang) trong bài."
+    },
+    "harvard-referencing-generator": {
+      "lead": "Tạo tài liệu tham khảo Harvard trong ba bước.",
+      "s1t": "Tìm nguồn",
+      "s1b": "Dán DOI hoặc ISBN rồi bấm Tìm, hoặc tự nhập thông tin.",
+      "s2t": "Thêm ngày truy cập",
+      "s2b": "Với trang web, thêm ngày bạn đọc trang; ngày này hiện dưới dạng Accessed.",
+      "s3t": "Sao chép tài liệu tham khảo",
+      "s3b": "Sao chép vào danh mục tài liệu tham khảo và trích dẫn dạng (Họ, Năm) trong bài."
+    }
+  },
+  "ui": {
+    "cite": {
+      "title_main": "Tạo trích dẫn",
+      "title_apa": "Tạo trích dẫn APA",
+      "title_mla": "Tạo trích dẫn MLA",
+      "title_harvard": "Tạo tài liệu tham khảo Harvard",
+      "privacyNote": "Tài liệu tham khảo và trích dẫn trong bài theo bảy kiểu. Việc định dạng diễn ra trong trình duyệt của bạn; chỉ nút Tìm liên hệ Crossref/DataCite hoặc Open Library.",
+      "lookupTitle": "Tìm theo DOI hoặc ISBN",
+      "lookupLabel": "DOI hoặc ISBN",
+      "lookupPlaceholder": "10.1038/nature14539 hoặc ISBN",
+      "find": "Tìm",
+      "searching": "Đang tìm…",
+      "found": "Đã tìm thấy. Hãy kiểm tra thông tin bên dưới.",
+      "lookup_invalid": "Đây không phải DOI (10.xxxx/…) hay ISBN-10/13 hợp lệ.",
+      "lookup_notFound": "Không tìm thấy gì với DOI hoặc ISBN này. Hãy điền thông tin bên dưới.",
+      "lookup_network": "Dịch vụ tra cứu không phản hồi. Hãy thử lại, hoặc điền thông tin bên dưới.",
+      "lookupPrivacy": "Nút Tìm chỉ gửi DOI này tới Crossref/DataCite hoặc ISBN này tới Open Library. Không có gì khác rời khỏi trình duyệt của bạn.",
+      "detailsTitle": "Thông tin nguồn",
+      "type": "Loại nguồn",
+      "type_article": "Bài báo khoa học",
+      "type_book": "Sách",
+      "type_chapter": "Chương sách",
+      "type_webpage": "Trang web",
+      "authors": "Tác giả (mỗi dòng một người)",
+      "authorsHint": "Ghi Họ, Tên hoặc Tên Họ. Tác giả là tổ chức đặt trong ngoặc nhọn: {World Health Organization}.",
+      "titleField": "Tiêu đề",
+      "container_article": "Tạp chí",
+      "container_book": "Tùng thư",
+      "container_chapter": "Tên sách",
+      "container_webpage": "Tên trang web",
+      "editors": "Biên tập viên của sách (mỗi dòng một người)",
+      "year": "Năm",
+      "month": "Tháng",
+      "day": "Ngày",
+      "volume": "Tập",
+      "issue": "Số",
+      "pages": "Trang",
+      "edition": "Lần xuất bản (số)",
+      "publisher": "Nhà xuất bản",
+      "place": "Nơi xuất bản",
+      "accessed": "Ngày truy cập",
+      "importTitle": "Nhập BibTeX hoặc RIS",
+      "importLabel": "Văn bản BibTeX hoặc RIS",
+      "import": "Nhập",
+      "importNone": "Không tìm thấy mục đầy đủ nào. Hãy dán BibTeX (@article{…}) hoặc RIS (TY  - JOUR …).",
+      "imported": "Đã nhập {n} mục. Mục đầu tiên nằm trong biểu mẫu; nếu có nhiều mục, tất cả đều được thêm vào danh mục của bạn.",
+      "style": "Kiểu trích dẫn",
+      "style_apa": "APA ấn bản 7",
+      "style_mla": "MLA ấn bản 9",
+      "style_chicago": "Chicago ấn bản 17 (chú thích và thư mục)",
+      "style_harvard": "Harvard (Cite Them Right)",
+      "style_ieee": "IEEE",
+      "style_vancouver": "Vancouver",
+      "style_gbt": "GB/T 7714-2015",
+      "result": "Tài liệu tham khảo",
+      "inText": "Trích dẫn trong bài:",
+      "note": "Chú thích ngắn:",
+      "caseSentence": "Kiểu này viết hoa tiêu đề kiểu câu: chỉ viết hoa từ đầu tiên, từ đầu tiên sau dấu hai chấm và danh từ riêng.",
+      "caseTitle": "Kiểu này viết hoa kiểu tiêu đề: viết hoa các từ chính trong tiêu đề.",
+      "needTitle_title": "Thêm tiêu đề để xem tài liệu tham khảo.",
+      "needTitle_container": "Thêm tiêu đề và tên tạp chí hoặc sách để xem tài liệu tham khảo.",
+      "copy": "Sao chép tài liệu tham khảo",
+      "copied": "Đã sao chép",
+      "copyFailed": "Không sao chép được",
+      "add": "Thêm vào danh mục",
+      "listTitle": "Danh mục tài liệu tham khảo của bạn ({n})",
+      "listEmpty": "Tài liệu tham khảo đã thêm sẽ hiện ở đây, sắp xếp theo kiểu trích dẫn. Danh mục được lưu trong trình duyệt này.",
+      "copyList": "Sao chép danh mục",
+      "copyBibtex": "Sao chép BibTeX",
+      "copyRis": "Sao chép RIS",
+      "clearList": "Xóa danh mục",
+      "clearConfirm": "Chạm lần nữa để xóa",
+      "remove": "Xóa khỏi danh mục",
+      "listFull": "Danh sách chứa tối đa {max} tài liệu; {n} mục chưa được thêm.",
+      "edited": "Đây là biên tập viên của sách"
+    }
+  },
+  "legal": {
+    "h": "Tra cứu trích dẫn",
+    "p": [
+      "Công cụ tạo trích dẫn định dạng tài liệu tham khảo ngay trong trình duyệt của bạn và lưu danh mục tài liệu tham khảo trong bộ nhớ cục bộ của trình duyệt này. Khi bạn bấm Tìm, DOI bạn nhập được gửi tới Crossref/DataCite (api.crossref.org, api.datacite.org) hoặc ISBN được gửi tới Open Library (openlibrary.org) để lấy thông tin nguồn. Không có nội dung nào khác bạn đã nhập được gửi đi, yêu cầu không kèm cookie hay địa chỉ trang, và chúng tôi không nhận cũng không lưu yêu cầu này. Crossref/DataCite và Open Library xử lý yêu cầu theo chính sách quyền riêng tư của họ."
+    ]
+  }
+}

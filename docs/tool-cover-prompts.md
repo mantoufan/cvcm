@@ -404,3 +404,11 @@ Codex (`codex exec -m gpt-6-astra --image chess-sweet.jpg,snake-game-sweet.jpg -
 - `stack-game`: a tall tower of pastel slabs stacked in alternating directions, a new slab sliding in above and a cut-off sliver tumbling down.
 - `driving-game`: she drifts a cute low-poly pink and white toy race car around a pastel track with red-and-white kerbs and cones, tyre smoke.
 - `flight-simulator`: she waves from the cockpit of a low-poly pink and white propeller plane flying through a golden ring over a low-poly island with a runway.
+## Citation generator, APA, MLA, Harvard (2026-11-18)
+
+Codex (`codex exec -m gpt-6-astra --image gpa-sweet.jpg --image average-sweet.jpg`), same base prompt as the statistics batch, plus "no words, letters or digits on book spines, cards or pages". All four came out on the first try.
+
+- `citation-generator`: a stack of pastel hardcover books and a pink journal, pink ribbon bookmarks tied to blank cream index cards in a card-file box; a quill and a pink library stamp.
+- `apa-citation-generator`: she holds an open pink research journal with blank pages and pink tabs; plain-covered journals, a brass desk lamp, a blank index card with a heart clip.
+- `mla-citation-generator`: she writes on a blank notecard with a pink fountain pen beside an open poetry book; literature books with ribbon bookmarks, roses.
+- `harvard-referencing-generator`: she holds a pink card-file drawer of blank index cards in a university library corner; a globe and an hourglass.

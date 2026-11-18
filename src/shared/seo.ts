@@ -317,6 +317,10 @@ const TITLE: Record<ToolId, string> = {
   "stack-game": "meta.titleStackGame",
   "driving-game": "meta.titleDrivingGame",
   "flight-simulator": "meta.titleFlightSimulator",
+  "citation-generator": "meta.titleCitationGenerator",
+  "apa-citation-generator": "meta.titleApaCitationGenerator",
+  "mla-citation-generator": "meta.titleMlaCitationGenerator",
+  "harvard-referencing-generator": "meta.titleHarvardReferencingGenerator",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -557,6 +561,10 @@ const DESC: Record<ToolId, string> = {
   "stack-game": "meta.descStackGame",
   "driving-game": "meta.descDrivingGame",
   "flight-simulator": "meta.descFlightSimulator",
+  "citation-generator": "meta.descCitationGenerator",
+  "apa-citation-generator": "meta.descApaCitationGenerator",
+  "mla-citation-generator": "meta.descMlaCitationGenerator",
+  "harvard-referencing-generator": "meta.descHarvardReferencingGenerator",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {
