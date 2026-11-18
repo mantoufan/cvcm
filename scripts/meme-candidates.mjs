@@ -95,8 +95,10 @@ async function resolveTitles(titles) {
     const norm = new Map((body?.query?.normalized ?? []).map((n) => [n.from, n.to]));
     const redirect = new Map((body?.query?.redirects ?? []).map((r) => [r.from, r.to]));
     for (const t of batch) {
-      const n = norm.get(t) ?? t;
-      to.set(t, redirect.get(n) ?? n);
+      // Follow a chain (A → B → C) to its end; the seen set stops a redirect loop.
+      let n = norm.get(t) ?? t;
+      for (const seen = new Set([n]); redirect.has(n) && !seen.has(redirect.get(n)); seen.add(n)) n = redirect.get(n);
+      to.set(t, n);
     }
   }
   return [...new Set(to.values())];
@@ -106,7 +108,7 @@ async function wikipediaCandidates() {
   const year = new Date().getUTCFullYear();
   const [tracked, end] = await Promise.all([trackedTitles(), lastPublishedDay()]);
   const members = [...new Set((await Promise.all([year, year - 1].map((y) => categoryPages(`Category:Internet memes introduced in ${y}`)))).flat())];
-  const titles = (await resolveTitles(members)).filter((title) => !tracked.has(key(title)) && !DECIDED.has(title));
+  const titles = (await resolveTitles(members)).filter((title) => !tracked.has(key(title)) && !DECIDED.has(title) && !title.startsWith("List of "));
   const counts = await pool(titles, (title) => views(title, end).catch((error) => {
     console.warn(`views ${title}: ${error.message}`);
     return null;
@@ -122,16 +124,22 @@ async function wikipediaCandidates() {
 }
 
 /**
- * Articles already decided on: left out on purpose (Clanker is a slur, Kirkification is politics; AGENTS.md) or covered
- * by an entry that tracks no English article of its own (jet2-holiday: the airline, its holiday brand and the song).
+ * Articles already decided on: left out on purpose (Clanker is a slur, Kirkification is politics; AGENTS.md), covered by
+ * an entry under another article (jet2-holiday: the airline, its holiday brand and the song; 67: its song), or general
+ * articles that sit in the category without being a meme to write up. "List of …" pages are skipped by name.
  */
-const DECIDED = new Set(["Clanker", "Kirkification", "Jet2.com", "Jet2 plc", "Jet2holidays", "Hold My Hand (Jess Glynne song)"]);
+const DECIDED = new Set([
+  "Clanker", "Kirkification",
+  "Jet2.com", "Jet2 plc", "Jet2holidays", "Hold My Hand (Jess Glynne song)",
+  "Doot Doot (6 7)", // the song behind the 67 entry
+  "Internet meme", "4chan", "Wikipedia mascots", // general articles, not a meme to write up
+]);
 
 /**
  * Wikipedia categories (whole words) that mark an article as politics, a crime or a disaster rather than a meme to write
  * up. Kept narrow: "Star Wars memes" or a "2025 deaths" category alone must not hide a meme.
  */
-const OFF_TOPIC = /\b(politic\w*|elections?|parliament\w*|protests?|terroris\w*|assassinat\w*|murders?|killings?|homicides?|shootings?|disasters?|sexual\w*|pornograph\w*)\b|charlie kirk/i;
+const OFF_TOPIC = /\b(politic\w*|elections?|parliament\w*|administration|protests?|corruption|controvers(y|ies)|scandals?|crimes?|criminal\w*|terroris\w*|assassinat\w*|murders?|killings?|homicides?|shootings?|disasters?|sexual\w*|pornograph\w*)\b|charlie kirk|donald trump|jeffrey epstein/i;
 
 /**
  * Titles whose categories mark them off-topic. A batch whose categories cannot be read is dropped whole (and warned

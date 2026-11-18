@@ -70,14 +70,13 @@ export function songArtists(locale: Locale, id: SlangId): string[] {
 }
 
 /**
- * Alt text and caption of an entry's picture: "<name> meme", or "<who> (<name>)" for a photo of a person: the image's
- * `who` when set, else for a song its first credited artist (named as the page names them).
+ * Alt text and caption of an entry's picture: "<name> meme", or "<who> (<name>)" for a photo of a person (`who` in
+ * meme-images.json; a number points at the song's credited artist).
  */
 export function memeImageAlt(locale: Locale, id: SlangId): string {
   const name = slangName(locale, id).name;
   const who = memeImage(id)?.who;
-  const named = typeof who === "string" ? who : who ? who[locale] ?? who.en : undefined;
-  const person = named ?? (isSong(id) ? songArtists(locale, id)[0] : undefined);
+  const person = typeof who === "number" ? songArtists(locale, id)[who] : typeof who === "string" ? who : who ? who[locale] ?? who.en : undefined;
   return person ? fill(slangUi(locale).imageAltWho, { who: person, name }) : fill(slangUi(locale).imageAlt, { name });
 }
 

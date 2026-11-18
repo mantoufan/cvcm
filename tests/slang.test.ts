@@ -377,6 +377,12 @@ describe("slang: page HTML and SEO", () => {
         expect(ld.image?.acquireLicensePage, `${locale} ${id}`).toBe(image.page);
       }
     }
+    // Every song picture says which credited artist it shows.
+    for (const [id, image] of images) {
+      if (!SLANG_META[id as SlangId].song) continue;
+      const who = (image as { who?: unknown }).who;
+      expect(typeof who === "number" ? SLANG_META[id as SlangId].song!.by[who] : who, `${id} who`).toBeTruthy();
+    }
     // A photo of a singer is described as that person, not as a "meme picture".
     expect(slangPageHtml("en", "apt")).toContain(`alt="ROSÉ (${slangCopy("en", "apt").name})"`);
     expect(slangPageHtml("zh-TW", "guyongzhe")).toContain(`alt="陳奕迅（${slangCopy("zh-TW", "guyongzhe").name}）"`);
