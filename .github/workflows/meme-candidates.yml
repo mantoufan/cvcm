@@ -32,7 +32,8 @@ jobs:
           BODY: ${{ runner.temp }}/candidates.md
         run: |
           gh label create meme-candidates --color FBCA04 --description "Weekly /memes/ shortlist" 2>/dev/null || true
-          number=$(gh issue list --label meme-candidates --state open --json number --jq '.[0].number')
+          # Only the bot's own issue: someone else's issue with the same label is never overwritten.
+          number=$(gh issue list --label meme-candidates --state open --author app/github-actions --json number --jq '.[0].number')
           if [ -n "$number" ]; then
             gh issue edit "$number" --body-file "$BODY"
           else

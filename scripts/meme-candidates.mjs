@@ -9,7 +9,7 @@
 import { appendFileSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { jsonGetter, pageviewsDay } from "./get-json.mjs";
+import { jsonGetter, pageviewsDay as compact } from "./get-json.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const UA = "cv.cm meme candidates (https://cv.cm/)";
@@ -21,8 +21,10 @@ const TIKTOK_REGIONS = ["US", "ID", "VN"];
 
 const getJson = jsonGetter(UA);
 
-const day = pageviewsDay;
 const key = (title) => title.replaceAll(" ", "_");
+
+/** The query string that continues a MediaWiki query: every key of `continue`, sent back as the API asks; "" at the end. */
+const nextPage = (body) => (body?.continue ? `&${new URLSearchParams(body.continue)}` : "");
 
 /** Articles (namespace 0) in a category, following continuation. */
 async function categoryPages(category) {
@@ -32,7 +34,7 @@ async function categoryPages(category) {
     const url = `https://en.wikipedia.org/w/api.php?action=query&list=categorymembers&cmtitle=${encodeURIComponent(category)}&cmnamespace=0&cmlimit=500&format=json${cont}`;
     const body = await getJson(url);
     titles.push(...(body?.query?.categorymembers ?? []).map((m) => m.title));
-    cont = body?.continue?.cmcontinue ? `&cmcontinue=${encodeURIComponent(body.continue.cmcontinue)}` : "";
+    cont = nextPage(body);
   } while (cont);
   return titles;
 }
@@ -43,16 +45,16 @@ async function categoryPages(category) {
  */
 async function lastPublishedDay() {
   const yesterday = new Date(Date.now() - 86_400_000);
-  const probe = await getJson(`https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Main_Page/daily/${day(yesterday)}/${day(yesterday)}`);
+  const probe = await getJson(`https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/Main_Page/daily/${compact(yesterday)}/${compact(yesterday)}`);
   return probe?.items?.length ? yesterday : new Date(yesterday.getTime() - 86_400_000);
 }
 
 /** Views in the 28 days up to `end`, and in the 28 days before. */
 async function views(title, end) {
   const start = new Date(end.getTime() - 55 * 86_400_000);
-  const url = `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/${encodeURIComponent(key(title))}/daily/${day(start)}/${day(end)}`;
+  const url = `https://wikimedia.org/api/rest_v1/metrics/pageviews/per-article/en.wikipedia.org/all-access/user/${encodeURIComponent(key(title))}/daily/${compact(start)}/${compact(end)}`;
   const items = (await getJson(url))?.items ?? [];
-  const cut = day(new Date(end.getTime() - 27 * 86_400_000));
+  const cut = compact(new Date(end.getTime() - 27 * 86_400_000));
   let recent = 0;
   let prior = 0;
   for (const item of items) {
@@ -63,11 +65,12 @@ async function views(title, end) {
 }
 
 /**
- * English Wikipedia articles the channel already covers: each entry's trend article plus every en.wikipedia source it
- * cites, resolved through redirects (a source may link "Apt. (song)" while the category lists "APT. (song)").
+ * English Wikipedia articles the channel already covers: each entry's trend article, its `also` list in meme-sources.json
+ * (articles about the same meme it does not track, e.g. mog → "Mogging") and every en.wikipedia source it cites, resolved
+ * through redirects (a source may link "Apt. (song)" while the category lists "APT. (song)").
  */
 async function trackedTitles() {
-  const raw = new Set(Object.values(SOURCES).flatMap((s) => (s.wiki?.startsWith("en:") ? [s.wiki.slice(3)] : [])));
+  const raw = new Set(Object.values(SOURCES).flatMap((s) => [...(s.wiki?.startsWith("en:") ? [s.wiki.slice(3)] : []), ...(s.also ?? [])]));
   for (const m of SLANG_TS.matchAll(/https:\/\/en\.wikipedia\.org\/wiki\/([^"#?\s]+)/g)) raw.add(decodeURIComponent(m[1]));
   const titles = [...raw].map((t) => t.replaceAll("_", " "));
   return new Set([...titles, ...(await resolveTitles(titles)).values()].map(key));
@@ -131,14 +134,12 @@ async function wikipediaCandidates() {
 }
 
 /**
- * Articles already decided on: left out on purpose (Clanker is a slur, Kirkification is politics; AGENTS.md), covered by
- * an entry under another article (jet2-holiday: the airline, its holiday brand and the song; 67: its song), or general
- * articles that sit in the category without being a meme to write up. "List of …" pages are skipped by name.
+ * Articles left out on purpose (Clanker is a slur, Kirkification is politics; AGENTS.md) or general articles that sit in
+ * the category without being a meme to write up. "List of …" pages are skipped by name. Articles an entry covers belong
+ * in that entry's `also` in meme-sources.json, not here.
  */
 const DECIDED = new Set([
   "Clanker", "Kirkification",
-  "Jet2.com", "Jet2 plc", "Jet2holidays", "Hold My Hand (Jess Glynne song)",
-  "Doot Doot (6 7)", // the song behind the 67 entry
   "Internet meme", "4chan", "Wikipedia mascots", // general articles, not a meme to write up
 ]);
 
@@ -157,21 +158,27 @@ async function offTopic(titles) {
   for (let i = 0; i < titles.length; i += 50) {
     const batch = titles.slice(i, i + 50);
     const categories = new Map(batch.map((t) => [t, []]));
+    const seen = new Set();
     try {
       let cont = "";
       do {
         const body = await getJson(`https://en.wikipedia.org/w/api.php?action=query&prop=categories&clshow=!hidden&cllimit=max&format=json&titles=${encodeURIComponent(batch.join("|"))}${cont}`);
         // Titles come from resolveTitles, already canonical, so each page's title is the key.
-        for (const page of Object.values(body?.query?.pages ?? {})) categories.get(page.title)?.push(...(page.categories ?? []).map((c) => c.title));
+        for (const page of Object.values(body?.query?.pages ?? {})) {
+          if (!categories.has(page.title) || "missing" in page) continue;
+          seen.add(page.title);
+          categories.get(page.title).push(...(page.categories ?? []).map((c) => c.title));
+        }
         // The 500-category cap is per request, not per page: follow clcontinue until every page's list is complete.
-        cont = body?.continue?.clcontinue ? `&clcontinue=${encodeURIComponent(body.continue.clcontinue)}` : "";
+        cont = nextPage(body);
       } while (cont);
     } catch (error) {
       console.warn(`categories for ${batch.length} articles: ${error.message}; leaving them out`);
       for (const t of batch) off.add(t);
       continue;
     }
-    for (const [title, cats] of categories) if (cats.some((c) => OFF_TOPIC.test(c))) off.add(title);
+    // A title the API returned no page for was not checked, so it stays out like a failed batch.
+    for (const [title, cats] of categories) if (!seen.has(title) || cats.some((c) => OFF_TOPIC.test(c))) off.add(title);
   }
   return off;
 }

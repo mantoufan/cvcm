@@ -9,7 +9,7 @@ import { appendFileSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { jsonGetter, pageviewsDay } from "./get-json.mjs";
+import { jsonGetter, pageviewsDay as compact } from "./get-json.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES_FILE = process.env.RANKINGS_FAILURES_FILE ?? join(tmpdir(), "rankings-failures.txt");
@@ -35,7 +35,6 @@ const failures = [];
 const getJson = jsonGetter(UA);
 
 const day = (d) => d.toISOString().slice(0, 10);
-const compact = pageviewsDay;
 
 /**
  * The last day whose pageviews Wikimedia has published: the most recent Sunday, or the one before when that Sunday's

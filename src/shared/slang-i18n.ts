@@ -69,14 +69,20 @@ export function songArtists(locale: Locale, id: SlangId): string[] {
   });
 }
 
+/** One credited artist (by the credited `name`) as this locale writes them. */
+function artistName(locale: Locale, id: SlangId, credited: string): string | undefined {
+  const i = (SLANG_META[id].song?.by ?? []).findIndex((artist) => artist.name === credited);
+  return i < 0 ? undefined : songArtists(locale, id)[i];
+}
+
 /**
  * Alt text and caption of an entry's picture: "<name> meme", or "<who> (<name>)" for a photo of a person (`who` in
- * meme-images.json; a number points at the song's credited artist).
+ * meme-images.json; `{ artist }` names one of the song's credited artists).
  */
 export function memeImageAlt(locale: Locale, id: SlangId): string {
   const name = slangName(locale, id).name;
   const who = memeImage(id)?.who;
-  const person = typeof who === "number" ? songArtists(locale, id)[who] : typeof who === "string" ? who : who ? who[locale] ?? who.en : undefined;
+  const person = typeof who === "string" ? who : who && "artist" in who ? artistName(locale, id, who.artist) : who ? who[locale] ?? who.en : undefined;
   return person ? fill(slangUi(locale).imageAltWho, { who: person, name }) : fill(slangUi(locale).imageAlt, { name });
 }
 

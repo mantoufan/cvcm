@@ -18,10 +18,10 @@ export type MemeImage = {
   page: string;
   /**
    * Who is in a photo of a person, named in the alt text: one name, names by locale (`en` as the fallback), or for a song
-   * the index of the credited artist in `SLANG_META[id].song.by` (named as the page names them). Every song picture
+   * `{ artist }`, the credited `name` of the artist shown (the alt then names them as the page does). Every song picture
    * must set it (tests check), so the alt never guesses who is shown.
    */
-  who?: string | Partial<Record<Locale, string>> | number;
+  who?: string | Partial<Record<Locale, string>> | { artist: string };
 };
 
 const MEME_IMAGES: Partial<Record<string, MemeImage>> = images satisfies Record<string, MemeImage>;

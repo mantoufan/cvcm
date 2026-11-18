@@ -380,8 +380,8 @@ describe("slang: page HTML and SEO", () => {
     // Every song picture says which credited artist it shows.
     for (const [id, image] of images) {
       if (!SLANG_META[id as SlangId].song) continue;
-      const who = (image as { who?: unknown }).who;
-      expect(typeof who === "number" ? SLANG_META[id as SlangId].song!.by[who] : who, `${id} who`).toBeTruthy();
+      const who = (image as { who?: { artist?: string } }).who;
+      expect(SLANG_META[id as SlangId].song!.by.map((a) => a.name), `${id} who`).toContain(who?.artist);
     }
     // A photo of a singer is described as that person, not as a "meme picture".
     expect(slangPageHtml("en", "apt")).toContain(`alt="ROSÉ (${slangCopy("en", "apt").name})"`);
