@@ -94,9 +94,19 @@ import viNostalgia from "../locales/packs/nostalgia-vi";
 import zhCNNostalgia from "../locales/packs/nostalgia-zh-CN";
 import zhTWNostalgia from "../locales/packs/nostalgia-zh-TW";
 import { NOSTALGIA_ALL } from "../locales/nostalgia/all";
+import enSummaries from "../locales/packs/summaries-en";
+import esSummaries from "../locales/packs/summaries-es";
+import idSummaries from "../locales/packs/summaries-id";
+import jaSummaries from "../locales/packs/summaries-ja";
+import koSummaries from "../locales/packs/summaries-ko";
+import viSummaries from "../locales/packs/summaries-vi";
+import zhCNSummaries from "../locales/packs/summaries-zh-CN";
+import zhTWSummaries from "../locales/packs/summaries-zh-TW";
+import { SUMMARIES_ALL } from "../locales/summaries/all";
 import { QUIZ_ALL } from "../locales/quiz/all";
 import type { QuizId } from "./quiz";
 import type { NostalgiaId } from "./nostalgia";
+import type { SummaryId } from "./summaries";
 import type { RefId } from "./ref";
 import type { KbId } from "./kb";
 import type { Locale } from "./locale";
@@ -117,6 +127,8 @@ import {
   registerIdeasMessages,
   registerNostalgiaEntry,
   registerNostalgiaMessages,
+  registerSummaryEntry,
+  registerSummariesMessages,
   registerCalendarMessages,
   type GameMessages,
   type KbMessages,
@@ -128,6 +140,7 @@ import {
   type SlangMessages,
   type IdeasMessages,
   type NostalgiaMessages,
+  type SummariesMessages,
   type CalendarMessages,
 } from "./messages";
 
@@ -269,6 +282,21 @@ const CALENDAR: Record<Locale, CalendarMessages> = {
 for (const [locale, pack] of Object.entries(CALENDAR)) registerCalendarMessages(locale as Locale, pack);
 for (const [locale, entries] of Object.entries(NOSTALGIA_ALL)) {
   for (const [id, copy] of Object.entries(entries)) registerNostalgiaEntry(locale as Locale, id as NostalgiaId, copy);
+}
+
+const SUMMARIES: Record<Locale, SummariesMessages> = {
+  en: enSummaries,
+  "zh-CN": zhCNSummaries,
+  "zh-TW": zhTWSummaries,
+  ja: jaSummaries,
+  ko: koSummaries,
+  vi: viSummaries,
+  id: idSummaries,
+  es: esSummaries,
+};
+for (const [locale, pack] of Object.entries(SUMMARIES)) registerSummariesMessages(locale as Locale, pack);
+for (const [locale, entries] of Object.entries(SUMMARIES_ALL)) {
+  for (const [id, copy] of Object.entries(entries)) registerSummaryEntry(locale as Locale, id as SummaryId, copy);
 }
 
 // Country profiles keep their own store (countries-store.ts).

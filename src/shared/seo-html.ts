@@ -22,6 +22,8 @@ import { slangPageHtml } from "./slang-page";
 import { ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd } from "./ideas-i18n";
 import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaFaqJsonLd } from "./nostalgia-i18n";
 import { nostalgiaPageHtml } from "./nostalgia-page";
+import { summariesArticleJsonLd, summariesBreadcrumbJsonLd, summariesFaqJsonLd } from "./summaries-i18n";
+import { summariesPageHtml } from "./summaries-page";
 import { countriesCollectionJsonLd, countryBreadcrumbJsonLd, countryFaqJsonLd } from "./countries-i18n";
 import { countriesPageHtml } from "./countries-page";
 import { caloriesBreadcrumbJsonLd, caloriesFaqJsonLd, caloriesPageJsonLd } from "./calories-i18n";
@@ -30,7 +32,7 @@ import { elementsBreadcrumbJsonLd, elementsFaqJsonLd, elementsPageJsonLd } from 
 import { elementsPageHtml } from "./elements-page";
 import { lessonsForTool } from "./learn";
 import { type Locale } from "./locale";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, categoryLinks, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, type ToolId } from "./path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryOf, categoryLinks, deviceHref, gamesHref, learnHref, kbHref, legalHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, type ToolId } from "./path";
 import { calendarBreadcrumbJsonLd, calendarFaqJsonLd, calendarPageJsonLd } from "./calendar-i18n";
 import { calendarPageHtml } from "./calendar-page";
 import { ideasPageHtml } from "./ideas-page";
@@ -94,7 +96,7 @@ export function applyHtmlSeo(
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
     `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
-    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game || (seo.kb && kbArticleOf(seo.kbId ?? null)) || (seo.ref && seo.refId) || (seo.slang && seo.slangId) || (seo.ideas && seo.ideaId) || (seo.nostalgia && seo.nostalgiaId) ? "article" : "website"}" />`,
+    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game || (seo.kb && kbArticleOf(seo.kbId ?? null)) || (seo.ref && seo.refId) || (seo.slang && seo.slangId) || (seo.ideas && seo.ideaId) || (seo.nostalgia && seo.nostalgiaId) || (seo.summaries && seo.summaryId) ? "article" : "website"}" />`,
     `<meta property="og:site_name" content="cv.cm" />`,
     `<meta property="og:locale" content="${escapeHtml(locale.replace("-", "_"))}" />`,
     `<meta name="twitter:card" content="${image ? "summary_large_image" : "summary"}" />`,
@@ -145,6 +147,12 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(nostalgiaBreadcrumbJsonLd(locale, seo.nostalgiaId ?? null)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(nostalgiaFaqJsonLd(locale, seo.nostalgiaId ?? null)).replace(/</g, "\\u003c")}</script>`,
       `<script type="application/ld+json" id="article-jsonld">${JSON.stringify(nostalgiaArticleJsonLd(locale, seo.nostalgiaId ?? null)).replace(/</g, "\\u003c")}</script>`,
+    );
+  } else if (seo.summaries) {
+    tags.push(
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(summariesBreadcrumbJsonLd(locale, seo.summaryId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(summariesFaqJsonLd(locale, seo.summaryId ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="article-jsonld">${JSON.stringify(summariesArticleJsonLd(locale, seo.summaryId ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   } else if (seo.elements) {
     tags.push(
@@ -213,7 +221,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(gameBreadcrumbJsonLd(locale, consoleId, seo.game ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.countries && !seo.calories && !seo.elements && !seo.calendar) {
+  if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.summaries && !seo.countries && !seo.calories && !seo.elements && !seo.calendar) {
     tags.push(
       `<script type="application/ld+json" id="faq-jsonld">${JSON.stringify(ld).replace(/</g, "\\u003c")}</script>`,
     );
@@ -241,7 +249,7 @@ export function applyHtmlSeo(
     ? null
     : seo.learn && seo.tutorial
       ? howToJsonLd(locale, seo.tutorial)
-      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.elements && !seo.calendar && seo.tool
+      : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.summaries && !seo.elements && !seo.calendar && seo.tool
         ? toolHowToJsonLd(locale, seo.tool)
         : null;
   if (howTo) {
@@ -249,7 +257,7 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(howTo).replace(/</g, "\\u003c")}</script>`,
     );
   }
-  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.elements && !seo.calendar && seo.tool && !seo.clipId;
+  const isToolPage = !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.summaries && !seo.elements && !seo.calendar && seo.tool && !seo.clipId;
   if (isToolPage && seo.tool) {
     tags.push(
       `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(toolSoftwareJsonLd(locale, seo.tool)).replace(/</g, "\\u003c")}</script>`,
@@ -281,6 +289,8 @@ export function applyHtmlSeo(
     ? ideasPageHtml(locale, seo.ideaId ?? null)
     : seo.nostalgia
     ? nostalgiaPageHtml(locale, seo.nostalgiaId ?? null)
+    : seo.summaries
+    ? summariesPageHtml(locale, seo.summaryId ?? null)
     : seo.countries
     ? countriesPageHtml(locale, seo.countryId ?? null)
     : seo.calories
@@ -363,6 +373,7 @@ function staticPageHtml(
       { href: slangHref(locale), text: linkText(pageTitle(locale, { slang: true })) },
       { href: ideasHref(locale), text: linkText(pageTitle(locale, { ideas: true })) },
       { href: nostalgiaHref(locale), text: linkText(pageTitle(locale, { nostalgia: true })) },
+      { href: summariesHref(locale), text: linkText(pageTitle(locale, { summaries: true })) },
       { href: countriesHref(locale), text: linkText(pageTitle(locale, { countries: true })) },
       { href: caloriesHref(locale), text: linkText(pageTitle(locale, { calories: true })) },
       { href: elementsHref(locale), text: linkText(pageTitle(locale, { elements: true })) },

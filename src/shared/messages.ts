@@ -13,6 +13,8 @@ import type { IdeaId } from "./ideas";
 import type { IdeaEntryCopy, IdeasData } from "./ideas-i18n";
 import type { NostalgiaId } from "./nostalgia";
 import type { NostalgiaEntryCopy } from "./nostalgia-i18n";
+import type { SummaryId } from "./summaries";
+import type { SummaryEntryCopy } from "./summaries-i18n";
 import type { QuizId } from "./quiz";
 import type { QuizCopy } from "./quiz-i18n";
 
@@ -54,6 +56,13 @@ export type NostalgiaMessages = typeof import("../locales/nostalgia/en.json") & 
   list: Record<NostalgiaId, { name: string; blurb: string }>;
   /** src/shared/nostalgia-meta.json (years, status, related, sources): rides in the nostalgia pack, never the entry bundle. */
   meta: Record<NostalgiaId, import("./nostalgia-meta").NostalgiaMeta>;
+};
+
+/** Summaries hub copy plus every work's name and blurb (`list`), from `npm run summaries:sync`. */
+export type SummariesMessages = typeof import("../locales/summaries/en.json") & {
+  list: Record<SummaryId, { name: string; blurb: string }>;
+  /** src/shared/summaries-meta.json (kind, creator, years, related, sources): rides in the summaries pack, never the entry bundle. */
+  meta: Record<SummaryId, import("./summaries-meta").SummaryMeta>;
 };
 
 /** Periodic table copy plus this locale's element names, the English names and the PubChem rows (one pack per locale). */
@@ -111,6 +120,8 @@ const loadedIdeaEntries: Partial<Record<Locale, Partial<Record<IdeaId, IdeaEntry
 const loadedNostalgia: Partial<Record<Locale, NostalgiaMessages>> = {};
 const loadedCalendar: Partial<Record<Locale, CalendarMessages>> = {};
 const loadedNostalgiaEntries: Partial<Record<Locale, Partial<Record<NostalgiaId, NostalgiaEntryCopy>>>> = {};
+const loadedSummaries: Partial<Record<Locale, SummariesMessages>> = {};
+const loadedSummaryEntries: Partial<Record<Locale, Partial<Record<SummaryId, SummaryEntryCopy>>>> = {};
 const loadedElements: Partial<Record<Locale, ElementsMessages>> = {};
 
 function pick<T>(table: Partial<Record<Locale, T>>, locale: Locale, what: string): T {
@@ -335,6 +346,34 @@ export function hasNostalgiaEntry(locale: Locale, id: NostalgiaId): boolean {
 export function nostalgiaEntryMessages(locale: Locale, id: NostalgiaId): NostalgiaEntryCopy {
   const copy = loadedNostalgiaEntries[locale]?.[id] ?? loadedNostalgiaEntries.en?.[id];
   if (!copy) throw new Error(`nostalgia entry not loaded: ${locale} ${id}`);
+  return copy;
+}
+
+export function registerSummariesMessages(locale: Locale, pack: SummariesMessages): void {
+  loadedSummaries[locale] = pack;
+}
+
+export function hasSummariesMessages(locale: Locale): boolean {
+  return Boolean(loadedSummaries[locale]);
+}
+
+/** Summaries hub copy, labels and work names; on the client only after the summaries pack is loaded (summaries pages). */
+export function summariesMessages(locale: Locale): SummariesMessages {
+  return pick(loadedSummaries, locale, "summaries messages");
+}
+
+/** One summary's copy. The client loads each work on its own. */
+export function registerSummaryEntry(locale: Locale, id: SummaryId, copy: SummaryEntryCopy): void {
+  (loadedSummaryEntries[locale] ??= {})[id] = copy;
+}
+
+export function hasSummaryEntry(locale: Locale, id: SummaryId): boolean {
+  return Boolean(loadedSummaryEntries[locale]?.[id]);
+}
+
+export function summaryEntryMessages(locale: Locale, id: SummaryId): SummaryEntryCopy {
+  const copy = loadedSummaryEntries[locale]?.[id] ?? loadedSummaryEntries.en?.[id];
+  if (!copy) throw new Error(`summary not loaded: ${locale} ${id}`);
   return copy;
 }
 
