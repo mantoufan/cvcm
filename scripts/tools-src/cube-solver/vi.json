@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "titleCubeSolver": "Giải rubik online — công cụ giải khối 3×3 từng bước — cv.cm",
+    "descCubeSolver": "Công cụ giải khối rubik 3×3 miễn phí: tô màu khối của bạn lên hình trải phẳng và nhận lời giải ngắn (thường dưới 22 bước) bằng ký hiệu chuẩn, xem từng bước trên khối 3D. Không tải gì lên."
+  },
+  "tools": {
+    "cube-solver": {
+      "name": "Giải rubik 3×3",
+      "blurb": "Tô màu khối 3×3 và nhận lời giải ngắn, từng bước một."
+    }
+  },
+  "faq": {
+    "cube-solver": {
+      "q1": "Nhập khối của tôi thế nào?",
+      "a1": "Cầm khối sao cho tâm trắng ở trên và tâm xanh lá hướng về phía bạn. Chọn một màu rồi chạm từng ô trên hình trải phẳng cho giống khối của bạn, lần lượt từng mặt. Các ô tâm cố định và cho biết đó là mặt nào.",
+      "q2": "Màu nào ở mặt nào?",
+      "a2": "Mỗi mặt được đặt tên theo ô tâm: trắng trên, vàng dưới, xanh lá trước, xanh dương sau, đỏ phải, cam trái. Tô mỗi mặt đúng như khi nhìn thẳng vào nó; mặt trên tô khi để phía xanh lá gần bạn.",
+      "q3": "Vì sao báo khối không thể tồn tại?",
+      "a3": "Khối thật chỉ xoay được tới một số trạng thái nhất định. Nếu số ô một màu sai, có góc hay cạnh mang tổ hợp màu không có thật, một góc bị vặn riêng, một cạnh bị lật riêng hoặc hai miếng đổi chỗ, nghĩa là đã tô sai (hoặc khối từng bị tháo ra). Thông báo cho biết cần kiểm tra loại lỗi nào.",
+      "q4": "Lời giải dài bao nhiêu bước?",
+      "a4": "Công cụ dùng thuật toán hai pha của Herbert Kociemba, cho lời giải tối đa 22 bước, thường khoảng 19–21. Lời giải ngắn nhưng không nhất thiết là ngắn nhất có thể.",
+      "q5": "Đọc các bước thế nào?",
+      "a5": "U, D, R, L, F, B là xoay mặt trên, dưới, phải, trái, trước, sau một phần tư vòng theo chiều kim đồng hồ khi nhìn thẳng vào mặt đó. Dấu ' là ngược chiều, số 2 là nửa vòng. Luôn giữ trắng ở trên và xanh lá ở trước."
+    }
+  },
+  "guides": {
+    "cube-solver": {
+      "lead": "Giải khối 3×3 trong ba bước.",
+      "s1t": "Tô màu các ô",
+      "s1b": "Cầm khối với trắng ở trên, xanh lá ở trước. Chọn màu và chạm các ô trên hình trải phẳng cho tới khi mọi mặt giống khối của bạn.",
+      "s2t": "Bấm Giải",
+      "s2b": "Khối được kiểm tra trước. Nếu có thể tồn tại, công cụ trả về một danh sách bước ngắn.",
+      "s3t": "Làm theo các bước",
+      "s3b": "Đi từng bước hoặc bấm Chơi để xem trên khối 3D, rồi xoay khối thật của bạn y như vậy."
+    }
+  },
+  "ui": {
+    "cubeSolver": {
+      "title": "Giải rubik 3×3",
+      "privacyNote": "Tô màu khối 3×3 của bạn và nhận lời giải ngắn. Mọi thứ chạy ngay trên trang này.",
+      "palette": "Màu",
+      "net": "Hình trải phẳng của khối",
+      "c_U": "Trắng",
+      "c_R": "Đỏ",
+      "c_F": "Xanh lá",
+      "c_D": "Vàng",
+      "c_L": "Cam",
+      "c_B": "Xanh dương",
+      "f_U": "Trên",
+      "f_R": "Phải",
+      "f_F": "Trước",
+      "f_D": "Dưới",
+      "f_L": "Trái",
+      "f_B": "Sau",
+      "blank": "chưa tô",
+      "stickerLabel": "Mặt {face}, ô {n}: {colour}",
+      "centreLabel": "Tâm mặt {face}: {colour} (cố định)",
+      "count": "{n}/9 ô",
+      "solve": "Giải",
+      "random": "Khối ngẫu nhiên",
+      "clear": "Xóa",
+      "reset": "Khối đã giải",
+      "e_blank": "Còn {n} ô chưa tô màu.",
+      "e_count": "Có {n} ô màu {colour}; mỗi màu phải đúng 9 ô.",
+      "e_corner": "Có một góc mang tổ hợp màu không có thật, hoặc xuất hiện hai lần. Hãy kiểm tra các ô ở góc.",
+      "e_edge": "Có một cạnh mang tổ hợp màu không có thật, hoặc xuất hiện hai lần. Hãy kiểm tra các ô ở cạnh.",
+      "e_twist": "Một góc bị vặn riêng, khối thật không làm được. Hãy kiểm tra các ô ở góc.",
+      "e_flip": "Một cạnh bị lật riêng, khối thật không làm được. Hãy kiểm tra các ô ở cạnh.",
+      "e_parity": "Hai miếng bị đổi chỗ, khối thật không làm được. Hãy kiểm tra lại từng mặt.",
+      "preparing": "Đang chuẩn bị bộ giải… (lần đầu mất vài giây)",
+      "solving": "Đang giải…",
+      "solved": "Đã tìm ra lời giải: {n} bước.",
+      "already": "Khối này đã được giải rồi.",
+      "failed": "Bộ giải không chạy được ở đây. Hãy tải lại trang và thử lại.",
+      "solutionTitle": "Lời giải",
+      "holdNote": "Cầm khối với trắng ở trên, xanh lá hướng về bạn và giữ nguyên hướng suốt quá trình.",
+      "movesLabel": "Các bước giải",
+      "toStart": "Về đầu",
+      "prev": "Bước trước",
+      "next": "Bước sau",
+      "playMoves": "Tự chạy",
+      "pauseMoves": "Tạm dừng",
+      "stepStart": "Khối của bạn, còn {n} bước.",
+      "step": "Bước {k}/{n}: {move}",
+      "stage": "Xem lời giải trên khối 3D",
+      "intro": "Bấm Chơi để xem lời giải trên khối 3D.",
+      "hint": "Chọn màu rồi chạm vào ô. Phím: 1–6 chọn màu, mũi tên di chuyển giữa các ô, Enter hoặc Space để tô.",
+      "practise": "Luyện tập trên khối rubik 3D",
+      "credit": "Bộ giải: {name} (giấy phép MIT), thuật toán hai pha của Herbert Kociemba."
+    }
+  }
+}

@@ -3,12 +3,13 @@ import { pageDescription, pageTitle, type SeoInput } from "./seo";
 import { sitemapPages, SITE_ORIGIN, pageUrl, type SitemapPage } from "./sitemap";
 import { messages } from "./messages";
 import { nostalgiaName } from "./nostalgia-i18n";
-import { summaryName } from "./summaries-i18n";
 import { countryName } from "./countries-i18n";
 import { countryCode } from "./countries";
 import { foodLabel } from "./calories-i18n";
 import { elementName } from "./elements-i18n";
 import { atomicNumberOf } from "./elements";
+import { emojiWithName } from "./emoji-i18n";
+import { currencyPairName } from "./currency-i18n";
 import { nameFromTitle, SEARCH_CHANNEL_NAV, shortBlurb, type SearchChannel, type SearchEntry } from "./search";
 
 /** A channel's front page (/tests/, /rankings/ …): listed under the channel's own name, not its SEO title. */
@@ -26,14 +27,16 @@ function isHub(page: SitemapPage): boolean {
     case "slang":
     case "ideas":
     case "nostalgia":
-    case "summaries":
     case "countries":
     case "elements":
+    case "emoji":
       return page.entry === null;
     case "calories":
       return page.food === null;
     case "calendar":
       return page.page === "hub";
+    case "currency":
+      return page.pair === null;
     case "games":
       // The main hub and the hubs of cv.cm's own games (/games/mini/, /games/3d/), not the console or game pages.
       return (page.console === null || page.console === "mini" || page.console === "3d") && page.game === null;
@@ -49,14 +52,16 @@ function pageName(locale: Locale, page: SitemapPage, channel: SearchChannel, seo
   }
   // Nostalgia titles are question headlines ("What Is a Floppy Disk? 1.44 MB, the A: Drive…"): use the entry's own name.
   if (page.kind === "nostalgia" && page.entry) return nostalgiaName(locale, page.entry).name;
-  // Summary titles lead with the search phrase ("Hamlet Summary: Plot, Characters…"): the work's own name.
-  if (page.kind === "summaries" && page.entry) return summaryName(locale, page.entry).name;
   // Country titles list what the page answers ("Japan: Population, GDP…"): the name is the place.
   if (page.kind === "countries" && page.entry) return countryName(locale, countryCode(page.entry));
   // Calories titles carry numbers ("Calories in Banana: 97 kcal per 100 g…"): use the food's own name.
   if (page.kind === "calories" && page.food) return foodLabel(locale, page.food);
   // Element titles are long ("Carbon (C): Atomic Mass, …"): the element's own name.
   if (page.kind === "elements" && page.entry) return elementName(locale, atomicNumberOf(page.entry));
+  // Emoji titles add "Emoji Meaning": the emoji and its CLDR name.
+  if (page.kind === "emoji" && page.entry) return emojiWithName(locale, page.entry);
+  // Pair titles carry what the page answers ("USD to CNY: … Today, History…"): the pair's heading.
+  if (page.kind === "currency" && page.pair) return currencyPairName(locale, page.pair);
   return nameFromTitle(pageTitle(locale, seo));
 }
 
@@ -89,18 +94,20 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
       return { channel: "ideas", seo: { ideas: true, ideaId: page.entry } };
     case "nostalgia":
       return { channel: "nostalgia", seo: { nostalgia: true, nostalgiaId: page.entry } };
-    case "summaries":
-      return { channel: "summaries", seo: { summaries: true, summaryId: page.entry } };
     case "calories":
       return { channel: "calories", seo: { calories: true, foodId: page.food } };
     case "elements":
       return { channel: "elements", seo: { elements: true, elementSlug: page.entry } };
+    case "emoji":
+      return { channel: "emoji", seo: { emoji: true, emojiSlug: page.entry } };
     case "calendar":
       return { channel: "calendar", seo: { calendar: true, calendarPage: page.page } };
     case "games":
       return { channel: "games", seo: { games: true, console: page.console, game: page.game } };
     case "countries":
       return { channel: "countries", seo: { countries: true, countryId: page.entry } };
+    case "currency":
+      return { channel: "currency", seo: { currency: true, currencyPair: page.pair } };
     default:
       return null;
   }

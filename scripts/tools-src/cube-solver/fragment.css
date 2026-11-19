@@ -1,0 +1,19 @@
+
+/* Cube solver (src/client/cube-solver/): colour palette, unfolded net (9 × 12 grid), solution steps */
+.cs-palette { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+.cs-swatch { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 40px; padding: 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink); font: inherit; font-size: 0.9rem; cursor: pointer; }
+.cs-swatch[aria-pressed="true"] { border-color: var(--pink-deep); box-shadow: inset 0 0 0 1px var(--pink-deep); }
+.cs-dot { width: 1rem; height: 1rem; border-radius: 3px; border: 1px solid rgba(0, 0, 0, 0.25); }
+.cs-count { color: var(--ink-soft); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.cs-count.cs-off { color: var(--pink-deep); font-weight: 700; }
+.cs-net { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(9, auto); gap: 2px; width: 100%; max-width: 36rem; margin: 0.5rem 0; }
+.cs-sticker { aspect-ratio: 1; min-width: 0; padding: 0; border: 1px solid #1d1a1f; border-radius: 4px; background: var(--gray); cursor: pointer; }
+.cs-sticker[data-c="?"] { background: var(--white); border-style: dashed; border-color: var(--ink-soft); }
+.cs-sticker.cs-centre { cursor: default; box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25); }
+.cs-sticker:focus-visible { outline: 3px solid var(--pink-deep); outline-offset: 1px; z-index: 1; }
+.cs-status { min-height: 1.6em; font-weight: 600; }
+.cs-solution { margin: 1rem 0; }
+.cs-moves { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0; margin: 0.5rem 0; list-style: none; }
+.cs-moves li { min-width: 2.6rem; padding: 0.2rem 0.45rem; border: 1px solid var(--line); border-radius: 6px; text-align: center; font-family: var(--mono); }
+.cs-moves li.on { border-color: var(--pink-deep); background: var(--pink-soft); color: var(--pink-deep); font-weight: 700; }
+.cs-step { min-height: 1.4em; font-variant-numeric: tabular-nums; }

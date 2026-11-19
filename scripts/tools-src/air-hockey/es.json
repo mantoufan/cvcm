@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "titleAirHockey": "Air hockey — juega al hockey de mesa online contra la computadora en 3D — cv.cm",
+    "descAirHockey": "Juega gratis al air hockey (hockey de aire) en una mesa 3D: mueve tu mazo con el ratón, el dedo o las flechas y gánale a la computadora en tres niveles. Gana quien marque 7. Funciona en el móvil."
+  },
+  "tools": {
+    "air-hockey": {
+      "name": "Air hockey (hockey de mesa)",
+      "blurb": "Desliza tu mazo y marca en la portería de la computadora."
+    }
+  },
+  "faq": {
+    "air-hockey": {
+      "q1": "¿Cómo se juega al air hockey?",
+      "a1": "Mueve tu mazo en tu mitad de la mesa y mete el disco en la portería de la computadora, al fondo. Defiende tu portería, la más cercana. Gana quien llegue primero a 7 goles.",
+      "q2": "¿Cómo muevo mi mazo?",
+      "a2": "Mueve el ratón sobre la mesa o arrastra el dedo en el móvil o la tableta: el mazo lo sigue. Con teclado, usa las flechas o W A S D. El mazo no puede pasar de la línea central.",
+      "q3": "¿Qué tan difícil es la computadora?",
+      "a3": "Fácil reacciona lento y apunta sin precisión, Normal es más rápida y Difícil se mueve deprisa y apunta a las esquinas de tu portería. Cambiar de nivel empieza un partido nuevo.",
+      "q4": "¿Cómo golpeo más fuerte?",
+      "a4": "El disco toma la velocidad de tu mazo al chocar, así que ve hacia él en lugar de esperarlo. Los tiros de banda contra los laterales cuestan mucho de parar.",
+      "q5": "¿Se guarda mi récord?",
+      "a5": "Sí. Tus victorias y derrotas en cada nivel se guardan solo en este navegador."
+    }
+  },
+  "guides": {
+    "air-hockey": {
+      "lead": "Juega al air hockey en tres pasos.",
+      "s1t": "Empieza el partido",
+      "s1b": "Elige un nivel y pulsa Jugar. El disco espera en el centro de tu mitad.",
+      "s2t": "Golpea el disco",
+      "s2b": "Mueve el mazo con el ratón, el dedo o las flechas y lanza el disco hacia la portería del fondo.",
+      "s3t": "Gana quien llegue a siete",
+      "s3b": "Para los tiros de la computadora y marca siete goles para ganar. Vuelve a pulsar para la revancha."
+    }
+  },
+  "ui": {
+    "airHockey": {
+      "title": "Air hockey (hockey de mesa)",
+      "privacyNote": "Juega al air hockey contra la computadora en una mesa 3D. Tu récord se queda en este navegador.",
+      "stage": "Mesa de air hockey",
+      "intro": "Mueve tu mazo con el ratón, el dedo o las flechas y marca siete goles antes que la computadora.",
+      "hud": "Tú {you} : {cpu} Computadora",
+      "record": "En este nivel: {w} victorias, {l} derrotas",
+      "youWin": "¡Ganaste {you}–{cpu}!",
+      "cpuWins": "Gana la computadora {cpu}–{you}.",
+      "again": "Jugar otra vez",
+      "goalYou": "¡Gol! Tú {you}, computadora {cpu}.",
+      "goalCpu": "Marca la computadora. Tú {you}, computadora {cpu}.",
+      "level": "Nivel",
+      "l_0": "Fácil",
+      "l_1": "Normal (medio)",
+      "l_2": "Difícil",
+      "restart": "Partido nuevo",
+      "you": "Tú",
+      "computer": "Computadora",
+      "hint": "Ratón o dedo: el mazo sigue al puntero en tu mitad. Teclado: flechas o W A S D. Espacio o Intro sobre la mesa empieza la revancha."
+    }
+  }
+}

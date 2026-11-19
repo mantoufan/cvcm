@@ -94,19 +94,9 @@ import viNostalgia from "../locales/packs/nostalgia-vi";
 import zhCNNostalgia from "../locales/packs/nostalgia-zh-CN";
 import zhTWNostalgia from "../locales/packs/nostalgia-zh-TW";
 import { NOSTALGIA_ALL } from "../locales/nostalgia/all";
-import enSummaries from "../locales/packs/summaries-en";
-import esSummaries from "../locales/packs/summaries-es";
-import idSummaries from "../locales/packs/summaries-id";
-import jaSummaries from "../locales/packs/summaries-ja";
-import koSummaries from "../locales/packs/summaries-ko";
-import viSummaries from "../locales/packs/summaries-vi";
-import zhCNSummaries from "../locales/packs/summaries-zh-CN";
-import zhTWSummaries from "../locales/packs/summaries-zh-TW";
-import { SUMMARIES_ALL } from "../locales/summaries/all";
 import { QUIZ_ALL } from "../locales/quiz/all";
 import type { QuizId } from "./quiz";
 import type { NostalgiaId } from "./nostalgia";
-import type { SummaryId } from "./summaries";
 import type { RefId } from "./ref";
 import type { KbId } from "./kb";
 import type { Locale } from "./locale";
@@ -127,8 +117,6 @@ import {
   registerIdeasMessages,
   registerNostalgiaEntry,
   registerNostalgiaMessages,
-  registerSummaryEntry,
-  registerSummariesMessages,
   registerCalendarMessages,
   type GameMessages,
   type KbMessages,
@@ -140,7 +128,6 @@ import {
   type SlangMessages,
   type IdeasMessages,
   type NostalgiaMessages,
-  type SummariesMessages,
   type CalendarMessages,
 } from "./messages";
 
@@ -284,21 +271,6 @@ for (const [locale, entries] of Object.entries(NOSTALGIA_ALL)) {
   for (const [id, copy] of Object.entries(entries)) registerNostalgiaEntry(locale as Locale, id as NostalgiaId, copy);
 }
 
-const SUMMARIES: Record<Locale, SummariesMessages> = {
-  en: enSummaries,
-  "zh-CN": zhCNSummaries,
-  "zh-TW": zhTWSummaries,
-  ja: jaSummaries,
-  ko: koSummaries,
-  vi: viSummaries,
-  id: idSummaries,
-  es: esSummaries,
-};
-for (const [locale, pack] of Object.entries(SUMMARIES)) registerSummariesMessages(locale as Locale, pack);
-for (const [locale, entries] of Object.entries(SUMMARIES_ALL)) {
-  for (const [id, copy] of Object.entries(entries)) registerSummaryEntry(locale as Locale, id as SummaryId, copy);
-}
-
 // Country profiles keep their own store (countries-store.ts).
 import "./countries-all";
 
@@ -345,3 +317,47 @@ const ELEMENTS: Record<Locale, ElementsMessages> = {
   es: esElements,
 };
 for (const [locale, pack] of Object.entries(ELEMENTS)) registerElementsMessages(locale as Locale, pack);
+// Emoji meanings packs (copy, CLDR names and keywords, usage sentences, emoji-test rows).
+import enEmoji from "../locales/packs/emoji-en";
+import esEmoji from "../locales/packs/emoji-es";
+import idEmoji from "../locales/packs/emoji-id";
+import jaEmoji from "../locales/packs/emoji-ja";
+import koEmoji from "../locales/packs/emoji-ko";
+import viEmoji from "../locales/packs/emoji-vi";
+import zhCNEmoji from "../locales/packs/emoji-zh-CN";
+import zhTWEmoji from "../locales/packs/emoji-zh-TW";
+import { registerEmojiMessages, type EmojiMessages } from "./messages";
+
+const EMOJI: Record<Locale, EmojiMessages> = {
+  en: enEmoji,
+  "zh-CN": zhCNEmoji,
+  "zh-TW": zhTWEmoji,
+  ja: jaEmoji,
+  ko: koEmoji,
+  vi: viEmoji,
+  id: idEmoji,
+  es: esEmoji,
+};
+for (const [locale, pack] of Object.entries(EMOJI)) registerEmojiMessages(locale as Locale, pack);
+
+import enCurrency from "../locales/packs/currency-en";
+import esCurrency from "../locales/packs/currency-es";
+import idCurrency from "../locales/packs/currency-id";
+import jaCurrency from "../locales/packs/currency-ja";
+import koCurrency from "../locales/packs/currency-ko";
+import viCurrency from "../locales/packs/currency-vi";
+import zhCNCurrency from "../locales/packs/currency-zh-CN";
+import zhTWCurrency from "../locales/packs/currency-zh-TW";
+import { registerCurrencyMessages, type CurrencyMessages } from "./messages";
+
+const CURRENCY: Record<Locale, CurrencyMessages> = {
+  en: enCurrency,
+  "zh-CN": zhCNCurrency,
+  "zh-TW": zhTWCurrency,
+  ja: jaCurrency,
+  ko: koCurrency,
+  vi: viCurrency,
+  id: idCurrency,
+  es: esCurrency,
+};
+for (const [locale, pack] of Object.entries(CURRENCY)) registerCurrencyMessages(locale as Locale, pack);

@@ -694,15 +694,6 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .nostalgia-vote-result { font-weight: 600; color: var(--pink-deep); }
 /* No handlers yet (the Worker's text copy, the prerendered copy, or a script that failed): no question with dead buttons. */
 .nostalgia-vote:not(.ready), .page.ssr .nostalgia-vote { display: none; }
-/* Summaries: spoiler badge on a heading, and the "did you get it?" self-check (answers in closed <details>). */
-.summary-spoiler { vertical-align: middle; font-weight: 600; color: var(--pink-deep); border-color: currentColor; }
-.summary-check { margin: 1.5rem 0; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 12px; }
-.summary-check h2 { margin: 0 0 0.35rem; font-size: 1.05rem; }
-.summary-check > ol { padding-left: 1.2rem; }
-.summary-check > ol > li { margin: 0.9rem 0; }
-.summary-q { margin: 0 0 0.3rem; font-weight: 600; }
-.summary-options { margin: 0 0 0.4rem; padding-left: 1.4rem; }
-.summary-check details summary { cursor: pointer; color: var(--pink-deep); }
 .meme-coin-name { margin: 0; }
 .meme-coin-name span { color: var(--ink-soft); }
 .meme-coin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); gap: 0.5rem; margin: 0.6rem 0 0; }
@@ -1904,3 +1895,104 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .cite-list li.cite-empty { padding-left: 0; text-indent: 0; border-bottom: 0; }
 .cite-list .cite-remove { min-height: 28px; padding: 0 0.5rem; text-indent: 0; }
 .cite-import summary { cursor: pointer; margin: 0.5rem 0; }
+
+/* Emoji meanings (/emoji/): emoji are text in the reader's emoji font. */
+.emoji-group h2 { margin: 1.4rem 0 0.5rem; font-size: 1.05rem; }
+.emoji-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 0.35rem 1rem; margin: 0; padding: 0; list-style: none; }
+.emoji-list li { display: flex; align-items: center; gap: 0.5rem; min-height: 40px; }
+.emoji-list li > a { flex: 1 1 auto; min-width: 0; }
+.emoji-glyph { font-size: 1.35rem; line-height: 1; vertical-align: -0.15rem; }
+.emoji-copy { flex: 0 0 auto; min-height: 32px; padding: 0.2rem 0.6rem; border: 1px solid var(--line); border-radius: 999px; background: var(--white); color: var(--ink); font: inherit; font-size: 0.8rem; cursor: pointer; }
+.emoji-copy:hover, .emoji-copy:focus-visible { border-color: var(--pink-deep); }
+.emoji-answer { display: flex; gap: 1rem; align-items: center; }
+.emoji-answer p { margin: 0 0 0.5rem; }
+.emoji-big { flex: 0 0 auto; font-size: 4rem; line-height: 1; }
+.emoji-page { max-width: 52rem; }
+.emoji-page .kb-section h2, .emoji-facts h2 { margin: 1.5rem 0 0.5rem; font-size: 1.15rem; }
+.emoji-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin: 0; padding: 0; list-style: none; }
+.emoji-tags li { padding: 0.15rem 0.55rem; border: 1px solid var(--line); border-radius: 999px; font-size: 0.85rem; }
+.emoji-notice pre { white-space: pre-wrap; font-size: 0.75rem; }
+
+/* Exchange rates (/currency/) */
+.fx-converter { margin: 1rem 0; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius); }
+.fx-converter h2 { margin: 0 0 0.6rem; font-size: 1.05rem; }
+.fx-form { display: flex; flex-wrap: wrap; gap: 0.6rem; align-items: flex-end; }
+.fx-form .field { display: flex; flex-direction: column; gap: 0.2rem; min-width: 10rem; flex: 1 1 10rem; }
+.fx-form .field span { font-size: 0.85rem; color: var(--ink-soft); }
+.fx-form input, .fx-form select { font: inherit; padding: 0.45rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink); max-width: 100%; }
+.fx-out { margin: 0.75rem 0 0.2rem; font-size: 1.25rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+.fx-big { margin: 0 0 0.4rem !important; font-size: 1.6rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.fx-notice { margin: 0.5rem 0; font-size: 0.85rem; color: var(--ink-soft); }
+.fx-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+.fx-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.fx-table caption { padding: 0.45rem 0.7rem; text-align: left; font-weight: 600; }
+.fx-table th, .fx-table td { padding: 0.4rem 0.7rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.fx-table thead th { background: var(--pink-soft); white-space: nowrap; }
+.fx-table .num { text-align: right; }
+.fx-table tbody tr:last-child > * { border-bottom: 0; }
+.fx-two { display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 0.8rem; }
+.fx-pairs { list-style: none; padding: 0; margin: 0 0 0.8rem; columns: 2 16rem; }
+.fx-pairs li { margin: 0 0 0.3rem; break-inside: avoid; }
+.fx-chart { display: block; width: 100%; max-width: 640px; height: auto; margin: 0.3rem 0 0.8rem; }
+.fx-chart .fx-line { fill: none; stroke: var(--pink-deep); stroke-width: 1.6; stroke-linejoin: round; }
+.fx-chart .fx-grid { stroke: var(--line); stroke-width: 1; }
+.fx-chart .fx-axis { stroke: var(--ink-soft); stroke-width: 1; }
+.fx-chart text { fill: var(--ink-soft); font-size: 11px; font-family: var(--sans); }
+/* Air hockey (src/client/air-hockey/ui.ts) */
+.ah-hud { justify-content: center; font-size: 1.05rem; font-weight: 700; }
+.ah-score { margin-left: auto; }
+.ah-status { min-height: 1.6em; margin: 0.5rem 0 0; }
+.ah-record { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
+.ah-root .g3d-stage { cursor: none; }
+
+/* Darts (src/client/darts/) */
+.dt-root .g3d-stage { cursor: crosshair; }
+.dt-hud { font-weight: 600; }
+.dt-turn { margin: 0.6rem 0 0.2rem; font-weight: 600; }
+.dt-status { min-height: 1.5em; margin: 0 0 0.6rem; color: var(--ink-soft); }
+.dt-score { width: 100%; max-width: 32rem; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.dt-score th, .dt-score td { padding: 0.35rem 0.6rem; border-bottom: 1px solid var(--line); text-align: left; }
+.dt-score thead th { color: var(--ink-soft); font-weight: 500; font-size: 0.85rem; }
+.dt-score tr.dt-now th { color: var(--pink-deep); }
+.dt-score tr.dt-now th::before { content: "▸ "; }
+.dt-best { margin-top: 0.4rem; }
+
+/* Pool game (src/client/pool-game/) */
+.pl-root { aspect-ratio: 16 / 10; }
+.pl-bar { gap: 0.6rem 0.75rem; }
+.pl-power { display: flex; align-items: center; gap: 0.5rem; flex: 1 1 14rem; }
+.pl-power input[type="range"] { flex: 1 1 auto; min-width: 8rem; accent-color: var(--pink-deep); }
+.pl-power-out { min-width: 3.2em; font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+.pl-status { margin: 0.4rem 0 0.2rem; min-height: 1.6em; font-weight: 600; }
+.pl-groups { margin: 0 0 0.6rem; color: var(--ink-soft); font-size: 0.92rem; }
+.pl-settings { margin-top: 0.4rem; }
+.pl-record { margin: 0.4rem 0; }
+.pl-record[hidden] { display: none; }
+
+/* Cube solver (src/client/cube-solver/): colour palette, unfolded net (9 × 12 grid), solution steps */
+.cs-palette { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0; }
+.cs-swatch { display: inline-flex; align-items: center; gap: 0.35rem; min-height: 40px; padding: 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink); font: inherit; font-size: 0.9rem; cursor: pointer; }
+.cs-swatch[aria-pressed="true"] { border-color: var(--pink-deep); box-shadow: inset 0 0 0 1px var(--pink-deep); }
+.cs-dot { width: 1rem; height: 1rem; border-radius: 3px; border: 1px solid rgba(0, 0, 0, 0.25); }
+.cs-count { color: var(--ink-soft); font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.cs-count.cs-off { color: var(--pink-deep); font-weight: 700; }
+.cs-net { display: grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(9, auto); gap: 2px; width: 100%; max-width: 36rem; margin: 0.5rem 0; }
+.cs-sticker { aspect-ratio: 1; min-width: 0; padding: 0; border: 1px solid #1d1a1f; border-radius: 4px; background: var(--gray); cursor: pointer; }
+.cs-sticker[data-c="?"] { background: var(--white); border-style: dashed; border-color: var(--ink-soft); }
+.cs-sticker.cs-centre { cursor: default; box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.25); }
+.cs-sticker:focus-visible { outline: 3px solid var(--pink-deep); outline-offset: 1px; z-index: 1; }
+.cs-status { min-height: 1.6em; font-weight: 600; }
+.cs-solution { margin: 1rem 0; }
+.cs-moves { display: flex; flex-wrap: wrap; gap: 0.3rem; padding: 0; margin: 0.5rem 0; list-style: none; }
+.cs-moves li { min-width: 2.6rem; padding: 0.2rem 0.45rem; border: 1px solid var(--line); border-radius: 6px; text-align: center; font-family: var(--mono); }
+.cs-moves li.on { border-color: var(--pink-deep); background: var(--pink-soft); color: var(--pink-deep); font-weight: 700; }
+.cs-step { min-height: 1.4em; font-variant-numeric: tabular-nums; }
+/* Pinball (src/client/pinball/ui.ts) */
+.pb-bar { justify-content: space-between; }
+.pb-stats { margin: 0; }
+.pb-hud { justify-content: space-between; align-items: baseline; }
+.pb-hud-score { font-size: 1.6rem; font-weight: 800; color: var(--pink-deep); }
+.pb-hud-ball, .pb-hud-mult { font-weight: 700; }
+.pb-hud-mult { color: var(--pink-deep); }
+.pb-status { min-height: 1.6em; margin: 0.5rem 0 0; color: var(--pink-deep); font-weight: 600; }
+.pb-pad .g3d-plunger { align-self: flex-end; }

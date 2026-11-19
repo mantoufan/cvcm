@@ -4,9 +4,10 @@ import { d1Store, type D1Database } from "./clip-store";
 import { d1SearchStore, handleSearchApi } from "./search-api";
 import { d1NostalgiaStore, handleNostalgiaApi } from "./nostalgia-api";
 import { countryBucket, countryCode } from "./shared/countries";
-import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, type Locale } from "./shared/locale";
+import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, parseLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isLookupToolPath, LOOKUP_HOSTS, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isLookupToolPath, LOOKUP_HOSTS, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, STATIC_FILE, toolJob } from "./shared/path";
+import { currencyHref } from "./shared/path";
 import { rankingRowsChunk } from "./shared/rankings";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
 import { COVER_ORIGIN, thumbOriginal } from "./shared/covers";
@@ -162,6 +163,9 @@ export default {
     const path = url.pathname;
     // Prerendered page bodies are read through ASSETS below, never served on their own.
     if (path.startsWith(SSR_PREFIX)) return withHeaders(notFound(DEFAULT_LOCALE, request.method), path);
+    // The Summaries channel was removed (2026-11-19): its URLs answer 410 so search engines drop them.
+    const removed = removedChannelLocale(path, request);
+    if (removed) return withHeaders(gone(removed, request.method), path);
     if (path === "/api/device/ip") return withHeaders(deviceIpResponse(request), path);
     const emu = await proxyEmu(path, request.method);
     if (emu) return withHeaders(emu, path);
@@ -222,9 +226,6 @@ export default {
       if (parsed.kind === "bare-nostalgia") {
         return redirectTo(nostalgiaHref(locale, parsed.entry), url, 302);
       }
-      if (parsed.kind === "bare-summaries") {
-        return redirectTo(summariesHref(locale, parsed.entry), url, 302);
-      }
       if (parsed.kind === "bare-countries") {
         return redirectTo(countriesHref(locale, parsed.entry), url, 302);
       }
@@ -236,6 +237,12 @@ export default {
       }
       if (parsed.kind === "bare-calendar") {
         return redirectTo(calendarHref(locale, parsed.page), url, 302);
+      }
+      if (parsed.kind === "bare-emoji") {
+        return redirectTo(emojiHref(locale, parsed.entry), url, 302);
+      }
+      if (parsed.kind === "bare-currency") {
+        return redirectTo(currencyHref(locale, parsed.pair), url, 302);
       }
       if (parsed.kind === "unknown") {
         return withHeaders(notFound(locale, request.method), path);
@@ -324,12 +331,6 @@ export default {
           return redirectTo(canonical, url, 301);
         }
       }
-      if (parsed.kind === "summaries") {
-        const canonical = summariesHref(parsed.locale, parsed.entry);
-        if (path !== canonical) {
-          return redirectTo(canonical, url, 301);
-        }
-      }
       if (parsed.kind === "countries") {
         const canonical = countriesHref(parsed.locale, parsed.entry);
         if (path !== canonical) {
@@ -348,8 +349,20 @@ export default {
           return redirectTo(canonical, url, 301);
         }
       }
+      if (parsed.kind === "emoji") {
+        const canonical = emojiHref(parsed.locale, parsed.entry);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
       if (parsed.kind === "calendar") {
         const canonical = calendarHref(parsed.locale, parsed.page);
+        if (path !== canonical) {
+          return redirectTo(canonical, url, 301);
+        }
+      }
+      if (parsed.kind === "currency") {
+        const canonical = currencyHref(parsed.locale, parsed.pair);
         if (path !== canonical) {
           return redirectTo(canonical, url, 301);
         }
@@ -378,10 +391,10 @@ export default {
     const parsed = parseAppPath(path);
     if (
       type.includes("text/html")
-      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "summaries" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar" || path === "/" || path === "/index.html")
+      && (parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar" || path === "/" || path === "/index.html" || parsed.kind === "emoji" || parsed.kind === "currency" || path === "/index.html")
     ) {
       const html = await assetResponse.text();
-      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "summaries" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar"
+      const locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar" || parsed.kind === "emoji" || parsed.kind === "currency"
         ? parsed.locale
         : negotiateLocale(
           request.headers.get("Accept-Language"),
@@ -413,8 +426,6 @@ export default {
               ? { ideas: true as const, ideaId: parsed.entry }
             : parsed.kind === "nostalgia"
               ? { nostalgia: true as const, nostalgiaId: parsed.entry }
-            : parsed.kind === "summaries"
-              ? { summaries: true as const, summaryId: parsed.entry }
             : parsed.kind === "countries"
               ? { countries: true as const, countryId: parsed.entry }
             : parsed.kind === "calories"
@@ -423,6 +434,10 @@ export default {
               ? { elements: true as const, elementSlug: parsed.entry }
             : parsed.kind === "calendar"
               ? { calendar: true as const, calendarPage: parsed.page }
+            : parsed.kind === "emoji"
+              ? { emoji: true as const, emojiSlug: parsed.entry }
+            : parsed.kind === "currency"
+              ? { currency: true as const, currencyPair: parsed.pair }
             : parsed.kind === "app"
             ? { tool: parsed.tool, clipId: parsed.clipId, convertJob: parsed.convertJob, resizeJob: parsed.resizeJob }
             : { tool: null };
@@ -441,17 +456,18 @@ export default {
         : parsed.kind === "slang" ? "slang"
         : parsed.kind === "ideas" ? "ideas"
         : parsed.kind === "nostalgia" ? "nostalgia"
-        : parsed.kind === "summaries" ? "summaries"
         : parsed.kind === "countries" ? "countries"
         : parsed.kind === "calories" ? "calories"
         : parsed.kind === "elements" ? "elements"
         : parsed.kind === "calendar" ? "calendar"
+        : parsed.kind === "emoji" ? "emoji"
+        : parsed.kind === "currency" ? "currency"
         : parsed.kind === "legal" ? null
         : "home";
       // The browser's core pack leaves out the copy only this page shows; preload the bucket that holds it.
       const copy = copyChunkKey(locale, pageCopyOf(parsed));
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz" && (parsed.quiz ?? "hub"), parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, ideasPackOf(parsed), parsed.kind === "nostalgia" ? parsed.entry ?? "hub" : null, parsed.kind === "countries" ? (parsed.entry ? String(countryBucket(countryCode(parsed.entry))) : "hub") : null, parsed.kind === "calories", parsed.kind === "elements", parsed.kind === "calendar" || (parsed.kind === "app" && parsed.tool === "lunar-converter"), parsed.kind === "summaries" ? parsed.entry ?? "hub" : null);
+      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz" && (parsed.quiz ?? "hub"), parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, ideasPackOf(parsed), parsed.kind === "nostalgia" ? parsed.entry ?? "hub" : null, parsed.kind === "countries" ? (parsed.entry ? String(countryBucket(countryCode(parsed.entry))) : "hub") : null, parsed.kind === "calories", parsed.kind === "elements", parsed.kind === "calendar" || (parsed.kind === "app" && parsed.tool === "lunar-converter"), parsed.kind === "emoji", parsed.kind === "currency");
       out = preloadPageChunk(out, chunk);
       if (parsed.kind === "ranking" && parsed.ranking) out = preloadPageChunk(out, rankingRowsChunk(parsed.ranking));
       if (parsed.kind === "dataset" && parsed.dataset) {
@@ -483,7 +499,7 @@ function unconditional(request: Request): Request {
 function ssrPath(parsed: ReturnType<typeof parseAppPath>, path: string): string | null {
   if (STATIC_FILE.test(path)) return null;
   if (parsed.kind === "app") return parsed.clipId ? null : path;
-  if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "summaries" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar") return path;
+  if (parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar" || parsed.kind === "emoji" || parsed.kind === "currency") return path;
   return null;
 }
 
@@ -527,6 +543,31 @@ function deviceIpResponse(request: Request): Response {
       "Content-Type": "application/json; charset=utf-8",
       "Cache-Control": "private, no-store",
       "CDN-Cache-Control": "no-store",
+      "X-Robots-Tag": "noindex",
+    },
+  });
+}
+
+/**
+ * `/summaries`, `/summaries/…`, `/{locale}/summaries` and `/{locale}/summaries/…` (any case, with or without the slash):
+ * pages of the removed Summaries channel. Returns the locale to link home in (the path's own, else negotiated), or null.
+ */
+function removedChannelLocale(path: string, request: Request): Locale | null {
+  const negotiated = (): Locale => negotiateLocale(request.headers.get("Accept-Language"), cookieValue(request.headers.get("Cookie"), LOCALE_COOKIE));
+  // The bare form first, so /summaries/summaries/ is not read as a locale named "summaries"; the old section sitemap too.
+  if (/^\/summaries(?:\/.*)?$/i.test(path) || /^\/sitemaps\/summaries\.xml$/i.test(path)) return negotiated();
+  const m = /^\/([^/]+)\/summaries(?:\/.*)?$/i.exec(path);
+  return m ? parseLocale(m[1]) : null;
+}
+
+function gone(locale: Locale, method: string): Response {
+  const home = appHref(locale, null);
+  const body = `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>410 — cv.cm</title></head><body style="font-family: system-ui, sans-serif; max-width: 40rem; margin: 4rem auto; padding: 0 1rem"><h1>410</h1><p>This page has been removed. <a href="${home}">cv.cm</a></p></body></html>`;
+  return new Response(method === "HEAD" ? null : body, {
+    status: 410,
+    headers: {
+      "Cache-Control": "no-store",
+      "Content-Type": "text/html; charset=utf-8",
       "X-Robots-Tag": "noindex",
     },
   });

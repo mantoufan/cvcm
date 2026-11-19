@@ -84,7 +84,7 @@
     },
     {
       "id": "games3d",
-      "name": "3D games: 3D chess against the computer, magic cube (3×3 and other sizes), stack game, driving and drift game, flight simulator"
+      "name": "3D games: 3D chess against the computer, magic cube (2×2–4×4) and cube solver, stack game, driving and drift game, flight simulator, pinball, 8-ball pool, air hockey, darts"
     },
     {
       "id": "assets",
@@ -1802,6 +1802,14 @@
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
+      "id": "cube-solver",
+      "name": "Cube solver",
+      "description": "Paint your 3×3 and get a short solution, move by move.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/cube-solver/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
       "id": "stack-game",
       "name": "Stack game",
       "description": "Drop the sliding blocks and build the tallest tower.",
@@ -1823,6 +1831,38 @@
       "description": "Take off, fly over an island and land, or race through rings.",
       "category": "games3d",
       "url": "https://cv.cm/en/flight-simulator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "pinball",
+      "name": "Pinball",
+      "description": "Flip, bump and score on a 3D pinball table.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/pinball/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "pool-game",
+      "name": "Pool game",
+      "description": "8-ball on a 3D table, against the computer or a friend.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/pool-game/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "air-hockey",
+      "name": "Air hockey",
+      "description": "Slide your mallet and score past the computer.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/air-hockey/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "darts",
+      "name": "Darts",
+      "description": "Throw 501 or Around the Clock on a 3D board.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/darts/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

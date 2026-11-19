@@ -412,3 +412,13 @@ Codex (`codex exec -m gpt-6-astra --image gpa-sweet.jpg --image average-sweet.jp
 - `apa-citation-generator`: she holds an open pink research journal with blank pages and pink tabs; plain-covered journals, a brass desk lamp, a blank index card with a heart clip.
 - `mla-citation-generator`: she writes on a blank notecard with a pink fountain pen beside an open poetry book; literature books with ribbon bookmarks, roses.
 - `harvard-referencing-generator`: she holds a pink card-file drawer of blank index cards in a university library corner; a globe and an hourglass.
+
+## Cube solver, pinball, pool game, air hockey, darts (2026-11-18)
+
+Codex (`codex exec -m gpt-6-astra --image stack-game-sweet.jpg,driving-game-sweet.jpg -`, prompt on stdin), one after another, same base prompt as the first 3D batch. `sips -s format jpeg` then `sips -z 720 1280`. All five came out on the first try.
+
+- `cube-solver`: she holds a scrambled sticker cube (no logo) beside a glowing pink unfolded cube net with arrows suggesting the solving steps; a pink tablet on the desk.
+- `pinball`: she leans over a pastel sweet-shop pinball table (cupcake bumpers, cream flippers, chrome ball), hands on the flipper buttons; no text on the playfield.
+- `pool-game`: she lines up a shot on a pink-cloth table with a white and pink cue; a rack of glossy coloured balls with no numbers.
+- `air-hockey`: she grips a pink mallet on a white and pink table; a glowing puck slides toward the goal slot.
+- `darts`: her pink-flighted dart lands in the bull of a pink, cream and mint board with no numbers; two more darts in her hand.

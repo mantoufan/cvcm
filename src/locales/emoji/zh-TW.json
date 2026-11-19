@@ -1,0 +1,157 @@
+{
+  "crumbHome": "首頁",
+  "copy": "複製",
+  "copied": "已複製",
+  "copyFailed": "複製失敗",
+  "copyLabel": "複製 {emoji}",
+  "hub": {
+    "title": "Emoji 意思大全：{n} 個常用表情符號是什麼意思",
+    "h1": "Emoji 意思",
+    "lede": "依 Unicode 分類，說明 {n} 個最常用 emoji 的意思。點「複製」即可複製 emoji，或點進去查看它的官方名稱、碼位、加入年份，以及膚色和性別版本。",
+    "description": "{n} 個常用 emoji 是什麼意思，附 Unicode 官方名稱、碼位、各自的加入年份，一鍵複製：😂 ❤️ 😭 💀 🥺 🙏 🔥 等。",
+    "search": "搜尋 emoji",
+    "searchPlaceholder": "名稱、關鍵字或 emoji",
+    "shown": "{total} 個 emoji 中的 {n} 個",
+    "none": "找不到符合的 emoji。",
+    "aboutTitle": "關於這些頁面",
+    "about": [
+      "每個 emoji 都有一個官方簡稱和關鍵字，來自 Unicode 通用地區資料庫（CLDR），由 Unicode 的貢獻者翻譯成這裡顯示的各種語言。分類、排列順序和 emoji 版本則來自 Unicode 的 emoji-test.txt。",
+      "說明大家用這個 emoji 表達什麼的句子由 cv.cm 撰寫，不是出自 Unicode。emoji 會以你裝置內建的 emoji 字型顯示，所以在每支手機或每台電腦上看起來會有些不同。"
+    ],
+    "faq": [
+      {
+        "q": "這裡列出了哪些 emoji？",
+        "a": "{n} 個最常用的 emoji：Unicode 公布的 emoji 使用頻率排行中排名最前面的 emoji（不含國旗），再加上幾個 2018 年以後新增的熱門 emoji；因為它們比較新，在那份排行中的名次偏低。"
+      },
+      {
+        "q": "要怎麼複製 emoji？",
+        "a": "按 emoji 旁邊的「複製」，再貼到訊息、貼文或文件裡。複製的是 emoji 文字本身，所以會以你貼上之處的字型顯示。"
+      },
+      {
+        "q": "為什麼 emoji 在我的手機上看起來不一樣？",
+        "a": "Unicode 定義每個 emoji 是什麼（它的碼位和名稱），而各家公司（Apple、Google、Samsung、Microsoft 等）各自繪製圖案。意思相同，只是畫法不同。"
+      }
+    ]
+  },
+  "page": {
+    "title": "{emoji} {name} emoji 意思",
+    "h1": "{emoji} {Name} emoji 是什麼意思",
+    "description": "{emoji} {Name}：{usage} Unicode {cp}，{year} 年起成為 emoji。一鍵複製。",
+    "meaning": "意思",
+    "factsTitle": "{emoji} 詳細資料",
+    "keywordsTitle": "關鍵字",
+    "keywordsText": "Unicode 列出、可在 emoji 鍵盤中搜尋到 {emoji} 的詞：",
+    "variantsTitle": "膚色和性別版本",
+    "variantsText": "{emoji} 還有另外 {n} 種版本，每種都是獨立的 emoji：",
+    "similarTitle": "相似的 emoji",
+    "similarText": "同屬「{subgroup}」類的其他 emoji：",
+    "faqTitle": "常見問題",
+    "faqMeaning": {
+      "q": "{emoji} emoji 是什麼意思？",
+      "a": "{usage}它的 Unicode 官方名稱是「{name}」。"
+    },
+    "faqYear": {
+      "q": "{emoji} emoji 是什麼時候加入的？",
+      "a": "{emoji} 在 {year} 年隨 Emoji {v} 成為 emoji。它的碼位是 {cp}。"
+    },
+    "faqYearSequence": {
+      "q": "{emoji} emoji 是什麼時候加入的？",
+      "a": "{emoji} 在 {year} 年隨 Emoji {v} 成為 emoji。它是由多個碼位組成的序列：{cp}。"
+    },
+    "faqCopy": {
+      "q": "要怎麼輸入或複製 {emoji}？",
+      "a": "按本頁的「複製」，就能貼到任何地方。在手機的 emoji 鍵盤中，也可以搜尋「{keyword}」。"
+    },
+    "faqCopyVariants": {
+      "q": "要怎麼輸入或複製 {emoji}？",
+      "a": "按本頁的「複製」，就能貼到任何地方。在手機的 emoji 鍵盤中，也可以搜尋「{keyword}」。它有 {n} 種膚色或性別版本，上方每一種都有自己的「複製」按鈕。"
+    }
+  },
+  "labels": {
+    "emoji": "Emoji",
+    "name": "官方名稱",
+    "englishName": "英文名稱",
+    "codepoint": "碼位",
+    "codepoints": "碼位",
+    "html": "HTML 字元參照",
+    "version": "Emoji 版本",
+    "year": "加入 emoji 的年份",
+    "group": "分類",
+    "subgroup": "子分類"
+  },
+  "values": {
+    "version": "Emoji {v}"
+  },
+  "sources": {
+    "title": "資料來源",
+    "names": "名稱和關鍵字：{cldr}（CLDR {version}）。",
+    "cldr": "Unicode CLDR emoji 註解",
+    "data": "分類、順序和 emoji 版本：{test}（版本 {version}）。",
+    "test": "Unicode emoji-test.txt",
+    "usage": "用法說明句由 cv.cm 撰寫。",
+    "notice": "© 1991–2026 Unicode, Inc. Unicode 資料檔案依 {license} 使用。",
+    "license": "Unicode License v3",
+    "noticeTitle": "Unicode 版權與授權聲明",
+    "snapshot": "資料快照：{date}。"
+  },
+  "groups": {
+    "smileys-emotion": "笑臉與情緒",
+    "people-body": "人物與身體",
+    "animals-nature": "動物與自然",
+    "food-drink": "食物與飲料",
+    "travel-places": "旅遊與地點",
+    "activities": "活動",
+    "objects": "物品",
+    "symbols": "符號"
+  },
+  "subgroups": {
+    "face-smiling": "笑臉",
+    "face-affection": "表達喜愛的臉",
+    "face-tongue": "吐舌頭的臉",
+    "face-hand": "帶手勢的臉",
+    "face-neutral-skeptical": "無表情與懷疑的臉",
+    "face-sleepy": "想睡的臉",
+    "face-unwell": "不舒服的臉",
+    "face-hat": "戴帽子的臉",
+    "face-glasses": "戴眼鏡的臉",
+    "face-concerned": "擔憂的臉",
+    "face-negative": "負面情緒的臉",
+    "cat-face": "貓臉",
+    "monkey-face": "猴臉",
+    "heart": "愛心",
+    "emotion": "情緒符號",
+    "hand-fingers-open": "張開的手",
+    "hand-fingers-partial": "手勢",
+    "hand-single-finger": "手指指向",
+    "hand-fingers-closed": "握起的手",
+    "hands": "雙手",
+    "body-parts": "身體部位",
+    "person": "人物",
+    "person-gesture": "人物手勢",
+    "person-activity": "人物活動",
+    "person-symbol": "人物符號",
+    "animal-mammal": "哺乳動物",
+    "animal-bug": "昆蟲",
+    "plant-flower": "花",
+    "plant-other": "其他植物",
+    "food-fruit": "水果",
+    "food-sweet": "甜點",
+    "drink": "飲料",
+    "transport-ground": "陸上交通",
+    "transport-air": "空中交通",
+    "sky & weather": "天空與天氣",
+    "event": "節慶活動",
+    "award-medal": "獎項",
+    "sport": "運動",
+    "game": "遊戲",
+    "clothing": "服飾",
+    "music": "音樂",
+    "money": "金錢",
+    "warning": "警告",
+    "arrow": "箭頭",
+    "av-symbol": "影音符號",
+    "punctuation": "標點符號",
+    "other-symbol": "其他符號",
+    "geometric": "形狀"
+  }
+}

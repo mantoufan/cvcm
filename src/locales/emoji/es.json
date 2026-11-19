@@ -1,0 +1,157 @@
+{
+  "crumbHome": "Inicio",
+  "copy": "Copiar",
+  "copied": "Copiado",
+  "copyFailed": "No se pudo copiar",
+  "copyLabel": "Copiar {emoji}",
+  "hub": {
+    "title": "Significado de los emojis: qué significan {n} emojis populares",
+    "h1": "Significado de los emojis",
+    "lede": "Qué significan {n} de los emojis más usados, por grupo de Unicode. Toca Copiar para copiar un emoji, o ábrelo para ver su nombre oficial, su punto de código, el año en que se añadió y sus variantes de tono de piel y de género.",
+    "description": "Qué significan {n} emojis populares, con sus nombres oficiales de Unicode, puntos de código, el año en que se añadió cada uno y copia con un toque: 😂 ❤️ 😭 💀 🥺 🙏 🔥 y más.",
+    "search": "Buscar un emoji",
+    "searchPlaceholder": "Nombre, palabra clave o emoji",
+    "shown": "{n} de {total} emojis",
+    "none": "Ningún emoji coincide con esa búsqueda.",
+    "aboutTitle": "Sobre estas páginas",
+    "about": [
+      "Cada emoji tiene un nombre corto oficial y palabras clave del Repositorio de Datos Comunes de Configuración Regional de Unicode (CLDR), traducidos por los colaboradores de Unicode a cada idioma que se muestra aquí. Los grupos, el orden y la versión de emoji proceden del archivo emoji-test.txt de Unicode.",
+      "La frase sobre el uso que la gente da a cada emoji la escribe cv.cm, no Unicode. Los emojis se muestran con la fuente de emojis de tu dispositivo, por lo que se ven un poco distintos en cada teléfono o computadora."
+    ],
+    "faq": [
+      {
+        "q": "¿Qué emojis aparecen aquí?",
+        "a": "{n} de los emojis más usados: los primeros puestos de la clasificación de frecuencia de emojis publicada por Unicode, sin las banderas de países, además de algunos emojis populares añadidos desde 2018, que esa clasificación sitúa demasiado abajo por ser más recientes."
+      },
+      {
+        "q": "¿Cómo copio un emoji?",
+        "a": "Pulsa Copiar junto al emoji y pégalo en un mensaje, una publicación o un documento. El emoji se copia como texto, así que se muestra con la fuente del lugar donde lo pegues."
+      },
+      {
+        "q": "¿Por qué un emoji se ve distinto en mi teléfono?",
+        "a": "Unicode define qué es cada emoji (su punto de código y su nombre), y cada empresa (Apple, Google, Samsung, Microsoft y otras) dibuja sus propias imágenes. El significado es el mismo; el dibujo cambia."
+      }
+    ]
+  },
+  "page": {
+    "title": "{emoji} Significado del emoji {name}",
+    "h1": "{emoji} Significado del emoji {name}",
+    "description": "{emoji} {Name}: {usage} Unicode {cp}, emoji desde {year}. Cópialo con un toque.",
+    "meaning": "Significado",
+    "factsTitle": "Detalles de {emoji}",
+    "keywordsTitle": "Palabras clave",
+    "keywordsText": "Palabras que Unicode asigna para encontrar {emoji} al buscar en un teclado de emojis:",
+    "variantsTitle": "Variantes de tono de piel y de género",
+    "variantsText": "{emoji} también tiene otras {n} variantes, cada una un emoji propio:",
+    "similarTitle": "Emojis similares",
+    "similarText": "Otros emojis del grupo de {subgroup}:",
+    "faqTitle": "Preguntas frecuentes",
+    "faqMeaning": {
+      "q": "¿Qué significa el emoji {emoji}?",
+      "a": "{usage} Su nombre oficial en Unicode es “{name}”."
+    },
+    "faqYear": {
+      "q": "¿Cuándo se añadió el emoji {emoji}?",
+      "a": "{emoji} se convirtió en emoji en {year}, con Emoji {v}. Su punto de código es {cp}."
+    },
+    "faqYearSequence": {
+      "q": "¿Cuándo se añadió el emoji {emoji}?",
+      "a": "{emoji} se convirtió en emoji en {year}, con Emoji {v}. Es una secuencia de puntos de código: {cp}."
+    },
+    "faqCopy": {
+      "q": "¿Cómo escribo o copio {emoji}?",
+      "a": "Pulsa Copiar en esta página y pégalo donde quieras. En el teclado de emojis del teléfono también puedes buscar “{keyword}”."
+    },
+    "faqCopyVariants": {
+      "q": "¿Cómo escribo o copio {emoji}?",
+      "a": "Pulsa Copiar en esta página y pégalo donde quieras. En el teclado de emojis del teléfono también puedes buscar “{keyword}”. Tiene {n} variantes de tono de piel o de género, cada una con su propio botón Copiar más arriba."
+    }
+  },
+  "labels": {
+    "emoji": "Emoji",
+    "name": "Nombre oficial",
+    "englishName": "Nombre en inglés",
+    "codepoint": "Punto de código",
+    "codepoints": "Puntos de código",
+    "html": "Código HTML",
+    "version": "Versión de emoji",
+    "year": "Añadido como emoji",
+    "group": "Grupo",
+    "subgroup": "Subgrupo"
+  },
+  "values": {
+    "version": "Emoji {v}"
+  },
+  "sources": {
+    "title": "Fuentes",
+    "names": "Nombres y palabras clave: {cldr} (CLDR {version}).",
+    "cldr": "Anotaciones de emojis de Unicode CLDR",
+    "data": "Grupos, orden y versiones de emoji: {test} (versión {version}).",
+    "test": "emoji-test.txt de Unicode",
+    "usage": "Las frases de uso las escribe cv.cm.",
+    "notice": "© 1991–2026 Unicode, Inc. Archivos de datos de Unicode usados conforme a la {license}.",
+    "license": "Licencia Unicode v3",
+    "noticeTitle": "Aviso de derechos de autor y permisos de Unicode",
+    "snapshot": "Fecha de los datos: {date}."
+  },
+  "groups": {
+    "smileys-emotion": "Caras y emociones",
+    "people-body": "Personas y cuerpo",
+    "animals-nature": "Animales y naturaleza",
+    "food-drink": "Comida y bebida",
+    "travel-places": "Viajes y lugares",
+    "activities": "Actividades",
+    "objects": "Objetos",
+    "symbols": "Símbolos"
+  },
+  "subgroups": {
+    "face-smiling": "caras sonrientes",
+    "face-affection": "caras cariñosas",
+    "face-tongue": "caras con la lengua fuera",
+    "face-hand": "caras con manos",
+    "face-neutral-skeptical": "caras neutras y escépticas",
+    "face-sleepy": "caras con sueño",
+    "face-unwell": "caras de malestar",
+    "face-hat": "caras con sombrero",
+    "face-glasses": "caras con gafas",
+    "face-concerned": "caras preocupadas",
+    "face-negative": "caras negativas",
+    "cat-face": "caras de gato",
+    "monkey-face": "caras de mono",
+    "heart": "corazones",
+    "emotion": "símbolos de emociones",
+    "hand-fingers-open": "manos abiertas",
+    "hand-fingers-partial": "gestos con la mano",
+    "hand-single-finger": "manos que señalan",
+    "hand-fingers-closed": "manos cerradas",
+    "hands": "dos manos",
+    "body-parts": "partes del cuerpo",
+    "person": "personas",
+    "person-gesture": "gestos de personas",
+    "person-activity": "actividades de personas",
+    "person-symbol": "símbolos de personas",
+    "animal-mammal": "mamíferos",
+    "animal-bug": "insectos",
+    "plant-flower": "flores",
+    "plant-other": "otras plantas",
+    "food-fruit": "frutas",
+    "food-sweet": "dulces",
+    "drink": "bebidas",
+    "transport-ground": "transporte terrestre",
+    "transport-air": "transporte aéreo",
+    "sky & weather": "cielo y tiempo",
+    "event": "eventos",
+    "award-medal": "premios",
+    "sport": "deportes",
+    "game": "juegos",
+    "clothing": "ropa",
+    "music": "música",
+    "money": "dinero",
+    "warning": "advertencias",
+    "arrow": "flechas",
+    "av-symbol": "símbolos de audio y video",
+    "punctuation": "puntuación",
+    "other-symbol": "otros símbolos",
+    "geometric": "formas"
+  }
+}

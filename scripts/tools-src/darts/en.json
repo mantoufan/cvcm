@@ -1,0 +1,82 @@
+{
+  "meta": {
+    "titleDarts": "Darts game — play 501 darts online on a 3D dartboard — cv.cm",
+    "descDarts": "Play darts online for free: 501 with double out, Around the Clock or practice on a 3D dartboard, against the computer or alone. Checkout hints, averages and best legs. Works on phones."
+  },
+  "tools": {
+    "darts": {
+      "name": "Darts",
+      "blurb": "Throw 501 or Around the Clock on a 3D board."
+    }
+  },
+  "faq": {
+    "darts": {
+      "q1": "How do I throw a dart?",
+      "a1": "Press and hold on the board: the aim marker sways, then settles for about a second. Move to aim and let go to throw. Hold too long and your hand starts to shake again. On a keyboard, the arrow keys aim and Space throws.",
+      "q2": "How does 501 work?",
+      "a2": "Each player starts on 501 and subtracts every score. You must finish exactly on zero with a double or the bull. Going below zero, leaving 1 or finishing on a single is a bust: the turn's score is taken back.",
+      "q3": "What is a checkout?",
+      "a3": "A finish of 170 or less in up to three darts that ends on a double. When you can check out, the page shows the usual route, such as T20 T20 Bull for 170 or D20 for 40.",
+      "q4": "How good is the computer?",
+      "a4": "Easy, medium and hard players aim at the treble 20 or their checkout, with more scatter at the easier levels. Hard averages well over 60.",
+      "q5": "Are my scores saved?",
+      "a5": "Your best three-dart average, your fewest darts for a 501 leg and your best Around the Clock stay in this browser. Nothing is uploaded."
+    }
+  },
+  "guides": {
+    "darts": {
+      "lead": "Play darts in three steps.",
+      "s1t": "Pick a game",
+      "s1b": "Choose 501, Around the Clock or practice, and play the computer or alone. Press Play.",
+      "s2t": "Aim and hold",
+      "s2b": "Press and hold on the board. The marker sways and steadies after about a second; move it onto your target.",
+      "s3t": "Let go to throw",
+      "s3b": "Release to throw. Three darts make a turn; in 501 finish exactly on a double."
+    }
+  },
+  "ui": {
+    "darts": {
+      "title": "Darts",
+      "privacyNote": "Play 501 or Around the Clock on a 3D dartboard. It runs in the page; nothing is uploaded.",
+      "stage": "3D dartboard",
+      "intro": "Hold on the board to steady your aim, then let go to throw.",
+      "mode": "Game",
+      "m_x01": "501 (double out)",
+      "m_clock": "Around the Clock",
+      "m_practice": "Practice",
+      "opponent": "Opponent",
+      "o_solo": "Play alone",
+      "o_cpu0": "Computer: easy",
+      "o_cpu1": "Computer: medium",
+      "o_cpu2": "Computer: hard",
+      "newGame": "New game",
+      "you": "You",
+      "cpu": "Computer",
+      "player": "Player",
+      "remaining": "Left",
+      "target": "Next",
+      "points": "Points",
+      "darts": "Darts",
+      "avg": "3-dart avg",
+      "checkout": "Checkout: {route}",
+      "noCheckout": "No checkout from here",
+      "turnYou": "Your throw",
+      "turnCpu": "Computer is throwing",
+      "thisTurn": "This turn",
+      "bust": "Bust! {name}: back to {n}.",
+      "scored": "{name}: {hit} ({n})",
+      "cpuWins": "The computer wins the leg.",
+      "youWin": "You win the leg in {n} darts (average {avg})!",
+      "clockDone": "Around the Clock done in {n} darts!",
+      "again": "Play again",
+      "bestAvg": "Best average {n}",
+      "bestLeg": "Best leg {n} darts",
+      "bestClock": "Best Around the Clock {n} darts",
+      "bull": "Bull",
+      "outerBull": "25",
+      "miss": "Miss",
+      "hint": "Move the mouse to aim, hold to steady and release to throw. Keyboard: arrow keys aim (Shift for bigger steps), hold Space and let go to throw.",
+      "hintTouch": "Hold on the board to aim (the marker sits just above your finger), slide to adjust and lift to throw."
+    }
+  }
+}

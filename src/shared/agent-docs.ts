@@ -10,16 +10,18 @@ import { REF_ENTRIES } from "./ref";
 import { SLANG_ENTRIES } from "./slang";
 import { IDEA_ENTRIES } from "./ideas";
 import { NOSTALGIA_ENTRIES } from "./nostalgia";
-import { SUMMARY_ENTRIES } from "./summaries";
 import { COUNTRY_LIST } from "./countries";
 import { FOODS } from "./calories";
 import { ELEMENT_SLUGS } from "./elements";
+import { EMOJI_SLUGS } from "./emoji";
+import { CURRENCY_PAIRS } from "./currency";
+import { currencyHref } from "./path";
 import { CALENDAR_YEARS, HOLIDAY_COUNTRIES } from "./calendar";
 import { LOCALES, localePath } from "./locale";
 import { IMAGE_COUNTS, IMAGE_SIZES, IMAGE_STYLES, PROMPT_MAX } from "./image-gen";
 import { MUSIC_BARS, MUSIC_STYLES, STYLE_PRESETS, SURPRISE_IDS } from "./music-gen";
 import { ASPECTS, DURATIONS, FPS, MOTIONS, SIZES, STRENGTH_IDS } from "./parallax";
-import { AI_TOOLS, CATEGORIES, LOOKUP_TOOLS, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, categoryLinks, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ToolId } from "./path";
+import { AI_TOOLS, CATEGORIES, LOOKUP_TOOLS, appHref, datasetHref, rankingHref, gamesHref, kbHref, learnHref, quizHref, refHref, slangHref, ideasHref, nostalgiaHref, categoryLinks, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type CategoryId, type ToolId } from "./path";
 import { SITE_ORIGIN } from "./sitemap";
 
 const CATEGORY_TITLE: Record<CategoryId, string> = {
@@ -40,7 +42,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   games: "Games: solitaire, spider solitaire, FreeCell, minesweeper, snake, checkers, reversi, gomoku, nonogram, memory game, Chinese checkers, sudoku, tic-tac-toe, 2048, the dinosaur game, mahjong solitaire, chess, Chinese chess, and retro players for your own ROM or SWF",
   assets: "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)",
   wordgames: "Word games: word search, hangman, typing game, typing practice (touch-typing lessons)",
-  games3d: "3D games: 3D chess against the computer, magic cube (3×3 and other sizes), stack game, driving and drift game, flight simulator",
+  games3d: "3D games: 3D chess against the computer, magic cube (2×2–4×4) and cube solver, stack game, driving and drift game, flight simulator, pinball, 8-ball pool, air hockey, darts",
   academic: "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines; a citation generator (APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver, GB/T 7714) with DOI and ISBN lookup and BibTeX/RIS import and export",
   valuation: "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)",
 };
@@ -258,11 +260,12 @@ export function buildLlmsTxt(): string {
     `- [Memes](${SITE_ORIGIN}${slangHref("en", null)}): ${SLANG_ENTRIES.length} viral memes, internet slang words and viral TikTok/Douyin songs (Tung Tung Tung Sahur, Pepe, Chill Guy, Labubu, aura, yyds, neijuan, 6 7, APT.…): meaning, dated origin timeline, usage and current popularity from Wikipedia page views, in eight languages.`,
     `- [Business ideas](${SITE_ORIGIN}${ideasHref("en", null)}): ${IDEA_ENTRIES.length} business and side-hustle ideas (AI agency, Amazon FBA, TikTok Shop, vending machines, cleaning, food trucks…), each with a 0-100 outlook score from four years of Google Ads Keyword Planner search data in eight languages, a 12-month forecast, a startup-cost level, and a guide to how it makes money, what it takes, the risks and how to test the idea cheaply (no income or cost figures).`,
     `- [Nostalgia](${SITE_ORIGIN}${nostalgiaHref("en", null)}): ${NOSTALGIA_ENTRIES.length} things from 1980s–2000s childhoods (Famicom, Tamagotchi, pagers, Walkman, Y2K, White Rabbit candy, Chinese snacks and playground games): what each was, when it was around, what it cost, what happened to it and whether it is still sold, in eight languages.`,
-    `- [Summaries](${SITE_ORIGIN}${summariesHref("en", null)}): ${SUMMARY_ENTRIES.length} plot summaries of well-known books, films, TV series and anime (Hamlet, Macbeth, Nineteen Eighty-Four, The Little Prince, Shutter Island, Inception, Stranger Things, Squid Game, Attack on Titan, The Tale of Kieu…): main characters, the plot in order, the ending explained, themes and a three-question self-check, checked against cited sources, in eight languages. Pages contain spoilers from the plot section on.`,
     `- [Countries](${SITE_ORIGIN}${countriesHref("en", null)}): ${COUNTRY_LIST.length} country and territory profiles: flag, capital, population, GDP, currency, calling code, time zones and about 50 World Bank figures, each with its world rank and a link to its ranked table, in eight languages.`,
     `- [Food calories](${SITE_ORIGIN}${caloriesHref("en", null)}): calories, protein, fat, carbohydrate, fibre, sugars and minerals per 100 g and per typical serving for ${FOODS.length} common foods (fruit, vegetables, rice, noodles and bread, meat, fish, eggs and dairy, tofu and beans, nuts, oils, drinks, sweets), from USDA FoodData Central (public domain, CC0 1.0), each with a gram calculator, in eight languages.`,
     `- [Periodic table](${SITE_ORIGIN}${elementsHref("en", null)}): all ${ELEMENT_SLUGS.length} elements as a clickable table and one page each (for example ${SITE_ORIGIN}${elementsHref("en", "carbon")}): atomic number, atomic mass, category, group and period, electron configuration, melting and boiling points in K and °C, density, electronegativity, ionization energy and oxidation states from PubChem (NCBI, public domain), names in eight languages from Wikidata (CC0).`,
+    `- [Emoji meanings](${SITE_ORIGIN}${emojiHref("en", null)}): ${EMOJI_SLUGS.length} of the most-used emoji, one page each (for example ${SITE_ORIGIN}${emojiHref("en", "loudly-crying-face")}): what people use it for (written by cv.cm), the official Unicode CLDR name and keywords in eight languages, code points, emoji version and year added, Unicode group and subgroup, skin-tone and gender forms, with one-tap copy; data from Unicode emoji-test.txt and CLDR (Unicode License v3).`,
     `- [Calendar](${SITE_ORIGIN}${calendarHref("en", null)}): year and month calendars for ${CALENDAR_YEARS.join(", ")} with ISO week numbers, public holidays for ${HOLIDAY_COUNTRIES.length} countries copied from the official government announcements (China incl. makeup working days, Taiwan, Hong Kong, Japan, South Korea, Vietnam, Indonesia, United States, United Kingdom, Spain, Mexico), Chinese / Vietnamese / Korean lunar dates and Japanese rokuyō computed from new moons, the 24 solar terms and moon phases with times, and a solar–lunar date converter (1900–2100).`,
+    `- [Exchange rates](${SITE_ORIGIN}${currencyHref("en", null)}): a converter for every currency in the ECB euro foreign exchange reference rates and ${CURRENCY_PAIRS.length} currency pairs (for example ${SITE_ORIGIN}${currencyHref("en", "usd-cny")}): the latest reference rate both ways, conversion tables, high, low and average over 30 days, 1 year, 5 years and since the series began (1999 for most), and charts of monthly averages and the last 90 days. Cross rates are computed through the euro; a daily snapshot (ECB, reuse with the source named), for information only, never a live quote or investment advice. The ECB has no TWD or VND rate.`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,
     `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): free homebrew games playable in the browser.`,
     `- [Sitemap](${SITE_ORIGIN}/sitemap.xml)`,

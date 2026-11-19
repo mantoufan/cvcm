@@ -1294,4 +1294,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountCitation(host, "harvard", "harvard");
     return m.unmountCitation;
   },
+  "cube-solver": async (host, ctx) => {
+    const m = await import("./cube-solver/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountCubeSolver(host);
+    return m.unmountCubeSolver;
+  },
+  "pinball": async (host, ctx) => {
+    const m = await import("./pinball/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPinball(host);
+    return m.unmountPinball;
+  },
+  "pool-game": async (host, ctx) => {
+    const m = await import("./pool-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPoolGame(host);
+    return m.unmountPoolGame;
+  },
+  "air-hockey": async (host, ctx) => {
+    const m = await import("./air-hockey/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountAirHockey(host);
+    return m.unmountAirHockey;
+  },
+  "darts": async (host, ctx) => {
+    const m = await import("./darts/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountDarts(host);
+    return m.unmountDarts;
+  },
 };

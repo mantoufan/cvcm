@@ -13,11 +13,13 @@ import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublis
 import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaModified, type IdeaId } from "./ideas";
 import { COUNTRY_LIST, COUNTRIES_UPDATED } from "./countries";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
-import { SUMMARY_ENTRIES, SUMMARIES_HUB_UPDATED, SUMMARIES_PUBLISHED, summaryUpdated, type SummaryId } from "./summaries";
 import { CALORIES_SNAPSHOT, FOODS, type FoodId } from "./calories";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 import { ELEMENT_SLUGS, ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT, type ElementSlug } from "./elements";
+import { EMOJI_SLUGS, emojiUpdated, type EmojiSlug } from "./emoji";
 import { CALENDAR_PAGES, CALENDAR_UPDATED, type CalendarPage } from "./calendar";
+import { CURRENCY_PAIRS, CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT, type CurrencyPair } from "./currency";
+import { currencyHref } from "./path";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -50,11 +52,12 @@ export type SitemapPage =
   | { locale: Locale; kind: "slang"; entry: SlangId | null }
   | { locale: Locale; kind: "ideas"; entry: IdeaId | null }
   | { locale: Locale; kind: "nostalgia"; entry: NostalgiaId | null }
-  | { locale: Locale; kind: "summaries"; entry: SummaryId | null }
   | { locale: Locale; kind: "countries"; entry: string | null }
   | { locale: Locale; kind: "calories"; food: FoodId | null }
   | { locale: Locale; kind: "elements"; entry: ElementSlug | null }
-  | { locale: Locale; kind: "calendar"; page: CalendarPage };
+  | { locale: Locale; kind: "calendar"; page: CalendarPage }
+  | { locale: Locale; kind: "emoji"; entry: EmojiSlug | null }
+  | { locale: Locale; kind: "currency"; pair: CurrencyPair | null };
 
 export function sitemapPages(): SitemapPage[] {
   const pages: SitemapPage[] = [];
@@ -90,8 +93,6 @@ export function sitemapPages(): SitemapPage[] {
     for (const entry of IDEA_ENTRIES) pages.push({ locale, kind: "ideas", entry });
     pages.push({ locale, kind: "nostalgia", entry: null });
     for (const entry of NOSTALGIA_ENTRIES) pages.push({ locale, kind: "nostalgia", entry });
-    pages.push({ locale, kind: "summaries", entry: null });
-    for (const entry of SUMMARY_ENTRIES) pages.push({ locale, kind: "summaries", entry });
     pages.push({ locale, kind: "countries", entry: null });
     for (const entry of COUNTRY_LIST) pages.push({ locale, kind: "countries", entry });
     pages.push({ locale, kind: "calories", food: null });
@@ -99,6 +100,10 @@ export function sitemapPages(): SitemapPage[] {
     pages.push({ locale, kind: "elements", entry: null });
     for (const entry of ELEMENT_SLUGS) pages.push({ locale, kind: "elements", entry });
     for (const page of CALENDAR_PAGES) pages.push({ locale, kind: "calendar", page });
+    pages.push({ locale, kind: "emoji", entry: null });
+    for (const entry of EMOJI_SLUGS) pages.push({ locale, kind: "emoji", entry });
+    pages.push({ locale, kind: "currency", pair: null });
+    for (const pair of CURRENCY_PAIRS) pages.push({ locale, kind: "currency", pair });
     for (const page of LEGAL_PAGES) pages.push({ locale, kind: "legal", page });
   }
   return pages;
@@ -120,11 +125,12 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(page.locale, page.entry)}`;
   if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(page.locale, page.entry)}`;
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(page.locale, page.entry)}`;
-  if (page.kind === "summaries") return `${SITE_ORIGIN}${summariesHref(page.locale, page.entry)}`;
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(page.locale, page.entry)}`;
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(page.locale, page.food)}`;
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(page.locale, page.entry)}`;
   if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(page.locale, page.page)}`;
+  if (page.kind === "emoji") return `${SITE_ORIGIN}${emojiHref(page.locale, page.entry)}`;
+  if (page.kind === "currency") return `${SITE_ORIGIN}${currencyHref(page.locale, page.pair)}`;
   return `${SITE_ORIGIN}${appHref(page.locale, null)}`;
 }
 
@@ -148,11 +154,12 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(locale, page.entry)}`;
   if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(locale, page.entry)}`;
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(locale, page.entry)}`;
-  if (page.kind === "summaries") return `${SITE_ORIGIN}${summariesHref(locale, page.entry)}`;
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(locale, page.entry)}`;
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(locale, page.food)}`;
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(locale, page.entry)}`;
   if (page.kind === "calendar") return `${SITE_ORIGIN}${calendarHref(locale, page.page)}`;
+  if (page.kind === "emoji") return `${SITE_ORIGIN}${emojiHref(locale, page.entry)}`;
+  if (page.kind === "currency") return `${SITE_ORIGIN}${currencyHref(locale, page.pair)}`;
   return `${SITE_ORIGIN}${appHref(locale, null)}`;
 }
 
@@ -179,11 +186,12 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "slang") return "slang";
   if (page.kind === "ideas") return "ideas";
   if (page.kind === "nostalgia") return "nostalgia";
-  if (page.kind === "summaries") return "summaries";
   if (page.kind === "countries") return "countries";
   if (page.kind === "calories") return "calories";
   if (page.kind === "elements") return "elements";
   if (page.kind === "calendar") return "calendar";
+  if (page.kind === "emoji") return "emoji";
+  if (page.kind === "currency") return "currency";
   return "pages";
 }
 
@@ -193,7 +201,7 @@ export function sitemapSectionUrl(section: SitemapSection): string {
 
 /**
  * `<lastmod>` only where a real edit date exists: knowledge articles (per-locale dates from git via
- * `npm run kb:sync`), their hub (newest article), data tables (snapshot date), reference entries in REF_UPDATED, slang, nostalgia and summaries entries (published or edited date; the hub takes the newest), ideas (also the data snapshot date). Other pages have no tracked
+ * `npm run kb:sync`), their hub (newest article), data tables (snapshot date), reference entries in REF_UPDATED, slang and nostalgia entries (published or edited date; the hub takes the newest), ideas (also the data snapshot date). Other pages have no tracked
  * edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
  */
 function pageLastmod(page: SitemapPage): string | null {
@@ -220,10 +228,6 @@ function pageLastmod(page: SitemapPage): string | null {
     // The hub changes whenever an entry does (or one is added), or when its own copy is edited: the newest of those.
     return [...NOSTALGIA_ENTRIES.map(nostalgiaUpdated), ...(NOSTALGIA_HUB_UPDATED ? [NOSTALGIA_HUB_UPDATED] : [])].sort().at(-1) ?? NOSTALGIA_PUBLISHED;
   }
-  if (page.kind === "summaries") {
-    if (page.entry) return summaryUpdated(page.entry);
-    return [...SUMMARY_ENTRIES.map(summaryUpdated), ...(SUMMARIES_HUB_UPDATED ? [SUMMARIES_HUB_UPDATED] : [])].sort().at(-1) ?? SUMMARIES_PUBLISHED;
-  }
   // Country profiles change with the data snapshot (World Bank tables, codes, capitals, flags).
   if (page.kind === "countries") return COUNTRIES_UPDATED;
   // Calories pages show the USDA snapshot: they change when scripts/fetch-calories.mjs writes a new one.
@@ -232,6 +236,10 @@ function pageLastmod(page: SitemapPage): string | null {
   if (page.kind === "elements") return [ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT].sort().at(-1)!;
   // Calendar pages change when their holiday lists or tables do (CALENDAR_UPDATED, set by hand with that change).
   if (page.kind === "calendar") return CALENDAR_UPDATED;
+  // Emoji pages show the Unicode snapshot and the usage sentences: the latest of launch, snapshot and copy edit.
+  if (page.kind === "emoji") return emojiUpdated();
+  // Exchange-rate pages show the ECB snapshot: the later of its date and the day the channel went live (= JSON-LD dateModified).
+  if (page.kind === "currency") return [CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT].sort().at(-1)!;
   return null;
 }
 

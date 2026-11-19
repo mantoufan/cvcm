@@ -1,9 +1,10 @@
+import { CURRENCY_PAIRS } from "../src/shared/currency";
 import { CALENDAR_PAGES } from "../src/shared/calendar";
+import { EMOJI_SLUGS } from "../src/shared/emoji";
 import { REF_UPDATED } from "../src/shared/ref";
 import { SLANG_ENTRIES } from "../src/shared/slang";
 import { IDEA_ENTRIES } from "../src/shared/ideas";
 import { NOSTALGIA_ENTRIES } from "../src/shared/nostalgia";
-import { SUMMARY_ENTRIES } from "../src/shared/summaries";
 import { COUNTRY_LIST } from "../src/shared/countries";
 import { FOODS } from "../src/shared/calories";
 import { describe, expect, it } from "vitest";
@@ -26,7 +27,7 @@ describe("sitemap", () => {
     expect(xml).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
     expect(sitemapPages().length).toBe(
-      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + RANKINGS.length + 1 + DATASETS.length + Object.keys(KB_SHELVES).length + KB_ARTICLES.length + 1 + REF_ENTRIES.length + 1 + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + SUMMARY_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + CALENDAR_PAGES.length),
+      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + RANKINGS.length + 1 + DATASETS.length + Object.keys(KB_SHELVES).length + KB_ARTICLES.length + 1 + REF_ENTRIES.length + 1 + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + CALENDAR_PAGES.length + 1 + CURRENCY_PAIRS.length + 1 + EMOJI_SLUGS.length),
     );
     for (const locale of LOCALES) {
       expect(xml).toContain(`https://cv.cm${appHref(locale, null)}`);
@@ -49,8 +50,8 @@ describe("sitemap", () => {
     expect(xml).toContain("https://cv.cm/zh-tw/");
     expect(xml).not.toContain("https://cv.cm/zh-CN/");
     expect(xml).not.toContain("https://cv.cm/zh-TW/");
-    // Only kb pages (every shelf hub and its articles), data tables, reference pages, slang, nostalgia, summaries, country, calories and periodic table pages have real edit dates.
-    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + Object.keys(KB_SHELVES).length + DATASETS.length + 1 + RANKINGS.length + 1 + Object.keys(REF_UPDATED).length + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + SUMMARY_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + 1 + CALENDAR_PAGES.length));
+    // Only kb pages (every shelf hub and its articles), data tables, reference pages, slang, nostalgia, country, calories and periodic table and emoji pages have real edit dates.
+    expect(xml.match(/<lastmod>/g)?.length).toBe(LOCALES.length * (KB_ARTICLES.length + Object.keys(KB_SHELVES).length + DATASETS.length + 1 + RANKINGS.length + 1 + Object.keys(REF_UPDATED).length + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + 1 + CALENDAR_PAGES.length + 1 + CURRENCY_PAIRS.length + 1 + EMOJI_SLUGS.length));
     expect(xml).toContain(`<lastmod>${DATASET_SNAPSHOT}</lastmod>`);
     const newest = KNOWLEDGE_ARTICLES.map((id) => kbUpdatedOn(id, "en")).sort().at(-1);
     expect(xml).toContain(`<loc>https://cv.cm${kbHref("en", null)}</loc>\n    <lastmod>${newest}</lastmod>`);

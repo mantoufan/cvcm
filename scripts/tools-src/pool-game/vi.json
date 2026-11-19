@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "titlePoolGame": "Game bida — chơi bida lỗ 8 bóng 3D online — cv.cm",
+    "descPoolGame": "Chơi bida lỗ 8 bóng online miễn phí: bàn bida 3D, đường ngắm, ba mức độ máy hoặc hai người trên cùng một máy. Chơi ngay trên trình duyệt, không cần cài."
+  },
+  "tools": {
+    "pool-game": {
+      "name": "Game bida",
+      "blurb": "Bida 8 bóng trên bàn 3D, đấu với máy hoặc bạn bè."
+    }
+  },
+  "faq": {
+    "pool-game": {
+      "q1": "Chơi bida 8 bóng thế nào?",
+      "a1": "Phá bi xong, đưa hết nhóm bi của bạn — bi trơn (1–7) hoặc bi sọc (9–15) — vào lỗ, cuối cùng là bi số 8 màu đen. Bi đầu tiên bạn đánh vào sau lượt phá quyết định nhóm của bạn. Đánh bi 8 vào khi chưa hết nhóm, hoặc vào cùng lúc phạm lỗi, là thua.",
+      "q2": "Ngắm và đánh thế nào?",
+      "a2": "Di chuột trên bàn hoặc kéo ngón tay để ngắm; đường trắng cho biết bi cái sẽ chạm vào đâu, đường vàng là hướng bi mục tiêu. Chỉnh lực bằng thanh trượt hoặc phím lên/xuống rồi bấm Đánh hoặc phím cách. Phím trái/phải chỉnh góc nhỏ (giữ Shift để chỉnh rất nhỏ).",
+      "q3": "Thế nào là phạm lỗi?",
+      "a3": "Bi cái rơi lỗ, bi cái không chạm bi nào, chạm trước bi của nhóm đối thủ (hoặc chạm bi 8 quá sớm), và cú đánh không có bi nào vào lỗ cũng không bi nào chạm băng sau lần chạm đầu. Sau lỗi, đối thủ được đặt bi cái ở bất cứ đâu.",
+      "q4": "Máy chơi giỏi đến đâu?",
+      "a4": "Dễ, Vừa và Khó đều tính thử các cú có thể ăn bằng cùng vật lý với bạn; mức càng dễ thì thử càng ít cú và ngắm càng kém chính xác.",
+      "q5": "Ván đấu có được lưu không?",
+      "a5": "Có. Bàn bi, tỉ số và số trận thắng thua với máy được lưu trong trình duyệt này để chơi tiếp sau."
+    }
+  },
+  "guides": {
+    "pool-game": {
+      "lead": "Chơi bida 8 bóng trong ba bước.",
+      "s1t": "Phá bi đầu ván",
+      "s1b": "Bấm Chơi, ngắm vào khối bi và đánh mạnh để bi tản ra.",
+      "s2t": "Ăn hết nhóm bi",
+      "s2b": "Ngắm bằng chuột hoặc ngón tay, chỉnh lực rồi đánh. Bi đầu tiên vào lỗ sau lượt phá quyết định bi trơn hay bi sọc.",
+      "s3t": "Kết thúc bằng bi 8",
+      "s3b": "Hết nhóm bi thì đánh bi 8 màu đen vào lỗ để thắng. Tránh phạm lỗi vì đối thủ sẽ được đặt bi tự do."
+    }
+  },
+  "ui": {
+    "poolGame": {
+      "title": "Game bida",
+      "privacyNote": "Chơi bida 8 bóng trên bàn 3D với máy hoặc bạn bè. Trò chơi chạy ngay trong trang này.",
+      "stage": "Bàn bida",
+      "intro": "8 bóng: ăn hết nhóm bi rồi đến bi 8 màu đen.",
+      "you": "Bạn",
+      "computer": "Máy",
+      "player": "Người chơi {n}",
+      "open": "chưa chia nhóm",
+      "groupLeft": "{group}, còn {n}",
+      "solids": "bi trơn",
+      "stripes": "bi sọc",
+      "wins": "Thắng",
+      "losses": "Thua",
+      "vsComputer": "Đấu với máy",
+      "twoPlayers": "Hai người chơi",
+      "level": "Mức độ của máy",
+      "l_0": "Dễ",
+      "l_1": "Vừa",
+      "l_2": "Khó",
+      "players": "Người chơi",
+      "power": "Lực đánh",
+      "shoot": "Đánh",
+      "turnView": "Xoay góc nhìn",
+      "newGame": "Ván mới",
+      "thinking": "Máy đang suy nghĩ…",
+      "yourShot": "Đến lượt bạn.",
+      "playerShot": "Đến lượt {who}.",
+      "breakShot": "Phá bi: ngắm vào khối bi và đánh mạnh.",
+      "ballInHand": "Bi tự do: kéo bi cái đến chỗ bạn muốn.",
+      "win_eight": "{who} thắng: bi 8 đã vào lỗ!",
+      "win_eightEarly": "{who} thắng: bi 8 vào lỗ quá sớm.",
+      "win_eightFoul": "{who} thắng: bi 8 vào lỗ khi phạm lỗi.",
+      "again_shot": "Vào rồi! Đánh tiếp.",
+      "foul_scratch": "Lỗi: bi cái rơi lỗ.",
+      "foul_noContact": "Lỗi: bi cái không chạm bi nào.",
+      "foul_wrongBall": "Lỗi: chạm sai bi trước.",
+      "foul_noRail": "Lỗi: không bi nào chạm băng.",
+      "again": "Chơi lại",
+      "hint": "Ngắm bằng chuột hoặc kéo trên bàn, phím trái/phải chỉnh nhỏ (Shift để chỉnh rất nhỏ), phím lên/xuống chỉnh lực, phím cách để đánh."
+    }
+  }
+}

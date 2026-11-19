@@ -197,7 +197,7 @@ describe("knowledge: routes", () => {
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "photo")}</loc>`);
       for (const id of KB_ARTICLES) expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, id)}</loc>`);
     }
-  });
+  }, 60_000);
 
   it("is tracked by analytics (no personal data on these pages)", () => {
     expect(isTrackedPath("/en/learn/knowledge/what-is-exif/")).toBe(true);

@@ -17,15 +17,16 @@ import { REF_SEGMENT, isRefId, type RefId } from "./ref";
 import { LEGACY_SLANG_SEGMENTS, SLANG_SEGMENT, isSlangId, type SlangId } from "./slang";
 import { IDEAS_SEGMENT, isIdeaId, type IdeaId } from "./ideas";
 import { NOSTALGIA_SEGMENT, isNostalgiaId, type NostalgiaId } from "./nostalgia";
-import { SUMMARIES_SEGMENT, isSummaryId, type SummaryId } from "./summaries";
 import { COUNTRIES_SEGMENT, isCountrySlug } from "./countries";
 import { CALORIES_SEGMENT, isFoodId, type FoodId } from "./calories";
 import { ELEMENTS_SEGMENT, isElementSlug, type ElementSlug } from "./elements";
+import { CURRENCY_SEGMENT, isCurrencyPair, type CurrencyPair } from "./currency";
 import { CALENDAR_SEGMENT, calendarPageOf, type CalendarPage } from "./calendar";
+import { EMOJI_SEGMENT, isEmojiSlug, type EmojiSlug } from "./emoji";
 import { localePath, parseLocale, type Locale } from "./locale";
 
 /** Child sitemaps listed by `/sitemap.xml` (`/sitemaps/<section>.xml`), so Search Console reports indexing per section. */
-export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "summaries", "countries", "calories", "elements", "calendar"] as const;
+export const SITEMAP_SECTIONS = ["pages", "learn", "games", "tests", "datasets", "rankings", "reference", "slang", "ideas", "nostalgia", "countries", "calories", "elements", "calendar", "emoji", "currency"] as const;
 
 /** Agent discovery files (`src/shared/agent-docs.ts`): static, and readable from any origin (the Worker adds CORS). */
 export const AGENT_DOC_PATHS = ["/llms.txt", "/tools.json", "/.well-known/poppy.json"] as const;
@@ -64,7 +65,7 @@ export const CATEGORIES = [
   { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "chinese-checkers"] },
   { id: "wordgames", tools: ["word-search", "hangman", "typing-game", "typing-practice"] },
   // Three.js games: the renderer and three itself load only when a game starts (Play), never during prerender.
-  { id: "games3d", tools: ["3d-chess", "magic-cube", "stack-game", "driving-game", "flight-simulator"] },
+  { id: "games3d", tools: ["3d-chess", "magic-cube", "cube-solver", "stack-game", "driving-game", "flight-simulator", "pinball", "pool-game", "air-hockey", "darts"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
   { id: "academic", tools: ["standard-deviation", "sample-size", "cronbach-alpha", "t-test", "chi-square", "p-value", "z-score", "citation-generator", "apa-citation-generator", "mla-citation-generator", "harvard-referencing-generator"] },
   { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation", "idea-validator"] },
@@ -300,6 +301,11 @@ export const TOOLS = [
   "apa-citation-generator",
   "mla-citation-generator",
   "harvard-referencing-generator",
+  "cube-solver",
+  "pinball",
+  "pool-game",
+  "air-hockey",
+  "darts",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
@@ -655,11 +661,12 @@ export type AppPath =
   | { kind: "bare-slang"; entry: SlangId | null }
   | { kind: "bare-ideas"; entry: IdeaId | null }
   | { kind: "bare-nostalgia"; entry: NostalgiaId | null }
-  | { kind: "bare-summaries"; entry: SummaryId | null }
   | { kind: "bare-countries"; entry: string | null }
   | { kind: "bare-calories"; food: FoodId | null }
   | { kind: "bare-elements"; entry: ElementSlug | null }
+  | { kind: "bare-currency"; pair: CurrencyPair | null }
   | { kind: "bare-calendar"; page: CalendarPage }
+  | { kind: "bare-emoji"; entry: EmojiSlug | null }
   | { kind: "app"; locale: Locale; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "learn"; locale: Locale; tutorial: TutorialId | null }
   | ({ kind: "games"; locale: Locale } & GamesPath)
@@ -674,11 +681,12 @@ export type AppPath =
   | { kind: "slang"; locale: Locale; entry: SlangId | null }
   | { kind: "ideas"; locale: Locale; entry: IdeaId | null }
   | { kind: "nostalgia"; locale: Locale; entry: NostalgiaId | null }
-  | { kind: "summaries"; locale: Locale; entry: SummaryId | null }
   | { kind: "countries"; locale: Locale; entry: string | null }
   | { kind: "calories"; locale: Locale; food: FoodId | null }
   | { kind: "elements"; locale: Locale; entry: ElementSlug | null }
+  | { kind: "currency"; locale: Locale; pair: CurrencyPair | null }
   | { kind: "calendar"; locale: Locale; page: CalendarPage }
+  | { kind: "emoji"; locale: Locale; entry: EmojiSlug | null }
   | { kind: "clip"; id: string }
   | { kind: "unknown" };
 
@@ -815,12 +823,6 @@ export function parseAppPath(pathname: string): AppPath {
       if (isNostalgiaId(third)) return { kind: "nostalgia", locale, entry: third };
       return { kind: "unknown" };
     }
-    if (second === SUMMARIES_SEGMENT) {
-      if (rest.length > 0) return { kind: "unknown" };
-      if (!third) return { kind: "summaries", locale, entry: null };
-      if (isSummaryId(third)) return { kind: "summaries", locale, entry: third };
-      return { kind: "unknown" };
-    }
     if (second === COUNTRIES_SEGMENT) {
       if (rest.length > 0) return { kind: "unknown" };
       if (!third) return { kind: "countries", locale, entry: null };
@@ -840,9 +842,22 @@ export function parseAppPath(pathname: string): AppPath {
       if (isElementSlug(third)) return { kind: "elements", locale, entry: third };
       return { kind: "unknown" };
     }
+    if (second === CURRENCY_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "currency", locale, pair: null };
+      // Parts are lowercased above, so /currency/USD-CNY/ parses as usd-cny and the Worker 301s to it.
+      if (isCurrencyPair(third)) return { kind: "currency", locale, pair: third };
+      return { kind: "unknown" };
+    }
     if (second === CALENDAR_SEGMENT) {
       const page = calendarPageOf([third, ...rest].filter(Boolean) as string[]);
       return page ? { kind: "calendar", locale, page } : { kind: "unknown" };
+    }
+    if (second === EMOJI_SEGMENT) {
+      if (rest.length > 0) return { kind: "unknown" };
+      if (!third) return { kind: "emoji", locale, entry: null };
+      if (isEmojiSlug(third)) return { kind: "emoji", locale, entry: third };
+      return { kind: "unknown" };
     }
     if (isLegalPageId(second)) {
       if (third || rest.length > 0) return { kind: "unknown" };
@@ -928,11 +943,6 @@ export function parseAppPath(pathname: string): AppPath {
     if (isNostalgiaId(second) && !third) return { kind: "bare-nostalgia", entry: second };
     return { kind: "unknown" };
   }
-  if (first === SUMMARIES_SEGMENT) {
-    if (!second) return { kind: "bare-summaries", entry: null };
-    if (isSummaryId(second) && !third) return { kind: "bare-summaries", entry: second };
-    return { kind: "unknown" };
-  }
   if (first === COUNTRIES_SEGMENT) {
     if (!second) return { kind: "bare-countries", entry: null };
     if (isCountrySlug(second) && !third) return { kind: "bare-countries", entry: second };
@@ -948,9 +958,19 @@ export function parseAppPath(pathname: string): AppPath {
     if (isElementSlug(second) && !third) return { kind: "bare-elements", entry: second };
     return { kind: "unknown" };
   }
+  if (first === CURRENCY_SEGMENT) {
+    if (!second) return { kind: "bare-currency", pair: null };
+    if (isCurrencyPair(second) && !third) return { kind: "bare-currency", pair: second };
+    return { kind: "unknown" };
+  }
   if (first === CALENDAR_SEGMENT) {
     const page = calendarPageOf([second, third, ...rest].filter(Boolean) as string[]);
     return page ? { kind: "bare-calendar", page } : { kind: "unknown" };
+  }
+  if (first === EMOJI_SEGMENT) {
+    if (!second) return { kind: "bare-emoji", entry: null };
+    if (isEmojiSlug(second) && !third) return { kind: "bare-emoji", entry: second };
+    return { kind: "unknown" };
   }
   if (isLegalPageId(first) && !second) return { kind: "bare-legal", page: first };
   if (isToolId(first) && !second) return { kind: "bare", tool: first };
@@ -1041,12 +1061,6 @@ export function nostalgiaHref(locale: Locale, entry: NostalgiaId | null = null):
   return entry ? `${base}/${entry}/` : `${base}/`;
 }
 
-/** The summaries channel: `/{locale}/summaries/` (hub) and `/{locale}/summaries/{id}/`. */
-export function summariesHref(locale: Locale, entry: SummaryId | null = null): string {
-  const base = `/${localePath(locale)}/${SUMMARIES_SEGMENT}`;
-  return entry ? `${base}/${entry}/` : `${base}/`;
-}
-
 /** Country profiles: `/{locale}/countries/` (hub) and `/{locale}/countries/{slug}/`. */
 export function countriesHref(locale: Locale, entry: string | null = null): string {
   const base = `/${localePath(locale)}/${COUNTRIES_SEGMENT}`;
@@ -1062,6 +1076,18 @@ export function caloriesHref(locale: Locale, food: FoodId | null = null): string
 export function elementsHref(locale: Locale, entry: ElementSlug | null = null): string {
   const base = `/${localePath(locale)}/${ELEMENTS_SEGMENT}`;
   return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The emoji meanings channel: `/{locale}/emoji/` (hub) and `/{locale}/emoji/{slug}/`. */
+export function emojiHref(locale: Locale, entry: EmojiSlug | null = null): string {
+  const base = `/${localePath(locale)}/${EMOJI_SEGMENT}`;
+  return entry ? `${base}/${entry}/` : `${base}/`;
+}
+
+/** The exchange-rate channel: `/{locale}/currency/` (hub) and `/{locale}/currency/{from}-{to}/`. */
+export function currencyHref(locale: Locale, pair: CurrencyPair | null = null): string {
+  const base = `/${localePath(locale)}/${CURRENCY_SEGMENT}`;
+  return pair ? `${base}/${pair}/` : `${base}/`;
 }
 
 /** The calendar channel: `/{locale}/calendar/` (hub), `/calendar/2027/`, `/calendar/2027-02/`, `/calendar/holidays/japan/`, … */

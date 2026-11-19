@@ -1,4 +1,5 @@
 import { escapeHtml } from "./device-i18n";
+import { currencyName } from "./currency-names";
 import { fill, type DatasetTable } from "./datasets-i18n";
 import type { Locale } from "./locale";
 import { compact, numberFormat, plain, signed, usd } from "./number-format";
@@ -96,15 +97,6 @@ function maybe(value: number | null, shown: (v: number) => string): { text: stri
   return value === null ? { text: NO_VALUE, sort: NOT_LISTED } : { text: shown(value), sort: value };
 }
 
-const currencyNames = new Map<string, Intl.DisplayNames>();
-function currencyName(locale: Locale, code: string): string {
-  let names = currencyNames.get(locale);
-  if (!names) {
-    names = new Intl.DisplayNames([locale], { type: "currency" });
-    currencyNames.set(locale, names);
-  }
-  return names.of(code) ?? code;
-}
 
 function commodityName(locale: Locale, id: string): string {
   return (rankingUi(locale).commodities as Record<string, string>)[id] ?? id;

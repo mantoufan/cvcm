@@ -21,13 +21,16 @@ import { ideaDescription, ideaTitle } from "./ideas-i18n";
 import type { IdeaId } from "./ideas";
 import { nostalgiaDescription, nostalgiaTitle } from "./nostalgia-i18n";
 import type { NostalgiaId } from "./nostalgia";
-import { summariesDescription, summariesTitle } from "./summaries-i18n";
-import type { SummaryId } from "./summaries";
 import { countryDescription, countryTitle } from "./countries-i18n";
 import { caloriesDescription, caloriesTitle } from "./calories-i18n";
 import type { FoodId } from "./calories";
 import { elementsDescription, elementsTitle } from "./elements-i18n";
 import type { ElementSlug } from "./elements";
+import { emojiDescription, emojiTitle } from "./emoji-i18n";
+import type { EmojiSlug } from "./emoji";
+import { currencyDescription, currencyTitle } from "./currency-i18n";
+import type { CurrencyPair } from "./currency";
+import { currencyHref } from "./path";
 import { calendarDescription, calendarTitle } from "./calendar-i18n";
 import type { CalendarPage } from "./calendar";
 import { TUTORIAL_DIAGRAMS, tutorialSteps } from "./learn";
@@ -36,7 +39,7 @@ import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, categoryOf, deviceHref, gameHubOf, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, categoryOf, deviceHref, gameHubOf, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -89,9 +92,6 @@ export type SeoInput = {
   /** The nostalgia channel under /nostalgia/; `nostalgiaId` null is the hub. */
   nostalgia?: boolean;
   nostalgiaId?: NostalgiaId | null;
-  /** The summaries channel under /summaries/; `summaryId` null is the hub. */
-  summaries?: boolean;
-  summaryId?: SummaryId | null;
   /** Country profiles under /countries/; `countryId` is the slug, null the hub. */
   countries?: boolean;
   countryId?: string | null;
@@ -101,9 +101,15 @@ export type SeoInput = {
   /** The periodic table under /periodic-table/; `elementSlug` null is the hub. */
   elements?: boolean;
   elementSlug?: ElementSlug | null;
+  /** The emoji meanings channel under /emoji/; `emojiSlug` null is the hub. */
+  emoji?: boolean;
+  emojiSlug?: EmojiSlug | null;
   /** The calendar channel under /calendar/; `calendarPage` "hub" is the hub. */
   calendar?: boolean;
   calendarPage?: CalendarPage;
+  /** The exchange-rate channel under /currency/; `currencyPair` null is the hub. */
+  currency?: boolean;
+  currencyPair?: CurrencyPair | null;
 };
 
 const TITLE: Record<ToolId, string> = {
@@ -321,6 +327,11 @@ const TITLE: Record<ToolId, string> = {
   "apa-citation-generator": "meta.titleApaCitationGenerator",
   "mla-citation-generator": "meta.titleMlaCitationGenerator",
   "harvard-referencing-generator": "meta.titleHarvardReferencingGenerator",
+  "cube-solver": "meta.titleCubeSolver",
+  "pinball": "meta.titlePinball",
+  "pool-game": "meta.titlePoolGame",
+  "air-hockey": "meta.titleAirHockey",
+  "darts": "meta.titleDarts",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -565,6 +576,11 @@ const DESC: Record<ToolId, string> = {
   "apa-citation-generator": "meta.descApaCitationGenerator",
   "mla-citation-generator": "meta.descMlaCitationGenerator",
   "harvard-referencing-generator": "meta.descHarvardReferencingGenerator",
+  "cube-solver": "meta.descCubeSolver",
+  "pinball": "meta.descPinball",
+  "pool-game": "meta.descPoolGame",
+  "air-hockey": "meta.descAirHockey",
+  "darts": "meta.descDarts",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {
@@ -887,8 +903,9 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   const seo = normalizeSeo(input);
   if (seo.countries) return countryTitle(locale, seo.countryId ?? null);
   if (seo.nostalgia) return nostalgiaTitle(locale, seo.nostalgiaId ?? null);
-  if (seo.summaries) return summariesTitle(locale, seo.summaryId ?? null);
+  if (seo.currency) return currencyTitle(locale, seo.currencyPair ?? null);
   if (seo.elements) return elementsTitle(locale, seo.elementSlug ?? null);
+  if (seo.emoji) return emojiTitle(locale, seo.emojiSlug ?? null);
   if (seo.calendar) return calendarTitle(locale, seo.calendarPage ?? "hub");
   if (seo.slang) return slangTitle(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaTitle(locale, seo.ideaId ?? null);
@@ -918,8 +935,9 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   const seo = normalizeSeo(input);
   if (seo.countries) return countryDescription(locale, seo.countryId ?? null);
   if (seo.nostalgia) return nostalgiaDescription(locale, seo.nostalgiaId ?? null);
-  if (seo.summaries) return summariesDescription(locale, seo.summaryId ?? null);
+  if (seo.currency) return currencyDescription(locale, seo.currencyPair ?? null);
   if (seo.elements) return elementsDescription(locale, seo.elementSlug ?? null);
+  if (seo.emoji) return emojiDescription(locale, seo.emojiSlug ?? null);
   if (seo.calendar) return calendarDescription(locale, seo.calendarPage ?? "hub");
   if (seo.slang) return slangDescription(locale, seo.slangId ?? null);
   if (seo.ideas) return ideaDescription(locale, seo.ideaId ?? null);
@@ -966,8 +984,9 @@ export function pageCanonical(
   const seo = normalizeSeo(input, clipId);
   if (seo.countries) return `https://cv.cm${countriesHref(locale, seo.countryId ?? null)}`;
   if (seo.nostalgia) return `https://cv.cm${nostalgiaHref(locale, seo.nostalgiaId ?? null)}`;
-  if (seo.summaries) return `https://cv.cm${summariesHref(locale, seo.summaryId ?? null)}`;
+  if (seo.currency) return `https://cv.cm${currencyHref(locale, seo.currencyPair ?? null)}`;
   if (seo.elements) return `https://cv.cm${elementsHref(locale, seo.elementSlug ?? null)}`;
+  if (seo.emoji) return `https://cv.cm${emojiHref(locale, seo.emojiSlug ?? null)}`;
   if (seo.calendar) return `https://cv.cm${calendarHref(locale, seo.calendarPage ?? "hub")}`;
   if (seo.slang) return `https://cv.cm${slangHref(locale, seo.slangId ?? null)}`;
   if (seo.ideas) return `https://cv.cm${ideasHref(locale, seo.ideaId ?? null)}`;

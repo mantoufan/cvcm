@@ -218,6 +218,11 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "apa-citation-generator": "/covers/apa-citation-generator-sweet.jpg?v=1",
   "mla-citation-generator": "/covers/mla-citation-generator-sweet.jpg?v=1",
   "harvard-referencing-generator": "/covers/harvard-referencing-generator-sweet.jpg?v=1",
+  "cube-solver": "/covers/cube-solver-sweet.jpg?v=1",
+  "pinball": "/covers/pinball-sweet.jpg?v=1",
+  "pool-game": "/covers/pool-game-sweet.jpg?v=1",
+  "air-hockey": "/covers/air-hockey-sweet.jpg?v=1",
+  "darts": "/covers/darts-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {

@@ -39,14 +39,16 @@ import { ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd } from "../sh
 import type { IdeaPage } from "../shared/ideas";
 import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaFaqJsonLd } from "../shared/nostalgia-i18n";
 import type { NostalgiaPage } from "../shared/nostalgia";
-import { summariesArticleJsonLd, summariesBreadcrumbJsonLd, summariesFaqJsonLd } from "../shared/summaries-i18n";
-import type { SummaryPage } from "../shared/summaries";
 import { countriesCollectionJsonLd, countryBreadcrumbJsonLd, countryFaqJsonLd } from "../shared/countries-i18n";
 import type { CountryPage } from "../shared/countries";
 import { caloriesBreadcrumbJsonLd, caloriesFaqJsonLd, caloriesPageJsonLd } from "../shared/calories-i18n";
 import type { CaloriesPage } from "../shared/calories";
 import { elementsBreadcrumbJsonLd, elementsFaqJsonLd, elementsPageJsonLd } from "../shared/elements-i18n";
 import type { ElementsPage } from "../shared/elements";
+import { emojiBreadcrumbJsonLd, emojiFaqJsonLd, emojiPageJsonLd } from "../shared/emoji-i18n";
+import type { EmojiPage } from "../shared/emoji";
+import { currencyBreadcrumbJsonLd, currencyFaqJsonLd, currencyPageJsonLd } from "../shared/currency-i18n";
+import type { CurrencyPage } from "../shared/currency";
 import { calendarBreadcrumbJsonLd, calendarFaqJsonLd, calendarPageJsonLd } from "../shared/calendar-i18n";
 import type { CalendarPage } from "../shared/calendar";
 import type { DevicePageId } from "../shared/device";
@@ -116,8 +118,25 @@ export function syncPageJsonLd(
   caloriesPage: CaloriesPage = null,
   elementsPage: ElementsPage = null,
   calendarPage: CalendarPage | null = null,
-  summariesPage: SummaryPage = null,
+  emojiPage: EmojiPage = null,
+  currencyPage: CurrencyPage = null,
 ): void {
+  if (currencyPage) {
+    const pair = currencyPage === "hub" ? null : currencyPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("article-jsonld", currencyPageJsonLd(locale, pair));
+    writeJsonLd("faq-jsonld", currencyFaqJsonLd(locale, pair));
+    writeJsonLd("breadcrumb-jsonld", currencyBreadcrumbJsonLd(locale, pair));
+    return;
+  }
+  if (emojiPage) {
+    const slug = emojiPage === "hub" ? null : emojiPage;
+    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    writeJsonLd("article-jsonld", emojiPageJsonLd(locale, slug));
+    writeJsonLd("faq-jsonld", emojiFaqJsonLd(locale, slug));
+    writeJsonLd("breadcrumb-jsonld", emojiBreadcrumbJsonLd(locale, slug));
+    return;
+  }
   if (elementsPage) {
     const slug = elementsPage === "hub" ? null : elementsPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
@@ -130,8 +149,7 @@ export function syncPageJsonLd(
   const slangId = slangPage === "hub" ? null : slangPage;
   const ideaId = ideasPage === "hub" ? null : ideasPage;
   const nostalgiaId = nostalgiaPage === "hub" ? null : nostalgiaPage;
-  const summaryId = summariesPage === "hub" ? null : summariesPage;
-  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : slangPage ? slangArticleJsonLd(locale, slangId) : ideasPage ? ideasArticleJsonLd(locale, ideaId) : nostalgiaPage ? nostalgiaArticleJsonLd(locale, nostalgiaId) : summariesPage ? summariesArticleJsonLd(locale, summaryId) : calendarPage ? calendarPageJsonLd(locale, calendarPage) : null);
+  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : slangPage ? slangArticleJsonLd(locale, slangId) : ideasPage ? ideasArticleJsonLd(locale, ideaId) : nostalgiaPage ? nostalgiaArticleJsonLd(locale, nostalgiaId) : calendarPage ? calendarPageJsonLd(locale, calendarPage) : null);
   if (datasetPage) {
     const id = datasetPage === "hub" ? null : datasetPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
@@ -181,12 +199,6 @@ export function syncPageJsonLd(
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", nostalgiaFaqJsonLd(locale, nostalgiaId));
     writeJsonLd("breadcrumb-jsonld", nostalgiaBreadcrumbJsonLd(locale, nostalgiaId));
-    return;
-  }
-  if (summariesPage) {
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
-    writeJsonLd("faq-jsonld", summariesFaqJsonLd(locale, summaryId));
-    writeJsonLd("breadcrumb-jsonld", summariesBreadcrumbJsonLd(locale, summaryId));
     return;
   }
   if (slangPage) {

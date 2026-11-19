@@ -11,9 +11,9 @@
 //   largest cities, largest stadiums; names from Wikidata
 import { appendFileSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { inflateRawSync } from "node:zlib";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { ecbHistCsv, getBuffer as getSharedBuffer, unzip } from "./fetch-util.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const FAILURES_FILE = process.env.RANKINGS_FAILURES_FILE ?? join(tmpdir(), "rankings-failures.txt");
@@ -44,34 +44,7 @@ const NAMES = {
 };
 const nameOf = (raw) => NAMES[raw] ?? (/^[a-z]/.test(raw) ? raw[0].toUpperCase() + raw.slice(1) : raw);
 
-async function getBuffer(url) {
-  const res = await fetch(url, { headers: { "User-Agent": UA }, signal: AbortSignal.timeout(90_000) });
-  if (!res.ok) throw new Error(`${res.status} ${url}`);
-  return Buffer.from(await res.arrayBuffer());
-}
-
-/** The files in a zip (or xlsx), by name: enough of the format for the two archives read here. */
-function unzip(buffer) {
-  const end = buffer.lastIndexOf(Buffer.from([0x50, 0x4b, 0x05, 0x06]));
-  if (end < 0) throw new Error("not a zip file");
-  const count = buffer.readUInt16LE(end + 10);
-  let at = buffer.readUInt32LE(end + 16);
-  const files = new Map();
-  for (let i = 0; i < count; i += 1) {
-    const method = buffer.readUInt16LE(at + 10);
-    const size = buffer.readUInt32LE(at + 20);
-    const nameLength = buffer.readUInt16LE(at + 28);
-    const extra = buffer.readUInt16LE(at + 30);
-    const comment = buffer.readUInt16LE(at + 32);
-    const local = buffer.readUInt32LE(at + 42);
-    const name = buffer.toString("utf8", at + 46, at + 46 + nameLength);
-    const start = local + 30 + buffer.readUInt16LE(local + 26) + buffer.readUInt16LE(local + 28);
-    const raw = buffer.subarray(start, start + size);
-    files.set(name, method === 8 ? inflateRawSync(raw) : raw);
-    at += 46 + nameLength + extra + comment;
-  }
-  return files;
-}
+const getBuffer = (url) => getSharedBuffer(url, UA);
 
 async function get(url, headers = {}, timeout = 40_000, init = {}) {
   for (let attempt = 0; ; attempt += 1) {
@@ -330,8 +303,8 @@ async function commodities() {
 
 /** Each currency against the US dollar, from the euro rates: how many per dollar, and how its value moved. */
 async function currencies() {
-  const files = unzip(await getBuffer("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist.zip"));
-  const csv = [...files.values()][0].toString("utf8").trim().split(/\r?\n/).map((line) => line.split(","));
+  // Shared with scripts/fetch-currency.mjs in the same run: one download, cached on disk.
+  const csv = (await ecbHistCsv(UA)).trim().split(/\r?\n/).map((line) => line.split(","));
   const head = csv[0].map((cell) => cell.trim());
   const days = csv.slice(1).map((cells) => ({ date: cells[0], rates: Object.fromEntries(head.slice(1).map((code, i) => [code, Number(cells[i + 1])])) }));
   const latest = days[0];
@@ -915,11 +888,11 @@ rmSync(FAILURES_FILE, { force: true });
 let attempts = 0;
 let failures = 0;
 /** RANKINGS_ONLY=id,id refreshes just those tables (skipping their monthly wait) and keeps the rest as they are, for a new or fixed table. */
-// "memes" belongs to scripts/fetch-meme.mjs (same workflow input), not to a table here.
-const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter((id) => id && id !== "memes");
+// "memes" belongs to scripts/fetch-meme.mjs and "currency" to scripts/fetch-currency.mjs (same workflow input), not to a table here.
+const listed = process.env.RANKINGS_ONLY?.split(",").map((id) => id.trim()).filter((id) => id && id !== "memes" && id !== "currency");
 // Set but empty (an unfilled input) means every table, not none.
 const only = listed?.length ? listed : undefined;
-if (!listed?.length && process.env.RANKINGS_ONLY?.split(",").some((id) => id.trim() === "memes")) {
+if (!listed?.length && process.env.RANKINGS_ONLY?.split(",").some((id) => id.trim() === "memes" || id.trim() === "currency")) {
   // Only "memes" was asked for: that is scripts/fetch-meme.mjs's job, so leave every table as it is.
   console.log("RANKINGS_ONLY names no rankings table; nothing to refresh here.");
   process.exit(0);

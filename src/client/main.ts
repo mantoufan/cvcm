@@ -29,11 +29,11 @@ import {
   ideasPackOf,
   IDEAS_PACK_TOOLS,
   nostalgiaHref,
-  summariesHref,
   countriesHref,
   caloriesHref,
   elementsHref,
   calendarHref,
+  emojiHref,
   toolJob,
   gameHubOf,
   withSearch,
@@ -58,12 +58,14 @@ import { memeImagePath } from "../shared/meme-images";
 import { IDEAS_FOCUS, isIdeaId, type IdeaId, type IdeaPage } from "../shared/ideas";
 import { toolsCrumb } from "../shared/channel-parent";
 import { NOSTALGIA_FOCUS, isNostalgiaId, type NostalgiaId, type NostalgiaPage } from "../shared/nostalgia";
-import { SUMMARIES_FOCUS, isSummaryId, type SummaryId, type SummaryPage } from "../shared/summaries";
 import { COUNTRIES_FOCUS, countryCode, isCountrySlug, type CountryPage } from "../shared/countries";
 import { regionName } from "../shared/datasets-i18n";
 import { CALORIES_FOCUS, type CaloriesPage, type FoodId } from "../shared/calories";
 import { ELEMENTS_FOCUS, type ElementSlug, type ElementsPage } from "../shared/elements";
+import { CURRENCY_FOCUS, type CurrencyPage, type CurrencyPair } from "../shared/currency";
+import { currencyHref } from "../shared/path";
 import { CALENDAR_LOCALE, CALENDAR_YEARS, type CalendarPage } from "../shared/calendar";
+import { EMOJI_FOCUS, type EmojiPage, type EmojiSlug } from "../shared/emoji";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
 import { HREFLANG } from "../shared/sitemap";
 import { toolLessonsSection } from "./tool-lessons";
@@ -114,16 +116,18 @@ let slangPage: SlangPage = null;
 let ideasPage: IdeaPage = null;
 /** A nostalgia page: "hub" for /nostalgia/, else the entry id. */
 let nostalgiaPage: NostalgiaPage = null;
-/** A summaries page: "hub" for /summaries/, else the work id. */
-let summariesPage: SummaryPage = null;
 /** A country profile: "hub" for /countries/, else the country slug. */
 let countriesPage: CountryPage = null;
 /** A calories page: "hub" for /calories/, else the food id. */
 let caloriesPage: CaloriesPage = null;
 /** A periodic table page: "hub" for /periodic-table/, else the element slug. Reset at the start of every render(). */
 let elementsPage: ElementsPage = null;
+/** An exchange-rate page: "hub" for /currency/, else the pair id. Reset at the start of every render(). */
+let currencyPage: CurrencyPage = null;
 /** A calendar page id ("hub", "2027", "2027-02", "holidays/japan" …), or null. */
 let calendarPage: CalendarPage | null = null;
+/** An emoji meanings page: "hub" for /emoji/, else the emoji slug. Reset at the start of every render(). */
+let emojiPage: EmojiPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -309,18 +313,6 @@ export function boot(): void {
     setLocale(loc);
     applyNostalgia(parsed.entry);
     history.replaceState(null, "", withSearch(nostalgiaHref(loc, parsed.entry), location.search));
-  } else if (parsed.kind === "summaries") {
-    setLocale(parsed.locale);
-    applySummaries(parsed.entry);
-    const canonical = summariesHref(parsed.locale, parsed.entry);
-    if (location.pathname !== canonical) {
-      history.replaceState(null, "", withSearch(canonical, location.search));
-    }
-  } else if (parsed.kind === "bare-summaries") {
-    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
-    setLocale(loc);
-    applySummaries(parsed.entry);
-    history.replaceState(null, "", withSearch(summariesHref(loc, parsed.entry), location.search));
   } else if (parsed.kind === "countries") {
     setLocale(parsed.locale);
     applyCountries(parsed.entry);
@@ -357,6 +349,18 @@ export function boot(): void {
     setLocale(loc);
     applyElements(parsed.entry);
     history.replaceState(null, "", withSearch(elementsHref(loc, parsed.entry), location.search));
+  } else if (parsed.kind === "currency") {
+    setLocale(parsed.locale);
+    applyCurrency(parsed.pair);
+    const canonical = currencyHref(parsed.locale, parsed.pair);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-currency") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyCurrency(parsed.pair);
+    history.replaceState(null, "", withSearch(currencyHref(loc, parsed.pair), location.search));
   } else if (parsed.kind === "calendar") {
     setLocale(parsed.locale);
     applyCalendar(parsed.page);
@@ -369,6 +373,18 @@ export function boot(): void {
     setLocale(loc);
     applyCalendar(parsed.page);
     history.replaceState(null, "", withSearch(calendarHref(loc, parsed.page), location.search));
+  } else if (parsed.kind === "emoji") {
+    setLocale(parsed.locale);
+    applyEmoji(parsed.entry);
+    const canonical = emojiHref(parsed.locale, parsed.entry);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-emoji") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyEmoji(parsed.entry);
+    history.replaceState(null, "", withSearch(emojiHref(loc, parsed.entry), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -455,12 +471,6 @@ function prefetchGamePack(e: Event): void {
     const id = nav.startsWith("nostalgia-") ? nav.slice(10) : "";
     const page: NostalgiaPage = isNostalgiaId(id) ? id : "hub";
     if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, page).catch(() => {});
-  } else if (target?.closest?.('a[data-nav^="summaries-"], a[data-nav="summaries"]')) {
-    // data-nav is "summaries-<work id>" on a work link, "summaries" on a hub link.
-    const nav = target.closest('a[data-nav^="summaries-"], a[data-nav="summaries"]')?.getAttribute("data-nav") ?? "";
-    const id = nav.startsWith("summaries-") ? nav.slice(10) : "";
-    const page: SummaryPage = isSummaryId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="countries-"], a[data-nav="countries"]')) {
     // data-nav is "countries-<slug>" on a profile link, "countries" on a hub link.
     const nav = target.closest('a[data-nav^="countries-"], a[data-nav="countries"]')?.getAttribute("data-nav") ?? "";
@@ -476,8 +486,27 @@ function prefetchGamePack(e: Event): void {
     // The pack carries every food's numbers: under a pointer, wait until it rests on a link, as test links do.
     if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
     else load();
+  } else if (target?.closest?.('a[data-nav^="emoji-"], a[data-nav="emoji"]')) {
+    // One pack serves the hub and every emoji page.
+    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, true)) return;
+    const load = (): void => {
+      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, true).catch(() => {});
+    };
+    // The pack carries every emoji's names and usage: under a pointer, wait until it rests on a link, as food links do.
+    if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
+    else load();
   } else if (target?.closest?.('a[data-nav^="element-"], a[data-nav="elements"]')) {
     // One pack serves the hub and every element page.
+    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true).catch(() => {});
+  } else if (target?.closest?.('a[data-nav^="currency"]')) {
+    // data-nav is "currency" on a hub link, "currency-<pair>" on a pair link: one pack (copy and the ECB snapshot) serves them all.
+    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, true)) return;
+    const load = (): void => {
+      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, true).catch(() => {});
+    };
+    // The pack carries the rate snapshot: under a pointer, wait until it rests on a link, as food links do.
+    if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
+    else load();
   } else if (target?.closest?.('a[data-nav^="calendar"]')) {
     // data-nav is "calendar" on a hub link, "calendar-<page id>" on a page link: one pack serves them all.
     if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true).catch(() => {});
@@ -558,7 +587,6 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   slangPage = null;
   ideasPage = null;
   nostalgiaPage = null;
-  summariesPage = null;
   countriesPage = null;
   caloriesPage = null;
   calendarPage = null;
@@ -584,7 +612,6 @@ function applyLearn(next: TutorialId | null): void {
   slangPage = null;
   ideasPage = null;
   nostalgiaPage = null;
-  summariesPage = null;
   countriesPage = null;
   caloriesPage = null;
   calendarPage = null;
@@ -610,7 +637,6 @@ function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): v
   slangPage = null;
   ideasPage = null;
   nostalgiaPage = null;
-  summariesPage = null;
   countriesPage = null;
   caloriesPage = null;
   calendarPage = null;
@@ -636,7 +662,6 @@ function applyDevice(page: DevicePageId): void {
   slangPage = null;
   ideasPage = null;
   nostalgiaPage = null;
-  summariesPage = null;
   countriesPage = null;
   caloriesPage = null;
   calendarPage = null;
@@ -662,7 +687,6 @@ function applyLegal(page: LegalPageId): void {
   slangPage = null;
   ideasPage = null;
   nostalgiaPage = null;
-  summariesPage = null;
   countriesPage = null;
   caloriesPage = null;
   calendarPage = null;
@@ -688,7 +712,6 @@ function applyQuiz(id: QuizId | null): void {
   slangPage = null;
   ideasPage = null;
   nostalgiaPage = null;
-  summariesPage = null;
   countriesPage = null;
   caloriesPage = null;
   calendarPage = null;
@@ -714,7 +737,6 @@ function applyDataset(id: DatasetId | null): void {
   slangPage = null;
   ideasPage = null;
   nostalgiaPage = null;
-  summariesPage = null;
   countriesPage = null;
   caloriesPage = null;
   calendarPage = null;
@@ -750,11 +772,6 @@ function applyNostalgia(id: NostalgiaId | null): void {
   nostalgiaPage = id ?? "hub";
 }
 
-function applySummaries(id: SummaryId | null): void {
-  applyTool(null, null);
-  summariesPage = id ?? "hub";
-}
-
 function applyCountries(slug: string | null): void {
   applyTool(null, null);
   countriesPage = slug ?? "hub";
@@ -769,9 +786,19 @@ function applyElements(slug: ElementSlug | null): void {
   elementsPage = slug ?? "hub";
 }
 
+function applyCurrency(pair: CurrencyPair | null): void {
+  applyTool(null, null);
+  currencyPage = pair ?? "hub";
+}
+
 function applyCalendar(page: CalendarPage): void {
   applyTool(null, null);
   calendarPage = page;
+}
+
+function applyEmoji(slug: EmojiSlug | null): void {
+  applyTool(null, null);
+  emojiPage = slug ?? "hub";
 }
 
 function unmountTools(): void {
@@ -782,7 +809,7 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "summaries" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar" || parsed.kind === "emoji" || parsed.kind === "currency"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
@@ -797,16 +824,17 @@ export function render(): void {
   // Ideas pages, and tool pages that match against the ideas pack (the idea validator), load it with the page.
   const ideas: IdeaPage = ideasPackOf(parsed);
   const nostalgia: NostalgiaPage = parsed.kind === "nostalgia" || parsed.kind === "bare-nostalgia" ? parsed.entry ?? "hub" : null;
-  const summaries: SummaryPage = parsed.kind === "summaries" || parsed.kind === "bare-summaries" ? parsed.entry ?? "hub" : null;
   const countries: CountryPage = parsed.kind === "countries" || parsed.kind === "bare-countries" ? parsed.entry ?? "hub" : null;
   const copy = pageCopyOf(parsed);
   const calories: CaloriesPage = parsed.kind === "calories" || parsed.kind === "bare-calories" ? parsed.food ?? "hub" : null;
   const elements = parsed.kind === "elements" || parsed.kind === "bare-elements";
   // The lunar converter tool reads the calendar pack (lunar month names, cycle years) too.
   const calendar = parsed.kind === "calendar" || parsed.kind === "bare-calendar" || ((parsed.kind === "app" || parsed.kind === "bare") && parsed.tool === "lunar-converter");
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, summaries)) {
+  const emoji = parsed.kind === "emoji" || parsed.kind === "bare-emoji";
+  const currency = parsed.kind === "currency" || parsed.kind === "bare-currency";
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, summaries).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -827,6 +855,8 @@ export function render(): void {
   pageGen += 1;
   unmountTools();
   elementsPage = null;
+  emojiPage = null;
+  currencyPage = null;
   convertJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.convertJob ?? null : null;
   resizeJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.resizeJob ?? null : null;
   if (parsed.kind === "app") {
@@ -905,11 +935,6 @@ export function render(): void {
     applyNostalgia(parsed.entry);
   } else if (parsed.kind === "bare-nostalgia") {
     applyNostalgia(parsed.entry);
-  } else if (parsed.kind === "summaries") {
-    setLocale(parsed.locale);
-    applySummaries(parsed.entry);
-  } else if (parsed.kind === "bare-summaries") {
-    applySummaries(parsed.entry);
   } else if (parsed.kind === "countries") {
     setLocale(parsed.locale);
     applyCountries(parsed.entry);
@@ -930,13 +955,27 @@ export function render(): void {
     applyCalendar(parsed.page);
   } else if (parsed.kind === "bare-calendar") {
     applyCalendar(parsed.page);
+  } else if (parsed.kind === "emoji") {
+    setLocale(parsed.locale);
+    applyEmoji(parsed.entry);
+  } else if (parsed.kind === "bare-emoji") {
+    applyEmoji(parsed.entry);
+  } else if (parsed.kind === "currency") {
+    setLocale(parsed.locale);
+    applyCurrency(parsed.pair);
+  } else if (parsed.kind === "bare-currency") {
+    applyCurrency(parsed.pair);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
     applyTool(null, null);
   }
 
-  const seo = elementsPage
+  const seo = emojiPage
+    ? { emoji: true as const, emojiSlug: emojiPage === "hub" ? null : emojiPage }
+    : currencyPage
+    ? { currency: true as const, currencyPair: currencyPage === "hub" ? null : currencyPage }
+    : elementsPage
     ? { elements: true as const, elementSlug: elementsPage === "hub" ? null : elementsPage }
     : countriesPage
     ? { countries: true as const, countryId: countriesPage === "hub" ? null : countriesPage }
@@ -946,8 +985,6 @@ export function render(): void {
     ? { ideas: true as const, ideaId: ideasPage === "hub" ? null : ideasPage }
     : nostalgiaPage
     ? { nostalgia: true as const, nostalgiaId: nostalgiaPage === "hub" ? null : nostalgiaPage }
-    : summariesPage
-    ? { summaries: true as const, summaryId: summariesPage === "hub" ? null : summariesPage }
     : calendarPage
     ? { calendar: true as const, calendarPage }
     : slangPage
@@ -985,7 +1022,7 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub") || (nostalgiaPage && nostalgiaPage !== "hub") || (summariesPage && summariesPage !== "hub") || (elementsPage && elementsPage !== "hub")) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub") || (nostalgiaPage && nostalgiaPage !== "hub") || (elementsPage && elementsPage !== "hub") || (emojiPage && emojiPage !== "hub") || (currencyPage && currencyPage !== "hub")) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
@@ -1005,7 +1042,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? coverUrl(image) : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage, summariesPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage, emojiPage, currencyPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -1143,7 +1180,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || summariesPage || countriesPage || caloriesPage || elementsPage || calendarPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage || calendarPage || countriesPage || caloriesPage || elementsPage || calendarPage || emojiPage || currencyPage);
   // The calendar sits under Tools (time group on the home tool wall); countries, calories and the periodic table under Data.
   // Game tool pages sit under Games (their games hub), not Tools.
   const gameTool = Boolean(tool && gameHubOf(tool));
@@ -1151,13 +1188,12 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const gamesOn = gamesHub || Boolean(gameId) || gameTool;
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
   const testsOn = Boolean(quizPage);
-  const dataOn = Boolean(datasetPage) || Boolean(countriesPage) || Boolean(caloriesPage) || Boolean(elementsPage);
+  const dataOn = Boolean(datasetPage) || Boolean(countriesPage) || Boolean(caloriesPage) || Boolean(elementsPage) || Boolean(emojiPage) || Boolean(currencyPage);
   const rankingsOn = Boolean(rankingPage);
   const refOn = Boolean(refPage);
   const slangOn = Boolean(slangPage);
   const ideasOn = Boolean(ideasPage);
   const nostalgiaOn = Boolean(nostalgiaPage);
-  const summariesOn = Boolean(summariesPage);
   const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
@@ -1170,7 +1206,6 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
         navLink(ideasHref(loc), t("nav.ideas"), ideasOn, "ideas"),
         navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
-        navLink(summariesHref(loc), t("nav.summaries"), summariesOn, "summaries"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       )),
@@ -1350,16 +1385,6 @@ function toolDirectory(loc: Locale): HTMLElement {
         ),
       ),
     ),
-    // Work names live in the summaries pack, so the footer links the hub and the SUMMARIES_FOCUS works, whose names
-    // are also in the core pack (summariesFocus.*).
-    h("div", { class: "dir-group" },
-      h("h2", null, h("a", { href: summariesHref(loc), "data-nav": "summaries", "aria-current": summariesPage === "hub" ? "page" : undefined }, t("nav.summaries"))),
-      h("p", null,
-        ...SUMMARIES_FOCUS.map((id) =>
-          h("a", { href: summariesHref(loc, id), "data-nav": `summaries-${id}`, "aria-current": summariesPage === id ? "page" : undefined }, t(`summariesFocus.${id}`)),
-        ),
-      ),
-    ),
     // Country names come from Intl, so the footer needs no copy beyond the section label.
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: countriesHref(loc), "data-nav": "countries", "aria-current": countriesPage === "hub" ? "page" : undefined }, t("nav.countries"))),
@@ -1386,6 +1411,25 @@ function toolDirectory(loc: Locale): HTMLElement {
       h("p", null,
         ...ELEMENTS_FOCUS.map((slug) =>
           h("a", { href: elementsHref(loc, slug), "data-nav": `element-${slug}`, "aria-current": elementsPage === slug ? "page" : undefined }, t(`periodicTable.focus.${slug}`)),
+        ),
+      ),
+    ),
+    // Emoji names live in the emoji pack, so the footer links the hub and the EMOJI_FOCUS emoji, whose labels are also
+    // in the core pack (emojiFocus.*: the emoji and its CLDR name).
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: emojiHref(loc), "data-nav": "emoji", "aria-current": emojiPage === "hub" ? "page" : undefined }, t("nav.emoji"))),
+      h("p", null,
+        ...EMOJI_FOCUS.map((slug) =>
+          h("a", { href: emojiHref(loc, slug), "data-nav": `emoji-${slug}`, "aria-current": emojiPage === slug ? "page" : undefined }, t(`emojiFocus.${slug}`)),
+        ),
+      ),
+    ),
+    // Exchange-rate pairs are named by their ISO codes, so the footer needs no copy beyond the section label.
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: currencyHref(loc), "data-nav": "currency", "aria-current": currencyPage === "hub" ? "page" : undefined }, t("nav.currency"))),
+      h("p", null,
+        ...CURRENCY_FOCUS.map((pair) =>
+          h("a", { href: currencyHref(loc, pair), "data-nav": `currency-${pair}`, "aria-current": currencyPage === pair ? "page" : undefined }, pair.toUpperCase().replace("-", "/")),
         ),
       ),
     ),
@@ -1525,10 +1569,6 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./nostalgia/ui");
     if (!alive()) return;
     m.mountNostalgia(main, loc, nostalgiaPage === "hub" ? null : nostalgiaPage);
-  } else if (summariesPage) {
-    const m = await import("./summaries/ui");
-    if (!alive()) return;
-    m.mountSummaries(main, loc, summariesPage === "hub" ? null : summariesPage);
   } else if (countriesPage) {
     const m = await import("./countries/ui");
     if (!alive()) return;
@@ -1537,11 +1577,21 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./calories/ui");
     if (!alive()) return;
     m.mountCalories(main, loc, caloriesPage === "hub" ? null : caloriesPage);
+  } else if (currencyPage) {
+    const page = currencyPage;
+    const m = await import("./currency/ui");
+    if (!alive()) return;
+    m.mountCurrency(main, loc, page === "hub" ? null : page);
   } else if (elementsPage) {
     const page = elementsPage;
     const m = await import("./elements/ui");
     if (!alive()) return;
     m.mountElements(main, loc, page === "hub" ? null : page);
+  } else if (emojiPage) {
+    const page = emojiPage;
+    const m = await import("./emoji/ui");
+    if (!alive()) return;
+    unmountCurrent = m.mountEmoji(main, loc, page === "hub" ? null : page);
   } else if (calendarPage) {
     const m = await import("./calendar/ui");
     if (!alive()) return;
@@ -1698,7 +1748,11 @@ function localeHref(next: Locale): string {
 
 /** The page on screen in another locale, without the query. */
 function localePath(next: Locale): string {
-  return elementsPage
+  return emojiPage
+    ? emojiHref(next, emojiPage === "hub" ? null : emojiPage)
+    : currencyPage
+    ? currencyHref(next, currencyPage === "hub" ? null : currencyPage)
+    : elementsPage
     ? elementsHref(next, elementsPage === "hub" ? null : elementsPage)
     : devicePage
     ? deviceHref(next, devicePage)
@@ -1718,8 +1772,6 @@ function localePath(next: Locale): string {
     ? ideasHref(next, ideasPage === "hub" ? null : ideasPage)
     : nostalgiaPage
     ? nostalgiaHref(next, nostalgiaPage === "hub" ? null : nostalgiaPage)
-    : summariesPage
-    ? summariesHref(next, summariesPage === "hub" ? null : summariesPage)
     : countriesPage
     ? countriesHref(next, countriesPage === "hub" ? null : countriesPage)
     : caloriesPage

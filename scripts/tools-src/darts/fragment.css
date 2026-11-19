@@ -1,0 +1,12 @@
+
+/* Darts (src/client/darts/) */
+.dt-root .g3d-stage { cursor: crosshair; }
+.dt-hud { font-weight: 600; }
+.dt-turn { margin: 0.6rem 0 0.2rem; font-weight: 600; }
+.dt-status { min-height: 1.5em; margin: 0 0 0.6rem; color: var(--ink-soft); }
+.dt-score { width: 100%; max-width: 32rem; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.dt-score th, .dt-score td { padding: 0.35rem 0.6rem; border-bottom: 1px solid var(--line); text-align: left; }
+.dt-score thead th { color: var(--ink-soft); font-weight: 500; font-size: 0.85rem; }
+.dt-score tr.dt-now th { color: var(--pink-deep); }
+.dt-score tr.dt-now th::before { content: "▸ "; }
+.dt-best { margin-top: 0.4rem; }

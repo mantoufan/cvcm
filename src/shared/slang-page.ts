@@ -7,13 +7,12 @@ import { CJK_LOCALES, type Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
-import { slangMessages } from "./messages";
-import { appHref, slangHref } from "./path";
+import { messages, slangMessages } from "./messages";
+import { appHref, emojiHref, slangHref } from "./path";
 import { SLANG_ENTRIES, SLANG_GROUPS, SLANG_META, isSong, slangGroupOf, type SlangId } from "./slang";
 import { memeImage, memeImagePath } from "./meme-images";
 import { compact, signed, usd } from "./number-format";
 import { HREFLANG } from "./sitemap";
-import { joinNames } from "./summaries-i18n";
 import { memeImageAlt, songArtists, slangUi, slangHub, slangCopy, slangName, slangFaqItems, slangUpdated, type MemeTrend, type MemeDir, type MemeCoin, type MemeData } from "./slang-i18n";
 
 /**
@@ -29,9 +28,23 @@ function imageHtml(locale: Locale, id: SlangId): string {
     + `<figcaption><a href="${escapeHtml(image.page)}" target="_blank" rel="noopener">${escapeHtml(credit)}</a> · <a href="${escapeHtml(image.licenseUrl)}" target="_blank" rel="noopener license">${escapeHtml(image.license)}</a></figcaption></figure>`;
 }
 
+const listFormats = new Map<Locale, Intl.ListFormat | null>();
+
+/** Joins names the locale's way ("A、B和C", "A, B y C"); one cached formatter per locale. */
+function joinNames(locale: Locale, names: string[]): string {
+  if (!listFormats.has(locale)) {
+    try {
+      listFormats.set(locale, new Intl.ListFormat(HREFLANG[locale], { style: "long", type: "conjunction" }));
+    } catch {
+      listFormats.set(locale, null);
+    }
+  }
+  return listFormats.get(locale)?.format(names) ?? names.join(", ");
+}
+
 /**
- * Artists as a list in the reader's language ("A, B y C", "A、B和C"), through the summaries channel's cached
- * Intl.ListFormat. Korean takes commas: its conjunction format uses the formal 및, which reads like a document here.
+ * Artists as a list in the reader's language ("A, B y C", "A、B和C"), through a cached Intl.ListFormat. Korean takes
+ * commas: its conjunction format uses the formal 및, which reads like a document here.
  */
 export function songArtistsLabel(locale: Locale, id: SlangId): string {
   const names = songArtists(locale, id);
@@ -242,7 +255,7 @@ export function slangPageHtml(locale: Locale, id: SlangId | null): string {
       crumbHtml(locale, null),
       `<header class="tool-head"><h1>${escapeHtml(hub.h1)}</h1><p class="lede">${escapeHtml(hub.lede)}</p></header>`,
       `<p class="slang-jump">${jump}</p>`,
-      `<p class="slang-jump"><a href="${escapeHtml(appHref(locale, "meme"))}">${escapeHtml(ui.maker)}</a></p>`,
+      `<p class="slang-jump"><a href="${escapeHtml(appHref(locale, "meme"))}">${escapeHtml(ui.maker)}</a> · <a href="${escapeHtml(emojiHref(locale))}" data-nav="emoji">${escapeHtml(messages(locale).ui.nav.emoji)}</a></p>`,
       hubTrendingHtml(locale),
       groups,
       hubCoinsHtml(locale),

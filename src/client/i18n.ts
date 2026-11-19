@@ -50,11 +50,6 @@ import {
   hasNostalgiaMessages,
   registerNostalgiaEntry,
   registerNostalgiaMessages,
-  type SummariesMessages,
-  hasSummaryEntry,
-  hasSummariesMessages,
-  registerSummaryEntry,
-  registerSummariesMessages,
   hasCalendarMessages,
   registerCalendarMessages,
   type CalendarMessages,
@@ -70,9 +65,9 @@ import type { IdeaEntryCopy } from "../shared/ideas-i18n";
 import type { IdeaId, IdeaPage } from "../shared/ideas";
 import type { NostalgiaEntryCopy } from "../shared/nostalgia-i18n";
 import type { NostalgiaId, NostalgiaPage } from "../shared/nostalgia";
-import type { SummaryEntryCopy } from "../shared/summaries-i18n";
-import type { SummaryId, SummaryPage } from "../shared/summaries";
 import { hasElementsMessages, registerElementsMessages, type ElementsMessages } from "../shared/messages";
+import { hasEmojiMessages, registerEmojiMessages, type EmojiMessages } from "../shared/messages";
+import { hasCurrencyMessages, registerCurrencyMessages, type CurrencyMessages } from "../shared/messages";
 import type { QuizId, QuizPage } from "../shared/quiz";
 import type { QuizCopy } from "../shared/quiz-i18n";
 import { countryBucket, countryCode, type CountryPage } from "../shared/countries";
@@ -394,40 +389,22 @@ const ELEMENTS_PACKS: Record<Locale, () => Promise<{ default: ElementsMessages }
   es: () => import("../locales/packs/elements-es"),
 };
 
+// Emoji meanings copy, CLDR names and keywords, usage sentences and the emoji-test rows, only for /emoji/ pages.
+const EMOJI_PACKS: Record<Locale, () => Promise<{ default: EmojiMessages }>> = {
+  en: () => import("../locales/packs/emoji-en"),
+  "zh-CN": () => import("../locales/packs/emoji-zh-CN"),
+  "zh-TW": () => import("../locales/packs/emoji-zh-TW"),
+  ja: () => import("../locales/packs/emoji-ja"),
+  ko: () => import("../locales/packs/emoji-ko"),
+  vi: () => import("../locales/packs/emoji-vi"),
+  id: () => import("../locales/packs/emoji-id"),
+  es: () => import("../locales/packs/emoji-es"),
+};
+
 async function loadNostalgiaEntry(next: Locale, id: NostalgiaId): Promise<void> {
   const { NOSTALGIA_LOADERS } = await NOSTALGIA_LOADER_TABLES[next]();
   const m = (await NOSTALGIA_LOADERS[id]()) as { default: NostalgiaEntryCopy };
   registerNostalgiaEntry(next, id, m.default);
-}
-
-// Summaries hub copy plus work names (`npm run summaries:sync`), only for /summaries/ pages.
-const SUMMARIES_PACKS: Record<Locale, () => Promise<{ default: SummariesMessages }>> = {
-  en: () => import("../locales/packs/summaries-en"),
-  "zh-CN": () => import("../locales/packs/summaries-zh-CN"),
-  "zh-TW": () => import("../locales/packs/summaries-zh-TW"),
-  ja: () => import("../locales/packs/summaries-ja"),
-  ko: () => import("../locales/packs/summaries-ko"),
-  vi: () => import("../locales/packs/summaries-vi"),
-  id: () => import("../locales/packs/summaries-id"),
-  es: () => import("../locales/packs/summaries-es"),
-};
-
-// One chunk per summary and locale, through that locale's generated loader table.
-const SUMMARY_LOADER_TABLES: Record<Locale, () => Promise<{ SUMMARY_LOADERS: Record<SummaryId, () => Promise<unknown>> }>> = {
-  en: () => import("../locales/summaries/loaders/en"),
-  "zh-CN": () => import("../locales/summaries/loaders/zh-CN"),
-  "zh-TW": () => import("../locales/summaries/loaders/zh-TW"),
-  ja: () => import("../locales/summaries/loaders/ja"),
-  ko: () => import("../locales/summaries/loaders/ko"),
-  vi: () => import("../locales/summaries/loaders/vi"),
-  id: () => import("../locales/summaries/loaders/id"),
-  es: () => import("../locales/summaries/loaders/es"),
-};
-
-async function loadSummaryEntry(next: Locale, id: SummaryId): Promise<void> {
-  const { SUMMARY_LOADERS } = await SUMMARY_LOADER_TABLES[next]();
-  const m = (await SUMMARY_LOADERS[id]()) as { default: SummaryEntryCopy };
-  registerSummaryEntry(next, id, m.default);
 }
 
 // Countries copy and the list data, only for /countries/ pages; a profile also loads the data bucket holding its figures.
@@ -458,29 +435,41 @@ const CALORIES_PACKS: Record<Locale, () => Promise<{ default: CaloriesMessages }
   es: () => import("../locales/packs/calories-es"),
 };
 
+// Exchange-rate copy and the ECB snapshot, only for /currency/ pages.
+const CURRENCY_PACKS: Record<Locale, () => Promise<{ default: CurrencyMessages }>> = {
+  en: () => import("../locales/packs/currency-en"),
+  "zh-CN": () => import("../locales/packs/currency-zh-CN"),
+  "zh-TW": () => import("../locales/packs/currency-zh-TW"),
+  ja: () => import("../locales/packs/currency-ja"),
+  ko: () => import("../locales/packs/currency-ko"),
+  vi: () => import("../locales/packs/currency-vi"),
+  id: () => import("../locales/packs/currency-id"),
+  es: () => import("../locales/packs/currency-es"),
+};
+
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
   const idea = ideas && ideas !== "hub" ? ideas : null;
   const memory = nostalgia && nostalgia !== "hub" ? nostalgia : null;
-  const work = summaries && summaries !== "hub" ? summaries : null;
   return hasMessages(next) && hasPageCopy(next, copy) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || (hasQuizMessages(next) && (!test || hasQuizTest(next, test)))) && (!dataset || hasDatasetMessages(next))
     && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
     && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))))
     && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))))
     && (!ideas || (hasIdeasMessages(next) && (!idea || hasIdeaEntry(next, idea))))
     && (!nostalgia || (hasNostalgiaMessages(next) && (!memory || hasNostalgiaEntry(next, memory))))
-    && (!summaries || (hasSummariesMessages(next) && (!work || hasSummaryEntry(next, work))))
     && (!countries || (hasCountriesMessages(next) && (countryBucketOf(countries) === null || hasCountryBucket(countryBucketOf(countries)!))))
     && (!calories || hasCaloriesMessages(next))
     && (!elements || hasElementsMessages(next))
-    && (!calendar || hasCalendarMessages(next));
+    && (!calendar || hasCalendarMessages(next))
+    && (!emoji || hasEmojiMessages(next))
+    && (!currency || hasCurrencyMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false): Promise<void> {
   const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
@@ -488,7 +477,6 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
   const term = slang && slang !== "hub" ? slang : null;
   const idea = ideas && ideas !== "hub" ? ideas : null;
   const memory = nostalgia && nostalgia !== "hub" ? nostalgia : null;
-  const work = summaries && summaries !== "hub" ? summaries : null;
   await Promise.all([
     hasMessages(next) && hasPageCopy(next, copy) ? null : loadCore(next, copy),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
@@ -506,13 +494,13 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !idea || hasIdeaEntry(next, idea) ? null : loadIdeaEntry(next, idea),
     !nostalgia || hasNostalgiaMessages(next) ? null : NOSTALGIA_PACKS[next]().then((m) => registerNostalgiaMessages(next, m.default)),
     !memory || hasNostalgiaEntry(next, memory) ? null : loadNostalgiaEntry(next, memory),
-    !summaries || hasSummariesMessages(next) ? null : SUMMARIES_PACKS[next]().then((m) => registerSummariesMessages(next, m.default)),
-    !work || hasSummaryEntry(next, work) ? null : loadSummaryEntry(next, work),
     !countries || hasCountriesMessages(next) ? null : COUNTRIES_PACKS[next]().then((m) => registerCountriesMessages(next, m.default)),
     bucket === null || hasCountryBucket(bucket) ? null : COUNTRY_BUCKET_LOADERS[bucket]().then((m) => registerCountryBucket(bucket, m.default as Record<string, CountryDetail>)),
     !calories || hasCaloriesMessages(next) ? null : CALORIES_PACKS[next]().then((m) => registerCaloriesMessages(next, m.default)),
     !elements || hasElementsMessages(next) ? null : ELEMENTS_PACKS[next]().then((m) => registerElementsMessages(next, m.default)),
     !calendar || hasCalendarMessages(next) ? null : CALENDAR_PACKS[next]().then((m) => registerCalendarMessages(next, m.default)),
+    !emoji || hasEmojiMessages(next) ? null : EMOJI_PACKS[next]().then((m) => registerEmojiMessages(next, m.default)),
+    !currency || hasCurrencyMessages(next) ? null : CURRENCY_PACKS[next]().then((m) => registerCurrencyMessages(next, m.default)),
   ]);
 }
 
