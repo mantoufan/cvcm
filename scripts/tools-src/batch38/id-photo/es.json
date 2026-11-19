@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "titleIdPhoto": "Foto carnet online — DNI, pasaporte, tamaño infantil, cambiar fondo — cv.cm",
+    "descIdPhoto": "Haz tu foto carnet gratis: recorta a 32×26 mm (DNI), tamaño infantil, pasaporte y más con guías para la cabeza, cambia el fondo e imprime una hoja."
+  },
+  "tools": {
+    "id-photo": {
+      "name": "Foto carnet online",
+      "blurb": "Tamaños de foto carnet, fondo y hoja para imprimir."
+    }
+  },
+  "faq": {
+    "id-photo": {
+      "q1": "¿Qué medida tiene la foto del DNI y del pasaporte español?",
+      "a1": "32 × 26 mm (alto × ancho), en color, reciente, de frente, con la cabeza descubierta y sobre fondo blanco liso y uniforme. Es la misma medida para el DNI y el pasaporte. Elige «DNI y pasaporte de España» para recortar a esa medida.",
+      "q2": "¿Cuánto mide la foto tamaño infantil?",
+      "a2": "En México se suele pedir de 2,5 × 3 cm. Es una medida de impresión habitual, no una norma oficial: si el trámite indica otra medida o color de fondo, sigue esa indicación.",
+      "q3": "¿Puedo cambiar el fondo de la foto del pasaporte?",
+      "a3": "Mejor no. Los pasaportes de Estados Unidos, Reino Unido, Corea, China y Taiwán rechazan fotos cuyo fondo se borró o editó con software. Para esos tamaños la herramienta conserva el fondo original y solo recorta: hazte la foto delante de una pared blanca. Cambiar el fondo sirve para currículums, carnés de estudiante o de empresa y trámites que lo acepten.",
+      "q4": "¿Cómo imprimo las fotos al tamaño correcto?",
+      "a4": "Descarga la hoja: 10 × 15 cm (4 × 6 in) en JPG a 300 ppp para llevar a revelar, o A4 en PDF. Imprime al 100 % (tamaño real), no «ajustar a la página», y recorta por las líneas finas.",
+      "q5": "¿Se sube mi foto a internet?",
+      "a5": "No. El recorte se hace en la página y el modelo para quitar el fondo se descarga una vez y funciona en tu dispositivo. La foto no sale de él."
+    }
+  },
+  "guides": {
+    "id-photo": {
+      "lead": "Haz tu foto carnet en tres pasos.",
+      "s1t": "Elige la foto y el tamaño",
+      "s1b": "Elige una foto de frente con luz uniforme y luego el tamaño: DNI, pasaporte, infantil u otro.",
+      "s2t": "Coloca la cabeza",
+      "s2b": "Arrastra y haz zoom hasta que la parte superior de la cabeza toque la línea de arriba y la barbilla quede en la franja sombreada.",
+      "s3t": "Descarga o imprime",
+      "s3b": "Descarga una foto para un trámite en línea, o una hoja de 10 × 15 cm o A4 para imprimir a tamaño real."
+    }
+  },
+  "ui": {
+    "idPhoto": {
+      "title": "Foto carnet online",
+      "privacyNote": "Recorta a tamaños de pasaporte, DNI y carnet, cambia el fondo e imprime una hoja. Tu foto se queda en este dispositivo.",
+      "dropTitle": "Elige una foto",
+      "dropHint": "o arrástrala aquí, o pégala",
+      "dropTypes": "JPG, PNG, WebP, HEIC",
+      "size": "Tamaño de la foto",
+      "official": "Documentos oficiales",
+      "common": "Tamaños habituales",
+      "sizeInfo": "{w} mm de ancho × {h} mm de alto · {pw} × {ph} px a {dpi} ppp",
+      "headRule": "Cabeza, de la barbilla a la parte superior: {a}–{b} mm.",
+      "noHeadRule": "No se publica una medida de la cabeza en mm: deja la cara grande y centrada.",
+      "commonNote": "Tamaño de impresión habitual: sigue la medida y el fondo que pida el trámite.",
+      "sourceLink": "Requisitos oficiales de la foto",
+      "frameLabel": "Recorte de la foto: arrastra para mover, flechas para ajustar, + y − para hacer zoom",
+      "zoom": "Ampliar",
+      "autoFit": "Ajuste automático",
+      "reset": "Restablecer",
+      "hint": "Elige una foto para empezar.",
+      "guideHint": "Pon la parte superior de la cabeza en la línea de arriba y la barbilla dentro de la franja sombreada. El ajuste automático busca la cabeza con el modelo para quitar el fondo; revísalo.",
+      "background": "Fondo",
+      "bg_keep": "Conservar el original",
+      "bg_replace": "Cambiar",
+      "c_white": "Blanco",
+      "c_offwhite": "Gris claro",
+      "c_lightblue": "Azul claro",
+      "c_blue": "Azul",
+      "c_red": "Rojo",
+      "c_custom": "Color personalizado",
+      "noEdits": "Esta autoridad rechaza fotos cuyo fondo se borró o editó con software. Conserva el fondo original y hazte la foto delante de una pared blanca.",
+      "bgNote": "Cambiar el fondo descarga una vez el modelo para quitar el fondo, que luego funciona en tu dispositivo.",
+      "photoOut": "Una foto",
+      "width": "Ancho (px)",
+      "height": "Alto (px)",
+      "maxKb": "Tamaño máximo del archivo (KB)",
+      "noLimit": "Sin límite",
+      "maxKbHint": "Para trámites en línea: indica los píxeles y el tamaño de archivo que piden.",
+      "download": "Descargar foto (JPG)",
+      "saved": "Guardada en {w} × {h} px, {kb} KB.",
+      "savedSmaller": "Guardada en {w} × {h} px, {kb} KB: se redujo el tamaño para no pasar del límite.",
+      "tooBig": "No se pudo bajar de {kb} KB. Sube el límite o reduce los píxeles.",
+      "sheet": "Hoja para imprimir",
+      "paper": "Papel",
+      "paper_4x6": "Papel fotográfico 10 × 15 cm (4 × 6 in)",
+      "paper_a4": "A4",
+      "paper_letter": "Carta (EE. UU.)",
+      "sheetCount": "{n} fotos en {paper}. Imprime al 100 % (tamaño real).",
+      "downloadSheet": "Descargar hoja",
+      "photoSize": "Foto de {w} × {h} px. Arrastra y haz zoom para ajustarla a las guías.",
+      "placed": "Cabeza encontrada y colocada en las guías. Revisa la línea superior y la barbilla.",
+      "notFound": "No se encontró a ninguna persona en la foto. Coloca el recorte a mano.",
+      "errorDecode": "No se pudo abrir esta foto. Prueba con JPG o PNG.",
+      "emptyDownload": "Primero elige una foto.",
+      "p_us": "Pasaporte y visa de EE. UU. (2 × 2 in)",
+      "p_uk": "Pasaporte del Reino Unido (35 × 45 mm)",
+      "p_jp": "Pasaporte de Japón (35 × 45 mm)",
+      "p_kr": "Pasaporte de Corea (35 × 45 mm)",
+      "p_tw": "Pasaporte de Taiwán (35 × 45 mm)",
+      "p_cn": "Pasaporte de China (33 × 48 mm)",
+      "p_vn": "Pasaporte de Vietnam (4 × 6 cm)",
+      "p_es": "DNI y pasaporte de España (32 × 26 mm)",
+      "p_c25x35": "1 pulgada china (25 × 35 mm)",
+      "p_c35x49": "2 pulgadas chinas (35 × 49 mm)",
+      "p_c35x45": "35 × 45 mm",
+      "p_c28x35": "28 × 35 mm (1 pulgada de Taiwán)",
+      "p_c30x40": "3 × 4 cm",
+      "p_c20x30": "2 × 3 cm",
+      "p_c40x60": "4 × 6 cm",
+      "p_c25x30": "Tamaño infantil (2,5 × 3 cm)"
+    }
+  }
+}

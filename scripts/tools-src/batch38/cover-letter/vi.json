@@ -1,0 +1,94 @@
+{
+  "meta": {
+    "titleCoverLetter": "Mẫu đơn xin việc — tạo đơn xin việc online miễn phí — cv.cm",
+    "descCoverLetter": "Tạo đơn xin việc miễn phí theo mẫu chuẩn có quốc hiệu, tiêu ngữ: điền vị trí ứng tuyển, thông tin cá nhân, hồ sơ kèm theo. In ra PDF hoặc tải file Word."
+  },
+  "tools": {
+    "cover-letter": {
+      "name": "Mẫu đơn xin việc",
+      "blurb": "Đơn xin việc theo mẫu chuẩn."
+    }
+  },
+  "faq": {
+    "cover-letter": {
+      "q1": "Đơn xin việc gồm những phần nào?",
+      "a1": "Quốc hiệu và tiêu ngữ, địa điểm và ngày tháng, tên đơn, phần Kính gửi, thông tin cá nhân, vị trí ứng tuyển và nguồn tin tuyển dụng, kinh nghiệm và kỹ năng, hồ sơ kèm theo, lời cảm ơn và chữ ký.",
+      "q2": "Hồ sơ xin việc thường gồm những gì?",
+      "a2": "Thường có sơ yếu lý lịch, bản sao văn bằng chứng chỉ, bản sao thẻ căn cước, giấy khám sức khỏe và ảnh 3x4. Mỗi công ty yêu cầu khác nhau, hãy làm theo tin tuyển dụng.",
+      "q3": "Đơn xin việc khác CV thế nào?",
+      "a3": "CV liệt kê chi tiết học vấn và kinh nghiệm. Đơn xin việc là lá đơn ngắn gửi kèm, nói rõ bạn ứng tuyển vị trí nào và vì sao bạn phù hợp.",
+      "q4": "Có cần viết đơn bằng tay không?",
+      "a4": "Nhiều nơi nhận đơn đánh máy hoặc gửi qua email. Nếu nhà tuyển dụng yêu cầu viết tay, hãy chép lại nội dung từ bản xem trước.",
+      "q5": "Thông tin của tôi có bị tải lên không?",
+      "a5": "Không. Đơn được tạo ngay trong trình duyệt, bản nháp lưu ở bộ nhớ cục bộ của trình duyệt này. Không có gì được gửi tới cv.cm."
+    }
+  },
+  "guides": {
+    "cover-letter": {
+      "lead": "Làm đơn xin việc trong ba bước.",
+      "s1t": "Điền vị trí và thông tin",
+      "s1b": "Nhập tên công ty, vị trí ứng tuyển, nguồn tin và thông tin cá nhân sẽ đưa vào bảng trong đơn.",
+      "s2t": "Chọn trường hợp và hồ sơ",
+      "s2b": "Chọn đã có kinh nghiệm, mới tốt nghiệp, thực tập hoặc chuyển ngành, ghi kinh nghiệm mỗi dòng một ý, đánh dấu hồ sơ kèm theo.",
+      "s3t": "In hoặc tải về",
+      "s3b": "Xem lại bản xem trước, rồi in hoặc lưu thành PDF, tải file Word hoặc sao chép nội dung vào email."
+    }
+  },
+  "ui": {
+    "coverLetter": {
+      "title": "Mẫu đơn xin việc",
+      "privacyNote": "Điền vị trí ứng tuyển và thông tin cá nhân để có đơn xin việc theo mẫu chuẩn. Tạo trong trình duyệt; không tải lên gì cả.",
+      "about": "Thông tin cá nhân",
+      "job": "Vị trí ứng tuyển",
+      "exp": "Kinh nghiệm",
+      "sections": "Nội dung",
+      "enclosures": "Hồ sơ kèm theo",
+      "editLegend": "Chỉnh sửa",
+      "edit": "Tự sửa nội dung đơn",
+      "editHint": "Khi bật, các ô phía trên không còn thay đổi phần nội dung. Để một dòng trống giữa các đoạn. Tắt đi để quay lại nội dung tự động.",
+      "scenario": "Trường hợp của bạn",
+      "sc_experienced": "Đã có kinh nghiệm",
+      "sc_graduate": "Mới tốt nghiệp",
+      "sc_internship": "Thực tập",
+      "sc_change": "Chuyển ngành",
+      "achievementsHint": "Mỗi dòng một ý, bắt đầu bằng việc bạn đã làm.",
+      "count": "{with} ký tự có dấu cách · {without} không dấu cách",
+      "preview": "Xem trước",
+      "paper": "Khổ giấy",
+      "paper_a4": "A4",
+      "paper_letter": "Letter",
+      "print": "In / Lưu PDF",
+      "word": "Tải Word",
+      "copy": "Sao chép",
+      "copied": "Đã sao chép",
+      "copyFailed": "Không sao chép được",
+      "printHint": "Nút In mở hộp thoại in của trình duyệt: chọn Lưu dưới dạng PDF để có file PDF.",
+      "example": "Dùng mẫu ví dụ",
+      "clear": "Xóa hết",
+      "fileStem": "don xin viec",
+      "f_name": "Họ và tên",
+      "f_birth": "Ngày sinh",
+      "f_address": "Địa chỉ",
+      "f_phone": "Điện thoại",
+      "f_email": "Email",
+      "f_place": "Địa điểm (dòng ngày tháng)",
+      "f_date": "Ngày làm đơn",
+      "f_company": "Tên công ty",
+      "f_manager": "Kính gửi",
+      "f_companyAddress": "Địa chỉ công ty (không bắt buộc)",
+      "f_job": "Vị trí ứng tuyển",
+      "f_source": "Nguồn tin tuyển dụng (không bắt buộc)",
+      "f_role": "Vị trí đã làm",
+      "f_years": "Số năm kinh nghiệm",
+      "f_education": "Trình độ",
+      "f_achievements": "Kinh nghiệm, thành tích",
+      "f_skills": "Kỹ năng",
+      "f_why": "Lý do chọn công ty (không bắt buộc)",
+      "f_availability": "Thời gian có thể bắt đầu (không bắt buộc)",
+      "f_growth": "Quá trình trưởng thành",
+      "f_character": "Ưu điểm và nhược điểm",
+      "f_motive": "Lý do ứng tuyển",
+      "f_plan": "Mục tiêu sau khi vào công ty"
+    }
+  }
+}

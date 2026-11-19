@@ -45,6 +45,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   wordgames: "Word games: word search, hangman, typing game, typing practice (touch-typing lessons)",
   games3d: "3D games: 3D chess against the computer, magic cube (2×2–4×4) and cube solver, stack game, driving and drift game, flight simulator, pinball, 8-ball pool, air hockey, darts, billiards (9-ball, 10-ball, Chinese 8-ball, Russian pyramid, three-cushion and 8-ball) and snooker with practice drills and an aim-line toggle, basketball shooting, mini golf, archery, ping pong, bowling",
   academic: "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines; a citation generator (APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver, GB/T 7714) with DOI and ISBN lookup and BibTeX/RIS import and export; a title case converter (APA, MLA, Chicago, AP and sentence case); and a words-to-pages estimator (page count from a word count or pasted text, by font, size, spacing, paper and margins)",
+  career: "Job-hunting papers: a resignation letter generator (local formats such as the Japanese 退職届 / 退職願, notice periods), a cover letter generator (cover letters, Indonesian surat lamaran kerja, Vietnamese đơn xin việc, Japanese 送付状, Korean 자기소개서), a résumé builder (ATS-friendly CV, Japanese JIS 履歴書 and 職務経歴書, Korean 이력서, Chinese 简历) printed to PDF, and an ID photo maker (background removal on the device, passport and visa sizes, print sheets)",
   valuation: "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)",
 };
 
@@ -69,8 +70,10 @@ const NOTES: readonly ToolId[] = ["notepad"];
 const LOOKUPS: readonly ToolId[] = [...LOOKUP_TOOLS];
 /** Renders text in the page; images the text links to are loaded from their own sites. */
 const LINKED_IMAGES: readonly ToolId[] = ["markdown"];
+/** Letters and résumés: typed in the page, the draft kept in this browser, printed or saved as a file on the device. */
+const DRAFTS: readonly ToolId[] = ["resignation-letter", "cover-letter", "resume-builder"];
 
-export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES, NOTES, LINKED_IMAGES, LOOKUPS } as const;
+export const DATA_HANDLING_GROUPS = { STORES, NETWORK_VOICES, AI, FILES, NOTES, LINKED_IMAGES, LOOKUPS, DRAFTS } as const;
 
 const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS | "LOCAL", string> = {
   STORES: `Stores the note on cv.cm (text in its database, files on its storage host s3.cv.cm) until ${CLIP_MAX_VIEWS} views or ${CLIP_TTL_MS / 3_600_000} hours. Anyone with the short link can open it, so it is not for secrets.`,
@@ -81,6 +84,7 @@ const DATA_HANDLING_TEXT: Record<keyof typeof DATA_HANDLING_GROUPS | "LOCAL", st
   NOTES: "Keeps the note in this browser's local storage on the device; files it opens are read in the page. Notes and files are not uploaded.",
   LINKED_IMAGES: "Renders in the page and keeps the text in this browser. Images written into the text load from their own addresses. The text is not uploaded.",
   LOOKUPS: "Formats citations in the page and keeps the reference list in this browser's local storage. Only when you press Find is the DOI or ISBN you typed sent to Crossref (api.crossref.org, then DataCite at api.datacite.org for DOIs Crossref does not hold) or Open Library (openlibrary.org) to fetch the source's details; nothing else is uploaded.",
+  DRAFTS: "Builds the document in the page and keeps the draft in this browser's local storage; a photo or saved draft it opens is read in the page. Print saves it as a PDF and Download writes a file on the device. Drafts and files are not uploaded.",
   LOCAL: "Runs in the page. Inputs are not uploaded.",
 };
 
@@ -119,6 +123,10 @@ const AI_DETAILS: Partial<Record<ToolId, AiToolDetails>> = {
   "depth-map": {
     models: [{ option: null, model: "depth" }],
     options: `${en.depthMap.style}: ${[en.depthMap.palette_gray, en.depthMap.palette_turbo, en.depthMap.palette_magma].join(" / ")}. ${en.depthMap.invert}. ${en.depthMap.side}. ${en.depthMap.note}`,
+  },
+  "id-photo": {
+    models: [{ option: `${en.idPhoto.background} "${en.idPhoto.bg_replace}"`, model: "birefnet" }],
+    options: `${en.idPhoto.size}: passport presets (US 2 × 2 in, UK / Japan / Korea / Taiwan 35 × 45 mm, China 33 × 48 mm, Vietnam 4 × 6 cm, Spain 26 × 32 mm, each with its head rule and official source) and common print sizes (25 × 35, 35 × 49, 35 × 45, 28 × 35, 30 × 40, 20 × 30, 40 × 60, 25 × 30 mm). Crop by drag, zoom and arrow keys over head guides; ${en.idPhoto.autoFit} places the crop from the model's mask. ${en.idPhoto.background}: "${en.idPhoto.bg_keep}" (no model; the default for passports that reject edited backgrounds) or "${en.idPhoto.bg_replace}" (${[en.idPhoto.c_white, en.idPhoto.c_offwhite, en.idPhoto.c_lightblue, en.idPhoto.c_blue, en.idPhoto.c_red].join(" / ")} or a custom colour). Downloads a 300 DPI JPG (pixel size and a maximum file size in KB can be set) and a print sheet: 4 × 6 in JPG, or A4 / Letter PDF.`,
   },
   v: {
     models: [{ option: null, model: "depth" }],

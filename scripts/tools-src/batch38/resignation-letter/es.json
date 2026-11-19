@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "titleResignationLetter": "Carta de renuncia voluntaria — modelo gratis en PDF y Word — cv.cm",
+    "descResignationLetter": "Modelo de carta de renuncia voluntaria: indica tu puesto, la fecha de baja y el motivo, y obtén una carta formal para imprimir en PDF, bajar en Word o copiar."
+  },
+  "tools": {
+    "resignation-letter": {
+      "name": "Carta de renuncia",
+      "blurb": "Carta de renuncia voluntaria formal."
+    }
+  },
+  "faq": {
+    "resignation-letter": {
+      "q1": "¿Qué debe incluir una carta de renuncia voluntaria?",
+      "a1": "Lugar y fecha, destinatario, tu decisión de renunciar al puesto, la fecha en que la baja será efectiva y tu firma. Dar las gracias y ofrecer ayuda con el traspaso es opcional, pero habitual.",
+      "q2": "¿Con cuánta antelación tengo que avisar?",
+      "a2": "En España, el artículo 49.1.d del Estatuto de los Trabajadores remite al preaviso que fije el convenio colectivo o la costumbre del lugar, que suele ser de 15 días. En otros países depende de la ley y del contrato. Revisa tu contrato y tu convenio.",
+      "q3": "¿Tengo que explicar por qué me voy?",
+      "a3": "No es obligatorio. Basta con \"motivos personales\" o \"una nueva oportunidad profesional\", sin dar más detalles.",
+      "q4": "¿Cómo dejo constancia de que entregué la carta?",
+      "a4": "Entrega dos copias y pide que la empresa firme y feche una como acuse de recibo. Así puedes demostrar cuándo avisaste. Si la envías por correo electrónico, guarda el mensaje.",
+      "q5": "¿Se envían a algún sitio los datos que escribo?",
+      "a5": "No. La carta se crea en tu navegador, el borrador solo se guarda en este navegador y los archivos PDF y Word se generan en tu dispositivo."
+    }
+  },
+  "guides": {
+    "resignation-letter": {
+      "lead": "Escribe tu carta de renuncia en tres pasos.",
+      "s1t": "Rellena tus datos",
+      "s1b": "Nombre, puesto, empresa, destinatario, ciudad y fecha de baja.",
+      "s2t": "Elige el motivo",
+      "s2b": "Motivos personales, nueva oportunidad, familia, salud o estudios.",
+      "s3t": "Imprime o descarga",
+      "s3b": "Guárdala en PDF, descarga un Word o copia el texto. También puedes cambiar la redacción."
+    }
+  },
+  "ui": {
+    "resignationLetter": {
+      "title": "Generador de carta de renuncia",
+      "privacyNote": "Carta de renuncia voluntaria con el formato habitual. Se crea en tu navegador; no se sube nada.",
+      "form": "Datos de la carta",
+      "kind": "Tipo",
+      "scenario": "Motivo",
+      "vertical": "Escritura vertical",
+      "era": "Formato del año",
+      "eraWareki": "Era japonesa",
+      "eraSeireki": "Año occidental",
+      "place": "Ciudad",
+      "name": "Nombre y apellidos",
+      "jobTitle": "Puesto",
+      "department": "Departamento",
+      "company": "Empresa",
+      "recipientTitle": "Cargo del destinatario",
+      "recipient": "Destinatario",
+      "startDate": "Fecha de alta",
+      "lastDay": "Fecha de baja",
+      "date": "Fecha de la carta",
+      "today": "Hoy",
+      "thanks": "Dar las gracias",
+      "handover": "Ofrecer ayuda con el traspaso",
+      "body": "Texto de la carta",
+      "editText": "Editar el texto yo mismo",
+      "editHint": "Tu texto sustituye a los párrafos generados; la fecha, el destinatario y la firma siguen el formulario.",
+      "resetBody": "Volver al texto del modelo",
+      "paper": "Papel",
+      "paperA4": "A4",
+      "paperLetter": "Carta (EE. UU.)",
+      "print": "Imprimir / Guardar PDF",
+      "docx": "Descargar Word",
+      "copy": "Copiar texto",
+      "copied": "Copiado",
+      "copyFailed": "No se pudo copiar",
+      "noticeDays": "{n} días entre la fecha de la carta y la fecha de baja.",
+      "noticeLaw": "Antigüedad de {months} meses: avisa con {days} días.",
+      "noticeShort": "Antigüedad de {months} meses: no hay plazo de preaviso fijado."
+    }
+  }
+}

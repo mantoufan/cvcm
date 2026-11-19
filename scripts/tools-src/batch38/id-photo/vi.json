@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "titleIdPhoto": "Làm ảnh thẻ online — ảnh 3x4, 4x6, hộ chiếu, đổi nền, in ảnh — cv.cm",
+    "descIdPhoto": "Làm ảnh thẻ online miễn phí: cắt ảnh 3x4, 4x6, hộ chiếu theo khung căn đầu, đổi nền trắng hoặc xanh ngay trên máy, xếp ảnh để in 10x15 hoặc A4."
+  },
+  "tools": {
+    "id-photo": {
+      "name": "Làm ảnh thẻ",
+      "blurb": "Cỡ ảnh thẻ, đổi nền và xếp ảnh để in."
+    }
+  },
+  "faq": {
+    "id-photo": {
+      "q1": "Ảnh hộ chiếu Việt Nam cỡ bao nhiêu?",
+      "a1": "Theo Bộ Công an, ảnh hộ chiếu cỡ 4 cm × 6 cm, chụp không quá 6 tháng, mặt nhìn thẳng, đầu để trần, rõ hai tai, không đeo kính, phông nền trắng; khuôn mặt chiếm khoảng 75% diện tích ảnh. Khi nộp trực tuyến, ảnh là file .jpg dưới 2 MB.",
+      "q2": "Ảnh thẻ 3x4 và 4x6 dùng khi nào?",
+      "a2": "Ảnh 3x4 thường dùng cho hồ sơ xin việc, sơ yếu lý lịch và thẻ học sinh; 4x6 dùng cho hộ chiếu và nhiều giấy tờ khác. Đây là cỡ in phổ biến, nơi nhận hồ sơ có yêu cầu riêng thì làm theo yêu cầu đó.",
+      "q3": "Có nên đổi nền ảnh hộ chiếu không?",
+      "a3": "Không nên. Hộ chiếu Mỹ, Anh, Hàn Quốc, Trung Quốc và Đài Loan không nhận ảnh đã xóa hoặc sửa nền bằng phần mềm. Với các cỡ này công cụ giữ nguyên nền gốc và chỉ cắt, hãy chụp trước tường trắng. Đổi nền dùng cho hồ sơ xin việc, thẻ học sinh, thẻ nhân viên khi được chấp nhận.",
+      "q4": "In ảnh thẻ sao cho đúng kích thước?",
+      "a4": "Tải bản xếp ảnh: khổ 10 × 15 cm (4 × 6 inch) là file JPG 300 DPI để mang ra tiệm in, A4 là file PDF. Khi in chọn 100% (kích thước thực), không chọn \"vừa trang\", rồi cắt theo đường mảnh.",
+      "q5": "Ảnh có bị tải lên mạng không?",
+      "a5": "Không. Việc cắt ảnh làm ngay trong trang; mô hình tách nền chỉ tải về một lần và chạy trên máy của bạn, ảnh không rời khỏi thiết bị."
+    }
+  },
+  "guides": {
+    "id-photo": {
+      "lead": "Làm ảnh thẻ trong ba bước.",
+      "s1t": "Chọn ảnh và cỡ ảnh",
+      "s1b": "Chọn ảnh chụp chính diện, ánh sáng đều, rồi chọn cỡ 3x4, 4x6 hoặc hộ chiếu.",
+      "s2t": "Căn vị trí đầu",
+      "s2b": "Kéo và phóng to để đỉnh đầu chạm vạch trên, cằm nằm trong dải tô màu.",
+      "s3t": "Tải về hoặc in",
+      "s3b": "Tải một ảnh để nộp hồ sơ online, hoặc tải bản xếp 10 × 15 cm hay A4 để in đúng kích thước."
+    }
+  },
+  "ui": {
+    "idPhoto": {
+      "title": "Làm ảnh thẻ online",
+      "privacyNote": "Cắt ảnh theo cỡ ảnh thẻ, đổi nền và xếp ảnh để in. Ảnh chỉ nằm trên máy của bạn.",
+      "dropTitle": "Chọn ảnh",
+      "dropHint": "hoặc kéo thả vào đây, hoặc dán",
+      "dropTypes": "JPG, PNG, WebP, HEIC",
+      "size": "Cỡ ảnh",
+      "official": "Hộ chiếu",
+      "common": "Cỡ thông dụng",
+      "sizeInfo": "Rộng {w} × cao {h} mm · {pw} × {ph} px ở {dpi} DPI",
+      "headRule": "Chiều cao đầu (cằm đến đỉnh đầu): {a}–{b} mm.",
+      "noHeadRule": "Không có quy định chiều cao đầu theo mm: để khuôn mặt lớn và ở giữa.",
+      "commonNote": "Cỡ in thông dụng: hãy theo cỡ và màu nền mà nơi nhận hồ sơ yêu cầu.",
+      "sourceLink": "Quy định ảnh chính thức",
+      "frameLabel": "Khung cắt ảnh: kéo để di chuyển, phím mũi tên để chỉnh, + và − để phóng to thu nhỏ",
+      "zoom": "Phóng to",
+      "autoFit": "Tự căn",
+      "reset": "Đặt lại",
+      "hint": "Hãy chọn một ảnh để bắt đầu.",
+      "guideHint": "Đặt đỉnh đầu chạm vạch trên và cằm nằm trong dải tô màu. \"Tự căn\" tìm đầu bằng mô hình tách nền, hãy kiểm tra lại.",
+      "background": "Nền",
+      "bg_keep": "Giữ nền gốc",
+      "bg_replace": "Đổi nền",
+      "c_white": "Trắng",
+      "c_offwhite": "Xám nhạt",
+      "c_lightblue": "Xanh nhạt",
+      "c_blue": "Xanh",
+      "c_red": "Đỏ",
+      "c_custom": "Màu tùy chọn",
+      "noEdits": "Nơi cấp này không nhận ảnh đã xóa hoặc sửa nền bằng phần mềm. Hãy giữ nền gốc và chụp trước tường trắng.",
+      "bgNote": "Đổi nền sẽ tải mô hình tách nền một lần, sau đó chạy trên máy của bạn.",
+      "photoOut": "Một ảnh",
+      "width": "Rộng (px)",
+      "height": "Cao (px)",
+      "maxKb": "Dung lượng tối đa (KB)",
+      "noLimit": "Không giới hạn",
+      "maxKbHint": "Cho hồ sơ online: nhập cỡ pixel và dung lượng mà hệ thống yêu cầu.",
+      "download": "Tải ảnh (JPG)",
+      "saved": "Đã lưu {w} × {h} px, {kb} KB.",
+      "savedSmaller": "Đã lưu {w} × {h} px, {kb} KB: ảnh đã được thu nhỏ để vừa giới hạn.",
+      "tooBig": "Không nén được dưới {kb} KB. Hãy tăng giới hạn hoặc giảm cỡ pixel.",
+      "sheet": "Xếp ảnh để in",
+      "paper": "Khổ giấy",
+      "paper_4x6": "Giấy ảnh 10 × 15 cm (4 × 6 inch)",
+      "paper_a4": "A4",
+      "paper_letter": "Letter (Mỹ)",
+      "sheetCount": "{n} ảnh trên {paper}. In ở 100% (kích thước thực).",
+      "downloadSheet": "Tải bản xếp ảnh",
+      "photoSize": "Ảnh {w} × {h} px. Kéo và phóng to để khớp vạch căn.",
+      "placed": "Đã tìm thấy đầu và căn theo vạch. Hãy kiểm tra đỉnh đầu và cằm.",
+      "notFound": "Không tìm thấy người trong ảnh. Hãy tự chỉnh khung cắt.",
+      "errorDecode": "Không mở được ảnh này. Hãy thử JPG hoặc PNG.",
+      "emptyDownload": "Hãy chọn ảnh trước.",
+      "p_us": "Hộ chiếu và visa Mỹ (2 × 2 inch)",
+      "p_uk": "Hộ chiếu Anh (35 × 45 mm)",
+      "p_jp": "Hộ chiếu Nhật Bản (35 × 45 mm)",
+      "p_kr": "Hộ chiếu Hàn Quốc (35 × 45 mm)",
+      "p_tw": "Hộ chiếu Đài Loan (35 × 45 mm)",
+      "p_cn": "Hộ chiếu Trung Quốc (33 × 48 mm)",
+      "p_vn": "Hộ chiếu Việt Nam (4 × 6 cm)",
+      "p_es": "DNI và hộ chiếu Tây Ban Nha (26 × 32 mm)",
+      "p_c25x35": "Cỡ 1 inch Trung Quốc (25 × 35 mm)",
+      "p_c35x49": "Cỡ 2 inch Trung Quốc (35 × 49 mm)",
+      "p_c35x45": "35 × 45 mm",
+      "p_c28x35": "28 × 35 mm (1 inch Đài Loan)",
+      "p_c30x40": "Ảnh thẻ 3x4",
+      "p_c20x30": "Ảnh thẻ 2x3",
+      "p_c40x60": "Ảnh thẻ 4x6",
+      "p_c25x30": "2,5 × 3 cm (tamaño infantil Mexico)"
+    }
+  }
+}

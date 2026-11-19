@@ -449,3 +449,12 @@ Codex (`codex exec -m gpt-6-astra --image darts-sweet.jpg,air-hockey-sweet.jpg -
 - `archery`: she draws a pink and white recurve bow at a five-colour target (no numbers) in a blossom meadow; an arrow in the gold.
 - `ping-pong`: she swings a pink paddle over a mint table with a white net; the ball pops up.
 - `bowling`: she releases a glossy pink ball down a pale lane toward ten white pins with pink stripes; one starts to tip.
+
+## Resignation letter, cover letter, résumé builder, ID photo (2026-11-20)
+
+agy (Antigravity, Gemini image tool) with `gpa-sweet.jpg` + `invoice-sweet.jpg` as style references, one after another (Codex was at its usage limit and kie.ai had no credits). The prompt tells agy not to run commands or read other files, or it stops on the headless read-permission prompt. Base prompt: same cute pink twin-tail chibi girl with a white lace bonnet in the same cream-pink room, same soft pastel style, 16:9 full-bleed, no words, letters, digits, symbols, logo, UI or watermark anywhere (paper shows only blank lines). Output 1376×768; resized to 1280×720 JPEG with sharp (metadata dropped). All four corners checked for a visible mark; first try for each.
+
+- `resignation-letter`: she slides a cream envelope with a pink heart wax seal across the desk, a lined letter peeking out; a pink fountain pen; a small box with her mug, a succulent and a blank frame, ready for a fresh start.
+- `cover-letter`: she holds up a lined cream letter with a pink bow clip, a pink folder under her arm; a pink briefcase and a teacup on the desk.
+- `resume-builder`: she holds a résumé page with a small portrait of herself in the corner and blank lines in two columns; a stack of pages, pastel sticky tabs and pink pens.
+- `id-photo`: she sits on a stool before a light-blue backdrop like a passport sitting; a pink camera on a tripod; a print sheet of six small portraits and pink scissors on the desk.
