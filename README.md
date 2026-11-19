@@ -176,6 +176,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Hangman** / 猜单词（吊死鬼） — guess the word in English, Spanish or Indonesian, or a friend's word. [Open](https://cv.cm/en/hangman/)
 - **Rock paper scissors** / 石头剪刀布 — against a random computer, best of 3/5/7, Lizard Spock too. [Open](https://cv.cm/en/rock-paper-scissors/)
 - **BAC calculator** / 血液酒精浓度计算器 — Widmark estimate in %, ‰ and mg/100 mL, time until sober. [Open](https://cv.cm/en/bac-calculator/)
+- **Pressure points map** / 穴位图 — 16 acupressure points (WHO 2008 locations) on line drawings, a foot reflexology chart and a hold timer; for relaxation, not medical advice. [Open](https://cv.cm/en/pressure-points-map/)
 - **Simple interest calculator** / 单利计算器 — interest, principal, rate or time, year-by-year table. [Open](https://cv.cm/en/simple-interest/)
 - **Standard deviation calculator** / 标准差计算器 — sample or population, variance, standard error, step table. [Open](https://cv.cm/en/standard-deviation/)
 - **Sample size calculator** / 样本量计算器 — Cochran, Slovin's formula or a mean, finite population, response rate. [Open](https://cv.cm/en/sample-size/)

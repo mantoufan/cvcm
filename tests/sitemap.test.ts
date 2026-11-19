@@ -10,7 +10,7 @@ import { COUNTRY_LIST } from "../src/shared/countries";
 import { FOODS } from "../src/shared/calories";
 import { describe, expect, it } from "vitest";
 import { LOCALES } from "../src/shared/locale";
-import { GAME_CONSOLES, GAMES } from "../src/shared/games";
+import { GAME_HUBS } from "../src/shared/games";
 import { DEVICE_PAGES } from "../src/shared/device";
 import { CONVERT_JOBS, LEGAL_PAGES, RESIZE_JOBS, TOOLS, FEATURED_TUTORIALS, appHref, gamesHref, kbHref, learnHref, parseAppPath } from "../src/shared/path";
 import { buildSectionSitemaps, buildSitemapIndexXml, buildSitemapXml, HREFLANG, pageUrl, SITEMAP_SECTIONS, sitemapPages, sitemapSectionUrl } from "../src/shared/sitemap";
@@ -28,7 +28,7 @@ describe("sitemap", () => {
     expect(xml).toContain('xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"');
     expect(xml).toContain('xmlns:xhtml="http://www.w3.org/1999/xhtml"');
     expect(sitemapPages().length).toBe(
-      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + RANKINGS.length + 1 + DATASETS.length + Object.keys(KB_SHELVES).length + KB_ARTICLES.length + 1 + REF_ENTRIES.length + 1 + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + CALENDAR_PAGES.length + 1 + CURRENCY_PAIRS.length + 1 + EMOJI_SLUGS.length + 1 + BREED_IDS.length),
+      LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + 1 + FEATURED_TUTORIALS.length + 1 + GAME_HUBS.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + RANKINGS.length + 1 + DATASETS.length + Object.keys(KB_SHELVES).length + KB_ARTICLES.length + 1 + REF_ENTRIES.length + 1 + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + CALENDAR_PAGES.length + 1 + CURRENCY_PAIRS.length + 1 + EMOJI_SLUGS.length + 1 + BREED_IDS.length),
     );
     for (const locale of LOCALES) {
       expect(xml).toContain(`https://cv.cm${appHref(locale, null)}`);
@@ -37,7 +37,8 @@ describe("sitemap", () => {
       expect(xml).toContain(`https://cv.cm${gamesHref(locale, null)}`);
       expect(xml).toContain(`https://cv.cm${appHref(locale, "gold")}`);
       expect(xml).toContain(`https://cv.cm${appHref(locale, "oil")}`);
-      expect(xml).toContain(`https://cv.cm${gamesHref(locale, "fc", "contra")}`);
+      expect(xml).toContain(`https://cv.cm${gamesHref(locale, "3d")}`);
+      expect(xml).not.toContain(`https://cv.cm${gamesHref(locale)}fc/`);
       for (const tool of TOOLS) {
         expect(xml).toContain(pageUrl({ locale, kind: "tool", tool }));
       }
@@ -75,7 +76,7 @@ describe("sitemap", () => {
     const counts = SITEMAP_SECTIONS.map((section) => sections[section].match(/<loc>/g)?.length ?? 0);
     expect(counts.every((count) => count > 0)).toBe(true);
     expect(counts.reduce((a, b) => a + b, 0)).toBe(sitemapPages().length);
-    expect(sections.games).toContain(`https://cv.cm${gamesHref("en", "fc", "contra")}`);
+    expect(sections.games).toContain(`https://cv.cm${gamesHref("en", "mini")}`);
     expect(sections.games).not.toContain(`https://cv.cm${appHref("en", "qr")}`);
     expect(sections.learn).toContain(`https://cv.cm${kbHref("ja", null)}`);
     expect(parseAppPath("/sitemaps/nope.xml")).toEqual({ kind: "unknown" });

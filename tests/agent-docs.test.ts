@@ -117,7 +117,6 @@ describe("agent discovery files", () => {
       "src/client/clip/ui.ts": "the clipboard, which stores notes by design",
       "src/client/ai/worker.ts": "downloads model files",
       "src/client/portrait-sim/assets.ts": "downloads sample photos",
-      "src/client/games/player.ts": "HEAD request for a ROM file",
       "src/client/device/ui.ts": "reads the visitor's own IP address",
       "src/client/decode.ts": "decodes a local image with new Image()",
       "src/client/word-unscrambler/ui.ts": "downloads the static ENABLE word list (/words/enable.txt)",

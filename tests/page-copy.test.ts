@@ -114,11 +114,11 @@ describe("page copy buckets", () => {
     expect(copyChunkKey("ja", pageCopyOf(parseAppPath("/ja/learn/make-qr/")))).toBe(`copy-ja/tutorials-${copyBucket("make-qr")}`);
     for (const path of ["/ja/", "/ja/learn/", "/ja/tests/", "/ja/games/"]) expect(copyChunkKey("ja", pageCopyOf(parseAppPath(path))), path).toBeNull();
     const packs = { ja: ["/assets/ja-1.js"], "copy-ja": ["/assets/copy-ja-t.js"], [key!]: ["/assets/copy-tools-ja-x.js"] };
-    const page = preloadLocalePack("<head></head>", "ja", false, packs, false, false, null, null, null, key);
+    const page = preloadLocalePack("<head></head>", "ja", packs, false, false, null, null, null, key);
     expect(page).toContain('href="/assets/ja-1.js"');
     expect(page).toContain('href="/assets/copy-ja-t.js"');
     expect(page).toContain('href="/assets/copy-tools-ja-x.js"');
-    expect(preloadLocalePack("<head></head>", "ja", false, packs)).not.toContain("copy-");
+    expect(preloadLocalePack("<head></head>", "ja", packs)).not.toContain("copy-");
   });
 
   it("generates one loader per bucket", () => {

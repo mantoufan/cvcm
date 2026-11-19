@@ -3,9 +3,7 @@ import { mountClipCompose, unmountClip } from "./clip/ui";
 import { t } from "./i18n";
 import { linkList } from "./links";
 import type { Locale } from "../shared/locale";
-import { GAMES } from "../shared/games";
-import { gameName } from "../shared/games-i18n";
-import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryLinks, deviceHref, gamesHref, kbHref, learnHref, quizHref, datasetHref, refHref } from "../shared/path";
+import { CATEGORIES, FEATURED_TUTORIALS, appHref, categoryLinks, deviceHref, gamesHref, kbHref, learnHref, quizHref, datasetHref, refHref, type ToolId } from "../shared/path";
 import { REF_FOCUS } from "../shared/ref";
 import { KB_SHELVES, KNOWLEDGE_ARTICLES, kbGroupsOf } from "../shared/kb";
 import { kbLinkItems } from "../shared/kb-i18n";
@@ -13,6 +11,9 @@ import { QUIZZES } from "../shared/quiz";
 import { DATASETS } from "../shared/datasets";
 import { DEVICE_CHILD_PAGES } from "../shared/device";
 import { deviceMessages, devicePageCopy } from "../shared/device-i18n";
+
+/** The games shown on the home page: the most searched of cv.cm's own games (Keyword Planner, 2026-11). */
+const HOME_GAMES: readonly ToolId[] = ["solitaire", "chess", "mahjong", "sudoku", "minesweeper", "2048", "flight-simulator", "driving-game"];
 
 /** Home: the clipboard, then every tool as a text link. Returns the clipboard's unmount. */
 export function mountHome(host: HTMLElement, locale: Locale): () => void {
@@ -86,16 +87,18 @@ export function mountHome(host: HTMLElement, locale: Locale): () => void {
       h("p", { class: "more" }, h("a", { href: kbHref(locale, "photo"), "data-nav": KB_SHELVES.photo.nav }, t("kb.photo.all"))),
     ),
     h("section", { class: "wall" },
+      h("h2", null, h("a", { href: kbHref(locale, "massage"), "data-nav": KB_SHELVES.massage.nav }, t("kb.massage.label"))),
+      linkList(kbGroupsOf("massage").map((group) => ({ href: `${kbHref(locale, "massage")}#${group.id}`, name: t(`kb.massage.groups.${group.id}`), blurb: t(`kb.massage.blurbs.${group.id}`), nav: KB_SHELVES.massage.nav }))),
+      h("p", { class: "more" }, h("a", { href: kbHref(locale, "massage"), "data-nav": KB_SHELVES.massage.nav }, t("kb.massage.all"))),
+    ),
+    h("section", { class: "wall" },
       h("h2", null, h("a", { href: refHref(locale), "data-nav": "reference" }, t("nav.reference"))),
       linkList(REF_FOCUS.map((id) => ({ href: refHref(locale, id), name: t(`refFocus.${id}`), blurb: t(`refFocusBlurb.${id}`), nav: `ref-${id}` }))),
       h("p", { class: "more" }, h("a", { href: refHref(locale), "data-nav": "reference" }, t("refAll"))),
     ),
     h("section", { class: "wall" },
       h("h2", null, t("nav.games")),
-      linkList(GAMES.slice(0, 8).map((game) => {
-        const copy = gameName(locale, game.id);
-        return { href: gamesHref(locale, game.console, game.id), name: copy.name, blurb: copy.blurb, nav: `game-${game.id}` };
-      })),
+      linkList(HOME_GAMES.map((id) => ({ href: appHref(locale, id), name: t(`tools.${id}.name`), blurb: t(`tools.${id}.blurb`), nav: id }))),
       h("p", { class: "more" }, h("a", { href: gamesHref(locale, null), "data-nav": "games" }, t("games.hub.all"))),
     ),
   );

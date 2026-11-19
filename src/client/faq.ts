@@ -8,11 +8,7 @@ import {
   faqItems,
   resizeJobFaqItems,
   faqJsonLd,
-  flashHubHowToJsonLd,
-  flashHubSoftwareJsonLd,
   gameBreadcrumbJsonLd,
-  gameHowToJsonLd,
-  gameVideoGameJsonLd,
   howToJsonLd,
   learnFaqItems,
   marketBreadcrumbJsonLd,
@@ -22,7 +18,7 @@ import {
   type FaqItem,
 } from "../shared/seo";
 import type { Locale } from "../shared/locale";
-import { gameById, type GameConsoleId, type GameId } from "../shared/games";
+import type { GameHubId } from "../shared/games";
 import type { MarketId } from "../shared/markets";
 import { deviceBreadcrumbJsonLd, deviceFaqJsonLd } from "../shared/device-i18n";
 import { quizBreadcrumbJsonLd, quizFaqJsonLd } from "../shared/quiz-i18n";
@@ -76,7 +72,7 @@ export function faqSection(
   convertJob?: ConvertJobId | null,
   resizeJob?: ResizeJobId | null,
 ): HTMLElement {
-  syncPageJsonLd(locale, tool, null, null, false, convertJob, resizeJob);
+  syncPageJsonLd(locale, tool, null, false, convertJob, resizeJob);
   const items = tool === "convert" && convertJob
     ? convertJobFaqItems(locale, convertJob)
     : tool === "resize" && resizeJob
@@ -98,14 +94,13 @@ export function syncPageJsonLd(
   locale: Locale,
   tool: ToolId | null,
   tutorial: TutorialId | null,
-  game: GameId | null = null,
   gamesHub = false,
   convertJob: ConvertJobId | null = null,
   resizeJob: ResizeJobId | null = null,
   market: MarketId | null = null,
   marketsHub = false,
   devicePage: DevicePageId | null = null,
-  gamesConsole: GameConsoleId | null = null,
+  gamesHubId: GameHubId | null = null,
   legalPage: LegalPageId | null = null,
   quizPage: QuizId | "hub" | null = null,
   datasetPage: DatasetId | "hub" | null = null,
@@ -126,7 +121,7 @@ export function syncPageJsonLd(
 ): void {
   if (currencyPage) {
     const pair = currencyPage === "hub" ? null : currencyPage;
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("article-jsonld", currencyPageJsonLd(locale, pair));
     writeJsonLd("faq-jsonld", currencyFaqJsonLd(locale, pair));
     writeJsonLd("breadcrumb-jsonld", currencyBreadcrumbJsonLd(locale, pair));
@@ -134,7 +129,7 @@ export function syncPageJsonLd(
   }
   if (emojiPage) {
     const slug = emojiPage === "hub" ? null : emojiPage;
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("article-jsonld", emojiPageJsonLd(locale, slug));
     writeJsonLd("faq-jsonld", emojiFaqJsonLd(locale, slug));
     writeJsonLd("breadcrumb-jsonld", emojiBreadcrumbJsonLd(locale, slug));
@@ -142,7 +137,7 @@ export function syncPageJsonLd(
   }
   if (breedsPage) {
     const id = breedsPage === "hub" ? null : breedsPage;
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("article-jsonld", breedsArticleJsonLd(locale, id));
     writeJsonLd("faq-jsonld", breedsFaqJsonLd(locale, id));
     writeJsonLd("breadcrumb-jsonld", breedsBreadcrumbJsonLd(locale, id));
@@ -150,7 +145,7 @@ export function syncPageJsonLd(
   }
   if (elementsPage) {
     const slug = elementsPage === "hub" ? null : elementsPage;
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("article-jsonld", elementsPageJsonLd(locale, slug));
     writeJsonLd("faq-jsonld", elementsFaqJsonLd(locale, slug));
     writeJsonLd("breadcrumb-jsonld", elementsBreadcrumbJsonLd(locale, slug));
@@ -163,7 +158,7 @@ export function syncPageJsonLd(
   writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : slangPage ? slangArticleJsonLd(locale, slangId) : ideasPage ? ideasArticleJsonLd(locale, ideaId) : nostalgiaPage ? nostalgiaArticleJsonLd(locale, nostalgiaId) : calendarPage ? calendarPageJsonLd(locale, calendarPage) : null);
   if (datasetPage) {
     const id = datasetPage === "hub" ? null : datasetPage;
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", datasetFaqJsonLd(locale, id));
     writeJsonLd("breadcrumb-jsonld", datasetBreadcrumbJsonLd(locale, id));
     writeJsonLd("dataset-jsonld", datasetJsonLd(locale, id));
@@ -171,7 +166,7 @@ export function syncPageJsonLd(
   }
   if (rankingPage) {
     const id = rankingPage === "hub" ? null : rankingPage;
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", rankingFaqJsonLd(locale, id));
     writeJsonLd("breadcrumb-jsonld", rankingBreadcrumbJsonLd(locale, id));
     writeJsonLd("dataset-jsonld", rankingJsonLd(locale, id));
@@ -180,7 +175,7 @@ export function syncPageJsonLd(
   writeJsonLd("dataset-jsonld", null);
   if (countriesPage) {
     const slug = countriesPage === "hub" ? null : countriesPage;
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", countryFaqJsonLd(locale, slug));
     writeJsonLd("breadcrumb-jsonld", countryBreadcrumbJsonLd(locale, slug));
     writeJsonLd("article-jsonld", countriesCollectionJsonLd(locale, slug));
@@ -188,66 +183,65 @@ export function syncPageJsonLd(
   }
   if (caloriesPage) {
     const foodId = caloriesPage === "hub" ? null : caloriesPage;
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", caloriesFaqJsonLd(locale, foodId));
     writeJsonLd("breadcrumb-jsonld", caloriesBreadcrumbJsonLd(locale, foodId));
     writeJsonLd("article-jsonld", caloriesPageJsonLd(locale, foodId));
     return;
   }
   if (ideasPage) {
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", ideasFaqJsonLd(locale, ideaId));
     writeJsonLd("breadcrumb-jsonld", ideasBreadcrumbJsonLd(locale, ideaId));
     return;
   }
   if (calendarPage) {
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", calendarFaqJsonLd(locale, calendarPage));
     writeJsonLd("breadcrumb-jsonld", calendarBreadcrumbJsonLd(locale, calendarPage));
     return;
   }
   if (nostalgiaPage) {
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", nostalgiaFaqJsonLd(locale, nostalgiaId));
     writeJsonLd("breadcrumb-jsonld", nostalgiaBreadcrumbJsonLd(locale, nostalgiaId));
     return;
   }
   if (slangPage) {
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", slangFaqJsonLd(locale, slangId));
     writeJsonLd("breadcrumb-jsonld", slangBreadcrumbJsonLd(locale, slangId));
     return;
   }
   if (refPage) {
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", refFaqJsonLd(locale, refId));
     writeJsonLd("breadcrumb-jsonld", refBreadcrumbJsonLd(locale, refId));
     return;
   }
   if (kbPage) {
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", kbFaqJsonLd(locale, kbPage));
     writeJsonLd("breadcrumb-jsonld", kbBreadcrumbJsonLd(locale, kbPage));
     return;
   }
   if (quizPage) {
     const id = quizPage === "hub" ? null : quizPage;
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
+    for (const key of ["howto-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", quizFaqJsonLd(locale, id));
     writeJsonLd("breadcrumb-jsonld", quizBreadcrumbJsonLd(locale, id));
     return;
   }
   if (legalPage) {
-    for (const id of ["faq-jsonld", "howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(id, null);
+    for (const id of ["faq-jsonld", "howto-jsonld", "software-jsonld"]) writeJsonLd(id, null);
     writeJsonLd("breadcrumb-jsonld", legalBreadcrumbJsonLd(locale, legalPage));
     return;
   }
-  const flashHub = gamesHub && gamesConsole === "flash";
   // Mirror applyHtmlSeo: plain tool pages carry WebApplication + BreadcrumbList.
-  const toolPage = Boolean(tool) && !tutorial && !game && !gamesHub && !market && !marketsHub && !devicePage;
+  const toolPage = Boolean(tool) && !tutorial && !gamesHub && !market && !marketsHub && !devicePage;
   const faq = devicePage
     ? deviceFaqJsonLd(locale, devicePage)
-    : faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob, market, marketsHub, gamesConsole);
+    : faqJsonLd(locale, tool, tutorial, gamesHub, convertJob, resizeJob, market, marketsHub, gamesHubId);
   writeJsonLd("faq-jsonld", faq);
   writeJsonLd(
     "breadcrumb-jsonld",
@@ -255,10 +249,8 @@ export function syncPageJsonLd(
       ? deviceBreadcrumbJsonLd(locale, devicePage)
       : marketsHub || market
         ? marketBreadcrumbJsonLd(locale, market)
-        : game
-          ? gameBreadcrumbJsonLd(locale, gameById(game)?.console ?? null, game)
-          : gamesHub
-            ? gameBreadcrumbJsonLd(locale, gamesConsole)
+        : gamesHub
+            ? gameBreadcrumbJsonLd(locale, gamesHubId)
             : tutorial || learnHub
               ? tutorialBreadcrumbJsonLd(locale, tutorial)
               : toolPage && tool
@@ -269,20 +261,15 @@ export function syncPageJsonLd(
     "howto-jsonld",
     devicePage
       ? null
-      : game
-        ? gameHowToJsonLd(locale, game)
-        : flashHub
-          ? flashHubHowToJsonLd(locale)
-          : tutorial
+      : tutorial
             ? howToJsonLd(locale, tutorial)
             : tool
               ? toolHowToJsonLd(locale, tool)
               : null,
   );
-  writeJsonLd("game-jsonld", game ? gameVideoGameJsonLd(locale, game) : null);
   writeJsonLd(
     "software-jsonld",
-    flashHub ? flashHubSoftwareJsonLd(locale) : toolPage && tool ? toolSoftwareJsonLd(locale, tool) : null,
+    toolPage && tool ? toolSoftwareJsonLd(locale, tool) : null,
   );
 }
 

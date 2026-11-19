@@ -5,8 +5,8 @@ import { mountFlashPlayer } from "../src/client/flash-player/ui";
 import { CATEGORIES, TOOLS, parseAppPath } from "../src/shared/path";
 import { isTrackedPath } from "../src/shared/analytics";
 import { dataHandling } from "../src/shared/agent-docs";
-import { GAMES } from "../src/shared/games";
-import { MAX_ROM_BYTES, ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, zipEntries } from "../src/shared/rom-detect";
+import { DEMO_ROMS } from "../src/shared/demo-roms";
+import { MAX_ROM_BYTES, ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, zipEntries, type RomConsoleId } from "../src/shared/rom-detect";
 
 function rom(size: number, at: number, bytes: readonly number[]): Uint8Array {
   const out = new Uint8Array(size);
@@ -103,12 +103,15 @@ describe("detectRomConsole", () => {
     expect(detectRomConsole("x.zip", hostile)).toBeNull();
   });
 
-  it("uses the same cores and file types as the game catalog", () => {
-    for (const id of ROM_CONSOLES) {
-      const game = GAMES.find((g) => g.console === id)!;
-      expect(game.core, id).toBe(ROM_CORE[id]);
-      for (const ext of game.accept.split(",")) expect(ROM_ACCEPT.split(","), ext).toContain(ext);
+  it("offers demo games that the detector names correctly", () => {
+    for (const demo of DEMO_ROMS) {
+      if (demo.console === "flash") continue;
+      // By extension (a .md this size is a cartridge, not Markdown), so the console select agrees with the demo.
+      expect(detectRomConsole(demo.file, new Uint8Array(128 * 1024)), demo.id).toBe(demo.console);
+      expect(ROM_CORE[demo.console as RomConsoleId], demo.id).toBeTruthy();
     }
+    expect(ROM_CONSOLES.length).toBe(6);
+    expect(ROM_ACCEPT.split(",")).toContain(".zip");
   });
 });
 
@@ -284,6 +287,116 @@ describe("tool pages", () => {
     unmountRomEmulator();
     await flush();
     expect(frameSrc.filter((src) => src !== "about:blank")).toEqual([]);
+  });
+
+  it("starts a hosted demo game with its console's core and keys", () => {
+    mountRomEmulator(host);
+    const buttons = [...host.querySelectorAll<HTMLButtonElement>("[data-demo]")];
+    expect(buttons.map((b) => b.dataset.demo)).toEqual(DEMO_ROMS.filter((d) => d.console !== "flash").map((d) => d.id));
+    const demo = DEMO_ROMS.find((d) => d.console === "gba")!;
+    host.querySelector<HTMLButtonElement>(`[data-demo="${demo.id}"]`)!.click();
+    expect(frameSrc.at(-1)).toContain("core=gba");
+    expect(frameSrc.at(-1)).toContain(`rom=${encodeURIComponent(`/emu/roms/${demo.file}`)}`);
+    expect(q(".game-empty").hidden).toBe(true);
+    expect(q<HTMLSelectElement>("select").value).toBe("gba");
+    expect(q("[data-out=controls] .game-controls")).toBeTruthy();
+    // Every demo credits its author, license and source.
+    expect(host.querySelectorAll(".game-demo-credits a")).toHaveLength(buttons.length);
+  });
+
+  it("drops a file read that a demo overtook", async () => {
+    mountRomEmulator(host);
+    const input = q<HTMLInputElement>("input[type=file]");
+    Object.defineProperty(input, "files", { configurable: true, get: () => [new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes")] });
+    input.dispatchEvent(new Event("change"));
+    host.querySelector<HTMLButtonElement>("[data-demo=apotris]")!.click();
+    await flush();
+    expect(frameSrc.at(-1)).toContain("core=gba");
+  });
+
+  it("detects the next file again after a demo", async () => {
+    mountRomEmulator(host);
+    host.querySelector<HTMLButtonElement>("[data-demo=apotris]")!.click();
+    const select = q<HTMLSelectElement>("select");
+    expect(select.value).toBe("gba");
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "game.nes"));
+    expect(select.value).toBe("auto");
+    expect(frameSrc.at(-1)).toContain("core=nes");
+  });
+
+  it("keeps a console chosen during a demo for the next file, without restarting the demo", async () => {
+    mountRomEmulator(host);
+    host.querySelector<HTMLButtonElement>("[data-demo=apotris]")!.click();
+    const loads = frameSrc.length;
+    const select = q<HTMLSelectElement>("select");
+    select.value = "sfc";
+    select.dispatchEvent(new Event("change"));
+    expect(frameSrc.length).toBe(loads);
+    await pick(new File([new Uint8Array(64) as BlobPart], "game.bin"));
+    expect(select.value).toBe("sfc");
+    expect(frameSrc.at(-1)).toContain("core=snes");
+  });
+
+  it("marks the demo a retired game page links to, without loading anything at mount", () => {
+    for (const [mount, path, id] of [
+      [mountRomEmulator, "/en/rom-emulator/#demo-porklike-gb", "porklike-gb"],
+      [mountFlashPlayer, "/en/flash-player/#demo-ending", "ending"],
+    ] as const) {
+      history.replaceState(null, "", path);
+      try {
+        host.replaceChildren();
+        mount(host);
+        expect(host.querySelector(`[data-demo="${id}"]`)?.getAttribute("aria-current"), id).toBe("true");
+        expect(host.querySelectorAll("[data-demo][aria-current]"), id).toHaveLength(1);
+        expect(frameSrc.filter((src) => src !== "about:blank"), id).toEqual([]);
+      } finally {
+        history.replaceState(null, "", "/");
+      }
+    }
+  });
+
+  it("gives a playing demo the keys back after a mouse choice, and leaves focus alone before any game", () => {
+    mountRomEmulator(host);
+    const select = q<HTMLSelectElement>("select");
+    select.focus();
+    select.value = "md";
+    select.dispatchEvent(new Event("change"));
+    expect(document.activeElement).toBe(select);
+    host.querySelector<HTMLButtonElement>("[data-demo=apotris]")!.click();
+    select.focus();
+    select.value = "sfc";
+    select.dispatchEvent(new Event("change"));
+    expect(document.activeElement?.tagName).toBe("IFRAME");
+    // The mark follows the demo that is playing.
+    host.querySelector<HTMLButtonElement>("[data-demo=ucity]")!.click();
+    expect([...host.querySelectorAll("[data-demo][aria-current]")].map((b) => (b as HTMLElement).dataset.demo)).toEqual(["ucity"]);
+  });
+
+  it("keeps a console chosen while the next file loads", async () => {
+    mountRomEmulator(host);
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
+    let finish: (buffer: ArrayBuffer) => void = () => {};
+    const slow = new File([new Uint8Array(64) as BlobPart], "b.bin");
+    Object.defineProperty(slow, "arrayBuffer", { value: () => new Promise<ArrayBuffer>((resolve) => { finish = resolve; }) });
+    const input = q<HTMLInputElement>("input[type=file]");
+    Object.defineProperty(input, "files", { configurable: true, get: () => [slow] });
+    input.dispatchEvent(new Event("change"));
+    const select = q<HTMLSelectElement>("select");
+    select.value = "md";
+    select.dispatchEvent(new Event("change"));
+    finish(new ArrayBuffer(128 * 1024));
+    await flush();
+    expect(select.value).toBe("md");
+    expect(frameSrc.at(-1)).toContain("core=segaMD");
+  });
+
+  it("offers only the Flash demos on the Flash player", () => {
+    mountFlashPlayer(host);
+    const ids = [...host.querySelectorAll<HTMLButtonElement>("[data-demo]")].map((b) => b.dataset.demo);
+    expect(ids).toEqual(DEMO_ROMS.filter((d) => d.console === "flash").map((d) => d.id));
+    host.querySelector<HTMLButtonElement>("[data-demo=ending]")!.click();
+    expect(frameSrc.at(-1)).toContain("/emu/flash");
+    expect(frameSrc.at(-1)).toContain(`rom=${encodeURIComponent("/emu/roms/ending.swf")}`);
   });
 
   it("opens a SWF in the Ruffle shell, and only takes .swf", async () => {

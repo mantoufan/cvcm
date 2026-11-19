@@ -1,6 +1,8 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { controls, gameEmpty, gameFrame } from "../games/player";
+import { controls, demoPicker, forgetRetiredRoms, gameEmpty, gameFrame } from "../games/player";
+import { ROM_DEMOS } from "../../shared/demo-roms";
+import { GAME_ROM_BASE } from "../../shared/games";
 import { gamesHref } from "../../shared/path";
 import { MAX_ROM_BYTES, ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, type RomConsoleId } from "../../shared/rom-detect";
 
@@ -32,6 +34,10 @@ export function mountRomEmulator(host: HTMLElement): void {
   let running: { rom: object; core: string } | null = null;
 
   let reading = false;
+  // The demo game now running, if any: its console is fixed, so the select shows it and the next file starts on Auto.
+  let demoConsole: RomConsoleId | null = null;
+  // The visitor chose a console after the running game started (during a demo, or while the next file loads).
+  let choiceForNext = false;
   // Arrowing through a closed select changes it once per key, so focus stays there until the visitor leaves it.
   let keyed = false;
 
@@ -71,6 +77,7 @@ export function mountRomEmulator(host: HTMLElement): void {
     // The last game keeps running until this file is known to be usable.
     if (file.size > MAX_ROM_BYTES) {
       reading = false;
+      choiceForNext = false;
       status.textContent = t("romEmulator.tooBig", { mb: MAX_ROM_BYTES / 1024 / 1024 });
       return;
     }
@@ -79,18 +86,46 @@ export function mountRomEmulator(host: HTMLElement): void {
     file.arrayBuffer().then((buffer) => {
       if (mine !== token) return;
       reading = false;
-      // A choice made for the last file says nothing about this one; one made before any file is the answer for it.
-      if (rom) select.value = AUTO;
+      // A choice made for the last file or shown for a demo says nothing about this one; one made before any file is
+      // the answer for it.
+      if ((rom || demoConsole) && !choiceForNext) select.value = AUTO;
+      demoConsole = null;
+      choiceForNext = false;
       rom = { name: file.name, buffer };
       play();
     }).catch(() => {
       if (mine !== token) return;
       reading = false;
+      choiceForNext = false;
       status.textContent = t("romEmulator.readFailed");
     });
   });
+  // A hosted open-source game: the console is known, and a pending file read becomes stale.
+  const startDemo = (demo: (typeof ROM_DEMOS)[number]): void => {
+    token += 1;
+    reading = false;
+    rom = null;
+    running = null;
+    demoConsole = demo.console;
+    choiceForNext = false;
+    select.value = demoConsole;
+    status.textContent = t("games.demos.playing", { title: demo.title });
+    controlsHost.replaceChildren(controls(demo.console));
+    empty.hidden = true;
+    boot({ rom: `${GAME_ROM_BASE}${demo.file}`, core: ROM_CORE[demo.console], name: demo.title, cheats: [] });
+    focus();
+  };
   select.addEventListener("keydown", () => { keyed = true; });
   select.addEventListener("change", () => {
+    // Chosen while a file loads, or while a demo plays: the choice is the answer for the next file. A demo keeps
+    // running, so the game gets the keys back after a mouse choice.
+    if (reading) {
+      choiceForNext = true;
+    } else if (!rom && demoConsole) {
+      demoConsole = null;
+      choiceForNext = true;
+      if (!keyed) focus();
+    }
     play();
     keyed = false;
   });
@@ -108,10 +143,12 @@ export function mountRomEmulator(host: HTMLElement): void {
         status,
       ),
       h("p", { class: "game-note muted" }, t("games.emulator"), " · ", t("games.mobile")),
+      demoPicker(ROM_DEMOS, startDemo),
       controlsHost,
     ),
     h("p", { class: "more" }, h("a", { href: gamesHref(loc, null), "data-nav": "games" }, t("romEmulator.games"))),
   );
+  forgetRetiredRoms();
 }
 
 export function unmountRomEmulator(): void {

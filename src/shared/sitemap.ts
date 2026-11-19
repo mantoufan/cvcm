@@ -1,5 +1,5 @@
 import { LOCALES, DEFAULT_LOCALE, type Locale } from "./locale";
-import { GAME_CONSOLES, GAMES, type GameConsoleId, type GameId } from "./games";
+import { GAME_HUBS, type GameHubId } from "./games";
 import { DEVICE_PAGES, type DevicePageId } from "./device";
 import { QUIZZES, type QuizId } from "./quiz";
 import { KB_ARTICLES, KB_SHELVES, kbArticleOf, kbGroupsOf, kbShelfOfPage, kbUpdatedOn, type KbPage } from "./kb";
@@ -43,7 +43,7 @@ export type SitemapPage =
   | { locale: Locale; kind: "convert-job"; job: ConvertJobId }
   | { locale: Locale; kind: "resize-job"; job: ResizeJobId }
   | { locale: Locale; kind: "learn"; tutorial: TutorialId | null }
-  | { locale: Locale; kind: "games"; console: GameConsoleId | null; game: GameId | null }
+  | { locale: Locale; kind: "games"; hub: GameHubId | null }
   | { locale: Locale; kind: "device"; page: DevicePageId }
   | { locale: Locale; kind: "legal"; page: LegalPageId }
   | { locale: Locale; kind: "quiz"; quiz: QuizId | null }
@@ -74,13 +74,8 @@ export function sitemapPages(): SitemapPage[] {
     // Every shelf hub (the knowledge hub is article null), then every article.
     for (const shelf of Object.values(KB_SHELVES)) pages.push({ locale, kind: "kb", article: shelf.hub === "hub" ? null : shelf.hub });
     for (const article of KB_ARTICLES) pages.push({ locale, kind: "kb", article });
-    pages.push({ locale, kind: "games", console: null, game: null });
-    for (const consoleId of GAME_CONSOLES) {
-      pages.push({ locale, kind: "games", console: consoleId, game: null });
-    }
-    for (const game of GAMES) {
-      pages.push({ locale, kind: "games", console: game.console, game: game.id });
-    }
+    pages.push({ locale, kind: "games", hub: null });
+    for (const hub of GAME_HUBS) pages.push({ locale, kind: "games", hub });
     for (const page of DEVICE_PAGES) pages.push({ locale, kind: "device", page });
     pages.push({ locale, kind: "quiz", quiz: null });
     for (const quiz of QUIZZES) pages.push({ locale, kind: "quiz", quiz });
@@ -119,7 +114,7 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "tool") return `${SITE_ORIGIN}${appHref(page.locale, page.tool)}`;
   if (page.kind === "convert-job") return `${SITE_ORIGIN}${appHref(page.locale, "convert", null, page.job)}`;
   if (page.kind === "resize-job") return `${SITE_ORIGIN}${appHref(page.locale, "resize", null, page.job)}`;
-  if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(page.locale, page.console, page.game)}`;
+  if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(page.locale, page.hub)}`;
   if (page.kind === "device") return `${SITE_ORIGIN}${deviceHref(page.locale, page.page)}`;
   if (page.kind === "legal") return `${SITE_ORIGIN}${legalHref(page.locale, page.page)}`;
   if (page.kind === "quiz") return `${SITE_ORIGIN}${quizHref(page.locale, page.quiz)}`;
@@ -149,7 +144,7 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "tool") return `${SITE_ORIGIN}${appHref(locale, page.tool)}`;
   if (page.kind === "convert-job") return `${SITE_ORIGIN}${appHref(locale, "convert", null, page.job)}`;
   if (page.kind === "resize-job") return `${SITE_ORIGIN}${appHref(locale, "resize", null, page.job)}`;
-  if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(locale, page.console, page.game)}`;
+  if (page.kind === "games") return `${SITE_ORIGIN}${gamesHref(locale, page.hub)}`;
   if (page.kind === "device") return `${SITE_ORIGIN}${deviceHref(locale, page.page)}`;
   if (page.kind === "legal") return `${SITE_ORIGIN}${legalHref(locale, page.page)}`;
   if (page.kind === "quiz") return `${SITE_ORIGIN}${quizHref(locale, page.quiz)}`;

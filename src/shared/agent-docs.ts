@@ -5,7 +5,7 @@ import { AI_MODELS, formatMb, modelBytes, type AiModelId } from "./ai-models";
 import { CLIP_MAX_VIEWS, CLIP_TTL_MS } from "./clip";
 import { DATASETS, csvHref } from "./datasets";
 import { RANKINGS, rankingCsvHref } from "./rankings";
-import { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES } from "./kb";
+import { AI_ARTICLES, CODE_ARTICLES, MASSAGE_ARTICLES, PHOTO_ARTICLES } from "./kb";
 import { REF_ENTRIES } from "./ref";
 import { SLANG_ENTRIES } from "./slang";
 import { IDEA_ENTRIES } from "./ideas";
@@ -35,7 +35,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   dev: "Developer tools",
   math: "Math and school",
   finance: "Money calculators",
-  health: "Health and fitness calculators (estimates, not medical advice)",
+  health: "Health and fitness calculators (estimates, not medical advice) and a pressure points map (acupressure and foot reflexology chart for relaxation)",
   time: "Date and time",
   design: "Color and design",
   hardware: "Hardware tests (keyboard, microphone, camera, screen, controllers)",
@@ -255,6 +255,7 @@ export function buildLlmsTxt(): string {
     `- [Coding tutorials](${SITE_ORIGIN}${kbHref("en", "code")}): ${CODE_ARTICLES.length} one-page tutorials on programming languages, design patterns, data structures and algorithms, with runnable code.`,
     `- [AI tutorials](${SITE_ORIGIN}${kbHref("en", "ai")}): ${AI_ARTICLES.length} sourced guides to generative AI: how LLMs and diffusion models work, writing image and video prompts, camera moves, AI video workflows, making AI short videos for TikTok, Reels and Shorts (scripts, voiceover, captions, sizes, lip sync, music and dance videos), speech, running models in the browser, and AI copyright and labeling.`,
     `- [Photography tutorials](${SITE_ORIGIN}${kbHref("en", "photo")}): ${PHOTO_ARTICLES.length} sourced guides to taking better photos with a camera or phone: aperture, shutter speed, ISO, white balance and focal length, composition and light, posing and portraits, solo bridal and pre-wedding shoots, night, moon, food and product photos.`,
+    `- [Self-massage tutorials](${SITE_ORIGIN}${kbHref("en", "massage")}): ${MASSAGE_ARTICLES.length} sourced self-care guides: massage techniques and when not to massage, acupressure points for headaches and eye strain, a foot reflexology chart, foot, hand, neck, shoulder, back, face and scalp massage, gua sha, massage guns, foam rolling and tennis-ball massage. For relaxation, not medical advice.`,
     `- [Datasets](${SITE_ORIGIN}${datasetHref("en", null)}): ${DATASETS.length} public reference tables, each also a CSV (for example ${SITE_ORIGIN}${csvHref(DATASETS[0])}).`,
     `- [Rankings](${SITE_ORIGIN}${rankingHref("en", null)}): ${RANKINGS.length} sourced rankings: AI models, market share of browsers, operating systems, search engines, phones and social media, the top 100 cryptocurrencies, commodity prices, currencies against the US dollar, the tallest mountains, longest rivers, largest lakes, islands and deserts, and the tallest buildings, largest cities and largest stadiums. Most are also a CSV (for example ${SITE_ORIGIN}${rankingCsvHref(RANKINGS[0])}).`,
     `- [Pose & style reference](${SITE_ORIGIN}${refHref("en", null)}): ${REF_ENTRIES.length} entries on hairstyles, hair colours, expressions, hand gestures, outfits, poses and camera angles, with credited photos linked from mfan8.com and English prompt keywords.`,
@@ -269,7 +270,7 @@ export function buildLlmsTxt(): string {
     `- [Calendar](${SITE_ORIGIN}${calendarHref("en", null)}): year and month calendars for ${CALENDAR_YEARS.join(", ")} with ISO week numbers, public holidays for ${HOLIDAY_COUNTRIES.length} countries copied from the official government announcements (China incl. makeup working days, Taiwan, Hong Kong, Japan, South Korea, Vietnam, Indonesia, United States, United Kingdom, Spain, Mexico), Chinese / Vietnamese / Korean lunar dates and Japanese rokuyō computed from new moons, the 24 solar terms and moon phases with times, and a solar–lunar date converter (1900–2100).`,
     `- [Exchange rates](${SITE_ORIGIN}${currencyHref("en", null)}): a converter for every currency in the ECB euro foreign exchange reference rates and ${CURRENCY_PAIRS.length} currency pairs (for example ${SITE_ORIGIN}${currencyHref("en", "usd-cny")}): the latest reference rate both ways, conversion tables, high, low and average over 30 days, 1 year, 5 years and since the series began (1999 for most), and charts of monthly averages and the last 90 days. Cross rates are computed through the euro; a daily snapshot (ECB, reuse with the source named), for information only, never a live quote or investment advice. The ECB has no TWD or VND rate.`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,
-    `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): free homebrew games playable in the browser.`,
+    `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): cv.cm's own browser games (card, board, puzzle, word and 3D games), plus a ROM emulator and Flash player with open-source demo games.`,
     `- [Sitemap](${SITE_ORIGIN}/sitemap.xml)`,
     "",
   );

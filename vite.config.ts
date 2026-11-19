@@ -4,11 +4,7 @@ import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
 import { defineConfig } from "vitest/config";
 import { coverOriginVite } from "./scripts/cover-origin.mjs";
-import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./scripts/game-names.mjs";
 import { COPY_BUCKETS, copyLoadersSource, pageCopyModule } from "./src/shared/page-copy";
-
-// Virtual id without a .json ending, so Vite's JSON plugin leaves the generated module alone.
-const NAMES_ID = "\0game-names:";
 
 /**
  * seedrandom (under TensorFlow.js 2, used by the music generator) finds the global object with `(0, eval)('this')`,
@@ -81,20 +77,7 @@ const pageCopy: Plugin = {
 };
 
 export default defineConfig({
-  plugins: [pageCopy, {
-    name: "game-names",
-    enforce: "pre",
-    resolveId(source, importer) {
-      if (!NAMES_FILTER.test(source) || !importer) return null;
-      return NAMES_ID + resolve(dirname(importer), namesJsonPath(source)).replace(/\.json$/, "");
-    },
-    load(id) {
-      if (!id.startsWith(NAMES_ID)) return null;
-      const file = `${id.slice(NAMES_ID.length)}.json`;
-      this.addWatchFile(file);
-      return `export default ${gameNamesSource(file)};`;
-    },
-  }, seedrandomNoEval, coverOriginVite],
+  plugins: [pageCopy, seedrandomNoEval, coverOriginVite],
   resolve: {
     alias: [
       // ONNX Runtime's default web bundle pulls its 27 MB .wasm into dist/ (over Pages' 25 MiB file limit).

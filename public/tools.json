@@ -56,7 +56,7 @@
     },
     {
       "id": "health",
-      "name": "Health and fitness calculators (estimates, not medical advice)"
+      "name": "Health and fitness calculators (estimates, not medical advice) and a pressure points map (acupressure and foot reflexology chart for relaxation)"
     },
     {
       "id": "time",
@@ -1271,6 +1271,14 @@
       "description": "Estimate blood alcohol content.",
       "category": "health",
       "url": "https://cv.cm/en/bac-calculator/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "pressure-points-map",
+      "name": "Pressure points map",
+      "description": "Acupressure points and a foot reflexology chart.",
+      "category": "health",
+      "url": "https://cv.cm/en/pressure-points-map/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

@@ -9,7 +9,7 @@ import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
 import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
-import { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
+import { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES, MASSAGE_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
 import { kbArticleJsonLd, kbCopy, kbUpdated, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
 import { kbMinutes, kbPageHtml } from "../src/shared/kb-page";
 import { pageCanonical, pageTitle } from "../src/shared/seo";
@@ -105,6 +105,31 @@ describe("knowledge: routes", () => {
     expect(article).toContain('href="/ko/collage/"');
   });
 
+  it("parses the massage shelf under /learn/massage/ and keeps each article on its own shelf", () => {
+    expect(parseAppPath("/en/learn/massage/")).toEqual({ kind: "kb", locale: "en", article: "massage" });
+    expect(parseAppPath("/ja/learn/massage/pressure-points-for-headache/")).toEqual({ kind: "kb", locale: "ja", article: "pressure-points-for-headache" });
+    expect(parseAppPath("/learn/massage/")).toEqual({ kind: "bare-kb", article: "massage" });
+    expect(parseAppPath("/en/learn/photography/foot-massage/")).toEqual({ kind: "unknown" });
+    expect(kbHref("en", "massage")).toBe("/en/learn/massage/");
+    expect(kbHref("zh-CN", "foot-reflexology-chart")).toBe("/zh-cn/learn/massage/foot-reflexology-chart/");
+    for (const id of MASSAGE_ARTICLES) expect(kbShelfOf(id)).toBe("massage");
+  });
+
+  it("builds the massage hub with every group and links its articles from tool pages", () => {
+    const hub = kbPageHtml("en", "massage");
+    for (const group of KB_GROUPS.filter((g) => g.shelf === "massage")) expect(hub).toContain(`<section class="wall" id="${group.id}">`);
+    const ld = kbArticleJsonLd("en", "massage") as { url: string; mainEntity: { itemListElement: unknown[] } };
+    expect(ld.url).toBe("https://cv.cm/en/learn/massage/");
+    expect(ld.mainEntity.itemListElement.length).toBe(MASSAGE_ARTICLES.length);
+    expect(kbForTool("countdown", "massage")).toContain("pressure-points-for-headache");
+    expect(kbForTool("countdown", "photo")).not.toContain("pressure-points-for-headache");
+    expect(kbForTool("pressure-points-map", "massage")).toContain("foot-reflexology-chart");
+    expect(kbPageHtml("en", "foot-reflexology-chart")).toContain('href="/en/pressure-points-map/"');
+    const article = kbPageHtml("vi", "neck-and-shoulder-massage");
+    expect(article).toContain('href="/vi/learn/massage/" data-nav="massage-learn"');
+    expect(article).toContain('href="/vi/pomodoro/"');
+  });
+
   it("builds the AI hub with every group and links AI articles from AI tool pages", () => {
     const hub = kbPageHtml("en", "ai");
     for (const group of KB_GROUPS.filter((g) => g.shelf === "ai")) expect(hub).toContain(`<section class="wall" id="${group.id}">`);
@@ -170,6 +195,22 @@ describe("knowledge: routes", () => {
     expect((await worker.fetch(new Request("https://cv.cm/en/learn/photography/nope/"), { ASSETS: assets })).status).toBe(404);
   });
 
+  it("serves the massage hub and articles, and redirects bare paths", async () => {
+    const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
+    const bare = await worker.fetch(new Request("https://cv.cm/learn/massage/foot-massage/", { headers: { "Accept-Language": "id" } }), { ASSETS: assets });
+    expect(bare.status).toBe(302);
+    expect(bare.headers.get("Location")).toBe("https://cv.cm/id/learn/massage/foot-massage/");
+    const hub = await worker.fetch(new Request("https://cv.cm/ja/learn/massage/"), { ASSETS: assets });
+    expect(hub.status).toBe(200);
+    expect(await hub.text()).toContain(`<title>${pageTitle("ja", { kb: true, kbId: "massage" })}</title>`);
+    const page = await worker.fetch(new Request("https://cv.cm/en/learn/massage/acupressure-points/"), { ASSETS: assets });
+    expect(page.status).toBe(200);
+    const html = await page.text();
+    expect(html).toContain('<link rel="canonical" href="https://cv.cm/en/learn/massage/acupressure-points/"');
+    expect(html).toContain('<meta property="og:type" content="article" />');
+    expect((await worker.fetch(new Request("https://cv.cm/en/learn/massage/nope/"), { ASSETS: assets })).status).toBe(404);
+  });
+
   it("redirects bare paths, adds the slash, 404s unknown articles and serves the page", async () => {
     const assets = { fetch: async () => new Response(SHELL, { headers: { "Content-Type": "text/html; charset=utf-8" } }) };
     const bare = await worker.fetch(new Request("https://cv.cm/learn/knowledge/what-is-uuid/", { headers: { "Accept-Language": "vi" } }), { ASSETS: assets });
@@ -195,6 +236,7 @@ describe("knowledge: routes", () => {
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "code")}</loc>`);
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "ai")}</loc>`);
       expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "photo")}</loc>`);
+      expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, "massage")}</loc>`);
       for (const id of KB_ARTICLES) expect(xml).toContain(`<loc>https://cv.cm${kbHref(locale, id)}</loc>`);
     }
   }, 60_000);
@@ -393,13 +435,13 @@ describe("knowledge: sync (run `npm run kb:sync` after editing any article or it
   it("preloads only the hub pack on either hub, or the hub pack plus one article", () => {
     const packs = { en: ["/a/en.js"], "kb-en": ["/a/kb-en.js"], "kb-en/loaders": ["/a/loaders-en.js"], "kb-en/iso-8601": ["/a/iso.js"], "kb-en/what-is-uuid": ["/a/uuid.js"] };
     const shell = "<head></head>";
-    const hub = preloadLocalePack(shell, "en", false, packs, false, false, "hub");
+    const hub = preloadLocalePack(shell, "en", packs, false, false, "hub");
     expect(hub).toContain("/a/kb-en.js");
     expect(hub).not.toContain("/a/iso.js");
-    const codeHub = preloadLocalePack(shell, "en", false, packs, false, false, "code");
+    const codeHub = preloadLocalePack(shell, "en", packs, false, false, "code");
     expect(codeHub).toContain("/a/kb-en.js");
     expect(codeHub).not.toContain("/a/iso.js");
-    const article = preloadLocalePack(shell, "en", false, packs, false, false, "iso-8601");
+    const article = preloadLocalePack(shell, "en", packs, false, false, "iso-8601");
     expect(article).toContain("/a/kb-en.js");
     expect(article).toContain("/a/iso.js");
     expect(article).toContain("/a/loaders-en.js");

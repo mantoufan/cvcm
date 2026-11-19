@@ -4,9 +4,8 @@
  * bundle imports for titles and descriptions: nothing on the client imports this module, so the page HTML builders it
  * uses (ideas-page.ts …) stay out of the main bundle.
  */
-import { DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, TOOL_COVER, coverUrl } from "./covers";
+import { DEVICE_COVER, LEARN_COVER, MARKET_COVER, TOOL_COVER, coverUrl } from "./covers";
 import { deviceBreadcrumbJsonLd, deviceFaqJsonLd, deviceStaticHtml, escapeHtml } from "./device-i18n";
-import { gameById } from "./games";
 import { toolHowToJsonLd } from "./guide";
 import { legalBreadcrumbJsonLd, legalStaticHtml } from "./legal";
 import { quizBreadcrumbJsonLd, quizFaqJsonLd, quizStaticHtml } from "./quiz-i18n";
@@ -43,7 +42,7 @@ import { breedsPageHtml } from "./breeds-page";
 import { ideasPageHtml } from "./ideas-page";
 import { memeImagePath } from "./meme-images";
 import { nostalgiaImagePath } from "./nostalgia-images";
-import { BRANDED_TOOLS, faqJsonLd, flashHubHowToJsonLd, flashHubSoftwareJsonLd, gameBreadcrumbJsonLd, gameHowToJsonLd, gameVideoGameJsonLd, howToJsonLd, lookup, hreflangAlternates, marketBreadcrumbJsonLd, pageCanonical, pageDescription, pageTitle, toolBreadcrumbJsonLd, toolSoftwareJsonLd, tutorialBreadcrumbJsonLd, normalizeSeo, type SeoInput } from "./seo";
+import { BRANDED_TOOLS, faqJsonLd, gameBreadcrumbJsonLd, howToJsonLd, lookup, hreflangAlternates, marketBreadcrumbJsonLd, pageCanonical, pageDescription, pageTitle, toolBreadcrumbJsonLd, toolSoftwareJsonLd, tutorialBreadcrumbJsonLd, normalizeSeo, type SeoInput } from "./seo";
 
 function ogImage(seo: SeoInput): string | null {
   if (seo.slang && seo.slangId) {
@@ -60,7 +59,6 @@ function ogImage(seo: SeoInput): string | null {
     return path ? coverUrl(path) : null;
   }
   if (seo.learn && seo.tutorial) return coverUrl(LEARN_COVER[seo.tutorial]);
-  if (seo.games && seo.game) return coverUrl(GAME_COVER[seo.game]);
   if (seo.markets && seo.market) return coverUrl(MARKET_COVER[seo.market]);
   if (seo.devicePage) return coverUrl(DEVICE_COVER);
   if (seo.tool) return coverUrl(TOOL_COVER[seo.tool]);
@@ -97,7 +95,6 @@ export function applyHtmlSeo(
   out = out.replace(/<meta name="twitter:(card|title|description|image)"[^>]*>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="faq-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="howto-jsonld">[\s\S]*?<\/script>\s*/gi, "");
-  out = out.replace(/<script type="application\/ld\+json" id="game-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="breadcrumb-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="software-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="dataset-jsonld">[\s\S]*?<\/script>\s*/gi, "");
@@ -106,7 +103,7 @@ export function applyHtmlSeo(
     `<meta property="og:title" content="${escapeHtml(title)}" />`,
     `<meta property="og:description" content="${escapeHtml(description)}" />`,
     `<meta property="og:url" content="${escapeHtml(canonical)}" />`,
-    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || seo.game || (seo.kb && kbArticleOf(seo.kbId ?? null)) || (seo.ref && seo.refId) || (seo.slang && seo.slangId) || (seo.ideas && seo.ideaId) || (seo.nostalgia && seo.nostalgiaId) || (seo.breeds && seo.breedId) ? "article" : "website"}" />`,
+    `<meta property="og:type" content="${(seo.learn && seo.tutorial) || (seo.kb && kbArticleOf(seo.kbId ?? null)) || (seo.ref && seo.refId) || (seo.slang && seo.slangId) || (seo.ideas && seo.ideaId) || (seo.nostalgia && seo.nostalgiaId) || (seo.breeds && seo.breedId) ? "article" : "website"}" />`,
     `<meta property="og:site_name" content="cv.cm" />`,
     `<meta property="og:locale" content="${escapeHtml(locale.replace("-", "_"))}" />`,
     `<meta name="twitter:card" content="${image ? "summary_large_image" : "summary"}" />`,
@@ -126,13 +123,12 @@ export function applyHtmlSeo(
     locale,
     seo.tool ?? null,
     seo.learn ? seo.tutorial : null,
-    seo.game ?? null,
-    Boolean(seo.games && !seo.game),
+    Boolean(seo.games),
     seo.convertJob,
     seo.resizeJob,
     seo.market ?? null,
     Boolean(seo.markets && !seo.market),
-    seo.console,
+    seo.gamesHub,
   );
   if (seo.devicePage) {
     tags.push(
@@ -238,9 +234,8 @@ export function applyHtmlSeo(
       `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(tutorialBreadcrumbJsonLd(locale, seo.tutorial ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   } else if (seo.games) {
-    const consoleId = seo.game ? gameById(seo.game)?.console ?? null : seo.console ?? null;
     tags.push(
-      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(gameBreadcrumbJsonLd(locale, consoleId, seo.game ?? null)).replace(/</g, "\\u003c")}</script>`,
+      `<script type="application/ld+json" id="breadcrumb-jsonld">${JSON.stringify(gameBreadcrumbJsonLd(locale, seo.gamesHub ?? null)).replace(/</g, "\\u003c")}</script>`,
     );
   }
   if (ld && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.countries && !seo.calories && !seo.elements && !seo.calendar && !seo.emoji && !seo.currency && !seo.breeds) {
@@ -256,20 +251,7 @@ export function applyHtmlSeo(
       ...(collection ? [`<script type="application/ld+json" id="article-jsonld">${JSON.stringify(collection).replace(/</g, "\\u003c")}</script>`] : []),
     );
   }
-  if (seo.game) {
-    tags.push(
-      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(gameHowToJsonLd(locale, seo.game)).replace(/</g, "\\u003c")}</script>`,
-      `<script type="application/ld+json" id="game-jsonld">${JSON.stringify(gameVideoGameJsonLd(locale, seo.game)).replace(/</g, "\\u003c")}</script>`,
-    );
-  } else if (seo.games && seo.console === "flash") {
-    tags.push(
-      `<script type="application/ld+json" id="howto-jsonld">${JSON.stringify(flashHubHowToJsonLd(locale)).replace(/</g, "\\u003c")}</script>`,
-      `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(flashHubSoftwareJsonLd(locale)).replace(/</g, "\\u003c")}</script>`,
-    );
-  }
-  const howTo = seo.game
-    ? null
-    : seo.learn && seo.tutorial
+  const howTo = seo.learn && seo.tutorial
       ? howToJsonLd(locale, seo.tutorial)
       : !seo.learn && !seo.games && !seo.markets && !seo.devicePage && !seo.legalPage && !seo.quiz && !seo.dataset && !seo.ranking && !seo.kb && !seo.ref && !seo.slang && !seo.ideas && !seo.nostalgia && !seo.elements && !seo.calendar && !seo.breeds && seo.tool && !seo.emoji && !seo.currency
         ? toolHowToJsonLd(locale, seo.tool)
@@ -325,7 +307,7 @@ export function applyHtmlSeo(
     ? calendarPageHtml(locale, seo.calendarPage ?? "hub")
     : seo.breeds
     ? breedsPageHtml(locale, seo.breedId ?? null)
-    : staticPageHtml(locale, seo, title, description, ld, howTo ?? (seo.game ? gameHowToJsonLd(locale, seo.game) : null));
+    : staticPageHtml(locale, seo, title, description, ld, howTo);
   // A function replacement: page text may contain "$&" or "$1", which a string replacement would expand.
   out = out.replace(/<div id="app">[\s\S]*?<\/div>/, () => `<div id="app">${inner}</div>`);
   return out;
@@ -389,7 +371,7 @@ function staticPageHtml(
     for (const cat of CATEGORIES) parts.push(linkList([...toolLinks(locale, cat.tools as readonly ToolId[]), ...categoryLinks(cat.id).map((x) => ({ href: x.href(locale), text: lookup(locale, x.nameKey) }))]));
     parts.push(linkList([
       { href: learnHref(locale, null), text: linkText(pageTitle(locale, { learn: true })) },
-      { href: gamesHref(locale, null, null), text: linkText(pageTitle(locale, { games: true })) },
+      { href: gamesHref(locale, null), text: linkText(pageTitle(locale, { games: true })) },
       { href: deviceHref(locale, "hub"), text: linkText(pageTitle(locale, { devicePage: "hub" })) },
       { href: quizHref(locale), text: linkText(pageTitle(locale, { quiz: true })) },
       { href: datasetHref(locale), text: linkText(pageTitle(locale, { dataset: true })) },
