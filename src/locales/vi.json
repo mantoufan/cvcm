@@ -787,7 +787,11 @@
     "titleCiteMla": "Cách trích dẫn MLA phiên bản 9: works cited và trích dẫn trong bài | cv.cm",
     "descCiteMla": "MLA 9 qua sáu bước: các thành phần cốt lõi theo thứ tự, tác giả, tiêu đề và nguồn chứa (container), ngày và vị trí, trích dẫn trong bài kèm số trang và trang works cited, có ví dụ và công cụ miễn phí.",
     "titleCiteHarvard": "Cách trích dẫn tài liệu tham khảo kiểu Harvard (Cite Them Right) | cv.cm",
-    "descCiteHarvard": "Trích dẫn kiểu Harvard qua sáu bước: tác giả và năm, tiêu đề, bài báo, sách và trang web kèm ngày truy cập, trích dẫn trong bài và danh mục tài liệu tham khảo, có ví dụ và công cụ miễn phí."
+    "descCiteHarvard": "Trích dẫn kiểu Harvard qua sáu bước: tác giả và năm, tiêu đề, bài báo, sách và trang web kèm ngày truy cập, trích dẫn trong bài và danh mục tài liệu tham khảo, có ví dụ và công cụ miễn phí.",
+    "titleTitleCase": "Chuyển đổi chữ hoa tiêu đề (title case) — APA, MLA, Chicago, AP và sentence case — cv.cm",
+    "descTitleCase": "Công cụ title case miễn phí: dán tiêu đề tiếng Anh rồi chuyển sang APA 7, MLA 9, Chicago 17, AP hoặc sentence case. Giữ nguyên viết tắt như DNA, COVID-19.",
+    "titleWordsToPages": "Đổi số từ sang số trang — 1.000 từ bao nhiêu trang? — cv.cm",
+    "descWordsToPages": "Tính miễn phí một số từ chiếm bao nhiêu trang với Times New Roman, Arial hoặc Calibri, giãn dòng đơn hoặc đôi, khổ Letter hoặc A4. Dán bài luận để đếm chính xác."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1741,6 +1745,14 @@
     "darts": {
       "name": "Phi tiêu",
       "blurb": "Chơi 501 hoặc Vòng quanh bảng trên bảng 3D."
+    },
+    "title-case": {
+      "name": "Chuyển đổi title case",
+      "blurb": "APA, MLA, Chicago, AP hoặc sentence case."
+    },
+    "words-to-pages": {
+      "name": "Số từ sang số trang",
+      "blurb": "Một số từ chiếm bao nhiêu trang."
     }
   },
   "watermark": {
@@ -6584,6 +6596,30 @@
       "a4": "Ba mức dễ, vừa, khó đều nhắm ô ba 20 hoặc đường kết thúc, mức càng dễ càng lệch nhiều. Mức khó trung bình trên 60 điểm.",
       "q5": "Thành tích có được lưu không?",
       "a5": "Điểm trung bình ba phi tiêu tốt nhất, số phi tiêu ít nhất cho một ván 501 và kết quả Vòng quanh bảng tốt nhất được lưu trong trình duyệt này. Không có gì được tải lên."
+    },
+    "title-case": {
+      "q1": "Title case là gì?",
+      "a1": "Là cách viết hoa tiêu đề tiếng Anh: các từ quan trọng viết hoa chữ cái đầu, còn các từ ngắn như a, the, and, of và in giữ chữ thường. Mỗi cẩm nang văn phong vạch ranh giới hơi khác nhau.",
+      "q2": "Title case của APA và MLA khác nhau thế nào?",
+      "a2": "APA viết hoa mọi từ có từ bốn chữ cái trở lên, nên viết \"Studies From 2010\". MLA viết thường mọi giới từ, dù dài bao nhiêu (\"Studies from 2010\"), và luôn viết hoa từ cuối, nên \"What It's Made Of\" kết thúc bằng chữ hoa trong MLA nhưng không trong APA.",
+      "q3": "Khi nào dùng sentence case?",
+      "a3": "Trong danh mục tài liệu tham khảo APA 7, tên bài báo, sách và trang web viết theo sentence case: chỉ viết hoa từ đầu tiên, từ đầu tiên sau dấu hai chấm và danh từ riêng. Tiêu đề bài viết của chính bạn và các đề mục dùng title case.",
+      "q4": "Công cụ có giữ nguyên từ viết tắt và tên riêng không?",
+      "a4": "Công cụ giữ nguyên các từ có chữ hoa bên trong, như DNA, COVID-19, iPhone và McDonald. Công cụ không thể biết một từ viết thường là tên riêng, nên khi dùng sentence case hãy kiểm tra danh từ riêng như Freud hay Europe và tự viết hoa.",
+      "q5": "Vì sao \"up\" viết thường trong \"Growing up\"?",
+      "a5": "Các từ như up, out và over là giới từ trong một số tiêu đề và là một phần của động từ trong tiêu đề khác. Công cụ coi chúng là giới từ. Khi từ đó thuộc về động từ, như trong \"Growing Up\" hay \"Setting Up\", hãy tự viết hoa."
+    },
+    "words-to-pages": {
+      "q1": "1.000 từ bao nhiêu trang?",
+      "a1": "Với Times New Roman 12 pt, lề 1 inch trên giấy Letter, 1.000 từ chiếm khoảng 2,8 trang khi giãn dòng đôi và 1,4 trang khi giãn dòng đơn. Với Arial 12 pt là khoảng 3,1 và 1,6 trang.",
+      "q2": "Một trang có bao nhiêu từ?",
+      "a2": "Khoảng 350 từ trên một trang giãn dòng đôi và 700 từ trên một trang giãn dòng đơn với Times New Roman 12 pt, lề 1 inch. Phông rộng hơn chứa ít hơn: khoảng 320 và 640 với Arial, 240 và 490 với Courier New.",
+      "q3": "Vì sao kết quả nhiều hơn mức 250 từ mỗi trang thường nghe?",
+      "a3": "Quy tắc 250 từ mỗi trang giãn dòng đôi xuất phát từ máy đánh chữ, vốn có các chữ Courier rộng bằng nhau. Courier New 12 pt vẫn cho khoảng 240 từ một trang. Times New Roman hẹp hơn nhiều, nên một dòng chứa khoảng 15 từ thay vì 10.",
+      "q4": "Số trang chính xác đến mức nào?",
+      "a4": "Với văn bản dán vào, công cụ dàn chính các từ của bạn theo độ rộng chữ thật của phông và chiều cao dòng của Word, nên kết quả thường chỉ lệch vài dòng. Với số từ đơn thuần, công cụ dùng một văn bản tiếng Anh trung bình; từ ngắn hay dài, đề mục, trích dẫn và danh mục tài liệu tham khảo sẽ làm kết quả thay đổi.",
+      "q5": "Có dùng được cho văn bản tiếng Trung, Nhật hoặc Hàn không?",
+      "a5": "Văn bản dán vào bằng các ngôn ngữ này được dàn với mỗi ký tự rộng một em, như các trình soạn thảo văn bản vẫn làm. Tài liệu bằng các ngôn ngữ này thường dùng lưới tài liệu hoặc phông khác, nên hãy coi kết quả là ước tính."
     }
   },
   "qr": {
@@ -17159,5 +17195,79 @@
     "miss": "Trượt",
     "hint": "Di chuột để ngắm, giữ để ổn định và thả để ném. Bàn phím: phím mũi tên để ngắm (Shift để bước lớn), giữ phím cách rồi thả để ném.",
     "hintTouch": "Nhấn giữ trên bảng để ngắm (tâm ngắm nằm ngay trên ngón tay), trượt để chỉnh và nhấc tay để ném."
+  },
+  "titleCase": {
+    "title": "Chuyển đổi title case",
+    "privacyNote": "Title case APA, MLA, Chicago và AP, cùng sentence case. Chuyển đổi ngay trong trình duyệt.",
+    "options": "Tiêu đề",
+    "result": "Kết quả",
+    "input": "Tiêu đề",
+    "placeholder": "Mỗi dòng một tiêu đề",
+    "output": "Tiêu đề đã chuyển",
+    "style": "Kiểu",
+    "s_apa": "Title case APA 7",
+    "s_mla": "Title case MLA 9",
+    "s_chicago": "Title case Chicago 17",
+    "s_ap": "Title case AP",
+    "s_sentence": "Sentence case (tài liệu tham khảo APA)",
+    "rule_apa": "APA: viết hoa từ có từ bốn chữ cái trở lên và mọi danh từ, động từ, tính từ, trạng từ, đại từ; viết thường mạo từ, liên từ và giới từ tối đa ba chữ cái.",
+    "rule_mla": "MLA: viết thường mạo từ, mọi giới từ, liên từ đẳng lập (and, but, for, nor, or, so, yet) và to; viết hoa từ đầu và từ cuối.",
+    "rule_chicago": "Chicago: viết thường mạo từ, mọi giới từ, and, but, for, or, nor, to và as; viết hoa từ đầu và từ cuối.",
+    "rule_ap": "AP: viết hoa từ có từ bốn chữ cái trở lên; viết thường mạo từ, liên từ và giới từ tối đa ba chữ cái, trừ khi là từ đầu hoặc từ cuối.",
+    "rule_sentence": "Sentence case: chỉ viết hoa từ đầu tiên, từ đầu tiên sau dấu hai chấm, từ viết tắt và danh từ riêng.",
+    "inputHint": "Mỗi dòng được chuyển riêng. Từ đầu tiên và từ đầu tiên sau dấu hai chấm luôn được viết hoa.",
+    "limits": "Không nhận ra được tên riêng viết thường và động từ như \"set up\": hãy kiểm tra trước khi sao chép.",
+    "copy": "Sao chép",
+    "copied": "Đã sao chép",
+    "copyFailed": "Không sao chép được",
+    "clear": "Xóa"
+  },
+  "wordsPages": {
+    "title": "Đổi số từ sang số trang",
+    "privacyNote": "Số từ của bạn chiếm bao nhiêu trang theo từng phông và giãn dòng. Văn bản dán vào chỉ ở trong trình duyệt.",
+    "options": "Văn bản và trang",
+    "result": "Số trang",
+    "mode": "Tính",
+    "m_words": "Số trang từ số từ",
+    "m_text": "Số trang từ văn bản dán vào",
+    "m_pages": "Số từ từ số trang",
+    "words": "Số từ",
+    "pages": "Số trang",
+    "text": "Văn bản của bạn",
+    "textPlaceholder": "Dán bài luận; mỗi dòng là một đoạn",
+    "font": "Phông chữ",
+    "size": "Cỡ chữ",
+    "spacing": "Giãn dòng",
+    "sp_1": "Đơn",
+    "sp_1_15": "1,15",
+    "sp_1_5": "1,5 dòng",
+    "sp_2": "Đôi",
+    "paper": "Khổ giấy",
+    "p_letter": "Letter (8,5 × 11 in)",
+    "p_a4": "A4 (210 × 297 mm)",
+    "margin": "Lề",
+    "mg_1": "1 in (2,54 cm)",
+    "mg_0_75": "0,75 in (1,9 cm)",
+    "mg_1_25": "1,25 in (3,18 cm)",
+    "indent": "Thụt dòng đầu (0,5 in)",
+    "inputHint": "Bài viết APA và MLA dùng 12 pt, giãn dòng đôi, lề 1 inch và thụt đầu đoạn.",
+    "pagesValue": "{n}",
+    "wordsValue": "{n}",
+    "needWords": "Nhập số từ lớn hơn 0.",
+    "needPages": "Nhập số trang lớn hơn 0.",
+    "needText": "Dán văn bản để đếm số trang.",
+    "pagesResult": "Số trang",
+    "wordsResult": "Số từ lấp đầy số trang này",
+    "counted": "Số từ trong văn bản",
+    "linesUsed": "Số dòng",
+    "perPage": "Số từ mỗi trang",
+    "linesPerPage": "Số dòng mỗi trang",
+    "fill": "Văn bản sang đến trang {n}, trang này đầy khoảng {pct} %.",
+    "tableTitle": "Số trang với {font} {size} pt",
+    "colWords": "Số từ",
+    "method": "Trang được dàn theo độ rộng chữ thật của từng phông và chiều cao dòng của Word. Số từ đơn thuần dùng một văn bản tiếng Anh trung bình; đề mục, trích dẫn khối và tài liệu tham khảo làm tăng số trang.",
+    "copy": "Sao chép kết quả",
+    "copied": "Đã sao chép",
+    "copyFailed": "Không sao chép được"
   }
 }

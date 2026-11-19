@@ -44,7 +44,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   assets: "Precious metals, oil and stock calculators (unit and ratio math; the user enters any prices, no live quotes)",
   wordgames: "Word games: word search, hangman, typing game, typing practice (touch-typing lessons)",
   games3d: "3D games: 3D chess against the computer, magic cube (2×2–4×4) and cube solver, stack game, driving and drift game, flight simulator, pinball, 8-ball pool, air hockey, darts",
-  academic: "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines; a citation generator (APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver, GB/T 7714) with DOI and ISBN lookup and BibTeX/RIS import and export",
+  academic: "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines; a citation generator (APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver, GB/T 7714) with DOI and ISBN lookup and BibTeX/RIS import and export; a title case converter (APA, MLA, Chicago, AP and sentence case); and a words-to-pages estimator (page count from a word count or pasted text, by font, size, spacing, paper and margins)",
   valuation: "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)",
 };
 

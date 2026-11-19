@@ -422,3 +422,10 @@ Codex (`codex exec -m gpt-6-astra --image stack-game-sweet.jpg,driving-game-swee
 - `pool-game`: she lines up a shot on a pink-cloth table with a white and pink cue; a rack of glossy coloured balls with no numbers.
 - `air-hockey`: she grips a pink mallet on a white and pink table; a glowing puck slides toward the goal slot.
 - `darts`: her pink-flighted dart lands in the bull of a pink, cream and mint board with no numbers; two more darts in her hand.
+
+## Title case converter, words to pages (2026-11-19)
+
+Codex (`codex exec -m gpt-6-astra --image gpa-sweet.jpg,average-sweet.jpg -`, prompt on stdin), one after another, same base prompt as the statistics batch (style references only, same chibi girl and room, full-bleed, no words, letters, digits, symbols, logo, UI or watermark, including on book covers, tiles, cards and pages). `sips -s format jpeg` then `sips -z 720 1280`. Both came out on the first try.
+
+- `title-case`: she sets the last tile into a row of blank glossy pink and cream tiles on a satin ribbon; every few tiles one is taller and wears a tiny golden crown, like the capitals of a title; a plain pink style-guide book and a fountain pen.
+- `words-to-pages`: she lifts a blank page out of a vintage pastel pink typewriter; a stack of cream pages with faint double-spaced ruled lines, a pink ruler measuring the stack and a round pink counter dial with no numerals.

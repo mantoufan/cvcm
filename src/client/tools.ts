@@ -1294,6 +1294,18 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountCitation(host, "harvard", "harvard");
     return m.unmountCitation;
   },
+  "title-case": async (host, ctx) => {
+    const m = await import("./title-case/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountTitleCase(host);
+    return m.unmountTitleCase;
+  },
+  "words-to-pages": async (host, ctx) => {
+    const m = await import("./words-to-pages/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountWordsToPages(host);
+    return m.unmountWordsToPages;
+  },
   "cube-solver": async (host, ctx) => {
     const m = await import("./cube-solver/ui");
     if (!ctx.alive()) return undefined;

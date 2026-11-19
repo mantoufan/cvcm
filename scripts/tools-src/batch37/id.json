@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "titleTitleCase": "Konverter title case — APA, MLA, Chicago, AP dan sentence case — cv.cm",
+    "descTitleCase": "Konverter title case gratis: tempel judul bahasa Inggris lalu ubah ke APA 7, MLA 9, Chicago 17, AP atau sentence case. Akronim seperti DNA dan COVID-19 tetap utuh.",
+    "titleWordsToPages": "Konverter kata ke halaman — 1.000 kata berapa halaman? — cv.cm",
+    "descWordsToPages": "Hitung gratis berapa halaman yang diisi sejumlah kata dalam Times New Roman, Arial atau Calibri, spasi 1 atau 2, kertas Letter atau A4. Tempel esai untuk hitungan persis."
+  },
+  "tools": {
+    "title-case": {
+      "name": "Konverter title case",
+      "blurb": "APA, MLA, Chicago, AP atau sentence case."
+    },
+    "words-to-pages": {
+      "name": "Kata ke halaman",
+      "blurb": "Berapa halaman yang diisi sejumlah kata."
+    }
+  },
+  "faq": {
+    "title-case": {
+      "q1": "Apa itu title case?",
+      "a1": "Cara menulis huruf kapital pada judul bahasa Inggris: kata-kata penting diawali huruf kapital, sedangkan kata pendek seperti a, the, and, of dan in tetap huruf kecil. Setiap panduan gaya menarik batasnya sedikit berbeda.",
+      "q2": "Apa beda title case APA dan MLA?",
+      "a2": "APA mengapitalkan setiap kata yang terdiri dari empat huruf atau lebih, jadi menulis \"Studies From 2010\". MLA menulis semua preposisi dengan huruf kecil, berapa pun panjangnya (\"Studies from 2010\"), dan selalu mengapitalkan kata terakhir, sehingga \"What It's Made Of\" diakhiri huruf kapital di MLA tetapi tidak di APA.",
+      "q3": "Kapan memakai sentence case?",
+      "a3": "Di daftar pustaka APA 7, judul artikel, buku dan halaman web ditulis dalam sentence case: hanya kata pertama, kata pertama setelah titik dua dan nama diri yang diawali huruf kapital. Judul makalah Anda sendiri dan subjudulnya memakai title case.",
+      "q4": "Apakah konverter mempertahankan akronim dan nama?",
+      "a4": "Konverter mempertahankan kata yang ditulis dengan huruf kapital di dalamnya, seperti DNA, COVID-19, iPhone dan McDonald. Konverter tidak bisa tahu bahwa kata berhuruf kecil adalah nama, jadi dalam sentence case periksa nama diri seperti Freud atau Europe dan kapitalkan sendiri.",
+      "q5": "Mengapa \"up\" ditulis kecil dalam \"Growing up\"?",
+      "a5": "Kata seperti up, out dan over adalah preposisi di sebagian judul dan bagian dari kata kerja di judul lain. Konverter menganggapnya preposisi. Jika kata itu bagian dari kata kerja, seperti dalam \"Growing Up\" atau \"Setting Up\", kapitalkan secara manual."
+    },
+    "words-to-pages": {
+      "q1": "1.000 kata berapa halaman?",
+      "a1": "Dalam Times New Roman 12 pt dengan margin 1 inci di kertas Letter, 1.000 kata mengisi sekitar 2,8 halaman dengan spasi 2 dan 1,4 halaman dengan spasi 1. Dalam Arial 12 pt sekitar 3,1 dan 1,6 halaman.",
+      "q2": "Berapa kata dalam satu halaman?",
+      "a2": "Sekitar 350 kata di halaman spasi 2 dan 700 di halaman spasi 1 dalam Times New Roman 12 pt dengan margin 1 inci. Font yang lebih lebar memuat lebih sedikit: sekitar 320 dan 640 dalam Arial, serta 240 dan 490 dalam Courier New.",
+      "q3": "Mengapa hasilnya lebih dari 250 kata per halaman yang biasa disebut?",
+      "a3": "Aturan 250 kata per halaman spasi 2 berasal dari mesin tik, yang huruf Courier-nya sama lebar semua. Courier New 12 pt masih memberi sekitar 240 kata per halaman. Times New Roman jauh lebih sempit, sehingga satu baris memuat sekitar 15 kata, bukan 10.",
+      "q4": "Seberapa akurat jumlah halamannya?",
+      "a4": "Untuk teks yang ditempel, alat ini menata kata-kata Anda sendiri dengan lebar huruf asli font dan tinggi baris Word, sehingga hasilnya biasanya hanya meleset beberapa baris. Untuk jumlah kata saja, alat ini memakai teks bahasa Inggris rata-rata; kata pendek atau panjang, judul bagian, kutipan dan daftar pustaka mengubah hasilnya.",
+      "q5": "Apakah bisa untuk teks Mandarin, Jepang atau Korea?",
+      "a5": "Teks yang ditempel dalam bahasa-bahasa ini ditata dengan setiap karakter selebar satu em, seperti di pengolah kata. Dokumen dalam bahasa-bahasa ini sering memakai kisi dokumen atau font lain, jadi anggap hasilnya sebagai perkiraan."
+    }
+  },
+  "guides": {
+    "title-case": {
+      "lead": "Ubah judul dalam tiga langkah.",
+      "s1t": "Tempel judul",
+      "s1b": "Ketik atau tempel satu judul, atau daftar dengan satu judul per baris.",
+      "s2t": "Pilih gaya",
+      "s2b": "Title case APA, MLA, Chicago atau AP, atau sentence case untuk daftar pustaka APA.",
+      "s3t": "Periksa dan salin",
+      "s3b": "Kapitalkan sendiri nama dalam sentence case dan kata kerja seperti \"Set Up\", lalu salin hasilnya."
+    },
+    "words-to-pages": {
+      "lead": "Cari jumlah halaman dalam tiga langkah.",
+      "s1t": "Masukkan kata atau tempel teks",
+      "s1b": "Ketik jumlah kata, tempel esai Anda untuk tata letak persis, atau masukkan jumlah halaman untuk mendapat jumlah kata.",
+      "s2t": "Atur halaman",
+      "s2b": "Pilih font, ukuran, spasi baris, kertas dan margin sesuai ketentuan tugas Anda.",
+      "s3t": "Baca jumlah halaman",
+      "s3b": "Lihat jumlah halaman, kata per halaman dan tabel untuk jumlah kata yang umum."
+    }
+  },
+  "ui": {
+    "titleCase": {
+      "title": "Konverter title case",
+      "privacyNote": "Title case APA, MLA, Chicago dan AP, serta sentence case. Diubah di browser Anda.",
+      "options": "Judul",
+      "result": "Hasil",
+      "input": "Judul",
+      "placeholder": "Satu judul per baris",
+      "output": "Judul hasil konversi",
+      "style": "Gaya",
+      "s_apa": "Title case APA 7",
+      "s_mla": "Title case MLA 9",
+      "s_chicago": "Title case Chicago 17",
+      "s_ap": "Title case AP",
+      "s_sentence": "Sentence case (daftar pustaka APA)",
+      "rule_apa": "APA: kapitalkan kata empat huruf atau lebih dan semua kata benda, kata kerja, kata sifat, kata keterangan dan kata ganti; tulis kecil artikel, konjungsi dan preposisi hingga tiga huruf.",
+      "rule_mla": "MLA: tulis kecil artikel, semua preposisi, konjungsi koordinatif (and, but, for, nor, or, so, yet) dan to; kapitalkan kata pertama dan terakhir.",
+      "rule_chicago": "Chicago: tulis kecil artikel, semua preposisi, and, but, for, or, nor, to dan as; kapitalkan kata pertama dan terakhir.",
+      "rule_ap": "AP: kapitalkan kata empat huruf atau lebih; tulis kecil artikel, konjungsi dan preposisi hingga tiga huruf, kecuali sebagai kata pertama atau terakhir.",
+      "rule_sentence": "Sentence case: kapitalkan hanya kata pertama, kata pertama setelah titik dua, akronim dan nama diri.",
+      "inputHint": "Setiap baris diubah sendiri-sendiri. Kata pertama dan kata pertama setelah titik dua selalu dikapitalkan.",
+      "limits": "Nama yang ditulis huruf kecil dan kata kerja seperti \"set up\" tidak bisa dideteksi: periksa sebelum menyalin.",
+      "copy": "Salin",
+      "copied": "Tersalin",
+      "copyFailed": "Gagal menyalin",
+      "clear": "Hapus"
+    },
+    "wordsPages": {
+      "title": "Konverter kata ke halaman",
+      "privacyNote": "Berapa halaman yang diisi kata-kata Anda di tiap font dan spasi. Teks yang ditempel tetap di browser Anda.",
+      "options": "Teks dan halaman",
+      "result": "Halaman",
+      "mode": "Cari",
+      "m_words": "Halaman dari jumlah kata",
+      "m_text": "Halaman dari teks yang ditempel",
+      "m_pages": "Kata dari jumlah halaman",
+      "words": "Jumlah kata",
+      "pages": "Halaman",
+      "text": "Teks Anda",
+      "textPlaceholder": "Tempel esai Anda; setiap baris adalah satu paragraf",
+      "font": "Font",
+      "size": "Ukuran font",
+      "spacing": "Spasi baris",
+      "sp_1": "Spasi 1",
+      "sp_1_15": "1,15",
+      "sp_1_5": "1,5 baris",
+      "sp_2": "Spasi 2",
+      "paper": "Kertas",
+      "p_letter": "Letter (8,5 × 11 in)",
+      "p_a4": "A4 (210 × 297 mm)",
+      "margin": "Margin",
+      "mg_1": "1 in (2,54 cm)",
+      "mg_0_75": "0,75 in (1,9 cm)",
+      "mg_1_25": "1,25 in (3,18 cm)",
+      "indent": "Inden baris pertama (0,5 in)",
+      "inputHint": "Makalah APA dan MLA memakai 12 pt, spasi 2, margin 1 inci dan paragraf berinden.",
+      "pagesValue": "{n}",
+      "wordsValue": "{n}",
+      "needWords": "Masukkan jumlah kata lebih dari nol.",
+      "needPages": "Masukkan jumlah halaman lebih dari nol.",
+      "needText": "Tempel teks untuk menghitung halamannya.",
+      "pagesResult": "Halaman",
+      "wordsResult": "Kata yang mengisi halaman ini",
+      "counted": "Kata dalam teks Anda",
+      "linesUsed": "Baris",
+      "perPage": "Kata per halaman",
+      "linesPerPage": "Baris per halaman",
+      "fill": "Teks berlanjut ke halaman {n}, yang terisi sekitar {pct} %.",
+      "tableTitle": "Halaman dalam {font} {size} pt",
+      "colWords": "Kata",
+      "method": "Halaman ditata dengan lebar huruf asli tiap font dan tinggi baris Word. Jumlah kata saja memakai teks bahasa Inggris rata-rata; judul bagian, kutipan blok dan daftar pustaka menambah halaman.",
+      "copy": "Salin hasil",
+      "copied": "Tersalin",
+      "copyFailed": "Gagal menyalin"
+    }
+  }
+}
