@@ -1007,20 +1007,7 @@ const DINOSAUR = relabel(GHIBLI, { chihiro: "trex", san: "triceratops", kiki: "v
  * the left, so each weight still sits three times in each position, but the strongest answer never sits where it does
  * in the crush quiz next to it on the hub.
  */
-const IN_LOVE: ChoiceItem[] = [
-  { options: [{ love: 1 }, { love: 2 }, { love: 3 }, { love: 0 }] },
-  { options: [{ love: 0 }, { love: 3 }, { love: 1 }, { love: 2 }] },
-  { options: [{ love: 1 }, { love: 2 }, { love: 0 }, { love: 3 }] },
-  { options: [{ love: 3 }, { love: 2 }, { love: 1 }, { love: 0 }] },
-  { options: [{ love: 2 }, { love: 3 }, { love: 0 }, { love: 1 }] },
-  { options: [{ love: 2 }, { love: 1 }, { love: 3 }, { love: 0 }] },
-  { options: [{ love: 0 }, { love: 1 }, { love: 2 }, { love: 3 }] },
-  { options: [{ love: 3 }, { love: 0 }, { love: 1 }, { love: 2 }] },
-  { options: [{ love: 0 }, { love: 3 }, { love: 2 }, { love: 1 }] },
-  { options: [{ love: 1 }, { love: 0 }, { love: 3 }, { love: 2 }] },
-  { options: [{ love: 2 }, { love: 1 }, { love: 0 }, { love: 3 }] },
-  { options: [{ love: 3 }, { love: 0 }, { love: 2 }, { love: 1 }] },
-];
+const IN_LOVE: ChoiceItem[] = CRUSH.map(({ options }) => ({ options: [...options.slice(1), options[0]].map((option) => ({ love: option.signs })) }));
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
