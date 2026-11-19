@@ -4,7 +4,6 @@ import { sitemapPages, SITE_ORIGIN, pageUrl, type SitemapPage } from "./sitemap"
 import { messages } from "./messages";
 import { nostalgiaName } from "./nostalgia-i18n";
 import { summaryName } from "./summaries-i18n";
-import { scriptName } from "./scripts-i18n";
 import { countryName } from "./countries-i18n";
 import { countryCode } from "./countries";
 import { foodLabel } from "./calories-i18n";
@@ -30,7 +29,6 @@ function isHub(page: SitemapPage): boolean {
     case "ideas":
     case "nostalgia":
     case "summaries":
-    case "scripts":
     case "countries":
     case "elements":
     case "emoji":
@@ -58,7 +56,6 @@ function pageName(locale: Locale, page: SitemapPage, channel: SearchChannel, seo
   if (page.kind === "nostalgia" && page.entry) return nostalgiaName(locale, page.entry).name;
   // Summary titles lead with the search phrase ("Hamlet Summary: Plot, Characters…"): the work's own name.
   if (page.kind === "summaries" && page.entry) return summaryName(locale, page.entry).name;
-  if (page.kind === "scripts" && page.entry) return scriptName(locale, page.entry).name;
   // Country titles list what the page answers ("Japan: Population, GDP…"): the name is the place.
   if (page.kind === "countries" && page.entry) return countryName(locale, countryCode(page.entry));
   // Calories titles carry numbers ("Calories in Banana: 97 kcal per 100 g…"): use the food's own name.
@@ -103,8 +100,6 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
       return { channel: "nostalgia", seo: { nostalgia: true, nostalgiaId: page.entry } };
     case "summaries":
       return { channel: "summaries", seo: { summaries: true, summaryId: page.entry } };
-    case "scripts":
-      return { channel: "scripts", seo: { scripts: true, scriptId: page.entry } };
     case "calories":
       return { channel: "calories", seo: { calories: true, foodId: page.food } };
     case "elements":

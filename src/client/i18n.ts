@@ -51,15 +51,10 @@ import {
   registerNostalgiaEntry,
   registerNostalgiaMessages,
   type SummariesMessages,
-  type ScriptsMessages,
   hasSummaryEntry,
-  hasScriptEntry,
   hasSummariesMessages,
-  hasScriptsMessages,
   registerSummaryEntry,
-  registerScriptEntry,
   registerSummariesMessages,
-  registerScriptsMessages,
   hasCalendarMessages,
   registerCalendarMessages,
   type CalendarMessages,
@@ -76,9 +71,7 @@ import type { IdeaId, IdeaPage } from "../shared/ideas";
 import type { NostalgiaEntryCopy } from "../shared/nostalgia-i18n";
 import type { NostalgiaId, NostalgiaPage } from "../shared/nostalgia";
 import type { SummaryEntryCopy } from "../shared/summaries-i18n";
-import type { ScriptEntryCopy } from "../shared/scripts-i18n";
 import type { SummaryId, SummaryPage } from "../shared/summaries";
-import type { ScriptId, ScriptPage } from "../shared/scripts";
 import { hasElementsMessages, registerElementsMessages, type ElementsMessages } from "../shared/messages";
 import { hasEmojiMessages, registerEmojiMessages, type EmojiMessages } from "../shared/messages";
 import { hasCurrencyMessages, registerCurrencyMessages, type CurrencyMessages } from "../shared/messages";
@@ -432,17 +425,6 @@ const SUMMARIES_PACKS: Record<Locale, () => Promise<{ default: SummariesMessages
   id: () => import("../locales/packs/summaries-id"),
   es: () => import("../locales/packs/summaries-es"),
 };
-// Scripts hub copy plus work names (`npm run scripts:sync`), only for /scripts/ pages.
-const SCRIPTS_PACKS: Record<Locale, () => Promise<{ default: ScriptsMessages }>> = {
-  en: () => import("../locales/packs/scripts-en"),
-  "zh-CN": () => import("../locales/packs/scripts-zh-CN"),
-  "zh-TW": () => import("../locales/packs/scripts-zh-TW"),
-  ja: () => import("../locales/packs/scripts-ja"),
-  ko: () => import("../locales/packs/scripts-ko"),
-  vi: () => import("../locales/packs/scripts-vi"),
-  id: () => import("../locales/packs/scripts-id"),
-  es: () => import("../locales/packs/scripts-es"),
-};
 
 // One chunk per summary and locale, through that locale's generated loader table.
 const SUMMARY_LOADER_TABLES: Record<Locale, () => Promise<{ SUMMARY_LOADERS: Record<SummaryId, () => Promise<unknown>> }>> = {
@@ -455,27 +437,11 @@ const SUMMARY_LOADER_TABLES: Record<Locale, () => Promise<{ SUMMARY_LOADERS: Rec
   id: () => import("../locales/summaries/loaders/id"),
   es: () => import("../locales/summaries/loaders/es"),
 };
-// One chunk per script and locale, through that locale's generated loader table.
-const SCRIPT_LOADER_TABLES: Record<Locale, () => Promise<{ SCRIPT_LOADERS: Record<ScriptId, () => Promise<unknown>> }>> = {
-  en: () => import("../locales/scripts/loaders/en"),
-  "zh-CN": () => import("../locales/scripts/loaders/zh-CN"),
-  "zh-TW": () => import("../locales/scripts/loaders/zh-TW"),
-  ja: () => import("../locales/scripts/loaders/ja"),
-  ko: () => import("../locales/scripts/loaders/ko"),
-  vi: () => import("../locales/scripts/loaders/vi"),
-  id: () => import("../locales/scripts/loaders/id"),
-  es: () => import("../locales/scripts/loaders/es"),
-};
 
 async function loadSummaryEntry(next: Locale, id: SummaryId): Promise<void> {
   const { SUMMARY_LOADERS } = await SUMMARY_LOADER_TABLES[next]();
   const m = (await SUMMARY_LOADERS[id]()) as { default: SummaryEntryCopy };
   registerSummaryEntry(next, id, m.default);
-}
-async function loadScriptEntry(next: Locale, id: ScriptId): Promise<void> {
-  const { SCRIPT_LOADERS } = await SCRIPT_LOADER_TABLES[next]();
-  const m = (await SCRIPT_LOADERS[id]()) as { default: ScriptEntryCopy };
-  registerScriptEntry(next, id, m.default);
 }
 
 // Countries copy and the list data, only for /countries/ pages; a profile also loads the data bucket holding its figures.
@@ -519,7 +485,7 @@ const CURRENCY_PACKS: Record<Locale, () => Promise<{ default: CurrencyMessages }
 };
 
 /** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null, emoji = false, currency = false): boolean {
+export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, emoji = false, currency = false): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
@@ -527,7 +493,6 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
   const idea = ideas && ideas !== "hub" ? ideas : null;
   const memory = nostalgia && nostalgia !== "hub" ? nostalgia : null;
   const work = summaries && summaries !== "hub" ? summaries : null;
-  const scriptEntry = scripts && scripts !== "hub" ? scripts : null;
   return hasMessages(next) && hasPageCopy(next, copy) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || (hasQuizMessages(next) && (!test || hasQuizTest(next, test)))) && (!dataset || hasDatasetMessages(next))
     && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
     && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))))
@@ -535,7 +500,6 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!ideas || (hasIdeasMessages(next) && (!idea || hasIdeaEntry(next, idea))))
     && (!nostalgia || (hasNostalgiaMessages(next) && (!memory || hasNostalgiaEntry(next, memory))))
     && (!summaries || (hasSummariesMessages(next) && (!work || hasSummaryEntry(next, work))))
-    && (!scripts || (hasScriptsMessages(next) && (!scriptEntry || hasScriptEntry(next, scriptEntry))))
     && (!countries || (hasCountriesMessages(next) && (countryBucketOf(countries) === null || hasCountryBucket(countryBucketOf(countries)!))))
     && (!calories || hasCaloriesMessages(next))
     && (!elements || hasElementsMessages(next))
@@ -544,7 +508,7 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!currency || hasCurrencyMessages(next));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, scripts: ScriptPage = null, emoji = false, currency = false): Promise<void> {
+export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, summaries: SummaryPage = null, emoji = false, currency = false): Promise<void> {
   const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
@@ -553,7 +517,6 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
   const idea = ideas && ideas !== "hub" ? ideas : null;
   const memory = nostalgia && nostalgia !== "hub" ? nostalgia : null;
   const work = summaries && summaries !== "hub" ? summaries : null;
-  const scriptEntry = scripts && scripts !== "hub" ? scripts : null;
   await Promise.all([
     hasMessages(next) && hasPageCopy(next, copy) ? null : loadCore(next, copy),
     !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
@@ -573,8 +536,6 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
     !memory || hasNostalgiaEntry(next, memory) ? null : loadNostalgiaEntry(next, memory),
     !summaries || hasSummariesMessages(next) ? null : SUMMARIES_PACKS[next]().then((m) => registerSummariesMessages(next, m.default)),
     !work || hasSummaryEntry(next, work) ? null : loadSummaryEntry(next, work),
-    !scripts || hasScriptsMessages(next) ? null : SCRIPTS_PACKS[next]().then((m) => registerScriptsMessages(next, m.default)),
-    !scriptEntry || hasScriptEntry(next, scriptEntry) ? null : loadScriptEntry(next, scriptEntry),
     !countries || hasCountriesMessages(next) ? null : COUNTRIES_PACKS[next]().then((m) => registerCountriesMessages(next, m.default)),
     bucket === null || hasCountryBucket(bucket) ? null : COUNTRY_BUCKET_LOADERS[bucket]().then((m) => registerCountryBucket(bucket, m.default as Record<string, CountryDetail>)),
     !calories || hasCaloriesMessages(next) ? null : CALORIES_PACKS[next]().then((m) => registerCaloriesMessages(next, m.default)),
