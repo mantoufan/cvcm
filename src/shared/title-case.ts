@@ -65,6 +65,20 @@ function keepPart(part: string): boolean {
 }
 
 /** Capitalizes the first letter, unless the word starts with a digit (21st, 1990s stay as they are). */
+/** Dotted abbreviations written in lowercase on purpose (e.g., i.e., a.m.). */
+const LOWER_DOTTED = new Set(["e.g", "i.e", "a.m", "p.m", "et al"]);
+/** Roman numerals written in lowercase (world war ii, part iii); not vi or xi, which are also words and names. */
+const ROMAN = new Set(["ii", "iii", "iv", "vii", "viii", "ix", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx", "xxi"]);
+/** Proper adjectives Chicago keeps capitalized after a prefix (Anti-American, Non-English). */
+const PROPER = new Set(["african", "american", "arab", "asian", "british", "catholic", "chinese", "christian", "english", "european", "french", "german", "greek", "hispanic", "indian", "islamic", "italian", "japanese", "jewish", "korean", "latin", "muslim", "roman", "russian", "semitic", "spanish", "western", "eastern"]);
+
+/** Words that keep a fixed form whatever the style: u.s. → U.S., ph.d. → Ph.D., world war ii → II. */
+function fixedForm(part: string): string | undefined {
+  if (DOTTED.test(part) && !LOWER_DOTTED.has(part.toLowerCase())) return part.split(".").map((seg) => capFirst(seg.toLowerCase())).join(".");
+  if (ROMAN.has(part.toLowerCase())) return part.toUpperCase();
+  return undefined;
+}
+
 const capFirst = (s: string): string => {
   const chars = [...s];
   const i = chars.findIndex((c) => /[\p{L}\p{N}]/u.test(c));
@@ -80,9 +94,10 @@ function splitToken(raw: string, space: string): Token {
   return { lead: m[1]!, core: m[2]!, trail: m[3]!, space };
 }
 
-/** A subtitle starts after a colon, an em dash, a question or exclamation mark, or a sentence's full stop. */
+/** A subtitle starts after a colon, an em dash, a question or exclamation mark, or a sentence's full stop (not an ellipsis). */
 function startsAfter(prev: Token | undefined, style: TitleStyle): boolean {
   if (!prev) return true;
+  if (/\.\.|…/.test(prev.trail)) return false;
   // Sentence case (APA references) capitalizes after a colon, not after a dash.
   if (/[:?!]/.test(prev.trail) || (style !== "sentence" && prev.space.includes("—"))) return true;
   // Not after an abbreviation, an initial or an initialism like U.N. or U.S.A.
@@ -99,14 +114,21 @@ function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start
     return parts.map((part, i) => {
       if (i % 2 === 1 || !part) return part;
       if (keepPart(part)) return part;
+      const fixed = fixedForm(part);
+      if (fixed) return fixed;
       const lower = part.toLowerCase();
-      // A hyphenated compound's first part is always capitalized; slash pairs (and/or) follow the usual rule.
-      if (i === 0) return parts[1] !== "/" || start || !minor.has(lower) ? capFirst(lower) : lower;
-      if (style === "chicago" && parts[1] !== "/" && PREFIXES.has(parts[0]!.toLowerCase())) return lower;
+      const slash = parts[1] === "/";
+      // A hyphenated compound's first part is always capitalized; a slash pair (and/or, in/out) is cased as one word.
+      if (slash) return start || capLast || !minor.has(lower) ? capFirst(lower) : lower;
+      if (i === 0) return capFirst(lower);
+      // Chicago: the part right after a bound prefix is lowercase (Anti-inflammatory), a proper adjective is not (Anti-American).
+      if (style === "chicago" && i === 2 && PREFIXES.has(parts[0]!.toLowerCase())) return PROPER.has(lower) ? capFirst(lower) : lower;
       return minor.has(lower) && !(capLast && i === parts.length - 1) ? lower : capFirst(lower);
     }).join("");
   }
   if (keepPart(core)) return core;
+  const fixed = fixedForm(core);
+  if (fixed) return fixed;
   const lower = core.toLowerCase();
   // APA and AP capitalize every word of four letters or more, whatever it is.
   return start || capLast || !minor.has(lower) ? capFirst(lower) : lower;
@@ -119,6 +141,8 @@ function sentenceWord(core: string, start: boolean, keep: boolean): string {
   if (/^i(['’]\p{L}+)?$/iu.test(core)) return capFirst(core.toLowerCase());
   return core.split(HYPHEN).map((part, i) => {
     if (keepPart(part)) return part;
+    const fixed = fixedForm(part);
+    if (fixed) return fixed;
     const lower = part.toLowerCase();
     return start && i === 0 ? capFirst(lower) : lower;
   }).join("");
@@ -163,7 +187,8 @@ function convertLine(line: string, style: TitleStyle): string {
       return t.lead + t.trail + t.space;
     }
     const n = nextWord[i]!;
-    const end = n < 0 || /[:?!]/.test(t.trail) || t.space.includes("—") || words.slice(i + 1, n).some(loneBreak);
+    // The last word before a subtitle, a dash or a sentence's full stop ends a part.
+    const end = n < 0 || startsAfter(t, "apa") || words.slice(i + 1, n).some(loneBreak);
     const start = pending || startsAfter(prev, style);
     pending = false;
     prev = t;

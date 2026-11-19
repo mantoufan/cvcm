@@ -5,6 +5,7 @@ import {
   ESSAY, FONT_IDS, MARGINS, PAPER_IDS, SIZES, SPACINGS, layoutText, linesPerPage, pagesForWords, wordsForPages, wordsPerPage,
   type FontId, type PageSetup, type PaperId,
 } from "../../shared/words-to-pages";
+import { numberFormat } from "../../shared/number-format";
 import { copyButton, field, layout, numInput, readNum, rowsTo, select, table } from "../academic/common";
 
 const S = "wordsPages";
@@ -19,9 +20,7 @@ let timer = 0;
 export function mountWordsToPages(host: HTMLElement): void {
   let last = "";
   const schedule = () => { window.clearTimeout(timer); timer = window.setTimeout(paint, 150); };
-  // Built once per mount: a paint formats about 40 numbers.
-  const formats = [0, 1].map((max) => new Intl.NumberFormat(locale(), { maximumFractionDigits: max }));
-  const nf = (max: 0 | 1) => formats[max]!;
+  const nf = (max: 0 | 1) => numberFormat(locale(), { maximumFractionDigits: max });
   const modeSel = select<Mode>("mode", ["words", "text", "pages"], (m) => t(`${S}.m_${m}`), () => { sync(); paint(); }, "words");
   const wordsEl = numInput("words", EXAMPLE_WORDS, schedule, { inputmode: "numeric" });
   const pagesEl = numInput("pages", "5", schedule);
@@ -57,7 +56,11 @@ export function mountWordsToPages(host: HTMLElement): void {
   }
 
   /** "2.8 pages" with one decimal; whole numbers stay whole. */
-  const pagesText = (p: number) => t(`${S}.pagesValue`, { n: nf(1).format(Math.round(p * 10) / 10) });
+  const pagesText = (p: number) => {
+    const shown = Math.round(p * 10) / 10;
+    // Under a twentieth of a page still reads as some page, not "0".
+    return t(`${S}.pagesValue`, { n: shown === 0 && p > 0 ? `< ${nf(1).format(0.1)}` : nf(1).format(shown) });
+  };
 
   function paint(): void {
     const mode = modeSel.value as Mode;
@@ -79,8 +82,8 @@ export function mountWordsToPages(host: HTMLElement): void {
     } else {
       if (!textEl.value.trim()) return empty(t(`${S}.needText`));
       const l = layoutText(textEl.value, s);
-      // Your own text: its words per page, not the sample's.
-      perPage = l.wordsPerPage;
+      // A page or more of your own text gives its own words per page; shorter text would make one up from a few lines.
+      if (l.pages >= 1) perPage = l.wordsPerPage;
       rows = [
         [t(`${S}.pagesResult`), pagesText(l.pages), true],
         [t(`${S}.counted`), nf(0).format(l.words)],

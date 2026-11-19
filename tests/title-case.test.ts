@@ -84,6 +84,21 @@ describe("title case", () => {
     expect(titleCase("read https://example.com/Page now", "apa")).toBe("Read https://example.com/Page Now");
   });
 
+  it("fixes lowercase initialisms and Roman numerals, and keeps proper adjectives after a Chicago prefix", () => {
+    expect(titleCase("the u.s. economy after 2008", "apa")).toBe("The U.S. Economy After 2008");
+    expect(titleCase("a ph.d. in the u.k., e.g. at oxford", "sentence")).toBe("A Ph.D. in the U.K., e.g. at oxford");
+    expect(titleCase("world war ii and henry viii", "apa")).toBe("World War II and Henry VIII");
+    expect(titleCase("WORLD WAR II AND ITS AFTERMATH", "mla")).toBe("World War II and Its Aftermath");
+    expect(titleCase("Anti-American sentiment in non-English media", "chicago")).toBe("Anti-American Sentiment in Non-English Media");
+  });
+
+  it("does not start a part after an ellipsis, and caps the word before a full stop", () => {
+    expect(titleCase("results... and what they mean", "apa")).toBe("Results... and What They Mean");
+    expect(titleCase("what it is for. a study of things", "mla")).toBe("What It Is For. A Study of Things");
+    expect(titleCase("data in/out", "mla")).toBe("Data In/Out");
+    expect(titleCase("data in/out of range", "mla")).toBe("Data in/out of Range");
+  });
+
   it("keeps punctuation around words", () => {
     expect(titleCase("“the art of war” (a new translation)", "chicago")).toBe("“The Art of War” (a New Translation)");
   });
