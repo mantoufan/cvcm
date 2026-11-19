@@ -735,7 +735,7 @@
     "titleFlightSimulator": "Simulador de vuelo online — juego de aviones 3D gratis — cv.cm",
     "descFlightSimulator": "Simulador de vuelo 3D gratis en el navegador: despega de la pista, vuela sobre una isla low-poly y vuelve a aterrizar, o pasa por 12 aros contra el reloj. Sin descargas; con teclado o en el móvil.",
     "titleGames3d": "Juegos 3D gratis online — ajedrez, pinball, billar, dardos y coches — cv.cm",
-    "descGames3d": "Juega gratis a juegos 3D en el navegador sin descargar nada: ajedrez 3D, pinball, billar, air hockey, dardos, cubo mágico con solucionador, juego de apilar, juego de coches y simulador de vuelo. También en el móvil.",
+    "descGames3d": "Juega gratis a juegos 3D en el navegador sin descargar nada: ajedrez 3D, pinball, billar, snooker, air hockey, dardos, cubo mágico con solucionador, juego de apilar, juego de coches y simulador de vuelo. También en el móvil.",
     "titleCitationGenerator": "Generador de citas — APA, MLA, Chicago, Harvard, IEEE, Vancouver, GB/T 7714 — cv.cm",
     "descCitationGenerator": "Generador de citas y referencias gratis: busca un artículo por DOI o un libro por ISBN, o escribe los datos, y obtén la referencia y la cita en el texto en APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver o GB/T 7714. Arma tu bibliografía; importa y exporta BibTeX y RIS.",
     "titleApaCitationGenerator": "Generador de citas APA — referencias y citas según normas APA 7 — cv.cm",
@@ -776,6 +776,10 @@
     "descCiteHarvard": "Referencias Harvard en seis pasos: autor y año, títulos, artículos, libros y sitios web con fecha de consulta, citas en el texto y lista de referencias, con ejemplos y un generador gratis.",
     "titlePressurePointsMap": "Mapa de puntos de acupresión: guía interactiva y reflexología podal — cv.cm",
     "descPressurePointsMap": "Mapa interactivo gratuito de puntos de acupresión: toca un punto de la cara, el cuello, la mano, el brazo, la pierna o el pie para ver dónde está en anchos de dedo, cómo presionarlo y para qué se usa tradicionalmente, con temporizador. Incluye un mapa de reflexología podal. Para relajarse, no es consejo médico.",
+    "titleBilliards": "Juego de billar — billar 3D gratis: bola 8, bola 9, snooker y tres bandas, con reglas — cv.cm",
+    "descBilliards": "Juega al billar gratis en 3D: bola 8, bola 9, bola 10, bola 8 china, pirámide rusa, tres bandas y snooker contra el ordenador, un amigo o en solitario, con efecto, ejercicios, las reglas de cada juego y una línea de puntería opcional.",
+    "titleSnooker": "Juego de snooker — snooker 3D gratis online, con reglas y práctica — cv.cm",
+    "descSnooker": "Juega al snooker gratis en 3D: una partida completa de 15 rojas o una rápida de 6 rojas contra el ordenador, un amigo o en solitario, con puntuación y faltas reales, efecto en la blanca, ejercicios de bola larga y despeje, y una línea de puntería opcional.",
     "titleTitleCase": "Convertidor de mayúsculas para títulos (title case) — APA, MLA, Chicago, AP y tipo oración — cv.cm",
     "descTitleCase": "Convertidor de title case gratis: pega títulos en inglés, uno por línea, y obtenlos en APA 7, MLA 9, Chicago 17, AP o tipo oración. Conserva siglas como DNA y COVID-19.",
     "titleWordsToPages": "Convertidor de palabras a páginas — ¿cuántas páginas son 1000 palabras? — cv.cm",
@@ -1737,6 +1741,14 @@
     "pressure-points-map": {
       "name": "Mapa de puntos de acupresión",
       "blurb": "Puntos de acupresión y un mapa de reflexología podal."
+    },
+    "billiards": {
+      "name": "Billar",
+      "blurb": "Billar 3D, bola 8 china, pirámide y carambola con reglas y ejercicios."
+    },
+    "snooker": {
+      "name": "Snooker",
+      "blurb": "Partidas de snooker 3D completas con faltas, tacadas y ejercicios de práctica."
     },
     "title-case": {
       "name": "Convertidor de title case",
@@ -6589,6 +6601,48 @@
       "q5": "¿Puede un mapa de reflexología podal mostrar qué le pasa a mi cuerpo?",
       "a5": "No. Un mapa de reflexología es un mapa tradicional, no anatomía, y no hay buena evidencia de que los pies muestren ni influyan en problemas de los órganos. El masaje de pies puede resultar relajante, pero nunca lo uses para comprobar síntomas: el dolor en el pecho, la debilidad repentina o la dificultad para respirar requieren atención de urgencia."
     },
+    "billiards": {
+      "q1": "¿Cómo se juega al billar aquí?",
+      "a1": "Elige un juego y pulsa Jugar. Arrastra sobre la mesa para apuntar: en la vista cenital el taco apunta hacia donde tocas, y en la vista 3D detrás de la bola arrastras hacia los lados para girar. Ajusta la potencia con el control deslizante, toca la imagen de la bola blanca para dar efecto y pulsa Tirar. Con el teclado, ← y → giran (mantén Shift para giros finos), ↑ y ↓ cambian la potencia, Espacio tira y C cambia la cámara. Con bola en mano, arrastra la bola blanca adonde quieras.",
+      "q2": "¿Cuáles son las reglas de la bola 8?",
+      "a2": "Un jugador toma las lisas (1–7) y el otro las rayadas (9–15); la mesa queda abierta hasta que alguien embolsa una bola de forma legal después del saque, y esa bola decide los grupos. Debes tocar primero una de tus bolas y, tras el contacto, tiene que entrar una bola o alguna bola debe llegar a una banda. Despeja tu grupo y embolsa la 8 para ganar. Meter la 8 antes de tiempo, o en una falta, pierde la partida. Una falta da al rival bola en mano en cualquier punto de la mesa.",
+      "q3": "¿Cuáles son las reglas de la bola 9 y la bola 10?",
+      "a3": "Ambas son juegos de rotación: la bola blanca debe tocar primero la bola de número más bajo de la mesa, y cualquier bola que entre después te mantiene en la mesa. En la bola 9, embolsar la 9 de forma legal gana en cualquier momento, incluso en el saque o en una combinación. En la bola 10, aquí la 10 debe entrar la última, así que una 10 anticipada se vuelve a colocar. Una falta (no tocar la bola más baja, no llegar a banda tras el contacto o meter la blanca) da bola en mano en cualquier punto.",
+      "q4": "¿Qué es la bola 8 china?",
+      "a4": "La bola 8 china (中式台球, también llamada heiba) usa las bolas y las reglas de la bola 8 en una mesa del tamaño de una de pool de 9 pies, pero con bandas al estilo snooker y troneras redondeadas mucho más estrechas, así que hay que embolsar con precisión. Un saque legal necesita una bola embolsada o cuatro bolas objetivo contra una banda, y cada falta da al rival bola en mano en cualquier punto.",
+      "q5": "¿Qué es la pirámide rusa?",
+      "a5": "La pirámide rusa (русский бильярд) se juega en una mesa de 12 pies con quince bolas grandes de marfil de 68 mm y una bola blanca de color, y las troneras son solo unos milímetros más anchas que una bola. Esta página juega la pirámide libre: cada bola embolsada suma un punto, embolsar la blanca después de tocar otra bola también suma y da bola en mano desde la cocina, una falta resta un punto y gana el primero en llegar a 8 puntos.",
+      "q6": "¿Cómo funciona el billar a tres bandas?",
+      "a6": "El tres bandas es un juego de carambola en una mesa sin troneras, con tres bolas: tu bola blanca (blanca o amarilla), la bola del rival y la roja. Sumas un punto cuando tu bola toca las otras dos y golpea las bandas al menos tres veces antes de tocar la segunda bola. Puntuar te mantiene en la mesa; fallar pasa el turno. Aquí gana el primero en llegar a 10 puntos.",
+      "q7": "¿Puedo desactivar la línea de puntería?",
+      "a7": "Sí. La ayuda de puntería tiene tres ajustes: la predicción completa dibuja las trayectorias de todas las bolas que se moverán con el tiro, calculadas con la misma física del juego; la línea de puntería muestra la línea del taco, la bola fantasma y hacia dónde van la bola objetivo y la blanca tras el contacto; desactivada solo muestra el taco, como en una mesa real. Redúcela a medida que mejore tu puntería.",
+      "q8": "¿Cómo funcionan el efecto, el retroceso y el seguimiento?",
+      "a8": "Toca la imagen de la bola blanca donde debe golpear la punta del taco. Por debajo del centro es retroceso (draw): la blanca vuelve atrás tras el golpe. Por encima del centro es seguimiento (follow): sigue avanzando tras la bola objetivo. En el centro exacto con golpe pleno la blanca se frena y se queda parada. El efecto a izquierda y derecha cambia el ángulo al salir de las bandas. La bola desliza al principio y se agarra al paño al rodar, así que el mismo efecto se comporta distinto a distintas distancias.",
+      "q9": "¿Qué reglas están simplificadas aquí?",
+      "a9": "Los tiros nunca se cantan, así que vale cualquier bola embolsada de forma legal y la 10 de la bola 10 debe entrar la última. No hay push-out ni la regla de tres faltas en la bola 9, ni elección de nueva colocación tras una 8 en el saque (se vuelve a colocar). El snooker no tiene regla de bola fallada ni bola libre. Todo lo demás sigue las reglas habituales de la WPA, la bola 8 china, la pirámide y la UMB. Con bola en mano detrás de la línea de saque y todas las bolas válidas también detrás, puedes tocar una directamente (la WPA colocaría en el punto la más cercana).",
+      "q10": "¿Puedo jugar en el móvil?",
+      "a10": "Sí. Arrastra sobre la mesa para apuntar, usa los botones ⟲ ⟳ para giros grandes y ‹ › para pequeños, y luego el control de potencia y Tirar. La vista cenital muestra toda la mesa en una pantalla estrecha, y la pantalla completa da el máximo espacio. Tus ajustes se quedan en este navegador y no se envía nada a ningún sitio."
+    },
+    "snooker": {
+      "q1": "¿Cómo se juega al snooker aquí?",
+      "a1": "Pulsa Jugar y empieza desde la D. Arrastra sobre la mesa para apuntar (en la vista cenital el taco apunta adonde tocas; detrás de la bola, arrastra hacia los lados), ajusta la potencia con el control deslizante, toca la imagen de la bola blanca para dar retroceso, seguimiento o efecto lateral y pulsa Tirar. Con el teclado, ← y → giran (Shift para giros finos), ↑ y ↓ cambian la potencia, Espacio tira y C cambia la cámara.",
+      "q2": "¿Cuáles son las reglas del snooker?",
+      "a2": "Hay 15 rojas y seis colores. Debes embolsar primero una roja, luego cualquier color, luego otra roja, mientras sigas embolsando; esa serie es tu tacada. Los colores embolsados mientras queden rojas vuelven a su marca. Cuando se acaban las rojas, los colores se toman en orden: amarilla, verde, marrón, azul, rosa y negra. Gana la partida quien tenga más puntos cuando entra la negra.",
+      "q3": "¿Cuánto vale cada bola?",
+      "a3": "Una roja vale 1, amarilla 2, verde 3, marrón 4, azul 5, rosa 6 y negra 7. Embolsar todas las rojas con la negra y luego despejar los colores da la tacada máxima de 147. En el snooker de 6 rojas el máximo es 75.",
+      "q4": "¿Qué es una falta en el snooker?",
+      "a4": "No tocar ninguna bola, tocar primero una bola que no toca, embolsar una bola que no toca o meter la blanca en una tronera. Una falta da al rival 4 puntos, o el valor de la bola implicada si es mayor, hasta 7, y termina tu turno. Tras meter la blanca, el siguiente jugador juega desde cualquier punto de la D.",
+      "q5": "¿Cómo designo un color?",
+      "a5": "Tras una roja, el juego considera que el primer color que toca tu bola blanca es el que has designado, así que nunca hace falta decirlo en voz alta. Embolsa ese color para sumar su valor; embolsar un color distinto es falta.",
+      "q6": "¿Qué es el snooker de 6 rojas?",
+      "a6": "El mismo juego con seis rojas en lugar de quince, así que una partida dura pocos minutos. Es popular para partidas rápidas y una buena forma de practicar la construcción de tacadas y el despeje de colores.",
+      "q7": "¿Puedo practicar sin la línea de puntería?",
+      "a7": "Sí. La ayuda de puntería puede mostrar las trayectorias previstas de todas las bolas, solo la línea del taco con la bola fantasma, o nada más que el taco, como en una mesa real. La práctica en solitario añade ejercicios (la bola larga, la azul a la tronera central, el despeje de colores), deshacer y mover bolas a mano.",
+      "q8": "¿Qué reglas del snooker están simplificadas?",
+      "a8": "No hay regla de bola fallada ni bola libre, y tras una falta tu rival siempre sigue jugando, sin pedirte que repitas el tiro. Los colores se designan con el primer color que toques. La puntuación, el valor de las faltas, la recolocación, los colores en orden y la negra de desempate en caso de empate siguen las reglas oficiales.",
+      "q9": "¿Puedo jugar en el móvil?",
+      "a9": "Sí. Arrastra sobre la mesa para apuntar, usa ⟲ ⟳ para giros grandes y ‹ › para pequeños, y luego el control de potencia y Tirar. La vista cenital ajusta la mesa larga a una pantalla estrecha, y la pantalla completa da el máximo espacio. Los ajustes se quedan en este navegador y no se envía nada a ningún sitio."
+    },
     "title-case": {
       "q1": "¿Qué es el title case?",
       "a1": "Es una forma de poner mayúsculas en los títulos en inglés: las palabras importantes empiezan con mayúscula y las palabras cortas como a, the, and, of e in quedan en minúscula. Cada guía de estilo traza el límite de forma un poco distinta.",
@@ -10852,7 +10906,7 @@
     },
     "g3d": {
       "title": "Juegos 3D gratis",
-      "lead": "Juegos 3D que se juegan aquí mismo: ajedrez en un tablero 3D, pinball, billar de bola 8, air hockey, dardos, un cubo mágico con solucionador, un juego de apilar, un juego de coches con derrapes y un simulador de vuelo. Gratis y sin instalar; la parte 3D se carga solo al pulsar Jugar."
+      "lead": "Juegos 3D que se juegan aquí mismo: ajedrez en un tablero 3D, pinball, billar de bola 8, un entrenador de billar (bola 9, bola 8 china, pirámide, tres bandas), snooker, air hockey, dardos, un cubo mágico con solucionador, un juego de apilar, un juego de coches con derrapes y un simulador de vuelo. Gratis y sin instalar; la parte 3D se carga solo al pulsar Jugar."
     },
     "emu": {
       "title": "Emuladores retro",
@@ -17271,6 +17325,242 @@
     "started": "Temporizador iniciado: {n} s.",
     "loadError": "No se pudieron cargar las descripciones de los puntos. Revisa tu conexión e inténtalo de nuevo.",
     "retry": "Reintentar"
+  },
+  "billiards": {
+    "title": "Billar",
+    "titleSnooker": "Snooker",
+    "privacyNote": "Billar 3D con ocho juegos, ejercicios de práctica y una línea de puntería que puedes desactivar. Funciona en tu navegador.",
+    "privacyNoteSnooker": "Snooker 3D completo con puntuación y faltas reales, ejercicios de práctica y una línea de puntería que puedes desactivar. Funciona en tu navegador.",
+    "stage": "Mesa de billar",
+    "intro": "Ocho juegos en una mesa: apunta, da efecto, elige la potencia y tira.",
+    "introSnooker": "Una partida completa de snooker: embolsa una roja, luego una de color y construye tu tacada.",
+    "game": "Juego",
+    "mode": "Rival",
+    "skill": "Ordenador",
+    "aimHelp": "Ayuda de puntería",
+    "drill": "Ejercicio",
+    "noDrill": "Práctica libre",
+    "newGame": "Nueva partida",
+    "topView": "Vista cenital",
+    "sound": "Sonido",
+    "power": "Potencia",
+    "spin": "Efecto",
+    "spinReset": "Centro",
+    "spinCentre": "Bola al centro",
+    "spinTop": "Seguimiento",
+    "spinDraw": "Retroceso",
+    "spinLeft": "Lado izquierdo",
+    "spinRight": "Lado derecho",
+    "shoot": "Tirar",
+    "turnLeft": "Girar el taco a la izquierda",
+    "turnRight": "Girar el taco a la derecha",
+    "nudgeLeft": "Mover el taco un poco a la izquierda",
+    "nudgeRight": "Mover el taco un poco a la derecha",
+    "undo": "Deshacer tiro",
+    "undone": "Tiro deshecho.",
+    "moveBalls": "Mover bolas",
+    "editOn": "Arrastra cualquier bola para preparar una posición y pulsa Mover bolas otra vez o tira.",
+    "you": "Tú",
+    "computer": "Ordenador",
+    "player": "Jugador {n}",
+    "turnOf": "Juega {name}",
+    "wins": "¡Gana {name}!",
+    "again": "Jugar otra vez",
+    "cleared": "¡Mesa despejada!",
+    "break": "Saque",
+    "openTable": "Mesa abierta",
+    "onEight": "A la 8",
+    "onRed": "A una roja",
+    "onColour": "A una de color",
+    "onBall": "A la {ball}",
+    "raceTo": "El primero a {n}",
+    "breakRun": "Tacada {n} · mejor {best}",
+    "stats": "{shots} tiros, {pots} embolsadas",
+    "drillScore": "Ejercicio {hits}/{tries}",
+    "drillStart": "Embolsa la bola como pide el ejercicio. La posición se repone tras cada intento.",
+    "drillHit": "¡Hecho! La posición se ha repuesto.",
+    "drillMiss": "Esta vez no. La posición se ha repuesto.",
+    "rulesOf": "Reglas de {game}",
+    "hint": "Arrastra sobre la mesa para apuntar (vista cenital: el taco apunta adonde tocas; vista 3D: arrastra hacia los lados). ← → giran, Shift para giros finos, ↑ ↓ potencia, Espacio tira, C cambia la vista. Con bola en mano, arrastra la bola blanca.",
+    "games": {
+      "8-ball": "Bola 8",
+      "9-ball": "Bola 9",
+      "10-ball": "Bola 10",
+      "chinese-8-ball": "Bola 8 china",
+      "snooker": "Snooker (15 rojas)",
+      "snooker-6": "Snooker (6 rojas)",
+      "pyramid": "Pirámide rusa",
+      "3-cushion": "Tres bandas"
+    },
+    "modes": {
+      "cpu": "Contra el ordenador",
+      "two": "2 jugadores",
+      "solo": "Práctica en solitario"
+    },
+    "skills": {
+      "easy": "Fácil",
+      "medium": "Medio",
+      "hard": "Difícil"
+    },
+    "aims": {
+      "full": "Predicción completa",
+      "line": "Línea de puntería",
+      "off": "Desactivada"
+    },
+    "group": {
+      "solids": "Lisas · quedan {n}",
+      "stripes": "Rayadas · quedan {n}"
+    },
+    "groupShort": {
+      "solids": "lisas",
+      "stripes": "rayadas"
+    },
+    "inHand": {
+      "anywhere": "Bola en mano: arrastra la bola blanca adonde quieras.",
+      "kitchen": "Bola en mano detrás de la línea de cabecera (la zona sombreada).",
+      "d": "Bola en mano dentro de la D."
+    },
+    "ball": {
+      "red": "roja",
+      "v2": "amarilla",
+      "v3": "verde",
+      "v4": "marrón",
+      "v5": "azul",
+      "v6": "rosa",
+      "v7": "negra",
+      "carom0": "blanca",
+      "carom1": "amarilla",
+      "carom2": "roja"
+    },
+    "msg": {
+      "potted": "Embolsada la {n}.",
+      "noHit": "Falta: no se tocó ninguna bola.",
+      "wrongBall": "Falta: se tocó primero la bola equivocada.",
+      "scratch": "Falta: bola blanca embolsada.",
+      "inOff": "Falta: blanca embolsada tras tocar una bola.",
+      "noRail": "Falta: ninguna bola llegó a una banda.",
+      "badBreak": "Falta: un saque legal necesita una bola embolsada o cuatro bolas contra una banda.",
+      "wrongPot": "Falta: entró una bola que no era la correcta.",
+      "foulPoints": "Falta, {n} puntos.",
+      "eightSpotted": "La 8 entró en el saque y se vuelve a colocar.",
+      "eightWin": "¡La 8 está embolsada!",
+      "eightLoss": "La 8 entró antes de tiempo o en una falta.",
+      "groupSolids": "Lisas para quien tira.",
+      "groupStripes": "Rayadas para quien tira.",
+      "moneyWin": "¡La {n} está embolsada!",
+      "moneySpotted": "La {n} se vuelve a colocar.",
+      "reSpotBlack": "Empate a puntos: se vuelve a colocar la negra para desempatar.",
+      "frameOver": "Fin de la partida.",
+      "minusOne": "Falta: menos un punto.",
+      "cueScores": "La blanca entró tras tocar una bola: un punto y bola en mano.",
+      "raceOver": "Fin de la carrera.",
+      "caromPoint": "¡Punto!",
+      "caromMiss": "Sin punto.",
+      "kitchenBall": "Falta: desde detrás de la línea de saque, la primera bola tocada debe estar más allá de ella."
+    },
+    "drills": {
+      "straight": {
+        "name": "Bola recta",
+        "tip": "Embolsa la 1 en la esquina de arriba. Golpea la blanca en el centro exacto y mantén el taco nivelado."
+      },
+      "cut30": {
+        "name": "Corte a media bola (30°)",
+        "tip": "Apunta la bola blanca a la bola fantasma, no a la bola objetivo: a 30° el centro de la blanca apunta al borde de la bola objetivo."
+      },
+      "cut55": {
+        "name": "Corte fino (55°)",
+        "tip": "Un corte fino hacia el otro lado: solo se toca una franja de la bola objetivo. Apunta a la bola fantasma y no pierdas velocidad."
+      },
+      "stop": {
+        "name": "Tiro de parada",
+        "tip": "Embolsa la 1 y deja la blanca en el círculo rosa: un golpe firme algo por debajo del centro para que se pare en seco."
+      },
+      "draw": {
+        "name": "Tiro de retroceso",
+        "tip": "Embolsa la 1 y haz volver la blanca al círculo: golpea bien por debajo del centro con suficiente fuerza."
+      },
+      "follow": {
+        "name": "Tiro de seguimiento",
+        "tip": "Embolsa la 1 y haz que la blanca siga rodando hasta el círculo: golpea por encima del centro con fuerza media."
+      },
+      "rail": {
+        "name": "Bola pegada a la banda",
+        "tip": "La 1 está pegada a la banda. Golpea la bola y la banda a la vez, o un poco de efecto lateral ayuda."
+      },
+      "long": {
+        "name": "Bola larga (snooker)",
+        "tip": "La clásica roja larga desde la D a una esquina de arriba. Mantén el golpe recto y suave."
+      },
+      "blue": {
+        "name": "Azul a la tronera central",
+        "tip": "Embolsa la azul desde su marca en una tronera central, con toque suave."
+      },
+      "clearance": {
+        "name": "Despeje de colores",
+        "tip": "Embolsa los colores en orden (amarilla, verde, marrón, azul, rosa, negra) con bola en mano en la D. Un despeje perfecto vale 27."
+      }
+    },
+    "rules": {
+      "8-ball": {
+        "r1": "Lisas 1–7 contra rayadas 9–15. La mesa está abierta tras el saque; la primera bola embolsada de forma legal decide los grupos.",
+        "r2": "Toca primero una de tus bolas. Tras el contacto, tiene que entrar una bola o alguna bola debe llegar a una banda.",
+        "r3": "Un saque legal embolsa una bola o lleva al menos cuatro bolas objetivo a una banda. Una 8 en el saque se vuelve a colocar.",
+        "r4": "Las faltas (tocar primero una bola equivocada, ninguna banda, no tocar ninguna bola, meter la blanca, o desde detrás de la línea de saque tocar una bola que también está detrás) dan a tu rival bola en mano en cualquier lugar; meter la blanca en el saque la da detrás de la línea de saque.",
+        "r5": "Si embolsas una de tu grupo, sigues tirando.",
+        "r6": "Despeja tu grupo y embolsa la 8 para ganar. La 8 antes de tiempo o en una falta pierde."
+      },
+      "9-ball": {
+        "r1": "Bolas 1–9. La blanca debe tocar primero la bola de número más bajo.",
+        "r2": "Cualquier bola que entre tras un golpe legal te mantiene en la mesa, también en combinaciones.",
+        "r3": "Embolsa la 9 de forma legal en cualquier momento, incluso en el saque, para ganar.",
+        "r4": "Un saque legal embolsa una bola o lleva cuatro bolas objetivo a una banda.",
+        "r5": "Las faltas dan bola en mano en cualquier punto; una 9 embolsada en una falta se vuelve a colocar."
+      },
+      "10-ball": {
+        "r1": "Bolas 1–10, colocadas en triángulo con la 1 delante y la 10 en el centro.",
+        "r2": "Toca siempre primero la bola de número más bajo.",
+        "r3": "Aquí los tiros no se cantan: cualquier bola embolsada de forma legal te mantiene en la mesa.",
+        "r4": "La 10 solo gana como última bola; una 10 anterior (o en el saque) se vuelve a colocar.",
+        "r5": "Las faltas dan bola en mano en cualquier punto."
+      },
+      "chinese-8-ball": {
+        "r1": "El juego de bolas de la bola 8 en una mesa del tamaño de 9 pies, con bandas al estilo snooker y troneras redondeadas y estrechas.",
+        "r2": "Lisas contra rayadas; la primera bola embolsada de forma legal tras el saque decide los grupos.",
+        "r3": "Un saque legal embolsa una bola o lleva cuatro bolas objetivo a una banda; si no, es falta.",
+        "r4": "Toca primero tu grupo; tras el contacto, tiene que entrar una bola o llegar a una banda.",
+        "r5": "Cada falta da al rival una bola en mano libre en cualquier punto.",
+        "r6": "Despeja tu grupo y luego la negra. La negra antes de tiempo o en una falta pierde."
+      },
+      "snooker": {
+        "r1": "15 rojas de 1 punto y seis colores: amarilla 2, verde 3, marrón 4, azul 5, rosa 6, negra 7.",
+        "r2": "Embolsa una roja, luego un color, luego una roja… El primer color que toques es el que has designado.",
+        "r3": "Los colores vuelven a su marca mientras queden rojas. Después los colores van en orden, de amarilla a negra.",
+        "r4": "Las faltas dan al rival al menos 4 puntos, o el valor de la bola implicada si es mayor (hasta 7).",
+        "r5": "Faltas: no tocar la bola que toca, tocar otra bola primero, embolsar una bola que no toca, meter la blanca.",
+        "r6": "Tras meter la blanca, el siguiente jugador tiene bola en mano en la D.",
+        "r7": "La partida termina cuando entra la negra; si hay empate, se vuelve a colocar la negra. La tacada máxima es 147."
+      },
+      "snooker-6": {
+        "r1": "Seis rojas en lugar de quince: las mismas reglas, una partida en pocos minutos.",
+        "r2": "Roja, color, roja… y luego los colores en orden. Las faltas valen al menos 4.",
+        "r3": "La tacada máxima posible es 75."
+      },
+      "pyramid": {
+        "r1": "Quince bolas de marfil numeradas y una bola blanca de color en una mesa de 12 pies con troneras apenas más anchas que una bola.",
+        "r2": "Pirámide libre: cada bola embolsada suma un punto y sigues tirando.",
+        "r3": "Embolsar la blanca tras tocar otra bola también suma, y sigues jugando desde la cocina.",
+        "r4": "Falta (no tocar ninguna bola, que ninguna llegue a una banda o tronera, o desde la cabecera tocar una bola que también está en ella): un punto menos y pasa el turno.",
+        "r5": "Gana el primero en llegar a 8 puntos."
+      },
+      "3-cushion": {
+        "r1": "Sin troneras, tres bolas: tu bola blanca (blanca o amarilla), la del rival y la roja.",
+        "r2": "Tu bola debe tocar las otras dos y golpear las bandas al menos tres veces antes de tocar la segunda.",
+        "r3": "Un punto te mantiene en la mesa; fallar pasa el turno.",
+        "r4": "Gana el primero en llegar a 10 puntos."
+      }
+    },
+    "failedFoul": "La última bola entró con falta. Vuelve a empezar.",
+    "drawn": "Empate."
   },
   "titleCase": {
     "title": "Convertidor de title case",

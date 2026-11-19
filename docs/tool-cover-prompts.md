@@ -4,7 +4,6 @@
 
 Same extra-cute pale-rose twin-tail chibi, lace bonnet, cream-pink room. She holds a small blank cream handset and a round blank screen with no numerals. Save `public/covers/device-sweet.jpg` at 1280×720 and upload to `s3://files/covers/device-sweet.jpg`. The production Worker serves `/covers/` from S3.
 
-
 **From 2026-09-16:** generate tool covers with **Codex** (OpenAI image tool + style-reference covers). Do not use Grok `image_gen` for `public/covers/*-sweet.jpg`. Same extra-cute pink twin-tail chibi, lace bonnet, cream-pink room. 1280×720 JPEG. No words, letters, numbers, titles, logos, or watermark. Style refs: `qr-sweet.jpg`, `password-sweet.jpg`, `names-sweet.jpg`, `watermark-sweet.jpg`.
 
 Generated with the built-in OpenAI image generation tool on 2026-09-09. Reference images are the existing covers in public/covers. Outputs converted to 1280×720 JPEG for the site.
@@ -362,7 +361,6 @@ Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`), refs `204
 - `bac-calculator`: she holds a glass of pink sparkling juice and looks at a round cream gauge with a soft needle (tick marks only); a glass of water, a pink alarm clock, a pink car key with a heart keyring set aside in a dish.
 - `simple-interest`: she drops a gold coin into a pink piggy bank; even stacks of coins grow in a straight row, each the same step taller; a pink calculator with blank keys and a blank desk calendar.
 
-
 ## Word search, Typing game, Chinese checkers (2026-11-15)
 
 Codex (`codex exec -m gpt-6-astra --image ref1.jpg --image ref2.jpg`; the cache's first entry `gpt-6.1-sol` returned 400 model_not_found, so the next one was used), refs `nonogram-sweet.jpg` + `memory-game-sweet.jpg`, 16:9 landscape, same base prompt as above (style references only, same chibi girl and room, full-bleed, no words, letters, digits, logo or watermark). Save `public/covers/<id>-sweet.jpg`, `sips -s format jpeg` then `sips -z 720 1280`. All came out on the first try.
@@ -422,6 +420,13 @@ Codex (`codex exec -m gpt-6-astra --image stack-game-sweet.jpg,driving-game-swee
 - `pool-game`: she lines up a shot on a pink-cloth table with a white and pink cue; a rack of glossy coloured balls with no numbers.
 - `air-hockey`: she grips a pink mallet on a white and pink table; a glowing puck slides toward the goal slot.
 - `darts`: her pink-flighted dart lands in the bull of a pink, cream and mint board with no numbers; two more darts in her hand.
+
+## Billiards, snooker (2026-11-18)
+
+Codex (`codex exec -m gpt-6-astra --image chess-sweet.jpg,snake-game-sweet.jpg -`, prompt on stdin), 16:9, same base prompt as above (style references only, same chibi girl and room, full-bleed, no words, letters, digits on balls, symbols, logo, UI or watermark). `sips -s format jpeg` then `sips -z 720 1280`. Both came out on the first try.
+
+- `billiards`: she leans over a pastel pool table with sky-blue cloth and wooden rails, a maple cue lined up behind the white cue ball, a faint dotted aim line to a rack of plain solid and striped balls, a pink chalk cube on the rail.
+- `snooker`: she cues at a green snooker table with the baulk line and D, a triangle of reds with the pink in front and the black behind, yellow, green, brown and blue on their spots, a brass bead scoreboard on the wall.
 
 ## Pressure points map (2026-11-19)
 

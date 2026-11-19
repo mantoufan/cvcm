@@ -84,7 +84,7 @@
     },
     {
       "id": "games3d",
-      "name": "3D games: 3D chess against the computer, magic cube (2×2–4×4) and cube solver, stack game, driving and drift game, flight simulator, pinball, 8-ball pool, air hockey, darts"
+      "name": "3D games: 3D chess against the computer, magic cube (2×2–4×4) and cube solver, stack game, driving and drift game, flight simulator, pinball, 8-ball pool, air hockey, darts, billiards (9-ball, 10-ball, Chinese 8-ball, Russian pyramid, three-cushion and 8-ball) and snooker with practice drills and an aim-line toggle"
     },
     {
       "id": "assets",
@@ -1871,6 +1871,22 @@
       "description": "Throw 501 or Around the Clock on a 3D board.",
       "category": "games3d",
       "url": "https://cv.cm/en/darts/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "billiards",
+      "name": "Billiards",
+      "description": "3D pool, Chinese 8-ball, pyramid and carom with rules and drills.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/billiards/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "snooker",
+      "name": "Snooker",
+      "description": "Full 3D snooker frames with fouls, breaks and practice drills.",
+      "category": "games3d",
+      "url": "https://cv.cm/en/snooker/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {
