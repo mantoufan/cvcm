@@ -188,6 +188,8 @@ Browser tools plus a tiny cloud clipboard.
 - **P-value calculator** / p 值计算器 — p from z, t, χ² or F, and critical values. [Open](https://cv.cm/en/p-value/)
 - **Z-score calculator** / z 分数计算器 — z, percentiles and normal probabilities. [Open](https://cv.cm/en/z-score/)
 - **Citation generator** / 参考文献生成器 — APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver, GB/T 7714; DOI/ISBN lookup, BibTeX/RIS. [Open](https://cv.cm/en/citation-generator/) · [APA](https://cv.cm/en/apa-citation-generator/) · [MLA](https://cv.cm/en/mla-citation-generator/) · [Harvard](https://cv.cm/en/harvard-referencing-generator/)
+- **Title case converter** / 英文标题大小写转换 — APA, MLA, Chicago, AP title case and sentence case. [Open](https://cv.cm/en/title-case/)
+- **Words to pages** / 字数换算页数 — pages for a word count or pasted text, by font, size, spacing, paper and margins. [Open](https://cv.cm/en/words-to-pages/)
 - **QR code** / 二维码 — text or URL to PNG, on-device. [Open](https://cv.cm/en/qr/)
 - **Barcode generator** / 条码生成 — Code 128, Code 39, EAN-13. [Open](https://cv.cm/en/barcode/)
 - **Password generator** / 密码生成. [Open](https://cv.cm/en/password/)

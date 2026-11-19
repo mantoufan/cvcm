@@ -218,6 +218,8 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "apa-citation-generator": 3,
   "mla-citation-generator": 3,
   "harvard-referencing-generator": 3,
+  "title-case": 3,
+  "words-to-pages": 3,
   "cube-solver": 3,
   "pinball": 3,
   "pool-game": 3,

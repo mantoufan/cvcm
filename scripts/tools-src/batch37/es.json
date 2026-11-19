@@ -1,0 +1,140 @@
+{
+  "meta": {
+    "titleTitleCase": "Convertidor de mayúsculas para títulos (title case) — APA, MLA, Chicago, AP y tipo oración — cv.cm",
+    "descTitleCase": "Convertidor de title case gratis: pega títulos en inglés, uno por línea, y obtenlos en APA 7, MLA 9, Chicago 17, AP o tipo oración. Conserva siglas como DNA y COVID-19.",
+    "titleWordsToPages": "Convertidor de palabras a páginas — ¿cuántas páginas son 1000 palabras? — cv.cm",
+    "descWordsToPages": "Calcula gratis cuántas páginas ocupan tus palabras en Times New Roman, Arial o Calibri, a espacio sencillo o doble, en Carta o A4. Pega tu texto para un recuento exacto."
+  },
+  "tools": {
+    "title-case": {
+      "name": "Convertidor de title case",
+      "blurb": "APA, MLA, Chicago, AP o tipo oración."
+    },
+    "words-to-pages": {
+      "name": "Palabras a páginas",
+      "blurb": "Cuántas páginas ocupan tus palabras."
+    }
+  },
+  "faq": {
+    "title-case": {
+      "q1": "¿Qué es el title case?",
+      "a1": "Es una forma de poner mayúsculas en los títulos en inglés: las palabras importantes empiezan con mayúscula y las palabras cortas como a, the, and, of e in quedan en minúscula. Cada guía de estilo traza el límite de forma un poco distinta.",
+      "q2": "¿Qué diferencia hay entre el title case de APA y el de MLA?",
+      "a2": "APA pone en mayúscula toda palabra de cuatro letras o más, así que escribe \"Studies From 2010\". MLA deja en minúscula todas las preposiciones, sea cual sea su longitud (\"Studies from 2010\"), y siempre pone en mayúscula la última palabra, por lo que \"What It's Made Of\" termina con mayúscula en MLA pero no en APA.",
+      "q3": "¿Cuándo se usa el tipo oración (sentence case)?",
+      "a3": "En las listas de referencias de APA 7, los títulos de artículos, libros y páginas web van en tipo oración: solo llevan mayúscula la primera palabra, la primera palabra después de dos puntos y los nombres propios. El título de tu propio trabajo y sus encabezados usan title case.",
+      "q4": "¿El convertidor respeta siglas y nombres?",
+      "a4": "Conserva las palabras escritas con mayúsculas en su interior, como DNA, COVID-19, iPhone y McDonald. No puede saber que una palabra en minúscula es un nombre, así que en tipo oración revisa los nombres propios como Freud o Europe y ponles la mayúscula tú mismo.",
+      "q5": "¿Por qué \"up\" va en minúscula en \"Growing up\"?",
+      "a5": "Palabras como up, out y over son preposiciones en algunos títulos y parte de un verbo en otros. El convertidor las trata como preposiciones. Cuando una forma parte de un verbo, como en \"Growing Up\" o \"Setting Up\", ponle la mayúscula a mano."
+    },
+    "words-to-pages": {
+      "q1": "¿Cuántas páginas son 1000 palabras?",
+      "a1": "En Times New Roman 12 pt con márgenes de 1 pulgada en papel Carta, 1000 palabras ocupan unas 2,8 páginas a doble espacio y 1,4 páginas a espacio sencillo. En Arial 12 pt son unas 3,1 y 1,6 páginas.",
+      "q2": "¿Cuántas palabras caben en una página?",
+      "a2": "Unas 350 palabras en una página a doble espacio y 700 en una a espacio sencillo, en Times New Roman 12 pt con márgenes de 1 pulgada. En las fuentes más anchas caben menos: unas 320 y 640 en Arial, y 240 y 490 en Courier New.",
+      "q3": "¿Por qué sale más que las 250 palabras por página de siempre?",
+      "a3": "La regla de 250 palabras por página a doble espacio viene de las máquinas de escribir, cuyas letras Courier tienen todas el mismo ancho. Courier New 12 pt sigue dando unas 240 palabras por página. Times New Roman es mucho más estrecha, así que en una línea caben unas 15 palabras en lugar de 10.",
+      "q4": "¿Qué tan exacto es el número de páginas?",
+      "a4": "Con texto pegado, la herramienta compone tus propias palabras con los anchos reales de las letras de la fuente y las alturas de línea de Word, así que el resultado suele fallar como mucho por unas pocas líneas. Con solo un número de palabras usa un texto medio en inglés; las palabras cortas o largas, los encabezados, las citas y las listas de referencias cambian el resultado.",
+      "q5": "¿Funciona con texto en chino, japonés o coreano?",
+      "a5": "El texto pegado en estos idiomas se compone con cada carácter de un em de ancho, como hacen los procesadores de texto. Los documentos en estos idiomas suelen usar una cuadrícula de documento u otras fuentes, así que toma el resultado como una estimación."
+    }
+  },
+  "guides": {
+    "title-case": {
+      "lead": "Convierte un título en tres pasos.",
+      "s1t": "Pega tus títulos",
+      "s1b": "Escribe o pega un título, o una lista con un título en cada línea.",
+      "s2t": "Elige el estilo",
+      "s2b": "Title case de APA, MLA, Chicago o AP, o tipo oración para las listas de referencias de APA.",
+      "s3t": "Revisa y copia",
+      "s3b": "Pon tú la mayúscula a los nombres en tipo oración y a verbos como \"Set Up\", y luego copia el resultado."
+    },
+    "words-to-pages": {
+      "lead": "Calcula el número de páginas en tres pasos.",
+      "s1t": "Escribe las palabras o pega el texto",
+      "s1b": "Escribe un número de palabras, pega tu ensayo para una composición exacta o introduce páginas para obtener palabras.",
+      "s2t": "Configura la página",
+      "s2b": "Elige la fuente, el tamaño, el interlineado, el papel y los márgenes que pide tu trabajo.",
+      "s3t": "Consulta las páginas",
+      "s3b": "Mira el número de páginas, las palabras por página y una tabla con recuentos de palabras habituales."
+    }
+  },
+  "ui": {
+    "titleCase": {
+      "title": "Convertidor de title case",
+      "privacyNote": "Title case de APA, MLA, Chicago y AP, y tipo oración. Se convierte en tu navegador.",
+      "options": "Título",
+      "result": "Convertido",
+      "input": "Títulos",
+      "placeholder": "Un título por línea",
+      "output": "Títulos convertidos",
+      "style": "Estilo",
+      "s_apa": "Title case APA 7",
+      "s_mla": "Title case MLA 9",
+      "s_chicago": "Title case Chicago 17",
+      "s_ap": "Title case AP",
+      "s_sentence": "Tipo oración (referencias APA)",
+      "rule_apa": "APA: mayúscula en las palabras de cuatro letras o más y en todos los sustantivos, verbos, adjetivos, adverbios y pronombres; minúscula en artículos, conjunciones y preposiciones de hasta tres letras.",
+      "rule_mla": "MLA: minúscula en artículos, todas las preposiciones, conjunciones coordinantes (and, but, for, nor, or, so, yet) y to; mayúscula en la primera y la última palabra.",
+      "rule_chicago": "Chicago: minúscula en artículos, todas las preposiciones, and, but, for, or, nor, to y as; mayúscula en la primera y la última palabra.",
+      "rule_ap": "AP: mayúscula en las palabras de cuatro letras o más; minúscula en artículos, conjunciones y preposiciones de hasta tres letras, salvo como primera o última palabra.",
+      "rule_sentence": "Tipo oración: mayúscula solo en la primera palabra, la primera palabra después de dos puntos, las siglas y los nombres propios.",
+      "inputHint": "Cada línea se convierte por separado. La primera palabra y la primera después de dos puntos siempre llevan mayúscula.",
+      "limits": "No se detectan los nombres escritos en minúscula ni verbos como \"set up\": revísalos antes de copiar.",
+      "copy": "Copiar",
+      "copied": "Copiado",
+      "copyFailed": "No se pudo copiar",
+      "clear": "Borrar"
+    },
+    "wordsPages": {
+      "title": "Convertidor de palabras a páginas",
+      "privacyNote": "Cuántas páginas ocupan tus palabras según la fuente y el interlineado. El texto pegado se queda en tu navegador.",
+      "options": "Texto y página",
+      "result": "Páginas",
+      "mode": "Calcular",
+      "m_words": "Páginas a partir de palabras",
+      "m_text": "Páginas a partir de texto pegado",
+      "m_pages": "Palabras a partir de páginas",
+      "words": "Número de palabras",
+      "pages": "Páginas",
+      "text": "Tu texto",
+      "textPlaceholder": "Pega tu ensayo; cada línea es un párrafo",
+      "font": "Fuente",
+      "size": "Tamaño de fuente",
+      "spacing": "Interlineado",
+      "sp_1": "Sencillo",
+      "sp_1_15": "1,15",
+      "sp_1_5": "1,5 líneas",
+      "sp_2": "Doble",
+      "paper": "Papel",
+      "p_letter": "Carta (8,5 × 11 in)",
+      "p_a4": "A4 (210 × 297 mm)",
+      "margin": "Márgenes",
+      "mg_1": "1 in (2,54 cm)",
+      "mg_0_75": "0,75 in (1,9 cm)",
+      "mg_1_25": "1,25 in (3,18 cm)",
+      "indent": "Sangría en primera línea (0,5 in)",
+      "inputHint": "Los trabajos APA y MLA usan 12 pt, doble espacio, márgenes de 1 pulgada y párrafos con sangría.",
+      "pagesValue": "{n}",
+      "wordsValue": "{n}",
+      "needWords": "Introduce un número de palabras mayor que cero.",
+      "needPages": "Introduce un número de páginas mayor que cero.",
+      "needText": "Pega algún texto para contar sus páginas.",
+      "pagesResult": "Páginas",
+      "wordsResult": "Palabras que llenan estas páginas",
+      "counted": "Palabras en tu texto",
+      "linesUsed": "Líneas",
+      "perPage": "Palabras por página",
+      "linesPerPage": "Líneas por página",
+      "fill": "El texto llega a la página {n}, que queda llena en torno al {pct} %.",
+      "tableTitle": "Páginas en {font} {size} pt",
+      "colWords": "Palabras",
+      "method": "Las páginas se componen con los anchos reales de las letras de cada fuente y las alturas de línea de Word. Un número de palabras sin texto usa un texto medio en inglés; los encabezados, las citas en bloque y las referencias añaden páginas.",
+      "copy": "Copiar resultado",
+      "copied": "Copiado",
+      "copyFailed": "No se pudo copiar"
+    }
+  }
+}
