@@ -137,21 +137,24 @@ export function countLines(text: string, setup: PageSetup): number {
     const parts = tokens(paragraph);
     if (!parts.length) continue;
     lines++;
+    // x is where the next piece would start; the first line begins after the indent.
     let x = setup.indent ? INDENT_PT : 0;
+    let empty = true;
     let gap = 0;
     for (const part of parts) {
       let pw = measure(part.text);
-      if (x > 0 && x + gap + pw > width + 1e-6) {
+      if (!empty && x + gap + pw > width + 1e-6) {
         lines++;
         x = 0;
-        gap = 0;
-      }
-      // A word wider than the whole line is broken where it runs out, as Word does.
-      while (pw > width + 1e-6) {
+      } else if (!empty) x += gap;
+      // A piece wider than what is left of the line is broken where it runs out, as Word does.
+      while (x + pw > width + 1e-6) {
+        pw -= width - x;
         lines++;
-        pw -= width;
+        x = 0;
       }
-      x += gap + pw;
+      x += pw;
+      empty = false;
       gap = part.space ? space : 0;
     }
   }

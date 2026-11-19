@@ -73,6 +73,17 @@ describe("title case", () => {
     expect(titleCase("the role of inc. firms", "sentence")).toBe("The role of inc. firms");
   });
 
+  it("keeps a lone capital that names something, slash compounds, numbers and initialisms", () => {
+    expect(titleCase("vitamin A deficiency in children", "apa")).toBe("Vitamin A Deficiency in Children");
+    expect(titleCase("type B personality and plan C", "sentence")).toBe("Type B personality and plan C");
+    expect(titleCase("Type A Personality", "apa")).toBe("Type a Personality");
+    expect(titleCase("input/output devices and/or sensors", "apa")).toBe("Input/Output Devices and/or Sensors");
+    expect(titleCase("input/output devices", "sentence")).toBe("Input/output devices");
+    expect(titleCase("the 21st century classroom in the 1990s", "apa")).toBe("The 21st Century Classroom in the 1990s");
+    expect(titleCase("a report by the U.N. on climate", "apa")).toBe("A Report by the U.N. on Climate");
+    expect(titleCase("read https://example.com/Page now", "apa")).toBe("Read https://example.com/Page Now");
+  });
+
   it("keeps punctuation around words", () => {
     expect(titleCase("“the art of war” (a new translation)", "chicago")).toBe("“The Art of War” (a New Translation)");
   });

@@ -49,12 +49,13 @@ const LETTER = /\p{L}/u;
 const UPPER = /\p{Lu}/u;
 /** Initialisms written with full stops: U.S, U.K, Ph.D (the last full stop is punctuation, outside the core). */
 const DOTTED = /^(\p{L}{1,2}\.)+\p{L}{1,2}$/u;
-/** Hyphens and en dashes inside a compound (self-esteem, 2010–2020). */
-const HYPHEN = /([-‐–])/;
+/** Hyphens, en dashes and slashes inside a compound (self-esteem, 2010–2020, input/output). */
+const HYPHEN = /([-‐–/])/;
 /** A separator standing on its own between words: a spaced en dash, hyphen or colon ("Learning – a guide"). */
 const LONE_BREAK = /^[-‐–—:]+$/;
 
-const isLink = (core: string) => /[@/]|^www\./i.test(core) || (/\.\w{2,}$/.test(core) && /\w\.\w/.test(core) && !DOTTED.test(core));
+/** URLs and e-mail addresses are kept as typed. */
+const isLink = (core: string) => /:\/\/|@|^www\./i.test(core) || (/\.\w{2,}(\/|$)/.test(core) && /\w\.\w/.test(core) && !DOTTED.test(core));
 
 /** A part kept as written: acronyms (DNA, COVID), mixed case (iPhone, McDonald), initialisms (U.S). */
 function keepPart(part: string): boolean {
@@ -63,10 +64,11 @@ function keepPart(part: string): boolean {
   return letters.length >= 2 && letters.slice(1).some((c) => UPPER.test(c));
 }
 
+/** Capitalizes the first letter, unless the word starts with a digit (21st, 1990s stay as they are). */
 const capFirst = (s: string): string => {
   const chars = [...s];
-  const i = chars.findIndex((c) => LETTER.test(c));
-  if (i >= 0) chars[i] = chars[i]!.toUpperCase();
+  const i = chars.findIndex((c) => /[\p{L}\p{N}]/u.test(c));
+  if (i >= 0 && LETTER.test(chars[i]!)) chars[i] = chars[i]!.toUpperCase();
   return chars.join("");
 };
 
@@ -83,12 +85,13 @@ function startsAfter(prev: Token | undefined, style: TitleStyle): boolean {
   if (!prev) return true;
   // Sentence case (APA references) capitalizes after a colon, not after a dash.
   if (/[:?!]/.test(prev.trail) || (style !== "sentence" && prev.space.includes("—"))) return true;
-  return prev.trail.includes(".") && !ABBREVIATIONS.has(prev.core.toLowerCase()) && !/^\p{L}$/u.test(prev.core);
+  // Not after an abbreviation, an initial or an initialism like U.N. or U.S.A.
+  return prev.trail.includes(".") && !ABBREVIATIONS.has(prev.core.toLowerCase()) && !/^\p{L}$/u.test(prev.core) && !DOTTED.test(prev.core);
 }
 
-/** One word in a title style. Hyphenated compounds: the first part is always capitalized, the others judged on their own. */
-function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start: boolean, end: boolean): string {
-  if (isLink(core)) return core;
+/** One word in a title style. Compounds: a hyphenated one's first part is always capitalized, the other parts judged on their own. */
+function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start: boolean, end: boolean, keep: boolean): string {
+  if (isLink(core) || keep) return core;
   const minor = MINOR[style];
   const parts = core.split(HYPHEN);
   const capLast = end && CAP_LAST.has(style);
@@ -97,8 +100,9 @@ function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start
       if (i % 2 === 1 || !part) return part;
       if (keepPart(part)) return part;
       const lower = part.toLowerCase();
-      if (i === 0) return capFirst(lower);
-      if (style === "chicago" && PREFIXES.has(parts[0]!.toLowerCase())) return lower;
+      // A hyphenated compound's first part is always capitalized; slash pairs (and/or) follow the usual rule.
+      if (i === 0) return parts[1] !== "/" || start || !minor.has(lower) ? capFirst(lower) : lower;
+      if (style === "chicago" && parts[1] !== "/" && PREFIXES.has(parts[0]!.toLowerCase())) return lower;
       return minor.has(lower) && !(capLast && i === parts.length - 1) ? lower : capFirst(lower);
     }).join("");
   }
@@ -109,8 +113,8 @@ function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start
 }
 
 /** One word in sentence case: lowercase except the start, the pronoun I and parts kept as written. */
-function sentenceWord(core: string, start: boolean): string {
-  if (isLink(core)) return core;
+function sentenceWord(core: string, start: boolean, keep: boolean): string {
+  if (isLink(core) || keep) return core;
   // The pronoun I stays capital (I, I'm, I've).
   if (/^i(['’]\p{L}+)?$/iu.test(core)) return capFirst(core.toLowerCase());
   return core.split(HYPHEN).map((part, i) => {
@@ -136,6 +140,21 @@ function convertLine(line: string, style: TitleStyle): string {
   const words = shouting ? tokens.map((t) => (DOTTED.test(t.core) ? t : { ...t, core: t.core.toLowerCase() })) : tokens;
   // A lone dash or colon between words ("Learning – a guide") ends one part and starts the next.
   const loneBreak = (t: Token) => !t.core && LONE_BREAK.test(t.lead + t.trail) && (style !== "sentence" || (t.lead + t.trail).includes(":"));
+  // Index of the next word for every token, found in one pass from the end.
+  const nextWord: number[] = new Array(words.length).fill(-1);
+  for (let i = words.length - 2, next = words[words.length - 1]?.core ? words.length - 1 : -1; i >= 0; i--) {
+    nextWord[i] = next;
+    if (words[i]!.core) next = i;
+  }
+  // A lone capital letter that names something (Vitamin A, Type B, Plan C) is kept. "A" is kept only before a
+  // lowercase word or at the end, since in a title-cased line it is usually the article.
+  const keepSingle = (i: number): boolean => {
+    const core = words[i]!.core;
+    if (shouting || !/^\p{Lu}$/u.test(core) || core === "I" || i === 0) return false;
+    if (core !== "A") return true;
+    const n = nextWord[i]!;
+    return n < 0 || !UPPER.test([...words[n]!.core][0] ?? "");
+  };
   let prev: Token | undefined;
   let pending = false;
   const out = words.map((t, i) => {
@@ -143,13 +162,13 @@ function convertLine(line: string, style: TitleStyle): string {
       if (loneBreak(t)) pending = true;
       return t.lead + t.trail + t.space;
     }
-    const rest = words.slice(i + 1);
-    const nextAt = rest.findIndex((w) => w.core);
-    const end = nextAt < 0 || /[:?!]/.test(t.trail) || t.space.includes("—") || rest.slice(0, nextAt).some(loneBreak);
+    const n = nextWord[i]!;
+    const end = n < 0 || /[:?!]/.test(t.trail) || t.space.includes("—") || words.slice(i + 1, n).some(loneBreak);
     const start = pending || startsAfter(prev, style);
     pending = false;
     prev = t;
-    const core = style === "sentence" ? sentenceWord(t.core, start) : convertWord(t.core, style, start, end);
+    const keep = !start && keepSingle(i);
+    const core = style === "sentence" ? sentenceWord(t.core, start, keep) : convertWord(t.core, style, start, end, keep);
     return t.lead + core + t.trail + t.space;
   });
   return indent + out.join("");

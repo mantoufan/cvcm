@@ -51,6 +51,9 @@ describe("words to pages", () => {
     expect(countLines("x".repeat(400), { ...single, indent: false })).toBeGreaterThan(3);
     // 39 one-em characters per 468 pt line at 12 pt.
     expect(countLines("字".repeat(39), { ...single, indent: false })).toBe(1);
+    // The indent shortens the first line; it never adds a line of its own before a long word.
+    expect(countLines("a".repeat(500), single)).toBe(countLines("a".repeat(500), { ...single, indent: false }));
+    expect(countLines("a".repeat(500) + " b", single)).toBe(countLines("a".repeat(500) + " b", { ...single, indent: false }));
     expect(countLines("字".repeat(40), { ...single, indent: false })).toBe(2);
     expect(countWords("AI模型 test 人工智能")).toBe(1 + 2 + 1 + 4);
     expect(countWords("안녕하세요 세계")).toBe(2);

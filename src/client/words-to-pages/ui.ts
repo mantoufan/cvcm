@@ -62,14 +62,14 @@ export function mountWordsToPages(host: HTMLElement): void {
   function paint(): void {
     const mode = modeSel.value as Mode;
     const s = setup();
-    const perPage = wordsPerPage(s);
+    let perPage = wordsPerPage(s);
     const lines = linesPerPage(s);
     let rows: [string, string, boolean?][] = [];
     note.textContent = "";
     if (mode === "pages") {
       const pages = readNum(pagesEl);
       if (pages === undefined || !(pages > 0)) return empty(t(`${S}.needPages`));
-      rows = [[t(`${S}.wordsResult`), t(`${S}.wordsValue`, { n: nf(0).format(Math.round(wordsForPages(pages, s) / 10) * 10) }), true]];
+      rows = [[t(`${S}.wordsResult`), t(`${S}.wordsValue`, { n: nf(0).format(roundWords(wordsForPages(pages, s))) }), true]];
     } else if (mode === "words") {
       const words = readNum(wordsEl, true);
       if (words === undefined || !(words > 0)) return empty(t(`${S}.needWords`));
@@ -79,6 +79,8 @@ export function mountWordsToPages(host: HTMLElement): void {
     } else {
       if (!textEl.value.trim()) return empty(t(`${S}.needText`));
       const l = layoutText(textEl.value, s);
+      // Your own text: its words per page, not the sample's.
+      perPage = l.wordsPerPage;
       rows = [
         [t(`${S}.pagesResult`), pagesText(l.pages), true],
         [t(`${S}.counted`), nf(0).format(l.words)],
@@ -100,6 +102,9 @@ export function mountWordsToPages(host: HTMLElement): void {
         TABLE_WORDS.map((w) => [nf(0).format(w), nf(1).format(Math.round(pagesForWords(w, single) * 10) / 10), nf(1).format(Math.round(pagesForWords(w, double) * 10) / 10)])),
     );
   }
+
+  /** An estimate to the nearest ten words, or to the word below a hundred (0.1 page is not "0 words"). */
+  const roundWords = (w: number) => (w >= 100 ? Math.round(w / 10) * 10 : Math.max(1, Math.round(w)));
 
   /** "Fills 3 pages, the last one about 80 % full." */
   function fillNote(pages: number): string {

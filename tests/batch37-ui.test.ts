@@ -61,11 +61,17 @@ describe("words to pages ui", () => {
     set("[data-field=mode]", "pages", "change");
     expect(q("[data-field=pages]").closest("label")!.hidden).toBe(false);
     expect(text("[data-out=result]")).toContain("Words that fill these pages1,760");
+    set("[data-field=pages]", "0.01");
+    expect(text("[data-out=result]")).toContain("Words that fill these pages4");
     set("[data-field=mode]", "text", "change");
     expect(text("[data-out=result]")).toContain("Paste some text");
     expect(q<HTMLButtonElement>("[data-action=copy]").disabled).toBe(true);
     set("[data-field=text]", "word ".repeat(100));
     expect(text("[data-out=result]")).toContain("Words in your text100");
+    set("[data-field=text]", "字".repeat(2000));
+    // Your own text sets the words per page: 36 characters on the indented first line, then 39 a line:
+    // 52 lines, 2,000 ÷ 52 × 23 = 885 (the English sample would say 351).
+    expect(text("[data-out=result]")).toContain("Words per page885");
     set("[data-field=mode]", "words", "change");
     set("[data-field=words]", "0");
     expect(text("[data-out=result]")).toContain("above zero");
