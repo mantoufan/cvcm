@@ -210,3 +210,7 @@ Keyword Planner (MCC `7007031245`, `generateKeywordHistoricalMetrics` per langua
 |---|---|---|
 | `billiards` | billiards 1M, billiards game 74k, billiards online 27.1k, 9 ball 27.1k, pool rules 18.1k, 9 ball rules 12.1k, carom billiards 12.1k; ja ビリヤード 165k, ビリヤード ルール 22.2k, ナインボール 5.4k; ko 당구 74k, 포켓볼 6.6k, 3쿠션 590; zh-TW 撞球 60.5k, 撞球規則 1.9k; zh-CN 桌球 40.5k, 台球 33.1k, 中式台球 590; es billar 201k, bola 8 40.5k, juego de billar 18.1k; vi bida 135k, game bida 9.9k, bida 3 băng 1.9k; id billiard 1M, game billiard 74k | 8-ball, 9-ball, 10-ball, Chinese 8-ball, Russian pyramid (5.4k en), three-cushion; "pool game" / "8 ball pool" are left to `pool-game` (#162) |
 | `snooker` | snooker 1.5M (same English word in es/vi/id), snooker game 40.5k, snooker online 27.1k, snooker rules 22.2k; zh 斯诺克 8.1k, 斯诺克规则 880; zh-TW 斯諾克 8.1k; ja スヌーカー 1.9k; ko 스누커 1k | 15 or 6 reds, WPBSA scoring and fouls without the miss rule or free ball |
+
+## 2026-11-19: hubs by kind of play
+
+`/games/<kind>/` for board, card, puzzle, word (with typing), arcade, sports & racing (`GAME_KIND_TOOLS` in path.ts); `/games/3d/` stays as a tag hub; `/games/mini/` 301s to `/games/`, which takes over "free online games" / 免费小游戏. Hub names per locale follow the volumes above: zh-TW 撲克牌遊戲 (6.6k, over 紙牌遊戲 480), ja トランプゲーム (135k), ko 카드게임, vi game bài (18.1k), es juegos de lógica (4.4k, over juegos de puzzle 3.6k), ja/ko/vi/id/es word hubs say "typing" too (タイピングゲーム 201k, 타자 게임 18.1k).

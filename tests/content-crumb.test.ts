@@ -41,12 +41,12 @@ describe("content page breadcrumbs", () => {
 
   it("puts Home / Games / hub / game above a game tool page and in its JSON-LD", async () => {
     const driving = await open("/en/driving-game/");
-    expect(driving.trail).toEqual(["Home", "Games", "3D games", "Driving game"]);
-    expect(driving.links).toEqual(["/en/", "/en/games/", "/en/games/3d/"]);
+    expect(driving.trail).toEqual(["Home", "Games", "Sports & racing", "Driving game"]);
+    expect(driving.links).toEqual(["/en/", "/en/games/", "/en/games/sports/"]);
     expect(driving.ld).toEqual(driving.trail);
     const snake = await open("/en/snake-game/");
-    expect(snake.trail).toEqual(["Home", "Games", "Free online games", "Snake game"]);
-    expect(snake.links).toEqual(["/en/", "/en/games/", "/en/games/mini/"]);
+    expect(snake.trail).toEqual(["Home", "Games", "Arcade games", "Snake game"]);
+    expect(snake.links).toEqual(["/en/", "/en/games/", "/en/games/arcade/"]);
     expect(snake.ld).toEqual(snake.trail);
     expect(document.querySelector('.nav a[data-nav="games"]')?.classList.contains("on")).toBe(true);
     expect(document.querySelector('.nav a[data-nav="tools"]')?.classList.contains("on")).toBe(false);
@@ -75,7 +75,7 @@ describe("content page breadcrumbs", () => {
     const games = await open("/en/games/");
     expect(games.trail).toEqual(["Home", "Games"]);
     expect(games.ld).toEqual(games.trail);
-    const consoleHub = await open(gamesHref("en", "mini"));
+    const consoleHub = await open(gamesHref("en", "card"));
     expect(consoleHub.trail).toHaveLength(3);
     expect(consoleHub.links).toEqual(["/en/", "/en/games/"]);
     expect(consoleHub.ld).toEqual(consoleHub.trail);

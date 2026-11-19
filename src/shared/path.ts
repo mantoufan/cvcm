@@ -1,7 +1,7 @@
 import { isClipId } from "./clip";
 import { DEVICE_SLUG, devicePageFromSlug, type DeviceChildId, type DevicePageId } from "./device";
 import { demoById } from "./demo-roms";
-import { isEmuConsoleId, isGameHubId, legacyGameConsole, type EmuConsoleId, type GameHubId } from "./games";
+import { isEmuConsoleId, isGameHubId, legacyGameConsole, type EmuConsoleId, type GameHubId, type GameKindId } from "./games";
 import { isMarketId, type MarketId } from "./markets";
 import { isQuizId, type QuizId } from "./quiz";
 import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
@@ -309,20 +309,37 @@ export const TOOLS = [
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
-/** Browser games (tool pages) listed on the /games/ hub too, apart from the emulator catalogue. */
-export const BROWSER_GAMES = ["solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "sudoku", "tic-tac-toe", "chinese-checkers", "hangman", "word-search", "typing-game"] as const satisfies readonly ToolId[];
+/**
+ * cv.cm's own games by kind of play, one hub each (`/games/<kind>/`). Every game tool is in exactly one kind
+ * (tests/games-hubs.test.ts); a new game goes in the kind players would search it under.
+ */
+export const GAME_KIND_TOOLS: Readonly<Record<GameKindId, readonly ToolId[]>> = {
+  board: ["chess", "3d-chess", "chinese-chess", "checkers", "reversi", "gomoku", "chinese-checkers", "tic-tac-toe"],
+  card: ["solitaire", "spider-solitaire", "freecell"],
+  puzzle: ["sudoku", "2048", "minesweeper", "mahjong", "nonogram", "memory-game", "magic-cube", "cube-solver"],
+  word: ["word-search", "hangman", "typing-game", "typing-practice"],
+  arcade: ["snake-game", "dinosaur-game", "stack-game"],
+  sports: ["driving-game", "flight-simulator", "pinball", "pool-game", "billiards", "snooker", "air-hockey", "darts"],
+};
 
-/** The 3D games (tool pages) listed on the /games/3d/ hub. */
+/** The 3D games (tool pages), also listed on the /games/3d/ tag hub. */
 export const GAMES_3D: readonly ToolId[] = CATEGORIES.find((c) => c.id === "games3d")!.tools;
 
+/** The games a hub lists: a kind's games, or every 3D game. */
+export function hubGames(hub: GameHubId): readonly ToolId[] {
+  return hub === "3d" ? GAMES_3D : GAME_KIND_TOOLS[hub];
+}
+
+const KIND_OF = new Map<ToolId, GameKindId>(
+  (Object.entries(GAME_KIND_TOOLS) as [GameKindId, readonly ToolId[]][]).flatMap(([kind, tools]) => tools.map((tool) => [tool, kind] as const)),
+);
+
 /**
- * The games hub a game tool page belongs to (`/games/mini/` or `/games/3d/`), or null for every other tool. Those
- * pages show Home / Games / hub / game instead of Home / Tools / tool, with matching BreadcrumbList JSON-LD.
+ * The games hub a game tool page belongs to (its kind, `/games/<kind>/`), or null for every other tool. Those pages
+ * show Home / Games / kind / game instead of Home / Tools / tool, with matching BreadcrumbList JSON-LD.
  */
-export function gameHubOf(tool: ToolId): GameHubId | null {
-  if ((GAMES_3D as readonly string[]).includes(tool)) return "3d";
-  if ((BROWSER_GAMES as readonly string[]).includes(tool)) return "mini";
-  return null;
+export function gameHubOf(tool: ToolId): GameKindId | null {
+  return KIND_OF.get(tool) ?? null;
 }
 
 /** Exact-match converter URLs. Same engine as `/convert/`, unique title and FAQ. */
@@ -627,7 +644,7 @@ export function isLegalPageId(value: string): value is LegalPageId {
   return (LEGAL_PAGES as readonly string[]).includes(value);
 }
 
-/** A games hub: null for /games/, or /games/mini/, /games/3d/. */
+/** A games hub: null for /games/, a kind (/games/board/ …) or the /games/3d/ tag hub. */
 export type GamesPath = { hub: GameHubId | null };
 
 /** The emulator tool that replaced a retired catalogue page (see LEGACY_GAMES in games.ts). */
@@ -734,6 +751,8 @@ function parseGamesTail(hubOrGame?: string, gamePart?: string, extra?: string[])
   if (extra && extra.length > 0) return "unknown";
   if (!hubOrGame) return { hub: null };
   if (isGameHubId(hubOrGame)) return gamePart ? "unknown" : { hub: hubOrGame };
+  // The old all-games hub: the Worker 301s it to /games/ (its canonical).
+  if (hubOrGame === "mini" && !gamePart) return { hub: null };
   // Retired catalogue: a system hub, a game under its own system, or the short /games/<id>/ form.
   if (isEmuConsoleId(hubOrGame)) {
     if (!gamePart) return retired(hubOrGame, null);

@@ -40,7 +40,7 @@ function isHub(page: SitemapPage): boolean {
     case "currency":
       return page.pair === null;
     case "games":
-      // The main hub and the hubs of cv.cm's own games (/games/mini/, /games/3d/).
+      // The main hub, the kind hubs and the 3D tag hub of cv.cm's own games.
       return true;
     default:
       return false;
