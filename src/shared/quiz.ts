@@ -942,8 +942,8 @@ const PERSONAL_COLOR: ChoiceItem[] = [
 
 /**
  * A layout with every question's options moved `by` places to the left. The balance holds (each result as often in each
- * position, just in other positions), so quizzes in the same group that share a layout don't map answer positions to
- * results the same way.
+ * position, just in other positions), so a new quiz on a shared layout needn't map answer positions to results the way
+ * the quizzes next to it do. The copy's answer order follows the shifted layout; tests pin each shift.
  */
 function shift(items: readonly ChoiceItem[], by: number): ChoiceItem[] {
   return items.map(({ options }) => ({ options: options.map((_, i) => options[(i + by) % options.length]) }));
@@ -1011,25 +1011,8 @@ const BIRD = shift(relabel(GHIBLI, { chihiro: "owl", san: "eagle", kiki: "parrot
 /** Eight dinosaurs: the `GHIBLI` layout with the results renamed, options moved 3 places left. */
 const DINOSAUR = shift(relabel(GHIBLI, { chihiro: "trex", san: "triceratops", kiki: "velociraptor", sophie: "stegosaurus", nausicaa: "brachiosaurus", howl: "ankylosaurus", haku: "spinosaurus", totoro: "parasaurolophus" }), 3);
 
-/**
- * Signs of being in love, 0 to 3 points an answer: the `CRUSH` weights with every question's options moved one place to
- * the left, so each weight still sits three times in each position, but the strongest answer never sits where it does
- * in the crush quiz in the same group. Written out, not derived: the copy's answer order is tied to these weights.
- */
-const IN_LOVE: ChoiceItem[] = [
-  { options: [{ love: 1 }, { love: 2 }, { love: 3 }, { love: 0 }] },
-  { options: [{ love: 0 }, { love: 3 }, { love: 1 }, { love: 2 }] },
-  { options: [{ love: 1 }, { love: 2 }, { love: 0 }, { love: 3 }] },
-  { options: [{ love: 3 }, { love: 2 }, { love: 1 }, { love: 0 }] },
-  { options: [{ love: 2 }, { love: 3 }, { love: 0 }, { love: 1 }] },
-  { options: [{ love: 2 }, { love: 1 }, { love: 3 }, { love: 0 }] },
-  { options: [{ love: 0 }, { love: 1 }, { love: 2 }, { love: 3 }] },
-  { options: [{ love: 3 }, { love: 0 }, { love: 1 }, { love: 2 }] },
-  { options: [{ love: 0 }, { love: 3 }, { love: 2 }, { love: 1 }] },
-  { options: [{ love: 1 }, { love: 0 }, { love: 3 }, { love: 2 }] },
-  { options: [{ love: 2 }, { love: 1 }, { love: 0 }, { love: 3 }] },
-  { options: [{ love: 3 }, { love: 0 }, { love: 2 }, { love: 1 }] },
-];
+/** Signs of being in love, 0 to 3 points an answer: the `CRUSH` weights with options moved 1 place left, so the strongest answer never sits where the crush quiz puts it. */
+const IN_LOVE = shift(relabel(CRUSH, { signs: "love" }), 1);
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },

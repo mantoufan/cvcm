@@ -623,6 +623,19 @@ describe("test pages: scoring", () => {
     }
   });
 
+  it("pins the shifted layouts the copy's answer order is written for", () => {
+    const first = (id: QuizId) => {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      return def.items[0].options.map((o) => Object.keys(o)[0]);
+    };
+    expect(first("flower")).toEqual(["rose", "sunflower", "lily", "lavender"]);
+    expect(first("my-hero-academia-character")).toEqual(["bakugo", "todoroki", "uraraka", "deku"]);
+    expect(first("fruit")).toEqual(["banana", "apple", "mango", "strawberry"]);
+    expect(first("bird")).toEqual(["parrot", "swan", "owl", "eagle"]);
+    expect(first("dinosaur")).toEqual(["stegosaurus", "trex", "triceratops", "velociraptor"]);
+  });
+
   it("never puts the strongest in-love answer where the crush quiz puts its strongest answer", () => {
     const crush = QUIZ_DEFS.crush;
     const love = QUIZ_DEFS["am-i-in-love"];
