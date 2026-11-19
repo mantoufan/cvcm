@@ -2,7 +2,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { formatClock } from "../src/shared/game-clock";
-import { GAME_CONSOLES, isToolGameHub } from "../src/shared/games";
+import { GAME_HUBS, isGameHubId } from "../src/shared/games";
 import { LOCALES } from "../src/shared/locale";
 import { CATEGORIES, GAMES_3D } from "../src/shared/path";
 
@@ -14,9 +14,9 @@ describe("3D games hub", () => {
   });
 
   it("is a tool hub next to the free online games hub", () => {
-    expect(GAME_CONSOLES.slice(0, 2)).toEqual(["mini", "3d"]);
-    expect(isToolGameHub("3d")).toBe(true);
-    expect(isToolGameHub("fc")).toBe(false);
+    expect([...GAME_HUBS]).toEqual(["mini", "3d"]);
+    expect(isGameHubId("3d")).toBe(true);
+    expect(isGameHubId("fc")).toBe(false);
   });
 
   it("has hub, nav and shell copy in every locale", () => {
@@ -24,7 +24,7 @@ describe("3D games hub", () => {
       const p = pack(loc);
       expect(p.nav.games3d, loc).toBeTruthy();
       expect(p.games.consoles["3d"], loc).toBeTruthy();
-      expect(p.games.g3d.all, loc).toContain("{n}");
+      expect(p.games.g3d.title, loc).toBeTruthy();
       expect(p.meta.titleGames3d, loc).toBeTruthy();
       expect(p.faq.games3d.q4, loc).toBeTruthy();
       for (const key of ["play", "loading", "noWebgl", "retry", "lost", "restart", "fullscreen", "exitFullscreen", "pad", "credit"]) {

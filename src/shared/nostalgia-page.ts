@@ -7,7 +7,7 @@ import { escapeHtml } from "./device-i18n";
 import { fill } from "./fill";
 import { blockHtml, dateLabel, inline, linkListHtml } from "./article-html";
 import { messages, nostalgiaMessages } from "./messages";
-import { appHref, gamesHref, nostalgiaHref } from "./path";
+import { appHref, nostalgiaHref } from "./path";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_GROUPS, NOSTALGIA_LINKS, nostalgiaGroupOf, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
 import { HREFLANG } from "./sitemap";
 import { nostalgiaImage, nostalgiaImagePath } from "./nostalgia-images";
@@ -91,15 +91,13 @@ function sourcesHtml(locale: Locale, id: NostalgiaId): string {
   return `<section class="learn-related"><h2>${escapeHtml(nostalgiaUi(locale).sources)}</h2><ul>${items}</ul></section>`;
 }
 
-/** Tools and game consoles on cv.cm that go with an entry (play Famicom games in the page, record yourself like a repeater). */
+/** Tools on cv.cm that go with an entry (play Famicom games in the ROM emulator, record yourself like a repeater). */
 function playHtml(locale: Locale, id: NostalgiaId): string {
   const links = NOSTALGIA_LINKS[id];
   if (!links) return "";
   const ui = messages(locale).ui;
-  const consoles = ui.games.consoles as Record<string, string>;
   const tools = ui.tools as unknown as Record<string, { name: string; blurb: string }>;
   const items = [
-    ...(links.consoles ?? []).map((c) => ({ href: gamesHref(locale, c, null), name: consoles[c], blurb: nostalgiaUi(locale).playConsole, nav: `games-${c}` })),
     ...(links.tools ?? []).map((tool) => ({ href: appHref(locale, tool), name: tools[tool].name, blurb: tools[tool].blurb, nav: tool })),
   ];
   return `<section class="learn-related"><h2>${escapeHtml(nostalgiaUi(locale).play)}</h2>${linkListHtml(items)}</section>`;

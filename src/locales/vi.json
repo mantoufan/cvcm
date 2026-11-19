@@ -180,20 +180,8 @@
     "descCompound": "Ước giá trị tương lai trong trình duyệt. Gốc, lãi, năm, lần ghép. Không tải lên.",
     "titleVat": "Tính VAT — thuế bán hàng — cv.cm",
     "descVat": "Cộng VAT hoặc tách giá gồm thuế trong trình duyệt. Không tải lên.",
-    "titleGames": "Chơi NES, SNES, GB, GBA và Flash trên trình duyệt — mã và hướng dẫn — cv.cm",
-    "descGames": "Game retro trong tab này. Mã, hướng dẫn và EmulatorJS. Flash mở SWF bằng Ruffle. Game tự làm chạy ngay. ROM thương mại do bạn chọn. Không tải lên.",
-    "titleGamesFc": "Game FC / NES — mã cheat và hướng dẫn — cv.cm",
-    "descGamesFc": "Chơi game NES trên trình duyệt. Contra, Super Mario Bros, Battle City. Mã cheat và hướng dẫn ngắn. Dùng ROM của bạn.",
-    "titleGamesSfc": "Game SFC / SNES — mã cheat và hướng dẫn — cv.cm",
-    "descGamesSfc": "Chơi game SNES trên trình duyệt. Super Mario World, Zelda, Street Fighter II. Mã cheat và hướng dẫn.",
-    "titleGamesGb": "Game Game Boy — mã cheat và hướng dẫn — cv.cm",
-    "descGamesGb": "Chơi game Game Boy trên trình duyệt. Pokémon Red, Tetris, Kirby. Mã cheat và hướng dẫn.",
-    "titleGamesGbc": "Game Game Boy Color — mã cheat và hướng dẫn — cv.cm",
-    "descGamesGbc": "Chơi game GBC trên trình duyệt. Mã cheat Pokémon Gold và hướng dẫn vùng Johto.",
-    "titleGamesGba": "Game GBA — mã cheat và hướng dẫn — cv.cm",
-    "descGamesGba": "Chơi game GBA trên trình duyệt. Pokémon Emerald, Mario Kart, Minish Cap. Mã cheat và hướng dẫn.",
-    "titleGamesMd": "Game Mega Drive / Genesis — mã cheat và hướng dẫn — cv.cm",
-    "descGamesMd": "Chơi Sonic và Streets of Rage 2 trên trình duyệt. Mã cheat và hướng dẫn. Dùng ROM của bạn.",
+    "titleGames": "Game miễn phí trên trình duyệt: xếp bài, cờ vua, mạt chược, game 3D — cv.cm",
+    "descGames": "Game miễn phí chơi ngay trong tab: xếp bài, xếp bài nhện, FreeCell, cờ vua, cờ tướng, mạt chược, sudoku, 2048, game chữ và game 3D. Không cần tải về. Kèm trình giả lập ROM và trình phát Flash có sẵn game mã nguồn mở.",
     "titleReverse": "Đảo chữ — palindrome — cv.cm",
     "descReverse": "Đảo chuỗi và kiểm tra palindrome trong trình duyệt. Không tải lên.",
     "titleUrlEncode": "URL encode — mã hóa phần trăm — cv.cm",
@@ -322,8 +310,6 @@
     "descOil": "Đổi thùng dầu, gallon Mỹ và lít trong trình duyệt. Một thùng là 42 gallon Mỹ. Không tải lên.",
     "titleStocks": "Vốn hóa và P/E — cv.cm",
     "descStocks": "Tính vốn hóa từ giá và số cổ phần lưu hành, P/E từ lợi nhuận năm mỗi cổ phần, suất cổ tức từ cổ tức năm. Không có giá thị trường.",
-    "titleGamesFlash": "Chơi game Flash trên trình duyệt — trình phát SWF — cv.cm",
-    "descGamesFlash": "Mở SWF trong trình duyệt bằng Ruffle. Không cần plugin Flash. Nếu chưa có file, hãy tự tải lên. File chỉ ở trong tab này.",
     "titlePercentOff": "Cách tính giảm giá | cv.cm",
     "descPercentOff": "Giảm 20% trên 100 là giá 80,00 và tiết kiệm 20,00. Không phải biên 20%. Giảm 120% có thể dưới 0. Phần trăm âm làm giá tăng. Không tải lên.",
     "titleEncodeUrl": "Cách mã hóa URL | cv.cm",
@@ -4540,16 +4526,16 @@
       "a5": "Không có. Chỉ là số có hai chữ số thập phân."
     },
     "games": {
-      "q1": "Chơi game NES trên trình duyệt được không?",
-      "a1": "Có. Từ NES đến Mega Drive dùng EmulatorJS trên GitHub. Lõi nằm trên S3. Flash mở SWF bằng Ruffle. Điện thoại có phím ảo.",
-      "q2": "Có lưu ROM Super Mario hay Contra không?",
-      "a2": "Không có bản dump thương mại. Các trang đó có mã cheat và hướng dẫn; bạn dùng ROM của mình. Game miễn phí của Shiru (Alter Ego, Lawn Mower) chạy ngay không cần tệp.",
-      "q3": "Mã cheat dùng thế nào?",
-      "a3": "Mỗi trang game liệt kê mã kiểu Game Genie / Gameshark. Sau khi ROM khởi động, dán vào menu cheat của trình giả lập. Mã phụ thuộc phiên bản dump.",
-      "q4": "ROM có bị tải lên không?",
-      "a4": "Không. Tệp trên máy được đọc trong tab này rồi đưa cho trình giả lập. Game tự làm được phép phân phối lại thì tải từ bucket S3 của chúng tôi.",
-      "q5": "Máy nào chơi được trên điện thoại?",
-      "a5": "NES, GB, GBC và phần lớn GBA / Mega Drive. SNES nặng hơn. Flash mở SWF của bạn, chạm được tính là chuột. Đối kháng và đua xe nên xoay ngang và dùng tay cầm."
+      "q1": "Các game này có miễn phí không?",
+      "a1": "Có. Mọi game đều miễn phí, không cần tài khoản và không cần tải về.",
+      "q2": "Chơi trên điện thoại được không?",
+      "a2": "Được. Mọi game đều hỗ trợ cảm ứng. Game 3D cần trình duyệt hỗ trợ WebGL, điện thoại hiện nay đều có.",
+      "q3": "Tiến trình có được lưu không?",
+      "a3": "Ván đang chơi và điểm cao nhất được giữ trong trình duyệt này, không tải lên. Xóa dữ liệu trang web này sẽ xóa chúng.",
+      "q4": "Có chơi được game NES hay Game Boy không?",
+      "a4": "Được, trong trình giả lập ROM: mở ROM bạn có quyền sử dụng, hoặc chạy một game mã nguồn mở có sẵn. cv.cm không lưu ROM thương mại.",
+      "q5": "Có chơi được game Flash không?",
+      "a5": "Trình phát Flash mở tệp .swf bằng Ruffle, không cần plugin, và có vài game Flash mã nguồn mở để chơi thử."
     },
     "reverse": {
       "q1": "Đảo chữ ở đây được không?",
@@ -4998,18 +4984,6 @@
       "a4": "Để trống vì mẫu số bằng 0.",
       "q5": "Trang có giá cổ phiếu không?",
       "a5": "Không. Bạn nhập giá. Đây là phép tính, không phải khuyến nghị."
-    },
-    "gamesFlash": {
-      "q1": "Còn chơi Flash trên trình duyệt được không?",
-      "a1": "Được. Trang này chạy SWF bằng Ruffle, trình giả lập Flash mã nguồn mở. Không cần cài Adobe Flash Player.",
-      "q2": "Không có file game thì sao?",
-      "a2": "Màn hình nhắc bạn tự tải lên. Chọn một SWF. File chỉ ở trong tab này và không được gửi lên máy chủ.",
-      "q3": "Vì sao có SWF không chạy?",
-      "a3": "Nhiều game có hơn một file, hoặc chỉ chạy trên trang gốc. Trang này dành cho một SWF chạy độc lập. Một số game ActionScript 3 vẫn chưa đủ.",
-      "q4": "Điện thoại chơi Flash được không?",
-      "a4": "Mở được. Chạm được tính là chuột. Game cần rê chuột hoặc bàn phím thì dễ hơn trên máy tính.",
-      "q5": "Tải game Flash kinh điển ở đây được không?",
-      "a5": "Không. Hãy dùng SWF bạn đang có. cv.cm chỉ lưu SWF khi giấy phép cho phép phân phối lại."
     },
     "mosaic": {
       "q1": "Làm mờ có tải ảnh lên không?",
@@ -5619,7 +5593,7 @@
       "q3": "Vì sao trang yêu cầu chọn hệ máy?",
       "a3": "Tệp SNES không có phần đầu cố định, còn .bin hay .bin trong tệp zip có thể thuộc hệ máy bất kỳ. Nếu tệp không cho biết hệ máy, hãy chọn ở mục Hệ máy và game sẽ bắt đầu.",
       "q4": "cv.cm có cung cấp ROM không?",
-      "a4": "Không cung cấp ROM thương mại. Hãy mở tệp bạn có quyền sử dụng. Chuyên mục Trò chơi có game tự chế miễn phí, chơi được mà không cần tệp.",
+      "a4": "Không cung cấp ROM thương mại. Hãy mở tệp bạn có quyền sử dụng, hoặc chạy một game mã nguồn mở trên trang này; không cần tệp.",
       "q5": "Điều khiển và lưu game thế nào?",
       "a5": "Khi game bắt đầu, các phím hiện ở bên dưới. Trên điện thoại, dùng tay cầm ảo trên màn hình hoặc tay cầm Bluetooth. Lưu và tải trạng thái nằm trên thanh công cụ của trình giả lập."
     },
@@ -9071,7 +9045,7 @@
       "result": "Game chạy trong một tab trình duyệt, các phím hiện ngay trước mắt và tệp lưu nằm trên thiết bị của bạn.",
       "note": "Hãy dùng ROM bạn có quyền sử dụng, chẳng hạn game tự chế do tác giả phát hành. cv.cm không cung cấp ROM thương mại.",
       "s1t": "Tìm ROM bạn được dùng",
-      "s1b": "ROM là bản sao của băng game trong một tệp. Công cụ này mở game FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance và Mega Drive / Genesis. Nếu chưa có tệp, chuyên mục Trò chơi của cv.cm có game tự chế miễn phí.",
+      "s1b": "ROM là bản sao của băng game trong một tệp. Công cụ này mở game FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance và Mega Drive / Genesis. Nếu chưa có tệp, công cụ có game mã nguồn mở chạy chỉ với một cú nhấp.",
       "s2t": "Mở trình giả lập game trên cv.cm",
       "s2b": "Nhấn Chọn ROM và chọn tệp .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin hoặc .zip. Tệp được đọc trong tab này và không gửi đi đâu. Lần đầu còn phải tải trình giả lập, nên hãy chờ một chút.",
       "s3t": "Kiểm tra hệ máy",
@@ -9103,7 +9077,7 @@
       "s5t": "Biết vì sao file dừng khi tải",
       "s5b": "Trang này chỉ chạy file có thể tự khởi động và chặn truy cập mạng. Game cần tải thêm SWF hoặc XML, hoặc chỉ chạy trên trang web cũ, sẽ dừng ở màn hình tải.",
       "s6t": "Thử cách khác nếu không chạy",
-      "s6b": "Ruffle chạy được phần lớn file ActionScript 1 và 2 cũ, nhưng chưa hỗ trợ đầy đủ ActionScript 3 nên một số game mới hơn có thể không khởi động hoặc chạy sai. Nhấn Chọn SWF để mở file khác, hoặc chơi các game miễn phí ở mục game Flash.",
+      "s6b": "Ruffle chạy được phần lớn file ActionScript 1 và 2 cũ, nhưng chưa hỗ trợ đầy đủ ActionScript 3 nên một số game mới hơn có thể không khởi động hoặc chạy sai. Nhấn Chọn SWF để mở file khác, hoặc chạy một game Flash mã nguồn mở trên trang trình phát.",
       "diagram1": "Cách dùng chuột, cảm ứng và bàn phím trong file Flash.",
       "diagram2": "SWF tự khởi động thì chạy được. File cần tệp khác hoặc trang web cũ sẽ dừng."
     },
@@ -10791,30 +10765,12 @@
   "games": {
     "play": "Chơi",
     "loadRom": "Chọn ROM",
-    "loadRomHint": "Tệp ở lại trong tab này. Nếu có ROM lưu trên S3, game tự chạy.",
-    "hostedNote": "Đã nạp ROM từ S3. Bạn vẫn có thể chọn tệp trên máy.",
-    "rememberRom": "Nhớ trong trình duyệt này",
-    "forgetRom": "Quên ROM này",
-    "rememberedRom": "Chỉ lưu trong trình duyệt này. Lần sau tự mở cho đến khi bạn xóa dữ liệu trang web, và không bao giờ được tải lên.",
-    "savedRomLoaded": "Đã mở ROM bạn lưu trong trình duyệt này. Không được tải lên.",
-    "forgotRom": "Đã xóa khỏi trình duyệt này.",
-    "rememberFailed": "Trình duyệt này không lưu được (chế độ riêng tư hoặc hết dung lượng). Vẫn chơi được trong tab này.",
-    "byoNote": "Chọn ROM để chơi. Nếu có tệp lưu trên S3, game tự chạy.",
-    "cheats": "Cheat",
-    "guide": "Hướng dẫn",
-    "related": "Game khác",
-    "year": "{n}",
     "emulator": "EmulatorJS (mã nguồn mở, GitHub)",
     "mobile": "Điện thoại có pad cảm ứng. Game đối kháng và đua xe nên dùng tay cầm Bluetooth.",
-    "legal": "Lõi trình giả lập nằm trên S3. Game chạy từ ROM lưu trên S3 nếu có tệp đó, hoặc từ tệp trên máy bạn chọn. Tệp trên máy không được tải lên.",
     "filterAll": "Tất cả",
-    "empty": "Không có game nào trong bộ lọc này.",
     "hub": {
-      "kicker": "Retro · Trình duyệt · Điện thoại",
-      "title": "Chơi FC, SFC, GB, GBA và Flash trên trình duyệt",
-      "lead": "Mã, hướng dẫn và trình giả lập mã nguồn mở. Game tự làm chạy ngay. Game thương mại dùng ROM của bạn. Flash mở SWF bằng Ruffle. Không tải lên.",
-      "menu": "Tất cả game",
-      "blurb": "Game giả lập retro kèm mã cheat và hướng dẫn.",
+      "title": "Game miễn phí chơi ngay trên trình duyệt",
+      "lead": "Game bài, game cờ, giải đố, game chữ và game 3D do cv.cm làm. Không cần cài đặt, ván đang chơi được giữ trong trình duyệt này. Với game cổ điển, trình giả lập ROM và trình phát Flash có game mã nguồn mở để chơi thử.",
       "all": "Xem tất cả"
     },
     "consoles": {
@@ -10827,15 +10783,6 @@
       "gba": "Game Boy Advance",
       "md": "Mega Drive",
       "flash": "Flash"
-    },
-    "genres": {
-      "platform": "Đi cảnh",
-      "action": "Hành động",
-      "shooting": "Bắn súng",
-      "rpg": "RPG",
-      "puzzle": "Giải đố",
-      "fighting": "Đối kháng",
-      "racing": "Đua xe"
     },
     "controls": {
       "title": "Phím",
@@ -10857,51 +10804,29 @@
     "needFile": "Chưa có ROM",
     "needFileBody": "Hãy tự tải lên. File chỉ ở trong tab này và không được gửi lên máy chủ.",
     "flash": {
-      "kicker": "Flash · SWF · Trình duyệt",
-      "title": "Chơi game Flash trên trình duyệt",
-      "lead": "Mở SWF trong tab này bằng Ruffle. Không cần plugin Flash. Khi chưa có file, hãy chọn SWF của bạn. File không rời khỏi tab.",
-      "catalog": "Game Flash được phép phân phối lại sẽ hiện ở đây. Bây giờ hãy chọn SWF bạn đang có.",
       "load": "Chọn SWF",
       "needFile": "Chưa có SWF",
       "needFileBody": "Hãy tự tải lên. File chỉ ở trong tab này và không được gửi lên máy chủ.",
-      "guide": "Cách mở SWF trên trình duyệt",
       "emulator": "Ruffle (mã nguồn mở, GitHub)",
-      "mobile": "Chạm được tính là nhấp chuột. Game cần bàn phím thì dễ hơn trên máy tính.",
-      "s1t": "Chọn SWF",
-      "s1b": "Bấm Chọn SWF và chọn một file .swf. Nếu màn hình trống, trang sẽ nhắc bạn tự tải lên. File chỉ ở trong tab này.",
-      "s2t": "Một file",
-      "s2b": "Trang này chạy SWF tự khởi động được. Game cần thêm SWF, XML hoặc trang gốc sẽ dừng ở bước tải.",
-      "s3t": "Chuột",
-      "s3b": "Phần lớn game Flash dùng nút trái. Chạm trên điện thoại là một cú nhấp. Phím mũi tên dùng khi game cần bàn phím.",
-      "s4t": "Âm thanh",
-      "s4b": "Trình duyệt chặn tiếng tự phát. Nhấp một lần vào hình thì tiếng mới ra.",
-      "s5t": "File của bạn",
-      "s5b": "Game Flash thương mại không được lưu ở đây. Hãy dùng SWF bạn đang có. Chỉ tác phẩm được phép phân phối lại mới vào danh sách."
-    },
-    "official": {
-      "title": "Chơi bản chính thức",
-      "sub": "Gói thuê bao",
-      "buy": "Mua",
-      "none": "Hiện chúng tôi không tìm thấy cửa hàng chính thức nào bán hoặc cung cấp game này. Các cửa hàng đã đóng như 3DS eShop không được liệt kê.",
-      "note": "Trang cửa hàng chính thức tại Mỹ, kiểm tra ngày {date}. Tình trạng phát hành và giá khác nhau theo khu vực và có thể thay đổi. cv.cm không liên kết với các nhà phát hành hay cửa hàng này và không nhận tiền từ các liên kết.",
-      "edition": {
-        "arcade": "Bản arcade",
-        "gba": "Bản Game Boy Advance",
-        "genesis": "Bản Mega Drive",
-        "pc": "Bản PC",
-        "remake": "Bản làm lại hiện đại",
-        "rerelease": "Phát hành lại, phiên bản có thể khác"
-      }
+      "mobile": "Chạm được tính là nhấp chuột. Game cần bàn phím thì dễ hơn trên máy tính."
     },
     "mini": {
       "title": "Game mini miễn phí",
-      "lead": "Những trò chơi kinh điển chơi ngay trên trình duyệt: xếp bài, dò mìn, cờ vua, mạt chược, 2048, trò chơi chữ và nhiều hơn nữa. Miễn phí, không cần tải về, điểm số và ván đang chơi được lưu trong trình duyệt này.",
-      "all": "Xem tất cả {n} game mini miễn phí"
+      "lead": "Những trò chơi kinh điển chơi ngay trên trình duyệt: xếp bài, dò mìn, cờ vua, mạt chược, 2048, trò chơi chữ và nhiều hơn nữa. Miễn phí, không cần tải về, điểm số và ván đang chơi được lưu trong trình duyệt này."
     },
     "g3d": {
       "title": "Game 3D miễn phí",
-      "lead": "Game 3D chơi ngay trên trình duyệt: cờ vua trên bàn cờ 3D, pinball, bida 8 bóng, khúc côn cầu bàn, phi tiêu, khối rubik và công cụ giải, game xếp chồng, lái xe và drift, mô phỏng máy bay. Miễn phí, không cần cài; phần 3D chỉ tải khi bạn bấm Chơi.",
-      "all": "Tất cả {n} game 3D miễn phí"
+      "lead": "Game 3D chơi ngay trên trình duyệt: cờ vua trên bàn cờ 3D, pinball, bida 8 bóng, khúc côn cầu bàn, phi tiêu, khối rubik và công cụ giải, game xếp chồng, lái xe và drift, mô phỏng máy bay. Miễn phí, không cần cài; phần 3D chỉ tải khi bạn bấm Chơi."
+    },
+    "emu": {
+      "title": "Trình giả lập game cổ điển",
+      "lead": "Chơi ROM NES, SNES, Game Boy, GBA, Mega Drive hoặc tệp SWF Flash ngay trên trình duyệt. Mỗi trình phát có vài game mã nguồn mở chạy được mà không cần tệp."
+    },
+    "demos": {
+      "title": "Chơi thử game mã nguồn mở",
+      "lead": "Tác giả phát hành các game này theo giấy phép mở, nên chúng chạy ngay tại đây mà không cần tệp.",
+      "source": "Mã nguồn",
+      "playing": "Đang chạy {title}."
     }
   },
   "reverse": {
@@ -12799,6 +12724,91 @@
         "wedding": "Chụp ảnh cưới một mình, dáng chụp cho cô dâu và chụp ảnh cưới cho cặp đôi",
         "scenes": "Chụp ảnh bằng điện thoại, chụp đêm, chụp trăng, chụp đồ ăn và sản phẩm"
       }
+    },
+    "how-to-massage": {
+      "name": "Cách massage",
+      "blurb": "Năm động tác cơ bản, ba mức lực ấn và bài massage 20 phút cho người mới"
+    },
+    "when-not-to-massage": {
+      "name": "Khi nào không nên massage",
+      "blurb": "Tình trạng nào cần tránh, chỉ massage nhẹ hoặc hỏi bác sĩ trước, cùng các dấu hiệu cảnh báo"
+    },
+    "acupressure-points": {
+      "name": "Bấm huyệt",
+      "blurb": "Vị trí 11 huyệt tự chăm sóc, cách tìm bằng bề ngang ngón tay và cách ấn"
+    },
+    "pressure-points-for-headache": {
+      "name": "Bấm huyệt giảm đau đầu",
+      "blurb": "Sáu huyệt cho đau đầu căng thẳng, bài 5 phút và dấu hiệu cảnh báo cần đi khám bác sĩ"
+    },
+    "pressure-points-for-eye-strain": {
+      "name": "Bấm huyệt giảm mỏi mắt",
+      "blurb": "Các huyệt quanh mắt, áp lòng bàn tay, bài nghỉ 3 phút và khi nào nên đi khám mắt"
+    },
+    "foot-reflexology-chart": {
+      "name": "Sơ đồ huyệt bàn chân",
+      "blurb": "Ý nghĩa từng vùng trên bản đồ phản xạ bàn chân, nguồn gốc và nghiên cứu cho thấy gì"
+    },
+    "foot-massage": {
+      "name": "Massage chân tại nhà",
+      "blurb": "Ngâm chân nước ấm an toàn, sáu kỹ thuật massage chân và bài 10 phút cho đôi chân mỏi"
+    },
+    "hand-massage": {
+      "name": "Massage tay",
+      "blurb": "Bài massage bàn tay và cổ tay 3 phút cho người gõ phím, dùng điện thoại và dấu hiệu ống cổ tay"
+    },
+    "neck-and-shoulder-massage": {
+      "name": "Tự massage cổ vai gáy",
+      "blurb": "Các cơ cổ căng nằm ở đâu, Phong trì và Kiên tỉnh, bài 5 phút tại bàn làm việc và dấu hiệu cảnh báo"
+    },
+    "back-massage": {
+      "name": "Cách massage lưng",
+      "blurb": "Bài massage lưng 15 phút, lực ấn an toàn cạnh cột sống và các dấu hiệu cảnh báo"
+    },
+    "facial-massage": {
+      "name": "Massage mặt tại nhà",
+      "blurb": "Bài massage mặt nhẹ nhàng 5 phút, làm dịu cơ hàm căng và những điều massage mặt không làm được"
+    },
+    "scalp-massage": {
+      "name": "Massage đầu",
+      "blurb": "Bài massage đầu 4 phút và nghiên cứu nhỏ về mọc tóc thực sự thấy gì"
+    },
+    "how-to-use-gua-sha": {
+      "name": "Cách dùng gua sha",
+      "blurb": "Các bước gua sha mặt và cơ thể, góc cầm dụng cụ, lực ấn, vết sha và ai nên tránh"
+    },
+    "how-to-use-a-massage-gun": {
+      "name": "Cách dùng súng massage",
+      "blurb": "Đầu súng, tốc độ, thời gian mỗi nhóm cơ, những chỗ không bao giờ dùng và ai nên hỏi bác sĩ"
+    },
+    "foam-rolling": {
+      "name": "Cách dùng con lăn foam roller",
+      "blurb": "Chọn con lăn, các vùng chính, dừng 20–30 giây, bài 10 phút và những điều cần tránh"
+    },
+    "tennis-ball-massage": {
+      "name": "Massage bằng bóng tennis cho nút thắt cơ",
+      "blurb": "Tư thế áp tường và nằm sàn, giữ 30–90 giây, bài 10 phút và bóng đôi"
+    },
+    "massage": {
+      "label": "Hướng dẫn tự massage",
+      "lead": "Hướng dẫn tự massage và bấm huyệt an toàn: kỹ thuật cơ bản, huyệt giảm đau đầu và mỏi mắt, sơ đồ huyệt bàn chân, massage cổ, lưng, mặt và da đầu, gua sha, súng massage và con lăn foam roller.",
+      "all": "Tất cả hướng dẫn massage",
+      "groups": {
+        "basics": "Cơ bản và an toàn",
+        "points": "Bấm huyệt",
+        "feet-hands": "Bàn chân và bàn tay",
+        "neck-back": "Cổ, vai và lưng",
+        "face-scalp": "Mặt và da đầu",
+        "tools": "Dụng cụ massage"
+      },
+      "blurbs": {
+        "basics": "Kỹ thuật massage, lực ấn và khi nào không nên massage",
+        "points": "Bấm huyệt, huyệt giảm đau đầu và huyệt cho mắt mỏi",
+        "feet-hands": "Sơ đồ huyệt bàn chân, massage chân và massage tay",
+        "neck-back": "Tự massage cổ vai gáy và cách massage lưng",
+        "face-scalp": "Massage mặt, massage đầu và cách dùng gua sha",
+        "tools": "Súng massage, con lăn foam roller và massage bằng bóng tennis"
+      }
     }
   },
   "dice": {
@@ -14279,14 +14289,13 @@
     "detected": "Đã nhận diện: {console}. Nếu sai, hãy chọn hệ máy khác.",
     "chosen": "Đang chạy theo {console}.",
     "unknown": "Tệp này không cho biết thuộc hệ máy nào. Hãy chọn ở mục Hệ máy.",
-    "games": "Game tự chế miễn phí",
-    "openTool": "Bạn có ROM riêng? Mở trình giả lập game",
+    "games": "Tất cả game trên cv.cm",
     "tooBig": "Tệp này quá lớn so với các hệ máy này (trên {mb} MB)."
   },
   "flashPlayer": {
     "title": "Flash Player",
     "privacyNote": "Mở tệp .swf trong tab này bằng Ruffle. Không cần plugin Flash. Không tải lên.",
-    "games": "Game Flash miễn phí"
+    "games": "Tất cả game trên cv.cm"
   },
   "tierList": {
     "title": "Tạo tier list online (bảng xếp hạng)",

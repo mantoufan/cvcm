@@ -180,20 +180,8 @@
     "descCompound": "Perkirakan nilai masa depan di browser. Pokok, bunga, tahun, frekuensi. Tidak diunggah.",
     "titleVat": "Kalkulator PPN — pajak penjualan — cv.cm",
     "descVat": "Tambah PPN atau pecah harga termasuk pajak di browser. Tidak diunggah.",
-    "titleGames": "Main NES, SNES, GB, GBA, dan Flash di browser — cheat dan panduan — cv.cm",
-    "descGames": "Game retro di tab ini. Cheat, panduan, dan EmulatorJS. Flash membuka SWF dengan Ruffle. Homebrew langsung main. ROM komersial dari berkas Anda. Tidak ada unggahan.",
-    "titleGamesFc": "Game FC / NES — cheat dan panduan — cv.cm",
-    "descGamesFc": "Main game NES di browser. Contra, Super Mario Bros, Battle City. Cheat dan panduan singkat. Muat ROM Anda sendiri.",
-    "titleGamesSfc": "Game SFC / SNES — cheat dan panduan — cv.cm",
-    "descGamesSfc": "Main game SNES di browser. Super Mario World, Zelda, Street Fighter II. Cheat dan panduan.",
-    "titleGamesGb": "Game Game Boy — cheat dan panduan — cv.cm",
-    "descGamesGb": "Main game Game Boy di browser. Pokémon Red, Tetris, Kirby. Cheat dan panduan.",
-    "titleGamesGbc": "Game Game Boy Color — cheat dan panduan — cv.cm",
-    "descGamesGbc": "Main game GBC di browser. Cheat Pokémon Gold dan panduan Johto.",
-    "titleGamesGba": "Game GBA — cheat dan panduan — cv.cm",
-    "descGamesGba": "Main game GBA di browser. Pokémon Emerald, Mario Kart, Minish Cap. Cheat dan panduan.",
-    "titleGamesMd": "Game Mega Drive / Genesis — cheat dan panduan — cv.cm",
-    "descGamesMd": "Main Sonic dan Streets of Rage 2 di browser. Cheat dan panduan. Muat ROM Anda sendiri.",
+    "titleGames": "Game browser gratis: solitaire, catur, mahjong, game 3D — cv.cm",
+    "descGames": "Game gratis yang langsung dimainkan di tab ini: solitaire, spider solitaire, FreeCell, catur, catur Tiongkok, mahjong, sudoku, 2048, game kata, dan game 3D. Tanpa unduhan. Ada juga emulator ROM dan pemutar Flash dengan game open source.",
     "titleReverse": "Balik teks — palindrom — cv.cm",
     "descReverse": "Balik teks dan cek palindrom di browser. Tidak diunggah.",
     "titleUrlEncode": "URL encode — percent encoding — cv.cm",
@@ -322,8 +310,6 @@
     "descOil": "Ubah barel minyak, galon AS, dan liter di peramban. Satu barel adalah 42 galon AS. Tidak diunggah.",
     "titleStocks": "Kapitalisasi dan P/E — cv.cm",
     "descStocks": "Hitung kapitalisasi dari harga dan saham beredar, P/E dari laba tahunan per saham, dan imbal dividen dari dividen tahunan. Tidak ada kuotasi.",
-    "titleGamesFlash": "Main game Flash di browser — pemutar SWF — cv.cm",
-    "descGamesFlash": "Buka SWF di browser dengan Ruffle. Tanpa plugin Flash. Jika belum ada berkas, unggah sendiri. Berkas tetap di tab ini.",
     "titlePercentOff": "Cara hitung diskon | cv.cm",
     "descPercentOff": "Diskon 20% dari 100 adalah harga 80,00 dan hemat 20,00. Bukan margin 20%. Diskon 120% bisa di bawah nol. Persen negatif menaikkan harga. Tidak diunggah.",
     "titleEncodeUrl": "Cara enkode URL | cv.cm",
@@ -4540,16 +4526,16 @@
       "a5": "Tidak ada. Hanya angka dengan dua desimal."
     },
     "games": {
-      "q1": "Bisa main game NES di browser?",
-      "a1": "Ya. NES sampai Mega Drive memakai EmulatorJS dari GitHub. Inti ada di S3. Flash membuka SWF dengan Ruffle. Ponsel punya tombol virtual.",
-      "q2": "Apakah ROM Super Mario atau Contra di-host di sini?",
-      "a2": "Tidak ada dump komersial. Halaman itu berisi cheat dan panduan; Anda memuat ROM milik Anda. Freeware Shiru (Alter Ego, Lawn Mower) langsung jalan tanpa berkas.",
-      "q3": "Bagaimana kode cheat bekerja?",
-      "a3": "Setiap halaman game mencantumkan kode gaya Game Genie / Gameshark. Setelah ROM menyala, tempel di menu cheat emulator. Kode bergantung pada versi dump.",
-      "q4": "Apakah ROM diunggah?",
-      "a4": "Tidak. Berkas lokal dibaca di tab ini dan diserahkan ke emulator. Homebrew yang boleh kami sebar ulang diambil dari bucket S3 kami.",
-      "q5": "Konsol mana yang jalan di ponsel?",
-      "a5": "NES, GB, GBC, dan sebagian besar GBA / Mega Drive. SNES lebih berat. Flash membuka SWF Anda, dan sentuhan dihitung sebagai mouse. Pertarungan dan balapan lebih enak mendatar dengan gamepad."
+      "q1": "Apakah game ini gratis?",
+      "a1": "Ya. Semua game gratis, tanpa akun dan tanpa unduhan.",
+      "q2": "Apakah bisa dimainkan di ponsel?",
+      "a2": "Bisa. Semua game mendukung sentuhan. Game 3D perlu browser yang mendukung WebGL, dan ponsel sekarang sudah mendukungnya.",
+      "q3": "Apakah progres saya tersimpan?",
+      "a3": "Permainan yang sedang berjalan dan skor terbaik tersimpan di browser ini, tidak diunggah. Menghapus data situs ini akan menghapusnya.",
+      "q4": "Bisakah saya memainkan game NES atau Game Boy?",
+      "a4": "Bisa, di emulator ROM: buka ROM yang berhak Anda gunakan, atau jalankan salah satu game open source-nya. cv.cm tidak menyimpan ROM komersial.",
+      "q5": "Bisakah saya memainkan game Flash?",
+      "a5": "Pemutar Flash membuka file .swf dengan Ruffle, tanpa plugin, dan punya beberapa game Flash open source untuk dicoba."
     },
     "reverse": {
       "q1": "Bisa membalik teks di sini?",
@@ -4998,18 +4984,6 @@
       "a4": "Kosong karena pembaginya nol.",
       "q5": "Apakah ada harga saham?",
       "a5": "Tidak. Anda mengetik harga. Ini hitungan, bukan saran."
-    },
-    "gamesFlash": {
-      "q1": "Masih bisa main Flash di browser?",
-      "a1": "Bisa. Halaman ini menjalankan SWF dengan Ruffle, emulator Flash sumber terbuka. Adobe Flash Player tidak perlu dipasang.",
-      "q2": "Kalau tidak ada berkas game?",
-      "a2": "Layar meminta Anda mengunggah sendiri. Pilih SWF. Berkas tetap di tab ini dan tidak dikirim ke server.",
-      "q3": "Mengapa ada SWF yang tidak jalan?",
-      "a3": "Banyak game lebih dari satu berkas, atau hanya jalan di situs asalnya. Halaman ini untuk satu SWF yang mandiri. Sebagian game ActionScript 3 masih belum lengkap.",
-      "q4": "Flash jalan di ponsel?",
-      "a4": "Bisa dibuka. Sentuhan dihitung sebagai mouse. Game yang butuh hover atau keyboard lebih enak di komputer.",
-      "q5": "Bisa mengunduh game Flash klasik di sini?",
-      "a5": "Tidak. Pakai SWF yang sudah Anda punya. cv.cm hanya menyimpan SWF jika lisensinya mengizinkan sebar ulang."
     },
     "mosaic": {
       "q1": "Apakah mosaik mengunggah foto?",
@@ -5619,7 +5593,7 @@
       "q3": "Mengapa saya diminta memilih konsol?",
       "a3": "File SNES tidak punya header tetap, dan .bin atau .bin di dalam zip bisa untuk konsol apa saja. Jika file tidak menyebut konsolnya, pilih di Konsol dan game akan mulai.",
       "q4": "Apakah cv.cm menyediakan ROM?",
-      "a4": "Tidak ada ROM komersial. Buka file yang berhak Anda gunakan. Kolom Game punya game homebrew gratis yang berjalan tanpa file.",
+      "a4": "Tidak ada ROM komersial. Buka file yang berhak Anda gunakan, atau jalankan salah satu game open source di halaman ini; tidak perlu file.",
       "q5": "Bagaimana cara bermain dan menyimpan?",
       "a5": "Tombol kontrol muncul setelah game mulai. Di ponsel, gunakan pad di layar atau gamepad Bluetooth. Simpan dan muat state ada di bilah alat emulator."
     },
@@ -9071,7 +9045,7 @@
       "result": "Game berjalan di tab browser, tombolnya terlihat jelas, dan file simpanan ada di perangkat Anda.",
       "note": "Gunakan ROM yang berhak Anda pakai, misalnya homebrew yang dirilis pembuatnya. cv.cm tidak menyediakan ROM komersial.",
       "s1t": "Siapkan ROM yang boleh dipakai",
-      "s1b": "ROM adalah salinan kartrid game dalam satu file. Alat ini membuka game FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance, dan Mega Drive / Genesis. Jika belum punya file, kolom Game di cv.cm punya homebrew gratis.",
+      "s1b": "ROM adalah salinan kartrid game dalam satu file. Alat ini membuka game FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance, dan Mega Drive / Genesis. Jika belum punya file, alat ini punya game open source yang berjalan dengan sekali klik.",
       "s2t": "Buka emulator game di cv.cm",
       "s2b": "Tekan Pilih ROM, lalu pilih file .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin, atau .zip. File dibaca di tab ini dan tidak dikirim ke mana pun. Saat pertama, emulator juga diunduh, jadi tunggu sebentar.",
       "s3t": "Periksa konsol",
@@ -9103,7 +9077,7 @@
       "s5t": "Ketahui mengapa file berhenti memuat",
       "s5b": "Halaman ini hanya menjalankan file yang bisa mulai sendiri dan memblokir akses jaringan. Game yang memuat SWF lain atau XML, atau hanya berjalan di situs lamanya, berhenti di layar pemuatan.",
       "s6t": "Coba cara lain jika gagal",
-      "s6b": "Ruffle menjalankan sebagian besar file ActionScript 1 dan 2 lama, tetapi dukungan ActionScript 3 belum lengkap, jadi beberapa game yang lebih baru mungkin gagal mulai atau berjalan tidak benar. Tekan Pilih SWF lagi untuk membuka file lain, atau mainkan game gratis di bagian game Flash.",
+      "s6b": "Ruffle menjalankan sebagian besar file ActionScript 1 dan 2 lama, tetapi dukungan ActionScript 3 belum lengkap, jadi beberapa game yang lebih baru mungkin gagal mulai atau berjalan tidak benar. Tekan Pilih SWF lagi untuk membuka file lain, atau jalankan salah satu game Flash open source di halaman pemutar.",
       "diagram1": "Cara memakai mouse, sentuhan, dan keyboard pada file Flash.",
       "diagram2": "SWF yang bisa mulai sendiri akan berjalan. Yang perlu file lain atau situs lamanya akan berhenti."
     },
@@ -10791,30 +10765,12 @@
   "games": {
     "play": "Main",
     "loadRom": "Pilih ROM",
-    "loadRomHint": "Berkas tetap di tab ini. ROM yang di-host di S3 langsung jalan bila tersedia.",
-    "hostedNote": "ROM yang di-host dimuat dari S3. Anda tetap bisa memilih berkas lokal.",
-    "rememberRom": "Ingat di browser ini",
-    "forgetRom": "Lupakan ROM ini",
-    "rememberedRom": "Disimpan hanya di browser ini. Kunjungan berikutnya dimuat otomatis sampai Anda menghapus data situs ini. Tidak pernah diunggah.",
-    "savedRomLoaded": "ROM yang Anda simpan di browser ini dimuat. Tidak diunggah.",
-    "forgotRom": "Dihapus dari browser ini.",
-    "rememberFailed": "Browser ini tidak bisa menyimpannya (mode privat atau ruang habis). Masih bisa dimainkan di tab ini.",
-    "byoNote": "Pilih ROM untuk dimainkan. Jika ada berkas yang di-host di S3, game langsung jalan.",
-    "cheats": "Cheat",
-    "guide": "Panduan",
-    "related": "Game lainnya",
-    "year": "{n}",
     "emulator": "EmulatorJS (sumber terbuka, GitHub)",
     "mobile": "Tombol sentuh di ponsel. Gamepad Bluetooth lebih enak untuk game tarung dan balap.",
-    "legal": "Inti emulator ada di S3. Game dimulai dari ROM yang di-host bila berkasnya ada, atau dari berkas lokal yang Anda pilih. Berkas lokal tidak diunggah.",
     "filterAll": "Semua",
-    "empty": "Tidak ada game di filter ini.",
     "hub": {
-      "kicker": "Retro · Browser · Ponsel",
-      "title": "Main FC, SFC, GB, GBA, dan Flash di browser",
-      "lead": "Cheat, panduan, dan emulator sumber terbuka. Homebrew langsung main. Game komersial memakai ROM Anda. Flash membuka SWF dengan Ruffle. Tidak ada unggahan.",
-      "menu": "Semua game",
-      "blurb": "Game emulator retro dengan cheat dan panduan.",
+      "title": "Game gratis yang dimainkan di browser",
+      "lead": "Game kartu, papan, puzzle, kata, dan 3D buatan cv.cm. Tanpa instalasi, dan permainan yang sedang berjalan tersimpan di browser ini. Untuk game retro, emulator ROM dan pemutar Flash punya game open source untuk dicoba.",
       "all": "Lihat semua"
     },
     "consoles": {
@@ -10827,15 +10783,6 @@
       "gba": "Game Boy Advance",
       "md": "Mega Drive",
       "flash": "Flash"
-    },
-    "genres": {
-      "platform": "Platformer",
-      "action": "Aksi",
-      "shooting": "Tembak-tembakan",
-      "rpg": "RPG",
-      "puzzle": "Teka-teki",
-      "fighting": "Pertarungan",
-      "racing": "Balap"
     },
     "controls": {
       "title": "Kontrol",
@@ -10857,51 +10804,29 @@
     "needFile": "Tidak ada ROM",
     "needFileBody": "Unggah sendiri. Berkas tetap di tab ini dan tidak dikirim ke server.",
     "flash": {
-      "kicker": "Flash · SWF · Browser",
-      "title": "Main game Flash di browser",
-      "lead": "Buka SWF di tab ini dengan Ruffle. Tanpa plugin Flash. Jika pemutar kosong, pilih SWF Anda. Berkas tidak keluar dari tab.",
-      "catalog": "Game Flash yang boleh disebar ulang akan tercantum di sini. Untuk sekarang, pilih SWF yang Anda punya.",
       "load": "Pilih SWF",
       "needFile": "Tidak ada SWF",
       "needFileBody": "Unggah sendiri. Berkas tetap di tab ini dan tidak dikirim ke server.",
-      "guide": "Cara membuka SWF di browser",
       "emulator": "Ruffle (sumber terbuka, GitHub)",
-      "mobile": "Sentuhan dihitung sebagai klik. Game yang butuh keyboard lebih enak di komputer.",
-      "s1t": "Pilih SWF",
-      "s1b": "Tekan Pilih SWF dan pilih berkas .swf. Jika layar kosong, halaman meminta Anda mengunggah sendiri. Berkas tetap di tab ini.",
-      "s2t": "Satu berkas",
-      "s2b": "Halaman ini untuk SWF yang bisa jalan sendiri. Game yang memuat SWF lain, XML, atau situs asalnya berhenti di pemuatan.",
-      "s3t": "Mouse",
-      "s3b": "Sebagian besar game Flash memakai klik kiri. Sentuhan di ponsel adalah klik. Tombol panah dipakai jika game meminta keyboard.",
-      "s4t": "Suara",
-      "s4b": "Browser menahan suara yang otomatis. Klik gambar sekali, lalu suara keluar.",
-      "s5t": "Berkas Anda",
-      "s5b": "Game Flash komersial tidak disimpan di sini. Pakai SWF yang sudah Anda punya. Hanya karya yang lisensinya mengizinkan sebar ulang yang masuk daftar."
-    },
-    "official": {
-      "title": "Main versi resmi",
-      "sub": "Langganan",
-      "buy": "Beli",
-      "none": "Saat ini kami tidak menemukan toko resmi yang menjual atau menyediakan game ini. Toko yang sudah tutup seperti 3DS eShop tidak dicantumkan.",
-      "note": "Halaman toko resmi AS, dicek {date}. Ketersediaan dan harga berbeda tiap wilayah dan bisa berubah. cv.cm tidak berafiliasi dengan penerbit atau toko ini dan tidak mendapat apa pun dari tautan ini.",
-      "edition": {
-        "arcade": "Versi arcade",
-        "gba": "Versi Game Boy Advance",
-        "genesis": "Versi Mega Drive",
-        "pc": "Versi PC",
-        "remake": "Remake modern",
-        "rerelease": "Rilis ulang, versinya bisa berbeda"
-      }
+      "mobile": "Sentuhan dihitung sebagai klik. Game yang butuh keyboard lebih enak di komputer."
     },
     "mini": {
       "title": "Game online gratis",
-      "lead": "Game klasik yang langsung dimainkan di browser: solitaire, minesweeper, catur, mahjong, 2048, permainan kata, dan lainnya. Gratis, tanpa unduhan, dan skor dan permainan yang sedang berjalan tersimpan di browser ini.",
-      "all": "Lihat semua {n} game online gratis"
+      "lead": "Game klasik yang langsung dimainkan di browser: solitaire, minesweeper, catur, mahjong, 2048, permainan kata, dan lainnya. Gratis, tanpa unduhan, dan skor dan permainan yang sedang berjalan tersimpan di browser ini."
     },
     "g3d": {
       "title": "Game 3D gratis",
-      "lead": "Game 3D yang langsung dimainkan di sini: catur di papan 3D, pinball, biliar bola 8, air hockey, dart, kubus rubik dengan pemecah, game menumpuk balok, game mobil dengan drift, dan simulator pesawat. Gratis tanpa instal; bagian 3D baru dimuat saat Anda menekan Main.",
-      "all": "Semua {n} game 3D gratis"
+      "lead": "Game 3D yang langsung dimainkan di sini: catur di papan 3D, pinball, biliar bola 8, air hockey, dart, kubus rubik dengan pemecah, game menumpuk balok, game mobil dengan drift, dan simulator pesawat. Gratis tanpa instal; bagian 3D baru dimuat saat Anda menekan Main."
+    },
+    "emu": {
+      "title": "Emulator retro",
+      "lead": "Mainkan ROM NES, SNES, Game Boy, GBA, dan Mega Drive atau file SWF Flash di browser. Setiap pemutar punya beberapa game open source yang berjalan tanpa file."
+    },
+    "demos": {
+      "title": "Coba game open source",
+      "lead": "Pembuatnya merilis game ini dengan lisensi terbuka, jadi game langsung berjalan di sini tanpa file.",
+      "source": "Kode sumber",
+      "playing": "Menjalankan {title}."
     }
   },
   "reverse": {
@@ -12799,6 +12724,91 @@
         "wedding": "Foto pengantin solo, pose pengantin, dan foto prewedding",
         "scenes": "Fotografi ponsel, foto malam, bulan, makanan, dan produk"
       }
+    },
+    "how-to-massage": {
+      "name": "Cara pijat yang benar",
+      "blurb": "Lima gerakan dasar, tiga tingkat tekanan, dan rutinitas 20 menit untuk pemula"
+    },
+    "when-not-to-massage": {
+      "name": "Kapan tidak boleh dipijat",
+      "blurb": "Kondisi yang harus dihindari, dipijat lembut saja, atau tanya dokter dulu, plus tanda bahaya"
+    },
+    "acupressure-points": {
+      "name": "Titik akupresur",
+      "blurb": "Letak 11 titik perawatan diri, cara menemukannya dengan lebar jari, dan cara menekan"
+    },
+    "pressure-points-for-headache": {
+      "name": "Pijat sakit kepala",
+      "blurb": "Enam titik untuk sakit kepala tegang, rutinitas 5 menit, dan tanda bahaya yang perlu dokter"
+    },
+    "pressure-points-for-eye-strain": {
+      "name": "Titik tekan untuk mata lelah",
+      "blurb": "Titik di sekitar mata, palming, jeda layar 3 menit, dan kapan harus ke dokter mata"
+    },
+    "foot-reflexology-chart": {
+      "name": "Peta titik refleksi kaki",
+      "blurb": "Arti tiap zona pada peta pijat refleksi kaki, asal-usulnya, dan apa kata penelitian"
+    },
+    "foot-massage": {
+      "name": "Pijat kaki di rumah",
+      "blurb": "Rendam air hangat yang aman, enam teknik pijat kaki, dan rutinitas 10 menit untuk kaki lelah"
+    },
+    "hand-massage": {
+      "name": "Pijat tangan",
+      "blurb": "Rutinitas tangan dan pergelangan 3 menit untuk pengetik dan pengguna ponsel, serta tanda terowongan karpal"
+    },
+    "neck-and-shoulder-massage": {
+      "name": "Pijat leher dan bahu sendiri",
+      "blurb": "Letak otot leher yang tegang, GB20 dan GB21, rutinitas meja kerja 5 menit, dan tanda bahaya"
+    },
+    "back-massage": {
+      "name": "Cara memijat punggung",
+      "blurb": "Urutan pijat punggung 15 menit, tekanan aman di samping tulang belakang, dan tanda bahaya"
+    },
+    "facial-massage": {
+      "name": "Pijat wajah di rumah",
+      "blurb": "Rutinitas pijat wajah 5 menit, melemaskan rahang, apa kata studi, dan kapan harus dilewati"
+    },
+    "scalp-massage": {
+      "name": "Pijat kulit kepala",
+      "blurb": "Teknik dengan jari atau sikat silikon, rutinitas 4 menit, dan apa kata studi tentang rambut"
+    },
+    "how-to-use-gua-sha": {
+      "name": "Cara pakai gua sha",
+      "blurb": "Langkah gua sha wajah dan tubuh, sudut alat, tekanan, tanda sha, dan siapa yang sebaiknya tidak memakainya"
+    },
+    "how-to-use-a-massage-gun": {
+      "name": "Cara pakai massage gun",
+      "blurb": "Kepala alat, kecepatan, durasi per otot, area terlarang, dan siapa yang perlu tanya dokter"
+    },
+    "foam-rolling": {
+      "name": "Cara pakai foam roller",
+      "blurb": "Pilihan roller, area utama, jeda 20–30 detik, rutinitas 10 menit, dan hal yang perlu dihindari"
+    },
+    "tennis-ball-massage": {
+      "name": "Pijat bola tenis untuk otot kaku",
+      "blurb": "Posisi di dinding dan lantai, tahan 30–90 detik, rutinitas 10 menit, dan peanut ball"
+    },
+    "massage": {
+      "label": "Cara pijat sendiri",
+      "lead": "Panduan pijat sendiri dan akupresur yang aman: teknik dasar, titik tekan untuk sakit kepala dan mata lelah, peta refleksi kaki, pijat leher, punggung, wajah dan kulit kepala, gua sha, massage gun, dan foam roller.",
+      "all": "Semua panduan pijat",
+      "groups": {
+        "basics": "Dasar dan keselamatan",
+        "points": "Titik akupresur",
+        "feet-hands": "Kaki dan tangan",
+        "neck-back": "Leher, bahu, dan punggung",
+        "face-scalp": "Wajah dan kulit kepala",
+        "tools": "Alat pijat"
+      },
+      "blurbs": {
+        "basics": "Teknik pijat dan tekanan, serta kapan tidak boleh dipijat",
+        "points": "Titik akupresur, titik tekan untuk sakit kepala dan mata lelah",
+        "feet-hands": "Peta refleksi kaki, pijat kaki, dan pijat tangan",
+        "neck-back": "Pijat leher dan bahu sendiri, serta cara memijat punggung",
+        "face-scalp": "Pijat wajah, pijat kulit kepala, dan cara pakai gua sha",
+        "tools": "Massage gun, foam roller, dan pijat bola tenis"
+      }
     }
   },
   "dice": {
@@ -14279,14 +14289,13 @@
     "detected": "Terdeteksi: {console}. Jika salah, pilih konsol lain.",
     "chosen": "Berjalan sebagai {console}.",
     "unknown": "File ini tidak menyebut konsolnya. Pilih di Konsol.",
-    "games": "Game homebrew gratis",
-    "openTool": "Punya ROM sendiri? Buka emulator game",
+    "games": "Semua game di cv.cm",
     "tooBig": "File ini terlalu besar untuk konsol-konsol ini (lebih dari {mb} MB)."
   },
   "flashPlayer": {
     "title": "Flash Player",
     "privacyNote": "Buka file .swf di tab ini dengan Ruffle. Tanpa plugin Flash. Tidak ada yang diunggah.",
-    "games": "Game Flash gratis"
+    "games": "Semua game di cv.cm"
   },
   "tierList": {
     "title": "Pembuat tier list online (peringkat)",

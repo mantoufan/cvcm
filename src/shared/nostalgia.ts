@@ -5,7 +5,6 @@
  * searches. Entries were chosen with Google Ads Keyword Planner (2026-11-14): Chinese childhood items (唐僧肉, 复读机,
  * 高乐高…) plus objects remembered worldwide (Famicom, Walkman, pagers, Tamagotchi, Y2K).
  */
-import type { GameConsoleId } from "./games";
 import type { ToolId } from "./path";
 
 export const NOSTALGIA_SEGMENT = "nostalgia";
@@ -80,12 +79,12 @@ export const NOSTALGIA_FOCUS = [
   "fuduji",
 ] as const satisfies readonly NostalgiaId[];
 
-/** cv.cm pages an entry links to: tools you can use today and game consoles you can still play in the page. */
-export const NOSTALGIA_LINKS: Partial<Record<NostalgiaId, { tools?: readonly ToolId[]; consoles?: readonly GameConsoleId[] }>> = {
-  famicom: { consoles: ["fc"], tools: ["rom-emulator"] },
-  subor: { consoles: ["fc"], tools: ["rom-emulator"] },
-  contra: { consoles: ["fc"], tools: ["rom-emulator"] },
-  "game-boy": { consoles: ["gb", "gbc"], tools: ["rom-emulator"] },
+/** cv.cm tools an entry links to (the ROM emulator for the consoles, a voice recorder for the repeater). */
+export const NOSTALGIA_LINKS: Partial<Record<NostalgiaId, { tools?: readonly ToolId[] }>> = {
+  famicom: { tools: ["rom-emulator"] },
+  subor: { tools: ["rom-emulator"] },
+  contra: { tools: ["rom-emulator"] },
+  "game-boy": { tools: ["rom-emulator"] },
   "nokia-3310": { tools: ["snake-game"] },
   fuduji: { tools: ["voice-recorder"] },
   cassette: { tools: ["voice-recorder"] },

@@ -7,7 +7,6 @@ import { availableParallelism, totalmem } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { coverOriginEsbuild } from "./cover-origin.mjs";
-import { NAMES_FILTER, gameNamesSource, namesJsonPath } from "./game-names.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 // Inside the repo so the bundle resolves happy-dom and vitest from node_modules.
@@ -31,15 +30,6 @@ await esbuild.build({
     __PRERENDER_ROOT__: JSON.stringify(root),
   },
   plugins: [coverOriginEsbuild, {
-    name: "game-names",
-    setup(build) {
-      build.onResolve({ filter: NAMES_FILTER }, (args) => ({
-        path: resolve(args.resolveDir, namesJsonPath(args.path)),
-        namespace: "game-names",
-      }));
-      build.onLoad({ filter: /.*/, namespace: "game-names" }, (args) => ({ contents: gameNamesSource(args.path), loader: "json" }));
-    },
-  }, {
     // The browser's core packs and copy buckets (vite.config.ts builds them). The prerender never loads them: it
     // registers the full packs and cuts each page's client pack from those (clientPack in src/shared/page-copy.ts).
     name: "page-copy-stub",

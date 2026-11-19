@@ -4,8 +4,7 @@
 import ui from "virtual:page-copy/ui/vi";
 import guides from "virtual:page-copy/guides/vi";
 import device from "../device/vi.json";
-import gameNames from "../games/vi.json?names";
 import markets from "../markets/vi.json";
 import type { LocaleMessages } from "../../shared/messages";
 
-export default { ui, gameNames, guides, device, markets } satisfies LocaleMessages;
+export default { ui, guides, device, markets } satisfies LocaleMessages;

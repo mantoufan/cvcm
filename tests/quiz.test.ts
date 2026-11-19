@@ -166,15 +166,15 @@ describe("test pages: copy", () => {
 
   it("preloads the quiz pack on the hub, plus the loader table and one test on a test page", () => {
     const packs = { en: ["/a/en.js"], "quiz-en": ["/a/q-en.js"], "quiz-en/loaders": ["/a/loaders.js"], "quiz-en/mbti": ["/a/mbti.js"], "quiz-en/ocd": ["/a/ocd.js"] };
-    const hub = preloadLocalePack("<head></head>", "en", false, packs, "hub");
+    const hub = preloadLocalePack("<head></head>", "en", packs, "hub");
     expect(hub).toContain("/a/q-en.js");
     expect(hub).not.toContain("/a/loaders.js");
-    const test = preloadLocalePack("<head></head>", "en", false, packs, "mbti");
+    const test = preloadLocalePack("<head></head>", "en", packs, "mbti");
     expect(test).toContain("/a/q-en.js");
     expect(test).toContain("/a/loaders.js");
     expect(test).toContain("/a/mbti.js");
     expect(test).not.toContain("/a/ocd.js");
-    expect(preloadLocalePack("<head></head>", "en", false, packs)).not.toContain("q-en");
+    expect(preloadLocalePack("<head></head>", "en", packs)).not.toContain("q-en");
   });
 
   it("has an item, every option, a label and a result for everything the scoring uses", () => {

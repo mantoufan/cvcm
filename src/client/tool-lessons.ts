@@ -14,6 +14,7 @@ export function toolLessonsSection(loc: Locale, tool: ToolId): HTMLElement | nul
     { page: "code" as const, nav: KB_SHELVES.code.nav, label: t("kb.code.label"), articles: kbForTool(tool, "code") },
     { page: "ai" as const, nav: KB_SHELVES.ai.nav, label: t("kb.ai.label"), articles: kbForTool(tool, "ai") },
     { page: "photo" as const, nav: KB_SHELVES.photo.nav, label: t("kb.photo.label"), articles: kbForTool(tool, "photo") },
+    { page: "massage" as const, nav: KB_SHELVES.massage.nav, label: t("kb.massage.label"), articles: kbForTool(tool, "massage") },
   ].filter((shelf) => shelf.articles.length);
   // The health calculators that work with food energy also point to the food calorie chart.
   const calories = (CALORIES_TOOLS as readonly string[]).includes(tool);

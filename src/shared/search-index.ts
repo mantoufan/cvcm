@@ -40,8 +40,8 @@ function isHub(page: SitemapPage): boolean {
     case "currency":
       return page.pair === null;
     case "games":
-      // The main hub and the hubs of cv.cm's own games (/games/mini/, /games/3d/), not the console or game pages.
-      return (page.console === null || page.console === "mini" || page.console === "3d") && page.game === null;
+      // The main hub and the hubs of cv.cm's own games (/games/mini/, /games/3d/).
+      return true;
     default:
       return false;
   }
@@ -109,7 +109,7 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
     case "breeds":
       return { channel: "breeds", seo: { breeds: true, breedId: page.entry } };
     case "games":
-      return { channel: "games", seo: { games: true, console: page.console, game: page.game } };
+      return { channel: "games", seo: { games: true, gamesHub: page.hub } };
     case "countries":
       return { channel: "countries", seo: { countries: true, countryId: page.entry } };
     case "currency":
