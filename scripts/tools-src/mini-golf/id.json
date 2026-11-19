@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "titleMiniGolf": "Golf mini — main game golf 3D gratis online — cv.cm",
+    "descMiniGolf": "Main golf mini di browser: sembilan lubang 3D dengan pemantul, lereng, kolam, dan palang berputar. Tarik ke belakang untuk memukul, catat skor Anda, dan kalahkan rekor terbaik Anda. Gratis, tanpa unduhan."
+  },
+  "tools": {
+    "mini-golf": {
+      "name": "Golf mini",
+      "blurb": "Sembilan lubang putt 3D: kalahkan par."
+    }
+  },
+  "faq": {
+    "mini-golf": {
+      "q1": "Bagaimana cara memukul?",
+      "a1": "Tarik ke belakang dari bola seperti ketapel: garis merah muda menunjukkan arah dan kekuatan. Lepaskan untuk memukul. Anda juga bisa mengatur kekuatan dengan penggeser lalu menekan Pukul.",
+      "q2": "Bisa main dengan keyboard?",
+      "a2": "Bisa. Klik lapangan dulu, lalu pakai panah kiri dan kanan untuk membidik (tahan Shift untuk halus), panah atas dan bawah untuk kekuatan, serta Spasi atau Enter untuk memukul.",
+      "q3": "Bagaimana jika bola masuk air?",
+      "a3": "Bola kembali ke tempat Anda memukul dan Anda kena satu pukulan penalti. Setelah delapan pukulan di satu lubang, bola diambil dan Anda lanjut ke lubang berikutnya.",
+      "q4": "Apakah permainan disimpan?",
+      "a4": "Ya, di browser ini. Jika Anda keluar, Anda lanjut di lubang dan posisi yang sama. Total terbaik sembilan lubang juga disimpan.",
+      "q5": "Apa itu par?",
+      "a5": "Jumlah pukulan yang dibutuhkan pemain yang baik untuk satu lubang. Par lapangan ini 24; kartu skor menampilkan tiap lubang dan total Anda dibanding par."
+    }
+  },
+  "guides": {
+    "mini-golf": {
+      "lead": "Mainkan sembilan lubang dalam tiga langkah.",
+      "s1t": "Bidik pukulan",
+      "s1b": "Tekan Main, lalu tarik ke belakang dari bola. Garis merah muda menunjukkan arah dan kekuatan.",
+      "s2t": "Pukul dan lihat",
+      "s2b": "Lepaskan untuk memukul. Dinding dan pemantul memantulkan bola, lereng membelokkannya, dan air menambah satu pukulan.",
+      "s3t": "Masukkan ke lubang",
+      "s3b": "Masukkan bola dengan pukulan sesedikit mungkin. Setiap lubang selesai, lubang berikutnya dimulai dan kartu skor terisi."
+    }
+  },
+  "ui": {
+    "miniGolf": {
+      "title": "Golf mini",
+      "privacyNote": "Sembilan lubang 3D di browser. Permainan hanya disimpan di perangkat ini.",
+      "stage": "Lapangan golf mini",
+      "intro": "Tarik ke belakang dari bola untuk membidik dan memukul. Sembilan lubang, par 24.",
+      "power": "Kekuatan",
+      "puttBtn": "Pukul",
+      "newRound": "Ronde baru",
+      "viewLeft": "Putar tampilan ke kiri",
+      "viewRight": "Putar tampilan ke kanan",
+      "scorecard": "Kartu skor",
+      "colHole": "Lubang",
+      "colPar": "Par lubang",
+      "colYou": "Anda",
+      "total": "Jumlah",
+      "even": "sama dengan par",
+      "overPar": "{n} di atas par",
+      "underPar": "{n} di bawah par",
+      "noBest": "Belum ada ronde yang selesai.",
+      "best": "Ronde terbaik: {n} pukulan ({diff}).",
+      "hud": "Lubang {n}/{of} · Par {par} · {s} pukulan · Kekuatan {p}%",
+      "newBest": "Ronde selesai: {total} pukulan ({diff}). Rekor baru!",
+      "roundOver": "Ronde selesai: {total} pukulan ({diff}).",
+      "again": "Main lagi",
+      "ace": "Hole in one — satu pukulan masuk!",
+      "eagle": "Eagle — dua di bawah par!",
+      "birdie": "Birdie — satu di bawah par!",
+      "par": "Sama dengan par.",
+      "bogey": "Bogey — satu di atas par.",
+      "overHole": "Lubang ini {n} di atas par.",
+      "water": "Masuk air: satu pukulan penalti, ulangi dari tempat yang sama.",
+      "pickedUp": "{n} pukulan: bola diambil, lanjut ke lubang berikutnya.",
+      "resumed": "Ronde Anda berlanjut di lubang {n}.",
+      "hint": "Tarik ke belakang dari bola lalu lepaskan untuk memukul. Tombol (klik lapangan dulu): ← → membidik, Shift untuk halus, ↑ ↓ kekuatan, Spasi atau Enter memukul. ⟲ ⟳ memutar tampilan."
+    }
+  }
+}

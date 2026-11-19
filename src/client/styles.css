@@ -2092,3 +2092,66 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
   .bl-controls { justify-content: center; }
   .bl-power { grid-template-columns: auto 1fr 3rem; width: 100%; }
 }
+
+/* Bowling (src/client/bowling/ui.ts) */
+.bw-root .g3d-stage { cursor: grab; }
+.bw-hud { justify-content: space-between; align-items: center; }
+.bw-meter { display: inline-block; width: 8rem; height: 0.6rem; border: 1px solid var(--pink-deep); border-radius: 999px; overflow: hidden; background: rgba(255, 255, 255, 0.8); }
+.bw-meter[hidden] { display: none; }
+.bw-meter-fill { display: block; height: 100%; width: 0; background: var(--pink-deep); }
+.bw-spin input { width: 8rem; }
+.bw-status { min-height: 1.6em; font-weight: 600; }
+.bw-sheet-wrap { overflow-x: auto; margin: 0.5rem 0 1rem; }
+.bw-sheet { border-collapse: collapse; font-variant-numeric: tabular-nums; min-width: 34rem; }
+.bw-sheet th, .bw-sheet td { border: 1px solid var(--line); padding: 0.2rem 0.35rem; text-align: center; vertical-align: top; }
+.bw-sheet th[scope="row"] { text-align: left; white-space: nowrap; }
+.bw-sheet td { min-width: 2.6rem; }
+.bw-marks { display: block; font-size: 0.8rem; color: var(--ink-soft); min-height: 1.1em; }
+.bw-cum { display: block; font-weight: 600; min-height: 1.2em; }
+.bw-total { font-weight: 700; color: var(--pink-deep); }
+.bw-sheet tr.bw-now th[scope="row"] { color: var(--pink-deep); }
+
+/* Basketball game (src/client/basketball-game/ui.ts) */
+.bb-root .g3d-stage { cursor: grab; }
+.bb-hud { justify-content: space-between; align-items: center; }
+.bb-hud-score { font-size: 2rem; font-weight: 800; color: var(--pink-deep); }
+.bb-hud-streak { color: var(--pink-dark); font-weight: 700; }
+.bb-meter { position: absolute; left: 0.6rem; right: 0.6rem; top: 2.8rem; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.7); overflow: hidden; }
+.bb-meter-fill { display: block; height: 100%; width: 0; background: var(--pink-deep); }
+.bb-stats { margin: 0.25rem 0 0.75rem; }
+.bb-status { min-height: 1.5em; margin: 0.5rem 0; font-weight: 600; }
+
+/* Archery (src/client/archery/ui.ts) */
+.ar-root .g3d-stage { cursor: crosshair; }
+.ar-draw { position: absolute; left: 0.6rem; bottom: 0.6rem; width: min(40%, 12rem); height: 0.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255, 255, 255, 0.8); overflow: hidden; pointer-events: none; }
+.ar-draw-fill { display: block; width: 0; height: 100%; background: var(--pink); }
+.ar-draw.ar-full .ar-draw-fill { background: var(--pink-deep); }
+.ar-status { min-height: 1.5em; margin: 0.5rem 0; font-weight: 600; }
+.ar-sheet-wrap { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; margin: 0.75rem 0; }
+.ar-face { width: 140px; height: 140px; flex: none; }
+.ar-sheet-col { flex: 1 1 16rem; min-width: 0; overflow-x: auto; }
+.ar-sheet { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.ar-sheet th, .ar-sheet td { padding: 0.2rem 0.6rem; border-bottom: 1px solid var(--line); text-align: center; }
+.ar-total { margin: 0.5rem 0 0; font-weight: 600; }
+
+/* Mini golf (src/client/mini-golf/ui.ts) */
+.mg-bar, .mg-putt { align-items: center; }
+.mg-power { display: flex; align-items: center; gap: 0.5rem; flex: 1 1 14rem; }
+.mg-power input { flex: 1; min-width: 0; }
+.mg-power-out { min-width: 3em; font-variant-numeric: tabular-nums; }
+.mg-status { min-height: 1.6em; font-weight: 600; }
+.mg-card-wrap { overflow-x: auto; }
+.mg-card { border-collapse: collapse; font-variant-numeric: tabular-nums; margin: 0.5rem 0; }
+.mg-card caption { text-align: left; font-weight: 600; margin-bottom: 0.25rem; }
+.mg-card th, .mg-card td { border: 1px solid var(--line); padding: 0.25rem 0.5rem; text-align: center; min-width: 2em; }
+.mg-card th[scope="row"] { text-align: left; }
+.mg-card .mg-now { background: var(--pink-soft); font-weight: 600; }
+.mg-card .mg-total { font-weight: 700; }
+.mg-best { color: var(--ink-soft); }
+
+/* Ping pong (src/client/ping-pong/ui.ts) */
+.pp-hud { justify-content: center; font-size: 1rem; font-weight: 700; }
+.pp-score { margin-left: auto; }
+.pp-status { min-height: 1.6em; margin: 0.5rem 0 0; }
+.pp-record { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
+.pp-root .g3d-stage { cursor: crosshair; }

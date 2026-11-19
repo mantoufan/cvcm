@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "titleBasketballGame": "Juego de baloncesto — lanza a canasta en 3D gratis — cv.cm",
+    "descBasketballGame": "Juego de baloncesto 3D gratis en el navegador: desliza o arrastra hacia arriba para lanzar, encesta todo lo que puedas en 60 segundos o practica desde cinco posiciones. También en el móvil."
+  },
+  "tools": {
+    "basketball-game": {
+      "name": "Juego de baloncesto",
+      "blurb": "Lanza a canasta 60 segundos o practica."
+    }
+  },
+  "faq": {
+    "basketball-game": {
+      "q1": "¿Cómo se lanza?",
+      "a1": "Arrastra o desliza hacia arriba sobre la cancha: la dirección apunta el tiro y la longitud marca la fuerza. Con teclado, apunta con las flechas izquierda y derecha, mantén Espacio para llenar la barra de fuerza y suelta para lanzar.",
+      "q2": "¿Cómo se cuentan los puntos?",
+      "a2": "Cada canasta vale 2 puntos, o 3 desde la posición tras la línea de triple. Desde la tercera canasta seguida, cada canasta suma 1 punto extra hasta que falles.",
+      "q3": "¿Qué diferencia hay entre los dos modos?",
+      "a3": "El modo contrarreloj dura 60 segundos y te cambia de posición cada tres canastas. En práctica no hay reloj: eliges una de cinco posiciones y lanzas cuanto quieras.",
+      "q4": "¿Qué es un swish y un tiro a tabla?",
+      "a4": "Un swish entra sin tocar el aro ni el tablero. Un tiro a tabla rebota en el tablero y entra. Valen lo mismo; el juego te dice cuál has hecho.",
+      "q5": "¿Funciona en el móvil?",
+      "a5": "Sí. Desliza hacia arriba sobre la cancha para lanzar. A pantalla completa tienes más espacio. Tu mejor puntuación contrarreloj se guarda en este navegador."
+    }
+  },
+  "guides": {
+    "basketball-game": {
+      "lead": "Juega al baloncesto en tres pasos.",
+      "s1t": "Elige un modo",
+      "s1b": "Elige la ronda de 60 segundos o practicar desde una de cinco posiciones y pulsa Jugar.",
+      "s2t": "Desliza para lanzar",
+      "s2b": "Arrastra o desliza hacia arriba sobre la cancha: la dirección apunta y la longitud da la fuerza. También con las flechas y Espacio.",
+      "s3t": "Mantén la racha",
+      "s3b": "Con tres canastas seguidas, cada canasta da un punto extra. Supera tu récord antes de que acabe el tiempo."
+    }
+  },
+  "ui": {
+    "basketballGame": {
+      "title": "Juego de baloncesto",
+      "privacyNote": "Lanza a canasta en 3D. Todo funciona en esta página.",
+      "stage": "Cancha de baloncesto",
+      "intro": "Desliza hacia arriba para lanzar. Encesta todo lo que puedas.",
+      "time": "Tiempo {time}",
+      "practice": "Práctica",
+      "streak": "{n} seguidas",
+      "r_swish": "¡Limpia!",
+      "r_bank": "¡A tabla!",
+      "r_rim": "¡Entra tras tocar el aro!",
+      "r_miss": "Fallo.",
+      "scored": "{what} +{points} puntos",
+      "newBest": "¡Tiempo! Nuevo récord: {score} puntos.",
+      "over": "¡Tiempo! Has hecho {score} puntos.",
+      "again": "Jugar otra vez",
+      "m_timed": "Contrarreloj (60 segundos)",
+      "m_practice": "Práctica",
+      "mode": "Modo",
+      "spot": "Posición",
+      "spotOption": "Posición {n} ({m} m)",
+      "newGame": "Nueva partida",
+      "score": "Puntos",
+      "made": "Canastas",
+      "best": "Récord (contrarreloj)",
+      "hint": "Arrastra o desliza hacia arriba sobre la cancha para lanzar: la dirección apunta y la longitud da la fuerza. Teclado: flechas izquierda y derecha para apuntar, mantén Espacio y suelta para lanzar."
+    }
+  }
+}

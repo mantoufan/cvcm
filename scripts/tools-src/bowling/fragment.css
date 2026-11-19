@@ -1,0 +1,18 @@
+
+/* Bowling (src/client/bowling/ui.ts) */
+.bw-root .g3d-stage { cursor: grab; }
+.bw-hud { justify-content: space-between; align-items: center; }
+.bw-meter { display: inline-block; width: 8rem; height: 0.6rem; border: 1px solid var(--pink-deep); border-radius: 999px; overflow: hidden; background: rgba(255, 255, 255, 0.8); }
+.bw-meter[hidden] { display: none; }
+.bw-meter-fill { display: block; height: 100%; width: 0; background: var(--pink-deep); }
+.bw-spin input { width: 8rem; }
+.bw-status { min-height: 1.6em; font-weight: 600; }
+.bw-sheet-wrap { overflow-x: auto; margin: 0.5rem 0 1rem; }
+.bw-sheet { border-collapse: collapse; font-variant-numeric: tabular-nums; min-width: 34rem; }
+.bw-sheet th, .bw-sheet td { border: 1px solid var(--line); padding: 0.2rem 0.35rem; text-align: center; vertical-align: top; }
+.bw-sheet th[scope="row"] { text-align: left; white-space: nowrap; }
+.bw-sheet td { min-width: 2.6rem; }
+.bw-marks { display: block; font-size: 0.8rem; color: var(--ink-soft); min-height: 1.1em; }
+.bw-cum { display: block; font-weight: 600; min-height: 1.2em; }
+.bw-total { font-weight: 700; color: var(--pink-deep); }
+.bw-sheet tr.bw-now th[scope="row"] { color: var(--pink-deep); }

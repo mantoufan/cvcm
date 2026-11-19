@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "titleBowling": "Game bowling — main bowling 3D online gratis — cv.cm",
+    "descBowling": "Main game bowling 3D gratis di browser: geser atau pakai tombol untuk melempar, beri putaran agar bola melengkung, dan main sepuluh frame melawan komputer atau sendiri. Skor resmi, bisa di HP."
+  },
+  "tools": {
+    "bowling": {
+      "name": "Main bowling",
+      "blurb": "Bowling sepuluh pin di lintasan 3D."
+    }
+  },
+  "faq": {
+    "bowling": {
+      "q1": "Bagaimana cara melempar bola?",
+      "a1": "Geser ke atas di lintasan: arah geseran menentukan bidikan, kecepatannya menentukan tenaga, dan geseran melengkung memberi putaran. Geser ke samping dulu untuk pindah di sepanjang garis pelanggaran. Dengan keyboard: ← → bergeser, ↑ ↓ membidik, tahan Spasi lalu lepas saat pengukur tenaga pas.",
+      "q2": "Apa gunanya putaran?",
+      "a2": "Bola yang berputar akan melengkung setelah lewat bagian depan lintasan yang berminyak. Atur dengan penggeser «Putaran», tombol Q dan E, atau geseran melengkung. Makin pelan bola, makin besar lengkungnya. Untuk strike, arahkan ke celah antara pin 1 dan pin di sebelahnya.",
+      "q3": "Bagaimana skor bowling dihitung?",
+      "a3": "Sepuluh frame, tiap frame paling banyak dua bola. Strike (sepuluh pin dengan bola pertama) bernilai 10 ditambah dua bola berikutnya; spare (sepuluh pin dengan dua bola) bernilai 10 ditambah satu bola berikutnya. Di frame kesepuluh, strike atau spare memberi bola tambahan. Skor sempurna 300.",
+      "q4": "Bisa main melawan komputer?",
+      "a4": "Bisa. Pilih lawan komputer mudah, normal, atau sulit; komputer melempar frame-nya setelah Anda. Atau pilih «Sendiri» untuk mengejar skor terbaik Anda.",
+      "q5": "Apakah permainan disimpan?",
+      "a5": "Skor terbaik dan permainan yang belum selesai disimpan di browser ini sehingga Anda bisa melanjutkannya nanti. Tidak ada yang diunggah."
+    }
+  },
+  "guides": {
+    "bowling": {
+      "lead": "Satu permainan dalam tiga langkah.",
+      "s1t": "Ambil posisi",
+      "s1b": "Geser ke samping untuk pindah di sepanjang garis pelanggaran, dan atur putaran bila mau.",
+      "s2t": "Lempar bola",
+      "s2b": "Geser ke atas ke arah pin, atau tahan Spasi dan lepas pada tenaga yang Anda mau.",
+      "s3t": "Selesaikan sepuluh frame",
+      "s3b": "Robohkan sisa pin dengan bola kedua. Strike dan spare memberi bonus; lembar skor menjumlahkannya."
+    }
+  },
+  "ui": {
+    "bowling": {
+      "title": "Game bowling",
+      "privacyNote": "Bowling sepuluh pin di lintasan 3D. Semuanya berjalan di halaman ini.",
+      "stage": "Lintasan bowling",
+      "intro": "Geser ke atas untuk melempar. Geser ke samping untuk pindah; geseran melengkung membuat bola berbelok.",
+      "opponent": "Lawan",
+      "solo": "Sendiri",
+      "cpu_0": "Komputer: mudah",
+      "cpu_1": "Komputer: sedang",
+      "cpu_2": "Komputer: sulit",
+      "spin": "Putaran",
+      "newGame": "Permainan baru",
+      "you": "Anda",
+      "computer": "Komputer",
+      "player": "Pemain",
+      "total": "Jumlah",
+      "best": "Skor terbaik",
+      "hud": "{who} · frame {f} · bola {b}",
+      "strike": "Strike, semua roboh!",
+      "spare": "Spare, bersih!",
+      "gutter": "Bola masuk parit.",
+      "none": "Tidak ada pin.",
+      "pin1": "Roboh 1 pin.",
+      "pins": "Roboh {n} pin.",
+      "cpuTurn": "Komputer sedang melempar…",
+      "youWin": "Anda menang {you} lawan {cpu}!",
+      "cpuWins": "Komputer menang {cpu} lawan {you}.",
+      "tie": "Seri dengan {score}.",
+      "gameOver": "Permainan selesai: {score}.",
+      "newBest": "Skor terbaik baru: {score}!",
+      "again": "Main lagi",
+      "resumed": "Dilanjutkan dari frame {f}.",
+      "hint": "Geser ke atas untuk melempar; geser ke samping untuk pindah. Tombol: ← → bergeser, ↑ ↓ membidik, Q E putaran, tahan Spasi lalu lepas untuk melempar."
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "titleBowling": "Bowling game — play 3D ten-pin bowling online — cv.cm",
+    "descBowling": "Play a free 3D bowling game in your browser: swipe or use the keys to roll, add spin to hook the ball, and bowl ten frames against the computer or on your own. Real scoring, works on phones."
+  },
+  "tools": {
+    "bowling": {
+      "name": "Bowling",
+      "blurb": "Ten-pin bowling on a 3D lane."
+    }
+  },
+  "faq": {
+    "bowling": {
+      "q1": "How do I roll the ball?",
+      "a1": "Swipe up on the lane: the direction of the swipe sets the aim, its speed sets the power, and a curved swipe adds spin. Drag sideways first to move along the foul line. With a keyboard, use ← → to move, ↑ ↓ to turn the aim, hold Space and let go when the power meter is where you want it.",
+      "q2": "How does spin work?",
+      "a2": "Spin makes the ball hook once it leaves the oiled front part of the lane. Set it with the Spin slider or Q and E, or curve your swipe. Slower balls hook more. A good strike ball comes into the pocket between the head pin and the pin next to it.",
+      "q3": "How is bowling scored?",
+      "a3": "Ten frames of up to two balls. A strike (all ten with the first ball) scores 10 plus your next two balls; a spare (all ten with two balls) scores 10 plus your next ball. In the tenth frame a strike or spare earns bonus balls. A perfect game is 300.",
+      "q4": "Can I play against the computer?",
+      "a4": "Yes. Pick an easy, normal or hard computer opponent; it bowls its own frames after yours. Or choose Solo to bowl alone and chase your best score.",
+      "q5": "Is my game saved?",
+      "a5": "Your best score and a game in progress stay in this browser, so you can come back to it. Nothing is uploaded."
+    }
+  },
+  "guides": {
+    "bowling": {
+      "lead": "Bowl a game in three steps.",
+      "s1t": "Line up",
+      "s1b": "Drag sideways to move along the foul line and set some spin if you like.",
+      "s2t": "Roll the ball",
+      "s2b": "Swipe up toward the pins, or hold Space and let go at the power you want.",
+      "s3t": "Finish ten frames",
+      "s3b": "Knock down what is left with the second ball. Strikes and spares earn bonus pins; the score sheet adds it all up."
+    }
+  },
+  "ui": {
+    "bowling": {
+      "title": "Bowling game",
+      "privacyNote": "Ten-pin bowling on a 3D lane. Everything runs in this page.",
+      "stage": "Bowling lane",
+      "intro": "Swipe up to roll. Drag sideways to move, curve the swipe to hook.",
+      "opponent": "Opponent",
+      "solo": "Solo",
+      "cpu_0": "Computer: easy",
+      "cpu_1": "Computer: normal",
+      "cpu_2": "Computer: hard",
+      "spin": "Spin",
+      "newGame": "New game",
+      "you": "You",
+      "computer": "Computer",
+      "player": "Player",
+      "total": "Total",
+      "best": "Best game",
+      "hud": "{who} · frame {f} · ball {b}",
+      "strike": "Strike!",
+      "spare": "Spare!",
+      "gutter": "Gutter ball.",
+      "none": "No pins.",
+      "pin1": "1 pin.",
+      "pins": "{n} pins.",
+      "cpuTurn": "The computer is bowling…",
+      "youWin": "You win {you} to {cpu}!",
+      "cpuWins": "The computer wins {cpu} to {you}.",
+      "tie": "A tie at {score}.",
+      "gameOver": "Game over: {score}.",
+      "newBest": "New best game: {score}!",
+      "again": "Play again",
+      "resumed": "Game resumed at frame {f}.",
+      "hint": "Swipe up to roll; drag sideways to move. Keys: ← → move, ↑ ↓ aim, Q E spin, hold Space and release to roll."
+    }
+  }
+}

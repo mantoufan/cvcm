@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "titleMiniGolf": "Minigolf — juego de golf 3D gratis online — cv.cm",
+    "descMiniGolf": "Juega al minigolf en el navegador: nueve hoyos en 3D con rebotadores, pendientes, agua y una barrera giratoria. Tira hacia atrás para golpear, lleva tu tarjeta y supera tu mejor vuelta. Gratis, sin descargas."
+  },
+  "tools": {
+    "mini-golf": {
+      "name": "Minigolf",
+      "blurb": "Nueve hoyos de putt en 3D: bate el par."
+    }
+  },
+  "faq": {
+    "mini-golf": {
+      "q1": "¿Cómo golpeo?",
+      "a1": "Arrastra hacia atrás desde la bola, como un tirachinas: la línea rosa marca la dirección y la fuerza. Suelta para golpear. También puedes fijar la fuerza con el deslizador y pulsar Golpear.",
+      "q2": "¿Se puede jugar con el teclado?",
+      "a2": "Sí. Haz clic en el campo y usa las flechas izquierda y derecha para apuntar (Mayús para afinar), arriba y abajo para la fuerza, y Espacio o Intro para golpear.",
+      "q3": "¿Qué pasa si cae al agua?",
+      "a3": "La bola vuelve al sitio desde donde la jugaste y sumas un golpe de castigo. Tras ocho golpes en un hoyo, la bola se recoge y pasas al siguiente.",
+      "q4": "¿Se guarda la partida?",
+      "a4": "Sí, en este navegador. Si sales, sigues en el mismo hoyo y en el mismo sitio. También se guarda tu mejor total de nueve hoyos.",
+      "q5": "¿Qué es el par?",
+      "a5": "Es el número de golpes que necesita un buen jugador en un hoyo. El par del campo es 24; la tarjeta muestra cada hoyo y tu total respecto al par."
+    }
+  },
+  "guides": {
+    "mini-golf": {
+      "lead": "Juega nueve hoyos en tres pasos.",
+      "s1t": "Apunta el golpe",
+      "s1b": "Pulsa Jugar y arrastra hacia atrás desde la bola. La línea rosa indica dirección y fuerza.",
+      "s2t": "Golpea y observa",
+      "s2b": "Suelta para golpear. Paredes y rebotadores la devuelven, las pendientes la desvían y el agua cuesta un golpe.",
+      "s3t": "Embocar",
+      "s3b": "Mete la bola con los menos golpes posibles. Al terminar cada hoyo empieza el siguiente y se rellena tu tarjeta."
+    }
+  },
+  "ui": {
+    "miniGolf": {
+      "title": "Minigolf",
+      "privacyNote": "Nueve hoyos en 3D en tu navegador. La partida se guarda solo aquí.",
+      "stage": "Campo de minigolf",
+      "intro": "Arrastra hacia atrás desde la bola para apuntar y golpear. Nueve hoyos, par 24.",
+      "power": "Fuerza",
+      "puttBtn": "Golpear",
+      "newRound": "Nueva vuelta",
+      "viewLeft": "Girar la vista a la izquierda",
+      "viewRight": "Girar la vista a la derecha",
+      "scorecard": "Tarjeta",
+      "colHole": "Hoyo",
+      "colPar": "Par del hoyo",
+      "colYou": "Tú",
+      "total": "Suma",
+      "even": "al par",
+      "overPar": "{n} sobre par",
+      "underPar": "{n} bajo par",
+      "noBest": "Aún no has terminado ninguna vuelta.",
+      "best": "Mejor vuelta: {n} golpes ({diff}).",
+      "hud": "Hoyo {n}/{of} · Par {par} · Golpes {s} · Fuerza {p}%",
+      "newBest": "Fin de la vuelta: {total} golpes ({diff}). ¡Nuevo récord!",
+      "roundOver": "Fin de la vuelta: {total} golpes ({diff}).",
+      "again": "Jugar otra vez",
+      "ace": "¡Hoyo en uno!",
+      "eagle": "¡Águila!",
+      "birdie": "¡Birdie!",
+      "par": "Par en el hoyo.",
+      "bogey": "Bogey en el hoyo.",
+      "overHole": "{n} sobre par en este hoyo.",
+      "water": "Al agua: un golpe de castigo, repite desde el mismo sitio.",
+      "pickedUp": "{n} golpes: bola recogida, al siguiente hoyo.",
+      "resumed": "Tu vuelta sigue en el hoyo {n}.",
+      "hint": "Arrastra hacia atrás desde la bola y suelta para golpear. Teclas (haz clic en el campo): ← → apuntar, Mayús para afinar, ↑ ↓ fuerza, Espacio o Intro golpea. ⟲ ⟳ giran la vista."
+    }
+  }
+}

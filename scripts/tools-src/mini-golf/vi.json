@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "titleMiniGolf": "Golf mini — game golf 3D miễn phí trực tuyến — cv.cm",
+    "descMiniGolf": "Chơi golf mini ngay trên trình duyệt: chín lỗ 3D có cột nảy, dốc, hồ nước và thanh chắn quay. Kéo lùi để đánh, ghi thẻ điểm và phá kỷ lục của bạn. Miễn phí, không cần tải."
+  },
+  "tools": {
+    "mini-golf": {
+      "name": "Golf mini",
+      "blurb": "Chín lỗ gạt bóng 3D: vượt qua par."
+    }
+  },
+  "faq": {
+    "mini-golf": {
+      "q1": "Đánh bóng thế nào?",
+      "a1": "Kéo lùi từ quả bóng như kéo ná: đường màu hồng cho biết hướng và lực. Thả tay để đánh. Bạn cũng có thể chỉnh lực bằng thanh trượt rồi bấm Đánh.",
+      "q2": "Chơi bằng bàn phím được không?",
+      "a2": "Được. Bấm vào sân trước, rồi dùng phím mũi tên trái phải để ngắm (giữ Shift để chỉnh nhỏ), lên xuống để đổi lực, Space hoặc Enter để đánh.",
+      "q3": "Bóng rơi xuống nước thì sao?",
+      "a3": "Bóng quay về chỗ bạn vừa đánh và bị phạt một gậy. Đánh đủ tám gậy mà chưa vào lỗ thì bóng được nhặt lên và sang lỗ tiếp theo.",
+      "q4": "Ván chơi có được lưu không?",
+      "a4": "Có, trong trình duyệt này. Rời trang rồi quay lại, bạn chơi tiếp đúng lỗ và đúng vị trí cũ. Tổng gậy tốt nhất cho chín lỗ cũng được giữ lại.",
+      "q5": "Par là gì?",
+      "a5": "Là số gậy một người chơi giỏi cần cho một lỗ. Par cả sân là 24; thẻ điểm hiện từng lỗ và tổng của bạn so với par."
+    }
+  },
+  "guides": {
+    "mini-golf": {
+      "lead": "Chơi chín lỗ trong ba bước.",
+      "s1t": "Ngắm cú đánh",
+      "s1b": "Bấm Chơi rồi kéo lùi từ quả bóng. Đường màu hồng cho thấy hướng và lực.",
+      "s2t": "Đánh và theo dõi",
+      "s2b": "Thả tay để đánh. Tường và cột nảy làm bóng bật lại, dốc làm bóng lượn, rơi xuống nước bị phạt một gậy.",
+      "s3t": "Đưa bóng vào lỗ",
+      "s3b": "Đưa bóng vào lỗ với ít gậy nhất. Xong mỗi lỗ sẽ sang lỗ tiếp theo và thẻ điểm được điền."
+    }
+  },
+  "ui": {
+    "miniGolf": {
+      "title": "Golf mini",
+      "privacyNote": "Chín lỗ 3D ngay trên trình duyệt. Ván chơi chỉ lưu ở máy này.",
+      "stage": "Sân golf mini",
+      "intro": "Kéo lùi từ quả bóng để ngắm và đánh. Chín lỗ, par 24.",
+      "power": "Lực",
+      "puttBtn": "Đánh",
+      "newRound": "Ván mới",
+      "viewLeft": "Xoay góc nhìn sang trái",
+      "viewRight": "Xoay góc nhìn sang phải",
+      "scorecard": "Thẻ điểm",
+      "colHole": "Lỗ",
+      "colPar": "Par của lỗ",
+      "colYou": "Bạn",
+      "total": "Tổng",
+      "even": "bằng par",
+      "overPar": "hơn par {n} gậy",
+      "underPar": "dưới par {n} gậy",
+      "noBest": "Bạn chưa chơi xong ván nào.",
+      "best": "Ván tốt nhất: {n} gậy ({diff}).",
+      "hud": "Lỗ {n}/{of} · Par {par} · {s} gậy · Lực {p}%",
+      "newBest": "Hết ván: {total} gậy ({diff}). Kỷ lục mới!",
+      "roundOver": "Hết ván: {total} gậy ({diff}).",
+      "again": "Chơi lại",
+      "ace": "Hole in one — một gậy vào lỗ!",
+      "eagle": "Eagle — dưới par hai gậy!",
+      "birdie": "Birdie — dưới par một gậy!",
+      "par": "Bằng par.",
+      "bogey": "Bogey — hơn par một gậy.",
+      "overHole": "Lỗ này hơn par {n} gậy.",
+      "water": "Rơi xuống nước: phạt một gậy, đánh lại từ chỗ cũ.",
+      "pickedUp": "{n} gậy: nhặt bóng, sang lỗ tiếp theo.",
+      "resumed": "Ván của bạn tiếp tục ở lỗ {n}.",
+      "hint": "Kéo lùi từ quả bóng rồi thả để đánh. Phím (bấm vào sân trước): ← → ngắm, giữ Shift để chỉnh nhỏ, ↑ ↓ lực, Space hoặc Enter để đánh. ⟲ ⟳ xoay góc nhìn."
+    }
+  }
+}

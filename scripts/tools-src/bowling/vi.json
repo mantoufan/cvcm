@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "titleBowling": "Game bowling — chơi bowling 3D online miễn phí — cv.cm",
+    "descBowling": "Chơi game bowling 3D miễn phí trên trình duyệt: vuốt hoặc dùng phím để ném, thêm xoáy cho bóng cong vào túi, chơi mười frame với máy hoặc một mình. Tính điểm chuẩn, chơi được trên điện thoại."
+  },
+  "tools": {
+    "bowling": {
+      "name": "Chơi bowling",
+      "blurb": "Bowling mười ki trên làn 3D."
+    }
+  },
+  "faq": {
+    "bowling": {
+      "q1": "Ném bóng thế nào?",
+      "a1": "Vuốt lên trên làn: hướng vuốt là hướng ngắm, tốc độ vuốt là lực, vuốt cong sẽ thêm xoáy. Kéo ngang trước để di chuyển dọc vạch phạm lỗi. Với bàn phím: ← → di chuyển, ↑ ↓ chỉnh hướng, giữ Space rồi thả khi thanh lực ở chỗ bạn muốn.",
+      "q2": "Xoáy có tác dụng gì?",
+      "a2": "Bóng có xoáy sẽ cong khi ra khỏi phần làn có dầu phía trước. Chỉnh bằng thanh «Xoáy», phím Q và E, hoặc vuốt cong. Bóng càng chậm càng cong nhiều. Muốn strike hãy đưa bóng vào túi giữa ki số 1 và ki bên cạnh.",
+      "q3": "Tính điểm bowling ra sao?",
+      "a3": "Mười frame, mỗi frame tối đa hai bóng. Strike (đổ cả mười ki bằng bóng đầu) được 10 cộng hai bóng tiếp theo; spare (đổ hết bằng hai bóng) được 10 cộng bóng tiếp theo. Ở frame thứ mười, strike hoặc spare được ném thêm. Điểm tối đa là 300.",
+      "q4": "Có chơi với máy được không?",
+      "a4": "Được. Chọn máy dễ, thường hoặc khó; máy sẽ ném frame của nó sau bạn. Hoặc chọn «Một mình» để tự chơi và phá kỷ lục.",
+      "q5": "Ván chơi có được lưu không?",
+      "a5": "Điểm cao nhất và ván đang chơi được lưu trong trình duyệt này để bạn chơi tiếp sau. Không có gì được tải lên."
+    }
+  },
+  "guides": {
+    "bowling": {
+      "lead": "Chơi một ván qua ba bước.",
+      "s1t": "Chọn vị trí",
+      "s1b": "Kéo ngang để di chuyển dọc vạch phạm lỗi và chỉnh xoáy nếu muốn.",
+      "s2t": "Ném bóng",
+      "s2b": "Vuốt lên về phía ki, hoặc giữ Space rồi thả ở lực bạn muốn.",
+      "s3t": "Chơi đủ mười frame",
+      "s3b": "Dùng bóng thứ hai đánh đổ số ki còn lại. Strike và spare được cộng điểm thưởng, bảng điểm tự cộng."
+    }
+  },
+  "ui": {
+    "bowling": {
+      "title": "Game bowling",
+      "privacyNote": "Bowling mười ki trên làn 3D. Mọi thứ chạy ngay trong trang này.",
+      "stage": "Làn bowling",
+      "intro": "Vuốt lên để ném. Kéo ngang để di chuyển, vuốt cong để bóng xoáy.",
+      "opponent": "Đối thủ",
+      "solo": "Một mình",
+      "cpu_0": "Máy: dễ",
+      "cpu_1": "Máy: thường",
+      "cpu_2": "Máy: khó",
+      "spin": "Xoáy",
+      "newGame": "Ván mới",
+      "you": "Bạn",
+      "computer": "Máy",
+      "player": "Người chơi",
+      "total": "Tổng",
+      "best": "Ván cao nhất",
+      "hud": "{who} · frame {f} · bóng {b}",
+      "strike": "Strike rồi!",
+      "spare": "Spare rồi!",
+      "gutter": "Bóng rơi rãnh.",
+      "none": "Không đổ ki nào.",
+      "pin1": "Đổ 1 ki.",
+      "pins": "Đổ {n} ki.",
+      "cpuTurn": "Máy đang ném…",
+      "youWin": "Bạn thắng {you} – {cpu}!",
+      "cpuWins": "Máy thắng {cpu} – {you}.",
+      "tie": "Hòa {score} điểm.",
+      "gameOver": "Hết ván: {score} điểm.",
+      "newBest": "Kỷ lục mới: {score} điểm!",
+      "again": "Chơi lại",
+      "resumed": "Đã chơi tiếp từ frame {f}.",
+      "hint": "Vuốt lên để ném, kéo ngang để di chuyển. Phím: ← → di chuyển, ↑ ↓ ngắm, Q E xoáy, giữ Space rồi thả để ném."
+    }
+  }
+}

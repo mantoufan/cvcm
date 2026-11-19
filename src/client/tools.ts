@@ -1354,4 +1354,34 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountBilliards(host, "snooker");
     return m.unmountBilliards;
   },
+  "basketball-game": async (host, ctx) => {
+    const m = await import("./basketball-game/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountBasketballGame(host);
+    return m.unmountBasketballGame;
+  },
+  "mini-golf": async (host, ctx) => {
+    const m = await import("./mini-golf/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountMiniGolf(host);
+    return m.unmountMiniGolf;
+  },
+  "archery": async (host, ctx) => {
+    const m = await import("./archery/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountArchery(host);
+    return m.unmountArchery;
+  },
+  "ping-pong": async (host, ctx) => {
+    const m = await import("./ping-pong/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPingPong(host);
+    return m.unmountPingPong;
+  },
+  "bowling": async (host, ctx) => {
+    const m = await import("./bowling/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountBowling(host);
+    return m.unmountBowling;
+  },
 };

@@ -60,7 +60,7 @@ export const CATEGORIES = [
   { id: "games", tools: ["rom-emulator", "flash-player", "sudoku", "tic-tac-toe", "2048", "dinosaur-game", "mahjong", "chess", "chinese-chess", "solitaire", "spider-solitaire", "freecell", "minesweeper", "snake-game", "checkers", "reversi", "gomoku", "nonogram", "memory-game", "chinese-checkers"] },
   { id: "wordgames", tools: ["word-search", "hangman", "typing-game", "typing-practice"] },
   // Three.js games: the renderer and three itself load only when a game starts (Play), never during prerender.
-  { id: "games3d", tools: ["3d-chess", "magic-cube", "cube-solver", "stack-game", "driving-game", "flight-simulator", "pinball", "pool-game", "air-hockey", "darts", "billiards", "snooker"] },
+  { id: "games3d", tools: ["3d-chess", "magic-cube", "cube-solver", "stack-game", "driving-game", "flight-simulator", "pinball", "pool-game", "air-hockey", "darts", "billiards", "snooker", "basketball-game", "mini-golf", "archery", "ping-pong", "bowling"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
   { id: "academic", tools: ["standard-deviation", "sample-size", "cronbach-alpha", "t-test", "chi-square", "p-value", "z-score", "citation-generator", "apa-citation-generator", "mla-citation-generator", "harvard-referencing-generator", "title-case", "words-to-pages"] },
   { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation", "idea-validator"] },
@@ -306,6 +306,11 @@ export const TOOLS = [
   "pressure-points-map",
   "billiards",
   "snooker",
+  "basketball-game",
+  "mini-golf",
+  "archery",
+  "ping-pong",
+  "bowling",
 ] as const;
 export type ToolId = (typeof TOOLS)[number];
 
@@ -319,7 +324,7 @@ export const GAME_KIND_TOOLS: Readonly<Record<GameKindId, readonly ToolId[]>> = 
   puzzle: ["sudoku", "2048", "minesweeper", "mahjong", "nonogram", "memory-game", "magic-cube", "cube-solver"],
   word: ["word-search", "hangman", "typing-game", "typing-practice"],
   arcade: ["snake-game", "dinosaur-game", "stack-game"],
-  sports: ["driving-game", "flight-simulator", "pinball", "pool-game", "billiards", "snooker", "air-hockey", "darts"],
+  sports: ["driving-game", "flight-simulator", "pinball", "pool-game", "billiards", "snooker", "air-hockey", "darts", "basketball-game", "mini-golf", "archery", "ping-pong", "bowling"],
 };
 
 /** The 3D games (tool pages), also listed on the /games/3d/ tag hub. */

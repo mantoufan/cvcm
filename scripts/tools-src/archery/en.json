@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "titleArchery": "Archery game — shoot a bow at a 3D target online — cv.cm",
+    "descArchery": "Play archery online for free: draw the bow, steady the sight and shoot at a ten-ring target from 18, 30, 50 or 70 m. Read the wind, score six ends of three arrows and beat your best."
+  },
+  "tools": {
+    "archery": {
+      "name": "Archery",
+      "blurb": "Draw, aim into the wind and hit the gold."
+    }
+  },
+  "faq": {
+    "archery": {
+      "q1": "How do I shoot an arrow?",
+      "a1": "Press and hold on the target (or hold Space) to draw the bow, move the sight onto your mark, and let go to shoot. A full draw takes under a second; let go too early and the arrow drops low.",
+      "q2": "How is it scored?",
+      "a2": "The target has ten rings worth 1 to 10 from the outside in. An arrow touching a line gets the higher ring, and the small inner 10 counts as an X, which breaks ties. A round is six ends of three arrows, 180 points at most.",
+      "q3": "How does the wind work?",
+      "a3": "The flag beside the target and the wind value show a side wind that changes every end. It pushes the arrow sideways more at longer distances, so aim a little into the wind.",
+      "q4": "Why does the sight move?",
+      "a4": "Like a real archer's, your aim sways. It steadies about a second after you start to draw and starts to shake again if you hold for more than four seconds, so shoot in that calm window.",
+      "q5": "Does it work on a phone?",
+      "a5": "Yes. Touch and hold the target to draw, slide to aim and lift your finger to shoot. Your best round for each distance is saved in this browser."
+    }
+  },
+  "guides": {
+    "archery": {
+      "lead": "Shoot a round of archery in three steps.",
+      "s1t": "Choose a distance",
+      "s1b": "Pick 18, 30, 50 or 70 m and press Play. The face is bigger at the longer distances.",
+      "s2t": "Draw and steady",
+      "s2b": "Hold on the target or hold Space. Wait for the sight to settle and allow for the wind.",
+      "s3t": "Release and score",
+      "s3b": "Let go to shoot. Three arrows make an end; six ends make a round."
+    }
+  },
+  "ui": {
+    "archery": {
+      "title": "Archery",
+      "privacyNote": "Shoot six ends of three arrows at a ten-ring target. Everything runs in this page.",
+      "stage": "Archery range",
+      "intro": "Hold to draw the bow, steady the sight, let go to shoot.",
+      "distance": "Distance",
+      "meters": "{n} m",
+      "newRound": "New round",
+      "faceLabel": "Target face with this end's arrows",
+      "calm": "calm",
+      "windValue": "{dir} {n} m/s",
+      "wind": "Wind",
+      "endOf": "End {n}/{of}",
+      "arrowOf": "Arrow {n}/{of}",
+      "totalShort": "Total {n}",
+      "end": "End",
+      "endScore": "Score",
+      "running": "Total",
+      "total": "Total {n} with {x} X from {arrows} arrows.",
+      "best": "Best at {d} m: {n} points, {x} X.",
+      "noBest": "No round finished at {d} m yet.",
+      "hit": "Hit: {s}.",
+      "boss": "On the boss, outside the face: no score.",
+      "miss": "Missed the target.",
+      "newBest": "New best: {n} points with {x} X!",
+      "roundDone": "Round over: {n} points with {x} X.",
+      "again": "Shoot again",
+      "hint": "Move the mouse to aim, hold the button or Space to draw, release to shoot. Arrow keys fine-tune the sight (Shift for bigger steps).",
+      "hintTouch": "Touch and hold the target to draw, slide to aim, lift to shoot."
+    }
+  }
+}

@@ -3,6 +3,7 @@
  * computer's shot search. Pure functions only, shared by the page (src/client/pool-game/) and the tests. Units are
  * metres and seconds; x runs along the table (head at -x, foot at +x), y across it.
  */
+import { approxNormal } from "./random";
 
 /** Play area of an 8-foot table (cushion nose to cushion nose). */
 export const TABLE_L = 2.24;
@@ -426,7 +427,7 @@ export function chooseShot(state: PoolState, level: Level, rand: () => number): 
   const lv = LEVELS[level]!;
   const noisy = (s: Shot): Shot => {
     // Sum of uniforms ≈ normal with the level's spread.
-    const n = (rand() + rand() + rand() - 1.5) * 2 * lv.noise;
+    const n = approxNormal(rand) * lv.noise;
     return { angle: s.angle + n, power: s.power };
   };
   if (state.breakShot) {

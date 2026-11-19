@@ -1,7 +1,7 @@
 import type { Group, Material, Mesh, MeshStandardMaterial } from "three";
 import { h } from "../dom";
 import { t } from "../i18n";
-import { creditLine, readStore, typingTarget, writeStore } from "../game-input";
+import { creditLine, readStore, writeStore } from "../game-input";
 import { coarsePointer, createStage, gameShell, heldKeys, holdPad, lostContext, type Stage } from "../three-stage";
 import {
   BALL_R,
@@ -337,15 +337,7 @@ export function mountPinball(host: HTMLElement): void {
   shell.stage.addEventListener("lostpointercapture", onPointerUp);
   shell.stage.addEventListener("contextmenu", (e) => e.preventDefault());
 
-  // Space or Enter on the stage after a game over plays again, like the cover's button.
-  const onKey = (e: KeyboardEvent) => {
-    if (e.code !== "Space" && e.code !== "Enter" && e.code !== "NumpadEnter") return;
-    if (e.ctrlKey || e.metaKey || e.altKey || typingTarget(e.target)) return;
-    if (e.target !== shell.stage || !shell.covered() || !game || playing) return;
-    e.preventDefault();
-    if (!e.repeat) shell.root.querySelector<HTMLButtonElement>('[data-act="play"]')?.click();
-  };
-  window.addEventListener("keydown", onKey);
+  // Space / Enter on the covered stage is handled by gameShell (it presses Play / Play again).
 
   const newBtn = h("button", { type: "button", class: "btn ghost", "data-act": "new-game" }, t("pinball.newGame")) as HTMLButtonElement;
   newBtn.addEventListener("click", () => {
@@ -377,7 +369,6 @@ export function mountPinball(host: HTMLElement): void {
   mounted = {
     cleanup: () => {
       window.clearTimeout(coverTimer);
-      window.removeEventListener("keydown", onKey);
       shell.stage.removeEventListener("pointerdown", onPointerDown);
       shell.stage.removeEventListener("pointerup", onPointerUp);
       shell.stage.removeEventListener("pointercancel", onPointerUp);

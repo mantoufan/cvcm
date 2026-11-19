@@ -227,6 +227,11 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "pressure-points-map": "/covers/pressure-points-map-sweet.jpg?v=1",
   billiards: "/covers/billiards-sweet.jpg?v=1",
   snooker: "/covers/snooker-sweet.jpg?v=1",
+  "basketball-game": "/covers/basketball-game-sweet.jpg?v=1",
+  "mini-golf": "/covers/mini-golf-sweet.jpg?v=1",
+  "archery": "/covers/archery-sweet.jpg?v=1",
+  "ping-pong": "/covers/ping-pong-sweet.jpg?v=1",
+  "bowling": "/covers/bowling-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {
