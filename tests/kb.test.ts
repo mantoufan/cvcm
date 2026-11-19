@@ -123,6 +123,8 @@ describe("knowledge: routes", () => {
     expect(ld.mainEntity.itemListElement.length).toBe(MASSAGE_ARTICLES.length);
     expect(kbForTool("countdown", "massage")).toContain("pressure-points-for-headache");
     expect(kbForTool("countdown", "photo")).not.toContain("pressure-points-for-headache");
+    expect(kbForTool("pressure-points-map", "massage")).toContain("foot-reflexology-chart");
+    expect(kbPageHtml("en", "foot-reflexology-chart")).toContain('href="/en/pressure-points-map/"');
     const article = kbPageHtml("vi", "neck-and-shoulder-massage");
     expect(article).toContain('href="/vi/learn/massage/" data-nav="massage-learn"');
     expect(article).toContain('href="/vi/pomodoro/"');
