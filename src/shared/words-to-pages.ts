@@ -5,6 +5,7 @@
  */
 import { FONT_METRICS } from "./font-metrics";
 import { SAMPLE_TEXT } from "./words-to-pages-sample";
+import { countWords } from "./word-count";
 
 export const FONT_IDS = ["times", "arial", "calibri", "aptos", "cambria", "georgia", "verdana", "courier"] as const;
 export type FontId = (typeof FONT_IDS)[number];
@@ -114,16 +115,7 @@ function tokens(paragraph: string): { text: string; space: boolean }[] {
   return out;
 }
 
-/** Chinese characters and Japanese kana: each one counts as a word. Korean, which spaces its words, counts by spaces. */
-const PER_CHAR = /[\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}]/gu;
-
-/**
- * Words as word processors count them: runs between spaces, every Chinese character or kana on its own, and nothing
- * for punctuation standing alone (，。 — …). Unlike word-count.ts, a Korean word is one word, not one per syllable.
- */
-export function countWords(text: string): number {
-  return text.replace(PER_CHAR, " $& ").split(/\s+/).filter((t) => /[\p{L}\p{N}]/u.test(t)).length;
-}
+export { countWords };
 
 /** Lines the text takes. Each line of input is a paragraph; blank lines between paragraphs are not counted. */
 export function countLines(text: string, setup: PageSetup): number {
