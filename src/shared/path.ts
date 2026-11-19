@@ -1,13 +1,7 @@
 import { isClipId } from "./clip";
 import { DEVICE_SLUG, devicePageFromSlug, type DeviceChildId, type DevicePageId } from "./device";
-import {
-  gameById,
-  isGameConsoleId,
-  isGameId,
-  type GameConsoleId,
-  type GameId,
-  type ToolGameHubId,
-} from "./games";
+import { demoById } from "./demo-roms";
+import { isEmuConsoleId, isGameHubId, legacyGameConsole, type EmuConsoleId, type GameHubId } from "./games";
 import { isMarketId, type MarketId } from "./markets";
 import { isQuizId, type QuizId } from "./quiz";
 import { DATASET_SEGMENT, isDatasetId, type DatasetId } from "./datasets";
@@ -320,7 +314,7 @@ export const GAMES_3D: readonly ToolId[] = CATEGORIES.find((c) => c.id === "game
  * The games hub a game tool page belongs to (`/games/mini/` or `/games/3d/`), or null for every other tool. Those
  * pages show Home / Games / hub / game instead of Home / Tools / tool, with matching BreadcrumbList JSON-LD.
  */
-export function gameHubOf(tool: ToolId): ToolGameHubId | null {
+export function gameHubOf(tool: ToolId): GameHubId | null {
   if ((GAMES_3D as readonly string[]).includes(tool)) return "3d";
   if ((BROWSER_GAMES as readonly string[]).includes(tool)) return "mini";
   return null;
@@ -628,10 +622,35 @@ export function isLegalPageId(value: string): value is LegalPageId {
   return (LEGAL_PAGES as readonly string[]).includes(value);
 }
 
-export type GamesPath = {
-  console: GameConsoleId | null;
-  game: GameId | null;
-};
+/** A games hub: null for /games/, or /games/mini/, /games/3d/. */
+export type GamesPath = { hub: GameHubId | null };
+
+/** The emulator tool that replaced a retired catalogue page (see LEGACY_GAMES in games.ts). */
+export type RetiredGameTool = "rom-emulator" | "flash-player";
+
+/** Where a retired catalogue page went: its emulator tool, and the game when it is one of the hosted demos. */
+export type RetiredGame = { tool: RetiredGameTool; demo: string | null };
+
+/**
+ * Where a retired page redirects (the Worker's 301 and the client router alike): the tool, `#demo-<id>` when the game
+ * is a hosted demo, and the query without the old genre filter (campaign tags are kept).
+ */
+export function retiredGameUrl(locale: Locale, retired: RetiredGame, origin: string, search: string): string {
+  const next = new URL(appHref(locale, retired.tool), origin);
+  next.search = search;
+  // Re-serialised only when there is a genre to drop, so campaign tags keep their exact encoding.
+  if (next.searchParams.has("genre")) next.searchParams.delete("genre");
+  if (retired.demo) next.hash = `demo-${retired.demo}`;
+  return next.toString();
+}
+
+function retired(consoleId: EmuConsoleId, id: string | null): RetiredGame {
+  return { tool: emulatorToolOf(consoleId), demo: id && demoById(id) ? id : null };
+}
+
+export function emulatorToolOf(consoleId: EmuConsoleId): RetiredGameTool {
+  return consoleId === "flash" ? "flash-player" : "rom-emulator";
+}
 
 /** A kb route: an article, null for the knowledge hub, or another shelf's hub ("code", "ai", "photo", "massage"). */
 export type KbArticlePath = KbId | Exclude<KbHub, "hub"> | null;
@@ -651,6 +670,7 @@ export type AppPath =
   | { kind: "bare"; tool: ToolId | null; clipId?: string; convertJob?: ConvertJobId; resizeJob?: ResizeJobId }
   | { kind: "bare-learn"; tutorial: TutorialId | null }
   | ({ kind: "bare-games" } & GamesPath)
+  | ({ kind: "games-retired"; locale: Locale | null } & RetiredGame)
   | { kind: "bare-markets"; market: MarketId | null }
   | { kind: "bare-device"; page: DevicePageId }
   | { kind: "bare-legal"; page: LegalPageId }
@@ -705,19 +725,18 @@ function parseMarketsTail(page?: string, extra?: string[]): MarketId | null | "u
   return isMarketId(page) ? page : "unknown";
 }
 
-function parseGamesTail(consoleOrGame?: string, gamePart?: string, extra?: string[]): GamesPath | "unknown" {
+function parseGamesTail(hubOrGame?: string, gamePart?: string, extra?: string[]): GamesPath | RetiredGame | "unknown" {
   if (extra && extra.length > 0) return "unknown";
-  if (!consoleOrGame) return { console: null, game: null };
-  if (isGameConsoleId(consoleOrGame)) {
-    if (!gamePart) return { console: consoleOrGame, game: null };
-    const game = gameById(gamePart);
-    if (game && game.console === consoleOrGame) return { console: consoleOrGame, game: game.id };
+  if (!hubOrGame) return { hub: null };
+  if (isGameHubId(hubOrGame)) return gamePart ? "unknown" : { hub: hubOrGame };
+  // Retired catalogue: a system hub, a game under its own system, or the short /games/<id>/ form.
+  if (isEmuConsoleId(hubOrGame)) {
+    if (!gamePart) return retired(hubOrGame, null);
+    if (legacyGameConsole(gamePart) === hubOrGame) return retired(hubOrGame, gamePart);
     return "unknown";
   }
-  if (isGameId(consoleOrGame) && !gamePart) {
-    const game = gameById(consoleOrGame)!;
-    return { console: game.console, game: game.id };
-  }
+  const legacy = legacyGameConsole(hubOrGame);
+  if (legacy && !gamePart) return retired(legacy, hubOrGame);
   return "unknown";
 }
 
@@ -770,6 +789,7 @@ export function parseAppPath(pathname: string): AppPath {
     if (second === "games") {
       const games = parseGamesTail(third, rest[0], rest.slice(1));
       if (games === "unknown") return { kind: "unknown" };
+      if ("tool" in games) return { kind: "games-retired", locale, ...games };
       return { kind: "games", locale, ...games };
     }
     if (second === "markets") {
@@ -904,6 +924,7 @@ export function parseAppPath(pathname: string): AppPath {
   if (first === "games") {
     const games = parseGamesTail(second, third, rest);
     if (games === "unknown") return { kind: "unknown" };
+    if ("tool" in games) return { kind: "games-retired", locale: null, ...games };
     return { kind: "bare-games", ...games };
   }
   if (first === "device") {
@@ -1137,17 +1158,9 @@ export function marketsHref(locale: Locale, market: MarketId | null = null): str
   return market ? `${base}/${market}/` : `${base}/`;
 }
 
-export function gamesHref(
-  locale: Locale,
-  consoleId: GameConsoleId | null = null,
-  game: GameId | null = null,
-): string {
+export function gamesHref(locale: Locale, hub: GameHubId | null = null): string {
   const base = `/${localePath(locale)}/games`;
-  if (game) {
-    const resolved = consoleId ?? gameById(game)?.console;
-    return resolved ? `${base}/${resolved}/${game}/` : `${base}/`;
-  }
-  return consoleId ? `${base}/${consoleId}/` : `${base}/`;
+  return hub ? `${base}/${hub}/` : `${base}/`;
 }
 
 /** Keep `location.search` / `url.search` on canonical redirects. */

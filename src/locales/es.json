@@ -180,20 +180,8 @@
     "descCompound": "Estima un valor futuro en el navegador. Principal, tipo, años, frecuencia. Nada se sube.",
     "titleVat": "Calculadora de IVA — impuesto sobre ventas — cv.cm",
     "descVat": "Suma IVA o separa un precio con impuesto en el navegador. Nada se sube.",
-    "titleGames": "Juega NES, SNES, GB, GBA y Flash en el navegador — trucos y guías — cv.cm",
-    "descGames": "Juegos retro en esta pestaña. Trucos, guías y EmulatorJS. Flash abre SWF con Ruffle. El homebrew empieza solo. Los clásicos cargan tu ROM. Nada se sube.",
-    "titleGamesFc": "Juegos de FC / NES — trucos y guías — cv.cm",
-    "descGamesFc": "Juega a NES en el navegador. Contra, Super Mario Bros, Battle City. Trucos y guías cortas. Carga tu propia ROM.",
-    "titleGamesSfc": "Juegos de SFC / SNES — trucos y guías — cv.cm",
-    "descGamesSfc": "Juega a SNES en el navegador. Super Mario World, Zelda, Street Fighter II. Trucos y guías.",
-    "titleGamesGb": "Juegos de Game Boy — trucos y guías — cv.cm",
-    "descGamesGb": "Juega a Game Boy en el navegador. Pokémon Rojo, Tetris, Kirby. Trucos y guías.",
-    "titleGamesGbc": "Juegos de Game Boy Color — trucos y guías — cv.cm",
-    "descGamesGbc": "Juega a GBC en el navegador. Trucos de Pokémon Oro y una guía de Johto.",
-    "titleGamesGba": "Juegos de GBA — trucos y guías — cv.cm",
-    "descGamesGba": "Juega a GBA en el navegador. Pokémon Esmeralda, Mario Kart, Minish Cap. Trucos y guías.",
-    "titleGamesMd": "Juegos de Mega Drive / Genesis — trucos y guías — cv.cm",
-    "descGamesMd": "Juega a Sonic y Streets of Rage 2 en el navegador. Trucos y guías. Carga tu propia ROM.",
+    "titleGames": "Juegos gratis en el navegador: solitario, ajedrez, mahjong y juegos 3D — cv.cm",
+    "descGames": "Juegos gratis que se juegan en esta pestaña: solitario, solitario spider, FreeCell, ajedrez, ajedrez chino, mahjong, sudoku, 2048, juegos de palabras y juegos 3D. Sin descargas. También un emulador de ROM y un reproductor Flash con juegos de código abierto.",
     "titleReverse": "Invertir texto — palíndromo — cv.cm",
     "descReverse": "Invierte texto y comprueba palíndromos en el navegador. Nada se sube.",
     "titleUrlEncode": "URL encode — codificación percent — cv.cm",
@@ -322,8 +310,6 @@
     "descOil": "Convierte un barril de petróleo, un galón de EE. UU. y un litro en el navegador. Un barril son 42 galones de EE. UU. No se sube nada.",
     "titleStocks": "Capitalización y PER — cv.cm",
     "descStocks": "Calcula la capitalización con un precio y las acciones en circulación, el PER con el beneficio anual por acción y la rentabilidad con el dividendo anual. Sin cotizaciones.",
-    "titleGamesFlash": "Juega Flash en el navegador — reproductor SWF — cv.cm",
-    "descGamesFlash": "Abre un SWF en el navegador con Ruffle. Sin plugin de Flash. Si no hay archivo, súbelo tú. El archivo se queda en esta pestaña.",
     "titlePercentOff": "Cómo calcular un descuento | cv.cm",
     "descPercentOff": "Un 20% sobre 100 es un precio de 80,00 y un ahorro de 20,00. No es un margen del 20%. Un 120% puede bajar de cero. Un porcentaje negativo sube el precio. Nada se sube.",
     "titleEncodeUrl": "Cómo codificar una URL | cv.cm",
@@ -4534,16 +4520,16 @@
       "a5": "Ninguna. Es solo un número con dos decimales."
     },
     "games": {
-      "q1": "¿Puedo jugar a juegos de NES en el navegador?",
-      "a1": "Sí. De NES a Mega Drive se usa EmulatorJS de GitHub. Los núcleos están en S3. Flash abre un SWF con Ruffle. En el teléfono hay controles táctiles.",
-      "q2": "¿Hay ROMs de Super Mario o Contra alojadas?",
-      "a2": "No hay volcados comerciales. Esas páginas tienen trucos y guías; tú cargas una ROM que sea tuya. Los freeware de Shiru (Alter Ego, Lawn Mower) arrancan sin archivo.",
-      "q3": "¿Cómo funcionan los trucos?",
-      "a3": "Cada página de juego lista códigos tipo Game Genie / Gameshark. Cuando la ROM arranque, pégalos en el menú de trucos del emulador. Los códigos dependen de la versión del volcado.",
-      "q4": "¿Se sube la ROM?",
-      "a4": "No. El archivo local se lee en esta pestaña y se pasa al emulador. Los homebrew que podemos redistribuir se descargan de nuestro bucket de S3.",
-      "q5": "¿Qué consolas funcionan en el teléfono?",
-      "a5": "NES, GB, GBC y la mayoría de GBA / Mega Drive. SNES pesa más. Flash abre un SWF tuyo y el toque cuenta como ratón. Lucha y karts van mejor en horizontal con un mando."
+      "q1": "¿Estos juegos son gratis?",
+      "a1": "Sí. Todos los juegos son gratis y no necesitan cuenta ni descarga.",
+      "q2": "¿Funcionan en el móvil?",
+      "a2": "Sí. Todos los juegos aceptan pantalla táctil. Los juegos 3D necesitan un navegador con WebGL, que tienen los móviles actuales.",
+      "q3": "¿Se guarda mi progreso?",
+      "a3": "Las partidas en curso y los mejores resultados se quedan en este navegador; no se sube nada. Si borras los datos de este sitio, se borran.",
+      "q4": "¿Puedo jugar juegos de NES o Game Boy?",
+      "a4": "Sí, en el emulador de ROM: abre una ROM que tengas derecho a usar o empieza uno de sus juegos de código abierto. cv.cm no aloja ROM comerciales.",
+      "q5": "¿Puedo jugar juegos Flash?",
+      "a5": "El reproductor Flash abre un archivo .swf con Ruffle, sin plugin, y tiene algunos juegos Flash de código abierto para probar."
     },
     "reverse": {
       "q1": "¿Puedo invertir texto aquí?",
@@ -4992,18 +4978,6 @@
       "a4": "La rentabilidad queda en blanco porque el divisor es cero.",
       "q5": "¿Hay un precio de la acción?",
       "a5": "No. Tú escribes el precio. Es aritmética, no una recomendación."
-    },
-    "gamesFlash": {
-      "q1": "¿Se puede jugar a Flash en el navegador?",
-      "a1": "Sí. Esta página ejecuta SWF con Ruffle, un emulador de Flash de código abierto. No hace falta instalar Adobe Flash Player.",
-      "q2": "¿Y si no hay archivo?",
-      "a2": "El reproductor pide subirlo. Elige un SWF. El archivo se queda en esta pestaña y no se envía a un servidor.",
-      "q3": "¿Por qué un SWF no arranca?",
-      "a3": "Muchos juegos son más de un archivo, o solo funcionan en su web original. Esta página es para un SWF que pueda ir solo. Parte de ActionScript 3 sigue incompleta.",
-      "q4": "¿Flash funciona en el teléfono?",
-      "a4": "Se abre. El toque cuenta como el ratón. Los juegos que necesitan pasar el cursor o el teclado van mejor en un ordenador.",
-      "q5": "¿Puedo descargar aquí juegos Flash clásicos?",
-      "a5": "No. Usa un SWF que ya tengas. cv.cm solo alojará un SWF si su licencia permite redistribuirlo."
     },
     "mosaic": {
       "q1": "¿Pixelar sube mi foto?",
@@ -5613,7 +5587,7 @@
       "q3": "¿Por qué me pide elegir una consola?",
       "a3": "Los archivos de SNES no tienen una cabecera fija, y un .bin, también dentro de un zip, puede ser de cualquier consola. Si el archivo no indica su consola, elige una en Consola y el juego empezará.",
       "q4": "¿cv.cm ofrece ROM?",
-      "a4": "No ofrece ROM comerciales. Abre un archivo que tengas derecho a usar. La sección Juegos tiene juegos homebrew gratis que empiezan sin archivo.",
+      "a4": "No ofrece ROM comerciales. Abre un archivo que tengas derecho a usar o empieza uno de los juegos de código abierto de esta página; no necesitan archivo.",
       "q5": "¿Cómo juego y guardo?",
       "a5": "Los controles aparecen cuando empieza el juego. En el móvil, usa el mando en pantalla o un mando Bluetooth. Guardar y cargar estados está en la barra del emulador."
     },
@@ -9053,7 +9027,7 @@
       "result": "Su juego funciona en una pestaña del navegador, con las teclas a la vista y un archivo de guardado en su dispositivo.",
       "note": "Use ROM que tenga derecho a usar, como juegos homebrew publicados por su autor. cv.cm no ofrece ROM comerciales.",
       "s1t": "Busque una ROM que pueda usar",
-      "s1b": "Una ROM es la copia de un cartucho de juego en un archivo. Esta herramienta abre juegos de FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance y Mega Drive / Genesis. Si no tiene ningún archivo, la sección Juegos de cv.cm tiene homebrew gratis.",
+      "s1b": "Una ROM es la copia de un cartucho de juego en un archivo. Esta herramienta abre juegos de FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance y Mega Drive / Genesis. Si no tiene ningún archivo, la herramienta tiene juegos de código abierto que empiezan con un clic.",
       "s2t": "Abra el emulador online de cv.cm",
       "s2b": "Pulse Elegir ROM y seleccione un archivo .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin o .zip. Se lee en esta pestaña y no se envía a ningún sitio. La primera vez también se descarga el emulador, así que espere un momento.",
       "s3t": "Compruebe la consola",
@@ -9085,7 +9059,7 @@
       "s5t": "Sepa por qué un archivo se detiene al cargar",
       "s5b": "Esta página solo ejecuta archivos que pueden arrancar solos y bloquea el acceso a la red. Un juego que carga otros SWF o XML, o que solo funciona en su antiguo sitio web, se detiene en la pantalla de carga.",
       "s6t": "Pruebe otra opción si falla",
-      "s6b": "Ruffle ejecuta la mayoría de los archivos antiguos de ActionScript 1 y 2, pero su soporte de ActionScript 3 aún está incompleto, así que algunos juegos más nuevos pueden no arrancar o funcionar mal. Pulse Elegir SWF de nuevo para abrir otro archivo o juegue a los títulos gratis de la sección de juegos Flash.",
+      "s6b": "Ruffle ejecuta la mayoría de los archivos antiguos de ActionScript 1 y 2, pero su soporte de ActionScript 3 aún está incompleto, así que algunos juegos más nuevos pueden no arrancar o funcionar mal. Pulse Elegir SWF de nuevo para abrir otro archivo o empiece uno de los juegos Flash de código abierto de la página del reproductor.",
       "diagram1": "Cómo funcionan el ratón, la pantalla táctil y el teclado en un archivo Flash.",
       "diagram2": "Un SWF que arranca solo funciona. Uno que necesita otros archivos o su antiguo sitio se detiene."
     },
@@ -10773,30 +10747,12 @@
   "games": {
     "play": "Jugar",
     "loadRom": "Elegir ROM",
-    "loadRomHint": "El archivo se queda en esta pestaña. Una ROM en S3 arranca sola si existe.",
-    "hostedNote": "ROM cargada desde S3. Aún puedes elegir un archivo local.",
-    "rememberRom": "Recordar en este navegador",
-    "forgetRom": "Olvidar esta ROM",
-    "rememberedRom": "Guardada solo en este navegador. Se carga sola en tu próxima visita hasta que borres los datos de este sitio. Nunca se sube.",
-    "savedRomLoaded": "Se cargó la ROM que guardaste en este navegador. No se subió.",
-    "forgotRom": "Eliminada de este navegador.",
-    "rememberFailed": "Este navegador no pudo guardarlo (modo privado o sin espacio). Sigue funcionando en esta pestaña.",
-    "byoNote": "Elige una ROM. Si hay una en S3, arranca sola.",
-    "cheats": "Trucos",
-    "guide": "Guía",
-    "related": "Más juegos",
-    "year": "{n}",
     "emulator": "EmulatorJS (código abierto, GitHub)",
     "mobile": "Pad táctil en el móvil. Un mando Bluetooth va mejor para lucha y karts.",
-    "legal": "Los núcleos están en S3. La ROM alojada arranca si existe; siempre puedes elegir un archivo local. Los archivos locales no se suben.",
     "filterAll": "Todos",
-    "empty": "No hay juegos con este filtro.",
     "hub": {
-      "kicker": "Retro · Navegador · Móvil",
-      "title": "Juega FC, SFC, GB, GBA y Flash en el navegador",
-      "lead": "Trucos, guías y un emulador de código abierto. El homebrew empieza solo. Los clásicos cargan tu ROM. Flash abre un SWF con Ruffle. Nada se sube.",
-      "menu": "Todos los juegos",
-      "blurb": "Juegos retro en emulador con trucos y guías.",
+      "title": "Juegos gratis para jugar en el navegador",
+      "lead": "Juegos de cartas, de mesa, de lógica, de palabras y en 3D hechos para cv.cm. Sin instalar nada, y las partidas en curso se guardan en este navegador. Para juegos retro, el emulador de ROM y el reproductor Flash tienen juegos de código abierto para probar.",
       "all": "Ver todo"
     },
     "consoles": {
@@ -10809,15 +10765,6 @@
       "gba": "Game Boy Advance",
       "md": "Mega Drive",
       "flash": "Flash"
-    },
-    "genres": {
-      "platform": "Plataformas",
-      "action": "Acción",
-      "shooting": "Disparos",
-      "rpg": "RPG",
-      "puzzle": "Puzle",
-      "fighting": "Lucha",
-      "racing": "Carreras"
     },
     "controls": {
       "title": "Mandos",
@@ -10839,51 +10786,29 @@
     "needFile": "No hay ROM",
     "needFileBody": "Súbela manualmente. El archivo se queda en esta pestaña y no se envía a un servidor.",
     "flash": {
-      "kicker": "Flash · SWF · Navegador",
-      "title": "Juega Flash en el navegador",
-      "lead": "Abre un SWF en esta pestaña con Ruffle. Sin plugin de Flash. Si el reproductor está vacío, sube el tuyo. El archivo no sale de la pestaña.",
-      "catalog": "Los Flash que se puedan redistribuir aparecerán aquí. Por ahora, sube un SWF que ya tengas.",
       "load": "Elegir SWF",
       "needFile": "No hay SWF",
       "needFileBody": "Súbelo manualmente. El archivo se queda en esta pestaña y no se envía a un servidor.",
-      "guide": "Cómo abrir un SWF en el navegador",
       "emulator": "Ruffle (código abierto, GitHub)",
-      "mobile": "Un toque cuenta como un clic. Los juegos de teclado van mejor en un ordenador.",
-      "s1t": "Elige un SWF",
-      "s1b": "Pulsa Elegir SWF y selecciona un .swf. Si la pantalla está vacía, pide que lo subas. El archivo se queda en esta pestaña.",
-      "s2t": "Un solo archivo",
-      "s2b": "Esta página ejecuta un SWF que puede arrancar solo. Los juegos que cargan más SWF, XML o su web antigua se quedan en la carga.",
-      "s3t": "Ratón",
-      "s3b": "La mayoría usa el botón izquierdo. Un toque en el teléfono es un clic. Las flechas sirven si el juego pide teclado.",
-      "s4t": "Sonido",
-      "s4b": "El navegador bloquea el audio automático. Haz clic una vez en la imagen y suena.",
-      "s5t": "Tu archivo",
-      "s5b": "Aquí no se alojan juegos Flash comerciales. Usa un SWF que ya tengas. Solo entrarán en la lista los que permitan redistribución."
-    },
-    "official": {
-      "title": "Jugar de forma oficial",
-      "sub": "Suscripción",
-      "buy": "Compra",
-      "none": "No encontramos ninguna tienda oficial que venda u ofrezca este juego ahora mismo. No se incluyen tiendas cerradas como la eShop de 3DS.",
-      "note": "Páginas de tiendas oficiales de EE. UU., revisadas el {date}. La disponibilidad y los precios varían según la región y cambian con el tiempo. cv.cm no está afiliado a estas editoras ni tiendas y no gana nada con estos enlaces.",
-      "edition": {
-        "arcade": "Versión arcade",
-        "gba": "Versión de Game Boy Advance",
-        "genesis": "Versión de Mega Drive",
-        "pc": "Versión de PC",
-        "remake": "Remake moderno",
-        "rerelease": "Reedición; la versión puede variar"
-      }
+      "mobile": "Un toque cuenta como un clic. Los juegos de teclado van mejor en un ordenador."
     },
     "mini": {
       "title": "Minijuegos gratis",
-      "lead": "Juegos clásicos que se juegan aquí mismo, en el navegador: solitario, buscaminas, ajedrez, mahjong, 2048, juegos de palabras y más. Gratis, sin descargas y con tus puntuaciones y partidas en curso guardadas en este navegador.",
-      "all": "Ver los {n} minijuegos gratis"
+      "lead": "Juegos clásicos que se juegan aquí mismo, en el navegador: solitario, buscaminas, ajedrez, mahjong, 2048, juegos de palabras y más. Gratis, sin descargas y con tus puntuaciones y partidas en curso guardadas en este navegador."
     },
     "g3d": {
       "title": "Juegos 3D gratis",
-      "lead": "Juegos 3D que se juegan aquí mismo: ajedrez en un tablero 3D, pinball, billar de bola 8, air hockey, dardos, un cubo mágico con solucionador, un juego de apilar, un juego de coches con derrapes y un simulador de vuelo. Gratis y sin instalar; la parte 3D se carga solo al pulsar Jugar.",
-      "all": "Los {n} juegos 3D gratis"
+      "lead": "Juegos 3D que se juegan aquí mismo: ajedrez en un tablero 3D, pinball, billar de bola 8, air hockey, dardos, un cubo mágico con solucionador, un juego de apilar, un juego de coches con derrapes y un simulador de vuelo. Gratis y sin instalar; la parte 3D se carga solo al pulsar Jugar."
+    },
+    "emu": {
+      "title": "Emuladores retro",
+      "lead": "Juega ROM de NES, SNES, Game Boy, GBA y Mega Drive o archivos SWF de Flash en el navegador. Cada reproductor tiene algunos juegos de código abierto que arrancan sin archivo."
+    },
+    "demos": {
+      "title": "Prueba un juego de código abierto",
+      "lead": "Sus autores publicaron estos juegos con licencias abiertas, así que arrancan aquí sin archivo.",
+      "source": "Código fuente",
+      "playing": "Jugando a {title}."
     }
   },
   "reverse": {
@@ -14346,14 +14271,13 @@
     "detected": "Detectada: {console}. Si no es correcta, elige otra consola.",
     "chosen": "Ejecutando como {console}.",
     "unknown": "Este archivo no indica su consola. Elige una en Consola.",
-    "games": "Juegos homebrew gratis",
-    "openTool": "¿Tienes tu propia ROM? Abre el emulador online",
+    "games": "Todos los juegos de cv.cm",
     "tooBig": "Este archivo es demasiado grande para estas consolas (más de {mb} MB)."
   },
   "flashPlayer": {
     "title": "Flash Player",
     "privacyNote": "Abre un archivo .swf en esta pestaña con Ruffle. Sin plugin de Flash. No se sube nada.",
-    "games": "Juegos Flash gratis"
+    "games": "Todos los juegos de cv.cm"
   },
   "tierList": {
     "title": "Creador de tier list online (ranking)",

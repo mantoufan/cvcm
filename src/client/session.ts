@@ -86,6 +86,16 @@ export async function clearDraft(key: string): Promise<void> {
   }
 }
 
+/** Deletes every draft whose key starts with `prefix`, in one transaction. Rejects when IndexedDB fails. */
+export async function clearDraftsWithPrefix(prefix: string): Promise<void> {
+  const db = await openDb();
+  try {
+    await runWrite(db, (store) => store.delete(IDBKeyRange.bound(prefix, `${prefix}\uffff`)));
+  } finally {
+    db.close();
+  }
+}
+
 export function debounce(fn: () => void, ms: number): () => void {
   let timer = 0;
   return () => {

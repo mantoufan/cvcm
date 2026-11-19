@@ -4,8 +4,7 @@
 import ui from "virtual:page-copy/ui/ko";
 import guides from "virtual:page-copy/guides/ko";
 import device from "../device/ko.json";
-import gameNames from "../games/ko.json?names";
 import markets from "../markets/ko.json";
 import type { LocaleMessages } from "../../shared/messages";
 
-export default { ui, gameNames, guides, device, markets } satisfies LocaleMessages;
+export default { ui, guides, device, markets } satisfies LocaleMessages;

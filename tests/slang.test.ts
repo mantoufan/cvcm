@@ -188,15 +188,15 @@ describe("slang: slang:sync (run `npm run slang:sync` after editing entries)", (
 
   it("preloads the slang pack on the hub, plus the loader table and one entry on an entry", () => {
     const packs = { en: ["/a/en.js"], "slang-en": ["/a/slang-en.js"], "slang-en/loaders": ["/a/loaders.js"], "slang-en/yyds": ["/a/yyds.js"], "slang-en/emo": ["/a/emo.js"] };
-    const hub = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, "hub");
+    const hub = preloadLocalePack("<head></head>", "en", packs, false, false, null, null, "hub");
     expect(hub).toContain("/a/slang-en.js");
     expect(hub).not.toContain("/a/loaders.js");
-    const entry = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, "yyds");
+    const entry = preloadLocalePack("<head></head>", "en", packs, false, false, null, null, "yyds");
     expect(entry).toContain("/a/slang-en.js");
     expect(entry).toContain("/a/loaders.js");
     expect(entry).toContain("/a/yyds.js");
     expect(entry).not.toContain("/a/emo.js");
-    expect(preloadLocalePack("<head></head>", "en", false, packs)).not.toContain("slang-en");
+    expect(preloadLocalePack("<head></head>", "en", packs)).not.toContain("slang-en");
   });
 });
 

@@ -1,6 +1,6 @@
-import type { GameConsoleId } from "./games";
+import type { EmuConsoleId } from "./games";
 
-export type RomConsoleId = Exclude<GameConsoleId, "flash" | "mini" | "3d">;
+export type RomConsoleId = Exclude<EmuConsoleId, "flash">;
 
 export const ROM_CONSOLES: readonly RomConsoleId[] = ["fc", "sfc", "gb", "gbc", "gba", "md"];
 

@@ -9,7 +9,7 @@ describe("ranking structured data on the client", () => {
   afterEach(() => { document.head.replaceChildren(); });
 
   it("keeps Dataset, FAQ and breadcrumb on a ranking page and clears them after", () => {
-    const sync = (page: "ai-models" | "hub" | null) => syncPageJsonLd("en", null, null, null, false, null, null, null, false, null, null, null, null, null, null, null, page);
+    const sync = (page: "ai-models" | "hub" | null) => syncPageJsonLd("en", null, null, false, null, null, null, false, null, null, null, null, null, null, null, page);
     sync("ai-models");
     expect(JSON.parse(ld("dataset-jsonld"))["@type"]).toBe("Dataset");
     expect(JSON.parse(ld("faq-jsonld"))["@type"]).toBe("FAQPage");

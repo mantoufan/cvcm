@@ -1,4 +1,5 @@
 import "./shared/messages-all";
+import { DEMO_ROM_FILES } from "./shared/demo-roms";
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { d1SearchStore, handleSearchApi } from "./search-api";
@@ -6,7 +7,7 @@ import { d1NostalgiaStore, handleNostalgiaApi } from "./nostalgia-api";
 import { countryBucket, countryCode } from "./shared/countries";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, parseLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isLookupToolPath, LOOKUP_HOSTS, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, breedsHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, retiredGameUrl, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isLookupToolPath, LOOKUP_HOSTS, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, breedsHref, STATIC_FILE, toolJob } from "./shared/path";
 import { currencyHref } from "./shared/path";
 import { rankingRowsChunk } from "./shared/rankings";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
@@ -191,7 +192,12 @@ export default {
         return redirectTo(learnHref(locale, parsed.tutorial), url, 302);
       }
       if (parsed.kind === "bare-games") {
-        return redirectTo(gamesHref(locale, parsed.console, parsed.game), url, 302);
+        return redirectTo(gamesHref(locale, parsed.hub), url, 302);
+      }
+      // Retired emulator catalogue pages and system hubs: the emulator tool that plays them. The old genre filter means
+      // nothing there; other parameters (campaign tags) are kept.
+      if (parsed.kind === "games-retired") {
+        return redirect(retiredGameUrl(parsed.locale ?? locale, parsed, url.origin, url.search), parsed.locale ? 301 : 302);
       }
       if (parsed.kind === "bare-markets") {
         return redirectTo(appHref(locale, parsed.market), url, 301);
@@ -266,7 +272,7 @@ export default {
         }
       }
       if (parsed.kind === "games") {
-        const canonical = gamesHref(parsed.locale, parsed.console, parsed.game);
+        const canonical = gamesHref(parsed.locale, parsed.hub);
         if (path !== canonical) {
           return redirectTo(canonical, url, 301);
         }
@@ -412,7 +418,7 @@ export default {
       const seo = parsed.kind === "learn"
         ? { learn: true as const, tutorial: parsed.tutorial }
         : parsed.kind === "games"
-          ? { games: true as const, console: parsed.console, game: parsed.game }
+          ? { games: true as const, gamesHub: parsed.hub }
           : parsed.kind === "markets"
             ? { markets: true as const, market: parsed.market }
             : parsed.kind === "device"
@@ -479,7 +485,7 @@ export default {
       // The browser's core pack leaves out the copy only this page shows; preload the bucket that holds it.
       const copy = copyChunkKey(locale, pageCopyOf(parsed));
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz" && (parsed.quiz ?? "hub"), parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, ideasPackOf(parsed), parsed.kind === "nostalgia" ? parsed.entry ?? "hub" : null, parsed.kind === "countries" ? (parsed.entry ? String(countryBucket(countryCode(parsed.entry))) : "hub") : null, parsed.kind === "calories", parsed.kind === "elements", parsed.kind === "calendar" || (parsed.kind === "app" && parsed.tool === "lunar-converter"), parsed.kind === "emoji", parsed.kind === "currency", parsed.kind === "breeds" ? parsed.entry ?? "hub" : null);
+      out = preloadLocalePack(out, locale, undefined, parsed.kind === "quiz" && (parsed.quiz ?? "hub"), parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, ideasPackOf(parsed), parsed.kind === "nostalgia" ? parsed.entry ?? "hub" : null, parsed.kind === "countries" ? (parsed.entry ? String(countryBucket(countryCode(parsed.entry))) : "hub") : null, parsed.kind === "calories", parsed.kind === "elements", parsed.kind === "calendar" || (parsed.kind === "app" && parsed.tool === "lunar-converter"), parsed.kind === "emoji", parsed.kind === "currency", parsed.kind === "breeds" ? parsed.entry ?? "hub" : null);
       out = preloadPageChunk(out, chunk);
       if (parsed.kind === "ranking" && parsed.ranking) out = preloadPageChunk(out, rankingRowsChunk(parsed.ranking));
       if (parsed.kind === "dataset" && parsed.dataset) {
@@ -623,6 +629,10 @@ async function proxyEmu(pathname: string, method: string): Promise<Response | nu
   const rest = match[2];
   if (!rest || rest.includes("..") || rest.includes("//")) {
     return new Response("Bad Request", { status: 400 });
+  }
+  // Only the demo games are still offered (src/shared/demo-roms.ts); the retired catalogue's ROMs are not served.
+  if (kind === "roms" && !DEMO_ROM_FILES.has(rest)) {
+    return new Response("Not Found", { status: 404, headers: { "Cache-Control": "no-store" } });
   }
   const key = kind === "roms" ? `games/roms/${rest}` : `games/emu/${rest}`;
   const upstream = await fetch(`https://s3.cv.cm/files/${key}`);

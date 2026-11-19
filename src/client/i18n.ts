@@ -6,7 +6,6 @@ import {
   type Locale,
 } from "../shared/locale";
 import {
-  hasGameMessages,
   hasLegalMessages,
   hasMessages,
   hasKbArticle,
@@ -17,7 +16,6 @@ import {
   hasRefEntry,
   hasRefMessages,
   messages,
-  registerGameMessages,
   registerLegalMessages,
   registerMessages,
   registerKbArticle,
@@ -27,7 +25,6 @@ import {
   registerDatasetMessages,
   registerRefEntry,
   registerRefMessages,
-  type GameMessages,
   type LegalMessages,
   type CopyLoaders,
   type LocaleMessages,
@@ -103,18 +100,6 @@ const COPY_LOADERS: Record<Locale, () => Promise<{ copy: CopyLoaders }>> = {
   vi: () => import("virtual:page-copy/loaders/vi"),
   id: () => import("virtual:page-copy/loaders/id"),
   es: () => import("virtual:page-copy/loaders/es"),
-};
-
-// Full game copy and walkthroughs, only for game pages.
-const GAME_PACKS: Record<Locale, () => Promise<{ default: GameMessages }>> = {
-  en: () => import("../locales/packs/games-en"),
-  "zh-CN": () => import("../locales/packs/games-zh-CN"),
-  "zh-TW": () => import("../locales/packs/games-zh-TW"),
-  ja: () => import("../locales/packs/games-ja"),
-  ko: () => import("../locales/packs/games-ko"),
-  vi: () => import("../locales/packs/games-vi"),
-  id: () => import("../locales/packs/games-id"),
-  es: () => import("../locales/packs/games-es"),
 };
 
 // Privacy policy and terms, only for those two pages.
@@ -479,15 +464,15 @@ const CURRENCY_PACKS: Record<Locale, () => Promise<{ default: CurrencyMessages }
   es: () => import("../locales/packs/currency-es"),
 };
 
-/** Whether the strings a page needs are loaded: the locale pack, plus the game, legal, quiz, dataset or kb pack on those pages and the page's own copy. */
-export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false, breeds: BreedsPage = null): boolean {
+/** Whether the strings a page needs are loaded: the locale pack, plus the legal, quiz, dataset or kb pack on those pages and the page's own copy. */
+export function hasPageMessages(next: Locale, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false, breeds: BreedsPage = null): boolean {
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
   const entry = ref && ref !== "hub" ? ref : null;
   const term = slang && slang !== "hub" ? slang : null;
   const idea = ideas && ideas !== "hub" ? ideas : null;
   const memory = nostalgia && nostalgia !== "hub" ? nostalgia : null;
-  return hasMessages(next) && hasPageCopy(next, copy) && (!game || hasGameMessages(next)) && (!legal || hasLegalMessages(next)) && (!quiz || (hasQuizMessages(next) && (!test || hasQuizTest(next, test)))) && (!dataset || hasDatasetMessages(next))
+  return hasMessages(next) && hasPageCopy(next, copy) && (!legal || hasLegalMessages(next)) && (!quiz || (hasQuizMessages(next) && (!test || hasQuizTest(next, test)))) && (!dataset || hasDatasetMessages(next))
     && (!kb || (hasKbMessages(next) && (!article || hasKbArticle(next, article))))
     && (!ref || (hasRefMessages(next) && (!entry || hasRefEntry(next, entry))))
     && (!slang || (hasSlangMessages(next) && (!term || hasSlangEntry(next, term))))
@@ -502,7 +487,7 @@ export function hasPageMessages(next: Locale, game: boolean, legal = false, quiz
     && (!breeds || (hasBreedsMessages(next) && (breeds === "hub" || hasBreedEntry(next, breeds))));
 }
 
-export async function loadPageMessages(next: Locale, game: boolean, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false, breeds: BreedsPage = null): Promise<void> {
+export async function loadPageMessages(next: Locale, legal = false, quiz: QuizPage = null, dataset = false, kb: KbPage = null, ref: RefPage = null, slang: SlangPage = null, copy: PageCopy = {}, ideas: IdeaPage = null, nostalgia: NostalgiaPage = null, countries: CountryPage = null, calories: CaloriesPage = null, elements = false, calendar = false, emoji = false, currency = false, breeds: BreedsPage = null): Promise<void> {
   const bucket = countryBucketOf(countries);
   const test = quiz && quiz !== "hub" ? quiz : null;
   const article = kbArticleOf(kb);
@@ -512,7 +497,6 @@ export async function loadPageMessages(next: Locale, game: boolean, legal = fals
   const memory = nostalgia && nostalgia !== "hub" ? nostalgia : null;
   await Promise.all([
     hasMessages(next) && hasPageCopy(next, copy) ? null : loadCore(next, copy),
-    !game || hasGameMessages(next) ? null : GAME_PACKS[next]().then((m) => registerGameMessages(next, m.default)),
     !legal || hasLegalMessages(next) ? null : LEGAL_PACKS[next]().then((m) => registerLegalMessages(next, m.default)),
     !quiz || hasQuizMessages(next) ? null : QUIZ_PACKS[next]().then((m) => registerQuizMessages(next, m.default)),
     !test || hasQuizTest(next, test) ? null : loadQuizTest(next, test),

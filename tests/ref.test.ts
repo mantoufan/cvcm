@@ -217,15 +217,15 @@ describe("reference: ref:sync (run `npm run ref:sync` after editing entries)", (
 
   it("preloads the ref pack on the hub, plus the loader table and one entry on an entry", () => {
     const packs = { en: ["/a/en.js"], "ref-en": ["/a/ref-en.js"], "ref-en/loaders": ["/a/loaders.js"], "ref-en/wink": ["/a/wink.js"], "ref-en/pout": ["/a/pout.js"] };
-    const hub = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, "hub");
+    const hub = preloadLocalePack("<head></head>", "en", packs, false, false, null, "hub");
     expect(hub).toContain("/a/ref-en.js");
     expect(hub).not.toContain("/a/loaders.js");
-    const entry = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, "wink");
+    const entry = preloadLocalePack("<head></head>", "en", packs, false, false, null, "wink");
     expect(entry).toContain("/a/ref-en.js");
     expect(entry).toContain("/a/loaders.js");
     expect(entry).toContain("/a/wink.js");
     expect(entry).not.toContain("/a/pout.js");
-    expect(preloadLocalePack("<head></head>", "en", false, packs)).not.toContain("ref-en");
+    expect(preloadLocalePack("<head></head>", "en", packs)).not.toContain("ref-en");
   });
 });
 

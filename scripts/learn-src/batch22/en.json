@@ -16,7 +16,7 @@
         "result": "Your game running in a browser tab, with its keys in front of you and a save state on your device.",
         "note": "Use ROMs you have the right to use, such as homebrew released by its author. cv.cm does not provide commercial ROMs.",
         "s1t": "Find a ROM you can use",
-        "s1b": "A ROM is a copy of a game cartridge in one file. This tool opens FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive / Genesis games. cv.cm's Games column has free homebrew if you have no file.",
+        "s1b": "A ROM is a copy of a game cartridge in one file. This tool opens FC / NES, SFC / SNES, Game Boy, Game Boy Color, Game Boy Advance and Mega Drive / Genesis games. If you have no file, the tool has open-source games that start with one click.",
         "s2t": "Open the ROM emulator on cv.cm",
         "s2b": "Press Choose ROM and pick a .nes, .sfc, .smc, .gb, .gbc, .gba, .md, .gen, .smd, .bin or .zip file. It is read in this tab and not sent anywhere. The first start also downloads the emulator, so give it a moment.",
         "s3t": "Check the console",
@@ -62,7 +62,7 @@
         "s5t": "See why a file stops loading",
         "s5b": "This page only runs a file that can start on its own, and it blocks network access. A game that loads more SWFs or XML, or only runs on its old website, stops on its loader.",
         "s6t": "Try something else if it fails",
-        "s6b": "Ruffle runs most older ActionScript 1 and 2 files, but its ActionScript 3 support is incomplete, so some newer games fail or misbehave. Choose SWF again to open another file, or play the free titles under Flash games.",
+        "s6b": "Ruffle runs most older ActionScript 1 and 2 files, but its ActionScript 3 support is incomplete, so some newer games fail or misbehave. Choose SWF again to open another file, or start one of the open-source Flash games on the player page.",
         "diagram1": "How mouse, touch and keyboard work in a Flash file.",
         "diagram2": "A SWF that starts alone runs. One that needs other files or its old website stops."
       },

@@ -4,8 +4,7 @@
 import ui from "virtual:page-copy/ui/zh-TW";
 import guides from "virtual:page-copy/guides/zh-TW";
 import device from "../device/zh-TW.json";
-import gameNames from "../games/zh-TW.json?names";
 import markets from "../markets/zh-TW.json";
 import type { LocaleMessages } from "../../shared/messages";
 
-export default { ui, gameNames, guides, device, markets } satisfies LocaleMessages;
+export default { ui, guides, device, markets } satisfies LocaleMessages;
