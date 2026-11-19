@@ -249,7 +249,7 @@ export const MASSAGE_MINUTES = {
   "neck-and-shoulder-massage": {
     "en": 9,
     "zh-CN": 7,
-    "zh-TW": 7,
+    "zh-TW": 8,
     "ja": 10,
     "ko": 9,
     "vi": 9,
@@ -290,8 +290,8 @@ export const MASSAGE_MINUTES = {
     "en": 9,
     "zh-CN": 8,
     "zh-TW": 9,
-    "ja": 11,
-    "ko": 10,
+    "ja": 12,
+    "ko": 11,
     "vi": 11,
     "id": 9,
     "es": 10
