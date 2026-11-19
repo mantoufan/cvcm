@@ -34,6 +34,8 @@ export function mountRomEmulator(host: HTMLElement): void {
   let running: { rom: object; core: string } | null = null;
 
   let reading = false;
+  // The demo game now running, if any: its console is fixed, so the select shows it and the next file starts on Auto.
+  let demoConsole: RomConsoleId | null = null;
   // Arrowing through a closed select changes it once per key, so focus stays there until the visitor leaves it.
   let keyed = false;
 
@@ -81,8 +83,10 @@ export function mountRomEmulator(host: HTMLElement): void {
     file.arrayBuffer().then((buffer) => {
       if (mine !== token) return;
       reading = false;
-      // A choice made for the last file says nothing about this one; one made before any file is the answer for it.
-      if (rom) select.value = AUTO;
+      // A choice made for the last file or shown for a demo says nothing about this one; one made before any file is
+      // the answer for it.
+      if (rom || demoConsole) select.value = AUTO;
+      demoConsole = null;
       rom = { name: file.name, buffer };
       play();
     }).catch(() => {
@@ -97,7 +101,8 @@ export function mountRomEmulator(host: HTMLElement): void {
     reading = false;
     rom = null;
     running = null;
-    select.value = demo.console;
+    demoConsole = demo.console as RomConsoleId;
+    select.value = demoConsole;
     status.textContent = t("games.demos.playing", { title: demo.title });
     controlsHost.replaceChildren(controls(demo.console));
     empty.hidden = true;
@@ -106,6 +111,8 @@ export function mountRomEmulator(host: HTMLElement): void {
   };
   select.addEventListener("keydown", () => { keyed = true; });
   select.addEventListener("change", () => {
+    // A demo plays on its own console: the select keeps showing it.
+    if (!rom && demoConsole) select.value = demoConsole;
     play();
     keyed = false;
   });

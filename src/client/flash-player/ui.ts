@@ -12,9 +12,6 @@ export function mountFlashPlayer(host: HTMLElement): void {
       h("p", { class: "lede" }, t("flashPlayer.privacyNote")),
     ),
     player({
-      console: "flash",
-      core: "ruffle",
-      accept: ".swf",
       name: t("flashPlayer.title"),
       demos: DEMO_ROMS.filter((demo) => demo.console === "flash"),
     }),

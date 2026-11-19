@@ -1,4 +1,5 @@
 import "./shared/messages-all";
+import { DEMO_ROM_FILES } from "./shared/demo-roms";
 import { handleClipApi } from "./clip-api";
 import { d1Store, type D1Database } from "./clip-store";
 import { d1SearchStore, handleSearchApi } from "./search-api";
@@ -193,10 +194,13 @@ export default {
       if (parsed.kind === "bare-games") {
         return redirectTo(gamesHref(locale, parsed.hub), url, 302);
       }
-      // Retired emulator catalogue pages and system hubs: the emulator tool that plays them. The query (an old genre
-      // filter) means nothing there.
+      // Retired emulator catalogue pages and system hubs: the emulator tool that plays them. The old genre filter means
+      // nothing there; other parameters (campaign tags) are kept.
       if (parsed.kind === "games-retired") {
-        return redirect(new URL(appHref(parsed.locale ?? locale, parsed.tool), url.origin).toString(), parsed.locale ? 301 : 302);
+        const next = new URL(appHref(parsed.locale ?? locale, parsed.tool), url.origin);
+        next.search = url.search;
+        next.searchParams.delete("genre");
+        return redirect(next.toString(), parsed.locale ? 301 : 302);
       }
       if (parsed.kind === "bare-markets") {
         return redirectTo(appHref(locale, parsed.market), url, 301);
@@ -628,6 +632,10 @@ async function proxyEmu(pathname: string, method: string): Promise<Response | nu
   const rest = match[2];
   if (!rest || rest.includes("..") || rest.includes("//")) {
     return new Response("Bad Request", { status: 400 });
+  }
+  // Only the demo games are still offered (src/shared/demo-roms.ts); the retired catalogue's ROMs are not served.
+  if (kind === "roms" && !DEMO_ROM_FILES.has(rest)) {
+    return new Response("Not Found", { status: 404, headers: { "Cache-Control": "no-store" } });
   }
   const key = kind === "roms" ? `games/roms/${rest}` : `games/emu/${rest}`;
   const upstream = await fetch(`https://s3.cv.cm/files/${key}`);

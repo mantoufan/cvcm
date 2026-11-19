@@ -314,6 +314,19 @@ describe("tool pages", () => {
     expect(frameSrc.at(-1)).toContain("core=gba");
   });
 
+  it("detects the next file again after a demo, and keeps the demo's console while it plays", async () => {
+    mountRomEmulator(host);
+    host.querySelector<HTMLButtonElement>("[data-demo=apotris]")!.click();
+    const select = q<HTMLSelectElement>("select");
+    expect(select.value).toBe("gba");
+    select.value = "fc";
+    select.dispatchEvent(new Event("change"));
+    expect(select.value).toBe("gba");
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "game.nes"));
+    expect(select.value).toBe("auto");
+    expect(frameSrc.at(-1)).toContain("core=nes");
+  });
+
   it("offers only the Flash demos on the Flash player", () => {
     mountFlashPlayer(host);
     const ids = [...host.querySelectorAll<HTMLButtonElement>("[data-demo]")].map((b) => b.dataset.demo);

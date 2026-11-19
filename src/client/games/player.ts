@@ -99,25 +99,18 @@ export function demoPicker(roms: readonly DemoRom[], start: (rom: DemoRom) => vo
   );
 }
 
-/** The Flash player: a local .swf, or one of the hosted demo games. */
-export function player(spec: {
-  console: EmuConsoleId;
-  core: string;
-  accept: string;
-  name: string;
-  demos?: readonly DemoRom[];
-}): HTMLElement {
-  const flash = spec.console === "flash";
+/** The Flash player: a local .swf, or one of the hosted demo games. (The ROM emulator builds its own from the parts above.) */
+export function player(spec: { name: string; demos?: readonly DemoRom[] }): HTMLElement {
   const box = h("section", { class: "game-play", "aria-label": t("games.play") });
-  const { frame, boot: bootFrame } = gameFrame({ flash, core: spec.core, name: spec.name });
-  const status = h("p", { class: "game-note", role: "status" }, t(flash ? "games.flash.needFileBody" : "games.loadRomHint"));
+  const { frame, boot: bootFrame, focus } = gameFrame({ flash: true, core: "ruffle", name: spec.name });
+  const status = h("p", { class: "game-note", role: "status" }, t("games.flash.needFileBody"));
   const picker = h("input", {
     type: "file",
-    accept: spec.accept,
+    accept: ".swf",
     class: "game-rom-input",
-    "aria-label": t(flash ? "games.flash.load" : "games.loadRom"),
+    "aria-label": t("games.flash.load"),
   }) as HTMLInputElement;
-  const empty = gameEmpty({ flash, picker, hidden: false });
+  const empty = gameEmpty({ flash: true, picker, hidden: false });
   const boot = (payload: Record<string, unknown>): void => {
     empty.hidden = true;
     bootFrame(payload);
@@ -127,7 +120,7 @@ export function player(spec: {
   picker.addEventListener("change", async () => {
     const file = picker.files?.[0];
     if (!file) return;
-    status.textContent = flash ? file.name : t("games.loadRomHint");
+    status.textContent = file.name;
     const read = ++reads;
     // The same file can be opened again.
     picker.value = "";
@@ -142,18 +135,20 @@ export function player(spec: {
   box.append(
     h("div", { class: "game-stage" }, frame, empty),
     h("div", { class: "game-playbar" },
-      h("label", { class: "btn" }, t(flash ? "games.flash.load" : "games.loadRom"), picker),
+      h("label", { class: "btn" }, t("games.flash.load"), picker),
       status,
     ),
-    h("p", { class: "game-note muted" }, t(flash ? "games.flash.emulator" : "games.emulator"), " · ", t(flash ? "games.flash.mobile" : "games.mobile")),
+    h("p", { class: "game-note muted" }, t("games.flash.emulator"), " · ", t("games.flash.mobile")),
     ...(spec.demos?.length
       ? [demoPicker(spec.demos, (rom) => {
         reads += 1;
         status.textContent = t("games.demos.playing", { title: rom.title });
         boot({ rom: `${GAME_ROM_BASE}${rom.file}`, name: rom.title, cheats: [] });
+        // Keyboard games (Ending) take the arrow keys at once, as the ROM emulator's demos do.
+        focus();
       })]
       : []),
-    controls(spec.console),
+    controls("flash"),
   );
   return box;
 }

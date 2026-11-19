@@ -81,6 +81,7 @@ describe("games worker", () => {
       ["/zh-cn/games/fc/contra/", "https://cv.cm/zh-cn/rom-emulator/"],
       ["/en/games/fc/contra", "https://cv.cm/en/rom-emulator/"],
       ["/en/games/sfc/?genre=rpg", "https://cv.cm/en/rom-emulator/"],
+      ["/en/games/gba/apotris/?genre=puzzle&utm_source=x", "https://cv.cm/en/rom-emulator/?utm_source=x"],
       ["/ja/games/flash/", "https://cv.cm/ja/flash-player/"],
       ["/es/games/flash/tag-chase/", "https://cv.cm/es/flash-player/"],
     ]) {
@@ -91,6 +92,24 @@ describe("games worker", () => {
     const bare = await worker.fetch(new Request("https://cv.cm/games/contra", { headers: { "Accept-Language": "ja" } }), { ASSETS: assets });
     expect(bare.status).toBe(302);
     expect(bare.headers.get("Location")).toBe("https://cv.cm/ja/rom-emulator/");
+  });
+
+  it("serves only the demo ROMs", async () => {
+    const original = globalThis.fetch;
+    const asked: string[] = [];
+    globalThis.fetch = async (input) => {
+      asked.push(String(input));
+      return new Response("rom", { status: 200 });
+    };
+    try {
+      const demo = await worker.fetch(new Request(`https://cv.cm/emu/roms/${DEMO_ROMS[0].file}`), { ASSETS: assets });
+      expect(demo.status).toBe(200);
+      const retired = await worker.fetch(new Request("https://cv.cm/emu/roms/thwaite.nes"), { ASSETS: assets });
+      expect(retired.status).toBe(404);
+      expect(asked).toEqual([`https://s3.cv.cm/files/games/roms/${DEMO_ROMS[0].file}`]);
+    } finally {
+      globalThis.fetch = original;
+    }
   });
 
   it("serves the hubs and 302s bare /games/ onto the locale hub", async () => {

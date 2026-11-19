@@ -181,6 +181,11 @@ if (!import.meta.env.VITEST) start();
 export function boot(): void {
   const parsed = parseAppPath(location.pathname);
   const stored = readStoredLocale();
+  // A retired games page the Worker did not redirect (dev server, or a history entry from before the change).
+  if (parsed.kind === "games-retired") {
+    location.replace(appHref(parsed.locale ?? stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null), parsed.tool));
+    return;
+  }
   if (parsed.kind === "app") {
     setLocale(parsed.locale);
     applyTool(parsed.tool, parsed.clipId ?? null);
@@ -834,6 +839,10 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
+  if (parsed.kind === "games-retired") {
+    location.replace(appHref(parsed.locale ?? locale(), parsed.tool));
+    return;
+  }
   const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar" || parsed.kind === "emoji" || parsed.kind === "currency" || parsed.kind === "breeds"
     ? parsed.locale
     : locale();
