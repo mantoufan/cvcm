@@ -35,7 +35,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   dev: "Developer tools",
   math: "Math and school",
   finance: "Money calculators",
-  health: "Health and fitness calculators (estimates, not medical advice)",
+  health: "Health and fitness calculators (estimates, not medical advice) and a pressure points map (acupressure and foot reflexology chart for relaxation)",
   time: "Date and time",
   design: "Color and design",
   hardware: "Hardware tests (keyboard, microphone, camera, screen, controllers)",

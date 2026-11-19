@@ -223,6 +223,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "pool-game": "/covers/pool-game-sweet.jpg?v=1",
   "air-hockey": "/covers/air-hockey-sweet.jpg?v=1",
   "darts": "/covers/darts-sweet.jpg?v=1",
+  "pressure-points-map": "/covers/pressure-points-map-sweet.jpg?v=1",
 };
 
 export const MARKET_COVER: Record<MarketId, string> = {
