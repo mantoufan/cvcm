@@ -148,6 +148,7 @@ let started = false;
 export function start(): void {
   if (!started) {
     started = true;
+    wireNavGroupClosing();
     // Registered before gtag loads, so this runs before gtag's own history listener.
     window.addEventListener("popstate", () => {
       // Following an in-page #anchor (a table of contents, #tools) also fires popstate: the page itself is unchanged.
@@ -1364,10 +1365,9 @@ function navRow(nav: HTMLElement): HTMLElement {
  * server HTML before the app takes over, and without JS. The links are always in the markup, so the prerendered HTML
  * and crawlers see them like any other nav link. The list is absolutely positioned against the header (.top), which
  * the nav row's overflow clipping does not reach. Closing on outside click, focus leaving, Escape and link click is
- * one delegated listener set (closeNavGroups), so a replaced header leaves nothing subscribed.
+ * one delegated listener set wired once in start() (wireNavGroupClosing), so a replaced header leaves nothing subscribed.
  */
 function navGroup(label: string, on: boolean, links: HTMLElement[]): HTMLElement {
-  closeNavGroups();
   return h("details", { class: "nav-group" + (on ? " on" : "") },
     h("summary", { class: "nav-group-btn" + (on ? " on" : "") },
       h("span", { class: "nav-group-label" }, label),
@@ -1377,21 +1377,18 @@ function navGroup(label: string, on: boolean, links: HTMLElement[]): HTMLElement
   );
 }
 
-let navGroupsWired = false;
-/** Wires, once, the document listeners that close open nav menus. */
-function closeNavGroups(): void {
-  if (navGroupsWired || typeof document === "undefined") return;
-  navGroupsWired = true;
+/** Document listeners that close open nav menus (navGroup); called once from start(). */
+function wireNavGroupClosing(): void {
   const closeAll = (keep: Node | null): void => {
     for (const d of document.querySelectorAll<HTMLDetailsElement>("details.nav-group[open]")) {
       if (!keep || !d.contains(keep)) d.open = false;
     }
   };
+  // pointerdown, not click: iOS Safari sends no click for a tap on plain text or empty space.
+  document.addEventListener("pointerdown", (event) => closeAll(event.target as Node | null), true);
+  // A link inside a menu navigates through the shared click handler; the menu closes either way.
   document.addEventListener("click", (event) => {
-    const target = event.target as Element | null;
-    // A link inside a menu navigates through the shared click handler; the menu closes either way.
-    if (target?.closest?.(".nav-group-pop a")) closeAll(null);
-    else closeAll(target);
+    if ((event.target as Element | null)?.closest?.(".nav-group-pop a")) closeAll(null);
   }, true);
   document.addEventListener("focusin", (event) => closeAll(event.target as Node | null));
   document.addEventListener("keydown", (event) => {

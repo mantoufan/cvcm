@@ -25,13 +25,17 @@ describe("reference shell", () => {
     expect(group.querySelector(".nav-group-btn")?.classList.contains("on")).toBe(true);
     expect(group.classList.contains("on")).toBe(true);
     expect([...group.querySelectorAll(".nav-group-pop a")].map((a) => a.getAttribute("data-nav"))).toEqual(["reference", "slang", "nostalgia"]);
-    // A native <details>: works in the server HTML and without JS; an outside click or Escape closes it.
+    // A native <details>: works in the server HTML and without JS; a tap outside or Escape closes it.
     const details = group as HTMLDetailsElement;
     expect(details.tagName).toBe("DETAILS");
     expect(details.open).toBe(false);
     details.open = true;
-    document.body.click();
+    document.body.dispatchEvent(new Event("pointerdown", { bubbles: true }));
     expect(details.open).toBe(false);
+    // A tap inside the menu keeps it open.
+    details.open = true;
+    group.querySelector(".nav-group-pop")!.dispatchEvent(new Event("pointerdown", { bubbles: true }));
+    expect(details.open).toBe(true);
     details.open = true;
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
     expect(details.open).toBe(false);
