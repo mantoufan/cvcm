@@ -445,7 +445,7 @@ def apa_intext(t) -> str:
 
 def mla_elements(t) -> str:
     rows = [("author", "LeCun, Yann, et al."), ("title", '"Deep Learning."'), ("container", "Nature,"), ("contributors", "—"),
-            ("version", "—"), ("number", "vol. 521, no. 7553,"), ("publisher", "—"), ("date", "2015,"), ("location", "pp. 436-44.")]
+            ("version", "—"), ("number", "vol. 521, no. 7553,"), ("publisher", "—"), ("date", "27 May 2015,"), ("location", "pp. 436-44.")]
     out = ""
     for i, (key, example) in enumerate(rows):
         y = 50 + i * 52
@@ -479,7 +479,7 @@ def citation_link(t, left_title, left, right_title, right_lines, italic_word) ->
 
 def mla_intext(t) -> str:
     return citation_link(t, t["inText"], "(LeCun et al. 437)", t["worksCited"], [
-        'LeCun, Yann, et al. "Deep Learning."', "Nature, vol. 521, no. 7553, 2015,", "pp. 436-44, https://doi.org/", "10.1038/nature14539."], "Nature")
+        'LeCun, Yann, et al. "Deep Learning."', "Nature, vol. 521, no. 7553, 27 May", "2015, pp. 436-44, https://doi.org/", "10.1038/nature14539."], "Nature")
 
 
 def harvard_intext(t) -> str:

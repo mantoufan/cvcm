@@ -20,8 +20,11 @@ const IDS = [
 const svg = (name: string, locale = "en") => readFileSync(`public/covers/tutorials/${locale === "en" ? "" : `${locale.toLowerCase()}/`}${name}.svg`, "utf8");
 const en = JSON.parse(readFileSync("scripts/learn-src/batch36/en.json", "utf8")) as { lessons: Record<string, { copy: Record<string, string> }> };
 const copy = (id: string) => Object.values(en.lessons[id]!.copy).join(" ");
+type Pack = { lessons: Record<string, { copy: Record<string, string>; faq: Record<string, string> }> };
+const packs = new Map<string, Pack>();
 const lessonText = (locale: string, id: string) => {
-  const pack = JSON.parse(readFileSync(`scripts/learn-src/batch36/${locale}.json`, "utf8")) as { lessons: Record<string, { copy: Record<string, string>; faq: Record<string, string> }> };
+  let pack = packs.get(locale);
+  if (!pack) packs.set(locale, (pack = JSON.parse(readFileSync(`scripts/learn-src/batch36/${locale}.json`, "utf8")) as Pack));
   return [...Object.values(pack.lessons[id]!.copy), ...Object.values(pack.lessons[id]!.faq)].join(" ");
 };
 // Digits only, so 1,000 / 1.000 / 20 000 / 1000 and .10 / 0.10 / 0,10 compare equal across locales.
@@ -124,8 +127,14 @@ describe("batch 36 tutorials stay in step with the tools", () => {
     expect(copy("calculate-z-score")).toContain(`${(z.below * 100).toFixed(2)} %`);
   });
 
-  it("MLA examples use title case, the year and a doi.org link, as the steps say", () => {
-    for (const name of ["cite-mla-elements", "cite-mla-in-text"]) expect(svg(name)).toContain("Deep Learning.");
+  it("MLA examples use title case, the generator's date and page range and a doi.org link, as the steps say", () => {
+    // The date and page range the MLA generator prints for this DOI (tests/citation.test.ts).
+    for (const name of ["cite-mla-elements", "cite-mla-in-text"]) {
+      expect(svg(name)).toContain("Deep Learning.");
+      expect(svg(name)).toContain("pp. 436-44");
+    }
+    expect(svg("cite-mla-elements")).toContain("27 May 2015");
+    expect(svg("cite-mla-in-text")).toContain("27 May");
     expect(svg("cite-mla-in-text")).toContain("https://doi.org/");
       });
 
