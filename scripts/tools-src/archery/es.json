@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "titleArchery": "Juego de tiro con arco — dispara a una diana 3D online — cv.cm",
+    "descArchery": "Juega gratis al tiro con arco: tensa el arco, estabiliza la mira y dispara a una diana de diez anillos desde 18, 30, 50 o 70 m. Lee el viento, tira seis tandas de tres flechas y supera tu récord."
+  },
+  "tools": {
+    "archery": {
+      "name": "Tiro con arco",
+      "blurb": "Tensa, apunta contra el viento y acierta en el oro."
+    }
+  },
+  "faq": {
+    "archery": {
+      "q1": "¿Cómo disparo una flecha?",
+      "a1": "Mantén pulsada la diana (o la barra espaciadora) para tensar el arco, lleva la mira a tu punto y suelta para disparar. Tensar del todo lleva menos de un segundo; si sueltas antes, la flecha cae baja.",
+      "q2": "¿Cómo se puntúa?",
+      "a2": "La diana tiene diez anillos de 1 a 10 de fuera hacia dentro. Una flecha que toca una línea vale el anillo más alto y el 10 interior pequeño cuenta como X para desempatar. Una ronda son seis tandas de tres flechas, 180 puntos como máximo.",
+      "q3": "¿Cómo influye el viento?",
+      "a3": "La bandera junto a la diana y el valor del viento muestran un viento lateral que cambia en cada tanda. Desvía más la flecha a distancias largas, así que apunta un poco contra el viento.",
+      "q4": "¿Por qué se mueve la mira?",
+      "a4": "Como la de un arquero de verdad, tu puntería oscila. Se estabiliza un segundo después de empezar a tensar y vuelve a temblar si aguantas más de cuatro segundos: dispara en ese momento de calma.",
+      "q5": "¿Funciona en el móvil?",
+      "a5": "Sí. Mantén pulsada la diana para tensar, desliza para apuntar y levanta el dedo para disparar. Tu mejor ronda por distancia se guarda en este navegador."
+    }
+  },
+  "guides": {
+    "archery": {
+      "lead": "Tira una ronda en tres pasos.",
+      "s1t": "Elige la distancia",
+      "s1b": "Elige 18, 30, 50 o 70 m y pulsa Jugar. A más distancia, diana más grande.",
+      "s2t": "Tensa y estabiliza",
+      "s2b": "Mantén pulsada la diana o la barra espaciadora. Espera a que la mira se calme y corrige por el viento.",
+      "s3t": "Suelta y puntúa",
+      "s3b": "Suelta para disparar. Tres flechas son una tanda y seis tandas una ronda."
+    }
+  },
+  "ui": {
+    "archery": {
+      "title": "Tiro con arco",
+      "privacyNote": "Tira seis tandas de tres flechas a una diana de diez anillos. Todo funciona en esta página.",
+      "stage": "Campo de tiro con arco",
+      "intro": "Mantén pulsado para tensar, estabiliza la mira y suelta para disparar.",
+      "distance": "Distancia",
+      "meters": "{n} m",
+      "newRound": "Nueva ronda",
+      "faceLabel": "Diana con las flechas de esta tanda",
+      "calm": "sin viento",
+      "windValue": "{dir} {n} metros/s",
+      "wind": "Viento",
+      "endOf": "Tanda {n}/{of}",
+      "arrowOf": "Flecha {n}/{of}",
+      "totalShort": "Puntos {n}",
+      "end": "Tanda",
+      "endScore": "Puntos",
+      "running": "Acumulado",
+      "total": "Total {n} con {x} X en {arrows} flechas.",
+      "best": "Récord a {d} m: {n} puntos, {x} X.",
+      "noBest": "Aún no has terminado una ronda a {d} m.",
+      "hit": "Impacto: {s}.",
+      "boss": "En el parapeto, fuera de la diana: sin puntos.",
+      "miss": "Fallo.",
+      "newBest": "¡Nuevo récord: {n} puntos con {x} X!",
+      "roundDone": "Ronda terminada: {n} puntos con {x} X.",
+      "again": "Tirar otra vez",
+      "hint": "Mueve el ratón para apuntar, mantén el botón o la barra espaciadora para tensar y suelta para disparar. Las flechas del teclado ajustan la mira (Mayús para pasos grandes).",
+      "hintTouch": "Mantén pulsada la diana para tensar, desliza para apuntar y levanta el dedo para disparar."
+    }
+  }
+}

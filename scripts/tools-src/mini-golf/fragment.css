@@ -1,0 +1,15 @@
+
+/* Mini golf (src/client/mini-golf/ui.ts) */
+.mg-bar, .mg-putt { align-items: center; }
+.mg-power { display: flex; align-items: center; gap: 0.5rem; flex: 1 1 14rem; }
+.mg-power input { flex: 1; min-width: 0; }
+.mg-power-out { min-width: 3em; font-variant-numeric: tabular-nums; }
+.mg-status { min-height: 1.6em; font-weight: 600; }
+.mg-card-wrap { overflow-x: auto; }
+.mg-card { border-collapse: collapse; font-variant-numeric: tabular-nums; margin: 0.5rem 0; }
+.mg-card caption { text-align: left; font-weight: 600; margin-bottom: 0.25rem; }
+.mg-card th, .mg-card td { border: 1px solid var(--line); padding: 0.25rem 0.5rem; text-align: center; min-width: 2em; }
+.mg-card th[scope="row"] { text-align: left; }
+.mg-card .mg-now { background: var(--pink-soft); font-weight: 600; }
+.mg-card .mg-total { font-weight: 700; }
+.mg-best { color: var(--ink-soft); }

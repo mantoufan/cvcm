@@ -340,6 +340,11 @@ const TITLE: Record<ToolId, string> = {
   "darts": "meta.titleDarts",
   billiards: "meta.titleBilliards",
   snooker: "meta.titleSnooker",
+  "basketball-game": "meta.titleBasketballGame",
+  "mini-golf": "meta.titleMiniGolf",
+  "archery": "meta.titleArchery",
+  "ping-pong": "meta.titlePingPong",
+  "bowling": "meta.titleBowling",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -594,6 +599,11 @@ const DESC: Record<ToolId, string> = {
   "darts": "meta.descDarts",
   billiards: "meta.descBilliards",
   snooker: "meta.descSnooker",
+  "basketball-game": "meta.descBasketballGame",
+  "mini-golf": "meta.descMiniGolf",
+  "archery": "meta.descArchery",
+  "ping-pong": "meta.descPingPong",
+  "bowling": "meta.descBowling",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

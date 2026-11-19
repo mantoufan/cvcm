@@ -42,3 +42,11 @@ export function seeded(seed: number): () => number {
     return ((t ^ (t >>> 14)) >>> 0) / 0x1_0000_0000;
   };
 }
+
+/**
+ * A bounded bell curve with mean 0 and standard deviation 1 (three uniforms summed: never beyond ±3), for game aim
+ * noise where a rare huge miss from an unbounded normal would feel unfair. `rand` returns uniforms in [0, 1).
+ */
+export function approxNormal(rand: () => number): number {
+  return (rand() + rand() + rand() - 1.5) * 2;
+}

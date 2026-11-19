@@ -1,0 +1,10 @@
+
+/* Basketball game (src/client/basketball-game/ui.ts) */
+.bb-root .g3d-stage { cursor: grab; }
+.bb-hud { justify-content: space-between; align-items: center; }
+.bb-hud-score { font-size: 2rem; font-weight: 800; color: var(--pink-deep); }
+.bb-hud-streak { color: var(--pink-dark); font-weight: 700; }
+.bb-meter { position: absolute; left: 0.6rem; right: 0.6rem; top: 2.8rem; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, 0.7); overflow: hidden; }
+.bb-meter-fill { display: block; height: 100%; width: 0; background: var(--pink-deep); }
+.bb-stats { margin: 0.25rem 0 0.75rem; }
+.bb-status { min-height: 1.5em; margin: 0.5rem 0; font-weight: 600; }

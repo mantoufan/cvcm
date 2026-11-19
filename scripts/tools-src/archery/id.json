@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "titleArchery": "Game panahan — memanah sasaran 3D online gratis — cv.cm",
+    "descArchery": "Main panahan gratis: tarik busur, tenangkan bidikan, dan panah sasaran sepuluh lingkaran dari 18, 30, 50 atau 70 m. Baca angin, panah enam seri tiga anak panah, dan pecahkan rekor Anda."
+  },
+  "tools": {
+    "archery": {
+      "name": "Panahan",
+      "blurb": "Tarik, bidik melawan angin, dan kenai pusat emas."
+    }
+  },
+  "faq": {
+    "archery": {
+      "q1": "Bagaimana cara memanah?",
+      "a1": "Tekan dan tahan sasaran (atau tahan Spasi) untuk menarik busur, arahkan bidikan ke titik tujuan, lalu lepaskan untuk memanah. Tarikan penuh butuh kurang dari sedetik; lepas terlalu cepat dan anak panah jatuh rendah.",
+      "q2": "Bagaimana penilaiannya?",
+      "a2": "Sasaran punya sepuluh lingkaran bernilai 1 sampai 10 dari luar ke dalam. Anak panah yang menyentuh garis mendapat nilai lingkaran yang lebih tinggi, dan 10 kecil di tengah dihitung X untuk penentu seri. Satu ronde terdiri dari enam seri tiga anak panah, maksimal 180 poin.",
+      "q3": "Apa pengaruh angin?",
+      "a3": "Bendera di samping sasaran dan angka kecepatan angin menunjukkan angin samping yang berubah tiap seri. Semakin jauh jaraknya, semakin jauh anak panah bergeser, jadi bidik sedikit ke arah datangnya angin.",
+      "q4": "Kenapa bidikan bergoyang?",
+      "a4": "Seperti pemanah sungguhan, bidikan Anda bergoyang. Bidikan paling tenang sekitar sedetik setelah mulai menarik dan bergetar lagi bila ditahan lebih dari empat detik, jadi lepaskan saat tenang.",
+      "q5": "Apakah bisa di HP?",
+      "a5": "Bisa. Tekan dan tahan sasaran untuk menarik, geser untuk membidik, dan angkat jari untuk memanah. Ronde terbaik tiap jarak disimpan di browser ini."
+    }
+  },
+  "guides": {
+    "archery": {
+      "lead": "Panah satu ronde dalam tiga langkah.",
+      "s1t": "Pilih jarak",
+      "s1b": "Pilih 18, 30, 50 atau 70 m lalu tekan Main. Semakin jauh, sasaran semakin besar.",
+      "s2t": "Tarik dan tenangkan",
+      "s2b": "Tahan sasaran atau tahan Spasi. Tunggu bidikan tenang dan perhitungkan angin.",
+      "s3t": "Lepas dan catat skor",
+      "s3b": "Lepaskan untuk memanah. Tiga anak panah satu seri, enam seri satu ronde."
+    }
+  },
+  "ui": {
+    "archery": {
+      "title": "Panahan",
+      "privacyNote": "Panah enam seri tiga anak panah ke sasaran sepuluh lingkaran. Semuanya berjalan di halaman ini.",
+      "stage": "Lapangan panahan",
+      "intro": "Tahan untuk menarik busur, tenangkan bidikan, lepaskan untuk memanah.",
+      "distance": "Jarak",
+      "meters": "{n} m",
+      "newRound": "Ronde baru",
+      "faceLabel": "Sasaran dengan anak panah seri ini",
+      "calm": "tanpa angin",
+      "windValue": "{dir} {n} m/detik",
+      "wind": "Angin",
+      "endOf": "Seri {n}/{of}",
+      "arrowOf": "Panah {n}/{of}",
+      "totalShort": "Jumlah {n}",
+      "end": "Seri",
+      "endScore": "Skor",
+      "running": "Akumulasi",
+      "total": "Total {n} dengan {x} X dari {arrows} anak panah.",
+      "best": "Terbaik di {d} m: {n} poin, {x} X.",
+      "noBest": "Belum ada ronde selesai di {d} m.",
+      "hit": "Kena: {s}.",
+      "boss": "Mengenai bantalan di luar sasaran: tanpa skor.",
+      "miss": "Meleset.",
+      "newBest": "Rekor baru: {n} poin dengan {x} X!",
+      "roundDone": "Ronde selesai: {n} poin dengan {x} X.",
+      "again": "Memanah lagi",
+      "hint": "Gerakkan mouse untuk membidik, tahan tombol atau Spasi untuk menarik, lepaskan untuk memanah. Tombol panah menyetel bidikan (Shift untuk langkah besar).",
+      "hintTouch": "Tekan dan tahan sasaran untuk menarik, geser untuk membidik, angkat jari untuk memanah."
+    }
+  }
+}

@@ -1,0 +1,13 @@
+
+/* Archery (src/client/archery/ui.ts) */
+.ar-root .g3d-stage { cursor: crosshair; }
+.ar-draw { position: absolute; left: 0.6rem; bottom: 0.6rem; width: min(40%, 12rem); height: 0.5rem; border: 1px solid var(--line); border-radius: 999px; background: rgba(255, 255, 255, 0.8); overflow: hidden; pointer-events: none; }
+.ar-draw-fill { display: block; width: 0; height: 100%; background: var(--pink); }
+.ar-draw.ar-full .ar-draw-fill { background: var(--pink-deep); }
+.ar-status { min-height: 1.5em; margin: 0.5rem 0; font-weight: 600; }
+.ar-sheet-wrap { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; margin: 0.75rem 0; }
+.ar-face { width: 140px; height: 140px; flex: none; }
+.ar-sheet-col { flex: 1 1 16rem; min-width: 0; overflow-x: auto; }
+.ar-sheet { border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.ar-sheet th, .ar-sheet td { padding: 0.2rem 0.6rem; border-bottom: 1px solid var(--line); text-align: center; }
+.ar-total { margin: 0.5rem 0 0; font-weight: 600; }

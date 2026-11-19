@@ -226,12 +226,7 @@ export function mountStackGame(host: HTMLElement): void {
     // Enter or Space on a button (Play, full screen) or link keeps its own meaning.
     if (!onStage && target instanceof HTMLElement && target.closest("button, a, summary")) return;
     if (!onStage && !onScreen(shell.root)) return;
-    // Space or Enter on the stage after a game over plays again, like the cover's button.
-    if (onStage && shell.covered() && game && !playing) {
-      e.preventDefault();
-      if (!e.repeat) shell.root.querySelector<HTMLButtonElement>('[data-act="play"]')?.click();
-      return;
-    }
+    // Space / Enter on the covered stage is handled by gameShell (it presses Play / Play again).
     if (!game || !playing) return;
     e.preventDefault();
     if (!e.repeat) game.drop();

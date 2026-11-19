@@ -214,3 +214,16 @@ Keyword Planner (MCC `7007031245`, `generateKeywordHistoricalMetrics` per langua
 ## 2026-11-19: hubs by kind of play
 
 `/games/<kind>/` for board, card, puzzle, word (with typing), arcade, sports & racing (`GAME_KIND_TOOLS` in path.ts); `/games/3d/` stays as a tag hub; `/games/mini/` 301s to `/games/`, which takes over "free online games" / 免费小游戏. Hub names per locale follow the volumes above: zh-TW 撲克牌遊戲 (6.6k, over 紙牌遊戲 480), ja トランプゲーム (135k), ko 카드게임, vi game bài (18.1k), es juegos de lógica (4.4k, over juegos de puzzle 3.6k), ja/ko/vi/id/es word hubs say "typing" too (タイピングゲーム 201k, 타자 게임 18.1k).
+## 3D games, third batch (2026-11-19)
+
+Keyword Planner, same MCC, per language. `games3d` now holds 15 pages.
+
+| Slug | Evidence (monthly) | Notes |
+|---|---|---|
+| `basketball-game` | basketball game 246k; ja バスケ ゲーム 22.2k; id game basket 5.4k; ko 농구 게임 3.6k; zh 篮球游戏 4.4k | Hoop shooting; no league, team or player names |
+| `mini-golf` | golf game 90.5k (vi/id "game golf" the same); mini golf game 12.1k; ja ゴルフ ゲーム 3.6k; zh-CN 迷你高尔夫 1k | Nine original holes |
+| `archery` | archery game 40.5k; bow and arrow game 5.4k; vi game bắn cung 2.9k; ja 弓矢 ゲーム 1.6k | Target archery, 18–70 m, wind |
+| `ping-pong` | ping pong game 33.1k; table tennis game 22.2k; ja 卓球 ゲーム 14.8k; es juego de ping pong 3.6k; ko 탁구 게임 2.4k | zh-TW 桌球 = table tennis |
+| `bowling` | bowling game 27.1k; 3d bowling 9.9k; ja ボウリング ゲーム 6.6k; es juego de bolos 4.4k | Ten-pin, full scoring |
+
+Skipped: skee ball 49.5k (Skee-Ball is a trademark). Next candidates: mahjong 3d 22.2k (es/vi/id), penalty kick game 14.8k (id game penalti 14.8k).

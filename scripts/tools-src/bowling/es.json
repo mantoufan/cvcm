@@ -1,0 +1,73 @@
+{
+  "meta": {
+    "titleBowling": "Juego de bolos — juega a los bolos 3D online — cv.cm",
+    "descBowling": "Juega gratis a los bolos en 3D en el navegador: desliza o usa el teclado para lanzar, añade efecto para que la bola gire y juega diez cuadros contra el ordenador o solo. Puntuación real, también en el móvil."
+  },
+  "tools": {
+    "bowling": {
+      "name": "Bolos",
+      "blurb": "Bolos de diez pinos en una pista 3D."
+    }
+  },
+  "faq": {
+    "bowling": {
+      "q1": "¿Cómo lanzo la bola?",
+      "a1": "Desliza hacia arriba sobre la pista: la dirección marca el tiro, la rapidez la fuerza y un deslizamiento curvo añade efecto. Arrastra primero de lado para moverte por la línea de falta. Con teclado: ← → para moverte, ↑ ↓ para apuntar, mantén Espacio y suéltalo cuando el medidor de fuerza esté donde quieres.",
+      "q2": "¿Para qué sirve el efecto?",
+      "a2": "Con efecto, la bola se curva al salir de la parte aceitada de la pista. Ajústalo con el control «Efecto», con Q y E o curvando el deslizamiento. Cuanto más lenta, más se curva. Para un pleno, busca el hueco entre el pino 1 y el de al lado.",
+      "q3": "¿Cómo se puntúa?",
+      "a3": "Diez cuadros de hasta dos bolas. Un pleno (los diez con la primera bola) vale 10 más tus dos bolas siguientes; un semipleno (los diez con dos bolas) vale 10 más la bola siguiente. En el décimo cuadro, un pleno o semipleno da bolas extra. La partida perfecta son 300 puntos.",
+      "q4": "¿Puedo jugar contra el ordenador?",
+      "a4": "Sí. Elige un rival fácil, normal o difícil; lanza sus cuadros después de los tuyos. O elige «Solo» para jugar sin rival y batir tu récord.",
+      "q5": "¿Se guarda mi partida?",
+      "a5": "Tu mejor puntuación y la partida en curso se guardan en este navegador para que puedas seguir más tarde. No se sube nada."
+    }
+  },
+  "guides": {
+    "bowling": {
+      "lead": "Una partida en tres pasos.",
+      "s1t": "Colócate",
+      "s1b": "Arrastra de lado para moverte por la línea de falta y elige el efecto si quieres.",
+      "s2t": "Lanza la bola",
+      "s2b": "Desliza hacia arriba hacia los pinos, o mantén Espacio y suéltalo con la fuerza que quieras.",
+      "s3t": "Termina los diez cuadros",
+      "s3b": "Derriba con la segunda bola lo que quede. Plenos y semiplenos suman bonificación; la hoja lo cuenta todo."
+    }
+  },
+  "ui": {
+    "bowling": {
+      "title": "Juego de bolos",
+      "privacyNote": "Bolos de diez pinos en una pista 3D. Todo funciona en esta página.",
+      "stage": "Pista de bolos",
+      "intro": "Desliza hacia arriba para lanzar. Arrastra de lado para moverte; curva el gesto para dar efecto.",
+      "opponent": "Rival",
+      "solo": "Sin rival",
+      "cpu_0": "Ordenador: fácil",
+      "cpu_1": "Ordenador: medio",
+      "cpu_2": "Ordenador: difícil",
+      "spin": "Efecto",
+      "newGame": "Nueva partida",
+      "you": "Tú",
+      "computer": "Ordenador",
+      "player": "Jugador",
+      "total": "Suma",
+      "best": "Mejor partida",
+      "hud": "{who} · cuadro {f} · bola {b}",
+      "strike": "¡Pleno!",
+      "spare": "¡Semipleno!",
+      "gutter": "Bola al canal.",
+      "none": "Ningún pino.",
+      "pin1": "1 pino.",
+      "pins": "{n} pinos.",
+      "cpuTurn": "El ordenador está lanzando…",
+      "youWin": "¡Ganas {you} a {cpu}!",
+      "cpuWins": "Gana el ordenador {cpu} a {you}.",
+      "tie": "Empate a {score}.",
+      "gameOver": "Fin de la partida: {score}.",
+      "newBest": "¡Nuevo récord: {score}!",
+      "again": "Jugar otra vez",
+      "resumed": "Partida retomada en el cuadro {f}.",
+      "hint": "Desliza hacia arriba para lanzar; arrastra de lado para moverte. Teclas: ← → mover, ↑ ↓ apuntar, Q E efecto, mantén Espacio y suelta para lanzar."
+    }
+  }
+}

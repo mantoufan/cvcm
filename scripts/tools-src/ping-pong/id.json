@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "titlePingPong": "Game tenis meja — main ping pong 3D online melawan komputer — cv.cm",
+    "descPingPong": "Main game ping pong gratis: tenis meja 3D melawan komputer dengan tiga level. Gerakkan bet dengan mouse, jari, atau tombol panah; yang pertama mencapai 11 menang. Bisa di HP juga."
+  },
+  "tools": {
+    "ping-pong": {
+      "name": "Tenis meja",
+      "blurb": "Tenis meja melawan komputer di meja 3D."
+    }
+  },
+  "faq": {
+    "ping-pong": {
+      "q1": "Bagaimana cara bermain tenis meja di sini?",
+      "a1": "Gerakkan bet untuk menjemput bola setelah bola memantul sekali di sisi Anda. Bagian bet yang mengenai bola menentukan arah: tepi kiri mengirim bola ke kiri, tepi kanan ke kanan. Anda dapat poin jika komputer meleset, memukul ke net, atau memukul keluar.",
+      "q2": "Bagaimana servis dan mengayun?",
+      "a2": "Klik, ketuk layar, atau tekan Spasi. Saat giliran servis Anda, bola dilambungkan dan diservis; saat reli, pukulan berikutnya jadi lebih kuat. Mendorong bet ke arah net saat memukul juga membuat bola lebih cepat dan dalam.",
+      "q3": "Apa aturannya?",
+      "a3": "Aturan tenis meja yang disederhanakan: bola harus memantul sekali di tiap sisi, servis memantul di separuh meja Anda dulu, dan servis yang menyentuh net lalu masuk adalah let dan diulang. Servis berganti tiap dua poin, dan tiap poin sejak 10–10. Yang pertama mencapai 11 dengan selisih dua poin menang.",
+      "q4": "Seberapa sulit komputernya?",
+      "a4": "Mudah bereaksi lambat dan sering salah, Sedang lebih stabil, Sulit bergerak cepat, menempatkan bola, dan jarang salah. Mengganti level memulai pertandingan baru.",
+      "q5": "Apakah catatan saya disimpan?",
+      "a5": "Ya. Menang dan kalah Anda di tiap level hanya disimpan di browser ini. Meja 3D baru dimuat saat Anda menekan Main."
+    }
+  },
+  "guides": {
+    "ping-pong": {
+      "lead": "Main tenis meja dalam tiga langkah.",
+      "s1t": "Servis",
+      "s1b": "Tekan Main, lalu klik, ketuk, atau tekan Spasi untuk servis. Servis Anda memantul di sisi Anda dulu.",
+      "s2t": "Kembalikan bola",
+      "s2b": "Gerakkan bet dengan mouse, jari, atau tombol panah dan pukul bola setelah memantul di sisi Anda. Bidik dengan tepi bet.",
+      "s3t": "Menang sampai sebelas",
+      "s3b": "Anda dapat poin saat komputer meleset atau memukul keluar. Yang pertama mencapai 11 dengan selisih dua poin memenangi pertandingan."
+    }
+  },
+  "ui": {
+    "pingPong": {
+      "title": "Tenis meja",
+      "privacyNote": "Main tenis meja melawan komputer di meja 3D. Catatan Anda tersimpan di browser ini.",
+      "stage": "Meja tenis meja",
+      "intro": "Gerakkan bet dengan mouse, jari, atau tombol panah. Klik, ketuk, atau tekan Spasi untuk servis dan memukul lebih keras. Yang pertama mencapai 11 menang.",
+      "hud": "Anda {you} : {cpu} Komputer",
+      "yourServe": "servis Anda: klik, ketuk, atau Spasi",
+      "cpuServe": "komputer servis",
+      "record": "Di level ini: {w} menang, {l} kalah",
+      "youPoint": "Poin untuk Anda: {why}. Anda {you}, komputer {cpu}.",
+      "cpuPoint": "Poin untuk komputer: {why}. Anda {you}, komputer {cpu}.",
+      "let": "Let: servis menyentuh net. Servis lagi.",
+      "r_out": "bola keluar",
+      "r_net": "kena net",
+      "r_double": "dua kali memantul",
+      "r_miss": "meleset",
+      "r_fault": "servis salah",
+      "r_own": "bola memantul di sisi pemukul",
+      "r_dead": "bola berhenti di meja",
+      "youWin": "Anda menang {you}–{cpu}!",
+      "cpuWins": "Komputer menang {cpu}–{you}.",
+      "again": "Main lagi",
+      "level": "Tingkat",
+      "l_0": "Mudah",
+      "l_1": "Sedang",
+      "l_2": "Sulit",
+      "restart": "Pertandingan baru",
+      "you": "Anda",
+      "computer": "Komputer",
+      "hint": "Mouse atau jari: bet mengikuti penunjuk di sisi meja Anda. Keyboard: tombol panah atau W A S D untuk bergerak, Spasi untuk servis dan mengayun. Bagian bet yang mengenai bola menentukan arah."
+    }
+  }
+}

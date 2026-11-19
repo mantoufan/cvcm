@@ -1,7 +1,7 @@
 import type { Mesh } from "three";
 import { h } from "../dom";
 import { t } from "../i18n";
-import { creditLine, readStore, typingTarget, writeStore } from "../game-input";
+import { creditLine, readStore, writeStore } from "../game-input";
 import { coarsePointer, createStage, gameShell, heldKeys, lostContext, type Stage } from "../three-stage";
 import {
   GOAL_W,
@@ -278,15 +278,7 @@ export function mountAirHockey(host: HTMLElement): void {
     shell.stage.focus({ preventScroll: true });
   });
 
-  // Space or Enter on the focused stage after a match plays again, like the cover's button.
-  const onKey = (e: KeyboardEvent) => {
-    if (e.code !== "Space" && e.code !== "Enter" && e.code !== "NumpadEnter") return;
-    if (e.ctrlKey || e.metaKey || e.altKey || typingTarget(e.target)) return;
-    if (e.target !== shell.stage) return;
-    e.preventDefault();
-    if (!e.repeat && shell.covered() && game) shell.root.querySelector<HTMLButtonElement>('[data-act="play"]')?.click();
-  };
-  window.addEventListener("keydown", onKey);
+  // Space / Enter on the covered stage is handled by gameShell (it presses Play / Play again).
 
   showScore();
   showRecord();
@@ -310,7 +302,6 @@ export function mountAirHockey(host: HTMLElement): void {
 
   mounted = {
     cleanup: () => {
-      window.removeEventListener("keydown", onKey);
       shell.dispose();
       game = null;
     },

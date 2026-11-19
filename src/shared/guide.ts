@@ -228,6 +228,11 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "pressure-points-map": 3,
   billiards: 3,
   snooker: 3,
+  "basketball-game": 3,
+  "mini-golf": 3,
+  "archery": 3,
+  "ping-pong": 3,
+  "bowling": 3,
 };
 
 export function guideSteps(tool: ToolId): number {

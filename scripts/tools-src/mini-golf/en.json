@@ -1,0 +1,74 @@
+{
+  "meta": {
+    "titleMiniGolf": "Mini golf — play a free 3D golf game online — cv.cm",
+    "descMiniGolf": "Play mini golf in your browser: nine 3D holes with bumpers, slopes, water and a turning blocker. Drag back to putt, keep your scorecard and beat your best round. Free, no download."
+  },
+  "tools": {
+    "mini-golf": {
+      "name": "Mini golf",
+      "blurb": "Nine 3D putting holes: beat par."
+    }
+  },
+  "faq": {
+    "mini-golf": {
+      "q1": "How do I putt?",
+      "a1": "Drag back from the ball like a slingshot: the line shows where it will go and how hard. Let go to putt. You can also set the power with the slider and press Putt.",
+      "q2": "Can I play with the keyboard?",
+      "a2": "Yes. Click the course first, then use the left and right arrow keys to aim (hold Shift for fine steps), up and down to change the power, and Space or Enter to putt.",
+      "q3": "What happens in the water?",
+      "a3": "The ball goes back to where you played it from and you get one penalty stroke. After eight strokes on a hole the ball is picked up and you move on.",
+      "q4": "Is my round saved?",
+      "a4": "Yes, in this browser. Leave the page and you carry on from the same hole and the same spot. Your best total over nine holes is kept too.",
+      "q5": "What is par?",
+      "a5": "Par is the number of strokes a good player needs for a hole. The course par is 24; the scorecard shows each hole and your total against par."
+    }
+  },
+  "guides": {
+    "mini-golf": {
+      "lead": "Play nine holes in three steps.",
+      "s1t": "Aim the putt",
+      "s1b": "Press Play, then drag back from the ball. The pink line shows the direction and power.",
+      "s2t": "Putt and watch",
+      "s2b": "Let go to putt. Walls and bumpers bounce the ball, slopes bend its path, and water costs a stroke.",
+      "s3t": "Hole out",
+      "s3b": "Sink the ball in as few strokes as you can. After each hole the next one starts and your scorecard fills in."
+    }
+  },
+  "ui": {
+    "miniGolf": {
+      "title": "Mini golf",
+      "privacyNote": "Nine 3D holes in your browser. Your round is saved here only.",
+      "stage": "Mini golf course",
+      "intro": "Drag back from the ball to aim and putt. Nine holes, par 24.",
+      "power": "Power",
+      "puttBtn": "Putt",
+      "newRound": "New round",
+      "viewLeft": "Turn the view left",
+      "viewRight": "Turn the view right",
+      "scorecard": "Scorecard",
+      "colHole": "Hole",
+      "colPar": "Par",
+      "colYou": "You",
+      "total": "Total",
+      "even": "level par",
+      "overPar": "{n} over par",
+      "underPar": "{n} under par",
+      "noBest": "No round finished yet.",
+      "best": "Best round: {n} strokes ({diff}).",
+      "hud": "Hole {n}/{of} · Par {par} · Strokes {s} · Power {p}%",
+      "newBest": "Round over: {total} strokes ({diff}). A new best!",
+      "roundOver": "Round over: {total} strokes ({diff}).",
+      "again": "Play again",
+      "ace": "Hole in one!",
+      "eagle": "Eagle!",
+      "birdie": "Birdie!",
+      "par": "Par.",
+      "bogey": "Bogey.",
+      "overHole": "{n} over par on this hole.",
+      "water": "In the water: one penalty stroke, play again from the same spot.",
+      "pickedUp": "{n} strokes: ball picked up, on to the next hole.",
+      "resumed": "Your round carries on at hole {n}.",
+      "hint": "Drag back from the ball and let go to putt. Keys (click the course first): ← → aim, Shift for fine aim, ↑ ↓ power, Space or Enter putts. ⟲ ⟳ turn the view."
+    }
+  }
+}

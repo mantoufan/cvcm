@@ -440,3 +440,12 @@ Codex (`codex exec -m gpt-6-astra --image gpa-sweet.jpg,average-sweet.jpg -`, pr
 
 - `title-case`: she sets the last tile into a row of blank glossy pink and cream tiles on a satin ribbon; every few tiles one is taller and wears a tiny golden crown, like the capitals of a title; a plain pink style-guide book and a fountain pen.
 - `words-to-pages`: she lifts a blank page out of a vintage pastel pink typewriter; a stack of cream pages with faint double-spaced ruled lines, a pink ruler measuring the stack and a round pink counter dial with no numerals.
+## Basketball game, mini golf, archery, ping pong, bowling (2026-11-19)
+
+Codex (`codex exec -m gpt-6-astra --image darts-sweet.jpg,air-hockey-sweet.jpg -`, prompt on stdin), one after another, same base prompt as the earlier 3D batches plus "no team emblem". `sips -s format jpeg` then `sips -z 720 1280`. All five came out on the first try.
+
+- `basketball-game`: she jumps and shoots a pink and cream ball (no logo) toward a white hoop with a pastel net on a glass backboard, sparkling arc; pastel gym.
+- `mini-golf`: she kneels with a pink putter on a pastel green with a tiny windmill, a bridge and flowers; a ball rolls toward the hole and a plain pink flag.
+- `archery`: she draws a pink and white recurve bow at a five-colour target (no numbers) in a blossom meadow; an arrow in the gold.
+- `ping-pong`: she swings a pink paddle over a mint table with a white net; the ball pops up.
+- `bowling`: she releases a glossy pink ball down a pale lane toward ten white pins with pink stripes; one starts to tip.

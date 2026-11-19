@@ -1,0 +1,66 @@
+{
+  "meta": {
+    "titleBasketballGame": "Basketball game — shoot hoops online in 3D for free — cv.cm",
+    "descBasketballGame": "Play a free 3D basketball shooting game in your browser: swipe or drag to shoot, score as many baskets as you can in 60 seconds or practise from five spots. Works on phones."
+  },
+  "tools": {
+    "basketball-game": {
+      "name": "Basketball game",
+      "blurb": "Shoot hoops for 60 seconds or practise."
+    }
+  },
+  "faq": {
+    "basketball-game": {
+      "q1": "How do I shoot?",
+      "a1": "Drag or swipe up on the court: the direction of the swipe aims the shot and its length sets the strength. On a keyboard, aim with the left and right arrows, hold Space to fill the power meter and let go to shoot.",
+      "q2": "How is the score counted?",
+      "a2": "A basket is worth 2 points, or 3 from the spot beyond the three-point line. From the third basket in a row, every basket earns 1 bonus point until you miss.",
+      "q3": "What is the difference between the two modes?",
+      "a3": "Timed mode gives you 60 seconds and moves you to a new spot after every three baskets. Practice has no clock: pick one of five spots and shoot as long as you like.",
+      "q4": "What are a swish and a bank shot?",
+      "a4": "A swish drops through without touching the rim or the board. A bank shot bounces off the backboard and in. Both count the same; the game tells you which one you made.",
+      "q5": "Does it work on a phone?",
+      "a5": "Yes. Swipe up on the court to shoot. Full screen gives you the most room. Your best timed score is kept in this browser."
+    }
+  },
+  "guides": {
+    "basketball-game": {
+      "lead": "Play the basketball game in three steps.",
+      "s1t": "Pick a mode",
+      "s1b": "Choose the 60-second timed round or practice from one of five spots, then press Play.",
+      "s2t": "Swipe to shoot",
+      "s2b": "Drag or swipe up on the court. Aim with the direction and set the strength with the length, or use the arrow keys and Space.",
+      "s3t": "Keep the streak",
+      "s3b": "Three baskets in a row and every basket earns a bonus point. Beat your best score before the clock runs out."
+    }
+  },
+  "ui": {
+    "basketballGame": {
+      "title": "Basketball game",
+      "privacyNote": "Shoot hoops in 3D. Everything runs in this page.",
+      "stage": "Basketball court",
+      "intro": "Swipe up to shoot. Score as many baskets as you can.",
+      "time": "Time {time}",
+      "practice": "Practice",
+      "streak": "{n} in a row",
+      "r_swish": "Swish!",
+      "r_bank": "Off the glass!",
+      "r_rim": "In off the rim!",
+      "r_miss": "Missed.",
+      "scored": "{what} +{points} pts",
+      "newBest": "Time! New best: {score} points.",
+      "over": "Time! You scored {score} points.",
+      "again": "Play again",
+      "m_timed": "Timed (60 seconds)",
+      "m_practice": "Practice",
+      "mode": "Mode",
+      "spot": "Spot",
+      "spotOption": "Spot {n} ({m} m)",
+      "newGame": "New game",
+      "score": "Score",
+      "made": "Baskets",
+      "best": "Best (timed)",
+      "hint": "Drag or swipe up on the court to shoot: the direction aims, the length sets the strength. Keyboard: left and right arrows aim, hold Space and let go to shoot."
+    }
+  }
+}

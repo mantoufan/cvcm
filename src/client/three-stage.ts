@@ -197,8 +197,13 @@ export interface Shell {
   stage: HTMLElement;
   /** Full screen toggle button, for the game's toolbar. */
   fullscreenButton: HTMLButtonElement;
-  /** Shows the cover again with a message (game over, context lost) and a button label. */
+  /**
+   * Shows the cover again with a message (game over) and a button label. Ignored after a lost context until the
+   * player restarts, so a game's delayed "game over" cover cannot hide that the 3D view stopped.
+   */
   cover(message: string, button?: string): void;
+  /** The lost-context cover (see lostContext); stays until the next Play. */
+  coverLost(): void;
   /** Hides the cover. */
   uncover(): void;
   /** The cover is showing (before the first Play, game over, lost context): the game should not run or take keys. */
@@ -233,6 +238,8 @@ export function gameShell(opts: ShellOptions): Shell {
   let cleanup: (() => void) | null = null;
   let loading = false;
   let disposed = false;
+  /** The GL context was lost: only the lost cover shows until the next Play. */
+  let lost = false;
   /** Bumped by stop()/dispose(), so a start that resolves afterwards tears its own game down. */
   let generation = 0;
   const msg = h("p", { class: "g3d-msg", "aria-live": "polite" }, opts.intro);
@@ -275,16 +282,54 @@ export function gameShell(opts: ShellOptions): Shell {
   });
   document.addEventListener("fullscreenchange", syncFull);
 
+  // Space or Enter on the focused stage while the cover is up presses its button (Play, Play again, Restart). The
+  // event stops here so a game's own key handling (a held power key, say) never sees the same press.
+  // It runs in the capture phase and stops the event outright (other stage listeners included). The key that pressed
+  // the button is remembered until it comes up: its auto-repeats are swallowed too, so holding it a little long does
+  // not start a power charge in the game that just began.
+  let swallow: string | null = null;
+  const onCoverKey = (e: KeyboardEvent) => {
+    if (swallow !== null && e.code === swallow) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      return;
+    }
+    if (coverEl.hidden || e.target !== stage || e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.code !== "Space" && e.code !== "Enter" && e.code !== "NumpadEnter") return;
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if (!e.repeat && !btn.disabled) {
+      swallow = e.code;
+      btn.click();
+    }
+  };
+  const onCoverKeyUp = (e: KeyboardEvent) => {
+    if (e.code === swallow) swallow = null;
+  };
+  const onWindowBlur = () => {
+    swallow = null;
+  };
+  stage.addEventListener("keydown", onCoverKey, true);
+  window.addEventListener("keyup", onCoverKeyUp);
+  window.addEventListener("blur", onWindowBlur);
   const shell: Shell = {
     root,
     stage,
     fullscreenButton,
     cover(message, button) {
+      if (lost) return;
       msg.textContent = message;
       btn.textContent = button ?? t("game3d.play");
       coverEl.hidden = false;
     },
+    coverLost() {
+      lost = false;
+      shell.cover(t("game3d.lost"), t("game3d.restart"));
+      lost = true;
+    },
     uncover() {
+      // The lost-context cover stays until the next Play (that path clears `lost` first).
+      if (lost) return;
       coverEl.hidden = true;
       stage.focus({ preventScroll: true });
       // A loop stage stops drawing while covered; start it again.
@@ -301,6 +346,9 @@ export function gameShell(opts: ShellOptions): Shell {
       disposed = true;
       document.removeEventListener("fullscreenchange", syncFull);
       document.removeEventListener("keydown", onEsc);
+      stage.removeEventListener("keydown", onCoverKey, true);
+      window.removeEventListener("keyup", onCoverKeyUp);
+      window.removeEventListener("blur", onWindowBlur);
       shell.stop();
     },
   };
@@ -313,6 +361,7 @@ export function gameShell(opts: ShellOptions): Shell {
       return;
     }
     loading = true;
+    lost = false;
     btn.disabled = true;
     msg.textContent = t("game3d.loading");
     const gen = generation;
@@ -345,7 +394,7 @@ export function gameShell(opts: ShellOptions): Shell {
 /** Call from a stage's onLost: drops the dead game and offers a fresh start. */
 export function lostContext(shell: Shell): void {
   shell.stop();
-  shell.cover(t("game3d.lost"), t("game3d.restart"));
+  shell.coverLost();
 }
 
 /**

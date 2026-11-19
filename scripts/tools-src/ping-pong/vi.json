@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "titlePingPong": "Game bóng bàn — chơi bóng bàn 3D online với máy — cv.cm",
+    "descPingPong": "Chơi game bóng bàn miễn phí: bóng bàn 3D đấu với máy ở ba cấp độ. Di chuyển vợt bằng chuột, ngón tay hoặc phím mũi tên; ai được 11 điểm trước thì thắng. Chơi được trên điện thoại."
+  },
+  "tools": {
+    "ping-pong": {
+      "name": "Bóng bàn",
+      "blurb": "Đánh bóng bàn với máy trên bàn 3D."
+    }
+  },
+  "faq": {
+    "ping-pong": {
+      "q1": "Chơi bóng bàn ở đây thế nào?",
+      "a1": "Di chuyển vợt để đón bóng sau khi bóng nảy một lần bên phía bạn. Chỗ bóng chạm vợt quyết định hướng: mép trái đưa bóng sang trái, mép phải đưa sang phải. Bạn được điểm khi máy đánh trượt, đánh vào lưới hoặc đánh ra ngoài.",
+      "q2": "Giao bóng và vung vợt thế nào?",
+      "a2": "Nhấp chuột, chạm màn hình hoặc nhấn Space. Đến lượt bạn giao thì bóng được tung lên và giao đi; trong lúc đánh qua lại, cú tiếp theo sẽ mạnh hơn. Đẩy vợt về phía lưới khi đánh cũng làm bóng nhanh và sâu hơn.",
+      "q3": "Luật chơi là gì?",
+      "a3": "Luật bóng bàn rút gọn: bóng phải nảy một lần ở mỗi bên, giao bóng phải nảy bên bạn trước, giao bóng chạm lưới rồi rơi vào bàn đối phương là giao lại. Đổi giao sau mỗi hai điểm, từ 10–10 thì đổi sau mỗi điểm. Ai được 11 điểm trước và hơn hai điểm thì thắng.",
+      "q4": "Máy khó đến mức nào?",
+      "a4": "Dễ phản ứng chậm và hay lỗi, Vừa ổn định hơn, Khó di chuyển nhanh, đặt bóng khéo và hiếm khi lỗi. Đổi cấp độ sẽ bắt đầu trận mới.",
+      "q5": "Thành tích có được lưu không?",
+      "a5": "Có. Số trận thắng thua ở mỗi cấp độ chỉ lưu trong trình duyệt này. Bàn 3D chỉ tải khi bạn bấm Chơi."
+    }
+  },
+  "guides": {
+    "ping-pong": {
+      "lead": "Chơi bóng bàn trong ba bước.",
+      "s1t": "Giao bóng",
+      "s1b": "Bấm Chơi rồi nhấp, chạm hoặc nhấn Space để giao. Bóng giao nảy bên bạn trước.",
+      "s2t": "Đỡ bóng",
+      "s2b": "Di chuyển vợt bằng chuột, ngón tay hoặc phím mũi tên và đánh bóng sau khi nó nảy bên bạn. Dùng mép vợt để chọn hướng.",
+      "s3t": "Thắng đến mười một",
+      "s3b": "Bạn được điểm khi máy đánh trượt hoặc ra ngoài. Ai được 11 điểm trước và hơn hai điểm thì thắng trận."
+    }
+  },
+  "ui": {
+    "pingPong": {
+      "title": "Bóng bàn",
+      "privacyNote": "Đánh bóng bàn với máy trên bàn 3D. Thành tích được lưu trong trình duyệt này.",
+      "stage": "Bàn bóng bàn",
+      "intro": "Di chuyển vợt bằng chuột, ngón tay hoặc phím mũi tên. Nhấp, chạm hoặc nhấn Space để giao bóng và đánh mạnh hơn. Ai được 11 điểm trước thì thắng.",
+      "hud": "Bạn {you} : {cpu} Máy",
+      "yourServe": "lượt bạn giao: nhấp, chạm hoặc Space",
+      "cpuServe": "máy giao bóng",
+      "record": "Ở cấp độ này: thắng {w}, thua {l}",
+      "youPoint": "Bạn được điểm: {why}. Bạn {you}, máy {cpu}.",
+      "cpuPoint": "Máy được điểm: {why}. Bạn {you}, máy {cpu}.",
+      "let": "Giao lại: bóng giao chạm lưới. Hãy giao lần nữa.",
+      "r_out": "bóng ra ngoài",
+      "r_net": "vào lưới",
+      "r_double": "bóng nảy hai lần",
+      "r_miss": "đánh trượt",
+      "r_fault": "lỗi giao bóng",
+      "r_own": "bóng nảy bên người đánh",
+      "r_dead": "bóng nằm im trên bàn",
+      "youWin": "Bạn thắng {you}–{cpu}!",
+      "cpuWins": "Máy thắng {cpu}–{you}.",
+      "again": "Chơi lại",
+      "level": "Cấp độ",
+      "l_0": "Dễ",
+      "l_1": "Vừa",
+      "l_2": "Khó",
+      "restart": "Trận mới",
+      "you": "Bạn",
+      "computer": "Máy",
+      "hint": "Chuột hoặc ngón tay: vợt đi theo con trỏ ở phía bạn. Bàn phím: phím mũi tên hoặc W A S D để di chuyển, Space để giao và vung vợt. Chỗ bóng chạm vợt quyết định hướng."
+    }
+  }
+}

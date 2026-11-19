@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "titleArchery": "Game bắn cung — bắn bia 3D trực tuyến miễn phí — cv.cm",
+    "descArchery": "Chơi bắn cung miễn phí: kéo cung, giữ ổn định ống ngắm và bắn bia mười vòng từ 18, 30, 50 hoặc 70 m. Đọc gió, bắn sáu loạt mỗi loạt ba mũi và phá kỷ lục của bạn."
+  },
+  "tools": {
+    "archery": {
+      "name": "Bắn cung",
+      "blurb": "Kéo cung, ngắm ngược gió và trúng hồng tâm vàng."
+    }
+  },
+  "faq": {
+    "archery": {
+      "q1": "Bắn tên thế nào?",
+      "a1": "Nhấn giữ trên bia (hoặc giữ phím cách) để kéo cung, đưa ống ngắm vào điểm muốn bắn rồi thả ra. Kéo căng mất chưa tới một giây; thả quá sớm thì tên rơi thấp.",
+      "q2": "Tính điểm thế nào?",
+      "a2": "Bia có mười vòng từ 1 đến 10 điểm, từ ngoài vào trong. Tên chạm vạch được tính vòng cao hơn, còn vòng 10 nhỏ ở giữa tính là X để phân định khi bằng điểm. Một hiệp gồm sáu loạt ba mũi, tối đa 180 điểm.",
+      "q3": "Gió ảnh hưởng ra sao?",
+      "a3": "Lá cờ cạnh bia và con số tốc độ gió cho biết gió ngang, thay đổi mỗi loạt. Bắn càng xa tên càng bị đẩy lệch, nên hãy ngắm lệch về phía gió thổi tới một chút.",
+      "q4": "Sao ống ngắm lại rung?",
+      "a4": "Giống cung thủ thật, tay ngắm sẽ rung. Ổn định nhất khoảng một giây sau khi bắt đầu kéo và rung trở lại nếu giữ quá bốn giây, nên hãy bắn trong lúc yên nhất.",
+      "q5": "Có chơi được trên điện thoại không?",
+      "a5": "Có. Nhấn giữ bia để kéo, trượt để ngắm và nhấc ngón tay để bắn. Kỷ lục từng cự ly được lưu trong trình duyệt này."
+    }
+  },
+  "guides": {
+    "archery": {
+      "lead": "Bắn một hiệp trong ba bước.",
+      "s1t": "Chọn cự ly",
+      "s1b": "Chọn 18, 30, 50 hoặc 70 m rồi bấm Chơi. Càng xa bia càng lớn.",
+      "s2t": "Kéo và giữ ổn định",
+      "s2b": "Nhấn giữ bia hoặc phím cách. Chờ ống ngắm yên lại và tính đến gió.",
+      "s3t": "Thả và ghi điểm",
+      "s3b": "Thả ra để bắn. Ba mũi là một loạt, sáu loạt là một hiệp."
+    }
+  },
+  "ui": {
+    "archery": {
+      "title": "Bắn cung",
+      "privacyNote": "Bắn sáu loạt ba mũi vào bia mười vòng. Mọi thứ chạy ngay trên trang này.",
+      "stage": "Trường bắn cung",
+      "intro": "Nhấn giữ để kéo cung, giữ ổn định ống ngắm, thả ra để bắn.",
+      "distance": "Cự ly",
+      "meters": "{n} m",
+      "newRound": "Hiệp mới",
+      "faceLabel": "Mặt bia và các mũi tên của loạt này",
+      "calm": "lặng gió",
+      "windValue": "{dir} {n} m/giây",
+      "wind": "Gió",
+      "endOf": "Loạt {n}/{of}",
+      "arrowOf": "Mũi {n}/{of}",
+      "totalShort": "Tổng {n}",
+      "end": "Loạt",
+      "endScore": "Điểm",
+      "running": "Cộng dồn",
+      "total": "Tổng {n} điểm, {x} X sau {arrows} mũi.",
+      "best": "Kỷ lục ở {d} m: {n} điểm, {x} X.",
+      "noBest": "Chưa có hiệp nào hoàn thành ở {d} m.",
+      "hit": "Trúng: {s}.",
+      "boss": "Trúng giá bia, ngoài mặt bia: không tính điểm.",
+      "miss": "Trượt bia.",
+      "newBest": "Kỷ lục mới: {n} điểm, {x} X!",
+      "roundDone": "Hết hiệp: {n} điểm, {x} X.",
+      "again": "Bắn lại",
+      "hint": "Di chuột để ngắm, giữ nút hoặc phím cách để kéo, thả ra để bắn. Phím mũi tên chỉnh ống ngắm (Shift để chỉnh nhiều hơn).",
+      "hintTouch": "Nhấn giữ bia để kéo, trượt để ngắm, nhấc tay để bắn."
+    }
+  }
+}

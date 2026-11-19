@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "titlePingPong": "Juego de ping pong — tenis de mesa 3D online contra el ordenador — cv.cm",
+    "descPingPong": "Juega gratis al ping pong online: tenis de mesa en 3D contra el ordenador en tres niveles. Mueve la pala con el ratón, un dedo o las flechas; gana quien llega a 11. También en el móvil."
+  },
+  "tools": {
+    "ping-pong": {
+      "name": "Juego de ping pong",
+      "blurb": "Tenis de mesa contra el ordenador en una mesa 3D."
+    }
+  },
+  "faq": {
+    "ping-pong": {
+      "q1": "¿Cómo se juega al ping pong aquí?",
+      "a1": "Mueve la pala para encontrar la pelota después de que bote una vez en tu lado. El punto de la pala donde la tocas decide la dirección: el borde izquierdo la manda a la izquierda y el derecho a la derecha. Ganas el punto si el ordenador falla, la mete en la red o la saca fuera.",
+      "q2": "¿Cómo saco y golpeo?",
+      "a2": "Haz clic, toca la pantalla o pulsa Espacio. En tu saque lanza y saca la pelota; en un peloteo da más fuerza a tu siguiente golpe. Mover la pala hacia la red al golpear también hace el tiro más rápido y profundo.",
+      "q3": "¿Cuáles son las reglas?",
+      "a3": "Reglas de tenis de mesa simplificadas: la pelota debe botar una vez en cada lado, el saque bota primero en tu mitad, y un saque que roza la red y entra es let y se repite. El saque cambia cada dos puntos, y en cada punto desde el 10–10. Gana quien llega a 11 con dos puntos de ventaja.",
+      "q4": "¿Qué tan difícil es el ordenador?",
+      "a4": "Fácil reacciona tarde y falla mucho, Medio es más regular y Difícil se mueve rápido, coloca la pelota y casi nunca falla. Cambiar de nivel empieza un partido nuevo.",
+      "q5": "¿Se guardan mis resultados?",
+      "a5": "Sí. Tus victorias y derrotas en cada nivel se quedan solo en este navegador. La mesa 3D se carga al pulsar Jugar."
+    }
+  },
+  "guides": {
+    "ping-pong": {
+      "lead": "Juega al ping pong en tres pasos.",
+      "s1t": "Saca",
+      "s1b": "Pulsa Jugar y luego haz clic, toca o pulsa Espacio para sacar. Tu saque bota primero en tu mitad.",
+      "s2t": "Devuelve la pelota",
+      "s2b": "Mueve la pala con el ratón, un dedo o las flechas y golpea la pelota tras su bote en tu lado. Apunta con el borde de la pala.",
+      "s3t": "Gana a once",
+      "s3b": "Sumas puntos cuando el ordenador falla o la saca fuera. Quien llega primero a 11 con dos de ventaja gana el partido."
+    }
+  },
+  "ui": {
+    "pingPong": {
+      "title": "Ping pong 3D",
+      "privacyNote": "Juega al tenis de mesa contra el ordenador en una mesa 3D. Tus resultados se quedan en este navegador.",
+      "stage": "Mesa de ping pong",
+      "intro": "Mueve la pala con el ratón, un dedo o las flechas. Haz clic, toca o pulsa Espacio para sacar y golpear más fuerte. Gana quien llega a 11.",
+      "hud": "Tú {you} : {cpu} Ordenador",
+      "yourServe": "tu saque: clic, toque o Espacio",
+      "cpuServe": "saca el ordenador",
+      "record": "En este nivel: {w} victorias, {l} derrotas",
+      "youPoint": "Punto para ti: {why}. Tú {you}, ordenador {cpu}.",
+      "cpuPoint": "Punto para el ordenador: {why}. Tú {you}, ordenador {cpu}.",
+      "let": "Let: el saque rozó la red. Saca otra vez.",
+      "r_out": "la pelota salió fuera",
+      "r_net": "a la red",
+      "r_double": "dos botes",
+      "r_miss": "no llegó",
+      "r_fault": "falta de saque",
+      "r_own": "botó en el lado de quien golpeó",
+      "r_dead": "la pelota se quedó parada en la mesa",
+      "youWin": "¡Ganas {you}–{cpu}!",
+      "cpuWins": "Gana el ordenador {cpu}–{you}.",
+      "again": "Jugar otra vez",
+      "level": "Nivel",
+      "l_0": "Fácil",
+      "l_1": "Medio",
+      "l_2": "Difícil",
+      "restart": "Partido nuevo",
+      "you": "Tú",
+      "computer": "Ordenador",
+      "hint": "Ratón o dedo: la pala sigue al puntero en tu lado de la mesa. Teclado: flechas o W A S D para moverla, Espacio para sacar y golpear. El punto de la pala donde toca la pelota decide la dirección."
+    }
+  }
+}

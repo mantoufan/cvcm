@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "titlePingPong": "Ping pong game — play table tennis online in 3D — cv.cm",
+    "descPingPong": "Play a free ping pong game online: 3D table tennis against the computer at three levels. Move the paddle with the mouse, a finger or the arrow keys; first to 11 wins. Works on phones."
+  },
+  "tools": {
+    "ping-pong": {
+      "name": "Ping pong",
+      "blurb": "Table tennis against the computer on a 3D table."
+    }
+  },
+  "faq": {
+    "ping-pong": {
+      "q1": "How do you play ping pong here?",
+      "a1": "Move your paddle to meet the ball after it bounces once on your side. Where the ball meets the paddle sets the direction: the left edge sends it left, the right edge right. Win a point when the computer misses, hits into the net or hits the ball out.",
+      "q2": "How do I serve and swing?",
+      "a2": "Click, tap or press Space. On your serve that tosses and serves the ball; in a rally it adds pace to your next hit. Moving the paddle toward the net as you hit also makes the shot faster and deeper.",
+      "q3": "What are the rules?",
+      "a3": "Table tennis rules, simplified: the ball must bounce once on each side, a serve bounces on your half first, and a serve that clips the net and lands in is a let and is played again. Serves change every two points, and every point from 10–10. The first to 11 wins, by two clear points.",
+      "q4": "How hard is the computer?",
+      "a4": "Easy reacts late and makes many mistakes, Normal is steadier, and Hard moves fast, places the ball and rarely misses. Changing the level starts a new match.",
+      "q5": "Is my record saved?",
+      "a5": "Yes. Your wins and losses at each level stay in this browser only. The 3D table loads when you press Play."
+    }
+  },
+  "guides": {
+    "ping-pong": {
+      "lead": "Play ping pong in three steps.",
+      "s1t": "Serve",
+      "s1b": "Press Play, then click, tap or press Space to serve. Your serve bounces on your half first.",
+      "s2t": "Return the ball",
+      "s2b": "Move the paddle with the mouse, a finger or the arrow keys and meet the ball after it bounces on your side. Aim with the edge of the paddle.",
+      "s3t": "Win to eleven",
+      "s3b": "Win points when the computer misses or hits out. The first to 11, two points clear, wins the match."
+    }
+  },
+  "ui": {
+    "pingPong": {
+      "title": "Ping pong",
+      "privacyNote": "Play table tennis against the computer on a 3D table. Your record stays in this browser.",
+      "stage": "Ping pong table",
+      "intro": "Move your paddle with the mouse, a finger or the arrow keys. Click, tap or press Space to serve and to hit harder. First to 11 wins.",
+      "hud": "You {you} : {cpu} Computer",
+      "yourServe": "your serve: click, tap or Space",
+      "cpuServe": "the computer serves",
+      "record": "At this level: {w} wins, {l} losses",
+      "youPoint": "Your point: {why}. You {you}, computer {cpu}.",
+      "cpuPoint": "The computer's point: {why}. You {you}, computer {cpu}.",
+      "let": "Let: the serve clipped the net. Serve again.",
+      "r_out": "the ball went out",
+      "r_net": "into the net",
+      "r_double": "two bounces",
+      "r_miss": "missed it",
+      "r_fault": "serve fault",
+      "r_own": "it bounced on the hitter's own side",
+      "r_dead": "the ball died on the table",
+      "youWin": "You win {you}–{cpu}!",
+      "cpuWins": "The computer wins {cpu}–{you}.",
+      "again": "Play again",
+      "level": "Level",
+      "l_0": "Easy",
+      "l_1": "Normal",
+      "l_2": "Hard",
+      "restart": "New match",
+      "you": "You",
+      "computer": "Computer",
+      "hint": "Mouse or finger: the paddle follows the pointer at your end of the table. Keyboard: arrow keys or W A S D move it, Space serves and swings. Where the ball meets the paddle sets its direction."
+    }
+  }
+}
