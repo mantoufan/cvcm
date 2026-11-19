@@ -16,8 +16,7 @@ en = json.loads((SRC / "en.json").read_text(encoding="utf-8"))
 for loc in LOCALES:
     src_path = SRC / f"{loc}.json"
     if not src_path.exists():
-        print("skip", loc)
-        continue
+        raise SystemExit(f"{loc}: {src_path.name} is missing; every locale needs the batch copy")
     src = json.loads(src_path.read_text(encoding="utf-8"))
     # A translation must carry exactly the English keys, or a page would show a missing string.
     for part in ("meta", "tools", "faq", "guides", "ui"):

@@ -120,12 +120,13 @@ export function mountWordsToPages(host: HTMLElement): void {
 
   /** "Fills 3 pages, the last one about 80 % full." */
   function fillNote(exact: number, up: boolean): string {
-    // From the same one-decimal figure the result row shows.
+    // The page number follows the figure the result row shows; for pasted text the share of the last page is exact.
     const pages = tenth(exact, up) || exact;
     const whole = Math.ceil(pages - 1e-9);
-    const last = Math.round((pages - (whole - 1)) * 100);
+    const last = Math.round(((up ? exact : pages) - (whole - 1)) * 100);
     return whole <= 0 ? "" : t(`${S}.fill`, { n: nf(0).format(whole), pct: String(Math.min(100, Math.max(1, last))) });
   }
+
 
   function empty(message: string): void {
     out.replaceChildren(h("p", { class: "muted" }, message));

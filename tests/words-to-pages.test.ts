@@ -58,6 +58,8 @@ describe("words to pages", () => {
     expect(countWords("AI模型 test 人工智能")).toBe(1 + 2 + 1 + 4);
     expect(countWords("안녕하세요 세계")).toBe(2);
     expect(countWords("𠀀𠀁𠀂 test")).toBe(4);
+    // A no-break space never ends a line: the pair moves to the next line together.
+    expect(countLines(`${"word ".repeat(16)}10\u00a0kg`, { ...single, indent: false })).toBe(2);
     // Unspaced em dashes break like spaces would, give or take the space width.
     expect(countLines("alpha—beta—gamma—".repeat(40), { ...single, indent: false })).toBeLessThanOrEqual(countLines("alpha— beta— gamma— ".repeat(40), { ...single, indent: false }));
     // Korean wraps between words: a word never splits across lines.

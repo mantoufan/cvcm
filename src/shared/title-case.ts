@@ -59,6 +59,8 @@ const isLink = (core: string) => /:\/\/|@|^www\./i.test(core) || /^[\w-]+(\.[\w-
 
 /** A part kept as written: acronyms (DNA, COVID), mixed case (iPhone, McDonald), initialisms (U.S). */
 function keepPart(part: string): boolean {
+  // A number with a capital unit or label: 3D, 4K, 5G, 10X.
+  if (/^\p{N}+\p{Lu}+$/u.test(part)) return true;
   if (DOTTED.test(part) && UPPER.test(part)) return true;
   const letters = [...part].filter((c) => LETTER.test(c));
   return letters.length >= 2 && letters.slice(1).some((c) => UPPER.test(c));
@@ -71,6 +73,8 @@ const ACRONYMS = new Set(["ai", "nasa", "dna", "rna", "covid", "hiv", "uk", "eu"
 /** Particles that end a compound noun or adjective and keep their capital (Follow-Up, Built-In, Drop-Off). */
 const PARTICLES = new Set(["up", "in", "out", "on", "off", "down", "over", "back", "by"]);
 /** Roman numerals written in lowercase (world war ii, part iii); not vi or xi, which are also words and names. */
+/** Words a capital letter names (Vitamin A, Type A, Plan A, Hepatitis B): the letter after them is a label, not the article. */
+const LABELLED = new Set(["vitamin", "type", "plan", "grade", "class", "hepatitis", "category", "group", "part", "section", "appendix", "phase", "model", "option", "exhibit"]);
 const ROMAN = new Set(["ii", "iii", "iv", "vii", "viii", "ix", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx", "xxi"]);
 /** Proper adjectives Chicago keeps capitalized after a prefix (Anti-American, Non-English). */
 const PROPER = new Set(["african", "american", "arab", "asian", "british", "catholic", "chinese", "christian", "english", "european", "french", "german", "greek", "hispanic", "indian", "islamic", "italian", "japanese", "jewish", "korean", "latin", "muslim", "roman", "russian", "semitic", "spanish", "western", "eastern"]);
@@ -165,7 +169,10 @@ function sentenceWord(core: string, start: boolean, keep: boolean, typed: boolea
   if (isLink(core) || keep) return core;
   // The pronoun I stays capital (I, I'm, I've).
   if (/^i(['’]\p{L}+)?$/iu.test(core)) return capFirst(core.toLowerCase());
-  return core.split(HYPHEN).map((part, i) => {
+  const split = core.split(HYPHEN);
+  // A slash pair of single letters is a label: A/B.
+  if (split.length > 1 && split.every((q, k) => k % 2 === 1 || q.length === 1) && split.includes("/")) return core.toUpperCase();
+  return split.map((part, i) => {
     if (keepPart(part)) return part;
     const fixed = fixedForm(part);
     if (fixed) return fixed;
@@ -210,6 +217,8 @@ function convertLine(line: string, style: TitleStyle): string {
     const core = words[i]!.core;
     if (shouting || !/^\p{Lu}$/u.test(core) || core === "I" || i === 0) return false;
     if (core !== "A" || end) return true;
+    const before = i > 0 ? words.slice(0, i).reverse().find((w) => w.core) : undefined;
+    if (before && LABELLED.has(before.core.toLowerCase())) return true;
     const first = [...words[nextWord[i]!]!.core][0] ?? "";
     return LETTER.test(first) && !UPPER.test(first);
   };

@@ -72,7 +72,8 @@ describe("words to pages ui", () => {
     // Pasted text rounds up: 47 lines at 23 a page print on three sheets.
     set("[data-field=text]", Array.from({ length: 47 }, () => "word").join("\n"));
     expect(text("[data-out=result]")).toContain("Pages2.1");
-    expect(text("[data-out=note]")).toBe("The text runs onto page 3, which is about 10 % full.");
+    // 47 − 46 = 1 line of 23 on page 3: about 4 % full.
+    expect(text("[data-out=note]")).toBe("The text runs onto page 3, which is about 4 % full.");
     set("[data-field=text]", "word ".repeat(100));
     // Less than a page of text has no words-per-page figure of its own.
     expect(text("[data-out=result]")).not.toContain("Words per page");

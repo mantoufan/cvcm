@@ -76,7 +76,8 @@ describe("title case", () => {
   it("keeps a lone capital that names something, slash compounds, numbers and initialisms", () => {
     expect(titleCase("vitamin A deficiency in children", "apa")).toBe("Vitamin A Deficiency in Children");
     expect(titleCase("type B personality and plan C", "sentence")).toBe("Type B personality and plan C");
-    expect(titleCase("Type A Personality", "apa")).toBe("Type a Personality");
+    expect(titleCase("Type A Personality", "apa")).toBe("Type A Personality");
+    expect(titleCase("A Study of A Thing", "apa")).toBe("A Study of a Thing");
     expect(titleCase("input/output devices and/or sensors", "apa")).toBe("Input/Output Devices and/or Sensors");
     expect(titleCase("input/output devices", "sentence")).toBe("Input/output devices");
     expect(titleCase("the 21st century classroom in the 1990s", "apa")).toBe("The 21st Century Classroom in the 1990s");
@@ -131,6 +132,12 @@ describe("title case", () => {
     expect(titleCase("COVID-19 AND THE CEO'S DILEMMA", "apa")).toBe("COVID-19 and the CEO's Dilemma");
     expect(titleCase("an a/b test of pricing", "apa")).toBe("An A/B Test of Pricing");
     expect(titleCase("Dr. Smith goes to Washington", "sentence")).toBe("Dr. Smith goes to Washington");
+  });
+
+  it("keeps 3D and 4K, labels after Vitamin or Type, and a/b in sentence case", () => {
+    expect(titleCase("3D printing and the 4K video era", "apa")).toBe("3D Printing and the 4K Video Era");
+    expect(titleCase("Vitamin A Deficiency and Type A Personality", "apa")).toBe("Vitamin A Deficiency and Type A Personality");
+    expect(titleCase("a/b testing in practice", "sentence")).toBe("A/B testing in practice");
   });
 
   it("keeps punctuation around words", () => {
