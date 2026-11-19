@@ -57,6 +57,8 @@ describe("words to pages", () => {
     expect(countLines("字".repeat(40), { ...single, indent: false })).toBe(2);
     expect(countWords("AI模型 test 人工智能")).toBe(1 + 2 + 1 + 4);
     expect(countWords("안녕하세요 세계")).toBe(2);
+    // Korean wraps between words: a word never splits across lines.
+    expect(countLines(`${"가나다라 ".repeat(9)}가나다라마바`, { ...single, indent: false })).toBe(2);
     expect(countWords("你好，世界。 — …")).toBe(4);
     const l = layoutText(SAMPLE_TEXT, ESSAY);
     expect(l.words).toBe(SAMPLE_TEXT.split(/\s+/).length);

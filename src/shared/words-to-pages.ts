@@ -50,8 +50,10 @@ function widths(font: FontId): Widths {
   return w;
 }
 
-/** Chinese, Japanese and Korean characters: one full em each, and a line may break between any two of them. */
+/** Chinese, Japanese and Korean characters: one full em each. */
 const WIDE = /[\u1100-\u11ff\u2e80-\u9fff\uac00-\ud7af\uf900-\ufaff\ufe30-\ufe4f\uff00-\uff60\uffe0-\uffe6]/u;
+/** Characters a line may break between: Chinese and Japanese. Korean wraps at the spaces between words, as in Word. */
+const BREAK_EACH = /[\u2e80-\u9fff\uf900-\ufaff\ufe30-\ufe4f\uff00-\uff60\uffe0-\uffe6]/u;
 
 function charWidth(w: Widths, ch: string): number {
   const c = ch.codePointAt(0)!;
@@ -89,7 +91,7 @@ export function linesPerPage(setup: PageSetup): number {
 function tokens(paragraph: string): { text: string; space: boolean }[] {
   const out: { text: string; space: boolean }[] = [];
   for (const word of paragraph.split(/\s+/).filter(Boolean)) {
-    if (!WIDE.test(word)) {
+    if (!BREAK_EACH.test(word)) {
       // A line may also break after a hyphen inside a word (self-|esteem), as in Word and browsers.
       const pieces = word.split(/(?<=\p{L}-)(?=\p{L})/u);
       pieces.forEach((piece, i) => out.push({ text: piece, space: i === pieces.length - 1 }));
@@ -98,7 +100,7 @@ function tokens(paragraph: string): { text: string; space: boolean }[] {
     // Split a mixed run like "AI模型" into "AI" and one token per wide character.
     let run = "";
     for (const ch of word) {
-      if (WIDE.test(ch)) {
+      if (BREAK_EACH.test(ch)) {
         if (run) out.push({ text: run, space: false });
         run = "";
         out.push({ text: ch, space: false });

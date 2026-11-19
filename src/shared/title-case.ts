@@ -47,8 +47,8 @@ const ABBREVIATIONS = new Set([
 
 const LETTER = /\p{L}/u;
 const UPPER = /\p{Lu}/u;
-/** Initialisms written with full stops: U.S, U.K, Ph.D (the last full stop is punctuation, outside the core). */
-const DOTTED = /^(\p{L}{1,2}\.)+\p{L}{1,2}$/u;
+/** Initialisms written with full stops: U.S, U.S.A, Ph.D (the last full stop is punctuation, outside the core); not ok.so. */
+const DOTTED = /^((\p{L}\.)+\p{L}|ph\.d)$/iu;
 /** Hyphens, en dashes and slashes inside a compound (self-esteem, 2010–2020, input/output). */
 const HYPHEN = /([-‐–/])/;
 /** A separator standing on its own between words: a spaced en dash, hyphen or colon ("Learning – a guide"). */
@@ -65,8 +65,12 @@ function keepPart(part: string): boolean {
 }
 
 /** Dotted abbreviations written in lowercase on purpose (e.g., i.e., a.m.). */
-const LOWER_DOTTED = new Set(["e.g", "i.e", "a.m", "p.m"]);
+const LOWER_DOTTED = new Set(["e.g", "i.e", "a.m", "p.m", "n.d"]);
 /** Roman numerals written in lowercase (world war ii, part iii); not vi or xi, which are also words and names. */
+/** Acronyms restored when a title arrives in capitals or is typed in lowercase (not words like aids, stem, us, who). */
+const ACRONYMS = new Set(["ai", "nasa", "dna", "rna", "covid", "hiv", "uk", "eu", "usa", "ceo", "nato", "unesco", "gdp", "adhd", "ptsd", "ocd", "mri", "lgbt", "lgbtq", "esg", "ngo", "iot", "api", "sql", "html", "css", "pdf", "url"]);
+/** Particles that end a compound noun or adjective and keep their capital (Follow-Up, Built-In, Drop-Off). */
+const PARTICLES = new Set(["up", "in", "out", "on", "off", "down", "over", "back", "by"]);
 const ROMAN = new Set(["ii", "iii", "iv", "vii", "viii", "ix", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx", "xxi"]);
 /** Proper adjectives Chicago keeps capitalized after a prefix (Anti-American, Non-English). */
 const PROPER = new Set(["african", "american", "arab", "asian", "british", "catholic", "chinese", "christian", "english", "european", "french", "german", "greek", "hispanic", "indian", "islamic", "italian", "japanese", "jewish", "korean", "latin", "muslim", "roman", "russian", "semitic", "spanish", "western", "eastern"]);
@@ -74,7 +78,7 @@ const PROPER = new Set(["african", "american", "arab", "asian", "british", "cath
 /** Words that keep a fixed form whatever the style: u.s. → U.S., ph.d. → Ph.D., world war ii → II. */
 function fixedForm(part: string): string | undefined {
   if (DOTTED.test(part) && !LOWER_DOTTED.has(part.toLowerCase())) return part.split(".").map((seg) => capFirst(seg.toLowerCase())).join(".");
-  if (ROMAN.has(part.toLowerCase())) return part.toUpperCase();
+  if (ROMAN.has(part.toLowerCase()) || ACRONYMS.has(part.toLowerCase())) return part.toUpperCase();
   return undefined;
 }
 
@@ -97,9 +101,9 @@ function splitToken(raw: string, space: string): Token {
 /** A subtitle starts after a colon, an em dash, a question or exclamation mark, or a sentence's full stop (not an ellipsis). */
 function startsAfter(prev: Token | undefined, style: TitleStyle): boolean {
   if (!prev) return true;
-  if (/\.\.|…/.test(prev.trail)) return false;
   // Sentence case (APA references) capitalizes after a colon, not after a dash.
   if (/[:?!]/.test(prev.trail) || (style !== "sentence" && prev.space.includes("—"))) return true;
+  if (/\.\.|…/.test(prev.trail)) return false;
   // Not after an abbreviation, an initial or an initialism like U.N. or U.S.A.
   return prev.trail.includes(".") && !ABBREVIATIONS.has(prev.core.toLowerCase()) && !/^\p{L}$/u.test(prev.core) && !DOTTED.test(prev.core);
 }
@@ -133,7 +137,10 @@ function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start
       if (style === "chicago" && i === 2 && PREFIXES.has(parts[0]!.toLowerCase())) {
         return PROPER.has(lower) || /^\p{Lu}$/u.test(part) || (typed && startsUpper(part)) ? capFirst(part.length === 1 ? part : lower) : lower;
       }
-      return minor.has(lower) && !(capLast && i === parts.length - 1) ? lower : capFirst(lower);
+      const lastPart = i === parts.length - 1;
+      // A particle closing a two-part compound belongs to it (Follow-Up, Built-In), unlike the of in Out-of-Date.
+      if (lastPart && parts.length === 3 && PARTICLES.has(lower)) return capFirst(lower);
+      return minor.has(lower) && !(capLast && lastPart) ? lower : capFirst(lower);
     }).join("");
   }
   if (keepPart(core)) return core;
@@ -191,12 +198,14 @@ function convertLine(line: string, style: TitleStyle): string {
   }
   // A lone capital letter that names something (Vitamin A, Type B, Plan C) is kept. "A" is kept only before a
   // lowercase word or at the end, since in a title-cased line it is usually the article.
-  const keepSingle = (i: number): boolean => {
+  // "A" is the article before a capitalized word or a number (A 10-Year Study), a label at the end of a part
+  // (Plan A: The Basics) or before a lowercase word (vitamin A deficiency).
+  const keepSingle = (i: number, end: boolean): boolean => {
     const core = words[i]!.core;
     if (shouting || !/^\p{Lu}$/u.test(core) || core === "I" || i === 0) return false;
-    if (core !== "A") return true;
-    const n = nextWord[i]!;
-    return n < 0 || !UPPER.test([...words[n]!.core][0] ?? "");
+    if (core !== "A" || end) return true;
+    const first = [...words[nextWord[i]!]!.core][0] ?? "";
+    return LETTER.test(first) && !UPPER.test(first);
   };
   let prev: Token | undefined;
   let pending = false;
@@ -211,7 +220,7 @@ function convertLine(line: string, style: TitleStyle): string {
     const start = pending || startsAfter(prev, style);
     pending = false;
     prev = t;
-    const keep = !start && keepSingle(i);
+    const keep = !start && keepSingle(i, end);
     const core = style === "sentence" ? sentenceWord(t.core, start, keep, typed) : convertWord(t.core, style, start, end, keep, typed);
     return t.lead + core + t.trail + t.space;
   });

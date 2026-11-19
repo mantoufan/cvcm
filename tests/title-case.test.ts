@@ -108,6 +108,17 @@ describe("title case", () => {
     expect(titleCase("vol.12 of the series and readme.md files", "apa")).toBe("Vol.12 of the Series and Readme.md Files");
   });
 
+  it("reads A as an article or a label, keeps particle compounds and common acronyms", () => {
+    expect(titleCase("Findings From A 10-Year Follow-Up Study", "apa")).toBe("Findings From a 10-Year Follow-Up Study");
+    expect(titleCase("Findings From A 10-Year Follow-Up Study", "sentence")).toBe("Findings from a 10-year follow-up study");
+    expect(titleCase("Plan A: The Basics", "apa")).toBe("Plan A: The Basics");
+    expect(titleCase("built-in tools and sign-up forms", "mla")).toBe("Built-In Tools and Sign-Up Forms");
+    expect(titleCase("what now...? a guide", "apa")).toBe("What Now...? A Guide");
+    expect(titleCase("THE IMPACT OF AI ON NASA", "apa")).toBe("The Impact of AI on NASA");
+    expect(titleCase("is it ok.so what", "apa")).toBe("Is It Ok.so What");
+    expect(titleCase("Smith (n.d.) on reading", "sentence")).toBe("Smith (n.d.) on reading");
+  });
+
   it("keeps punctuation around words", () => {
     expect(titleCase("“the art of war” (a new translation)", "chicago")).toBe("“The Art of War” (a New Translation)");
   });
