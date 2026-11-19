@@ -9,10 +9,10 @@ const LOCALE_PACKS: Record<string, string[]> = typeof __LOCALE_PACKS__ === "unde
 
 /**
  * Fetch the page's strings (plus the game, quiz, dataset, kb or ref pack on those pages; `quiz` is "hub" or the test id,
- * `kb` "hub", "code", "ai", "photo" or the article id, `ref`, `slang`, `idea`, `nostalgia` and `summaries` "hub" or the entry id; `copy` the key of the page's copy bucket) in
+ * `kb` "hub", "code", "ai", "photo" or the article id, `ref`, `slang`, `idea` and `nostalgia` "hub" or the entry id; `copy` the key of the page's copy bucket) in
  * parallel with the entry script instead of after it runs.
  */
-export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz: QuizPage | false = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, copy: string | null = null, idea: string | null = null, nostalgia: string | null = null, countries: string | null = null, calories = false, elements = false, calendar = false, summaries: string | null = null, emoji = false, currency = false): string {
+export function preloadLocalePack(html: string, locale: Locale, game = false, packs: Record<string, string[]> = LOCALE_PACKS, quiz: QuizPage | false = false, dataset = false, kb: string | null = null, ref: string | null = null, slang: string | null = null, copy: string | null = null, idea: string | null = null, nostalgia: string | null = null, countries: string | null = null, calories = false, elements = false, calendar = false, emoji = false, currency = false): string {
   const files = [...new Set([
     ...(packs[locale] ?? []),
     // The page's own copy bucket (`copyChunkKey`: a tool's FAQ and how-to, or a tutorial's text) and the locale's loader table.
@@ -31,8 +31,6 @@ export function preloadLocalePack(html: string, locale: Locale, game = false, pa
     ...(idea && idea !== "hub" ? [...(packs[`ideas-${locale}/loaders`] ?? []), ...(packs[`ideas-${locale}/${idea}`] ?? [])] : []),
     ...(nostalgia ? packs[`nostalgia-${locale}`] ?? [] : []),
     ...(nostalgia && nostalgia !== "hub" ? [...(packs[`nostalgia-${locale}/loaders`] ?? []), ...(packs[`nostalgia-${locale}/${nostalgia}`] ?? [])] : []),
-    ...(summaries ? packs[`summaries-${locale}`] ?? [] : []),
-    ...(summaries && summaries !== "hub" ? [...(packs[`summaries-${locale}/loaders`] ?? []), ...(packs[`summaries-${locale}/${summaries}`] ?? [])] : []),
     // Country profiles: the countries pack, and on a profile ("hub" or the data bucket number) its bucket of figures.
     ...(countries ? packs[`countries-${locale}`] ?? [] : []),
     ...(countries && countries !== "hub" ? packs[`countries-data/${countries}`] ?? [] : []),

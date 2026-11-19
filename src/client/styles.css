@@ -694,15 +694,6 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .nostalgia-vote-result { font-weight: 600; color: var(--pink-deep); }
 /* No handlers yet (the Worker's text copy, the prerendered copy, or a script that failed): no question with dead buttons. */
 .nostalgia-vote:not(.ready), .page.ssr .nostalgia-vote { display: none; }
-/* Summaries: spoiler badge on a heading, and the "did you get it?" self-check (answers in closed <details>). */
-.summary-spoiler { vertical-align: middle; font-weight: 600; color: var(--pink-deep); border-color: currentColor; }
-.summary-check { margin: 1.5rem 0; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: 12px; }
-.summary-check h2 { margin: 0 0 0.35rem; font-size: 1.05rem; }
-.summary-check > ol { padding-left: 1.2rem; }
-.summary-check > ol > li { margin: 0.9rem 0; }
-.summary-q { margin: 0 0 0.3rem; font-weight: 600; }
-.summary-options { margin: 0 0 0.4rem; padding-left: 1.4rem; }
-.summary-check details summary { cursor: pointer; color: var(--pink-deep); }
 .meme-coin-name { margin: 0; }
 .meme-coin-name span { color: var(--ink-soft); }
 .meme-coin-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(7rem, 1fr)); gap: 0.5rem; margin: 0.6rem 0 0; }

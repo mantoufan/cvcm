@@ -21,8 +21,6 @@ import { ideaDescription, ideaTitle } from "./ideas-i18n";
 import type { IdeaId } from "./ideas";
 import { nostalgiaDescription, nostalgiaTitle } from "./nostalgia-i18n";
 import type { NostalgiaId } from "./nostalgia";
-import { summariesDescription, summariesTitle } from "./summaries-i18n";
-import type { SummaryId } from "./summaries";
 import { countryDescription, countryTitle } from "./countries-i18n";
 import { caloriesDescription, caloriesTitle } from "./calories-i18n";
 import type { FoodId } from "./calories";
@@ -41,7 +39,7 @@ import { messages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { marketCopy, marketFaqItems, marketHub, marketHubFaqItems } from "./markets-i18n";
 import type { MarketId } from "./markets";
-import { appHref, categoryOf, deviceHref, gameHubOf, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
+import { appHref, categoryOf, deviceHref, gameHubOf, gamesHref, learnHref, kbHref, legalHref, marketsHref, quizHref, datasetHref, rankingHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type CategoryId, type ConvertJobId, type LegalPageId, type ResizeJobId, type ToolId, type TutorialId } from "./path";
 
 
 export type FaqItem = { q: string; a: string };
@@ -94,9 +92,6 @@ export type SeoInput = {
   /** The nostalgia channel under /nostalgia/; `nostalgiaId` null is the hub. */
   nostalgia?: boolean;
   nostalgiaId?: NostalgiaId | null;
-  /** The summaries channel under /summaries/; `summaryId` null is the hub. */
-  summaries?: boolean;
-  summaryId?: SummaryId | null;
   /** Country profiles under /countries/; `countryId` is the slug, null the hub. */
   countries?: boolean;
   countryId?: string | null;
@@ -888,7 +883,6 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
   const seo = normalizeSeo(input);
   if (seo.countries) return countryTitle(locale, seo.countryId ?? null);
   if (seo.nostalgia) return nostalgiaTitle(locale, seo.nostalgiaId ?? null);
-  if (seo.summaries) return summariesTitle(locale, seo.summaryId ?? null);
   if (seo.currency) return currencyTitle(locale, seo.currencyPair ?? null);
   if (seo.elements) return elementsTitle(locale, seo.elementSlug ?? null);
   if (seo.emoji) return emojiTitle(locale, seo.emojiSlug ?? null);
@@ -921,7 +915,6 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
   const seo = normalizeSeo(input);
   if (seo.countries) return countryDescription(locale, seo.countryId ?? null);
   if (seo.nostalgia) return nostalgiaDescription(locale, seo.nostalgiaId ?? null);
-  if (seo.summaries) return summariesDescription(locale, seo.summaryId ?? null);
   if (seo.currency) return currencyDescription(locale, seo.currencyPair ?? null);
   if (seo.elements) return elementsDescription(locale, seo.elementSlug ?? null);
   if (seo.emoji) return emojiDescription(locale, seo.emojiSlug ?? null);
@@ -971,7 +964,6 @@ export function pageCanonical(
   const seo = normalizeSeo(input, clipId);
   if (seo.countries) return `https://cv.cm${countriesHref(locale, seo.countryId ?? null)}`;
   if (seo.nostalgia) return `https://cv.cm${nostalgiaHref(locale, seo.nostalgiaId ?? null)}`;
-  if (seo.summaries) return `https://cv.cm${summariesHref(locale, seo.summaryId ?? null)}`;
   if (seo.currency) return `https://cv.cm${currencyHref(locale, seo.currencyPair ?? null)}`;
   if (seo.elements) return `https://cv.cm${elementsHref(locale, seo.elementSlug ?? null)}`;
   if (seo.emoji) return `https://cv.cm${emojiHref(locale, seo.emojiSlug ?? null)}`;

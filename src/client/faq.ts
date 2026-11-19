@@ -39,8 +39,6 @@ import { ideasArticleJsonLd, ideasBreadcrumbJsonLd, ideasFaqJsonLd } from "../sh
 import type { IdeaPage } from "../shared/ideas";
 import { nostalgiaArticleJsonLd, nostalgiaBreadcrumbJsonLd, nostalgiaFaqJsonLd } from "../shared/nostalgia-i18n";
 import type { NostalgiaPage } from "../shared/nostalgia";
-import { summariesArticleJsonLd, summariesBreadcrumbJsonLd, summariesFaqJsonLd } from "../shared/summaries-i18n";
-import type { SummaryPage } from "../shared/summaries";
 import { countriesCollectionJsonLd, countryBreadcrumbJsonLd, countryFaqJsonLd } from "../shared/countries-i18n";
 import type { CountryPage } from "../shared/countries";
 import { caloriesBreadcrumbJsonLd, caloriesFaqJsonLd, caloriesPageJsonLd } from "../shared/calories-i18n";
@@ -120,7 +118,6 @@ export function syncPageJsonLd(
   caloriesPage: CaloriesPage = null,
   elementsPage: ElementsPage = null,
   calendarPage: CalendarPage | null = null,
-  summariesPage: SummaryPage = null,
   emojiPage: EmojiPage = null,
   currencyPage: CurrencyPage = null,
 ): void {
@@ -152,8 +149,7 @@ export function syncPageJsonLd(
   const slangId = slangPage === "hub" ? null : slangPage;
   const ideaId = ideasPage === "hub" ? null : ideasPage;
   const nostalgiaId = nostalgiaPage === "hub" ? null : nostalgiaPage;
-  const summaryId = summariesPage === "hub" ? null : summariesPage;
-  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : slangPage ? slangArticleJsonLd(locale, slangId) : ideasPage ? ideasArticleJsonLd(locale, ideaId) : nostalgiaPage ? nostalgiaArticleJsonLd(locale, nostalgiaId) : summariesPage ? summariesArticleJsonLd(locale, summaryId) : calendarPage ? calendarPageJsonLd(locale, calendarPage) : null);
+  writeJsonLd("article-jsonld", kbPage ? kbArticleJsonLd(locale, kbPage) : refPage ? refArticleJsonLd(locale, refId) : slangPage ? slangArticleJsonLd(locale, slangId) : ideasPage ? ideasArticleJsonLd(locale, ideaId) : nostalgiaPage ? nostalgiaArticleJsonLd(locale, nostalgiaId) : calendarPage ? calendarPageJsonLd(locale, calendarPage) : null);
   if (datasetPage) {
     const id = datasetPage === "hub" ? null : datasetPage;
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
@@ -203,12 +199,6 @@ export function syncPageJsonLd(
     for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
     writeJsonLd("faq-jsonld", nostalgiaFaqJsonLd(locale, nostalgiaId));
     writeJsonLd("breadcrumb-jsonld", nostalgiaBreadcrumbJsonLd(locale, nostalgiaId));
-    return;
-  }
-  if (summariesPage) {
-    for (const key of ["howto-jsonld", "game-jsonld", "software-jsonld"]) writeJsonLd(key, null);
-    writeJsonLd("faq-jsonld", summariesFaqJsonLd(locale, summaryId));
-    writeJsonLd("breadcrumb-jsonld", summariesBreadcrumbJsonLd(locale, summaryId));
     return;
   }
   if (slangPage) {
