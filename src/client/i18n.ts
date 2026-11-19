@@ -171,7 +171,7 @@ const DATASET_PACKS: Record<Locale, () => Promise<{ default: DatasetMessages }>>
   es: () => import("../locales/packs/datasets-es"),
 };
 
-// Kb hub copy and the coding, AI and photography shelf meta, only for /learn/knowledge/, /learn/code/, /learn/ai/ and /learn/photography/ pages.
+// Kb hub copy and the coding, AI, photography and massage shelf meta, only for /learn/knowledge/, /learn/code/, /learn/ai/, /learn/photography/ and /learn/massage/ pages.
 const KB_PACKS: Record<Locale, () => Promise<{ default: KbMessages }>> = {
   en: () => import("../locales/packs/kb-en"),
   "zh-CN": () => import("../locales/packs/kb-zh-CN"),
