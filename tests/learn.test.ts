@@ -11,7 +11,6 @@ import { REF_ENTRIES } from "../src/shared/ref";
 import { SLANG_ENTRIES } from "../src/shared/slang";
 import { IDEA_ENTRIES } from "../src/shared/ideas";
 import { NOSTALGIA_ENTRIES } from "../src/shared/nostalgia";
-import { SUMMARY_ENTRIES } from "../src/shared/summaries";
 import { COUNTRY_LIST } from "../src/shared/countries";
 import { ALGO_SNIPPETS, TUTORIAL_DIAGRAMS, TUTORIAL_META, lessonsForTool, tutorialSteps } from "../src/shared/learn";
 import { GAME_CONSOLES, GAMES } from "../src/shared/games";
@@ -221,7 +220,7 @@ describe("learn SEO", () => {
 describe("learn sitemap", () => {
   it("lists published lessons and omits unpublished ones", () => {
     const xml = buildSitemapXml();
-    const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + DATASETS.length + 1 + RANKINGS.length + Object.keys(KB_SHELVES).length + KB_ARTICLES.length + 1 + REF_ENTRIES.length + 1 + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + SUMMARY_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + CALENDAR_PAGES.length + 1 + CURRENCY_PAIRS.length + 1 + EMOJI_SLUGS.length;
+    const extra = 1 + FEATURED_TUTORIALS.length + 1 + GAME_CONSOLES.length + GAMES.length + DEVICE_PAGES.length + LEGAL_PAGES.length + 1 + QUIZZES.length + 1 + DATASETS.length + 1 + RANKINGS.length + Object.keys(KB_SHELVES).length + KB_ARTICLES.length + 1 + REF_ENTRIES.length + 1 + SLANG_ENTRIES.length + 1 + IDEA_ENTRIES.length + 1 + NOSTALGIA_ENTRIES.length + 1 + COUNTRY_LIST.length + 1 + FOODS.length + 1 + ELEMENT_SLUGS.length + CALENDAR_PAGES.length + 1 + CURRENCY_PAIRS.length + 1 + EMOJI_SLUGS.length;
     expect(sitemapPages().length).toBe(LOCALES.length * (1 + TOOLS.length + CONVERT_JOBS.length + RESIZE_JOBS.length + extra));
     expect(xml).toContain("https://cv.cm/en/resize/compress-image/");
     expect(xml).toContain("https://cv.cm/en/convert/heic-to-jpg/");

@@ -13,9 +13,8 @@ import { SLANG_ADDED, SLANG_ENTRIES, SLANG_PUBLISHED, SLANG_UPDATED, slangPublis
 import { IDEAS_ADDED, IDEAS_DATA_FETCHED, IDEAS_PUBLISHED, IDEAS_UPDATED, IDEA_ENTRIES, ideaModified, type IdeaId } from "./ideas";
 import { COUNTRY_LIST, COUNTRIES_UPDATED } from "./countries";
 import { NOSTALGIA_ENTRIES, NOSTALGIA_HUB_UPDATED, NOSTALGIA_PUBLISHED, nostalgiaUpdated, type NostalgiaId } from "./nostalgia";
-import { SUMMARY_ENTRIES, SUMMARIES_HUB_UPDATED, SUMMARIES_PUBLISHED, summaryUpdated, type SummaryId } from "./summaries";
 import { CALORIES_SNAPSHOT, FOODS, type FoodId } from "./calories";
-import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, summariesHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
+import { CONVERT_JOBS, RESIZE_JOBS, SITEMAP_SECTIONS, TOOLS, FEATURED_TUTORIALS, LEGAL_PAGES, appHref, rankingHref, deviceHref, gamesHref, kbHref, learnHref, legalHref, quizHref, datasetHref, refHref, slangHref, ideasHref, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, type ConvertJobId, type ResizeJobId, type ToolId, type LegalPageId, type TutorialId } from "./path";
 import { ELEMENT_SLUGS, ELEMENTS_PUBLISHED, ELEMENTS_SNAPSHOT, type ElementSlug } from "./elements";
 import { EMOJI_SLUGS, emojiUpdated, type EmojiSlug } from "./emoji";
 import { CALENDAR_PAGES, CALENDAR_UPDATED, type CalendarPage } from "./calendar";
@@ -53,7 +52,6 @@ export type SitemapPage =
   | { locale: Locale; kind: "slang"; entry: SlangId | null }
   | { locale: Locale; kind: "ideas"; entry: IdeaId | null }
   | { locale: Locale; kind: "nostalgia"; entry: NostalgiaId | null }
-  | { locale: Locale; kind: "summaries"; entry: SummaryId | null }
   | { locale: Locale; kind: "countries"; entry: string | null }
   | { locale: Locale; kind: "calories"; food: FoodId | null }
   | { locale: Locale; kind: "elements"; entry: ElementSlug | null }
@@ -95,8 +93,6 @@ export function sitemapPages(): SitemapPage[] {
     for (const entry of IDEA_ENTRIES) pages.push({ locale, kind: "ideas", entry });
     pages.push({ locale, kind: "nostalgia", entry: null });
     for (const entry of NOSTALGIA_ENTRIES) pages.push({ locale, kind: "nostalgia", entry });
-    pages.push({ locale, kind: "summaries", entry: null });
-    for (const entry of SUMMARY_ENTRIES) pages.push({ locale, kind: "summaries", entry });
     pages.push({ locale, kind: "countries", entry: null });
     for (const entry of COUNTRY_LIST) pages.push({ locale, kind: "countries", entry });
     pages.push({ locale, kind: "calories", food: null });
@@ -129,7 +125,6 @@ export function pageUrl(page: SitemapPage): string {
   if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(page.locale, page.entry)}`;
   if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(page.locale, page.entry)}`;
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(page.locale, page.entry)}`;
-  if (page.kind === "summaries") return `${SITE_ORIGIN}${summariesHref(page.locale, page.entry)}`;
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(page.locale, page.entry)}`;
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(page.locale, page.food)}`;
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(page.locale, page.entry)}`;
@@ -159,7 +154,6 @@ function pathFor(locale: Locale, page: SitemapPage): string {
   if (page.kind === "slang") return `${SITE_ORIGIN}${slangHref(locale, page.entry)}`;
   if (page.kind === "ideas") return `${SITE_ORIGIN}${ideasHref(locale, page.entry)}`;
   if (page.kind === "nostalgia") return `${SITE_ORIGIN}${nostalgiaHref(locale, page.entry)}`;
-  if (page.kind === "summaries") return `${SITE_ORIGIN}${summariesHref(locale, page.entry)}`;
   if (page.kind === "countries") return `${SITE_ORIGIN}${countriesHref(locale, page.entry)}`;
   if (page.kind === "calories") return `${SITE_ORIGIN}${caloriesHref(locale, page.food)}`;
   if (page.kind === "elements") return `${SITE_ORIGIN}${elementsHref(locale, page.entry)}`;
@@ -192,7 +186,6 @@ export function sitemapSection(page: SitemapPage): SitemapSection {
   if (page.kind === "slang") return "slang";
   if (page.kind === "ideas") return "ideas";
   if (page.kind === "nostalgia") return "nostalgia";
-  if (page.kind === "summaries") return "summaries";
   if (page.kind === "countries") return "countries";
   if (page.kind === "calories") return "calories";
   if (page.kind === "elements") return "elements";
@@ -208,7 +201,7 @@ export function sitemapSectionUrl(section: SitemapSection): string {
 
 /**
  * `<lastmod>` only where a real edit date exists: knowledge articles (per-locale dates from git via
- * `npm run kb:sync`), their hub (newest article), data tables (snapshot date), reference entries in REF_UPDATED, slang, nostalgia and summaries entries (published or edited date; the hub takes the newest), ideas (also the data snapshot date). Other pages have no tracked
+ * `npm run kb:sync`), their hub (newest article), data tables (snapshot date), reference entries in REF_UPDATED, slang and nostalgia entries (published or edited date; the hub takes the newest), ideas (also the data snapshot date). Other pages have no tracked
  * edit date, and stamping the build date on every URL teaches Google to ignore lastmod.
  */
 function pageLastmod(page: SitemapPage): string | null {
@@ -234,10 +227,6 @@ function pageLastmod(page: SitemapPage): string | null {
     if (page.entry) return nostalgiaUpdated(page.entry);
     // The hub changes whenever an entry does (or one is added), or when its own copy is edited: the newest of those.
     return [...NOSTALGIA_ENTRIES.map(nostalgiaUpdated), ...(NOSTALGIA_HUB_UPDATED ? [NOSTALGIA_HUB_UPDATED] : [])].sort().at(-1) ?? NOSTALGIA_PUBLISHED;
-  }
-  if (page.kind === "summaries") {
-    if (page.entry) return summaryUpdated(page.entry);
-    return [...SUMMARY_ENTRIES.map(summaryUpdated), ...(SUMMARIES_HUB_UPDATED ? [SUMMARIES_HUB_UPDATED] : [])].sort().at(-1) ?? SUMMARIES_PUBLISHED;
   }
   // Country profiles change with the data snapshot (World Bank tables, codes, capitals, flags).
   if (page.kind === "countries") return COUNTRIES_UPDATED;
