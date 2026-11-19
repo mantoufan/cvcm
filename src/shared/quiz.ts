@@ -209,6 +209,11 @@ const OCD = likert(Array(15).fill("ocd+").join(" "));
  * daytime toll). Not the Insomnia Severity Index or any other scale, not clinically validated; the copy says so.
  */
 const INSOMNIA = likert(Array(15).fill("sleep+").join(" "));
+/**
+ * Written for cv.cm from the main sides of problem anger (how often and how strongly it comes, how it comes out, how
+ * long it lasts and what it costs). Not the STAXI or any other scale, not clinically validated; the copy says so.
+ */
+const ANGER = likert(Array(15).fill("anger+").join(" "));
 /** Thinking style from analytic ("left-brain") to holistic ("right-brain"), written for cv.cm; analytic statements reversed. */
 const LEFT_RIGHT_BRAIN = likert(Array(7).fill("right+ right-").join(" "));
 /** Written for cv.cm around common descriptions of codependency (not any published scale), half reversed. */
@@ -220,11 +225,6 @@ const GRIT = likert(Array(7).fill("grit+ grit-").join(" "));
 
 /** Written for cv.cm around the Type A pattern (hurry, competitiveness, impatience, hostility), not the Jenkins Activity Survey or any other published scale; half reversed. */
 const TYPE_A = likert(Array(7).fill("typea+ typea-").join(" "));
-/**
- * Written for cv.cm from the main sides of problem anger (how often and how strongly it comes, how it comes out, how
- * long it lasts and what it costs). Not the STAXI or any other scale, not clinically validated; the copy says so.
- */
-const ANGER = likert(Array(15).fill("anger+").join(" "));
 
 /**
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
@@ -1691,6 +1691,8 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   stress: ["high"],
   "social-anxiety": ["high"],
   ocd: ["many"],
+  // Its high band tells people to get help now if someone has been or might be hurt.
+  anger: ["high"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
