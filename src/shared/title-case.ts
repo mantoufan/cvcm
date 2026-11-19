@@ -41,8 +41,8 @@ const PREFIXES = new Set(["anti", "co", "counter", "de", "extra", "inter", "intr
 
 /** Abbreviations whose full stop does not end a sentence inside a title. */
 const ABBREVIATIONS = new Set([
-  "vs", "v", "e.g", "i.e", "etc", "al", "cf", "ca", "st", "dr", "mr", "mrs", "ms", "jr", "sr", "no", "vol", "ed", "eds", "fig", "approx",
-  "est", "dept", "univ", "inc", "co", "corp", "ltd", "ph.d", "u.s", "u.k",
+  "vs", "v", "e.g", "i.e", "etc", "al", "cf", "ca", "dr", "mr", "mrs", "ms", "jr", "sr", "vol", "eds", "fig", "approx",
+  "dept", "univ", "inc", "corp", "ltd", "ph.d", "u.s", "u.k",
 ]);
 
 const LETTER = /\p{L}/u;
@@ -66,11 +66,11 @@ function keepPart(part: string): boolean {
 
 /** Dotted abbreviations written in lowercase on purpose (e.g., i.e., a.m.). */
 const LOWER_DOTTED = new Set(["e.g", "i.e", "a.m", "p.m", "n.d"]);
-/** Roman numerals written in lowercase (world war ii, part iii); not vi or xi, which are also words and names. */
 /** Acronyms restored when a title arrives in capitals or is typed in lowercase (not words like aids, stem, us, who). */
 const ACRONYMS = new Set(["ai", "nasa", "dna", "rna", "covid", "hiv", "uk", "eu", "usa", "ceo", "nato", "unesco", "gdp", "adhd", "ptsd", "ocd", "mri", "lgbt", "lgbtq", "esg", "ngo", "iot", "api", "sql", "html", "css", "pdf", "url"]);
 /** Particles that end a compound noun or adjective and keep their capital (Follow-Up, Built-In, Drop-Off). */
 const PARTICLES = new Set(["up", "in", "out", "on", "off", "down", "over", "back", "by"]);
+/** Roman numerals written in lowercase (world war ii, part iii); not vi or xi, which are also words and names. */
 const ROMAN = new Set(["ii", "iii", "iv", "vii", "viii", "ix", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx", "xxi"]);
 /** Proper adjectives Chicago keeps capitalized after a prefix (Anti-American, Non-English). */
 const PROPER = new Set(["african", "american", "arab", "asian", "british", "catholic", "chinese", "christian", "english", "european", "french", "german", "greek", "hispanic", "indian", "islamic", "italian", "japanese", "jewish", "korean", "latin", "muslim", "roman", "russian", "semitic", "spanish", "western", "eastern"]);
@@ -135,7 +135,7 @@ function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start
       // Chicago: the part right after a bound prefix is lowercase (Anti-inflammatory), a proper noun or adjective is not
       // (Anti-American; pre-Columbian, post–World War, pre-K when typed so in a lowercase line).
       if (style === "chicago" && i === 2 && PREFIXES.has(parts[0]!.toLowerCase())) {
-        return PROPER.has(lower) || /^\p{Lu}$/u.test(part) || (typed && startsUpper(part)) ? capFirst(part.length === 1 ? part : lower) : lower;
+        return PROPER.has(lower) || part.length === 1 || (typed && startsUpper(part)) ? capFirst(lower) : lower;
       }
       const lastPart = i === parts.length - 1;
       // A particle closing a two-part compound belongs to it (Follow-Up, Built-In), unlike the of in Out-of-Date.
@@ -165,7 +165,7 @@ function sentenceWord(core: string, start: boolean, keep: boolean, typed: boolea
     if (fixed) return fixed;
     const lower = part.toLowerCase();
     // A lone capital inside a compound (pre-K, type-A) or a typed name stays.
-    if (i > 0 && /^\p{Lu}$/u.test(part)) return part;
+    if (/^\p{Lu}$/u.test(part) && (i > 0 || core.length > 1 && HYPHEN.test(core))) return part;
     if (typed && startsUpper(part)) return capFirst(lower);
     return start && i === 0 ? capFirst(lower) : lower;
   }).join("");
@@ -196,9 +196,7 @@ function convertLine(line: string, style: TitleStyle): string {
     nextWord[i] = next;
     if (words[i]!.core) next = i;
   }
-  // A lone capital letter that names something (Vitamin A, Type B, Plan C) is kept. "A" is kept only before a
-  // lowercase word or at the end, since in a title-cased line it is usually the article.
-  // "A" is the article before a capitalized word or a number (A 10-Year Study), a label at the end of a part
+  // A lone capital letter that names something (Vitamin A, Type B, Plan C) is kept. "A" is the article before a capitalized word or a number (A 10-Year Study), a label at the end of a part
   // (Plan A: The Basics) or before a lowercase word (vitamin A deficiency).
   const keepSingle = (i: number, end: boolean): boolean => {
     const core = words[i]!.core;
@@ -221,6 +219,8 @@ function convertLine(line: string, style: TitleStyle): string {
     pending = false;
     prev = t;
     const keep = !start && keepSingle(i, end);
+    // Elided fragments stay lowercase: rock 'n' roll.
+    if (!start && /^n$/i.test(t.core) && /['’]$/.test(t.lead)) return t.lead + "n" + t.trail + t.space;
     const core = style === "sentence" ? sentenceWord(t.core, start, keep, typed) : convertWord(t.core, style, start, end, keep, typed);
     return t.lead + core + t.trail + t.space;
   });

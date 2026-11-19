@@ -119,6 +119,13 @@ describe("title case", () => {
     expect(titleCase("Smith (n.d.) on reading", "sentence")).toBe("Smith (n.d.) on reading");
   });
 
+  it("handles sentence breaks after ordinary words, X-ray, pre-k and rock 'n' roll", () => {
+    expect(titleCase("just say no. then leave", "sentence")).toBe("Just say no. Then leave");
+    expect(titleCase("the X-ray machine and the A-team", "sentence")).toBe("The X-ray machine and the A-team");
+    expect(titleCase("the co-op is pre-k ready", "chicago")).toBe("The Co-op Is Pre-K Ready");
+    expect(titleCase("rock 'n' roll forever", "apa")).toBe("Rock 'n' Roll Forever");
+  });
+
   it("keeps punctuation around words", () => {
     expect(titleCase("“the art of war” (a new translation)", "chicago")).toBe("“The Art of War” (a New Translation)");
   });

@@ -57,6 +57,9 @@ describe("words to pages", () => {
     expect(countLines("字".repeat(40), { ...single, indent: false })).toBe(2);
     expect(countWords("AI模型 test 人工智能")).toBe(1 + 2 + 1 + 4);
     expect(countWords("안녕하세요 세계")).toBe(2);
+    expect(countWords("𠀀𠀁𠀂 test")).toBe(4);
+    // Unspaced em dashes break like spaces would, give or take the space width.
+    expect(countLines("alpha—beta—gamma—".repeat(40), { ...single, indent: false })).toBeLessThanOrEqual(countLines("alpha— beta— gamma— ".repeat(40), { ...single, indent: false }));
     // Korean wraps between words: a word never splits across lines.
     expect(countLines(`${"가나다라 ".repeat(9)}가나다라마바`, { ...single, indent: false })).toBe(2);
     expect(countWords("你好，世界。 — …")).toBe(4);
