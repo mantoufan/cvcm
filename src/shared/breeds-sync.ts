@@ -7,7 +7,10 @@ import { BREED_IDS } from "./breeds";
  * back to English here (the sync warns); the test still requires every locale × breed on disk.
  *
  * - `src/locales/breeds/index/<locale>.json`: every breed's blurb, so the hub and related links need no breed chunk
- * - `src/locales/breeds/all.ts`: every breed in every locale, for the Worker, prerender and tests
+ * - `src/locales/breeds/head/<locale>.json`: every breed's description, answer and FAQ (no blurb or sections), for the
+ *   Worker: it serves the prerendered body, and only needs the head, the JSON-LD and a short fallback body
+ * - `src/locales/breeds/index/words.json`: every breed's names in all eight locales, lower case, for the hub search
+ * - `src/locales/breeds/all.ts`: every breed in every locale in full, for the prerender and tests (breeds-all-full.ts)
  * - `src/locales/breeds/loaders/<locale>.ts`: one lazy chunk per breed, for the client
  * - `src/locales/packs/breeds-<locale>.ts`: the breeds pack (hub copy, names, blurbs, facts), loaded only on breed pages
  */
@@ -28,11 +31,21 @@ export function breedsSyncFiles(read: (path: string) => string | null): { files:
   for (const locale of LOCALES) {
     const list = Object.fromEntries(BREED_IDS.map((id) => [id, (JSON.parse(read(entryPath(sources[locale][id], id))!) as { blurb: string }).blurb]));
     files[`src/locales/breeds/index/${locale}.json`] = JSON.stringify(list, null, 1) + "\n";
+    const head = Object.fromEntries(BREED_IDS.map((id) => {
+      const copy = JSON.parse(read(entryPath(sources[locale][id], id))!) as { blurb: string; description: string; answer: string; faq: unknown[] };
+      // The blurb is in the pack's list and the Worker never shows sections: both are left out (breeds-all.ts fills them).
+      return [id, { description: copy.description, answer: copy.answer, faq: copy.faq }];
+    }));
+    files[`src/locales/breeds/head/${locale}.json`] = JSON.stringify(head) + "\n";
   }
+
+  const names = LOCALES.map((locale) => JSON.parse(read(`src/locales/breeds/names/${locale}.json`) ?? "{}") as Record<string, string>);
+  const words = Object.fromEntries(BREED_IDS.map((id) => [id, [...new Set(names.map((n) => (n[id] ?? "").toLowerCase()).filter(Boolean))].join(" | ")]));
+  files["src/locales/breeds/index/words.json"] = JSON.stringify(words, null, 1) + "\n";
 
   const ident = (locale: string, id: string): string => `${locale.replace("-", "")}_${id.replace(/[/-]/g, "_")}`;
   files["src/locales/breeds/all.ts"] = [
-    `${header} Every breed in every locale, for the Worker, prerender and tests; the client loads one at a time.`,
+    `${header} Every breed in every locale in full, for the prerender and tests; the client loads one at a time.`,
     ...LOCALES.flatMap((locale) => BREED_IDS.map((id) => `import ${ident(locale, id)} from "./${sources[locale][id]}/${id}.json";`)),
     'import type { BreedEntryCopy } from "../../shared/breeds-store";',
     'import type { BreedId } from "../../shared/breeds";',
@@ -64,6 +77,7 @@ export function breedsSyncFiles(read: (path: string) => string | null): { files:
       `import names from "../breeds/names/${locale}.json";`,
       'import english from "../breeds/names/en.json";',
       `import list from "../breeds/index/${locale}.json";`,
+      'import words from "../breeds/index/words.json";',
       // Facts ride in the pack (one shared chunk), not the breed chunks.
       'import data from "../../shared/breeds-data.json";',
       'import images from "../../shared/breeds-images.json";',
@@ -76,6 +90,7 @@ export function breedsSyncFiles(read: (path: string) => string | null): { files:
       "  names: names as Record<BreedId, string>,",
       "  english: english as Record<BreedId, string>,",
       "  list: list as Record<BreedId, string>,",
+      "  words: words as Record<BreedId, string>,",
       "  data: data as unknown as Record<BreedId, BreedFacts>,",
       "  images: images as Partial<Record<BreedId, BreedImage>>,",
       "} satisfies BreedsMessages;",

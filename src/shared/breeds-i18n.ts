@@ -10,7 +10,9 @@ import { appHref, breedsHref } from "./path";
 import { dataCrumbItem } from "./channel-parent";
 import { HREFLANG } from "./sitemap";
 import { coverUrl } from "./covers";
-import { BREED_IDS, BREEDS_PUBLISHED, BREEDS_SNAPSHOT, breedKindOf, breedUpdated, type BreedId } from "./breeds";
+import { BREED_IDS, BREEDS_PUBLISHED, CAT_COUNT, DOG_COUNT, breedKindOf, breedsUpdated, type BreedId } from "./breeds";
+
+export { breedsUpdated };
 import { breedEntryMessages, breedsMessages, type BreedEntryCopy, type BreedFacts, type BreedsMessages } from "./breeds-store";
 
 const ORIGIN = "https://cv.cm";
@@ -93,21 +95,16 @@ export function breedsTitle(locale: Locale, id: BreedId | null): string {
 }
 
 export function breedsDescription(locale: Locale, id: BreedId | null): string {
-  if (!id) return fill(breedsHub(locale).description, { dogs: BREED_IDS.filter((b) => breedKindOf(b) === "dogs").length, cats: BREED_IDS.filter((b) => breedKindOf(b) === "cats").length });
+  if (!id) return fill(breedsHub(locale).description, { dogs: DOG_COUNT, cats: CAT_COUNT });
   return breedCopy(locale, id).description;
 }
 
 export function breedsFaqItems(locale: Locale, id: BreedId | null): { q: string; a: string }[] {
   if (!id) {
-    const vars = { dogs: BREED_IDS.filter((b) => breedKindOf(b) === "dogs").length, cats: BREED_IDS.filter((b) => breedKindOf(b) === "cats").length };
+    const vars = { dogs: DOG_COUNT, cats: CAT_COUNT };
     return breedsHub(locale).faq.map((item) => ({ q: fill(item.q, vars), a: fill(item.a, vars) }));
   }
   return breedCopy(locale, id).faq;
-}
-
-/** When a page last changed (dateModified and the sitemap lastmod). */
-export function breedsUpdated(id: BreedId | null): string {
-  return id ? breedUpdated(id, BREEDS_SNAPSHOT) : [BREEDS_PUBLISHED, BREEDS_SNAPSHOT].sort().at(-1)!;
 }
 
 /** A breed's sources: its English Wikipedia article, the FCI breed page, each registry standard and the Wikidata item. */

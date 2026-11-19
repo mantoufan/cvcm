@@ -42,6 +42,8 @@ process.on("unhandledRejection", () => {});
 document.write('<!doctype html><html><head></head><body><div id="app"></div></body></html>');
 
 await import("../src/shared/messages-all");
+// Full breed articles (the Worker registers only their head copy).
+await import("../src/shared/breeds-all-full");
 const { messages, registerMessages } = await import("../src/shared/messages");
 const { LOCALES } = await import("../src/shared/locale");
 const { parseAppPath } = await import("../src/shared/path");

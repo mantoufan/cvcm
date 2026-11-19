@@ -11,7 +11,7 @@ const read = (path: string): string | null => {
 };
 const { files, missing } = breedsSyncFiles(read);
 // Start the generated folders empty, so a dropped breed or locale leaves nothing behind.
-for (const dir of ["src/locales/breeds/index", "src/locales/breeds/loaders"]) rmSync(resolve(root, dir), { recursive: true, force: true });
+for (const dir of ["src/locales/breeds/index", "src/locales/breeds/head", "src/locales/breeds/loaders"]) rmSync(resolve(root, dir), { recursive: true, force: true });
 for (const [path, content] of Object.entries(files)) {
   const file = resolve(root, path);
   mkdirSync(dirname(file), { recursive: true });

@@ -119,6 +119,12 @@ describe("breeds: copy", () => {
 });
 
 describe("breeds: pages", () => {
+  it("lets the hub search find a breed by its name in any locale", () => {
+    const hub = breedsPageHtml("en", null);
+    expect(hub).toContain("ゴールデン・レトリバー");
+    expect(hub).toContain("金毛寻回犬");
+  });
+
   it("renders the hub and every breed in every locale", { timeout: 60_000 }, () => {
     for (const locale of LOCALES) {
       const hub = breedsPageHtml(locale, null);
@@ -229,5 +235,8 @@ describe("breeds: routes and sitemap", () => {
     expect(xml).not.toContain("/zh-CN/");
     expect(xml.match(/<lastmod>/g)).toHaveLength(pages.length);
     expect(xml).toContain("<image:loc>https://s3.cv.cm/files/covers/breeds/dog-golden-retriever.webp</image:loc>");
+    // The hub's lastmod is its JSON-LD dateModified.
+    const hubLastmod = /<loc>https:\/\/cv\.cm\/en\/breeds\/<\/loc>\s*<lastmod>([^<]+)</.exec(xml)?.[1];
+    expect(hubLastmod).toBe((breedsArticleJsonLd("en", null) as Record<string, string>).dateModified);
   });
 });

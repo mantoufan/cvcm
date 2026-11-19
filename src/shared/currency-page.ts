@@ -267,10 +267,12 @@ export function lineChartSvg(locale: Locale, points: ChartPoint[], ticks: { inde
     + `${grid}<line class="fx-axis" x1="${PAD.left}" x2="${W - PAD.right}" y1="${H - PAD.bottom}" y2="${H - PAD.bottom}"/>${xs}<path class="fx-line" d="${path}"/></svg>`;
 }
 
-function chartLabel(locale: Locale, pair: CurrencyPair, points: ChartPoint[], when: (at: string) => string): string {
+/** The chart's text alternative; `months` picks the wording for month-only dates ("in April 2005", not "on"). */
+function chartLabel(locale: Locale, pair: CurrencyPair, points: ChartPoint[], when: (at: string) => string, months = false): string {
   const shown = points.filter((p): p is { at: string; v: number } => p.v !== null);
   const values = shown.map((p) => p.v);
-  return fill(currencyMessages(locale).page.chartLabel, {
+  const page = currencyMessages(locale).page;
+  return fill(months ? page.chartLabelMonths : page.chartLabel, {
     ...pairVars(locale, pair),
     first: formatRate(locale, shown[0].v),
     firstDate: when(shown[0].at),
@@ -301,7 +303,7 @@ function chartsHtml(locale: Locale, pair: CurrencyPair): string {
   const { monthly, yearTicks, daily, dayTicks } = chartSeries(locale, pair);
   return `<section class="fx-history" aria-labelledby="fx-chart-title"><h2 id="fx-chart-title">${escapeHtml(fill(m.chartTitle, vars))}</h2>`
     + `<h3>${escapeHtml(fill(m.chartMonthly, { start: formatMonth(locale, monthly[0].at) }))}</h3>`
-    + lineChartSvg(locale, monthly, yearTicks, chartLabel(locale, pair, monthly, (at) => formatMonth(locale, at)))
+    + lineChartSvg(locale, monthly, yearTicks, chartLabel(locale, pair, monthly, (at) => formatMonth(locale, at), true))
     + `<h3>${escapeHtml(m.chartDaily)}</h3>`
     + lineChartSvg(locale, daily, dayTicks, chartLabel(locale, pair, daily, (at) => formatDate(locale, at)))
     + `<p class="muted">${escapeHtml(fill(m.method, vars))} ${escapeHtml(fill(m.monthlyNote, vars))}</p></section>`;

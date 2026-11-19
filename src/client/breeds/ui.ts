@@ -1,6 +1,5 @@
 import { fill } from "../../shared/fill";
 import type { Locale } from "../../shared/locale";
-import { HREFLANG } from "../../shared/sitemap";
 import type { BreedId } from "../../shared/breeds";
 import { breedsHub } from "../../shared/breeds-i18n";
 import { breedsPageHtml } from "../../shared/breeds-page";
@@ -23,7 +22,7 @@ function wireHub(host: HTMLElement, locale: Locale): void {
   if (!search || !size || !group) return;
   const lists = [...host.querySelectorAll<HTMLElement>(".breed-list")];
   const apply = (): void => {
-    const query = search.value.trim().toLocaleLowerCase(HREFLANG[locale]);
+    const query = search.value.trim().toLowerCase();
     for (const list of lists) {
       const items = [...list.querySelectorAll<HTMLLIElement>("li[data-kind]")];
       let shown = 0;

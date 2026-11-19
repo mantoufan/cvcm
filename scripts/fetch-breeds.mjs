@@ -131,6 +131,15 @@ async function zhVariants(titles) {
   return out;
 }
 
+/**
+ * Names fixed by hand after a check, by Wikidata item and locale, with the check. Each overrides whatever the sources
+ * above give (a typo or an odd label), so a refetch keeps it.
+ */
+const NAME_OVERRIDES = {
+  // Affenpinscher: Wikidata's zh-cn/zh-hans label 猴绠 is a typo; zh.wikipedia's article title is 猴面犬 in both variants (checked 2026-11-19).
+  Q7254: { "zh-CN": "猴面犬", "zh-TW": "猴面犬" },
+};
+
 /** Whether a name is written in the locale's own script (zh-CN Simplified, zh-TW Traditional, ja kana/kanji, ko Hangul). */
 /** Strings that zh.wikipedia's converter changes for a variant: a label in the other script ("腊肠犬" filed as zh-tw). */
 const ZH_CHANGED = { "zh-CN": new Set(), "zh-TW": new Set() };
@@ -188,6 +197,12 @@ function namesOf(entity, zh) {
       [locale === "id" || locale === "vi" ? en : null, "en"],
     ]);
   }
+  for (const [locale, name] of Object.entries(NAME_OVERRIDES[entity.id] ?? {})) {
+    names[locale] = name;
+    from[locale] = "override";
+    const i = gaps.indexOf(locale);
+    if (i >= 0) gaps.splice(i, 1);
+  }
   return { names, from, gaps };
 }
 
@@ -241,9 +256,12 @@ function infoboxCountries(value) {
     .replace(/\{\{[^}]*\}\}/g, " ")
     .replace(/<[^>]+>/g, ",");
   const out = [];
-  for (const part of text.split(/,|;|\band\b|\bor\b|\//)) {
-    const code = REGION_EN[part.replace(/[()]/g, " ").replace(/\bmodern-day\b|\blater development\b/gi, " ").trim().toLowerCase()];
-    if (code && !out.includes(code)) out.push(code);
+  const clean = (part) => part.replace(/[()]/g, " ").replace(/\bmodern-day\b|\blater development\b/gi, " ").replace(/\s+/g, " ").trim().toLowerCase();
+  for (const part of text.split(/,|;|\//)) {
+    // A whole known name first ("Antigua and Barbuda", "Trinidad and Tobago"); only then "X and Y" / "X or Y" as two names.
+    const whole = REGION_EN[clean(part)];
+    const codes = whole ? [whole] : part.split(/\band\b|\bor\b/).map((p) => REGION_EN[clean(p)]);
+    for (const code of codes) if (code && !out.includes(code)) out.push(code);
   }
   return out;
 }
@@ -323,6 +341,9 @@ async function select() {
   candidates.forEach((c, i) => (c.views = views[i]));
   const out = [];
   const report = [];
+  // Slugs never change once written: an earlier selection's slug wins, before any duplicate check.
+  const old = existsSync(SELECTION) ? JSON.parse(readFileSync(SELECTION, "utf8")) : null;
+  const oldSlug = new Map((old?.breeds ?? []).map((o) => [o.qid, o.slug]));
   for (const kind of ["dog", "cat"]) {
     const ranked = candidates.filter((c) => c.kind === kind).sort((a, b) => b.views - a.views);
     const kept = [];
@@ -334,7 +355,7 @@ async function select() {
       let iso = itemIds(e, "P495").map((id) => isoOf(countries, id)).filter(Boolean);
       if (!iso.length && !EXCLUDE[c.qid]) iso = infoboxCountries(infobox((await enwikiText(e)) ?? "").country);
       const why = EXCLUDE[c.qid] ?? (gaps.length ? `no name: ${gaps.join(", ")}` : !iso.length ? "no country of origin with an ISO code" : null);
-      const slug = names.en ? slugOf(names.en) : null;
+      const slug = oldSlug.get(c.qid) ?? (names.en ? slugOf(names.en) : null);
       if (!why && slugs.has(slug)) { report.push(`${kind} ${c.qid} ${names.en}: duplicate slug`); continue; }
       if (why) { report.push(`${kind} #${ranked.indexOf(c) + 1} ${c.qid} ${names.en ?? e.labels?.en?.value}: ${why} (${c.views} views)`); continue; }
       slugs.add(slug);
@@ -343,10 +364,10 @@ async function select() {
     if (kept.length < TARGET[kind]) console.warn(`only ${kept.length} ${kind} breeds pass`);
     out.push(...kept);
   }
-  const old = existsSync(SELECTION) ? JSON.parse(readFileSync(SELECTION, "utf8")) : null;
-  if (old) for (const o of old.breeds) {
-    const now = out.find((b) => b.qid === o.qid);
-    if (now && now.slug !== o.slug) now.slug = o.slug; // slugs never change once written
+  for (const kind of ["dog", "cat"]) {
+    const list = out.filter((b) => b.kind === kind).map((b) => b.slug);
+    const dup = list.find((slug, i) => list.indexOf(slug) !== i);
+    if (dup) throw new Error(`duplicate ${kind} slug ${dup} (nothing written)`);
   }
   writeFileSync(SELECTION, `${JSON.stringify({ rule: "see RULE in scripts/fetch-breeds.mjs", views: VIEW_RANGE, chosen: today, breeds: out.map(({ kind, qid, slug }) => ({ kind, qid, slug })) }, null, 1)}\n`);
   writeFileSync(join(CACHE, "selection-report.txt"), `${out.map((b) => `${b.kind} ${b.qid} ${b.slug} ${b.views}`).join("\n")}\n\nleft out:\n${report.join("\n")}\n`);
@@ -567,7 +588,9 @@ async function images() {
       if (author && /^(unknown|anonymous|unknown author)$/i.test(author)) author = null;
       const licenseUrl = pd ? "https://creativecommons.org/publicdomain/mark/1.0/" : cc0 ? "https://creativecommons.org/publicdomain/zero/1.0/" : stripHtml(meta.LicenseUrl?.value).replace(/^http:/, "https:");
       if (!licenseUrl) { log.push(`${id}: ${file} no licence URL`); continue; }
-      const bytes = Buffer.from(await (await fetch(info.thumburl, { headers: { "User-Agent": UA } })).arrayBuffer());
+      const thumb = await fetch(info.thumburl, { headers: { "User-Agent": UA } }).catch((err) => ({ ok: false, status: String(err) }));
+      if (!thumb.ok) { log.push(`${id}: ${file} thumbnail download failed (${thumb.status}): skipped`); continue; }
+      const bytes = Buffer.from(await thumb.arrayBuffer());
       const name = `${b.kind}-${b.slug}.webp`;
       const out = await sharp(bytes).rotate().resize({ width: 640, height: 640, fit: "inside", withoutEnlargement: true }).webp({ quality: 72 }).toBuffer({ resolveWithObject: true });
       writeFileSync(join(outDir, name), out.data);

@@ -45,6 +45,8 @@ export type BreedsMessages = typeof import("../locales/breeds/en.json") & {
   english: Record<BreedId, string>;
   /** Each breed's one-line blurb in this locale (`npm run breeds:sync`), so lists load no breed chunk. */
   list: Record<BreedId, string>;
+  /** Every breed's names in all eight locales, lower case (`npm run breeds:sync`): the hub search matches any of them. */
+  words: Record<BreedId, string>;
   data: Record<BreedId, BreedFacts>;
   /** src/shared/breeds-images.json: a breed's Commons picture, where one passed the licence and content checks. */
   images: Partial<Record<BreedId, import("./breeds-i18n").BreedImage>>;

@@ -5,7 +5,7 @@
  * languages that have names in all eight locales (rule in scripts/fetch-breeds.mjs). Placed under Data
  * (channel-parent.ts). Main bundle: keep it small (ids, kinds, dates, the footer and quiz links).
  */
-import { CAT_SLUGS, DOG_SLUGS } from "./breeds-slugs";
+import { BREEDS_SNAPSHOT, CAT_SLUGS, DOG_SLUGS } from "./breeds-slugs";
 
 export { BREEDS_SNAPSHOT } from "./breeds-slugs";
 
@@ -23,6 +23,9 @@ export const BREED_IDS: readonly BreedId[] = [
   ...DOG_SLUGS.map((slug) => `dogs/${slug}` as BreedId),
   ...CAT_SLUGS.map((slug) => `cats/${slug}` as BreedId),
 ];
+
+export const DOG_COUNT = DOG_SLUGS.length;
+export const CAT_COUNT = CAT_SLUGS.length;
 
 /** A breeds page: the hub, one breed, or none. */
 export type BreedsPage = BreedId | "hub" | null;
@@ -53,9 +56,13 @@ export const BREEDS_PUBLISHED = "2026-11-18";
 /** Breeds whose copy was edited after they went live, by id, for dateModified and the sitemap (set by hand). */
 export const BREEDS_UPDATED: Partial<Record<BreedId, string>> = {};
 
-/** When a breed page last changed: the latest of its edit date, the data snapshot and the day the channel went live. */
-export function breedUpdated(id: BreedId, snapshot: string): string {
-  return [BREEDS_PUBLISHED, snapshot, BREEDS_UPDATED[id] ?? BREEDS_PUBLISHED].sort().at(-1)!;
+/**
+ * When a page last changed (dateModified and the sitemap lastmod): for a breed, the latest of the day the channel went
+ * live, the data snapshot and its copy edit; for the hub (null), the latest of those over every breed.
+ */
+export function breedsUpdated(id: BreedId | null): string {
+  const dates = [BREEDS_PUBLISHED, BREEDS_SNAPSHOT, ...(id ? [BREEDS_UPDATED[id]] : Object.values(BREEDS_UPDATED))];
+  return dates.filter((d): d is string => Boolean(d)).sort().at(-1)!;
 }
 
 /** Breeds the site footer links directly (the biggest searches); names are core-pack `breedsFocus.*` (= the Wikidata names). */

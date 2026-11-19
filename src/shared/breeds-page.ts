@@ -32,6 +32,27 @@ import {
 
 const sep = ` <span aria-hidden="true">/</span> `;
 
+/** Intl formatters are costly to build and the hub formats hundreds of values: one of each per locale. */
+const listFormats = new Map<Locale, Intl.ListFormat | null>();
+const numberFormats = new Map<Locale, Intl.NumberFormat>();
+
+function listFormat(locale: Locale): Intl.ListFormat | null {
+  if (!listFormats.has(locale)) {
+    try {
+      listFormats.set(locale, new Intl.ListFormat(HREFLANG[locale], { type: "conjunction" }));
+    } catch {
+      listFormats.set(locale, null);
+    }
+  }
+  return listFormats.get(locale)!;
+}
+
+function numberFormat(locale: Locale): Intl.NumberFormat {
+  let nf = numberFormats.get(locale);
+  if (!nf) numberFormats.set(locale, nf = new Intl.NumberFormat(HREFLANG[locale], { maximumFractionDigits: 1 }));
+  return nf;
+}
+
 function crumbHtml(locale: Locale, id: BreedId | null): string {
   const m = breedsMessages(locale);
   const parts = [
@@ -53,16 +74,12 @@ function faqHtml(locale: Locale, id: BreedId | null): string {
 /** "United Kingdom, Ireland": Intl names of the ISO codes, joined the locale's way. */
 export function breedOrigin(locale: Locale, facts: BreedFacts): string {
   const names = facts.origin.map((code) => regionName(locale, code, code));
-  try {
-    return new Intl.ListFormat(HREFLANG[locale], { type: "conjunction" }).format(names);
-  } catch {
-    return names.join(", ");
-  }
+  return listFormat(locale)?.format(names) ?? names.join(", ");
 }
 
 function rangeText(locale: Locale, range: BreedRange | null, many: string, one: string): string {
   if (!range) return breedsUi(locale).none;
-  const nf = new Intl.NumberFormat(HREFLANG[locale], { maximumFractionDigits: 1 });
+  const nf = numberFormat(locale);
   return range.min === range.max ? fill(one, { v: nf.format(range.min) }) : fill(many, { min: nf.format(range.min), max: nf.format(range.max) });
 }
 
@@ -75,8 +92,8 @@ function itemHtml(locale: Locale, id: BreedId): string {
   const english = breedEnglishName(locale, id);
   const ui = breedsUi(locale);
   const meta = [breedOrigin(locale, facts), size ? (ui.sizes as Record<string, string>)[size] : ""].filter(Boolean).join(" · ");
-  // Search text: the local and English names (lower case), so "golden", "ゴールデン" and "金毛" all find it.
-  const words = [...new Set([name, english].map((n) => n.toLocaleLowerCase(HREFLANG[locale])))].join(" | ");
+  // Search text: the names in all eight locales (lower case), so "golden", "ゴールデン" and "金毛" find it on any page.
+  const words = breedsMessages(locale).words[id];
   return `<li data-kind="${kind}" data-size="${size ?? ""}" data-group="${facts.fci?.group ?? 0}" data-words="${escapeHtml(words)}">`
     + `<a href="${escapeHtml(breedsHref(locale, id))}" data-nav="breed-${escapeHtml(id)}"><small>${escapeHtml(meta)}</small><strong>${escapeHtml(name)}</strong>`
     + `${english !== name ? `<span class="breed-en">${escapeHtml(english)}</span>` : ""}<span>${escapeHtml(breedBlurb(locale, id))}</span></a></li>`;
@@ -205,7 +222,8 @@ function breedHtml(locale: Locale, id: BreedId): string {
     `<section class="kb-answer" aria-label="${escapeHtml(ui.answer)}"><h2>${escapeHtml(ui.answer)}</h2><p>${inline(copy.answer)}</p></section>`,
     imageHtml(locale, id),
     factsHtml(locale, id),
-    `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>`,
+    // The Worker holds no sections (breeds-all.ts): its fallback body skips the contents list; the prerendered body has both.
+    copy.sections.length ? `<nav class="kb-toc" aria-label="${escapeHtml(ui.toc)}"><h2>${escapeHtml(ui.toc)}</h2><ol>${toc}</ol></nav>` : "",
     sections,
     `<p class="meme-note">${escapeHtml(ui.notAdvice)}</p>`,
     faqHtml(locale, id),

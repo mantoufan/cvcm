@@ -528,7 +528,13 @@ function prefetchGamePack(e: Event): void {
     const nav = target.closest('a[data-nav^="breed-"], a[data-nav="breeds"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("breed-") ? nav.slice(6) : "";
     const page: BreedsPage = isBreedId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, null, null, false, false, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, null, null, false, false, page).catch(() => {});
+    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, false, page)) return;
+    const load = (): void => {
+      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, false, page).catch(() => {});
+    };
+    // The pack carries every breed's names and facts: under a pointer, wait until it rests on a link, as food links do.
+    if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
+    else load();
   } else if (target?.closest?.('a[data-nav^="calendar"]')) {
     // data-nav is "calendar" on a hub link, "calendar-<page id>" on a page link: one pack serves them all.
     if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true).catch(() => {});

@@ -3,6 +3,7 @@ import hub from "../breeds/id.json";
 import names from "../breeds/names/id.json";
 import english from "../breeds/names/en.json";
 import list from "../breeds/index/id.json";
+import words from "../breeds/index/words.json";
 import data from "../../shared/breeds-data.json";
 import images from "../../shared/breeds-images.json";
 import type { BreedImage } from "../../shared/breeds-i18n";
@@ -14,6 +15,7 @@ export default {
   names: names as Record<BreedId, string>,
   english: english as Record<BreedId, string>,
   list: list as Record<BreedId, string>,
+  words: words as Record<BreedId, string>,
   data: data as unknown as Record<BreedId, BreedFacts>,
   images: images as Partial<Record<BreedId, BreedImage>>,
 } satisfies BreedsMessages;

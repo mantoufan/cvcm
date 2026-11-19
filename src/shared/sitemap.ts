@@ -20,8 +20,8 @@ import { EMOJI_SLUGS, emojiUpdated, type EmojiSlug } from "./emoji";
 import { CALENDAR_PAGES, CALENDAR_UPDATED, type CalendarPage } from "./calendar";
 import { CURRENCY_PAIRS, CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT, type CurrencyPair } from "./currency";
 import { currencyHref } from "./path";
-import { BREED_IDS, BREEDS_PUBLISHED, BREEDS_SNAPSHOT, breedUpdated, type BreedId } from "./breeds";
-import { breedsMessages } from "./breeds-store";
+import { BREED_IDS, breedsUpdated, type BreedId } from "./breeds";
+import { breedImagePath } from "./breeds-i18n";
 
 export const SITE_ORIGIN = "https://cv.cm";
 
@@ -249,14 +249,14 @@ function pageLastmod(page: SitemapPage): string | null {
   // Exchange-rate pages show the ECB snapshot: the later of its date and the day the channel went live (= JSON-LD dateModified).
   if (page.kind === "currency") return [CURRENCY_PUBLISHED, CURRENCY_SNAPSHOT].sort().at(-1)!;
   // Breed pages: the later of the channel's start, the Wikidata / FCI snapshot and a copy edit (BREEDS_UPDATED).
-  if (page.kind === "breeds") return page.entry ? breedUpdated(page.entry, BREEDS_SNAPSHOT) : [BREEDS_PUBLISHED, BREEDS_SNAPSHOT, ...BREED_IDS.map((id) => breedUpdated(id, BREEDS_SNAPSHOT))].sort().at(-1)!;
+  if (page.kind === "breeds") return breedsUpdated(page.entry);
   return null;
 }
 
 /** A page's own picture for the image sitemap: a meme or nostalgia entry's freely licensed image. */
 function pageImage(page: SitemapPage): string | null {
-  const breed = page.kind === "breeds" && page.entry ? breedsMessages("en").images[page.entry] : null;
-  const path = page.kind === "slang" ? memeImagePath(page.entry) : page.kind === "nostalgia" ? nostalgiaImagePath(page.entry) : breed ? `/covers/${breed.src}` : null;
+  // Breed pictures do not depend on the language; every breeds pack carries the same table.
+  const path = page.kind === "slang" ? memeImagePath(page.entry) : page.kind === "nostalgia" ? nostalgiaImagePath(page.entry) : page.kind === "breeds" ? breedImagePath("en", page.entry) : null;
   return path ? coverUrl(path) : null;
 }
 

@@ -409,9 +409,6 @@ async function loadNostalgiaEntry(next: Locale, id: NostalgiaId): Promise<void> 
   registerNostalgiaEntry(next, id, m.default);
 }
 
-
-
-
 // Breeds hub copy, names, blurbs and facts (`npm run breeds:sync`), only for /breeds/ pages.
 const BREEDS_PACKS: Record<Locale, () => Promise<{ default: BreedsMessages }>> = {
   en: () => import("../locales/packs/breeds-en"),
@@ -422,6 +419,7 @@ const BREEDS_PACKS: Record<Locale, () => Promise<{ default: BreedsMessages }>> =
   vi: () => import("../locales/packs/breeds-vi"),
   id: () => import("../locales/packs/breeds-id"),
   es: () => import("../locales/packs/breeds-es"),
+};
 
 // One chunk per breed and locale, through that locale's generated loader table.
 const BREED_LOADER_TABLES: Record<Locale, () => Promise<{ BREED_LOADERS: Record<BreedId, () => Promise<unknown>> }>> = {
@@ -433,11 +431,13 @@ const BREED_LOADER_TABLES: Record<Locale, () => Promise<{ BREED_LOADERS: Record<
   vi: () => import("../locales/breeds/loaders/vi"),
   id: () => import("../locales/breeds/loaders/id"),
   es: () => import("../locales/breeds/loaders/es"),
+};
 
 async function loadBreedEntry(next: Locale, id: BreedId): Promise<void> {
   const { BREED_LOADERS } = await BREED_LOADER_TABLES[next]();
   const m = (await BREED_LOADERS[id]()) as { default: BreedEntryCopy };
   registerBreedEntry(next, id, m.default);
+}
 
 // Countries copy and the list data, only for /countries/ pages; a profile also loads the data bucket holding its figures.
 const COUNTRIES_PACKS: Record<Locale, () => Promise<{ default: CountriesMessages }>> = {
