@@ -1334,7 +1334,7 @@ function navRow(nav: HTMLElement): HTMLElement {
       if (!a.hidden) continue;
       if (a.classList.contains("nav-group")) {
         // A menu that does not fit: its label, then its links, inside "More".
-        groupClose.get(a)?.();
+        a.removeAttribute("open");
         pop.append(h("span", { class: "nav-more-label" }, a.querySelector(".nav-group-label")?.textContent ?? ""));
         for (const link of a.querySelectorAll<HTMLAnchorElement>(".nav-group-pop a")) {
           const copy = link.cloneNode(true) as HTMLAnchorElement;
@@ -1359,64 +1359,48 @@ function navRow(nav: HTMLElement): HTMLElement {
   return row;
 }
 
-/** Close functions of the open-able menus in the nav row, so navRow() can close one it folds into "More". */
-const groupClose = new WeakMap<HTMLElement, () => void>();
-
 /**
- * One item on the nav row that opens a list of links. The links are always in the markup (hidden until opened), so the
- * prerendered HTML and crawlers see them like any other nav link. The list is position: fixed under the button: the nav
- * row clips overflow (navRow() measures it), so an absolutely positioned list would be cut off.
+ * One item on the nav row that opens a list of links: a native <details>, so it opens and its links work in the
+ * server HTML before the app takes over, and without JS. The links are always in the markup, so the prerendered HTML
+ * and crawlers see them like any other nav link. The list is absolutely positioned against the header (.top), which
+ * the nav row's overflow clipping does not reach. Closing on outside click, focus leaving, Escape and link click is
+ * one delegated listener set (closeNavGroups), so a replaced header leaves nothing subscribed.
  */
 function navGroup(label: string, on: boolean, links: HTMLElement[]): HTMLElement {
-  const pop = h("div", { class: "nav-group-pop", hidden: true }, ...links);
-  const button: HTMLButtonElement = h("button", {
-    type: "button",
-    class: "nav-group-btn" + (on ? " on" : ""),
-    "aria-expanded": "false",
-    onClick: () => setOpen(button.getAttribute("aria-expanded") !== "true"),
-  }, h("span", { class: "nav-group-label" }, label), h("span", { class: "nav-more-caret", "aria-hidden": "true" }, "▾"));
-  // "on" on the group too: navRow() keeps the current channel's item on the row.
-  const group = h("div", { class: "nav-group" + (on ? " on" : "") }, button, pop);
+  closeNavGroups();
+  return h("details", { class: "nav-group" + (on ? " on" : "") },
+    h("summary", { class: "nav-group-btn" + (on ? " on" : "") },
+      h("span", { class: "nav-group-label" }, label),
+      h("span", { class: "nav-more-caret", "aria-hidden": "true" }, "▾"),
+    ),
+    h("div", { class: "nav-group-pop" }, ...links),
+  );
+}
 
-  const onDocClick = (event: MouseEvent): void => {
-    if (!group.contains(event.target as Node)) setOpen(false);
-  };
-  const onKey = (event: KeyboardEvent): void => {
-    if (event.key !== "Escape") return;
-    setOpen(false);
-    button.focus();
-  };
-  // The list is placed once when it opens; scrolling or resizing would leave it behind, so either closes it.
-  const onMove = (): void => setOpen(false);
-  function place(): void {
-    const r = button.getBoundingClientRect();
-    pop.style.top = `${Math.round(r.bottom + 6)}px`;
-    const width = pop.offsetWidth;
-    pop.style.left = `${Math.round(Math.max(8, Math.min(r.left, window.innerWidth - width - 8)))}px`;
-  }
-  function setOpen(open: boolean): void {
-    if ((button.getAttribute("aria-expanded") === "true") === open) return;
-    button.setAttribute("aria-expanded", String(open));
-    pop.hidden = !open;
-    if (open) {
-      place();
-      document.addEventListener("click", onDocClick, true);
-      document.addEventListener("keydown", onKey);
-      window.addEventListener("scroll", onMove, { passive: true });
-      window.addEventListener("resize", onMove);
-    } else {
-      document.removeEventListener("click", onDocClick, true);
-      document.removeEventListener("keydown", onKey);
-      window.removeEventListener("scroll", onMove);
-      window.removeEventListener("resize", onMove);
+let navGroupsWired = false;
+/** Wires, once, the document listeners that close open nav menus. */
+function closeNavGroups(): void {
+  if (navGroupsWired || typeof document === "undefined") return;
+  navGroupsWired = true;
+  const closeAll = (keep: Node | null): void => {
+    for (const d of document.querySelectorAll<HTMLDetailsElement>("details.nav-group[open]")) {
+      if (!keep || !d.contains(keep)) d.open = false;
     }
-  }
-  // A link navigates through the shared click handler; the list closes either way.
-  pop.addEventListener("click", (event) => {
-    if ((event.target as Element).closest?.("a")) setOpen(false);
+  };
+  document.addEventListener("click", (event) => {
+    const target = event.target as Element | null;
+    // A link inside a menu navigates through the shared click handler; the menu closes either way.
+    if (target?.closest?.(".nav-group-pop a")) closeAll(null);
+    else closeAll(target);
+  }, true);
+  document.addEventListener("focusin", (event) => closeAll(event.target as Node | null));
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const open = document.querySelector<HTMLDetailsElement>("details.nav-group[open]");
+    if (!open) return;
+    open.open = false;
+    open.querySelector<HTMLElement>("summary")?.focus();
   });
-  groupClose.set(group, () => setOpen(false));
-  return group;
 }
 
 function navLink(href: string, label: string, on: boolean, nav: string): HTMLElement {

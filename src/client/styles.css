@@ -52,12 +52,15 @@ img { max-width: 100%; }
    away. The row shows whole links only (never one cut mid-word), and every link is still in the markup. */
 .page.ssr .nav { flex-wrap: wrap; height: calc(var(--nav-fs) * 1.6 + 2 * var(--nav-py)); }
 .nav a:hover, .nav a.on { color: var(--pink-deep); background: var(--pink-soft); }
-/* A menu on the nav row (navGroup() in main.ts): a button like a nav link, its links in a list under it. */
-.nav-group { display: flex; flex-shrink: 0; }
-.nav-group[hidden], .nav-group-pop[hidden] { display: none; }
-.nav-group-btn { display: inline-flex; align-items: center; gap: 0.2rem; padding: var(--nav-py) var(--nav-px); border: 0; border-radius: 8px; background: none; color: var(--ink-soft); font: inherit; font-size: var(--nav-fs); line-height: 1.6; cursor: pointer; white-space: nowrap; }
-.nav-group-btn:hover, .nav-group-btn.on, .nav-group-btn[aria-expanded="true"] { color: var(--pink-deep); background: var(--pink-soft); }
-.nav-group-pop { position: fixed; z-index: 50; display: flex; flex-direction: column; min-width: 9rem; padding: 0.3rem; border: 1px solid var(--pink); border-radius: var(--radius); background: var(--white); }
+/* A menu on the nav row (navGroup() in main.ts, a <details>): a summary like a nav link, its links in a list under the
+   header. No position on .nav-group: the list is placed against .top, outside the nav row's overflow clipping. */
+/* Column: the list's static left position is then the summary's left edge, so it opens right under it. */
+.nav-group { display: flex; flex-direction: column; flex-shrink: 0; }
+.nav-group[hidden] { display: none; }
+.nav-group-btn { display: inline-flex; align-items: center; gap: 0.2rem; padding: var(--nav-py) var(--nav-px); border-radius: 8px; color: var(--ink-soft); font-size: var(--nav-fs); line-height: 1.6; cursor: pointer; white-space: nowrap; list-style: none; user-select: none; }
+.nav-group-btn::-webkit-details-marker { display: none; }
+.nav-group-btn:hover, .nav-group-btn.on, .nav-group[open] > .nav-group-btn { color: var(--pink-deep); background: var(--pink-soft); }
+.nav-group-pop { position: absolute; top: calc(100% + 0.35rem); z-index: 50; display: flex; flex-direction: column; min-width: 9rem; padding: 0.3rem; border: 1px solid var(--pink); border-radius: var(--radius); background: var(--white); }
 .nav-more-label { padding: 0.45rem 0.6rem 0.15rem; color: var(--ink-soft); font-size: 0.78rem; opacity: 0.75; }
 .nav-more-pop a.nav-more-sub { padding-left: 1.1rem; }
 /* Site search: a button in the header, a panel under it (src/client/search.ts). */

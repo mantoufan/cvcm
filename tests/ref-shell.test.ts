@@ -25,11 +25,16 @@ describe("reference shell", () => {
     expect(group.querySelector(".nav-group-btn")?.classList.contains("on")).toBe(true);
     expect(group.classList.contains("on")).toBe(true);
     expect([...group.querySelectorAll(".nav-group-pop a")].map((a) => a.getAttribute("data-nav"))).toEqual(["reference", "slang", "nostalgia"]);
-    expect(group.querySelector(".nav-group-pop")?.hasAttribute("hidden")).toBe(true);
-    group.querySelector<HTMLButtonElement>(".nav-group-btn")!.click();
-    expect(group.querySelector(".nav-group-pop")?.hasAttribute("hidden")).toBe(false);
+    // A native <details>: works in the server HTML and without JS; an outside click or Escape closes it.
+    const details = group as HTMLDetailsElement;
+    expect(details.tagName).toBe("DETAILS");
+    expect(details.open).toBe(false);
+    details.open = true;
     document.body.click();
-    expect(group.querySelector(".nav-group-pop")?.hasAttribute("hidden")).toBe(true);
+    expect(details.open).toBe(false);
+    details.open = true;
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    expect(details.open).toBe(false);
     expect(document.querySelector('.nav > a[data-nav="ideas"]')).not.toBeNull();
     expect(document.querySelector('.dir a[data-nav="reference"]')).not.toBeNull();
     expect(document.getElementById("article-jsonld")?.textContent).toContain("CollectionPage");
