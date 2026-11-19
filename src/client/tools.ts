@@ -1319,10 +1319,10 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     return m.unmountPinball;
   },
   "pool-game": async (host, ctx) => {
-    const m = await import("./pool-game/ui");
+    const m = await import("./billiards/ui");
     if (!ctx.alive()) return undefined;
-    m.mountPoolGame(host);
-    return m.unmountPoolGame;
+    m.mountBilliards(host, "pool-game");
+    return m.unmountBilliards;
   },
   "air-hockey": async (host, ctx) => {
     const m = await import("./air-hockey/ui");

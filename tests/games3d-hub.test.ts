@@ -35,8 +35,8 @@ describe("3D games hub", () => {
   });
 
   it("never loads three.js at mount: game modules only import types from three at the top level", () => {
-    // /snooker/ is the billiards trainer with another default game, so it shares src/client/billiards/.
-    const dirs = [...new Set([...GAMES_3D.map((id) => (id === "snooker" ? "billiards" : id)), "three-stage"])];
+    // /snooker/ and /pool-game/ are the billiards trainer with another default game, so they share src/client/billiards/.
+    const dirs = [...new Set([...GAMES_3D.map((id) => (id === "snooker" || id === "pool-game" ? "billiards" : id)), "three-stage"])];
     for (const dir of dirs) {
       const base = join(__dirname, "../src/client");
       const files = dir === "three-stage" ? ["three-stage.ts"] : readdirSync(join(base, dir)).filter((f) => f.endsWith(".ts")).map((f) => join(dir, f));

@@ -7,10 +7,11 @@
  */
 
 import type { Ball, SimEvent } from "./billiards-physics";
-import { groupOf, type Group } from "./pool-game";
 import { TABLE_OF, cueIdFor, spotsFor, isRed, snookerValue, SNOOKER_FIRST_COLOUR, type PlaceZone, type Variant } from "./billiards-tables";
 
-export type { Group };
+export type Group = "solids" | "stripes";
+
+export const groupOf = (id: number): Group | null => (id >= 1 && id <= 7 ? "solids" : id >= 9 && id <= 15 ? "stripes" : null);
 
 export interface Match {
   variant: Variant;
@@ -73,6 +74,28 @@ export function newMatch(variant: Variant, players: 1 | 2): Match {
     shots: 0,
     pots: 0,
   };
+}
+
+/** A stored match (saved game) that is safe to resume for `variant`: every field present and in range. */
+export function isMatch(value: unknown, variant: Variant): value is Match {
+  const m = value as Partial<Match> | null;
+  if (!m || typeof m !== "object" || m.variant !== variant) return false;
+  const num = (n: unknown) => typeof n === "number" && Number.isFinite(n);
+  const okGroup = (g: unknown) => g === null || g === "solids" || g === "stripes";
+  return (
+    (m.players === 1 || m.players === 2) &&
+    (m.turn === 0 || (m.turn === 1 && m.players === 2)) &&
+    Array.isArray(m.scores) && m.scores.length === 2 && m.scores.every(num) &&
+    Array.isArray(m.groups) && m.groups.length === 2 && m.groups.every(okGroup) &&
+    typeof m.breakShot === "boolean" &&
+    // Only zones this table has: the D on snooker, the kitchen on pool and pyramid, none on carom.
+    (m.inHand === null ||
+      (TABLE_OF[variant] === "snooker" ? m.inHand === "d" : TABLE_OF[variant] !== "carom" && (m.inHand === "anywhere" || m.inHand === "kitchen"))) &&
+    typeof m.onColour === "boolean" &&
+    [m.breakRun, m.bestBreak, m.target, m.shots, m.pots].every(num) &&
+    (m.winner === null || m.winner === 0 || m.winner === 1) &&
+    typeof m.drawn === "boolean"
+  );
 }
 
 /** What happened in one shot, read from the physics events. */
