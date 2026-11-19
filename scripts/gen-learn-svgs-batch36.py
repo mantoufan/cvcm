@@ -145,7 +145,7 @@ def ss_margins(t) -> str:
     out = line(x0 - 20, base, x0 + len(SS_MARGINS) * 150, base, MUTED, 3)
     for i, (m, n) in enumerate(SS_MARGINS):
         x = x0 + i * 150
-        bh = n / 2401 * h
+        bh = n / max(k for _, k in SS_MARGINS) * h
         out += f'<rect x="{x}" y="{base - bh:.1f}" width="{w}" height="{bh:.1f}" rx="10" fill="{PINK if m != 5 else DEEP}"/>'
         out += text(x + w / 2, base - bh - 12, g.group(n), 26, INK, 800, "middle")
         out += text(x + w / 2, base + 38, f"± {m} %", 24, MUTED, 700, "middle")
@@ -217,7 +217,8 @@ def ca_bands(t) -> str:
     out += f'<path d="M{X(a):.1f} 245 l-14 -32 h28 z" fill="{LILAC}"/>'
     out += text(X(a), 150, f'{t["example"]}', 22, LILAC, 800, "middle")
     out += text(X(a), 190, f"α = {num(a, 3)}", 28, LILAC, 800, "middle", MONO)
-    out += line(X(0.7), 120, X(0.7), 250, DEEP, 3) + text(X(0.7), 110, f"{num(0.7, 1)} +", 22, DEEP, 800, "middle")
+    # Stops above the axis labels so the cut-off's own "0.7" stays readable; the tick below continues it.
+    out += line(X(0.7), 120, X(0.7), 205, DEEP, 3) + text(X(0.7), 110, f"{num(0.7, 1)} +", 22, DEEP, 800, "middle")
     return out
 
 
@@ -303,18 +304,19 @@ def chi_tables(t) -> str:
     for k, (title, cells, x0) in enumerate(((t["observed"], OBS, 40), (t["expected"], exp, 500))):
         out += text(x0 + 210, 60, title, 30, DEEP, 800, "middle")
         out += box(x0, 80, 420, 330, CARD if k == 0 else SOFT, LINE if k == 0 else PINK, 18)
-        out += text(x0 + 200, 125, t["yes"], 22, MUTED, 800, "middle") + text(x0 + 300, 125, t["no"], 22, MUTED, 800, "middle") + text(x0 + 380, 125, "Σ", 22, MUTED, 800, "middle")
+        out += text(x0 + 185, 125, t["yes"], 22, MUTED, 800, "middle") + text(x0 + 300, 125, t["no"], 22, MUTED, 800, "middle") + text(x0 + 385, 125, "Σ", 22, MUTED, 800, "middle")
         for i, name in enumerate((t["groupA"], t["groupB"])):
             y = 190 + i * 80
             out += wrapped(x0 + 80, y, name, 20, MUTED, 800, "middle", 10)
             for j in range(2):
                 v = cells[i][j]
-                out += text(x0 + 200 + j * 100, y + 8, num(v, 1) if k else str(v), 34, INK if k == 0 else DEEP, 800, "middle", MONO)
-            out += text(x0 + 380, y + 8, str(rows[i]), 24, MUTED, 700, "middle", MONO)
+                # 115 px apart at 30 px so "17,5" and "32,5" keep a clear gap in comma locales.
+                out += text(x0 + 185 + j * 115, y + 8, num(v, 1) if k else str(v), 30, INK if k == 0 else DEEP, 800, "middle", MONO)
+            out += text(x0 + 385, y + 8, str(rows[i]), 24, MUTED, 700, "middle", MONO)
         out += text(x0 + 80, 380, "Σ", 22, MUTED, 800, "middle")
         for j in range(2):
-            out += text(x0 + 200 + j * 100, 380, str(cols[j]), 24, MUTED, 700, "middle", MONO)
-        out += text(x0 + 380, 380, str(n), 24, MUTED, 700, "middle", MONO)
+            out += text(x0 + 185 + j * 115, 380, str(cols[j]), 24, MUTED, 700, "middle", MONO)
+        out += text(x0 + 385, 380, str(n), 24, MUTED, 700, "middle", MONO)
     out += text(480, 470, f'E = {rows[0]} × {cols[0]} ÷ {n} = {num(exp[0][0], 1)}', 28, LILAC, 800, "middle", MONO)
     out += text(480, 515, f'χ² = Σ (O − E)² ÷ E = {num(chi2, 2)}', 26, DEEP, 800, "middle", MONO)
     return out

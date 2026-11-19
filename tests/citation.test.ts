@@ -94,6 +94,8 @@ describe("citation styles", () => {
     expect(["436-444", "103-104", "395-401", "1003-1005", "1608-1774", "1099-1100", "923-1003", "96-101", "10-25", "200-200", "A12-A15", "436"].map(pages)).toEqual([
       "pp. 436-44", "pp. 103-04", "pp. 395-401", "pp. 1003-05", "pp. 1608-774", "pp. 1099-100", "pp. 923-1003", "pp. 96-101", "pp. 10-25", "pp. 200-200", "pp. A12-A15", "p. 436",
     ]);
+    // Each range in a list is shortened on its own.
+    expect(html(formatReference({ ...art, pages: "1-5, 103-104" }, "mla"))).toContain("pp. 1-5, 103-04,");
     // Other styles keep the full range.
     expect(html(formatReference(art, "apa"))).toContain("436–444");
   });

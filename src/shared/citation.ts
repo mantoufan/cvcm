@@ -170,14 +170,13 @@ const isRange = (pages: string) => /[-–—]/.test(pages);
  * ("436-444" → "436-44", "1608-1774" → "1608-774", "1099-1100" → "1099-100"; "395-401" and "923-1003" stay in full).
  */
 function mlaPages(pages: string): string {
-  const r = pageRange(pages, "-");
-  const m = /^(\d+)-(\d+)$/.exec(r);
-  if (!m) return r;
-  const [, a, b] = m;
-  if (a.length !== b.length || Number(b) <= Number(a)) return r;
-  let keep = 2;
-  while (keep < b.length && a.slice(0, -keep) !== b.slice(0, -keep)) keep++;
-  return `${a}-${b.slice(-keep)}`;
+  // Each range in a list ("1-5, 103-104") is shortened on its own.
+  return pageRange(pages, "-").replace(/\b(\d+)-(\d+)\b/g, (whole, a: string, b: string) => {
+    if (a.length !== b.length || Number(b) <= Number(a)) return whole;
+    let keep = 2;
+    while (keep < b.length && a.slice(0, -keep) !== b.slice(0, -keep)) keep++;
+    return `${a}-${b.slice(-keep)}`;
+  });
 }
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

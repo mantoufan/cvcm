@@ -38,8 +38,10 @@ def load(src: Path) -> dict[str, dict]:
     for loc in LOCS:
         if set(out[loc]["meta"]) != set(en["meta"]):
             raise SystemExit(f"{loc}: meta keys differ from en")
+        if not isinstance(out[loc].get("group"), str):
+            raise SystemExit(f"{loc}: missing group label")
         for lesson_id, labels in en["svg"].items():
-            if set(out[loc]["svg"][lesson_id]) != set(labels):
+            if set(out[loc].get("svg", {}).get(lesson_id, {})) != set(labels):
                 raise SystemExit(f"{loc}: svg keys differ from en for {lesson_id}")
     return out
 
