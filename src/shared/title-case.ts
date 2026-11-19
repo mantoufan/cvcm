@@ -213,11 +213,10 @@ function convertLine(line: string, style: TitleStyle): string {
   }
   // A lone capital letter that names something (Vitamin A, Type B, Plan C) is kept. "A" is the article before a capitalized word or a number (A 10-Year Study), a label at the end of a part
   // (Plan A: The Basics) or before a lowercase word (vitamin A deficiency).
-  const keepSingle = (i: number, end: boolean): boolean => {
+  const keepSingle = (i: number, end: boolean, before: Token | undefined): boolean => {
     const core = words[i]!.core;
     if (shouting || !/^\p{Lu}$/u.test(core) || core === "I" || i === 0) return false;
     if (core !== "A" || end) return true;
-    const before = i > 0 ? words.slice(0, i).reverse().find((w) => w.core) : undefined;
     if (before && LABELLED.has(before.core.toLowerCase())) return true;
     const first = [...words[nextWord[i]!]!.core][0] ?? "";
     return LETTER.test(first) && !UPPER.test(first);
@@ -234,10 +233,10 @@ function convertLine(line: string, style: TitleStyle): string {
     const end = n < 0 || startsAfter(t, "apa") || words.slice(i + 1, n).some(loneBreak);
     const start = pending || startsAfter(prev, style);
     pending = false;
+    const keep = !start && keepSingle(i, end, prev);
     prev = t;
-    const keep = !start && keepSingle(i, end);
     // Elided fragments stay lowercase: rock 'n' roll.
-    if (!start && /^n$/i.test(t.core) && /['’]$/.test(t.lead)) return t.lead + "n" + t.trail + t.space;
+    if (!start && t.core === "n" && /['’]$/.test(t.lead)) return t.lead + "n" + t.trail + t.space;
     const core = style === "sentence" ? sentenceWord(t.core, start, keep, typed) : convertWord(t.core, style, start, end, keep, typed);
     return t.lead + core + t.trail + t.space;
   });
