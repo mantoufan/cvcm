@@ -735,7 +735,7 @@
     "titleFlightSimulator": "Flight simulator online — fly a plane in 3D for free — cv.cm",
     "descFlightSimulator": "Free online flight simulator in 3D: take off from the runway, fly over a low-poly island and land again, or race through 12 rings against the clock. No download; works with a keyboard or on a phone.",
     "titleGames3d": "Free 3D games online — chess, pinball, pool, darts, driving — cv.cm",
-    "descGames3d": "Play free 3D games in your browser with no download: 3D chess, pinball, pool, air hockey, darts, a magic cube and solver, a stack game, a driving game and a flight simulator. Works on phones too.",
+    "descGames3d": "Play free 3D games in your browser with no download: 3D chess, pinball, pool, billiards, snooker, air hockey, darts, a magic cube and solver, a stack game, a driving game and a flight simulator. Works on phones too.",
     "titleCitationGenerator": "Citation generator — APA, MLA, Chicago, Harvard, IEEE, Vancouver, GB/T 7714 — cv.cm",
     "descCitationGenerator": "Free citation generator: find a journal article by DOI or a book by ISBN, or type the details, and get the reference and in-text citation in APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver or GB/T 7714. Build a reference list; import and export BibTeX and RIS.",
     "titleApaCitationGenerator": "APA citation generator — APA 7th edition references and in-text citations — cv.cm",
@@ -775,7 +775,11 @@
     "titleCiteHarvard": "How to reference in Harvard style (Cite Them Right) | cv.cm",
     "descCiteHarvard": "Harvard referencing in six steps: author and year, titles, journal articles, books and websites with access dates, citing in the text, and the reference list, with examples and a free generator.",
     "titlePressurePointsMap": "Pressure points map: interactive acupressure & reflexology chart — cv.cm",
-    "descPressurePointsMap": "Free interactive pressure points chart: tap a point on the face, neck, hand, arm, leg or foot to see where it is in finger-widths, how to press it and what it is traditionally used for, with a hold timer. Includes a foot reflexology chart. For relaxation, not medical advice."
+    "descPressurePointsMap": "Free interactive pressure points chart: tap a point on the face, neck, hand, arm, leg or foot to see where it is in finger-widths, how to press it and what it is traditionally used for, with a hold timer. Includes a foot reflexology chart. For relaxation, not medical advice.",
+    "titleBilliards": "Billiards game — free 3D 8-ball, 9-ball, Chinese 8-ball and carom, with rules — cv.cm",
+    "descBilliards": "Play billiards free in 3D: 8-ball, 9-ball, 10-ball, Chinese 8-ball, Russian pyramid, three-cushion and snooker against the computer, a friend or solo, with spin, practice drills, the rules of each game and an aim line you can switch off.",
+    "titleSnooker": "Snooker game — play free 3D snooker online, with rules and practice — cv.cm",
+    "descSnooker": "Play snooker free in 3D: a full 15-red frame or a quick 6-red game against the computer, a friend or solo, with real scoring and fouls, cue ball spin, long-pot and clearance drills and an aim line you can switch off."
   },
   "brand": "cv.cm",
   "nav": {
@@ -4943,6 +4947,14 @@
     "pressure-points-map": {
       "name": "Pressure points map",
       "blurb": "Acupressure points and a foot reflexology chart."
+    },
+    "billiards": {
+      "name": "Billiards",
+      "blurb": "3D pool, Chinese 8-ball, pyramid and carom with rules and drills."
+    },
+    "snooker": {
+      "name": "Snooker",
+      "blurb": "Full 3D snooker frames with fouls, breaks and practice drills."
     }
   },
   "watermark": {
@@ -9786,6 +9798,48 @@
       "a4": "Traditional practice advises against firm pressure on LI4 (Hegu), SP6 (Sanyinjiao) and GB21 (Jianjing) during pregnancy. If you are pregnant, ask your midwife or doctor before using acupressure.",
       "q5": "Can a foot reflexology chart show what is wrong with my body?",
       "a5": "No. A reflexology chart is a traditional map, not anatomy, and there is no good evidence that the feet show or treat problems in organs. Foot massage can feel relaxing, but never use it to check symptoms: chest pain, sudden weakness or trouble breathing need emergency care."
+    },
+    "billiards": {
+      "q1": "How do you play billiards here?",
+      "a1": "Pick a game and press Play. Drag on the table to aim: in top view the cue points where you touch, and in the 3D view behind the ball you drag sideways to turn. Set the power with the slider, tap the cue ball picture to add spin, then press Shoot. On a keyboard, ← and → turn (hold Shift for fine turns), ↑ and ↓ change the power, Space shoots and C switches the camera. With ball in hand, drag the cue ball to where you want it.",
+      "q2": "What are the rules of 8-ball?",
+      "a2": "One player takes the solids (1–7) and the other the stripes (9–15); the table stays open until someone legally pots a ball after the break, and that ball decides the groups. You have to hit one of your own balls first, and after the contact a ball must go in or some ball must reach a cushion. Clear your group, then pot the 8 to win. Potting the 8 early, or on a foul, loses the game. A foul gives your opponent ball in hand anywhere on the table.",
+      "q3": "What are the rules of 9-ball and 10-ball?",
+      "a3": "Both are rotation games: the cue ball must hit the lowest-numbered ball on the table first, and any ball that then drops keeps you at the table. In 9-ball, legally potting the 9 wins at any time, even on the break or in a combination. In 10-ball the 10 must go in last here, so an early 10 is spotted again. A foul (missing the lowest ball, no cushion after contact, or a scratch) gives ball in hand anywhere.",
+      "q4": "What is Chinese 8-ball?",
+      "a4": "Chinese 8-ball (中式台球, also called heiba) uses the 8-ball balls and rules on a table the size of a 9 ft pool table, but with snooker-style cushions and much tighter rounded pockets, so pots have to be accurate. A legal break needs a pot or four object balls driven to a cushion, and every foul gives the opponent a free ball in hand anywhere.",
+      "q5": "What is Russian pyramid?",
+      "a5": "Russian pyramid (русский бильярд) is played on a 12 ft table with fifteen large 68 mm ivory balls and one coloured cue ball, and the pockets are only a few millimetres wider than a ball. This page plays free pyramid: every ball you pot scores a point, potting the cue ball after it has hit another ball also scores and gives ball in hand from the kitchen, a foul costs a point, and the first to 8 points wins.",
+      "q6": "How does three-cushion billiards work?",
+      "a6": "Three-cushion is a carom game on a table without pockets, with three balls: your cue ball (white or yellow), your opponent's cue ball and the red. You score a point when your cue ball touches both other balls and hits the cushions at least three times before it touches the second ball. Scoring keeps you at the table; a miss passes the turn. Here the first to 10 points wins.",
+      "q7": "Can I turn off the aim line?",
+      "a7": "Yes. Aim help has three settings: full prediction draws the paths of every ball the shot will move, worked out with the same physics as the game; aim line shows the cue line, the ghost ball and where the object ball and cue ball go after contact; off shows only the cue, as on a real table. Turn it down as your aim improves.",
+      "q8": "How do spin, draw and follow work?",
+      "a8": "Tap the cue ball picture where the tip should hit. Below centre is draw (screw): the cue ball comes back after the hit. Above centre is follow: it runs on after the object ball. Dead centre on a full hit stuns the cue ball so it stops. Left and right side change the angle off the cushions. The ball slides at first and grips the cloth as it rolls, so the same spin behaves differently at different distances.",
+      "q9": "Which rules are simplified here?",
+      "a9": "Shots are never called, so any legal pot counts and the 10 in 10-ball must go in last. There is no push-out and no three-foul rule in 9-ball, and no re-rack choice after an 8 on the break (it is spotted). Snooker has no miss rule or free ball. Everything else follows the usual WPA, Chinese 8-ball, pyramid and UMB rules. With ball in hand behind the head string and every ball on behind it too, you may hit one directly (WPA would spot the nearest one instead).",
+      "q10": "Can I play on my phone?",
+      "a10": "Yes. Drag on the table to aim, use the ⟲ ⟳ buttons for big turns and ‹ › for small ones, then the power slider and Shoot. Top view shows the whole table on a narrow screen, and full screen gives you the most room. Your settings stay in this browser, and nothing is sent anywhere."
+    },
+    "snooker": {
+      "q1": "How do you play snooker here?",
+      "a1": "Press Play and start from the D. Drag on the table to aim (in top view the cue points where you touch; behind the ball, drag sideways), set the power with the slider, tap the cue ball picture for draw, follow or side, and press Shoot. On a keyboard, ← and → turn (Shift for fine turns), ↑ and ↓ change the power, Space shoots and C switches the camera.",
+      "q2": "What are the rules of snooker?",
+      "a2": "There are 15 reds and six colours. You must pot a red first, then any colour, then a red again, for as long as you keep potting; that run is your break. Colours potted while reds remain come back to their spots. When the reds are gone, the colours are taken in order: yellow, green, brown, blue, pink and black. The player with more points when the black goes down wins the frame.",
+      "q3": "How many points is each ball worth?",
+      "a3": "A red is 1, yellow 2, green 3, brown 4, blue 5, pink 6 and black 7. Taking every red with the black and then clearing the colours gives the maximum break of 147. In 6-red snooker the maximum is 75.",
+      "q4": "What is a foul in snooker?",
+      "a4": "Missing every ball, hitting a ball that is not on first, potting a ball that is not on, or putting the cue ball in a pocket (an in-off). A foul gives your opponent 4 points, or the value of the ball involved if that is higher, up to 7, and ends your turn. After an in-off the next player plays from anywhere in the D.",
+      "q5": "How do I nominate a colour?",
+      "a5": "After a red the game treats the first colour your cue ball hits as the one you nominated, so you never need to say it out loud. Pot that colour to score its value; potting a different colour is a foul.",
+      "q6": "What is 6-red snooker?",
+      "a6": "The same game with six reds instead of fifteen, so a frame takes a few minutes. It is popular for quick matches and is a good way to practise your break-building and the colour clearance.",
+      "q7": "Can I practise without the aim line?",
+      "a7": "Yes. Aim help can show the full predicted paths of every ball, just the cue line with the ghost ball, or nothing but the cue, like a real table. Solo practice adds drills (the long pot, blue to the middle, the colours clearance), undo and moving balls by hand.",
+      "q8": "Which snooker rules are simplified?",
+      "a8": "There is no miss rule and no free ball, and after a foul your opponent always plays on rather than asking you to play again. Colours are nominated by the first colour you hit. Scoring, foul values, re-spotting, the colours in order and the re-spotted black on a tie follow the official rules.",
+      "q9": "Can I play on my phone?",
+      "a9": "Yes. Drag on the table to aim, use ⟲ ⟳ for big turns and ‹ › for small ones, then the power slider and Shoot. Top view fits the long table onto a narrow screen, and full screen gives you the most room. Settings stay in this browser and nothing is sent anywhere."
     }
   },
   "qr": {
@@ -10816,7 +10870,7 @@
     },
     "g3d": {
       "title": "Free 3D games",
-      "lead": "3D browser games that play right here: chess on a 3D board, pinball, 8-ball pool, air hockey, darts, a magic cube with a solver, a stack game, a driving and drift game and a flight simulator. Free, nothing to install; the 3D part loads only when you press Play."
+      "lead": "3D browser games that play right here: chess on a 3D board, pinball, 8-ball pool, a billiards trainer (9-ball, Chinese 8-ball, pyramid, three-cushion), snooker, air hockey, darts, a magic cube with a solver, a stack game, a driving and drift game and a flight simulator. Free, nothing to install; the 3D part loads only when you press Play."
     },
     "emu": {
       "title": "Retro emulators",
@@ -17235,5 +17289,241 @@
     "started": "Timer started: {n} s.",
     "loadError": "The point descriptions did not load. Check your connection and try again.",
     "retry": "Try again"
+  },
+  "billiards": {
+    "title": "Billiards",
+    "titleSnooker": "Snooker",
+    "privacyNote": "3D billiards with eight games, practice drills and an aim line you can switch off. Runs in your browser.",
+    "privacyNoteSnooker": "Full 3D snooker with real scoring and fouls, practice drills and an aim line you can switch off. Runs in your browser.",
+    "stage": "Billiards table",
+    "intro": "Eight games on one table: aim, add spin, pick the power and shoot.",
+    "introSnooker": "A full frame of snooker: pot a red, then a colour, and build your break.",
+    "game": "Game",
+    "mode": "Opponent",
+    "skill": "Computer",
+    "aimHelp": "Aim help",
+    "drill": "Drill",
+    "noDrill": "Free practice",
+    "newGame": "New rack",
+    "topView": "Top view",
+    "sound": "Sound",
+    "power": "Power",
+    "spin": "Spin",
+    "spinReset": "Centre",
+    "spinCentre": "Centre ball",
+    "spinTop": "Follow",
+    "spinDraw": "Draw",
+    "spinLeft": "Left side",
+    "spinRight": "Right side",
+    "shoot": "Shoot",
+    "turnLeft": "Turn the cue left",
+    "turnRight": "Turn the cue right",
+    "nudgeLeft": "Nudge the cue left",
+    "nudgeRight": "Nudge the cue right",
+    "undo": "Undo shot",
+    "undone": "Shot undone.",
+    "moveBalls": "Move balls",
+    "editOn": "Drag any ball to set up a position, then press Move balls again or shoot.",
+    "you": "You",
+    "computer": "Computer",
+    "player": "Player {n}",
+    "turnOf": "{name} to play",
+    "wins": "{name} wins!",
+    "again": "Play again",
+    "cleared": "Rack cleared!",
+    "break": "Break",
+    "openTable": "Open table",
+    "onEight": "On the 8",
+    "onRed": "On a red",
+    "onColour": "On a colour",
+    "onBall": "On the {ball}",
+    "raceTo": "First to {n}",
+    "breakRun": "Break {n} · best {best}",
+    "stats": "{shots} shots, {pots} potted",
+    "drillScore": "Drill {hits}/{tries}",
+    "drillStart": "Pot the ball as the drill asks. The layout comes back after each try.",
+    "drillHit": "Done! The layout is set up again.",
+    "drillMiss": "Not this time. The layout is set up again.",
+    "rulesOf": "Rules of {game}",
+    "hint": "Drag on the table to aim (top view: the cue points where you touch; 3D view: drag sideways). ← → turn, Shift for fine turns, ↑ ↓ power, Space shoots, C switches the view. With ball in hand, drag the cue ball.",
+    "games": {
+      "8-ball": "8-ball",
+      "9-ball": "9-ball",
+      "10-ball": "10-ball",
+      "chinese-8-ball": "Chinese 8-ball",
+      "snooker": "Snooker (15 reds)",
+      "snooker-6": "Snooker (6 reds)",
+      "pyramid": "Russian pyramid",
+      "3-cushion": "Three-cushion"
+    },
+    "modes": {
+      "cpu": "Vs computer",
+      "two": "2 players",
+      "solo": "Solo practice"
+    },
+    "skills": {
+      "easy": "Easy",
+      "medium": "Medium",
+      "hard": "Hard"
+    },
+    "aims": {
+      "full": "Full prediction",
+      "line": "Aim line",
+      "off": "Off"
+    },
+    "group": {
+      "solids": "Solids · {n} left",
+      "stripes": "Stripes · {n} left"
+    },
+    "groupShort": {
+      "solids": "solids",
+      "stripes": "stripes"
+    },
+    "inHand": {
+      "anywhere": "Ball in hand: drag the cue ball anywhere.",
+      "kitchen": "Ball in hand behind the head string (the shaded area).",
+      "d": "Ball in hand in the D."
+    },
+    "ball": {
+      "red": "red",
+      "v2": "yellow",
+      "v3": "green",
+      "v4": "brown",
+      "v5": "blue",
+      "v6": "pink",
+      "v7": "black",
+      "carom0": "white",
+      "carom1": "yellow",
+      "carom2": "red"
+    },
+    "msg": {
+      "potted": "Potted {n}.",
+      "noHit": "Foul: no ball hit.",
+      "wrongBall": "Foul: wrong ball hit first.",
+      "scratch": "Foul: scratch.",
+      "inOff": "Foul: in-off.",
+      "noRail": "Foul: no ball reached a cushion.",
+      "badBreak": "Foul: a legal break needs a pot or four balls to a cushion.",
+      "wrongPot": "Foul: a ball that was not on went in.",
+      "foulPoints": "Foul, {n} points.",
+      "eightSpotted": "The 8 went in on the break and is spotted.",
+      "eightWin": "The 8 is down!",
+      "eightLoss": "The 8 went down early or on a foul.",
+      "groupSolids": "Solids for the shooter.",
+      "groupStripes": "Stripes for the shooter.",
+      "moneyWin": "The {n} is down!",
+      "moneySpotted": "The {n} is spotted again.",
+      "reSpotBlack": "Scores level: the black is spotted for a re-spotted black.",
+      "frameOver": "Frame over.",
+      "minusOne": "Foul: minus one point.",
+      "cueScores": "The cue ball went in off a ball: a point, and ball in hand.",
+      "raceOver": "Race over.",
+      "caromPoint": "Point!",
+      "caromMiss": "No point.",
+      "kitchenBall": "Foul: from behind the head string, the first ball hit must lie past it."
+    },
+    "drills": {
+      "straight": {
+        "name": "Straight pot",
+        "tip": "Pot the 1 in the top corner. Hit the cue ball dead centre and keep the cue level."
+      },
+      "cut30": {
+        "name": "Half-ball cut (30°)",
+        "tip": "Aim the cue ball at the ghost ball, not at the object ball: at 30° the cue ball's centre points at the object ball's edge."
+      },
+      "cut55": {
+        "name": "Thin cut (55°)",
+        "tip": "A thin cut the other way: only a sliver of the object ball is hit. Aim at the ghost ball and keep the pace up."
+      },
+      "stop": {
+        "name": "Stop shot",
+        "tip": "Pot the 1 and leave the cue ball in the pink circle: a firm hit slightly below centre so it stops dead."
+      },
+      "draw": {
+        "name": "Draw shot",
+        "tip": "Pot the 1 and screw the cue ball back into the circle: hit well below centre with enough pace."
+      },
+      "follow": {
+        "name": "Follow shot",
+        "tip": "Pot the 1 and roll the cue ball on into the circle: hit above centre at medium pace."
+      },
+      "rail": {
+        "name": "Ball on the cushion",
+        "tip": "The 1 sits on the cushion. Hit it and the cushion together, or a touch of running side helps."
+      },
+      "long": {
+        "name": "Long pot (snooker)",
+        "tip": "The classic long red from the D into a top corner. Keep the stroke straight and smooth."
+      },
+      "blue": {
+        "name": "Blue to the middle",
+        "tip": "Pot the blue off its spot into a middle pocket, with a soft touch."
+      },
+      "clearance": {
+        "name": "Colours clearance",
+        "tip": "Pot the colours in order (yellow, green, brown, blue, pink, black) with ball in hand in the D. A perfect clearance is 27."
+      }
+    },
+    "rules": {
+      "8-ball": {
+        "r1": "Solids 1–7 against stripes 9–15. The table is open after the break; the first legal pot picks the groups.",
+        "r2": "Hit one of your own balls first. After the contact a ball must drop or any ball must reach a cushion.",
+        "r3": "A legal break pots a ball or drives at least four object balls to a cushion. An 8 on the break is spotted.",
+        "r4": "Fouls (wrong ball first, no cushion, no hit, scratch, or from behind the head string hitting a ball that is also behind it) give your opponent ball in hand anywhere; a scratch on the break gives it behind the head string.",
+        "r5": "Pot one of your group and you keep shooting.",
+        "r6": "Clear your group, then pot the 8 to win. The 8 early or on a foul loses."
+      },
+      "9-ball": {
+        "r1": "Balls 1–9. The cue ball must hit the lowest-numbered ball first.",
+        "r2": "Any ball that drops after a legal hit keeps you at the table, combinations too.",
+        "r3": "Legally pot the 9 at any time, even on the break, to win.",
+        "r4": "A legal break pots a ball or drives four object balls to a cushion.",
+        "r5": "Fouls give ball in hand anywhere; a 9 potted on a foul is spotted."
+      },
+      "10-ball": {
+        "r1": "Balls 1–10, racked in a triangle with the 1 at the front and the 10 in the middle.",
+        "r2": "Always hit the lowest-numbered ball first.",
+        "r3": "Shots are not called here: any legal pot keeps you at the table.",
+        "r4": "The 10 wins only as the last ball; an earlier 10 (or one on the break) is spotted.",
+        "r5": "Fouls give ball in hand anywhere."
+      },
+      "chinese-8-ball": {
+        "r1": "The 8-ball set on a 9 ft-size table with snooker-style cushions and tight rounded pockets.",
+        "r2": "Solids against stripes; the first legal pot after the break picks the groups.",
+        "r3": "A legal break pots a ball or sends four object balls to a cushion, otherwise it is a foul.",
+        "r4": "Hit your own group first; after the contact a ball must drop or reach a cushion.",
+        "r5": "Every foul gives the opponent a free ball in hand anywhere.",
+        "r6": "Clear your group, then the black. The black early or on a foul loses."
+      },
+      "snooker": {
+        "r1": "15 reds worth 1 and six colours: yellow 2, green 3, brown 4, blue 5, pink 6, black 7.",
+        "r2": "Pot a red, then a colour, then a red… The first colour you hit is the one you have nominated.",
+        "r3": "Colours come back to their spots while reds remain. Then the colours go in order, yellow to black.",
+        "r4": "Fouls give your opponent at least 4 points, or the value of the ball involved if higher (up to 7).",
+        "r5": "Fouls: missing the ball on, hitting another ball first, potting a ball that is not on, going in-off.",
+        "r6": "After an in-off the next player has ball in hand in the D.",
+        "r7": "The frame ends when the black goes down; level scores re-spot the black. The highest break is 147."
+      },
+      "snooker-6": {
+        "r1": "Six reds instead of fifteen: the same rules, a frame in a few minutes.",
+        "r2": "Red, colour, red… then the colours in order. Fouls are worth at least 4.",
+        "r3": "The highest possible break is 75."
+      },
+      "pyramid": {
+        "r1": "Fifteen numbered ivory balls and one coloured cue ball on a 12 ft table with pockets only just wider than a ball.",
+        "r2": "Free pyramid: every ball you pot scores a point and you keep shooting.",
+        "r3": "Potting the cue ball after it hits another ball also scores, and you play on from the kitchen.",
+        "r4": "Foul (no hit, nothing reaches a cushion or a pocket, or from the kitchen hitting a ball that is also in it): minus one point and the turn passes.",
+        "r5": "First to 8 points wins."
+      },
+      "3-cushion": {
+        "r1": "No pockets, three balls: your cue ball (white or yellow), your opponent's, and the red.",
+        "r2": "Your cue ball must touch both other balls and hit cushions at least three times before it touches the second one.",
+        "r3": "A point keeps you at the table; a miss passes the turn.",
+        "r4": "First to 10 points wins."
+      }
+    },
+    "failedFoul": "The last ball went down on a foul. Rack again.",
+    "drawn": "A draw."
   }
 }

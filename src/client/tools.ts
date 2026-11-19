@@ -1330,4 +1330,16 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     await m.mountPressurePoints(host);
     return m.unmountPressurePoints;
   },
+  billiards: async (host, ctx) => {
+    const m = await import("./billiards/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountBilliards(host, "billiards");
+    return m.unmountBilliards;
+  },
+  snooker: async (host, ctx) => {
+    const m = await import("./billiards/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountBilliards(host, "snooker");
+    return m.unmountBilliards;
+  },
 };

@@ -336,6 +336,8 @@ const TITLE: Record<ToolId, string> = {
   "pool-game": "meta.titlePoolGame",
   "air-hockey": "meta.titleAirHockey",
   "darts": "meta.titleDarts",
+  billiards: "meta.titleBilliards",
+  snooker: "meta.titleSnooker",
 };
 
 const CONVERT_JOB_TITLE: Record<ConvertJobId, string> = {
@@ -586,6 +588,8 @@ const DESC: Record<ToolId, string> = {
   "pool-game": "meta.descPoolGame",
   "air-hockey": "meta.descAirHockey",
   "darts": "meta.descDarts",
+  billiards: "meta.descBilliards",
+  snooker: "meta.descSnooker",
 };
 
 const LEARN_TITLE: Record<TutorialId, string> = {

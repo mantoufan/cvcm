@@ -2049,3 +2049,46 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .ppm-cautions ul { padding-left: 1.2rem; }
 .ppm-guide dt { font-weight: 600; margin-top: 0.5rem; }
 .ppm-guide dd { margin: 0.1rem 0 0; color: var(--ink-soft); }
+
+
+
+/* Billiards and snooker (src/client/billiards/) */
+.bl-root { aspect-ratio: 16 / 9; background: #2a1c22; }
+.bl-root .g3d-stage { cursor: crosshair; }
+.bl-bar, .bl-bar2, .bl-practice { align-items: flex-end; }
+.bl-bar .field, .bl-practice .field { margin: 0; }
+.bl-practice[hidden], .bl-bar [hidden] { display: none; }
+.bl-score { margin: 0.25rem 0 0.5rem; min-height: 1.5em; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.bl-hud { justify-content: space-between; color: #fff; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.8); }
+.bl-hud-p { padding: 0.15rem 0.5rem; border-radius: 6px; background: rgba(0, 0, 0, 0.35); }
+.bl-hud-p:empty { display: none; }
+.bl-hud-p.is-turn { background: var(--pink-deep); }
+.bl-hud-mid { padding: 0.15rem 0.5rem; }
+.bl-controls { justify-content: space-between; gap: 0.75rem 1rem; }
+.bl-spin-box { display: flex; align-items: center; gap: 0.6rem; }
+.bl-spin { position: relative; width: 64px; height: 64px; flex: none; border-radius: 50%; background: #f6f2ea; border: 1px solid var(--line); cursor: crosshair; touch-action: none; }
+.bl-spin:focus-visible { outline: 2px solid var(--pink-deep); outline-offset: 2px; }
+.bl-spin::before, .bl-spin::after { content: ""; position: absolute; background: rgba(0, 0, 0, 0.12); pointer-events: none; }
+.bl-spin::before { left: 50%; top: 10%; bottom: 10%; width: 1px; }
+.bl-spin::after { top: 50%; left: 10%; right: 10%; height: 1px; }
+.bl-spin-dot { position: absolute; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--pink-deep); border: 2px solid #fff; pointer-events: none; }
+.bl-spin-text { display: grid; gap: 0.15rem; font-size: 0.9rem; }
+.bl-spin-val { min-width: 7.5rem; font-weight: 600; }
+.bl-centre { min-height: 32px; padding: 0.1rem 0.6rem; font-size: 0.85rem; justify-self: start; }
+.bl-label { color: var(--ink-soft); font-size: 0.85rem; }
+.bl-power { display: grid; grid-template-columns: auto minmax(8rem, 14rem) 3rem; align-items: center; gap: 0.5rem; }
+.bl-power input { width: 100%; }
+.bl-power-val { font-variant-numeric: tabular-nums; text-align: right; }
+.g3d-pad.bl-pad { position: static; pointer-events: auto; gap: 0.4rem; justify-content: center; }
+.bl-pad .g3d-key { min-width: 48px; min-height: 48px; background: var(--white); }
+.bl-shoot { min-width: 7rem; min-height: 48px; font-size: 1.05rem; }
+.bl-status { min-height: 1.6em; margin: 0.4rem 0 0; font-weight: 600; color: var(--pink-deep); }
+.bl-drill-tip:empty { display: none; }
+.bl-rules { margin: 0.75rem 0; }
+.bl-rules summary { cursor: pointer; font-weight: 600; }
+.bl-rules-list { margin: 0.5rem 0 0; padding-left: 1.3rem; line-height: 1.55; }
+@media (max-width: 640px) {
+  .bl-root { aspect-ratio: 4 / 5; }
+  .bl-controls { justify-content: center; }
+  .bl-power { grid-template-columns: auto 1fr 3rem; width: 100%; }
+}

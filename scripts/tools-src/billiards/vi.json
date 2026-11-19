@@ -1,0 +1,285 @@
+{
+  "meta": {
+    "titleBilliards": "Game bida — chơi bida 3D miễn phí: bida lỗ 8 bi, 9 bi, snooker, 3 băng, có luật — cv.cm",
+    "descBilliards": "Chơi bida 3D miễn phí: bida 8 bi, 9 bi, 10 bi, bida kiểu Trung Quốc, bida Nga, bida 3 băng và snooker với máy, bạn bè hoặc tập một mình, có xoáy bi, bài tập luyện, luật từng game và đường ngắm tắt được."
+  },
+  "tools": {
+    "billiards": {
+      "name": "Bida",
+      "blurb": "Bida lỗ 3D, bida Trung Quốc, bida Nga và 3 băng, có luật và bài tập."
+    }
+  },
+  "faq": {
+    "billiards": {
+      "q1": "Chơi bida ở đây như thế nào?",
+      "a1": "Chọn một game rồi bấm Chơi. Kéo trên bàn để ngắm: ở góc nhìn từ trên xuống, cơ chỉ về chỗ bạn chạm; ở góc nhìn 3D sau bi, bạn kéo ngang để xoay. Chỉnh lực bằng thanh trượt, chạm vào hình bi cái để thêm xoáy, rồi bấm Đánh. Trên bàn phím, ← và → để xoay (giữ Shift để xoay nhẹ), ↑ và ↓ chỉnh lực, Space để đánh và C đổi góc camera. Khi có bi cái trên tay, kéo bi cái tới chỗ bạn muốn.",
+      "q2": "Luật bida 8 bi như thế nào?",
+      "a2": "Một người đánh nhóm bi trơn (1–7), người kia đánh nhóm bi sọc (9–15); sau cú phá bi, bàn còn mở cho đến khi có người đánh vào lỗ hợp lệ một bi, và bi đó quyết định nhóm. Bạn phải chạm bi của mình trước, và sau khi chạm phải có bi vào lỗ hoặc có bi chạm băng. Hết nhóm của mình thì đánh bi 8 để thắng. Đánh bi 8 vào lỗ sớm, hoặc khi đang phạm lỗi, là thua. Lỗi cho đối thủ bi cái trên tay, đặt ở bất cứ đâu trên bàn.",
+      "q3": "Luật bida 9 bi và 10 bi như thế nào?",
+      "a3": "Cả hai đều đánh theo thứ tự số: bi cái phải chạm bi số nhỏ nhất trên bàn trước, và bi nào vào lỗ sau đó thì bạn được đánh tiếp. Ở bida 9 bi, đánh bi 9 vào lỗ hợp lệ là thắng ở bất kỳ lúc nào, kể cả khi phá bi hay đánh liên hoàn. Ở bida 10 bi, ở đây bi 10 phải vào lỗ sau cùng, nên bi 10 vào sớm sẽ được đặt lại. Lỗi (không chạm bi nhỏ nhất, không có bi chạm băng sau khi chạm, hoặc bi cái vào lỗ) cho đối thủ bi cái trên tay, đặt ở bất cứ đâu.",
+      "q4": "Bida 8 bi kiểu Trung Quốc là gì?",
+      "a4": "Bida 8 bi kiểu Trung Quốc (中式台球, còn gọi là heiba) dùng bộ bi và luật của bida 8 bi trên bàn cỡ bàn pool 9 ft, nhưng băng kiểu snooker và lỗ tròn, hẹp hơn nhiều, nên phải đánh thật chuẩn mới vào. Cú phá bi hợp lệ cần có bi vào lỗ hoặc bốn bi mục tiêu chạm băng, và mỗi lỗi đều cho đối thủ bi cái trên tay, đặt ở bất cứ đâu.",
+      "q5": "Bida Nga (kim tự tháp) là gì?",
+      "a5": "Bida Nga (русский бильярд) chơi trên bàn 12 ft với mười lăm bi ngà lớn 68 mm và một bi cái có màu, lỗ chỉ rộng hơn bi vài milimét. Trang này chơi kim tự tháp tự do: mỗi bi vào lỗ được một điểm, đánh bi cái vào lỗ sau khi đã chạm bi khác cũng được điểm và được bi cái trên tay từ khu đầu bàn, mỗi lỗi bị trừ một điểm, ai đạt 8 điểm trước thì thắng.",
+      "q6": "Bida 3 băng chơi như thế nào?",
+      "a6": "Bida 3 băng là game carom trên bàn không có lỗ, với ba bi: bi cái của bạn (trắng hoặc vàng), bi cái của đối thủ và bi đỏ. Bạn được một điểm khi bi cái chạm cả hai bi còn lại và chạm băng ít nhất ba lần trước khi chạm bi thứ hai. Ghi điểm thì được đánh tiếp; hụt thì đến lượt đối thủ. Ở đây ai đạt 10 điểm trước thì thắng.",
+      "q7": "Có tắt được đường ngắm không?",
+      "a7": "Có. Hỗ trợ ngắm có ba mức: dự đoán đầy đủ vẽ đường đi của mọi bi bị cú đánh làm chuyển động, tính bằng cùng một cơ chế vật lý của game; đường ngắm chỉ hiện đường cơ, bi ảo và hướng đi của bi mục tiêu và bi cái sau khi chạm; tắt thì chỉ còn cây cơ, như trên bàn thật. Hãy giảm dần khi ngắm đã chuẩn hơn.",
+      "q8": "Xoáy, đánh kéo và đánh đẩy hoạt động ra sao?",
+      "a8": "Chạm vào hình bi cái ở chỗ đầu cơ sẽ đánh trúng. Dưới tâm là đánh kéo (draw): bi cái lùi lại sau khi va chạm. Trên tâm là đánh đẩy (follow): bi cái chạy tiếp theo sau bi mục tiêu. Đánh đúng tâm vào chính diện thì bi cái dừng lại tại chỗ. Xoáy trái và phải làm đổi góc nảy khỏi băng. Bi lúc đầu trượt rồi bám vào nỉ khi lăn, nên cùng một xoáy sẽ cho kết quả khác nhau ở những khoảng cách khác nhau.",
+      "q9": "Những luật nào được giản lược ở đây?",
+      "a9": "Không phải gọi lỗ, nên bi nào vào lỗ hợp lệ cũng được tính và bi 10 trong bida 10 bi phải vào sau cùng. Không có push-out và không có luật ba lỗi trong bida 9 bi, và không có lựa chọn xếp lại bi sau khi bi 8 vào lỗ lúc phá bi (bi 8 được đặt lại). Snooker không có luật bỏ lỡ hay bi tự do. Mọi thứ còn lại theo luật thông dụng của WPA, bida 8 bi kiểu Trung Quốc, bida Nga và UMB. Khi có bi cái trên tay sau vạch đầu bàn mà mọi bi hợp lệ cũng ở sau vạch, bạn được đánh thẳng vào một bi (WPA sẽ đặt bi gần nhất lên điểm).",
+      "q10": "Chơi trên điện thoại được không?",
+      "a10": "Được. Kéo trên bàn để ngắm, dùng nút ⟲ ⟳ để xoay nhiều và ‹ › để xoay nhẹ, rồi chỉnh thanh lực và bấm Đánh. Góc nhìn từ trên xuống hiển thị toàn bộ bàn trên màn hình hẹp, còn toàn màn hình cho nhiều chỗ nhất. Cài đặt được lưu ngay trong trình duyệt này và không có gì được gửi đi đâu cả."
+    }
+  },
+  "guides": {
+    "billiards": {
+      "lead": "Chơi bida chỉ với ba bước.",
+      "s1t": "Chọn game",
+      "s1b": "Chọn bida 8 bi, 9 bi, 10 bi, bida kiểu Trung Quốc, snooker, bida Nga hoặc bida 3 băng, và chơi với máy, bạn bè hoặc tập một mình. Bấm Chơi.",
+      "s2t": "Ngắm và chỉnh cú đánh",
+      "s2b": "Kéo trên bàn để ngắm, chỉnh lực, và chạm vào hình bi cái để đánh kéo, đánh đẩy hoặc xoáy bên. Giảm hỗ trợ ngắm xuống đầy đủ, đường ngắm hoặc tắt.",
+      "s3t": "Đánh và theo luật",
+      "s3b": "Bấm Đánh hoặc Space. Trọng tài báo lỗi, bi cái trên tay và tỷ số; mở phần luật dưới bàn của game bạn đã chọn."
+    }
+  },
+  "ui": {
+    "billiards": {
+      "title": "Bida",
+      "titleSnooker": "Snooker",
+      "privacyNote": "Bida 3D với tám game, bài tập luyện và đường ngắm tắt được. Chạy ngay trong trình duyệt.",
+      "privacyNoteSnooker": "Snooker 3D đầy đủ với tính điểm và lỗi thật, bài tập luyện và đường ngắm tắt được. Chạy ngay trong trình duyệt.",
+      "stage": "Bàn bida",
+      "intro": "Tám game trên một bàn: ngắm, thêm xoáy, chọn lực và đánh.",
+      "introSnooker": "Một ván snooker đầy đủ: đánh một bi đỏ, rồi một bi màu, và xây dựng break của bạn.",
+      "game": "Trò chơi",
+      "mode": "Đối thủ",
+      "skill": "Máy",
+      "aimHelp": "Hỗ trợ ngắm",
+      "drill": "Bài tập",
+      "noDrill": "Tập tự do",
+      "newGame": "Xếp bi mới",
+      "topView": "Nhìn từ trên",
+      "sound": "Âm thanh",
+      "power": "Lực",
+      "spin": "Xoáy",
+      "spinReset": "Giữa",
+      "spinCentre": "Đánh giữa bi",
+      "spinTop": "Đánh đẩy",
+      "spinDraw": "Đánh kéo",
+      "spinLeft": "Xoáy trái",
+      "spinRight": "Xoáy phải",
+      "shoot": "Đánh",
+      "turnLeft": "Xoay cơ sang trái",
+      "turnRight": "Xoay cơ sang phải",
+      "nudgeLeft": "Nhích cơ sang trái",
+      "nudgeRight": "Nhích cơ sang phải",
+      "undo": "Hoàn tác cú đánh",
+      "undone": "Đã hoàn tác cú đánh.",
+      "moveBalls": "Di chuyển bi",
+      "editOn": "Kéo bất kỳ bi nào để bày thế bi, rồi bấm Di chuyển bi lần nữa hoặc đánh.",
+      "you": "Bạn",
+      "computer": "Máy",
+      "player": "Người chơi {n}",
+      "turnOf": "Lượt của {name}",
+      "wins": "{name} thắng!",
+      "again": "Chơi lại",
+      "cleared": "Đã dọn sạch bàn!",
+      "break": "Phá bi",
+      "openTable": "Bàn mở",
+      "onEight": "Đánh bi 8",
+      "onRed": "Đánh bi đỏ",
+      "onColour": "Đánh bi màu",
+      "onBall": "Đánh bi {ball}",
+      "raceTo": "Ai đạt {n} trước",
+      "breakRun": "Break {n} · cao nhất {best}",
+      "stats": "{shots} cú đánh, {pots} bi vào lỗ",
+      "drillScore": "Bài tập {hits}/{tries}",
+      "drillStart": "Đánh bi vào lỗ theo yêu cầu bài tập. Thế bi được bày lại sau mỗi lần thử.",
+      "drillHit": "Xong! Thế bi đã được bày lại.",
+      "drillMiss": "Lần này chưa được. Thế bi đã được bày lại.",
+      "rulesOf": "Luật {game}",
+      "hint": "Kéo trên bàn để ngắm (nhìn từ trên: cơ chỉ về chỗ bạn chạm; 3D: kéo ngang). ← → xoay, Shift để xoay nhẹ, ↑ ↓ chỉnh lực, Space để đánh, C đổi góc nhìn. Khi có bi cái trên tay, kéo bi cái.",
+      "games": {
+        "8-ball": "Bida 8 bi",
+        "9-ball": "Bida 9 bi",
+        "10-ball": "Bida 10 bi",
+        "chinese-8-ball": "Bida 8 bi kiểu Trung Quốc",
+        "snooker": "Snooker (15 bi đỏ)",
+        "snooker-6": "Snooker (6 bi đỏ)",
+        "pyramid": "Bida Nga (kim tự tháp)",
+        "3-cushion": "Bida 3 băng"
+      },
+      "modes": {
+        "cpu": "Đấu với máy",
+        "two": "2 người chơi",
+        "solo": "Tập một mình"
+      },
+      "skills": {
+        "easy": "Dễ",
+        "medium": "Trung bình",
+        "hard": "Khó"
+      },
+      "aims": {
+        "full": "Dự đoán đầy đủ",
+        "line": "Đường ngắm",
+        "off": "Tắt"
+      },
+      "group": {
+        "solids": "Bi trơn · còn {n}",
+        "stripes": "Bi sọc · còn {n}"
+      },
+      "groupShort": {
+        "solids": "bi trơn",
+        "stripes": "bi sọc"
+      },
+      "inHand": {
+        "anywhere": "Bi cái trên tay: kéo bi cái tới bất cứ đâu.",
+        "kitchen": "Bi cái trên tay sau vạch đầu bàn (vùng tô bóng).",
+        "d": "Bi cái trên tay trong vòng D."
+      },
+      "ball": {
+        "red": "đỏ",
+        "v2": "vàng",
+        "v3": "xanh lá",
+        "v4": "nâu",
+        "v5": "xanh dương",
+        "v6": "hồng",
+        "v7": "đen",
+        "carom0": "trắng",
+        "carom1": "vàng",
+        "carom2": "đỏ"
+      },
+      "msg": {
+        "potted": "Đã vào lỗ bi {n}.",
+        "noHit": "Lỗi: không chạm bi nào.",
+        "wrongBall": "Lỗi: chạm sai bi trước.",
+        "scratch": "Lỗi: bi cái vào lỗ.",
+        "inOff": "Lỗi: bi cái vào lỗ (in-off).",
+        "noRail": "Lỗi: không có bi nào chạm băng.",
+        "badBreak": "Lỗi: cú phá bi hợp lệ cần có bi vào lỗ hoặc bốn bi chạm băng.",
+        "wrongPot": "Lỗi: bi không được phép đánh đã vào lỗ.",
+        "foulPoints": "Lỗi, {n} điểm.",
+        "eightSpotted": "Bi 8 vào lỗ lúc phá bi và được đặt lại.",
+        "eightWin": "Bi 8 vào lỗ!",
+        "eightLoss": "Bi 8 vào lỗ quá sớm hoặc khi đang phạm lỗi.",
+        "groupSolids": "Người đánh nhận bi trơn.",
+        "groupStripes": "Người đánh nhận bi sọc.",
+        "moneyWin": "Bi {n} vào lỗ!",
+        "moneySpotted": "Bi {n} được đặt lại.",
+        "reSpotBlack": "Hòa điểm: bi đen được đặt lại để đánh phân thắng bại.",
+        "frameOver": "Hết ván.",
+        "minusOne": "Lỗi: trừ một điểm.",
+        "cueScores": "Bi cái vào lỗ sau khi chạm bi khác: được một điểm và bi cái trên tay.",
+        "raceOver": "Hết ván đấu.",
+        "caromPoint": "Được điểm!",
+        "caromMiss": "Không được điểm.",
+        "kitchenBall": "Lỗi: đặt bi từ sau vạch đầu bàn thì bi chạm đầu tiên phải nằm bên kia vạch."
+      },
+      "drills": {
+        "straight": {
+          "name": "Đánh thẳng",
+          "tip": "Đánh bi 1 vào lỗ góc phía trên. Đánh đúng tâm bi cái và giữ cơ nằm ngang."
+        },
+        "cut30": {
+          "name": "Cắt nửa bi (30°)",
+          "tip": "Nhắm bi cái vào bi ảo, không phải bi mục tiêu: ở góc 30°, tâm bi cái hướng vào mép bi mục tiêu."
+        },
+        "cut55": {
+          "name": "Cắt mỏng (55°)",
+          "tip": "Cú cắt mỏng sang phía kia: chỉ chạm một phần nhỏ của bi mục tiêu. Nhắm vào bi ảo và giữ đủ lực."
+        },
+        "stop": {
+          "name": "Cú dừng bi",
+          "tip": "Đánh bi 1 vào lỗ và để bi cái dừng trong vòng tròn hồng: đánh mạnh, hơi dưới tâm để bi cái dừng hẳn."
+        },
+        "draw": {
+          "name": "Cú đánh kéo",
+          "tip": "Đánh bi 1 vào lỗ và kéo bi cái lùi vào vòng tròn: đánh thấp dưới tâm với đủ lực."
+        },
+        "follow": {
+          "name": "Cú đánh đẩy",
+          "tip": "Đánh bi 1 vào lỗ và để bi cái lăn tiếp vào vòng tròn: đánh trên tâm với lực vừa."
+        },
+        "rail": {
+          "name": "Bi sát băng",
+          "tip": "Bi 1 nằm sát băng. Đánh trúng cả bi và băng cùng lúc, hoặc thêm một chút xoáy chạy sẽ giúp."
+        },
+        "long": {
+          "name": "Cú dài (snooker)",
+          "tip": "Cú bi đỏ dài kinh điển từ vòng D vào lỗ góc phía trên. Giữ nhát cơ thẳng và mượt."
+        },
+        "blue": {
+          "name": "Bi xanh dương vào lỗ giữa",
+          "tip": "Đánh bi xanh dương từ điểm đặt của nó vào lỗ giữa, với lực nhẹ."
+        },
+        "clearance": {
+          "name": "Dọn bi màu",
+          "tip": "Đánh các bi màu theo thứ tự (vàng, xanh lá, nâu, xanh dương, hồng, đen) với bi cái trên tay trong vòng D. Dọn hoàn hảo được 27 điểm."
+        }
+      },
+      "rules": {
+        "8-ball": {
+          "r1": "Bi trơn 1–7 đấu với bi sọc 9–15. Bàn mở sau cú phá bi; bi hợp lệ đầu tiên vào lỗ sẽ chọn nhóm.",
+          "r2": "Chạm bi của mình trước. Sau khi chạm phải có bi vào lỗ hoặc có bi chạm băng.",
+          "r3": "Cú phá bi hợp lệ có bi vào lỗ hoặc đưa ít nhất bốn bi mục tiêu chạm băng. Bi 8 vào lỗ lúc phá bi được đặt lại.",
+          "r4": "Lỗi (chạm sai bi trước, không bi nào chạm băng, không chạm bi, bi cái vào lỗ, hoặc từ sau vạch đầu bàn đánh vào bi cũng nằm sau vạch) cho đối thủ bi cái trên tay ở bất kỳ đâu; bi cái vào lỗ lúc phá bi thì đặt sau vạch đầu bàn.",
+          "r5": "Đánh vào lỗ một bi của nhóm mình thì được đánh tiếp.",
+          "r6": "Hết nhóm của mình, rồi đánh bi 8 để thắng. Bi 8 vào sớm hoặc khi phạm lỗi là thua."
+        },
+        "9-ball": {
+          "r1": "Bi 1–9. Bi cái phải chạm bi số nhỏ nhất trước.",
+          "r2": "Bi nào vào lỗ sau cú chạm hợp lệ thì bạn được đánh tiếp, kể cả đánh liên hoàn.",
+          "r3": "Đánh bi 9 vào lỗ hợp lệ ở bất kỳ lúc nào, kể cả lúc phá bi, là thắng.",
+          "r4": "Cú phá bi hợp lệ có bi vào lỗ hoặc đưa bốn bi mục tiêu chạm băng.",
+          "r5": "Lỗi cho bi cái trên tay ở bất cứ đâu; bi 9 vào lỗ khi phạm lỗi được đặt lại."
+        },
+        "10-ball": {
+          "r1": "Bi 1–10, xếp hình tam giác với bi 1 ở đầu và bi 10 ở giữa.",
+          "r2": "Luôn chạm bi số nhỏ nhất trước.",
+          "r3": "Ở đây không phải gọi lỗ: bi nào vào lỗ hợp lệ cũng được đánh tiếp.",
+          "r4": "Bi 10 chỉ thắng khi là bi cuối cùng; bi 10 vào sớm (hoặc lúc phá bi) được đặt lại.",
+          "r5": "Lỗi cho bi cái trên tay ở bất cứ đâu."
+        },
+        "chinese-8-ball": {
+          "r1": "Bộ bi 8 trên bàn cỡ 9 ft với băng kiểu snooker và lỗ tròn, hẹp.",
+          "r2": "Bi trơn đấu với bi sọc; bi hợp lệ đầu tiên vào lỗ sau cú phá bi sẽ chọn nhóm.",
+          "r3": "Cú phá bi hợp lệ có bi vào lỗ hoặc đưa bốn bi mục tiêu chạm băng, nếu không là lỗi.",
+          "r4": "Chạm nhóm của mình trước; sau khi chạm phải có bi vào lỗ hoặc chạm băng.",
+          "r5": "Mỗi lỗi cho đối thủ bi cái trên tay tự do ở bất cứ đâu.",
+          "r6": "Hết nhóm của mình, rồi đến bi đen. Bi đen vào sớm hoặc khi phạm lỗi là thua."
+        },
+        "snooker": {
+          "r1": "15 bi đỏ giá trị 1 và sáu bi màu: vàng 2, xanh lá 3, nâu 4, xanh dương 5, hồng 6, đen 7.",
+          "r2": "Đánh một bi đỏ, rồi một bi màu, rồi lại bi đỏ… Bi màu đầu tiên bạn chạm là bi bạn đã chọn.",
+          "r3": "Bi màu được đặt lại vị trí cũ khi còn bi đỏ. Sau đó các bi màu được đánh theo thứ tự, từ vàng đến đen.",
+          "r4": "Lỗi cho đối thủ ít nhất 4 điểm, hoặc giá trị của bi liên quan nếu cao hơn (tối đa 7).",
+          "r5": "Lỗi: không chạm bi cần đánh, chạm bi khác trước, đánh vào lỗ bi không được phép, bi cái vào lỗ (in-off).",
+          "r6": "Sau khi bi cái vào lỗ, người chơi tiếp theo có bi cái trên tay trong vòng D.",
+          "r7": "Ván kết thúc khi bi đen vào lỗ; hòa điểm thì bi đen được đặt lại. Break cao nhất là 147."
+        },
+        "snooker-6": {
+          "r1": "Sáu bi đỏ thay vì mười lăm: cùng luật, một ván chỉ vài phút.",
+          "r2": "Đỏ, màu, đỏ… rồi các bi màu theo thứ tự. Lỗi có giá trị ít nhất 4.",
+          "r3": "Break cao nhất có thể là 75."
+        },
+        "pyramid": {
+          "r1": "Mười lăm bi ngà có số và một bi cái có màu trên bàn 12 ft với lỗ chỉ rộng hơn bi một chút.",
+          "r2": "Kim tự tháp tự do: mỗi bi vào lỗ được một điểm và bạn được đánh tiếp.",
+          "r3": "Đánh bi cái vào lỗ sau khi chạm bi khác cũng được điểm, và bạn đánh tiếp từ khu đầu bàn.",
+          "r4": "Lỗi (không chạm bi, không bi nào tới băng hay lỗ, hoặc từ khu đầu bàn đánh vào bi cũng nằm trong khu đó): trừ một điểm và mất lượt.",
+          "r5": "Ai đạt 8 điểm trước thì thắng."
+        },
+        "3-cushion": {
+          "r1": "Không có lỗ, ba bi: bi cái của bạn (trắng hoặc vàng), bi cái của đối thủ và bi đỏ.",
+          "r2": "Bi cái của bạn phải chạm cả hai bi còn lại và chạm băng ít nhất ba lần trước khi chạm bi thứ hai.",
+          "r3": "Được điểm thì đánh tiếp; hụt thì mất lượt.",
+          "r4": "Ai đạt 10 điểm trước thì thắng."
+        }
+      },
+      "failedFoul": "Bi cuối vào lỗ kèm lỗi. Xếp bi lại nhé.",
+      "drawn": "Hòa."
+    }
+  }
+}
