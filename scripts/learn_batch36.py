@@ -53,7 +53,7 @@ def inject(src: Path) -> None:
         for lesson_id in IDS:
             data["learn"][lesson_id] = {k: copy[loc]["lessons"][lesson_id]["copy"][k] for k in COPY_KEYS}
             data["faq"]["learn"][lesson_id] = {k: copy[loc]["lessons"][lesson_id]["faq"][k] for k in FAQ_KEYS}
-        data["learn"]["groups"]["academic"] = copy[loc]["group"]
+        data["learn"].setdefault("groups", {})["academic"] = copy[loc]["group"]
         for key, value in copy[loc]["meta"].items():
             data["meta"][key] = value
         path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -61,4 +61,6 @@ def inject(src: Path) -> None:
 
 
 if __name__ == "__main__":
+    if "--src" in sys.argv and sys.argv.index("--src") + 1 >= len(sys.argv):
+        sys.exit("usage: learn_batch36.py [--src DIR]")
     inject(Path(sys.argv[sys.argv.index("--src") + 1]) if "--src" in sys.argv else ROOT / "scripts/learn-src/batch36")

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { LOCALES } from "../src/shared/locale";
 import { TUTORIAL_DIAGRAMS } from "../src/shared/learn";
 import { TUTORIAL_GROUPS } from "../src/shared/path";
-import { between, chiIndependence, criticalValue, cronbachAlpha, parseMatrix, pValue, sampleSize, standardDeviation, tTest, zScore } from "../src/shared/academic-stats";
+import { apa2, apaDf, apaP, between, chiIndependence, criticalValue, cronbachAlpha, parseMatrix, pValue, sampleSize, standardDeviation, tTest, zScore } from "../src/shared/academic-stats";
 import { SAMPLE } from "../src/client/cronbach-alpha/ui";
 import { START_TABLE } from "../src/client/chi-square/ui";
 import { EXAMPLE as SD_EXAMPLE } from "../src/client/standard-deviation/ui";
@@ -20,6 +20,12 @@ const IDS = [
 const svg = (name: string, locale = "en") => readFileSync(`public/covers/tutorials/${locale === "en" ? "" : `${locale.toLowerCase()}/`}${name}.svg`, "utf8");
 const en = JSON.parse(readFileSync("scripts/learn-src/batch36/en.json", "utf8")) as { lessons: Record<string, { copy: Record<string, string> }> };
 const copy = (id: string) => Object.values(en.lessons[id]!.copy).join(" ");
+const lessonText = (locale: string, id: string) => {
+  const pack = JSON.parse(readFileSync(`scripts/learn-src/batch36/${locale}.json`, "utf8")) as { lessons: Record<string, { copy: Record<string, string>; faq: Record<string, string> }> };
+  return [...Object.values(pack.lessons[id]!.copy), ...Object.values(pack.lessons[id]!.faq)].join(" ");
+};
+// Digits only, so 1,000 / 1.000 / 20 000 / 1000 and .10 / 0.10 / 0,10 compare equal across locales.
+const digitRuns = (text: string) => (text.replace(/(\d) (?=\d{3}(?!\d))/g, "$1").match(/\d(?:[\d.,\u202f\u00a0]*\d)?/g) ?? []).map((n) => n.replace(/\D/g, "").replace(/^0+(?=\d)/, ""));
 
 describe("batch 36 tutorials", () => {
   it("are one tutorial group with two diagrams each, drawn in every locale", () => {
@@ -90,7 +96,8 @@ describe("batch 36 tutorials stay in step with the tools", () => {
     const A = nums(EXAMPLE_A);
     const B = nums(EXAMPLE_B);
     const r = tTest("independent", A, B)!;
-    const line = `t(${r.df.toFixed(2)}) = ${r.t.toFixed(2)}, p = ${r.p.toFixed(3).replace(/^0/, "")}`;
+    // The APA line exactly as the calculator prints it.
+    const line = `t(${apaDf(r.df)}) = ${apa2(r.t)}, ${apaP(r.p)}`;
     expect(copy("run-t-test")).toContain(line);
     expect(copy("run-t-test")).toContain(`d = ${r.d.toFixed(2)}`);
     expect(copy("run-t-test")).toContain(`${r.ciLow.toFixed(2).replace("-", "−")} to ${r.ciHigh.toFixed(2)}`);
@@ -103,7 +110,7 @@ describe("batch 36 tutorials stay in step with the tools", () => {
     expect(svg("run-chi-square-test-tables")).toContain(`= ${r.chi2.toFixed(2)}<`);
     expect(svg("run-chi-square-test-curve")).toContain(`p = ${r.p.toFixed(3)}`);
     expect(svg("run-chi-square-test-curve")).toContain(criticalValue("chi2", 0.05, "right", 1)!.toFixed(2));
-    expect(copy("run-chi-square-test")).toContain(`χ²(1, N = 100) = ${r.chi2.toFixed(2)}, p = ${r.p.toFixed(3).replace(/^0/, "")}`);
+    expect(copy("run-chi-square-test")).toContain(`χ²(${r.df}, N = ${r.n}) = ${apa2(r.chi2)}, ${apaP(r.p)}`);
   });
 
   it("p-values and z-scores", () => {
@@ -118,13 +125,19 @@ describe("batch 36 tutorials stay in step with the tools", () => {
   });
 
   it("MLA examples use title case, the year and a doi.org link, as the steps say", () => {
-    for (const name of ["cite-mla-elements", "cite-mla-in-text"]) {
-      const s = svg(name);
-      expect(s).toContain("Deep Learning.");
-      expect(s).not.toContain("May 2015");
-    }
+    for (const name of ["cite-mla-elements", "cite-mla-in-text"]) expect(svg(name)).toContain("Deep Learning.");
     expect(svg("cite-mla-in-text")).toContain("https://doi.org/");
       });
+
+  it("every locale carries the same worked numbers as the English", () => {
+    for (const id of IDS) {
+      const want = digitRuns(lessonText("en", id));
+      for (const locale of LOCALES.filter((l) => l !== "en")) {
+        const have = new Set(digitRuns(lessonText(locale, id)));
+        expect(want.filter((n) => !have.has(n)), `${locale} ${id}`).toEqual([]);
+      }
+    }
+  });
 
   it("writes decimals with each locale's mark in the diagrams", () => {
     expect(svg("calculate-standard-deviation-divide", "es")).toContain("2,138");

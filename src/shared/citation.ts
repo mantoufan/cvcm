@@ -166,18 +166,16 @@ const pageRange = (pages: string, dash: string) => pages.trim().replace(/\s*[-�
 const isRange = (pages: string) => /[-–—]/.test(pages);
 
 /**
- * MLA 9 inclusive numbers: past 99 the second page keeps only its last two digits, or more when the
- * hundreds change ("436-444" → "436-44", "395-401" stays, "1608-1702" → "1608-702"). Other ranges are kept.
+ * MLA 9 inclusive numbers: past 99, when only the last two digits change the second page keeps just those
+ * ("436-444" → "436-44", "1186-1189" → "1186-89"); any other range stays in full ("395-401", "1608-1702").
  */
 function mlaPages(pages: string): string {
   const r = pageRange(pages, "-");
   const m = /^(\d+)-(\d+)$/.exec(r);
   if (!m) return r;
   const [, a, b] = m;
-  if (a.length !== b.length || Number(b) <= 99 || Number(b) <= Number(a)) return r;
-  let keep = 2;
-  while (keep < b.length && a.slice(0, b.length - keep) !== b.slice(0, b.length - keep)) keep++;
-  return `${a}-${b.slice(b.length - keep)}`;
+  if (a.length !== b.length || Number(b) <= 99 || Number(b) <= Number(a) || a.slice(0, -2) !== b.slice(0, -2)) return r;
+  return `${a}-${b.slice(-2)}`;
 }
 
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
