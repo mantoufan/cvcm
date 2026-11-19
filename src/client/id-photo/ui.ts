@@ -178,7 +178,7 @@ function stagePane(): HTMLElement {
     onWheel: onWheel,
   }, canvas, guideTop, guideChin, h("div", { class: "idp-guide idp-mid", "aria-hidden": "true" }));
   zoomEl = h("input", {
-    type: "range", min: "-100", max: "200", step: "1", value: "0", "data-field": "zoom",
+    type: "range", min: "-100", max: "500", step: "1", value: "0", "data-field": "zoom",
     "aria-label": t(`${S}.zoom`),
     onInput: () => setZoom(Number(zoomEl!.value)),
   });
@@ -310,6 +310,7 @@ function syncSpec(): void {
   if (pxH) pxH.value = String(spec.px?.[1] ?? px.h);
   syncBg();
   syncSheet();
+  syncZoom();
   redraw();
 }
 
@@ -535,8 +536,14 @@ function onPointerMove(e: PointerEvent): void {
   drag.y = e.clientY;
   // Dragging the picture right moves the crop left over it.
   state.crop = moveCrop(state.crop, (-dx * state.crop.w) / box.width, (-dy * state.crop.h) / box.height, state.photo.width, state.photo.height);
-  redraw();
+  // Pointer events can outnumber frames; repaint the full-size photo once per frame.
+  if (!frameQueued) {
+    frameQueued = true;
+    requestAnimationFrame(() => { frameQueued = false; redraw(); });
+  }
 }
+
+let frameQueued = false;
 
 function onPointerUp(e: PointerEvent): void {
   if (drag?.id !== e.pointerId) return;
@@ -591,12 +598,25 @@ async function jpegBytes(c: HTMLCanvasElement, quality: number, dpi: number): Pr
   return setJpegDpi(new Uint8Array(await blob.arrayBuffer()), dpi);
 }
 
+/**
+ * In Replace mode the file must have the new background: wait for the cut-out (running the model if needed) rather
+ * than quietly saving the original background while Replace is shown as selected.
+ */
+async function cutReady(): Promise<boolean> {
+  if (state.bgMode !== "replace" || state.cut) return true;
+  if (!state.busy) await ensureMask();
+  while (alive && state.busy) await new Promise((r) => setTimeout(r, 150));
+  if (alive && !state.cut) status?.error(t("ai.errorRun"));
+  return alive && Boolean(state.cut);
+}
+
 async function downloadPhoto(): Promise<void> {
   const spec = state.spec!;
   if (!state.photo || !state.crop) {
     status?.error(t(`${S}.emptyDownload`));
     return;
   }
+  if (!(await cutReady())) return;
   const base = specPixels(spec);
   const w = readPx(pxW, spec.px?.[0] ?? base.w);
   const hgt = readPx(pxH, spec.px?.[1] ?? base.h);
@@ -638,6 +658,7 @@ async function downloadSheet(): Promise<void> {
     status?.error(t(`${S}.emptyDownload`));
     return;
   }
+  if (!(await cutReady())) return;
   const layout = sheetLayout(state.paper, spec);
   if (!layout.cells.length) return;
   const sheet = h("canvas", { width: mmToPx(layout.w), height: mmToPx(layout.h) });

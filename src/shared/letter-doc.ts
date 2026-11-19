@@ -51,7 +51,8 @@ export function letterText(doc: LetterDoc): string {
     // The indent is an ideographic space, as Chinese and Japanese letters are typed.
     out.push(line.indent ? `　${line.text}` : line.text);
   }
-  return out.join("\n").replace(/\n{3,}/g, "\n\n").trim() + "\n";
+  // Blank lines are kept as the preview shows them (a gap of 2 leaves room for a signature).
+  return out.join("\n").trim() + "\n";
 }
 
 function xml(text: string): string {
@@ -138,8 +139,13 @@ export function letterDocx(doc: LetterDoc, paper: Paper, now?: Date): Uint8Array
   ], now);
 }
 
-/** A file name from typed words: letters, digits and dashes in any script, never a path. */
-export function docFilename(stem: string, ext: string, fallback: string): string {
+/** A file name stem from typed words: letters, digits and dashes in any script, never a path. */
+export function docStem(stem: string, fallback: string): string {
   const clean = stem.normalize("NFC").replace(/[\\/:*?"<>|\u0000-\u001f]+/g, " ").replace(/\s+/g, "-").replace(/^-+|-+$/g, "").slice(0, 60);
-  return `${clean || fallback}.${ext}`;
+  return clean || fallback;
+}
+
+/** A file name from typed words (see docStem) with its extension. */
+export function docFilename(stem: string, ext: string, fallback: string): string {
+  return `${docStem(stem, fallback)}.${ext}`;
 }

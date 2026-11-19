@@ -169,8 +169,6 @@ function photoField(): HTMLElement {
     },
   });
   const idLink = h("a", { href: appHref(locale(), "id-photo") }, t(`${S}.photoIdLink`));
-  // A crop in progress moves into the rebuilt field instead of being dropped with the old one.
-  if (crop) queueMicrotask(() => { if (crop) wrap.append(crop.el); });
   wrap.append(...[
     h("span", null, t(`${S}.photo`)),
     r.basics.photo ? h("img", { class: "rs-photo-thumb", src: r.basics.photo, alt: "" }) : null,
@@ -286,7 +284,12 @@ function buildForm(): void {
     shows(FIELDS.motivation) ? h("fieldset", null, h("legend", null, L(r.format === "shokumu" ? "selfPr" : "motivation")), area("motivation", r.motivation, (v) => { r.motivation = v; }, 5)) : null,
     shows(FIELDS.wishes) ? h("fieldset", null, h("legend", null, L("wishes")), area("wishes", r.wishes, (v) => { r.wishes = v; }, 2)) : null,
     shows(FIELDS.extra) ? h("fieldset", null, h("legend", null, L("extra")), area("extra", r.extra, (v) => { r.extra = v; }, 3)) : null,
-  ].filter((x): x is HTMLFieldSetElement => x !== null));
+  ].filter((x): x is HTMLFieldSetElement => x !== null));  // A crop in progress moves into the rebuilt photo field; a format without a photo closes it (and frees the bitmap).
+  if (crop) {
+    const photoField = formEl.querySelector(".rs-photo-field");
+    if (photoField) photoField.append(crop.el);
+    else crop.close();
+  }
 }
 
 function docTitle(): string {

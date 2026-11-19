@@ -3,7 +3,7 @@ import { copyWithFlash } from "../copy";
 import { defaultPaper, paintLetter, printSheet, sheet } from "../doc-sheet";
 import { downloadBlob, h } from "../dom";
 import { locale, t } from "../i18n";
-import { docFilename, letterDocx, letterText, type LetterDoc, type Paper } from "../../shared/letter-doc";
+import { docStem, letterDocx, letterText, type LetterDoc, type Paper } from "../../shared/letter-doc";
 import {
   buildLetter,
   daysBetween,
@@ -47,19 +47,39 @@ function readSaved(loc: string): Saved | null {
   return saved && typeof saved === "object" && saved.locale === loc && saved.form && typeof saved.form === "object" ? saved : null;
 }
 
+/** A saved draft over the defaults, keeping only fields of the right type (old or hand-edited drafts). */
+function restoreForm(base: RlForm, saved: unknown): RlForm {
+  if (!saved || typeof saved !== "object") return base;
+  const out: Record<string, unknown> = { ...base };
+  for (const [k, v] of Object.entries(saved as Record<string, unknown>)) {
+    if (k in base && typeof v === typeof (base as Record<string, unknown>)[k]) out[k] = v;
+  }
+  if (out.era !== "wareki" && out.era !== "seireki") out.era = base.era;
+  return out as RlForm;
+}
+
+let pending: { loc: string; entry: Saved } | null = null;
+
+/** Writes the draft due now (the debounce, page hide, or leaving the page). */
+function flushSave(): void {
+  window.clearTimeout(saveTimer);
+  if (!pending) return;
+  const { loc, entry } = pending;
+  pending = null;
+  try {
+    localStorage.setItem(STORE, JSON.stringify({ ...readAll(), [loc]: entry }));
+  } catch {
+    /* private mode or full: the draft just isn't kept */
+  }
+}
+
 /** Keeps the draft (debounced). The snapshot is taken now, so a save still due after leaving the page holds it. */
 function save(): void {
   if (!form) return;
   const loc = locale();
-  const entry: Saved = { locale: loc, form: { ...form }, paper };
+  pending = { loc, entry: { locale: loc, form: { ...form }, paper } };
   window.clearTimeout(saveTimer);
-  saveTimer = window.setTimeout(() => {
-    try {
-      localStorage.setItem(STORE, JSON.stringify({ ...readAll(), [loc]: entry }));
-    } catch {
-      /* private mode or full: the draft just isn't kept */
-    }
-  }, 400);
+  saveTimer = window.setTimeout(flushSave, 400);
 }
 
 const TEXT_FIELDS = ["place", "name", "title", "department", "company", "recipientTitle", "recipient"] as const;
@@ -72,10 +92,12 @@ const LABEL: Record<RlField, string> = {
 
 export function mountResignationLetter(host: HTMLElement): void {
   mounted = true;
+  // Closing the tab within the save delay would lose the last edit.
+  window.addEventListener("pagehide", flushSave);
   const loc = locale();
   tpl = RL_TEMPLATES[loc];
   const saved = readSaved(loc);
-  form = { ...defaultForm(tpl), ...(saved?.form ?? {}) };
+  form = restoreForm(defaultForm(tpl), saved?.form);
   if (!tpl.kinds.some(([k]) => k === form!.kind)) form.kind = tpl.kinds[0][0];
   if (tpl.scenarios.length && !tpl.scenarios.some(([k]) => k === form!.scenario)) form.scenario = tpl.scenarios[0][0];
   paper = saved?.paper === "letter" || saved?.paper === "a4" ? saved.paper : defaultPaper(loc);
@@ -207,7 +229,7 @@ export function mountResignationLetter(host: HTMLElement): void {
   paint();
 
   function stem(): string {
-    return docFilename(template.fileStem(f), "x", "resignation-letter").slice(0, -2);
+    return docStem(template.fileStem(f), "resignation-letter");
   }
 
   function downloadDocx(): void {
@@ -260,7 +282,8 @@ function todayIso(): string {
 export function unmountResignationLetter(): void {
   mounted = false;
   window.clearTimeout(paintTimer);
-  // A pending draft save still runs: it holds what was typed just before leaving.
+  window.removeEventListener("pagehide", flushSave);
+  flushSave();
   form = null;
   tpl = null;
   page = null;

@@ -90,7 +90,8 @@ export function dateParts(iso: string): { y: number; m: number; d: number } | nu
   const y = Number(m[1]);
   const mo = Number(m[2]);
   const d = Number(m[3]);
-  if (mo < 1 || mo > 12 || d < 1 || d > 31) return null;
+  // Real calendar days only: 2026-02-31 from a hand-edited draft is not 3 March.
+  if (mo < 1 || mo > 12 || d < 1 || d > new Date(Date.UTC(y, mo, 0)).getUTCDate()) return null;
   return { y, m: mo, d };
 }
 

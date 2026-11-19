@@ -154,6 +154,8 @@ function fieldset(legend: string, fields: CoverField[], extra: HTMLElement[] = [
 }
 
 export function mountCoverLetter(host: HTMLElement): void {
+  // Closing the tab within the save delay would lose the last edit.
+  window.addEventListener("pagehide", saveDraft);
   tpl = COVER_TEMPLATES[locale()];
   paper = defaultPaper(locale());
   inputs = new Map();
@@ -260,6 +262,7 @@ export function mountCoverLetter(host: HTMLElement): void {
 }
 
 export function unmountCoverLetter(): void {
+  window.removeEventListener("pagehide", saveDraft);
   window.clearTimeout(paintTimer);
   window.clearTimeout(saveTimer);
   saveDraft();
