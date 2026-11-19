@@ -32,16 +32,16 @@ export const MASSAGE_GROUPS: readonly { id: MassageGroupId; articles: readonly M
   { id: "tools", articles: ["how-to-use-a-massage-gun", "foam-rolling", "tennis-ball-massage"] },
 ];
 
-/** Tools a massage article puts to work (first is its call to action): timers for holds and routines. */
+/** Tools a massage article puts to work (first is its call to action): the pressure points map and timers for holds and routines. */
 export const MASSAGE_ARTICLE_TOOLS: Partial<Record<MassageId, readonly ToolId[]>> = {
   "how-to-massage": ["countdown", "stopwatch"],
-  "acupressure-points": ["countdown"],
-  "pressure-points-for-headache": ["countdown"],
-  "pressure-points-for-eye-strain": ["pomodoro", "countdown"],
-  "foot-reflexology-chart": ["countdown"],
+  "acupressure-points": ["pressure-points-map", "countdown"],
+  "pressure-points-for-headache": ["pressure-points-map", "countdown"],
+  "pressure-points-for-eye-strain": ["pressure-points-map", "pomodoro"],
+  "foot-reflexology-chart": ["pressure-points-map", "countdown"],
   "foot-massage": ["countdown"],
-  "hand-massage": ["pomodoro", "countdown"],
-  "neck-and-shoulder-massage": ["pomodoro", "countdown"],
+  "hand-massage": ["pomodoro", "pressure-points-map"],
+  "neck-and-shoulder-massage": ["pomodoro", "pressure-points-map"],
   "back-massage": ["countdown"],
   "facial-massage": ["countdown"],
   "scalp-massage": ["countdown"],
