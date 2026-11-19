@@ -1,0 +1,61 @@
+{
+  "title": "Test de ira: ¿tengo problemas de ira? Autoevaluación gratis — cv.cm",
+  "description": "Test de ira gratis: valora 15 afirmaciones sobre con qué frecuencia te enfadaste durante el último mes, con qué intensidad, cómo lo expresaste y lo que te costó, y llévate consejos para manejar la ira. No es un diagnóstico. Tus respuestas no salen del navegador.",
+  "h1": "Test de ira: autoevaluación",
+  "hint": "Pensando en el último mes, ¿hasta qué punto te describe cada afirmación?",
+  "scoreLabel": "Puntuación de la autoevaluación de ira (0 = pocos signos, 60 = muchos)",
+  "lede": "¿Te sacan de quicio las pequeñas cosas, o el enfado te dura horas y lo pagan las personas que quieres? Valora 15 afirmaciones sobre el último mes para ver cuánto te afecta la ira y qué puede ayudarte.",
+  "about": [
+    "La ira es una emoción normal y sana: te avisa de que algo te parece injusto o amenazante y te da energía para actuar. Se convierte en un problema cuando aparece con demasiada frecuencia o con demasiada fuerza, dura mucho después del momento, sale en forma de gritos, amenazas o cosas rotas, o daña tus relaciones, tu trabajo o tu salud. La ira problemática suele estar ligada al estrés, al mal sueño, al dolor, al alcohol, a la ansiedad o al bajo estado de ánimo, y responde bien a la ayuda: las técnicas de control de la ira y la terapia cognitivo-conductual funcionan para la mayoría de las personas.",
+    "Las afirmaciones se han escrito para cv.cm en torno a las principales caras de la ira problemática: con qué frecuencia e intensidad aparece, cómo se expresa, cuánto dura y lo que cuesta. No son el Inventario de Expresión de Ira Estado-Rasgo ni ningún otro cuestionario, y no se han validado clínicamente, así que los tramos de puntuación son una guía aproximada, no puntos de corte clínicos. Esta autoevaluación no puede diagnosticar nada."
+  ],
+  "faq": [
+    {
+      "q": "¿Cómo se calcula la puntuación?",
+      "a": "Cada afirmación puntúa de 0 (muy en desacuerdo) a 4 (muy de acuerdo), así que el total va de 0 a 60. 24 o menos son pocos signos de ira problemática, de 25 a 39 son algunos signos y 40 o más son muchos."
+    },
+    {
+      "q": "¿Cómo sé si tengo problemas de ira?",
+      "a": "Algunas señales son enfadarte a menudo por cosas pequeñas, que te cueste calmarte, decir o hacer cosas de las que te arrepientes y que la gente a tu alrededor ande con pies de plomo. Si la ira está dañando tus relaciones o tu trabajo, vale la pena buscar ayuda."
+    },
+    {
+      "q": "¿Cómo puedo calmarme rápido?",
+      "a": "Fíjate en las primeras señales, como el corazón acelerado o la mandíbula apretada, y apártate antes de reaccionar. Respira despacio, cuenta, sal a caminar y vuelve al problema cuando estés tranquilo."
+    },
+    {
+      "q": "¿Dónde puedo buscar ayuda con la ira?",
+      "a": "Un médico, un orientador o un psicólogo pueden ayudarte, y en muchos lugares hay cursos de control de la ira. Si has hecho daño a alguien, o temes poder hacerlo, busca ayuda ya."
+    }
+  ],
+  "items": [
+    "Me enfadé más a menudo que la mayoría de la gente de mi alrededor.",
+    "Cosas pequeñas, como un conductor lento o una respuesta que tardaba, me sacaron de quicio.",
+    "Cuando me enfadaba, el enfado llegaba rápido y con fuerza.",
+    "Levanté la voz o le grité a alguien.",
+    "Dije cosas con rabia de las que luego me arrepentí.",
+    "Di portazos, tiré cosas o golpeé objetos cuando estaba enfadado.",
+    "El enfado me duró horas después de que pasara el momento.",
+    "Le di vueltas una y otra vez a las cosas que me habían enfadado.",
+    "Noté que el cuerpo se me tensaba, el corazón se me aceleraba o la cara me ardía de rabia.",
+    "La gente a mi alrededor parecía tener cuidado de no molestarme.",
+    "La ira me causó problemas con mi pareja, mi familia o mis amigos.",
+    "La ira me causó problemas en el trabajo o en los estudios.",
+    "Una vez enfadado, me costaba calmarme.",
+    "Me sentí irritable o al límite gran parte del día.",
+    "Sentí que mi ira estaba fuera de mi control."
+  ],
+  "results": {
+    "low": {
+      "name": "Pocos signos de ira problemática (0–24)",
+      "body": "Ahora mismo la ira no parece causarte muchos problemas. Todo el mundo se enfada a veces, y eso es sano cuando se expresa con calma. Mantén los hábitos que te ayudan: darte cuenta de cuándo te estás alterando, hacer una pausa y decir lo que te molesta antes de que se acumule."
+    },
+    "moderate": {
+      "name": "Algunos signos de ira problemática (25–39)",
+      "body": "Parece que la ira te gana la partida parte del tiempo. Intenta fijarte en tus primeras señales de alerta, tómate un respiro antes de responder y mira qué la alimenta: el estrés, el mal sueño, el alcohol o tener demasiadas cosas encima. Si sigue pasando o empieza a dañar tus relaciones, habla con un médico o un orientador."
+    },
+    "high": {
+      "name": "Muchos signos de ira problemática (40–60)",
+      "body": "Tus respuestas muestran una ira que llega a menudo o con fuerza y que te está pasando factura. Es difícil vivir así, y tiene muy buen tratamiento: los cursos de control de la ira y terapias como la cognitivo-conductual ayudan a la mayoría de las personas, así que habla con un médico o un orientador. Si has hecho daño a alguien, o te preocupa poder hacerlo, busca ayuda ya, y en caso de emergencia llama al número de emergencias de tu zona. El estrés suele estar detrás de la ira; el test de estrés de abajo puede ayudarte a ver cuánto."
+    }
+  }
+}

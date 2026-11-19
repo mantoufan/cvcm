@@ -4,14 +4,14 @@
 // Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad", "archetype", "communication-style"] },
-  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency", "parenting-style"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad", "archetype", "communication-style", "type-a-personality"] },
+  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency", "parenting-style", "am-i-in-love"] },
   { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money", "imposter-syndrome", "grit"] },
-  { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
-  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "sanrio", "dragon-ball-character", "anime"] },
+  { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class", "fnaf-character"] },
+  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "sanrio", "dragon-ball-character", "my-hero-academia-character", "anime"] },
   { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob", "harry-potter-character", "lord-of-the-rings", "game-of-thrones-house", "star-wars-character"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed", "flower", "mythical-creature", "superpower"] },
-  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed", "flower", "mythical-creature", "superpower", "fruit", "bird", "dinosaur"] },
+  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "anger", "adhd"] },
 ] as const;
 
 export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
@@ -217,6 +217,14 @@ const CODEPENDENCY = likert(Array(7).fill("codep+ codep-").join(" "));
 const IMPOSTER = likert(Array(7).fill("imposter+ imposter-").join(" "));
 /** Written for cv.cm around perseverance and steady interest (not the Grit Scale or any other published scale), half reversed. */
 const GRIT = likert(Array(7).fill("grit+ grit-").join(" "));
+
+/** Written for cv.cm around the Type A pattern (hurry, competitiveness, impatience, hostility), not the Jenkins Activity Survey or any other published scale; half reversed. */
+const TYPE_A = likert(Array(7).fill("typea+ typea-").join(" "));
+/**
+ * Written for cv.cm from the main sides of problem anger (how often and how strongly it comes, how it comes out, how
+ * long it lasts and what it costs). Not the STAXI or any other scale, not clinically validated; the copy says so.
+ */
+const ANGER = likert(Array(15).fill("anger+").join(" "));
 
 /**
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
@@ -979,6 +987,24 @@ const ARCHETYPE = relabel(GREEK_GOD, { zeus: "innocent", hera: "everyman", posei
  */
 const PARENTING = relabel(PERSONAL_COLOR, { warm: "warmth", deep: "control" });
 
+/** Eight Five Nights at Freddy's characters: the `GHIBLI` layout with the results renamed. */
+const FNAF = relabel(GHIBLI, { chihiro: "freddy", san: "bonnie", kiki: "chica", sophie: "foxy", nausicaa: "goldenfreddy", howl: "mangle", haku: "springtrap", totoro: "puppet" });
+
+/** Eight My Hero Academia characters: the `GHIBLI` layout with the results renamed. */
+const MY_HERO_ACADEMIA = relabel(GHIBLI, { chihiro: "deku", san: "bakugo", kiki: "todoroki", sophie: "uraraka", nausicaa: "iida", howl: "tsuyu", haku: "kirishima", totoro: "allmight" });
+
+/** Eight fruits: the `GHIBLI` layout with the results renamed. */
+const FRUIT = relabel(GHIBLI, { chihiro: "strawberry", san: "banana", kiki: "apple", sophie: "mango", nausicaa: "pineapple", howl: "watermelon", haku: "lemon", totoro: "peach" });
+
+/** Eight birds: the `GHIBLI` layout with the results renamed. */
+const BIRD = relabel(GHIBLI, { chihiro: "owl", san: "eagle", kiki: "parrot", sophie: "swan", nausicaa: "crow", howl: "hummingbird", haku: "penguin", totoro: "flamingo" });
+
+/** Eight dinosaurs: the `GHIBLI` layout with the results renamed. */
+const DINOSAUR = relabel(GHIBLI, { chihiro: "trex", san: "triceratops", kiki: "velociraptor", sophie: "stegosaurus", nausicaa: "brachiosaurus", howl: "ankylosaurus", haku: "spinosaurus", totoro: "parasaurolophus" });
+
+/** Signs of being in love: the `CRUSH` layout (0 to 3 points an answer, each weight three times in each position). */
+const IN_LOVE = relabel(CRUSH, { signs: "love" });
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -1578,6 +1604,67 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: PARENTING,
     result: { kind: "quadrant", x: "warmth", y: "control", results: { lowLow: "uninvolved", highLow: "permissive", lowHigh: "authoritarian", highHigh: "authoritative" } },
   },
+  "fnaf-character": {
+    id: "fnaf-character",
+    type: "choice",
+    dims: ["freddy", "bonnie", "chica", "foxy", "goldenfreddy", "mangle", "springtrap", "puppet"],
+    items: FNAF,
+    result: { kind: "top", tie: "spread" },
+  },
+  "my-hero-academia-character": {
+    id: "my-hero-academia-character",
+    type: "choice",
+    dims: ["deku", "bakugo", "todoroki", "uraraka", "iida", "tsuyu", "kirishima", "allmight"],
+    items: MY_HERO_ACADEMIA,
+    result: { kind: "top", tie: "spread" },
+  },
+  fruit: {
+    id: "fruit",
+    type: "choice",
+    dims: ["strawberry", "banana", "apple", "mango", "pineapple", "watermelon", "lemon", "peach"],
+    items: FRUIT,
+    result: { kind: "top", tie: "spread" },
+  },
+  bird: {
+    id: "bird",
+    type: "choice",
+    dims: ["owl", "eagle", "parrot", "swan", "crow", "hummingbird", "penguin", "flamingo"],
+    items: BIRD,
+    result: { kind: "top", tie: "spread" },
+  },
+  dinosaur: {
+    id: "dinosaur",
+    type: "choice",
+    dims: ["trex", "triceratops", "velociraptor", "stegosaurus", "brachiosaurus", "ankylosaurus", "spinosaurus", "parasaurolophus"],
+    items: DINOSAUR,
+    result: { kind: "top", tie: "spread" },
+  },
+  "type-a-personality": {
+    id: "type-a-personality",
+    type: "likert",
+    scale: "agree5",
+    dims: ["typea"],
+    items: TYPE_A,
+    // Three equal bands around the neutral total of 28.
+    result: { kind: "band", bands: [{ max: 18, key: "typeb" }, { max: 37, key: "mixed" }, { max: 56, key: "typea" }] },
+  },
+  "am-i-in-love": {
+    id: "am-i-in-love",
+    type: "choice",
+    dims: ["love"],
+    items: IN_LOVE,
+    // A third and two thirds of 36, as in the crush quiz.
+    result: { kind: "band", bands: [{ max: 12, key: "notyet" }, { max: 24, key: "crush" }, { max: 36, key: "love" }] },
+  },
+  anger: {
+    id: "anger",
+    type: "likert",
+    scale: "agree5",
+    dims: ["anger"],
+    items: ANGER,
+    // 24 and 39 of 60 are 40% and 65%, as in the OCD and insomnia checks. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 24, key: "low" }, { max: 39, key: "moderate" }, { max: 60, key: "high" }] },
+  },
 };
 
 /**
@@ -1613,6 +1700,7 @@ export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz:
   stress: { bands: ["high"], quiz: "anxiety" },
   "social-anxiety": { bands: ["high"], quiz: "anxiety" },
   insomnia: { bands: ["many"], quiz: "depression" },
+  anger: { bands: ["high"], quiz: "stress" },
 };
 
 export function questionCount(id: QuizId): number {

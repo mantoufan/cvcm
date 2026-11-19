@@ -203,7 +203,7 @@ describe("test pages: copy", () => {
           expect(ui.scaleHint[def.scale], `${where} hint`).toBeTruthy();
         }
         // These ask about a set period, and an empty hint would silently fall back to "as you usually are".
-        if (id === "adhd" || id === "burnout" || id === "stress" || id === "ocd" || id === "insomnia") {
+        if (id === "adhd" || id === "burnout" || id === "stress" || id === "ocd" || id === "insomnia" || id === "anger") {
           expect(copy.hint, `${where} own hint`).toBeTruthy();
           expect(quizStaticHtml(locale, id), `${where} static hint`).toContain(escapeHtml(copy.hint!));
         }
@@ -499,6 +499,7 @@ describe("test pages: scoring", () => {
       { id: "codependency", max: 56, keys: ["low", "some", "high"], cuts: [18, 37] },
       { id: "imposter-syndrome", max: 56, keys: ["low", "moderate", "high"], cuts: [18, 37] },
       { id: "grit", max: 56, keys: ["low", "mid", "high"], cuts: [18, 37] },
+      { id: "type-a-personality", max: 56, keys: ["typeb", "mixed", "typea"], cuts: [18, 37] },
     ] as const;
     for (const { id, max, keys, cuts } of cases) {
       const def = QUIZ_DEFS[id];
@@ -561,6 +562,19 @@ describe("test pages: scoring", () => {
     expect(FOLLOW_UP.insomnia).toEqual({ bands: ["many"], quiz: "depression" });
   });
 
+  it("bands the anger self-check like the OCD check, with the stress check, not the support box, at high", () => {
+    expect(maxTotal("anger")).toBe(60);
+    expect(QUIZ_DEFS.anger.items.some((item) => "rev" in item)).toBe(false);
+    const answersFor = (points: number): number[] => Array.from({ length: 15 }, (_, i) => Math.max(0, Math.min(4, points - i * 4)));
+    expect(scoreQuiz("anger", answersFor(0))).toMatchObject({ total: 0, key: "low" });
+    expect(scoreQuiz("anger", answersFor(24)).key).toBe("low");
+    expect(scoreQuiz("anger", answersFor(25)).key).toBe("moderate");
+    expect(scoreQuiz("anger", answersFor(39)).key).toBe("moderate");
+    expect(scoreQuiz("anger", answersFor(40))).toMatchObject({ key: "high", safety: false });
+    expect(SUPPORT.anger).toBeUndefined();
+    expect(FOLLOW_UP.anger).toEqual({ bands: ["high"], quiz: "stress" });
+  });
+
   it("bands the OCD self-check from few to many signs, with help at many and no crisis box", () => {
     expect(maxTotal("ocd")).toBe(60);
     expect(QUIZ_DEFS.ocd.items.some((item) => "rev" in item)).toBe(false);
@@ -581,26 +595,32 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("social-anxiety", QUIZ_DEFS["social-anxiety"].items.map((_, i) => (i % 2 === 0 ? 4 : 0))).safety).toBe(false);
   });
 
-  it("counts crush signs from 0 to 36, with every weight once a question and three times in each position", () => {
-    const def = QUIZ_DEFS.crush;
-    if (def.type !== "choice") throw new Error();
-    expect(maxTotal("crush")).toBe(36);
-    for (const item of def.items) expect(item.options.map((o) => o.signs).sort()).toEqual([0, 1, 2, 3]);
-    for (let position = 0; position < 4; position++) {
-      for (let weight = 0; weight < 4; weight++) {
-        expect(def.items.filter((item) => item.options[position].signs === weight), `${position} ${weight}`).toHaveLength(3);
+  it("counts crush and in-love signs from 0 to 36, with every weight once a question and three times in each position", () => {
+    const cases = [
+      { id: "crush", dim: "signs", keys: ["few", "mixed", "many"] },
+      { id: "am-i-in-love", dim: "love", keys: ["notyet", "crush", "love"] },
+    ] as const;
+    for (const { id, dim, keys } of cases) {
+      const def = QUIZ_DEFS[id];
+      if (def.type !== "choice") throw new Error();
+      expect(maxTotal(id)).toBe(36);
+      for (const item of def.items) expect(item.options.map((o) => o[dim]).sort(), id).toEqual([0, 1, 2, 3]);
+      for (let position = 0; position < 4; position++) {
+        for (let weight = 0; weight < 4; weight++) {
+          expect(def.items.filter((item) => item.options[position][dim] === weight), `${id} ${position} ${weight}`).toHaveLength(3);
+        }
       }
+      const strongest = def.items.map((item) => item.options.findIndex((o) => o[dim] === 3));
+      strongest.slice(1).forEach((at, i) => expect(at, `${id} q${i + 2}`).not.toBe(strongest[i]));
+      const answersFor = (points: number): number[] =>
+        def.items.map((item, i) => item.options.findIndex((o) => o[dim] === Math.max(0, Math.min(3, points - i * 3))));
+      expect(scoreQuiz(id, answersFor(0))).toMatchObject({ total: 0, key: keys[0] });
+      expect(scoreQuiz(id, answersFor(12)).key).toBe(keys[0]);
+      expect(scoreQuiz(id, answersFor(13)).key).toBe(keys[1]);
+      expect(scoreQuiz(id, answersFor(24)).key).toBe(keys[1]);
+      expect(scoreQuiz(id, answersFor(25)).key).toBe(keys[2]);
+      expect(scoreQuiz(id, answersFor(36))).toMatchObject({ total: 36, key: keys[2] });
     }
-    const strongest = def.items.map((item) => item.options.findIndex((o) => o.signs === 3));
-    strongest.slice(1).forEach((at, i) => expect(at, `q${i + 2}`).not.toBe(strongest[i]));
-    const answersFor = (points: number): number[] =>
-      def.items.map((item, i) => item.options.findIndex((o) => o.signs === Math.max(0, Math.min(3, points - i * 3))));
-    expect(scoreQuiz("crush", answersFor(0))).toMatchObject({ total: 0, key: "few" });
-    expect(scoreQuiz("crush", answersFor(12)).key).toBe("few");
-    expect(scoreQuiz("crush", answersFor(13)).key).toBe("mixed");
-    expect(scoreQuiz("crush", answersFor(24)).key).toBe("mixed");
-    expect(scoreQuiz("crush", answersFor(25)).key).toBe("many");
-    expect(scoreQuiz("crush", answersFor(36))).toMatchObject({ total: 36, key: "many" });
   });
 
   it("lets every DISC style and learning style win, spreads ties and keeps the results level", () => {
@@ -665,6 +685,9 @@ describe("test pages: scoring", () => {
     expect(isTrackedPath("/en/tests/social-anxiety/")).toBe(false);
     expect(isTrackedPath("/en/tests/codependency/")).toBe(false);
     expect(isTrackedPath("/en/tests/insomnia/")).toBe(false);
+    expect(isTrackedPath("/ja/tests/anger/")).toBe(false);
+    expect(isTrackedPath("/en/tests/type-a-personality/")).toBe(true);
+    expect(isTrackedPath("/en/tests/am-i-in-love/")).toBe(true);
     expect(isTrackedPath("/en/tests/imposter-syndrome/")).toBe(true);
     expect(isTrackedPath("/en/tests/empath/")).toBe(true);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
@@ -852,7 +875,7 @@ describe("test pages: scoring", () => {
     // question (each in four, once in each position).
     const positions = [
       { ids: ["friend-role", "avengers", "friends-character"], min: 2, max: 2 },
-      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic", "harry-potter-character", "avatar-character", "game-of-thrones-house", "lord-of-the-rings", "sanrio", "cat-breed", "flower", "mythical-creature", "superpower", "star-wars-character", "dragon-ball-character"], min: 1, max: 2 },
+      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic", "harry-potter-character", "avatar-character", "game-of-thrones-house", "lord-of-the-rings", "sanrio", "cat-breed", "flower", "mythical-creature", "superpower", "star-wars-character", "fnaf-character", "my-hero-academia-character", "fruit", "bird", "dinosaur", "dragon-ball-character"], min: 1, max: 2 },
       { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age", "communication-style"], min: 3, max: 3 },
       { ids: ["hunger-games-district", "greek-god", "archetype"], min: 1, max: 1 },
     ] as const;
