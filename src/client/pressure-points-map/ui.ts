@@ -2,7 +2,7 @@ import { h } from "../dom";
 import { locale, t } from "../i18n";
 import type { Locale } from "../../shared/locale";
 import {
-  PP_DEFAULT_HOLD, PP_HOLD_SECONDS, PP_POINTS, PP_VIEWS, PP_ZONES, PP_ZONE_FEET, ppClock, ppMatches, ppPoint, ppPointsIn,
+  PP_DEFAULT_HOLD, PP_HOLD_SECONDS, PP_POINTS, PP_VIEWS, PP_ZONES, PP_ZONE_FEET, ppClock, ppCodeLabel, ppMatches, ppPoint, ppPointsIn,
   type PpFoot, type PpPoint, type PpSelection, type PpView, type PpZone,
 } from "../../shared/pressure-points";
 import { VIEW_ART, soleClip, zoneShapes } from "./art";
@@ -33,7 +33,28 @@ const svgEl = (tag: string, attrs: Record<string, string | number> = {}) => {
 let teardown: (() => void) | null = null;
 
 export async function mountPressurePoints(host: HTMLElement): Promise<void> {
-  const copy = (await COPY[locale()]()).default as PpCopy;
+  let copy: PpCopy;
+  try {
+    copy = (await COPY[locale()]()).default as PpCopy;
+  } catch {
+    // Offline, or a tab still on an older deploy's chunk names: say so and offer another try (a reload if it fails again).
+    let tries = 0;
+    const retry = h("button", { type: "button", class: "btn", "data-action": "retry", onClick: () => {
+      tries += 1;
+      if (tries > 1) {
+        location.reload();
+        return;
+      }
+      host.replaceChildren();
+      void mountPressurePoints(host);
+    } }, t("ppm.retry"));
+    host.append(
+      h("header", { class: "tool-head" }, h("h1", null, t("ppm.title")), h("p", { class: "ppm-disclaimer", role: "note" }, t("ppm.disclaimer"))),
+      h("p", { role: "alert", "data-out": "load-error" }, t("ppm.loadError")),
+      retry,
+    );
+    return;
+  }
   let view: PpView = "hand";
   let sel: PpSelection = { kind: "point", id: "li4" };
   let hold: number = PP_DEFAULT_HOLD;
@@ -66,15 +87,18 @@ export async function mountPressurePoints(host: HTMLElement): Promise<void> {
   const feet = h("p", { class: "ppm-feet", "aria-hidden": "true" }, h("span", null, t("ppm.left")), h("span", null, t("ppm.right")));
   const stage = h("figure", { class: "ppm-stage", id: "ppm-stage", role: "tabpanel" }, svg, feet, caption);
 
-  const panel = h("section", { class: "ppm-panel", "aria-live": "polite", "data-out": "panel" });
+  // Only the point / zone details are a live region; the timer below it announces just its start and end.
+  const details = h("div", { "aria-live": "polite", "data-out": "details" });
+  const panel = h("section", { class: "ppm-panel", "data-out": "panel" });
 
   // Timer.
   const holdSel = h("select", { "data-field": "hold", "aria-label": t("ppm.timer"), onChange: () => { hold = Number(holdSel.value); stopTimer(); } },
     ...PP_HOLD_SECONDS.map((n) => h("option", { value: String(n), selected: n === PP_DEFAULT_HOLD }, t("ppm.seconds", { n }))));
   const startBtn = h("button", { type: "button", class: "btn", "data-action": "timer", onClick: () => (timer === null ? startTimer() : stopTimer()) });
-  const clock = h("output", { class: "ppm-clock", role: "timer", "data-out": "clock" });
+  // role=timer is not announced as it ticks (aria-live off); a button's changing label is not announced either.
+  const clock = h("span", { class: "ppm-clock", role: "timer", "aria-live": "off", "data-out": "clock" });
   const bar = h("progress", { class: "ppm-bar", max: "1", value: "0", "aria-hidden": "true" });
-  const timerStatus = h("p", { class: "ppm-timer-status", "aria-live": "assertive", "data-out": "timer-status" });
+  const timerStatus = h("p", { class: "ppm-timer-status", "aria-live": "polite", "data-out": "timer-status" });
   const timerBox = h("div", { class: "ppm-timer" },
     h("h3", null, t("ppm.timer")),
     h("div", { class: "ppm-timer-row" }, holdSel, startBtn, clock),
@@ -85,7 +109,6 @@ export async function mountPressurePoints(host: HTMLElement): Promise<void> {
     startBtn.textContent = timer === null ? t("ppm.start", { n: hold }) : t("ppm.stop");
     startBtn.setAttribute("aria-pressed", String(timer !== null));
     clock.textContent = ppClock(left);
-    clock.setAttribute("aria-label", t("ppm.left_s", { t: ppClock(left) }));
     bar.value = timer === null ? 0 : 1 - left / hold;
   };
   function stopTimer(): void {
@@ -116,7 +139,7 @@ export async function mountPressurePoints(host: HTMLElement): Promise<void> {
     if (!reduce) navigator.vibrate?.(200);
   }
   function startTimer(): void {
-    timerStatus.textContent = "";
+    timerStatus.textContent = t("ppm.started", { n: hold });
     // The audio context is made on the press (a user gesture), so the end chime may play.
     try {
       const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
@@ -139,30 +162,30 @@ export async function mountPressurePoints(host: HTMLElement): Promise<void> {
   const section = (title: string, ...kids: Array<Node | string>) => [h("h3", null, title), ...kids];
 
   const paintPanel = () => {
-    panel.replaceChildren();
+    details.replaceChildren();
     if (sel.kind === "point") {
       const p = ppPoint(sel.id)!;
       const c = copy.points[p.id];
-      panel.append(
+      details.append(
         h("h2", { "data-out": "name" }, c.name),
-        h("p", { class: "ppm-code", "data-out": "code" }, `${p.pinyin} · ${p.code}${p.id === "yintang" ? " (EX-HN3)" : ""}`),
+        h("p", { class: "ppm-code", "data-out": "code" }, `${p.pinyin} · ${ppCodeLabel(p)}`),
         ...section(t("ppm.where"), h("p", { "data-out": "where" }, c.where), h("p", { class: "ppm-small" }, t("ppm.cun"))),
         ...section(t("ppm.how"), h("p", { "data-out": "press" }, c.press), p.light ? h("p", { class: "ppm-small" }, t("ppm.lightNote")) : ""),
         ...section(t("ppm.use"), h("p", { "data-out": "use" }, c.use)),
       );
-      if (c.caution) panel.append(h("p", { class: "ppm-caution", "data-out": "caution" }, c.caution));
+      if (c.caution) details.append(h("p", { class: "ppm-caution", "data-out": "caution" }, c.caution));
     } else {
       const z = copy.zones[sel.id];
-      panel.append(
+      details.append(
         h("h2", { "data-out": "name" }, zoneLabel(sel.id, sel.foot)),
         ...section(t("ppm.zoneTitle"), h("p", { "data-out": "where" }, z.maps)),
         ...section(t("ppm.how"), h("p", null, t("ppm.zoneHow"))),
         h("p", { class: "ppm-caution", "data-out": "caution" }, t("ppm.zoneNote")),
       );
     }
-    panel.append(timerBox);
     paintTimer();
   };
+  panel.append(details, timerBox);
 
   /** The focusable targets on the drawing, in reading order (for arrow-key movement). */
   let targets: SVGGElement[] = [];
@@ -194,7 +217,7 @@ export async function mountPressurePoints(host: HTMLElement): Promise<void> {
     return g;
   };
 
-  const dot = (p: PpPoint, x: number, focusable: boolean) => target({ kind: "point", id: p.id }, `${pointName(p)} (${p.code})`, [
+  const dot = (p: PpPoint, x: number, focusable: boolean) => target({ kind: "point", id: p.id }, `${pointName(p)} (${ppCodeLabel(p)})`, [
     svgEl("circle", { class: "ppm-hit", cx: x, cy: p.y, r: 13 }),
     svgEl("circle", { class: "ppm-ring", cx: x, cy: p.y, r: 11 }),
     svgEl("circle", { class: "ppm-core", cx: x, cy: p.y, r: 6 }),
@@ -293,16 +316,16 @@ export async function mountPressurePoints(host: HTMLElement): Promise<void> {
   const pointsRow = h("div", { class: "chip-row" });
   for (const p of PP_POINTS) {
     const b = h("button", { type: "button", class: "chip", "data-pick": p.id, "aria-pressed": "false", onClick: () => select({ kind: "point", id: p.id }) },
-      `${pointName(p)} `, h("small", null, p.code));
+      `${pointName(p)} `, h("small", null, ppCodeLabel(p)));
     pointsRow.append(b);
-    items.push({ el: b, names: [pointName(p), p.pinyin, p.code, p.id, p.id === "yintang" ? "EX-HN3" : ""] });
+    items.push({ el: b, names: [pointName(p), p.english, p.pinyin, p.code, p.altCode ?? "", p.id] });
   }
   const zonesRow = h("div", { class: "chip-row" });
   for (const zone of PP_ZONES) {
     for (const foot of PP_ZONE_FEET[zone]) {
       const b = h("button", { type: "button", class: "chip", "data-pick": `${foot}-${zone}`, "aria-pressed": "false", onClick: () => select({ kind: "zone", id: zone, foot }) }, zoneLabel(zone, foot));
       zonesRow.append(b);
-      items.push({ el: b, names: [copy.zones[zone].name, t(`ppm.${foot}`)] });
+      items.push({ el: b, names: [zoneLabel(zone, foot), copy.zones[zone].name, t(`ppm.${foot}`)] });
     }
   }
   const zonesTitle = h("h3", { class: "ppm-list-title" }, t("ppm.zonesTitle"));
@@ -325,7 +348,7 @@ export async function mountPressurePoints(host: HTMLElement): Promise<void> {
     if (!pts.length) continue;
     guide.append(h("h3", null, t(`ppm.v_${v}`)));
     const dl = h("dl", null);
-    for (const p of pts) dl.append(h("dt", null, `${pointName(p)} (${p.pinyin}, ${p.code})`), h("dd", null, copy.points[p.id].where));
+    for (const p of pts) dl.append(h("dt", null, `${pointName(p)} (${p.pinyin}, ${ppCodeLabel(p)})`), h("dd", null, copy.points[p.id].where));
     guide.append(dl);
   }
 

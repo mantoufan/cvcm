@@ -1,6 +1,7 @@
 // Pressure points map: the points (WHO 2008 standard locations), the foot reflexology zones and where each sits on
 // the line drawings in src/client/pressure-points-map/art.ts. Copy (names, locations, uses) is per locale in
 // src/locales/pressure-points/<locale>.json; this module holds only what every language shares.
+import { foldText } from "./search";
 
 export const PP_VIEWS = ["face", "back", "hand", "arm", "leg", "foot", "sole"] as const;
 export type PpView = (typeof PP_VIEWS)[number];
@@ -9,7 +10,11 @@ export type PpPoint = {
   id: string;
   /** WHO 2008 code (extra points keep their EX-HN number). */
   code: string;
+  /** An older code the point is still listed under (Yintang was EX-HN3 before WHO 2008 made it GV29). */
+  altCode?: string;
   pinyin: string;
+  /** The English name, searchable on every language's page (equal to the en copy's name; tests check). */
+  english: string;
   view: PpView;
   x: number;
   y: number;
@@ -22,22 +27,22 @@ export type PpPoint = {
 };
 
 export const PP_POINTS: readonly PpPoint[] = [
-  { id: "yintang", code: "GV29", pinyin: "Yìntáng", view: "face", x: 160, y: 148, light: true },
-  { id: "bl2", code: "BL2", pinyin: "Cuánzhú", view: "face", x: 184, y: 148, mirrorX: 136, light: true },
-  { id: "yuyao", code: "EX-HN4", pinyin: "Yúyāo", view: "face", x: 211, y: 141, mirrorX: 109, light: true },
-  { id: "te23", code: "TE23", pinyin: "Sīzhúkōng", view: "face", x: 238, y: 146, mirrorX: 82, light: true },
-  { id: "taiyang", code: "EX-HN5", pinyin: "Tàiyáng", view: "face", x: 253, y: 158, mirrorX: 67, light: true },
-  { id: "gb1", code: "GB1", pinyin: "Tóngzǐliáo", view: "face", x: 240, y: 174, mirrorX: 80, light: true },
-  { id: "st2", code: "ST2", pinyin: "Sìbái", view: "face", x: 205, y: 198, mirrorX: 115, light: true },
-  { id: "gb20", code: "GB20", pinyin: "Fēngchí", view: "back", x: 187, y: 194, mirrorX: 133 },
-  { id: "gb21", code: "GB21", pinyin: "Jiānjǐng", view: "back", x: 220, y: 262, mirrorX: 100, pregnancy: true },
-  { id: "li4", code: "LI4", pinyin: "Hégǔ", view: "hand", x: 118, y: 212, pregnancy: true },
-  { id: "pc6", code: "PC6", pinyin: "Nèiguān", view: "arm", x: 158, y: 302 },
-  { id: "ht7", code: "HT7", pinyin: "Shénmén", view: "arm", x: 124, y: 242 },
-  { id: "st36", code: "ST36", pinyin: "Zúsānlǐ", view: "leg", x: 148, y: 152 },
-  { id: "sp6", code: "SP6", pinyin: "Sānyīnjiāo", view: "leg", x: 186, y: 298, pregnancy: true },
-  { id: "lr3", code: "LR3", pinyin: "Tàichōng", view: "foot", x: 138, y: 170 },
-  { id: "ki1", code: "KI1", pinyin: "Yǒngquán", view: "sole", x: 259, y: 170, mirrorX: 81 },
+  { id: "yintang", code: "GV29", altCode: "EX-HN3", pinyin: "Yìntáng", english: "Hall of Impression", view: "face", x: 160, y: 148, light: true },
+  { id: "bl2", code: "BL2", pinyin: "Cuánzhú", english: "Bamboo Gathering", view: "face", x: 184, y: 148, mirrorX: 136, light: true },
+  { id: "yuyao", code: "EX-HN4", pinyin: "Yúyāo", english: "Fish Waist", view: "face", x: 211, y: 141, mirrorX: 109, light: true },
+  { id: "te23", code: "TE23", pinyin: "Sīzhúkōng", english: "Silk Bamboo Hollow", view: "face", x: 238, y: 146, mirrorX: 82, light: true },
+  { id: "taiyang", code: "EX-HN5", pinyin: "Tàiyáng", english: "Supreme Yang (temple)", view: "face", x: 253, y: 158, mirrorX: 67, light: true },
+  { id: "gb1", code: "GB1", pinyin: "Tóngzǐliáo", english: "Pupil Bone-Hole", view: "face", x: 240, y: 174, mirrorX: 80, light: true },
+  { id: "st2", code: "ST2", pinyin: "Sìbái", english: "Four Whites", view: "face", x: 205, y: 198, mirrorX: 115, light: true },
+  { id: "gb20", code: "GB20", pinyin: "Fēngchí", english: "Wind Pool", view: "back", x: 187, y: 194, mirrorX: 133 },
+  { id: "gb21", code: "GB21", pinyin: "Jiānjǐng", english: "Shoulder Well", view: "back", x: 220, y: 262, mirrorX: 100, pregnancy: true },
+  { id: "li4", code: "LI4", pinyin: "Hégǔ", english: "Union Valley", view: "hand", x: 118, y: 212, pregnancy: true },
+  { id: "pc6", code: "PC6", pinyin: "Nèiguān", english: "Inner Pass", view: "arm", x: 158, y: 302 },
+  { id: "ht7", code: "HT7", pinyin: "Shénmén", english: "Spirit Gate", view: "arm", x: 124, y: 242 },
+  { id: "st36", code: "ST36", pinyin: "Zúsānlǐ", english: "Leg Three Miles", view: "leg", x: 148, y: 152 },
+  { id: "sp6", code: "SP6", pinyin: "Sānyīnjiāo", english: "Three Yin Intersection", view: "leg", x: 186, y: 298, pregnancy: true },
+  { id: "lr3", code: "LR3", pinyin: "Tàichōng", english: "Great Surge", view: "foot", x: 138, y: 170 },
+  { id: "ki1", code: "KI1", pinyin: "Yǒngquán", english: "Gushing Spring", view: "sole", x: 259, y: 170, mirrorX: 81 },
 ];
 
 export const PP_ZONES = ["toes", "ball", "arch", "heel", "spine", "heart", "spleen", "liver"] as const;
@@ -70,16 +75,20 @@ export function ppPointsIn(view: PpView): PpPoint[] {
   return PP_POINTS.filter((p) => p.view === view);
 }
 
-/** Lower case without tone marks, so "hegu", "Hégǔ" and "HEGU" all match. */
-export function ppFold(s: string): string {
-  return s.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().replace(/đ/g, "d").trim();
+/** "LI4", or "GV29 (EX-HN3)" for a point with an older code too. */
+export function ppCodeLabel(p: PpPoint): string {
+  return p.altCode ? `${p.code} (${p.altCode})` : p.code;
 }
+
+/** Folded (case, tone marks, đ) without spaces or punctuation, so "hegu", "Hégǔ" and "EX HN5" match. */
+const squash = (s: string) => foldText(s).replace(/[\s\p{P}]+/gu, "");
 
 /** Whether a search query matches any of a point's or zone's names (local name, pinyin, code, English name). */
 export function ppMatches(query: string, names: readonly string[]): boolean {
-  const q = ppFold(query).replace(/[\s-]+/g, "");
-  if (!q) return true;
-  return names.some((n) => ppFold(n).replace(/[\s-]+/g, "").includes(q));
+  // Every word of the query must appear in one of the names: "right foot liver", "ex hn5", "合谷".
+  const words = foldText(query).split(" ").map(squash).filter(Boolean);
+  const hay = names.map(squash);
+  return words.every((w) => hay.some((n) => n.includes(w)));
 }
 
 /** "1:05" for 65 seconds. */

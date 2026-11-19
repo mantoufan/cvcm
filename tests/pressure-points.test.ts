@@ -3,8 +3,21 @@ import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { mountPressurePoints, unmountPressurePoints } from "../src/client/pressure-points-map/ui";
+import { setLocale } from "../src/client/i18n";
 import { LOCALES } from "../src/shared/locale";
 import { PP_POINTS, PP_VIEWS, PP_ZONES, ppClock, ppMatches } from "../src/shared/pressure-points";
+
+// The English copy chunk, made to fail on demand (a failed chunk load: offline, or an older deploy's file names).
+const copyLoad = vi.hoisted(() => ({ fail: false }));
+vi.mock("../src/locales/pressure-points/en.json", async (importOriginal) => {
+  const real = await importOriginal<{ default: unknown }>();
+  return {
+    get default() {
+      if (copyLoad.fail) throw new Error("chunk failed");
+      return real.default;
+    },
+  };
+});
 
 const root = resolve(__dirname, "..");
 const json = (path: string) => JSON.parse(readFileSync(resolve(root, path), "utf8"));
@@ -64,7 +77,7 @@ describe("pressure points map ui", () => {
     expect(text("[data-out=caution]")).toContain("chest pain is an emergency");
     expect(host.querySelector("[data-target=right-heart]")).toBeNull();
     (q("[data-target=right-liver]") as SVGGElement).dispatchEvent(new MouseEvent("click", { bubbles: true }));
-    expect(text("[data-out=name]")).toBe("Right foot: Liver and gallbladder area (right foot)");
+    expect(text("[data-out=name]")).toBe("Right foot: Liver and gallbladder area");
     expect(host.querySelector("[data-target=ki1][role=button]")).not.toBeNull();
   });
 
@@ -75,9 +88,64 @@ describe("pressure points map ui", () => {
     find.dispatchEvent(new Event("input"));
     const shown = [...host.querySelectorAll<HTMLButtonElement>("[data-pick]")].filter((b) => !b.hidden).map((b) => b.dataset.pick);
     expect(shown).toEqual(["sp6"]);
+    const search = (value: string) => {
+      find.value = value;
+      find.dispatchEvent(new Event("input"));
+      return [...host.querySelectorAll<HTMLButtonElement>("[data-pick]")].filter((b) => !b.hidden).map((b) => b.dataset.pick);
+    };
+    expect(search("right foot liver")).toEqual(["right-liver"]);
+    expect(search("ex hn3")).toEqual(["yintang"]);
+    expect(search("Union Valley")).toEqual(["li4"]);
     find.value = "zzz";
     find.dispatchEvent(new Event("input"));
     expect(q<HTMLElement>("[data-out=none]").hidden).toBe(false);
+  });
+
+  it("finds a point by its English name on another language's page", async () => {
+    setLocale("zh-CN");
+    try {
+      await mountPressurePoints(host);
+      expect(text("[data-out=name]")).toBe("合谷");
+      const find = q<HTMLInputElement>("[data-field=find]");
+      find.value = "inner pass";
+      find.dispatchEvent(new Event("input"));
+      expect([...host.querySelectorAll<HTMLButtonElement>("[data-pick]")].filter((b) => !b.hidden).map((b) => b.dataset.pick)).toEqual(["pc6"]);
+    } finally {
+      setLocale("en");
+    }
+  });
+
+  it("shows the older code in one place: panel, dot label, list and guide", async () => {
+    await mountPressurePoints(host);
+    (q("[data-pick=yintang]") as HTMLButtonElement).click();
+    expect(text("[data-out=code]")).toBe("Yìntáng · GV29 (EX-HN3)");
+    expect(q("[data-target=yintang][role=button]").getAttribute("aria-label")).toBe("Hall of Impression (GV29 (EX-HN3))");
+    expect(text("[data-pick=yintang] small")).toBe("GV29 (EX-HN3)");
+    expect(text(".ppm-guide dt")).toBe("Hall of Impression (Yìntáng, GV29 (EX-HN3))");
+  });
+
+  it("keeps the live region on the details only and announces just the timer's start and end", async () => {
+    await mountPressurePoints(host);
+    const live = [...host.querySelectorAll("[aria-live]")].filter((el) => el.getAttribute("aria-live") !== "off");
+    expect(live.map((el) => el.getAttribute("data-out")).sort()).toEqual(["details", "timer-status"]);
+    expect(q("[data-out=details]").contains(q("[data-out=timer-status]"))).toBe(false);
+    expect(q("[data-out=details]").contains(q("[data-out=clock]"))).toBe(false);
+    q<HTMLButtonElement>("[data-action=timer]").click();
+    expect(text("[data-out=timer-status]")).toBe("Timer started: 60 s.");
+  });
+
+  it("says when the point copy did not load and tries again", async () => {
+    copyLoad.fail = true;
+    try {
+      await mountPressurePoints(host);
+      expect(text("[data-out=load-error]")).toContain("did not load");
+      expect(host.querySelector("[data-out=details]")).toBeNull();
+    } finally {
+      copyLoad.fail = false;
+    }
+    q<HTMLButtonElement>("[data-action=retry]").click();
+    await vi.waitFor(() => expect(host.querySelector("[data-out=details]")).not.toBeNull());
+    expect(host.querySelector("[data-out=load-error]")).toBeNull();
   });
 
   it("counts the hold down and says when the time is up", async () => {
@@ -105,6 +173,8 @@ describe("pressure points data and copy", () => {
     expect(ppMatches("hegu", ["Hégǔ"])).toBe(true);
     expect(ppMatches("ex hn5", ["EX-HN5"])).toBe(true);
     expect(ppMatches("tu bach", ["Tứ bạch"])).toBe(true);
+    expect(ppMatches("right foot liver", ["Right foot: Liver and gallbladder area"])).toBe(true);
+    expect(ppMatches("left liver", ["Right foot: Liver and gallbladder area"])).toBe(false);
   });
 
   it("puts every point on a view and keeps dots inside the drawing", () => {
@@ -114,6 +184,8 @@ describe("pressure points data and copy", () => {
       expect(p.x).toBeLessThan(330);
     }
     expect(new Set(PP_POINTS.map((p) => p.id)).size).toBe(PP_POINTS.length);
+    const en = json("src/locales/pressure-points/en.json");
+    for (const p of PP_POINTS) expect(p.english, p.id).toBe(en.points[p.id].name);
     // The cautions the brief asks for: firm pressure in pregnancy is avoided on these three.
     expect(PP_POINTS.filter((p) => p.pregnancy).map((p) => p.code).sort()).toEqual(["GB21", "LI4", "SP6"]);
   });
