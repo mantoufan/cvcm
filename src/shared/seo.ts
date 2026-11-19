@@ -1,7 +1,7 @@
 import { LEARN_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
 import { devicePageCopy } from "./device-i18n";
 import type { DevicePageId } from "./device";
-import { gamesFaqBase, type GameHubId } from "./games";
+import { gameHubKey, gamesFaqBase, type GameHubId } from "./games";
 import { legalPageCopy } from "./legal";
 import { quizDescription, quizTitle } from "./quiz-i18n";
 import type { QuizId } from "./quiz";
@@ -62,7 +62,7 @@ export type SeoInput = {
   tutorial?: TutorialId | null;
   learn?: boolean;
   games?: boolean;
-  /** A games sub-hub (/games/mini/, /games/3d/); null or absent for /games/. */
+  /** A games sub-hub (a kind such as /games/board/, or /games/3d/); null or absent for /games/. */
   gamesHub?: GameHubId | null;
   markets?: boolean;
   market?: MarketId | null;
@@ -929,7 +929,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
     return lookup(locale, seo.tutorial ? LEARN_TITLE[seo.tutorial] : "meta.titleLearn");
   }
   if (seo.games) {
-    if (seo.gamesHub) return lookup(locale, `meta.titleGames${hubMeta(seo.gamesHub)}`);
+    if (seo.gamesHub) return lookup(locale, `meta.titleGames${gameHubKey(seo.gamesHub)}`);
     return lookup(locale, "meta.titleGames");
   }
   if (seo.markets) return seo.market ? marketCopy(locale, seo.market).title : marketHub(locale).title;
@@ -961,7 +961,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
     return lookup(locale, seo.tutorial ? LEARN_DESC[seo.tutorial] : "meta.descLearn");
   }
   if (seo.games) {
-    if (seo.gamesHub) return lookup(locale, `meta.descGames${hubMeta(seo.gamesHub)}`);
+    if (seo.gamesHub) return lookup(locale, `meta.descGames${gameHubKey(seo.gamesHub)}`);
     return lookup(locale, "meta.descGames");
   }
   if (seo.markets) return seo.market ? marketCopy(locale, seo.market).description : marketHub(locale).description;
@@ -1016,10 +1016,6 @@ export function pageCanonical(
   if (seo.calories) return `https://cv.cm${caloriesHref(locale, seo.foodId ?? null)}`;
   if (seo.legalPage) return `https://cv.cm${legalHref(locale, seo.legalPage)}`;
   return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob ?? seo.resizeJob)}`;
-}
-
-function hubMeta(id: GameHubId): string {
-  return id[0].toUpperCase() + id.slice(1);
 }
 
 export function normalizeSeo(input: SeoInput | ToolId | null, clipId?: string | null): SeoInput {

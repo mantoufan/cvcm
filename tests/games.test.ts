@@ -55,7 +55,9 @@ describe("demo games", () => {
 describe("games routes", () => {
   it("parses the hub and the two sub-hubs", () => {
     expect(parseAppPath("/zh-cn/games/")).toEqual({ kind: "games", locale: "zh-CN", hub: null });
-    expect(parseAppPath("/en/games/mini/")).toEqual({ kind: "games", locale: "en", hub: "mini" });
+    expect(parseAppPath("/en/games/board/")).toEqual({ kind: "games", locale: "en", hub: "board" });
+    // The old all-games hub parses to /games/, so the Worker 301s it there.
+    expect(parseAppPath("/en/games/mini/")).toEqual({ kind: "games", locale: "en", hub: null });
     expect(parseAppPath("/en/games/3d/")).toEqual({ kind: "games", locale: "en", hub: "3d" });
     expect(parseAppPath("/games/")).toEqual({ kind: "bare-games", hub: null });
     expect(gamesHref("zh-CN", "3d")).toBe("/zh-cn/games/3d/");
@@ -72,7 +74,7 @@ describe("games routes", () => {
     // A game under another console's hub, a made-up id or a nested hub path was never a page.
     expect(parseAppPath("/en/games/gb/contra/")).toEqual({ kind: "unknown" });
     expect(parseAppPath("/en/games/fc/not-a-game/")).toEqual({ kind: "unknown" });
-    expect(parseAppPath("/en/games/mini/chess/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/games/board/chess/")).toEqual({ kind: "unknown" });
   });
 });
 
@@ -118,7 +120,7 @@ describe("games worker", () => {
     const bare = await worker.fetch(new Request("https://cv.cm/games/"), { ASSETS: assets });
     expect(bare.status).toBe(302);
     expect(bare.headers.get("Location")).toMatch(/\/games\/$/);
-    for (const path of ["/zh-cn/games/", "/en/games/mini/", "/en/games/3d/"]) {
+    for (const path of ["/zh-cn/games/", "/en/games/card/", "/en/games/3d/"]) {
       const html = await worker.fetch(new Request(`https://cv.cm${path}`), { ASSETS: assets });
       expect(html.status, path).toBe(200);
     }

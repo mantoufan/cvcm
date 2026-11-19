@@ -13,8 +13,8 @@ describe("3D games hub", () => {
     expect([...GAMES_3D]).toEqual([...CATEGORIES.find((c) => c.id === "games3d")!.tools]);
   });
 
-  it("is a tool hub next to the free online games hub", () => {
-    expect([...GAME_HUBS]).toEqual(["mini", "3d"]);
+  it("is a tag hub after the six kinds", () => {
+    expect([...GAME_HUBS]).toEqual(["board", "card", "puzzle", "word", "arcade", "sports", "3d"]);
     expect(isGameHubId("3d")).toBe(true);
     expect(isGameHubId("fc")).toBe(false);
   });

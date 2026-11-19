@@ -14,8 +14,8 @@ for loc in LOCALES:
     pack["meta"].update(src["meta"])
     pack["nav"]["games3d"] = src["nav"]
     consoles = pack["games"]["consoles"]
-    # Keep the hub order of GAME_HUBS (mini, 3d), then the emulator consoles.
-    pack["games"]["consoles"] = {k: v for k, v in [("mini", consoles["mini"]), ("3d", src["console"])] + [(k, v) for k, v in consoles.items() if k not in ("mini", "3d")]}
+    # The 3D tag hub's chip label (the kinds' labels come from the locale packs themselves).
+    consoles["3d"] = src["console"]
     pack["games"]["g3d"] = src["g3d"]
     pack["faq"]["games3d"] = src["faq"]
     pack["game3d"] = src["ui"]

@@ -1,11 +1,21 @@
 /**
- * Hubs under /games/: lists of cv.cm's own browser games (tool pages in BROWSER_GAMES and GAMES_3D).
+ * Hubs under /games/: cv.cm's own browser games by kind of play (GAME_KIND_TOOLS in path.ts), plus /games/3d/, a tag hub
+ * listing the 3D ones (GAMES_3D). Players search by kind ("card games" 301k, "board games" 368k, "puzzle games" 110k a
+ * month in the US) far more than by "3d games" (14.8k): docs/games-keyword-plan.md. /games/mini/ (all games in one
+ * list until 2026-11-19) 301s to /games/.
  * The emulator catalogue (one page per FC / SFC / GB / GBC / GBA / MD / Flash title) was retired on 2026-11-19: its
  * pages had no search impressions, and a fifth of them could not be played without the visitor's own ROM. The ROM
  * emulator and Flash player tools stay, with a few hosted open-source demo games (src/shared/demo-roms.ts).
  */
-export const GAME_HUBS = ["mini", "3d"] as const;
+export const GAME_KINDS = ["board", "card", "puzzle", "word", "arcade", "sports"] as const;
+export type GameKindId = (typeof GAME_KINDS)[number];
+export const GAME_HUBS = [...GAME_KINDS, "3d"] as const;
 export type GameHubId = (typeof GAME_HUBS)[number];
+
+/** Copy namespace of a hub's title and lead (a key cannot start with a digit in the copy tools, hence g3d). */
+export function gameHubNs(hub: GameHubId): string {
+  return hub === "3d" ? "games.g3d" : `games.kinds.${hub}`;
+}
 
 export function isGameHubId(value: string): value is GameHubId {
   return (GAME_HUBS as readonly string[]).includes(value);
@@ -19,11 +29,15 @@ export function isEmuConsoleId(value: string): value is EmuConsoleId {
   return (EMU_CONSOLES as readonly string[]).includes(value);
 }
 
+/** A hub id as a copy-key suffix: `meta.titleGames<Suffix>`, `faq.games<Suffix>` ("board" → "Board", "3d" → "3d"). */
+export function gameHubKey(hub: GameHubId): string {
+  return hub[0].toUpperCase() + hub.slice(1);
+}
+
 /** The FAQ copy namespace of a games hub page (shared by the page and its FAQPage JSON-LD). */
 export function gamesFaqBase(hub: GameHubId | null | undefined): string {
-  if (hub === "mini") return "faq.gamesMini";
-  if (hub === "3d") return "faq.games3d";
-  return "faq.games";
+  if (!hub) return "faq.games";
+  return `faq.games${gameHubKey(hub)}`;
 }
 
 /**

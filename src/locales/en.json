@@ -180,8 +180,6 @@
     "descCompound": "Estimate a future value in the browser. Principal, rate, years, compounding. Nothing is uploaded.",
     "titleVat": "VAT calculator — sales tax — cv.cm",
     "descVat": "Add VAT or split a gross price into net and tax in the browser. Nothing is uploaded.",
-    "titleGames": "Free browser games: solitaire, chess, mahjong and 3D games — cv.cm",
-    "descGames": "Free games that play in this tab: solitaire, spider solitaire, FreeCell, chess, Chinese chess, mahjong, sudoku, 2048, word games and 3D games. Nothing to download. Plus a ROM emulator and a Flash player with open-source games.",
     "titleReverse": "Reverse text — palindrome check — cv.cm",
     "descReverse": "Reverse text and check palindromes in the browser. Nothing is uploaded.",
     "titleUrlEncode": "URL encode decode — percent encoding — cv.cm",
@@ -706,8 +704,6 @@
     "descCalculateBac": "Estimate BAC step by step: grams of alcohol in a drink, the Widmark formula, how fast the body clears it, and what 0.08 %, 0.5 ‰ and 80 mg/100 mL mean. An estimate, never a reason to drive.",
     "titleCalculateSimpleInterest": "How to calculate simple interest: I = P × r × t with examples | cv.cm",
     "descCalculateSimpleInterest": "Simple interest in six steps: the formula, rates as decimals, months and days (365 or 360-day year), finding the principal, rate or time, and how it compares with compound interest.",
-    "titleGamesMini": "Free online games — solitaire, minesweeper, chess and more — cv.cm",
-    "descGamesMini": "Play free online games in your browser with no download: solitaire, spider solitaire, FreeCell, minesweeper, snake, chess, checkers, mahjong, 2048, word search and more. Works on phones.",
     "titleStandardDeviation": "Standard deviation calculator — sample and population, step by step — cv.cm",
     "descStandardDeviation": "Free standard deviation calculator: paste numbers to get the sample (n − 1) or population (n) standard deviation, variance, mean, standard error and coefficient of variation, with a step-by-step table of each deviation.",
     "titleSampleSize": "Sample size calculator — Cochran, Slovin's formula, finite population — cv.cm",
@@ -734,8 +730,6 @@
     "descDrivingGame": "Free 3D driving game in your browser: race three laps against the clock or slide through corners in drift mode. Three tracks, keyboard or touch controls, no download.",
     "titleFlightSimulator": "Flight simulator online — fly a plane in 3D for free — cv.cm",
     "descFlightSimulator": "Free online flight simulator in 3D: take off from the runway, fly over a low-poly island and land again, or race through 12 rings against the clock. No download; works with a keyboard or on a phone.",
-    "titleGames3d": "Free 3D games online — chess, pinball, pool, darts, driving — cv.cm",
-    "descGames3d": "Play free 3D games in your browser with no download: 3D chess, pinball, pool, billiards, snooker, air hockey, darts, a magic cube and solver, a stack game, a driving game and a flight simulator. Works on phones too.",
     "titleCitationGenerator": "Citation generator — APA, MLA, Chicago, Harvard, IEEE, Vancouver, GB/T 7714 — cv.cm",
     "descCitationGenerator": "Free citation generator: find a journal article by DOI or a book by ISBN, or type the details, and get the reference and in-text citation in APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver or GB/T 7714. Build a reference list; import and export BibTeX and RIS.",
     "titleApaCitationGenerator": "APA citation generator — APA 7th edition references and in-text citations — cv.cm",
@@ -783,7 +777,23 @@
     "titleTitleCase": "Title case converter — APA, MLA, Chicago, AP and sentence case — cv.cm",
     "descTitleCase": "Free title case converter: paste a title (or a list, one per line) and get it in APA 7, MLA 9, Chicago 17 or AP title case, or in sentence case for APA references. Keeps acronyms like DNA and COVID-19.",
     "titleWordsToPages": "Words to pages converter — how many pages is 1,000 words? — cv.cm",
-    "descWordsToPages": "Free words to pages converter: how many pages a word count fills in Times New Roman, Arial, Calibri or another font, single or double spaced, on Letter or A4. Paste your essay for an exact count, or turn pages into words."
+    "descWordsToPages": "Free words to pages converter: how many pages a word count fills in Times New Roman, Arial, Calibri or another font, single or double spaced, on Letter or A4. Paste your essay for an exact count, or turn pages into words.",
+    "titleGames": "Free online games — solitaire, chess, mahjong, sudoku and more — cv.cm",
+    "descGames": "Free games that play in this tab, sorted by kind: board games, card games, puzzle games, word and typing games, arcade games, sports and racing games. Nothing to download.",
+    "titleGames3d": "Free 3D games online — chess, pinball, pool, darts, driving — cv.cm",
+    "descGames3d": "Play free 3D games in your browser with no download: 3D chess, pinball, pool, billiards, snooker, air hockey, darts, a magic cube and solver, a stack game, a driving game and a flight simulator. Works on phones too.",
+    "titleGamesBoard": "Free board games online — chess, checkers, reversi, gomoku — cv.cm",
+    "descGamesBoard": "Play chess, Chinese chess, checkers, reversi, gomoku, Chinese checkers and tic-tac-toe in the browser against the computer or a friend. Free, no download.",
+    "titleGamesCard": "Free card games online — solitaire, spider solitaire, FreeCell — cv.cm",
+    "descGamesCard": "Play Klondike solitaire, spider solitaire and FreeCell free in the browser, with hints, undo, a timer and numbered deals. No download, no sign-up.",
+    "titleGamesPuzzle": "Free puzzle games online — sudoku, 2048, minesweeper, mahjong — cv.cm",
+    "descGamesPuzzle": "Play sudoku, 2048, minesweeper, mahjong solitaire, nonograms, a memory game and a 3D magic cube free in the browser. Logic and brain games, no download.",
+    "titleGamesWord": "Free word games and typing games — word search, hangman, typing — cv.cm",
+    "descGamesWord": "Play word search, hangman and a typing game, and learn touch typing with lessons, free in the browser and in eight languages. No download.",
+    "titleGamesArcade": "Free arcade games online — snake, dinosaur game, stack game — cv.cm",
+    "descGamesArcade": "Play the snake game, the dinosaur runner and a 3D stack game free in the browser, with keyboard or touch. Best scores stay in this browser.",
+    "titleGamesSports": "Free sports and racing games online — driving, flight, pool, darts — cv.cm",
+    "descGamesSports": "Play a 3D driving game, a flight simulator, pinball, 8-ball pool, billiards, snooker, air hockey and darts free in the browser. No download; the 3D part loads when you press Play."
   },
   "brand": "cv.cm",
   "nav": {
@@ -7765,7 +7775,7 @@
       "q2": "Do they work on a phone?",
       "a2": "Yes. Every game takes touch input. The 3D games need a browser with WebGL, which current phones have.",
       "q3": "Is my progress saved?",
-      "a3": "Games in progress and best scores stay in this browser. Nothing is uploaded. Clearing this site's data removes them.",
+      "a3": "Most games keep the game in progress and best scores in this browser. Nothing is uploaded. Clearing this site's data removes them.",
       "q4": "Can I play NES or Game Boy games?",
       "a4": "Yes, in the ROM emulator: open a ROM you have the right to use, or start one of its open-source games. cv.cm does not host commercial ROMs.",
       "q5": "Can I play Flash games?",
@@ -9515,16 +9525,6 @@
       "q5": "How is this different from the typing test?",
       "a5": "The typing test measures your speed on a passage in a set time. Typing practice teaches the keys one row at a time and shows which keys you miss most."
     },
-    "gamesMini": {
-      "q1": "Are these games really free?",
-      "a1": "Yes. Every game is free to play, with no sign-up and no download. Your progress stays in this browser.",
-      "q2": "Do they work on a phone?",
-      "a2": "Yes. Every game works with touch, and the board games and puzzles fit a phone screen. A keyboard helps in the typing game.",
-      "q3": "Which games are there?",
-      "a3": "Card games (solitaire, spider solitaire, FreeCell), puzzles (minesweeper, sudoku, nonogram, 2048, mahjong solitaire), board games against the computer (chess, Chinese chess, checkers, reversi, gomoku, Chinese checkers), word games and arcade games such as snake and the dinosaur game.",
-      "q4": "Can I play offline?",
-      "a4": "Most games keep working if the connection drops after the page has loaded. Chess and Chinese chess download their engine the first time the computer moves, so start that game before you go offline."
-    },
     "standard-deviation": {
       "q1": "How do you calculate standard deviation?",
       "a1": "Find the mean, subtract it from each value, square the differences and add them up. Divide that sum by n − 1 for a sample (or n for a whole population) to get the variance, then take the square root.",
@@ -9876,6 +9876,52 @@
       "a4": "For pasted text the tool lays out your own words with the font's real letter widths and Word's line heights, so the count is usually within a few lines. For a bare word count it uses an average English text; short or long words, headings, quotations and reference lists change the result.",
       "q5": "Does it work for Chinese, Japanese or Korean text?",
       "a5": "Pasted text in these languages is laid out with each character one em wide, as word processors do. Documents in these languages often use a document grid or other fonts, so treat the result as an estimate."
+    },
+    "gamesBoard": {
+      "q1": "Can I play against the computer?",
+      "a1": "Yes. Every board game has a computer opponent, and a two-player mode on one device.",
+      "q2": "Can I play with a friend online?",
+      "a2": "Not over the internet. Two players take turns on the same phone or computer.",
+      "q3": "Is my game saved?",
+      "a3": "Every board game except tic-tac-toe keeps a game in progress in this browser, so you can close the tab and continue later."
+    },
+    "gamesCard": {
+      "q1": "Which solitaire games are there?",
+      "a1": "Klondike (draw 1 or 3), spider solitaire with 1, 2 or 4 suits, and FreeCell.",
+      "q2": "Can I replay a deal?",
+      "a2": "Yes. Every deal has a number; enter it to play the same cards again. FreeCell numbers match the classic Windows deals.",
+      "q3": "Does it work on a phone?",
+      "a3": "Yes. Tap a card and then where it should go, or drag it. Double-tap sends a card to its best place."
+    },
+    "gamesPuzzle": {
+      "q1": "Are the puzzles solvable?",
+      "a1": "Yes. Every sudoku and nonogram has exactly one solution, and every mahjong deal can be cleared.",
+      "q2": "Are there difficulty levels?",
+      "a2": "Sudoku and minesweeper have several levels, up to expert, and the magic cube comes in sizes from 2×2 to 4×4.",
+      "q3": "Can I get a hint?",
+      "a3": "Sudoku, mahjong and the cube solver show hints or the next move when you ask."
+    },
+    "gamesWord": {
+      "q1": "Which languages do the word games use?",
+      "a1": "Word search and the typing games use the page's language; hangman has English, Spanish and Indonesian words.",
+      "q2": "Can I type with an input method?",
+      "a2": "Yes. The typing game checks the word after your input method finishes, so Chinese and Japanese input work.",
+      "q3": "Is the typing practice for beginners?",
+      "a3": "Yes. It starts on the home row and adds keys lesson by lesson; a lesson passes at 90% accuracy."
+    },
+    "gamesArcade": {
+      "q1": "How do I control the games?",
+      "a1": "Arrow keys or Space on a computer; swipe or tap on a phone.",
+      "q2": "Are best scores saved?",
+      "a2": "Yes, in this browser. Nothing is uploaded."
+    },
+    "gamesSports": {
+      "q1": "Do these games need a fast computer?",
+      "a1": "No. They are light 3D scenes; any recent phone or computer with WebGL plays them.",
+      "q2": "Can I play against someone?",
+      "a2": "Pool, billiards, snooker, air hockey and darts have a computer opponent, and pool, billiards and snooker also take two players on one device.",
+      "q3": "Do they work on a phone?",
+      "a3": "Yes. Each game shows touch controls on phones."
     }
   },
   "qr": {
@@ -10859,12 +10905,17 @@
     "mobile": "Touch pad on phones. A Bluetooth gamepad is better for fighters and karts.",
     "filterAll": "All",
     "hub": {
-      "title": "Free games to play in your browser",
-      "lead": "Card, board, puzzle, word and 3D games made for cv.cm. Nothing to install, and games in progress stay in this browser. For retro games, the ROM emulator and the Flash player have open-source games to try.",
+      "title": "Free online games",
+      "lead": "Board, card, puzzle, word, arcade and sports games made for cv.cm, sorted by kind. Nothing to install, and most games keep your progress in this browser. For retro games, the ROM emulator and the Flash player have open-source games to try.",
       "all": "See all"
     },
     "consoles": {
-      "mini": "Free online games",
+      "board": "Board games",
+      "card": "Card games",
+      "puzzle": "Puzzle games",
+      "word": "Word games",
+      "arcade": "Arcade games",
+      "sports": "Sports & racing",
       "3d": "3D games",
       "fc": "FC / NES",
       "sfc": "SFC / SNES",
@@ -10900,10 +10951,6 @@
       "emulator": "Ruffle (open source, GitHub)",
       "mobile": "A tap acts as a click. Games that need a keyboard are easier on a computer."
     },
-    "mini": {
-      "title": "Free online games",
-      "lead": "Classic browser games that play right here: solitaire, minesweeper, chess, mahjong, 2048, word games and more. Free, nothing to download, scores and games in progress kept in this browser."
-    },
     "g3d": {
       "title": "Free 3D games",
       "lead": "3D browser games that play right here: chess on a 3D board, pinball, 8-ball pool, a billiards trainer (9-ball, Chinese 8-ball, pyramid, three-cushion), snooker, air hockey, darts, a magic cube with a solver, a stack game, a driving and drift game and a flight simulator. Free, nothing to install; the 3D part loads only when you press Play."
@@ -10917,6 +10964,32 @@
       "lead": "Their authors released these games under open licenses, so they start here without a file.",
       "source": "Source",
       "playing": "Playing {title}."
+    },
+    "kinds": {
+      "board": {
+        "title": "Free board games online",
+        "lead": "Chess, 3D chess, Chinese chess, checkers, reversi, gomoku, Chinese checkers and tic-tac-toe. Play the computer at the level you pick, or a friend on the same device."
+      },
+      "card": {
+        "title": "Free card games online",
+        "lead": "Solitaire (Klondike), spider solitaire and FreeCell, with hints, undo and numbered deals you can replay."
+      },
+      "puzzle": {
+        "title": "Free puzzle games online",
+        "lead": "Sudoku, 2048, minesweeper, mahjong solitaire, nonograms, a memory game, a 3D magic cube and a cube solver. Logic and brain games for a few minutes or an hour."
+      },
+      "word": {
+        "title": "Free word and typing games",
+        "lead": "Word search, hangman, a typing game with falling words and touch-typing lessons."
+      },
+      "arcade": {
+        "title": "Free arcade games online",
+        "lead": "Quick arcade games: the snake game, the dinosaur runner and a 3D stack game. One more try, then one more."
+      },
+      "sports": {
+        "title": "Free sports and racing games",
+        "lead": "3D sports and racing: a driving and drift game, a flight simulator, pinball, 8-ball pool, billiards, snooker, air hockey and darts."
+      }
     }
   },
   "reverse": {

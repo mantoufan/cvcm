@@ -76,7 +76,7 @@ describe("sitemap", () => {
     const counts = SITEMAP_SECTIONS.map((section) => sections[section].match(/<loc>/g)?.length ?? 0);
     expect(counts.every((count) => count > 0)).toBe(true);
     expect(counts.reduce((a, b) => a + b, 0)).toBe(sitemapPages().length);
-    expect(sections.games).toContain(`https://cv.cm${gamesHref("en", "mini")}`);
+    expect(sections.games).toContain(`https://cv.cm${gamesHref("en", "puzzle")}`);
     expect(sections.games).not.toContain(`https://cv.cm${appHref("en", "qr")}`);
     expect(sections.learn).toContain(`https://cv.cm${kbHref("ja", null)}`);
     expect(parseAppPath("/sitemaps/nope.xml")).toEqual({ kind: "unknown" });

@@ -2,8 +2,8 @@ import { crumbNav, homeCrumb, type Crumb } from "../crumb";
 import { h } from "../dom";
 import { linkList } from "../links";
 import { locale, t } from "../i18n";
-import { GAME_HUBS, gamesFaqBase, type GameHubId } from "../../shared/games";
-import { BROWSER_GAMES, GAMES_3D, appHref, gamesHref, type ToolId } from "../../shared/path";
+import { GAME_HUBS, GAME_KINDS, gameHubNs, gamesFaqBase, type GameHubId } from "../../shared/games";
+import { appHref, gamesHref, hubGames, type ToolId } from "../../shared/path";
 
 type Loc = ReturnType<typeof locale>;
 
@@ -15,27 +15,18 @@ function hubCrumb(loc: Loc, hub: GameHubId | null): HTMLElement {
     : [homeCrumb(loc), { label: t("nav.games") }]);
 }
 
-/** Copy namespace of a sub-hub (a key cannot start with a digit in the copy tools). */
-function hubNs(hub: GameHubId): string {
-  return hub === "3d" ? "games.g3d" : "games.mini";
-}
-
-function hubGames(hub: GameHubId): readonly ToolId[] {
-  return hub === "3d" ? GAMES_3D : BROWSER_GAMES;
-}
-
 function toolLinks(loc: Loc, list: readonly ToolId[]): HTMLElement {
   return linkList(list.map((id) => ({ href: appHref(loc, id), name: t(`tools.${id}.name`), blurb: t(`tools.${id}.blurb`), nav: id })));
 }
 
-/** /games/ lists every cv.cm game by hub; /games/mini/ and /games/3d/ list one hub. */
+/** /games/ lists every cv.cm game by kind; /games/<kind>/ and the /games/3d/ tag hub list one. */
 export function mountGamesHub(host: HTMLElement, hub: GameHubId | null): void {
   const loc = locale();
   host.append(
     hubCrumb(loc, hub),
     h("header", { class: "tool-head" },
-      h("h1", null, hub ? t(`${hubNs(hub)}.title`) : t("games.hub.title")),
-      h("p", { class: "lede" }, hub ? t(`${hubNs(hub)}.lead`) : t("games.hub.lead")),
+      h("h1", null, hub ? t(`${gameHubNs(hub)}.title`) : t("games.hub.title")),
+      h("p", { class: "lede" }, hub ? t(`${gameHubNs(hub)}.lead`) : t("games.hub.lead")),
     ),
     h("nav", { class: "game-filters", "aria-label": t("nav.games") },
       h("div", { class: "game-filter-row" },
@@ -45,11 +36,12 @@ export function mountGamesHub(host: HTMLElement, hub: GameHubId | null): void {
     ),
     ...(hub
       ? [h("section", { class: "wall" },
-        h("h2", { class: "sr-only" }, t(`${hubNs(hub)}.title`)),
+        h("h2", { class: "sr-only" }, t(`${gameHubNs(hub)}.title`)),
         toolLinks(loc, hubGames(hub)),
       )]
-      : GAME_HUBS.map((id) => h("section", { class: "wall", "aria-labelledby": `games-${id}-title` },
-        h("h2", { id: `games-${id}-title` }, t(`${hubNs(id)}.title`)),
+      // Each kind once; 3D is a tag, so its games already appear under their kind (the chip above links its hub).
+      : GAME_KINDS.map((id) => h("section", { class: "wall", "aria-labelledby": `games-${id}-title` },
+        h("h2", { id: `games-${id}-title` }, h("a", { href: gamesHref(loc, id), "data-nav": `games-${id}` }, t(`${gameHubNs(id)}.title`))),
         toolLinks(loc, hubGames(id)),
       ))),
     h("section", { class: "wall", "aria-labelledby": "games-emu-title" },
