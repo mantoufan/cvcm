@@ -623,6 +623,15 @@ describe("test pages: scoring", () => {
     }
   });
 
+  it("never puts the strongest in-love answer where the crush quiz puts its strongest answer", () => {
+    const crush = QUIZ_DEFS.crush;
+    const love = QUIZ_DEFS["am-i-in-love"];
+    if (crush.type !== "choice" || love.type !== "choice") throw new Error();
+    love.items.forEach((item, i) => {
+      expect(item.options.findIndex((o) => o.love === 3), `q${i + 1}`).not.toBe(crush.items[i].options.findIndex((o) => o.signs === 3));
+    });
+  });
+
   it("lets every DISC style and learning style win, spreads ties and keeps the results level", () => {
     for (const [id, per] of [["disc", 5], ["learning-style", 4]] as const) {
       const def = QUIZ_DEFS[id];

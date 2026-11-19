@@ -1002,8 +1002,25 @@ const BIRD = relabel(GHIBLI, { chihiro: "owl", san: "eagle", kiki: "parrot", sop
 /** Eight dinosaurs: the `GHIBLI` layout with the results renamed. */
 const DINOSAUR = relabel(GHIBLI, { chihiro: "trex", san: "triceratops", kiki: "velociraptor", sophie: "stegosaurus", nausicaa: "brachiosaurus", howl: "ankylosaurus", haku: "spinosaurus", totoro: "parasaurolophus" });
 
-/** Signs of being in love: the `CRUSH` layout (0 to 3 points an answer, each weight three times in each position). */
-const IN_LOVE = relabel(CRUSH, { signs: "love" });
+/**
+ * Signs of being in love, 0 to 3 points an answer: the `CRUSH` weights with every question's options moved one place to
+ * the left, so each weight still sits three times in each position, but the strongest answer never sits where it does
+ * in the crush quiz next to it on the hub.
+ */
+const IN_LOVE: ChoiceItem[] = [
+  { options: [{ love: 1 }, { love: 2 }, { love: 3 }, { love: 0 }] },
+  { options: [{ love: 0 }, { love: 3 }, { love: 1 }, { love: 2 }] },
+  { options: [{ love: 1 }, { love: 2 }, { love: 0 }, { love: 3 }] },
+  { options: [{ love: 3 }, { love: 2 }, { love: 1 }, { love: 0 }] },
+  { options: [{ love: 2 }, { love: 3 }, { love: 0 }, { love: 1 }] },
+  { options: [{ love: 2 }, { love: 1 }, { love: 3 }, { love: 0 }] },
+  { options: [{ love: 0 }, { love: 1 }, { love: 2 }, { love: 3 }] },
+  { options: [{ love: 3 }, { love: 0 }, { love: 1 }, { love: 2 }] },
+  { options: [{ love: 0 }, { love: 3 }, { love: 2 }, { love: 1 }] },
+  { options: [{ love: 1 }, { love: 0 }, { love: 3 }, { love: 2 }] },
+  { options: [{ love: 2 }, { love: 1 }, { love: 0 }, { love: 3 }] },
+  { options: [{ love: 3 }, { love: 0 }, { love: 2 }, { love: 1 }] },
+];
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
@@ -1682,6 +1699,7 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
  * less often go with depression, but the WHO-5 asks nothing about self-harm. Where both apply, the crisis box wins.
  * Not insomnia: its "see a doctor" is sleep advice, and these are emotional-support lines; its high band links the
  * depression check instead (FOLLOW_UP).
+ * Anger's high band is in: its copy says to get help now, and someone that angry is often in distress too.
  */
 export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   "wellbeing-index": ["low"],
@@ -1691,7 +1709,6 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   stress: ["high"],
   "social-anxiety": ["high"],
   ocd: ["many"],
-  // Its high band tells people to get help now if someone has been or might be hurt.
   anger: ["high"],
 };
 
