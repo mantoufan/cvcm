@@ -1,9 +1,8 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { controls, demoPicker, gameEmpty, gameFrame, linkedDemo } from "../games/player";
+import { controls, demoPicker, forgetRetiredRoms, gameEmpty, gameFrame } from "../games/player";
 import { ROM_DEMOS } from "../../shared/demo-roms";
-import { clearDraft } from "../session";
-import { GAME_ROM_BASE, LEGACY_GAME_IDS } from "../../shared/games";
+import { GAME_ROM_BASE } from "../../shared/games";
 import { gamesHref } from "../../shared/path";
 import { MAX_ROM_BYTES, ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, type RomConsoleId } from "../../shared/rom-detect";
 
@@ -37,6 +36,8 @@ export function mountRomEmulator(host: HTMLElement): void {
   let reading = false;
   // The demo game now running, if any: its console is fixed, so the select shows it and the next file starts on Auto.
   let demoConsole: RomConsoleId | null = null;
+  // The visitor chose a console after the running game started (during a demo, or while the next file loads).
+  let choiceForNext = false;
   // Arrowing through a closed select changes it once per key, so focus stays there until the visitor leaves it.
   let keyed = false;
 
@@ -86,8 +87,9 @@ export function mountRomEmulator(host: HTMLElement): void {
       reading = false;
       // A choice made for the last file or shown for a demo says nothing about this one; one made before any file is
       // the answer for it.
-      if (rom || demoConsole) select.value = AUTO;
+      if ((rom || demoConsole) && !choiceForNext) select.value = AUTO;
       demoConsole = null;
+      choiceForNext = false;
       rom = { name: file.name, buffer };
       play();
     }).catch(() => {
@@ -103,6 +105,7 @@ export function mountRomEmulator(host: HTMLElement): void {
     rom = null;
     running = null;
     demoConsole = demo.console;
+    choiceForNext = false;
     select.value = demoConsole;
     status.textContent = t("games.demos.playing", { title: demo.title });
     controlsHost.replaceChildren(controls(demo.console));
@@ -112,8 +115,12 @@ export function mountRomEmulator(host: HTMLElement): void {
   };
   select.addEventListener("keydown", () => { keyed = true; });
   select.addEventListener("change", () => {
-    // Chosen while a demo plays: the demo keeps running, and the choice is the answer for the next file.
-    if (!rom) demoConsole = null;
+    // Chosen while a demo plays or a file loads: the choice is the answer for that next file.
+    if (!rom || reading) {
+      demoConsole = null;
+      choiceForNext = true;
+      if (!rom && !keyed) focus();
+    }
     play();
     keyed = false;
   });
@@ -136,26 +143,7 @@ export function mountRomEmulator(host: HTMLElement): void {
     ),
     h("p", { class: "more" }, h("a", { href: gamesHref(loc, null), "data-nav": "games" }, t("romEmulator.games"))),
   );
-  const linked = linkedDemo(ROM_DEMOS);
-  if (linked) startDemo(linked);
   forgetRetiredRoms();
-}
-
-const FORGOT_KEY = "cvcm.emu.forgotRoms";
-
-/**
- * The retired game pages could keep a visitor's own ROM in IndexedDB ("rom:<game id>", Remember in this browser). Those
- * pages are gone, and with them the Forget button, so clear what they stored, once per browser.
- */
-function forgetRetiredRoms(): void {
-  try {
-    if (localStorage.getItem(FORGOT_KEY)) return;
-    localStorage.setItem(FORGOT_KEY, "1");
-  } catch {
-    return;
-  }
-  if (typeof indexedDB === "undefined") return;
-  for (const id of LEGACY_GAME_IDS) clearDraft(`rom:${id}`).catch(() => {});
 }
 
 export function unmountRomEmulator(): void {

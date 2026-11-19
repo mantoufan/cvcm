@@ -337,15 +337,40 @@ describe("tool pages", () => {
     expect(frameSrc.at(-1)).toContain("core=snes");
   });
 
-  it("starts the demo a retired game page links to", () => {
-    history.replaceState(null, "", "/en/rom-emulator/#demo-porklike-gb");
-    try {
-      mountRomEmulator(host);
-      expect(frameSrc.at(-1)).toContain(`rom=${encodeURIComponent("/emu/roms/porklike-gb.gb")}`);
-      expect(q<HTMLSelectElement>("select").value).toBe("gb");
-    } finally {
-      history.replaceState(null, "", "/");
+  it("marks the demo a retired game page links to, without loading anything at mount", () => {
+    for (const [mount, path, id] of [
+      [mountRomEmulator, "/en/rom-emulator/#demo-porklike-gb", "porklike-gb"],
+      [mountFlashPlayer, "/en/flash-player/#demo-ending", "ending"],
+    ] as const) {
+      history.replaceState(null, "", path);
+      try {
+        host.replaceChildren();
+        mount(host);
+        expect(host.querySelector(`[data-demo="${id}"]`)?.getAttribute("aria-current"), id).toBe("true");
+        expect(host.querySelectorAll("[data-demo][aria-current]"), id).toHaveLength(1);
+        expect(frameSrc.filter((src) => src !== "about:blank"), id).toEqual([]);
+      } finally {
+        history.replaceState(null, "", "/");
+      }
     }
+  });
+
+  it("keeps a console chosen while the next file loads", async () => {
+    mountRomEmulator(host);
+    await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));
+    let finish: (buffer: ArrayBuffer) => void = () => {};
+    const slow = new File([new Uint8Array(64) as BlobPart], "b.bin");
+    Object.defineProperty(slow, "arrayBuffer", { value: () => new Promise<ArrayBuffer>((resolve) => { finish = resolve; }) });
+    const input = q<HTMLInputElement>("input[type=file]");
+    Object.defineProperty(input, "files", { configurable: true, get: () => [slow] });
+    input.dispatchEvent(new Event("change"));
+    const select = q<HTMLSelectElement>("select");
+    select.value = "md";
+    select.dispatchEvent(new Event("change"));
+    finish(new ArrayBuffer(128 * 1024));
+    await flush();
+    expect(select.value).toBe("md");
+    expect(frameSrc.at(-1)).toContain("core=segaMD");
   });
 
   it("offers only the Flash demos on the Flash player", () => {

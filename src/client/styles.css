@@ -517,6 +517,7 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .game-demos { margin: 0.6rem 0 0.4rem; }
 .game-demos h2 { margin: 0 0 0.3rem; font-size: 1.05rem; }
 .game-demo-row { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin: 0.4rem 0; }
+.game-demo-row .btn.on { border-color: var(--pink-deep); background: var(--pink-soft); color: var(--pink-deep); }
 .game-demo-console { min-width: 4.5rem; color: var(--ink-soft); font-size: 0.86rem; }
 .game-demo-credits { margin: 0.3rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.15rem; }
 .game-section { margin: 1.4rem 0; }

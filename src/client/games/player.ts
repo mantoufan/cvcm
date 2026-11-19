@@ -3,6 +3,7 @@ import { locale, t } from "../i18n";
 import { CONSOLE_CONTROLS } from "../../shared/game-controls";
 import type { DemoRom } from "../../shared/demo-roms";
 import { GAME_ROM_BASE, type EmuConsoleId } from "../../shared/games";
+import { clearDraftsWithPrefix } from "../session";
 
 const GAME_SCROLL_KEYS = new Set(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "]);
 
@@ -75,6 +76,9 @@ export function gameEmpty(spec: { flash: boolean; picker: HTMLInputElement; hidd
 
 /** Buttons that start one of the hosted open-source games (src/shared/demo-roms.ts), with their credit lines. */
 export function demoPicker<T extends DemoRom>(roms: readonly T[], start: (rom: T) => void): HTMLElement {
+  // A retired game page redirects to #demo-<id>: that game's button is marked, for the visitor to start (a mount makes
+  // no network calls, so it does not boot the emulator by itself).
+  const linked = linkedDemo(roms);
   return h("section", { class: "game-demos", "aria-labelledby": "game-demos-title" },
     h("h2", { id: "game-demos-title" }, t("games.demos.title")),
     h("p", { class: "game-note" }, t("games.demos.lead")),
@@ -83,7 +87,7 @@ export function demoPicker<T extends DemoRom>(roms: readonly T[], start: (rom: T
       h("div", { class: "game-demo-row" },
         ...(all.length > 1 ? [h("span", { class: "game-demo-console" }, t(`games.consoles.${consoleId}`))] : []),
         ...roms.filter((rom) => rom.console === consoleId).map((rom) => {
-          const button = h("button", { class: "btn ghost", type: "button", "data-demo": rom.id }, rom.title) as HTMLButtonElement;
+          const button = h("button", { class: "btn ghost" + (rom === linked ? " on" : ""), type: "button", "data-demo": rom.id, "aria-current": rom === linked ? "true" : undefined }, rom.title) as HTMLButtonElement;
           button.addEventListener("click", () => start(rom));
           return button;
         }),
@@ -97,6 +101,28 @@ export function demoPicker<T extends DemoRom>(roms: readonly T[], start: (rom: T
       ),
     ),
   );
+}
+
+const FORGOT_KEY = "cvcm.emu.forgotRoms";
+
+/**
+ * The retired game pages could keep a visitor's own ROM or SWF in IndexedDB ("rom:<game id>", Remember in this browser).
+ * Those pages are gone, and with them the Forget button, so both players clear what they stored, once per browser
+ * (marked only after the delete succeeded).
+ */
+export function forgetRetiredRoms(): void {
+  try {
+    if (typeof indexedDB === "undefined" || localStorage.getItem(FORGOT_KEY)) return;
+  } catch {
+    return;
+  }
+  clearDraftsWithPrefix("rom:").then(() => {
+    try {
+      localStorage.setItem(FORGOT_KEY, "1");
+    } catch {
+      /* tried again next visit */
+    }
+  }).catch(() => {});
 }
 
 /** The demo a `#demo-<id>` link asks for (a retired game page redirects there), if it is one of these. */
@@ -155,8 +181,7 @@ export function player(spec: { name: string; demos?: readonly DemoRom[] }): HTML
     ...(spec.demos?.length ? [demoPicker(spec.demos, startDemo)] : []),
     controls("flash"),
   );
-  const linked = linkedDemo(spec.demos ?? []);
-  if (linked) queueMicrotask(() => startDemo(linked));
+  forgetRetiredRoms();
   return box;
 }
 

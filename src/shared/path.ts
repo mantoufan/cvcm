@@ -631,9 +631,16 @@ export type RetiredGameTool = "rom-emulator" | "flash-player";
 /** Where a retired catalogue page went: its emulator tool, and the game when it is one of the hosted demos. */
 export type RetiredGame = { tool: RetiredGameTool; demo: string | null };
 
-/** The URL a retired page redirects to: the tool, with `#demo-<id>` so a hosted demo starts there. */
-export function retiredGameHref(locale: Locale, retired: RetiredGame): string {
-  return appHref(locale, retired.tool) + (retired.demo ? `#demo-${retired.demo}` : "");
+/**
+ * Where a retired page redirects (the Worker's 301 and the client router alike): the tool, `#demo-<id>` when the game
+ * is a hosted demo, and the query without the old genre filter (campaign tags are kept).
+ */
+export function retiredGameUrl(locale: Locale, retired: RetiredGame, origin: string, search: string): string {
+  const next = new URL(appHref(locale, retired.tool), origin);
+  next.search = search;
+  next.searchParams.delete("genre");
+  if (retired.demo) next.hash = `demo-${retired.demo}`;
+  return next.toString();
 }
 
 function retired(consoleId: EmuConsoleId, id: string | null): RetiredGame {
