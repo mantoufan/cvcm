@@ -164,6 +164,8 @@ Browser tools plus a tiny cloud clipboard.
 - **Pool game** / 台球 — 8-ball pool against the computer or a friend. [Open](https://cv.cm/en/pool-game/)
 - **Air hockey** / 桌上冰球 — first to seven against the computer. [Open](https://cv.cm/en/air-hockey/)
 - **Darts** / 飞镖 — 501, around the clock and practice. [Open](https://cv.cm/en/darts/)
+- **Billiards** / 台球 — 3D 8-ball, 9-ball, 10-ball, Chinese 8-ball, Russian pyramid and three-cushion against the computer, a friend or solo, with spin, drills, rules and a switchable aim line. [Open](https://cv.cm/en/billiards/)
+- **Snooker** / 斯诺克 — full 3D snooker frames (15 or 6 reds) with fouls, breaks and practice drills. [Open](https://cv.cm/en/snooker/)
 - **Color blindness test** / 色盲测试 — red–green and blue–yellow screening with dot plates. [Open](https://cv.cm/en/color-blindness-test/)
 - **Military time converter** / 24小时制转换 — 1430 ↔ 2:30 PM, how to say it, Zulu time. [Open](https://cv.cm/en/military-time/)
 - **Height calculator** / 身高预测 — a child's adult height from parents and growth charts. [Open](https://cv.cm/en/height-calculator/)

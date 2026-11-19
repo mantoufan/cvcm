@@ -735,7 +735,7 @@
     "titleFlightSimulator": "Simulator pesawat online — game pesawat 3D gratis — cv.cm",
     "descFlightSimulator": "Simulator pesawat 3D gratis di browser: lepas landas dari landasan, terbang di atas pulau low-poly lalu mendarat lagi, atau lewati 12 cincin melawan waktu. Tanpa unduhan; bisa dengan keyboard atau di HP.",
     "titleGames3d": "Game 3D online gratis — catur 3D, pinball, biliar, dart, mobil — cv.cm",
-    "descGames3d": "Main game 3D gratis di browser tanpa unduhan: catur 3D, pinball, biliar, air hockey, dart, kubus rubik dan pemecahnya, game menumpuk balok, game mobil, dan simulator pesawat. Bisa di HP juga.",
+    "descGames3d": "Main game 3D gratis di browser tanpa unduhan: catur 3D, pinball, biliar, snooker, air hockey, dart, kubus rubik dan pemecahnya, game menumpuk balok, game mobil, dan simulator pesawat. Bisa di HP juga.",
     "titleCitationGenerator": "Generator daftar pustaka & sitasi — APA, MLA, Chicago, Harvard, IEEE, Vancouver — cv.cm",
     "descCitationGenerator": "Generator daftar pustaka gratis: cari artikel jurnal lewat DOI atau buku lewat ISBN, atau ketik datanya, lalu dapatkan daftar pustaka dan sitasi dalam teks gaya APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver atau GB/T 7714. Susun daftar pustaka skripsi; impor dan ekspor BibTeX dan RIS.",
     "titleApaCitationGenerator": "Generator sitasi APA — daftar pustaka APA 7 dan sitasi dalam teks — cv.cm",
@@ -775,7 +775,11 @@
     "titleCiteHarvard": "Cara membuat daftar pustaka gaya Harvard (Cite Them Right) | cv.cm",
     "descCiteHarvard": "Referensi Harvard dalam enam langkah: penulis dan tahun, judul, artikel jurnal, buku dan situs web dengan tanggal akses, sitasi dalam teks, dan daftar pustaka, dengan contoh dan generator gratis.",
     "titlePressurePointsMap": "Peta titik akupresur: titik pijat & refleksi kaki interaktif — cv.cm",
-    "descPressurePointsMap": "Peta titik akupresur interaktif gratis: ketuk sebuah titik di wajah, leher, tangan, lengan, tungkai, atau kaki untuk melihat letaknya dalam lebar jari, cara menekannya, dan untuk apa titik itu secara tradisional digunakan, lengkap dengan pengatur waktu tahan. Termasuk peta titik refleksi kaki. Untuk relaksasi, bukan nasihat medis."
+    "descPressurePointsMap": "Peta titik akupresur interaktif gratis: ketuk sebuah titik di wajah, leher, tangan, lengan, tungkai, atau kaki untuk melihat letaknya dalam lebar jari, cara menekannya, dan untuk apa titik itu secara tradisional digunakan, lengkap dengan pengatur waktu tahan. Termasuk peta titik refleksi kaki. Untuk relaksasi, bukan nasihat medis.",
+    "titleBilliards": "Game billiard online gratis — 3D 8 ball, 9 ball, 8 ball Tiongkok dan carom, plus aturan — cv.cm",
+    "descBilliards": "Main game billiard 3D gratis: 8 ball, 9 ball, 10 ball, 8 ball Tiongkok, Piramida Rusia, 3 cushion dan snooker lawan komputer, teman, atau latihan sendiri, dengan efek bola, latihan, aturan tiap game, dan garis bidik yang bisa dimatikan.",
+    "titleSnooker": "Game snooker — main snooker 3D online gratis, dengan aturan dan latihan — cv.cm",
+    "descSnooker": "Main snooker 3D gratis: satu frame penuh 15 bola merah atau game cepat 6 bola merah lawan komputer, teman, atau sendiri, dengan skor dan pelanggaran sungguhan, efek bola putih, latihan tembakan jauh dan clearance, serta garis bidik yang bisa dimatikan."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1733,6 +1737,14 @@
     "pressure-points-map": {
       "name": "Peta titik akupresur",
       "blurb": "Titik akupresur dan bagan refleksi kaki."
+    },
+    "billiards": {
+      "name": "Billiard",
+      "blurb": "Pool 3D, 8 ball Tiongkok, piramida, dan carom dengan aturan dan latihan."
+    },
+    "snooker": {
+      "name": "Snooker",
+      "blurb": "Frame snooker 3D penuh dengan pelanggaran, break, dan latihan."
     }
   },
   "watermark": {
@@ -6576,6 +6588,48 @@
       "a4": "Praktik tradisional menyarankan untuk tidak memberi tekanan kuat pada LI4 (Hegu), SP6 (Sanyinjiao), dan GB21 (Jianjing) selama kehamilan. Jika Anda sedang hamil, tanyakan dulu kepada bidan atau dokter sebelum menggunakan akupresur.",
       "q5": "Apakah bagan refleksi kaki bisa menunjukkan apa yang salah dengan tubuh saya?",
       "a5": "Tidak. Bagan refleksi adalah peta tradisional, bukan anatomi, dan tidak ada bukti yang baik bahwa kaki menunjukkan atau memengaruhi masalah pada organ. Pijat kaki bisa terasa menenangkan, tetapi jangan pernah menggunakannya untuk memeriksa gejala: nyeri dada, kelemahan mendadak, atau sesak napas memerlukan penanganan darurat."
+    },
+    "billiards": {
+      "q1": "Bagaimana cara main billiard di sini?",
+      "a1": "Pilih game lalu tekan Main. Seret di atas meja untuk membidik: pada tampilan atas, stik mengarah ke titik yang Anda sentuh, dan pada tampilan 3D di belakang bola, seret ke samping untuk memutar. Atur tenaga dengan penggeser, ketuk gambar bola putih untuk menambah efek, lalu tekan Tembak. Di keyboard, ← dan → memutar (tahan Shift untuk putaran halus), ↑ dan ↓ mengubah tenaga, Space menembak, dan C mengganti kamera. Saat ball in hand, seret bola putih ke posisi yang Anda mau.",
+      "q2": "Apa aturan 8 ball?",
+      "a2": "Satu pemain mengambil bola penuh (1–7) dan lawannya bola belang (9–15); meja tetap terbuka sampai seseorang memasukkan bola secara sah setelah break, dan bola itu menentukan kelompoknya. Anda harus mengenai salah satu bola Anda lebih dulu, dan setelah sentuhan itu harus ada bola yang masuk atau ada bola yang mengenai bantalan. Habiskan kelompok Anda, lalu masukkan bola 8 untuk menang. Memasukkan bola 8 terlalu dini, atau saat pelanggaran, berarti kalah. Pelanggaran memberi lawan ball in hand di mana saja di meja.",
+      "q3": "Apa aturan 9 ball dan 10 ball?",
+      "a3": "Keduanya game urutan: bola putih harus mengenai bola bernomor terendah di meja lebih dulu, dan bola apa pun yang masuk setelahnya membuat Anda tetap main. Di 9 ball, memasukkan bola 9 secara sah menang kapan saja, bahkan saat break atau lewat kombinasi. Di 10 ball, bola 10 di sini harus masuk paling akhir, jadi bola 10 yang masuk terlalu cepat dikembalikan ke titiknya. Pelanggaran (tidak mengenai bola terendah, tidak ada bola mengenai bantalan setelah sentuhan, atau bola putih masuk lubang) memberi ball in hand di mana saja.",
+      "q4": "Apa itu 8 ball Tiongkok?",
+      "a4": "8 ball Tiongkok (中式台球, juga disebut heiba) memakai bola dan aturan 8 ball di meja seukuran meja pool 9 kaki, tetapi dengan bantalan ala snooker dan lubang membulat yang jauh lebih sempit, jadi bidikan harus akurat. Break yang sah butuh satu bola masuk atau empat bola sasaran mengenai bantalan, dan setiap pelanggaran memberi lawan ball in hand gratis di mana saja.",
+      "q5": "Apa itu Piramida Rusia?",
+      "a5": "Piramida Rusia (русский бильярд) dimainkan di meja 12 kaki dengan lima belas bola gading besar 68 mm dan satu bola putih berwarna, dan lubangnya hanya beberapa milimeter lebih lebar dari bola. Halaman ini memainkan piramida bebas: setiap bola yang Anda masukkan dapat satu poin, memasukkan bola putih setelah mengenai bola lain juga dapat poin dan memberi ball in hand dari area dapur, pelanggaran mengurangi satu poin, dan yang pertama mencapai 8 poin menang.",
+      "q6": "Bagaimana cara kerja 3 cushion?",
+      "a6": "3 cushion adalah game carom di meja tanpa lubang, dengan tiga bola: bola putih Anda (putih atau kuning), bola putih lawan, dan bola merah. Anda mendapat satu poin bila bola putih Anda menyentuh kedua bola lain dan mengenai bantalan minimal tiga kali sebelum menyentuh bola kedua. Mencetak poin membuat Anda tetap main; meleset menyerahkan giliran. Di sini yang pertama mencapai 10 poin menang.",
+      "q7": "Bisakah garis bidik dimatikan?",
+      "a7": "Bisa. Bantuan bidik punya tiga pengaturan: prediksi penuh menggambar jalur semua bola yang akan bergerak akibat tembakan, dihitung dengan fisika yang sama dengan game; garis bidik menampilkan garis stik, bola bayangan, serta arah bola sasaran dan bola putih setelah sentuhan; mati hanya menampilkan stik, seperti di meja sungguhan. Kurangi bantuannya seiring bidikan Anda makin baik.",
+      "q8": "Bagaimana efek, tarik, dan dorong bekerja?",
+      "a8": "Ketuk gambar bola putih di titik yang akan dikenai ujung stik. Di bawah tengah adalah tarik (draw/screw): bola putih mundur setelah menumbuk. Di atas tengah adalah dorong (follow): bola putih terus maju setelah bola sasaran. Tepat di tengah pada tumbukan penuh membuat bola putih berhenti. Sisi kiri dan kanan mengubah sudut pantulan dari bantalan. Bola mula-mula meluncur lalu mencengkeram kain saat menggelinding, jadi efek yang sama bereaksi berbeda pada jarak yang berbeda.",
+      "q9": "Aturan mana yang disederhanakan di sini?",
+      "a9": "Tembakan tidak perlu diumumkan, jadi bola apa pun yang masuk secara sah dihitung dan bola 10 di 10 ball harus masuk paling akhir. Tidak ada push-out dan tidak ada aturan tiga pelanggaran di 9 ball, dan tidak ada pilihan susun ulang setelah bola 8 masuk saat break (bola dikembalikan ke titiknya). Snooker tidak punya aturan miss atau free ball. Selebihnya mengikuti aturan umum WPA, 8 ball Tiongkok, piramida, dan UMB. Dengan ball in hand di belakang garis kepala dan semua bola sah juga di belakangnya, Anda boleh langsung mengenai salah satunya (WPA akan menaruh bola terdekat di titik).",
+      "q10": "Bisakah dimainkan di HP?",
+      "a10": "Bisa. Seret di atas meja untuk membidik, pakai tombol ⟲ ⟳ untuk putaran besar dan ‹ › untuk putaran kecil, lalu penggeser tenaga dan Tembak. Tampilan atas memperlihatkan seluruh meja di layar sempit, dan layar penuh memberi ruang terbesar. Pengaturan Anda tersimpan di browser ini, dan tidak ada yang dikirim ke mana pun."
+    },
+    "snooker": {
+      "q1": "Bagaimana cara main snooker di sini?",
+      "a1": "Tekan Main dan mulai dari D. Seret di atas meja untuk membidik (pada tampilan atas stik mengarah ke titik yang Anda sentuh; di belakang bola, seret ke samping), atur tenaga dengan penggeser, ketuk gambar bola putih untuk tarik, dorong, atau efek samping, lalu tekan Tembak. Di keyboard, ← dan → memutar (Shift untuk putaran halus), ↑ dan ↓ mengubah tenaga, Space menembak, dan C mengganti kamera.",
+      "q2": "Apa aturan snooker?",
+      "a2": "Ada 15 bola merah dan enam bola warna. Anda harus memasukkan bola merah lebih dulu, lalu bola warna apa pun, lalu merah lagi, selama Anda terus memasukkan bola; rangkaian itu disebut break. Bola warna yang masuk selama bola merah masih ada dikembalikan ke titiknya. Setelah bola merah habis, bola warna dimasukkan berurutan: kuning, hijau, cokelat, biru, pink, dan hitam. Pemain dengan poin lebih banyak saat bola hitam masuk memenangkan frame.",
+      "q3": "Berapa nilai tiap bola?",
+      "a3": "Merah bernilai 1, kuning 2, hijau 3, cokelat 4, biru 5, pink 6, dan hitam 7. Memasukkan semua bola merah dengan bola hitam, lalu menghabiskan bola warna, menghasilkan break maksimum 147. Di snooker 6 bola merah, nilai maksimumnya 75.",
+      "q4": "Apa itu pelanggaran (foul) di snooker?",
+      "a4": "Tidak mengenai bola apa pun, mengenai bola yang bukan sasaran lebih dulu, memasukkan bola yang bukan sasaran, atau memasukkan bola putih ke lubang (in-off). Pelanggaran memberi lawan 4 poin, atau nilai bola yang terlibat jika lebih tinggi, sampai 7, dan mengakhiri giliran Anda. Setelah in-off, pemain berikutnya boleh menembak dari mana saja di dalam D.",
+      "q5": "Bagaimana cara menunjuk bola warna?",
+      "a5": "Setelah bola merah, game menganggap bola warna pertama yang dikenai bola putih Anda sebagai bola yang Anda tunjuk, jadi Anda tidak perlu menyebutkannya. Masukkan bola warna itu untuk mendapat nilainya; memasukkan bola warna lain adalah pelanggaran.",
+      "q6": "Apa itu snooker 6 bola merah?",
+      "a6": "Game yang sama dengan enam bola merah, bukan lima belas, sehingga satu frame selesai dalam beberapa menit. Populer untuk pertandingan singkat dan cocok untuk melatih membangun break serta menghabiskan bola warna.",
+      "q7": "Bisakah berlatih tanpa garis bidik?",
+      "a7": "Bisa. Bantuan bidik dapat menampilkan jalur prediksi penuh semua bola, hanya garis stik dengan bola bayangan, atau hanya stik saja, seperti di meja sungguhan. Latihan sendiri menambah latihan (tembakan jauh, biru ke lubang tengah, menghabiskan bola warna), batalkan tembakan, dan memindahkan bola dengan tangan.",
+      "q8": "Aturan snooker mana yang disederhanakan?",
+      "a8": "Tidak ada aturan miss dan tidak ada free ball, dan setelah pelanggaran lawan selalu melanjutkan main tanpa meminta Anda mengulang tembakan. Bola warna ditunjuk lewat bola warna pertama yang Anda kenai. Penilaian, nilai pelanggaran, pengembalian bola ke titiknya, bola warna berurutan, dan bola hitam penentu saat seri mengikuti aturan resmi.",
+      "q9": "Bisakah dimainkan di HP?",
+      "a9": "Bisa. Seret di atas meja untuk membidik, pakai ⟲ ⟳ untuk putaran besar dan ‹ › untuk putaran kecil, lalu penggeser tenaga dan Tembak. Tampilan atas memuat meja panjang di layar sempit, dan layar penuh memberi ruang terbesar. Pengaturan tersimpan di browser ini dan tidak ada yang dikirim ke mana pun."
     }
   },
   "qr": {
@@ -10816,7 +10870,7 @@
     },
     "g3d": {
       "title": "Game 3D gratis",
-      "lead": "Game 3D yang langsung dimainkan di sini: catur di papan 3D, pinball, biliar bola 8, air hockey, dart, kubus rubik dengan pemecah, game menumpuk balok, game mobil dengan drift, dan simulator pesawat. Gratis tanpa instal; bagian 3D baru dimuat saat Anda menekan Main."
+      "lead": "Game 3D yang langsung dimainkan di sini: catur di papan 3D, pinball, biliar bola 8, latihan billiard (9 ball, 8 ball Tiongkok, piramida, 3 cushion), snooker, air hockey, dart, kubus rubik dengan pemecah, game menumpuk balok, game mobil dengan drift, dan simulator pesawat. Gratis tanpa instal; bagian 3D baru dimuat saat Anda menekan Main."
     },
     "emu": {
       "title": "Emulator retro",
@@ -17235,5 +17289,241 @@
     "started": "Timer dimulai: {n} detik.",
     "loadError": "Penjelasan titik tidak berhasil dimuat. Periksa koneksi Anda lalu coba lagi.",
     "retry": "Coba lagi"
+  },
+  "billiards": {
+    "title": "Billiard",
+    "titleSnooker": "Snooker",
+    "privacyNote": "Billiard 3D dengan delapan game, latihan, dan garis bidik yang bisa dimatikan. Berjalan di browser Anda.",
+    "privacyNoteSnooker": "Snooker 3D penuh dengan skor dan pelanggaran sungguhan, latihan, dan garis bidik yang bisa dimatikan. Berjalan di browser Anda.",
+    "stage": "Meja billiard",
+    "intro": "Delapan game dalam satu meja: bidik, tambah efek, pilih tenaga, lalu tembak.",
+    "introSnooker": "Satu frame snooker penuh: masukkan bola merah, lalu bola warna, dan bangun break Anda.",
+    "game": "Permainan",
+    "mode": "Lawan",
+    "skill": "Komputer",
+    "aimHelp": "Bantuan bidik",
+    "drill": "Latihan",
+    "noDrill": "Latihan bebas",
+    "newGame": "Susun ulang",
+    "topView": "Tampilan atas",
+    "sound": "Suara",
+    "power": "Tenaga",
+    "spin": "Efek",
+    "spinReset": "Tengah",
+    "spinCentre": "Bola tengah",
+    "spinTop": "Dorong",
+    "spinDraw": "Tarik",
+    "spinLeft": "Sisi kiri",
+    "spinRight": "Sisi kanan",
+    "shoot": "Tembak",
+    "turnLeft": "Putar stik ke kiri",
+    "turnRight": "Putar stik ke kanan",
+    "nudgeLeft": "Geser stik sedikit ke kiri",
+    "nudgeRight": "Geser stik sedikit ke kanan",
+    "undo": "Batalkan tembakan",
+    "undone": "Tembakan dibatalkan.",
+    "moveBalls": "Pindahkan bola",
+    "editOn": "Seret bola mana pun untuk mengatur posisi, lalu tekan Pindahkan bola lagi atau tembak.",
+    "you": "Anda",
+    "computer": "Komputer",
+    "player": "Pemain {n}",
+    "turnOf": "Giliran {name}",
+    "wins": "{name} menang!",
+    "again": "Main lagi",
+    "cleared": "Meja bersih!",
+    "break": "Break",
+    "openTable": "Meja terbuka",
+    "onEight": "Bola 8",
+    "onRed": "Bola merah",
+    "onColour": "Bola warna",
+    "onBall": "Bola {ball}",
+    "raceTo": "Pertama sampai {n}",
+    "breakRun": "Break {n} · terbaik {best}",
+    "stats": "{shots} tembakan, {pots} masuk",
+    "drillScore": "Latihan {hits}/{tries}",
+    "drillStart": "Masukkan bola sesuai permintaan latihan. Posisi bola dikembalikan setelah setiap percobaan.",
+    "drillHit": "Berhasil! Posisi bola disusun ulang.",
+    "drillMiss": "Belum berhasil. Posisi bola disusun ulang.",
+    "rulesOf": "Aturan {game}",
+    "hint": "Seret di atas meja untuk membidik (tampilan atas: stik mengarah ke titik yang Anda sentuh; tampilan 3D: seret ke samping). ← → memutar, Shift untuk putaran halus, ↑ ↓ tenaga, Space menembak, C mengganti tampilan. Saat ball in hand, seret bola putih.",
+    "games": {
+      "8-ball": "8 ball",
+      "9-ball": "9 ball",
+      "10-ball": "10 ball",
+      "chinese-8-ball": "8 ball Tiongkok",
+      "snooker": "Snooker (15 bola merah)",
+      "snooker-6": "Snooker (6 bola merah)",
+      "pyramid": "Piramida Rusia",
+      "3-cushion": "3 cushion"
+    },
+    "modes": {
+      "cpu": "Lawan komputer",
+      "two": "2 pemain",
+      "solo": "Latihan sendiri"
+    },
+    "skills": {
+      "easy": "Mudah",
+      "medium": "Sedang",
+      "hard": "Sulit"
+    },
+    "aims": {
+      "full": "Prediksi penuh",
+      "line": "Garis bidik",
+      "off": "Mati"
+    },
+    "group": {
+      "solids": "Penuh · sisa {n}",
+      "stripes": "Belang · sisa {n}"
+    },
+    "groupShort": {
+      "solids": "penuh",
+      "stripes": "belang"
+    },
+    "inHand": {
+      "anywhere": "Ball in hand: seret bola putih ke mana saja.",
+      "kitchen": "Ball in hand di belakang garis kepala (area yang diarsir).",
+      "d": "Ball in hand di dalam D."
+    },
+    "ball": {
+      "red": "merah",
+      "v2": "kuning",
+      "v3": "hijau",
+      "v4": "cokelat",
+      "v5": "biru",
+      "v6": "merah muda",
+      "v7": "hitam",
+      "carom0": "putih",
+      "carom1": "kuning",
+      "carom2": "merah"
+    },
+    "msg": {
+      "potted": "Masuk {n}.",
+      "noHit": "Pelanggaran: tidak mengenai bola.",
+      "wrongBall": "Pelanggaran: salah mengenai bola lebih dulu.",
+      "scratch": "Pelanggaran: bola putih masuk lubang.",
+      "inOff": "Pelanggaran: in-off.",
+      "noRail": "Pelanggaran: tidak ada bola yang mengenai bantalan.",
+      "badBreak": "Pelanggaran: break yang sah butuh satu bola masuk atau empat bola mengenai bantalan.",
+      "wrongPot": "Pelanggaran: bola yang bukan sasaran masuk.",
+      "foulPoints": "Pelanggaran, {n} poin.",
+      "eightSpotted": "Bola 8 masuk saat break dan dikembalikan ke titiknya.",
+      "eightWin": "Bola 8 masuk!",
+      "eightLoss": "Bola 8 masuk terlalu dini atau saat pelanggaran.",
+      "groupSolids": "Bola penuh untuk penembak.",
+      "groupStripes": "Bola belang untuk penembak.",
+      "moneyWin": "Bola {n} masuk!",
+      "moneySpotted": "Bola {n} dikembalikan ke titiknya.",
+      "reSpotBlack": "Skor seri: bola hitam dikembalikan ke titiknya untuk penentuan.",
+      "frameOver": "Frame selesai.",
+      "minusOne": "Pelanggaran: minus satu poin.",
+      "cueScores": "Bola putih masuk setelah mengenai bola lain: satu poin, dan ball in hand.",
+      "raceOver": "Balapan poin selesai.",
+      "caromPoint": "Poin!",
+      "caromMiss": "Tidak ada poin.",
+      "kitchenBall": "Pelanggaran: dari belakang garis kepala, bola pertama yang dikenai harus berada di depan garis itu."
+    },
+    "drills": {
+      "straight": {
+        "name": "Tembakan lurus",
+        "tip": "Masukkan bola 1 ke lubang sudut atas. Pukul bola putih tepat di tengah dan jaga stik tetap datar."
+      },
+      "cut30": {
+        "name": "Potongan setengah bola (30°)",
+        "tip": "Arahkan bola putih ke bola bayangan, bukan ke bola sasaran: pada 30° tengah bola putih mengarah ke tepi bola sasaran."
+      },
+      "cut55": {
+        "name": "Potongan tipis (55°)",
+        "tip": "Potongan tipis ke arah lain: hanya sedikit bagian bola sasaran yang tersentuh. Bidik bola bayangan dan jaga kecepatan."
+      },
+      "stop": {
+        "name": "Tembakan berhenti",
+        "tip": "Masukkan bola 1 dan biarkan bola putih berhenti di lingkaran pink: pukulan mantap sedikit di bawah tengah agar bola putih berhenti mati."
+      },
+      "draw": {
+        "name": "Tembakan tarik",
+        "tip": "Masukkan bola 1 dan tarik bola putih kembali ke lingkaran: pukul jauh di bawah tengah dengan tenaga yang cukup."
+      },
+      "follow": {
+        "name": "Tembakan dorong",
+        "tip": "Masukkan bola 1 dan biarkan bola putih terus menggelinding ke lingkaran: pukul di atas tengah dengan tenaga sedang."
+      },
+      "rail": {
+        "name": "Bola di bantalan",
+        "tip": "Bola 1 menempel di bantalan. Pukul bola dan bantalan sekaligus, atau sedikit efek samping yang ikut berjalan akan membantu."
+      },
+      "long": {
+        "name": "Tembakan jauh (snooker)",
+        "tip": "Bola merah jauh klasik dari D ke lubang sudut atas. Jaga ayunan tetap lurus dan halus."
+      },
+      "blue": {
+        "name": "Biru ke lubang tengah",
+        "tip": "Masukkan bola biru dari titiknya ke lubang tengah dengan sentuhan lembut."
+      },
+      "clearance": {
+        "name": "Menghabiskan bola warna",
+        "tip": "Masukkan bola warna berurutan (kuning, hijau, cokelat, biru, pink, hitam) dengan ball in hand di D. Penghabisan sempurna bernilai 27."
+      }
+    },
+    "rules": {
+      "8-ball": {
+        "r1": "Bola penuh 1–7 lawan bola belang 9–15. Meja terbuka setelah break; bola pertama yang masuk secara sah menentukan kelompok.",
+        "r2": "Kenai salah satu bola Anda lebih dulu. Setelah sentuhan, harus ada bola yang masuk atau ada bola yang mengenai bantalan.",
+        "r3": "Break yang sah memasukkan satu bola atau mengarahkan minimal empat bola sasaran ke bantalan. Bola 8 yang masuk saat break dikembalikan ke titiknya.",
+        "r4": "Pelanggaran (bola salah dikenai lebih dulu, tanpa bantalan, tidak mengenai bola, bola putih masuk, atau dari belakang garis kepala mengenai bola yang juga di belakangnya) memberi lawan ball in hand di mana saja; bola putih masuk saat break memberinya di belakang garis kepala.",
+        "r5": "Masukkan salah satu bola kelompok Anda dan Anda terus menembak.",
+        "r6": "Habiskan kelompok Anda, lalu masukkan bola 8 untuk menang. Bola 8 terlalu dini atau saat pelanggaran berarti kalah."
+      },
+      "9-ball": {
+        "r1": "Bola 1–9. Bola putih harus mengenai bola bernomor terendah lebih dulu.",
+        "r2": "Bola apa pun yang masuk setelah sentuhan sah membuat Anda tetap main, termasuk kombinasi.",
+        "r3": "Masukkan bola 9 secara sah kapan saja, bahkan saat break, untuk menang.",
+        "r4": "Break yang sah memasukkan satu bola atau mengarahkan empat bola sasaran ke bantalan.",
+        "r5": "Pelanggaran memberi ball in hand di mana saja; bola 9 yang masuk saat pelanggaran dikembalikan ke titiknya."
+      },
+      "10-ball": {
+        "r1": "Bola 1–10, disusun segitiga dengan bola 1 di depan dan bola 10 di tengah.",
+        "r2": "Selalu kenai bola bernomor terendah lebih dulu.",
+        "r3": "Tembakan tidak diumumkan di sini: bola apa pun yang masuk secara sah membuat Anda tetap main.",
+        "r4": "Bola 10 hanya menang jika menjadi bola terakhir; bola 10 yang masuk lebih awal (atau saat break) dikembalikan ke titiknya.",
+        "r5": "Pelanggaran memberi ball in hand di mana saja."
+      },
+      "chinese-8-ball": {
+        "r1": "Set bola 8 ball di meja seukuran 9 kaki dengan bantalan ala snooker dan lubang membulat yang sempit.",
+        "r2": "Bola penuh lawan bola belang; bola pertama yang masuk secara sah setelah break menentukan kelompok.",
+        "r3": "Break yang sah memasukkan satu bola atau mengirim empat bola sasaran ke bantalan, jika tidak maka itu pelanggaran.",
+        "r4": "Kenai kelompok Anda lebih dulu; setelah sentuhan, harus ada bola yang masuk atau mengenai bantalan.",
+        "r5": "Setiap pelanggaran memberi lawan ball in hand gratis di mana saja.",
+        "r6": "Habiskan kelompok Anda, lalu bola hitam. Bola hitam terlalu dini atau saat pelanggaran berarti kalah."
+      },
+      "snooker": {
+        "r1": "15 bola merah bernilai 1 dan enam bola warna: kuning 2, hijau 3, cokelat 4, biru 5, pink 6, hitam 7.",
+        "r2": "Masukkan bola merah, lalu bola warna, lalu merah lagi… Bola warna pertama yang Anda kenai dianggap bola yang Anda tunjuk.",
+        "r3": "Bola warna dikembalikan ke titiknya selama bola merah masih ada. Setelah itu bola warna masuk berurutan, dari kuning sampai hitam.",
+        "r4": "Pelanggaran memberi lawan minimal 4 poin, atau nilai bola yang terlibat jika lebih tinggi (sampai 7).",
+        "r5": "Pelanggaran: tidak mengenai bola sasaran, mengenai bola lain lebih dulu, memasukkan bola yang bukan sasaran, bola putih masuk (in-off).",
+        "r6": "Setelah in-off, pemain berikutnya mendapat ball in hand di dalam D.",
+        "r7": "Frame berakhir saat bola hitam masuk; skor seri membuat bola hitam dikembalikan ke titiknya. Break tertinggi adalah 147."
+      },
+      "snooker-6": {
+        "r1": "Enam bola merah, bukan lima belas: aturan sama, satu frame dalam beberapa menit.",
+        "r2": "Merah, warna, merah… lalu bola warna berurutan. Pelanggaran bernilai minimal 4.",
+        "r3": "Break tertinggi yang mungkin adalah 75."
+      },
+      "pyramid": {
+        "r1": "Lima belas bola gading bernomor dan satu bola putih berwarna di meja 12 kaki dengan lubang yang hanya sedikit lebih lebar dari bola.",
+        "r2": "Piramida bebas: setiap bola yang Anda masukkan dapat satu poin dan Anda terus menembak.",
+        "r3": "Memasukkan bola putih setelah mengenai bola lain juga dapat poin, dan Anda lanjut main dari area dapur.",
+        "r4": "Pelanggaran (tidak mengenai bola, tak ada bola sampai ke bantalan atau lubang, atau dari area kepala mengenai bola yang juga di sana): minus satu poin dan giliran berpindah.",
+        "r5": "Yang pertama mencapai 8 poin menang."
+      },
+      "3-cushion": {
+        "r1": "Tanpa lubang, tiga bola: bola putih Anda (putih atau kuning), bola lawan, dan bola merah.",
+        "r2": "Bola putih Anda harus menyentuh kedua bola lain dan mengenai bantalan minimal tiga kali sebelum menyentuh bola kedua.",
+        "r3": "Satu poin membuat Anda tetap main; meleset menyerahkan giliran.",
+        "r4": "Yang pertama mencapai 10 poin menang."
+      }
+    },
+    "failedFoul": "Bola terakhir masuk dengan pelanggaran. Ulangi lagi.",
+    "drawn": "Seri."
   }
 }
