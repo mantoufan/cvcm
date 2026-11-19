@@ -355,6 +355,23 @@ describe("tool pages", () => {
     }
   });
 
+  it("gives a playing demo the keys back after a mouse choice, and leaves focus alone before any game", () => {
+    mountRomEmulator(host);
+    const select = q<HTMLSelectElement>("select");
+    select.focus();
+    select.value = "md";
+    select.dispatchEvent(new Event("change"));
+    expect(document.activeElement).toBe(select);
+    host.querySelector<HTMLButtonElement>("[data-demo=apotris]")!.click();
+    select.focus();
+    select.value = "sfc";
+    select.dispatchEvent(new Event("change"));
+    expect(document.activeElement?.tagName).toBe("IFRAME");
+    // The mark follows the demo that is playing.
+    host.querySelector<HTMLButtonElement>("[data-demo=ucity]")!.click();
+    expect([...host.querySelectorAll("[data-demo][aria-current]")].map((b) => (b as HTMLElement).dataset.demo)).toEqual(["ucity"]);
+  });
+
   it("keeps a console chosen while the next file loads", async () => {
     mountRomEmulator(host);
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "a.nes"));

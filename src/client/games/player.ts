@@ -79,7 +79,7 @@ export function demoPicker<T extends DemoRom>(roms: readonly T[], start: (rom: T
   // A retired game page redirects to #demo-<id>: that game's button is marked, for the visitor to start (a mount makes
   // no network calls, so it does not boot the emulator by itself).
   const linked = linkedDemo(roms);
-  return h("section", { class: "game-demos", "aria-labelledby": "game-demos-title" },
+  const box: HTMLElement = h("section", { class: "game-demos", "aria-labelledby": "game-demos-title" },
     h("h2", { id: "game-demos-title" }, t("games.demos.title")),
     h("p", { class: "game-note" }, t("games.demos.lead")),
     // One row per console, labelled when the list spans more than one (the ROM emulator; the Flash player has one).
@@ -88,7 +88,16 @@ export function demoPicker<T extends DemoRom>(roms: readonly T[], start: (rom: T
         ...(all.length > 1 ? [h("span", { class: "game-demo-console" }, t(`games.consoles.${consoleId}`))] : []),
         ...roms.filter((rom) => rom.console === consoleId).map((rom) => {
           const button = h("button", { class: "btn ghost" + (rom === linked ? " on" : ""), type: "button", "data-demo": rom.id, "aria-current": rom === linked ? "true" : undefined }, rom.title) as HTMLButtonElement;
-          button.addEventListener("click", () => start(rom));
+          button.addEventListener("click", () => {
+          // The mark follows the game that is playing.
+          for (const other of box.querySelectorAll(".game-demo-row .btn")) {
+            other.classList.remove("on");
+            other.removeAttribute("aria-current");
+          }
+          button.classList.add("on");
+          button.setAttribute("aria-current", "true");
+          start(rom);
+        });
           return button;
         }),
       )),
@@ -101,6 +110,7 @@ export function demoPicker<T extends DemoRom>(roms: readonly T[], start: (rom: T
       ),
     ),
   );
+  return box;
 }
 
 const FORGOT_KEY = "cvcm.emu.forgotRoms";
@@ -108,21 +118,32 @@ const FORGOT_KEY = "cvcm.emu.forgotRoms";
 /**
  * The retired game pages could keep a visitor's own ROM or SWF in IndexedDB ("rom:<game id>", Remember in this browser).
  * Those pages are gone, and with them the Forget button, so both players clear what they stored, once per browser
- * (marked only after the delete succeeded).
+ * (marked only after the delete succeeded). `rom:` keys belonged to those pages only: do not reuse the prefix.
  */
+let forgetting: Promise<void> | null = null;
+
 export function forgetRetiredRoms(): void {
   try {
-    if (typeof indexedDB === "undefined" || localStorage.getItem(FORGOT_KEY)) return;
+    if (forgetting || typeof indexedDB === "undefined" || localStorage.getItem(FORGOT_KEY)) return;
   } catch {
     return;
   }
-  clearDraftsWithPrefix("rom:").then(() => {
+  const done = (): void => {
     try {
       localStorage.setItem(FORGOT_KEY, "1");
     } catch {
       /* tried again next visit */
     }
-  }).catch(() => {});
+  };
+  // Visitors who never had the drafts database have nothing to clear; do not create it for them.
+  const exists = typeof indexedDB.databases === "function"
+    ? indexedDB.databases().then((list) => list.some((db) => db.name === "cvcm"), () => true)
+    : Promise.resolve(true);
+  forgetting = exists
+    .then((has) => (has ? clearDraftsWithPrefix("rom:") : undefined))
+    .then(done)
+    .catch(() => {})
+    .finally(() => { forgetting = null; });
 }
 
 /** The demo a `#demo-<id>` link asks for (a retired game page redirects there), if it is one of these. */

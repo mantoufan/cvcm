@@ -77,6 +77,7 @@ export function mountRomEmulator(host: HTMLElement): void {
     // The last game keeps running until this file is known to be usable.
     if (file.size > MAX_ROM_BYTES) {
       reading = false;
+      choiceForNext = false;
       status.textContent = t("romEmulator.tooBig", { mb: MAX_ROM_BYTES / 1024 / 1024 });
       return;
     }
@@ -95,6 +96,7 @@ export function mountRomEmulator(host: HTMLElement): void {
     }).catch(() => {
       if (mine !== token) return;
       reading = false;
+      choiceForNext = false;
       status.textContent = t("romEmulator.readFailed");
     });
   });
@@ -115,11 +117,14 @@ export function mountRomEmulator(host: HTMLElement): void {
   };
   select.addEventListener("keydown", () => { keyed = true; });
   select.addEventListener("change", () => {
-    // Chosen while a demo plays or a file loads: the choice is the answer for that next file.
-    if (!rom || reading) {
+    // Chosen while a file loads, or while a demo plays: the choice is the answer for the next file. A demo keeps
+    // running, so the game gets the keys back after a mouse choice.
+    if (reading) {
+      choiceForNext = true;
+    } else if (!rom && demoConsole) {
       demoConsole = null;
       choiceForNext = true;
-      if (!rom && !keyed) focus();
+      if (!keyed) focus();
     }
     play();
     keyed = false;

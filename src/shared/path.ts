@@ -638,7 +638,8 @@ export type RetiredGame = { tool: RetiredGameTool; demo: string | null };
 export function retiredGameUrl(locale: Locale, retired: RetiredGame, origin: string, search: string): string {
   const next = new URL(appHref(locale, retired.tool), origin);
   next.search = search;
-  next.searchParams.delete("genre");
+  // Re-serialised only when there is a genre to drop, so campaign tags keep their exact encoding.
+  if (next.searchParams.has("genre")) next.searchParams.delete("genre");
   if (retired.demo) next.hash = `demo-${retired.demo}`;
   return next.toString();
 }
