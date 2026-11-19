@@ -14,13 +14,15 @@
       "q1": "Bagaimana cara main bola 8?",
       "a1": "Pecahkan susunan bola, lalu masukkan semua kelompok Anda — bola polos (1–7) atau belang (9–15) — dan terakhir bola 8 hitam. Bola pertama yang Anda masukkan setelah break menentukan kelompok Anda. Memasukkan bola 8 sebelum kelompok habis, atau bersamaan dengan pelanggaran, berarti kalah.",
       "q2": "Bagaimana membidik dan memukul?",
-      "a2": "Gerakkan mouse di atas meja atau seret dengan jari untuk membidik; garis putih menunjukkan titik kena bola putih, garis kuning arah bola sasaran. Atur kekuatan dengan slider atau tombol atas/bawah, lalu tekan Pukul atau spasi. Tombol kiri/kanan untuk menyetel arah (tahan Shift untuk langkah sangat kecil).",
+      "a2": "Seret di meja untuk membidik: di tampilan atas stik mengarah ke titik yang Anda sentuh, dan di tampilan 3D Anda menyeret ke samping untuk memutar. Garis putih dan bola bayangan menunjukkan titik kena bola putih, dan garis berwarna arah bola sasaran; bantuan bidik juga bisa menampilkan jalur lengkap atau dimatikan. Atur kekuatan dengan slider atau Atas dan Bawah, ketuk gambar bola putih untuk efek, lalu tekan Tembak atau Spasi. Kiri dan Kanan memutar stik (tahan Shift untuk langkah kecil).",
       "q3": "Apa saja pelanggaran?",
-      "a3": "Bola putih masuk lubang, bola putih tidak mengenai bola apa pun, mengenai kelompok lawan (atau bola 8 terlalu cepat) lebih dulu, dan pukulan tanpa bola masuk dan tanpa bola yang menyentuh bantalan setelah sentuhan pertama. Setelah pelanggaran, lawan mendapat bola di tangan dan boleh menaruh bola putih di mana saja.",
+      "a3": "Memasukkan bola putih, tidak mengenai bola apa pun, mengenai grup lawan (atau bola 8 terlalu cepat) lebih dulu, dan pukulan tanpa bola masuk dan tanpa bola yang sampai ke bantalan setelah sentuhan pertama. Setelah pelanggaran, lawan mendapat ball in hand di mana saja; setelah bola putih masuk saat break, di belakang garis kepala, dan bola di belakang garis itu tidak boleh dikenai lebih dulu.",
       "q4": "Seberapa kuat komputernya?",
-      "a4": "Mudah, Sedang, dan Sulit sama-sama mencoba pukulan yang mungkin dengan fisika yang sama dengan Anda; level yang lebih mudah mencoba lebih sedikit pukulan dan bidikannya kurang tepat.",
+      "a4": "Mudah, Sedang, dan Sulit mencari pukulan masuk dan pukulan aman dengan fisika yang sama seperti Anda, lalu menguji tiap pukulan dalam simulasi sebelum memukul; level yang lebih mudah membidik kurang tepat.",
       "q5": "Apakah permainan disimpan?",
-      "a5": "Ya. Posisi meja, skor, serta menang dan kalah Anda melawan komputer tersimpan di browser ini, jadi Anda bisa melanjutkan nanti."
+      "a5": "Ya. Permainan yang sedang berjalan serta menang dan kalah Anda melawan komputer tersimpan di browser ini, jadi Anda bisa melanjutkannya nanti. Tidak ada yang dikirim.",
+      "q6": "Bisakah saya memainkan permainan biliar lain di meja ini?",
+      "a6": "Bisa. Pilih permainan lain di atas meja: 9 ball, 10 ball, 8 ball Tiongkok, snooker, piramida Rusia, atau 3 cushion. Halaman billiard dan snooker menjelaskan aturan masing-masing."
     }
   },
   "guides": {
@@ -29,52 +31,10 @@
       "s1t": "Break pembuka",
       "s1b": "Tekan Main, bidik susunan bola, dan pukul keras agar bola menyebar.",
       "s2t": "Masukkan kelompok Anda",
-      "s2b": "Bidik dengan mouse atau jari, atur kekuatan, lalu pukul. Bola pertama yang masuk setelah break menentukan polos atau belang.",
+      "s2b": "Seret di meja untuk membidik, atur kekuatan, lalu pukul. Bola pertama yang masuk setelah break menentukan polos atau belang.",
       "s3t": "Akhiri dengan bola 8",
       "s3b": "Setelah kelompok Anda habis, masukkan bola 8 hitam untuk menang. Hindari pelanggaran karena lawan mendapat bola di tangan."
     }
   },
-  "ui": {
-    "poolGame": {
-      "title": "Game billiard",
-      "privacyNote": "Main bola 8 di meja 3D melawan komputer atau teman. Permainan berjalan di halaman ini.",
-      "stage": "Meja biliar",
-      "intro": "Bola 8: masukkan kelompok Anda, lalu bola 8 hitam.",
-      "you": "Anda",
-      "computer": "Komputer",
-      "player": "Pemain {n}",
-      "open": "meja terbuka",
-      "groupLeft": "{group}, sisa {n}",
-      "solids": "bola polos",
-      "stripes": "bola belang",
-      "wins": "Menang",
-      "losses": "Kalah",
-      "vsComputer": "Melawan komputer",
-      "twoPlayers": "Dua pemain",
-      "level": "Level komputer",
-      "l_0": "Mudah",
-      "l_1": "Sedang",
-      "l_2": "Sulit",
-      "players": "Pemain",
-      "power": "Kekuatan",
-      "shoot": "Pukul",
-      "turnView": "Putar sudut pandang",
-      "newGame": "Permainan baru",
-      "thinking": "Komputer sedang berpikir…",
-      "yourShot": "Giliran Anda.",
-      "playerShot": "Giliran {who}.",
-      "breakShot": "Break: bidik susunan bola dan pukul keras.",
-      "ballInHand": "Bola di tangan: seret bola putih ke tempat yang Anda mau.",
-      "win_eight": "{who} menang: bola 8 masuk!",
-      "win_eightEarly": "{who} menang: bola 8 masuk terlalu cepat.",
-      "win_eightFoul": "{who} menang: bola 8 masuk saat pelanggaran.",
-      "again_shot": "Masuk! Pukul lagi.",
-      "foul_scratch": "Pelanggaran: bola putih masuk lubang.",
-      "foul_noContact": "Pelanggaran: bola putih tidak mengenai bola apa pun.",
-      "foul_wrongBall": "Pelanggaran: bola yang salah kena lebih dulu.",
-      "foul_noRail": "Pelanggaran: tidak ada bola yang menyentuh bantalan.",
-      "again": "Main lagi",
-      "hint": "Bidik dengan mouse atau seret di meja, kiri/kanan untuk menyetel (Shift untuk langkah sangat kecil), atas/bawah untuk kekuatan, spasi untuk memukul."
-    }
-  }
+  "ui": {}
 }

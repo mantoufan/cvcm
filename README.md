@@ -161,7 +161,7 @@ Browser tools plus a tiny cloud clipboard.
 - **Flight simulator** / 飞行模拟器 — take off, fly rings and land over a 3D island. [Open](https://cv.cm/en/flight-simulator/)
 - **Cube solver** / 魔方还原器 — paint your cube's colours and get a short solution, step by step in 3D. [Open](https://cv.cm/en/cube-solver/)
 - **Pinball** / 弹珠台 — a 3D pinball table with flippers, bumpers and a plunger. [Open](https://cv.cm/en/pinball/)
-- **Pool game** / 台球 — 8-ball pool against the computer or a friend. [Open](https://cv.cm/en/pool-game/)
+- **Pool game** / 台球 — 8-ball pool against the computer or a friend, on the billiards trainer (saved games, win/loss record, other games one click away). [Open](https://cv.cm/en/pool-game/)
 - **Air hockey** / 桌上冰球 — first to seven against the computer. [Open](https://cv.cm/en/air-hockey/)
 - **Darts** / 飞镖 — 501, around the clock and practice. [Open](https://cv.cm/en/darts/)
 - **Billiards** / 台球 — 3D 8-ball, 9-ball, 10-ball, Chinese 8-ball, Russian pyramid and three-cushion against the computer, a friend or solo, with spin, drills, rules and a switchable aim line. [Open](https://cv.cm/en/billiards/)

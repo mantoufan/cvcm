@@ -6,6 +6,7 @@ import { coarsePointer, createStage, disposeScene, gameShell, heldKeys, holdPad,
 import { buildScene, type AimLine, type CameraMode, type TableScene } from "./scene";
 import { TICK, anyMoving, cloneBalls, freeSpot, simulate, step, strike, type Ball, type SimEvent, type Vec } from "../../shared/billiards-physics";
 import {
+  ballIds,
   ballLook,
   cueIdFor,
   inZone,
@@ -22,7 +23,7 @@ import {
   type TableKind,
   type Variant,
 } from "../../shared/billiards-tables";
-import { ballsOn, groupLeft, judge, newMatch, readShot, type Match, type Note } from "../../shared/billiards-rules";
+import { ballsOn, groupLeft, isMatch, judge, newMatch, readShot, type Match, type Note } from "../../shared/billiards-rules";
 import { planShot, type Skill } from "../../shared/billiards-ai";
 import { drill, drillDone, DRILLS, isDrill, type Drill, type DrillId } from "../../shared/billiards-drills";
 
@@ -33,7 +34,8 @@ import { drill, drillDone, DRILLS, isDrill, type Drill, type DrillId } from "../
  * predicted paths from the same physics. Strings are under `billiards.*`.
  */
 
-export type BilliardsPage = "billiards" | "snooker";
+/** The pages this trainer serves: /billiards/, /snooker/ and /pool-game/ (8-ball first, its own page copy). */
+export type BilliardsPage = "billiards" | "snooker" | "pool-game";
 
 const STORE_KEY = "cvcm.billiards.v1";
 type Mode = "cpu" | "two" | "solo";
@@ -47,7 +49,35 @@ interface Saved {
   aim?: AimLevel;
   camera?: CameraMode;
   sound?: boolean;
+  /** Wins and losses against the computer, per game (variant), shared by every page. */
+  records?: Partial<Record<Variant, { wins: number; losses: number }>>;
 }
+
+/** A game in progress, kept per page so a visitor can come back to it. */
+interface SavedGame {
+  variant: Variant;
+  mode: Mode;
+  match: Match;
+  balls: Ball[];
+  breaker: 0 | 1;
+  /** A shot that was rolling when the page closed: played again from the same table on return (the physics is
+   * deterministic, so it ends the same way, and a loss cannot be dodged by reloading). */
+  pending?: { angle: number; speed: number; side: number; top: number };
+  /** One id per game (rack): its result against the computer is counted once, whichever tab finishes it. */
+  gameId?: string;
+}
+
+const gameKey = (page: BilliardsPage) => `cvcm.billiards.game.${page}`;
+/** The old /pool-game/ page kept its record here; it is carried over once. */
+const OLD_POOL_KEY = "cvcm.poolgame.v1";
+/** Ids of games whose result was already counted (two tabs may both finish the same saved game). */
+const COUNTED_KEY = "cvcm.billiards.counted";
+
+const PAGE_TEXT: Record<BilliardsPage, { title: string; lede: string; intro: string }> = {
+  billiards: { title: "billiards.title", lede: "billiards.privacyNote", intro: "billiards.intro" },
+  snooker: { title: "billiards.titleSnooker", lede: "billiards.privacyNoteSnooker", intro: "billiards.introSnooker" },
+  "pool-game": { title: "billiards.titlePool", lede: "billiards.privacyNotePool", intro: "billiards.introPool" },
+};
 
 const MODES: Mode[] = ["cpu", "two", "solo"];
 const SKILLS: Skill[] = ["easy", "medium", "hard"];
@@ -56,10 +86,26 @@ const AIMS: AimLevel[] = ["full", "line", "off"];
 const RULE_COUNT: Record<Variant, number> = { "8-ball": 6, "9-ball": 5, "10-ball": 5, "chinese-8-ball": 6, snooker: 7, "snooker-6": 3, pyramid: 5, "3-cushion": 4 };
 /** Fastest cue ball (m/s) per table, at full power. */
 const MAX_SPEED: Record<TableKind, number> = { pool: 7.5, chinese: 7.5, snooker: 6, pyramid: 7, carom: 6 };
+const POOL_FIRST: Variant[] = ["8-ball", "9-ball", "10-ball", "chinese-8-ball", "snooker", "snooker-6", "pyramid", "3-cushion"];
 const PAGE_ORDER: Record<BilliardsPage, Variant[]> = {
-  billiards: ["8-ball", "9-ball", "10-ball", "chinese-8-ball", "snooker", "snooker-6", "pyramid", "3-cushion"],
+  billiards: POOL_FIRST,
   snooker: ["snooker", "snooker-6", "8-ball", "9-ball", "10-ball", "chinese-8-ball", "pyramid", "3-cushion"],
+  "pool-game": POOL_FIRST,
 };
+
+/** Everyday stroke power (after a break, and on a resumed game). */
+const STROKE_POWER = 45;
+
+/** Power the slider starts at for a break (carom has no break shot, just the opening). */
+function breakPower(v: Variant): number {
+  const kind = TABLE_OF[v];
+  return kind === "carom" ? 45 : kind === "snooker" ? 55 : 80;
+}
+
+/** A short random id (games, shots). */
+function newId(): string {
+  return `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 8)}`;
+}
 
 let mounted: { cleanup: () => void } | null = null;
 
@@ -123,7 +169,56 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
   let camMode: CameraMode = saved.camera === "top" || saved.camera === "3d" ? saved.camera : "3d";
   let soundOn = saved.sound !== false;
   let drillId: DrillId | null = null;
-  const save = () => writeStore(STORE_KEY, { mode, skill, aim: aimLevel, camera: camMode, sound: soundOn } satisfies Saved);
+  const count = (v: unknown) => (typeof v === "number" && Number.isFinite(v) && v >= 0 ? Math.floor(v) : 0);
+  const cleanRecord = (r: unknown) => ({ wins: count((r as { wins?: unknown } | null)?.wins), losses: count((r as { losses?: unknown } | null)?.losses) });
+  /** The stored records, read fresh (another open tab may have added a result). */
+  const storedRecords = () => readStore<Saved>(STORE_KEY)?.records ?? {};
+  /** In-memory copy for the HUD, refreshed on writes here and on storage events from other tabs. */
+  let recordsNow: NonNullable<Saved["records"]> = saved.records ?? {};
+  /** Wins and losses against the computer for one game (the same 8-ball record on /billiards/ and /pool-game/). */
+  const recordOf = (v: Variant) => cleanRecord(recordsNow[v]);
+  /** `prefMode` is the opponent preference shared by all pages (a restored game may play in another mode). */
+  let prefMode: Mode = mode;
+  /** Writes the settings; records always come from the store, so a settings change never rolls one back. */
+  const save = (records?: NonNullable<Saved["records"]>) => {
+    records ??= storedRecords();
+    recordsNow = records;
+    writeStore(STORE_KEY, { mode: prefMode, skill, aim: aimLevel, camera: camMode, sound: soundOn, records } satisfies Saved);
+  };
+  /** Adds one result to the stored records only (settings changed in another tab are left as they are). */
+  const addResult = (v: Variant, won: boolean) => {
+    const current = readStore<Saved>(STORE_KEY) ?? {};
+    const all = current.records ?? {};
+    const r = cleanRecord(all[v]);
+    recordsNow = { ...all, [v]: won ? { ...r, wins: r.wins + 1 } : { ...r, losses: r.losses + 1 } };
+    writeStore(STORE_KEY, { ...current, records: recordsNow } satisfies Saved);
+  };
+  {
+    // The old /pool-game/ page kept its 8-ball record, opponent and level under its own key: carry them over once
+    // (added to any 8-ball record already here), then drop that key once the write has landed.
+    const old = readStore<{ wins?: unknown; losses?: unknown; mode?: unknown; level?: unknown }>(OLD_POOL_KEY);
+    if (old) {
+      if (saved.mode === undefined && old.mode === "friend") mode = prefMode = "two";
+      if (saved.skill === undefined && (old.level === 0 || old.level === 1 || old.level === 2)) skill = SKILLS[old.level]!;
+      const o = cleanRecord(old);
+      const all = storedRecords();
+      const r = cleanRecord(all["8-ball"]);
+      const want = { wins: r.wins + o.wins, losses: r.losses + o.losses };
+      save({ ...all, "8-ball": want });
+      const got = cleanRecord(readStore<Saved>(STORE_KEY)?.records?.["8-ball"]);
+      if (got.wins === want.wins && got.losses === want.losses) writeStore(OLD_POOL_KEY, null);
+    }
+  }
+
+
+  /** The current game's id (see SavedGame.gameId); a new one for every new rack. */
+  let gameId = newId();
+  /** Keeps the game in progress for the next visit (not drills; cleared when a game ends or a new one starts). */
+  const saveGame = (keep: boolean, pending?: SavedGame["pending"]) => {
+    // Drills are never saved, and leave the saved game alone.
+    if (currentDrill) return;
+    writeStore(gameKey(page), keep && match.winner === null ? ({ variant, mode, match, balls, breaker, pending, gameId } satisfies SavedGame) : null);
+  };
 
   let match: Match = newMatch(variant, mode === "solo" ? 1 : 2);
   let balls: Ball[] = rack(variant);
@@ -194,10 +289,10 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
 
   const shell = gameShell({
     label: t("billiards.stage"),
-    intro: t(page === "snooker" ? "billiards.introSnooker" : "billiards.intro"),
+    intro: t(PAGE_TEXT[page].intro),
     className: "bl-root",
     start: async (el) => {
-      const stage = await createStage(el, { mode: "loop", fov: 42, near: 0.02, far: 30, background: 0x2a1c22, active: () => !shell.covered(), onLost: () => { game = null; window.clearTimeout(coverTimer); window.clearTimeout(cpuTimer); cpuAim = null; lostContext(shell); } });
+      const stage = await createStage(el, { mode: "loop", fov: 42, near: 0.02, far: 30, background: 0x2a1c22, active: () => !shell.covered(), onLost: () => { game = null; window.clearTimeout(coverTimer); window.clearTimeout(cpuTimer); lostPlan = cpuAim?.plan ?? null; cpuAim = null; lostContext(shell); } });
       if (!stage) return null;
       try {
         build(stage);
@@ -271,6 +366,10 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     const parts = [two ? t("billiards.turnOf", { name: playerName(match.turn) }) : "", on];
     if (TABLE_OF[variant] === "snooker") parts.push(t("billiards.breakRun", { n: match.breakRun, best: match.bestBreak }));
     if (match.players === 1) parts.push(t("billiards.stats", { shots: match.shots, pots: match.pots }));
+    if (mode === "cpu" && !currentDrill) {
+      const r = recordOf(variant);
+      parts.push(t("billiards.record", { wins: r.wins, losses: r.losses }));
+    }
     if (currentDrill) parts.push(t("billiards.drillScore", { hits: drillHits, tries: drillTries }));
     scoreEl.textContent = parts.filter(Boolean).join(" · ");
     shootBtn.disabled = phase !== "aim" || !human();
@@ -338,19 +437,144 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     if (p) Object.assign(ball, { x: p.x, y: p.y, on: true, vx: 0, vy: 0, wx: 0, wy: 0, wz: 0 });
   }
 
+  /** A saved shot the page could have played: finite, a real speed, spin within the tip's half-radius. */
+  function pendingValid(p: NonNullable<SavedGame["pending"]>): boolean {
+    return [p.angle, p.speed, p.side, p.top].every((n) => Number.isFinite(n)) && p.speed > 0 && p.speed < 10 && Math.hypot(p.side, p.top) <= 0.51;
+  }
+
+  /** Saved balls that make a playable table: on the bed and not overlapping. */
+  function ballsValid(v: Variant, list: Ball[]): boolean {
+    const gg = tableFor(v);
+    const up = list.filter((b) => b.on);
+    // A ball can rest hanging in a pocket mouth, a little past the cushion line (the physics drops it beyond 0.2R).
+    const mx = gg.length / 2 + gg.R * 0.25;
+    const my = gg.width / 2 + gg.R * 0.25;
+    if (up.some((b) => Math.abs(b.x) > mx || Math.abs(b.y) > my)) return false;
+    for (let i = 0; i < up.length; i++) {
+      for (let k = i + 1; k < up.length; k++) if (Math.hypot(up[i]!.x - up[k]!.x, up[i]!.y - up[k]!.y) < 2 * gg.R * 0.98) return false;
+    }
+    return true;
+  }
+
+  /** Sets the opponent and the controls that depend on it (computer level, practice row). */
+  function applyMode(m: Mode): void {
+    mode = m;
+    modeSel.value = m;
+    skillField.hidden = m !== "cpu";
+    practiceRow.hidden = m !== "solo";
+  }
+
+  /** Puts a saved game back on the table, if it still fits this page, game choice and opponent setting. */
+  function restoreGame(kept: SavedGame | null): void {
+    if (!kept || !isVariant(kept.variant) || !MODES.includes(kept.mode)) return;
+    // A link to another game starts that game, unless a shot was still rolling: then the saved game comes back
+    // and the shot finishes (the link's game is one click away).
+    const linked = new URLSearchParams(location.search).get("game");
+    if (isVariant(linked) && linked !== kept.variant) {
+      if (!kept.pending) return;
+      const url = new URL(location.href);
+      url.searchParams.set("game", kept.variant);
+      window.history.replaceState(window.history.state, "", url);
+    }
+    const ids = ballIds(kept.variant);
+    const ok =
+      Array.isArray(kept.balls) &&
+      kept.balls.length === ids.length &&
+      kept.balls.every((b) => b && Number.isInteger(b.id) && typeof b.on === "boolean" && Number.isFinite(b.x) && Number.isFinite(b.y)) &&
+      // Same ball set (racks are stored in rack order, not by id).
+      kept.balls.map((b) => b.id).sort((x, y) => x - y).join(",") === ids.join(",") &&
+      ballsValid(kept.variant, kept.balls) &&
+      isMatch(kept.match, kept.variant) &&
+      kept.match.winner === null &&
+      (kept.match.players === 1) === (kept.mode === "solo");
+    if (!ok) return;
+    // The saved game comes back with the opponent it was played against (this page only; the shared
+    // preference for new games stays as it was).
+    if (kept.mode !== mode) applyMode(kept.mode);
+    variant = homeVariant = kept.variant;
+    variantSel.value = variant;
+    balls = kept.balls.map((b) => ({ ...b, vx: 0, vy: 0, wx: 0, wy: 0, wz: 0 }));
+    match = kept.match;
+    if (typeof kept.gameId === "string") gameId = kept.gameId;
+    // The table on screen may be another game's (drill, link): rebuild it if so.
+    if (game) {
+      if (sceneKey() !== builtKey) game.scene = makeScene(game.stage);
+      else game.scene.sync(balls, 0);
+    }
+    breaker = kept.breaker === 1 ? 1 : 0;
+    phase = mode === "cpu" && match.turn === 1 ? "cpu" : "aim";
+    const pendingOk = Boolean(kept.pending && pendingValid(kept.pending));
+    // With the table already up (drill → free practice), the computer's turn starts now; else Play starts it.
+    if (phase === "cpu" && game && !pendingOk) {
+      window.clearTimeout(cpuTimer);
+      cpuTimer = window.setTimeout(cpuTurn, 650);
+    }
+    // Break power for a rack not yet broken, an everyday stroke otherwise.
+    setPower(match.breakShot ? breakPower(variant) : STROKE_POWER);
+    aimAtBallOn();
+    const prompt = match.inHand && human() && !pendingOk ? ` ${t(`billiards.inHand.${match.inHand}`)}` : "";
+    setStatus(`${t("billiards.resumed")}${prompt}`);
+    renderHud();
+    renderRules();
+    if (pendingOk) {
+      // (A computer ball-in-hand placement is already in the saved balls: cpuTurn moves the cue ball first.)
+      const p = kept.pending!;
+      // The shot that was rolling plays again; it rolls once Play has built the table.
+      takeShot(p.angle, p.speed, p.side, p.top, true);
+    }
+  }
+
   /** A drill's match: solo, past the break, ball in hand only for the clearance (in the D). */
   function drillMatch(d: Drill): Match {
     return { ...newMatch(d.variant, 1), breakShot: false, inHand: d.id === "clearance" ? "d" : null };
   }
 
-  /** `nextRack`: the same game goes on (New rack, Play again), so the break passes; a mode or game change keeps it. */
-  function newGame(keepDrill = false, nextRack = false): void {
+  /** Plays a rolling shot to its end at once (same physics) and lets the referee rule on it. */
+  function settleNow(): void {
+    // The computer has chosen (and saved) its shot but is still swinging: play it first.
+    if (phase === "cpu" && cpuAim) {
+      const p = cpuAim.plan;
+      cpuAim = null;
+      takeShot(p.angle, p.speed, p.side, p.top);
+    }
+    if (phase !== "roll") return;
+    const res = simulate(g(), balls, { maxTime: Math.max(1, 40 - simT) });
+    for (const e of res.events) events.push({ ...e, t: e.t + simT });
+    finishRoll();
+  }
+
+  /** The balls have stopped (or the cap): zero the leftovers and let the referee rule. */
+  function finishRoll(): void {
+    for (const b of balls) Object.assign(b, { vx: 0, vy: 0, wx: 0, wy: 0, wz: 0 });
+    endShot();
+  }
+
+  /**
+   * `nextRack`: the same game goes on (New rack, Play again), so the break passes; a mode or game change keeps it.
+   * `clearSave`: false keeps the saved game (mount, before a restore; drills, which are never saved).
+   */
+  function newGame(keepDrill = false, nextRack = false, clearSave = true): void {
+    // A shot still rolling (or waiting to replay) counts before the rack is replaced: no dodging a loss.
+    if (clearSave && !currentDrill) settleNow();
+    if (clearSave && !keepDrill) {
+      // Starting a game is a choice of opponent too: it becomes the shared preference.
+      if (prefMode !== mode) {
+        prefMode = mode;
+        save();
+      }
+    }
     // Drop anything still pending from the last rack (computer turn, drill reset, game-over cover).
     window.clearTimeout(cpuTimer);
     window.clearTimeout(drillTimer);
     window.clearTimeout(coverTimer);
     cpuAim = null;
     drag = null;
+    if (clearSave) {
+      // A new rack replaces the saved game (written directly: saveGame skips while a drill is on). New rack inside
+      // a drill leaves it alone, as drills never touch the save.
+      if (!keepDrill) writeStore(gameKey(page), null);
+      gameId = newId();
+    }
     // A new rack replaces the result under the game-over cover.
     if (game && shell.covered()) shell.uncover();
     if (!keepDrill) {
@@ -390,7 +614,7 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     editBtn.setAttribute("aria-pressed", "false");
     side = 0;
     top = 0;
-    setPower(drillId ? 30 : TABLE_OF[variant] === "carom" ? 45 : TABLE_OF[variant] === "snooker" ? 55 : 80);
+    setPower(drillId ? 30 : breakPower(variant));
     renderSpin();
     // The break goes straight up the table.
     aim = 0;
@@ -431,7 +655,9 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     takeShot(aim, speed(), side, top);
   }
 
-  function takeShot(angle: number, v: number, sd: number, tp: number): void {
+  function takeShot(angle: number, v: number, sd: number, tp: number, replay = false): void {
+    // Saved with the shot itself: a reload while the balls roll plays this shot again (same result), never rewinds.
+    saveGame(true, { angle, speed: v, side: sd, top: tp });
     if (mode === "solo") {
       undoStack.push({ balls: cloneBalls(balls), match: { ...match, scores: [...match.scores], groups: [...match.groups] }, drill: currentDrill, tries: drillTries, hits: drillHits });
       if (undoStack.length > 30) undoStack.shift();
@@ -446,18 +672,19 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     editBtn.setAttribute("aria-pressed", "false");
     const cue = cueBall();
     strike(cue, angle, v, sd, tp, g().R);
-    if (soundOn) snd.cue(v);
+    // A replayed shot (page reopened mid-roll) is silent and keeps the "resumed" message.
+    if (soundOn && !replay) snd.cue(v);
     phase = "roll";
     game?.scene.cue(false);
     game?.scene.aim([], null);
     game?.scene.zone(null);
-    setStatus("");
+    if (!replay) setStatus("");
     renderHud();
   }
 
   function endShot(): void {
     // After a full-power break, come back to an everyday stroke.
-    if (match.breakShot && power > 50) setPower(45);
+    if (match.breakShot && power > 50) setPower(STROKE_POWER);
     const log = readShot(events, cueId());
     const verdict = judge(match, shotBefore, balls, log);
     const gg = g();
@@ -506,6 +733,15 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     }
     if (match.winner !== null) {
       phase = "over";
+      saveGame(false);
+      if (mode === "cpu" && !match.drawn) {
+        const raw = readStore<unknown>(COUNTED_KEY);
+        const counted = Array.isArray(raw) ? raw.filter((x): x is string => typeof x === "string") : [];
+        if (!counted.includes(gameId)) {
+          addResult(variant, match.winner === 0);
+          writeStore(COUNTED_KEY, [...counted, gameId].slice(-20));
+        }
+      }
       const solo = match.players === 1;
       // The referee's own reason (8 early, or on a foul), not a guess.
       const failed = verdict.notes.some((n) => n.key === "eightLoss") ? t("billiards.msg.eightLoss") : t("billiards.failedFoul");
@@ -525,6 +761,7 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     if (match.inHand && human()) notes.push(t(`billiards.inHand.${match.inHand}`));
     setStatus(notes.join(" "));
     aimAtBallOn();
+    saveGame(true);
     if (mode === "cpu" && match.turn === 1) {
       phase = "cpu";
       renderHud();
@@ -541,6 +778,8 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
   let drillTimer = 0;
   /** Computer turn: think, swing the cue to the chosen line, shoot. */
   let cpuAim: { from: number; to: number; t: number; plan: ReturnType<typeof planShot> } | null = null;
+  /** The computer's chosen shot when the 3D context was lost mid-swing (played as is after Restart). */
+  let lostPlan: ReturnType<typeof planShot> | null = null;
   function cpuTurn(): void {
     if (!game || phase !== "cpu") return;
     const plan = planShot(match, balls, g(), skill);
@@ -553,6 +792,8 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     while (to - aim > Math.PI) to -= Math.PI * 2;
     while (to - aim < -Math.PI) to += Math.PI * 2;
     cpuAim = { from: aim, to, t: 0, plan };
+    // The computer's chosen shot is saved before it swings: a reload replays this shot rather than a new try.
+    saveGame(true, { angle: plan.angle, speed: plan.speed, side: plan.side, top: plan.top });
   }
 
   // ---------- aim prediction ----------
@@ -654,7 +895,13 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
       phase = "cpu";
       renderHud();
       window.clearTimeout(cpuTimer);
-      cpuTimer = window.setTimeout(cpuTurn, 650);
+      // A shot it had already chosen before the context was lost is played as it was, not planned again.
+      const plan = lostPlan;
+      lostPlan = null;
+      cpuTimer = window.setTimeout(() => {
+        if (plan && phase === "cpu") takeShot(plan.angle, plan.speed, plan.side, plan.top);
+        else cpuTurn();
+      }, 650);
     }
     let predictWait = 0;
     let fullDue = false;
@@ -682,8 +929,8 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
           }
         }
         if (!anyMoving(balls, g().R) || simT > 40) {
-          for (const b of balls) Object.assign(b, { vx: 0, vy: 0, wx: 0, wy: 0, wz: 0 });
-          endShot();
+          rollAcc = 0;
+          finishRoll();
         }
       }
       if (phase === "aim" && human()) {
@@ -804,6 +1051,8 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
   const onUp = () => {
     // A cue ball moved by hand in Move balls mode is placed: the ball-in-hand zone (and its kitchen rule) is done.
     if (drag?.kind === "ball" && drag.moved && editing && drag.id === cueId()) match.inHand = null;
+    // Balls moved by hand (Move balls, ball in hand) are part of the saved game.
+    if (drag?.kind === "ball" && drag.moved) saveGame(true);
     drag = null;
   };
   shell.stage.addEventListener("pointerdown", onDown);
@@ -883,6 +1132,8 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
 
   variantSel.addEventListener("change", () => {
     if (!isVariant(variantSel.value)) return;
+    // The rolling shot ends under the game (and opponent) it was played in.
+    settleNow();
     variant = variantSel.value;
     homeVariant = variant;
     const url = new URL(location.href);
@@ -891,9 +1142,9 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     newGame(false);
   });
   modeSel.addEventListener("change", () => {
-    mode = modeSel.value as Mode;
-    skillField.hidden = mode !== "cpu";
-    practiceRow.hidden = mode !== "solo";
+    settleNow();
+    applyMode(modeSel.value as Mode);
+    prefMode = mode;
     save();
     newGame();
   });
@@ -908,11 +1159,14 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     save();
   });
   drillSel.addEventListener("change", () => {
+    settleNow();
     const v = drillSel.value;
     drillId = isDrill(v) ? v : null;
     drillHits = 0;
     drillTries = 0;
-    newGame(true);
+    // Drills are never saved and leave the saved game alone; back to free practice, it comes back.
+    newGame(true, false, false);
+    if (!drillId) restoreGame(readStore<SavedGame>(gameKey(page)));
   });
   camBtn.addEventListener("click", () => {
     camMode = camMode === "3d" ? "top" : "3d";
@@ -948,6 +1202,7 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     game?.scene.sync(balls, 0);
     setStatus(t("billiards.undone"));
     renderHud();
+    saveGame(true);
   });
   editBtn.addEventListener("click", () => {
     if (phase !== "aim") return;
@@ -979,15 +1234,19 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     }
   };
   window.addEventListener("keydown", onKey);
+  const onStorage = (e: StorageEvent) => {
+    if (e.key !== STORE_KEY) return;
+    recordsNow = storedRecords();
+    renderHud();
+  };
+  window.addEventListener("storage", onStorage);
 
-  skillField.hidden = mode !== "cpu";
-  practiceRow.hidden = mode !== "solo";
-  modeSel.value = mode;
+  applyMode(mode);
 
   host.append(
     h("header", { class: "tool-head" },
-      h("h1", null, t(page === "snooker" ? "billiards.titleSnooker" : "billiards.title")),
-      h("p", { class: "lede" }, t(page === "snooker" ? "billiards.privacyNoteSnooker" : "billiards.privacyNote")),
+      h("h1", null, t(PAGE_TEXT[page].title)),
+      h("p", { class: "lede" }, t(PAGE_TEXT[page].lede)),
     ),
     h("div", { class: "g3d-bar bl-bar" },
       h("label", { class: "field" }, h("span", null, t("billiards.game")), variantSel),
@@ -1017,7 +1276,9 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
     creditLine("game3d.credit", "https://threejs.org", "three.js"),
   );
   renderSpin();
-  newGame();
+  // A fresh rack first (without touching the save), then the saved game on top if it still fits.
+  newGame(false, false, false);
+  restoreGame(readStore<SavedGame>(gameKey(page)));
 
   mounted = {
     cleanup: () => {
@@ -1025,6 +1286,7 @@ export function mountBilliards(host: HTMLElement, page: BilliardsPage = "billiar
       window.clearTimeout(coverTimer);
       window.clearTimeout(drillTimer);
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("storage", onStorage);
       keys.dispose();
       shell.stage.removeEventListener("pointerdown", onDown);
       shell.stage.removeEventListener("pointermove", onMove);
