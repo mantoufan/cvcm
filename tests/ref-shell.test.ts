@@ -22,7 +22,6 @@ describe("reference shell", () => {
     // Reference, memes and nostalgia sit under one "Wiki" menu: one button on the row, the three links in its markup.
     const group = nav!.closest(".nav-group")!;
     expect(group.querySelector(".nav-group-label")?.textContent).toBe("Wiki");
-    expect(group.querySelector(".nav-group-btn")?.classList.contains("on")).toBe(true);
     expect(group.classList.contains("on")).toBe(true);
     expect([...group.querySelectorAll(".nav-group-pop a")].map((a) => a.getAttribute("data-nav"))).toEqual(["reference", "slang", "nostalgia"]);
     // A native <details>: works in the server HTML and without JS; a tap outside or Escape closes it.

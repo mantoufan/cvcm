@@ -1290,7 +1290,7 @@ function navRow(nav: HTMLElement): HTMLElement {
   const more = h("div", { class: "nav-more", hidden: true }, button, pop);
   const row = h("div", { class: "nav-row" }, nav, more);
 
-  const onDocClick = (event: MouseEvent): void => {
+  const onDocClick = (event: Event): void => {
     if (!more.contains(event.target as Node)) setOpen(false);
   };
   const onKey = (event: KeyboardEvent): void => {
@@ -1303,10 +1303,11 @@ function navRow(nav: HTMLElement): HTMLElement {
     button.setAttribute("aria-expanded", String(open));
     pop.hidden = !open;
     if (open) {
-      document.addEventListener("click", onDocClick, true);
+      // pointerdown, not click: iOS Safari sends no click for a tap on plain text or empty space.
+      document.addEventListener("pointerdown", onDocClick, true);
       document.addEventListener("keydown", onKey);
     } else {
-      document.removeEventListener("click", onDocClick, true);
+      document.removeEventListener("pointerdown", onDocClick, true);
       document.removeEventListener("keydown", onKey);
     }
   }
@@ -1317,8 +1318,8 @@ function navRow(nav: HTMLElement): HTMLElement {
 
   function fit(): void {
     // Row items: plain links and menus (navGroup) of links.
-    const links = Array.from(nav.querySelectorAll<HTMLElement>(":scope > a, :scope > .nav-group"));
-    for (const a of links) a.hidden = false;
+    const items = Array.from(nav.querySelectorAll<HTMLElement>(":scope > a, :scope > .nav-group"));
+    for (const item of items) item.hidden = false;
     more.hidden = true;
     // No layout (detached, or the build-time prerender): leave every link on the row.
     if (nav.clientWidth === 0 || nav.scrollWidth <= nav.clientWidth + 1) {
@@ -1327,26 +1328,18 @@ function navRow(nav: HTMLElement): HTMLElement {
       return;
     }
     more.hidden = false;
-    for (let i = links.length - 1; i >= 0 && nav.scrollWidth > nav.clientWidth + 1; i--) {
-      if (!links[i].classList.contains("on")) links[i].hidden = true;
+    for (let i = items.length - 1; i >= 0 && nav.scrollWidth > nav.clientWidth + 1; i--) {
+      if (!items[i].classList.contains("on")) items[i].hidden = true;
     }
     clear(pop);
-    for (const a of links) {
-      if (!a.hidden) continue;
-      if (a.classList.contains("nav-group")) {
-        // A menu that does not fit: its label, then its links, inside "More".
-        a.removeAttribute("open");
-        pop.append(h("span", { class: "nav-more-label" }, a.querySelector(".nav-group-label")?.textContent ?? ""));
-        for (const link of a.querySelectorAll<HTMLAnchorElement>(".nav-group-pop a")) {
-          const copy = link.cloneNode(true) as HTMLAnchorElement;
-          copy.classList.add("nav-more-sub");
-          pop.append(copy);
-        }
-        continue;
+    for (const item of items) {
+      if (!item.hidden) continue;
+      if (item instanceof HTMLDetailsElement) foldGroupInto(pop, item);
+      else {
+        const copy = item.cloneNode(true) as HTMLAnchorElement;
+        copy.hidden = false;
+        pop.append(copy);
       }
-      const copy = a.cloneNode(true) as HTMLAnchorElement;
-      copy.hidden = false;
-      pop.append(copy);
     }
     if (pop.childElementCount === 0) {
       more.hidden = true;
@@ -1360,6 +1353,17 @@ function navRow(nav: HTMLElement): HTMLElement {
   return row;
 }
 
+/** A nav menu that does not fit the row, listed inside "More": its label, then copies of its links. */
+function foldGroupInto(pop: HTMLElement, group: HTMLDetailsElement): void {
+  group.open = false;
+  pop.append(h("span", { class: "nav-more-label" }, group.querySelector(".nav-group-label")?.textContent ?? ""));
+  for (const link of group.querySelectorAll<HTMLAnchorElement>(".nav-group-pop a")) {
+    const copy = link.cloneNode(true) as HTMLAnchorElement;
+    copy.classList.add("nav-more-sub");
+    pop.append(copy);
+  }
+}
+
 /**
  * One item on the nav row that opens a list of links: a native <details>, so it opens and its links work in the
  * server HTML before the app takes over, and without JS. The links are always in the markup, so the prerendered HTML
@@ -1369,7 +1373,7 @@ function navRow(nav: HTMLElement): HTMLElement {
  */
 function navGroup(label: string, on: boolean, links: HTMLElement[]): HTMLElement {
   return h("details", { class: "nav-group" + (on ? " on" : "") },
-    h("summary", { class: "nav-group-btn" + (on ? " on" : "") },
+    h("summary", { class: "nav-group-btn" },
       h("span", { class: "nav-group-label" }, label),
       h("span", { class: "nav-more-caret", "aria-hidden": "true" }, "▾"),
     ),
@@ -1395,8 +1399,10 @@ function wireNavGroupClosing(): void {
     if (event.key !== "Escape") return;
     const open = document.querySelector<HTMLDetailsElement>("details.nav-group[open]");
     if (!open) return;
+    // Focus goes back to the summary only when it was in the menu; elsewhere the page keeps its focus.
+    const inside = open.contains(document.activeElement);
     open.open = false;
-    open.querySelector<HTMLElement>("summary")?.focus();
+    if (inside) open.querySelector<HTMLElement>("summary")?.focus();
   });
 }
 

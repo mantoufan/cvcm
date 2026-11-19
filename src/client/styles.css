@@ -61,7 +61,7 @@ img { max-width: 100%; }
 .nav-group[hidden] { display: none; }
 .nav-group-btn { display: inline-flex; align-items: center; gap: 0.2rem; padding: var(--nav-py) var(--nav-px); border-radius: 8px; color: var(--ink-soft); font-size: var(--nav-fs); line-height: 1.6; cursor: pointer; white-space: nowrap; list-style: none; user-select: none; }
 .nav-group-btn::-webkit-details-marker { display: none; }
-.nav-group-btn:hover, .nav-group-btn.on, .nav-group[open] > .nav-group-btn { color: var(--pink-deep); background: var(--pink-soft); }
+.nav-group-btn:hover, .nav-group.on > .nav-group-btn, .nav-group[open] > .nav-group-btn { color: var(--pink-deep); background: var(--pink-soft); }
 .nav-more-label { padding: 0.45rem 0.6rem 0.15rem; color: var(--ink-soft); font-size: 0.78rem; opacity: 0.75; }
 .nav-more-pop a.nav-more-sub { padding-left: 1.1rem; }
 /* Site search: a button in the header, a panel under it (src/client/search.ts). */
