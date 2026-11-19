@@ -41,7 +41,7 @@ const PREFIXES = new Set(["anti", "co", "counter", "de", "extra", "inter", "intr
 
 /** Abbreviations whose full stop does not end a sentence inside a title. */
 const ABBREVIATIONS = new Set([
-  "vs", "v", "e.g", "i.e", "etc", "al", "cf", "ca", "dr", "mr", "mrs", "ms", "jr", "sr", "vol", "eds", "fig", "approx",
+  "vs", "v", "e.g", "i.e", "etc", "al", "cf", "ca", "dr", "mr", "mrs", "ms", "jr", "sr", "st", "mt", "prof", "rev", "vol", "eds", "fig", "approx",
   "dept", "univ", "inc", "corp", "ltd", "ph.d", "u.s", "u.k",
 ]);
 

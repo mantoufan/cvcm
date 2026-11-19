@@ -56,8 +56,13 @@ export function mountWordsToPages(host: HTMLElement): void {
   }
 
   /** "2.8 pages" with one decimal; whole numbers stay whole. */
-  const pagesText = (p: number) => {
-    const shown = Math.round(p * 10) / 10;
+  /**
+   * Pages to a tenth. Pasted text is laid out exactly, so it rounds up: 2.04 pages print on three sheets and must not
+   * read as a flat 2. A bare word count is an estimate and rounds to the nearest tenth (1,000 words ≈ 2.8 pages).
+   */
+  const tenth = (p: number, up: boolean) => (up ? Math.ceil(p * 10 - 1e-9) : Math.round(p * 10)) / 10;
+  const pagesText = (p: number, up: boolean) => {
+    const shown = tenth(p, up);
     // Under a twentieth of a page still reads as some page, not "0".
     return t(`${S}.pagesValue`, { n: shown === 0 && p > 0 ? `< ${nf(1).format(0.1)}` : nf(1).format(shown) });
   };
@@ -77,22 +82,22 @@ export function mountWordsToPages(host: HTMLElement): void {
       const words = readNum(wordsEl, true);
       if (words === undefined || !(words > 0)) return empty(t(`${S}.needWords`));
       const pages = pagesForWords(words, s);
-      rows = [[t(`${S}.pagesResult`), pagesText(pages), true]];
-      note.textContent = fillNote(pages);
+      rows = [[t(`${S}.pagesResult`), pagesText(pages, false), true]];
+      note.textContent = fillNote(pages, false);
     } else {
       if (!textEl.value.trim()) return empty(t(`${S}.needText`));
       const l = layoutText(textEl.value, s);
-      // A page or more of your own text gives its own words per page; shorter text would make one up from a few lines.
-      if (l.pages >= 1) perPage = l.wordsPerPage;
+      // A page or more of your own text gives its own words per page; for shorter text there is no honest figure.
+      perPage = l.pages >= 1 ? l.wordsPerPage : NaN;
       rows = [
-        [t(`${S}.pagesResult`), pagesText(l.pages), true],
+        [t(`${S}.pagesResult`), pagesText(l.pages, true), true],
         [t(`${S}.counted`), nf(0).format(l.words)],
         [t(`${S}.linesUsed`), nf(0).format(l.lines)],
       ];
-      note.textContent = fillNote(l.pages);
+      note.textContent = fillNote(l.pages, true);
     }
     rows.push(
-      [t(`${S}.perPage`), nf(0).format(Math.round(perPage))],
+      ...(Number.isNaN(perPage) ? [] : [[t(`${S}.perPage`), nf(0).format(Math.round(perPage))] as [string, string]]),
       [t(`${S}.linesPerPage`), nf(0).format(lines)],
     );
     copy.disabled = false;
@@ -115,9 +120,9 @@ export function mountWordsToPages(host: HTMLElement): void {
   const roundWords = (w: number) => (w >= 100 ? Math.round(w / 10) * 10 : Math.max(1, Math.round(w)));
 
   /** "Fills 3 pages, the last one about 80 % full." */
-  function fillNote(exact: number): string {
-    // From the same one-decimal figure the result row shows, so "2" pages never comes with "runs onto page 3".
-    const pages = Math.round(exact * 10) / 10 || exact;
+  function fillNote(exact: number, up: boolean): string {
+    // From the same one-decimal figure the result row shows.
+    const pages = tenth(exact, up) || exact;
     const whole = Math.ceil(pages - 1e-9);
     const last = Math.round((pages - (whole - 1)) * 100);
     return whole <= 0 ? "" : t(`${S}.fill`, { n: nf(0).format(whole), pct: String(Math.min(100, Math.max(1, last))) });

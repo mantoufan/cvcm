@@ -69,8 +69,13 @@ describe("words to pages ui", () => {
     set("[data-field=text]", "word ".repeat(100));
     expect(text("[data-out=result]")).toContain("Words in your text100");
     expect(host.querySelectorAll("[data-out=table] table")).toHaveLength(0);
-    // Less than a page of text keeps the measured figure.
-    expect(text("[data-out=result]")).toContain("Words per page351");
+    // Pasted text rounds up: 47 lines at 23 a page print on three sheets.
+    set("[data-field=text]", Array.from({ length: 47 }, () => "word").join("\n"));
+    expect(text("[data-out=result]")).toContain("Pages2.1");
+    expect(text("[data-out=note]")).toBe("The text runs onto page 3, which is about 10 % full.");
+    set("[data-field=text]", "word ".repeat(100));
+    // Less than a page of text has no words-per-page figure of its own.
+    expect(text("[data-out=result]")).not.toContain("Words per page");
     set("[data-field=text]", "字".repeat(2000));
     // Your own text sets the words per page: 36 characters on the indented first line, then 39 a line:
     // 52 lines, 2,000 ÷ 52 × 23 = 885 (the English sample would say 351).

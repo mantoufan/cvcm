@@ -90,7 +90,8 @@ export function linesPerPage(setup: PageSetup): number {
 /** Pieces a line can break between: words (with the space after them), the parts of a hyphenated word and single CJK characters. */
 function tokens(paragraph: string): { text: string; space: boolean }[] {
   const out: { text: string; space: boolean }[] = [];
-  for (const word of paragraph.split(/\s+/).filter(Boolean)) {
+  // The ideographic space (U+3000) is a full-width character, not a break: it stays in the text and takes 1 em.
+  for (const word of paragraph.split(/[^\S\u3000]+/).filter(Boolean)) {
     if (!BREAK_EACH.test(word)) {
       // A line may also break after a hyphen, dash or slash inside a word (self-|esteem, 2010–|2020, and/|or), as in Word.
       const pieces = word.split(/(?<=[\p{L}\p{N}][-–—/])(?=[\p{L}\p{N}])/u);
