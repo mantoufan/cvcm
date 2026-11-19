@@ -77,8 +77,13 @@ const PROPER = new Set(["african", "american", "arab", "asian", "british", "cath
 
 /** Words that keep a fixed form whatever the style: u.s. → U.S., ph.d. → Ph.D., world war ii → II. */
 function fixedForm(part: string): string | undefined {
-  if (DOTTED.test(part) && !LOWER_DOTTED.has(part.toLowerCase())) return part.split(".").map((seg) => capFirst(seg.toLowerCase())).join(".");
-  if (ROMAN.has(part.toLowerCase()) || ACRONYMS.has(part.toLowerCase())) return part.toUpperCase();
+  // Inside a compound an initialism keeps its last full stop (u.s.-china); a possessive follows an acronym (CEO's).
+  const dot = part.endsWith(".") ? "." : "";
+  const bare = dot ? part.slice(0, -1) : part;
+  if (DOTTED.test(bare) && !LOWER_DOTTED.has(bare.toLowerCase())) return bare.split(".").map((seg) => capFirst(seg.toLowerCase())).join(".") + dot;
+  const m = /^(.*?)(['’]s)?$/su.exec(part)!;
+  const word = m[1]!.toLowerCase();
+  if (ROMAN.has(word) || ACRONYMS.has(word)) return word.toUpperCase() + (m[2] ?? "").toLowerCase();
   return undefined;
 }
 
@@ -130,7 +135,8 @@ function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start
       const lower = part.toLowerCase();
       const slash = parts[1] === "/";
       // A hyphenated compound's first part is always capitalized; a slash pair (and/or, in/out) is cased as one word.
-      if (slash) return start || capLast || !minor.has(lower) ? capFirst(lower) : lower;
+      // Letter pairs are labels (A/B), never the article a.
+      if (slash) return start || capLast || !minor.has(lower) || parts.every((q, k) => k % 2 === 1 || q.length === 1) ? capFirst(lower) : lower;
       if (i === 0) return capFirst(lower);
       // Chicago: the part right after a bound prefix is lowercase (Anti-inflammatory), a proper noun or adjective is not
       // (Anti-American; pre-Columbian, post–World War, pre-K when typed so in a lowercase line).
@@ -187,9 +193,11 @@ function convertLine(line: string, style: TitleStyle): string {
   const words = shouting ? tokens.map((t) => (DOTTED.test(t.core) ? t : { ...t, core: t.core.toLowerCase() })) : tokens;
   // A lone dash or colon between words ("Learning – a guide") ends one part and starts the next.
   const loneBreak = (t: Token) => !t.core && LONE_BREAK.test(t.lead + t.trail) && (style !== "sentence" || (t.lead + t.trail).includes(":"));
-  // Capitals carry meaning only in a line typed mostly in lowercase: there a capitalized longer word is a name.
+  // Capitals carry meaning only in a line not already in title case: there a capitalized word is a name.
+  // Not title case: a major word after the first is in lowercase (Smith goes to Washington), or most longer words are.
   const long = words.filter((w) => [...w.core].filter((c) => LETTER.test(c)).length >= 4);
-  const typed = !shouting && long.length >= 2 && long.filter((w) => startsUpper(w.core)).length / long.length < 0.5;
+  const typed = !shouting && (words.some((w, k) => k > 0 && /^\p{Ll}{2,}$/u.test(w.core) && !MINOR.mla.has(w.core))
+    || (long.length >= 2 && long.filter((w) => startsUpper(w.core)).length / long.length < 0.5));
   // Index of the next word for every token, found in one pass from the end.
   const nextWord: number[] = new Array(words.length).fill(-1);
   for (let i = words.length - 2, next = words[words.length - 1]?.core ? words.length - 1 : -1; i >= 0; i--) {

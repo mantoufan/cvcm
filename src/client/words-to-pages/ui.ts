@@ -55,7 +55,6 @@ export function mountWordsToPages(host: HTMLElement): void {
     textField.hidden = mode !== "text";
   }
 
-  /** "2.8 pages" with one decimal; whole numbers stay whole. */
   /**
    * Pages to a tenth. Pasted text is laid out exactly, so it rounds up: 2.04 pages print on three sheets and must not
    * read as a flat 2. A bare word count is an estimate and rounds to the nearest tenth (1,000 words ≈ 2.8 pages).
@@ -102,17 +101,17 @@ export function mountWordsToPages(host: HTMLElement): void {
     );
     copy.disabled = false;
     last = rowsTo(out, rows);
-    const single = { ...s, spacing: 1 };
-    const double = { ...s, spacing: 2 };
     // The table is for word counts; next to pasted text's own figures it would contradict them.
     if (mode === "text") {
       ref.replaceChildren();
       return;
     }
+    const single = { ...s, spacing: 1 };
+    const double = { ...s, spacing: 2 };
     ref.replaceChildren(
       h("h3", null, t(`${S}.tableTitle`, { font: FONT_METRICS[s.font].name, size: nf(1).format(s.size) })),
       table([t(`${S}.colWords`), t(`${S}.sp_1`), t(`${S}.sp_2`)],
-        TABLE_WORDS.map((w) => [nf(0).format(w), nf(1).format(Math.round(pagesForWords(w, single) * 10) / 10), nf(1).format(Math.round(pagesForWords(w, double) * 10) / 10)])),
+        TABLE_WORDS.map((w) => [nf(0).format(w), nf(1).format(tenth(pagesForWords(w, single), false)), nf(1).format(tenth(pagesForWords(w, double), false))])),
     );
   }
 

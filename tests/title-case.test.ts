@@ -126,6 +126,13 @@ describe("title case", () => {
     expect(titleCase("rock 'n' roll forever", "apa")).toBe("Rock 'n' Roll Forever");
   });
 
+  it("handles initialisms in compounds, acronym possessives, A/B and names in sentence-cased lines", () => {
+    expect(titleCase("the u.s.-china trade war", "apa")).toBe("The U.S.-China Trade War");
+    expect(titleCase("COVID-19 AND THE CEO'S DILEMMA", "apa")).toBe("COVID-19 and the CEO's Dilemma");
+    expect(titleCase("an a/b test of pricing", "apa")).toBe("An A/B Test of Pricing");
+    expect(titleCase("Dr. Smith goes to Washington", "sentence")).toBe("Dr. Smith goes to Washington");
+  });
+
   it("keeps punctuation around words", () => {
     expect(titleCase("“the art of war” (a new translation)", "chicago")).toBe("“The Art of War” (a New Translation)");
   });
