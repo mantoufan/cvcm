@@ -1,9 +1,7 @@
-import { GAME_COVER, LEARN_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
+import { LEARN_COVER, TOOL_COVER, coverUrl, localizedTutorialSrc } from "./covers";
 import { devicePageCopy } from "./device-i18n";
 import type { DevicePageId } from "./device";
-import { gameById, gamesFaqBase, type GameConsoleId, type GameId } from "./games";
-import { gameCopy, gameFaqItems } from "./games-i18n";
-import { gameGuideSteps, walkthroughImage } from "./game-walkthrough";
+import { gamesFaqBase, type GameHubId } from "./games";
 import { legalPageCopy } from "./legal";
 import { quizDescription, quizTitle } from "./quiz-i18n";
 import type { QuizId } from "./quiz";
@@ -64,8 +62,8 @@ export type SeoInput = {
   tutorial?: TutorialId | null;
   learn?: boolean;
   games?: boolean;
-  console?: GameConsoleId | null;
-  game?: GameId | null;
+  /** A games sub-hub (/games/mini/, /games/3d/); null or absent for /games/. */
+  gamesHub?: GameHubId | null;
   markets?: boolean;
   market?: MarketId | null;
   devicePage?: DevicePageId | null;
@@ -921,8 +919,7 @@ export function pageTitle(locale: Locale, input: SeoInput | ToolId | null = {}):
     return lookup(locale, seo.tutorial ? LEARN_TITLE[seo.tutorial] : "meta.titleLearn");
   }
   if (seo.games) {
-    if (seo.game) return gameCopy(locale, seo.game).title;
-    if (seo.console) return lookup(locale, `meta.titleGames${consoleMeta(seo.console)}`);
+    if (seo.gamesHub) return lookup(locale, `meta.titleGames${hubMeta(seo.gamesHub)}`);
     return lookup(locale, "meta.titleGames");
   }
   if (seo.markets) return seo.market ? marketCopy(locale, seo.market).title : marketHub(locale).title;
@@ -954,8 +951,7 @@ export function pageDescription(locale: Locale, input: SeoInput | ToolId | null 
     return lookup(locale, seo.tutorial ? LEARN_DESC[seo.tutorial] : "meta.descLearn");
   }
   if (seo.games) {
-    if (seo.game) return gameCopy(locale, seo.game).description;
-    if (seo.console) return lookup(locale, `meta.descGames${consoleMeta(seo.console)}`);
+    if (seo.gamesHub) return lookup(locale, `meta.descGames${hubMeta(seo.gamesHub)}`);
     return lookup(locale, "meta.descGames");
   }
   if (seo.markets) return seo.market ? marketCopy(locale, seo.market).description : marketHub(locale).description;
@@ -1001,7 +997,7 @@ export function pageCanonical(
   if (seo.ref) return `https://cv.cm${refHref(locale, seo.refId ?? null)}`;
   if (seo.kb) return `https://cv.cm${kbHref(locale, seo.kbId ?? null)}`;
   if (seo.learn) return `https://cv.cm${learnHref(locale, seo.tutorial ?? null)}`;
-  if (seo.games) return `https://cv.cm${gamesHref(locale, seo.console ?? null, seo.game ?? null)}`;
+  if (seo.games) return `https://cv.cm${gamesHref(locale, seo.gamesHub ?? null)}`;
   if (seo.markets) return `https://cv.cm${marketsHref(locale, seo.market ?? null)}`;
   if (seo.devicePage) return `https://cv.cm${deviceHref(locale, seo.devicePage)}`;
   if (seo.quiz) return `https://cv.cm${quizHref(locale, seo.quizId ?? null)}`;
@@ -1012,7 +1008,7 @@ export function pageCanonical(
   return `https://cv.cm${appHref(locale, seo.tool ?? null, seo.clipId, seo.convertJob ?? seo.resizeJob)}`;
 }
 
-function consoleMeta(id: GameConsoleId): string {
+function hubMeta(id: GameHubId): string {
   return id[0].toUpperCase() + id.slice(1);
 }
 
@@ -1049,44 +1045,13 @@ export function learnFaqItems(locale: Locale, tutorial: TutorialId): FaqItem[] {
   return faqFrom(locale, `faq.learn.${tutorial}`);
 }
 
-export function gamesHubFaqItems(locale: Locale, consoleId?: GameConsoleId | null): FaqItem[] {
-  const base = gamesFaqBase(consoleId);
+export function gamesHubFaqItems(locale: Locale, hub?: GameHubId | null): FaqItem[] {
+  const base = gamesFaqBase(hub);
   if (base !== "faq.games") {
     const specific = faqFrom(locale, base);
     if (specific.length) return specific;
   }
   return faqFrom(locale, "faq.games");
-}
-
-export function flashHubHowToJsonLd(locale: Locale): Record<string, unknown> {
-  const page = pageCanonical(locale, { games: true, console: "flash" });
-  return {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: lookup(locale, "meta.titleGamesFlash"),
-    description: lookup(locale, "games.flash.lead"),
-    step: [1, 2, 3, 4, 5].map((i) => ({
-      "@type": "HowToStep",
-      position: i,
-      name: lookup(locale, `games.flash.s${i}t`),
-      text: lookup(locale, `games.flash.s${i}b`),
-      url: `${page}#flash-s${i}`,
-    })),
-  };
-}
-
-export function flashHubSoftwareJsonLd(locale: Locale): Record<string, unknown> {
-  return {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    name: lookup(locale, "games.flash.title"),
-    description: lookup(locale, "meta.descGamesFlash"),
-    applicationCategory: "GameApplication",
-    operatingSystem: "Web",
-    browserRequirements: "Requires JavaScript and WebAssembly",
-    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-    url: pageCanonical(locale, { games: true, console: "flash" }),
-  };
 }
 
 export function marketBreadcrumbJsonLd(locale: Locale, id: MarketId | null): Record<string, unknown> {
@@ -1105,22 +1070,19 @@ export function faqJsonLd(
   locale: Locale,
   tool: ToolId | null,
   tutorial?: TutorialId | null,
-  game?: GameId | null,
   gamesHub?: boolean,
   convertJob?: ConvertJobId | null,
   resizeJob?: ResizeJobId | null,
   market?: MarketId | null,
   marketsHub?: boolean,
-  gamesConsole?: GameConsoleId | null,
+  gamesHubId?: GameHubId | null,
 ): Record<string, unknown> | null {
   const items = market
     ? marketFaqItems(locale, market)
     : marketsHub
       ? marketHubFaqItems(locale)
-      : game
-        ? gameFaqItems(locale, game)
-        : gamesHub
-          ? gamesHubFaqItems(locale, gamesConsole)
+      : gamesHub
+          ? gamesHubFaqItems(locale, gamesHubId)
           : tutorial
         ? learnFaqItems(locale, tutorial)
         : tool === "convert" && convertJob
@@ -1163,42 +1125,6 @@ export function howToJsonLd(locale: Locale, tutorial: TutorialId): Record<string
     description: lookup(locale, `learn.${tutorial}.lead`),
     image: coverUrl(LEARN_COVER[tutorial]),
     step: steps,
-  };
-}
-
-export function gameHowToJsonLd(locale: Locale, id: GameId): Record<string, unknown> {
-  const copy = gameCopy(locale, id);
-  const game = gameById(id)!;
-  return {
-    "@context": "https://schema.org",
-    "@type": "HowTo",
-    name: copy.title,
-    description: copy.lead,
-    image: coverUrl(GAME_COVER[id]),
-    step: gameGuideSteps(locale, id).map((step, i) => ({
-      "@type": "HowToStep",
-      position: i + 1,
-      name: step.title,
-      text: step.body,
-      url: `${pageCanonical(locale, { games: true, console: game.console, game: id })}#guide-${step.id}`,
-      ...(step.image ? { image: coverUrl(walkthroughImage(id, step.image)) } : {}),
-    })),
-  };
-}
-
-export function gameVideoGameJsonLd(locale: Locale, id: GameId): Record<string, unknown> {
-  const copy = gameCopy(locale, id);
-  const game = gameById(id)!;
-  return {
-    "@context": "https://schema.org",
-    "@type": "VideoGame",
-    name: copy.name,
-    description: copy.description,
-    image: coverUrl(GAME_COVER[id]),
-    gamePlatform: lookup(locale, `games.consoles.${game.console}`),
-    genre: lookup(locale, `games.genres.${game.genre}`),
-    datePublished: String(game.year),
-    url: pageCanonical(locale, { games: true, console: game.console, game: id }),
   };
 }
 
@@ -1263,20 +1189,18 @@ export function tutorialBreadcrumbJsonLd(locale: Locale, tutorial: TutorialId | 
   return breadcrumbList(items);
 }
 
-/** Home / Games (/ console (/ game)): the trail shown above the games hub, a console hub or a game page. */
-export function gameBreadcrumbJsonLd(locale: Locale, consoleId: GameConsoleId | null, id: GameId | null = null): Record<string, unknown> {
-  const items = gamesTrail(locale, consoleId);
-  if (consoleId && id) items.push({ name: gameCopy(locale, id).name, url: pageCanonical(locale, { games: true, console: consoleId, game: id }) });
-  return breadcrumbList(items);
+/** Home / Games (/ hub): the trail shown above the games hub and its sub-hubs. */
+export function gameBreadcrumbJsonLd(locale: Locale, hub: GameHubId | null): Record<string, unknown> {
+  return breadcrumbList(gamesTrail(locale, hub));
 }
 
 /** Home / Games (/ hub or console): the start of every games trail, game tool pages included. */
-function gamesTrail(locale: Locale, consoleId: GameConsoleId | null): { name: string; url: string }[] {
+function gamesTrail(locale: Locale, hub: GameHubId | null): { name: string; url: string }[] {
   const items = [
     { name: lookup(locale, "nav.home"), url: pageCanonical(locale, { tool: null }) },
     { name: lookup(locale, "nav.games"), url: pageCanonical(locale, { games: true }) },
   ];
-  if (consoleId) items.push({ name: lookup(locale, `games.consoles.${consoleId}`), url: pageCanonical(locale, { games: true, console: consoleId }) });
+  if (hub) items.push({ name: lookup(locale, `games.consoles.${hub}`), url: pageCanonical(locale, { games: true, gamesHub: hub }) });
   return items;
 }
 

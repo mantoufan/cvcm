@@ -8,11 +8,7 @@ import {
   faqItems,
   resizeJobFaqItems,
   faqJsonLd,
-  flashHubHowToJsonLd,
-  flashHubSoftwareJsonLd,
   gameBreadcrumbJsonLd,
-  gameHowToJsonLd,
-  gameVideoGameJsonLd,
   howToJsonLd,
   learnFaqItems,
   marketBreadcrumbJsonLd,
@@ -22,7 +18,7 @@ import {
   type FaqItem,
 } from "../shared/seo";
 import type { Locale } from "../shared/locale";
-import { gameById, type GameConsoleId, type GameId } from "../shared/games";
+import type { GameHubId } from "../shared/games";
 import type { MarketId } from "../shared/markets";
 import { deviceBreadcrumbJsonLd, deviceFaqJsonLd } from "../shared/device-i18n";
 import { quizBreadcrumbJsonLd, quizFaqJsonLd } from "../shared/quiz-i18n";
@@ -76,7 +72,7 @@ export function faqSection(
   convertJob?: ConvertJobId | null,
   resizeJob?: ResizeJobId | null,
 ): HTMLElement {
-  syncPageJsonLd(locale, tool, null, null, false, convertJob, resizeJob);
+  syncPageJsonLd(locale, tool, null, false, convertJob, resizeJob);
   const items = tool === "convert" && convertJob
     ? convertJobFaqItems(locale, convertJob)
     : tool === "resize" && resizeJob
@@ -98,14 +94,13 @@ export function syncPageJsonLd(
   locale: Locale,
   tool: ToolId | null,
   tutorial: TutorialId | null,
-  game: GameId | null = null,
   gamesHub = false,
   convertJob: ConvertJobId | null = null,
   resizeJob: ResizeJobId | null = null,
   market: MarketId | null = null,
   marketsHub = false,
   devicePage: DevicePageId | null = null,
-  gamesConsole: GameConsoleId | null = null,
+  gamesHubId: GameHubId | null = null,
   legalPage: LegalPageId | null = null,
   quizPage: QuizId | "hub" | null = null,
   datasetPage: DatasetId | "hub" | null = null,
@@ -242,12 +237,11 @@ export function syncPageJsonLd(
     writeJsonLd("breadcrumb-jsonld", legalBreadcrumbJsonLd(locale, legalPage));
     return;
   }
-  const flashHub = gamesHub && gamesConsole === "flash";
   // Mirror applyHtmlSeo: plain tool pages carry WebApplication + BreadcrumbList.
-  const toolPage = Boolean(tool) && !tutorial && !game && !gamesHub && !market && !marketsHub && !devicePage;
+  const toolPage = Boolean(tool) && !tutorial && !gamesHub && !market && !marketsHub && !devicePage;
   const faq = devicePage
     ? deviceFaqJsonLd(locale, devicePage)
-    : faqJsonLd(locale, tool, tutorial, game, gamesHub, convertJob, resizeJob, market, marketsHub, gamesConsole);
+    : faqJsonLd(locale, tool, tutorial, gamesHub, convertJob, resizeJob, market, marketsHub, gamesHubId);
   writeJsonLd("faq-jsonld", faq);
   writeJsonLd(
     "breadcrumb-jsonld",
@@ -255,10 +249,8 @@ export function syncPageJsonLd(
       ? deviceBreadcrumbJsonLd(locale, devicePage)
       : marketsHub || market
         ? marketBreadcrumbJsonLd(locale, market)
-        : game
-          ? gameBreadcrumbJsonLd(locale, gameById(game)?.console ?? null, game)
-          : gamesHub
-            ? gameBreadcrumbJsonLd(locale, gamesConsole)
+        : gamesHub
+            ? gameBreadcrumbJsonLd(locale, gamesHubId)
             : tutorial || learnHub
               ? tutorialBreadcrumbJsonLd(locale, tutorial)
               : toolPage && tool
@@ -269,20 +261,16 @@ export function syncPageJsonLd(
     "howto-jsonld",
     devicePage
       ? null
-      : game
-        ? gameHowToJsonLd(locale, game)
-        : flashHub
-          ? flashHubHowToJsonLd(locale)
-          : tutorial
+      : tutorial
             ? howToJsonLd(locale, tutorial)
             : tool
               ? toolHowToJsonLd(locale, tool)
               : null,
   );
-  writeJsonLd("game-jsonld", game ? gameVideoGameJsonLd(locale, game) : null);
+  writeJsonLd("game-jsonld", null);
   writeJsonLd(
     "software-jsonld",
-    flashHub ? flashHubSoftwareJsonLd(locale) : toolPage && tool ? toolSoftwareJsonLd(locale, tool) : null,
+    toolPage && tool ? toolSoftwareJsonLd(locale, tool) : null,
   );
 }
 

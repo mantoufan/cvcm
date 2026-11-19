@@ -2,7 +2,7 @@ import { mustStay } from "./leave-guard";
 import { clear, h } from "./dom";
 import { faqSection, syncPageJsonLd } from "./faq";
 import { guideSection } from "./guide";
-import { COVER, DEVICE_COVER, GAME_COVER, LEARN_COVER, MARKET_COVER, coverUrl } from "./covers";
+import { COVER, DEVICE_COVER, LEARN_COVER, MARKET_COVER, coverUrl } from "./covers";
 import { LOCALES, hasPageMessages, loadPageMessages, locale, readStoredLocale, setLocale, t, type Locale } from "./i18n";
 import { pageCopyOf, type PageCopy } from "../shared/page-copy";
 import { negotiateLocale } from "../shared/locale";
@@ -45,7 +45,7 @@ import {
   type ToolId,
   type TutorialId,
 } from "../shared/path";
-import type { GameConsoleId, GameId } from "../shared/games";
+import type { GameHubId } from "../shared/games";
 import type { DevicePageId } from "../shared/device";
 import { legalStaticHtml } from "../shared/legal";
 import type { MarketId } from "../shared/markets";
@@ -96,8 +96,7 @@ let resizeJob: ResizeJobId | null = null;
 let tutorial: TutorialId | null = null;
 let learnHub = false;
 let gamesHub = false;
-let gameConsole: GameConsoleId | null = null;
-let gameId: GameId | null = null;
+let gamesHubId: GameHubId | null = null;
 let marketsHub = false;
 let marketId: MarketId | null = null;
 let devicePage: DevicePageId | null = null;
@@ -170,9 +169,9 @@ export function start(): void {
       render();
     });
     document.addEventListener("click", onClick);
-    document.addEventListener("pointerover", prefetchGamePack, { passive: true });
-    document.addEventListener("touchstart", prefetchGamePack, { passive: true });
-    document.addEventListener("focusin", prefetchGamePack);
+    document.addEventListener("pointerover", prefetchPagePack, { passive: true });
+    document.addEventListener("touchstart", prefetchPagePack, { passive: true });
+    document.addEventListener("focusin", prefetchPagePack);
   }
   boot();
 }
@@ -198,8 +197,8 @@ export function boot(): void {
     }
   } else if (parsed.kind === "games") {
     setLocale(parsed.locale);
-    applyGames(parsed.console, parsed.game);
-    const canonical = gamesHref(parsed.locale, parsed.console, parsed.game);
+    applyGames(parsed.hub);
+    const canonical = gamesHref(parsed.locale, parsed.hub);
     if (location.pathname !== canonical) {
       history.replaceState(null, "", withSearch(canonical, location.search));
     }
@@ -414,8 +413,8 @@ export function boot(): void {
   } else if (parsed.kind === "bare-games") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
-    applyGames(parsed.console, parsed.game);
-    history.replaceState(null, "", withSearch(gamesHref(loc, parsed.console, parsed.game), location.search));
+    applyGames(parsed.hub);
+    history.replaceState(null, "", withSearch(gamesHref(loc, parsed.hub), location.search));
   } else if (parsed.kind === "bare-markets") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -443,22 +442,20 @@ export function boot(): void {
   render();
 }
 
-/** Start the game, test, knowledge or reference pack download when such a link is about to be followed, so the page opens without a wait. */
-function prefetchGamePack(e: Event): void {
+/** Start the test, knowledge or reference pack download when such a link is about to be followed, so the page opens without a wait. */
+function prefetchPagePack(e: Event): void {
   const target = e.target as Element | null;
   const loc = locale();
   // The pointer moved on: a copy prefetch still waiting belongs to the link it left.
   clearTimeout(copyPrefetch);
-  if (target?.closest?.('a[data-nav^="game-"]')) {
-    if (!hasPageMessages(loc, true)) loadPageMessages(loc, true).catch(() => {});
-  } else if (target?.closest?.('a[data-nav^="test-"], a[data-nav="tests"]')) {
+  if (target?.closest?.('a[data-nav^="test-"], a[data-nav="tests"]')) {
     // data-nav is "test-<test id>" on a test link, "tests" on a hub link: the quiz pack, plus that test's own chunk.
     const nav = target.closest('a[data-nav^="test-"], a[data-nav="tests"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("test-") ? nav.slice(5) : "";
     const page: QuizPage = isQuizId(id) ? id : "hub";
-    if (hasPageMessages(loc, false, false, page)) return;
+    if (hasPageMessages(loc, false, page)) return;
     const load = (): void => {
-      loadPageMessages(loc, false, false, page).catch(() => {});
+      loadPageMessages(loc, false, page).catch(() => {});
     };
     // The hub lists every test: under a pointer, wait until it rests on a link, as tool links do.
     if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
@@ -468,57 +465,57 @@ function prefetchGamePack(e: Event): void {
     const nav = target.closest('a[data-nav^="ref-"], a[data-nav="reference"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("ref-") ? nav.slice(4) : "";
     const page: RefPage = isRefId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, null, false, null, page)) loadPageMessages(loc, false, false, null, false, null, page).catch(() => {});
+    if (!hasPageMessages(loc, false, null, false, null, page)) loadPageMessages(loc, false, null, false, null, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="slang-"], a[data-nav="slang"]')) {
     // data-nav is "slang-<entry id>" on an entry link, "slang" on a hub link.
     const nav = target.closest('a[data-nav^="slang-"], a[data-nav="slang"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("slang-") ? nav.slice(6) : "";
     const page: SlangPage = isSlangId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, null, false, null, null, page)) loadPageMessages(loc, false, false, null, false, null, null, page).catch(() => {});
+    if (!hasPageMessages(loc, false, null, false, null, null, page)) loadPageMessages(loc, false, null, false, null, null, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="ideas-"], a[data-nav="ideas"]')) {
     // data-nav is "ideas-<idea id>" on an idea link, "ideas" on a hub link.
     const nav = target.closest('a[data-nav^="ideas-"], a[data-nav="ideas"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("ideas-") ? nav.slice(6) : "";
     const page: IdeaPage = isIdeaId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, page).catch(() => {});
+    if (!hasPageMessages(loc, false, null, false, null, null, null, {}, page)) loadPageMessages(loc, false, null, false, null, null, null, {}, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="nostalgia-"], a[data-nav="nostalgia"]')) {
     // data-nav is "nostalgia-<entry id>" on an entry link, "nostalgia" on a hub link.
     const nav = target.closest('a[data-nav^="nostalgia-"], a[data-nav="nostalgia"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("nostalgia-") ? nav.slice(10) : "";
     const page: NostalgiaPage = isNostalgiaId(id) ? id : "hub";
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, page).catch(() => {});
+    if (!hasPageMessages(loc, false, null, false, null, null, null, {}, null, page)) loadPageMessages(loc, false, null, false, null, null, null, {}, null, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="countries-"], a[data-nav="countries"]')) {
     // data-nav is "countries-<slug>" on a profile link, "countries" on a hub link.
     const nav = target.closest('a[data-nav^="countries-"], a[data-nav="countries"]')?.getAttribute("data-nav") ?? "";
     const slug = nav.startsWith("countries-") ? nav.slice(10) : "";
     const page: CountryPage = isCountrySlug(slug) ? slug : "hub";
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, page)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, page).catch(() => {});
+    if (!hasPageMessages(loc, false, null, false, null, null, null, {}, null, null, page)) loadPageMessages(loc, false, null, false, null, null, null, {}, null, null, page).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="food-"], a[data-nav="calories"]')) {
     // data-nav is "food-<food id>" on a food link, "calories" on a hub link (not "calories-…": that is the calories-burned tool).
-    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, "hub")) return;
+    if (hasPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, "hub")) return;
     const load = (): void => {
-      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, "hub").catch(() => {});
+      loadPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, "hub").catch(() => {});
     };
     // The pack carries every food's numbers: under a pointer, wait until it rests on a link, as test links do.
     if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
     else load();
   } else if (target?.closest?.('a[data-nav^="emoji-"], a[data-nav="emoji"]')) {
     // One pack serves the hub and every emoji page.
-    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, true)) return;
+    if (hasPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, false, false, true)) return;
     const load = (): void => {
-      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, true).catch(() => {});
+      loadPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, false, false, true).catch(() => {});
     };
     // The pack carries every emoji's names and usage: under a pointer, wait until it rests on a link, as food links do.
     if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
     else load();
   } else if (target?.closest?.('a[data-nav^="element-"], a[data-nav="elements"]')) {
     // One pack serves the hub and every element page.
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, true).catch(() => {});
+    if (!hasPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, true)) loadPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, true).catch(() => {});
   } else if (target?.closest?.('a[data-nav^="currency"]')) {
     // data-nav is "currency" on a hub link, "currency-<pair>" on a pair link: one pack (copy and the ECB snapshot) serves them all.
-    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, true)) return;
+    if (hasPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, true)) return;
     const load = (): void => {
-      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, true).catch(() => {});
+      loadPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, true).catch(() => {});
     };
     // The pack carries the rate snapshot: under a pointer, wait until it rests on a link, as food links do.
     if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
@@ -528,16 +525,16 @@ function prefetchGamePack(e: Event): void {
     const nav = target.closest('a[data-nav^="breed-"], a[data-nav="breeds"]')?.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("breed-") ? nav.slice(6) : "";
     const page: BreedsPage = isBreedId(id) ? id : "hub";
-    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, false, page)) return;
+    if (hasPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, false, page)) return;
     const load = (): void => {
-      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, false, page).catch(() => {});
+      loadPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, false, page).catch(() => {});
     };
     // The pack carries every breed's names and facts: under a pointer, wait until it rests on a link, as food links do.
     if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
     else load();
   } else if (target?.closest?.('a[data-nav^="calendar"]')) {
     // data-nav is "calendar" on a hub link, "calendar-<page id>" on a page link: one pack serves them all.
-    if (!hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true)) loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, true).catch(() => {});
+    if (!hasPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, false, true)) loadPageMessages(loc, false, null, false, null, null, null, {}, null, null, null, null, false, true).catch(() => {});
   } else {
     const link = target?.closest?.(KB_NAV_SELECTOR);
     if (!link) {
@@ -548,7 +545,7 @@ function prefetchGamePack(e: Event): void {
     const nav = link.getAttribute("data-nav") ?? "";
     const id = nav.startsWith("kb-") ? nav.slice(3) : "";
     const page: KbPage = isKbId(id) ? id : kbHubOfNav(nav) ?? "hub";
-    if (!hasPageMessages(loc, false, false, null, false, page)) loadPageMessages(loc, false, false, null, false, page).catch(() => {});
+    if (!hasPageMessages(loc, false, null, false, page)) loadPageMessages(loc, false, null, false, page).catch(() => {});
   }
 }
 
@@ -565,9 +562,9 @@ function prefetchCopy(target: Element | null, loc: Locale, hover: boolean): void
   // A tool page that renders with the ideas pack (the idea validator) waits for it too, so fetch it with the copy.
   if (!copy) return;
   const ideas: IdeaPage = copy.tool && IDEAS_PACK_TOOLS.includes(copy.tool as ToolId) ? "hub" : null;
-  if (hasPageMessages(loc, false, false, null, false, null, null, null, copy, ideas)) return;
+  if (hasPageMessages(loc, false, null, false, null, null, null, copy, ideas)) return;
   const load = (): void => {
-    loadPageMessages(loc, false, false, null, false, null, null, null, copy, ideas).catch(() => {});
+    loadPageMessages(loc, false, null, false, null, null, null, copy, ideas).catch(() => {});
   };
   if (hover) copyPrefetch = window.setTimeout(load, 120);
   else load();
@@ -586,7 +583,9 @@ function onClick(e: MouseEvent): void {
   // AI pages are cross-origin isolated, mic/camera/screen pages allow those devices, and citation pages allow the lookup
   // hosts, each by the page's own response headers: entering or leaving one loads a new document.
   if (documentPolicyKey(a.pathname) !== documentPolicyKey(location.pathname)) return;
-  if (parseAppPath(a.pathname).kind === "static") return;
+  // Static files, and retired game pages (the Worker answers those with a 301 to the emulator tool).
+  const kind = parseAppPath(a.pathname).kind;
+  if (kind === "static" || kind === "games-retired") return;
   // Unsaved work in this tab: a full navigation lets beforeunload ask before it is lost.
   if (mustStay()) return;
   e.preventDefault();
@@ -601,8 +600,7 @@ function applyTool(next: ToolId | null, nextClip: string | null): void {
   tutorial = null;
   learnHub = false;
   gamesHub = false;
-  gameConsole = null;
-  gameId = null;
+  gamesHubId = null;
   marketsHub = false;
   marketId = null;
   devicePage = null;
@@ -626,8 +624,7 @@ function applyLearn(next: TutorialId | null): void {
   tutorial = next;
   learnHub = next === null;
   gamesHub = false;
-  gameConsole = null;
-  gameId = null;
+  gamesHubId = null;
   marketsHub = false;
   marketId = null;
   devicePage = null;
@@ -645,14 +642,13 @@ function applyLearn(next: TutorialId | null): void {
   calendarPage = null;
 }
 
-function applyGames(consoleId: GameConsoleId | null, nextGame: GameId | null): void {
+function applyGames(hub: GameHubId | null): void {
   tool = null;
   clipId = null;
   tutorial = null;
   learnHub = false;
-  gamesHub = nextGame === null;
-  gameConsole = consoleId;
-  gameId = nextGame;
+  gamesHub = true;
+  gamesHubId = hub;
   marketsHub = false;
   marketId = null;
   devicePage = null;
@@ -676,8 +672,7 @@ function applyDevice(page: DevicePageId): void {
   tutorial = null;
   learnHub = false;
   gamesHub = false;
-  gameConsole = null;
-  gameId = null;
+  gamesHubId = null;
   marketsHub = false;
   marketId = null;
   devicePage = page;
@@ -701,8 +696,7 @@ function applyLegal(page: LegalPageId): void {
   tutorial = null;
   learnHub = false;
   gamesHub = false;
-  gameConsole = null;
-  gameId = null;
+  gamesHubId = null;
   marketsHub = false;
   marketId = null;
   devicePage = null;
@@ -726,8 +720,7 @@ function applyQuiz(id: QuizId | null): void {
   tutorial = null;
   learnHub = false;
   gamesHub = false;
-  gameConsole = null;
-  gameId = null;
+  gamesHubId = null;
   marketsHub = false;
   marketId = null;
   devicePage = null;
@@ -751,8 +744,7 @@ function applyDataset(id: DatasetId | null): void {
   tutorial = null;
   learnHub = false;
   gamesHub = false;
-  gameConsole = null;
-  gameId = null;
+  gamesHubId = null;
   marketsHub = false;
   marketId = null;
   devicePage = null;
@@ -846,7 +838,6 @@ export function render(): void {
     ? parsed.locale
     : locale();
   const req = ++localeReq;
-  const gamePage = (parsed.kind === "games" || parsed.kind === "bare-games") && Boolean(parsed.game);
   const legal = parsed.kind === "legal" || parsed.kind === "bare-legal";
   const quiz: QuizPage = parsed.kind === "quiz" || parsed.kind === "bare-quiz" ? parsed.quiz ?? "hub" : null;
   // Ranking copy travels in the data pack.
@@ -866,9 +857,9 @@ export function render(): void {
   const emoji = parsed.kind === "emoji" || parsed.kind === "bare-emoji";
   const currency = parsed.kind === "currency" || parsed.kind === "bare-currency";
   const breeds: BreedsPage = parsed.kind === "breeds" || parsed.kind === "bare-breeds" ? parsed.entry ?? "hub" : null;
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency, breeds)) {
+  if (!hasPageMessages(loc, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency, breeds)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency, breeds).then(
+    loadPageMessages(loc, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency, breeds).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -906,7 +897,7 @@ export function render(): void {
     applyLearn(published ? parsed.tutorial : null);
   } else if (parsed.kind === "games") {
     setLocale(parsed.locale);
-    applyGames(parsed.console, parsed.game);
+    applyGames(parsed.hub);
   } else if (parsed.kind === "markets") {
     setLocale(parsed.locale);
     applyTool(parsed.market, null);
@@ -917,7 +908,7 @@ export function render(): void {
     const published = parsed.tutorial && isPublishedTutorial(parsed.tutorial);
     applyLearn(published ? parsed.tutorial : null);
   } else if (parsed.kind === "bare-games") {
-    applyGames(parsed.console, parsed.game);
+    applyGames(parsed.hub);
   } else if (parsed.kind === "bare-markets") {
     applyTool(parsed.market, null);
   } else if (parsed.kind === "device") {
@@ -1037,8 +1028,8 @@ export function render(): void {
     ? { kb: true as const, kbId: kbPage }
     : learnHub || tutorial
     ? { learn: true as const, tutorial }
-    : gamesHub || gameId
-      ? { games: true as const, console: gameConsole, game: gameId }
+    : gamesHub
+      ? { games: true as const, gamesHub: gamesHubId }
       : devicePage
         ? { devicePage }
         : quizPage
@@ -1064,15 +1055,13 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub") || (nostalgiaPage && nostalgiaPage !== "hub") || (elementsPage && elementsPage !== "hub") || (emojiPage && emojiPage !== "hub") || (currencyPage && currencyPage !== "hub") || (breedsPage && breedsPage !== "hub")) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub") || (nostalgiaPage && nostalgiaPage !== "hub") || (elementsPage && elementsPage !== "hub") || (emojiPage && emojiPage !== "hub") || (currencyPage && currencyPage !== "hub") || (breedsPage && breedsPage !== "hub")) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
     : tutorial
     ? LEARN_COVER[tutorial]
-    : gameId
-      ? GAME_COVER[gameId]
-      : marketId
+    : marketId
         ? MARKET_COVER[marketId]
         : tool
           ? COVER[tool]
@@ -1083,8 +1072,8 @@ export function render(): void {
   upsertMeta("name", "twitter:title", pageTitle(loc, seo));
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? coverUrl(image) : null);
-  syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage, emojiPage, currencyPage, breedsPage);
+  syncBrandIcon(Boolean(tool && !tutorial && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
+  syncPageJsonLd(loc, tool, tutorial, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gamesHubId, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage, emojiPage, currencyPage, breedsPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -1222,12 +1211,12 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage || calendarPage || countriesPage || caloriesPage || elementsPage || calendarPage || emojiPage || currencyPage || breedsPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage || calendarPage || countriesPage || caloriesPage || elementsPage || calendarPage || emojiPage || currencyPage || breedsPage);
   // The calendar sits under Tools (time group on the home tool wall); countries, calories and the periodic table under Data.
   // Game tool pages sit under Games (their games hub), not Tools.
   const gameTool = Boolean(tool && gameHubOf(tool));
   const toolsOn = (Boolean(tool) && !gameTool) || Boolean(devicePage) || Boolean(marketsHub || marketId) || Boolean(calendarPage);
-  const gamesOn = gamesHub || Boolean(gameId) || gameTool;
+  const gamesOn = gamesHub || gameTool;
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
   const testsOn = Boolean(quizPage);
   const dataOn = Boolean(datasetPage) || Boolean(countriesPage) || Boolean(caloriesPage) || Boolean(elementsPage) || Boolean(emojiPage) || Boolean(currencyPage) || Boolean(breedsPage);
@@ -1236,7 +1225,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const slangOn = Boolean(slangPage);
   const ideasOn = Boolean(ideasPage);
   const nostalgiaOn = Boolean(nostalgiaPage);
-  const page = h("div", { class: "page" + (home ? " is-home" : "") + (gameId || gameConsole === "flash" ? " is-game" : "") },
+  const page = h("div", { class: "page" + (home ? " is-home" : "") },
     h("header", { class: "top" },
       h("a", { class: "brand", href: appHref(loc, null), "data-nav": "home", "aria-label": t("brand") }, "cv.cm"),
       navRow(h("nav", { class: "nav", "aria-label": t("nav.tools") },
@@ -1585,11 +1574,10 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     if (!alive()) return;
     if (tutorial) m.mountLearn(main, tutorial);
     else m.mountLearnHub(main);
-  } else if (gameId || gamesHub) {
+  } else if (gamesHub) {
     const m = await import("./games/ui");
     if (!alive()) return;
-    if (gameId) m.mountGame(main, gameId);
-    else m.mountGamesHub(main, gameConsole);
+    m.mountGamesHub(main, gamesHubId);
   } else if (devicePage) {
     const m = await import("./device/ui");
     if (!alive()) return;
@@ -1849,8 +1837,8 @@ function localePath(next: Locale): string {
     ? legalHref(next, legalPage)
     : learnHub || tutorial
       ? learnHref(next, tutorial)
-      : gamesHub || gameId
-        ? gamesHref(next, gameConsole, gameId)
+      : gamesHub
+        ? gamesHref(next, gamesHubId)
         : marketsHub || marketId
           ? marketsHref(next, marketId)
           : appHref(next, tool, clipId, convertJob ?? resizeJob);

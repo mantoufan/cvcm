@@ -1,7 +1,6 @@
 // @vitest-environment happy-dom
 import { describe, expect, it } from "vitest";
 import { start, whenRendered } from "../src/client/app-shell";
-import { GAMES } from "../src/shared/games";
 import { gamesHref } from "../src/shared/path";
 
 function reset(url: string): void {
@@ -61,18 +60,9 @@ describe("content page breadcrumbs", () => {
     expect(page.ld).toEqual(page.trail);
   });
 
-  it("puts Home / Games / console / game above a game and in its JSON-LD", async () => {
-    const game = GAMES.find((item) => item.console !== "flash")!;
-    const page = await open(gamesHref("en", game.console, game.id));
+  it("puts Home / Games / hub above a games sub-hub and in its JSON-LD", async () => {
+    const page = await open(gamesHref("en", "3d"));
     expect(page.trail.slice(0, 2)).toEqual(["Home", "Games"]);
-    expect(page.trail).toHaveLength(4);
-    expect(page.trail[3]).toBe(document.querySelector("main h1")?.textContent);
-    expect(page.links).toEqual(["/en/", "/en/games/", gamesHref("en", game.console)]);
-    expect(page.ld).toEqual(page.trail);
-  });
-
-  it("puts Home / Games / Flash above the Flash player hub", async () => {
-    const page = await open("/en/games/flash/");
     expect(page.trail).toHaveLength(3);
     expect(page.links).toEqual(["/en/", "/en/games/"]);
     expect(page.ld).toEqual(page.trail);
@@ -85,8 +75,7 @@ describe("content page breadcrumbs", () => {
     const games = await open("/en/games/");
     expect(games.trail).toEqual(["Home", "Games"]);
     expect(games.ld).toEqual(games.trail);
-    const game = GAMES.find((item) => item.console !== "flash")!;
-    const consoleHub = await open(gamesHref("en", game.console));
+    const consoleHub = await open(gamesHref("en", "mini"));
     expect(consoleHub.trail).toHaveLength(3);
     expect(consoleHub.links).toEqual(["/en/", "/en/games/"]);
     expect(consoleHub.ld).toEqual(consoleHub.trail);

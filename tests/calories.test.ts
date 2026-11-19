@@ -217,10 +217,10 @@ describe("calories: routes", () => {
 
   it("preloads the calories pack on its pages", () => {
     const packs = { "calories-ja": ["/assets/cal-ja.js", "/assets/data.js"], ja: ["/assets/ja.js"] };
-    const out = preloadLocalePack("<head></head>", "ja", false, packs, false, false, null, null, null, null, null, null, null, true);
+    const out = preloadLocalePack("<head></head>", "ja", packs, false, false, null, null, null, null, null, null, null, true);
     expect(out).toContain("/assets/cal-ja.js");
     expect(out).toContain("/assets/data.js");
-    expect(preloadLocalePack("<head></head>", "ja", false, packs)).not.toContain("cal-ja");
+    expect(preloadLocalePack("<head></head>", "ja", packs)).not.toContain("cal-ja");
   });
 
   it("is in the sitemap with every locale, alternates and the snapshot lastmod, and tracked by analytics", () => {

@@ -187,24 +187,19 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
 .convert-jobs { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0.85rem 0 0; }
 
 /* Games */
-.page.is-game .tool-head { padding: 0.6rem 0 0.4rem; }
 /* The trail took the place of the header's 2rem back link; keep it to one line under that so the player height still
    fits: no wrapping, and a long game name is cut with an ellipsis. */
-.page.is-game .device-crumb, .device-crumb:has(+ .game-head) { margin: 0.4rem 0 0; flex-wrap: nowrap; white-space: nowrap; }
-.page.is-game .device-crumb > :last-child, .device-crumb:has(+ .game-head) > :last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-.page.is-game .tool-head h1 { font-size: clamp(1.15rem, 4vw, 1.5rem); margin: 0; }
+.device-crumb:has(+ .game-head) { margin: 0.4rem 0 0; flex-wrap: nowrap; white-space: nowrap; }
+.device-crumb:has(+ .game-head) > :last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .game-chip { display: inline-flex; align-items: center; min-height: 34px; padding: 0.25rem 0.75rem; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; font-size: 0.86rem; }
 .game-chip.on, .game-chip:hover { border-color: var(--pink-deep); background: var(--pink-soft); color: var(--pink-deep); }
-.guide-toc { display: flex; flex-wrap: wrap; gap: 0.3rem 0.8rem; margin: 0 0 1rem; font-size: 0.85rem; }
-.guide-toc a { text-decoration: none; }
 .guide-step { padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
 .guide-step h3 { margin: 0 0 0.5rem; font-size: 1.02rem; }
 .guide-step p { margin: 0 0 0.6rem; line-height: 1.8; }
 .guide-step p:last-child { margin-bottom: 0; }
-.cheat-row, .control-row { display: grid; gap: 0.6rem; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--line); }
-.cheat-row { grid-template-columns: minmax(8rem, 1fr) minmax(10rem, 1.4fr); }
+.control-row { display: grid; gap: 0.6rem; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--line); }
 .control-row { grid-template-columns: minmax(5rem, 8rem) 1fr; }
-.cheat-row code, .control-row kbd { font-family: var(--mono); font-size: 0.86rem; overflow-wrap: anywhere; }
+.control-row kbd { font-family: var(--mono); font-size: 0.86rem; overflow-wrap: anywhere; }
 
 /* Device, legal, ID watermark */
 .device-reading { display: grid; gap: 0.4rem; margin: 1rem 0 1.2rem; padding: 1rem; border: 1px solid var(--line); border-radius: var(--radius); }
@@ -236,7 +231,6 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
   .search-pop { left: 0; width: auto; }
   .links { grid-template-columns: 1fr; }
   .pool-cards { grid-template-columns: 1fr; }
-  .cheat-row { grid-template-columns: 1fr; }
   .clip-bar { gap: 0.25rem; }
   .clip-bar .chip, .clip-bar .icon-btn, .clip-biu { min-height: 34px; min-width: 34px; padding: 0.15rem 0.45rem; font-size: 0.85rem; }
 }
@@ -520,14 +514,14 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .control-table { display: grid; gap: 0.35rem; }
 .control-action { font-weight: 650; }
 .game-note.muted { font-size: 0.82rem; }
+.game-demos { margin: 0.6rem 0 0.4rem; }
+.game-demos h2 { margin: 0 0 0.3rem; font-size: 1.05rem; }
+.game-demo-row { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin: 0.4rem 0; }
+.game-demo-console { min-width: 4.5rem; color: var(--ink-soft); font-size: 0.86rem; }
+.game-demo-credits { margin: 0.3rem 0 0; padding-left: 1.1rem; display: grid; gap: 0.15rem; }
 .game-section { margin: 1.4rem 0; }
 .game-section h2 { margin: 0 0 0.55rem; }
 .guide-intro { margin: 0 0 0.85rem; line-height: 1.75; }
-.game-guide { list-style: none; margin: 0; padding: 0; display: grid; gap: 1.15rem; }
-.guide-figure { margin: 0 0 0.75rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--line); }
-.guide-figure img { display: block; width: 100%; height: auto; object-fit: cover; }
-.cheat-table { display: grid; gap: 0.45rem; }
-.game-legal { margin-top: 1.4rem; color: var(--ink-soft); font-size: 0.82rem; }
 @media (max-width: 640px) {
   .game-frame { height: calc(100dvh - 10.5rem); min-height: 220px; }
 }
@@ -789,8 +783,6 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .music-roll { display: block; width: 100%; height: auto; background: var(--white); }
 .ref-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .ref-names th[scope="row"] { font-weight: 400; color: var(--ink-soft); }
-.game-official { margin: 0.4rem 0 0.6rem; padding-left: 1.2rem; }
-.game-official li { margin: 0.3rem 0; }
 
 /* Dice roller, GPA calculator, Pomodoro timer */
 .dice-faces { margin: 0 0 0.6rem; font-family: var(--mono); font-size: 1.4rem; font-weight: 700; color: var(--pink-deep); word-break: break-word; }

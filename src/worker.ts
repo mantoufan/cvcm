@@ -191,7 +191,12 @@ export default {
         return redirectTo(learnHref(locale, parsed.tutorial), url, 302);
       }
       if (parsed.kind === "bare-games") {
-        return redirectTo(gamesHref(locale, parsed.console, parsed.game), url, 302);
+        return redirectTo(gamesHref(locale, parsed.hub), url, 302);
+      }
+      // Retired emulator catalogue pages and system hubs: the emulator tool that plays them. The query (an old genre
+      // filter) means nothing there.
+      if (parsed.kind === "games-retired") {
+        return redirect(new URL(appHref(parsed.locale ?? locale, parsed.tool), url.origin).toString(), parsed.locale ? 301 : 302);
       }
       if (parsed.kind === "bare-markets") {
         return redirectTo(appHref(locale, parsed.market), url, 301);
@@ -266,7 +271,7 @@ export default {
         }
       }
       if (parsed.kind === "games") {
-        const canonical = gamesHref(parsed.locale, parsed.console, parsed.game);
+        const canonical = gamesHref(parsed.locale, parsed.hub);
         if (path !== canonical) {
           return redirectTo(canonical, url, 301);
         }
@@ -412,7 +417,7 @@ export default {
       const seo = parsed.kind === "learn"
         ? { learn: true as const, tutorial: parsed.tutorial }
         : parsed.kind === "games"
-          ? { games: true as const, console: parsed.console, game: parsed.game }
+          ? { games: true as const, gamesHub: parsed.hub }
           : parsed.kind === "markets"
             ? { markets: true as const, market: parsed.market }
             : parsed.kind === "device"
@@ -479,7 +484,7 @@ export default {
       // The browser's core pack leaves out the copy only this page shows; preload the bucket that holds it.
       const copy = copyChunkKey(locale, pageCopyOf(parsed));
       let out = applyHtmlSeo(html, locale, seo, undefined, body);
-      out = preloadLocalePack(out, locale, parsed.kind === "games" && Boolean(parsed.game), undefined, parsed.kind === "quiz" && (parsed.quiz ?? "hub"), parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, ideasPackOf(parsed), parsed.kind === "nostalgia" ? parsed.entry ?? "hub" : null, parsed.kind === "countries" ? (parsed.entry ? String(countryBucket(countryCode(parsed.entry))) : "hub") : null, parsed.kind === "calories", parsed.kind === "elements", parsed.kind === "calendar" || (parsed.kind === "app" && parsed.tool === "lunar-converter"), parsed.kind === "emoji", parsed.kind === "currency", parsed.kind === "breeds" ? parsed.entry ?? "hub" : null);
+      out = preloadLocalePack(out, locale, undefined, parsed.kind === "quiz" && (parsed.quiz ?? "hub"), parsed.kind === "dataset" || parsed.kind === "ranking", parsed.kind === "kb" ? parsed.article ?? "hub" : null, parsed.kind === "ref" ? parsed.entry ?? "hub" : null, parsed.kind === "slang" ? parsed.entry ?? "hub" : null, copy, ideasPackOf(parsed), parsed.kind === "nostalgia" ? parsed.entry ?? "hub" : null, parsed.kind === "countries" ? (parsed.entry ? String(countryBucket(countryCode(parsed.entry))) : "hub") : null, parsed.kind === "calories", parsed.kind === "elements", parsed.kind === "calendar" || (parsed.kind === "app" && parsed.tool === "lunar-converter"), parsed.kind === "emoji", parsed.kind === "currency", parsed.kind === "breeds" ? parsed.entry ?? "hub" : null);
       out = preloadPageChunk(out, chunk);
       if (parsed.kind === "ranking" && parsed.ranking) out = preloadPageChunk(out, rankingRowsChunk(parsed.ranking));
       if (parsed.kind === "dataset" && parsed.dataset) {

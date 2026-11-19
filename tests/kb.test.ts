@@ -433,13 +433,13 @@ describe("knowledge: sync (run `npm run kb:sync` after editing any article or it
   it("preloads only the hub pack on either hub, or the hub pack plus one article", () => {
     const packs = { en: ["/a/en.js"], "kb-en": ["/a/kb-en.js"], "kb-en/loaders": ["/a/loaders-en.js"], "kb-en/iso-8601": ["/a/iso.js"], "kb-en/what-is-uuid": ["/a/uuid.js"] };
     const shell = "<head></head>";
-    const hub = preloadLocalePack(shell, "en", false, packs, false, false, "hub");
+    const hub = preloadLocalePack(shell, "en", packs, false, false, "hub");
     expect(hub).toContain("/a/kb-en.js");
     expect(hub).not.toContain("/a/iso.js");
-    const codeHub = preloadLocalePack(shell, "en", false, packs, false, false, "code");
+    const codeHub = preloadLocalePack(shell, "en", packs, false, false, "code");
     expect(codeHub).toContain("/a/kb-en.js");
     expect(codeHub).not.toContain("/a/iso.js");
-    const article = preloadLocalePack(shell, "en", false, packs, false, false, "iso-8601");
+    const article = preloadLocalePack(shell, "en", packs, false, false, "iso-8601");
     expect(article).toContain("/a/kb-en.js");
     expect(article).toContain("/a/iso.js");
     expect(article).toContain("/a/loaders-en.js");

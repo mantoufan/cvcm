@@ -1,4 +1,4 @@
-import type { GameConsoleId } from "./games";
+import type { EmuConsoleId } from "./games";
 
 export type ControlRow = {
   action: string;
@@ -55,9 +55,7 @@ const FLASH: ControlRow[] = [
   { action: "start", keys: "Enter" },
 ];
 
-export const CONSOLE_CONTROLS: Record<GameConsoleId, ControlRow[]> = {
-  mini: [],
-  "3d": [],
+export const CONSOLE_CONTROLS: Record<EmuConsoleId, ControlRow[]> = {
   fc: NES,
   sfc: SNES,
   gb: GB,

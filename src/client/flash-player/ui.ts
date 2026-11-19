@@ -1,6 +1,7 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { player } from "../games/player";
+import { DEMO_ROMS } from "../../shared/demo-roms";
 import { gamesHref } from "../../shared/path";
 
 export function mountFlashPlayer(host: HTMLElement): void {
@@ -15,9 +16,8 @@ export function mountFlashPlayer(host: HTMLElement): void {
       core: "ruffle",
       accept: ".swf",
       name: t("flashPlayer.title"),
-      romUrl: null,
-      cheats: [],
+      demos: DEMO_ROMS.filter((demo) => demo.console === "flash"),
     }),
-    h("p", { class: "more" }, h("a", { href: gamesHref(loc, "flash"), "data-nav": "games-flash" }, t("flashPlayer.games"))),
+    h("p", { class: "more" }, h("a", { href: gamesHref(loc, null), "data-nav": "games" }, t("flashPlayer.games"))),
   );
 }

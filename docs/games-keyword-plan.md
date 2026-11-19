@@ -195,3 +195,9 @@ Keyword Planner, same MCC, `generateKeywordHistoricalMetrics` per language. Same
 | `darts` | darts game 49.5k; id game dart 49.5k; darts online 14.8k | 501, around the clock, practice |
 
 Third-batch candidates: archery game 40.5k, ping pong game 33.1k (ja 卓球 ゲーム 14.8k), bowling game 27.1k (ja ボウリング ゲーム 6.6k), basketball games 246k (broad, crowded).
+
+## 2026-11-19: emulator catalogue retired
+
+Search Console, 2026-08-21 to 2026-11-17: the whole site had 928 impressions and 31 clicks; **no `/games/` URL had a single impression**. The 164 catalogue pages (8 locales, about 1,300 URLs) are removed: commercial titles could not be played without the visitor's ROM, and homebrew names have no search volume. Old URLs 301 to `/rom-emulator/` or `/flash-player/`, which now offer three open-source demo games per system (`src/shared/demo-roms.ts`). Other ROMs on S3 are deleted after the redirects ship.
+
+Keyword Planner, same day (avg monthly searches; en = US/UK/CA/AU): board games 368k, card games 301k, solitaire games 550k, puzzle games 110k, word games 135k, typing games 368k, two player games 201k, racing games 74k, arcade games 90.5k, brain games 60.5k, sports games 27.1k, **3d games 14.8k**, nes emulator 12.1k, super mario bros online 12.1k. ja: トランプゲーム 135k, ボードゲーム 110k, パズルゲーム 60.5k, タイピングゲーム 201k, 3d ゲーム 4.4k. es: juegos de mesa 201k, solitario 1.5M, rompecabezas 165k, juegos 3d 5.4k. zh-TW: 小遊戲 110k, 益智遊戲 6.6k, 賽車遊戲 6.6k, 撲克牌遊戲 6.6k, 3d遊戲 480. Players search by kind of game, not by "3D": the next step regroups the hubs by gameplay (board, card, puzzle, word, arcade, sports & racing) with 3D as a tag.

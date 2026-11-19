@@ -147,10 +147,10 @@ describe("countries: routes", () => {
 
   it("preloads the pack on the hub and the data bucket on a profile", () => {
     const packs = { en: ["/a/en.js"], "countries-en": ["/a/c-en.js"], "countries-data/3": ["/a/b3.js"] };
-    const hub = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, null, null, null, null, "hub");
+    const hub = preloadLocalePack("<head></head>", "en", packs, false, false, null, null, null, null, null, null, "hub");
     expect(hub).toContain("/a/c-en.js");
     expect(hub).not.toContain("/a/b3.js");
-    const page = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, null, null, null, null, "3");
+    const page = preloadLocalePack("<head></head>", "en", packs, false, false, null, null, null, null, null, null, "3");
     expect(page).toContain("/a/b3.js");
   });
 

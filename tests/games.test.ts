@@ -4,40 +4,14 @@ import flashJs from "../public/emu/flash.js?raw";
 import playerHtml from "../public/emu/player.html?raw";
 import playerJs from "../public/emu/player.js?raw";
 import gamesUi from "../src/client/games/player.ts?raw";
-import { GAME_COVER } from "../src/shared/covers";
+import { DEMO_ROMS } from "../src/shared/demo-roms";
 import { CONSOLE_CONTROLS } from "../src/shared/game-controls";
-import { GAME_OFFICIAL } from "../src/shared/game-official";
-import {
-  GAME_CONSOLES,
-  GAMES,
-  gameById,
-  gameRomFile,
-  gamesFor,
-  isGameId,
-} from "../src/shared/games";
-import { gameCopy, gameFaqItems } from "../src/shared/games-i18n";
-import { gameGuideSteps, gameWalkthrough } from "../src/shared/game-walkthrough";
+import { EMU_CONSOLES, GAME_HUBS, legacyGameConsole } from "../src/shared/games";
 import { LOCALES } from "../src/shared/locale";
 import { gamesHref, parseAppPath } from "../src/shared/path";
-import { pageCanonical, pageDescription, pageTitle } from "../src/shared/seo";
-import { applyHtmlSeo } from "../src/shared/seo-html";
+import { ROM_ACCEPT, ROM_CORE } from "../src/shared/rom-detect";
 import { sitemapPages, type SitemapPage } from "../src/shared/sitemap";
 import worker from "../src/worker";
-import en from "../src/locales/games/en.json";
-import zhCN from "../src/locales/games/zh-CN.json";
-import zhTW from "../src/locales/games/zh-TW.json";
-import ja from "../src/locales/games/ja.json";
-import ko from "../src/locales/games/ko.json";
-import vi from "../src/locales/games/vi.json";
-import id from "../src/locales/games/id.json";
-import es from "../src/locales/games/es.json";
-
-function keys(value: unknown, prefix = ""): string[] {
-  if (typeof value !== "object" || value === null) return [prefix];
-  return Object.entries(value as Record<string, unknown>).flatMap(([k, v]) =>
-    keys(v, prefix ? `${prefix}.${k}` : k),
-  );
-}
 
 const assets = {
   fetch: async () =>
@@ -46,152 +20,93 @@ const assets = {
     }),
 };
 
-describe("games catalog", () => {
+describe("emulator consoles", () => {
   it("lists keyboard controls for every console", () => {
-    for (const id of GAME_CONSOLES) {
-      // `mini` and `3d` are hubs of cv.cm's own browser games, not emulated consoles.
-      if (id === "mini" || id === "3d") continue;
+    for (const id of EMU_CONSOLES) {
       expect(CONSOLE_CONTROLS[id].length, id).toBeGreaterThanOrEqual(4);
       expect(CONSOLE_CONTROLS[id].some((row) => row.action === "start"), id).toBe(true);
     }
   });
-
-  it("covers every console and gives every game an S3 ROM filename", () => {
-    for (const id of GAME_CONSOLES) {
-      if (id === "flash" || id === "mini" || id === "3d") continue;
-      expect(gamesFor(id).length, id).toBeGreaterThan(0);
-    }
-    expect(GAME_CONSOLES).toContain("flash");
-    const files = GAMES.map((game) => gameRomFile(game));
-    expect(new Set(files).size).toBe(files.length);
-    expect(gameRomFile(gameById("contra")!)).toBe("contra.nes");
-    expect(gameRomFile(gameById("alter-ego")!)).toBe("alter-ego.nes");
-    expect(Object.keys(GAME_COVER).sort()).toEqual([...GAMES.map((game) => game.id)].sort());
-  });
-
-  it("keeps five FAQ items and a full walkthrough on every game", () => {
-    for (const game of GAMES) {
-      expect(gameFaqItems("en", game.id).length, game.id).toBe(5);
-      const steps = gameGuideSteps("zh-CN", game.id);
-      expect(steps.length, game.id).toBeGreaterThanOrEqual(3);
-      expect(gameWalkthrough("zh-CN", game.id).intro.length, game.id).toBeGreaterThan(40);
-      expect(gameCopy("zh-CN", game.id).title).toMatch(/cv\.cm/);
-    }
-    expect(gameGuideSteps("zh-CN", "super-mario-bros").length).toBeGreaterThanOrEqual(24);
-    expect(gameGuideSteps("zh-CN", "contra").length).toBeGreaterThanOrEqual(8);
-  });
-
-  it("keeps the same walkthrough step ids in every locale", () => {
-    for (const game of GAMES) {
-      const ids = gameGuideSteps("en", game.id).map((step) => step.id);
-      expect(gameGuideSteps("zh-CN", game.id).map((step) => step.id), game.id).toEqual(ids);
-    }
-  });
 });
 
-describe("games locale parity", () => {
-  it("keeps the same keys in every games language file", () => {
-    const tables = [en, zhCN, zhTW, ja, ko, vi, id, es].map((table) => keys(table).sort());
-    for (const table of tables) expect(table).toEqual(tables[0]);
+describe("demo games", () => {
+  it("has three open-source games for every console, with credits", () => {
+    for (const id of EMU_CONSOLES) expect(DEMO_ROMS.filter((rom) => rom.console === id), id).toHaveLength(3);
+    expect(new Set(DEMO_ROMS.map((rom) => rom.id)).size).toBe(DEMO_ROMS.length);
+    for (const rom of DEMO_ROMS) {
+      expect(rom.file, rom.id).toMatch(/^[A-Za-z0-9._-]+$/);
+      expect(rom.source.startsWith("https://"), rom.id).toBe(true);
+      expect(rom.license.length, rom.id).toBeGreaterThan(0);
+      expect(rom.author.length, rom.id).toBeGreaterThan(0);
+    }
+  });
+
+  it("only offers files the players open, from the retired catalogue", () => {
+    const romExt = ROM_ACCEPT.split(",");
+    for (const rom of DEMO_ROMS) {
+      const ext = rom.file.slice(rom.file.lastIndexOf("."));
+      if (rom.console === "flash") expect(ext, rom.id).toBe(".swf");
+      else expect(romExt, rom.id).toContain(ext);
+      expect(legacyGameConsole(rom.id), rom.id).toBe(rom.console);
+    }
   });
 });
 
 describe("games routes", () => {
-  it("parses hub, console, and game paths", () => {
-    expect(parseAppPath("/zh-cn/games/")).toEqual({
-      kind: "games",
-      locale: "zh-CN",
-      console: null,
-      game: null,
-    });
-    expect(parseAppPath("/en/games/fc/")).toEqual({
-      kind: "games",
-      locale: "en",
-      console: "fc",
-      game: null,
-    });
-    expect(parseAppPath("/zh-cn/games/fc/contra/")).toEqual({
-      kind: "games",
-      locale: "zh-CN",
-      console: "fc",
-      game: "contra",
-    });
-    expect(parseAppPath("/games/contra")).toEqual({
-      kind: "bare-games",
-      console: "fc",
-      game: "contra",
-    });
-    expect(isGameId("contra")).toBe(true);
-    expect(gameById("contra")?.core).toBe("nes");
-    expect(gamesHref("zh-CN", "fc", "contra")).toBe("/zh-cn/games/fc/contra/");
-    expect(parseAppPath("/zh-cn/games/flash/")).toEqual({
-      kind: "games",
-      locale: "zh-CN",
-      console: "flash",
-      game: null,
-    });
-    expect(gamesHref("en", "flash")).toBe("/en/games/flash/");
-  });
-});
-
-describe("games seo", () => {
-  it("uses cheat and walkthrough titles on Chinese game pages", () => {
-    const seo = { games: true as const, console: "fc" as const, game: "contra" as const };
-    expect(pageTitle("zh-CN", seo)).toMatch(/魂斗罗/);
-    expect(pageTitle("zh-CN", seo)).toMatch(/金手指/);
-    expect(pageDescription("zh-CN", seo)).toMatch(/攻略/);
-    expect(pageCanonical("zh-CN", seo)).toBe("https://cv.cm/zh-cn/games/fc/contra/");
-    const html = applyHtmlSeo(
-      `<!doctype html><html><head><title>x</title><meta name="description" content="old" /><link rel="canonical" href="https://cv.cm/" /></head><body></body></html>`,
-      "zh-CN",
-      seo,
-    );
-    expect(html).toContain("faq-jsonld");
-    expect(html).toContain("howto-jsonld");
-    expect(html).toContain("game-jsonld");
-    expect(html).toContain("VideoGame");
+  it("parses the hub and the two sub-hubs", () => {
+    expect(parseAppPath("/zh-cn/games/")).toEqual({ kind: "games", locale: "zh-CN", hub: null });
+    expect(parseAppPath("/en/games/mini/")).toEqual({ kind: "games", locale: "en", hub: "mini" });
+    expect(parseAppPath("/en/games/3d/")).toEqual({ kind: "games", locale: "en", hub: "3d" });
+    expect(parseAppPath("/games/")).toEqual({ kind: "bare-games", hub: null });
+    expect(gamesHref("zh-CN", "3d")).toBe("/zh-cn/games/3d/");
+    expect(gamesHref("en")).toBe("/en/games/");
   });
 
-  it("targets flash and SWF queries on the flash hub", () => {
-    const seo = { games: true as const, console: "flash" as const, game: null };
-    expect(pageTitle("zh-CN", seo)).toMatch(/Flash/);
-    expect(pageTitle("zh-CN", seo)).toMatch(/SWF|在线玩/);
-    expect(pageDescription("zh-CN", seo)).toMatch(/Ruffle/);
-    expect(pageCanonical("zh-CN", seo)).toBe("https://cv.cm/zh-cn/games/flash/");
-    const html = applyHtmlSeo(
-      `<!doctype html><html><head><title>x</title><meta name="description" content="old" /><link rel="canonical" href="https://cv.cm/" /></head><body></body></html>`,
-      "zh-CN",
-      seo,
-    );
-    expect(html).toContain("faq-jsonld");
-    expect(html).toContain("howto-jsonld");
-    expect(html).toContain("software-jsonld");
-    expect(html).toContain("WebApplication");
-    expect(html).toContain("Ruffle");
+  it("sends retired catalogue pages to the emulator that plays them", () => {
+    expect(parseAppPath("/zh-cn/games/fc/contra/")).toEqual({ kind: "games-retired", locale: "zh-CN", tool: "rom-emulator" });
+    expect(parseAppPath("/en/games/gba/")).toEqual({ kind: "games-retired", locale: "en", tool: "rom-emulator" });
+    expect(parseAppPath("/en/games/flash/")).toEqual({ kind: "games-retired", locale: "en", tool: "flash-player" });
+    expect(parseAppPath("/en/games/flash/ending/")).toEqual({ kind: "games-retired", locale: "en", tool: "flash-player" });
+    expect(parseAppPath("/games/contra")).toEqual({ kind: "games-retired", locale: null, tool: "rom-emulator" });
+    // A game under another console's hub, a made-up id or a nested hub path was never a page.
+    expect(parseAppPath("/en/games/gb/contra/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/games/fc/not-a-game/")).toEqual({ kind: "unknown" });
+    expect(parseAppPath("/en/games/mini/chess/")).toEqual({ kind: "unknown" });
   });
 });
 
 describe("games worker", () => {
-  it("301s mixed-case games URLs and 302s bare games onto the locale hub", async () => {
-    const slash = await worker.fetch(new Request("https://cv.cm/en/games/fc/contra"), { ASSETS: assets });
-    expect(slash.status).toBe(301);
-    expect(slash.headers.get("Location")).toBe("https://cv.cm/en/games/fc/contra/");
+  it("301s retired pages to the emulator tools, without the old query", async () => {
+    for (const [path, location] of [
+      ["/zh-cn/games/fc/contra/", "https://cv.cm/zh-cn/rom-emulator/"],
+      ["/en/games/fc/contra", "https://cv.cm/en/rom-emulator/"],
+      ["/en/games/sfc/?genre=rpg", "https://cv.cm/en/rom-emulator/"],
+      ["/ja/games/flash/", "https://cv.cm/ja/flash-player/"],
+      ["/es/games/flash/tag-chase/", "https://cv.cm/es/flash-player/"],
+    ]) {
+      const response = await worker.fetch(new Request(`https://cv.cm${path}`), { ASSETS: assets });
+      expect(response.status, path).toBe(301);
+      expect(response.headers.get("Location"), path).toBe(location);
+    }
+    const bare = await worker.fetch(new Request("https://cv.cm/games/contra", { headers: { "Accept-Language": "ja" } }), { ASSETS: assets });
+    expect(bare.status).toBe(302);
+    expect(bare.headers.get("Location")).toBe("https://cv.cm/ja/rom-emulator/");
+  });
 
+  it("serves the hubs and 302s bare /games/ onto the locale hub", async () => {
     const bare = await worker.fetch(new Request("https://cv.cm/games/"), { ASSETS: assets });
     expect(bare.status).toBe(302);
     expect(bare.headers.get("Location")).toMatch(/\/games\/$/);
-
-    const html = await worker.fetch(new Request("https://cv.cm/zh-cn/games/fc/contra/"), { ASSETS: assets });
-    expect(html.status).toBe(200);
-    const body = await html.text();
-    expect(body).toContain("魂斗罗");
-    expect(html.headers.get("Content-Security-Policy")).toContain("frame-src 'self'");
+    for (const path of ["/zh-cn/games/", "/en/games/mini/", "/en/games/3d/"]) {
+      const html = await worker.fetch(new Request(`https://cv.cm${path}`), { ASSETS: assets });
+      expect(html.status, path).toBe(200);
+    }
   });
 
   it("uses EmulatorJS system ids that map to hosted cores", () => {
     // Unknown ids (e.g. "gbc") make EmulatorJS fetch a missing {id}-legacy-wasm.data.
-    const systems = new Set(["nes", "snes", "gb", "gba", "segaMD", "ruffle"]);
-    for (const game of GAMES) expect(systems.has(game.core), game.id).toBe(true);
+    const systems = new Set(["nes", "snes", "gb", "gba", "segaMD"]);
+    for (const core of Object.values(ROM_CORE)) expect(systems.has(core), core).toBe(true);
   });
 
   it("boots the emulator from an external script so CSP can block inline JS", () => {
@@ -208,6 +123,7 @@ describe("games worker", () => {
     expect(gamesUi).toContain("game-empty");
     expect(gamesUi).toContain("games.needFile");
     expect(gamesUi).toContain("games.flash.needFile");
+    expect(gamesUi).toContain("games.demos.title");
   });
 
   it("allows the emulator player to be framed with wasm eval", async () => {
@@ -259,31 +175,12 @@ describe("games worker", () => {
 });
 
 describe("games sitemap", () => {
-  it("lists the games hub, every console, and every game", () => {
+  it("lists the games hub and its sub-hubs only", () => {
     const pages = sitemapPages().filter(
       (page): page is Extract<SitemapPage, { kind: "games" }> =>
         page.kind === "games" && page.locale === "en",
     );
-    expect(pages.some((page) => page.console === null && page.game === null)).toBe(true);
-    expect(pages.filter((page) => page.console && !page.game)).toHaveLength(GAME_CONSOLES.length);
-    expect(pages.filter((page) => page.game)).toHaveLength(GAMES.length);
+    expect(pages.map((page) => page.hub)).toEqual([null, ...GAME_HUBS]);
     expect(LOCALES.length).toBeGreaterThan(1);
-  });
-
-  it("lists official ways to play for every commercial game, and only for those", () => {
-    for (const game of GAMES) {
-      const ways = GAME_OFFICIAL[game.id];
-      if (game.rom) {
-        expect(ways, game.id).toBeUndefined();
-        continue;
-      }
-      expect(ways, game.id).toBeDefined();
-      for (const way of ways ?? []) {
-        const host = new URL(way.url).host;
-        expect(["www.nintendo.com", "store.steampowered.com"], `${game.id} ${way.url}`).toContain(host);
-        expect(way.url.startsWith("https://"), way.url).toBe(true);
-        expect(way.product.length, game.id).toBeGreaterThan(0);
-      }
-    }
   });
 });

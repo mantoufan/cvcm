@@ -1,8 +1,8 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { CONSOLE_CONTROLS } from "../../shared/game-controls";
-import type { GameConsoleId, GameId } from "../../shared/games";
-import { clearDraft, loadDraft, saveDraft } from "../session";
+import type { DemoRom } from "../../shared/demo-roms";
+import { GAME_ROM_BASE, type EmuConsoleId } from "../../shared/games";
 
 const GAME_SCROLL_KEYS = new Set(["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", " "]);
 
@@ -15,8 +15,6 @@ if (typeof window !== "undefined") {
     }
   });
 }
-
-type SavedRom = { blob: Blob; name: string };
 
 /** The emulator iframe. `boot` may override `core` and `name` for tools where the file decides them. */
 export function gameFrame(spec: { flash: boolean; core: string; name: string }): {
@@ -75,114 +73,69 @@ export function gameEmpty(spec: { flash: boolean; picker: HTMLInputElement; hidd
   return empty;
 }
 
+/** Buttons that start one of the hosted open-source games (src/shared/demo-roms.ts), with their credit lines. */
+export function demoPicker(roms: readonly DemoRom[], start: (rom: DemoRom) => void): HTMLElement {
+  return h("section", { class: "game-demos", "aria-labelledby": "game-demos-title" },
+    h("h2", { id: "game-demos-title" }, t("games.demos.title")),
+    h("p", { class: "game-note" }, t("games.demos.lead")),
+    // One row per console, labelled when the list spans more than one (the ROM emulator; the Flash player has one).
+    ...[...new Set(roms.map((rom) => rom.console))].map((consoleId, _, all) =>
+      h("div", { class: "game-demo-row" },
+        ...(all.length > 1 ? [h("span", { class: "game-demo-console" }, t(`games.consoles.${consoleId}`))] : []),
+        ...roms.filter((rom) => rom.console === consoleId).map((rom) => {
+          const button = h("button", { class: "btn ghost", type: "button", "data-demo": rom.id }, rom.title) as HTMLButtonElement;
+          button.addEventListener("click", () => start(rom));
+          return button;
+        }),
+      )),
+    h("ul", { class: "game-demo-credits game-note muted" },
+      ...roms.map((rom) =>
+        h("li", null,
+          `${rom.title} · ${rom.author}, ${rom.year} · ${rom.license} · `,
+          h("a", { href: rom.source, target: "_blank", rel: "noopener noreferrer" }, t("games.demos.source")),
+        ),
+      ),
+    ),
+  );
+}
+
+/** The Flash player: a local .swf, or one of the hosted demo games. */
 export function player(spec: {
-  id?: GameId;
-  remember?: boolean;
-  console: GameConsoleId;
+  console: EmuConsoleId;
   core: string;
   accept: string;
   name: string;
-  romUrl: string | null;
-  cheats: { name: string; code: string }[];
+  demos?: readonly DemoRom[];
 }): HTMLElement {
   const flash = spec.console === "flash";
   const box = h("section", { class: "game-play", "aria-label": t("games.play") });
   const { frame, boot: bootFrame } = gameFrame({ flash, core: spec.core, name: spec.name });
-  const status = h("p", { class: "game-note", role: "status" }, t(flash ? "games.flash.needFileBody" : "games.byoNote"));
+  const status = h("p", { class: "game-note", role: "status" }, t(flash ? "games.flash.needFileBody" : "games.loadRomHint"));
   const picker = h("input", {
     type: "file",
     accept: spec.accept,
     class: "game-rom-input",
     "aria-label": t(flash ? "games.flash.load" : "games.loadRom"),
   }) as HTMLInputElement;
-  const empty = gameEmpty({ flash, picker, hidden: !!spec.romUrl });
-  const showEmpty = (): void => { empty.hidden = false; };
+  const empty = gameEmpty({ flash, picker, hidden: false });
   const boot = (payload: Record<string, unknown>): void => {
     empty.hidden = true;
     bootFrame(payload);
   };
-
-  // Opt-in only: page copy promises a picked file stays in the tab unless the player saves it here.
-  const remember = !!(spec.remember && spec.id);
-  const savedKey = `rom:${spec.id ?? ""}`;
-  let current: SavedRom | null = null; // local file now playing
-  let stored = false; // a ROM for this game is in IndexedDB
-  let currentStored = false; // ...and it is the one now playing
-  let busy = false;
-  let reads = 0; // a newer pick makes a slower, earlier read stale
-  const rememberBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.rememberRom")) as HTMLButtonElement;
-  const forgetBtn = h("button", { class: "btn ghost", type: "button", hidden: true }, t("games.forgetRom")) as HTMLButtonElement;
-  // Move focus only if the user has not gone elsewhere during a slow save.
-  const refocus = (target: HTMLButtonElement): void => {
-    const active = document.activeElement;
-    if (!target.hidden && (active === document.body || active === rememberBtn || active === forgetBtn)) target.focus();
-  };
-  const sync = (): void => {
-    rememberBtn.hidden = !(remember && current && !currentStored);
-    forgetBtn.hidden = !(remember && stored);
-    rememberBtn.disabled = busy;
-    forgetBtn.disabled = busy;
-  };
-  rememberBtn.addEventListener("click", () => {
-    const rom = current;
-    if (!rom || busy) return;
-    busy = true;
-    sync();
-    void navigator.storage?.persist?.().catch(() => false);
-    saveDraft(savedKey, rom).then(() => {
-      stored = true;
-      if (current === rom) {
-        currentStored = true;
-        status.textContent = t("games.rememberedRom");
-      }
-    }).catch(() => {
-      if (current === rom) status.textContent = t("games.rememberFailed");
-    }).finally(() => {
-      busy = false;
-      sync();
-      refocus(forgetBtn.hidden ? rememberBtn : forgetBtn);
-    });
-  });
-  forgetBtn.addEventListener("click", () => {
-    if (busy) return;
-    busy = true;
-    sync();
-    clearDraft(savedKey).then(() => {
-      stored = false;
-      currentStored = false;
-      status.textContent = t("games.forgotRom");
-    }).catch(() => {
-      /* still stored: Forget stays available to retry */
-    }).finally(() => {
-      busy = false;
-      sync();
-      refocus(rememberBtn.hidden ? forgetBtn : rememberBtn);
-    });
-  });
+  let reads = 0; // a newer pick (or a demo) makes a slower, earlier read stale
 
   picker.addEventListener("change", async () => {
     const file = picker.files?.[0];
     if (!file) return;
     status.textContent = flash ? file.name : t("games.loadRomHint");
-    if (remember) {
-      // Keep the File (a Blob) rather than a second ArrayBuffer copy.
-      current = { blob: file, name: file.name };
-      currentStored = false;
-      sync();
-    }
     const read = ++reads;
+    // The same file can be opened again.
+    picker.value = "";
     try {
       const buffer = await file.arrayBuffer();
-      if (read === reads) boot({ buffer, filename: file.name, cheats: spec.cheats });
-      // With nothing hosted to race against, the same file can be opened again.
-      if (!spec.romUrl) picker.value = "";
+      if (read === reads) boot({ buffer, filename: file.name, cheats: [] });
     } catch {
-      if (read !== reads) return;
-      status.textContent = t("romEmulator.readFailed");
-      // The file can be picked again, and an unreadable one must not be offered to Remember.
-      picker.value = "";
-      current = null;
-      sync();
+      if (read === reads) status.textContent = t("romEmulator.readFailed");
     }
   });
 
@@ -190,59 +143,22 @@ export function player(spec: {
     h("div", { class: "game-stage" }, frame, empty),
     h("div", { class: "game-playbar" },
       h("label", { class: "btn" }, t(flash ? "games.flash.load" : "games.loadRom"), picker),
-      rememberBtn,
-      forgetBtn,
       status,
     ),
     h("p", { class: "game-note muted" }, t(flash ? "games.flash.emulator" : "games.emulator"), " · ", t(flash ? "games.flash.mobile" : "games.mobile")),
+    ...(spec.demos?.length
+      ? [demoPicker(spec.demos, (rom) => {
+        reads += 1;
+        status.textContent = t("games.demos.playing", { title: rom.title });
+        boot({ rom: `${GAME_ROM_BASE}${rom.file}`, name: rom.title, cheats: [] });
+      })]
+      : []),
     controls(spec.console),
   );
-
-  const tryHosted = (romUrl: string): void => {
-    void fetch(romUrl, { method: "HEAD" }).then((res) => {
-      if (picker.files?.length) return;
-      if (!res.ok) {
-        showEmpty();
-        return;
-      }
-      status.textContent = t("games.hostedNote");
-      boot({ rom: romUrl, cheats: spec.cheats });
-    }).catch(() => {
-      if (!picker.files?.length) showEmpty();
-    });
-  };
-
-  if (spec.romUrl) {
-    const romUrl = spec.romUrl;
-    queueMicrotask(() => {
-      if (!remember || typeof indexedDB === "undefined") {
-        tryHosted(romUrl);
-        return;
-      }
-      loadDraft<SavedRom>(savedKey).then(async (saved) => {
-        if (picker.files?.length) return;
-        if (!saved || !(saved.blob instanceof Blob)) {
-          tryHosted(romUrl);
-          return;
-        }
-        // Mark it stored first so an unreadable entry can still be forgotten.
-        stored = true;
-        sync();
-        const buffer = await saved.blob.arrayBuffer();
-        if (picker.files?.length) return;
-        current = saved;
-        // Forget may have finished while the blob was being read.
-        currentStored = stored;
-        sync();
-        status.textContent = t("games.savedRomLoaded");
-        boot({ buffer, filename: saved.name, cheats: spec.cheats });
-      }).catch(() => tryHosted(romUrl));
-    });
-  }
   return box;
 }
 
-export function controls(consoleId: GameConsoleId): HTMLElement {
+export function controls(consoleId: EmuConsoleId): HTMLElement {
   const rows = CONSOLE_CONTROLS[consoleId];
   return h("section", { class: "game-controls", "aria-labelledby": "controls-title" },
     h("h2", { id: "controls-title" }, t("games.controls.title")),

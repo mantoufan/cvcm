@@ -270,7 +270,7 @@ export function buildLlmsTxt(): string {
     `- [Calendar](${SITE_ORIGIN}${calendarHref("en", null)}): year and month calendars for ${CALENDAR_YEARS.join(", ")} with ISO week numbers, public holidays for ${HOLIDAY_COUNTRIES.length} countries copied from the official government announcements (China incl. makeup working days, Taiwan, Hong Kong, Japan, South Korea, Vietnam, Indonesia, United States, United Kingdom, Spain, Mexico), Chinese / Vietnamese / Korean lunar dates and Japanese rokuyō computed from new moons, the 24 solar terms and moon phases with times, and a solar–lunar date converter (1900–2100).`,
     `- [Exchange rates](${SITE_ORIGIN}${currencyHref("en", null)}): a converter for every currency in the ECB euro foreign exchange reference rates and ${CURRENCY_PAIRS.length} currency pairs (for example ${SITE_ORIGIN}${currencyHref("en", "usd-cny")}): the latest reference rate both ways, conversion tables, high, low and average over 30 days, 1 year, 5 years and since the series began (1999 for most), and charts of monthly averages and the last 90 days. Cross rates are computed through the euro; a daily snapshot (ECB, reuse with the source named), for information only, never a live quote or investment advice. The ECB has no TWD or VND rate.`,
     `- [Personality tests](${SITE_ORIGIN}${quizHref("en", null)}): quizzes that run in the page.`,
-    `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): free homebrew games playable in the browser.`,
+    `- [Games](${SITE_ORIGIN}${gamesHref("en", null)}): cv.cm's own browser games (card, board, puzzle, word and 3D games), plus a ROM emulator and Flash player with open-source demo games.`,
     `- [Sitemap](${SITE_ORIGIN}/sitemap.xml)`,
     "",
   );

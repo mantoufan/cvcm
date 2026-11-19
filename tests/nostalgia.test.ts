@@ -190,15 +190,15 @@ describe("nostalgia: nostalgia:sync (run `npm run nostalgia:sync` after editing 
 
   it("preloads the nostalgia pack on the hub, plus the loader table and one entry on an entry", () => {
     const packs = { en: ["/a/en.js"], "nostalgia-en": ["/a/n-en.js"], "nostalgia-en/loaders": ["/a/loaders.js"], "nostalgia-en/famicom": ["/a/famicom.js"], "nostalgia-en/pager": ["/a/pager.js"] };
-    const hub = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, null, null, null, "hub");
+    const hub = preloadLocalePack("<head></head>", "en", packs, false, false, null, null, null, null, null, "hub");
     expect(hub).toContain("/a/n-en.js");
     expect(hub).not.toContain("/a/loaders.js");
-    const entry = preloadLocalePack("<head></head>", "en", false, packs, false, false, null, null, null, null, null, "famicom");
+    const entry = preloadLocalePack("<head></head>", "en", packs, false, false, null, null, null, null, null, "famicom");
     expect(entry).toContain("/a/n-en.js");
     expect(entry).toContain("/a/loaders.js");
     expect(entry).toContain("/a/famicom.js");
     expect(entry).not.toContain("/a/pager.js");
-    expect(preloadLocalePack("<head></head>", "en", false, packs)).not.toContain("n-en");
+    expect(preloadLocalePack("<head></head>", "en", packs)).not.toContain("n-en");
   });
 });
 
@@ -333,9 +333,9 @@ describe("nostalgia: page HTML and SEO", () => {
     for (const id of bare) expect(nostalgiaPageHtml("en", id), id).not.toContain("meme-figure");
   });
 
-  it("links entries to the cv.cm tools and consoles that go with them", () => {
+  it("links entries to the cv.cm tools that go with them", () => {
     expect(nostalgiaPageHtml("en", "famicom")).toContain('href="/en/rom-emulator/"');
-    expect(nostalgiaPageHtml("en", "famicom")).toContain('href="/en/games/fc/"');
+    expect(nostalgiaPageHtml("en", "famicom")).not.toContain("/games/fc/");
     expect(nostalgiaPageHtml("zh-CN", "fuduji")).toContain('href="/zh-cn/voice-recorder/"');
     expect(nostalgiaPageHtml("en", "tangseng-rou")).not.toContain("rom-emulator");
   });
