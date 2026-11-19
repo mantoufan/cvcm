@@ -1,12 +1,14 @@
 /** Chinese characters and Japanese kana: each one counts as a word. Korean, which spaces its words, counts by spaces. */
-const PER_CHAR = /[\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}]/gu;
+// A halfwidth voicing mark stays with its kana (ｶﾞ is one character).
+const PER_CHAR = /[\p{sc=Han}\p{sc=Hiragana}\p{sc=Katakana}][\uff9e\uff9f\u3099-\u309c]?/gu;
 
 /**
  * Words as word processors count them: runs between spaces, every Chinese character or kana on its own, and nothing
  * for punctuation standing alone (，。 — …). A Korean word is one word, not one per syllable.
  */
 export function countWords(text: string): number {
-  return text.replace(PER_CHAR, " $& ").split(/\s+/).filter((t) => /[\p{L}\p{N}]/u.test(t)).length;
+  // The katakana middle dot separates words (ジョン・スミス). Emoji and symbols (=, +) count as Word counts them.
+  return text.replace(/\u30fb/g, " ").replace(PER_CHAR, " $& ").split(/\s+/).filter((t) => t && !/^\p{P}+$/u.test(t)).length;
 }
 
 export type TextStats = {

@@ -131,6 +131,8 @@ describe("word count", () => {
     // Korean words are spaced: one per word, not per syllable; lone punctuation is not a word.
     expect(countText("안녕하세요 세계").words).toBe(2);
     expect(countText("你好，世界。 — …").words).toBe(4);
+    expect(countText("ｶﾞｷﾞ ジョン・スミス").words).toBe(2 + 6);
+    expect(countText("👍 x = y + 1").words).toBe(6);
     expect(countText("  ").words).toBe(0);
     expect(countText("one.\n\ntwo!").paragraphs).toBe(2);
     expect(countText("abc").chars).toBe(3);

@@ -7,6 +7,8 @@ import { FONT_METRICS } from "./font-metrics";
 import { SAMPLE_TEXT } from "./words-to-pages-sample";
 import { countWords } from "./word-count";
 
+export { countWords };
+
 export const FONT_IDS = ["times", "arial", "calibri", "aptos", "cambria", "georgia", "verdana", "courier"] as const;
 export type FontId = (typeof FONT_IDS)[number];
 export const SIZES = [10, 10.5, 11, 12, 13, 14] as const;
@@ -115,7 +117,6 @@ function tokens(paragraph: string): { text: string; space: boolean }[] {
   return out;
 }
 
-export { countWords };
 
 /** Lines the text takes. Each line of input is a paragraph; blank lines between paragraphs are not counted. */
 export function countLines(text: string, setup: PageSetup): number {

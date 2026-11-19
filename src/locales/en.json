@@ -5417,7 +5417,7 @@
       "q1": "Is this a word counter?",
       "a1": "Yes. It counts words, characters, sentences, paragraphs, lines, and a 200 wpm reading time.",
       "q2": "How are Chinese or Japanese words counted?",
-      "a2": "Each CJK character counts as one word. Latin text still splits on spaces.",
+      "a2": "Each Chinese character or Japanese kana counts as one word. Korean and Latin text split on spaces, and punctuation on its own is not a word.",
       "q3": "Is my text uploaded?",
       "a3": "No. Counting is local. You can also open a text file from your device.",
       "q4": "Does it count spaces?",
