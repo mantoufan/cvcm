@@ -19,6 +19,18 @@ describe("reference shell", () => {
     // After Data in the top nav, and linked from the footer directory.
     const order = [...document.querySelectorAll(".nav a")].map((a) => a.getAttribute("data-nav"));
     expect(order.indexOf("reference")).toBe(order.indexOf("datasets") + 1);
+    // Reference, memes and nostalgia sit under one "Wiki" menu: one button on the row, the three links in its markup.
+    const group = nav!.closest(".nav-group")!;
+    expect(group.querySelector(".nav-group-label")?.textContent).toBe("Wiki");
+    expect(group.querySelector(".nav-group-btn")?.classList.contains("on")).toBe(true);
+    expect(group.classList.contains("on")).toBe(true);
+    expect([...group.querySelectorAll(".nav-group-pop a")].map((a) => a.getAttribute("data-nav"))).toEqual(["reference", "slang", "nostalgia"]);
+    expect(group.querySelector(".nav-group-pop")?.hasAttribute("hidden")).toBe(true);
+    group.querySelector<HTMLButtonElement>(".nav-group-btn")!.click();
+    expect(group.querySelector(".nav-group-pop")?.hasAttribute("hidden")).toBe(false);
+    document.body.click();
+    expect(group.querySelector(".nav-group-pop")?.hasAttribute("hidden")).toBe(true);
+    expect(document.querySelector('.nav > a[data-nav="ideas"]')).not.toBeNull();
     expect(document.querySelector('.dir a[data-nav="reference"]')).not.toBeNull();
     expect(document.getElementById("article-jsonld")?.textContent).toContain("CollectionPage");
 
@@ -37,7 +49,7 @@ describe("reference shell", () => {
     select.dispatchEvent(new Event("change"));
     await whenRendered();
     expect(window.location.pathname).toBe("/zh-cn/reference/wink/");
-    expect(document.querySelector('.nav a[data-nav="reference"]')?.textContent).toBe("参考");
+    expect(document.querySelector('.nav a[data-nav="reference"]')?.textContent).toBe("姿势参考");
 
     window.history.pushState(null, "", "/en/");
     render();

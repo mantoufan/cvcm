@@ -18,7 +18,7 @@ describe("ideas shell", () => {
     expect(nav?.classList.contains("on")).toBe(true);
     // After Memes in the top nav, and linked from the footer directory with its focus ideas.
     const order = [...document.querySelectorAll(".nav a")].map((a) => a.getAttribute("data-nav"));
-    expect(order.indexOf("ideas")).toBe(order.indexOf("slang") + 1);
+    expect(order.indexOf("ideas")).toBe(order.indexOf("nostalgia") + 1);
     expect(document.querySelector('.dir a[data-nav="ideas"]')).not.toBeNull();
     expect(document.querySelector('.dir a[data-nav="ideas-vending-machine"]')).not.toBeNull();
     expect(document.querySelector("#ranking table")).not.toBeNull();

@@ -353,7 +353,7 @@ describe("reference: page HTML and SEO", () => {
   });
 
   it("has the nav label in every core pack", () => {
-    const expected: Record<Locale, string> = { en: "Reference", "zh-CN": "参考", "zh-TW": "參考", ja: "資料集", ko: "참고 자료", vi: "Tham khảo", id: "Referensi", es: "Referencias" };
+    const expected: Record<Locale, string> = { en: "Pose Reference", "zh-CN": "姿势参考", "zh-TW": "姿勢參考", ja: "ポーズ集", ko: "포즈 자료", vi: "Tạo dáng", id: "Referensi pose", es: "Poses de referencia" };
     for (const locale of LOCALES) expect((messages(locale).ui.nav as Record<string, string>).reference).toBe(expected[locale]);
   });
 });

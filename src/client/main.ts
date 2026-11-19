@@ -1242,10 +1242,14 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(quizHref(loc), t("nav.tests"), testsOn, "tests"),
         navLink(rankingHref(loc), t("nav.rankings"), rankingsOn, "rankings"),
         navLink(datasetHref(loc), t("nav.data"), dataOn, "datasets"),
-        navLink(refHref(loc), t("nav.reference"), refOn, "reference"),
-        navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
+        // Encyclopedia-style channels under one menu. Their links stay in this nav's markup, so every page still links
+        // to each channel hub; only the row shows a single item. The channels keep their own URLs.
+        navGroup(t("nav.wiki"), refOn || slangOn || nostalgiaOn, [
+          navLink(refHref(loc), t("nav.reference"), refOn, "reference"),
+          navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
+          navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
+        ]),
         navLink(ideasHref(loc), t("nav.ideas"), ideasOn, "ideas"),
-        navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       )),
@@ -1311,7 +1315,8 @@ function navRow(nav: HTMLElement): HTMLElement {
   });
 
   function fit(): void {
-    const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>(":scope > a"));
+    // Row items: plain links and menus (navGroup) of links.
+    const links = Array.from(nav.querySelectorAll<HTMLElement>(":scope > a, :scope > .nav-group"));
     for (const a of links) a.hidden = false;
     more.hidden = true;
     // No layout (detached, or the build-time prerender): leave every link on the row.
@@ -1327,6 +1332,17 @@ function navRow(nav: HTMLElement): HTMLElement {
     clear(pop);
     for (const a of links) {
       if (!a.hidden) continue;
+      if (a.classList.contains("nav-group")) {
+        // A menu that does not fit: its label, then its links, inside "More".
+        groupClose.get(a)?.();
+        pop.append(h("span", { class: "nav-more-label" }, a.querySelector(".nav-group-label")?.textContent ?? ""));
+        for (const link of a.querySelectorAll<HTMLAnchorElement>(".nav-group-pop a")) {
+          const copy = link.cloneNode(true) as HTMLAnchorElement;
+          copy.classList.add("nav-more-sub");
+          pop.append(copy);
+        }
+        continue;
+      }
       const copy = a.cloneNode(true) as HTMLAnchorElement;
       copy.hidden = false;
       pop.append(copy);
@@ -1341,6 +1357,66 @@ function navRow(nav: HTMLElement): HTMLElement {
     new ResizeObserver(() => fit()).observe(row);
   }
   return row;
+}
+
+/** Close functions of the open-able menus in the nav row, so navRow() can close one it folds into "More". */
+const groupClose = new WeakMap<HTMLElement, () => void>();
+
+/**
+ * One item on the nav row that opens a list of links. The links are always in the markup (hidden until opened), so the
+ * prerendered HTML and crawlers see them like any other nav link. The list is position: fixed under the button: the nav
+ * row clips overflow (navRow() measures it), so an absolutely positioned list would be cut off.
+ */
+function navGroup(label: string, on: boolean, links: HTMLElement[]): HTMLElement {
+  const pop = h("div", { class: "nav-group-pop", hidden: true }, ...links);
+  const button: HTMLButtonElement = h("button", {
+    type: "button",
+    class: "nav-group-btn" + (on ? " on" : ""),
+    "aria-expanded": "false",
+    onClick: () => setOpen(button.getAttribute("aria-expanded") !== "true"),
+  }, h("span", { class: "nav-group-label" }, label), h("span", { class: "nav-more-caret", "aria-hidden": "true" }, "▾"));
+  // "on" on the group too: navRow() keeps the current channel's item on the row.
+  const group = h("div", { class: "nav-group" + (on ? " on" : "") }, button, pop);
+
+  const onDocClick = (event: MouseEvent): void => {
+    if (!group.contains(event.target as Node)) setOpen(false);
+  };
+  const onKey = (event: KeyboardEvent): void => {
+    if (event.key !== "Escape") return;
+    setOpen(false);
+    button.focus();
+  };
+  // The list is placed once when it opens; scrolling or resizing would leave it behind, so either closes it.
+  const onMove = (): void => setOpen(false);
+  function place(): void {
+    const r = button.getBoundingClientRect();
+    pop.style.top = `${Math.round(r.bottom + 6)}px`;
+    const width = pop.offsetWidth;
+    pop.style.left = `${Math.round(Math.max(8, Math.min(r.left, window.innerWidth - width - 8)))}px`;
+  }
+  function setOpen(open: boolean): void {
+    if ((button.getAttribute("aria-expanded") === "true") === open) return;
+    button.setAttribute("aria-expanded", String(open));
+    pop.hidden = !open;
+    if (open) {
+      place();
+      document.addEventListener("click", onDocClick, true);
+      document.addEventListener("keydown", onKey);
+      window.addEventListener("scroll", onMove, { passive: true });
+      window.addEventListener("resize", onMove);
+    } else {
+      document.removeEventListener("click", onDocClick, true);
+      document.removeEventListener("keydown", onKey);
+      window.removeEventListener("scroll", onMove);
+      window.removeEventListener("resize", onMove);
+    }
+  }
+  // A link navigates through the shared click handler; the list closes either way.
+  pop.addEventListener("click", (event) => {
+    if ((event.target as Element).closest?.("a")) setOpen(false);
+  });
+  groupClose.set(group, () => setOpen(false));
+  return group;
 }
 
 function navLink(href: string, label: string, on: boolean, nav: string): HTMLElement {
