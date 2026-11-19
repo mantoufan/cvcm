@@ -773,7 +773,9 @@
     "titleCiteMla": "Cara membuat daftar pustaka dan sitasi MLA edisi 9 | cv.cm",
     "descCiteMla": "MLA 9 dalam enam langkah: elemen inti secara berurutan, penulis, judul dan wadah (container), tanggal dan lokasi, sitasi dalam teks dengan nomor halaman, dan halaman works cited, dengan contoh dan generator gratis.",
     "titleCiteHarvard": "Cara membuat daftar pustaka gaya Harvard (Cite Them Right) | cv.cm",
-    "descCiteHarvard": "Referensi Harvard dalam enam langkah: penulis dan tahun, judul, artikel jurnal, buku dan situs web dengan tanggal akses, sitasi dalam teks, dan daftar pustaka, dengan contoh dan generator gratis."
+    "descCiteHarvard": "Referensi Harvard dalam enam langkah: penulis dan tahun, judul, artikel jurnal, buku dan situs web dengan tanggal akses, sitasi dalam teks, dan daftar pustaka, dengan contoh dan generator gratis.",
+    "titlePressurePointsMap": "Peta titik akupresur: titik pijat & refleksi kaki interaktif — cv.cm",
+    "descPressurePointsMap": "Peta titik akupresur interaktif gratis: ketuk sebuah titik di wajah, leher, tangan, lengan, tungkai, atau kaki untuk melihat letaknya dalam lebar jari, cara menekannya, dan untuk apa titik itu secara tradisional digunakan, lengkap dengan pengatur waktu tahan. Termasuk peta titik refleksi kaki. Untuk relaksasi, bukan nasihat medis."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1727,6 +1729,10 @@
     "darts": {
       "name": "Dart",
       "blurb": "Main 501 atau Keliling Papan di papan 3D."
+    },
+    "pressure-points-map": {
+      "name": "Peta titik akupresur",
+      "blurb": "Titik akupresur dan bagan refleksi kaki."
     }
   },
   "watermark": {
@@ -6558,6 +6564,18 @@
       "a4": "Tingkat mudah, sedang, dan sulit membidik treble 20 atau rute checkout, makin mudah makin melenceng. Tingkat sulit rata-ratanya di atas 60.",
       "q5": "Apakah skor saya disimpan?",
       "a5": "Rata-rata tiga dart terbaik, dart paling sedikit untuk satu leg 501, dan Keliling Papan terbaik Anda disimpan di browser ini. Tidak ada yang diunggah."
+    },
+    "pressure-points-map": {
+      "q1": "Bagaimana cara menemukan titik akupresur?",
+      "a1": "Pilih bagian tubuh, ketuk titiknya, lalu baca letaknya. Jarak dinyatakan dalam cun, ukuran tubuh tradisional: satu cun adalah lebar ibu jari Anda sendiri di bagian buku jari, dan empat jari yang dirapatkan sama dengan tiga cun. Titik biasanya berada di cekungan kecil yang terasa sedikit nyeri saat ditekan.",
+      "q2": "Seberapa kuat dan berapa lama menekannya?",
+      "a2": "Kuat tetapi nyaman, sekitar 4–6 dari 10 pada tangan, lengan, tungkai, dan kaki, dan hanya tekanan ringan pada wajah. Tahan diam atau buat lingkaran kecil selama 30–60 detik sambil bernapas pelan; pengatur waktu bawaan akan menghitungnya untuk Anda. Berhenti jika terasa sakit, kesemutan, atau mati rasa.",
+      "q3": "Apakah akupresur berhasil?",
+      "a3": "Untuk sebagian besar titik, bukti masih terbatas, dan kegunaan yang ditampilkan adalah menurut tradisi, bukan efek yang terbukti. Titik yang paling banyak diteliti adalah PC6 (Neiguan) di pergelangan tangan bagian dalam: tinjauan atas berbagai uji coba menemukan bahwa titik ini dapat mengurangi mual setelah operasi. Banyak orang sekadar merasa menekan titik-titik ini menenangkan.",
+      "q4": "Titik mana yang sebaiknya dihindari saat hamil?",
+      "a4": "Praktik tradisional menyarankan untuk tidak memberi tekanan kuat pada LI4 (Hegu), SP6 (Sanyinjiao), dan GB21 (Jianjing) selama kehamilan. Jika Anda sedang hamil, tanyakan dulu kepada bidan atau dokter sebelum menggunakan akupresur.",
+      "q5": "Apakah bagan refleksi kaki bisa menunjukkan apa yang salah dengan tubuh saya?",
+      "a5": "Tidak. Bagan refleksi adalah peta tradisional, bukan anatomi, dan tidak ada bukti yang baik bahwa kaki menunjukkan atau memengaruhi masalah pada organ. Pijat kaki bisa terasa menenangkan, tetapi jangan pernah menggunakannya untuk memeriksa gejala: nyeri dada, kelemahan mendadak, atau sesak napas memerlukan penanganan darurat."
     }
   },
   "qr": {
@@ -17168,5 +17186,54 @@
     "miss": "Meleset",
     "hint": "Gerakkan mouse untuk membidik, tahan agar stabil, lalu lepas untuk melempar. Keyboard: tombol panah membidik (Shift untuk langkah besar), tahan Spasi lalu lepas untuk melempar.",
     "hintTouch": "Tahan di papan untuk membidik (penanda ada tepat di atas jari Anda), geser untuk menyesuaikan, dan angkat jari untuk melempar."
+  },
+  "ppm": {
+    "title": "Peta titik akupresur",
+    "lede": "Ketuk sebuah titik untuk melihat letaknya, cara menekannya, dan untuk apa titik itu secara tradisional digunakan. Tampilan telapak kaki menampilkan bagan refleksi.",
+    "disclaimer": "Hanya untuk relaksasi dan perawatan diri, bukan nasihat medis. Temui dokter jika gejalanya parah, mendadak, atau berkepanjangan.",
+    "views": "Bagian tubuh",
+    "v_face": "Wajah",
+    "v_back": "Tengkuk",
+    "v_hand": "Tangan",
+    "v_arm": "Lengan bawah bagian dalam",
+    "v_leg": "Tungkai bawah",
+    "v_foot": "Punggung kaki",
+    "v_sole": "Telapak kaki (refleksi)",
+    "c_face": "Wajah dari depan. Titik di kedua sisi sama; titik berlabel berada di sisi kiri orang tersebut.",
+    "c_back": "Belakang kepala dan bahu. Kedua sisi sama.",
+    "c_hand": "Punggung tangan kanan. Tangan kiri sama.",
+    "c_arm": "Bagian dalam lengan bawah kanan, telapak tangan menghadap Anda. Lengan kiri sama.",
+    "c_leg": "Tungkai bawah kanan dari depan (sisi dalam di sebelah kanan). Tungkai kiri sama.",
+    "c_foot": "Punggung kaki kanan. Kaki kiri sama.",
+    "c_sole": "Telapak kaki dari bawah, jari kaki di atas: kaki kiri di kiri, kaki kanan di kanan. Ketuk sebuah zona.",
+    "left": "Kaki kiri",
+    "right": "Kaki kanan",
+    "zoneOn": "{foot}: {zone}",
+    "mapLabel": "{view} dengan titik akupresur",
+    "find": "Cari titik",
+    "findPlaceholder": "Nama atau kode, mis. LI4",
+    "none": "Tidak ada titik atau zona yang cocok.",
+    "zonesTitle": "Zona refleksi kaki",
+    "where": "Letaknya",
+    "how": "Cara menekan",
+    "use": "Kegunaan tradisional",
+    "cun": "1 cun ≈ lebar ibu jari Anda di bagian buku jari; 3 cun ≈ empat jari yang dirapatkan.",
+    "lightNote": "Titik di wajah: hanya tekanan ringan, jangan pernah pada bola mata.",
+    "zoneTitle": "Yang dipetakan bagan di sini",
+    "zoneNote": "Bagan refleksi adalah peta tradisional, bukan anatomi. Tidak ada bukti yang baik bahwa bagan ini menunjukkan atau memengaruhi masalah pada organ, jadi jangan pernah menggunakannya untuk memeriksa gejala: nyeri dada adalah keadaan darurat.",
+    "zoneHow": "Tekan dengan ibu jari menggunakan gerakan kecil yang pelan di seluruh zona (4–6 dari 10) selama satu atau dua menit. Banyak orang merasa pijat kaki menenangkan.",
+    "timer": "Pengatur waktu tahan",
+    "seconds": "{n} dtk",
+    "start": "Mulai {n} dtk",
+    "stop": "Berhenti",
+    "done": "Waktu habis. Lepaskan perlahan, lalu lakukan di sisi lainnya.",
+    "cautionsTitle": "Sebelum menekan",
+    "caution1": "Kehamilan: hindari tekanan kuat pada LI4 (Hegu), SP6 (Sanyinjiao), dan GB21 (Jianjing), dan tanyakan dulu kepada bidan atau dokter.",
+    "caution2": "Jangan pernah menekan bola mata, bagian depan leher, kulit yang terluka, memar, bengkak, atau varises.",
+    "caution3": "Berhenti jika terasa sakit, kesemutan, atau mati rasa. Tekan ringan saja jika Anda mudah berdarah atau memar, atau mengonsumsi pengencer darah.",
+    "guideTitle": "Semua titik sekilas",
+    "started": "Timer dimulai: {n} detik.",
+    "loadError": "Penjelasan titik tidak berhasil dimuat. Periksa koneksi Anda lalu coba lagi.",
+    "retry": "Coba lagi"
   }
 }

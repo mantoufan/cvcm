@@ -422,3 +422,9 @@ Codex (`codex exec -m gpt-6-astra --image stack-game-sweet.jpg,driving-game-swee
 - `pool-game`: she lines up a shot on a pink-cloth table with a white and pink cue; a rack of glossy coloured balls with no numbers.
 - `air-hockey`: she grips a pink mallet on a white and pink table; a glowing puck slides toward the goal slot.
 - `darts`: her pink-flighted dart lands in the bull of a pink, cream and mint board with no numbers; two more darts in her hand.
+
+## Pressure points map (2026-11-19)
+
+Codex (`codex exec -m gpt-6-astra --image bac-calculator-sweet.jpg,height-calculator-sweet.jpg -`, prompt on stdin), same base prompt as above (style references only, same chibi girl and room, full-bleed, no words, letters, digits, symbols, logo, UI or watermark). `sips -s format jpeg` then `sips -z 720 1280`. First try.
+
+- `pressure-points-map`: she presses the web between thumb and index finger of her other hand, a tiny glowing pink dot on the spot; a cream card beside her with a pink line drawing of a hand and a foot sole with small pink dots; a pink hourglass and a lavender sprig on the desk.

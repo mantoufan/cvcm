@@ -773,7 +773,9 @@
     "titleCiteMla": "How to cite in MLA 9th edition: works cited and in-text citations | cv.cm",
     "descCiteMla": "MLA 9 in six steps: the core elements in order, authors, titles and containers, dates and locations, in-text citations with page numbers, and the works cited page, with examples and a free generator.",
     "titleCiteHarvard": "How to reference in Harvard style (Cite Them Right) | cv.cm",
-    "descCiteHarvard": "Harvard referencing in six steps: author and year, titles, journal articles, books and websites with access dates, citing in the text, and the reference list, with examples and a free generator."
+    "descCiteHarvard": "Harvard referencing in six steps: author and year, titles, journal articles, books and websites with access dates, citing in the text, and the reference list, with examples and a free generator.",
+    "titlePressurePointsMap": "Pressure points map: interactive acupressure & reflexology chart — cv.cm",
+    "descPressurePointsMap": "Free interactive pressure points chart: tap a point on the face, neck, hand, arm, leg or foot to see where it is in finger-widths, how to press it and what it is traditionally used for, with a hold timer. Includes a foot reflexology chart. For relaxation, not medical advice."
   },
   "brand": "cv.cm",
   "nav": {
@@ -4937,6 +4939,10 @@
     "darts": {
       "name": "Darts",
       "blurb": "Throw 501 or Around the Clock on a 3D board."
+    },
+    "pressure-points-map": {
+      "name": "Pressure points map",
+      "blurb": "Acupressure points and a foot reflexology chart."
     }
   },
   "watermark": {
@@ -9768,6 +9774,18 @@
       "a4": "Easy, medium and hard players aim at the treble 20 or their checkout, with more scatter at the easier levels. Hard averages well over 60.",
       "q5": "Are my scores saved?",
       "a5": "Your best three-dart average, your fewest darts for a 501 leg and your best Around the Clock stay in this browser. Nothing is uploaded."
+    },
+    "pressure-points-map": {
+      "q1": "How do I find a pressure point?",
+      "a1": "Pick the body part, tap the dot and read where it is. Distances are in cun, the traditional body measure: one cun is the width of your own thumb at the knuckle, and four fingers held together are three cun. Points usually sit in a small hollow that feels slightly tender.",
+      "q2": "How hard and how long should I press?",
+      "a2": "Firm but comfortable, about 4–6 out of 10 on the hand, arm, leg and foot, and only light pressure on the face. Hold steady or make small circles for 30–60 seconds while breathing slowly; the built-in timer counts it for you. Stop if it hurts, tingles or goes numb.",
+      "q3": "Does acupressure work?",
+      "a3": "For most points the evidence is limited, and the uses shown are what tradition says, not proven effects. The best-studied point is PC6 (Neiguan) on the inner wrist: reviews of trials found it may reduce nausea after surgery. Many people simply find pressing these points relaxing.",
+      "q4": "Which points should I avoid in pregnancy?",
+      "a4": "Traditional practice advises against firm pressure on LI4 (Hegu), SP6 (Sanyinjiao) and GB21 (Jianjing) during pregnancy. If you are pregnant, ask your midwife or doctor before using acupressure.",
+      "q5": "Can a foot reflexology chart show what is wrong with my body?",
+      "a5": "No. A reflexology chart is a traditional map, not anatomy, and there is no good evidence that the feet show or treat problems in organs. Foot massage can feel relaxing, but never use it to check symptoms: chest pain, sudden weakness or trouble breathing need emergency care."
     }
   },
   "qr": {
@@ -17168,5 +17186,54 @@
     "miss": "Miss",
     "hint": "Move the mouse to aim, hold to steady and release to throw. Keyboard: arrow keys aim (Shift for bigger steps), hold Space and let go to throw.",
     "hintTouch": "Hold on the board to aim (the marker sits just above your finger), slide to adjust and lift to throw."
+  },
+  "ppm": {
+    "title": "Pressure points map",
+    "lede": "Tap a point to see where it is, how to press it and what it is traditionally used for. The foot sole view shows a reflexology chart.",
+    "disclaimer": "For relaxation and self-care only, not medical advice. See a doctor for severe, sudden or lasting symptoms.",
+    "views": "Body part",
+    "v_face": "Face",
+    "v_back": "Back of the neck",
+    "v_hand": "Hand",
+    "v_arm": "Inner forearm",
+    "v_leg": "Lower leg",
+    "v_foot": "Top of the foot",
+    "v_sole": "Foot sole (reflexology)",
+    "c_face": "Face from the front. Points on both sides are the same; the labelled dots are on the person's left side.",
+    "c_back": "Back of the head and shoulders. Both sides are the same.",
+    "c_hand": "Back of the right hand. The left hand is the same.",
+    "c_arm": "Inside of the right forearm, palm towards you. The left arm is the same.",
+    "c_leg": "Right lower leg from the front (inner side on the right). The left leg is the same.",
+    "c_foot": "Top of the right foot. The left foot is the same.",
+    "c_sole": "Soles from below, toes up: left foot on the left, right foot on the right. Tap a zone.",
+    "left": "Left foot",
+    "right": "Right foot",
+    "zoneOn": "{foot}: {zone}",
+    "mapLabel": "{view} with pressure points",
+    "find": "Find a point",
+    "findPlaceholder": "Name or code, e.g. LI4",
+    "none": "No point or zone matches.",
+    "zonesTitle": "Foot reflexology zones",
+    "where": "Where it is",
+    "how": "How to press",
+    "use": "Traditional use",
+    "cun": "1 cun ≈ the width of your thumb at the knuckle; 3 cun ≈ four fingers held together.",
+    "lightNote": "Face points: light pressure only, never on the eyeball.",
+    "zoneTitle": "What the chart maps here",
+    "zoneNote": "A reflexology chart is a traditional map, not anatomy. There is no good evidence that it shows or treats problems in organs, so never use it to check symptoms: chest pain is an emergency.",
+    "zoneHow": "Press with the thumb in small, slow movements across the zone (4–6 out of 10) for a minute or two. Many people find foot massage relaxing.",
+    "timer": "Hold timer",
+    "seconds": "{n} s",
+    "start": "Start {n} s",
+    "stop": "Stop",
+    "done": "Time is up. Release slowly, then do the other side.",
+    "cautionsTitle": "Before you press",
+    "caution1": "Pregnancy: avoid firm pressure on LI4 (Hegu), SP6 (Sanyinjiao) and GB21 (Jianjing), and ask your midwife or doctor first.",
+    "caution2": "Never press on the eyeball, the front of the neck, broken skin, bruises, swelling or varicose veins.",
+    "caution3": "Stop if it hurts, tingles or goes numb. Press lightly if you bleed or bruise easily or take blood thinners.",
+    "guideTitle": "All points at a glance",
+    "started": "Timer started: {n} s.",
+    "loadError": "The point descriptions did not load. Check your connection and try again.",
+    "retry": "Try again"
   }
 }

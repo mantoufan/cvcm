@@ -773,7 +773,9 @@
     "titleCiteMla": "Cómo citar en MLA 9.ª edición: lista de obras citadas y citas en el texto | cv.cm",
     "descCiteMla": "Citar en MLA 9 en seis pasos: los elementos básicos en orden, autores, títulos y contenedores, fechas y ubicación, citas en el texto con número de página y la lista de obras citadas, con ejemplos y un generador gratis.",
     "titleCiteHarvard": "Cómo hacer referencias en estilo Harvard (Cite Them Right) | cv.cm",
-    "descCiteHarvard": "Referencias Harvard en seis pasos: autor y año, títulos, artículos, libros y sitios web con fecha de consulta, citas en el texto y lista de referencias, con ejemplos y un generador gratis."
+    "descCiteHarvard": "Referencias Harvard en seis pasos: autor y año, títulos, artículos, libros y sitios web con fecha de consulta, citas en el texto y lista de referencias, con ejemplos y un generador gratis.",
+    "titlePressurePointsMap": "Mapa de puntos de acupresión: guía interactiva y reflexología podal — cv.cm",
+    "descPressurePointsMap": "Mapa interactivo gratuito de puntos de acupresión: toca un punto de la cara, el cuello, la mano, el brazo, la pierna o el pie para ver dónde está en anchos de dedo, cómo presionarlo y para qué se usa tradicionalmente, con temporizador. Incluye un mapa de reflexología podal. Para relajarse, no es consejo médico."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1727,6 +1729,10 @@
     "darts": {
       "name": "Dardos",
       "blurb": "Juega al 501 o Alrededor del reloj en una diana 3D."
+    },
+    "pressure-points-map": {
+      "name": "Mapa de puntos de acupresión",
+      "blurb": "Puntos de acupresión y un mapa de reflexología podal."
     }
   },
   "watermark": {
@@ -6558,6 +6564,18 @@
       "a4": "Los niveles fácil, medio y difícil apuntan al triple 20 o a su cierre, con más dispersión cuanto más fácil. El difícil promedia más de 60.",
       "q5": "¿Se guardan mis marcas?",
       "a5": "Tu mejor promedio de tres dardos, tus menos dardos en una manga de 501 y tu mejor Alrededor del reloj se guardan en este navegador. No se sube nada."
+    },
+    "pressure-points-map": {
+      "q1": "¿Cómo encuentro un punto de acupresión?",
+      "a1": "Elige la parte del cuerpo, toca el punto y lee dónde está. Las distancias se dan en cun, la medida corporal tradicional: un cun es el ancho de tu propio pulgar a la altura del nudillo, y cuatro dedos juntos equivalen a tres cun. Los puntos suelen estar en un pequeño hueco que se nota algo sensible.",
+      "q2": "¿Con qué fuerza y durante cuánto tiempo debo presionar?",
+      "a2": "Con firmeza pero sin molestia, unos 4–6 de 10 en la mano, el brazo, la pierna y el pie, y solo presión suave en la cara. Mantén la presión constante o haz círculos pequeños durante 30–60 segundos mientras respiras despacio; el temporizador integrado cuenta el tiempo por ti. Para si duele, hormiguea o se adormece.",
+      "q3": "¿Funciona la acupresión?",
+      "a3": "Para la mayoría de los puntos la evidencia es limitada, y los usos que se muestran son lo que dice la tradición, no efectos demostrados. El punto mejor estudiado es el PC6 (Neiguan), en la parte interna de la muñeca: las revisiones de ensayos encontraron que puede reducir las náuseas después de una cirugía. Mucha gente simplemente encuentra relajante presionar estos puntos.",
+      "q4": "¿Qué puntos debo evitar durante el embarazo?",
+      "a4": "La práctica tradicional desaconseja la presión firme en LI4 (Hegu), SP6 (Sanyinjiao) y GB21 (Jianjing) durante el embarazo. Si estás embarazada, consulta a tu matrona o a tu médico antes de usar acupresión.",
+      "q5": "¿Puede un mapa de reflexología podal mostrar qué le pasa a mi cuerpo?",
+      "a5": "No. Un mapa de reflexología es un mapa tradicional, no anatomía, y no hay buena evidencia de que los pies muestren ni influyan en problemas de los órganos. El masaje de pies puede resultar relajante, pero nunca lo uses para comprobar síntomas: el dolor en el pecho, la debilidad repentina o la dificultad para respirar requieren atención de urgencia."
     }
   },
   "qr": {
@@ -17168,5 +17186,54 @@
     "miss": "Fallo",
     "hint": "Mueve el ratón para apuntar, mantén pulsado para afinar y suelta para lanzar. Teclado: flechas para apuntar (Mayús para pasos grandes), mantén Espacio y suelta para lanzar.",
     "hintTouch": "Mantén pulsado sobre la diana para apuntar (la mira queda justo encima del dedo), desliza para ajustar y levanta el dedo para lanzar."
+  },
+  "ppm": {
+    "title": "Mapa de puntos de acupresión",
+    "lede": "Toca un punto para ver dónde está, cómo presionarlo y para qué se usa tradicionalmente. La vista de la planta del pie muestra un mapa de reflexología.",
+    "disclaimer": "Solo para relajación y autocuidado, no es consejo médico. Consulta a un médico si tienes síntomas graves, repentinos o duraderos.",
+    "views": "Parte del cuerpo",
+    "v_face": "Cara",
+    "v_back": "Nuca",
+    "v_hand": "Mano",
+    "v_arm": "Cara interna del antebrazo",
+    "v_leg": "Parte baja de la pierna",
+    "v_foot": "Empeine",
+    "v_sole": "Planta del pie (reflexología)",
+    "c_face": "Cara de frente. Los puntos de ambos lados son iguales; los puntos con etiqueta están en el lado izquierdo de la persona.",
+    "c_back": "Parte posterior de la cabeza y los hombros. Ambos lados son iguales.",
+    "c_hand": "Dorso de la mano derecha. La mano izquierda es igual.",
+    "c_arm": "Cara interna del antebrazo derecho, con la palma hacia ti. El brazo izquierdo es igual.",
+    "c_leg": "Parte baja de la pierna derecha de frente (el lado interno a la derecha). La pierna izquierda es igual.",
+    "c_foot": "Empeine del pie derecho. El pie izquierdo es igual.",
+    "c_sole": "Plantas vistas desde abajo, con los dedos hacia arriba: pie izquierdo a la izquierda, pie derecho a la derecha. Toca una zona.",
+    "left": "Pie izquierdo",
+    "right": "Pie derecho",
+    "zoneOn": "{foot}: {zone}",
+    "mapLabel": "{view} con puntos de acupresión",
+    "find": "Buscar un punto",
+    "findPlaceholder": "Nombre o código, p. ej. LI4",
+    "none": "Ningún punto ni zona coincide.",
+    "zonesTitle": "Zonas de reflexología podal",
+    "where": "Dónde está",
+    "how": "Cómo presionar",
+    "use": "Uso tradicional",
+    "cun": "1 cun ≈ el ancho de tu pulgar a la altura del nudillo; 3 cun ≈ cuatro dedos juntos.",
+    "lightNote": "Puntos de la cara: solo presión suave, nunca sobre el globo ocular.",
+    "zoneTitle": "Qué representa el mapa aquí",
+    "zoneNote": "Un mapa de reflexología es un mapa tradicional, no anatomía. No hay buena evidencia de que muestre ni influya en problemas de los órganos, así que nunca lo uses para comprobar síntomas: el dolor en el pecho es una urgencia.",
+    "zoneHow": "Presiona con el pulgar con movimientos pequeños y lentos por toda la zona (4–6 de 10) durante uno o dos minutos. A mucha gente le resulta relajante el masaje de pies.",
+    "timer": "Temporizador",
+    "seconds": "{n} s",
+    "start": "Iniciar {n} s",
+    "stop": "Parar",
+    "done": "Se acabó el tiempo. Suelta despacio y repite en el otro lado.",
+    "cautionsTitle": "Antes de presionar",
+    "caution1": "Embarazo: evita la presión firme en LI4 (Hegu), SP6 (Sanyinjiao) y GB21 (Jianjing), y consulta antes a tu matrona o a tu médico.",
+    "caution2": "Nunca presiones sobre el globo ocular, la parte delantera del cuello, la piel dañada, los moretones, las zonas hinchadas ni las varices.",
+    "caution3": "Para si duele, hormiguea o se adormece. Presiona con suavidad si sangras o te salen moretones con facilidad o tomas anticoagulantes.",
+    "guideTitle": "Todos los puntos de un vistazo",
+    "started": "Temporizador iniciado: {n} s.",
+    "loadError": "No se pudieron cargar las descripciones de los puntos. Revisa tu conexión e inténtalo de nuevo.",
+    "retry": "Reintentar"
   }
 }
