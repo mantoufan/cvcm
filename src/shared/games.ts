@@ -80,6 +80,9 @@ const LEGACY_BY_ID = new Map<string, EmuConsoleId>(
   (Object.entries(LEGACY_GAMES) as [EmuConsoleId, readonly string[]][]).flatMap(([c, ids]) => ids.map((id) => [id, c] as const)),
 );
 
+/** Every retired catalogue id (to clear what the old pages stored in the browser). */
+export const LEGACY_GAME_IDS: readonly string[] = [...LEGACY_BY_ID.keys()];
+
 /** The system of a retired catalogue game, or undefined. */
 export function legacyGameConsole(id: string): EmuConsoleId | undefined {
   return LEGACY_BY_ID.get(id);

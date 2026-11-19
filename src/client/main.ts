@@ -64,7 +64,7 @@ import { regionName } from "../shared/datasets-i18n";
 import { CALORIES_FOCUS, type CaloriesPage, type FoodId } from "../shared/calories";
 import { ELEMENTS_FOCUS, type ElementSlug, type ElementsPage } from "../shared/elements";
 import { CURRENCY_FOCUS, type CurrencyPage, type CurrencyPair } from "../shared/currency";
-import { currencyHref } from "../shared/path";
+import { currencyHref, retiredGameHref, type RetiredGame } from "../shared/path";
 import { BREEDS_FOCUS, isBreedId, type BreedId, type BreedsPage } from "../shared/breeds";
 import { CALENDAR_LOCALE, CALENDAR_YEARS, type CalendarPage } from "../shared/calendar";
 import { EMOJI_FOCUS, type EmojiPage, type EmojiSlug } from "../shared/emoji";
@@ -178,12 +178,20 @@ export function start(): void {
 
 if (!import.meta.env.VITEST) start();
 
+/** Where a retired games URL goes, as the Worker's 301 does: the tool (and demo), the query without the old genre filter. */
+function retiredGameUrl(loc: Locale, retired: RetiredGame): string {
+  const next = new URL(retiredGameHref(loc, retired), location.origin);
+  next.search = location.search;
+  next.searchParams.delete("genre");
+  return next.toString();
+}
+
 export function boot(): void {
   const parsed = parseAppPath(location.pathname);
   const stored = readStoredLocale();
   // A retired games page the Worker did not redirect (dev server, or a history entry from before the change).
   if (parsed.kind === "games-retired") {
-    location.replace(appHref(parsed.locale ?? stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null), parsed.tool));
+    location.replace(retiredGameUrl(parsed.locale ?? stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null), parsed));
     return;
   }
   if (parsed.kind === "app") {
@@ -840,7 +848,7 @@ function unmountTools(): void {
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
   if (parsed.kind === "games-retired") {
-    location.replace(appHref(parsed.locale ?? locale(), parsed.tool));
+    location.replace(retiredGameUrl(parsed.locale ?? locale(), parsed));
     return;
   }
   const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar" || parsed.kind === "emoji" || parsed.kind === "currency" || parsed.kind === "breeds"

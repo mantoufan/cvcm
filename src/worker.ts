@@ -7,7 +7,7 @@ import { d1NostalgiaStore, handleNostalgiaApi } from "./nostalgia-api";
 import { countryBucket, countryCode } from "./shared/countries";
 import { cookieValue, DEFAULT_LOCALE, LOCALE_COOKIE, negotiateLocale, parseLocale, type Locale } from "./shared/locale";
 import { isIpAddress } from "./shared/device";
-import { appHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isLookupToolPath, LOOKUP_HOSTS, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, breedsHref, STATIC_FILE, toolJob } from "./shared/path";
+import { appHref, retiredGameHref, rankingHref, datasetHref, deviceHref, gamesHref, isAgentDocPath, devicePolicyOf, isAiToolPath, isLookupToolPath, LOOKUP_HOSTS, isPublishedTutorial, kbHref, learnHref, legalHref, parseAppPath, quizHref, refHref, slangHref, ideasHref, ideasPackOf, nostalgiaHref, countriesHref, caloriesHref, elementsHref, calendarHref, emojiHref, breedsHref, STATIC_FILE, toolJob } from "./shared/path";
 import { currencyHref } from "./shared/path";
 import { rankingRowsChunk } from "./shared/rankings";
 import { GA_CONNECT_HOSTS, GA_SCRIPT_HOST, isTrackedPath } from "./shared/analytics";
@@ -197,7 +197,7 @@ export default {
       // Retired emulator catalogue pages and system hubs: the emulator tool that plays them. The old genre filter means
       // nothing there; other parameters (campaign tags) are kept.
       if (parsed.kind === "games-retired") {
-        const next = new URL(appHref(parsed.locale ?? locale, parsed.tool), url.origin);
+        const next = new URL(retiredGameHref(parsed.locale ?? locale, parsed), url.origin);
         next.search = url.search;
         next.searchParams.delete("genre");
         return redirect(next.toString(), parsed.locale ? 301 : 302);

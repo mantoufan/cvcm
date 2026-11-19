@@ -41,5 +41,14 @@ export const DEMO_ROMS: readonly DemoRom[] = [
   { id: "ending", console: "flash", file: "ending.swf", title: "Ending", author: "Aaron Steed", year: 2013, license: "GPL-2.0", source: "https://github.com/st33d/Ending" },
 ];
 
+/** The cartridge demos (the ROM emulator) and the SWF demos (the Flash player). */
+export const ROM_DEMOS = DEMO_ROMS.filter((rom): rom is DemoRom & { console: Exclude<EmuConsoleId, "flash"> } => rom.console !== "flash");
+export const FLASH_DEMOS = DEMO_ROMS.filter((rom) => rom.console === "flash");
+
+/** A demo by id, for the `#demo-<id>` link a retired game page redirects to. */
+export function demoById(id: string): DemoRom | undefined {
+  return DEMO_ROMS.find((rom) => rom.id === id);
+}
+
 /** Every ROM file the site still serves; anything else under S3 `files/games/roms/` is no longer linked. */
 export const DEMO_ROM_FILES: ReadonlySet<string> = new Set(DEMO_ROMS.map((rom) => rom.file));

@@ -63,11 +63,12 @@ describe("games routes", () => {
   });
 
   it("sends retired catalogue pages to the emulator that plays them", () => {
-    expect(parseAppPath("/zh-cn/games/fc/contra/")).toEqual({ kind: "games-retired", locale: "zh-CN", tool: "rom-emulator" });
-    expect(parseAppPath("/en/games/gba/")).toEqual({ kind: "games-retired", locale: "en", tool: "rom-emulator" });
-    expect(parseAppPath("/en/games/flash/")).toEqual({ kind: "games-retired", locale: "en", tool: "flash-player" });
-    expect(parseAppPath("/en/games/flash/ending/")).toEqual({ kind: "games-retired", locale: "en", tool: "flash-player" });
-    expect(parseAppPath("/games/contra")).toEqual({ kind: "games-retired", locale: null, tool: "rom-emulator" });
+    expect(parseAppPath("/zh-cn/games/fc/contra/")).toEqual({ kind: "games-retired", locale: "zh-CN", tool: "rom-emulator", demo: null });
+    expect(parseAppPath("/en/games/gba/")).toEqual({ kind: "games-retired", locale: "en", tool: "rom-emulator", demo: null });
+    expect(parseAppPath("/en/games/gba/apotris/")).toEqual({ kind: "games-retired", locale: "en", tool: "rom-emulator", demo: "apotris" });
+    expect(parseAppPath("/en/games/flash/")).toEqual({ kind: "games-retired", locale: "en", tool: "flash-player", demo: null });
+    expect(parseAppPath("/en/games/flash/ending/")).toEqual({ kind: "games-retired", locale: "en", tool: "flash-player", demo: "ending" });
+    expect(parseAppPath("/games/contra")).toEqual({ kind: "games-retired", locale: null, tool: "rom-emulator", demo: null });
     // A game under another console's hub, a made-up id or a nested hub path was never a page.
     expect(parseAppPath("/en/games/gb/contra/")).toEqual({ kind: "unknown" });
     expect(parseAppPath("/en/games/fc/not-a-game/")).toEqual({ kind: "unknown" });
@@ -81,7 +82,8 @@ describe("games worker", () => {
       ["/zh-cn/games/fc/contra/", "https://cv.cm/zh-cn/rom-emulator/"],
       ["/en/games/fc/contra", "https://cv.cm/en/rom-emulator/"],
       ["/en/games/sfc/?genre=rpg", "https://cv.cm/en/rom-emulator/"],
-      ["/en/games/gba/apotris/?genre=puzzle&utm_source=x", "https://cv.cm/en/rom-emulator/?utm_source=x"],
+      ["/en/games/gba/apotris/?genre=puzzle&utm_source=x", "https://cv.cm/en/rom-emulator/?utm_source=x#demo-apotris"],
+      ["/en/games/flash/ending/", "https://cv.cm/en/flash-player/#demo-ending"],
       ["/ja/games/flash/", "https://cv.cm/ja/flash-player/"],
       ["/es/games/flash/tag-chase/", "https://cv.cm/es/flash-player/"],
     ]) {

@@ -1,8 +1,9 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
-import { controls, demoPicker, gameEmpty, gameFrame } from "../games/player";
-import { DEMO_ROMS, type DemoRom } from "../../shared/demo-roms";
-import { GAME_ROM_BASE } from "../../shared/games";
+import { controls, demoPicker, gameEmpty, gameFrame, linkedDemo } from "../games/player";
+import { ROM_DEMOS } from "../../shared/demo-roms";
+import { clearDraft } from "../session";
+import { GAME_ROM_BASE, LEGACY_GAME_IDS } from "../../shared/games";
 import { gamesHref } from "../../shared/path";
 import { MAX_ROM_BYTES, ROM_ACCEPT, ROM_CONSOLES, ROM_CORE, detectRomConsole, type RomConsoleId } from "../../shared/rom-detect";
 
@@ -96,23 +97,23 @@ export function mountRomEmulator(host: HTMLElement): void {
     });
   });
   // A hosted open-source game: the console is known, and a pending file read becomes stale.
-  const startDemo = (demo: DemoRom): void => {
+  const startDemo = (demo: (typeof ROM_DEMOS)[number]): void => {
     token += 1;
     reading = false;
     rom = null;
     running = null;
-    demoConsole = demo.console as RomConsoleId;
+    demoConsole = demo.console;
     select.value = demoConsole;
     status.textContent = t("games.demos.playing", { title: demo.title });
     controlsHost.replaceChildren(controls(demo.console));
     empty.hidden = true;
-    boot({ rom: `${GAME_ROM_BASE}${demo.file}`, core: ROM_CORE[demo.console as RomConsoleId], name: demo.title, cheats: [] });
+    boot({ rom: `${GAME_ROM_BASE}${demo.file}`, core: ROM_CORE[demo.console], name: demo.title, cheats: [] });
     focus();
   };
   select.addEventListener("keydown", () => { keyed = true; });
   select.addEventListener("change", () => {
-    // A demo plays on its own console: the select keeps showing it.
-    if (!rom && demoConsole) select.value = demoConsole;
+    // Chosen while a demo plays: the demo keeps running, and the choice is the answer for the next file.
+    if (!rom) demoConsole = null;
     play();
     keyed = false;
   });
@@ -130,11 +131,31 @@ export function mountRomEmulator(host: HTMLElement): void {
         status,
       ),
       h("p", { class: "game-note muted" }, t("games.emulator"), " · ", t("games.mobile")),
-      demoPicker(DEMO_ROMS.filter((demo) => demo.console !== "flash"), startDemo),
+      demoPicker(ROM_DEMOS, startDemo),
       controlsHost,
     ),
     h("p", { class: "more" }, h("a", { href: gamesHref(loc, null), "data-nav": "games" }, t("romEmulator.games"))),
   );
+  const linked = linkedDemo(ROM_DEMOS);
+  if (linked) startDemo(linked);
+  forgetRetiredRoms();
+}
+
+const FORGOT_KEY = "cvcm.emu.forgotRoms";
+
+/**
+ * The retired game pages could keep a visitor's own ROM in IndexedDB ("rom:<game id>", Remember in this browser). Those
+ * pages are gone, and with them the Forget button, so clear what they stored, once per browser.
+ */
+function forgetRetiredRoms(): void {
+  try {
+    if (localStorage.getItem(FORGOT_KEY)) return;
+    localStorage.setItem(FORGOT_KEY, "1");
+  } catch {
+    return;
+  }
+  if (typeof indexedDB === "undefined") return;
+  for (const id of LEGACY_GAME_IDS) clearDraft(`rom:${id}`).catch(() => {});
 }
 
 export function unmountRomEmulator(): void {

@@ -314,17 +314,38 @@ describe("tool pages", () => {
     expect(frameSrc.at(-1)).toContain("core=gba");
   });
 
-  it("detects the next file again after a demo, and keeps the demo's console while it plays", async () => {
+  it("detects the next file again after a demo", async () => {
     mountRomEmulator(host);
     host.querySelector<HTMLButtonElement>("[data-demo=apotris]")!.click();
     const select = q<HTMLSelectElement>("select");
     expect(select.value).toBe("gba");
-    select.value = "fc";
-    select.dispatchEvent(new Event("change"));
-    expect(select.value).toBe("gba");
     await pick(new File([rom(64, 0, [0x4e, 0x45, 0x53, 0x1a]) as BlobPart], "game.nes"));
     expect(select.value).toBe("auto");
     expect(frameSrc.at(-1)).toContain("core=nes");
+  });
+
+  it("keeps a console chosen during a demo for the next file, without restarting the demo", async () => {
+    mountRomEmulator(host);
+    host.querySelector<HTMLButtonElement>("[data-demo=apotris]")!.click();
+    const loads = frameSrc.length;
+    const select = q<HTMLSelectElement>("select");
+    select.value = "sfc";
+    select.dispatchEvent(new Event("change"));
+    expect(frameSrc.length).toBe(loads);
+    await pick(new File([new Uint8Array(64) as BlobPart], "game.bin"));
+    expect(select.value).toBe("sfc");
+    expect(frameSrc.at(-1)).toContain("core=snes");
+  });
+
+  it("starts the demo a retired game page links to", () => {
+    history.replaceState(null, "", "/en/rom-emulator/#demo-porklike-gb");
+    try {
+      mountRomEmulator(host);
+      expect(frameSrc.at(-1)).toContain(`rom=${encodeURIComponent("/emu/roms/porklike-gb.gb")}`);
+      expect(q<HTMLSelectElement>("select").value).toBe("gb");
+    } finally {
+      history.replaceState(null, "", "/");
+    }
   });
 
   it("offers only the Flash demos on the Flash player", () => {

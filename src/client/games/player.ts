@@ -74,7 +74,7 @@ export function gameEmpty(spec: { flash: boolean; picker: HTMLInputElement; hidd
 }
 
 /** Buttons that start one of the hosted open-source games (src/shared/demo-roms.ts), with their credit lines. */
-export function demoPicker(roms: readonly DemoRom[], start: (rom: DemoRom) => void): HTMLElement {
+export function demoPicker<T extends DemoRom>(roms: readonly T[], start: (rom: T) => void): HTMLElement {
   return h("section", { class: "game-demos", "aria-labelledby": "game-demos-title" },
     h("h2", { id: "game-demos-title" }, t("games.demos.title")),
     h("p", { class: "game-note" }, t("games.demos.lead")),
@@ -99,6 +99,12 @@ export function demoPicker(roms: readonly DemoRom[], start: (rom: DemoRom) => vo
   );
 }
 
+/** The demo a `#demo-<id>` link asks for (a retired game page redirects there), if it is one of these. */
+export function linkedDemo<T extends DemoRom>(roms: readonly T[]): T | undefined {
+  const id = /^#demo-([a-z0-9-]+)$/.exec(typeof location === "undefined" ? "" : location.hash)?.[1];
+  return roms.find((rom) => rom.id === id);
+}
+
 /** The Flash player: a local .swf, or one of the hosted demo games. (The ROM emulator builds its own from the parts above.) */
 export function player(spec: { name: string; demos?: readonly DemoRom[] }): HTMLElement {
   const box = h("section", { class: "game-play", "aria-label": t("games.play") });
@@ -116,6 +122,13 @@ export function player(spec: { name: string; demos?: readonly DemoRom[] }): HTML
     bootFrame(payload);
   };
   let reads = 0; // a newer pick (or a demo) makes a slower, earlier read stale
+  const startDemo = (rom: DemoRom): void => {
+    reads += 1;
+    status.textContent = t("games.demos.playing", { title: rom.title });
+    boot({ rom: `${GAME_ROM_BASE}${rom.file}`, name: rom.title, cheats: [] });
+    // Keyboard games (Ending) take the arrow keys at once, as the ROM emulator's demos do.
+    focus();
+  };
 
   picker.addEventListener("change", async () => {
     const file = picker.files?.[0];
@@ -139,17 +152,11 @@ export function player(spec: { name: string; demos?: readonly DemoRom[] }): HTML
       status,
     ),
     h("p", { class: "game-note muted" }, t("games.flash.emulator"), " · ", t("games.flash.mobile")),
-    ...(spec.demos?.length
-      ? [demoPicker(spec.demos, (rom) => {
-        reads += 1;
-        status.textContent = t("games.demos.playing", { title: rom.title });
-        boot({ rom: `${GAME_ROM_BASE}${rom.file}`, name: rom.title, cheats: [] });
-        // Keyboard games (Ending) take the arrow keys at once, as the ROM emulator's demos do.
-        focus();
-      })]
-      : []),
+    ...(spec.demos?.length ? [demoPicker(spec.demos, startDemo)] : []),
     controls("flash"),
   );
+  const linked = linkedDemo(spec.demos ?? []);
+  if (linked) queueMicrotask(() => startDemo(linked));
   return box;
 }
 

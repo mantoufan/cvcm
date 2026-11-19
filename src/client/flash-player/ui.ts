@@ -1,7 +1,7 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import { player } from "../games/player";
-import { DEMO_ROMS } from "../../shared/demo-roms";
+import { FLASH_DEMOS } from "../../shared/demo-roms";
 import { gamesHref } from "../../shared/path";
 
 export function mountFlashPlayer(host: HTMLElement): void {
@@ -13,7 +13,7 @@ export function mountFlashPlayer(host: HTMLElement): void {
     ),
     player({
       name: t("flashPlayer.title"),
-      demos: DEMO_ROMS.filter((demo) => demo.console === "flash"),
+      demos: FLASH_DEMOS,
     }),
     h("p", { class: "more" }, h("a", { href: gamesHref(loc, null), "data-nav": "games" }, t("flashPlayer.games"))),
   );
