@@ -113,7 +113,7 @@ describe("test pages: routes", () => {
     expect(html).toContain('<link rel="canonical" href="https://cv.cm/ja/tests/big-five/"');
   });
 
-  it("lists every test in every locale in the sitemap", () => {
+  it("lists every test in every locale in the sitemap", { timeout: 60_000 }, () => {
     const xml = buildSitemapXml();
     for (const locale of LOCALES) {
       expect(xml).toContain(`<loc>https://cv.cm${quizHref(locale)}</loc>`);

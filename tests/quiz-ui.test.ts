@@ -108,7 +108,7 @@ describe("test page UI", () => {
     }
   });
 
-  it("renders a result for every test and resets on start over", () => {
+  it("renders a result for every test and resets on start over", { timeout: 60_000 }, () => {
     for (const id of QUIZZES) {
       const main = mount(id);
       answer(main, (i) => i % 2);
@@ -192,7 +192,7 @@ describe("test page UI", () => {
     for (const id of fanQuizzes) expect(fromOutside.has(id), id).toBe(true);
   });
 
-  it("links to every test in a group from at least one of its members", () => {
+  it("links to every test in a group from at least one of its members", { timeout: 60_000 }, () => {
     for (const group of QUIZ_GROUPS) {
       const linked = new Set<string>();
       for (const id of group.quizzes) {

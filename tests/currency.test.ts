@@ -261,3 +261,13 @@ describe("currency: pages", () => {
     expect(new Set(external)).toEqual(new Set(["www.ecb.europa.eu"]));
   });
 });
+
+describe("currency: chart text alternative", () => {
+  it("phrases month-only dates as months", () => {
+    const en = currencyPageHtml("en", "usd-cny");
+    expect(en).toMatch(/aria-label="Line chart of USD\/CNY: [^"]* in [A-Z][a-z]+ \d{4}, /);
+    expect(en).not.toMatch(/aria-label="[^"]* on [A-Z][a-z]+ \d{4}, /);
+    const es = currencyPageHtml("es", "usd-cny");
+    expect(es).not.toMatch(/ el [a-z]+ de \d{4}/);
+  });
+});

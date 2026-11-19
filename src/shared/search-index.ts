@@ -10,6 +10,7 @@ import { elementName } from "./elements-i18n";
 import { atomicNumberOf } from "./elements";
 import { emojiWithName } from "./emoji-i18n";
 import { currencyPairName } from "./currency-i18n";
+import { breedName } from "./breeds-i18n";
 import { nameFromTitle, SEARCH_CHANNEL_NAV, shortBlurb, type SearchChannel, type SearchEntry } from "./search";
 
 /** A channel's front page (/tests/, /rankings/ …): listed under the channel's own name, not its SEO title. */
@@ -30,6 +31,7 @@ function isHub(page: SitemapPage): boolean {
     case "countries":
     case "elements":
     case "emoji":
+    case "breeds":
       return page.entry === null;
     case "calories":
       return page.food === null;
@@ -62,6 +64,8 @@ function pageName(locale: Locale, page: SitemapPage, channel: SearchChannel, seo
   if (page.kind === "emoji" && page.entry) return emojiWithName(locale, page.entry);
   // Pair titles carry what the page answers ("USD to CNY: … Today, History…"): the pair's heading.
   if (page.kind === "currency" && page.pair) return currencyPairName(locale, page.pair);
+  // Breed titles list what the page answers ("Pug: Size, Temperament, Lifespan"): the breed's own name.
+  if (page.kind === "breeds" && page.entry) return breedName(locale, page.entry);
   return nameFromTitle(pageTitle(locale, seo));
 }
 
@@ -102,6 +106,8 @@ function describe(page: SitemapPage): { channel: SearchChannel; seo: SeoInput } 
       return { channel: "emoji", seo: { emoji: true, emojiSlug: page.entry } };
     case "calendar":
       return { channel: "calendar", seo: { calendar: true, calendarPage: page.page } };
+    case "breeds":
+      return { channel: "breeds", seo: { breeds: true, breedId: page.entry } };
     case "games":
       return { channel: "games", seo: { games: true, console: page.console, game: page.game } };
     case "countries":

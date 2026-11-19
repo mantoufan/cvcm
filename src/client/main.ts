@@ -34,6 +34,7 @@ import {
   elementsHref,
   calendarHref,
   emojiHref,
+  breedsHref,
   toolJob,
   gameHubOf,
   withSearch,
@@ -64,6 +65,7 @@ import { CALORIES_FOCUS, type CaloriesPage, type FoodId } from "../shared/calori
 import { ELEMENTS_FOCUS, type ElementSlug, type ElementsPage } from "../shared/elements";
 import { CURRENCY_FOCUS, type CurrencyPage, type CurrencyPair } from "../shared/currency";
 import { currencyHref } from "../shared/path";
+import { BREEDS_FOCUS, isBreedId, type BreedId, type BreedsPage } from "../shared/breeds";
 import { CALENDAR_LOCALE, CALENDAR_YEARS, type CalendarPage } from "../shared/calendar";
 import { EMOJI_FOCUS, type EmojiPage, type EmojiSlug } from "../shared/emoji";
 import { BRANDED_TOOLS, hreflangAlternates, pageCanonical, pageDescription, pageTitle } from "../shared/seo";
@@ -128,6 +130,8 @@ let currencyPage: CurrencyPage = null;
 let calendarPage: CalendarPage | null = null;
 /** An emoji meanings page: "hub" for /emoji/, else the emoji slug. Reset at the start of every render(). */
 let emojiPage: EmojiPage = null;
+/** A breeds page: "hub" for /breeds/, else the breed id ("dogs/pug"). Reset at the start of every render(). */
+let breedsPage: BreedsPage = null;
 const noop = (): void => {};
 let unmountCurrent: () => void = noop;
 /** Settles once the page from the latest render() has mounted and is on screen. */
@@ -385,6 +389,18 @@ export function boot(): void {
     setLocale(loc);
     applyEmoji(parsed.entry);
     history.replaceState(null, "", withSearch(emojiHref(loc, parsed.entry), location.search));
+  } else if (parsed.kind === "breeds") {
+    setLocale(parsed.locale);
+    applyBreeds(parsed.entry);
+    const canonical = breedsHref(parsed.locale, parsed.entry);
+    if (location.pathname !== canonical) {
+      history.replaceState(null, "", withSearch(canonical, location.search));
+    }
+  } else if (parsed.kind === "bare-breeds") {
+    const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
+    setLocale(loc);
+    applyBreeds(parsed.entry);
+    history.replaceState(null, "", withSearch(breedsHref(loc, parsed.entry), location.search));
   } else if (parsed.kind === "clip") {
     const loc = stored ?? negotiateLocale(navigator.languages?.join(",") || navigator.language, null);
     setLocale(loc);
@@ -505,6 +521,18 @@ function prefetchGamePack(e: Event): void {
       loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, true).catch(() => {});
     };
     // The pack carries the rate snapshot: under a pointer, wait until it rests on a link, as food links do.
+    if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
+    else load();
+  } else if (target?.closest?.('a[data-nav^="breed-"], a[data-nav="breeds"]')) {
+    // data-nav is "breed-<kind>/<slug>" on a breed link, "breeds" on a hub link.
+    const nav = target.closest('a[data-nav^="breed-"], a[data-nav="breeds"]')?.getAttribute("data-nav") ?? "";
+    const id = nav.startsWith("breed-") ? nav.slice(6) : "";
+    const page: BreedsPage = isBreedId(id) ? id : "hub";
+    if (hasPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, false, page)) return;
+    const load = (): void => {
+      loadPageMessages(loc, false, false, null, false, null, null, null, {}, null, null, null, null, false, false, false, false, page).catch(() => {});
+    };
+    // The pack carries every breed's names and facts: under a pointer, wait until it rests on a link, as food links do.
     if (e.type === "pointerover") copyPrefetch = window.setTimeout(load, 120);
     else load();
   } else if (target?.closest?.('a[data-nav^="calendar"]')) {
@@ -791,6 +819,11 @@ function applyCurrency(pair: CurrencyPair | null): void {
   currencyPage = pair ?? "hub";
 }
 
+function applyBreeds(id: BreedId | null): void {
+  applyTool(null, null);
+  breedsPage = id ?? "hub";
+}
+
 function applyCalendar(page: CalendarPage): void {
   applyTool(null, null);
   calendarPage = page;
@@ -809,7 +842,7 @@ function unmountTools(): void {
 
 export function render(): void {
   const parsed = parseAppPath(location.pathname);
-  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar" || parsed.kind === "emoji" || parsed.kind === "currency"
+  const loc: Locale = parsed.kind === "app" || parsed.kind === "learn" || parsed.kind === "games" || parsed.kind === "markets" || parsed.kind === "device" || parsed.kind === "legal" || parsed.kind === "quiz" || parsed.kind === "dataset" || parsed.kind === "ranking" || parsed.kind === "kb" || parsed.kind === "ref" || parsed.kind === "slang" || parsed.kind === "ideas" || parsed.kind === "nostalgia" || parsed.kind === "countries" || parsed.kind === "calories" || parsed.kind === "elements" || parsed.kind === "calendar" || parsed.kind === "emoji" || parsed.kind === "currency" || parsed.kind === "breeds"
     ? parsed.locale
     : locale();
   const req = ++localeReq;
@@ -832,9 +865,10 @@ export function render(): void {
   const calendar = parsed.kind === "calendar" || parsed.kind === "bare-calendar" || ((parsed.kind === "app" || parsed.kind === "bare") && parsed.tool === "lunar-converter");
   const emoji = parsed.kind === "emoji" || parsed.kind === "bare-emoji";
   const currency = parsed.kind === "currency" || parsed.kind === "bare-currency";
-  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency)) {
+  const breeds: BreedsPage = parsed.kind === "breeds" || parsed.kind === "bare-breeds" ? parsed.entry ?? "hub" : null;
+  if (!hasPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency, breeds)) {
     // Keep the current (or server-rendered) page until this page's strings arrive.
-    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency).then(
+    loadPageMessages(loc, gamePage, legal, quiz, dataset, kb, ref, slang, copy, ideas, nostalgia, countries, calories, elements, calendar, emoji, currency, breeds).then(
       () => {
         try {
           sessionStorage.removeItem(RELOAD_KEY);
@@ -857,6 +891,7 @@ export function render(): void {
   elementsPage = null;
   emojiPage = null;
   currencyPage = null;
+  breedsPage = null;
   convertJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.convertJob ?? null : null;
   resizeJob = parsed.kind === "app" || parsed.kind === "bare" ? parsed.resizeJob ?? null : null;
   if (parsed.kind === "app") {
@@ -965,6 +1000,11 @@ export function render(): void {
     applyCurrency(parsed.pair);
   } else if (parsed.kind === "bare-currency") {
     applyCurrency(parsed.pair);
+  } else if (parsed.kind === "breeds") {
+    setLocale(parsed.locale);
+    applyBreeds(parsed.entry);
+  } else if (parsed.kind === "bare-breeds") {
+    applyBreeds(parsed.entry);
   } else if (parsed.kind === "bare") {
     applyTool(parsed.tool, parsed.clipId ?? null);
   } else {
@@ -975,6 +1015,8 @@ export function render(): void {
     ? { emoji: true as const, emojiSlug: emojiPage === "hub" ? null : emojiPage }
     : currencyPage
     ? { currency: true as const, currencyPair: currencyPage === "hub" ? null : currencyPage }
+    : breedsPage
+    ? { breeds: true as const, breedId: breedsPage === "hub" ? null : breedsPage }
     : elementsPage
     ? { elements: true as const, elementSlug: elementsPage === "hub" ? null : elementsPage }
     : countriesPage
@@ -1022,7 +1064,7 @@ export function render(): void {
   upsertMeta("property", "og:title", pageTitle(loc, seo));
   upsertMeta("property", "og:description", pageDescription(loc, seo));
   upsertMeta("property", "og:url", pageCanonical(loc, seo));
-  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub") || (nostalgiaPage && nostalgiaPage !== "hub") || (elementsPage && elementsPage !== "hub") || (emojiPage && emojiPage !== "hub") || (currencyPage && currencyPage !== "hub")) ? "article" : "website");
+  upsertMeta("property", "og:type", (tutorial || gameId || kbArticleOf(kbPage) || (refPage && refPage !== "hub") || (slangPage && slangPage !== "hub") || (ideasPage && ideasPage !== "hub") || (nostalgiaPage && nostalgiaPage !== "hub") || (elementsPage && elementsPage !== "hub") || (emojiPage && emojiPage !== "hub") || (currencyPage && currencyPage !== "hub") || (breedsPage && breedsPage !== "hub")) ? "article" : "website");
   syncHreflang(seo);
   const image = devicePage
     ? DEVICE_COVER
@@ -1042,7 +1084,7 @@ export function render(): void {
   upsertMeta("name", "twitter:description", pageDescription(loc, seo));
   upsertMeta("name", "twitter:image", image ? coverUrl(image) : null);
   syncBrandIcon(Boolean(tool && !tutorial && !gameId && !devicePage && !marketId && BRANDED_TOOLS.has(tool)));
-  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage, emojiPage, currencyPage);
+  syncPageJsonLd(loc, tool, tutorial, gameId, gamesHub, convertJob, resizeJob, marketId, marketsHub, devicePage, gameConsole, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage, emojiPage, currencyPage, breedsPage);
 
   const root = appEl();
   const gen = pageGen;
@@ -1180,7 +1222,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const ready = mountPage(main, loc).catch((err: unknown) => {
     console.error(err);
   });
-  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage || calendarPage || countriesPage || caloriesPage || elementsPage || calendarPage || emojiPage || currencyPage);
+  const home = !(tool || tutorial || learnHub || gamesHub || gameId || marketsHub || marketId || devicePage || legalPage || quizPage || datasetPage || rankingPage || kbPage || refPage || slangPage || ideasPage || nostalgiaPage || countriesPage || caloriesPage || elementsPage || calendarPage || countriesPage || caloriesPage || elementsPage || calendarPage || emojiPage || currencyPage || breedsPage);
   // The calendar sits under Tools (time group on the home tool wall); countries, calories and the periodic table under Data.
   // Game tool pages sit under Games (their games hub), not Tools.
   const gameTool = Boolean(tool && gameHubOf(tool));
@@ -1188,7 +1230,7 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
   const gamesOn = gamesHub || Boolean(gameId) || gameTool;
   const learnOn = learnHub || Boolean(tutorial) || Boolean(kbPage);
   const testsOn = Boolean(quizPage);
-  const dataOn = Boolean(datasetPage) || Boolean(countriesPage) || Boolean(caloriesPage) || Boolean(elementsPage) || Boolean(emojiPage) || Boolean(currencyPage);
+  const dataOn = Boolean(datasetPage) || Boolean(countriesPage) || Boolean(caloriesPage) || Boolean(elementsPage) || Boolean(emojiPage) || Boolean(currencyPage) || Boolean(breedsPage);
   const rankingsOn = Boolean(rankingPage);
   const refOn = Boolean(refPage);
   const slangOn = Boolean(slangPage);
@@ -1433,6 +1475,16 @@ function toolDirectory(loc: Locale): HTMLElement {
         ),
       ),
     ),
+    // Breed names live in the breeds pack, so the footer links the hub and the BREEDS_FOCUS breeds, whose names are
+    // also in the core pack (breedsFocus.*).
+    h("div", { class: "dir-group" },
+      h("h2", null, h("a", { href: breedsHref(loc), "data-nav": "breeds", "aria-current": breedsPage === "hub" ? "page" : undefined }, t("nav.breeds"))),
+      h("p", null,
+        ...BREEDS_FOCUS.map((id) =>
+          h("a", { href: breedsHref(loc, id), "data-nav": `breed-${id}`, "aria-current": breedsPage === id ? "page" : undefined }, t(`breedsFocus.${id.replace("/", ".")}`)),
+        ),
+      ),
+    ),
     // Calendar page names are computed from the calendar pack, so the footer links the hub and the year pages by number.
     h("div", { class: "dir-group" },
       h("h2", null, h("a", { href: calendarHref(loc), "data-nav": "calendar", "aria-current": calendarPage === "hub" ? "page" : undefined }, t("nav.calendar"))),
@@ -1592,6 +1644,11 @@ async function mountPage(main: HTMLElement, loc: Locale): Promise<void> {
     const m = await import("./emoji/ui");
     if (!alive()) return;
     unmountCurrent = m.mountEmoji(main, loc, page === "hub" ? null : page);
+  } else if (breedsPage) {
+    const page = breedsPage;
+    const m = await import("./breeds/ui");
+    if (!alive()) return;
+    m.mountBreeds(main, loc, page === "hub" ? null : page);
   } else if (calendarPage) {
     const m = await import("./calendar/ui");
     if (!alive()) return;
@@ -1752,6 +1809,8 @@ function localePath(next: Locale): string {
     ? emojiHref(next, emojiPage === "hub" ? null : emojiPage)
     : currencyPage
     ? currencyHref(next, currencyPage === "hub" ? null : currencyPage)
+    : breedsPage
+    ? breedsHref(next, breedsPage === "hub" ? null : breedsPage)
     : elementsPage
     ? elementsHref(next, elementsPage === "hub" ? null : elementsPage)
     : devicePage
