@@ -74,7 +74,9 @@ describe("resignation letter logic", () => {
     const text = letterText(doc);
     expect(text).toContain("退職届");
     expect(text).toContain("私儀");
-    expect(text).toContain("令和8年12月4日をもって退職いたします。");
+    expect(text).toContain("令和八年十二月四日をもって退職いたします。");
+    const western = letterText(buildLetter(RL_TEMPLATES.ja, filled("ja", { era: "seireki" })));
+    expect(western).toContain("二〇二六年十二月四日をもって退職いたします。");
     const negai = letterText(buildLetter(RL_TEMPLATES.ja, filled("ja", { kind: "negai", era: "seireki", vertical: false })));
     expect(negai).toContain("2026年12月4日をもって退職いたしたく、ここにお願い申し上げます。");
     expect(negai).toContain("以上");
@@ -140,7 +142,23 @@ describe("resignation letter ui", () => {
     set("[data-field=scenario]", "retirement", "change");
     expect(q("[data-out=sheet]").textContent).toContain("retire");
     vi.advanceTimersByTime(500);
-    expect(JSON.parse(localStorage.getItem("cvcm.resignation-letter.v1")!).form.name).toBe("Jordan Lee");
+    expect(JSON.parse(localStorage.getItem("cvcm.resignation-letter.v1")!).en.form.name).toBe("Jordan Lee");
+  });
+
+  it("keeps one draft per language", () => {
+    setLocale("en");
+    mountResignationLetter(host);
+    set("[data-field=name]", "Jordan Lee");
+    vi.advanceTimersByTime(500);
+    unmountResignationLetter();
+    host.replaceChildren();
+    setLocale("ja");
+    mountResignationLetter(host);
+    set("[data-field=name]", "山田 花子");
+    vi.advanceTimersByTime(500);
+    const all = JSON.parse(localStorage.getItem("cvcm.resignation-letter.v1")!);
+    expect(all.en.form.name).toBe("Jordan Lee");
+    expect(all.ja.form.name).toBe("山田 花子");
   });
 
   it("switches to edited text seeded with the generated body", () => {

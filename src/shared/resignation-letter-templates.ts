@@ -89,10 +89,25 @@ const en: RlTemplate = {
 
 // ---------- Japanese ----------
 
+const KANJI_DIGITS = "〇一二三四五六七八九";
+
+/** 1–99 as 縦書き kanji (十一, 二十); a western year digit by digit (二〇二六). */
+function kanjiNumber(n: number, digitwise = false): string {
+  if (digitwise || n >= 100) return String(n).split("").map((d) => KANJI_DIGITS[Number(d)]).join("");
+  const tens = Math.floor(n / 10);
+  const ones = n % 10;
+  return `${tens > 1 ? KANJI_DIGITS[tens] : ""}${tens ? "十" : ""}${ones ? KANJI_DIGITS[ones] : ""}` || "〇";
+}
+
+/** A Japanese date. Vertical letters write kanji numerals: Arabic digits would lie on their side in a column. */
 function jaDate(iso: string, f: RlForm): string {
   const p = parseIso(iso);
   if (!p) return f.era === "wareki" ? "令和　　年　　月　　日" : "　　　　年　　月　　日";
   const reiwa = f.era === "wareki" ? reiwaYear(p[0], p[1]) : null;
+  if (f.vertical) {
+    const year = reiwa ? `令和${reiwa === "元" ? "元" : kanjiNumber(Number(reiwa))}` : kanjiNumber(p[0], true);
+    return `${year}年${kanjiNumber(p[1])}月${kanjiNumber(p[2])}日`;
+  }
   const year = reiwa ? `令和${reiwa}` : String(p[0]);
   return `${year}年${p[1]}月${p[2]}日`;
 }

@@ -99,8 +99,15 @@ export function mountIdPhoto(host: HTMLElement): void {
   window.addEventListener("paste", onPaste);
 }
 
+/** One number per model job: a job that is no longer the latest (or outlived the page) changes nothing. */
+let jobSeq = 0;
+/** A request that arrived while a job ran: run once more for the current photo (true: also place the crop). */
+let queued: boolean | null = null;
+
 export function unmountIdPhoto(): void {
   alive = false;
+  jobSeq++;
+  queued = null;
   window.removeEventListener("paste", onPaste);
   client?.dispose();
   client = null;
@@ -366,7 +373,12 @@ async function addFile(file: File | undefined): Promise<void> {
 /** Runs the background model on the current photo once; `place` moves the crop onto the head it finds. */
 async function ensureMask(place = false): Promise<void> {
   const photo = state.photo;
-  if (!photo || !client || !status || state.busy) return;
+  if (!photo || !client || !status) return;
+  if (state.busy) {
+    // A newer photo (or Replace pressed again) while the model runs: run again for it when this job ends.
+    queued = place || Boolean(queued);
+    return;
+  }
   if (state.cut) {
     if (place && state.head) state.crop = placeCrop(state.spec!, state.head);
     syncZoom();
@@ -374,6 +386,7 @@ async function ensureMask(place = false): Promise<void> {
     return;
   }
   const gen = state.gen;
+  const job = ++jobSeq;
   state.busy = true;
   try {
     const { result, backend, seconds } = await runJob<Extract<AiResponse, { type: "mask" }>>(client, status, async () => {
@@ -395,11 +408,16 @@ async function ensureMask(place = false): Promise<void> {
     syncZoom();
     redraw();
   } catch (err) {
-    if (!alive) return;
+    if (!alive || job !== jobSeq) return;
     status.error(t("ai.errorRun"));
     console.error(err);
   } finally {
-    state.busy = false;
+    if (job === jobSeq) {
+      state.busy = false;
+      const again = queued;
+      queued = null;
+      if (alive && again !== null && state.photo && !state.cut) void ensureMask(again);
+    }
   }
 }
 
@@ -588,8 +606,11 @@ async function downloadPhoto(): Promise<void> {
   let outW = w;
   let outH = hgt;
   if (Number.isFinite(limitKb) && limitKb > 0) {
+    // Draw once per scale; the quality search re-encodes the same canvas.
+    let drawn: { scale: number; canvas: HTMLCanvasElement } | null = null;
     const fit = await fitToBytes(async (q, scale) => {
-      const c = render(Math.max(1, Math.round(w * scale)), Math.max(1, Math.round(hgt * scale)));
+      if (drawn?.scale !== scale) drawn = { scale, canvas: render(Math.max(1, Math.round(w * scale)), Math.max(1, Math.round(hgt * scale))) };
+      const c = drawn.canvas;
       const out = await jpegBytes(c, q, dpi * scale);
       return { out: { bytes: out, w: c.width, h: c.height }, bytes: out.byteLength };
     }, limitKb * 1024);

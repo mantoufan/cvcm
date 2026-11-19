@@ -36,7 +36,7 @@
     },
     {
       "id": "career",
-      "name": "Job-hunting papers: a resignation letter generator (local formats such as the Japanese 退職届 / 退職願, notice periods), a cover letter generator (cover letters, Indonesian surat lamaran kerja, Vietnamese đơn xin việc, Japanese 送付状, Korean 자기소개서), a résumé builder (ATS-friendly CV, Japanese JIS 履歴書 and 職務経歴書, Korean 이력서, Chinese 简历) printed to PDF, and an ID photo maker (background removal on the device, passport and visa sizes, print sheets)"
+      "name": "Job-hunting papers: a resignation letter generator (local formats such as the Japanese 退職届 / 退職願, notice periods), a cover letter generator (cover letters, Indonesian surat lamaran kerja, Vietnamese đơn xin việc, Japanese 送付状, Korean 자기소개서), a résumé builder (ATS-friendly CV, Japanese 履歴書 on the 2021 MHLW sample form and 職務経歴書, Korean 이력서, Chinese 简历) printed to PDF, and an ID photo maker (background removal on the device, passport and visa sizes, print sheets)"
     },
     {
       "id": "audio",
@@ -579,7 +579,7 @@
       "description": "Two weeks' notice letter or email.",
       "category": "career",
       "url": "https://cv.cm/en/resignation-letter/",
-      "data_handling": "Builds the document in the page and keeps the draft in this browser's local storage; a photo or saved draft it opens is read in the page. Print saves it as a PDF and Download writes a file on the device. Drafts and files are not uploaded."
+      "data_handling": "Builds the letter in the page and keeps the draft in this browser's local storage. Print saves it as a PDF and Download writes a Word file on the device. The draft is not uploaded."
     },
     {
       "id": "cover-letter",
@@ -587,7 +587,7 @@
       "description": "One-page cover letter from a template.",
       "category": "career",
       "url": "https://cv.cm/en/cover-letter/",
-      "data_handling": "Builds the document in the page and keeps the draft in this browser's local storage; a photo or saved draft it opens is read in the page. Print saves it as a PDF and Download writes a file on the device. Drafts and files are not uploaded."
+      "data_handling": "Builds the letter in the page and keeps the draft in this browser's local storage. Print saves it as a PDF and Download writes a Word file on the device. The draft is not uploaded."
     },
     {
       "id": "resume-builder",
@@ -595,7 +595,7 @@
       "description": "ATS-friendly CV printed to PDF.",
       "category": "career",
       "url": "https://cv.cm/en/resume-builder/",
-      "data_handling": "Builds the document in the page and keeps the draft in this browser's local storage; a photo or saved draft it opens is read in the page. Print saves it as a PDF and Download writes a file on the device. Drafts and files are not uploaded."
+      "data_handling": "Builds the résumé in the page and keeps the draft in this browser's local storage; a photo or saved JSON draft it opens is read in the page. Print saves it as a PDF and Save writes a JSON file on the device. The draft and files are not uploaded."
     },
     {
       "id": "id-photo",

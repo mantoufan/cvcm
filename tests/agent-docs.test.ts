@@ -98,7 +98,7 @@ describe("agent discovery files", () => {
   it("declares every tool that has a file input", () => {
     // Text tools that can also read a file the user picks; they keep the generic local text.
     const LOCAL_FILE_INPUT_TOOLS = ["data", "hash", "word-count"];
-    const declared = new Set<string>([...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI, ...DATA_HANDLING_GROUPS.STORES, ...DATA_HANDLING_GROUPS.NOTES, ...DATA_HANDLING_GROUPS.DRAFTS, ...LOCAL_FILE_INPUT_TOOLS]);
+    const declared = new Set<string>([...DATA_HANDLING_GROUPS.FILES, ...DATA_HANDLING_GROUPS.AI, ...DATA_HANDLING_GROUPS.STORES, ...DATA_HANDLING_GROUPS.NOTES, ...DATA_HANDLING_GROUPS.RESUME, ...LOCAL_FILE_INPUT_TOOLS]);
     const withFileInput = TOOLS.filter((tool) => {
       const dir = join(root, "src/client", tool);
       try {

@@ -1,3 +1,4 @@
+import { blobFromBytes } from "../../shared/image-encode";
 import { h, downloadBlob } from "../dom";
 import { locale, t } from "../i18n";
 import { copyWithFlash } from "../copy";
@@ -144,10 +145,7 @@ function stem(): string {
 }
 
 function downloadWord(): void {
-  const bytes = letterDocx(current().doc, paper);
-  const copy = new ArrayBuffer(bytes.byteLength);
-  new Uint8Array(copy).set(bytes);
-  downloadBlob(new Blob([copy], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" }), docFilename(stem(), "docx", "cover-letter"));
+  downloadBlob(blobFromBytes(letterDocx(current().doc, paper), "application/vnd.openxmlformats-officedocument.wordprocessingml.document"), docFilename(stem(), "docx", "cover-letter"));
 }
 
 function fieldset(legend: string, fields: CoverField[], extra: HTMLElement[] = []): HTMLElement | null {

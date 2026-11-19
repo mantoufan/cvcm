@@ -2180,7 +2180,9 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
   body.printing-doc > :not(.print-root) { display: none !important; }
   body.printing-doc .print-root { display: block; }
   .print-root .doc-page { border: 0; padding: 0; font-size: 11pt; aspect-ratio: auto; overflow: visible; }
+  /* The column length is the printable height: A4 less 20 mm margins, Letter less 1 in margins (printSheet's @page). */
   .print-root .doc-page.doc-vertical { height: calc(297mm - 40mm); width: auto; }
+  .print-root .doc-page.doc-vertical.doc-letter { height: calc(279.4mm - 2in); }
 }
 
 /* resignation-letter (batch 38) */

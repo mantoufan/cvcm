@@ -42,6 +42,14 @@ describe("cover letter helpers", () => {
 });
 
 describe("cover letter templates", () => {
+  it("writes one year in the singular", () => {
+    const one = { ...withDate(sampleData(COVER_TEMPLATES.en)), years: "1" };
+    expect(textOf("en", one)).toContain("I have 1 year of experience");
+    expect(textOf("en", { ...one, scenario: "change" })).toContain("After 1 year as");
+    expect(textOf("en", { ...one, years: "11" })).toContain("11 years");
+    expect(textOf("es", { ...withDate(sampleData(COVER_TEMPLATES.es)), years: "1" })).toContain("1 año de experiencia");
+  });
+
   it.each(LOCALES)("%s: the sample letter has no fill-in marks", (loc) => {
     const tpl = COVER_TEMPLATES[loc];
     const text = textOf(loc, withDate(sampleData(tpl)));

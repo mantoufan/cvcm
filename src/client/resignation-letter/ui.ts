@@ -1,3 +1,4 @@
+import { blobFromBytes } from "../../shared/image-encode";
 import { copyWithFlash } from "../copy";
 import { defaultPaper, paintLetter, printSheet, sheet } from "../doc-sheet";
 import { downloadBlob, h } from "../dom";
@@ -19,6 +20,7 @@ const S = "resignationLetter";
 const STORE = "cvcm.resignation-letter.v1";
 
 type Saved = { locale: string; form: RlForm; paper: Paper };
+const DOCX_TYPE = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
 let form: RlForm | null = null;
 let tpl: RlTemplate | null = null;
@@ -29,25 +31,31 @@ let saveTimer = 0;
 let paintTimer = 0;
 let mounted = false;
 
-function readSaved(loc: string): Saved | null {
+/** Drafts by language, so a 退職届 written on /ja/ survives a letter written on /zh-tw/. */
+function readAll(): Record<string, Saved> {
   try {
     const raw = localStorage.getItem(STORE);
-    if (!raw) return null;
-    const saved = JSON.parse(raw) as Saved;
-    return saved && saved.locale === loc && saved.form ? saved : null;
+    const all = raw ? (JSON.parse(raw) as unknown) : null;
+    return all && typeof all === "object" && !Array.isArray(all) ? (all as Record<string, Saved>) : {};
   } catch {
-    return null;
+    return {};
   }
+}
+
+function readSaved(loc: string): Saved | null {
+  const saved = readAll()[loc];
+  return saved && typeof saved === "object" && saved.locale === loc && saved.form && typeof saved.form === "object" ? saved : null;
 }
 
 /** Keeps the draft (debounced). The snapshot is taken now, so a save still due after leaving the page holds it. */
 function save(): void {
   if (!form) return;
-  const data = JSON.stringify({ locale: locale(), form, paper } satisfies Saved);
+  const loc = locale();
+  const entry: Saved = { locale: loc, form: { ...form }, paper };
   window.clearTimeout(saveTimer);
   saveTimer = window.setTimeout(() => {
     try {
-      localStorage.setItem(STORE, data);
+      localStorage.setItem(STORE, JSON.stringify({ ...readAll(), [loc]: entry }));
     } catch {
       /* private mode or full: the draft just isn't kept */
     }
@@ -205,10 +213,7 @@ export function mountResignationLetter(host: HTMLElement): void {
   function downloadDocx(): void {
     flush();
     if (!doc) return;
-    const bytes = letterDocx(doc, paper);
-    const copy = new ArrayBuffer(bytes.byteLength);
-    new Uint8Array(copy).set(bytes);
-    downloadBlob(new Blob([copy], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" }), `${stem()}.docx`);
+    downloadBlob(blobFromBytes(letterDocx(doc, paper), DOCX_TYPE), `${stem()}.docx`);
   }
 
   function flush(): void {

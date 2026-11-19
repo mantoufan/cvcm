@@ -40,6 +40,9 @@ let paintTimer = 0;
 let saveTimer = 0;
 let dirty = false;
 let clearArmed = 0;
+/** The open photo crop panel (one at a time); it survives buildForm, which re-attaches it to the new photo field. */
+let crop: { el: HTMLElement; close: () => void } | null = null;
+let photoSeq = 0;
 
 type Show = Partial<Record<ResumeFormat, true>>;
 const shows = (show: Show) => Boolean(show[r.format]);
@@ -162,10 +165,12 @@ function photoField(): HTMLElement {
     onChange: () => {
       const file = fileInput.files?.[0];
       fileInput.value = "";
-      if (file) void openPhoto(file, wrap);
+      if (file) void openPhoto(file);
     },
   });
   const idLink = h("a", { href: appHref(locale(), "id-photo") }, t(`${S}.photoIdLink`));
+  // A crop in progress moves into the rebuilt field instead of being dropped with the old one.
+  if (crop) queueMicrotask(() => { if (crop) wrap.append(crop.el); });
   wrap.append(...[
     h("span", null, t(`${S}.photo`)),
     r.basics.photo ? h("img", { class: "rs-photo-thumb", src: r.basics.photo, alt: "" }) : null,
@@ -178,19 +183,31 @@ function photoField(): HTMLElement {
   return wrap;
 }
 
-async function openPhoto(file: File, wrap: HTMLElement): Promise<void> {
+async function openPhoto(file: File): Promise<void> {
+  const seq = ++photoSeq;
+  crop?.close();
   let decoded: Awaited<ReturnType<typeof decodeImage>>;
   try {
     decoded = await decodeImage(file);
   } catch {
-    setStatus(t(`${S}.photoFailed`));
+    if (seq === photoSeq) setStatus(t(`${S}.photoFailed`));
     return;
   }
-  const close = () => { decoded.bitmap.close(); panel.remove(); };
+  // A newer photo was picked, or the page was left, while this one decoded.
+  if (seq !== photoSeq || !formEl) {
+    decoded.bitmap.close();
+    return;
+  }
+  const close = () => {
+    decoded.bitmap.close();
+    panel.remove();
+    if (crop?.el === panel) crop = null;
+  };
   const panel = cropPanel(decoded.bitmap, {
     zoom: t(`${S}.photoZoom`), use: t(`${S}.photoUse`), cancel: t(`${S}.photoCancel`), hint: t(`${S}.photoCropHint`),
   }, (url) => { r.basics.photo = url; close(); changed(); buildForm(); }, close);
-  wrap.append(panel);
+  crop = { el: panel, close };
+  formEl.querySelector(".rs-photo-field")?.append(panel);
 }
 
 function buildForm(): void {
@@ -354,6 +371,8 @@ export function mountResumeBuilder(host: HTMLElement): void {
 }
 
 export function unmountResumeBuilder(): void {
+  photoSeq++;
+  crop?.close();
   window.removeEventListener("pagehide", onPageHide);
   window.clearTimeout(paintTimer);
   if (clearArmed) window.clearTimeout(clearArmed);

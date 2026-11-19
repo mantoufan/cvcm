@@ -76,13 +76,15 @@ const en: CoverTemplate = {
     const company = val(d, "company", "[Company]");
     const role = article(val(d, "role", "[your current job]"));
     const years = val(d, "years", "[number]");
+    // "1 year", "1.5 years", "[number] years": only a lone 1 takes the singular.
+    const yrs = `${years} ${/^0*1$/.test(years.trim()) ? "year" : "years"}`;
     const edu = val(d, "education", "[your degree or course]");
     const src = d.source.trim() ? `, as advertised on ${d.source.trim()}` : "";
     const open = {
-      experienced: `I am writing to apply for the ${job} position at ${company}${src}. I have ${years} years of experience as ${role}, and I would like to bring that experience to your team.`,
+      experienced: `I am writing to apply for the ${job} position at ${company}${src}. I have ${yrs} of experience as ${role}, and I would like to bring that experience to your team.`,
       graduate: `I am writing to apply for the ${job} position at ${company}${src}. I recently graduated with ${edu}, and I am ready to start my career in this field.`,
       internship: `I am writing to apply for the ${job} role at ${company}${src}. I am currently studying for ${edu}, and I am looking for practical experience in this field.`,
-      change: `I am writing to apply for the ${job} position at ${company}${src}. After ${years} years as ${role}, I am moving into this field, and many of the skills I built in that work apply directly to this role.`,
+      change: `I am writing to apply for the ${job} position at ${company}${src}. After ${yrs} as ${role}, I am moving into this field, and many of the skills I built in that work apply directly to this role.`,
     }[d.scenario];
     const lead = { experienced: "Highlights of my experience:", graduate: "Highlights of my studies and projects:", internship: "Relevant coursework and projects:", change: "From my previous work, I bring:" }[d.scenario];
     const list = items(d.achievements);
@@ -156,13 +158,14 @@ const es: CoverTemplate = {
     const company = val(d, "company", "[empresa]");
     const role = val(d, "role", "[su puesto actual]");
     const years = val(d, "years", "[número]");
+    const yrs = `${years} ${/^0*1$/.test(years.trim()) ? "año" : "años"}`;
     const edu = val(d, "education", "[sus estudios]");
     const src = d.source.trim() ? `, publicado en ${d.source.trim()}` : "";
     const open = {
-      experienced: `Me dirijo a ustedes para presentar mi candidatura al puesto de ${job} en ${company}${src}. Cuento con ${years} años de experiencia como ${role} y me gustaría aportar esa experiencia a su equipo.`,
+      experienced: `Me dirijo a ustedes para presentar mi candidatura al puesto de ${job} en ${company}${src}. Cuento con ${yrs} de experiencia como ${role} y me gustaría aportar esa experiencia a su equipo.`,
       graduate: `Me dirijo a ustedes para presentar mi candidatura al puesto de ${job} en ${company}${src}. Recientemente he terminado ${edu} y quiero comenzar mi carrera profesional en este campo.`,
       internship: `Me dirijo a ustedes para solicitar una plaza de prácticas como ${job} en ${company}${src}. Actualmente curso ${edu} y busco adquirir experiencia práctica en este campo.`,
-      change: `Me dirijo a ustedes para presentar mi candidatura al puesto de ${job} en ${company}${src}. Tras ${years} años como ${role}, quiero dar el paso a este campo, y muchas de las habilidades que he desarrollado se aplican directamente a este puesto.`,
+      change: `Me dirijo a ustedes para presentar mi candidatura al puesto de ${job} en ${company}${src}. Tras ${yrs} como ${role}, quiero dar el paso a este campo, y muchas de las habilidades que he desarrollado se aplican directamente a este puesto.`,
     }[d.scenario];
     const lead = { experienced: "Entre mis logros destacan:", graduate: "De mis estudios y proyectos destaco:", internship: "Asignaturas y proyectos relacionados:", change: "De mi experiencia anterior aporto:" }[d.scenario];
     const list = items(d.achievements);
