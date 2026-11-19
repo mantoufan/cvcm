@@ -148,6 +148,7 @@ let started = false;
 export function start(): void {
   if (!started) {
     started = true;
+    wireNavGroupClosing();
     // Registered before gtag loads, so this runs before gtag's own history listener.
     window.addEventListener("popstate", () => {
       // Following an in-page #anchor (a table of contents, #tools) also fires popstate: the page itself is unchanged.
@@ -1242,10 +1243,14 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(quizHref(loc), t("nav.tests"), testsOn, "tests"),
         navLink(rankingHref(loc), t("nav.rankings"), rankingsOn, "rankings"),
         navLink(datasetHref(loc), t("nav.data"), dataOn, "datasets"),
-        navLink(refHref(loc), t("nav.reference"), refOn, "reference"),
-        navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
+        // Encyclopedia-style channels under one menu. Their links stay in this nav's markup, so every page still links
+        // to each channel hub; only the row shows a single item. The channels keep their own URLs.
+        navGroup(t("nav.wiki"), refOn || slangOn || nostalgiaOn, [
+          navLink(refHref(loc), t("nav.reference"), refOn, "reference"),
+          navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
+          navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
+        ]),
         navLink(ideasHref(loc), t("nav.ideas"), ideasOn, "ideas"),
-        navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
       )),
@@ -1285,7 +1290,7 @@ function navRow(nav: HTMLElement): HTMLElement {
   const more = h("div", { class: "nav-more", hidden: true }, button, pop);
   const row = h("div", { class: "nav-row" }, nav, more);
 
-  const onDocClick = (event: MouseEvent): void => {
+  const onDocClick = (event: Event): void => {
     if (!more.contains(event.target as Node)) setOpen(false);
   };
   const onKey = (event: KeyboardEvent): void => {
@@ -1298,10 +1303,11 @@ function navRow(nav: HTMLElement): HTMLElement {
     button.setAttribute("aria-expanded", String(open));
     pop.hidden = !open;
     if (open) {
-      document.addEventListener("click", onDocClick, true);
+      // pointerdown, not click: iOS Safari sends no click for a tap on plain text or empty space.
+      document.addEventListener("pointerdown", onDocClick, true);
       document.addEventListener("keydown", onKey);
     } else {
-      document.removeEventListener("click", onDocClick, true);
+      document.removeEventListener("pointerdown", onDocClick, true);
       document.removeEventListener("keydown", onKey);
     }
   }
@@ -1311,8 +1317,9 @@ function navRow(nav: HTMLElement): HTMLElement {
   });
 
   function fit(): void {
-    const links = Array.from(nav.querySelectorAll<HTMLAnchorElement>(":scope > a"));
-    for (const a of links) a.hidden = false;
+    // Row items: plain links and menus (navGroup) of links.
+    const items = Array.from(nav.querySelectorAll<HTMLElement>(":scope > a, :scope > .nav-group"));
+    for (const item of items) item.hidden = false;
     more.hidden = true;
     // No layout (detached, or the build-time prerender): leave every link on the row.
     if (nav.clientWidth === 0 || nav.scrollWidth <= nav.clientWidth + 1) {
@@ -1321,15 +1328,18 @@ function navRow(nav: HTMLElement): HTMLElement {
       return;
     }
     more.hidden = false;
-    for (let i = links.length - 1; i >= 0 && nav.scrollWidth > nav.clientWidth + 1; i--) {
-      if (!links[i].classList.contains("on")) links[i].hidden = true;
+    for (let i = items.length - 1; i >= 0 && nav.scrollWidth > nav.clientWidth + 1; i--) {
+      if (!items[i].classList.contains("on")) items[i].hidden = true;
     }
     clear(pop);
-    for (const a of links) {
-      if (!a.hidden) continue;
-      const copy = a.cloneNode(true) as HTMLAnchorElement;
-      copy.hidden = false;
-      pop.append(copy);
+    for (const item of items) {
+      if (!item.hidden) continue;
+      if (item instanceof HTMLDetailsElement) foldGroupInto(pop, item);
+      else {
+        const copy = item.cloneNode(true) as HTMLAnchorElement;
+        copy.hidden = false;
+        pop.append(copy);
+      }
     }
     if (pop.childElementCount === 0) {
       more.hidden = true;
@@ -1341,6 +1351,59 @@ function navRow(nav: HTMLElement): HTMLElement {
     new ResizeObserver(() => fit()).observe(row);
   }
   return row;
+}
+
+/** A nav menu that does not fit the row, listed inside "More": its label, then copies of its links. */
+function foldGroupInto(pop: HTMLElement, group: HTMLDetailsElement): void {
+  group.open = false;
+  pop.append(h("span", { class: "nav-more-label" }, group.querySelector(".nav-group-label")?.textContent ?? ""));
+  for (const link of group.querySelectorAll<HTMLAnchorElement>(".nav-group-pop a")) {
+    const copy = link.cloneNode(true) as HTMLAnchorElement;
+    copy.classList.add("nav-more-sub");
+    pop.append(copy);
+  }
+}
+
+/**
+ * One item on the nav row that opens a list of links: a native <details>, so it opens and its links work in the
+ * server HTML before the app takes over, and without JS. The links are always in the markup, so the prerendered HTML
+ * and crawlers see them like any other nav link. The list is absolutely positioned against the header (.top), which
+ * the nav row's overflow clipping does not reach. Closing on outside click, focus leaving, Escape and link click is
+ * one delegated listener set wired once in start() (wireNavGroupClosing), so a replaced header leaves nothing subscribed.
+ */
+function navGroup(label: string, on: boolean, links: HTMLElement[]): HTMLElement {
+  return h("details", { class: "nav-group" + (on ? " on" : "") },
+    h("summary", { class: "nav-group-btn" },
+      h("span", { class: "nav-group-label" }, label),
+      h("span", { class: "nav-more-caret", "aria-hidden": "true" }, "▾"),
+    ),
+    h("div", { class: "nav-group-pop" }, ...links),
+  );
+}
+
+/** Document listeners that close open nav menus (navGroup); called once from start(). */
+function wireNavGroupClosing(): void {
+  const closeAll = (keep: Node | null): void => {
+    for (const d of document.querySelectorAll<HTMLDetailsElement>("details.nav-group[open]")) {
+      if (!keep || !d.contains(keep)) d.open = false;
+    }
+  };
+  // pointerdown, not click: iOS Safari sends no click for a tap on plain text or empty space.
+  document.addEventListener("pointerdown", (event) => closeAll(event.target as Node | null), true);
+  // A link inside a menu navigates through the shared click handler; the menu closes either way.
+  document.addEventListener("click", (event) => {
+    if ((event.target as Element | null)?.closest?.(".nav-group-pop a")) closeAll(null);
+  }, true);
+  document.addEventListener("focusin", (event) => closeAll(event.target as Node | null));
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const open = document.querySelector<HTMLDetailsElement>("details.nav-group[open]");
+    if (!open) return;
+    // Focus goes back to the summary only when it was in the menu; elsewhere the page keeps its focus.
+    const inside = open.contains(document.activeElement);
+    open.open = false;
+    if (inside) open.querySelector<HTMLElement>("summary")?.focus();
+  });
 }
 
 function navLink(href: string, label: string, on: boolean, nav: string): HTMLElement {

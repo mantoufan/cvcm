@@ -16,9 +16,9 @@ describe("nostalgia shell", () => {
     const nav = document.querySelector<HTMLAnchorElement>('.nav a[data-nav="nostalgia"]');
     expect(nav?.getAttribute("href")).toBe("/en/nostalgia/");
     expect(nav?.classList.contains("on")).toBe(true);
-    // Right after Ideas in the top nav, and linked from the footer directory with its focus entries.
+    // Right after Memes (in the Wiki menu) in the top nav, and linked from the footer directory with its focus entries.
     const order = [...document.querySelectorAll(".nav a")].map((a) => a.getAttribute("data-nav"));
-    expect(order.indexOf("nostalgia")).toBe(order.indexOf("ideas") + 1);
+    expect(order.indexOf("nostalgia")).toBe(order.indexOf("slang") + 1);
     expect(document.querySelector('.nav a[data-nav="slang"]')?.classList.contains("on")).toBe(false);
     expect(document.querySelector('.dir a[data-nav="nostalgia"]')).not.toBeNull();
     expect(document.querySelector('.dir a[data-nav="nostalgia-famicom"]')?.textContent).toBe("Famicom (NES)");

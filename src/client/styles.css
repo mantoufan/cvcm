@@ -43,7 +43,9 @@ img { max-width: 100%; }
 .nav-more-btn:hover, .nav-more-btn[aria-expanded="true"] { color: var(--pink-deep); background: var(--pink-soft); }
 .nav-more-caret { font-size: 0.7em; }
 .nav-more[hidden], .nav-more-pop[hidden], .nav a[hidden] { display: none; }
-.nav-more-pop { position: absolute; top: calc(100% + 0.35rem); left: 0; z-index: 50; display: flex; flex-direction: column; min-width: 9rem; padding: 0.3rem; border: 1px solid var(--pink); border-radius: var(--radius); background: var(--white); }
+.nav-more-pop { left: 0; }
+/* The More list and the Wiki list (navGroup) share one look. */
+.nav-more-pop, .nav-group-pop { position: absolute; top: calc(100% + 0.35rem); z-index: 50; display: flex; flex-direction: column; min-width: 9rem; padding: 0.3rem; border: 1px solid var(--pink); border-radius: var(--radius); background: var(--white); }
 .nav-more-pop a { padding: 0.45rem 0.6rem; border-radius: 8px; color: var(--ink-soft); text-decoration: none; font-size: 0.92rem; white-space: nowrap; }
 .nav-more-pop a:hover, .nav-more-pop a.on { color: var(--pink-deep); background: var(--pink-soft); }
 .nav { --nav-fs: 0.92rem; --nav-py: 0.4rem; --nav-px: 0.6rem; }
@@ -52,6 +54,16 @@ img { max-width: 100%; }
    away. The row shows whole links only (never one cut mid-word), and every link is still in the markup. */
 .page.ssr .nav { flex-wrap: wrap; height: calc(var(--nav-fs) * 1.6 + 2 * var(--nav-py)); }
 .nav a:hover, .nav a.on { color: var(--pink-deep); background: var(--pink-soft); }
+/* A menu on the nav row (navGroup() in main.ts, a <details>): a summary like a nav link, its links in a list under the
+   header. No position on .nav-group: the list is placed against .top, outside the nav row's overflow clipping. */
+/* Column: the list's static left position is then the summary's left edge, so it opens right under it. */
+.nav-group { display: flex; flex-direction: column; flex-shrink: 0; }
+.nav-group[hidden] { display: none; }
+.nav-group-btn { display: inline-flex; align-items: center; gap: 0.2rem; padding: var(--nav-py) var(--nav-px); border-radius: 8px; color: var(--ink-soft); font-size: var(--nav-fs); line-height: 1.6; cursor: pointer; white-space: nowrap; list-style: none; user-select: none; }
+.nav-group-btn::-webkit-details-marker { display: none; }
+.nav-group-btn:hover, .nav-group.on > .nav-group-btn, .nav-group[open] > .nav-group-btn { color: var(--pink-deep); background: var(--pink-soft); }
+.nav-more-label { padding: 0.45rem 0.6rem 0.15rem; color: var(--ink-soft); font-size: 0.78rem; opacity: 0.75; }
+.nav-more-pop a.nav-more-sub { padding-left: 1.1rem; }
 /* Site search: a button in the header, a panel under it (src/client/search.ts). */
 .search-btn { flex-shrink: 0; display: inline-flex; align-items: center; gap: 0.3rem; margin-left: auto; min-height: 36px; padding: 0.3rem 0.6rem; border: 1px solid var(--line); border-radius: 8px; background: var(--white); color: var(--ink-soft); font: inherit; font-size: 0.88rem; cursor: pointer; white-space: nowrap; }
 .search-btn:hover, .search-btn[aria-expanded="true"] { color: var(--pink-deep); border-color: var(--pink); }
@@ -224,7 +236,8 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
   .nav-row { order: 3; flex: 1 0 100%; margin: 0 -0.4rem; }
   .nav { --nav-fs: 0.86rem; --nav-py: 0.35rem; --nav-px: 0.4rem; }
   .nav-more-btn { padding: 0.35rem 0.4rem; font-size: 0.86rem; }
-  .nav-more-pop { left: auto; right: 0; }
+  /* Lists open from the right edge on phones, so a menu near the end of the row does not run off screen. */
+  .nav-more-pop, .nav-group-pop { left: auto; right: 0; }
   .lang { max-width: 7.5rem; font-size: 0.8rem; padding: 0.25rem 1.5rem 0.25rem 0.45rem; background-position: right 0.45rem center; }
   .search-btn { padding: 0.25rem 0.45rem; }
   .search-btn-text { display: none; }
