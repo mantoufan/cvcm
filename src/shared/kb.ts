@@ -3,9 +3,10 @@ import type { ToolId, TutorialId } from "./path";
 import { CODE_ARTICLES, CODE_GROUPS, CODE_TOOLS, type CodeId } from "./kb-code";
 import { AI_ARTICLES, AI_ARTICLE_TOOLS, AI_GROUPS, type AiId } from "./kb-ai";
 import { PHOTO_ARTICLES, PHOTO_ARTICLE_TOOLS, PHOTO_GROUPS, type PhotoId } from "./kb-photo";
+import { MASSAGE_ARTICLES, MASSAGE_ARTICLE_TOOLS, MASSAGE_GROUPS, type MassageId } from "./kb-massage";
 import { KB_MINUTES, KB_UPDATED } from "../locales/kb/meta";
 
-export { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES };
+export { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES, MASSAGE_ARTICLES };
 
 /**
  * Four shelves of articles under the tutorials, rendered the same way:
@@ -15,13 +16,16 @@ export { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES };
  * - ai: generative AI concepts, prompts, image, video and audio workflows, AI law, `/{locale}/learn/ai/{id}/` (src/shared/kb-ai.ts).
  * - photo: camera settings, composition and light, portraits and posing, wedding shoots, phone and scene guides,
  *   `/{locale}/learn/photography/{id}/` (src/shared/kb-photo.ts).
+ * - massage: self-massage basics and safety, acupressure points, feet and hands, neck and back, face and scalp, tools,
+ *   `/{locale}/learn/massage/{id}/` (src/shared/kb-massage.ts).
  */
 export const KB_SEGMENT = "knowledge";
 export const CODE_SEGMENT = "code";
 export const AI_SEGMENT = "ai";
 export const PHOTO_SEGMENT = "photography";
+export const MASSAGE_SEGMENT = "massage";
 
-export type KbShelf = "knowledge" | "code" | "ai" | "photo";
+export type KbShelf = "knowledge" | "code" | "ai" | "photo" | "massage";
 
 export const KNOWLEDGE_ARTICLES = [
   "what-is-heic",
@@ -45,14 +49,14 @@ export const KNOWLEDGE_ARTICLES = [
 ] as const;
 
 export type KnowledgeId = (typeof KNOWLEDGE_ARTICLES)[number];
-export type { AiId, CodeId, PhotoId };
-export type KbId = KnowledgeId | CodeId | AiId | PhotoId;
+export type { AiId, CodeId, PhotoId, MassageId };
+export type KbId = KnowledgeId | CodeId | AiId | PhotoId | MassageId;
 
-/** Every article of every shelf, knowledge first, then coding, AI and photography, each shelf in hub order. */
-export const KB_ARTICLES: readonly KbId[] = [...KNOWLEDGE_ARTICLES, ...CODE_ARTICLES, ...AI_ARTICLES, ...PHOTO_ARTICLES];
+/** Every article of every shelf, knowledge first, then coding, AI, photography and massage, each shelf in hub order. */
+export const KB_ARTICLES: readonly KbId[] = [...KNOWLEDGE_ARTICLES, ...CODE_ARTICLES, ...AI_ARTICLES, ...PHOTO_ARTICLES, ...MASSAGE_ARTICLES];
 
-/** A shelf hub: "hub" is the knowledge hub, "code" the coding hub, "ai" the AI hub, "photo" the photography hub. */
-export type KbHub = "hub" | "code" | "ai" | "photo";
+/** A shelf hub: "hub" is the knowledge hub, "code" the coding hub, "ai" the AI hub, "photo" the photography hub, "massage" the massage hub. */
+export type KbHub = "hub" | "code" | "ai" | "photo" | "massage";
 
 /** A kb page: a hub, one article, or none. */
 export type KbPage = KbId | KbHub | null;
@@ -60,7 +64,8 @@ export type KbPage = KbId | KbHub | null;
 export type CodeGroupId = "languages" | "patterns" | "structures" | "algorithms";
 export type AiGroupId = "basics" | "prompts" | "image" | "video" | "shorts" | "audio" | "dev" | "trust";
 export type PhotoGroupId = "exposure" | "composition" | "portraits" | "wedding" | "scenes";
-export type KbGroupId = "files" | "data" | "time" | "money" | CodeGroupId | AiGroupId | PhotoGroupId;
+export type MassageGroupId = "basics" | "points" | "feet-hands" | "neck-back" | "face-scalp" | "tools";
+export type KbGroupId = "files" | "data" | "time" | "money" | CodeGroupId | AiGroupId | PhotoGroupId | MassageGroupId;
 
 const KNOWLEDGE_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] = [
   { id: "files", articles: ["what-is-heic", "jpg-vs-png-vs-webp", "what-is-exif", "dpi-vs-ppi", "aspect-ratios", "why-pdf-files-are-large"] },
@@ -74,6 +79,7 @@ export const KB_GROUPS: readonly { id: KbGroupId; shelf: KbShelf; articles: read
   ...CODE_GROUPS.map((group) => ({ ...group, shelf: "code" as const })),
   ...AI_GROUPS.map((group) => ({ ...group, shelf: "ai" as const })),
   ...PHOTO_GROUPS.map((group) => ({ ...group, shelf: "photo" as const })),
+  ...MASSAGE_GROUPS.map((group) => ({ ...group, shelf: "massage" as const })),
 ];
 
 /** Per shelf: URL segment, hub page and the data-nav of hub links (main.ts prefetches the kb pack on hover). */
@@ -82,6 +88,7 @@ export const KB_SHELVES: Record<KbShelf, { segment: string; hub: KbHub; nav: str
   code: { segment: CODE_SEGMENT, hub: "code", nav: "coding" },
   ai: { segment: AI_SEGMENT, hub: "ai", nav: "ai-learn" },
   photo: { segment: PHOTO_SEGMENT, hub: "photo", nav: "photo-learn" },
+  massage: { segment: MASSAGE_SEGMENT, hub: "massage", nav: "massage-learn" },
 };
 
 export type KbSource = { title: string; href: string };
@@ -287,7 +294,7 @@ const KNOWLEDGE_META: Record<KnowledgeId, KbMeta> = {
   },
 };
 
-/** Meta of a shelf that loads with the kb packs instead of the entry chunk (coding: kb-code-meta.ts, AI: kb-ai-meta.ts, photography: kb-photo-meta.ts). */
+/** Meta of a shelf that loads with the kb packs instead of the entry chunk (coding: kb-code-meta.ts, AI: kb-ai-meta.ts, photography: kb-photo-meta.ts, massage: kb-massage-meta.ts). */
 type LazyShelf<Id extends KbId> = {
   meta: Record<Id, KbMeta>;
   updated: Record<Id, Record<Locale, string>>;
@@ -296,13 +303,14 @@ type LazyShelf<Id extends KbId> = {
 
 type LazyShelfId = Exclude<KbShelf, "knowledge">;
 
-const lazyShelves: { code?: LazyShelf<CodeId>; ai?: LazyShelf<AiId>; photo?: LazyShelf<PhotoId> } = {};
+const lazyShelves: { code?: LazyShelf<CodeId>; ai?: LazyShelf<AiId>; photo?: LazyShelf<PhotoId>; massage?: LazyShelf<MassageId> } = {};
 
-/** Called by src/shared/kb-code-meta.ts, kb-ai-meta.ts and kb-photo-meta.ts, which load with the kb packs (and in the Worker, build scripts and tests). */
+/** Called by src/shared/kb-code-meta.ts, kb-ai-meta.ts, kb-photo-meta.ts and kb-massage-meta.ts, which load with the kb packs (and in the Worker, build scripts and tests). */
 export function registerShelf(shelf: "code", data: LazyShelf<CodeId>): void;
 export function registerShelf(shelf: "ai", data: LazyShelf<AiId>): void;
 export function registerShelf(shelf: "photo", data: LazyShelf<PhotoId>): void;
-export function registerShelf(shelf: LazyShelfId, data: LazyShelf<CodeId> | LazyShelf<AiId> | LazyShelf<PhotoId>): void {
+export function registerShelf(shelf: "massage", data: LazyShelf<MassageId>): void;
+export function registerShelf(shelf: LazyShelfId, data: LazyShelf<CodeId> | LazyShelf<AiId> | LazyShelf<PhotoId> | LazyShelf<MassageId>): void {
   (lazyShelves as Record<LazyShelfId, unknown>)[shelf] = data;
 }
 
@@ -314,7 +322,7 @@ function lazy(id: KbId): LazyShelf<KbId> | null {
   return data as LazyShelf<KbId>;
 }
 
-/** Sources, links and publish date; coding, AI and photography articles need the kb pack (kb-code-meta, kb-ai-meta, kb-photo-meta) loaded. */
+/** Sources, links and publish date; coding, AI, photography and massage articles need the kb pack (kb-code-meta, kb-ai-meta, kb-photo-meta, kb-massage-meta) loaded. */
 export function kbMeta(id: KbId): KbMeta {
   return lazy(id)?.meta[id] ?? KNOWLEDGE_META[id as KnowledgeId];
 }
@@ -347,7 +355,7 @@ export function kbShelfOf(id: KbId): KbShelf {
 
 const HUB_SHELF = new Map<KbPage, KbShelf>((Object.keys(KB_SHELVES) as KbShelf[]).map((shelf) => [KB_SHELVES[shelf].hub, shelf]));
 
-/** Whether a page is a shelf hub ("hub", "code", "ai", "photo"), not an article. */
+/** Whether a page is a shelf hub ("hub", "code", "ai", "photo", "massage"), not an article. */
 export function isKbHub(page: KbPage | string): page is KbHub {
   return HUB_SHELF.has(page as KbPage);
 }
@@ -384,5 +392,6 @@ export function kbForTool(tool: ToolId, shelf: KbShelf = "knowledge"): KbId[] {
   if (shelf === "code") return CODE_ARTICLES.filter((id) => CODE_TOOLS[id]?.includes(tool));
   if (shelf === "ai") return AI_ARTICLES.filter((id) => AI_ARTICLE_TOOLS[id]?.includes(tool));
   if (shelf === "photo") return PHOTO_ARTICLES.filter((id) => PHOTO_ARTICLE_TOOLS[id]?.includes(tool));
+  if (shelf === "massage") return MASSAGE_ARTICLES.filter((id) => MASSAGE_ARTICLE_TOOLS[id]?.includes(tool));
   return KNOWLEDGE_ARTICLES.filter((id) => KNOWLEDGE_META[id].tools.includes(tool));
 }

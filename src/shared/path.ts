@@ -633,7 +633,7 @@ export type GamesPath = {
   game: GameId | null;
 };
 
-/** A kb route: an article, null for the knowledge hub, or another shelf's hub ("code", "ai", "photo"). */
+/** A kb route: an article, null for the knowledge hub, or another shelf's hub ("code", "ai", "photo", "massage"). */
 export type KbArticlePath = KbId | Exclude<KbHub, "hub"> | null;
 
 function kbShelfOfSegment(segment: string | undefined): KbShelf | null {
@@ -1125,7 +1125,7 @@ export function learnHref(locale: Locale, tutorial: TutorialId | null = null): s
   return tutorial ? `${base}/${tutorial}/` : `${base}/`;
 }
 
-/** Kb articles sit under the tutorials: `/{locale}/learn/{knowledge,code,ai,photography}/{id}/`; null or "hub" is the knowledge hub, "code" the coding hub, "ai" the AI hub, "photo" the photography hub. */
+/** Kb articles sit under the tutorials: `/{locale}/learn/{knowledge,code,ai,photography,massage}/{id}/`; null or "hub" is the knowledge hub, "code" the coding hub, "ai" the AI hub, "photo" the photography hub, "massage" the massage hub. */
 export function kbHref(locale: Locale, page: KbPage = null): string {
   const base = `/${localePath(locale)}/learn/${KB_SHELVES[kbShelfOfPage(page)].segment}`;
   const article = kbArticleOf(page);

@@ -5,7 +5,7 @@ import { AI_MODELS, formatMb, modelBytes, type AiModelId } from "./ai-models";
 import { CLIP_MAX_VIEWS, CLIP_TTL_MS } from "./clip";
 import { DATASETS, csvHref } from "./datasets";
 import { RANKINGS, rankingCsvHref } from "./rankings";
-import { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES } from "./kb";
+import { AI_ARTICLES, CODE_ARTICLES, MASSAGE_ARTICLES, PHOTO_ARTICLES } from "./kb";
 import { REF_ENTRIES } from "./ref";
 import { SLANG_ENTRIES } from "./slang";
 import { IDEA_ENTRIES } from "./ideas";
@@ -255,6 +255,7 @@ export function buildLlmsTxt(): string {
     `- [Coding tutorials](${SITE_ORIGIN}${kbHref("en", "code")}): ${CODE_ARTICLES.length} one-page tutorials on programming languages, design patterns, data structures and algorithms, with runnable code.`,
     `- [AI tutorials](${SITE_ORIGIN}${kbHref("en", "ai")}): ${AI_ARTICLES.length} sourced guides to generative AI: how LLMs and diffusion models work, writing image and video prompts, camera moves, AI video workflows, making AI short videos for TikTok, Reels and Shorts (scripts, voiceover, captions, sizes, lip sync, music and dance videos), speech, running models in the browser, and AI copyright and labeling.`,
     `- [Photography tutorials](${SITE_ORIGIN}${kbHref("en", "photo")}): ${PHOTO_ARTICLES.length} sourced guides to taking better photos with a camera or phone: aperture, shutter speed, ISO, white balance and focal length, composition and light, posing and portraits, solo bridal and pre-wedding shoots, night, moon, food and product photos.`,
+    `- [Self-massage tutorials](${SITE_ORIGIN}${kbHref("en", "massage")}): ${MASSAGE_ARTICLES.length} sourced self-care guides: massage techniques and when not to massage, acupressure points for headaches and eye strain, a foot reflexology chart, foot, hand, neck, shoulder, back, face and scalp massage, gua sha, massage guns, foam rolling and tennis-ball massage. For relaxation, not medical advice.`,
     `- [Datasets](${SITE_ORIGIN}${datasetHref("en", null)}): ${DATASETS.length} public reference tables, each also a CSV (for example ${SITE_ORIGIN}${csvHref(DATASETS[0])}).`,
     `- [Rankings](${SITE_ORIGIN}${rankingHref("en", null)}): ${RANKINGS.length} sourced rankings: AI models, market share of browsers, operating systems, search engines, phones and social media, the top 100 cryptocurrencies, commodity prices, currencies against the US dollar, the tallest mountains, longest rivers, largest lakes, islands and deserts, and the tallest buildings, largest cities and largest stadiums. Most are also a CSV (for example ${SITE_ORIGIN}${rankingCsvHref(RANKINGS[0])}).`,
     `- [Pose & style reference](${SITE_ORIGIN}${refHref("en", null)}): ${REF_ENTRIES.length} entries on hairstyles, hair colours, expressions, hand gestures, outfits, poses and camera angles, with credited photos linked from mfan8.com and English prompt keywords.`,
