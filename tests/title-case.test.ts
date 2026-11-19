@@ -99,6 +99,15 @@ describe("title case", () => {
     expect(titleCase("data in/out of range", "mla")).toBe("Data in/out of Range");
   });
 
+  it("keeps typed capitals in a lowercase line, and e.g. / a.m. in lowercase", () => {
+    expect(titleCase("life in post–World War II Europe", "chicago")).toBe("Life in Post–World War II Europe");
+    expect(titleCase("the anti-Trump movement and pre-Columbian art", "chicago")).toBe("The Anti-Trump Movement and Pre-Columbian Art");
+    expect(titleCase("pre-K education and type-A personality", "sentence")).toBe("Pre-K education and type-A personality");
+    expect(titleCase("the effects of migration on Europe since 1990", "sentence")).toBe("The effects of migration on Europe since 1990");
+    expect(titleCase("examples, e.g. dogs and cats at 9 a.m. today", "apa")).toBe("Examples, e.g. Dogs and Cats at 9 a.m. Today");
+    expect(titleCase("vol.12 of the series and readme.md files", "apa")).toBe("Vol.12 of the Series and Readme.md Files");
+  });
+
   it("keeps punctuation around words", () => {
     expect(titleCase("“the art of war” (a new translation)", "chicago")).toBe("“The Art of War” (a New Translation)");
   });

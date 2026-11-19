@@ -81,7 +81,7 @@ export function lineHeight(setup: PageSetup): number {
 }
 
 export function linesPerPage(setup: PageSetup): number {
-  // A hair of tolerance so 648 / 27.6 lands on 23 lines, not 22.999….
+  // A hair of tolerance so a text height that is an exact multiple of the line height is not lost to float error.
   return Math.max(1, Math.floor(textArea(setup).height / lineHeight(setup) + 1e-9));
 }
 

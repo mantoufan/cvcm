@@ -55,7 +55,7 @@ const HYPHEN = /([-‐–/])/;
 const LONE_BREAK = /^[-‐–—:]+$/;
 
 /** URLs and e-mail addresses are kept as typed. */
-const isLink = (core: string) => /:\/\/|@|^www\./i.test(core) || (/\.\w{2,}(\/|$)/.test(core) && /\w\.\w/.test(core) && !DOTTED.test(core));
+const isLink = (core: string) => /:\/\/|@|^www\./i.test(core) || /^[\w-]+(\.[\w-]+)*\.(com|org|net|edu|gov|io|ai|co|cn|uk|de|jp|fr|info|dev|app)(\/|$)/i.test(core);
 
 /** A part kept as written: acronyms (DNA, COVID), mixed case (iPhone, McDonald), initialisms (U.S). */
 function keepPart(part: string): boolean {
@@ -64,9 +64,8 @@ function keepPart(part: string): boolean {
   return letters.length >= 2 && letters.slice(1).some((c) => UPPER.test(c));
 }
 
-/** Capitalizes the first letter, unless the word starts with a digit (21st, 1990s stay as they are). */
 /** Dotted abbreviations written in lowercase on purpose (e.g., i.e., a.m.). */
-const LOWER_DOTTED = new Set(["e.g", "i.e", "a.m", "p.m", "et al"]);
+const LOWER_DOTTED = new Set(["e.g", "i.e", "a.m", "p.m"]);
 /** Roman numerals written in lowercase (world war ii, part iii); not vi or xi, which are also words and names. */
 const ROMAN = new Set(["ii", "iii", "iv", "vii", "viii", "ix", "xii", "xiii", "xiv", "xv", "xvi", "xvii", "xviii", "xix", "xx", "xxi"]);
 /** Proper adjectives Chicago keeps capitalized after a prefix (Anti-American, Non-English). */
@@ -79,6 +78,7 @@ function fixedForm(part: string): string | undefined {
   return undefined;
 }
 
+/** Capitalizes the first letter, unless the word starts with a digit (21st, 1990s stay as they are). */
 const capFirst = (s: string): string => {
   const chars = [...s];
   const i = chars.findIndex((c) => /[\p{L}\p{N}]/u.test(c));
@@ -104,9 +104,16 @@ function startsAfter(prev: Token | undefined, style: TitleStyle): boolean {
   return prev.trail.includes(".") && !ABBREVIATIONS.has(prev.core.toLowerCase()) && !/^\p{L}$/u.test(prev.core) && !DOTTED.test(prev.core);
 }
 
-/** One word in a title style. Compounds: a hyphenated one's first part is always capitalized, the other parts judged on their own. */
-function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start: boolean, end: boolean, keep: boolean): string {
+const startsUpper = (s: string) => UPPER.test([...s][0] ?? "");
+
+/**
+ * One word in a title style. Compounds: a hyphenated one's first part is always capitalized, the other parts judged
+ * on their own. `typed`: the line was typed mostly in lowercase, so a capital in it was meant (a name).
+ */
+function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start: boolean, end: boolean, keep: boolean, typed: boolean): string {
   if (isLink(core) || keep) return core;
+  // e.g., i.e., a.m. and p.m. stay lowercase inside a title.
+  if (LOWER_DOTTED.has(core.toLowerCase())) return start ? capFirst(core.toLowerCase()) : core.toLowerCase();
   const minor = MINOR[style];
   const parts = core.split(HYPHEN);
   const capLast = end && CAP_LAST.has(style);
@@ -121,8 +128,11 @@ function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start
       // A hyphenated compound's first part is always capitalized; a slash pair (and/or, in/out) is cased as one word.
       if (slash) return start || capLast || !minor.has(lower) ? capFirst(lower) : lower;
       if (i === 0) return capFirst(lower);
-      // Chicago: the part right after a bound prefix is lowercase (Anti-inflammatory), a proper adjective is not (Anti-American).
-      if (style === "chicago" && i === 2 && PREFIXES.has(parts[0]!.toLowerCase())) return PROPER.has(lower) ? capFirst(lower) : lower;
+      // Chicago: the part right after a bound prefix is lowercase (Anti-inflammatory), a proper noun or adjective is not
+      // (Anti-American; pre-Columbian, post–World War, pre-K when typed so in a lowercase line).
+      if (style === "chicago" && i === 2 && PREFIXES.has(parts[0]!.toLowerCase())) {
+        return PROPER.has(lower) || /^\p{Lu}$/u.test(part) || (typed && startsUpper(part)) ? capFirst(part.length === 1 ? part : lower) : lower;
+      }
       return minor.has(lower) && !(capLast && i === parts.length - 1) ? lower : capFirst(lower);
     }).join("");
   }
@@ -134,8 +144,11 @@ function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start
   return start || capLast || !minor.has(lower) ? capFirst(lower) : lower;
 }
 
-/** One word in sentence case: lowercase except the start, the pronoun I and parts kept as written. */
-function sentenceWord(core: string, start: boolean, keep: boolean): string {
+/**
+ * One word in sentence case: lowercase except the start, the pronoun I and parts kept as written. In a line typed
+ * mostly in lowercase (`typed`), a capitalized word is taken for a name and keeps its capital (Europe, Freud).
+ */
+function sentenceWord(core: string, start: boolean, keep: boolean, typed: boolean): string {
   if (isLink(core) || keep) return core;
   // The pronoun I stays capital (I, I'm, I've).
   if (/^i(['’]\p{L}+)?$/iu.test(core)) return capFirst(core.toLowerCase());
@@ -144,6 +157,9 @@ function sentenceWord(core: string, start: boolean, keep: boolean): string {
     const fixed = fixedForm(part);
     if (fixed) return fixed;
     const lower = part.toLowerCase();
+    // A lone capital inside a compound (pre-K, type-A) or a typed name stays.
+    if (i > 0 && /^\p{Lu}$/u.test(part)) return part;
+    if (typed && startsUpper(part)) return capFirst(lower);
     return start && i === 0 ? capFirst(lower) : lower;
   }).join("");
 }
@@ -164,6 +180,9 @@ function convertLine(line: string, style: TitleStyle): string {
   const words = shouting ? tokens.map((t) => (DOTTED.test(t.core) ? t : { ...t, core: t.core.toLowerCase() })) : tokens;
   // A lone dash or colon between words ("Learning – a guide") ends one part and starts the next.
   const loneBreak = (t: Token) => !t.core && LONE_BREAK.test(t.lead + t.trail) && (style !== "sentence" || (t.lead + t.trail).includes(":"));
+  // Capitals carry meaning only in a line typed mostly in lowercase: there a capitalized longer word is a name.
+  const long = words.filter((w) => [...w.core].filter((c) => LETTER.test(c)).length >= 4);
+  const typed = !shouting && long.length >= 2 && long.filter((w) => startsUpper(w.core)).length / long.length < 0.5;
   // Index of the next word for every token, found in one pass from the end.
   const nextWord: number[] = new Array(words.length).fill(-1);
   for (let i = words.length - 2, next = words[words.length - 1]?.core ? words.length - 1 : -1; i >= 0; i--) {
@@ -193,7 +212,7 @@ function convertLine(line: string, style: TitleStyle): string {
     pending = false;
     prev = t;
     const keep = !start && keepSingle(i);
-    const core = style === "sentence" ? sentenceWord(t.core, start, keep) : convertWord(t.core, style, start, end, keep);
+    const core = style === "sentence" ? sentenceWord(t.core, start, keep, typed) : convertWord(t.core, style, start, end, keep, typed);
     return t.lead + core + t.trail + t.space;
   });
   return indent + out.join("");
