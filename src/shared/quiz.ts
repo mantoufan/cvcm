@@ -941,6 +941,15 @@ const PERSONAL_COLOR: ChoiceItem[] = [
 ];
 
 /**
+ * A layout with every question's options moved `by` places to the left. The balance holds (each result as often in each
+ * position, just in other positions), so quizzes in the same group that share a layout don't map answer positions to
+ * results the same way.
+ */
+function shift(items: readonly ChoiceItem[], by: number): ChoiceItem[] {
+  return items.map(({ options }) => ({ options: options.map((_, i) => options[(i + by) % options.length]) }));
+}
+
+/**
  * A tested choice layout with its results renamed, so quizzes that share an arrangement (and its balance: every result
  * equally often, spread over the answer positions) cannot drift from it. Every result in the layout must get its own new name.
  */
@@ -990,17 +999,17 @@ const PARENTING = relabel(PERSONAL_COLOR, { warm: "warmth", deep: "control" });
 /** Eight Five Nights at Freddy's characters: the `GHIBLI` layout with the results renamed. */
 const FNAF = relabel(GHIBLI, { chihiro: "freddy", san: "bonnie", kiki: "chica", sophie: "foxy", nausicaa: "goldenfreddy", howl: "mangle", haku: "springtrap", totoro: "puppet" });
 
-/** Eight My Hero Academia characters: the `GHIBLI` layout with the results renamed. */
-const MY_HERO_ACADEMIA = relabel(GHIBLI, { chihiro: "deku", san: "bakugo", kiki: "todoroki", sophie: "uraraka", nausicaa: "iida", howl: "tsuyu", haku: "kirishima", totoro: "allmight" });
+/** Eight My Hero Academia characters: the `GHIBLI` layout with the results renamed, options moved 1 place left. */
+const MY_HERO_ACADEMIA = shift(relabel(GHIBLI, { chihiro: "deku", san: "bakugo", kiki: "todoroki", sophie: "uraraka", nausicaa: "iida", howl: "tsuyu", haku: "kirishima", totoro: "allmight" }), 1);
 
-/** Eight fruits: the `GHIBLI` layout with the results renamed. */
-const FRUIT = relabel(GHIBLI, { chihiro: "strawberry", san: "banana", kiki: "apple", sophie: "mango", nausicaa: "pineapple", howl: "watermelon", haku: "lemon", totoro: "peach" });
+/** Eight fruits: the `GHIBLI` layout with the results renamed, options moved 1 place left. */
+const FRUIT = shift(relabel(GHIBLI, { chihiro: "strawberry", san: "banana", kiki: "apple", sophie: "mango", nausicaa: "pineapple", howl: "watermelon", haku: "lemon", totoro: "peach" }), 1);
 
-/** Eight birds: the `GHIBLI` layout with the results renamed. */
-const BIRD = relabel(GHIBLI, { chihiro: "owl", san: "eagle", kiki: "parrot", sophie: "swan", nausicaa: "crow", howl: "hummingbird", haku: "penguin", totoro: "flamingo" });
+/** Eight birds: the `GHIBLI` layout with the results renamed, options moved 2 places left. */
+const BIRD = shift(relabel(GHIBLI, { chihiro: "owl", san: "eagle", kiki: "parrot", sophie: "swan", nausicaa: "crow", howl: "hummingbird", haku: "penguin", totoro: "flamingo" }), 2);
 
-/** Eight dinosaurs: the `GHIBLI` layout with the results renamed. */
-const DINOSAUR = relabel(GHIBLI, { chihiro: "trex", san: "triceratops", kiki: "velociraptor", sophie: "stegosaurus", nausicaa: "brachiosaurus", howl: "ankylosaurus", haku: "spinosaurus", totoro: "parasaurolophus" });
+/** Eight dinosaurs: the `GHIBLI` layout with the results renamed, options moved 3 places left. */
+const DINOSAUR = shift(relabel(GHIBLI, { chihiro: "trex", san: "triceratops", kiki: "velociraptor", sophie: "stegosaurus", nausicaa: "brachiosaurus", howl: "ankylosaurus", haku: "spinosaurus", totoro: "parasaurolophus" }), 3);
 
 /**
  * Signs of being in love, 0 to 3 points an answer: the `CRUSH` weights with every question's options moved one place to

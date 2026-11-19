@@ -630,6 +630,11 @@ describe("test pages: scoring", () => {
     love.items.forEach((item, i) => {
       expect(item.options.findIndex((o) => o.love === 3), `q${i + 1}`).not.toBe(crush.items[i].options.findIndex((o) => o.signs === 3));
     });
+    // The in-love weights are the crush weights with each question's options moved one place left (written out in quiz.ts).
+    love.items.forEach((item, i) => {
+      const weights = crush.items[i].options.map((o) => o.signs);
+      expect(item.options.map((o) => o.love), `q${i + 1}`).toEqual([...weights.slice(1), weights[0]]);
+    });
   });
 
   it("lets every DISC style and learning style win, spreads ties and keeps the results level", () => {
