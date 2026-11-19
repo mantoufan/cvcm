@@ -134,5 +134,6 @@ describe("page copy buckets", () => {
       for (const id of TOOLS) expect(hasToolCopy(clientPack(full, id, null), id), `${locale} ${id}`).toBe(true);
       for (const id of TUTORIALS) expect(hasTutorialCopy(clientPack(full, null, id), id), `${locale} ${id}`).toBe(true);
     }
-  });
+    // Builds a client pack for every tool and tutorial in 8 locales: ~4–6 s, more under a loaded CI runner.
+  }, 30_000);
 });

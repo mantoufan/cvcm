@@ -10,7 +10,7 @@ const CATS = ["2", "3", "4", "5", "6", "7", "8", "9", "10"] as const;
 const ALPHAS = ["0.01", "0.05", "0.1"] as const;
 
 /** Example counts the page opens with (fixed, rule 8). */
-const START_TABLE = [[20, 15], [30, 35]];
+export const START_TABLE = [[20, 15], [30, 35]];
 const START_OBSERVED = [18, 22, 30, 30];
 
 export function mountChiSquare(host: HTMLElement): void {

@@ -7,6 +7,10 @@ import { copyButton, curve, decimalSelect, field, fmt, fmtP, layout, numInput, r
 
 const S = "tTest";
 const ALPHAS = ["0.01", "0.05", "0.1"] as const;
+/** The two example groups the page opens with (the t-test tutorial works through them). */
+export const EXAMPLE_A = "5.1 4.9 6.2 5.8 6.0 5.5 5.3 6.1";
+export const EXAMPLE_B = "4.8 4.7 5.9 5.0 5.6 5.2 4.9 5.4";
+
 let timer = 0;
 
 export function mountTTest(host: HTMLElement): void {
@@ -18,8 +22,6 @@ export function mountTTest(host: HTMLElement): void {
     el.value = value;
     return el;
   };
-  const EXAMPLE_A = "5.1 4.9 6.2 5.8 6.0 5.5 5.3 6.1";
-  const EXAMPLE_B = "4.8 4.7 5.9 5.0 5.6 5.2 4.9 5.4";
   const commaOf = (s: string) => s.replace(/\./g, ",");
   // The example follows the decimal mark (es, id and vi open with 5,1); an untouched example is rewritten when the
   // mark changes, so "5,1 4,9" is never re-read as comma-separated integers.
