@@ -52,7 +52,6 @@ function widths(font: FontId): Widths {
 
 /** Chinese, Japanese and Korean characters: one full em each, and a line may break between any two of them. */
 const WIDE = /[\u1100-\u11ff\u2e80-\u9fff\uac00-\ud7af\uf900-\ufaff\ufe30-\ufe4f\uff00-\uff60\uffe0-\uffe6]/u;
-const WIDE_ALL = new RegExp(WIDE.source, "gu");
 
 function charWidth(w: Widths, ch: string): number {
   const c = ch.codePointAt(0)!;
@@ -111,10 +110,15 @@ function tokens(paragraph: string): { text: string; space: boolean }[] {
   return out;
 }
 
-/** Words as a word counter counts them: runs between spaces, and every CJK character on its own. */
+/** Chinese characters and Japanese kana: each one counts as a word. Korean, which spaces its words, counts by spaces. */
+const PER_CHAR = /[\u3040-\u30ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff]/gu;
+
+/**
+ * Words as word processors count them: runs between spaces, every Chinese character or kana on its own, and nothing
+ * for punctuation standing alone (，。 — …). Unlike word-count.ts, a Korean word is one word, not one per syllable.
+ */
 export function countWords(text: string): number {
-  const spaced = text.replace(WIDE_ALL, " $& ").trim();
-  return spaced ? spaced.split(/\s+/).length : 0;
+  return text.replace(PER_CHAR, " $& ").split(/\s+/).filter((t) => /[\p{L}\p{N}]/u.test(t)).length;
 }
 
 /** Lines the text takes. Each line of input is a paragraph; blank lines between paragraphs are not counted. */

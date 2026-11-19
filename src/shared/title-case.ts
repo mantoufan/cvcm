@@ -17,11 +17,13 @@ const PREPOSITIONS = [
   "underneath", "unlike", "until", "unto", "up", "upon", "versus", "vs", "v", "via", "with", "within", "without",
 ];
 
+/** APA 7 (6.17) and AP: articles, and conjunctions and prepositions of three letters or fewer. */
+const SHORT_MINOR = new Set([...ARTICLES, ...COORDINATING, "as", "if", ...PREPOSITIONS.filter((w) => w.length <= 3)]);
+
 /** Words each style writes in lowercase (unless first, last where the style says so, or after a colon). */
 const MINOR: Record<Exclude<TitleStyle, "sentence">, Set<string>> = {
-  // APA 7 (6.17) and AP: articles, and conjunctions and prepositions of three letters or fewer.
-  apa: new Set([...ARTICLES, ...COORDINATING, "as", "if", ...PREPOSITIONS.filter((w) => w.length <= 3)]),
-  ap: new Set([...ARTICLES, ...COORDINATING, "as", "if", ...PREPOSITIONS.filter((w) => w.length <= 3)]),
+  apa: SHORT_MINOR,
+  ap: SHORT_MINOR,
   // MLA 9 (1.2): articles, all prepositions, coordinating conjunctions and the "to" of infinitives.
   mla: new Set([...ARTICLES, ...COORDINATING, ...PREPOSITIONS]),
   // Chicago 17 (8.159): articles, all prepositions, and/but/for/or/nor, to and as; yet, so and if are capitalized.
@@ -31,28 +33,40 @@ const MINOR: Record<Exclude<TitleStyle, "sentence">, Set<string>> = {
 /** Styles that always capitalize the last word of a title or subtitle. */
 const CAP_LAST = new Set<TitleStyle>(["mla", "chicago", "ap"]);
 
-/** Chicago lowercases the part after these prefixes in a hyphenated compound (Anti-inflammatory, Non-native). */
-const PREFIXES = new Set(["anti", "co", "counter", "de", "extra", "inter", "intra", "mid", "multi", "non", "over", "post", "pre", "pro", "re", "semi", "sub", "super", "trans", "un", "under"]);
+/**
+ * Chicago lowercases the part after these bound prefixes in a hyphenated compound (Anti-inflammatory, Non-native).
+ * Not over- or under-, which are also words: Over-the-Counter.
+ */
+const PREFIXES = new Set(["anti", "co", "counter", "de", "extra", "inter", "intra", "mid", "multi", "non", "post", "pre", "pro", "re", "semi", "sub", "super", "trans", "un"]);
 
 /** Abbreviations whose full stop does not end a sentence inside a title. */
-const ABBREVIATIONS = new Set(["vs", "v", "e.g", "i.e", "etc", "al", "cf", "st", "dr", "mr", "mrs", "ms", "jr", "sr", "no", "vol", "ed", "eds", "u.s", "u.k"]);
+const ABBREVIATIONS = new Set([
+  "vs", "v", "e.g", "i.e", "etc", "al", "cf", "ca", "st", "dr", "mr", "mrs", "ms", "jr", "sr", "no", "vol", "ed", "eds", "fig", "approx",
+  "est", "dept", "univ", "inc", "co", "corp", "ltd", "ph.d", "u.s", "u.k",
+]);
 
 const LETTER = /\p{L}/u;
 const UPPER = /\p{Lu}/u;
+/** Initialisms written with full stops: U.S, U.K, Ph.D (the last full stop is punctuation, outside the core). */
+const DOTTED = /^(\p{L}{1,2}\.)+\p{L}{1,2}$/u;
+/** Hyphens and en dashes inside a compound (self-esteem, 2010–2020). */
+const HYPHEN = /([-‐–])/;
+/** A separator standing on its own between words: a spaced en dash, hyphen or colon ("Learning – a guide"). */
+const LONE_BREAK = /^[-‐–—:]+$/;
 
-/** Kept exactly as written: acronyms (DNA), mixed case (iPhone, McDonald), URLs and e-mail addresses. */
-function keepAsWritten(core: string): boolean {
-  if (/[@/]|^www\./i.test(core) || /\.\w{2,}$/.test(core) && /\w\.\w/.test(core)) return true;
-  const letters = [...core].filter((c) => LETTER.test(c));
-  if (letters.length < 2) return false;
-  return letters.slice(1).some((c) => UPPER.test(c));
+const isLink = (core: string) => /[@/]|^www\./i.test(core) || (/\.\w{2,}$/.test(core) && /\w\.\w/.test(core) && !DOTTED.test(core));
+
+/** A part kept as written: acronyms (DNA, COVID), mixed case (iPhone, McDonald), initialisms (U.S). */
+function keepPart(part: string): boolean {
+  if (DOTTED.test(part) && UPPER.test(part)) return true;
+  const letters = [...part].filter((c) => LETTER.test(c));
+  return letters.length >= 2 && letters.slice(1).some((c) => UPPER.test(c));
 }
 
 const capFirst = (s: string): string => {
-  const i = [...s].findIndex((c) => LETTER.test(c));
-  if (i < 0) return s;
   const chars = [...s];
-  chars[i] = chars[i]!.toUpperCase();
+  const i = chars.findIndex((c) => LETTER.test(c));
+  if (i >= 0) chars[i] = chars[i]!.toUpperCase();
   return chars.join("");
 };
 
@@ -72,30 +86,38 @@ function startsAfter(prev: Token | undefined, style: TitleStyle): boolean {
   return prev.trail.includes(".") && !ABBREVIATIONS.has(prev.core.toLowerCase()) && !/^\p{L}$/u.test(prev.core);
 }
 
-/** A word ends a title or subtitle: it is last, or a colon, ? , ! or an em dash follows it. */
-function endsBefore(token: Token, next: Token | undefined): boolean {
-  return !next || /[:?!]/.test(token.trail) || token.space.includes("—");
-}
-
+/** One word in a title style. Hyphenated compounds: the first part is always capitalized, the others judged on their own. */
 function convertWord(core: string, style: Exclude<TitleStyle, "sentence">, start: boolean, end: boolean): string {
-  if (keepAsWritten(core)) return core;
-  const lower = core.toLowerCase();
+  if (isLink(core)) return core;
   const minor = MINOR[style];
-  // Hyphenated compounds: the first part follows the word's position, the others are judged on their own.
-  const parts = lower.split(/([-‐–])/);
+  const parts = core.split(HYPHEN);
+  const capLast = end && CAP_LAST.has(style);
   if (parts.length > 1) {
     return parts.map((part, i) => {
       if (i % 2 === 1 || !part) return part;
-      if (i === 0) return start || end || !minor.has(part) ? capFirst(part) : part;
-      if (style === "chicago" && PREFIXES.has(parts[0]!)) return part;
-      const lastPart = i === parts.length - 1;
-      return minor.has(part) && !(end && lastPart && CAP_LAST.has(style)) ? part : capFirst(part);
+      if (keepPart(part)) return part;
+      const lower = part.toLowerCase();
+      if (i === 0) return capFirst(lower);
+      if (style === "chicago" && PREFIXES.has(parts[0]!.toLowerCase())) return lower;
+      return minor.has(lower) && !(capLast && i === parts.length - 1) ? lower : capFirst(lower);
     }).join("");
   }
-  if (start) return capFirst(lower);
-  if (end && CAP_LAST.has(style)) return capFirst(lower);
+  if (keepPart(core)) return core;
+  const lower = core.toLowerCase();
   // APA and AP capitalize every word of four letters or more, whatever it is.
-  return minor.has(lower.replace(/\.$/, "")) ? lower : capFirst(lower);
+  return start || capLast || !minor.has(lower) ? capFirst(lower) : lower;
+}
+
+/** One word in sentence case: lowercase except the start, the pronoun I and parts kept as written. */
+function sentenceWord(core: string, start: boolean): string {
+  if (isLink(core)) return core;
+  // The pronoun I stays capital (I, I'm, I've).
+  if (/^i(['’]\p{L}+)?$/iu.test(core)) return capFirst(core.toLowerCase());
+  return core.split(HYPHEN).map((part, i) => {
+    if (keepPart(part)) return part;
+    const lower = part.toLowerCase();
+    return start && i === 0 ? capFirst(lower) : lower;
+  }).join("");
 }
 
 function convertLine(line: string, style: TitleStyle): string {
@@ -108,22 +130,26 @@ function convertLine(line: string, style: TitleStyle): string {
     if (pieces[i]) tokens.push(splitToken(pieces[i]!, pieces[i + 1] ?? ""));
     else if (tokens.length) tokens[tokens.length - 1]!.space += pieces[i + 1] ?? "";
   }
-  // A title typed in capitals says nothing about acronyms: start from lowercase.
+  // A title typed in capitals says nothing about acronyms: start from lowercase, keeping only dotted initialisms (U.S.).
   const letters = [...line].filter((c) => LETTER.test(c));
   const shouting = letters.length >= 6 && letters.filter((c) => UPPER.test(c)).length / letters.length > 0.8;
-  const words = shouting ? tokens.map((t) => ({ ...t, core: t.core.toLowerCase() })) : tokens;
+  const words = shouting ? tokens.map((t) => (DOTTED.test(t.core) ? t : { ...t, core: t.core.toLowerCase() })) : tokens;
+  // A lone dash or colon between words ("Learning – a guide") ends one part and starts the next.
+  const loneBreak = (t: Token) => !t.core && LONE_BREAK.test(t.lead + t.trail) && (style !== "sentence" || (t.lead + t.trail).includes(":"));
   let prev: Token | undefined;
+  let pending = false;
   const out = words.map((t, i) => {
-    if (!t.core) return t.lead + t.trail + t.space;
-    const next = words.slice(i + 1).find((w) => w.core);
-    const start = startsAfter(prev, style);
+    if (!t.core) {
+      if (loneBreak(t)) pending = true;
+      return t.lead + t.trail + t.space;
+    }
+    const rest = words.slice(i + 1);
+    const nextAt = rest.findIndex((w) => w.core);
+    const end = nextAt < 0 || /[:?!]/.test(t.trail) || t.space.includes("—") || rest.slice(0, nextAt).some(loneBreak);
+    const start = pending || startsAfter(prev, style);
+    pending = false;
     prev = t;
-    let core: string;
-    if (style !== "sentence") core = convertWord(t.core, style, start, endsBefore(t, next));
-    else if (keepAsWritten(t.core)) core = t.core;
-    // The pronoun I stays capital (I, I'm, I've).
-    else if (/^i(['’]\p{L}+)?$/iu.test(t.core)) core = capFirst(t.core.toLowerCase());
-    else core = start ? capFirst(t.core.toLowerCase()) : t.core.toLowerCase();
+    const core = style === "sentence" ? sentenceWord(t.core, start) : convertWord(t.core, style, start, end);
     return t.lead + core + t.trail + t.space;
   });
   return indent + out.join("");

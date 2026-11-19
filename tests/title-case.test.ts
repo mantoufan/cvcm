@@ -48,6 +48,31 @@ describe("title case", () => {
     expect(titleCase("first title of note\n\n  second one: in brief", "mla")).toBe("First Title of Note\n\n  Second One: In Brief");
   });
 
+  it("re-cases title-cased compounds and always capitalizes a compound's first part", () => {
+    expect(titleCase("The Effects of Social Media on Self-Esteem: A Meta-Analysis", "sentence")).toBe("The effects of social media on self-esteem: A meta-analysis");
+    expect(titleCase("Out-Of-Date Anti-Inflammatory Drugs", "apa")).toBe("Out-of-Date Anti-Inflammatory Drugs");
+    expect(titleCase("Out-Of-Date Anti-Inflammatory Drugs", "chicago")).toBe("Out-of-Date Anti-inflammatory Drugs");
+    expect(titleCase("studies on out-of-date software and in-depth reviews of the for-profit sector", "apa")).toBe("Studies on Out-of-Date Software and In-Depth Reviews of the For-Profit Sector");
+    expect(titleCase("over-the-counter drugs", "chicago")).toBe("Over-the-Counter Drugs");
+    expect(titleCase("testing COVID-19 vaccines", "sentence")).toBe("Testing COVID-19 vaccines");
+  });
+
+  it("keeps dotted initialisms in a title typed in capitals", () => {
+    expect(titleCase("THE U.S. AND THE U.K.", "apa")).toBe("The U.S. and the U.K.");
+  });
+
+  it("starts a new part after a spaced en dash, hyphen or colon", () => {
+    expect(titleCase("learning – a guide to the basics", "apa")).toBe("Learning – A Guide to the Basics");
+    expect(titleCase("learning - a guide", "chicago")).toBe("Learning - A Guide");
+    expect(titleCase("what it is made of – a guide", "mla")).toBe("What It Is Made Of – A Guide");
+    expect(titleCase("learning – a guide", "sentence")).toBe("Learning – a guide");
+  });
+
+  it("does not end a sentence at common abbreviations", () => {
+    expect(titleCase("Ph.D. students in the U.S.: a survey", "sentence")).toBe("Ph.D. students in the U.S.: A survey");
+    expect(titleCase("the role of inc. firms", "sentence")).toBe("The role of inc. firms");
+  });
+
   it("keeps punctuation around words", () => {
     expect(titleCase("“the art of war” (a new translation)", "chicago")).toBe("“The Art of War” (a New Translation)");
   });

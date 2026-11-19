@@ -19,7 +19,9 @@ let timer = 0;
 export function mountWordsToPages(host: HTMLElement): void {
   let last = "";
   const schedule = () => { window.clearTimeout(timer); timer = window.setTimeout(paint, 150); };
-  const nf = (max: number) => new Intl.NumberFormat(locale(), { maximumFractionDigits: max });
+  // Built once per mount: a paint formats about 40 numbers.
+  const formats = [0, 1].map((max) => new Intl.NumberFormat(locale(), { maximumFractionDigits: max }));
+  const nf = (max: 0 | 1) => formats[max]!;
   const modeSel = select<Mode>("mode", ["words", "text", "pages"], (m) => t(`${S}.m_${m}`), () => { sync(); paint(); }, "words");
   const wordsEl = numInput("words", EXAMPLE_WORDS, schedule, { inputmode: "numeric" });
   const pagesEl = numInput("pages", "5", schedule);
