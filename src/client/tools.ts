@@ -1054,6 +1054,18 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountStartupCost(host);
     return m.unmountStartupCost;
   },
+  "pokemon-type-chart": async (host, ctx) => {
+    const m = await import("./pokemon-type-chart/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPokemonTypeChart(host);
+    return m.unmountPokemonTypeChart;
+  },
+  "pokemon-natures": async (host, ctx) => {
+    const m = await import("./pokemon-natures/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountPokemonNatures(host);
+    return m.unmountPokemonNatures;
+  },
   "2048": async (host, ctx) => {
     const m = await import("./game-2048/ui");
     if (!ctx.alive()) return undefined;

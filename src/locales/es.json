@@ -813,7 +813,11 @@
     "titleIdPhoto": "Foto carnet online — DNI, pasaporte, tamaño infantil, cambiar fondo — cv.cm",
     "descIdPhoto": "Haz tu foto carnet gratis: recorta a 32×26 mm (DNI), tamaño infantil, pasaporte y más con guías para la cabeza, cambia el fondo e imprime una hoja.",
     "titleStartupCost": "¿Cuánto cuesta abrir una cafetería? Calculadora de inversión — cv.cm",
-    "descStartupCost": "Calculadora gratuita para abrir una cafetería, una franquicia de bubble tea o una panadería: suma obra, equipamiento, canon de franquicia, traspaso y fianza, y calcula el beneficio mensual, en cuántos meses recuperas la inversión y cuántos pedidos al día necesitas para cubrir gastos."
+    "descStartupCost": "Calculadora gratuita para abrir una cafetería, una franquicia de bubble tea o una panadería: suma obra, equipamiento, canon de franquicia, traspaso y fianza, y calcula el beneficio mensual, en cuántos meses recuperas la inversión y cuántos pedidos al día necesitas para cubrir gastos.",
+    "titlePokemonTypeChart": "Tabla de tipos Pokémon y calculadora de debilidades (18 tipos) — cv.cm",
+    "descPokemonTypeChart": "Tabla de tipos Pokémon gratis con calculadora de debilidades: elige uno o dos tipos, o escribe el nombre o número de Pokédex de un Pokémon.",
+    "titlePokemonNatures": "Tabla de naturalezas Pokémon: las 25 y las estadísticas que cambian — cv.cm",
+    "descPokemonNatures": "Tabla de naturalezas Pokémon gratis: las 25, la estadística que sube un 10 % y la que baja un 10 %. Encuentra Firme, Alegre, Modesta o Miedosa."
   },
   "brand": "cv.cm",
   "nav": {
@@ -859,7 +863,8 @@
     "academic": "Académico y estadística",
     "more": "Más",
     "games3d": "Juegos 3D",
-    "career": "Empleo"
+    "career": "Empleo",
+    "pokemon": "Pokémon"
   },
   "lang": {
     "label": "Idioma",
@@ -1829,6 +1834,14 @@
     "startup-cost": {
       "name": "Calculadora para abrir un negocio",
       "blurb": "Inversión inicial, recuperación y punto de equilibrio de un local."
+    },
+    "pokemon-type-chart": {
+      "name": "Tabla de tipos Pokémon",
+      "blurb": "Debilidades y resistencias de cualquier combinación de tipos o Pokémon."
+    },
+    "pokemon-natures": {
+      "name": "Tabla de naturalezas Pokémon",
+      "blurb": "Las 25 naturalezas y la estadística que sube y baja cada una."
     }
   },
   "watermark": {
@@ -6896,6 +6909,30 @@
       "a4": "Pide al franquiciador la información por escrito antes de firmar: canon de entrada, royalties, fianzas, la obra con proveedores obligatorios, cuántos locales propios y franquiciados tiene y cuántos han cerrado en los últimos años. Comprueba que la marca está registrada a nombre de la empresa con la que firmas, y habla con varios franquiciados actuales y antiguos sobre lo que gastan y venden de verdad.",
       "q5": "¿El beneficio incluye impuestos y mi propio sueldo?",
       "a5": "No. El beneficio es antes de impuestos y de intereses de préstamos, y no paga al dueño. Si vas a trabajar en el local a tiempo completo, cuéntate como un empleado más, o el plazo de recuperación parecerá más corto de lo que es."
+    },
+    "pokemon-type-chart": {
+      "q1": "¿Cuántos tipos de Pokémon hay?",
+      "a1": "Hay 18: Normal, Fuego, Agua, Eléctrico, Planta, Hielo, Lucha, Veneno, Tierra, Volador, Psíquico, Bicho, Roca, Fantasma, Dragón, Siniestro, Acero y Hada. Hada fue el último en añadirse, en Pokémon X e Y (2013). La tabla de esta página es la que se usa desde entonces.",
+      "q2": "¿Cómo funcionan las debilidades de un Pokémon con dos tipos?",
+      "a2": "Se multiplican los dos valores. Bulbasaur es de tipo Planta y Veneno: Fuego es ×2 contra Planta y ×1 contra Veneno, así que ×2 en total; Planta es ×½ contra ambos, así que ×¼. Si uno de los tipos es inmune, el resultado es ×0. Por eso un tipo doble puede recibir ×4 o solo ×¼, algo que un tipo simple nunca hace.",
+      "q3": "¿Qué significa ×4?",
+      "a3": "Los dos tipos del Pokémon son débiles al movimiento, así que hace cuatro veces el daño normal. Los movimientos de tipo Hielo contra Garchomp (Dragón y Tierra) son el ejemplo más conocido. En combate el juego dice que el movimiento es muy eficaz, el mismo mensaje que con ×2.",
+      "q4": "¿Las habilidades cambian la tabla?",
+      "a4": "Algunas sí, y esta página no las tiene en cuenta. Levitación hace inmune a un Pokémon a los movimientos de tipo Tierra, Absorbe Fuego a los de tipo Fuego, Sebo reduce a la mitad el daño de Fuego y Hielo, y Superguarda solo deja pasar los movimientos muy eficaces. La teracristalización en Escarlata y Púrpura cambia el tipo del Pokémon. Revisa la habilidad del Pokémon antes de fiarte de una debilidad.",
+      "q5": "¿La tabla es igual en Pokémon GO?",
+      "a5": "Los mismos tipos son fuertes y débiles entre sí, pero los números cambian. En Pokémon GO un movimiento muy eficaz hace 1,6 veces el daño y uno poco eficaz 0,625 veces, y no hay inmunidades: un movimiento que los juegos principales bloquean, como Eléctrico contra Tierra, hace en cambio unas 0,39 veces."
+    },
+    "pokemon-natures": {
+      "q1": "¿Qué hace la naturaleza de un Pokémon?",
+      "a1": "Sube una estadística un 10 % y baja otra un 10 %. De las 25 naturalezas, 20 hacen eso y 5 (Fuerte, Dócil, Seria, Tímida y Rara) no cambian nada. Los PS nunca suben ni bajan.",
+      "q2": "¿Cuál es la mejor naturaleza?",
+      "a2": "Sube la estadística que usa el Pokémon y baja una que no use. Los atacantes físicos suelen llevar Firme (+Ataque, −Ataque Especial) o Alegre (+Velocidad, −Ataque Especial); los atacantes especiales llevan Modesta (+Ataque Especial, −Ataque) o Miedosa (+Velocidad, −Ataque). Osada, Agitada, Serena y Cauta van bien a los Pokémon que aguantan golpes. Audaz y Mansa bajan la Velocidad, lo que ayuda con Espacio Raro.",
+      "q3": "¿Puedo cambiar la naturaleza de un Pokémon?",
+      "a3": "En Espada y Escudo y en Escarlata y Púrpura, una menta (como la Menta Firme) cambia las estadísticas que afecta la naturaleza, aunque el resumen sigue mostrando la naturaleza original. En la cría, un progenitor que lleve una Piedra Eterna transmite su naturaleza al huevo.",
+      "q4": "¿Cuánto cambia una naturaleza una estadística?",
+      "a4": "La estadística se multiplica por 1,1 o por 0,9 y se redondea hacia abajo. Una Velocidad de 120 pasa a 132 con Alegre o Miedosa y a 108 con Audaz o Mansa. El efecto se aplica a la estadística final, no a la estadística base.",
+      "q5": "¿Por qué la tabla tiene una diagonal de naturalezas neutras?",
+      "a5": "Los juegos numeran las naturalezas como 5 × la estadística que sube + la que baja. Cuando ambas son la misma estadística, la subida y la bajada se anulan, así que esas cinco naturalezas quedan en la diagonal de la cuadrícula y no cambian nada."
     }
   },
   "qr": {
@@ -18367,6 +18404,67 @@
     "fewer": "{n} ({pct} % menos)",
     "more": "{n} ({pct} % más)",
     "disclaimer": "Solo como referencia. Los ejemplos son ilustrativos, no presupuestos. El beneficio es antes de impuestos e intereses. No es asesoramiento financiero.",
+    "copy": "Copiar resultado",
+    "copied": "Copiado",
+    "copyFailed": "No se pudo copiar"
+  },
+  "pokemonTypes": {
+    "title": "Tabla de tipos Pokémon y calculadora de debilidades",
+    "privacyNote": "Elige uno o dos tipos, o busca un Pokémon, para ver sus debilidades, resistencias e inmunidades. Los 18 tipos.",
+    "findTitle": "Buscar un Pokémon",
+    "search": "Nombre o número de Pokédex",
+    "searchPlaceholder": "Garchomp, 445…",
+    "searchHint": "Nombres en este idioma o en inglés; también aparecen las formas regionales, las Megaevoluciones y otras formas que cambian de tipo.",
+    "loadFailed": "No se pudo cargar la Pokédex. Revisa tu conexión y vuelve a escribir.",
+    "noMatch": "Ningún Pokémon con ese nombre.",
+    "noNumber": "Ningún Pokémon tiene ese número (1–{max}).",
+    "typesTitle": "O elige los tipos",
+    "type1": "Tipo 1",
+    "type2": "Tipo 2",
+    "noSecond": "Ninguno",
+    "result": "Daño recibido",
+    "x4": "Muy débil a",
+    "x2": "Débil a",
+    "x1": "Daño normal de",
+    "xHalf": "Resiste",
+    "xQuarter": "Resiste mucho",
+    "x0": "Inmune a",
+    "sep": ", ",
+    "none": "Ninguno",
+    "offenseTitle": "Sus propios movimientos",
+    "movesOf": "Movimientos de tipo {type}",
+    "superOn": "Muy eficaz contra",
+    "notVeryOn": "Poco eficaz contra",
+    "noEffectOn": "No afecta a",
+    "abilityNote": "Solo tipos: no se cuentan habilidades como Levitación o Absorbe Fuego, la teracristalización ni los objetos equipados.",
+    "chartTitle": "Tabla de tipos completa",
+    "chartHint": "Las filas son el tipo del movimiento y las columnas el tipo del Pokémon que lo recibe. 2 = muy eficaz, ½ = poco eficaz, 0 = no afecta, vacío = normal.",
+    "chartCaption": "Eficacia de los tipos Pokémon, desde X e Y (sexta generación)",
+    "corner": "Movimiento ↓ / Objetivo →",
+    "unofficial": "Referencia de fans no oficial. Pokémon y los nombres de Pokémon son marcas de Nintendo, Creatures y GAME FREAK. Datos de PokeAPI.",
+    "copy": "Copiar resultado",
+    "copied": "Copiado",
+    "copyFailed": "No se pudo copiar"
+  },
+  "pokemonNatures": {
+    "title": "Tabla de naturalezas Pokémon",
+    "privacyNote": "Las 25 naturalezas y la estadística que sube y baja cada una un 10 %. Elige dos estadísticas para encontrar la naturaleza.",
+    "findTitle": "Buscar una naturaleza",
+    "up": "Sube (+10 %)",
+    "down": "Baja (−10 %)",
+    "result": "Naturaleza",
+    "effect": "{up} +10 %, {down} −10 %.",
+    "neutral": "Neutra: ninguna estadística sube ni baja.",
+    "mintNote": "En Espada y Escudo y en Escarlata y Púrpura, una menta con este nombre da a un Pokémon los mismos cambios de estadísticas.",
+    "gridTitle": "Cuadrícula de naturalezas",
+    "gridHint": "Las filas suben una estadística y las columnas bajan una. La diagonal contiene las cinco naturalezas neutras. Toca una naturaleza para seleccionarla.",
+    "gridCaption": "Las 25 naturalezas Pokémon según la estadística que sube y la que baja",
+    "corner": "Sube ↓ / Baja →",
+    "listTitle": "Las 25 naturalezas",
+    "colNature": "Naturaleza",
+    "colUp": "Sube",
+    "colDown": "Baja",
+    "unofficial": "Referencia de fans no oficial. Pokémon y los nombres de Pokémon son marcas de Nintendo, Creatures y GAME FREAK. Datos de PokeAPI.",
     "copy": "Copiar resultado",
     "copied": "Copiado",
     "copyFailed": "No se pudo copiar"

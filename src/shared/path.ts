@@ -65,6 +65,8 @@ export const CATEGORIES = [
   { id: "games3d", tools: ["3d-chess", "magic-cube", "cube-solver", "stack-game", "driving-game", "flight-simulator", "pinball", "pool-game", "air-hockey", "darts", "billiards", "snooker", "basketball-game", "mini-golf", "archery", "ping-pong", "bowling"] },
   { id: "assets", tools: ["gold", "silver", "platinum", "palladium", "oil", "stocks"] },
   { id: "academic", tools: ["standard-deviation", "sample-size", "cronbach-alpha", "t-test", "chi-square", "p-value", "z-score", "citation-generator", "apa-citation-generator", "mla-citation-generator", "harvard-referencing-generator", "title-case", "words-to-pages"] },
+  // Game companions: facts only (types, natures, names), no Pokémon images anywhere (owner, 2026-11-20).
+  { id: "pokemon", tools: ["pokemon-type-chart", "pokemon-natures"] },
   { id: "valuation", tools: ["phone-number-value", "license-plate-value", "domain-value", "car-depreciation", "net-worth", "business-valuation", "idea-validator"] },
 ] as const;
 
@@ -244,6 +246,8 @@ export const TOOLS = [
   "bac-calculator",
   "simple-interest",
   "startup-cost",
+  "pokemon-type-chart",
+  "pokemon-natures",
   "2048",
   "dinosaur-game",
   "mahjong",

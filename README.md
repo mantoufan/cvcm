@@ -186,6 +186,8 @@ Browser tools plus a tiny cloud clipboard.
 - **Pressure points map** / 穴位图 — 16 acupressure points (WHO 2008 locations) on line drawings, a foot reflexology chart and a hold timer; for relaxation, not medical advice. [Open](https://cv.cm/en/pressure-points-map/)
 - **Simple interest calculator** / 单利计算器 — interest, principal, rate or time, year-by-year table. [Open](https://cv.cm/en/simple-interest/)
 - **Startup cost calculator** / 开店成本计算器 — what a coffee shop, bubble tea franchise or bakery costs to open, payback and break-even orders. [Open](https://cv.cm/en/startup-cost/)
+- **Pokémon type chart** / 宝可梦属性克制表 — weaknesses, resistances and immunities for any type pair or Pokémon, and the full 18 × 18 chart. [Open](https://cv.cm/en/pokemon-type-chart/)
+- **Pokémon nature chart** / 宝可梦性格表 — all 25 natures and the stat each raises and lowers. [Open](https://cv.cm/en/pokemon-natures/)
 - **Standard deviation calculator** / 标准差计算器 — sample or population, variance, standard error, step table. [Open](https://cv.cm/en/standard-deviation/)
 - **Sample size calculator** / 样本量计算器 — Cochran, Slovin's formula or a mean, finite population, response rate. [Open](https://cv.cm/en/sample-size/)
 - **Cronbach's alpha calculator** / 克朗巴哈系数计算器 — reliability, item-total r, alpha if item deleted. [Open](https://cv.cm/en/cronbach-alpha/)
