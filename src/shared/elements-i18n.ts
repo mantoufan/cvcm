@@ -260,8 +260,8 @@ export function elementsFaqJsonLd(locale: Locale, slug: ElementSlug | null): Rec
 }
 
 const CITATIONS = [
-  { "@type": "Dataset", name: "PubChem Periodic Table of Elements", url: SOURCE.pubchem, publisher: { "@type": "Organization", name: "National Center for Biotechnology Information, U.S. National Library of Medicine" } },
-  { "@type": "Dataset", name: "Wikidata", url: SOURCE.wikidata, license: "https://creativecommons.org/publicdomain/zero/1.0/" },
+  { "@type": "CreativeWork", name: "PubChem Periodic Table of Elements", url: SOURCE.pubchem, publisher: { "@type": "Organization", name: "National Center for Biotechnology Information, U.S. National Library of Medicine" } },
+  { "@type": "CreativeWork", name: "Wikidata", url: SOURCE.wikidata, license: "https://creativecommons.org/publicdomain/zero/1.0/" },
 ];
 
 /**
