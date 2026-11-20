@@ -298,7 +298,7 @@ export function currencyFaqJsonLd(locale: Locale, pair: CurrencyPair | null): Re
 }
 
 const CITATION = {
-  "@type": "Dataset",
+  "@type": "CreativeWork",
   name: "ECB euro foreign exchange reference rates",
   url: ECB_SOURCE.url,
   publisher: { "@type": "Organization", name: "European Central Bank" },

@@ -169,7 +169,7 @@ export function breedsFaqJsonLd(locale: Locale, id: BreedId | null): Record<stri
   };
 }
 
-const WIKIDATA = { "@type": "Dataset", name: "Wikidata", url: "https://www.wikidata.org/", license: "https://creativecommons.org/publicdomain/zero/1.0/" };
+const WIKIDATA = { "@type": "CreativeWork", name: "Wikidata", url: "https://www.wikidata.org/", license: "https://creativecommons.org/publicdomain/zero/1.0/" };
 
 /** Article about a Thing (the breed) for a breed page; CollectionPage with an ItemList of every breed for the hub. */
 export function breedsArticleJsonLd(locale: Locale, id: BreedId | null): Record<string, unknown> {

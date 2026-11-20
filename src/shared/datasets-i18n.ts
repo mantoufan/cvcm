@@ -433,6 +433,12 @@ function datasetNode(locale: Locale, id: DatasetId): Record<string, unknown> {
   return node;
 }
 
+/** A table as listed in the hub DataCatalog: the same @id, description, creator and license as its page's Dataset. */
+function datasetStub(locale: Locale, id: DatasetId): Record<string, unknown> {
+  const { "@id": nodeId, name, description, url, license, creator } = datasetNode(locale, id);
+  return { "@type": "Dataset", "@id": nodeId, name, description, url, license, creator };
+}
+
 /** Dataset on a table page (Google Dataset Search); DataCatalog listing every table on the hub. */
 export function datasetJsonLd(locale: Locale, id: DatasetId | null): Record<string, unknown> {
   if (id) return { "@context": "https://schema.org", ...datasetNode(locale, id), includedInDataCatalog: { "@type": "DataCatalog", name: datasetHub(locale).h1, url: `${ORIGIN}${datasetHref(locale)}` } };
@@ -444,7 +450,7 @@ export function datasetJsonLd(locale: Locale, id: DatasetId | null): Record<stri
     url: `${ORIGIN}${datasetHref(locale)}`,
     inLanguage: locale,
     publisher: { "@type": "Organization", name: "cv.cm", url: ORIGIN },
-    dataset: DATASETS.map((set) => ({ "@type": "Dataset", name: datasetName(locale, set).name, description: datasetPageCopy(locale, set).description, url: `${ORIGIN}${datasetHref(locale, set)}` })),
+    dataset: DATASETS.map((set) => datasetStub(locale, set)),
   };
 }
 

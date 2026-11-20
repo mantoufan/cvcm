@@ -259,12 +259,12 @@ export function caloriesFaqJsonLd(locale: Locale, id: FoodId | null): Record<str
   };
 }
 
-const FDC_PUBLISHER = { "@type": "GovernmentOrganization", name: "U.S. Department of Agriculture, Agricultural Research Service", url: "https://www.ars.usda.gov/" };
+const FDC_PUBLISHER = { "@type": "Organization", name: "U.S. Department of Agriculture, Agricultural Research Service", url: "https://www.ars.usda.gov/" };
 
 /** The USDA record behind a page, as the CreativeWork it is based on. */
 function sourceJsonLd(food: FoodData): Record<string, unknown> {
   return {
-    "@type": "Dataset",
+    "@type": "CreativeWork",
     name: `FoodData Central ${food.type === "foundation" ? "Foundation Foods" : "SR Legacy"}: ${food.desc}`,
     identifier: `FDC ID ${food.fdc}`,
     url: fdcUrl(food.fdc),
@@ -286,7 +286,7 @@ export function caloriesPageJsonLd(locale: Locale, id: FoodId | null): Record<st
       url: `${ORIGIN}${caloriesHref(locale)}`,
       inLanguage: HREFLANG[locale],
       dateModified: CALORIES_SNAPSHOT,
-      isBasedOn: { "@type": "Dataset", name: "USDA FoodData Central", url: FDC_HOME, license: FDC_LICENSE, creator: FDC_PUBLISHER },
+      isBasedOn: { "@type": "CreativeWork", name: "USDA FoodData Central", url: FDC_HOME, license: FDC_LICENSE, creator: FDC_PUBLISHER },
       mainEntity: {
         "@type": "ItemList",
         numberOfItems: FOODS.length,

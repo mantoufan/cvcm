@@ -177,8 +177,8 @@ export function emojiFaqJsonLd(locale: Locale, slug: EmojiSlug | null): Record<s
 }
 
 const CITATIONS = [
-  { "@type": "Dataset", name: "Unicode CLDR emoji annotations", url: EMOJI_SOURCES.cldr, license: EMOJI_SOURCES.license, publisher: { "@type": "Organization", name: "Unicode, Inc." } },
-  { "@type": "Dataset", name: "Unicode emoji-test.txt", url: EMOJI_SOURCES.test, license: EMOJI_SOURCES.license, publisher: { "@type": "Organization", name: "Unicode, Inc." } },
+  { "@type": "CreativeWork", name: "Unicode CLDR emoji annotations", url: EMOJI_SOURCES.cldr, license: EMOJI_SOURCES.license, publisher: { "@type": "Organization", name: "Unicode, Inc." } },
+  { "@type": "CreativeWork", name: "Unicode emoji-test.txt", url: EMOJI_SOURCES.test, license: EMOJI_SOURCES.license, publisher: { "@type": "Organization", name: "Unicode, Inc." } },
 ];
 
 function termSet(locale: Locale): Record<string, unknown> {
