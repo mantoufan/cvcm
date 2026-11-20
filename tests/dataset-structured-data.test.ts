@@ -1,4 +1,5 @@
 import { readdirSync, readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import { describe, expect, it } from "vitest";
 import { LOCALES } from "../src/shared/locale";
 import { DATASETS } from "../src/shared/datasets";
@@ -26,14 +27,16 @@ function* nodes(value: unknown): Generator<Record<string, unknown>> {
 }
 
 /**
- * Google Search Console reads every node typed Dataset as a dataset rich result: it needs a non-empty description,
+ * Google Search Console reads every node typed Dataset as a dataset rich result: it needs a 50-5000 character description,
  * and creator must be exactly Organization or Person (GovernmentOrganization was flagged as an invalid object type).
  * A source we only cite is a CreativeWork, not a Dataset.
  */
 function expectValidDatasets(ld: Record<string, unknown>): void {
   for (const node of nodes(ld)) {
     if (node["@type"] !== "Dataset") continue;
-    expect(typeof node.description === "string" && node.description.trim().length > 0, JSON.stringify(node).slice(0, 200)).toBe(true);
+    const length = typeof node.description === "string" ? [...node.description.trim()].length : 0;
+    expect(length >= 50 && length <= 5000, `${length} chars: ${JSON.stringify(node).slice(0, 200)}`).toBe(true);
+    expect(node.license, String(node.name)).toBeTruthy();
     for (const creator of nodes(node.creator)) {
       if ("@type" in creator) expect(["Organization", "Person"]).toContain(creator["@type"]);
     }
@@ -52,10 +55,11 @@ describe("Dataset structured data", () => {
   });
 
   it("only types Dataset in the tables cv.cm publishes", () => {
-    const allowed = new Set(["datasets-i18n.ts", "rankings-i18n.ts"]);
-    for (const file of readdirSync("src/shared")) {
-      if (!file.endsWith(".ts") || allowed.has(file)) continue;
-      expect(readFileSync(`src/shared/${file}`, "utf8"), file).not.toMatch(/"@type":\s*"Dataset"/);
+    const allowed = new Set(["shared/datasets-i18n.ts", "shared/rankings-i18n.ts"]);
+    const src = fileURLToPath(new URL("../src/", import.meta.url));
+    for (const file of readdirSync(src, { recursive: true }) as string[]) {
+      if (!/\.tsx?$/.test(file) || allowed.has(file.replaceAll("\\", "/"))) continue;
+      expect(readFileSync(`${src}${file}`, "utf8"), file).not.toMatch(/["']@type["']\s*:\s*["']Dataset["']/);
     }
   });
 });

@@ -356,7 +356,19 @@ export function rankingJsonLd(locale: Locale, id: RankingId | null): Record<stri
       url: `${ORIGIN}${rankingHref(locale)}`,
       inLanguage: locale,
       publisher: { "@type": "Organization", name: "cv.cm", url: ORIGIN },
-      dataset: RANKINGS.map((set) => ({ "@type": "Dataset", name: rankingName(locale, set).name, description: rankingPageCopy(locale, set).description, url: `${ORIGIN}${rankingHref(locale, set)}` })),
+      dataset: RANKINGS.map((set) => {
+        const copy = rankingPageCopy(locale, set);
+        const source = RANKING_SOURCE[set];
+        return {
+          "@type": "Dataset",
+          "@id": `${ORIGIN}${rankingHref(locale, set)}#dataset`,
+          name: copy.h1,
+          description: `${copy.description} ${copy.lede}`,
+          url: `${ORIGIN}${rankingHref(locale, set)}`,
+          license: source.licenseUrl,
+          creator: { "@type": "Organization", name: source.name, url: source.url },
+        };
+      }),
     };
   }
   const copy = rankingPageCopy(locale, id);
