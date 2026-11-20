@@ -277,7 +277,7 @@ describe("computer player", () => {
       expect(Math.hypot(x - sp.baulkX, y)).toBeLessThanOrEqual(sp.dRadius + 0.01);
     }
     expect(fouls).toBeLessThanOrEqual(2);
-  }, 30_000); // 8 full shot plans by the hard computer player: ~3 s locally, more on a busy CI runner.
+  }, 15_000); // 8 full shot plans by the hard computer player: ~3 s locally. Room for a busy CI runner, tight enough to catch a much slower planner.
   it("breaks a pool rack at full power into the head ball", () => {
     const g = tableFor("9-ball");
     const balls = rack("9-ball", seeded(3));

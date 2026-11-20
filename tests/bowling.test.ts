@@ -139,6 +139,8 @@ describe("bowling physics", () => {
       let pinPin = Infinity;
       let ballPin = Infinity;
       let frame = 0;
+      let pinPinAt = "";
+      let ballPinAt = "";
       while (!r.ended) {
         r = stepRoll(r, 1 / 60);
         frame++;
@@ -146,13 +148,15 @@ describe("bowling physics", () => {
         const ballLive = !r.ball.gutter && !r.ball.done;
         for (let i = 0; i < live.length; i++) {
           for (let k = i + 1; k < live.length; k++) {
-            pinPin = Math.min(pinPin, Math.hypot(live[i]!.x - live[k]!.x, live[i]!.y - live[k]!.y));
+            const d = Math.hypot(live[i]!.x - live[k]!.x, live[i]!.y - live[k]!.y);
+            if (d < pinPin) { pinPin = d; pinPinAt = `frame ${frame}, pins ${r.pins.indexOf(live[i]!)} and ${r.pins.indexOf(live[k]!)}`; }
           }
-          if (ballLive) ballPin = Math.min(ballPin, Math.hypot(live[i]!.x - r.ball.x, live[i]!.y - r.ball.y));
+          const d = ballLive ? Math.hypot(live[i]!.x - r.ball.x, live[i]!.y - r.ball.y) : Infinity;
+          if (d < ballPin) { ballPin = d; ballPinAt = `frame ${frame}, pin ${r.pins.indexOf(live[i]!)}`; }
         }
       }
-      expect(pinPin, `roll ${n} (${frame} frames): pin through pin`).toBeGreaterThan(PIN_R * 1.5);
-      expect(ballPin, `roll ${n} (${frame} frames): ball through pin`).toBeGreaterThan((PIN_R + BALL_R) * 0.75);
+      expect(pinPin, `roll ${n}, ${pinPinAt}: pin through pin`).toBeGreaterThan(PIN_R * 1.5);
+      expect(ballPin, `roll ${n}, ${ballPinAt}: ball through pin`).toBeGreaterThan((PIN_R + BALL_R) * 0.75);
     }
   });
 
