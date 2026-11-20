@@ -148,7 +148,7 @@ let started = false;
 export function start(): void {
   if (!started) {
     started = true;
-    wireNavGroupClosing();
+    wireNavGroups();
     // Registered before gtag loads, so this runs before gtag's own history listener.
     window.addEventListener("popstate", () => {
       // Following an in-page #anchor (a table of contents, #tools) also fires popstate: the page itself is unchanged.
@@ -1369,7 +1369,8 @@ function foldGroupInto(pop: HTMLElement, group: HTMLDetailsElement): void {
  * server HTML before the app takes over, and without JS. The links are always in the markup, so the prerendered HTML
  * and crawlers see them like any other nav link. The list is absolutely positioned against the header (.top), which
  * the nav row's overflow clipping does not reach. Closing on outside click, focus leaving, Escape and link click is
- * one delegated listener set wired once in start() (wireNavGroupClosing), so a replaced header leaves nothing subscribed.
+ * one delegated listener set wired once in start() (wireNavGroups), so a replaced header leaves nothing subscribed. With a
+ * mouse the menu opens on hover; touch and keyboard open it with a tap or Enter on the summary.
  */
 function navGroup(label: string, on: boolean, links: HTMLElement[]): HTMLElement {
   return h("details", { class: "nav-group" + (on ? " on" : "") },
@@ -1381,13 +1382,46 @@ function navGroup(label: string, on: boolean, links: HTMLElement[]): HTMLElement
   );
 }
 
-/** Document listeners that close open nav menus (navGroup); called once from start(). */
-function wireNavGroupClosing(): void {
+/** Document listeners that open nav menus (navGroup) on mouse hover and close them; called once from start(). */
+function wireNavGroups(): void {
   const closeAll = (keep: Node | null): void => {
     for (const d of document.querySelectorAll<HTMLDetailsElement>("details.nav-group[open]")) {
       if (!keep || !d.contains(keep)) d.open = false;
     }
   };
+  // Hover: open on mouse enter, close a moment after the mouse leaves (time to cross into the list). Touch and pen
+  // have no hover; they open the menu with a tap on the summary.
+  let leaveTimer = 0;
+  const groupOf = (node: EventTarget | null): HTMLDetailsElement | null =>
+    (node as Element | null)?.closest?.<HTMLDetailsElement>("details.nav-group") ?? null;
+  document.addEventListener("pointerover", (event) => {
+    if (event.pointerType !== "mouse") return;
+    const group = groupOf(event.target);
+    if (!group) return;
+    window.clearTimeout(leaveTimer);
+    closeAll(group);
+    group.open = true;
+  });
+  document.addEventListener("pointerout", (event) => {
+    if (event.pointerType !== "mouse") return;
+    const group = groupOf(event.target);
+    if (!group || group.contains(event.relatedTarget as Node | null)) return;
+    window.clearTimeout(leaveTimer);
+    leaveTimer = window.setTimeout(() => { group.open = false; }, 200);
+  });
+  // A mouse click on a summary the hover already opened would toggle it shut under the pointer: keep it open.
+  // Keyboard activation (Enter/Space, detail 0) and taps still toggle.
+  // Whether the press began with a mouse on an already open menu's summary (read at pointerdown, before any toggle).
+  let mouseDownOnOpen = false;
+  document.addEventListener("pointerdown", (event) => {
+    const group = groupOf((event.target as Element | null)?.closest?.("details.nav-group > summary") ?? null);
+    mouseDownOnOpen = event.pointerType === "mouse" && Boolean(group?.open);
+  }, true);
+  document.addEventListener("click", (event) => {
+    if (event.detail > 0 && mouseDownOnOpen && (event.target as Element | null)?.closest?.("details.nav-group > summary")) {
+      event.preventDefault();
+    }
+  }, true);
   // pointerdown, not click: iOS Safari sends no click for a tap on plain text or empty space.
   document.addEventListener("pointerdown", (event) => closeAll(event.target as Node | null), true);
   // A link inside a menu navigates through the shared click handler; the menu closes either way.
