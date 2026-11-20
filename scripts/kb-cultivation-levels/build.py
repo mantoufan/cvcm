@@ -12,7 +12,7 @@ NINE = ["炼气","筑基","金丹","元婴","化神","炼虚","合体","大乘",
 FANREN = [("炼气","Qi Condensation","h","fr1"),("筑基","Foundation Establishment","h","fr2"),("结丹","Core Formation","h","fr3"),
  ("元婴","Nascent Soul","h","same"),("化神","Deity Transformation","h","fr5"),("炼虚","Spatial Tempering","s","same"),
  ("合体","Body Integration","s","same"),("大乘","Grand Ascension","s","fr8"),("渡劫","Tribulation Transcendence","s","fr9"),
- ("真仙","—","i",None),("金仙","—","i",None),("太乙玉仙","—","i",None),("大罗金仙","—","i","fr13"),("道祖","—","i",None)]
+ ("真仙","—","i",None),("金仙","—","i",None),("太乙玉仙","—","i",None),("大罗金仙","—","i",None),("道祖","—","i",None)]
 DOULUO = [("1–10","魂士","Spirit Scholar","0"),("11–20","魂师","Spirit Master","1"),("21–30","大魂师","Spirit Grandmaster","2"),
  ("31–40","魂尊","Spirit Elder","3"),("41–50","魂宗","Spirit Ancestor","4"),("51–60","魂王","Spirit King","5"),
  ("61–70","魂帝","Spirit Emperor","6"),("71–80","魂圣","Spirit Saint","7"),("81–90","魂斗罗","Spirit Douluo","8"),
@@ -39,7 +39,7 @@ def localize(text, table):
     return text
 
 def article(L, T):
-    f = lambda s: fill(s, L)
+    f = lambda s: fill(s.replace("{NINE}", "@@NINE@@"), L).replace("@@NINE@@", chain(NINE, L))
     c = lambda xs: chain(xs, L)
     W = {"h": T["w_human"], "s": T["w_spirit"], "i": T["w_immortal"]}
     secs = []
@@ -92,7 +92,7 @@ def article(L, T):
     secs.append({"h": T["h_origin"], "body": [f(T["origin_intro"]), {"ul": [f(x) for x in T["origin_daoist"]]},
         f(T["origin_new_intro"]), {"ul": [f(x) for x in T["origin_new"]]}]})
     return {"title": T["title"], "description": f(T["description"]), "h1": T["h1"],
-            "answer": f(T["answer"].replace("{NINE}", "@@NINE@@")).replace("@@NINE@@", c(NINE)), "sections": secs,
+            "answer": f(T["answer"]), "sections": secs,
             "faq": [{"q": f(q), "a": f(a)} for q, a in T["faq"]]}
 
 if __name__ == "__main__":

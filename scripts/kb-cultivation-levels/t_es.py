@@ -90,7 +90,8 @@ T = {'name': 'Niveles de cultivo en las novelas web chinas',
                  'título, el 100, significa convertirse en dios, por eso la tabla pone al dios en una fila aparte. Los nombres en inglés '
                  'son los que usan habitualmente los lectores, no una lista oficial.',
  'douluo_head': ['Nivel de poder espiritual', 'Título', 'Nombre habitual en inglés', 'Anillos espirituales'],
- 'douluo_note': 'La división interna del tramo de Titled Douluo varía según la fuente, así que no se incluye aquí.',
+ 'douluo_note': 'La división interna del tramo de Titled Douluo varía según la fuente, así que no se incluye aquí. 魂士 y 魂师 comparten el '
+                'pinyin Hunshi; se distinguen por los caracteres o por el nombre en inglés.',
  'h_piao': 'Piaomiao Zhi Lü (飘邈之旅)',
  'piao_work': 'De Xiao Qian (萧潜), empezada en 2002; las fuentes no coinciden en dónde se publicó primero. Se considera en general la '
               'primera novela que ordenó el cultivo en una escala.',
@@ -149,7 +150,7 @@ T = {'name': 'Niveles de cultivo en las novelas web chinas',
           'estado de paso antes de ascender. Los nueve reinos comunes también ponen {渡劫} al final.'],
          ['¿Cuál es el nivel de cultivo más alto?',
           "Cada novela tiene su cima: {道祖} en Mortal's Journey, {红尘仙} en Shrouding the Heavens, {祭道} en Perfect World, {斗帝} en Battle "
-          'Through the Heavens, {神} en Soul Land y {踏天} en Renegade Immortal.'],
+          'Through the Heavens, {神} en Soul Land y {踏天} en Renegade Immortal. El dato de Perfect World se basa en una sola fuente.'],
          ['¿Qué diferencia hay entre duan y estrellas en Battle Through the Heavens?',
           'Solo el rango más bajo, {斗之气}, se cuenta en duan, de uno a nueve. De {斗者} en adelante, cada rango se cuenta en estrellas, de '
           'una a nueve.']]}

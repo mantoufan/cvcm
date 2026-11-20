@@ -89,7 +89,8 @@ T = {'name': 'Tingkat kultivasi dalam novel web Tiongkok',
                  'berarti menjadi dewa, jadi tabel mencantumkan dewa di baris tersendiri. Kolom nama Inggris adalah sebutan yang umum '
                  'dipakai pembaca, bukan daftar resmi.',
  'douluo_head': ['Level kekuatan roh', 'Gelar', 'Nama Inggris yang umum', 'Cincin roh'],
- 'douluo_note': 'Pembagian di dalam Titled Douluo berbeda antarsumber, jadi tidak dicantumkan di sini.',
+ 'douluo_note': 'Pembagian di dalam Titled Douluo berbeda antarsumber, jadi tidak dicantumkan di sini. 魂士 dan 魂师 sama-sama ditulis Hunshi '
+                'dalam pinyin; bedakan lewat aksaranya atau nama Inggrisnya.',
  'h_piao': 'Piaomiao Zhi Lü (飘邈之旅)',
  'piao_work': 'Karya Xiao Qian (萧潜), mulai ditulis 2002; sumber berbeda soal tempat terbit pertamanya. Novel ini luas dianggap yang '
               'pertama menyusun kultivasi menjadi jenjang.',
@@ -145,7 +146,8 @@ T = {'name': 'Tingkat kultivasi dalam novel web Tiongkok',
           'keadaan peralihan sebelum naik. Sembilan ranah umum juga menaruh {渡劫} di akhir.'],
          ['Apa tingkat kultivasi tertinggi?',
           "Tiap novel punya puncak sendiri: {道祖} di Mortal's Journey, {红尘仙} di Shrouding the Heavens, {祭道} di Perfect World, {斗帝} di "
-          'Battle Through the Heavens, {神} di Soul Land dan {踏天} di Renegade Immortal.'],
+          'Battle Through the Heavens, {神} di Soul Land dan {踏天} di Renegade Immortal. Entri Perfect World hanya bersandar pada satu '
+          'sumber.'],
          ['Apa beda duan dan bintang di Battle Through the Heavens?',
           'Hanya peringkat terendah, {斗之气}, yang dihitung dengan duan, satu sampai sembilan. Mulai {斗者} ke atas, tiap peringkat dihitung '
           'dengan bintang, satu sampai sembilan.']]}

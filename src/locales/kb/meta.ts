@@ -381,7 +381,7 @@ export const KB_MINUTES = {
     "zh-CN": 8,
     "zh-TW": 8,
     "ja": 10,
-    "ko": 12,
+    "ko": 13,
     "vi": 12,
     "id": 9,
     "es": 10

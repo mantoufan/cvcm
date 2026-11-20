@@ -143,6 +143,6 @@ T = {'name': 'Các cảnh giới tu tiên',
           'trước khi phi thăng. Chín cảnh giới phổ biến cũng đặt {渡劫} cuối cùng.'],
          ['Cảnh giới tu tiên cao nhất là gì?',
           'Mỗi truyện một khác: Phàm Nhân Tu Tiên là {道祖}, Già Thiên là {红尘仙}, Thế Giới Hoàn Mỹ là {祭道}, Đấu Phá Thương Khung là {斗帝}, Đấu '
-          'La Đại Lục là {神}, bước thứ tư của Tiên Nghịch là {踏天}.'],
+          'La Đại Lục là {神}, bước thứ tư của Tiên Nghịch là {踏天}. Mục Thế Giới Hoàn Mỹ chỉ dựa trên một nguồn.'],
          ['Đoạn và sao trong Đấu Phá Thương Khung khác nhau thế nào?',
           'Chỉ cấp thấp nhất là {斗之气} tính theo đoạn, từ một đến chín. Từ {斗者} trở lên, mọi cấp đều tính theo sao, từ một đến chín.']]}

@@ -90,7 +90,8 @@ T = {'name': 'Cultivation levels in Chinese web novels',
                  'becoming a god, so the table lists god as its own row. The English names are the ones readers commonly use, not an '
                  'official list.',
  'douluo_head': ['Spirit power level', 'Title', 'Common English name', 'Spirit rings'],
- 'douluo_note': 'How the titled douluo range divides varies between sources, so it is left out here.',
+ 'douluo_note': 'How the titled douluo range divides varies between sources, so it is left out here. 魂士 and 魂师 share the pinyin Hunshi; '
+                'tell them apart by the characters or the English names.',
  'h_piao': 'Piaomiao Zhi Lü (飘邈之旅)',
  'piao_work': 'By Xiao Qian (萧潜), begun in 2002; accounts of where it was first published differ. It is widely seen as the first novel to '
               'grade cultivation into a ladder.',
@@ -148,6 +149,6 @@ T = {'name': 'Cultivation levels in Chinese web novels',
           'passing state before ascension. The common nine realms also put {渡劫} last.'],
          ['What is the highest cultivation level?',
           "Each novel has its own peak: {道祖} in Mortal's Journey, {红尘仙} in Shrouding the Heavens, {祭道} in Perfect World, {斗帝} in Battle "
-          'Through the Heavens, {神} in Soul Land and {踏天} in Renegade Immortal.'],
+          'Through the Heavens, {神} in Soul Land and {踏天} in Renegade Immortal. The Perfect World entry rests on a single source.'],
          ['What is the difference between duan and stars in Battle Through the Heavens?',
           'Only the lowest rank, {斗之气}, is counted in duan, one to nine. From {斗者} up, every rank is counted in stars, one to nine.']]}
