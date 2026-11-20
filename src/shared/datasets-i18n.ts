@@ -201,6 +201,21 @@ export function datasetFaqItems(locale: Locale, id: DatasetId | null): { q: stri
   return id ? datasetPageCopy(locale, id).faq : datasetHub(locale).faq;
 }
 
+/**
+ * The Data hub's links to the reference channels (country profiles, calories, …), shaped like its table links: the
+ * channels open the "Quick reference" group, and their small line counts entries as a table's counts rows.
+ */
+export function dataReferenceLinks(locale: Locale): { href: string; name: string; blurb: string; meta: string; nav: string }[] {
+  const hub = datasetHub(locale);
+  return DATA_REFERENCE.map((item) => ({
+    href: item.href(locale),
+    name: hub[item.copy].title,
+    blurb: hub[item.copy].text,
+    meta: fill(hub[item.copy].meta, { n: formatCount(locale, item.count) }),
+    nav: item.nav,
+  }));
+}
+
 /** Row count, then the snapshot date: the small line under each link. */
 export function datasetLinkMeta(locale: Locale, id: DatasetId): string {
   return fill(datasetUi(locale).rows, { n: formatCount(locale, datasetMeta(id).rows) });
@@ -419,17 +434,17 @@ export function datasetStaticHtml(locale: Locale, id: DatasetId | null): string 
   const home = `<a href="${escapeHtml(appHref(locale, null))}">${escapeHtml(datasetMessages(locale).crumbHome)}</a>`;
   if (!id) {
     const groups = DATASET_GROUPS.map((group) => {
-      const links = group.sets.map((set) => {
-        const name = datasetName(locale, set);
-        return `<li><a href="${escapeHtml(datasetHref(locale, set))}">${escapeHtml(name.name)}</a> ${escapeHtml(name.blurb)}</li>`;
-      }).join("");
+      const channels = group.id === "reference" ? dataReferenceLinks(locale) : [];
+      const links = [
+        ...channels,
+        ...group.sets.map((set) => ({ href: datasetHref(locale, set), ...datasetName(locale, set) })),
+      ].map((link) => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.name)}</a> ${escapeHtml(link.blurb)}</li>`).join("");
       return `<h2>${escapeHtml(hub.groups[group.id])}</h2><ul>${links}</ul>`;
     }).join("");
     return [
       `<nav class="device-crumb">${home} <span aria-hidden="true">/</span> <span>${escapeHtml(hub.h1)}</span></nav>`,
       `<h1>${escapeHtml(hub.h1)}</h1>`,
       `<p class="lede">${escapeHtml(hub.lede)}</p>`,
-      `<h2>${escapeHtml(hub.reference)}</h2><ul>${DATA_REFERENCE.map((item) => `<li><a href="${escapeHtml(item.href(locale))}">${escapeHtml(hub[item.copy].title)}</a> ${escapeHtml(hub[item.copy].text)}</li>`).join("")}</ul>`,
       groups,
       hub.about.map((p) => `<p>${escapeHtml(p)}</p>`).join(""),
       faqHtml(locale, null),

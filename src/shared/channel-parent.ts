@@ -7,17 +7,26 @@ import type { Locale } from "./locale";
 import { escapeHtml } from "./device-i18n";
 import { messages } from "./messages";
 import { appHref, breedsHref, caloriesHref, countriesHref, datasetHref, elementsHref, emojiHref, currencyHref } from "./path";
+import { COUNTRY_LIST } from "./countries";
+import { FOODS } from "./calories";
+import { ELEMENT_SLUGS } from "./elements";
+import { EMOJI_SLUGS } from "./emoji";
+import { CURRENCY_PAIRS } from "./currency";
+import { BREED_IDS } from "./breeds";
 
 const ORIGIN = "https://cv.cm";
 
-/** The reference channels the Data hub lists under "Reference", in order; `copy` names their hub copy in the datasets pack. */
+/**
+ * The reference channels the Data hub lists in its "Quick reference" group, ahead of the reference tables, in order.
+ * `copy` names their hub copy in the datasets pack; `count` fills its `meta` line, as the row count does for a table.
+ */
 export const DATA_REFERENCE = [
-  { copy: "countries", nav: "countries", href: (locale: Locale): string => countriesHref(locale) },
-  { copy: "calories", nav: "calories", href: (locale: Locale): string => caloriesHref(locale) },
-  { copy: "elements", nav: "elements", href: (locale: Locale): string => elementsHref(locale) },
-  { copy: "emoji", nav: "emoji", href: (locale: Locale): string => emojiHref(locale) },
-  { copy: "currency", nav: "currency", href: (locale: Locale): string => currencyHref(locale) },
-  { copy: "breeds", nav: "breeds", href: (locale: Locale): string => breedsHref(locale) },
+  { copy: "countries", nav: "countries", count: COUNTRY_LIST.length, href: (locale: Locale): string => countriesHref(locale) },
+  { copy: "calories", nav: "calories", count: FOODS.length, href: (locale: Locale): string => caloriesHref(locale) },
+  { copy: "elements", nav: "elements", count: ELEMENT_SLUGS.length, href: (locale: Locale): string => elementsHref(locale) },
+  { copy: "emoji", nav: "emoji", count: EMOJI_SLUGS.length, href: (locale: Locale): string => emojiHref(locale) },
+  { copy: "currency", nav: "currency", count: CURRENCY_PAIRS.length, href: (locale: Locale): string => currencyHref(locale) },
+  { copy: "breeds", nav: "breeds", count: BREED_IDS.length, href: (locale: Locale): string => breedsHref(locale) },
 ] as const;
 
 /** The Tools step of a trail: the home page's tool wall. Shared by tool pages (main.ts) and the calendar. */

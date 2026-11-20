@@ -8,10 +8,11 @@ import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
 import { DATASETS, DATASET_FILES, DATASET_SENSITIVE, DATASET_TOOLS, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
 import { ROW_FILES } from "../src/client/datasets/rows";
-import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, formatIndicator, regionName, utcOffset } from "../src/shared/datasets-i18n";
+import { dataReferenceLinks, datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, formatIndicator, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { pageCanonical } from "../src/shared/seo";
 import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml } from "../src/shared/sitemap";
+import { DATA_REFERENCE } from "../src/shared/channel-parent";
 
 const SHELL = `<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`;
 
@@ -287,5 +288,24 @@ describe("data pages: tables", () => {
     expect(dominican[1].text).toBe("+1-809, +1-829, +1-849");
     expect(dominican[1].sort).toBeCloseTo(1.0809);
     expect(calling.rows.find((r) => r[2].text === "CN")![1].sort).toBe(86);
+  });
+});
+
+describe("data hub: reference channels", () => {
+  it("lists the reference channels inside the Quick reference group, counted like the tables", () => {
+    for (const locale of LOCALES) {
+      const links = dataReferenceLinks(locale);
+      expect(links.map((l) => l.nav)).toEqual(DATA_REFERENCE.map((item) => item.nav));
+      for (const link of links) {
+        expect(link.meta).not.toContain("{n}");
+        expect(link.meta).toMatch(/\d/);
+      }
+      // No heading of its own: the channels open the "reference" group, before the reference tables.
+      const html = datasetStaticHtml(locale, null);
+      const group = html.indexOf(`<h2>${datasetMessages(locale).hub.groups.reference}</h2>`);
+      expect(group).toBeGreaterThan(-1);
+      expect(html.indexOf(`href="${links[0].href}"`)).toBeGreaterThan(group);
+      expect(html.indexOf(`href="${links[0].href}"`)).toBeLessThan(html.indexOf(`href="${datasetHref(locale, "paper-sizes")}"`));
+    }
   });
 });
