@@ -10,7 +10,10 @@ import { appHref, breedsHref, caloriesHref, countriesHref, datasetHref, elements
 
 const ORIGIN = "https://cv.cm";
 
-/** The reference channels the Data hub lists under "Reference", in order; `copy` names their hub copy in the datasets pack. */
+/**
+ * The reference channels the Data hub lists as its first group, in order (datasetHubGroups). `copy` names their hub
+ * copy in the datasets pack.
+ */
 export const DATA_REFERENCE = [
   { copy: "countries", nav: "countries", href: (locale: Locale): string => countriesHref(locale) },
   { copy: "calories", nav: "calories", href: (locale: Locale): string => caloriesHref(locale) },

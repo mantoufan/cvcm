@@ -19,11 +19,18 @@ import {
   type IndicatorRow,
   type PaperRow,
   type ZoneRow,
+  type DatasetGroupId,
 } from "./datasets";
 import type { Locale } from "./locale";
 import { datasetMessages, messages, type DatasetMessages } from "./messages";
 import { appHref, datasetHref } from "./path";
 import { DATA_REFERENCE } from "./channel-parent";
+import { COUNTRY_LIST } from "./countries";
+import { FOODS } from "./calories";
+import { ELEMENT_SLUGS } from "./elements";
+import { EMOJI_SLUGS } from "./emoji";
+import { CURRENCY_PAIRS } from "./currency";
+import { BREED_IDS } from "./breeds";
 
 export type DatasetHubCopy = DatasetMessages["hub"];
 export type DatasetUi = DatasetMessages["ui"];
@@ -199,6 +206,44 @@ export function datasetDescription(locale: Locale, id: DatasetId | null): string
 
 export function datasetFaqItems(locale: Locale, id: DatasetId | null): { q: string; a: string }[] {
   return id ? datasetPageCopy(locale, id).faq : datasetHub(locale).faq;
+}
+
+/** A link on the Data hub: a table, or a reference channel shaped like one (its small line counts entries, not rows). */
+export type DatasetHubLink = { href: string; name: string; blurb: string; meta: string; nav: string };
+
+/** Entries in each reference channel, for its small line on the hub (the countries hub counts COUNTRY_LIST too). */
+const CHANNEL_COUNT: Record<(typeof DATA_REFERENCE)[number]["copy"], number> = {
+  countries: COUNTRY_LIST.length,
+  calories: FOODS.length,
+  elements: ELEMENT_SLUGS.length,
+  emoji: EMOJI_SLUGS.length,
+  currency: CURRENCY_PAIRS.length,
+  breeds: BREED_IDS.length,
+};
+
+/** A table's link: on the hub and under "related tables". */
+export function datasetLinkItem(locale: Locale, id: DatasetId): DatasetHubLink {
+  const name = datasetName(locale, id);
+  return { href: datasetHref(locale, id), name: name.name, blurb: name.blurb, meta: datasetLinkMeta(locale, id), nav: `dataset-${id}` };
+}
+
+/**
+ * The Data hub's groups, in order, for both the page and its crawler fallback: the reference channels (country
+ * profiles, calories, the periodic table, …) first, as an ordinary group, then the table groups.
+ */
+export function datasetHubGroups(locale: Locale): { id: "channels" | DatasetGroupId; label: string; links: DatasetHubLink[] }[] {
+  const hub = datasetHub(locale);
+  const channels = DATA_REFERENCE.map((item) => ({
+    href: item.href(locale),
+    name: hub[item.copy].title,
+    blurb: hub[item.copy].text,
+    meta: fill(hub[item.copy].meta, { n: formatCount(locale, CHANNEL_COUNT[item.copy]) }),
+    nav: item.nav,
+  }));
+  return [
+    { id: "channels", label: hub.reference, links: channels },
+    ...DATASET_GROUPS.map((group) => ({ id: group.id, label: hub.groups[group.id], links: group.sets.map((set) => datasetLinkItem(locale, set)) })),
+  ];
 }
 
 /** Row count, then the snapshot date: the small line under each link. */
@@ -418,18 +463,14 @@ export function datasetStaticHtml(locale: Locale, id: DatasetId | null): string 
   const hub = datasetHub(locale);
   const home = `<a href="${escapeHtml(appHref(locale, null))}">${escapeHtml(datasetMessages(locale).crumbHome)}</a>`;
   if (!id) {
-    const groups = DATASET_GROUPS.map((group) => {
-      const links = group.sets.map((set) => {
-        const name = datasetName(locale, set);
-        return `<li><a href="${escapeHtml(datasetHref(locale, set))}">${escapeHtml(name.name)}</a> ${escapeHtml(name.blurb)}</li>`;
-      }).join("");
-      return `<h2>${escapeHtml(hub.groups[group.id])}</h2><ul>${links}</ul>`;
+    const groups = datasetHubGroups(locale).map((group) => {
+      const links = group.links.map((link) => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.name)}</a> ${escapeHtml(link.blurb)}</li>`).join("");
+      return `<h2>${escapeHtml(group.label)}</h2><ul>${links}</ul>`;
     }).join("");
     return [
       `<nav class="device-crumb">${home} <span aria-hidden="true">/</span> <span>${escapeHtml(hub.h1)}</span></nav>`,
       `<h1>${escapeHtml(hub.h1)}</h1>`,
       `<p class="lede">${escapeHtml(hub.lede)}</p>`,
-      `<h2>${escapeHtml(hub.reference)}</h2><ul>${DATA_REFERENCE.map((item) => `<li><a href="${escapeHtml(item.href(locale))}">${escapeHtml(hub[item.copy].title)}</a> ${escapeHtml(hub[item.copy].text)}</li>`).join("")}</ul>`,
       groups,
       hub.about.map((p) => `<p>${escapeHtml(p)}</p>`).join(""),
       faqHtml(locale, null),

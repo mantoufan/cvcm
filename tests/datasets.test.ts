@@ -6,12 +6,13 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, DATASET_FILES, DATASET_SENSITIVE, DATASET_TOOLS, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { DATASETS, DATASET_GROUPS, DATASET_FILES, DATASET_SENSITIVE, DATASET_TOOLS, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
 import { ROW_FILES } from "../src/client/datasets/rows";
-import { datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, formatIndicator, regionName, utcOffset } from "../src/shared/datasets-i18n";
+import { datasetHubGroups, datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, formatIndicator, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { pageCanonical } from "../src/shared/seo";
 import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml } from "../src/shared/sitemap";
+import { DATA_REFERENCE } from "../src/shared/channel-parent";
 
 const SHELL = `<!doctype html><html lang="en"><head><title>cv.cm</title><meta name="description" content="x" /><link rel="canonical" href="https://cv.cm/" /></head><body><div id="app"></div></body></html>`;
 
@@ -287,5 +288,23 @@ describe("data pages: tables", () => {
     expect(dominican[1].text).toBe("+1-809, +1-829, +1-849");
     expect(dominican[1].sort).toBeCloseTo(1.0809);
     expect(calling.rows.find((r) => r[2].text === "CN")![1].sort).toBe(86);
+  });
+});
+
+describe("data hub: reference channels", () => {
+  it("lists the reference channels first, as an ordinary group counted like the tables", () => {
+    for (const locale of LOCALES) {
+      const groups = datasetHubGroups(locale);
+      expect(groups.map((g) => g.id)).toEqual(["channels", ...DATASET_GROUPS.map((g) => g.id)]);
+      expect(groups[0].links.map((l) => l.nav)).toEqual(DATA_REFERENCE.map((item) => item.nav));
+      for (const link of groups.flatMap((g) => g.links)) {
+        expect(link.meta).not.toContain("{");
+        expect(link.meta).toMatch(/\d/);
+      }
+      // The crawler fallback lists the same links in the same order.
+      const html = datasetStaticHtml(locale, null);
+      const at = groups.flatMap((g) => g.links).map((l) => html.indexOf(`href="${l.href}"`));
+      expect(at.every((i, n) => i > (n ? at[n - 1] : -1))).toBe(true);
+    }
   });
 });
