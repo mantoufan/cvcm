@@ -115,7 +115,11 @@ describe("reading a field", () => {
     expect(readField("1,2 tỷ", "equipment", "vi")).toBe(1200000000);
     expect(readField("1,5 miliar", "equipment", "id")).toBe(1500000000);
     expect(readField("8千", "rent", "zh-CN")).toBe(8000);
-    expect(readField("2M", "rent", "en")).toBeNaN();
+    expect(readField("1.5M", "buildout", "en")).toBe(1500000);
+    expect(readField("5천원", "rent", "ko")).toBe(5000);
+    expect(readField("5£", "rent", "en")).toBe(5);
+    expect(readField("46.000 Rp", "price", "id")).toBe(46000);
+    expect(readField("2k", "depositMonths", "en")).toBeNaN();
   });
   it("keeps shares to 100 % and days open to 1–31", () => {
     expect(fieldOk(250, "commissionPct")).toBe(false);

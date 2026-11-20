@@ -19,20 +19,23 @@ const GROUPS: readonly { id: string; keys: readonly Key[] }[] = [
   { id: "sales", keys: ["orders", "days"] },
 ];
 export const PCT_KEYS: ReadonlySet<Key> = new Set<Key>(["cogsPct", "deliveryPct", "commissionPct"]);
+/** Counts take no unit words: "2k" months of deposit is a typo, not 2,000 months. */
+const COUNT_KEYS: ReadonlySet<Key> = new Set<Key>(["depositMonths", "staff", "orders", "days"]);
 
 /**
  * Currency signs and codes typed before or after an amount (never inside it, so "1$000" stays unreadable), and a
  * percent sign after a share. Spaces inside a number are kept, so "1 2" stays unreadable too.
  */
 const LEAD = /^(?:(?:NT|US|HK|S|A)?\$|[€¥￥₩₫£]|Rp\.?|VND|USD|EUR)\s*/i;
-const TRAIL = /\s*(?:[€¥￥₩₫$]|元|円|원|đồng|đ|VND|USD|EUR)$/i;
+const TRAIL = /\s*(?:[€¥￥₩₫£$]|Rp|元|円|원|đồng|đ|VND|USD|EUR)$/i;
 /** Unit words after an amount: 12万 = 120,000, 3000만, 1.5억, 35k, 2 tr / 2 triệu, 5 jt / 5 juta, 500 rb / 500 ribu. */
 const UNITS: readonly [RegExp, number][] = [
   [/(?:[万萬만])$/, 1e4],
   [/(?:[億亿억])$/, 1e8],
   [/(?:tỷ|miliar)$/i, 1e9],
-  [/(?:triệu|tr|juta|jt)$/i, 1e6],
-  [/(?:ribu|rb|k|千)$/i, 1e3],
+  [/(?:triệu|tr|juta|jt|mn)$/i, 1e6],
+  [/M$/, 1e6],
+  [/(?:ribu|rb|k|千|천)$/i, 1e3],
 ];
 
 /**
@@ -47,7 +50,7 @@ export function readField(raw: string, key: Key, loc: Locale): number | undefine
   if (PCT_KEYS.has(key)) bare = bare.replace(/\s*%$/, "");
   if (bare === "") return NaN;
   let scale = 1;
-  if (!PCT_KEYS.has(key)) {
+  if (!PCT_KEYS.has(key) && !COUNT_KEYS.has(key)) {
     const unit = UNITS.find(([re]) => re.test(bare));
     if (unit) {
       scale = unit[1];
@@ -157,7 +160,8 @@ export function mountStartupCost(host: HTMLElement): void {
   function paint(): void {
     const { v, bad } = read();
     if (bad.length) {
-      const msg = bad.every((k) => k === "days") ? "needDays" : bad.every((k) => PCT_KEYS.has(k)) ? "needPct" : "invalid";
+      // The most specific message that covers a bad field: amounts first, then days open, then shares.
+      const msg = bad.some((k) => k !== "days" && !PCT_KEYS.has(k)) ? "invalid" : bad.includes("days") ? "needDays" : "needPct";
       out.replaceChildren(h("p", { class: "muted" }, t(`${S}.${msg}`)));
       verdict.textContent = "";
       sens.replaceChildren();
@@ -199,10 +203,10 @@ export function mountStartupCost(host: HTMLElement): void {
 
   function verdictText(v: ShopInput, r: ShopResult, breakEven: string): string {
     if (!(r.perOrder > 0)) return t(`${S}.vLossPerOrder`);
-    if (Math.round(r.profit) === 0) return t(`${S}.vEven`, { orders: one.format(v.orders) });
-    if (r.profit < 0) return t(`${S}.vLoss`, { orders: one.format(v.orders), loss: money(-r.profit), need: breakEven });
+    if (Math.round(r.profit) === 0) return t(`${S}.vEven`, { orders: typedOrders.format(v.orders) });
+    if (r.profit < 0) return t(`${S}.vLoss`, { orders: typedOrders.format(v.orders), loss: money(-r.profit), need: breakEven });
     if (r.paybackMonths > 24) return t(`${S}.vSlow`, { time: inline(months(r.paybackMonths)) });
-    return t(`${S}.vOk`, { orders: one.format(v.orders), time: inline(months(r.paybackMonths)) });
+    return t(`${S}.vOk`, { orders: typedOrders.format(v.orders), time: inline(months(r.paybackMonths)) });
   }
 
   host.append(
