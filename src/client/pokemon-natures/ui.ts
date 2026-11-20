@@ -52,8 +52,9 @@ export function mountPokemonNatures(host: HTMLElement): void {
       h("thead", null, h("tr", null, ...[`${S}.colNature`, `${S}.colUp`, `${S}.colDown`].map((k) => h("th", { scope: "col" }, t(k))))),
       h("tbody", null, ...NATURES.map((n) => h("tr", null,
         h("th", { scope: "row" }, natureName(n)),
-        h("td", null, n.up ? `+10% ${statName(n.up)}` : "—"),
-        h("td", null, n.down ? `−10% ${statName(n.down)}` : "—"),
+        // The column heads say raise / lower; the cells name the stat, so the page has one +10 % format (the result line's).
+        h("td", null, n.up ? statName(n.up) : "—"),
+        h("td", null, n.down ? statName(n.down) : "—"),
       ))),
     ),
   );

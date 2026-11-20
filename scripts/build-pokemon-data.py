@@ -148,7 +148,11 @@ for r in sorted(pokemon, key=lambda r: (int(r["species_id"]), r["is_default"] !=
     if r["is_default"] != "1":
         if r["identifier"].endswith(SKIP_FORM) or "-totem-" in r["identifier"]:
             continue
-        if type_list(r["id"]) == type_list(default_of[r["species_id"]]):
+        # Forms with the usual types add nothing to a weakness lookup, except Megas and Primal forms, which readers
+        # search by name ("Mega Charizard Y"); cosmetic forms (Vivillon patterns, Pikachu caps) are left out.
+        form = forms_by_pokemon.get(r["id"])
+        battle_name = (form and form["is_mega"] == "1") or "-primal" in r["identifier"]
+        if type_list(r["id"]) == type_list(default_of[r["species_id"]]) and not battle_name:
             continue
     t = [idx[x] for x in type_list(r["id"])]
     en_name = entry_name(r, "en")
@@ -156,18 +160,17 @@ for r in sorted(pokemon, key=lambda r: (int(r["species_id"]), r["is_default"] !=
         name = entry_name(r, loc)
         dex[loc].append({"n": int(r["species_id"]), "name": name, "en": en_name, "t": t})
 
-# Some forms share a name in a language (the three Paldean Tauros in ja, Zen Darmanitan and its Galarian form):
-# add the types in that language, so a reader never has to pick between identical rows.
+# Exact repeats (male and female Mega Meowstic: same name, same types) are one row, dropped in every language alike.
+# Other forms may share a name in one language (the three Paldean Tauros in ja): the page adds their types
+# (dexEntries), and rows equal in name and types there too (Mega Tatsugiri's forms in ja) show once (searchDex).
+seen_en, keep = set(), []
+for i, e in enumerate(dex["en"]):
+    k = (e["n"], e["name"], tuple(e["t"]))
+    if k not in seen_en:
+        seen_en.add(k)
+        keep.append(i)
 for loc in LOCALES:
-    seen = {}
-    for e in dex[loc]:
-        seen.setdefault(e["name"], []).append(e)
-    for same in seen.values():
-        if len(same) > 1:
-            for e in same:
-                e["name"] = f"{e['name']} · {'/'.join(label[loc]['types'][TYPE_ORDER[i]] for i in e['t'])}"
-    names = [e["name"] for e in dex[loc]]
-    assert len(names) == len(set(names)), f"{loc}: duplicate names"
+    dex[loc] = [dex[loc][i] for i in keep]
 
 out_dir = ROOT / "src/data/pokemon"
 out_dir.mkdir(parents=True, exist_ok=True)

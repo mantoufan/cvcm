@@ -70,12 +70,19 @@ describe("Pokédex data", () => {
       expect(new Set(rows.map((e) => e.n)).size, loc).toBe(SPECIES_COUNT);
       expect(rows.every((e) => e.name && e.types.length >= 1 && e.types.length <= 2), loc).toBe(true);
       expect(rows.map((e) => e.en), loc).toEqual(en.map((e) => e.name));
-      // No two rows look alike in the search (forms that share a name get their types added).
-      expect(new Set(rows.map((e) => e.name)).size, loc).toBe(rows.length);
+      // No two search results look alike: a shared name is shown with its types, and exact repeats show once.
+      for (const e of rows) {
+        const hits = searchDex(rows, e.name, 50).filter((x) => x.name === e.name);
+        const labels = hits.map((x) => (x.shared ? `${x.name}|${x.types.join("/")}` : x.name));
+        expect(new Set(labels).size, `${loc} ${e.name}`).toBe(labels.length);
+      }
     }
-    expect(dex("ja").filter((e) => e.n === 128).map((e) => e.name)).toEqual([
-      "ケンタロス", "ケンタロス（パルデアのすがた） · かくとう", "ケンタロス（パルデアのすがた） · かくとう/ほのお", "ケンタロス（パルデアのすがた） · かくとう/みず",
-    ]);
+    const tauros = dex("ja").filter((e) => e.n === 128);
+    expect(tauros.map((e) => e.shared)).toEqual([false, true, true, true]);
+    expect(tauros[2].types).toEqual(["fighting", "fire"]);
+    // Megas and Primal forms are found by name even when their types are the usual ones.
+    expect(searchDex(dex("en"), "mega charizard y")[0].types).toEqual(["fire", "flying"]);
+    expect(searchDex(dex("en"), "primal kyogre")[0].types).toEqual(["water"]);
     // Forms with no name in a language yet still carry the local species name, so searching it finds them.
     expect(searchDex(dex("ko"), "켄타로스").map((e) => e.en)).toContain("Paldean Tauros (Blaze Breed)");
     expect(POKEMON_NAMES.id.natures).toEqual(POKEMON_NAMES.en.natures);
@@ -84,7 +91,7 @@ describe("Pokédex data", () => {
     const ja = dex("ja");
     expect(searchDex(ja, "がぶりあす")[0].en).toBe("Garchomp");
     expect(searchDex(ja, "Garchomp")[0].name).toBe("ガブリアス");
-    expect(searchDex(ja, "#0445").map((e) => e.en)).toEqual(["Garchomp", "Mega Garchomp Z"]);
+    expect(searchDex(ja, "#0445").map((e) => e.en)).toEqual(["Garchomp", "Mega Garchomp", "Mega Garchomp Z"]);
     const en = dex("en");
     expect(searchDex(en, "flabebe")[0].name).toBe("Flabébé");
     expect(searchDex(en, "farfetchd")[0].name).toBe("Farfetch’d");
@@ -92,6 +99,8 @@ describe("Pokédex data", () => {
     expect(searchDex(en, "alolan ninetales")[0].types).toEqual(["ice", "fairy"]);
     expect(searchDex(dex("zh-CN"), "烈咬")[0].en).toBe("Garchomp");
     expect(searchDex(dex("ko"), "한카리아스")[0].en).toBe("Garchomp");
+    // A Korean syllable still being typed (한 + ㅋ) already matches.
+    expect(searchDex(dex("ko"), "한ㅋ")[0].en).toBe("Garchomp");
     expect(searchDex(en, "   ")).toEqual([]);
     expect(searchKey("ＰＩＫＡ")).toBe("pika");
     expect(dexNumber(25)).toBe("#0025");
@@ -141,6 +150,11 @@ describe("type chart page", () => {
     await new Promise((r) => setTimeout(r, 0));
     await new Promise((r) => setTimeout(r, 0));
     expect(text("[data-out=pair]")).toBe("#0445 Garchomp · Dragon / Ground");
+    // A number no Pokémon has says so (not "no Pokémon by that name").
+    input.value = "1999";
+    input.dispatchEvent(new Event("input"));
+    await new Promise((r) => setTimeout(r, 0));
+    expect(text("[data-out=matches]")).toBe("No Pokémon has that number (1–1025).");
     // Changing a type by hand drops the Pokémon's name.
     const t2 = q<HTMLSelectElement>("[data-field=type2]");
     t2.value = "";
@@ -175,6 +189,11 @@ describe("nature chart page", () => {
     expect(q("[data-out=mint]").hidden).toBe(false);
     q<HTMLButtonElement>("[data-nature=hardy] button").click();
     expect(q("[data-out=mint]").hidden).toBe(true);
+  });
+  it("names the stat in the list cells; the column heads say raise or lower", () => {
+    mountPokemonNatures(host);
+    const adamant = [...host.querySelectorAll("[data-out=list] tbody tr")].find((r) => r.textContent?.startsWith("Adamant"))!;
+    expect([...adamant.querySelectorAll("td")].map((td) => td.textContent)).toEqual(["Attack", "Special Attack"]);
   });
   it("adds the English name outside English", () => {
     setLocale("ja");

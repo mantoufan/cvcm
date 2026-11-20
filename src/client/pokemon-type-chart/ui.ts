@@ -1,9 +1,9 @@
 import { h } from "../dom";
 import { locale, t } from "../i18n";
 import type { Locale } from "../../shared/locale";
-import { POKEMON_NAMES } from "../../shared/pokemon-data";
+import { POKEMON_NAMES, SPECIES_COUNT } from "../../shared/pokemon-data";
 import {
-  MULTIPLIERS, TYPES, defenseGroups, dexEntries, dexNumber, multiplier, multiplierLabel, offenseGroups, searchDex, typePair,
+  MULTIPLIERS, TYPES, defenseGroups, dexEntries, dexNumber, isDexNumberQuery, multiplier, multiplierLabel, offenseGroups, searchDex, typePair,
   type DexEntry, type DexRow, type PokemonType,
 } from "../../shared/pokemon";
 import { copyButton, field } from "../academic/common";
@@ -91,8 +91,8 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
     const found = searchDex(dex, q);
     matches.replaceChildren(...(found.length
       ? found.map((e) => h("button", { type: "button", class: "chip", "data-dex": String(e.n), onClick: () => choose(e) },
-        `${dexNumber(e.n)} ${e.name}`))
-      : [h("p", { class: "hint" }, t(`${S}.noMatch`))]));
+        `${dexNumber(e.n)} ${e.shared ? `${e.name} · ${e.types.map(typeName).join("/")}` : e.name}`))
+      : [h("p", { class: "hint" }, isDexNumberQuery(q) ? t(`${S}.noNumber`, { max: SPECIES_COUNT }) : t(`${S}.noMatch`))]));
     return found;
   }
 
@@ -113,9 +113,7 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
   function paint(): void {
     const pair = typePair(first.value as PokemonType, (second.value || null) as PokemonType | null);
     const pairName = pair.map(typeName).join(" / ");
-    // Forms that share a name already end in their types (" · かくとう/ほのお"): don't print them twice.
-    const named = picked && (picked.name.endsWith(` · ${pair.map(typeName).join("/")}`) ? picked.name : `${picked.name} · ${pairName}`);
-    heading.textContent = picked ? `${dexNumber(picked.n)} ${named}` : pairName;
+    heading.textContent = picked ? `${dexNumber(picked.n)} ${picked.name} · ${pairName}` : pairName;
     const groups = defenseGroups(pair);
     defense.replaceChildren();
     const lines: string[] = [heading.textContent];

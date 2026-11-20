@@ -29,7 +29,7 @@
       "q4": "Đặc tính (ability) có làm thay đổi bảng không?",
       "a4": "Một số có, và trang này không tính đến chúng. Levitate giúp Pokémon miễn nhiễm chiêu hệ Ground, Flash Fire miễn nhiễm chiêu hệ Fire, Thick Fat giảm một nửa sát thương Fire và Ice, còn Wonder Guard chỉ cho chiêu super effective đánh trúng. Terastallizing trong Scarlet and Violet làm thay đổi hệ của Pokémon. Hãy kiểm tra ability của Pokémon trước khi dựa vào một điểm yếu.",
       "q5": "Trong Pokémon GO bảng có giống không?",
-      "a5": "Các hệ khắc và bị khắc nhau vẫn như vậy, nhưng con số khác. Trong Pokémon GO, chiêu super effective gây sát thương gấp 1.6 lần, chiêu bị kháng chỉ 0.625 lần, và không có miễn nhiễm: chiêu mà game chính chặn hoàn toàn, như Electric lên Ground, chỉ gây khoảng 0.39 lần."
+      "a5": "Các hệ khắc và bị khắc nhau vẫn như vậy, nhưng con số khác. Trong Pokémon GO, chiêu super effective gây sát thương gấp 1,6 lần, chiêu bị kháng chỉ 0,625 lần, và không có miễn nhiễm: chiêu mà game chính chặn hoàn toàn, như Electric lên Ground, chỉ gây khoảng 0,39 lần."
     },
     "pokemon-natures": {
       "q1": "Tính cách của Pokémon có tác dụng gì?",
@@ -39,7 +39,7 @@
       "q3": "Có đổi được tính cách của Pokémon không?",
       "a3": "Trong Sword and Shield và Scarlet and Violet, mint (ví dụ Adamant Mint) thay đổi các chỉ số mà tính cách tác động, dù bảng tóm tắt vẫn hiện tính cách gốc. Khi nhân giống, bố hoặc mẹ cầm Everstone sẽ truyền tính cách cho trứng.",
       "q4": "Tính cách thay đổi một chỉ số bao nhiêu?",
-      "a4": "Chỉ số được nhân với 1.1 hoặc 0.9 rồi làm tròn xuống. Chỉ số Speed 120 thành 132 với Jolly hoặc Timid và 108 với Brave hoặc Quiet. Hiệu ứng áp dụng lên chính chỉ số đó, không phải chỉ số cơ bản.",
+      "a4": "Chỉ số được nhân với 1,1 hoặc 0,9 rồi làm tròn xuống. Chỉ số Speed 120 thành 132 với Jolly hoặc Timid và 108 với Brave hoặc Quiet. Hiệu ứng áp dụng lên chính chỉ số đó, không phải chỉ số cơ bản.",
       "q5": "Vì sao bảng có đường chéo toàn tính cách trung tính?",
       "a5": "Game đánh số tính cách theo công thức 5 × chỉ số tăng + chỉ số giảm. Khi cả hai là cùng một chỉ số, phần tăng và phần giảm triệt tiêu nhau, nên năm tính cách đó nằm trên đường chéo của lưới và không thay đổi gì."
     }
@@ -71,9 +71,10 @@
       "findTitle": "Tìm Pokémon",
       "search": "Tên hoặc số Pokédex",
       "searchPlaceholder": "Garchomp, 445…",
-      "searchHint": "Tên bằng ngôn ngữ này hoặc tiếng Anh; các dạng vùng và Mega có hệ khác cũng được liệt kê.",
+      "searchHint": "Tên bằng ngôn ngữ này hoặc tiếng Anh; các dạng vùng, Mega và các dạng đổi hệ khác cũng được liệt kê.",
       "loadFailed": "Không tải được Pokédex. Hãy kiểm tra kết nối rồi nhập lại.",
       "noMatch": "Không có Pokémon nào mang tên đó.",
+      "noNumber": "Không có Pokémon nào mang số đó (1–{max}).",
       "typesTitle": "Hoặc chọn hệ",
       "type1": "Hệ 1",
       "type2": "Hệ 2",

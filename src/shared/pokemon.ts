@@ -55,11 +55,16 @@ export interface DexEntry {
   types: PokemonType[];
   /** searchKey of the name and of the English name, computed once when the chunk loads. */
   keys: [string, string];
+  /** Another entry has the same name in this language (the three Paldean Tauros in ja): show the types beside it. */
+  shared: boolean;
 }
 
 export function dexEntries(rows: readonly DexRow[]): DexEntry[] {
+  const count = new Map<string, number>();
+  for (const [, name] of rows) count.set(name, (count.get(name) ?? 0) + 1);
   return rows.map(([n, name, t, en]) => ({
     n, name, en: en ?? name, types: t.map((i) => TYPES[i]), keys: [searchKey(name), searchKey(en ?? name)],
+    shared: count.get(name)! > 1,
   }));
 }
 
@@ -71,7 +76,20 @@ export function searchKey(s: string): string {
   // foldText (site search) drops Latin accents and lower-cases; kana voicing marks and Hangul survive it.
   return foldText(s)
     .replace(/[ぁ-ゖ]/g, (c) => String.fromCharCode(c.charCodeAt(0) + 0x60))
-    .replace(/[\s.'’\-‐・:：()（）]/g, "");
+    .replace(/[\s.'’\-‐・:：()（）]/g, "")
+    // Hangul as jamo, so a syllable still being typed (한ㅋ) prefix-matches the finished one (한카리아스).
+    .normalize("NFD");
+}
+
+/** Entries minus later ones that read the same and have the same types (Mega Tatsugiri's three forms in ja). */
+function unique(entries: readonly DexEntry[]): DexEntry[] {
+  const seen = new Set<string>();
+  return entries.filter((e) => {
+    const k = `${e.name}|${e.types.join("/")}`;
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 }
 
 /**
@@ -82,7 +100,7 @@ export function searchDex(entries: readonly DexEntry[], query: string, limit = 8
   const q = query.normalize("NFKC").trim();
   if (!q) return [];
   const num = /^#?0*(\d{1,4})$/.exec(q);
-  if (num) return entries.filter((e) => e.n === Number(num[1])).slice(0, limit);
+  if (num) return unique(entries.filter((e) => e.n === Number(num[1]))).slice(0, limit);
   const key = searchKey(q);
   if (!key) return [];
   const scored: { e: DexEntry; score: number }[] = [];
@@ -92,8 +110,11 @@ export function searchDex(entries: readonly DexEntry[], query: string, limit = 8
     if (score >= 0) scored.push({ e, score });
   }
   // Array.sort is stable, and entries are in Pokédex order: species before their forms.
-  return scored.sort((x, y) => x.score - y.score).slice(0, limit).map((s) => s.e);
+  return unique(scored.sort((x, y) => x.score - y.score).map((s) => s.e)).slice(0, limit);
 }
+
+/** Whether a query is a Pokédex number ("445", "#0445") rather than a name. */
+export const isDexNumberQuery = (query: string): boolean => /^#?0*\d{1,4}$/.test(query.normalize("NFKC").trim());
 
 /** "#0445": the National Pokédex number as the games print it. */
 export const dexNumber = (n: number): string => `#${String(n).padStart(4, "0")}`;
