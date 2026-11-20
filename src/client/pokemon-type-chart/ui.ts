@@ -94,9 +94,14 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
   async function find(): Promise<DexEntry[]> {
     const q = search.value;
     const mine = ++seq;
-    // Editing the name after a pick means the result no longer belongs to that Pokémon: keep the types, drop the name.
+    // Editing the name after a pick means the result no longer belongs to that Pokémon: keep the types, drop the name;
+    // typing the same name back (types untouched) brings it back.
+    const same = chosen && q === chosen.name && first.value === chosen.types[0] && second.value === (chosen.types[1] ?? "");
     if (picked && q !== picked.name) {
       picked = null;
+      paint();
+    } else if (!picked && same) {
+      picked = chosen;
       paint();
     }
     if (!q.trim()) { matches.replaceChildren(); return []; }
@@ -110,7 +115,12 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
     if (mine !== seq) return [];
     const found = searchDex(dex, q);
     matches.replaceChildren(...(found.length
-      ? found.map((e) => h("button", { type: "button", class: "chip", "data-dex": String(e.n), onClick: () => choose(e) },
+      ? found.map((e) => h("button", { type: "button", class: "chip", "data-dex": String(e.n), onClick: (ev: MouseEvent) => {
+          choose(e);
+          // Keyboard activation (detail 0): the focused chip is gone, so return to the box. A tap leaves focus alone,
+          // so a phone keyboard does not slide back over the result.
+          if (ev.detail === 0) search.focus();
+        } },
         `${dexNumber(e.n)} ${e.shared ? `${e.name} · ${e.types.map(typeName).join("/")}` : e.name}`))
       : [h("p", { class: "hint" }, isDexNumberQuery(q) ? t(`${S}.noNumber`, { max: SPECIES_COUNT }) : t(`${S}.noMatch`))]));
     return found;
@@ -124,8 +134,6 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
     search.value = e.name;
     matches.replaceChildren();
     paint();
-    // The chip that had focus is gone: put the reader back in the box rather than at the top of the page.
-    search.focus();
   }
 
   const heading = h("p", { class: "shape-main", "aria-live": "polite", "data-out": "pair" });

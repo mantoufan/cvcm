@@ -160,6 +160,9 @@ describe("type chart page", () => {
     input.value = "pikach";
     input.dispatchEvent(new Event("input"));
     expect(text("[data-out=pair]")).toBe("Dragon / Ground");
+    input.value = "Garchomp";
+    input.dispatchEvent(new Event("input"));
+    expect(text("[data-out=pair]")).toBe("#0445 Garchomp · Dragon / Ground");
     input.value = "garchomp";
     input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
     await new Promise((r) => setTimeout(r, 0));
