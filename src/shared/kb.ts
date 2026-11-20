@@ -46,6 +46,7 @@ export const KNOWLEDGE_ARTICLES = [
   "utc-and-time-zones",
   "apr-vs-apy",
   "margin-vs-markup",
+  "cultivation-levels",
 ] as const;
 
 export type KnowledgeId = (typeof KNOWLEDGE_ARTICLES)[number];
@@ -65,13 +66,14 @@ export type CodeGroupId = "languages" | "patterns" | "structures" | "algorithms"
 export type AiGroupId = "basics" | "prompts" | "image" | "video" | "shorts" | "audio" | "dev" | "trust";
 export type PhotoGroupId = "exposure" | "composition" | "portraits" | "wedding" | "scenes";
 export type MassageGroupId = "basics" | "points" | "feet-hands" | "neck-back" | "face-scalp" | "tools";
-export type KbGroupId = "files" | "data" | "time" | "money" | CodeGroupId | AiGroupId | PhotoGroupId | MassageGroupId;
+export type KbGroupId = "files" | "data" | "time" | "money" | "culture" | CodeGroupId | AiGroupId | PhotoGroupId | MassageGroupId;
 
 const KNOWLEDGE_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] = [
   { id: "files", articles: ["what-is-heic", "jpg-vs-png-vs-webp", "what-is-exif", "dpi-vs-ppi", "aspect-ratios", "why-pdf-files-are-large"] },
   { id: "data", articles: ["what-is-base64", "unicode-and-utf-8", "url-encoding", "json-vs-yaml-vs-xml", "md5-vs-sha-256", "password-strength", "what-is-uuid"] },
   { id: "time", articles: ["unix-timestamp", "iso-8601", "utc-and-time-zones"] },
   { id: "money", articles: ["apr-vs-apy", "margin-vs-markup"] },
+  { id: "culture", articles: ["cultivation-levels"] },
 ];
 
 export const KB_GROUPS: readonly { id: KbGroupId; shelf: KbShelf; articles: readonly KbId[] }[] = [
@@ -290,6 +292,31 @@ const KNOWLEDGE_META: Record<KnowledgeId, KbMeta> = {
     related: ["apr-vs-apy"],
     sources: [
       { title: "U.S. SEC: Beginners' Guide to Financial Statements (revenue, cost of sales, gross profit)", href: "https://www.sec.gov/about/reports-publications/beginners-guide-financial-statements" },
+    ],
+  },
+  "cultivation-levels": {
+    published: "2026-11-20",
+    tools: ["tier-list"],
+    tutorials: [],
+    related: [],
+    sources: [
+      { title: "Wikipedia: A Record of Mortal's Journey to Immortality", href: "https://en.wikipedia.org/wiki/A_Record_of_Mortal%27s_Journey_to_Immortality" },
+      { title: "维基百科：斗破苍穹", href: "https://zh.wikipedia.org/wiki/%E6%96%97%E7%A0%B4%E8%8B%8D%E7%A9%B9" },
+      { title: "《斗罗大陆》第 6 章（QQ 阅读）", href: "https://book.qq.com/book-read/468021/6" },
+      { title: "光明网：中国网络小说好看榜《飘邈之旅》", href: "https://wenyi.gmw.cn/2017-07/11/content_25678187_2.htm" },
+      { title: "中国作家网：《飘邈之旅》专题", href: "https://www.chinawriter.com.cn/n1/2020/0113/c425784-31546542.html" },
+      { title: "维基文库：伍守阳《天仙正理直论》筑基直论", href: "https://zh.wikisource.org/wiki/%E5%A4%A9%E4%BB%99%E6%AD%A3%E7%90%86%E7%9B%B4%E8%AB%96%E5%A2%97%E8%A8%BB/6" },
+      { title: "维基文库：谭峭《化书》卷一", href: "https://zh.wikisource.org/wiki/%E5%8C%96%E6%9B%B8/%E5%8D%B7%E4%B8%80" },
+      { title: "维基文库：《钟吕传道集》", href: "https://zh.wikisource.org/wiki/%E9%8D%BE%E5%91%82%E5%82%B3%E9%81%93%E9%9B%86" },
+      { title: "维基文库：张伯端《悟真篇》", href: "https://zh.wikisource.org/wiki/%E6%82%9F%E7%9C%9F%E7%AF%87" },
+      { title: "Fandom (reader-written): A Record of a Mortal's Journey to Immortality, Cultivation", href: "https://a-record-of-a-mortal-is-journey-to-immortality.fandom.com/wiki/Cultivation" },
+      { title: "Fandom (reader-written): Renegade Immortal, Cultivation", href: "https://xian-ni.fandom.com/wiki/Cultivation" },
+      { title: "Fandom (reader-written): Shrouding the Heavens, Cultivation", href: "https://shrouding-the-heavens.fandom.com/wiki/Cultivation" },
+      { title: "Fandom (reader-written): Perfect World, Cultivation", href: "https://wanmei-shijie.fandom.com/wiki/Cultivation" },
+      { title: "Fandom (reader-written): Battle Through the Heavens, Cultivation", href: "https://battle-through-the-heavens.fandom.com/wiki/Cultivation" },
+      { title: "Fandom (reader-written): Soul Land, Spirit Ranks", href: "https://soulland.fandom.com/wiki/Spirit_Ranks" },
+      { title: "Fandom (reader-written): I Shall Seal the Heavens, Cultivation", href: "https://i-shall-seal-the-heavens.fandom.com/wiki/Cultivation" },
+      { title: "Fandom (reader-written): A Will Eternal, Cultivation", href: "https://a-will-eternal.fandom.com/wiki/Cultivation" },
     ],
   },
 };

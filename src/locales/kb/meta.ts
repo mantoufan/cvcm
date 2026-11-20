@@ -182,6 +182,16 @@ export const KB_UPDATED = {
     "vi": "2026-10-14",
     "id": "2026-10-14",
     "es": "2026-10-14"
+  },
+  "cultivation-levels": {
+    "en": "2026-11-20",
+    "zh-CN": "2026-11-20",
+    "zh-TW": "2026-11-20",
+    "ja": "2026-11-20",
+    "ko": "2026-11-20",
+    "vi": "2026-11-20",
+    "id": "2026-11-20",
+    "es": "2026-11-20"
   }
 } satisfies Record<KnowledgeId, Record<Locale, string>>;
 
@@ -365,5 +375,15 @@ export const KB_MINUTES = {
     "vi": 4,
     "id": 3,
     "es": 4
+  },
+  "cultivation-levels": {
+    "en": 9,
+    "zh-CN": 8,
+    "zh-TW": 8,
+    "ja": 15,
+    "ko": 15,
+    "vi": 12,
+    "id": 9,
+    "es": 10
   }
 } satisfies Record<KnowledgeId, Record<Locale, number>>;
