@@ -146,6 +146,7 @@ def entry_name(r, loc):
 
 
 dex = {loc: [] for loc in LOCALES}
+aliases = {}
 for r in sorted(pokemon, key=lambda r: (int(r["species_id"]), r["is_default"] != "1", int(r["id"]))):
     if r["is_default"] != "1":
         if r["identifier"].endswith(SKIP_FORM) or "-totem-" in r["identifier"]:
@@ -155,6 +156,12 @@ for r in sorted(pokemon, key=lambda r: (int(r["species_id"]), r["is_default"] !=
         form = forms_by_pokemon.get(r["id"])
         battle_name = (form and form["is_mega"] == "1") or "-primal" in r["identifier"]
         if type_list(r["id"]) == type_list(default_of[r["species_id"]]) and not battle_name:
+            # Same types as the species: no row of its own, but its name ("Black Kyurem", "Origin Giratina") finds the
+            # species row, whose types are the answer.
+            form_row = forms_by_pokemon.get(r["id"])
+            if form_row and "9" in form_names.get(form_row["id"], {}):  # some forms (Koraidon's builds) have no name
+                for loc in LOCALES:
+                    aliases.setdefault((int(r["species_id"]), loc), []).extend([entry_name(r, loc), entry_name(r, "en")])
             continue
     t = [idx[x] for x in type_list(r["id"])]
     en_name = entry_name(r, "en")
@@ -181,7 +188,18 @@ for loc in LOCALES:
     if loc in ("vi", "id"):
         continue  # same as en: the page loads the English file (pokemon-type-chart/ui.ts)
     en_names = [e["name"] for e in dex["en"]]
-    data = [[e["n"], e["name"], e["t"], *([en] if en != e["name"] else [])] for e, en in zip(dex[loc], en_names)]
+    data, first_row = [], set()
+    for e, en in zip(dex[loc], en_names):
+        row = [e["n"], e["name"], e["t"]]
+        # Other names that find this row: forms with the species' own types (only on the species' first row).
+        extra = [] if e["n"] in first_row else list(dict.fromkeys(
+            a for a in aliases.get((e["n"], loc), []) if a not in (e["name"], en)))
+        first_row.add(e["n"])
+        if en != e["name"] or extra:
+            row.append(en if en != e["name"] else 0)
+        if extra:
+            row.append(extra)
+        data.append(row)
     (out_dir / f"{loc}.json").write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
 
 species_count = len({e["n"] for e in dex["en"]})

@@ -83,6 +83,9 @@ describe("Pokédex data", () => {
     // Megas and Primal forms are found by name even when their types are the usual ones.
     expect(searchDex(dex("en"), "mega charizard y")[0].types).toEqual(["fire", "flying"]);
     expect(searchDex(dex("en"), "primal kyogre")[0].types).toEqual(["water"]);
+    // Named forms with the species' own types find the species row.
+    expect(searchDex(dex("en"), "black kyurem")[0].name).toBe("Kyurem");
+    expect(searchDex(dex("ja"), "ホワイトキュレム")[0].types).toEqual(["dragon", "ice"]);
     // Forms with no name in a language yet still carry the local species name, so searching it finds them.
     expect(searchDex(dex("ko"), "켄타로스").map((e) => e.en)).toContain("Paldean Tauros (Blaze Breed)");
     expect(POKEMON_NAMES.id.natures).toEqual(POKEMON_NAMES.en.natures);
@@ -104,6 +107,8 @@ describe("Pokédex data", () => {
     // …and so does the IME's in-between state, where the next consonant sits as a final (한카 → 한칼 → 한카리).
     expect(searchDex(dex("ko"), "한칼")[0].en).toBe("Garchomp");
     expect(searchDex(dex("ko"), "곫")[0].en).toBe("Golbat"); // 고 + ㄼ, on the way to 골뱃
+    // A vowel that starts a compound vowel (고 on the way to 괴력몬) keeps the compound names in view.
+    expect(searchDex(dex("ko"), "고", 200).map((e) => e.en)).toContain("Machamp");
     // Kana keep their voicing marks: カ does not find ガーディ.
     expect(searchDex(dex("ja"), "カ").map((e) => e.en)).not.toContain("Growlithe");
     expect(searchDex(en, "10000")).toEqual([]);

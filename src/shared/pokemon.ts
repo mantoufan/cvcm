@@ -45,16 +45,19 @@ export function typePair(a: PokemonType, b: PokemonType | null): PokemonType[] {
 
 // ---- Pokédex search ----
 
-/** One Pokédex row as stored in src/data/pokemon/<locale>.json: number, name, type indexes, English name if it differs. */
-export type DexRow = [number, string, number[], string?];
+/**
+ * One Pokédex row as stored in src/data/pokemon/<locale>.json: number, name, type indexes, the English name if it
+ * differs (0 when it doesn't but aliases follow), and other names that find the row (forms with the species' types).
+ */
+export type DexRow = [number, string, number[], (string | 0)?, string[]?];
 
 export interface DexEntry {
   n: number;
   name: string;
   en: string;
   types: PokemonType[];
-  /** searchKey of the name and of the English name, computed once when the chunk loads. */
-  keys: [string, string];
+  /** searchKey of the name, the English name and any aliases, computed once when the chunk loads. */
+  keys: string[];
   /** Another entry has the same name in this language (the three Paldean Tauros in ja): show the types beside it. */
   shared: boolean;
 }
@@ -66,8 +69,9 @@ export function dexEntries(rows: readonly DexRow[]): DexEntry[] {
     if (!typeSets.has(name)) typeSets.set(name, new Set());
     typeSets.get(name)!.add(t.join("/"));
   }
-  return rows.map(([n, name, t, en]) => ({
-    n, name, en: en ?? name, types: t.map((i) => TYPES[i]), keys: [searchKey(name), searchKey(en ?? name)],
+  return rows.map(([n, name, t, en, aliases]) => ({
+    n, name, en: en || name, types: t.map((i) => TYPES[i]),
+    keys: [name, en || name, ...(aliases ?? [])].map(searchKey),
     shared: typeSets.get(name)!.size > 1,
   }));
 }
@@ -103,6 +107,11 @@ const DOUBLE_FINAL: Record<string, string> = {
   "\u11b5": "\u11af\u1111", "\u11b6": "\u11af\u1112", "\u11b9": "\u11b8\u1109",
 };
 
+/** A vowel that a compound vowel starts with → those compounds (고 on the way to 괴, 우 to 워, 으 to 의). */
+const VOWEL_START: Record<string, string[]> = {
+  "\u1169": ["\u116a", "\u116b", "\u116c"], "\u116e": ["\u116f", "\u1170", "\u1171"], "\u1173": ["\u1174"],
+};
+
 /**
  * The keys a query may stand for. A Korean IME holds the next consonant as the last syllable's final while typing
  * (한카리 passes through 한칼, 골뱃 through 곮), so a key ending in a final also stands for that consonant starting a
@@ -110,8 +119,9 @@ const DOUBLE_FINAL: Record<string, string> = {
  */
 function queryKeys(key: string): string[] {
   const last = key.slice(-1);
+  const head = key.slice(0, -1);
   const alt = DOUBLE_FINAL[last] ?? FINAL_TO_INITIAL[last];
-  return alt ? [key, key.slice(0, -1) + alt] : [key];
+  return [key, ...(alt ? [head + alt] : []), ...(VOWEL_START[last] ?? []).map((v) => head + v)];
 }
 
 /** Entries minus later ones that read the same and have the same types (Mega Tatsugiri's three forms in ja). */

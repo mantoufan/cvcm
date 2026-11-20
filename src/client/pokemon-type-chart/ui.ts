@@ -54,6 +54,7 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
 
   // Choosing a type by hand leaves the Pokémon behind: clear its name so Enter can't pick it again over the new types.
   const byHand = () => {
+    seq++; // a search still waiting for the Pokédex must not bring its chips (or its Enter pick) back
     picked = chosen = null;
     search.value = "";
     matches.replaceChildren();
