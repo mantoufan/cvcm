@@ -96,12 +96,21 @@ const FINAL_TO_INITIAL: Record<string, string> = {
   "\u11bf": "\u110f", "\u11c0": "\u1110", "\u11c1": "\u1111", "\u11c2": "\u1112",
 };
 
+/** Double final → its first final + the second consonant as the next initial (곮 on the way to 골뱃 = 골 + ㅂ). */
+const DOUBLE_FINAL: Record<string, string> = {
+  "\u11aa": "\u11a8\u1109", "\u11ac": "\u11ab\u110c", "\u11ad": "\u11ab\u1112", "\u11b0": "\u11af\u1100",
+  "\u11b1": "\u11af\u1106", "\u11b2": "\u11af\u1107", "\u11b3": "\u11af\u1109", "\u11b4": "\u11af\u1110",
+  "\u11b5": "\u11af\u1111", "\u11b6": "\u11af\u1112", "\u11b9": "\u11b8\u1109",
+};
+
 /**
  * The keys a query may stand for. A Korean IME holds the next consonant as the last syllable's final while typing
- * (한카리 passes through 한칼), so a key ending in a final consonant also stands for that consonant starting a new one.
+ * (한카리 passes through 한칼, 골뱃 through 곮), so a key ending in a final also stands for that consonant starting a
+ * new syllable.
  */
 function queryKeys(key: string): string[] {
-  const alt = FINAL_TO_INITIAL[key.slice(-1)];
+  const last = key.slice(-1);
+  const alt = DOUBLE_FINAL[last] ?? FINAL_TO_INITIAL[last];
   return alt ? [key, key.slice(0, -1) + alt] : [key];
 }
 

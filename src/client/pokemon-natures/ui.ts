@@ -66,7 +66,10 @@ export function mountPokemonNatures(host: HTMLElement): void {
       ? t(`${S}.effect`, { up: statName(n.up), down: statName(n.down) })
       : t(`${S}.neutral`);
     mint.hidden = !n.up && n.id !== "serious";
-    for (const [id, td] of cells) td.classList.toggle("on", id === n.id);
+    for (const [id, td] of cells) {
+      td.classList.toggle("on", id === n.id);
+      td.querySelector("button")!.setAttribute("aria-pressed", String(id === n.id));
+    }
     last = `${out.textContent}: ${effect.textContent}`;
   }
 

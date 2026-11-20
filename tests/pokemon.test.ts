@@ -103,6 +103,7 @@ describe("Pokédex data", () => {
     expect(searchDex(dex("ko"), "한ㅋ")[0].en).toBe("Garchomp");
     // …and so does the IME's in-between state, where the next consonant sits as a final (한카 → 한칼 → 한카리).
     expect(searchDex(dex("ko"), "한칼")[0].en).toBe("Garchomp");
+    expect(searchDex(dex("ko"), "곫")[0].en).toBe("Golbat"); // 고 + ㄼ, on the way to 골뱃
     // Kana keep their voicing marks: カ does not find ガーディ.
     expect(searchDex(dex("ja"), "カ").map((e) => e.en)).not.toContain("Growlithe");
     expect(searchDex(en, "10000")).toEqual([]);
@@ -228,6 +229,11 @@ describe("type chart page in Japanese", () => {
       "#0128 ケンタロス（パルデアのすがた） · かくとう/みず",
     ]);
     chips[3].click();
+    // Edit the name and put it back: Enter still keeps the Aqua Breed.
+    input.value += "x";
+    input.dispatchEvent(new Event("input"));
+    input.value = input.value.slice(0, -1);
+    input.dispatchEvent(new Event("input"));
     input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
     await new Promise((r) => setTimeout(r, 0));
     await new Promise((r) => setTimeout(r, 0));
@@ -255,5 +261,10 @@ describe("search details", () => {
     t1.dispatchEvent(new Event("change"));
     expect(input.value).toBe("");
     expect(text("[data-out=pair]")).toBe("Water / Ground");
+    const t2 = q<HTMLSelectElement>("[data-field=type2]");
+    t2.value = "water";
+    t2.dispatchEvent(new Event("change"));
+    expect(t2.value).toBe("");
+    expect(text("[data-out=pair]")).toBe("Water");
   });
 });

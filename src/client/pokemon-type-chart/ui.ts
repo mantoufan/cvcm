@@ -12,27 +12,27 @@ const S = "pokemonTypes";
 /** The pair the page opens with (rule 8: the same markup every time): Grass / Poison, the first Pokémon's types. */
 export const START: readonly [PokemonType, PokemonType | null] = ["grass", "poison"];
 
-/** Each language's Pokédex is its own chunk, fetched the first time a reader types in the search box (never at mount). */
-const DEX: Record<Locale, () => Promise<{ default: unknown }>> = {
+/**
+ * Each language's Pokédex is its own chunk, fetched the first time a reader types in the search box (never at mount).
+ * vi and id have no file: the games have no Vietnamese or Indonesian text, so those pages read en (loadDex).
+ */
+const DEX: Record<Exclude<Locale, "vi" | "id">, () => Promise<{ default: unknown }>> = {
   en: () => import("../../data/pokemon/en.json"),
   "zh-CN": () => import("../../data/pokemon/zh-CN.json"),
   "zh-TW": () => import("../../data/pokemon/zh-TW.json"),
   ja: () => import("../../data/pokemon/ja.json"),
   ko: () => import("../../data/pokemon/ko.json"),
-  // The games have no Vietnamese or Indonesian text: those pages use the English names (one shared chunk).
-  vi: () => import("../../data/pokemon/en.json"),
-  id: () => import("../../data/pokemon/en.json"),
   es: () => import("../../data/pokemon/es.json"),
 };
 
 let dexPromise: Promise<DexEntry[]> | null = null;
-let dexFile: Locale | null = null;
+let dexFile: keyof typeof DEX | null = null;
 export function loadDex(loc: Locale): Promise<DexEntry[]> {
   // en, vi and id read the same file: keep one parsed copy across them.
-  const file: Locale = loc === "vi" || loc === "id" ? "en" : loc;
+  const file = loc === "vi" || loc === "id" ? "en" : loc;
   if (!dexPromise || dexFile !== file) {
     dexFile = file;
-    const p = DEX[loc]().then((m) => dexEntries(m.default as DexRow[]));
+    const p = DEX[file]().then((m) => dexEntries(m.default as DexRow[]));
     dexPromise = p;
     // A failed chunk (offline) may be retried on the next keystroke; an older language's failure leaves a newer one alone.
     p.catch(() => { if (dexPromise === p) dexPromise = null; });
@@ -48,10 +48,19 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
   const typeName = (x: PokemonType) => names[x];
   const list = (xs: readonly PokemonType[]) => xs.length ? xs.map(typeName).join(t(`${S}.sep`)) : t(`${S}.none`);
   let picked: DexEntry | null = null;
+  /** The last chip chosen, kept while the name is edited: Enter on that exact name again keeps that form. */
+  let chosen: DexEntry | null = null;
   let last = "";
 
   // Choosing a type by hand leaves the Pokémon behind: clear its name so Enter can't pick it again over the new types.
-  const byHand = () => { picked = null; search.value = ""; matches.replaceChildren(); paint(); };
+  const byHand = () => {
+    picked = chosen = null;
+    search.value = "";
+    matches.replaceChildren();
+    // One type picked twice is one type: show the menus the way the result reads them.
+    if (second.value === first.value) second.value = "";
+    paint();
+  };
   const first = h("select", { "data-field": "type1", onChange: byHand },
     ...TYPES.map((x) => h("option", { value: x, selected: x === START[0] }, typeName(x))));
   const second = h("select", { "data-field": "type2", onChange: byHand },
@@ -68,9 +77,8 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
       if (e.key !== "Enter" || e.isComposing || e.keyCode === 229) return;
       e.preventDefault();
       // The box already holds the picked Pokémon: Enter keeps it (a shared name would otherwise re-pick its first form).
-      if (picked && search.value === picked.name) {
-        seq++;
-        matches.replaceChildren();
+      if (chosen && search.value === chosen.name) {
+        choose(chosen);
         return;
       }
       // Wait for this query's own matches (the Pokédex may still be loading), then take the best one.
@@ -108,7 +116,7 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
 
   function choose(e: DexEntry): void {
     seq++; // a find() still waiting for the Pokédex must not redraw the chips over this choice
-    picked = e;
+    picked = chosen = e;
     first.value = e.types[0];
     second.value = e.types[1] ?? "";
     search.value = e.name;
