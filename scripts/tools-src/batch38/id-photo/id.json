@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "titleIdPhoto": "Pas foto online — ukuran 2x3, 3x4, 4x6, ganti background, cetak — cv.cm",
+    "descIdPhoto": "Buat pas foto online gratis: potong ke 2x3, 3x4, 4x6 atau paspor dengan garis bantu kepala, ganti background merah, biru atau putih, lalu cetak."
+  },
+  "tools": {
+    "id-photo": {
+      "name": "Pas foto online",
+      "blurb": "Ukuran pas foto, ganti background, lembar cetak."
+    }
+  },
+  "faq": {
+    "id-photo": {
+      "q1": "Berapa ukuran pas foto 2x3, 3x4 dan 4x6?",
+      "a1": "2x3 berarti 2 × 3 cm, 3x4 berarti 3 × 4 cm, dan 4x6 berarti 4 × 6 cm (lebar × tinggi). Ini ukuran cetak yang umum untuk lamaran kerja, ijazah dan berkas lain; kalau instansi menyebut ukuran atau warna background sendiri, ikuti itu.",
+      "q2": "Bagaimana cara ganti background pas foto jadi merah atau biru?",
+      "a2": "Pilih ukuran, tekan \"Ganti\", lalu pilih merah, biru, putih atau warna sendiri. Model penghapus background diunduh sekali saat pertama dipakai, lalu berjalan di perangkat Anda.",
+      "q3": "Bolehkah background foto paspor diganti?",
+      "a3": "Untuk paspor sebaiknya tidak. Paspor Amerika, Inggris, Korea, Tiongkok dan Taiwan menolak foto yang background-nya dihapus atau diubah dengan software. Untuk ukuran itu alat ini mempertahankan background asli dan hanya memotong, jadi berfotolah di depan dinding putih.",
+      "q4": "Bagaimana mencetak pas foto dengan ukuran yang pas?",
+      "a4": "Unduh lembar cetak: 4R (4 × 6 inci) berupa JPG 300 DPI yang bisa langsung dicetak di studio foto, atau A4 berupa PDF. Cetak dengan skala 100% (ukuran asli), bukan \"fit to page\", lalu gunting mengikuti garis tipis.",
+      "q5": "Apakah foto saya diunggah?",
+      "a5": "Tidak. Pemotongan dilakukan di halaman, dan model penghapus background diunduh sekali lalu berjalan di perangkat Anda. Foto tidak meninggalkan perangkat."
+    }
+  },
+  "guides": {
+    "id-photo": {
+      "lead": "Buat pas foto dalam tiga langkah.",
+      "s1t": "Pilih foto dan ukuran",
+      "s1b": "Pilih foto menghadap depan dengan cahaya rata, lalu ukuran 2x3, 3x4, 4x6 atau paspor.",
+      "s2t": "Atur posisi kepala",
+      "s2b": "Geser dan perbesar sampai puncak kepala menyentuh garis atas dan dagu ada di pita berarsir.",
+      "s3t": "Unduh atau cetak",
+      "s3b": "Unduh satu foto untuk formulir online, atau lembar 4R atau A4 untuk dicetak ukuran asli."
+    }
+  },
+  "ui": {
+    "idPhoto": {
+      "title": "Pas foto online",
+      "privacyNote": "Potong ke ukuran pas foto, ganti background dan buat lembar cetak. Foto tetap di perangkat ini.",
+      "dropTitle": "Pilih foto",
+      "dropHint": "atau seret ke sini, atau tempel",
+      "dropTypes": "JPG, PNG, WebP, HEIC",
+      "size": "Ukuran foto",
+      "official": "Paspor",
+      "common": "Ukuran umum",
+      "sizeInfo": "Lebar {w} × tinggi {h} mm · {pw} × {ph} px pada {dpi} DPI",
+      "headRule": "Tinggi kepala (dagu sampai puncak kepala): {a}–{b} mm.",
+      "noHeadRule": "Tidak ada ketentuan tinggi kepala dalam mm: buat wajah besar dan di tengah.",
+      "commonNote": "Ukuran cetak umum: ikuti ukuran dan warna background yang diminta instansi.",
+      "sourceLink": "Ketentuan foto resmi",
+      "frameLabel": "Bingkai potong: seret untuk menggeser, tombol panah untuk menyetel, + dan − untuk zoom",
+      "zoom": "Perbesar",
+      "autoFit": "Sesuaikan otomatis",
+      "reset": "Atur ulang",
+      "hint": "Pilih foto untuk mulai.",
+      "guideHint": "Letakkan puncak kepala di garis atas dan dagu di dalam pita berarsir. \"Sesuaikan otomatis\" mencari kepala dengan model penghapus background; periksa hasilnya.",
+      "background": "Latar belakang",
+      "bg_keep": "Background asli",
+      "bg_replace": "Ganti",
+      "c_white": "Putih",
+      "c_offwhite": "Abu-abu muda",
+      "c_lightblue": "Biru muda",
+      "c_blue": "Biru",
+      "c_red": "Merah",
+      "c_custom": "Warna sendiri",
+      "noEdits": "Instansi ini menolak foto yang background-nya dihapus atau diubah dengan software. Pertahankan background asli dan berfotolah di depan dinding putih.",
+      "bgNote": "Mengganti background akan mengunduh model penghapus background sekali, lalu berjalan di perangkat Anda.",
+      "photoOut": "Satu foto",
+      "width": "Lebar (px)",
+      "height": "Tinggi (px)",
+      "maxKb": "Ukuran file maks. (KB)",
+      "noLimit": "Tanpa batas",
+      "maxKbHint": "Untuk formulir online: isi ukuran piksel dan ukuran file yang diminta.",
+      "download": "Unduh foto (JPG)",
+      "saved": "Tersimpan {w} × {h} px, {kb} KB.",
+      "savedSmaller": "Tersimpan {w} × {h} px, {kb} KB: ukurannya diperkecil agar muat dalam batas.",
+      "tooBig": "Tidak bisa di bawah {kb} KB. Naikkan batas atau kecilkan ukuran piksel.",
+      "sheet": "Lembar cetak",
+      "paper": "Kertas",
+      "paper_4x6": "Kertas foto 4R (4 × 6 inci)",
+      "paper_a4": "A4",
+      "paper_letter": "Letter (AS)",
+      "sheetCount": "{n} foto di {paper}. Cetak 100% (ukuran asli).",
+      "downloadSheet": "Unduh lembar cetak",
+      "photoSize": "Foto {w} × {h} px. Geser dan zoom agar pas dengan garis bantu.",
+      "placed": "Kepala ditemukan dan diletakkan di garis bantu. Periksa puncak kepala dan dagu.",
+      "notFound": "Tidak ada orang di foto. Atur bingkai potong secara manual.",
+      "errorDecode": "Foto ini tidak bisa dibuka. Coba JPG atau PNG.",
+      "emptyDownload": "Pilih foto dulu.",
+      "p_us": "Paspor dan visa Amerika (2 × 2 inci)",
+      "p_uk": "Paspor Inggris (35 × 45 mm)",
+      "p_jp": "Paspor Jepang (35 × 45 mm)",
+      "p_kr": "Paspor Korea (35 × 45 mm)",
+      "p_tw": "Paspor Taiwan (35 × 45 mm)",
+      "p_cn": "Paspor Tiongkok (33 × 48 mm)",
+      "p_vn": "Paspor Vietnam (4 × 6 cm)",
+      "p_es": "DNI dan paspor Spanyol (26 × 32 mm)",
+      "p_c25x35": "1 inci Tiongkok (25 × 35 mm)",
+      "p_c35x49": "2 inci Tiongkok (35 × 49 mm)",
+      "p_c35x45": "35 × 45 mm",
+      "p_c28x35": "28 × 35 mm (1 inci Taiwan)",
+      "p_c30x40": "Pas foto 3x4",
+      "p_c20x30": "Pas foto 2x3",
+      "p_c40x60": "Pas foto 4x6",
+      "p_c25x30": "2,5 × 3 cm (tamaño infantil Meksiko)"
+    }
+  }
+}

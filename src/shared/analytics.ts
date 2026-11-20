@@ -22,6 +22,8 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
   "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "image-colors",
   "remove-background", "image-upscaler", "speech-to-text", "depth-map", "v", "ai-image-generator", "ai-music-generator", "mic-test", "webcam-test", "guitar-tuner", "rom-emulator", "flash-player", "notepad", "tier-list",
   "decibel-meter", "voice-recorder", "screen-recorder", "gif-maker", "image-splitter",
+  // Career papers hold the visitor's name, history and photo.
+  "resignation-letter", "cover-letter", "resume-builder", "id-photo",
 ]);
 
 /**
@@ -32,7 +34,7 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
  * of thinking, not a condition, and it links no screening.
  * A test checks every quiz in the wellbeing group is listed.
  */
-export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd", "narcissist", "dark-triad", "codependency"]);
+export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd", "narcissist", "dark-triad", "codependency", "anger"]);
 
 /** Whether this page may report to GA. A clip URL is its own access key, so clip notes are never reported. */
 export function isTrackedPath(pathname: string): boolean {

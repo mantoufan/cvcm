@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "titleIdPhoto": "Passport photo maker — ID photo sizes, background and print sheet — cv.cm",
+    "descIdPhoto": "Free passport and ID photo maker: crop to US 2×2 in, 35×45 mm and other sizes with head guides, change the background on your device, and print a 4×6 sheet."
+  },
+  "tools": {
+    "id-photo": {
+      "name": "Passport photo maker",
+      "blurb": "ID photo sizes, background and print sheet."
+    }
+  },
+  "faq": {
+    "id-photo": {
+      "q1": "What size is a passport photo?",
+      "a1": "A US passport photo is 2 × 2 inches (51 × 51 mm) with the head 1 to 1 3/8 inches (25–35 mm) from chin to top of head. The UK, Japan, Korea, Taiwan and most of Europe use 35 × 45 mm; China uses 33 × 48 mm. Pick the size and line the head up with the guides.",
+      "q2": "Can I change the background of a passport photo?",
+      "a2": "Usually not. The US, UK, Korea, China and Taiwan reject passport photos whose background was cut out or edited with software. For those sizes the tool keeps your original background and only crops: take the photo against a plain white wall. Background replacement is for résumés, school and work IDs and forms that accept it.",
+      "q3": "How do I print passport photos at the right size?",
+      "a3": "Download the print sheet: a 4 × 6 in JPEG at 300 DPI, or an A4 or Letter PDF. Print it at 100 % (actual size), not \"fit to page\", on photo paper, or order a 4 × 6 print at a photo lab, then cut along the thin lines.",
+      "q4": "Is my photo uploaded?",
+      "a4": "No. Cropping happens in the page. When you replace the background, the background-removal model downloads once and runs on your device; the photo never leaves it.",
+      "q5": "How do I get a photo under a file size limit?",
+      "a5": "Online forms often ask for a pixel size and a maximum file size, such as 600 × 600 px under 240 KB. Enter both before you download: the tool lowers the JPEG quality first and only shrinks the picture if it still does not fit."
+    }
+  },
+  "guides": {
+    "id-photo": {
+      "lead": "Make an ID photo in three steps.",
+      "s1t": "Choose a photo and a size",
+      "s1b": "Pick a front-facing photo in even light, then the passport, visa or ID size you need.",
+      "s2t": "Line up the head",
+      "s2b": "Drag and zoom until the top of the head touches the top line and the chin sits in the band.",
+      "s3t": "Download or print",
+      "s3b": "Download the photo for an online form, or a 4 × 6 or A4 sheet to print at actual size."
+    }
+  },
+  "ui": {
+    "idPhoto": {
+      "title": "Passport photo maker",
+      "privacyNote": "Crop to passport, visa and ID sizes, change the background and print a sheet. Your photo stays on this device.",
+      "dropTitle": "Choose a photo",
+      "dropHint": "or drop it here, or paste",
+      "dropTypes": "JPG, PNG, WebP, HEIC",
+      "size": "Photo size",
+      "official": "Passports",
+      "common": "Common sizes",
+      "sizeInfo": "{w} mm wide × {h} mm high · {pw} × {ph} px at {dpi} DPI",
+      "headRule": "Head, chin to top of head: {a}–{b} mm.",
+      "noHeadRule": "No head size in mm is published for this photo: keep the face large and centred.",
+      "commonNote": "A common print size: check the size and background your form asks for.",
+      "sourceLink": "Official photo rules",
+      "frameLabel": "Photo crop: drag to move, arrow keys to nudge, + and − to zoom",
+      "zoom": "Zoom",
+      "autoFit": "Auto fit",
+      "reset": "Reset",
+      "hint": "Choose a photo to start.",
+      "guideHint": "Put the top of the head on the top line and the chin inside the shaded band. Auto fit finds the head with the background model; check it.",
+      "background": "Background",
+      "bg_keep": "Keep original",
+      "bg_replace": "Replace",
+      "c_white": "White",
+      "c_offwhite": "Light grey",
+      "c_lightblue": "Light blue",
+      "c_blue": "Blue",
+      "c_red": "Red",
+      "c_custom": "Custom colour",
+      "noEdits": "This authority rejects photos whose background was removed or edited with software. Keep the original background and take the photo against a plain white wall.",
+      "bgNote": "Replacing the background downloads the background-removal model once, then runs on your device.",
+      "photoOut": "Photo",
+      "width": "Width (px)",
+      "height": "Height (px)",
+      "maxKb": "Max file size (KB)",
+      "noLimit": "No limit",
+      "maxKbHint": "For online forms: set the pixel size and file size they ask for.",
+      "download": "Download photo (JPG)",
+      "saved": "Saved {w} × {h} px, {kb} KB.",
+      "savedSmaller": "Saved {w} × {h} px, {kb} KB: the size had to shrink to fit the limit.",
+      "tooBig": "Could not get under {kb} KB. Raise the limit or lower the pixel size.",
+      "sheet": "Print sheet",
+      "paper": "Paper",
+      "paper_4x6": "4 × 6 in (10 × 15 cm) photo",
+      "paper_a4": "A4",
+      "paper_letter": "US Letter",
+      "sheetCount": "{n} photos on {paper}. Print at 100 % (actual size).",
+      "downloadSheet": "Download print sheet",
+      "photoSize": "Photo {w} × {h} px. Drag and zoom to fit the guides.",
+      "placed": "Head found and placed on the guides. Check the top line and the chin band.",
+      "notFound": "No person found in the photo. Place the crop by hand.",
+      "errorDecode": "This photo could not be opened. Try a JPG or PNG.",
+      "emptyDownload": "Choose a photo first.",
+      "p_us": "US passport and visa (2 × 2 in)",
+      "p_uk": "UK passport (35 × 45 mm)",
+      "p_jp": "Japan passport (35 × 45 mm)",
+      "p_kr": "Korea passport (35 × 45 mm)",
+      "p_tw": "Taiwan passport (35 × 45 mm)",
+      "p_cn": "China passport (33 × 48 mm)",
+      "p_vn": "Vietnam passport (4 × 6 cm)",
+      "p_es": "Spain DNI and passport (26 × 32 mm)",
+      "p_c25x35": "1 inch, 25 × 35 mm (China)",
+      "p_c35x49": "2 inch, 35 × 49 mm (China)",
+      "p_c35x45": "35 × 45 mm",
+      "p_c28x35": "28 × 35 mm (Taiwan 1 inch)",
+      "p_c30x40": "3 × 4 cm",
+      "p_c20x30": "2 × 3 cm",
+      "p_c40x60": "4 × 6 cm",
+      "p_c25x30": "2.5 × 3 cm (Mexico tamaño infantil)"
+    }
+  }
+}

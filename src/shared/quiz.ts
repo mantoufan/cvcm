@@ -4,14 +4,14 @@
 // Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad", "archetype", "communication-style"] },
-  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency", "parenting-style"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad", "archetype", "communication-style", "type-a-personality"] },
+  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency", "parenting-style", "am-i-in-love"] },
   { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money", "imposter-syndrome", "grit"] },
-  { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class"] },
-  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "sanrio", "dragon-ball-character", "anime"] },
+  { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class", "fnaf-character"] },
+  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "sanrio", "dragon-ball-character", "my-hero-academia-character", "anime"] },
   { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob", "harry-potter-character", "lord-of-the-rings", "game-of-thrones-house", "star-wars-character"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed", "flower", "mythical-creature", "superpower"] },
-  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed", "flower", "mythical-creature", "superpower", "fruit", "bird", "dinosaur"] },
+  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "anger", "adhd"] },
 ] as const;
 
 export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
@@ -209,6 +209,11 @@ const OCD = likert(Array(15).fill("ocd+").join(" "));
  * daytime toll). Not the Insomnia Severity Index or any other scale, not clinically validated; the copy says so.
  */
 const INSOMNIA = likert(Array(15).fill("sleep+").join(" "));
+/**
+ * Written for cv.cm from the main sides of problem anger (how often and how strongly it comes, how it comes out, how
+ * long it lasts and what it costs). Not the STAXI or any other scale, not clinically validated; the copy says so.
+ */
+const ANGER = likert(Array(15).fill("anger+").join(" "));
 /** Thinking style from analytic ("left-brain") to holistic ("right-brain"), written for cv.cm; analytic statements reversed. */
 const LEFT_RIGHT_BRAIN = likert(Array(7).fill("right+ right-").join(" "));
 /** Written for cv.cm around common descriptions of codependency (not any published scale), half reversed. */
@@ -217,6 +222,9 @@ const CODEPENDENCY = likert(Array(7).fill("codep+ codep-").join(" "));
 const IMPOSTER = likert(Array(7).fill("imposter+ imposter-").join(" "));
 /** Written for cv.cm around perseverance and steady interest (not the Grit Scale or any other published scale), half reversed. */
 const GRIT = likert(Array(7).fill("grit+ grit-").join(" "));
+
+/** Written for cv.cm around the Type A pattern (hurry, competitiveness, impatience, hostility), not the Jenkins Activity Survey or any other published scale; half reversed. */
+const TYPE_A = likert(Array(7).fill("typea+ typea-").join(" "));
 
 /**
  * Growth or fixed mindset (after Carol Dweck): ten original statements, the fixed-mindset ones reversed. Total 0–40;
@@ -933,6 +941,19 @@ const PERSONAL_COLOR: ChoiceItem[] = [
 ];
 
 /**
+ * A layout with every question's options moved `by` places to the left. The balance holds (each result as often in each
+ * position, just in other positions), so a new quiz on a shared layout needn't map answer positions to results the way
+ * the quizzes next to it do. The copy's answer order follows the shifted layout; tests pin each shift.
+ */
+function shift(items: readonly ChoiceItem[], by: number): ChoiceItem[] {
+  const n = items[0].options.length;
+  if (!Number.isInteger(by) || by <= 0 || by >= n) throw new Error(`shift: ${by} is not between 1 and ${n - 1}`);
+  // `exclude` is indexed by answer position, and a shared layout with mixed option counts can't rotate as one.
+  if (items.some((item) => item.exclude || item.options.length !== n)) throw new Error("shift: needs a layout of equal-length items without exclude");
+  return items.map(({ options }) => ({ options: options.map((_, i) => options[(i + by) % n]) }));
+}
+
+/**
  * A tested choice layout with its results renamed, so quizzes that share an arrangement (and its balance: every result
  * equally often, spread over the answer positions) cannot drift from it. Every result in the layout must get its own new name.
  */
@@ -978,6 +999,24 @@ const ARCHETYPE = relabel(GREEK_GOD, { zeus: "innocent", hera: "everyman", posei
  * questions an axis worth 2 or nothing, so neither axis can land on exactly 50%. Questions written for cv.cm.
  */
 const PARENTING = relabel(PERSONAL_COLOR, { warm: "warmth", deep: "control" });
+
+/** Eight Five Nights at Freddy's characters: the `GHIBLI` layout with the results renamed. */
+const FNAF = relabel(GHIBLI, { chihiro: "freddy", san: "bonnie", kiki: "chica", sophie: "foxy", nausicaa: "goldenfreddy", howl: "mangle", haku: "springtrap", totoro: "puppet" });
+
+/** Eight My Hero Academia characters: the `GHIBLI` layout with the results renamed, options moved 1 place left. */
+const MY_HERO_ACADEMIA = shift(relabel(GHIBLI, { chihiro: "deku", san: "bakugo", kiki: "todoroki", sophie: "uraraka", nausicaa: "iida", howl: "tsuyu", haku: "kirishima", totoro: "allmight" }), 1);
+
+/** Eight fruits: the `GHIBLI` layout with the results renamed, options moved 1 place left. */
+const FRUIT = shift(relabel(GHIBLI, { chihiro: "strawberry", san: "banana", kiki: "apple", sophie: "mango", nausicaa: "pineapple", howl: "watermelon", haku: "lemon", totoro: "peach" }), 1);
+
+/** Eight birds: the `GHIBLI` layout with the results renamed, options moved 2 places left. */
+const BIRD = shift(relabel(GHIBLI, { chihiro: "owl", san: "eagle", kiki: "parrot", sophie: "swan", nausicaa: "crow", howl: "hummingbird", haku: "penguin", totoro: "flamingo" }), 2);
+
+/** Eight dinosaurs: the `GHIBLI` layout with the results renamed, options moved 3 places left. */
+const DINOSAUR = shift(relabel(GHIBLI, { chihiro: "trex", san: "triceratops", kiki: "velociraptor", sophie: "stegosaurus", nausicaa: "brachiosaurus", howl: "ankylosaurus", haku: "spinosaurus", totoro: "parasaurolophus" }), 3);
+
+/** Signs of being in love, 0 to 3 points an answer: the `CRUSH` weights with options moved 1 place left, so the strongest answer never sits where the crush quiz puts it. */
+const IN_LOVE = shift(relabel(CRUSH, { signs: "love" }), 1);
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
@@ -1578,6 +1617,67 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     items: PARENTING,
     result: { kind: "quadrant", x: "warmth", y: "control", results: { lowLow: "uninvolved", highLow: "permissive", lowHigh: "authoritarian", highHigh: "authoritative" } },
   },
+  "fnaf-character": {
+    id: "fnaf-character",
+    type: "choice",
+    dims: ["freddy", "bonnie", "chica", "foxy", "goldenfreddy", "mangle", "springtrap", "puppet"],
+    items: FNAF,
+    result: { kind: "top", tie: "spread" },
+  },
+  "my-hero-academia-character": {
+    id: "my-hero-academia-character",
+    type: "choice",
+    dims: ["deku", "bakugo", "todoroki", "uraraka", "iida", "tsuyu", "kirishima", "allmight"],
+    items: MY_HERO_ACADEMIA,
+    result: { kind: "top", tie: "spread" },
+  },
+  fruit: {
+    id: "fruit",
+    type: "choice",
+    dims: ["strawberry", "banana", "apple", "mango", "pineapple", "watermelon", "lemon", "peach"],
+    items: FRUIT,
+    result: { kind: "top", tie: "spread" },
+  },
+  bird: {
+    id: "bird",
+    type: "choice",
+    dims: ["owl", "eagle", "parrot", "swan", "crow", "hummingbird", "penguin", "flamingo"],
+    items: BIRD,
+    result: { kind: "top", tie: "spread" },
+  },
+  dinosaur: {
+    id: "dinosaur",
+    type: "choice",
+    dims: ["trex", "triceratops", "velociraptor", "stegosaurus", "brachiosaurus", "ankylosaurus", "spinosaurus", "parasaurolophus"],
+    items: DINOSAUR,
+    result: { kind: "top", tie: "spread" },
+  },
+  "type-a-personality": {
+    id: "type-a-personality",
+    type: "likert",
+    scale: "agree5",
+    dims: ["typea"],
+    items: TYPE_A,
+    // Three equal bands around the neutral total of 28.
+    result: { kind: "band", bands: [{ max: 18, key: "typeb" }, { max: 37, key: "mixed" }, { max: 56, key: "typea" }] },
+  },
+  "am-i-in-love": {
+    id: "am-i-in-love",
+    type: "choice",
+    dims: ["love"],
+    items: IN_LOVE,
+    // A third and two thirds of 36, as in the crush quiz.
+    result: { kind: "band", bands: [{ max: 12, key: "notyet" }, { max: 24, key: "crush" }, { max: 36, key: "love" }] },
+  },
+  anger: {
+    id: "anger",
+    type: "likert",
+    scale: "agree5",
+    dims: ["anger"],
+    items: ANGER,
+    // 24 and 39 of 60 are 40% and 65%, as in the OCD and insomnia checks. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 24, key: "low" }, { max: 39, key: "moderate" }, { max: 60, key: "high" }] },
+  },
 };
 
 /**
@@ -1595,6 +1695,8 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
  * less often go with depression, but the WHO-5 asks nothing about self-harm. Where both apply, the crisis box wins.
  * Not insomnia: its "see a doctor" is sleep advice, and these are emotional-support lines; its high band links the
  * depression check instead (FOLLOW_UP).
+ * Anger's moderate and high bands are in: they recommend a doctor or counselor and, if anger has led to hurting someone,
+ * getting help now. Its low band only mentions that case in passing.
  */
 export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   "wellbeing-index": ["low"],
@@ -1604,6 +1706,7 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   stress: ["high"],
   "social-anxiety": ["high"],
   ocd: ["many"],
+  anger: ["moderate", "high"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
@@ -1613,6 +1716,7 @@ export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz:
   stress: { bands: ["high"], quiz: "anxiety" },
   "social-anxiety": { bands: ["high"], quiz: "anxiety" },
   insomnia: { bands: ["many"], quiz: "depression" },
+  anger: { bands: ["high"], quiz: "stress" },
 };
 
 export function questionCount(id: QuizId): number {
