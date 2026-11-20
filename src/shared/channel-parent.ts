@@ -17,8 +17,8 @@ import { BREED_IDS } from "./breeds";
 const ORIGIN = "https://cv.cm";
 
 /**
- * The reference channels the Data hub lists in its "Quick reference" group, ahead of the reference tables, in order.
- * `copy` names their hub copy in the datasets pack; `count` fills its `meta` line, as the row count does for a table.
+ * The reference channels the Data hub lists as its first group, in order (datasetHubGroups). `copy` names their hub
+ * copy in the datasets pack; `count` fills its `meta` line, as the row count does for a table.
  */
 export const DATA_REFERENCE = [
   { copy: "countries", nav: "countries", count: COUNTRY_LIST.length, href: (locale: Locale): string => countriesHref(locale) },

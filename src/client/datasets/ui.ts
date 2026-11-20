@@ -1,5 +1,5 @@
 import { h } from "../dom";
-import { linkList, type LinkItem } from "../links";
+import { linkList } from "../links";
 import { t } from "../i18n";
 import type { Locale } from "../../shared/locale";
 import { appHref, datasetHref } from "../../shared/path";
@@ -16,7 +16,7 @@ import {
   type DatasetId,
 } from "../../shared/datasets";
 import {
-  dataReferenceLinks,
+  datasetHubGroups,
   datasetFaqItems,
   datasetHub,
   datasetLinkMeta,
@@ -51,11 +51,11 @@ function faq(locale: Locale, id: DatasetId | null): HTMLElement {
   );
 }
 
-function setLinks(locale: Locale, ids: readonly DatasetId[], before: LinkItem[] = []): HTMLElement {
-  return linkList([...before, ...ids.map((id) => {
+function setLinks(locale: Locale, ids: readonly DatasetId[]): HTMLElement {
+  return linkList(ids.map((id) => {
     const name = datasetName(locale, id);
     return { href: datasetHref(locale, id), name: name.name, blurb: name.blurb, meta: datasetLinkMeta(locale, id), nav: `dataset-${id}` };
-  })]);
+  }));
 }
 
 export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
@@ -64,13 +64,10 @@ export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
     crumb(locale, null),
     h("h1", null, hub.h1),
     h("p", { class: "lede" }, hub.lede),
-    // The reference channels that belong to Data (country profiles, calories, the periodic table, …) open the
-    // "Quick reference" group as ordinary links. Their breadcrumbs run Home / Data / … (channel-parent.ts).
+    // The reference channels that belong to Data (country profiles, calories, the periodic table, …) are the first
+    // group, linked like the tables. Their breadcrumbs run Home / Data / … (channel-parent.ts).
     h("section", { class: "wall quiz-hub" },
-      ...DATASET_GROUPS.map((group) => h("div", { class: "group" },
-        h("h2", null, hub.groups[group.id]),
-        setLinks(locale, group.sets, group.id === "reference" ? dataReferenceLinks(locale) : []),
-      )),
+      ...datasetHubGroups(locale).map((group) => h("div", { class: "group" }, h("h2", null, group.label), linkList(group.links))),
     ),
     h("section", { class: "quiz-about" }, ...hub.about.map((p) => h("p", null, p))),
     faq(locale, null),

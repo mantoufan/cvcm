@@ -19,6 +19,7 @@ import {
   type IndicatorRow,
   type PaperRow,
   type ZoneRow,
+  type DatasetGroupId,
 } from "./datasets";
 import type { Locale } from "./locale";
 import { datasetMessages, messages, type DatasetMessages } from "./messages";
@@ -201,19 +202,33 @@ export function datasetFaqItems(locale: Locale, id: DatasetId | null): { q: stri
   return id ? datasetPageCopy(locale, id).faq : datasetHub(locale).faq;
 }
 
+/** A link on the Data hub: a table, or a reference channel shaped like one (its small line counts entries, not rows). */
+export type DatasetHubLink = { href: string; name: string; blurb: string; meta: string; nav: string };
+
 /**
- * The Data hub's links to the reference channels (country profiles, calories, …), shaped like its table links: the
- * channels open the "Quick reference" group, and their small line counts entries as a table's counts rows.
+ * The Data hub's groups, in order, for both the page and its crawler fallback: the reference channels (country
+ * profiles, calories, the periodic table, …) first, as an ordinary group, then the table groups.
  */
-export function dataReferenceLinks(locale: Locale): { href: string; name: string; blurb: string; meta: string; nav: string }[] {
+export function datasetHubGroups(locale: Locale): { id: "channels" | DatasetGroupId; label: string; links: DatasetHubLink[] }[] {
   const hub = datasetHub(locale);
-  return DATA_REFERENCE.map((item) => ({
+  const channels = DATA_REFERENCE.map((item) => ({
     href: item.href(locale),
     name: hub[item.copy].title,
     blurb: hub[item.copy].text,
     meta: fill(hub[item.copy].meta, { n: formatCount(locale, item.count) }),
     nav: item.nav,
   }));
+  return [
+    { id: "channels", label: hub.reference, links: channels },
+    ...DATASET_GROUPS.map((group) => ({
+      id: group.id,
+      label: hub.groups[group.id],
+      links: group.sets.map((set) => {
+        const name = datasetName(locale, set);
+        return { href: datasetHref(locale, set), name: name.name, blurb: name.blurb, meta: datasetLinkMeta(locale, set), nav: `dataset-${set}` };
+      }),
+    })),
+  ];
 }
 
 /** Row count, then the snapshot date: the small line under each link. */
@@ -433,13 +448,9 @@ export function datasetStaticHtml(locale: Locale, id: DatasetId | null): string 
   const hub = datasetHub(locale);
   const home = `<a href="${escapeHtml(appHref(locale, null))}">${escapeHtml(datasetMessages(locale).crumbHome)}</a>`;
   if (!id) {
-    const groups = DATASET_GROUPS.map((group) => {
-      const channels = group.id === "reference" ? dataReferenceLinks(locale) : [];
-      const links = [
-        ...channels,
-        ...group.sets.map((set) => ({ href: datasetHref(locale, set), ...datasetName(locale, set) })),
-      ].map((link) => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.name)}</a> ${escapeHtml(link.blurb)}</li>`).join("");
-      return `<h2>${escapeHtml(hub.groups[group.id])}</h2><ul>${links}</ul>`;
+    const groups = datasetHubGroups(locale).map((group) => {
+      const links = group.links.map((link) => `<li><a href="${escapeHtml(link.href)}">${escapeHtml(link.name)}</a> ${escapeHtml(link.blurb)}</li>`).join("");
+      return `<h2>${escapeHtml(group.label)}</h2><ul>${links}</ul>`;
     }).join("");
     return [
       `<nav class="device-crumb">${home} <span aria-hidden="true">/</span> <span>${escapeHtml(hub.h1)}</span></nav>`,

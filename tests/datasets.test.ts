@@ -6,9 +6,9 @@ import countries from "../src/data/countries.json";
 import { LOCALES } from "../src/shared/locale";
 import { datasetMessages } from "../src/shared/messages";
 import { STATIC_FILE, datasetHref, parseAppPath } from "../src/shared/path";
-import { DATASETS, DATASET_FILES, DATASET_SENSITIVE, DATASET_TOOLS, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
+import { DATASETS, DATASET_GROUPS, DATASET_FILES, DATASET_SENSITIVE, DATASET_TOOLS, DATASET_SNAPSHOT, datasetUpdated, INDICATORS, INDICATOR_SPEC, csvHref, datasetMeta, isIndicator, type CountryRow, type DatasetId, type DatasetRows, type IndicatorRow } from "../src/shared/datasets";
 import { ROW_FILES } from "../src/client/datasets/rows";
-import { dataReferenceLinks, datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, formatIndicator, regionName, utcOffset } from "../src/shared/datasets-i18n";
+import { datasetHubGroups, datasetJsonLd, datasetPageCopy, datasetStaticHtml, datasetTable, datasetTitle, formatIndicator, regionName, utcOffset } from "../src/shared/datasets-i18n";
 import { pageCanonical } from "../src/shared/seo";
 import { applyHtmlSeo } from "../src/shared/seo-html";
 import { buildSitemapXml } from "../src/shared/sitemap";
@@ -292,20 +292,19 @@ describe("data pages: tables", () => {
 });
 
 describe("data hub: reference channels", () => {
-  it("lists the reference channels inside the Quick reference group, counted like the tables", () => {
+  it("lists the reference channels first, as an ordinary group counted like the tables", () => {
     for (const locale of LOCALES) {
-      const links = dataReferenceLinks(locale);
-      expect(links.map((l) => l.nav)).toEqual(DATA_REFERENCE.map((item) => item.nav));
-      for (const link of links) {
-        expect(link.meta).not.toContain("{n}");
+      const groups = datasetHubGroups(locale);
+      expect(groups.map((g) => g.id)).toEqual(["channels", ...DATASET_GROUPS.map((g) => g.id)]);
+      expect(groups[0].links.map((l) => l.nav)).toEqual(DATA_REFERENCE.map((item) => item.nav));
+      for (const link of groups.flatMap((g) => g.links)) {
+        expect(link.meta).not.toContain("{");
         expect(link.meta).toMatch(/\d/);
       }
-      // No heading of its own: the channels open the "reference" group, before the reference tables.
+      // The crawler fallback lists the same links in the same order.
       const html = datasetStaticHtml(locale, null);
-      const group = html.indexOf(`<h2>${datasetMessages(locale).hub.groups.reference}</h2>`);
-      expect(group).toBeGreaterThan(-1);
-      expect(html.indexOf(`href="${links[0].href}"`)).toBeGreaterThan(group);
-      expect(html.indexOf(`href="${links[0].href}"`)).toBeLessThan(html.indexOf(`href="${datasetHref(locale, "paper-sizes")}"`));
+      const at = groups.flatMap((g) => g.links).map((l) => html.indexOf(`href="${l.href}"`));
+      expect(at.every((i, n) => i > (n ? at[n - 1] : -1))).toBe(true);
     }
   });
 });
