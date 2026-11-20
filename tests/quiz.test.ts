@@ -640,10 +640,7 @@ describe("test pages: scoring", () => {
     const crush = QUIZ_DEFS.crush;
     const love = QUIZ_DEFS["am-i-in-love"];
     if (crush.type !== "choice" || love.type !== "choice") throw new Error();
-    love.items.forEach((item, i) => {
-      expect(item.options.findIndex((o) => o.love === 3), `q${i + 1}`).not.toBe(crush.items[i].options.findIndex((o) => o.signs === 3));
-    });
-    // The in-love weights are the crush weights with each question's options moved one place left (written out in quiz.ts).
+    // The crush weights moved one place left, which also moves every question's strongest answer.
     love.items.forEach((item, i) => {
       const weights = crush.items[i].options.map((o) => o.signs);
       expect(item.options.map((o) => o.love), `q${i + 1}`).toEqual([...weights.slice(1), weights[0]]);

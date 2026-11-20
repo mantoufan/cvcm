@@ -946,7 +946,10 @@ const PERSONAL_COLOR: ChoiceItem[] = [
  * the quizzes next to it do. The copy's answer order follows the shifted layout; tests pin each shift.
  */
 function shift(items: readonly ChoiceItem[], by: number): ChoiceItem[] {
-  return items.map(({ options }) => ({ options: options.map((_, i) => options[(i + by) % options.length]) }));
+  return items.map(({ options }) => {
+    if (!Number.isInteger(by) || by <= 0 || by >= options.length) throw new Error(`shift: ${by} is not between 1 and ${options.length - 1}`);
+    return { options: options.map((_, i) => options[(i + by) % options.length]) };
+  });
 }
 
 /**
