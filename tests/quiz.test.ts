@@ -562,7 +562,7 @@ describe("test pages: scoring", () => {
     expect(FOLLOW_UP.insomnia).toEqual({ bands: ["many"], quiz: "depression" });
   });
 
-  it("bands the anger self-check like the OCD check, with the stress check and the support box at high", () => {
+  it("bands the anger self-check like the OCD check, with the support box from moderate and the stress check at high", () => {
     expect(maxTotal("anger")).toBe(60);
     expect(QUIZ_DEFS.anger.items.some((item) => "rev" in item)).toBe(false);
     const answersFor = (points: number): number[] => Array.from({ length: 15 }, (_, i) => Math.max(0, Math.min(4, points - i * 4)));
@@ -571,7 +571,7 @@ describe("test pages: scoring", () => {
     expect(scoreQuiz("anger", answersFor(25)).key).toBe("moderate");
     expect(scoreQuiz("anger", answersFor(39)).key).toBe("moderate");
     expect(scoreQuiz("anger", answersFor(40))).toMatchObject({ key: "high", safety: false });
-    expect(SUPPORT.anger).toEqual(["high"]);
+    expect(SUPPORT.anger).toEqual(["moderate", "high"]);
     expect(FOLLOW_UP.anger).toEqual({ bands: ["high"], quiz: "stress" });
   });
 

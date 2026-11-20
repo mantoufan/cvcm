@@ -946,10 +946,11 @@ const PERSONAL_COLOR: ChoiceItem[] = [
  * the quizzes next to it do. The copy's answer order follows the shifted layout; tests pin each shift.
  */
 function shift(items: readonly ChoiceItem[], by: number): ChoiceItem[] {
-  return items.map(({ options }) => {
-    if (!Number.isInteger(by) || by <= 0 || by >= options.length) throw new Error(`shift: ${by} is not between 1 and ${options.length - 1}`);
-    return { options: options.map((_, i) => options[(i + by) % options.length]) };
-  });
+  const n = items[0].options.length;
+  if (!Number.isInteger(by) || by <= 0 || by >= n) throw new Error(`shift: ${by} is not between 1 and ${n - 1}`);
+  // `exclude` is indexed by answer position, and a shared layout with mixed option counts can't rotate as one.
+  if (items.some((item) => item.exclude || item.options.length !== n)) throw new Error("shift: needs a layout of equal-length items without exclude");
+  return items.map(({ options }) => ({ options: options.map((_, i) => options[(i + by) % n]) }));
 }
 
 /**
@@ -1694,7 +1695,7 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
  * less often go with depression, but the WHO-5 asks nothing about self-harm. Where both apply, the crisis box wins.
  * Not insomnia: its "see a doctor" is sleep advice, and these are emotional-support lines; its high band links the
  * depression check instead (FOLLOW_UP).
- * Anger's high band is in: its copy says to get help now, and someone that angry is often in distress too.
+ * Anger's moderate and high bands are in: their copy says to get help now if anger has led to hurting someone.
  */
 export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   "wellbeing-index": ["low"],
@@ -1704,7 +1705,7 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   stress: ["high"],
   "social-anxiety": ["high"],
   ocd: ["many"],
-  anger: ["high"],
+  anger: ["moderate", "high"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
