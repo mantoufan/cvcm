@@ -44,7 +44,8 @@ N = {
 "永恒":("永恆","Yongheng","Vĩnh Hằng"),
 }
 import re, json, os
-KO = json.load(open(os.path.join(os.path.dirname(__file__), "ko_readings.json"), encoding="utf-8"))
+with open(os.path.join(os.path.dirname(__file__), "ko_readings.json"), encoding="utf-8") as _fh:
+    KO = json.load(_fh)
 # Traditional forms that Japanese writes in shinjitai; 鬥 becomes 斗 as in the Japanese titles 斗破蒼穹 / 斗羅大陸.
 JA_MAP = str.maketrans({"氣": "気", "體": "体", "虛": "虚", "鬥": "斗", "號": "号", "靈": "霊", "恆": "恒", "傳": "伝",
     "絕": "絶", "變": "変", "實": "実", "淨": "浄", "碎": "砕", "圓": "円", "轉": "転", "鍊": "錬", "乘": "乗"})
@@ -59,7 +60,7 @@ def disp(s, L):
     if L == "vi": return f"{hv} ({s})"
     if L == "ja": return ja(t)
     if L == "ko": return f"{KO[s]}({t})"
-    return f"{s} ({py})"
+    raise KeyError(f"unknown locale {L}")
 def fill(text, L):
     return re.sub(r"\{([^{}|]+)\}", lambda m: disp(m.group(1), L), text)
 def chain(names, L, sep=" → "):
