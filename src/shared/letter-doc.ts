@@ -93,8 +93,9 @@ function table(rows: readonly (readonly [string, string])[], total: number): str
 
 function paragraph(line: DocLine, vertical: boolean): string {
   const pPr: string[] = [];
-  if (line.align && line.align !== "start") pPr.push(`<w:jc w:val="${JC[line.align]}"/>`);
+  // CT_PPr order: ind comes before jc, or Word reports unreadable content.
   if (line.indent) pPr.push(`<w:ind w:firstLineChars="100" w:firstLine="${vertical ? 210 : 220}"/>`);
+  if (line.align && line.align !== "start") pPr.push(`<w:jc w:val="${JC[line.align]}"/>`);
   const size = LINE_PT[line.size ?? "body"] * 2;
   const rPr = `<w:rPr>${line.bold ? "<w:b/>" : ""}<w:sz w:val="${size}"/><w:szCs w:val="${size}"/></w:rPr>`;
   const runs = line.text.split("\n").map((part, i) =>

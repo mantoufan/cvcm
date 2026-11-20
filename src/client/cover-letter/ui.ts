@@ -166,7 +166,9 @@ export function mountCoverLetter(host: HTMLElement): void {
   counts = new Map();
   encBoxes = [];
   dirty = false;
-  data = readDraft() ?? { ...sampleData(tpl), date: todayIso() };
+  // A letter is dated the day it goes out: a reopened draft takes today's date, not the day it was last edited.
+  const draft = readDraft();
+  data = draft ? { ...draft, date: todayIso() } : { ...sampleData(tpl), date: todayIso() };
 
   const about = tpl.fields.filter((f) => !JOB_FIELDS.has(f) && !EXP_FIELDS.has(f) && !KO_FIELDS.has(f));
   const job = tpl.fields.filter((f) => JOB_FIELDS.has(f));

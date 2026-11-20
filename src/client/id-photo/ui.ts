@@ -409,7 +409,8 @@ async function ensureMask(place = false): Promise<void> {
     syncZoom();
     redraw();
   } catch (err) {
-    if (!alive || job !== jobSeq) return;
+    // A failure for a photo that has since been replaced is not news to the visitor.
+    if (!alive || job !== jobSeq || gen !== state.gen) return;
     status.error(t("ai.errorRun"));
     console.error(err);
   } finally {

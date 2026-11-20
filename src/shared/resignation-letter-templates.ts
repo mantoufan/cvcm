@@ -5,7 +5,8 @@
  * untouched form is still a usable template.
  */
 import type { Locale } from "./locale";
-import { parseIso, reiwaYear, type RlForm, type RlTemplate } from "./resignation-letter";
+import { parseIso, type RlForm, type RlTemplate } from "./resignation-letter";
+import { wareki } from "./resume";
 
 const or = (value: string, blank: string): string => value.trim() || blank;
 const opt = (value: string): string => value.trim();
@@ -103,12 +104,13 @@ function kanjiNumber(n: number, digitwise = false): string {
 function jaDate(iso: string, f: RlForm): string {
   const p = parseIso(iso);
   if (!p) return f.era === "wareki" ? "令和　　年　　月　　日" : "　　　　年　　月　　日";
-  const reiwa = f.era === "wareki" ? reiwaYear(p[0], p[1]) : null;
+  // Any era, to the day (a back-dated 2019-04-30 is 平成31年), from the résumé builder's era table.
+  const era = f.era === "wareki" ? wareki({ y: p[0], m: p[1], d: p[2] }) : null;
   if (f.vertical) {
-    const year = reiwa ? `令和${reiwa === "元" ? "元" : kanjiNumber(Number(reiwa))}` : kanjiNumber(p[0], true);
+    const year = era ? `${era.era}${era.year === "元" ? "元" : kanjiNumber(Number(era.year))}` : kanjiNumber(p[0], true);
     return `${year}年${kanjiNumber(p[1])}月${kanjiNumber(p[2])}日`;
   }
-  const year = reiwa ? `令和${reiwa}` : String(p[0]);
+  const year = era ? `${era.era}${era.year}` : String(p[0]);
   return `${year}年${p[1]}月${p[2]}日`;
 }
 

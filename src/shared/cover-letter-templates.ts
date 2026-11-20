@@ -31,7 +31,10 @@ const picked = (tpl: { enclosures: readonly string[] }, d: CoverData) => d.enclo
 
 function article(word: string): string {
   if (word.startsWith("[")) return word;
-  return /^(?:[aeio]|u(?!ni|se|sa|ro)|hour|honest)/i.test(word) ? `an ${word}` : `a ${word}`;
+  // By sound: "a European", "a one-person", "a university", "an hour", "an honest", "an MBA".
+  if (/^(?:eu|ew|one\b|once|uni|use|usu|ura|uro)/i.test(word)) return `a ${word}`;
+  if (/^(?:[aeiou]|hour|honest|heir)/i.test(word) || /^[FHLMNRSX](?:[A-Z]|$)/.test(word)) return `an ${word}`;
+  return `a ${word}`;
 }
 
 function enDate(iso: string): string {

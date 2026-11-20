@@ -77,6 +77,8 @@ describe("resignation letter logic", () => {
     expect(text).toContain("令和八年十二月四日をもって退職いたします。");
     const western = letterText(buildLetter(RL_TEMPLATES.ja, filled("ja", { era: "seireki" })));
     expect(western).toContain("二〇二六年十二月四日をもって退職いたします。");
+    const heisei = letterText(buildLetter(RL_TEMPLATES.ja, filled("ja", { lastDay: "2019-04-30", vertical: false })));
+    expect(heisei).toContain("平成31年4月30日");
     const negai = letterText(buildLetter(RL_TEMPLATES.ja, filled("ja", { kind: "negai", era: "seireki", vertical: false })));
     expect(negai).toContain("2026年12月4日をもって退職いたしたく、ここにお願い申し上げます。");
     expect(negai).toContain("以上");
