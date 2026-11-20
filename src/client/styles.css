@@ -392,7 +392,7 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .sc-group input[aria-invalid] { border-color: var(--pink-deep); }
 @media (min-width: 900px) {
   .sc-tool { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: start; }
-  .sc-result { position: sticky; top: calc(0.75rem + env(safe-area-inset-top, 0px)); }
+  .sc-result { position: sticky; top: calc(0.75rem + env(safe-area-inset-top, 0px)); max-height: calc(100vh - 1.5rem - env(safe-area-inset-top, 0px)); overflow-y: auto; }
 }
 .data-panes { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
 .data-panes .clip-input { min-height: 18rem; }

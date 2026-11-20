@@ -111,6 +111,11 @@ describe("reading a field", () => {
     expect(readField("1$000", "rent", "en")).toBeNaN();
     expect(readField("30%", "rent", "en")).toBeNaN();
     expect(readField("Rp 26.000", "price", "id")).toBe(26000);
+    expect(readField("３０％", "cogsPct", "ja")).toBe(30);
+    expect(readField("1,2 tỷ", "equipment", "vi")).toBe(1200000000);
+    expect(readField("1,5 miliar", "equipment", "id")).toBe(1500000000);
+    expect(readField("8千", "rent", "zh-CN")).toBe(8000);
+    expect(readField("2M", "rent", "en")).toBeNaN();
   });
   it("keeps shares to 100 % and days open to 1–31", () => {
     expect(fieldOk(250, "commissionPct")).toBe(false);
@@ -173,7 +178,7 @@ describe("startup cost ui", () => {
     mountStartupCost(host);
     set("[data-field=rent]", "abc");
     expect(text("[data-out=result]")).toBe("Enter amounts of zero or more.");
-    expect(q("[data-field=rent]").hasAttribute("aria-invalid")).toBe(true);
+    expect(q("[data-field=rent]").getAttribute("aria-invalid")).toBe("true");
     expect(q<HTMLButtonElement>("[data-action=copy]").disabled).toBe(true);
     set("[data-field=rent]", "");
     expect(q("[data-field=rent]").hasAttribute("aria-invalid")).toBe(false);
@@ -203,6 +208,9 @@ describe("startup cost ui", () => {
     expect(text("[data-out=verdict]")).toContain("payback takes over 50 years.");
     set("[data-field=orders]", "12.5");
     expect(text("[data-out=table] tbody tr:nth-child(3) td:first-child")).toBe("12.5 (yours)");
+    set("[data-field=orders]", "2.25");
+    expect(text("[data-out=table] tbody tr:nth-child(3) td:first-child")).toBe("2.25 (yours)");
+    set("[data-field=orders]", "12.5");
     // Singular in English: one order a day breaks even when fixed costs are tiny.
     set("[data-field=rent]", "0"); set("[data-field=staff]", "0"); set("[data-field=utilities]", "0"); set("[data-field=other]", "100");
     expect(text("[data-out=result]")).toContain("Break-even orders a day1 order");

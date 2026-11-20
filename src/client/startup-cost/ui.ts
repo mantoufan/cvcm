@@ -30,8 +30,9 @@ const TRAIL = /\s*(?:[€¥￥₩₫$]|元|円|원|đồng|đ|VND|USD|EUR)$/i;
 const UNITS: readonly [RegExp, number][] = [
   [/(?:[万萬만])$/, 1e4],
   [/(?:[億亿억])$/, 1e8],
+  [/(?:tỷ|miliar)$/i, 1e9],
   [/(?:triệu|tr|juta|jt)$/i, 1e6],
-  [/(?:ribu|rb|k)$/i, 1e3],
+  [/(?:ribu|rb|k|千)$/i, 1e3],
 ];
 
 /**
@@ -39,8 +40,10 @@ const UNITS: readonly [RegExp, number][] = [
  * Empty → undefined; not a number → NaN.
  */
 export function readField(raw: string, key: Key, loc: Locale): number | undefined {
-  if (raw.trim() === "") return undefined;
-  let bare = raw.trim().replace(LEAD, "").replace(TRAIL, "");
+  // NFKC turns IME full-width input into ASCII: "３０％" → "30%", "￥" → "¥".
+  const typed = raw.normalize("NFKC").trim();
+  if (typed === "") return undefined;
+  let bare = typed.replace(LEAD, "").replace(TRAIL, "");
   if (PCT_KEYS.has(key)) bare = bare.replace(/\s*%$/, "");
   if (bare === "") return NaN;
   let scale = 1;
@@ -90,7 +93,10 @@ export function mountStartupCost(host: HTMLElement): void {
   let last = "";
   const whole = numberFormat(loc, { maximumFractionDigits: 0 });
   const one = numberFormat(loc, { maximumFractionDigits: 1 });
-  const two = numberFormat(loc, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  // Yen, won, đồng, rupiah and NT$ prices have no cents worth showing.
+  const centDigits = loc === "en" || loc === "es" || loc === "zh-CN" ? 2 : 0;
+  const cents = numberFormat(loc, { minimumFractionDigits: centDigits, maximumFractionDigits: centDigits });
+  const typedOrders = numberFormat(loc, { maximumFractionDigits: 2 });
 
   const inputs = {} as Record<Key, HTMLInputElement>;
   for (const g of GROUPS) {
@@ -120,7 +126,9 @@ export function mountStartupCost(host: HTMLElement): void {
     for (const k of Object.keys(inputs) as Key[]) {
       const x = readField(inputs[k].value, k, loc);
       const ok = fieldOk(x, k);
-      inputs[k].toggleAttribute("aria-invalid", !ok);
+      // An empty aria-invalid means "false" to assistive tech: write "true", or remove it.
+      if (ok) inputs[k].removeAttribute("aria-invalid");
+      else inputs[k].setAttribute("aria-invalid", "true");
       if (!ok) bad.push(k);
       v[k] = ok && x !== undefined ? x : 0;
     }
@@ -167,22 +175,23 @@ export function mountStartupCost(host: HTMLElement): void {
       [t(`${S}.startup`), money(r.startup)],
       [t(`${S}.profit`), money(r.profit)],
       [t(`${S}.revenue`), money(r.revenue)],
-      [t(`${S}.perOrderNet`), signed(r.perOrder, two, 2)],
+      [t(`${S}.perOrderNet`), signed(r.perOrder, cents, centDigits)],
       [t(`${S}.fixed`), money(r.fixed)],
       [t(`${S}.rentShare`), pct(r.rentShare, 1)],
       [t(`${S}.laborShare`), pct(r.laborShare, 1)],
     ]);
     copy.disabled = false;
     verdict.textContent = verdictText(v, r, breakEven);
-    sens.replaceChildren(
-      h("h3", null, t(`${S}.tableTitle`)),
-      table([t(`${S}.colOrders`), t(`${S}.profit`), t(`${S}.payback`)], sensitivityRows(v.orders).map(({ f, orders }) => {
-        const s = shopNumbers(v, orders);
-        const label = f === 1 ? t(`${S}.current`, { n: one.format(orders) })
-          : t(f < 1 ? `${S}.fewer` : `${S}.more`, { n: one.format(orders), pct: whole.format(Math.round(Math.abs(1 - f) * 100)) });
-        return [label, money(s.profit), months(s.paybackMonths)];
-      })),
-    );
+    const head = [t(`${S}.colOrders`), t(`${S}.profit`), t(`${S}.payback`)];
+    const rows = sensitivityRows(v.orders).map(({ f, orders }) => {
+      const s = shopNumbers(v, orders);
+      const label = f === 1 ? t(`${S}.current`, { n: typedOrders.format(orders) })
+        : t(f < 1 ? `${S}.fewer` : `${S}.more`, { n: one.format(orders), pct: whole.format(Math.round(Math.abs(1 - f) * 100)) });
+      return [label, money(s.profit), months(s.paybackMonths)];
+    });
+    sens.replaceChildren(h("h3", null, t(`${S}.tableTitle`)), table(head, rows));
+    // Copy carries the verdict and the what-if table too: the check the page asks for travels with the numbers.
+    last = [last, "", verdict.textContent, "", t(`${S}.tableTitle`), ...[head, ...rows].map((row) => row.join("\t"))].join("\n");
   }
 
   /** A standalone label ("Under a month", "Más de 50 años") made to sit mid-sentence. */
