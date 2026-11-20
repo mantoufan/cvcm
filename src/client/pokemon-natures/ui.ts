@@ -22,7 +22,8 @@ export function mountPokemonNatures(host: HTMLElement): void {
   const up = statSelect("up", START[0]);
   const down = statSelect("down", START[1]);
   const out = h("p", { class: "shape-main", "data-out": "nature" });
-  const effect = h("p", { "data-out": "effect" });
+  // Announced when a grid tap or a menu changes the nature (the name and effect lines change together).
+  const effect = h("p", { "aria-live": "polite", "data-out": "effect" });
   // Mints exist for the 20 natures that change stats, plus Serious among the neutral five.
   const mint = h("p", { class: "hint", "data-out": "mint" }, t(`${S}.mintNote`));
 

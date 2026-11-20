@@ -149,12 +149,15 @@ export function searchDex(entries: readonly DexEntry[], query: string, limit = 8
   const key = searchKey(q);
   if (!key) return [];
   const keys = queryKeys(key);
+  // Several words in any order ("charizard mega", "galarian zen darmanitan"): each must appear in the same name.
+  const words = q.split(/\s+/).map(searchKey).filter(Boolean);
   const scored: { e: DexEntry; score: number }[] = [];
   for (const e of entries) {
     const names = e.keys;
     const score = names.some((s) => s === key) ? 0
       : names.some((s) => keys.some((k) => s.startsWith(k))) ? 1
-      : names.some((s) => keys.some((k) => s.includes(k))) ? 2 : -1;
+      : names.some((s) => keys.some((k) => s.includes(k))) ? 2
+      : words.length > 1 && names.some((s) => words.every((w) => s.includes(w))) ? 3 : -1;
     if (score >= 0) scored.push({ e, score });
   }
   // Array.sort is stable, and entries are in Pokédex order: species before their forms.

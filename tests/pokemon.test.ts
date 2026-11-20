@@ -89,6 +89,9 @@ describe("Pokédex data", () => {
     expect(searchDex(dex("en"), "primal kyogre")[0].types).toEqual(["water"]);
     // Named forms with the species' own types find the species row.
     expect(searchDex(dex("en"), "black kyurem")[0].name).toBe("Kyurem");
+    expect(searchDex(dex("en"), "single strike urshifu")[0].types).toEqual(["fighting", "dark"]);
+    expect(searchDex(dex("en"), "charizard mega").map((e) => e.name)).toEqual(["Mega Charizard X", "Mega Charizard Y"]);
+    expect(searchDex(dex("en"), "galarian zen darmanitan")[0].types).toEqual(["ice", "fire"]);
     expect(searchDex(dex("ja"), "ホワイトキュレム")[0].types).toEqual(["dragon", "ice"]);
     // Forms with no name in a language yet still carry the local species name, so searching it finds them.
     expect(searchDex(dex("ko"), "켄타로스").map((e) => e.en)).toContain("Paldean Tauros (Blaze Breed)");

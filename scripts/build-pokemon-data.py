@@ -166,6 +166,16 @@ for r in sorted(pokemon, key=lambda r: (int(r["species_id"]), r["is_default"] !=
                         continue  # no files of their own
                     aliases.setdefault((int(r["species_id"]), loc), []).extend([entry_name(r, loc), en_alias])
             continue
+    if r["is_default"] == "1":
+        # The usual form's own name ("Single Strike Urshifu", "Incarnate Tornadus") also finds the species row.
+        own = form_names.get((forms_by_pokemon.get(r["id"]) or {}).get("id"), {})
+        for loc in LOCALES:
+            if loc in ("vi", "id"):
+                continue
+            for lang in {*LANG[loc], "9"}:
+                full = clean((own.get(lang) or {}).get("pokemon_name") or "")
+                if full:
+                    aliases.setdefault((int(r["species_id"]), loc), []).append(full)
     t = [idx[x] for x in type_list(r["id"])]
     en_name = entry_name(r, "en")
     for loc in LOCALES:
