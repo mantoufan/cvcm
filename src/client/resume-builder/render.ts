@@ -160,12 +160,15 @@ function renderRirekisho(r: Resume): HTMLElement {
     }
   }
   head("職歴");
-  const jobs = r.experience.filter((x) => x.org);
+  const jobs = r.experience.filter((x) => x.org || x.role);
   if (!jobs.length) row("", "なし");
   for (const e of jobs) {
-    row(e.start, `${e.org} 入社`);
+    const org = e.org || e.role;
+    row(e.start, `${org} 入社`);
+    if (e.org && e.role) row("", `　${e.role}`);
     for (const l of lines(e.details)) row("", `　${l}`);
-    if (!e.current && e.end) row(e.end, `${e.org} 一身上の都合により退社`);
+    // The reason (一身上の都合, 会社都合, 契約期間満了…) is the writer's to give: write it in the details if wanted.
+    if (!e.current && e.end) row(e.end, `${org} 退社`);
   }
   if (jobs.some((e) => e.current)) row("", "現在に至る");
   row("", "以上", "rs-end");

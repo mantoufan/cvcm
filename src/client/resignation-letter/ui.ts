@@ -99,6 +99,8 @@ export function mountResignationLetter(host: HTMLElement): void {
   tpl = RL_TEMPLATES[loc];
   const saved = readSaved(loc);
   form = restoreForm(defaultForm(tpl), saved?.form);
+  // A letter is dated the day it goes out: a reopened draft with a date takes today's.
+  if (form.date) form.date = todayIso();
   if (!tpl.kinds.some(([k]) => k === form!.kind)) form.kind = tpl.kinds[0][0];
   if (tpl.scenarios.length && !tpl.scenarios.some(([k]) => k === form!.scenario)) form.scenario = tpl.scenarios[0][0];
   paper = saved?.paper === "letter" || saved?.paper === "a4" ? saved.paper : defaultPaper(loc);

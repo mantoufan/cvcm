@@ -403,7 +403,8 @@ async function ensureMask(place = false): Promise<void> {
       chin: (est.chin * photo.height) / result.height,
       cx: (est.cx * photo.width) / result.width,
     };
-    if (state.head) state.crop = placeCrop(state.spec!, state.head);
+    // Only Auto fit (or a new photo) moves the crop; a colour change keeps the visitor's own framing.
+    if (place && state.head) state.crop = placeCrop(state.spec!, state.head);
     status.done(t("ai.doneIn", { s: formatSeconds(seconds), device: deviceLabel(backend) }));
     if (hintEl) hintEl.textContent = t(state.head ? `${S}.placed` : `${S}.notFound`);
     syncZoom();
