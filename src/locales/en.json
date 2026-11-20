@@ -813,7 +813,11 @@
     "titleIdPhoto": "Passport photo maker — ID photo sizes, background and print sheet — cv.cm",
     "descIdPhoto": "Free passport and ID photo maker: crop to US 2×2 in, 35×45 mm and other sizes with head guides, change the background on your device, and print a 4×6 sheet.",
     "titleStartupCost": "Coffee Shop Startup Cost Calculator: Payback and Break-Even — cv.cm",
-    "descStartupCost": "Free startup cost calculator for a coffee shop, bubble tea franchise or bakery: add up fit-out, equipment, fees and the rent deposit, then see monthly profit, how many months until you earn it back and how many orders a day you need to break even."
+    "descStartupCost": "Free startup cost calculator for a coffee shop, bubble tea franchise or bakery: add up fit-out, equipment, fees and the rent deposit, then see monthly profit, how many months until you earn it back and how many orders a day you need to break even.",
+    "titlePokemonTypeChart": "Pokémon Type Chart and Weakness Calculator (All 18 Types) — cv.cm",
+    "descPokemonTypeChart": "Free Pokémon type chart with a weakness calculator: pick one or two types, or type any Pokémon's name or Pokédex number, to see what it is weak to, what it resists, what cannot hurt it and what its own moves hit super effectively. All 18 types, current games.",
+    "titlePokemonNatures": "Pokémon Nature Chart: All 25 Natures and the Stats They Change — cv.cm",
+    "descPokemonNatures": "Free Pokémon nature chart: all 25 natures, which stat each raises by 10 % and which it lowers by 10 %, as a 5 × 5 grid and a list. Pick the stat to raise and the stat to lower to find the nature you want, such as Adamant, Jolly, Modest or Timid."
   },
   "brand": "cv.cm",
   "nav": {
@@ -859,7 +863,8 @@
     "academic": "Academic & statistics",
     "more": "More",
     "games3d": "3D games",
-    "career": "Jobs & careers"
+    "career": "Jobs & careers",
+    "pokemon": "Pokémon"
   },
   "lang": {
     "label": "Language",
@@ -5039,6 +5044,14 @@
     "startup-cost": {
       "name": "Startup cost calculator",
       "blurb": "Opening costs, payback and break-even for a small shop."
+    },
+    "pokemon-type-chart": {
+      "name": "Pokémon type chart",
+      "blurb": "Weaknesses and resistances for any type pair or Pokémon."
+    },
+    "pokemon-natures": {
+      "name": "Pokémon nature chart",
+      "blurb": "All 25 natures and the stat each raises and lowers."
     }
   },
   "watermark": {
@@ -10106,6 +10119,30 @@
       "a4": "In the US the FTC Franchise Rule requires the franchisor to give you its Franchise Disclosure Document (FDD) at least 14 calendar days before you sign or pay anything. Read the fees, the list of franchisees who left, and Item 19, where the franchisor may state what its outlets earn. Call several current and former franchisees and ask what they really spend and sell.",
       "q5": "Does the profit include tax and my own pay?",
       "a5": "No. Profit here is before income tax and loan interest, and it does not pay the owner. If you will work in the shop full time, count yourself as one of the staff, or payback will look shorter than it is."
+    },
+    "pokemon-type-chart": {
+      "q1": "How many Pokémon types are there?",
+      "a1": "There are 18: Normal, Fire, Water, Electric, Grass, Ice, Fighting, Poison, Ground, Flying, Psychic, Bug, Rock, Ghost, Dragon, Dark, Steel and Fairy. Fairy was the last one added, in Pokémon X and Y (2013). The chart on this page is the one used since then.",
+      "q2": "How do weaknesses work for a Pokémon with two types?",
+      "a2": "Multiply the two. Bulbasaur is Grass and Poison: Fire is ×2 on Grass and ×1 on Poison, so ×2 overall; Grass is ×½ on both, so ×¼. If either type is immune, the result is ×0. That is why a dual type can take ×4 or only ×¼, which a single type never does.",
+      "q3": "What does ×4 mean?",
+      "a3": "Both of the Pokémon's types are weak to the move, so it does four times the usual damage. Ice moves on Garchomp (Dragon and Ground) are the best-known example. In battle the game says the move is super effective, the same message as ×2.",
+      "q4": "Do abilities change the chart?",
+      "a4": "Some do, and this page does not count them. Levitate makes a Pokémon immune to Ground moves, Flash Fire to Fire moves, Thick Fat halves Fire and Ice damage, and Wonder Guard lets only super effective moves hit. Terastallizing in Scarlet and Violet changes the Pokémon's type. Check the Pokémon's ability before you rely on a weakness.",
+      "q5": "Is the chart the same in Pokémon GO?",
+      "a5": "The same types are strong and weak against each other, but the numbers differ. In Pokémon GO a super effective move does 1.6 times the damage and a resisted one 0.625 times, and there are no immunities: a move the main games block, such as Electric on Ground, does about 0.39 times instead."
+    },
+    "pokemon-natures": {
+      "q1": "What does a Pokémon's nature do?",
+      "a1": "It raises one stat by 10 % and lowers another by 10 %. Of the 25 natures, 20 do that and 5 (Hardy, Docile, Serious, Bashful and Quirky) change nothing. HP is never raised or lowered.",
+      "q2": "Which nature is best?",
+      "a2": "Raise the stat the Pokémon uses and lower one it does not. Physical attackers usually take Adamant (+Attack, −Sp. Atk) or Jolly (+Speed, −Sp. Atk); special attackers take Modest (+Sp. Atk, −Attack) or Timid (+Speed, −Attack). Bold, Impish, Calm and Careful suit Pokémon that take hits. Brave and Quiet lower Speed, which helps under Trick Room.",
+      "q3": "Can I change a Pokémon's nature?",
+      "a3": "In Sword and Shield and in Scarlet and Violet, a mint (such as an Adamant Mint) changes which stats the nature affects, though the summary still shows the original nature. For breeding, a parent holding an Everstone passes its nature to the egg.",
+      "q4": "How much does a nature change a stat?",
+      "a4": "The stat is multiplied by 1.1 or 0.9 and rounded down. A Speed stat of 120 becomes 132 with Jolly or Timid and 108 with Brave or Quiet. The effect applies to the stat itself, not to the base stat.",
+      "q5": "Why does the chart have a diagonal of neutral natures?",
+      "a5": "The games number natures as 5 × the stat raised + the stat lowered. When both are the same stat, the raise and the drop cancel out, so those five natures sit on the diagonal of the grid and change nothing."
     }
   },
   "qr": {
@@ -18367,6 +18404,66 @@
     "fewer": "{n} ({pct} % fewer)",
     "more": "{n} ({pct} % more)",
     "disclaimer": "For reference only. The examples are illustrations, not quotes. Profit is before tax and loan interest. This is not financial advice.",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "copyFailed": "Copy failed"
+  },
+  "pokemonTypes": {
+    "title": "Pokémon type chart and weakness calculator",
+    "privacyNote": "Pick one or two types, or search for a Pokémon, to see its weaknesses, resistances and immunities. All 18 types.",
+    "findTitle": "Find a Pokémon",
+    "search": "Name or Pokédex number",
+    "searchPlaceholder": "Garchomp, 445…",
+    "searchHint": "Names in this language or in English; regional forms and Megas whose types differ are listed too.",
+    "loadFailed": "The Pokédex could not load. Check your connection and type again.",
+    "noMatch": "No Pokémon by that name.",
+    "typesTitle": "Or pick the types",
+    "type1": "Type 1",
+    "type2": "Type 2",
+    "noSecond": "None",
+    "result": "Damage taken",
+    "x4": "Very weak to",
+    "x2": "Weak to",
+    "x1": "Normal damage from",
+    "xHalf": "Resists",
+    "xQuarter": "Strongly resists",
+    "x0": "Immune to",
+    "sep": ", ",
+    "none": "None",
+    "offenseTitle": "Its own moves",
+    "movesOf": "{type} moves",
+    "superOn": "Super effective on",
+    "notVeryOn": "Not very effective on",
+    "noEffectOn": "No effect on",
+    "abilityNote": "Types only: abilities such as Levitate or Flash Fire, Terastallizing and held items are not counted.",
+    "chartTitle": "Full type chart",
+    "chartHint": "Rows are the move's type, columns the type of the Pokémon hit. 2 = super effective, ½ = not very effective, 0 = no effect, blank = normal.",
+    "chartCaption": "Pokémon type effectiveness, from X and Y (Generation 6) on",
+    "corner": "Move ↓ / Target →",
+    "unofficial": "Unofficial fan reference. Pokémon and Pokémon names are trademarks of Nintendo, Creatures and GAME FREAK. Data from PokeAPI.",
+    "copy": "Copy result",
+    "copied": "Copied",
+    "copyFailed": "Copy failed"
+  },
+  "pokemonNatures": {
+    "title": "Pokémon nature chart",
+    "privacyNote": "All 25 natures and the stat each one raises and lowers by 10 %. Pick two stats to find the nature.",
+    "findTitle": "Find a nature",
+    "up": "Raise (+10 %)",
+    "down": "Lower (−10 %)",
+    "result": "Nature",
+    "effect": "{up} +10 %, {down} −10 %.",
+    "neutral": "Neutral: no stat goes up or down.",
+    "mintNote": "In Sword and Shield and in Scarlet and Violet, a mint of this name gives a Pokémon the same stat changes.",
+    "gridTitle": "Nature grid",
+    "gridHint": "Rows raise a stat, columns lower one. The diagonal holds the five neutral natures. Tap a nature to select it.",
+    "gridCaption": "The 25 Pokémon natures by the stat raised and the stat lowered",
+    "corner": "Raise ↓ / Lower →",
+    "listTitle": "All 25 natures",
+    "colNature": "Nature",
+    "colUp": "Raises",
+    "colDown": "Lowers",
+    "unofficial": "Unofficial fan reference. Pokémon and Pokémon names are trademarks of Nintendo, Creatures and GAME FREAK. Data from PokeAPI.",
     "copy": "Copy result",
     "copied": "Copied",
     "copyFailed": "Copy failed"

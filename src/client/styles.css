@@ -383,6 +383,28 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
   .sc-tool { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: start; }
   .sc-result { position: sticky; top: calc(0.75rem + env(safe-area-inset-top, 0px)); max-height: calc(100vh - 1.5rem - env(safe-area-inset-top, 0px)); overflow-y: auto; }
 }
+/* Pokémon type and nature charts: plain palette, the cell's number carries the meaning (no type colours). */
+.pkt-full { margin-top: 1.5rem; }
+.pkt-chart-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.pkt-chart { border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 0.85rem; }
+.pkt-chart caption { caption-side: bottom; text-align: left; padding-top: 0.4rem; color: var(--ink-soft); font-size: 0.8rem; }
+.pkt-chart th, .pkt-chart td { border: 1px solid var(--line); padding: 0.2rem 0.35rem; text-align: center; }
+.pkt-chart tbody th { text-align: left; white-space: nowrap; font-weight: 600; }
+.pkt-chart thead th:not(.pkt-corner) span { writing-mode: vertical-rl; display: inline-block; max-height: 7.5rem; white-space: nowrap; }
+.pkt-corner { font-size: 0.7rem; color: var(--ink-soft); font-weight: 400; white-space: nowrap; }
+.pkt-chart td { min-width: 1.6rem; }
+.pkt-chart tr:hover > * { background: var(--gray); }
+.pkt-2 { color: var(--pink-deep); font-weight: 800; background: var(--pink-soft); }
+.pkt-half { color: var(--ink-soft); }
+.pkt-0 { color: var(--white); background: var(--ink-soft); font-weight: 700; }
+.pkt-groups dd[data-mult="4"], .pkt-groups dd[data-mult="2"] { color: var(--pink-deep); }
+.pkt-groups dd[data-mult="1"] { color: var(--ink-soft); font-weight: 400; }
+.pkt-matches:empty { display: none; }
+.pkn-grid td { padding: 0; }
+.pkn-pick { width: 100%; min-height: 40px; padding: 0.3rem 0.5rem; border: 0; background: none; font: inherit; cursor: pointer; white-space: nowrap; }
+.pkn-neutral .pkn-pick { color: var(--ink-soft); }
+.pkn-grid td.on { background: var(--pink-soft); outline: 2px solid var(--pink-deep); outline-offset: -2px; }
+.pkn-grid td.on .pkn-pick { color: var(--pink-deep); font-weight: 700; }
 .data-panes { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; align-items: start; }
 .data-panes .clip-input { min-height: 18rem; }
 .qr-canvas { width: min(280px, 100%); height: auto; border-radius: 10px; background: var(--gray); image-rendering: pixelated; }

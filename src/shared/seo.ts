@@ -276,6 +276,8 @@ const TITLE: Record<ToolId, string> = {
   "bac-calculator": "meta.titleBacCalculator",
   "simple-interest": "meta.titleSimpleInterest",
   "startup-cost": "meta.titleStartupCost",
+  "pokemon-type-chart": "meta.titlePokemonTypeChart",
+  "pokemon-natures": "meta.titlePokemonNatures",
   "2048": "meta.title2048",
   "dinosaur-game": "meta.titleDinosaurGame",
   "mahjong": "meta.titleMahjong",
@@ -540,6 +542,8 @@ const DESC: Record<ToolId, string> = {
   "bac-calculator": "meta.descBacCalculator",
   "simple-interest": "meta.descSimpleInterest",
   "startup-cost": "meta.descStartupCost",
+  "pokemon-type-chart": "meta.descPokemonTypeChart",
+  "pokemon-natures": "meta.descPokemonNatures",
   "2048": "meta.desc2048",
   "dinosaur-game": "meta.descDinosaurGame",
   "mahjong": "meta.descMahjong",
@@ -1171,6 +1175,7 @@ const APP_CATEGORY: Partial<Record<CategoryId, string>> = {
   fun: "EntertainmentApplication",
   valuation: "FinanceApplication",
   academic: "EducationalApplication",
+  pokemon: "GameApplication",
 };
 /** Tools sold under their own name (watermark + mosaic share the ID Watermark & Redact brand). */
 export const BRANDED_TOOLS = new Set<ToolId>(["watermark", "mosaic"]);

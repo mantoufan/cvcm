@@ -1,0 +1,129 @@
+{
+  "nav": {
+    "pokemon": "Pokémon"
+  },
+  "meta": {
+    "titlePokemonTypeChart": "Tabel Tipe Pokémon dan Kalkulator Kelemahan (Semua 18 Tipe) — cv.cm",
+    "descPokemonTypeChart": "Tabel tipe Pokémon gratis dengan kalkulator kelemahan: pilih satu atau dua tipe, atau ketik nama atau nomor Pokédex Pokémon apa pun untuk melihat kelemahan, resistansi, imunitas, dan serangan yang super efektif. Semua 18 tipe.",
+    "titlePokemonNatures": "Tabel Nature Pokémon: Semua 25 Nature dan Stat yang Diubahnya — cv.cm",
+    "descPokemonNatures": "Tabel nature Pokémon gratis: 25 nature, stat yang naik 10 % dan stat yang turun 10 %, dalam grid 5 × 5 dan daftar. Cari nature seperti Adamant, Jolly, Modest atau Timid."
+  },
+  "tools": {
+    "pokemon-type-chart": {
+      "name": "Tabel tipe Pokémon",
+      "blurb": "Kelemahan dan resistansi untuk pasangan tipe atau Pokémon mana pun."
+    },
+    "pokemon-natures": {
+      "name": "Tabel nature Pokémon",
+      "blurb": "Semua 25 nature beserta stat yang dinaikkan dan diturunkan."
+    }
+  },
+  "faq": {
+    "pokemon-type-chart": {
+      "q1": "Ada berapa tipe Pokémon?",
+      "a1": "Ada 18: Normal, Fire, Water, Electric, Grass, Ice, Fighting, Poison, Ground, Flying, Psychic, Bug, Rock, Ghost, Dragon, Dark, Steel dan Fairy. Fairy adalah tipe terakhir yang ditambahkan, di Pokémon X and Y (2013). Tabel di halaman ini adalah yang dipakai sejak saat itu.",
+      "q2": "Bagaimana kelemahan bekerja untuk Pokémon dengan dua tipe?",
+      "a2": "Kalikan keduanya. Bulbasaur bertipe Grass dan Poison: Fire ×2 pada Grass dan ×1 pada Poison, jadi ×2 secara keseluruhan. Grass ×½ pada keduanya, jadi ×¼. Jika salah satu tipe kebal, hasilnya ×0. Itulah sebabnya tipe ganda bisa menerima ×4 atau hanya ×¼, sesuatu yang tidak pernah terjadi pada tipe tunggal.",
+      "q3": "Apa arti ×4?",
+      "a3": "Kedua tipe Pokémon itu lemah terhadap serangan tersebut, sehingga damage-nya empat kali lipat. Serangan Ice terhadap Garchomp (Dragon dan Ground) adalah contoh yang paling terkenal. Dalam pertarungan, game menampilkan bahwa serangan itu super efektif, pesan yang sama seperti ×2.",
+      "q4": "Apakah ability mengubah tabel?",
+      "a4": "Sebagian ya, dan halaman ini tidak menghitungnya. Levitate membuat Pokémon kebal terhadap serangan Ground, Flash Fire terhadap serangan Fire, Thick Fat mengurangi damage Fire dan Ice setengahnya, dan Wonder Guard hanya membiarkan serangan super efektif yang mengenai. Terastallizing di Scarlet and Violet mengubah tipe Pokémon. Periksa ability Pokémon sebelum mengandalkan sebuah kelemahan.",
+      "q5": "Apakah tabelnya sama di Pokémon GO?",
+      "a5": "Tipe yang kuat dan lemah satu sama lain sama, tetapi angkanya berbeda. Di Pokémon GO serangan super efektif memberi damage 1,6 kali dan serangan yang diresistensi 0,625 kali, dan tidak ada imunitas: serangan yang diblokir di game utama, seperti Electric terhadap Ground, justru memberi sekitar 0,39 kali."
+    },
+    "pokemon-natures": {
+      "q1": "Apa fungsi nature Pokémon?",
+      "a1": "Nature menaikkan satu stat sebesar 10 % dan menurunkan stat lain sebesar 10 %. Dari 25 nature, 20 melakukan itu dan 5 (Hardy, Docile, Serious, Bashful dan Quirky) tidak mengubah apa pun. HP tidak pernah dinaikkan atau diturunkan.",
+      "q2": "Nature mana yang terbaik?",
+      "a2": "Naikkan stat yang dipakai Pokémon dan turunkan stat yang tidak dipakai. Physical attacker biasanya memakai Adamant (+Attack, −Sp. Atk) atau Jolly (+Speed, −Sp. Atk). Special attacker memakai Modest (+Sp. Atk, −Attack) atau Timid (+Speed, −Attack). Bold, Impish, Calm dan Careful cocok untuk Pokémon yang menahan serangan. Brave dan Quiet menurunkan Speed, yang membantu di bawah Trick Room.",
+      "q3": "Bisakah saya mengubah nature Pokémon?",
+      "a3": "Di Sword and Shield dan di Scarlet and Violet, sebuah mint (seperti Adamant Mint) mengubah stat yang dipengaruhi nature, meskipun ringkasan masih menampilkan nature aslinya. Untuk breeding, induk yang membawa Everstone menurunkan nature-nya ke telur.",
+      "q4": "Seberapa besar nature mengubah sebuah stat?",
+      "a4": "Stat dikalikan 1,1 atau 0,9 lalu dibulatkan ke bawah. Stat Speed 120 menjadi 132 dengan Jolly atau Timid dan 108 dengan Brave atau Quiet. Efeknya berlaku pada stat itu sendiri, bukan pada base stat.",
+      "q5": "Mengapa tabel memiliki diagonal nature netral?",
+      "a5": "Game menomori nature sebagai 5 × stat yang dinaikkan + stat yang diturunkan. Jika keduanya stat yang sama, kenaikan dan penurunan saling meniadakan, sehingga kelima nature itu berada di diagonal grid dan tidak mengubah apa pun."
+    }
+  },
+  "guides": {
+    "pokemon-type-chart": {
+      "lead": "Temukan kelemahan Pokémon dalam tiga langkah.",
+      "s1t": "Ketik nama atau pilih tipe",
+      "s1b": "Cari Pokémon berdasarkan nama atau nomor Pokédex, atau pilih satu atau dua tipe dari menu.",
+      "s2t": "Baca kelemahannya",
+      "s2b": "Lihat tipe serangan mana yang kena ×4 atau ×2, mana yang diresistensi, dan mana yang tidak berefek.",
+      "s3t": "Rencanakan serangan Anda",
+      "s3b": "Periksa apa yang dipukul keras oleh tipe Pokémon itu sendiri, atau cari pasangan apa pun di tabel lengkap di bawah."
+    },
+    "pokemon-natures": {
+      "lead": "Temukan nature yang Anda inginkan dalam tiga langkah.",
+      "s1t": "Pilih stat yang dinaikkan",
+      "s1b": "Pilih stat yang diandalkan Pokémon Anda, seperti Attack atau Speed.",
+      "s2t": "Pilih stat yang diturunkan",
+      "s2b": "Pilih stat yang tidak dipakai, sering kali Sp. Atk pada physical attacker atau Attack pada special attacker.",
+      "s3t": "Baca nature-nya",
+      "s3b": "Halaman menyebutkan nature dan menandainya di grid. Daftar di bawah memuat semua 25."
+    }
+  },
+  "ui": {
+    "pokemonTypes": {
+      "title": "Tabel tipe Pokémon dan kalkulator kelemahan",
+      "privacyNote": "Pilih satu atau dua tipe, atau cari Pokémon, untuk melihat kelemahan, resistansi, dan imunitasnya. Semua 18 tipe.",
+      "findTitle": "Cari Pokémon",
+      "search": "Nama atau nomor Pokédex",
+      "searchPlaceholder": "Garchomp, 445…",
+      "searchHint": "Nama dalam bahasa ini atau bahasa Inggris. Regional form dan Mega yang tipenya berbeda juga tercantum.",
+      "loadFailed": "Pokédex tidak dapat dimuat. Periksa koneksi Anda lalu ketik lagi.",
+      "noMatch": "Tidak ada Pokémon dengan nama itu.",
+      "typesTitle": "Atau pilih tipenya",
+      "type1": "Tipe 1",
+      "type2": "Tipe 2",
+      "noSecond": "Tidak ada",
+      "result": "Damage yang diterima",
+      "x4": "Sangat lemah terhadap",
+      "x2": "Lemah terhadap",
+      "x1": "Damage normal dari",
+      "xHalf": "Resisten terhadap",
+      "xQuarter": "Sangat resisten terhadap",
+      "x0": "Kebal terhadap",
+      "sep": ", ",
+      "none": "Tidak ada",
+      "offenseTitle": "Serangannya sendiri",
+      "movesOf": "Serangan {type}",
+      "superOn": "Super efektif terhadap",
+      "notVeryOn": "Kurang efektif terhadap",
+      "noEffectOn": "Tidak berefek terhadap",
+      "abilityNote": "Hanya tipe: ability seperti Levitate atau Flash Fire, Terastallizing, dan item yang dipegang tidak dihitung.",
+      "chartTitle": "Tabel tipe lengkap",
+      "chartHint": "Baris adalah tipe serangan, kolom adalah tipe Pokémon yang terkena. 2 = super efektif, ½ = kurang efektif, 0 = tidak berefek, kosong = normal.",
+      "chartCaption": "Efektivitas tipe Pokémon, sejak X and Y (Generasi 6)",
+      "corner": "Serangan ↓ / Target →",
+      "unofficial": "Referensi penggemar tidak resmi. Pokémon dan nama Pokémon adalah merek dagang Nintendo, Creatures, dan GAME FREAK. Data dari PokeAPI.",
+      "copy": "Salin hasil",
+      "copied": "Tersalin",
+      "copyFailed": "Gagal menyalin"
+    },
+    "pokemonNatures": {
+      "title": "Tabel nature Pokémon",
+      "privacyNote": "Semua 25 nature beserta stat yang dinaikkan dan diturunkan 10 % oleh masing-masing. Pilih dua stat untuk menemukan nature-nya.",
+      "findTitle": "Cari nature",
+      "up": "Naikkan (+10 %)",
+      "down": "Turunkan (−10 %)",
+      "result": "Nature",
+      "effect": "{up} +10 %, {down} −10 %.",
+      "neutral": "Netral: tidak ada stat yang naik atau turun.",
+      "mintNote": "Di Sword and Shield dan di Scarlet and Violet, mint dengan nama ini memberi Pokémon perubahan stat yang sama.",
+      "gridTitle": "Grid nature",
+      "gridHint": "Baris menaikkan sebuah stat, kolom menurunkannya. Diagonal berisi lima nature netral. Ketuk sebuah nature untuk memilihnya.",
+      "gridCaption": "25 nature Pokémon menurut stat yang dinaikkan dan stat yang diturunkan",
+      "corner": "Naik ↓ / Turun →",
+      "listTitle": "Semua 25 nature",
+      "colNature": "Nature",
+      "colUp": "Menaikkan",
+      "colDown": "Menurunkan",
+      "unofficial": "Referensi penggemar tidak resmi. Pokémon dan nama Pokémon adalah merek dagang Nintendo, Creatures, dan GAME FREAK. Data dari PokeAPI.",
+      "copy": "Salin hasil",
+      "copied": "Tersalin",
+      "copyFailed": "Gagal menyalin"
+    }
+  }
+}

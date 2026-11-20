@@ -99,6 +99,10 @@
       "name": "Academic statistics: standard deviation, sample size (Cochran, Slovin, a mean), Cronbach's alpha, t-tests (one-sample, Welch or Student, paired), chi-square tests, p-values and critical values, and z-scores, with APA-style result lines; a citation generator (APA 7, MLA 9, Chicago, Harvard, IEEE, Vancouver, GB/T 7714) with DOI and ISBN lookup and BibTeX/RIS import and export; a title case converter (APA, MLA, Chicago, AP and sentence case); and a words-to-pages estimator (page count from a word count or pasted text, by font, size, spacing, paper and margins)"
     },
     {
+      "id": "pokemon",
+      "name": "Pokémon companions (unofficial, text only): a type chart with a weakness calculator for any one or two types or any Pokémon by name or National Pokédex number, and a nature chart (which stat each of the 25 natures raises and lowers)"
+    },
+    {
       "id": "valuation",
       "name": "Valuation: phone number, licence plate and domain name estimates from their patterns (rule-based, not quotes), car depreciation, net worth, and business valuation (multiples and DCF)"
     }
@@ -2138,6 +2142,22 @@
       "description": "How many pages a word count fills.",
       "category": "academic",
       "url": "https://cv.cm/en/words-to-pages/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "pokemon-type-chart",
+      "name": "Pokémon type chart",
+      "description": "Weaknesses and resistances for any type pair or Pokémon.",
+      "category": "pokemon",
+      "url": "https://cv.cm/en/pokemon-type-chart/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "pokemon-natures",
+      "name": "Pokémon nature chart",
+      "description": "All 25 natures and the stat each raises and lowers.",
+      "category": "pokemon",
+      "url": "https://cv.cm/en/pokemon-natures/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

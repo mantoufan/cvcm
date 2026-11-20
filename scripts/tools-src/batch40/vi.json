@@ -1,0 +1,129 @@
+{
+  "nav": {
+    "pokemon": "Pokémon"
+  },
+  "meta": {
+    "titlePokemonTypeChart": "Bảng hệ Pokémon và công cụ tính điểm yếu, khắc hệ (đủ 18 hệ) — cv.cm",
+    "descPokemonTypeChart": "Bảng hệ Pokémon miễn phí: chọn hệ hoặc nhập tên Pokémon để xem điểm yếu, hệ kháng, hệ miễn nhiễm và chiêu đánh super effective.",
+    "titlePokemonNatures": "Bảng tính cách Pokémon: 25 tính cách và chỉ số bị thay đổi — cv.cm",
+    "descPokemonNatures": "Bảng tính cách Pokémon miễn phí: 25 tính cách, chỉ số tăng và giảm 10 %, dạng lưới 5 × 5. Tìm Adamant, Jolly, Modest, Timid."
+  },
+  "tools": {
+    "pokemon-type-chart": {
+      "name": "Bảng hệ Pokémon",
+      "blurb": "Điểm yếu và hệ kháng của mọi cặp hệ hoặc Pokémon."
+    },
+    "pokemon-natures": {
+      "name": "Bảng tính cách Pokémon",
+      "blurb": "25 tính cách và chỉ số mỗi tính cách tăng, giảm."
+    }
+  },
+  "faq": {
+    "pokemon-type-chart": {
+      "q1": "Pokémon có bao nhiêu hệ?",
+      "a1": "Có 18 hệ: Normal, Fire, Water, Electric, Grass, Ice, Fighting, Poison, Ground, Flying, Psychic, Bug, Rock, Ghost, Dragon, Dark, Steel và Fairy. Fairy là hệ được thêm vào sau cùng, trong Pokémon X and Y (2013). Bảng trên trang này là bảng được dùng từ đó đến nay.",
+      "q2": "Pokémon hai hệ tính điểm yếu thế nào?",
+      "a2": "Nhân hai hệ số với nhau. Bulbasaur là hệ Grass và Poison: Fire là ×2 với Grass và ×1 với Poison, nên tổng cộng ×2; Grass là ×½ với cả hai, nên ×¼. Nếu một trong hai hệ miễn nhiễm thì kết quả là ×0. Vì vậy Pokémon hai hệ có thể chịu ×4 hoặc chỉ ×¼, điều mà Pokémon một hệ không bao giờ có.",
+      "q3": "×4 nghĩa là gì?",
+      "a3": "Cả hai hệ của Pokémon đều yếu trước chiêu đó, nên sát thương gấp bốn lần bình thường. Chiêu hệ Ice đánh Garchomp (Dragon và Ground) là ví dụ nổi tiếng nhất. Trong trận đấu, game báo chiêu đó super effective, giống như thông báo của ×2.",
+      "q4": "Đặc tính (ability) có làm thay đổi bảng không?",
+      "a4": "Một số có, và trang này không tính đến chúng. Levitate giúp Pokémon miễn nhiễm chiêu hệ Ground, Flash Fire miễn nhiễm chiêu hệ Fire, Thick Fat giảm một nửa sát thương Fire và Ice, còn Wonder Guard chỉ cho chiêu super effective đánh trúng. Terastallizing trong Scarlet and Violet làm thay đổi hệ của Pokémon. Hãy kiểm tra ability của Pokémon trước khi dựa vào một điểm yếu.",
+      "q5": "Trong Pokémon GO bảng có giống không?",
+      "a5": "Các hệ khắc và bị khắc nhau vẫn như vậy, nhưng con số khác. Trong Pokémon GO, chiêu super effective gây sát thương gấp 1.6 lần, chiêu bị kháng chỉ 0.625 lần, và không có miễn nhiễm: chiêu mà game chính chặn hoàn toàn, như Electric lên Ground, chỉ gây khoảng 0.39 lần."
+    },
+    "pokemon-natures": {
+      "q1": "Tính cách của Pokémon có tác dụng gì?",
+      "a1": "Nó tăng một chỉ số 10 % và giảm một chỉ số khác 10 %. Trong 25 tính cách, 20 tính cách làm vậy còn 5 tính cách (Hardy, Docile, Serious, Bashful và Quirky) không thay đổi gì. HP không bao giờ bị tăng hay giảm.",
+      "q2": "Tính cách nào tốt nhất?",
+      "a2": "Hãy tăng chỉ số Pokémon dùng đến và giảm chỉ số nó không dùng. Pokémon tấn công vật lý thường chọn Adamant (+Attack, −Sp. Atk) hoặc Jolly (+Speed, −Sp. Atk); Pokémon tấn công đặc biệt chọn Modest (+Sp. Atk, −Attack) hoặc Timid (+Speed, −Attack). Bold, Impish, Calm và Careful hợp với Pokémon chịu đòn. Brave và Quiet giảm Speed, có ích khi dùng Trick Room.",
+      "q3": "Có đổi được tính cách của Pokémon không?",
+      "a3": "Trong Sword and Shield và Scarlet and Violet, mint (ví dụ Adamant Mint) thay đổi các chỉ số mà tính cách tác động, dù bảng tóm tắt vẫn hiện tính cách gốc. Khi nhân giống, bố hoặc mẹ cầm Everstone sẽ truyền tính cách cho trứng.",
+      "q4": "Tính cách thay đổi một chỉ số bao nhiêu?",
+      "a4": "Chỉ số được nhân với 1.1 hoặc 0.9 rồi làm tròn xuống. Chỉ số Speed 120 thành 132 với Jolly hoặc Timid và 108 với Brave hoặc Quiet. Hiệu ứng áp dụng lên chính chỉ số đó, không phải chỉ số cơ bản.",
+      "q5": "Vì sao bảng có đường chéo toàn tính cách trung tính?",
+      "a5": "Game đánh số tính cách theo công thức 5 × chỉ số tăng + chỉ số giảm. Khi cả hai là cùng một chỉ số, phần tăng và phần giảm triệt tiêu nhau, nên năm tính cách đó nằm trên đường chéo của lưới và không thay đổi gì."
+    }
+  },
+  "guides": {
+    "pokemon-type-chart": {
+      "lead": "Tìm điểm yếu của Pokémon trong ba bước.",
+      "s1t": "Nhập tên hoặc chọn hệ",
+      "s1b": "Tìm Pokémon theo tên hoặc số Pokédex, hoặc chọn một hoặc hai hệ từ menu.",
+      "s2t": "Đọc điểm yếu",
+      "s2b": "Xem các hệ chiêu đánh ×4 hoặc ×2, hệ nào bị kháng và hệ nào vô hiệu.",
+      "s3t": "Lên kế hoạch chiêu thức",
+      "s3b": "Xem các hệ của Pokémon đó đánh mạnh lên hệ nào, hoặc tra bất kỳ cặp hệ nào trong bảng đầy đủ bên dưới."
+    },
+    "pokemon-natures": {
+      "lead": "Tìm tính cách bạn muốn trong ba bước.",
+      "s1t": "Chọn chỉ số cần tăng",
+      "s1b": "Chọn chỉ số Pokémon của bạn dựa vào, như Attack hoặc Speed.",
+      "s2t": "Chọn chỉ số cần giảm",
+      "s2b": "Chọn chỉ số nó không dùng, thường là Sp. Atk với Pokémon vật lý hoặc Attack với Pokémon đặc biệt.",
+      "s3t": "Đọc tính cách",
+      "s3b": "Trang sẽ nêu tên tính cách và đánh dấu trong lưới; danh sách bên dưới có đủ 25 tính cách."
+    }
+  },
+  "ui": {
+    "pokemonTypes": {
+      "title": "Bảng hệ Pokémon và công cụ tính điểm yếu",
+      "privacyNote": "Chọn một hoặc hai hệ, hoặc tìm một Pokémon, để xem điểm yếu, hệ kháng và hệ miễn nhiễm. Đủ 18 hệ.",
+      "findTitle": "Tìm Pokémon",
+      "search": "Tên hoặc số Pokédex",
+      "searchPlaceholder": "Garchomp, 445…",
+      "searchHint": "Tên bằng ngôn ngữ này hoặc tiếng Anh; các dạng vùng và Mega có hệ khác cũng được liệt kê.",
+      "loadFailed": "Không tải được Pokédex. Hãy kiểm tra kết nối rồi nhập lại.",
+      "noMatch": "Không có Pokémon nào mang tên đó.",
+      "typesTitle": "Hoặc chọn hệ",
+      "type1": "Hệ 1",
+      "type2": "Hệ 2",
+      "noSecond": "Không có",
+      "result": "Sát thương nhận vào",
+      "x4": "Rất yếu trước",
+      "x2": "Yếu trước",
+      "x1": "Nhận sát thương bình thường từ",
+      "xHalf": "Kháng",
+      "xQuarter": "Kháng mạnh",
+      "x0": "Miễn nhiễm",
+      "sep": ", ",
+      "none": "Không có",
+      "offenseTitle": "Chiêu của chính nó",
+      "movesOf": "Chiêu hệ {type}",
+      "superOn": "Siêu hiệu quả lên",
+      "notVeryOn": "Ít hiệu quả lên",
+      "noEffectOn": "Không có tác dụng lên",
+      "abilityNote": "Chỉ tính hệ: ability như Levitate hay Flash Fire, Terastallizing và vật phẩm cầm theo không được tính.",
+      "chartTitle": "Bảng hệ đầy đủ",
+      "chartHint": "Hàng là hệ của chiêu, cột là hệ của Pokémon bị đánh. 2 = super effective, ½ = not very effective, 0 = không tác dụng, để trống = bình thường.",
+      "chartCaption": "Khắc hệ Pokémon, từ X and Y (Thế hệ 6) trở đi",
+      "corner": "Chiêu ↓ / Mục tiêu →",
+      "unofficial": "Tài liệu tham khảo không chính thức do người hâm mộ làm. Pokémon và tên Pokémon là nhãn hiệu của Nintendo, Creatures và GAME FREAK. Dữ liệu từ PokeAPI.",
+      "copy": "Sao chép kết quả",
+      "copied": "Đã sao chép",
+      "copyFailed": "Sao chép thất bại"
+    },
+    "pokemonNatures": {
+      "title": "Bảng tính cách Pokémon",
+      "privacyNote": "25 tính cách và chỉ số mỗi tính cách tăng, giảm 10 %. Chọn hai chỉ số để tìm tính cách.",
+      "findTitle": "Tìm tính cách",
+      "up": "Tăng (+10 %)",
+      "down": "Giảm (−10 %)",
+      "result": "Tính cách",
+      "effect": "{up} +10 %, {down} −10 %.",
+      "neutral": "Trung tính: không chỉ số nào tăng hay giảm.",
+      "mintNote": "Trong Sword and Shield và Scarlet and Violet, mint cùng tên sẽ cho Pokémon những thay đổi chỉ số tương tự.",
+      "gridTitle": "Lưới tính cách",
+      "gridHint": "Hàng tăng một chỉ số, cột giảm một chỉ số. Đường chéo là năm tính cách trung tính. Chạm vào một tính cách để chọn.",
+      "gridCaption": "25 tính cách Pokémon theo chỉ số tăng và chỉ số giảm",
+      "corner": "Tăng ↓ / Giảm →",
+      "listTitle": "Cả 25 tính cách",
+      "colNature": "Tính cách",
+      "colUp": "Tăng",
+      "colDown": "Giảm",
+      "unofficial": "Tài liệu tham khảo không chính thức do người hâm mộ làm. Pokémon và tên Pokémon là nhãn hiệu của Nintendo, Creatures và GAME FREAK. Dữ liệu từ PokeAPI.",
+      "copy": "Sao chép kết quả",
+      "copied": "Đã sao chép",
+      "copyFailed": "Sao chép thất bại"
+    }
+  }
+}
