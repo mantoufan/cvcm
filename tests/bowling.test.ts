@@ -134,16 +134,25 @@ describe("bowling physics", () => {
     const rand = seeded(9);
     for (let n = 0; n < 40; n++) {
       let r = startRoll(FULL_RACK, { x: (rand() - 0.5) * 0.6, angle: (rand() - 0.5) * 0.04, power: rand(), hook: rand() * 2 - 1 });
+      // The closest any two standing pins and the ball and a standing pin get over the roll, checked once per roll:
+      // an expect() per pair per frame (about a million calls) made this test time out on a busy CI runner.
+      let pinPin = Infinity;
+      let ballPin = Infinity;
+      let frame = 0;
       while (!r.ended) {
         r = stepRoll(r, 1 / 60);
+        frame++;
         const live = r.pins.filter((p) => !p.gone && !p.down);
+        const ballLive = !r.ball.gutter && !r.ball.done;
         for (let i = 0; i < live.length; i++) {
           for (let k = i + 1; k < live.length; k++) {
-            expect(Math.hypot(live[i]!.x - live[k]!.x, live[i]!.y - live[k]!.y)).toBeGreaterThan(PIN_R * 1.5);
+            pinPin = Math.min(pinPin, Math.hypot(live[i]!.x - live[k]!.x, live[i]!.y - live[k]!.y));
           }
-          if (!r.ball.gutter && !r.ball.done) expect(Math.hypot(live[i]!.x - r.ball.x, live[i]!.y - r.ball.y)).toBeGreaterThan((PIN_R + BALL_R) * 0.75);
+          if (ballLive) ballPin = Math.min(ballPin, Math.hypot(live[i]!.x - r.ball.x, live[i]!.y - r.ball.y));
         }
       }
+      expect(pinPin, `roll ${n} (${frame} frames): pin through pin`).toBeGreaterThan(PIN_R * 1.5);
+      expect(ballPin, `roll ${n} (${frame} frames): ball through pin`).toBeGreaterThan((PIN_R + BALL_R) * 0.75);
     }
   });
 

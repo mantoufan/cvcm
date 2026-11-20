@@ -58,7 +58,7 @@ describe("data pages: routes", () => {
       expect(xml).toContain(`<loc>https://cv.cm${datasetHref(locale)}</loc>`);
       for (const id of DATASETS) expect(xml).toContain(`<loc>https://cv.cm${datasetHref(locale, id)}</loc>`);
     }
-  });
+  }, 30_000); // every table in every locale through the sitemap: slow on a busy CI runner.
 
   it("ships a CSV for every table", () => {
     for (const id of DATASETS) expect(existsSync(`public${csvHref(id)}`), id).toBe(true);
