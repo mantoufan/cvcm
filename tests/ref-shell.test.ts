@@ -1,5 +1,5 @@
 // @vitest-environment happy-dom
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render, start, whenRendered } from "../src/client/app-shell";
 
 function reset(url: string): void {
@@ -37,6 +37,32 @@ describe("reference shell", () => {
     expect(details.open).toBe(true);
     details.open = true;
     document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    expect(details.open).toBe(false);
+    // A mouse opens it on hover and closes it shortly after leaving; a mouse click then keeps it open.
+    const summary = group.querySelector("summary")!;
+    summary.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, pointerType: "mouse" }));
+    expect(details.open).toBe(true);
+    summary.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, pointerType: "mouse" }));
+    // Browsers skip the toggle when the click is cancelled (happy-dom toggles anyway, so check the cancel).
+    const click = new MouseEvent("click", { bubbles: true, cancelable: true, detail: 1 });
+    summary.dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(true);
+    details.open = true;
+    vi.useFakeTimers();
+    summary.dispatchEvent(new PointerEvent("pointerout", { bubbles: true, pointerType: "mouse", relatedTarget: document.body }));
+    expect(details.open).toBe(true);
+    vi.advanceTimersByTime(200);
+    vi.useRealTimers();
+    expect(details.open).toBe(false);
+    // Dismissed with Escape while the pointer is still on it: moving within the menu does not reopen it.
+    summary.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, pointerType: "mouse", relatedTarget: document.body }));
+    expect(details.open).toBe(true);
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    expect(details.open).toBe(false);
+    group.querySelector(".nav-group-label")!.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, pointerType: "mouse", relatedTarget: summary }));
+    expect(details.open).toBe(false);
+    // Touch has no hover: pointerover from a finger does not open it.
+    summary.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, pointerType: "touch" }));
     expect(details.open).toBe(false);
     expect(document.querySelector('.nav > a[data-nav="ideas"]')).not.toBeNull();
     expect(document.querySelector('.dir a[data-nav="reference"]')).not.toBeNull();
