@@ -54,7 +54,7 @@ export interface ShopResult {
   revenue: number;
   /** Monthly profit before tax and before the owner's own pay (unless the owner is counted as staff). */
   profit: number;
-  /** Months to earn back the startup money; Infinity when a month makes no profit. */
+  /** Months to earn back the startup money; Infinity when a month makes no profit (rounded to a whole unit). */
   paybackMonths: number;
   /** Orders a day at which the month breaks even; Infinity when each order loses money. */
   breakEvenOrders: number;
@@ -81,7 +81,8 @@ export function shopNumbers(input: ShopInput, ordersOverride?: number): ShopResu
     perOrder,
     revenue,
     profit,
-    paybackMonths: profit > 0 ? startup / profit : Infinity,
+    // A profit that rounds to nothing (floating-point dust at break-even) is no payback, not 10¹⁶ years.
+    paybackMonths: Math.round(profit) > 0 ? startup / profit : Infinity,
     breakEvenOrders: perOrder > 0 ? fixed / (perOrder * days) : Infinity,
     rentShare: revenue > 0 ? v.rent / revenue : NaN,
     laborShare: revenue > 0 ? labor / revenue : NaN,

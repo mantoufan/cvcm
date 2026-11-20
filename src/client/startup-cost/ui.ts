@@ -20,14 +20,48 @@ const GROUPS: readonly { id: string; keys: readonly Key[] }[] = [
 ];
 export const PCT_KEYS: ReadonlySet<Key> = new Set<Key>(["cogsPct", "deliveryPct", "commissionPct"]);
 
-/** A typed figure: "30%", "$6.50", "₫29.000" and "120,000 元" read as numbers; empty → undefined; not a number → NaN. */
+/** Currency signs and codes typed around an amount; spaces inside a number are kept, so "1 2" stays unreadable. */
+const CURRENCY = /NT\$|[%$€¥￥₩₫£]|Rp|VND|USD|EUR|元|円|원|đồng|đ/gi;
+/** Ten-thousands, as Chinese and Japanese write amounts: 12万 = 120,000. */
+const WAN = /[万萬]$/;
+
+/**
+ * A typed figure: "30%", "$6.50", "￥1,000", "₫29.000", "120,000 元" and "12万" read as numbers. Empty → undefined;
+ * not a number → NaN.
+ */
 export function readField(raw: string, key: Key, loc: Locale): number | undefined {
-  const bare = raw.replace(/[\s%$€¥₩₫£]|NT|Rp|VND|USD|EUR|元|円|원|đồng|đ/gi, "");
+  let bare = raw.replace(CURRENCY, "").trim();
   if (bare === "") return raw.trim() === "" ? undefined : NaN;
-  return (PCT_KEYS.has(key) ? parseDecimalInput : parseMoneyInput)(bare, loc);
+  const wan = WAN.test(bare) && !PCT_KEYS.has(key);
+  if (wan) bare = bare.replace(WAN, "").trim();
+  const x = (PCT_KEYS.has(key) ? parseDecimalInput : parseMoneyInput)(bare, loc);
+  return x === undefined ? NaN : wan ? x * 10000 : x;
+}
+
+/** Whether a read figure is allowed in its field: nothing negative, shares up to 100 %, 1–31 days open. */
+export function fieldOk(x: number | undefined, key: Key): boolean {
+  if (x === undefined) return key !== "days";
+  if (!(Number.isFinite(x) && x >= 0)) return false;
+  if (PCT_KEYS.has(key)) return x <= 100;
+  if (key === "days") return x >= 1 && x <= 31;
+  return true;
 }
 
 let timer = 0;
+
+/**
+ * Rows of the what-if table: the typed figure itself on the "yours" row (so it matches the result above), the others
+ * to a whole order. A row that rounds onto its neighbour (2 orders × 0.8 = 2) is left out rather than shown twice.
+ */
+export function sensitivityRows(orders: number): { f: number; orders: number }[] {
+  const rows: { f: number; orders: number }[] = [];
+  for (const f of SENSITIVITY) {
+    const n = f === 1 ? orders : Math.round(orders * f);
+    if (f !== 1 && (n === Math.round(orders) || rows.some((row) => row.orders === n))) continue;
+    rows.push({ f, orders: n });
+  }
+  return rows;
+}
 
 /** A start value in the page language's own digits: 15,480,000 / 826.000.000 / 3,6. */
 export function shownValue(x: number, loc: Locale): string {
@@ -63,19 +97,24 @@ export function mountStartupCost(host: HTMLElement): void {
     paint();
   }
 
-  /** The typed figures. An empty field counts as 0; an unreadable or negative one is marked aria-invalid. */
-  function read(): { v: ShopInput; bad: boolean } {
-    let bad = false;
+  /** The typed figures. An empty field counts as 0 (days open must be filled); a field out of range is marked aria-invalid. */
+  function read(): { v: ShopInput; bad: Key[] } {
+    const bad: Key[] = [];
     const v = {} as ShopInput;
     for (const k of Object.keys(inputs) as Key[]) {
       const x = readField(inputs[k].value, k, loc);
-      const ok = x === undefined || (Number.isFinite(x) && x >= 0);
+      const ok = fieldOk(x, k);
       inputs[k].toggleAttribute("aria-invalid", !ok);
-      if (!ok) bad = true;
+      if (!ok) bad.push(k);
       v[k] = ok && x !== undefined ? x : 0;
     }
     return { v, bad };
   }
+
+  const plural = new Intl.PluralRules(loc);
+  /** "{n} months" with the singular where the language has one (1 month, 1 mes). */
+  const counted = (key: "months" | "years" | "ordersValue", n: number, shown: string) =>
+    t(`${S}.${key}${plural.select(n) === "one" ? "One" : ""}`, { n: shown });
 
   /** Rounded before the sign is chosen, so −0.3 reads 0, not −0. */
   const signed = (x: number, f: Intl.NumberFormat, digits: number) => {
@@ -83,16 +122,19 @@ export function mountStartupCost(host: HTMLElement): void {
     return (n < 0 ? "−" : "") + f.format(Math.abs(n));
   };
   const money = (x: number) => signed(x, whole, 0);
-  const months = (m: number) => !Number.isFinite(m) ? t(`${S}.never`)
-    : m < 1 ? t(`${S}.underMonth`)
-      : m < 24 ? t(`${S}.months`, { n: one.format(Math.round(m * 10) / 10) })
-        : t(`${S}.years`, { n: one.format(Math.round((m / 12) * 10) / 10) });
+  const months = (m: number) => {
+    if (!Number.isFinite(m)) return t(`${S}.never`);
+    if (m < 1) return t(`${S}.underMonth`);
+    if (m > 600) return t(`${S}.overFifty`);
+    const n = Math.round((m < 24 ? m : m / 12) * 10) / 10;
+    return counted(m < 24 ? "months" : "years", n, one.format(n));
+  };
 
   function paint(): void {
     const { v, bad } = read();
-    const noDays = !bad && !(v.days >= 1);
-    if (bad || noDays) {
-      out.replaceChildren(h("p", { class: "muted" }, t(noDays ? `${S}.needDays` : `${S}.invalid`)));
+    if (bad.length) {
+      const msg = bad.every((k) => k === "days") ? "needDays" : bad.every((k) => PCT_KEYS.has(k)) ? "needPct" : "invalid";
+      out.replaceChildren(h("p", { class: "muted" }, t(`${S}.${msg}`)));
       verdict.textContent = "";
       sens.replaceChildren();
       last = "";
@@ -100,7 +142,8 @@ export function mountStartupCost(host: HTMLElement): void {
       return;
     }
     const r = shopNumbers(v);
-    const breakEven = Number.isFinite(r.breakEvenOrders) ? t(`${S}.ordersValue`, { n: whole.format(Math.ceil(r.breakEvenOrders - 1e-9)) }) : t(`${S}.lossPerOrder`);
+    const need = Math.ceil(r.breakEvenOrders - 1e-9);
+    const breakEven = Number.isFinite(r.breakEvenOrders) ? counted("ordersValue", need, whole.format(need)) : t(`${S}.lossPerOrder`);
     last = rowsTo(out, [
       [t(`${S}.payback`), months(r.paybackMonths), true],
       [t(`${S}.breakEven`), breakEven, true],
@@ -116,9 +159,7 @@ export function mountStartupCost(host: HTMLElement): void {
     verdict.textContent = verdictText(v, r, breakEven);
     sens.replaceChildren(
       h("h3", null, t(`${S}.tableTitle`)),
-      table([t(`${S}.colOrders`), t(`${S}.profit`), t(`${S}.payback`)], SENSITIVITY.map((f) => {
-        // The typed figure itself on the "yours" row, so it matches the result above; the others to a whole order.
-        const orders = f === 1 ? v.orders : Math.round(v.orders * f);
+      table([t(`${S}.colOrders`), t(`${S}.profit`), t(`${S}.payback`)], sensitivityRows(v.orders).map(({ f, orders }) => {
         const s = shopNumbers(v, orders);
         const label = f === 1 ? t(`${S}.current`, { n: one.format(orders) })
           : t(f < 1 ? `${S}.fewer` : `${S}.more`, { n: whole.format(orders), pct: whole.format(Math.round(Math.abs(1 - f) * 100)) });

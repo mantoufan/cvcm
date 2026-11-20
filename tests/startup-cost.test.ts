@@ -2,7 +2,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { EXAMPLE_KIND, mountStartupCost, readField, shownValue, unmountStartupCost } from "../src/client/startup-cost/ui";
+import { EXAMPLE_KIND, fieldOk, mountStartupCost, readField, sensitivityRows, shownValue, unmountStartupCost } from "../src/client/startup-cost/ui";
 import { LOCALES, type Locale } from "../src/shared/locale";
 import { SHOP_KINDS, shopExample, shopNumbers, type ShopInput } from "../src/shared/startup-cost";
 
@@ -22,6 +22,10 @@ describe("shop numbers", () => {
     expect(r.profit).toBeCloseTo(5.5 * 300 - 60);
     expect(r.paybackMonths).toBeCloseTo(200 / 1590);
     expect(r.breakEvenOrders).toBeCloseTo(60 / (5.5 * 30));
+  });
+  it("treats a profit that rounds to nothing as no payback", () => {
+    const at = 60 / (5.5 * 30);
+    expect(shopNumbers({ ...BASE, orders: at }).paybackMonths).toBe(Infinity);
   });
   it("never pays back at a loss, and has no break-even when each order loses", () => {
     expect(shopNumbers({ ...BASE, orders: 0 }).paybackMonths).toBe(Infinity);
@@ -85,6 +89,23 @@ describe("reading a field", () => {
     expect(readField("  ", "rent", "en")).toBeUndefined();
     expect(readField("%", "cogsPct", "en")).toBeNaN();
     expect(readField("abc", "rent", "en")).toBeNaN();
+    expect(readField("￥1,000", "rent", "ja")).toBe(1000);
+    expect(readField("12万", "buildout", "zh-CN")).toBe(120000);
+    expect(readField("1.5萬", "rent", "zh-TW")).toBe(15000);
+    expect(readField("1 2", "rent", "en")).toBeNaN();
+  });
+  it("keeps shares to 100 % and days open to 1–31", () => {
+    expect(fieldOk(250, "commissionPct")).toBe(false);
+    expect(fieldOk(100, "cogsPct")).toBe(true);
+    expect(fieldOk(60, "days")).toBe(false);
+    expect(fieldOk(undefined, "days")).toBe(false);
+    expect(fieldOk(undefined, "rent")).toBe(true);
+    expect(fieldOk(-1, "rent")).toBe(false);
+  });
+  it("drops what-if rows that round onto another", () => {
+    expect(sensitivityRows(250).map((r) => r.orders)).toEqual([150, 200, 250, 300, 375]);
+    expect(sensitivityRows(2).map((r) => r.orders)).toEqual([1, 2, 3]);
+    expect(sensitivityRows(12.5).map((r) => r.orders)).toEqual([8, 10, 12.5, 15, 19]);
   });
 });
 
@@ -144,6 +165,11 @@ describe("startup cost ui", () => {
     expect(text("[data-out=result]")).toBe("Enter how many days a month the shop is open (1–31).");
     set("[data-field=days]", "0");
     expect(text("[data-out=result]")).toBe("Enter how many days a month the shop is open (1–31).");
+    set("[data-field=days]", "60");
+    expect(q("[data-field=days]").hasAttribute("aria-invalid")).toBe(true);
+    set("[data-field=days]", "30");
+    set("[data-field=commissionPct]", "250");
+    expect(text("[data-out=result]")).toBe("Enter shares from 0 to 100 %.");
   });
   it("calls a zero month break-even, never shows −0, and keeps the typed orders on the yours row", () => {
     mountStartupCost(host);
@@ -151,7 +177,13 @@ describe("startup cost ui", () => {
     set("[data-field=orders]", String(22700 / (3.95625 * 30)));
     expect(text("[data-out=verdict]")).toMatch(/just breaks even/);
     expect(text("[data-out=result]")).not.toContain("−0");
+    expect(text("[data-out=result]")).toContain("PaybackNever");
+    set("[data-field=orders]", "191.3");
+    expect(text("[data-out=result]")).toContain("PaybackOver 50 years");
     set("[data-field=orders]", "12.5");
     expect(text("[data-out=table] tbody tr:nth-child(3) td:first-child")).toBe("12.5 (yours)");
+    // Singular in English: one order a day breaks even when fixed costs are tiny.
+    set("[data-field=rent]", "0"); set("[data-field=staff]", "0"); set("[data-field=utilities]", "0"); set("[data-field=other]", "100");
+    expect(text("[data-out=result]")).toContain("Break-even orders a day1 order");
   });
 });
