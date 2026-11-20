@@ -86,7 +86,8 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
       void find().then((found) => { if (found[0]) choose(found[0]); });
     },
   });
-  const matches = h("div", { class: "chip-row pkt-matches", id: "pkt-matches", "aria-live": "polite", "data-out": "matches" });
+  // Not a live region: it is redrawn on every keystroke. The result heading announces the pick instead.
+  const matches = h("div", { class: "chip-row pkt-matches", id: "pkt-matches", "data-out": "matches" });
 
   let seq = 0;
   /** Matches for the box's current text, shown as chips; [] when the text changed again before they arrived. */
@@ -123,9 +124,11 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
     search.value = e.name;
     matches.replaceChildren();
     paint();
+    // The chip that had focus is gone: put the reader back in the box rather than at the top of the page.
+    search.focus();
   }
 
-  const heading = h("p", { class: "shape-main", "data-out": "pair" });
+  const heading = h("p", { class: "shape-main", "aria-live": "polite", "data-out": "pair" });
   const defense = h("dl", { class: "stats-grid pkt-groups", "data-out": "defense" });
   const offense = h("div", { "data-out": "offense" });
 

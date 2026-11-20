@@ -71,11 +71,15 @@ describe("Pokédex data", () => {
       expect(rows.every((e) => e.name && e.types.length >= 1 && e.types.length <= 2), loc).toBe(true);
       expect(rows.map((e) => e.en), loc).toEqual(en.map((e) => e.name));
       // No two search results look alike: a shared name is shown with its types, and exact repeats show once.
+      // Grouped by name: as many distinct chip labels as distinct type sets (searchDex shows each label once).
+      const byName = new Map<string, { labels: Set<string>; types: Set<string> }>();
       for (const e of rows) {
-        const hits = searchDex(rows, e.name, 50).filter((x) => x.name === e.name);
-        const labels = hits.map((x) => (x.shared ? `${x.name}|${x.types.join("/")}` : x.name));
-        expect(new Set(labels).size, `${loc} ${e.name}`).toBe(labels.length);
+        const g = byName.get(e.name) ?? { labels: new Set<string>(), types: new Set<string>() };
+        g.labels.add(e.shared ? `${e.name}|${e.types.join("/")}` : e.name);
+        g.types.add(e.types.join("/"));
+        byName.set(e.name, g);
       }
+      for (const [name, g] of byName) expect(g.labels.size, `${loc} ${name}`).toBe(g.types.size);
     }
     const tauros = dex("ja").filter((e) => e.n === 128);
     expect(tauros.map((e) => e.shared)).toEqual([false, true, true, true]);

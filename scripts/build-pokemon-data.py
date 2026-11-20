@@ -160,8 +160,11 @@ for r in sorted(pokemon, key=lambda r: (int(r["species_id"]), r["is_default"] !=
             # species row, whose types are the answer.
             form_row = forms_by_pokemon.get(r["id"])
             if form_row and "9" in form_names.get(form_row["id"], {}):  # some forms (Koraidon's builds) have no name
+                en_alias = entry_name(r, "en")
                 for loc in LOCALES:
-                    aliases.setdefault((int(r["species_id"]), loc), []).extend([entry_name(r, loc), entry_name(r, "en")])
+                    if loc in ("vi", "id"):
+                        continue  # no files of their own
+                    aliases.setdefault((int(r["species_id"]), loc), []).extend([entry_name(r, loc), en_alias])
             continue
     t = [idx[x] for x in type_list(r["id"])]
     en_name = entry_name(r, "en")
