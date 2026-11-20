@@ -25,9 +25,9 @@ YINIAN = ["凝气","筑基","结丹","元婴","天人","半神","天尊","太古
 # Book titles, authors and other Chinese words in ja / ko running text, in Japanese kanji / Korean hanja forms.
 LOCAL_TITLES = {
     "ja": {"凡人修仙传": "凡人修仙伝", "斗破苍穹": "斗破蒼穹", "斗罗大陆": "斗羅大陸", "飘邈之旅": "飄邈之旅", "绝世唐门": "絶世唐門",
-           "忘语": "忘語", "辰东": "辰東", "萧潜": "蕭潜", "起点中文網": "起点中文網",
+           "忘语": "忘語", "辰东": "辰東", "萧潜": "蕭潜",
            "炼精化气・炼气化神・炼神还虚": "煉精化気・煉気化神・煉神還虚", "元婴": "元嬰", "封号斗罗": "封号斗羅", "仮婴": "仮嬰", "筑基": "築基"},
-    "ko": {"凡人修仙传": "凡人修仙傳", "斗破苍穹": "斗破蒼穹", "斗罗大陆": "斗羅大陸", "飘邈之旅": "飄邈之旅", "绝世唐门": "絶世唐門",
+    "ko": {"凡人修仙传": "凡人修仙傳", "斗破苍穹": "鬥破蒼穹", "斗罗大陆": "斗羅大陸", "飘邈之旅": "飄邈之旅", "绝世唐门": "絶世唐門",
            "忘语": "忘語", "辰东": "辰東", "萧潜": "蕭潛", "起点中文网": "起點中文網", "中国作家网": "中國作家網", "光明网": "光明網",
            "伍守阳": "伍守陽", "谭峭": "譚峭", "张伯端": "張伯端", "天仙正理直论": "天仙正理直論", "化书": "化書", "钟吕传道集": "鍾呂傳道集",
            "炼精化气·炼气化神·炼神还虚": "煉精化氣·煉氣化神·煉神還虛", "婴儿·圣胎·阳神": "嬰兒·聖胎·陽神", "天蚕土豆": "天蠶土豆",
@@ -103,14 +103,21 @@ if __name__ == "__main__":
         if L in LOCAL_TITLES:
             a = json.loads(localize(json.dumps(a, ensure_ascii=False), LOCAL_TITLES[L]))
         s = json.dumps(a, ensure_ascii=False, indent=2)
-        assert "{" not in s.replace("{\n", "").replace('": {', "") or True
-        open(os.path.join(root, "src/locales/kb", L, ID + ".json"), "w").write(s + "\n")
+        def strings(x):
+            if isinstance(x, str): yield x
+            elif isinstance(x, list):
+                for y in x: yield from strings(y)
+            elif isinstance(x, dict):
+                for y in x.values(): yield from strings(y)
+        left = [x for x in strings(a) if "{" in x or "}" in x]
+        if left: raise SystemExit(f"{L}: unfilled {{token}} in: {left[0][:80]}")
+        with open(os.path.join(root, "src/locales/kb", L, ID + ".json"), "w", encoding="utf-8") as fh: fh.write(s + "\n")
         core = os.path.join(root, "src/locales", L + ".json")
-        d = json.load(open(core))
+        with open(core, encoding="utf-8") as fh: d = json.load(fh)
         d["kb"][ID] = {"name": T["name"], "blurb": T["blurb"]}
-        open(core, "w").write(json.dumps(d, ensure_ascii=False, indent=2) + "\n")
+        with open(core, "w", encoding="utf-8") as fh: fh.write(json.dumps(d, ensure_ascii=False, indent=2) + "\n")
         hub = os.path.join(root, "src/locales/kb", L + ".json")
-        h = json.load(open(hub))
+        with open(hub, encoding="utf-8") as fh: h = json.load(fh)
         h["hub"]["groups"]["culture"] = T["group"]
-        open(hub, "w").write(json.dumps(h, ensure_ascii=False, indent=2) + "\n")
+        with open(hub, "w", encoding="utf-8") as fh: fh.write(json.dumps(h, ensure_ascii=False, indent=2) + "\n")
         print("wrote", L)

@@ -33,8 +33,8 @@ N = {
 "魂士":("魂士","Hunshi","Hồn Sĩ"),"魂师":("魂師","Hunshi","Hồn Sư"),"大魂师":("大魂師","Da Hunshi","Đại Hồn Sư"),
 "魂尊":("魂尊","Hunzun","Hồn Tôn"),"魂宗":("魂宗","Hunzong","Hồn Tông"),"魂王":("魂王","Hunwang","Hồn Vương"),
 "魂帝":("魂帝","Hundi","Hồn Đế"),"魂圣":("魂聖","Hunsheng","Hồn Thánh"),"魂斗罗":("魂斗羅","Hun Douluo","Hồn Đấu La"),
-"封号斗罗":("封號斗羅","Fenghao Douluo","Phong Hào Đấu La"),"超级斗罗":("超級斗羅","Chaoji Douluo","Siêu Cấp Đấu La"),
-"极限斗罗":("極限斗羅","Jixian Douluo","Cực Hạn Đấu La"),"神":("神","Shen","Thần"),
+"封号斗罗":("封號斗羅","Fenghao Douluo","Phong Hào Đấu La"),
+"神":("神","Shen","Thần"),
 "旋照":("旋照","Xuanzhao","Toàn Chiếu"),"开光":("開光","Kaiguang","Khai Quang"),"融合":("融合","Ronghe","Dung Hợp"),
 "心动":("心動","Xindong","Tâm Động"),"灵寂":("靈寂","Lingji","Linh Tịch"),"出窍":("出竅","Chuqiao","Xuất Khiếu"),
 "分神":("分神","Fenshen","Phân Thần"),"斩灵":("斬靈","Zhanling","Trảm Linh"),"问道":("問道","Wendao","Vấn Đạo"),
@@ -44,11 +44,10 @@ N = {
 "永恒":("永恆","Yongheng","Vĩnh Hằng"),
 }
 import re, json, os
-KO = json.load(open(os.path.join(os.path.dirname(__file__), "ko_readings.json")))
-# Traditional forms that Japanese writes in shinjitai; 鬥 stays 斗 as in the Japanese titles 斗破蒼穹 / 斗羅大陸.
+KO = json.load(open(os.path.join(os.path.dirname(__file__), "ko_readings.json"), encoding="utf-8"))
+# Traditional forms that Japanese writes in shinjitai; 鬥 becomes 斗 as in the Japanese titles 斗破蒼穹 / 斗羅大陸.
 JA_MAP = str.maketrans({"氣": "気", "體": "体", "虛": "虚", "鬥": "斗", "號": "号", "靈": "霊", "恆": "恒", "傳": "伝",
-    "絕": "絶", "變": "変", "實": "実", "淨": "浄", "碎": "砕", "圓": "円", "轉": "転", "級": "級", "鍊": "錬", "語": "語",
-    "東": "東", "蕭": "蕭", "還": "還", "飄": "飄", "陸": "陸", "門": "門", "蒼": "蒼"})
+    "絕": "絶", "變": "変", "實": "実", "淨": "浄", "碎": "砕", "圓": "円", "轉": "転", "鍊": "錬", "乘": "乗"})
 def ja(text):
     return text.translate(JA_MAP)
 def disp(s, L):
@@ -56,10 +55,10 @@ def disp(s, L):
     t, py, hv = N[s]
     if L == "zh-CN": return s
     if L == "zh-TW": return t
-    if L == "en": return f"{py} ({s})"
+    if L in ("en", "id", "es"): return f"{py} ({s})"
     if L == "vi": return f"{hv} ({s})"
     if L == "ja": return ja(t)
-    if L == "ko": return f"{KO[s]}({t.replace('鬥', '斗')})"
+    if L == "ko": return f"{KO[s]}({t})"
     return f"{s} ({py})"
 def fill(text, L):
     return re.sub(r"\{([^{}|]+)\}", lambda m: disp(m.group(1), L), text)
