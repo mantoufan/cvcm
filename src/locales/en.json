@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "cv.cm — clipboard, image, and PDF tools",
+    "title": "Cloud clipboard and free online tools — cv.cm",
     "titleClip": "Pastebin — online clipboard, no account — cv.cm",
     "descClip": "Pastebin-style clipboard. Share text, images, and files with a link. No account. Deleted after 10 views or 24 hours.",
     "titleWatermark": "Watermark ID copies and photos + invisible watermark — free, no upload — cv.cm",
@@ -13,7 +13,7 @@
     "descAudio": "Convert MP3, M4A, OGG, AAC, and FLAC to WAV in the browser. Choose 44.1 or 48 kHz. Nothing is uploaded.",
     "titleData": "JSON formatter, Base64, CSV to JSON — cv.cm",
     "descData": "Pretty-print JSON, CSV ↔ JSON, Base64, URL encode, Markdown to HTML. Runs in this tab.",
-    "description": "On-device browser tools. Image and PDF files stay in this tab.",
+    "description": "Cloud clipboard: paste text, images, audio, video or files and share them with one short link. No account; deleted after 10 views or 24 hours. Plus free image, PDF, calculator and game tools, most of them running right in your browser.",
     "descWatermark": "Watermark photos and ID copies in the browser. Tile “for [org] use only” with today’s date, add an invisible watermark that tells you which copy leaked, blur ID numbers, batch export PNG, JPEG, or ZIP. EXIF removed. Files never leave this tab.",
     "descCollage": "Make a photo collage in the browser. Grid layouts and Instagram sizes. Nothing is uploaded.",
     "titleQr": "Free QR code generator — cv.cm",
@@ -5312,7 +5312,7 @@
   },
   "clip": {
     "title": "Online clipboard",
-    "privacyNote": "Text in D1, files on S3. Deleted after 10 views or 24 hours. No account.",
+    "privacyNote": "No account. Only people with the link can open it; deleted after 10 views or 24 hours.",
     "bodyLabel": "Text",
     "placeholder": "Paste text, HTML, or drop files here…",
     "submit": "Create link",
@@ -5337,7 +5337,7 @@
     "ruleViews": "Deleted after 10 views",
     "ruleDay": "Deleted after 1 day",
     "ruleLogin": "No account needed",
-    "ruleFiles": "Images, audio, video and files go to S3",
+    "ruleFiles": "Images, audio, video and files up to 32 MB",
     "preview": "Preview",
     "edit": "Edit",
     "bold": "Bold",

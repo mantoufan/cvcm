@@ -15,6 +15,7 @@ import {
   toolBreadcrumbJsonLd,
   toolSoftwareJsonLd,
   tutorialBreadcrumbJsonLd,
+  websiteJsonLd,
   type FaqItem,
 } from "../shared/seo";
 import type { Locale } from "../shared/locale";
@@ -119,6 +120,9 @@ export function syncPageJsonLd(
   currencyPage: CurrencyPage = null,
   breedsPage: BreedsPage = null,
 ): void {
+  const home = [tool, tutorial, gamesHub, convertJob, resizeJob, market, marketsHub, devicePage, gamesHubId, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage, emojiPage, currencyPage, breedsPage].every((v) => !v);
+  // Home: the site plus its cloud clipboard (mirrors applyHtmlSeo). Every other page drops the WebSite block.
+  writeJsonLd("website-jsonld", home ? websiteJsonLd(locale) : null);
   if (currencyPage) {
     const pair = currencyPage === "hub" ? null : currencyPage;
     for (const key of ["howto-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
@@ -269,7 +273,7 @@ export function syncPageJsonLd(
   );
   writeJsonLd(
     "software-jsonld",
-    toolPage && tool ? toolSoftwareJsonLd(locale, tool) : null,
+    toolPage && tool ? toolSoftwareJsonLd(locale, tool) : home ? toolSoftwareJsonLd(locale, "clip") : null,
   );
 }
 

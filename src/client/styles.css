@@ -127,7 +127,6 @@ h2 { font-size: 1.15rem; line-height: 1.35; }
 .home-hero .lede { margin-bottom: 0.5rem; }
 .home-hero .muted { margin: 0.5rem 0 0; }
 /* Empty status / result rows only reserve space once they have content */
-.home-hero .clip-compose > .status:empty, .home-hero .clip-result:empty { display: none; }
 
 /* Link lists: the home directory, hubs and related links */
 .wall { padding-top: 2rem; }
@@ -248,8 +247,6 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
   .search-pop { left: 0; width: auto; }
   .links { grid-template-columns: 1fr; }
   .pool-cards { grid-template-columns: 1fr; }
-  .clip-bar { gap: 0.25rem; }
-  .clip-bar .chip, .clip-bar .icon-btn, .clip-biu { min-height: 34px; min-width: 34px; padding: 0.15rem 0.45rem; font-size: 0.85rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
@@ -273,18 +270,9 @@ textarea:focus, select:focus, input[type="text"]:focus { border-color: var(--pin
 .preview.actual { max-width: none; max-height: none; }
 .field.grow { flex: 1; min-width: 12rem; }
 .field[hidden] { display: none; }
-.clip.solo { grid-template-columns: minmax(0, 1fr); }
-.clip-seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; overflow: hidden; margin-right: 0.25rem; }
-.clip-seg .seg { border: 0; background: transparent; padding: 0.3rem 0.75rem; font: inherit; font-size: 0.8rem; font-weight: 700; color: var(--ink-soft); cursor: pointer; }
-.clip-seg .seg.on { background: var(--pink-soft); color: var(--ink); }
-.clip-biu.s { text-decoration: line-through; font-weight: 600; }
-.clip-attach { margin-left: auto; }
 .clip-sheet { display: grid; }
-.clip-rich { min-height: 16rem; max-height: 70vh; overflow: auto; padding: 0.9rem 1rem; border: 1px solid var(--line); border-radius: 10px; background: #fff; outline: none; line-height: 1.6; word-break: break-word; }
-.clip-rich:focus { border-color: var(--pink-deep); }
 .clip-rich.is-empty::before { content: attr(data-placeholder); color: var(--ink-soft); opacity: 0.7; pointer-events: none; }
 .clip-rich blockquote, .clip-md blockquote { margin: 0.4rem 0; padding: 0.2rem 0.9rem; border-left: 3px solid var(--pink-deep); color: var(--ink-soft); }
-.clip-compose.over .clip-rich, .clip-compose.over .clip-input { border-color: var(--pink-deep); background: var(--pink-soft); }
 .clip-pills { display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .clip-pills:empty { display: none; }
 .clip-pill { display: inline-flex; align-items: center; gap: 0.35rem; max-width: 100%; padding: 0.25rem 0.7rem; border-radius: 999px; border: 1px solid var(--line); background: #fff; font-size: 0.8rem; }
@@ -379,14 +367,12 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
   .preview { max-height: 48vh; }
   .stage-actions { position: sticky; bottom: 0; z-index: 3; background: var(--white); padding: 0.65rem 0 calc(0.65rem + env(safe-area-inset-bottom)); }
 }
-.clip { display: grid; grid-template-columns: minmax(0, 1fr) 240px; gap: 1rem; align-items: start; }
 .clip-compose { display: grid; gap: 0.75rem; }
 .clip-input { min-height: 16rem; font-family: var(--mono); line-height: 1.55; resize: vertical; }
 .clip-pre { margin: 0; white-space: pre-wrap; word-break: break-word; background: var(--gray); border: 1px solid var(--line); border-radius: 10px; padding: 1rem; min-height: 8rem; font-family: var(--mono); font-size: 0.92rem; line-height: 1.55; }
 .clip-url-row { display: flex; gap: 0.5rem; align-items: center; }
 .clip-url { flex: 1; min-width: 0; font-family: var(--mono); font-size: 0.88rem; }
 .clip-meta { display: flex; flex-wrap: wrap; gap: 0.45rem; }
-.clip-rules ul { margin: 0; padding-left: 1.1rem; color: var(--ink-soft); font-size: 0.9rem; display: grid; gap: 0.4rem; }
 .clip-bytes { margin: 0; }
 .clip-result { display: grid; gap: 0.65rem; }
 .data-tool { display: grid; gap: 1rem; }
@@ -474,11 +460,6 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 @media (max-width: 960px) {
   .data-panes { grid-template-columns: 1fr; }
 }
-.clip-bar { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
-.clip-biu { min-width: 2rem; padding-inline: 0.55rem; font-family: Georgia, "Times New Roman", serif; font-weight: 800; }
-.clip-biu.i { font-style: italic; font-weight: 600; }
-.clip-biu.u { text-decoration: underline; font-weight: 600; }
-.clip-compose.over { outline: 2px dashed var(--pink-deep); }
 .clip-md { overflow: auto; line-height: 1.65; }
 .clip-md h1, .clip-md h2, .clip-md h3, .clip-md h4 { margin: 0.6rem 0 0.35rem; }
 .clip-md p { margin: 0 0 0.7rem; }
@@ -492,7 +473,6 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .clip-md .c { color: #c4a0b0; }
 .clip-preview { min-height: 16rem; background: var(--gray); border: 1px solid var(--line); border-radius: 12px; padding: 0.85rem; }
 @media (max-width: 960px) {
-  .clip { grid-template-columns: 1fr; }
   .clip-input { min-height: 12rem; }
 }
 .learn { display: grid; gap: 1.15rem; max-width: 46rem; min-width: 0; }
@@ -2311,3 +2291,40 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .idp-px .field { flex: 1; min-width: 0; }
 .idp-px > span { padding-bottom: 0.6rem; }
 .idp-warn { color: var(--pink-dark); }
+
+/* Cloud clipboard: one card. Toolbar on top, a borderless page to write on, actions at the foot. */
+.clip { display: grid; gap: 0.75rem; }
+.clip-compose > .status:empty, .clip-result:empty { display: none; }
+.clip-editor { gap: 0; padding: 0; overflow: hidden; }
+.clip-editor:focus-within { border-color: var(--pink); }
+.clip-editor.over { border-color: var(--pink-deep); background: var(--pink-soft); }
+.clip-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem; padding: 0.45rem 0.55rem; border-bottom: 1px solid var(--line); background: var(--gray); }
+.clip-seg { display: inline-flex; padding: 2px; border-radius: 8px; background: var(--pink-soft); }
+.clip-seg .seg { min-height: 30px; padding: 0 0.7rem; border: 0; border-radius: 6px; background: transparent; font-size: 0.8rem; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
+.clip-seg .seg.on { background: var(--white); color: var(--pink-deep); }
+.clip-sep { width: 1px; height: 1.1rem; margin: 0 0.3rem; background: var(--line); }
+.clip-biu, .clip-attach { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; min-width: 34px; min-height: 34px; padding: 0 0.4rem; border: 0; border-radius: 8px; background: transparent; color: var(--ink-soft); font-size: 0.9rem; font-weight: 700; cursor: pointer; }
+.clip-biu:hover, .clip-attach:hover { background: var(--pink-soft); color: var(--pink-deep); }
+.clip-biu.i { font-style: italic; font-family: Georgia, "Times New Roman", serif; }
+.clip-biu.u { text-decoration: underline; }
+.clip-biu.s { text-decoration: line-through; }
+.clip-attach { margin-left: auto; padding: 0 0.65rem; font-size: 0.85rem; font-weight: 600; }
+.clip-editor .clip-sheet { min-width: 0; }
+.clip-rich, .clip-editor .clip-input { min-height: 15rem; max-height: 70vh; overflow: auto; padding: 1rem 1.1rem; border: 0; border-radius: 0; background: var(--white); outline: none; line-height: 1.65; word-break: break-word; }
+.clip-editor .clip-input { resize: vertical; }
+.clip-editor .clip-pills { padding: 0 1.1rem 0.6rem; }
+.clip-editor .clip-actions { padding: 0.6rem 0.75rem 0.6rem 1.1rem; border-top: 1px solid var(--line); }
+.clip-editor > .status, .clip-editor > .clip-result { margin: 0; padding: 0 1.1rem 0.75rem; }
+.clip-editor .clip-actions .btn { min-height: 40px; padding: 0.5rem 1rem; }
+.clip-editor .clip-actions .btn.ghost { border-color: transparent; color: var(--ink-soft); }
+.clip-editor .clip-actions .btn.ghost:hover { color: var(--pink-deep); background: var(--pink-soft); }
+.clip-bytes { font-size: 0.8rem; font-variant-numeric: tabular-nums; }
+.clip-rules ul { display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem; margin: 0; padding: 0; list-style: none; color: var(--ink-soft); font-size: 0.85rem; }
+.clip-rules li::before { content: "✓"; margin-right: 0.35rem; color: var(--pink-deep); font-weight: 700; }
+@media (max-width: 640px) {
+  .clip-bar { padding: 0.35rem; }
+  .clip-sep { display: none; }
+  .clip-biu { min-width: 32px; min-height: 32px; padding: 0 0.3rem; }
+  .clip-rich, .clip-editor .clip-input { min-height: 12rem; padding: 0.85rem; }
+  .clip-editor .clip-actions { padding-left: 0.85rem; }
+}
