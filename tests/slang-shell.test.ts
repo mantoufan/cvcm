@@ -16,9 +16,8 @@ describe("slang shell", () => {
     const nav = document.querySelector<HTMLAnchorElement>('.nav a[data-nav="slang"]');
     expect(nav?.getAttribute("href")).toBe("/en/memes/");
     expect(nav?.classList.contains("on")).toBe(true);
-    // After Reference in the top nav, and linked from the footer directory with its focus terms.
-    const order = [...document.querySelectorAll(".nav a")].map((a) => a.getAttribute("data-nav"));
-    expect(order.indexOf("slang")).toBe(order.indexOf("reference") + 1);
+    // First in the Wiki menu, and linked from the footer directory with its focus terms.
+    expect(nav?.closest(".nav-group")?.querySelector(".nav-group-pop a")?.getAttribute("data-nav")).toBe("slang");
     expect(document.querySelector('.dir a[data-nav="slang"]')).not.toBeNull();
     expect(document.querySelector('.dir a[data-nav="slang-tung-tung-tung-sahur"]')?.textContent).toBe("Tung Tung Tung Sahur");
     expect(document.querySelector('.dir a[data-nav="slang-hajimi"]')).not.toBeNull();

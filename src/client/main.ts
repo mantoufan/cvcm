@@ -1243,16 +1243,16 @@ function shell(loc: Locale): { page: HTMLElement; ready: Promise<void> } {
         navLink(quizHref(loc), t("nav.tests"), testsOn, "tests"),
         navLink(rankingHref(loc), t("nav.rankings"), rankingsOn, "rankings"),
         navLink(datasetHref(loc), t("nav.data"), dataOn, "datasets"),
-        // Encyclopedia-style channels under one menu. Their links stay in this nav's markup, so every page still links
-        // to each channel hub; only the row shows a single item. The channels keep their own URLs.
-        navGroup(t("nav.wiki"), refOn || slangOn || nostalgiaOn, [
-          navLink(refHref(loc), t("nav.reference"), refOn, "reference"),
-          navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
-          navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
-        ]),
-        navLink(ideasHref(loc), t("nav.ideas"), ideasOn, "ideas"),
         navLink(gamesHref(loc, null), t("nav.games"), gamesOn, "games"),
         navLink(learnHref(loc, null), t("nav.learn"), learnOn, "learn"),
+        // Encyclopedia-style channels under one menu, last on the row. Their links stay in this nav's markup, so every
+        // page still links to each channel hub; only the row shows a single item. The channels keep their own URLs.
+        navGroup(t("nav.wiki"), slangOn || nostalgiaOn || refOn || ideasOn, [
+          navLink(slangHref(loc), t("nav.slang"), slangOn, "slang"),
+          navLink(nostalgiaHref(loc), t("nav.nostalgia"), nostalgiaOn, "nostalgia"),
+          navLink(refHref(loc), t("nav.reference"), refOn, "reference"),
+          navLink(ideasHref(loc), t("nav.ideas"), ideasOn, "ideas"),
+        ]),
       )),
       searchButton(),
       langSwitch(loc),

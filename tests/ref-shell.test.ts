@@ -16,14 +16,14 @@ describe("reference shell", () => {
     const nav = document.querySelector<HTMLAnchorElement>('.nav a[data-nav="reference"]');
     expect(nav?.getAttribute("href")).toBe("/en/reference/");
     expect(nav?.classList.contains("on")).toBe(true);
-    // After Data in the top nav, and linked from the footer directory.
-    const order = [...document.querySelectorAll(".nav a")].map((a) => a.getAttribute("data-nav"));
-    expect(order.indexOf("reference")).toBe(order.indexOf("datasets") + 1);
-    // Reference, memes and nostalgia sit under one "Wiki" menu: one button on the row, the three links in its markup.
+    // The Wiki menu is the last item on the nav row.
+    const row = [...document.querySelectorAll(".nav > a, .nav > .nav-group")];
+    expect(row[row.length - 1].classList.contains("nav-group")).toBe(true);
+    // Memes, nostalgia, reference and business ideas sit under one "Wiki" menu: one button on the row, the links in its markup.
     const group = nav!.closest(".nav-group")!;
     expect(group.querySelector(".nav-group-label")?.textContent).toBe("Wiki");
     expect(group.classList.contains("on")).toBe(true);
-    expect([...group.querySelectorAll(".nav-group-pop a")].map((a) => a.getAttribute("data-nav"))).toEqual(["reference", "slang", "nostalgia"]);
+    expect([...group.querySelectorAll(".nav-group-pop a")].map((a) => a.getAttribute("data-nav"))).toEqual(["slang", "nostalgia", "reference", "ideas"]);
     // A native <details>: works in the server HTML and without JS; a tap outside or Escape closes it.
     const details = group as HTMLDetailsElement;
     expect(details.tagName).toBe("DETAILS");
@@ -64,7 +64,7 @@ describe("reference shell", () => {
     // Touch has no hover: pointerover from a finger does not open it.
     summary.dispatchEvent(new PointerEvent("pointerover", { bubbles: true, pointerType: "touch" }));
     expect(details.open).toBe(false);
-    expect(document.querySelector('.nav > a[data-nav="ideas"]')).not.toBeNull();
+    expect(document.querySelector('.nav-group-pop a[data-nav="ideas"]')).not.toBeNull();
     expect(document.querySelector('.dir a[data-nav="reference"]')).not.toBeNull();
     expect(document.getElementById("article-jsonld")?.textContent).toContain("CollectionPage");
 
