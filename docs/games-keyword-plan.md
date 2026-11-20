@@ -227,3 +227,12 @@ Keyword Planner, same MCC, per language. `games3d` now holds 15 pages.
 | `bowling` | bowling game 27.1k; 3d bowling 9.9k; ja ボウリング ゲーム 6.6k; es juego de bolos 4.4k | Ten-pin, full scoring |
 
 Skipped: skee ball 49.5k (Skee-Ball is a trademark). Next candidates: mahjong 3d 22.2k (es/vi/id), penalty kick game 14.8k (id game penalti 14.8k).
+
+## Chinese names: /billiards/ vs /pool-game/ (2026-11-20)
+
+Both pages used to open with 台球游戏 (zh-CN) / 撞球遊戲 (zh-TW). Keyword Planner shows 桌球 and 台球 as separate head terms in Simplified Chinese, so each page takes one:
+
+| Page | zh-CN | zh-TW |
+|---|---|---|
+| `/billiards/` | 台球: 台球 33.1k, 台球游戏 1k, 中式台球 590, 打台球 480, 台球规则 390, 九球 260 | 撞球: 撞球 60.5k, 撞球遊戲 2.9k, 撞球規則 1.9k, 九號球 720, 花式撞球 320 |
+| `/pool-game/` | 桌球 + 黑八: 桌球 40.5k, 桌球游戏 880, 黑八 260, 8球 90, 八球 70, 黑八台球 70 | 8號球: 8號球 480, 八號球 260, 撞球小遊戲 320 (桌球 means table tennis in Taiwan, so it is not used; "8 Ball Pool" 673k is a trademark name) |
