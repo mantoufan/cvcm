@@ -123,13 +123,16 @@ describe("Chinese names of /billiards/ and /pool-game/", () => {
     const meta = (p: typeof zhCN, k: string) => String(p.meta![k]);
     // The billiards titles and meta leave 桌球 / 黑八 / 8號球 to the pool page.
     for (const k of ["titleBilliards", "descBilliards"]) {
-      expect(meta(zhCN, k)).not.toMatch(/桌球|黑八/);
-      expect(meta(zhTW, k)).not.toMatch(/8\s?號球/);
+      expect(meta(zhCN, k)).not.toMatch(/桌球|黑八|八球|8\s?球/);
+      expect(meta(zhTW, k)).not.toMatch(/[8八]\s?號球/);
     }
     expect(meta(zhCN, "titleBilliards")).toMatch(/^台球游戏/);
     expect(meta(zhCN, "titlePoolGame")).toMatch(/^桌球游戏/);
     expect(meta(zhTW, "titleBilliards")).toMatch(/^撞球遊戲/);
     expect(meta(zhTW, "titlePoolGame")).toMatch(/^8號球/);
+    // The pool page leaves 撞球 / 台球 to /billiards/ in its title and FAQ questions.
+    expect(meta(zhTW, "titlePoolGame")).not.toContain("撞球");
+    expect(meta(zhCN, "titlePoolGame")).not.toContain("台球");
     // In Taiwan 桌球 is table tennis: never on the zh-TW pool page.
     expect(JSON.stringify([zhTW.meta!.titlePoolGame, zhTW.meta!.descPoolGame, (zhTW.faq as Record<string, unknown>)["pool-game"]])).not.toContain("桌球");
   });
