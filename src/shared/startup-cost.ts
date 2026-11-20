@@ -72,7 +72,9 @@ export function shopNumbers(input: ShopInput, ordersOverride?: number): ShopResu
   const startup = v.fee + v.buildout + v.equipment + v.keyMoney + v.rent * v.depositMonths + v.stock;
   const labor = v.staff * v.wage;
   const fixed = v.rent + labor + v.utilities + v.other;
-  const perOrder = v.price * (1 - clampPct(v.cogsPct)) - v.packaging - v.price * clampPct(v.deliveryPct) * clampPct(v.commissionPct);
+  const rawPerOrder = v.price * (1 - clampPct(v.cogsPct)) - v.packaging - v.price * clampPct(v.deliveryPct) * clampPct(v.commissionPct);
+  // 6 × (1 − 0.7) − 1.8 is 2.2e-16, not a margin: snap leftovers below a millionth of the price to zero.
+  const perOrder = Math.abs(rawPerOrder) < 1e-6 * Math.max(v.price, v.packaging, 1) ? 0 : rawPerOrder;
   const revenue = v.price * orders * days;
   const profit = perOrder * orders * days - fixed;
   return {

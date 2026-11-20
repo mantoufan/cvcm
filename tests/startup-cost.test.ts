@@ -23,6 +23,11 @@ describe("shop numbers", () => {
     expect(r.paybackMonths).toBeCloseTo(200 / 1590);
     expect(r.breakEvenOrders).toBeCloseTo(60 / (5.5 * 30));
   });
+  it("treats a margin of floating-point dust as zero", () => {
+    const r = shopNumbers({ ...BASE, price: 6, cogsPct: 70, packaging: 1.8, deliveryPct: 0 });
+    expect(r.perOrder).toBe(0);
+    expect(r.breakEvenOrders).toBe(Infinity);
+  });
   it("treats a profit that rounds to nothing as no payback", () => {
     const at = 60 / (5.5 * 30);
     expect(shopNumbers({ ...BASE, orders: at }).paybackMonths).toBe(Infinity);
@@ -93,6 +98,14 @@ describe("reading a field", () => {
     expect(readField("12万", "buildout", "zh-CN")).toBe(120000);
     expect(readField("1.5萬", "rent", "zh-TW")).toBe(15000);
     expect(readField("1 2", "rent", "en")).toBeNaN();
+    expect(readField("3000만원", "buildout", "ko")).toBe(30000000);
+    expect(readField("1.5억", "buildout", "ko")).toBe(150000000);
+    expect(readField("35k", "price", "vi")).toBe(35000);
+    expect(readField("2 triệu", "rent", "vi")).toBe(2000000);
+    expect(readField("5 jt", "rent", "id")).toBe(5000000);
+    expect(readField("US$6.50", "price", "en")).toBe(6.5);
+    expect(readField("HK$40", "price", "zh-TW")).toBe(40);
+    expect(readField("30k", "cogsPct", "en")).toBeNaN();
   });
   it("keeps shares to 100 % and days open to 1–31", () => {
     expect(fieldOk(250, "commissionPct")).toBe(false);
@@ -104,8 +117,9 @@ describe("reading a field", () => {
   });
   it("drops what-if rows that round onto another", () => {
     expect(sensitivityRows(250).map((r) => r.orders)).toEqual([150, 200, 250, 300, 375]);
-    expect(sensitivityRows(2).map((r) => r.orders)).toEqual([1, 2, 3]);
-    expect(sensitivityRows(12.5).map((r) => r.orders)).toEqual([8, 10, 12.5, 15, 19]);
+    expect(sensitivityRows(2).map((r) => r.orders)).toEqual([1.2, 1.6, 2, 2.4, 3]);
+    expect(sensitivityRows(0.1).map((r) => r.orders)).toEqual([0.1, 0.2]);
+    expect(sensitivityRows(12.5).map((r) => r.orders)).toEqual([7.5, 10, 12.5, 15, 18.8]);
   });
 });
 
@@ -180,6 +194,7 @@ describe("startup cost ui", () => {
     expect(text("[data-out=result]")).toContain("PaybackNever");
     set("[data-field=orders]", "191.3");
     expect(text("[data-out=result]")).toContain("PaybackOver 50 years");
+    expect(text("[data-out=verdict]")).toContain("payback takes over 50 years.");
     set("[data-field=orders]", "12.5");
     expect(text("[data-out=table] tbody tr:nth-child(3) td:first-child")).toBe("12.5 (yours)");
     // Singular in English: one order a day breaks even when fixed costs are tiny.

@@ -21,21 +21,32 @@ const GROUPS: readonly { id: string; keys: readonly Key[] }[] = [
 export const PCT_KEYS: ReadonlySet<Key> = new Set<Key>(["cogsPct", "deliveryPct", "commissionPct"]);
 
 /** Currency signs and codes typed around an amount; spaces inside a number are kept, so "1 2" stays unreadable. */
-const CURRENCY = /NT\$|[%$€¥￥₩₫£]|Rp|VND|USD|EUR|元|円|원|đồng|đ/gi;
-/** Ten-thousands, as Chinese and Japanese write amounts: 12万 = 120,000. */
-const WAN = /[万萬]$/;
+const CURRENCY = /(?:NT|US|HK|S|A)?\$|[%€¥￥₩₫£]|Rp|VND|USD|EUR|元|円|원|đồng|đ/gi;
+/** Unit words after an amount: 12万 = 120,000, 3000만, 1.5억, 35k, 2 tr / 2 triệu, 5 jt / 5 juta, 500 rb / 500 ribu. */
+const UNITS: readonly [RegExp, number][] = [
+  [/(?:[万萬만])$/, 1e4],
+  [/(?:[億亿억])$/, 1e8],
+  [/(?:triệu|tr|juta|jt)$/i, 1e6],
+  [/(?:ribu|rb|k)$/i, 1e3],
+];
 
 /**
- * A typed figure: "30%", "$6.50", "￥1,000", "₫29.000", "120,000 元" and "12万" read as numbers. Empty → undefined;
- * not a number → NaN.
+ * A typed figure: "30%", "US$6.50", "￥1,000", "₫29.000", "120,000 元", "12万", "3000만원" and "35k" read as numbers.
+ * Empty → undefined; not a number → NaN.
  */
 export function readField(raw: string, key: Key, loc: Locale): number | undefined {
   let bare = raw.replace(CURRENCY, "").trim();
   if (bare === "") return raw.trim() === "" ? undefined : NaN;
-  const wan = WAN.test(bare) && !PCT_KEYS.has(key);
-  if (wan) bare = bare.replace(WAN, "").trim();
+  let scale = 1;
+  if (!PCT_KEYS.has(key)) {
+    const unit = UNITS.find(([re]) => re.test(bare));
+    if (unit) {
+      scale = unit[1];
+      bare = bare.replace(unit[0], "").trim();
+    }
+  }
   const x = (PCT_KEYS.has(key) ? parseDecimalInput : parseMoneyInput)(bare, loc);
-  return x === undefined ? NaN : wan ? x * 10000 : x;
+  return x === undefined ? NaN : x * scale;
 }
 
 /** Whether a read figure is allowed in its field: nothing negative, shares up to 100 %, 1–31 days open. */
@@ -47,8 +58,6 @@ export function fieldOk(x: number | undefined, key: Key): boolean {
   return true;
 }
 
-let timer = 0;
-
 /**
  * Rows of the what-if table: the typed figure itself on the "yours" row (so it matches the result above), the others
  * to a whole order. A row that rounds onto its neighbour (2 orders × 0.8 = 2) is left out rather than shown twice.
@@ -56,8 +65,9 @@ let timer = 0;
 export function sensitivityRows(orders: number): { f: number; orders: number }[] {
   const rows: { f: number; orders: number }[] = [];
   for (const f of SENSITIVITY) {
-    const n = f === 1 ? orders : Math.round(orders * f);
-    if (f !== 1 && (n === Math.round(orders) || rows.some((row) => row.orders === n))) continue;
+    // Under 20 a day keep a tenth, so 2 orders still get a "20 % fewer" row (1.6) rather than rounding back onto 2.
+    const n = f === 1 ? orders : orders < 20 ? Math.round(orders * f * 10) / 10 : Math.round(orders * f);
+    if (f !== 1 && (n === orders || rows.some((row) => row.orders === n))) continue;
     rows.push({ f, orders: n });
   }
   return rows;
@@ -71,7 +81,8 @@ export function shownValue(x: number, loc: Locale): string {
 export function mountStartupCost(host: HTMLElement): void {
   const loc = locale();
   let last = "";
-  const schedule = () => { window.clearTimeout(timer); timer = window.setTimeout(paint, 150); };
+  // The sums are cheap: paint on every keystroke, so Copy never sees a result older than the fields.
+  const schedule = () => paint();
   const whole = numberFormat(loc, { maximumFractionDigits: 0 });
   const one = numberFormat(loc, { maximumFractionDigits: 1 });
   const two = numberFormat(loc, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -89,7 +100,7 @@ export function mountStartupCost(host: HTMLElement): void {
   const out = h("dl", { class: "stats-grid", "data-out": "result" });
   const verdict = h("p", { class: "hint", "data-out": "verdict" });
   const sens = h("div", { class: "table-wrap", "data-out": "table" });
-  const copy = copyButton(S, () => { window.clearTimeout(timer); paint(); return last; });
+  const copy = copyButton(S, () => last);
 
   function load(kind: ShopKind): void {
     const ex = shopExample(loc, kind);
@@ -162,18 +173,21 @@ export function mountStartupCost(host: HTMLElement): void {
       table([t(`${S}.colOrders`), t(`${S}.profit`), t(`${S}.payback`)], sensitivityRows(v.orders).map(({ f, orders }) => {
         const s = shopNumbers(v, orders);
         const label = f === 1 ? t(`${S}.current`, { n: one.format(orders) })
-          : t(f < 1 ? `${S}.fewer` : `${S}.more`, { n: whole.format(orders), pct: whole.format(Math.round(Math.abs(1 - f) * 100)) });
+          : t(f < 1 ? `${S}.fewer` : `${S}.more`, { n: one.format(orders), pct: whole.format(Math.round(Math.abs(1 - f) * 100)) });
         return [label, money(s.profit), months(s.paybackMonths)];
       })),
     );
   }
 
+  /** A standalone label ("Under a month", "Más de 50 años") made to sit mid-sentence. */
+  const inline = (label: string) => label.charAt(0).toLocaleLowerCase(loc) + label.slice(1);
+
   function verdictText(v: ShopInput, r: ShopResult, breakEven: string): string {
     if (!(r.perOrder > 0)) return t(`${S}.vLossPerOrder`);
     if (Math.round(r.profit) === 0) return t(`${S}.vEven`, { orders: one.format(v.orders) });
     if (r.profit < 0) return t(`${S}.vLoss`, { orders: one.format(v.orders), loss: money(-r.profit), need: breakEven });
-    if (r.paybackMonths > 24) return t(`${S}.vSlow`, { time: months(r.paybackMonths) });
-    return t(`${S}.vOk`, { orders: one.format(v.orders), time: months(r.paybackMonths) });
+    if (r.paybackMonths > 24) return t(`${S}.vSlow`, { time: inline(months(r.paybackMonths)) });
+    return t(`${S}.vOk`, { orders: one.format(v.orders), time: inline(months(r.paybackMonths)) });
   }
 
   host.append(
@@ -203,6 +217,5 @@ export function mountStartupCost(host: HTMLElement): void {
   load(EXAMPLE_KIND);
 }
 
-export function unmountStartupCost(): void {
-  window.clearTimeout(timer);
-}
+/** Nothing outlives the page: no timers or listeners outside its own nodes. */
+export function unmountStartupCost(): void {}
