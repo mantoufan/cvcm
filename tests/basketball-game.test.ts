@@ -84,15 +84,27 @@ describe("basketball physics", () => {
     const rand = seeded(7);
     for (let n = 0; n < 300; n++) {
       let b = launch(Math.floor(rand() * SPOTS.length), (rand() * 2 - 1) * MAX_YAW, rand() < 0.3 ? 1 : rand());
+      // The worst rim and board clearance over the shot, checked once per shot: an expect() per substep made this test
+      // slow enough to time out on a busy CI runner.
+      let rimGap = Infinity;
+      let boardGap = Infinity;
+      let rimAt = "";
+      let boardAt = "";
       for (let i = 0; i < (SHOT_MAX / SUBSTEP) && !b.done; i++) {
         const prevZ = b.z;
         b = stepBall(b, SUBSTEP);
         // Never inside the rim tube.
-        expect(rimDistance(b.x, b.y, b.z)).toBeGreaterThanOrEqual(BALL_R + RIM_TUBE - 1e-6);
+        const rim = rimDistance(b.x, b.y, b.z);
+        if (rim < rimGap) { rimGap = rim; rimAt = `step ${i} at (${b.x.toFixed(3)}, ${b.y.toFixed(3)}, ${b.z.toFixed(3)})`; }
         // Never behind the board face while level with it (coming from the front).
         const level = Math.abs(b.x) < BOARD_W / 2 - BALL_R && b.y > BOARD_BOTTOM && b.y < BOARD_TOP;
-        if (level && prevZ > BOARD_Z) expect(b.z - BALL_R).toBeGreaterThanOrEqual(BOARD_Z - 1e-6);
+        if (level && prevZ > BOARD_Z && b.z - BALL_R < boardGap) {
+          boardGap = b.z - BALL_R;
+          boardAt = `step ${i} at (${b.x.toFixed(3)}, ${b.y.toFixed(3)}, ${b.z.toFixed(3)})`;
+        }
       }
+      expect(rimGap, `shot ${n}, ${rimAt}: inside the rim`).toBeGreaterThanOrEqual(BALL_R + RIM_TUBE - 1e-6);
+      expect(boardGap, `shot ${n}, ${boardAt}: through the board`).toBeGreaterThanOrEqual(BOARD_Z - 1e-6);
     }
   });
 

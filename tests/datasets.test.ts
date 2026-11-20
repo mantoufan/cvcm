@@ -53,11 +53,15 @@ describe("data pages: routes", () => {
   });
 
   it("lists the hub and every table in every locale in the sitemap", () => {
-    const xml = buildSitemapXml();
+    // The <loc> values once, as a set: a toContain per URL rescanned the whole sitemap each time.
+    const locs = new Set([...buildSitemapXml().matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]));
+    const missing: string[] = [];
     for (const locale of LOCALES) {
-      expect(xml).toContain(`<loc>https://cv.cm${datasetHref(locale)}</loc>`);
-      for (const id of DATASETS) expect(xml).toContain(`<loc>https://cv.cm${datasetHref(locale, id)}</loc>`);
+      for (const href of [datasetHref(locale), ...DATASETS.map((id) => datasetHref(locale, id))]) {
+        if (!locs.has(`https://cv.cm${href}`)) missing.push(href);
+      }
     }
+    expect(missing).toEqual([]);
   });
 
   it("ships a CSV for every table", () => {
