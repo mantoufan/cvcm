@@ -1695,7 +1695,8 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
  * less often go with depression, but the WHO-5 asks nothing about self-harm. Where both apply, the crisis box wins.
  * Not insomnia: its "see a doctor" is sleep advice, and these are emotional-support lines; its high band links the
  * depression check instead (FOLLOW_UP).
- * Anger's moderate and high bands are in: their copy says to get help now if anger has led to hurting someone.
+ * Anger's moderate and high bands are in: they recommend a doctor or counselor and, if anger has led to hurting someone,
+ * getting help now. Its low band only mentions that case in passing.
  */
 export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   "wellbeing-index": ["low"],
