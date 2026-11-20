@@ -52,7 +52,7 @@
     },
     {
       "id": "finance",
-      "name": "Money calculators"
+      "name": "Money calculators, including a shop startup cost and break-even calculator"
     },
     {
       "id": "health",
@@ -1159,6 +1159,14 @@
       "description": "Interest, principal, rate or time.",
       "category": "finance",
       "url": "https://cv.cm/en/simple-interest/",
+      "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "startup-cost",
+      "name": "Startup cost calculator",
+      "description": "Opening costs, payback and break-even for a small shop.",
+      "category": "finance",
+      "url": "https://cv.cm/en/startup-cost/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
     },
     {

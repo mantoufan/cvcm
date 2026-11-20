@@ -163,6 +163,7 @@ export const GUIDE_STEP_COUNT: Record<ToolId, number> = {
   "rock-paper-scissors": 3,
   "bac-calculator": 3,
   "simple-interest": 3,
+  "startup-cost": 3,
   "2048": 3,
   "dinosaur-game": 3,
   "mahjong": 3,

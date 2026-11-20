@@ -162,6 +162,7 @@ export const TOOL_COVER: Record<ToolId, string> = {
   "rock-paper-scissors": "/covers/rock-paper-scissors-sweet.jpg?v=1",
   "bac-calculator": "/covers/bac-calculator-sweet.jpg?v=1",
   "simple-interest": "/covers/simple-interest-sweet.jpg?v=1",
+  "startup-cost": "/covers/startup-cost-sweet.jpg?v=1",
   "2048": "/covers/2048-sweet.jpg?v=1",
   "dinosaur-game": "/covers/dinosaur-game-sweet.jpg?v=1",
   "mahjong": "/covers/mahjong-sweet.jpg?v=1",

@@ -449,3 +449,9 @@ Codex (`codex exec -m gpt-6-astra --image darts-sweet.jpg,air-hockey-sweet.jpg -
 - `archery`: she draws a pink and white recurve bow at a five-colour target (no numbers) in a blossom meadow; an arrow in the gold.
 - `ping-pong`: she swings a pink paddle over a mint table with a white net; the ball pops up.
 - `bowling`: she releases a glossy pink ball down a pale lane toward ten white pins with pink stripes; one starts to tip.
+
+## Startup cost calculator (2026-11-20)
+
+Codex was out of quota (gpt-6-astra usage limit; gpt-6.2/6.1 models 400), so on the owner's choice this one came from **agy** (Antigravity / Gemini image tool), text prompt only: headless agy cannot read reference files, so the reference style was described in words. The prompt tells agy not to read files first (its startup notes make it read IMAGE_GEN.md, which headless mode denies). Output 1376×768 → `ffmpeg crop=1365:768:5:0,scale=1280:720`, C2PA/JUMBF metadata stripped (`-map_metadata -1` + `exiftool -all=`); checked at full size for a visible watermark (none). First try.
+
+- `startup-cost`: she holds up a dollhouse-sized cream café storefront with a pink and white striped awning, arched window and door, potted flower; on the table a heart latte, a pink macaron, a stack of plain gold coins and a pink piggy bank; bed, lace curtains, roses and a white bunny behind.
