@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { mountBilliards, unmountBilliards } from "../src/client/billiards/ui";
 
 describe("billiards page", () => {
-  it("mounts both pages without WebGL or three.js, keeps settings, and Play falls back to the retry cover", async () => {
+  it("mounts all three pages without WebGL or three.js, keeps settings, and Play falls back to the retry cover", async () => {
     window.localStorage.clear();
     for (const page of ["billiards", "snooker", "pool-game"] as const) {
       // Changing the game writes ?game= into the URL, which the page reads on mount.
@@ -113,5 +113,24 @@ describe("a shot rolling when the page closed", () => {
     expect(JSON.parse(window.localStorage.getItem("cvcm.billiards.game.pool-game")!).pending).toMatchObject(pending);
     unmountBilliards();
     host.remove();
+  });
+});
+
+describe("Chinese names of /billiards/ and /pool-game/", () => {
+  it("keep each page on its own head terms (docs/games-keyword-plan.md)", async () => {
+    const zhCN = (await import("../src/locales/zh-CN.json")).default as unknown as Record<string, Record<string, unknown>>;
+    const zhTW = (await import("../src/locales/zh-TW.json")).default as unknown as Record<string, Record<string, unknown>>;
+    const meta = (p: typeof zhCN, k: string) => String(p.meta![k]);
+    // The billiards titles and meta leave 桌球 / 黑八 / 8號球 to the pool page.
+    for (const k of ["titleBilliards", "descBilliards"]) {
+      expect(meta(zhCN, k)).not.toMatch(/桌球|黑八/);
+      expect(meta(zhTW, k)).not.toMatch(/8\s?號球/);
+    }
+    expect(meta(zhCN, "titleBilliards")).toMatch(/^台球游戏/);
+    expect(meta(zhCN, "titlePoolGame")).toMatch(/^桌球游戏/);
+    expect(meta(zhTW, "titleBilliards")).toMatch(/^撞球遊戲/);
+    expect(meta(zhTW, "titlePoolGame")).toMatch(/^8號球/);
+    // In Taiwan 桌球 is table tennis: never on the zh-TW pool page.
+    expect(JSON.stringify([zhTW.meta!.titlePoolGame, zhTW.meta!.descPoolGame, (zhTW.faq as Record<string, unknown>)["pool-game"]])).not.toContain("桌球");
   });
 });
