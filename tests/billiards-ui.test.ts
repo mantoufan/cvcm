@@ -14,7 +14,7 @@ describe("billiards page", () => {
       expect(host.querySelector("h1")!.textContent).toBe(page === "snooker" ? "Snooker" : "Billiards");
       expect(host.querySelector("canvas")).toBeNull();
       const variant = host.querySelector<HTMLSelectElement>("[data-in=variant]")!;
-      expect(variant.value).toBe(page === "snooker" ? "snooker" : "8-ball");
+      expect(variant.value).toBe(page === "snooker" ? "snooker" : "9-ball");
       // Every game has its rules panel filled in (no raw keys).
       for (const v of Array.from(variant.options).map((o) => o.value)) {
         variant.value = v;

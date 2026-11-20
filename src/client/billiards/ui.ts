@@ -88,7 +88,8 @@ const RULE_COUNT: Record<Variant, number> = { "8-ball": 6, "9-ball": 5, "10-ball
 const MAX_SPEED: Record<TableKind, number> = { pool: 7.5, chinese: 7.5, snooker: 6, pyramid: 7, carom: 6 };
 const POOL_FIRST: Variant[] = ["8-ball", "9-ball", "10-ball", "chinese-8-ball", "snooker", "snooker-6", "pyramid", "3-cushion"];
 const PAGE_ORDER: Record<BilliardsPage, Variant[]> = {
-  billiards: POOL_FIRST,
+  // /billiards/ opens on 9-ball (its titles lead with it); 8-ball is /pool-game/'s default.
+  billiards: ["9-ball", "8-ball", "10-ball", "chinese-8-ball", "snooker", "snooker-6", "pyramid", "3-cushion"],
   snooker: ["snooker", "snooker-6", "8-ball", "9-ball", "10-ball", "chinese-8-ball", "pyramid", "3-cushion"],
   "pool-game": POOL_FIRST,
 };
