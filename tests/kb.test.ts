@@ -9,7 +9,7 @@ import worker from "../src/worker";
 import { LOCALES } from "../src/shared/locale";
 import { kbMessages, messages } from "../src/shared/messages";
 import { FEATURED_TUTORIALS, TOOLS, kbHref, parseAppPath } from "../src/shared/path";
-import { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES, MASSAGE_ARTICLES, KB_ARTICLES, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
+import { AI_ARTICLES, CODE_ARTICLES, PHOTO_ARTICLES, MASSAGE_ARTICLES, KB_ARTICLES, KB_CULTURE_GROUPS, KB_GROUPS, KNOWLEDGE_ARTICLES, kbForTool, kbGroupOf, kbMeta, kbMinutesOf, kbShelfOf, kbUpdatedOn, type KbId } from "../src/shared/kb";
 import { kbArticleJsonLd, kbCopy, kbUpdated, type KbArticleCopy, type KbBlock } from "../src/shared/kb-i18n";
 import { kbMinutes, kbPageHtml } from "../src/shared/kb-page";
 import { pageCanonical, pageTitle } from "../src/shared/seo";
@@ -270,6 +270,8 @@ describe("knowledge: SEO", () => {
   it("describes each article as a dated TechArticle with its sources", () => {
     const ld = kbArticleJsonLd("en", "md5-vs-sha-256") as Record<string, unknown>;
     expect(ld["@type"]).toBe("TechArticle");
+    // Fiction lore in the culture group is a plain Article, not a TechArticle.
+    expect((kbArticleJsonLd("en", "cultivation-levels") as Record<string, unknown>)["@type"]).toBe("Article");
     expect(ld.datePublished).toBe(kbMeta("md5-vs-sha-256").published);
     expect(ld.dateModified).toBe(kbUpdated("en", "md5-vs-sha-256"));
     expect((ld.citation as unknown[]).length).toBe(kbMeta("md5-vs-sha-256").sources.length);
@@ -310,7 +312,7 @@ describe("knowledge: catalog and copy", () => {
   it("links only to real tools, published tutorials and other articles", () => {
     for (const id of KB_ARTICLES) {
       const meta = kbMeta(id);
-      if (kbShelfOf(id) === "knowledge") expect(meta.tools.length, id).toBeGreaterThan(0);
+      if (kbShelfOf(id) === "knowledge" && !KB_CULTURE_GROUPS.has(kbGroupOf(id))) expect(meta.tools.length, id).toBeGreaterThan(0);
       for (const tool of meta.tools) expect(TOOLS, `${id} tool ${tool}`).toContain(tool);
       for (const tutorial of meta.tutorials) expect(FEATURED_TUTORIALS, `${id} tutorial ${tutorial}`).toContain(tutorial);
       for (const other of meta.related) expect(KB_ARTICLES.includes(other) && other !== id && kbShelfOf(other) === kbShelfOf(id), `${id} related ${other}`).toBe(true);

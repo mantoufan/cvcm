@@ -20,6 +20,7 @@ export const KB_LOADERS = {
   "utc-and-time-zones": () => import("../zh-TW/utc-and-time-zones.json"),
   "apr-vs-apy": () => import("../zh-TW/apr-vs-apy.json"),
   "margin-vs-markup": () => import("../zh-TW/margin-vs-markup.json"),
+  "cultivation-levels": () => import("../zh-TW/cultivation-levels.json"),
   "python": () => import("../zh-TW/python.json"),
   "javascript": () => import("../zh-TW/javascript.json"),
   "typescript": () => import("../zh-TW/typescript.json"),
