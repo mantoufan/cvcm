@@ -105,20 +105,6 @@ export function daysBetween(a: string, b: string): number | null {
   return Math.round((Date.UTC(pb[0], pb[1] - 1, pb[2]) - Date.UTC(pa[0], pa[1] - 1, pa[2])) / 86_400_000);
 }
 
-export function addDays(iso: string, days: number): string {
-  const p = parseIso(iso);
-  if (!p) return "";
-  const d = new Date(Date.UTC(p[0], p[1] - 1, p[2] + days));
-  return d.toISOString().slice(0, 10);
-}
-
-/** 令和 year for a date on or after 2019-05-01 (元年 for the first), else null. */
-export function reiwaYear(y: number, m: number): string | null {
-  if (y < 2019 || (y === 2019 && m < 5)) return null;
-  const n = y - 2018;
-  return n === 1 ? "元" : String(n);
-}
-
 /**
  * Length of service in whole months from the start date to the letter date (a month counts once its day comes round;
  * the 31st counts on the last day of a shorter month).

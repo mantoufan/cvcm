@@ -127,7 +127,8 @@ function later(a: string, b: string): boolean {
   const pa = parseYmd(a);
   const pb = parseYmd(b);
   if (!pa || !pb) return false;
-  return pa.y * 100 + pa.m > pb.y * 100 + pb.m;
+  // A bare year (month 0) reads as March, when Japanese school years end: "2026" is 見込み until April 2026.
+  return pa.y * 100 + (pa.m || 3) > pb.y * 100 + (pb.m || 12);
 }
 
 const td = (text: string, cls = "") => h("td", cls ? { class: cls } : null, text);

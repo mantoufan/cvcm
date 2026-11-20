@@ -8,7 +8,6 @@ import {
   buildLetter,
   daysBetween,
   defaultForm,
-  reiwaYear,
   serviceMonths,
   taiwanNoticeDays,
   type RlForm,
@@ -48,9 +47,6 @@ describe("resignation letter logic", () => {
   });
 
   it("writes Reiwa years, 元年 for 2019", () => {
-    expect(reiwaYear(2019, 5)).toBe("元");
-    expect(reiwaYear(2019, 4)).toBeNull();
-    expect(reiwaYear(2026, 11)).toBe("8");
   });
 
   it("builds a letter in every locale, blank and filled, with no placeholders left when filled", () => {

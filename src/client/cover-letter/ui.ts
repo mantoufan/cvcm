@@ -48,6 +48,17 @@ let editBox: HTMLInputElement | null = null;
 let editArea: HTMLTextAreaElement | null = null;
 let editWrap: HTMLElement | null = null;
 
+/** The paper saved with this language's draft, if any. */
+function savedPaper(): Paper | null {
+  try {
+    const all = JSON.parse(window.localStorage.getItem(STORAGE_KEY) ?? "{}") as Record<string, { paper?: unknown } | undefined>;
+    const p = all?.[locale()]?.paper;
+    return p === "a4" || p === "letter" ? p : null;
+  } catch {
+    return null;
+  }
+}
+
 function readDraft(): CoverData | null {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
@@ -65,7 +76,7 @@ function saveDraft(): void {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     const all = raw ? (JSON.parse(raw) as Record<string, unknown>) : {};
-    all[dirtyLoc || locale()] = data;
+    all[dirtyLoc || locale()] = { ...data, paper };
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
   } catch {
     /* storage full or blocked: the letter still works for this visit */
@@ -160,7 +171,7 @@ export function mountCoverLetter(host: HTMLElement): void {
   // Closing the tab within the save delay would lose the last edit.
   window.addEventListener("pagehide", saveDraft);
   tpl = COVER_TEMPLATES[locale()];
-  paper = defaultPaper(locale());
+  paper = savedPaper() ?? defaultPaper(locale());
   inputs = new Map();
   wrappers = new Map();
   counts = new Map();
@@ -211,7 +222,8 @@ export function mountCoverLetter(host: HTMLElement): void {
 
   page = sheet(paper);
   const paperSel = h("select", { "data-field": "paper", onChange: () => {
-    paper = paperSel.value as Paper;
+    paper = paperSel.value === "letter" ? "letter" : "a4";
+    changed();
     page!.classList.toggle("doc-a4", paper === "a4");
     page!.classList.toggle("doc-letter", paper === "letter");
   } },

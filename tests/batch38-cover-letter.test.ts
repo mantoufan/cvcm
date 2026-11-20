@@ -44,7 +44,7 @@ describe("cover letter helpers", () => {
 describe("cover letter templates", () => {
   it("picks a or an by sound", () => {
     const base = withDate(sampleData(COVER_TEMPLATES.en));
-    for (const [role, want] of [["European sales manager", "as a European"], ["one-person IT lead", "as a one-person"], ["university tutor", "as a university"], ["office manager", "as an office"], ["MBA intern", "as an MBA"], ["hourly cashier", "as an hourly"], ["engineer", "as an engineer"], ["nurse", "as a nurse"]] as const) {
+    for (const [role, want] of [["European sales manager", "as a European"], ["one-person IT lead", "as a one-person"], ["university tutor", "as a university"], ["office manager", "as an office"], ["MBA intern", "as an MBA"], ["hourly cashier", "as an hourly"], ["engineer", "as an engineer"], ["nurse", "as a nurse"], ["UX designer", "as a UX designer"], ["a marketing coordinator", "as a marketing coordinator"]] as const) {
       expect(textOf("en", { ...base, role })).toContain(want);
     }
   });

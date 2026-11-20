@@ -390,7 +390,7 @@ const id: RlTemplate = {
       "di Tempat",
     );
     const p = [
-      `Dengan ini saya mengajukan pengunduran diri dari jabatan saya sebagai ${or(f.title, "..........")} di ${company}, terhitung mulai tanggal ${idDate(f.lastDay, "..........")}. Keputusan ini saya ambil karena ${ID_REASONS[f.scenario] ?? ID_REASONS.personal}.`,
+      `Dengan ini saya mengajukan pengunduran diri dari jabatan saya sebagai ${or(f.title, "..........")} di ${company}, dengan hari terakhir bekerja pada tanggal ${idDate(f.lastDay, "..........")}. Keputusan ini saya ambil karena ${ID_REASONS[f.scenario] ?? ID_REASONS.personal}.`,
     ];
     if (f.handover) p.push("Sebelum hari terakhir saya, saya akan menyelesaikan pekerjaan yang menjadi tanggung jawab saya dan melakukan serah terima dengan baik.");
     if (f.thanks) p.push(`Saya mengucapkan terima kasih atas kesempatan dan pengalaman berharga selama bekerja di ${company}. Saya juga memohon maaf atas segala kekurangan selama masa kerja saya.`);

@@ -32,7 +32,9 @@ const picked = (tpl: { enclosures: readonly string[] }, d: CoverData) => d.enclo
 function article(word: string): string {
   if (word.startsWith("[")) return word;
   // By sound: "a European", "a one-person", "a university", "an hour", "an honest", "an MBA".
-  if (/^(?:eu|ew|one\b|once|uni|use|usu|ura|uro)/i.test(word)) return `a ${word}`;
+  // Typed with its own article ("a marketing coordinator"): keep it as it is.
+  if (/^(?:a|an|the)\s/i.test(word)) return word;
+  if (/^(?:eu|ew|one\b|once|uni|use|usu|ura|uro)/i.test(word) || /^U[A-Z]/.test(word)) return `a ${word}`;
   if (/^(?:[aeiou]|hour|honest|heir)/i.test(word) || /^[FHLMNRSX](?:[A-Z]|$)/.test(word)) return `an ${word}`;
   return `a ${word}`;
 }
