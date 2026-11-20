@@ -1389,17 +1389,21 @@ function wireNavGroups(): void {
       if (!keep || !d.contains(keep)) d.open = false;
     }
   };
-  // Hover: open on mouse enter, close a moment after the mouse leaves (time to cross into the list). Touch and pen
-  // have no hover; they open the menu with a tap on the summary.
-  let leaveTimer = 0;
   const groupOf = (node: EventTarget | null): HTMLDetailsElement | null =>
     (node as Element | null)?.closest?.<HTMLDetailsElement>("details.nav-group") ?? null;
+  // Hover: a mouse entering a menu from outside opens it; leaving closes it after a moment (time to cross into the
+  // list). Only entering counts, so a menu dismissed with Escape or a link click stays shut while the pointer is still
+  // on it. Touch and pen have no hover; they open the menu with a tap on the summary.
+  let leaveTimer = 0;
   document.addEventListener("pointerover", (event) => {
     if (event.pointerType !== "mouse") return;
     const group = groupOf(event.target);
     if (!group) return;
     window.clearTimeout(leaveTimer);
+    if (group.contains(event.relatedTarget as Node | null)) return;
     closeAll(group);
+    // The More list is a separate popup at the same spot: close it so the two do not overlap.
+    document.querySelector<HTMLButtonElement>('.nav-more-btn[aria-expanded="true"]')?.click();
     group.open = true;
   });
   document.addEventListener("pointerout", (event) => {
@@ -1407,26 +1411,26 @@ function wireNavGroups(): void {
     const group = groupOf(event.target);
     if (!group || group.contains(event.relatedTarget as Node | null)) return;
     window.clearTimeout(leaveTimer);
-    leaveTimer = window.setTimeout(() => { group.open = false; }, 200);
+    leaveTimer = window.setTimeout(() => {
+      // Keep a menu the keyboard is working in open; the mouse only passed by.
+      if (!group.querySelector(":focus-visible")) group.open = false;
+    }, 200);
   });
-  // A mouse click on a summary the hover already opened would toggle it shut under the pointer: keep it open.
-  // Keyboard activation (Enter/Space, detail 0) and taps still toggle.
-  // Whether the press began with a mouse on an already open menu's summary (read at pointerdown, before any toggle).
+  // A mouse press on the summary of a menu the hover already opened: its click would toggle the menu shut under the
+  // pointer, so it is cancelled. Read at pointerdown, before any toggle. Keyboard (click detail 0) and taps still toggle.
   let mouseDownOnOpen = false;
+  // pointerdown, not click, for closing: iOS Safari sends no click for a tap on plain text or empty space.
   document.addEventListener("pointerdown", (event) => {
-    const group = groupOf((event.target as Element | null)?.closest?.("details.nav-group > summary") ?? null);
-    mouseDownOnOpen = event.pointerType === "mouse" && Boolean(group?.open);
+    const target = event.target as Element | null;
+    const summaryGroup = groupOf(target?.closest?.("details.nav-group > summary") ?? null);
+    mouseDownOnOpen = event.pointerType === "mouse" && Boolean(summaryGroup?.open);
+    closeAll(target);
   }, true);
   document.addEventListener("click", (event) => {
-    if (event.detail > 0 && mouseDownOnOpen && (event.target as Element | null)?.closest?.("details.nav-group > summary")) {
-      event.preventDefault();
-    }
-  }, true);
-  // pointerdown, not click: iOS Safari sends no click for a tap on plain text or empty space.
-  document.addEventListener("pointerdown", (event) => closeAll(event.target as Node | null), true);
-  // A link inside a menu navigates through the shared click handler; the menu closes either way.
-  document.addEventListener("click", (event) => {
-    if ((event.target as Element | null)?.closest?.(".nav-group-pop a")) closeAll(null);
+    const target = event.target as Element | null;
+    // A link inside a menu navigates through the shared click handler; the menu closes either way.
+    if (target?.closest?.(".nav-group-pop a")) closeAll(null);
+    else if (event.detail > 0 && mouseDownOnOpen && target?.closest?.("details.nav-group > summary")) event.preventDefault();
   }, true);
   document.addEventListener("focusin", (event) => closeAll(event.target as Node | null));
   document.addEventListener("keydown", (event) => {
