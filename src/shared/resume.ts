@@ -220,6 +220,4 @@ export function lines(text: string): string[] {
   return text.split(/\r?\n/).map((l) => l.trim().replace(/^[-•・*]\s*/, "")).filter(Boolean);
 }
 
-export function todayYmd(now = new Date()): string {
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
-}
+export { todayIso as todayYmd } from "./age";

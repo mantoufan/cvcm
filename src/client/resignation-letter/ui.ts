@@ -1,4 +1,5 @@
 import { blobFromBytes } from "../../shared/image-encode";
+import { todayIso } from "../../shared/age";
 import { copyWithFlash } from "../copy";
 import { defaultPaper, paintLetter, printSheet, sheet } from "../doc-sheet";
 import { downloadBlob, h } from "../dom";
@@ -263,7 +264,8 @@ function noticeLines(f: RlForm, loc: string): string[] {
   const days = daysBetween(f.date, f.lastDay);
   if (days !== null && days >= 0) out.push(t(`${S}.noticeDays`, { n: days }));
   if (loc === "zh-TW") {
-    const months = serviceMonths(f.startDate, f.date);
+    // Service counts to the last working day (the notice must cover the whole time worked).
+    const months = serviceMonths(f.startDate, f.lastDay || f.date);
     if (months !== null && months >= 0) {
       const need = taiwanNoticeDays(months);
       out.push(need === null
@@ -274,10 +276,6 @@ function noticeLines(f: RlForm, loc: string): string[] {
   return out;
 }
 
-function todayIso(): string {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
-}
 
 export function unmountResignationLetter(): void {
   mounted = false;

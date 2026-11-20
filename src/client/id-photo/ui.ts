@@ -178,7 +178,7 @@ function stagePane(): HTMLElement {
     onWheel: onWheel,
   }, canvas, guideTop, guideChin, h("div", { class: "idp-guide idp-mid", "aria-hidden": "true" }));
   zoomEl = h("input", {
-    type: "range", min: "-100", max: "500", step: "1", value: "0", "data-field": "zoom",
+    type: "range", min: "-300", max: "500", step: "1", value: "0", "data-field": "zoom",
     "aria-label": t(`${S}.zoom`),
     onInput: () => setZoom(Number(zoomEl!.value)),
   });

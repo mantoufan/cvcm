@@ -153,14 +153,14 @@ describe("resume builder ui", () => {
     name.dispatchEvent(new Event("input"));
     vi.advanceTimersByTime(1000);
     expect(q("[data-out=sheet]").textContent).toContain("Sam Rivera");
-    expect(JSON.parse(localStorage.getItem(STORE)!).r.basics.name).toBe("Sam Rivera");
+    expect(JSON.parse(localStorage.getItem(STORE)!).en.r.basics.name).toBe("Sam Rivera");
     setItem.mockRestore();
   });
 
   it("reopens the saved draft", () => {
     const r = sampleResume("en");
     r.basics.name = "Draft Person";
-    localStorage.setItem(STORE, JSON.stringify({ r, paper: "a4" }));
+    localStorage.setItem(STORE, JSON.stringify({ en: { r, paper: "a4" } }));
     mountResumeBuilder(host);
     expect(q("[data-out=sheet]").textContent).toContain("Draft Person");
     expect(q("[data-out=sheet]").classList.contains("doc-a4")).toBe(true);

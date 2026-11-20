@@ -152,7 +152,11 @@ function renderRirekisho(r: Resume): HTMLElement {
   for (const e of r.education.filter((x) => x.school)) {
     const name = [e.school, e.degree].filter(Boolean).join(" ");
     if (e.start) row(e.start, `${name} 入学`);
-    if (e.end) row(e.end, `${name} ${later(e.end, asOf) ? "卒業見込み" : "卒業"}`);
+    if (e.end) {
+      row(e.end, `${name} ${later(e.end, asOf) ? "卒業見込み" : "卒業"}`);
+      // Without an as-of date, 見込み turns into 卒業 when the date passes: keep it out of public HTML.
+      if (!b.asOf && later(e.end, asOf)) rows[rows.length - 1].lastElementChild?.setAttribute("data-volatile", "");
+    }
   }
   head("職歴");
   const jobs = r.experience.filter((x) => x.org);

@@ -37,6 +37,8 @@ let page: HTMLElement | null = null;
 let saveTimer = 0;
 let paintTimer = 0;
 let dirty = false;
+/** The language the unsaved edits belong to: a save at unmount can run after the locale already changed. */
+let dirtyLoc = "";
 let inputs = new Map<CoverField, HTMLInputElement | HTMLTextAreaElement>();
 let wrappers = new Map<CoverField, HTMLElement>();
 let counts = new Map<CoverField, HTMLElement>();
@@ -63,7 +65,7 @@ function saveDraft(): void {
   try {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     const all = raw ? (JSON.parse(raw) as Record<string, unknown>) : {};
-    all[locale()] = data;
+    all[dirtyLoc || locale()] = data;
     window.localStorage.setItem(STORAGE_KEY, JSON.stringify(all));
   } catch {
     /* storage full or blocked: the letter still works for this visit */
@@ -72,6 +74,7 @@ function saveDraft(): void {
 
 function changed(): void {
   dirty = true;
+  dirtyLoc = locale();
   window.clearTimeout(saveTimer);
   saveTimer = window.setTimeout(saveDraft, 400);
   window.clearTimeout(paintTimer);

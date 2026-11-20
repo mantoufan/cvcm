@@ -65,11 +65,24 @@ const FIELDS = {
   eduDetails: { ats: true, photo: true, kr: true },
 } satisfies Record<string, Show>;
 
-function readDraft(): { r: Resume; paper: Paper } | null {
+/** Drafts by language (a 履歴書 on /ja/ and a CV on /en/ are different documents). */
+function readAll(): Record<string, unknown> {
   try {
     const raw = localStorage.getItem(STORE);
-    if (!raw) return null;
-    const data = JSON.parse(raw) as { r?: unknown; paper?: unknown };
+    const all = raw ? (JSON.parse(raw) as unknown) : null;
+    return all && typeof all === "object" && !Array.isArray(all) ? (all as Record<string, unknown>) : {};
+  } catch {
+    return {};
+  }
+}
+
+/** The language the unsaved edits belong to (set at edit time: a save can run after the locale changed). */
+let draftLoc = "";
+
+function readDraft(loc: string): { r: Resume; paper: Paper } | null {
+  try {
+    const data = readAll()[loc] as { r?: unknown; paper?: unknown } | undefined;
+    if (!data || typeof data !== "object") return null;
     const parsed = parseResume(data.r);
     if (!parsed) return null;
     return { r: parsed, paper: data.paper === "letter" ? "letter" : "a4" };
@@ -83,7 +96,7 @@ function saveNow(): void {
   if (!dirty) return;
   dirty = false;
   try {
-    localStorage.setItem(STORE, JSON.stringify({ r, paper }));
+    localStorage.setItem(STORE, JSON.stringify({ ...readAll(), [draftLoc || locale()]: { r, paper } }));
   } catch {
     setStatus(t(`${S}.saveFailed`));
   }
@@ -92,6 +105,7 @@ function saveNow(): void {
 /** After every edit: repaint the paper soon, save the draft a little later. */
 function changed(): void {
   dirty = true;
+  draftLoc = locale();
   window.clearTimeout(paintTimer);
   paintTimer = window.setTimeout(paint, 120);
   window.clearTimeout(saveTimer);
@@ -323,7 +337,7 @@ function onPageHide(): void {
 
 export function mountResumeBuilder(host: HTMLElement): void {
   const loc = locale();
-  const draft = readDraft();
+  const draft = readDraft(locale());
   r = draft?.r ?? sampleResume(loc);
   paper = draft?.paper ?? defaultPaper(loc);
   dirty = false;

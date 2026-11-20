@@ -95,11 +95,8 @@ export function dateParts(iso: string): { y: number; m: number; d: number } | nu
   return { y, m: mo, d };
 }
 
-/** Today in the visitor's time zone, as a date input value. */
-export function todayIso(now = new Date()): string {
-  const p = (n: number) => String(n).padStart(2, "0");
-  return `${now.getFullYear()}-${p(now.getMonth() + 1)}-${p(now.getDate())}`;
-}
+/** Today in the visitor's time zone, as a date input value (the site's one helper). */
+export { todayIso } from "./age";
 
 /** The letter for the current data: the generated body, or the visitor's own when they edited it. */
 export function buildCover(tpl: CoverTemplate, d: CoverData): BuiltLetter {
