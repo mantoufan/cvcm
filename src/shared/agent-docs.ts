@@ -34,7 +34,7 @@ const CATEGORY_TITLE: Record<CategoryId, string> = {
   text: "Text",
   dev: "Developer tools",
   math: "Math and school",
-  finance: "Money calculators, including a shop startup cost and break-even calculator",
+  finance: "Money calculators",
   health: "Health and fitness calculators (estimates, not medical advice) and a pressure points map (acupressure and foot reflexology chart for relaxation)",
   time: "Date and time",
   design: "Color and design",

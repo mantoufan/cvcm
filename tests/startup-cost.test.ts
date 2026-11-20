@@ -2,8 +2,7 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { EXAMPLE_KIND, mountStartupCost, shownValue, unmountStartupCost } from "../src/client/startup-cost/ui";
-import { parseDecimalInput, parseMoneyInput } from "../src/shared/decimal-input";
+import { EXAMPLE_KIND, mountStartupCost, readField, shownValue, unmountStartupCost } from "../src/client/startup-cost/ui";
 import { LOCALES, type Locale } from "../src/shared/locale";
 import { SHOP_KINDS, shopExample, shopNumbers, type ShopInput } from "../src/shared/startup-cost";
 
@@ -53,8 +52,7 @@ describe("examples", () => {
       const ex = shopExample(loc, kind);
       for (const [k, x] of Object.entries(ex)) {
         const shown = shownValue(x, loc);
-        const plain = ["depositMonths", "staff", "cogsPct", "deliveryPct", "commissionPct", "orders", "days"].includes(k);
-        expect((plain ? parseDecimalInput : parseMoneyInput)(shown, loc), `${kind}.${k} ${shown}`).toBe(x);
+        expect(readField(shown, k as keyof ShopInput, loc), `${kind}.${k} ${shown}`).toBe(x);
       }
     }
   });
@@ -68,6 +66,25 @@ describe("examples", () => {
     const m = r.paybackMonths;
     const shown = new Intl.NumberFormat(loc, { maximumFractionDigits: 1 }).format(Math.round((m < 24 ? m : m / 12) * 10) / 10);
     expect(a1).toContain(shown);
+  });
+});
+
+describe("reading a field", () => {
+  it("reads grouped counts as whole numbers where a dot groups thousands", () => {
+    expect(readField("1.200", "orders", "vi")).toBe(1200);
+    expect(readField("1.200", "orders", "id")).toBe(1200);
+    expect(readField("1,200", "orders", "en")).toBe(1200);
+    expect(readField("2,5", "staff", "es")).toBe(2.5);
+    expect(readField("1.5", "depositMonths", "en")).toBe(1.5);
+  });
+  it("drops percent and currency signs, and tells empty from unreadable", () => {
+    expect(readField("30%", "cogsPct", "en")).toBe(30);
+    expect(readField("$6.50", "price", "en")).toBe(6.5);
+    expect(readField("₫29.000", "price", "vi")).toBe(29000);
+    expect(readField("120,000 元", "buildout", "zh-CN")).toBe(120000);
+    expect(readField("  ", "rent", "en")).toBeUndefined();
+    expect(readField("%", "cogsPct", "en")).toBeNaN();
+    expect(readField("abc", "rent", "en")).toBeNaN();
   });
 });
 
@@ -111,12 +128,30 @@ describe("startup cost ui", () => {
     expect(text("[data-out=verdict]")).toMatch(/^At 100 orders a day the shop loses/);
     expect(text("[data-out=result]")).toContain("PaybackNever");
   });
-  it("says so when a figure is not a number and disables copy", () => {
+  it("says so when a figure is not a number, marks the field and disables copy", () => {
     mountStartupCost(host);
     set("[data-field=rent]", "abc");
     expect(text("[data-out=result]")).toBe("Enter amounts of zero or more.");
+    expect(q("[data-field=rent]").hasAttribute("aria-invalid")).toBe(true);
     expect(q<HTMLButtonElement>("[data-action=copy]").disabled).toBe(true);
     set("[data-field=rent]", "");
+    expect(q("[data-field=rent]").hasAttribute("aria-invalid")).toBe(false);
     expect(q<HTMLButtonElement>("[data-action=copy]").disabled).toBe(false);
+  });
+  it("asks for the days open instead of counting one day a month", () => {
+    mountStartupCost(host);
+    set("[data-field=days]", "");
+    expect(text("[data-out=result]")).toBe("Enter how many days a month the shop is open (1–31).");
+    set("[data-field=days]", "0");
+    expect(text("[data-out=result]")).toBe("Enter how many days a month the shop is open (1–31).");
+  });
+  it("calls a zero month break-even, never shows −0, and keeps the typed orders on the yours row", () => {
+    mountStartupCost(host);
+    // Coffee example: 3.95625 left per order, fixed 22,700, 30 days → 22,700 / (3.95625 × 30) orders a day.
+    set("[data-field=orders]", String(22700 / (3.95625 * 30)));
+    expect(text("[data-out=verdict]")).toMatch(/just breaks even/);
+    expect(text("[data-out=result]")).not.toContain("−0");
+    set("[data-field=orders]", "12.5");
+    expect(text("[data-out=table] tbody tr:nth-child(3) td:first-child")).toBe("12.5 (yours)");
   });
 });

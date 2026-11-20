@@ -4,23 +4,28 @@ import { parseDecimalInput, parseMoneyInput } from "../../shared/decimal-input";
 import { numberFormat } from "../../shared/number-format";
 import type { Locale } from "../../shared/locale";
 import { SENSITIVITY, SHOP_KINDS, shopExample, shopNumbers, type ShopInput, type ShopKind, type ShopResult } from "../../shared/startup-cost";
-import { copyButton, field, rowsTo, select, table } from "../academic/common";
+import { copyButton, field, pct, rowsTo, select, table } from "../academic/common";
 
 const S = "startupCost";
 /** The example the page opens with. */
 export const EXAMPLE_KIND: ShopKind = "coffee";
 
 type Key = keyof ShopInput;
-/** Fields by group, in page order. Percentages and counts read as plain decimals; the rest as money. */
+/** Fields by group, in page order. Percentages read as plain decimals; amounts and counts as money (1.200 is 1,200 in es/id/vi). */
 const GROUPS: readonly { id: string; keys: readonly Key[] }[] = [
   { id: "oneOff", keys: ["fee", "buildout", "equipment", "keyMoney", "depositMonths", "stock"] },
   { id: "monthly", keys: ["rent", "staff", "wage", "utilities", "other"] },
   { id: "perOrder", keys: ["price", "cogsPct", "packaging", "deliveryPct", "commissionPct"] },
   { id: "sales", keys: ["orders", "days"] },
 ];
-const PLAIN = new Set<Key>(["depositMonths", "staff", "cogsPct", "deliveryPct", "commissionPct", "orders", "days"]);
-/** Whole counts get the digits-only keypad. */
-const COUNTS = new Set<Key>(["depositMonths", "staff", "orders", "days"]);
+export const PCT_KEYS: ReadonlySet<Key> = new Set<Key>(["cogsPct", "deliveryPct", "commissionPct"]);
+
+/** A typed figure: "30%", "$6.50", "₫29.000" and "120,000 元" read as numbers; empty → undefined; not a number → NaN. */
+export function readField(raw: string, key: Key, loc: Locale): number | undefined {
+  const bare = raw.replace(/[\s%$€¥₩₫£]|NT|Rp|VND|USD|EUR|元|円|원|đồng|đ/gi, "");
+  if (bare === "") return raw.trim() === "" ? undefined : NaN;
+  return (PCT_KEYS.has(key) ? parseDecimalInput : parseMoneyInput)(bare, loc);
+}
 
 let timer = 0;
 
@@ -41,7 +46,7 @@ export function mountStartupCost(host: HTMLElement): void {
   for (const g of GROUPS) {
     for (const k of g.keys) {
       inputs[k] = h("input", {
-        type: "text", inputmode: COUNTS.has(k) ? "numeric" : "decimal",
+        type: "text", inputmode: "decimal",
         autocomplete: "off", spellcheck: "false", "data-field": k, onInput: schedule,
       });
     }
@@ -58,30 +63,36 @@ export function mountStartupCost(host: HTMLElement): void {
     paint();
   }
 
-  /** The typed figures; an empty or unreadable field counts as 0 and is listed so the page can say so. */
+  /** The typed figures. An empty field counts as 0; an unreadable or negative one is marked aria-invalid. */
   function read(): { v: ShopInput; bad: boolean } {
     let bad = false;
     const v = {} as ShopInput;
     for (const k of Object.keys(inputs) as Key[]) {
-      const raw = inputs[k].value;
-      const x = PLAIN.has(k) ? parseDecimalInput(raw, loc) : parseMoneyInput(raw, loc);
-      if (x !== undefined && !(Number.isFinite(x) && x >= 0)) bad = true;
-      v[k] = x !== undefined && Number.isFinite(x) && x >= 0 ? x : 0;
+      const x = readField(inputs[k].value, k, loc);
+      const ok = x === undefined || (Number.isFinite(x) && x >= 0);
+      inputs[k].toggleAttribute("aria-invalid", !ok);
+      if (!ok) bad = true;
+      v[k] = ok && x !== undefined ? x : 0;
     }
     return { v, bad };
   }
 
-  const money = (x: number) => (x < 0 ? "−" : "") + whole.format(Math.abs(Math.round(x)));
+  /** Rounded before the sign is chosen, so −0.3 reads 0, not −0. */
+  const signed = (x: number, f: Intl.NumberFormat, digits: number) => {
+    const n = Math.round(x * 10 ** digits) / 10 ** digits;
+    return (n < 0 ? "−" : "") + f.format(Math.abs(n));
+  };
+  const money = (x: number) => signed(x, whole, 0);
   const months = (m: number) => !Number.isFinite(m) ? t(`${S}.never`)
     : m < 1 ? t(`${S}.underMonth`)
       : m < 24 ? t(`${S}.months`, { n: one.format(Math.round(m * 10) / 10) })
         : t(`${S}.years`, { n: one.format(Math.round((m / 12) * 10) / 10) });
-  const share = (x: number) => (Number.isFinite(x) ? `${one.format(Math.round(x * 1000) / 10)} %` : "—");
 
   function paint(): void {
     const { v, bad } = read();
-    if (bad) {
-      out.replaceChildren(h("p", { class: "muted" }, t(`${S}.invalid`)));
+    const noDays = !bad && !(v.days >= 1);
+    if (bad || noDays) {
+      out.replaceChildren(h("p", { class: "muted" }, t(noDays ? `${S}.needDays` : `${S}.invalid`)));
       verdict.textContent = "";
       sens.replaceChildren();
       last = "";
@@ -96,19 +107,20 @@ export function mountStartupCost(host: HTMLElement): void {
       [t(`${S}.startup`), money(r.startup)],
       [t(`${S}.profit`), money(r.profit)],
       [t(`${S}.revenue`), money(r.revenue)],
-      [t(`${S}.perOrderNet`), (r.perOrder < 0 ? "−" : "") + two.format(Math.abs(r.perOrder))],
+      [t(`${S}.perOrderNet`), signed(r.perOrder, two, 2)],
       [t(`${S}.fixed`), money(r.fixed)],
-      [t(`${S}.rentShare`), share(r.rentShare)],
-      [t(`${S}.laborShare`), share(r.laborShare)],
+      [t(`${S}.rentShare`), pct(r.rentShare, 1)],
+      [t(`${S}.laborShare`), pct(r.laborShare, 1)],
     ]);
     copy.disabled = false;
     verdict.textContent = verdictText(v, r, breakEven);
     sens.replaceChildren(
       h("h3", null, t(`${S}.tableTitle`)),
       table([t(`${S}.colOrders`), t(`${S}.profit`), t(`${S}.payback`)], SENSITIVITY.map((f) => {
-        const orders = Math.round(v.orders * f);
+        // The typed figure itself on the "yours" row, so it matches the result above; the others to a whole order.
+        const orders = f === 1 ? v.orders : Math.round(v.orders * f);
         const s = shopNumbers(v, orders);
-        const label = f === 1 ? t(`${S}.current`, { n: whole.format(orders) })
+        const label = f === 1 ? t(`${S}.current`, { n: one.format(orders) })
           : t(f < 1 ? `${S}.fewer` : `${S}.more`, { n: whole.format(orders), pct: whole.format(Math.round(Math.abs(1 - f) * 100)) });
         return [label, money(s.profit), months(s.paybackMonths)];
       })),
@@ -117,9 +129,10 @@ export function mountStartupCost(host: HTMLElement): void {
 
   function verdictText(v: ShopInput, r: ShopResult, breakEven: string): string {
     if (!(r.perOrder > 0)) return t(`${S}.vLossPerOrder`);
-    if (!(r.profit > 0)) return t(`${S}.vLoss`, { orders: whole.format(v.orders), loss: money(-r.profit), need: breakEven });
+    if (Math.round(r.profit) === 0) return t(`${S}.vEven`, { orders: one.format(v.orders) });
+    if (r.profit < 0) return t(`${S}.vLoss`, { orders: one.format(v.orders), loss: money(-r.profit), need: breakEven });
     if (r.paybackMonths > 24) return t(`${S}.vSlow`, { time: months(r.paybackMonths) });
-    return t(`${S}.vOk`, { orders: whole.format(v.orders), time: months(r.paybackMonths) });
+    return t(`${S}.vOk`, { orders: one.format(v.orders), time: months(r.paybackMonths) });
   }
 
   host.append(
