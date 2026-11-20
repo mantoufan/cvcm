@@ -1202,13 +1202,12 @@ export function isHomeSeo(input: SeoInput | ToolId | null): boolean {
   return Object.values(normalizeSeo(input)).every((v) => !v);
 }
 
-/** Home: the site itself. Its tool, the cloud clipboard, is described by `toolSoftwareJsonLd(locale, "clip")`. */
+/** Home: the site itself (the clipboard's WebApplication lives on /clip/ only). */
 export function websiteJsonLd(locale: Locale): Record<string, unknown> {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "cv.cm",
-    alternateName: lookup(locale, "tools.clip.name"),
     url: pageCanonical(locale, { tool: null }),
     description: pageDescription(locale, { tool: null }),
     inLanguage: HREFLANG[locale],

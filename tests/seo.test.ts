@@ -314,7 +314,7 @@ describe("home structured data", () => {
     const home = applyHtmlSeo(html, "zh-CN", { tool: null });
     expect(home).toContain('id="website-jsonld"');
     expect(home).toContain('"@type":"WebSite"');
-    expect(home).toMatch(/id="software-jsonld">[^<]*"WebApplication"[^<]*云剪切板/);
+    expect(home).not.toContain('id="software-jsonld"');
     expect(pageTitle("zh-CN", null)).toMatch(/^云剪切板/);
     const clip = applyHtmlSeo(html, "zh-CN", { tool: "clip" });
     expect(clip).not.toContain('id="website-jsonld"');

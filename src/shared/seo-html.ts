@@ -275,7 +275,6 @@ export function applyHtmlSeo(
   if (isHomeSeo(seo)) {
     tags.push(
       `<script type="application/ld+json" id="website-jsonld">${JSON.stringify(websiteJsonLd(locale)).replace(/</g, "\\u003c")}</script>`,
-      `<script type="application/ld+json" id="software-jsonld">${JSON.stringify(toolSoftwareJsonLd(locale, "clip")).replace(/</g, "\\u003c")}</script>`,
     );
   }
   out = out.replace("</head>", () => `${tags.join("\n    ")}\n  </head>`);

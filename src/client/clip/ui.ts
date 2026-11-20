@@ -63,7 +63,7 @@ export function mountClipCompose(host: HTMLElement, opts: { rules?: boolean } = 
   uploadGen++;
   savedRange = null;
   draftDirty = false;
-  const page = h("div", { class: "clip" + (opts.rules ? "" : " solo") });
+  const page = h("div", { class: "clip" });
   host.append(page);
   showCompose(page, Boolean(opts.rules));
   window.addEventListener("paste", onWindowPaste);
@@ -203,7 +203,7 @@ function toolbar(filePick: HTMLInputElement): HTMLElement {
     h("button", { type: "button", class: "seg", "data-mode": "md", onClick: () => switchMode("md") }, t("clip.modeMd")),
   ];
   const sep = () => h("span", { class: "clip-sep", "aria-hidden": "true" });
-  return h("div", { class: "clip-bar", role: "toolbar", "aria-label": t("clip.bodyLabel") },
+  return h("div", { class: "clip-bar" },
     filePick,
     h("div", { class: "clip-seg", role: "group" }, ...modeBtns),
     sep(),

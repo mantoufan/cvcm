@@ -120,8 +120,10 @@ export function syncPageJsonLd(
   currencyPage: CurrencyPage = null,
   breedsPage: BreedsPage = null,
 ): void {
-  const home = [tool, tutorial, gamesHub, convertJob, resizeJob, market, marketsHub, devicePage, gamesHubId, legalPage, quizPage, datasetPage, kbPage, refPage, rankingPage, slangPage, learnHub, ideasPage, nostalgiaPage, countriesPage, caloriesPage, elementsPage, calendarPage, emojiPage, currencyPage, breedsPage].every((v) => !v);
-  // Home: the site plus its cloud clipboard (mirrors applyHtmlSeo). Every other page drops the WebSite block.
+  // Home is the page with no tool, channel or page of any kind: every argument after the locale is empty. Reading
+  // `arguments` keeps a parameter added for a new channel from being missed here.
+  const home = Array.prototype.slice.call(arguments, 1).every((v: unknown) => !v);
+  // Home carries the WebSite block (mirrors applyHtmlSeo); every other page drops it.
   writeJsonLd("website-jsonld", home ? websiteJsonLd(locale) : null);
   if (currencyPage) {
     const pair = currencyPage === "hub" ? null : currencyPage;
@@ -273,7 +275,7 @@ export function syncPageJsonLd(
   );
   writeJsonLd(
     "software-jsonld",
-    toolPage && tool ? toolSoftwareJsonLd(locale, tool) : home ? toolSoftwareJsonLd(locale, "clip") : null,
+    toolPage && tool ? toolSoftwareJsonLd(locale, tool) : null,
   );
 }
 

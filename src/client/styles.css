@@ -126,7 +126,6 @@ h2 { font-size: 1.15rem; line-height: 1.35; }
 .home-hero { padding: 0.75rem 0 0.25rem; }
 .home-hero .lede { margin-bottom: 0.5rem; }
 .home-hero .muted { margin: 0.5rem 0 0; }
-/* Empty status / result rows only reserve space once they have content */
 
 /* Link lists: the home directory, hubs and related links */
 .wall { padding-top: 2rem; }
@@ -2297,7 +2296,8 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .clip-compose > .status:empty, .clip-result:empty { display: none; }
 .clip-editor { gap: 0; padding: 0; overflow: hidden; }
 .clip-editor:focus-within { border-color: var(--pink); }
-.clip-editor.over { border-color: var(--pink-deep); background: var(--pink-soft); }
+.clip-editor.over { border-color: var(--pink-deep); outline: 2px dashed var(--pink-deep); outline-offset: 2px; }
+.clip-editor.over .clip-rich, .clip-editor.over .clip-input { background: var(--pink-soft); }
 .clip-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem; padding: 0.45rem 0.55rem; border-bottom: 1px solid var(--line); background: var(--gray); }
 .clip-seg { display: inline-flex; padding: 2px; border-radius: 8px; background: var(--pink-soft); }
 .clip-seg .seg { min-height: 30px; padding: 0 0.7rem; border: 0; border-radius: 6px; background: transparent; font-size: 0.8rem; font-weight: 600; color: var(--ink-soft); cursor: pointer; }
