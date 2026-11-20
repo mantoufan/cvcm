@@ -397,8 +397,9 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .pkt-2 { color: var(--pink-deep); font-weight: 800; background: var(--pink-soft); }
 .pkt-half { color: var(--ink-soft); }
 .pkt-0 { color: var(--white); background: var(--ink-soft); font-weight: 700; }
-.pkt-groups dd[data-mult="4"], .pkt-groups dd[data-mult="2"] { color: var(--pink-deep); }
+/* Weak (×4, ×2) stays the result pink; normal damage is muted; resisted and immune read as plain ink. */
 .pkt-groups dd[data-mult="1"] { color: var(--ink-soft); font-weight: 400; }
+.pkt-groups dd:is([data-mult="0.5"], [data-mult="0.25"], [data-mult="0"]) { color: var(--ink); }
 .pkt-matches:empty { display: none; }
 .pkn-grid td { padding: 0; }
 .pkn-pick { width: 100%; min-height: 40px; padding: 0.3rem 0.5rem; border: 0; background: none; font: inherit; cursor: pointer; white-space: nowrap; }

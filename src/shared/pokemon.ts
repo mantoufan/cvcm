@@ -1,6 +1,7 @@
 // Pokémon type chart and nature lookups (cv.cm /pokemon-type-chart/ and /pokemon-natures/). Facts only, from
 // pokemon-data.ts (generated from PokeAPI); the site shows no Pokémon images.
 import { CHART, NATURES, STATS, TYPES, type PokemonStat, type PokemonType } from "./pokemon-data";
+import { foldText } from "./search";
 
 export { NATURES, STATS, TYPES, type PokemonStat, type PokemonType };
 
@@ -52,10 +53,14 @@ export interface DexEntry {
   name: string;
   en: string;
   types: PokemonType[];
+  /** searchKey of the name and of the English name, computed once when the chunk loads. */
+  keys: [string, string];
 }
 
 export function dexEntries(rows: readonly DexRow[]): DexEntry[] {
-  return rows.map(([n, name, t, en]) => ({ n, name, en: en ?? name, types: t.map((i) => TYPES[i]) }));
+  return rows.map(([n, name, t, en]) => ({
+    n, name, en: en ?? name, types: t.map((i) => TYPES[i]), keys: [searchKey(name), searchKey(en ?? name)],
+  }));
 }
 
 /**
@@ -63,14 +68,9 @@ export function dexEntries(rows: readonly DexRow[]): DexEntry[] {
  * games write Pokémon names in katakana; people type either), no spaces, dots, apostrophes or hyphens.
  */
 export function searchKey(s: string): string {
-  return s
-    .normalize("NFKC")
-    .toLowerCase()
+  // foldText (site search) drops Latin accents and lower-cases; kana voicing marks and Hangul survive it.
+  return foldText(s)
     .replace(/[ぁ-ゖ]/g, (c) => String.fromCharCode(c.charCodeAt(0) + 0x60))
-    // Drop Latin accents (Flabébé, Pokémon); kana voicing marks and Hangul recompose under NFC.
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .normalize("NFC")
     .replace(/[\s.'’\-‐・:：()（）]/g, "");
 }
 
@@ -87,7 +87,7 @@ export function searchDex(entries: readonly DexEntry[], query: string, limit = 8
   if (!key) return [];
   const scored: { e: DexEntry; score: number }[] = [];
   for (const e of entries) {
-    const names = [searchKey(e.name), searchKey(e.en)];
+    const names = e.keys;
     const score = names.some((s) => s === key) ? 0 : names.some((s) => s.startsWith(key)) ? 1 : names.some((s) => s.includes(key)) ? 2 : -1;
     if (score >= 0) scored.push({ e, score });
   }

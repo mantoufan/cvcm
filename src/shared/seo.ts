@@ -1175,7 +1175,7 @@ const APP_CATEGORY: Partial<Record<CategoryId, string>> = {
   fun: "EntertainmentApplication",
   valuation: "FinanceApplication",
   academic: "EducationalApplication",
-  pokemon: "GameApplication",
+  pokemon: "ReferenceApplication",
 };
 /** Tools sold under their own name (watermark + mosaic share the ID Watermark & Redact brand). */
 export const BRANDED_TOOLS = new Set<ToolId>(["watermark", "mosaic"]);

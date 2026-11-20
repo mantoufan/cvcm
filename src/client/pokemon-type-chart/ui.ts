@@ -60,7 +60,8 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
     onFocus: () => void loadDex(loc).catch(() => undefined),
     onInput: () => void find(),
     onKeydown: (e: KeyboardEvent) => {
-      if (e.key !== "Enter") return;
+      // The Enter that commits an IME conversion (がぶ → ガブ) is not "pick".
+      if (e.key !== "Enter" || e.isComposing || e.keyCode === 229) return;
       e.preventDefault();
       // Wait for this query's own matches (the Pokédex may still be loading), then take the best one.
       void find().then((found) => { if (found[0]) choose(found[0]); });
@@ -112,7 +113,9 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
   function paint(): void {
     const pair = typePair(first.value as PokemonType, (second.value || null) as PokemonType | null);
     const pairName = pair.map(typeName).join(" / ");
-    heading.textContent = picked ? `${dexNumber(picked.n)} ${picked.name} · ${pairName}` : pairName;
+    // Forms that share a name already end in their types (" · かくとう/ほのお"): don't print them twice.
+    const named = picked && (picked.name.endsWith(` · ${pair.map(typeName).join("/")}`) ? picked.name : `${picked.name} · ${pairName}`);
+    heading.textContent = picked ? `${dexNumber(picked.n)} ${named}` : pairName;
     const groups = defenseGroups(pair);
     defense.replaceChildren();
     const lines: string[] = [heading.textContent];

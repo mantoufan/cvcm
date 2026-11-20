@@ -12,6 +12,7 @@ Only facts are taken (numbers, names, types). No sprites or artwork: the site do
 Pokémon games have no Vietnamese or Indonesian text, so vi and id use the English in-game names.
 """
 import csv
+import re
 import json
 import sys
 import unicodedata
@@ -40,8 +41,8 @@ def rows(name):
 
 
 def clean(s):
-    # Full-width Ｘ／Ｙ／Ｚ in zh names → ASCII; keep everything else as written.
-    return unicodedata.normalize("NFKC", s).strip()
+    # Full-width Latin letters and digits (超级喷火龙Ｘ) → ASCII; brackets and other punctuation stay as written.
+    return re.sub(r"[Ａ-Ｚａ-ｚ０-９]", lambda m: unicodedata.normalize("NFKC", m.group()), s).strip()
 
 
 def pick(by_lang, loc):
@@ -132,17 +133,18 @@ def entry_name(r, loc):
             return f if sp in f else (f"{sp}（{f}）" if loc in ("ja", "zh-CN", "zh-TW") else f"{sp} ({f})")
     en = fn.get("9")
     assert en, f"{r['identifier']}: no form name at all"
+    en_full = clean(en["pokemon_name"] or en["form_name"])
+    assert en_full, f"{r['identifier']}: empty English form name"
     if loc in ("en", "vi", "id"):
-        return clean(en["pokemon_name"] or en["form_name"])
+        return en_full
     # No form name in this language yet: the local species name, so a search for it still finds the form.
     print(f"warning: {loc} has no name for {r['identifier']}; using the English form name", file=sys.stderr)
-    return f"{sp}（{clean(en['form_name'])}）" if loc in ("ja", "zh-CN", "zh-TW") else f"{sp} ({clean(en['form_name'])})"
+    form = clean(en["form_name"]) or en_full
+    return f"{sp}（{form}）" if loc in ("ja", "zh-CN", "zh-TW") else f"{sp} ({form})"
 
 
 dex = {loc: [] for loc in LOCALES}
 for r in sorted(pokemon, key=lambda r: (int(r["species_id"]), r["is_default"] != "1", int(r["id"]))):
-    if int(r["species_id"]) > 10000:
-        continue
     if r["is_default"] != "1":
         if r["identifier"].endswith(SKIP_FORM) or "-totem-" in r["identifier"]:
             continue
