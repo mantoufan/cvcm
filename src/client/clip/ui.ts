@@ -63,7 +63,7 @@ export function mountClipCompose(host: HTMLElement, opts: { rules?: boolean } = 
   uploadGen++;
   savedRange = null;
   draftDirty = false;
-  const page = h("div", { class: "clip" + (opts.rules ? "" : " solo") });
+  const page = h("div", { class: "clip" });
   host.append(page);
   showCompose(page, Boolean(opts.rules));
   window.addEventListener("paste", onWindowPaste);
@@ -156,7 +156,7 @@ function showCompose(page: HTMLElement, withRules: boolean): void {
   });
   page.append(
     h("div", {
-      class: "rail clip-compose",
+      class: "rail clip-compose clip-editor",
       onDragover: (e: Event) => { e.preventDefault(); (e.currentTarget as HTMLElement).classList.add("over"); },
       onDragleave: (e: Event) => { (e.currentTarget as HTMLElement).classList.remove("over"); },
       onDrop: (e: Event) => {
@@ -202,31 +202,54 @@ function toolbar(filePick: HTMLInputElement): HTMLElement {
     h("button", { type: "button", class: "seg", "data-mode": "rich", onClick: () => switchMode("rich") }, t("clip.modeRich")),
     h("button", { type: "button", class: "seg", "data-mode": "md", onClick: () => switchMode("md") }, t("clip.modeMd")),
   ];
+  const sep = () => h("span", { class: "clip-sep", "aria-hidden": "true" });
   return h("div", { class: "clip-bar" },
     filePick,
     h("div", { class: "clip-seg", role: "group" }, ...modeBtns),
+    sep(),
     fmt("B", "clip.bold", "clip-biu", () => cmd("bold"), () => wrapMd("**")),
     fmt("I", "clip.italic", "clip-biu i", () => cmd("italic"), () => wrapMd("*")),
     fmt("U", "clip.underline", "clip-biu u", () => cmd("underline"), () => wrapMd("++")),
     fmt("S", "clip.strike", "clip-biu s", () => cmd("strikeThrough"), () => wrapMd("~~")),
+    sep(),
     fmt("H1", "clip.h1", "clip-biu", () => block("h1"), () => prefixMd("# ")),
     fmt("H2", "clip.h2", "clip-biu", () => block("h2"), () => prefixMd("## ")),
+    sep(),
     fmt("•", "clip.bullet", "clip-biu", () => cmd("insertUnorderedList"), () => prefixMd("- ")),
     fmt("1.", "clip.numbered", "clip-biu", () => cmd("insertOrderedList"), () => prefixMd("1. ")),
     fmt("</>", "clip.code", "clip-biu", () => block("pre"), () => fenceMd()),
     fmt("❝", "clip.quote", "clip-biu", () => block("blockquote"), () => prefixMd("> ")),
     h("button", {
       type: "button",
-      class: "chip clip-attach",
+      class: "clip-attach",
       onClick: () => filePick.click(),
-    }, `📎 ${t("clip.attachBtn")}`),
+    }, clipIcon(), h("span", null, t("clip.attachBtn"))),
   );
+}
+
+/** A line-art paperclip (no emoji: it renders differently on every system). */
+function clipIcon(): SVGSVGElement {
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", "0 0 24 24");
+  svg.setAttribute("width", "16");
+  svg.setAttribute("height", "16");
+  svg.setAttribute("aria-hidden", "true");
+  const path = document.createElementNS(ns, "path");
+  path.setAttribute("d", "M21 11.5l-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l8.6-8.6a3.7 3.7 0 0 1 5.2 5.2l-8.6 8.6a1.8 1.8 0 0 1-2.6-2.6l7.9-7.9");
+  path.setAttribute("fill", "none");
+  path.setAttribute("stroke", "currentColor");
+  path.setAttribute("stroke-width", "1.8");
+  path.setAttribute("stroke-linecap", "round");
+  path.setAttribute("stroke-linejoin", "round");
+  svg.append(path);
+  return svg;
 }
 
 function fmt(label: string, titleKey: string, cls: string, rich: () => void, md: () => void): HTMLButtonElement {
   return h("button", {
     type: "button",
-    class: `chip ${cls}`,
+    class: cls,
     title: t(titleKey),
     "aria-label": t(titleKey),
     // Keep the editor selection: a mousedown on the button would blur it.
@@ -602,13 +625,12 @@ function clearAll(): void {
 }
 
 function rules(): HTMLElement {
-  return h("aside", { class: "rail clip-rules" },
-    h("h2", null, t("clip.rulesTitle")),
+  return h("aside", { class: "clip-rules", "aria-label": t("clip.rulesTitle") },
     h("ul", null,
       h("li", null, t("clip.ruleViews")),
       h("li", null, t("clip.ruleDay")),
       h("li", null, t("clip.ruleLogin")),
-      h("li", null, t("clip.ruleFiles")),
+      h("li", null, t("clip.ruleFiles", { mb: Math.round(CLIP_MAX_FILE_BYTES / 1024 / 1024) })),
     ),
   );
 }

@@ -1197,6 +1197,24 @@ export function toolSoftwareJsonLd(locale: Locale, tool: ToolId): Record<string,
   };
 }
 
+/** Whether the input is the home page: no tool, channel, page or job of any kind. */
+export function isHomeSeo(input: SeoInput | ToolId | null): boolean {
+  return Object.values(normalizeSeo(input)).every((v) => !v);
+}
+
+/** Home: the site itself (the clipboard's WebApplication lives on /clip/ only). */
+export function websiteJsonLd(locale: Locale): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "cv.cm",
+    url: pageCanonical(locale, { tool: null }),
+    description: pageDescription(locale, { tool: null }),
+    inLanguage: HREFLANG[locale],
+    publisher: { "@type": "Organization", name: "cv.cm", url: "https://cv.cm/" },
+  };
+}
+
 function breadcrumbList(items: Array<{ name: string; url: string }>): Record<string, unknown> {
   return {
     "@context": "https://schema.org",

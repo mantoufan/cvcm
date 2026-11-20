@@ -42,7 +42,7 @@ import { breedsPageHtml } from "./breeds-page";
 import { ideasPageHtml } from "./ideas-page";
 import { memeImagePath } from "./meme-images";
 import { nostalgiaImagePath } from "./nostalgia-images";
-import { BRANDED_TOOLS, faqJsonLd, gameBreadcrumbJsonLd, howToJsonLd, lookup, hreflangAlternates, marketBreadcrumbJsonLd, pageCanonical, pageDescription, pageTitle, toolBreadcrumbJsonLd, toolSoftwareJsonLd, tutorialBreadcrumbJsonLd, normalizeSeo, type SeoInput } from "./seo";
+import { BRANDED_TOOLS, isHomeSeo, websiteJsonLd, faqJsonLd, gameBreadcrumbJsonLd, howToJsonLd, lookup, hreflangAlternates, marketBreadcrumbJsonLd, pageCanonical, pageDescription, pageTitle, toolBreadcrumbJsonLd, toolSoftwareJsonLd, tutorialBreadcrumbJsonLd, normalizeSeo, type SeoInput } from "./seo";
 
 function ogImage(seo: SeoInput): string | null {
   if (seo.slang && seo.slangId) {
@@ -97,6 +97,7 @@ export function applyHtmlSeo(
   out = out.replace(/<script type="application\/ld\+json" id="howto-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="breadcrumb-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="software-jsonld">[\s\S]*?<\/script>\s*/gi, "");
+  out = out.replace(/<script type="application\/ld\+json" id="website-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="dataset-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   out = out.replace(/<script type="application\/ld\+json" id="article-jsonld">[\s\S]*?<\/script>\s*/gi, "");
   const tags = [
@@ -271,6 +272,11 @@ export function applyHtmlSeo(
       out = out.replace(/(<link\s+rel="icon"\s+href=")[^"]*("\s+type="image\/svg\+xml")/i, "$1/brand/safemark.svg$2");
       out = out.replace(/(<link\s+rel="apple-touch-icon"\s+href=")[^"]*(")/i, "$1/brand/safemark-180.png$2");
     }
+  }
+  if (isHomeSeo(seo)) {
+    tags.push(
+      `<script type="application/ld+json" id="website-jsonld">${JSON.stringify(websiteJsonLd(locale)).replace(/</g, "\\u003c")}</script>`,
+    );
   }
   out = out.replace("</head>", () => `${tags.join("\n    ")}\n  </head>`);
   const inner = body ? body : seo.devicePage

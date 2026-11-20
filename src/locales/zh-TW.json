@@ -1,11 +1,11 @@
 {
   "meta": {
-    "title": "cv.cm — 剪切板、圖片、PDF 工具",
+    "title": "雲端剪貼簿與免費線上工具 — cv.cm",
     "titleClip": "線上剪貼簿 — 無需登入分享文字 — cv.cm",
     "descClip": "類似 Pastebin 的雲端剪貼簿。用連結分享文字、圖片和檔案。無需帳號。查看 10 次或 24 小時後刪除。",
     "titleWatermark": "身分證加浮水印、隱形浮水印線上工具，證件防盜用，免費不上傳 — cv.cm",
     "titleCollage": "線上圖片拼圖 — cv.cm",
-    "description": "瀏覽器本地工具。圖片和 PDF 留在目前分頁。",
+    "description": "雲端剪貼簿：貼上文字、圖片或檔案，一鍵產生短網址分享。無需登入，查看 10 次或 24 小時後自動刪除。另有免費線上工具和小遊戲。",
     "titleConvert": "圖片格式轉換 — HEIC、WebP、PNG、JPG — cv.cm",
     "descConvert": "瀏覽器互轉 HEIC、WebP、PNG、JPG、SVG、AVIF、GIF、BMP、ICO。可縮小邊長。檔案不上傳。",
     "titleImagePdf": "JPG 轉 PDF、PNG 轉 PDF — cv.cm",
@@ -1969,7 +1969,7 @@
   },
   "clip": {
     "title": "線上剪貼簿",
-    "privacyNote": "文字在 D1，檔案在 S3。查看 10 次或 24 小時後刪除。無需登入。",
+    "privacyNote": "無需登入。只有拿到連結的人能開啟，查看 10 次或 24 小時後自動刪除。",
     "bodyLabel": "文字",
     "placeholder": "貼上文字、HTML，或拖放檔案到這裡…",
     "submit": "產生連結",
@@ -1994,7 +1994,7 @@
     "ruleViews": "查看 10 次後刪除",
     "ruleDay": "超過 1 天後刪除",
     "ruleLogin": "無需登入",
-    "ruleFiles": "圖片、影音、附件存在 S3",
+    "ruleFiles": "圖片、影音、附件，單檔最大 {mb} MB",
     "preview": "預覽",
     "edit": "編輯",
     "bold": "粗體",

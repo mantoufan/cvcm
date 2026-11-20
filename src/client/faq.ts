@@ -15,6 +15,7 @@ import {
   toolBreadcrumbJsonLd,
   toolSoftwareJsonLd,
   tutorialBreadcrumbJsonLd,
+  websiteJsonLd,
   type FaqItem,
 } from "../shared/seo";
 import type { Locale } from "../shared/locale";
@@ -119,6 +120,11 @@ export function syncPageJsonLd(
   currencyPage: CurrencyPage = null,
   breedsPage: BreedsPage = null,
 ): void {
+  // Home is the page with no tool, channel or page of any kind: every argument after the locale is empty. Reading
+  // `arguments` keeps a parameter added for a new channel from being missed here.
+  const home = Array.prototype.slice.call(arguments, 1).every((v: unknown) => !v);
+  // Home carries the WebSite block (mirrors applyHtmlSeo); every other page drops it.
+  writeJsonLd("website-jsonld", home ? websiteJsonLd(locale) : null);
   if (currencyPage) {
     const pair = currencyPage === "hub" ? null : currencyPage;
     for (const key of ["howto-jsonld", "software-jsonld", "dataset-jsonld"]) writeJsonLd(key, null);
