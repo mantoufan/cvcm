@@ -19,8 +19,9 @@ const DEX: Record<Locale, () => Promise<{ default: unknown }>> = {
   "zh-TW": () => import("../../data/pokemon/zh-TW.json"),
   ja: () => import("../../data/pokemon/ja.json"),
   ko: () => import("../../data/pokemon/ko.json"),
-  vi: () => import("../../data/pokemon/vi.json"),
-  id: () => import("../../data/pokemon/id.json"),
+  // The games have no Vietnamese or Indonesian text: those pages use the English names (one shared chunk).
+  vi: () => import("../../data/pokemon/en.json"),
+  id: () => import("../../data/pokemon/en.json"),
   es: () => import("../../data/pokemon/es.json"),
 };
 
@@ -29,9 +30,10 @@ let dexLocale: Locale | null = null;
 export function loadDex(loc: Locale): Promise<DexEntry[]> {
   if (!dexPromise || dexLocale !== loc) {
     dexLocale = loc;
-    dexPromise = DEX[loc]().then((m) => dexEntries(m.default as DexRow[]));
-    // A failed chunk (offline) may be retried on the next keystroke.
-    dexPromise.catch(() => { dexPromise = null; });
+    const p = DEX[loc]().then((m) => dexEntries(m.default as DexRow[]));
+    dexPromise = p;
+    // A failed chunk (offline) may be retried on the next keystroke; an older language's failure leaves a newer one alone.
+    p.catch(() => { if (dexPromise === p) dexPromise = null; });
   }
   return dexPromise;
 }
@@ -60,33 +62,41 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
     onKeydown: (e: KeyboardEvent) => {
       if (e.key !== "Enter") return;
       e.preventDefault();
-      const firstMatch = matches.querySelector<HTMLButtonElement>("button");
-      firstMatch?.click();
+      // Wait for this query's own matches (the Pokédex may still be loading), then take the best one.
+      void find().then((found) => { if (found[0]) choose(found[0]); });
     },
   });
   const matches = h("div", { class: "chip-row pkt-matches", id: "pkt-matches", "aria-live": "polite", "data-out": "matches" });
 
   let seq = 0;
-  async function find(): Promise<void> {
+  /** Matches for the box's current text, shown as chips; [] when the text changed again before they arrived. */
+  async function find(): Promise<DexEntry[]> {
     const q = search.value;
     const mine = ++seq;
-    if (!q.trim()) { matches.replaceChildren(); return; }
+    // Editing the name after a pick means the result no longer belongs to that Pokémon: keep the types, drop the name.
+    if (picked && q !== picked.name) {
+      picked = null;
+      paint();
+    }
+    if (!q.trim()) { matches.replaceChildren(); return []; }
     let dex: DexEntry[];
     try {
       dex = await loadDex(loc);
     } catch {
       if (mine === seq) matches.replaceChildren(h("p", { class: "hint" }, t(`${S}.loadFailed`)));
-      return;
+      return [];
     }
-    if (mine !== seq) return;
+    if (mine !== seq) return [];
     const found = searchDex(dex, q);
     matches.replaceChildren(...(found.length
       ? found.map((e) => h("button", { type: "button", class: "chip", "data-dex": String(e.n), onClick: () => choose(e) },
         `${dexNumber(e.n)} ${e.name}`))
       : [h("p", { class: "hint" }, t(`${S}.noMatch`))]));
+    return found;
   }
 
   function choose(e: DexEntry): void {
+    seq++; // a find() still waiting for the Pokédex must not redraw the chips over this choice
     picked = e;
     first.value = e.types[0];
     second.value = e.types[1] ?? "";
@@ -118,13 +128,15 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
     lines.push("", t(`${S}.offenseTitle`));
     for (const a of pair) {
       const g = offenseGroups(a);
-      const rows: [string, PokemonType[]][] = [[t(`${S}.superOn`), g[2]], [t(`${S}.notVeryOn`), g[0.5]], [t(`${S}.noEffectOn`), g[0]]];
+      // "No effect on" only when there is something; the first two rows always show (even as "none").
+      const rows = ([[t(`${S}.superOn`), g[2]], [t(`${S}.notVeryOn`), g[0.5]], [t(`${S}.noEffectOn`), g[0]]] as [string, PokemonType[]][])
+        .filter(([, xs], i) => xs.length || i < 2);
       offense.append(
         h("h4", null, t(`${S}.movesOf`, { type: typeName(a) })),
         h("dl", { class: "stats-grid pkt-groups", "data-offense": a },
-          ...rows.filter(([, xs], i) => xs.length || i < 2).flatMap(([k, xs]) => [h("dt", null, k), h("dd", null, list(xs))])),
+          ...rows.flatMap(([k, xs]) => [h("dt", null, k), h("dd", null, list(xs))])),
       );
-      lines.push(t(`${S}.movesOf`, { type: typeName(a) }), ...rows.filter(([, xs], i) => xs.length || i < 2).map(([k, xs]) => `${k}: ${list(xs)}`));
+      lines.push(t(`${S}.movesOf`, { type: typeName(a) }), ...rows.map(([k, xs]) => `${k}: ${list(xs)}`));
     }
     last = lines.join("\n");
   }

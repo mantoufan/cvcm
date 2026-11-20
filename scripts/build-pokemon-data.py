@@ -115,6 +115,7 @@ def type_list(pid):
 def entry_name(r, loc):
     """The species name, or for a form its full name: 'Alolan Ninetales', 'キュウコン（アローラのすがた）'."""
     sp = pick(species_names[r["species_id"]], loc)
+    assert sp, f"{loc}: species {r['species_id']} has no name"
     if r["is_default"] == "1":
         return sp
     form = forms_by_pokemon.get(r["id"])
@@ -131,7 +132,11 @@ def entry_name(r, loc):
             return f if sp in f else (f"{sp}（{f}）" if loc in ("ja", "zh-CN", "zh-TW") else f"{sp} ({f})")
     en = fn.get("9")
     assert en, f"{r['identifier']}: no form name at all"
-    return clean(en["pokemon_name"] or en["form_name"])
+    if loc in ("en", "vi", "id"):
+        return clean(en["pokemon_name"] or en["form_name"])
+    # No form name in this language yet: the local species name, so a search for it still finds the form.
+    print(f"warning: {loc} has no name for {r['identifier']}; using the English form name", file=sys.stderr)
+    return f"{sp}（{clean(en['form_name'])}）" if loc in ("ja", "zh-CN", "zh-TW") else f"{sp} ({clean(en['form_name'])})"
 
 
 dex = {loc: [] for loc in LOCALES}
@@ -149,11 +154,27 @@ for r in sorted(pokemon, key=lambda r: (int(r["species_id"]), r["is_default"] !=
         name = entry_name(r, loc)
         dex[loc].append({"n": int(r["species_id"]), "name": name, "en": en_name, "t": t})
 
+# Some forms share a name in a language (the three Paldean Tauros in ja, Zen Darmanitan and its Galarian form):
+# add the types in that language, so a reader never has to pick between identical rows.
+for loc in LOCALES:
+    seen = {}
+    for e in dex[loc]:
+        seen.setdefault(e["name"], []).append(e)
+    for same in seen.values():
+        if len(same) > 1:
+            for e in same:
+                e["name"] = f"{e['name']} · {'/'.join(label[loc]['types'][TYPE_ORDER[i]] for i in e['t'])}"
+    names = [e["name"] for e in dex[loc]]
+    assert len(names) == len(set(names)), f"{loc}: duplicate names"
+
 out_dir = ROOT / "src/data/pokemon"
 out_dir.mkdir(parents=True, exist_ok=True)
 for loc in LOCALES:
     # Compact rows: [number, name, type index, type index?] and the English name only where it differs (search).
-    data = [[e["n"], e["name"], e["t"], *([e["en"]] if e["en"] != e["name"] else [])] for e in dex[loc]]
+    if loc in ("vi", "id"):
+        continue  # same as en: the page loads the English file (pokemon-type-chart/ui.ts)
+    en_names = [e["name"] for e in dex["en"]]
+    data = [[e["n"], e["name"], e["t"], *([en] if en != e["name"] else [])] for e, en in zip(dex[loc], en_names)]
     (out_dir / f"{loc}.json").write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
 
 species_count = len({e["n"] for e in dex["en"]})

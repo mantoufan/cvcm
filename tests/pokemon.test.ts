@@ -12,7 +12,9 @@ import {
   offenseGroups, searchDex, searchKey, type DexRow,
 } from "../src/shared/pokemon";
 
-const dex = (loc: string) => dexEntries(JSON.parse(readFileSync(resolve(__dirname, `../src/data/pokemon/${loc}.json`), "utf8")) as DexRow[]);
+// vi and id load the English file (the games have no Vietnamese or Indonesian text).
+const dexFile = (loc: string) => (loc === "vi" || loc === "id" ? "en" : loc);
+const dex = (loc: string) => dexEntries(JSON.parse(readFileSync(resolve(__dirname, `../src/data/pokemon/${dexFile(loc)}.json`), "utf8")) as DexRow[]);
 
 describe("type chart", () => {
   it("has the immunities every player knows", () => {
@@ -68,9 +70,14 @@ describe("Pokédex data", () => {
       expect(new Set(rows.map((e) => e.n)).size, loc).toBe(SPECIES_COUNT);
       expect(rows.every((e) => e.name && e.types.length >= 1 && e.types.length <= 2), loc).toBe(true);
       expect(rows.map((e) => e.en), loc).toEqual(en.map((e) => e.name));
+      // No two rows look alike in the search (forms that share a name get their types added).
+      expect(new Set(rows.map((e) => e.name)).size, loc).toBe(rows.length);
     }
-    // vi and id use the English in-game names: the games have no Vietnamese or Indonesian text.
-    expect(dex("vi").map((e) => e.name)).toEqual(en.map((e) => e.name));
+    expect(dex("ja").filter((e) => e.n === 128).map((e) => e.name)).toEqual([
+      "ケンタロス", "ケンタロス（パルデアのすがた） · かくとう", "ケンタロス（パルデアのすがた） · かくとう/ほのお", "ケンタロス（パルデアのすがた） · かくとう/みず",
+    ]);
+    // Forms with no name in a language yet still carry the local species name, so searching it finds them.
+    expect(searchDex(dex("ko"), "켄타로스").map((e) => e.en)).toContain("Paldean Tauros (Blaze Breed)");
     expect(POKEMON_NAMES.id.natures).toEqual(POKEMON_NAMES.en.natures);
   });
   it("finds by name in the page language or English, by hiragana, and by number", () => {
@@ -125,6 +132,15 @@ describe("type chart page", () => {
     expect(text("[data-out=pair]")).toBe("#0445 Garchomp · Dragon / Ground");
     expect(text("[data-out=defense]")).toContain("Very weak to (×4)Ice");
     expect(text("[data-out=defense]")).toContain("Immune to (×0)Electric");
+    // Editing the name drops it from the heading; picking again brings it back.
+    input.value = "pikach";
+    input.dispatchEvent(new Event("input"));
+    expect(text("[data-out=pair]")).toBe("Dragon / Ground");
+    input.value = "garchomp";
+    input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+    await new Promise((r) => setTimeout(r, 0));
+    await new Promise((r) => setTimeout(r, 0));
+    expect(text("[data-out=pair]")).toBe("#0445 Garchomp · Dragon / Ground");
     // Changing a type by hand drops the Pokémon's name.
     const t2 = q<HTMLSelectElement>("[data-field=type2]");
     t2.value = "";
@@ -152,8 +168,13 @@ describe("nature chart page", () => {
     expect(host.querySelectorAll("[data-out=list] tbody tr")).toHaveLength(25);
     q<HTMLButtonElement>("[data-nature=timid] button").click();
     expect(text("[data-out=nature]")).toBe("Timid");
+    expect(q("[data-out=mint]").hidden).toBe(false);
     q<HTMLButtonElement>("[data-nature=serious] button").click();
     expect(text("[data-out=effect]")).toBe("Neutral: no stat goes up or down.");
+    // Serious is the one neutral nature with a mint.
+    expect(q("[data-out=mint]").hidden).toBe(false);
+    q<HTMLButtonElement>("[data-nature=hardy] button").click();
+    expect(q("[data-out=mint]").hidden).toBe(true);
   });
   it("adds the English name outside English", () => {
     setLocale("ja");

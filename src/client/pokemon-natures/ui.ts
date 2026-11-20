@@ -23,6 +23,8 @@ export function mountPokemonNatures(host: HTMLElement): void {
   const down = statSelect("down", START[1]);
   const out = h("p", { class: "shape-main", "data-out": "nature" });
   const effect = h("p", { "data-out": "effect" });
+  // Mints exist for the 20 natures that change stats, plus Serious among the neutral five.
+  const mint = h("p", { class: "hint", "data-out": "mint" }, t(`${S}.mintNote`));
 
   // The 5 × 5 grid: rows raise a stat, columns lower one; the diagonal is the five natures that change nothing.
   const cells = new Map<string, HTMLTableCellElement>();
@@ -62,6 +64,7 @@ export function mountPokemonNatures(host: HTMLElement): void {
     effect.textContent = n.up && n.down
       ? t(`${S}.effect`, { up: statName(n.up), down: statName(n.down) })
       : t(`${S}.neutral`);
+    mint.hidden = !n.up && n.id !== "serious";
     for (const [id, td] of cells) td.classList.toggle("on", id === n.id);
     last = `${out.textContent}: ${effect.textContent}`;
   }
@@ -82,8 +85,7 @@ export function mountPokemonNatures(host: HTMLElement): void {
       ),
       h("div", { class: "rail" },
         h("h2", null, t(`${S}.result`)),
-        out, effect,
-        h("p", { class: "hint" }, t(`${S}.mintNote`)),
+        out, effect, mint,
       ),
     ),
     h("section", { class: "pkt-full" },
