@@ -345,6 +345,22 @@ export function rankingFaqJsonLd(locale: Locale, id: RankingId | null): Record<s
   };
 }
 
+/** The fields a ranking's Dataset carries both on its page and in the hub DataCatalog, so the shared @id never disagrees. */
+function rankingIdentity(locale: Locale, id: RankingId): Record<string, unknown> {
+  const copy = rankingPageCopy(locale, id);
+  const source = RANKING_SOURCE[id];
+  const url = `${ORIGIN}${rankingHref(locale, id)}`;
+  return {
+    "@type": "Dataset",
+    "@id": `${url}#dataset`,
+    name: copy.h1,
+    description: `${copy.description} ${copy.lede}`,
+    url,
+    license: source.licenseUrl,
+    creator: { "@type": "Organization", name: source.name, url: source.url },
+  };
+}
+
 export function rankingJsonLd(locale: Locale, id: RankingId | null): Record<string, unknown> {
   const hub = rankingHub(locale);
   if (!id) {
@@ -356,37 +372,18 @@ export function rankingJsonLd(locale: Locale, id: RankingId | null): Record<stri
       url: `${ORIGIN}${rankingHref(locale)}`,
       inLanguage: locale,
       publisher: { "@type": "Organization", name: "cv.cm", url: ORIGIN },
-      dataset: RANKINGS.map((set) => {
-        const copy = rankingPageCopy(locale, set);
-        const source = RANKING_SOURCE[set];
-        return {
-          "@type": "Dataset",
-          "@id": `${ORIGIN}${rankingHref(locale, set)}#dataset`,
-          name: copy.h1,
-          description: `${copy.description} ${copy.lede}`,
-          url: `${ORIGIN}${rankingHref(locale, set)}`,
-          license: source.licenseUrl,
-          creator: { "@type": "Organization", name: source.name, url: source.url },
-        };
-      }),
+      dataset: RANKINGS.map((set) => rankingIdentity(locale, set)),
     };
   }
-  const copy = rankingPageCopy(locale, id);
   const source = RANKING_SOURCE[id];
   return {
     "@context": "https://schema.org",
-    "@type": "Dataset",
-    "@id": `${ORIGIN}${rankingHref(locale, id)}#dataset`,
-    name: copy.h1,
-    description: `${copy.description} ${copy.lede}`,
-    url: `${ORIGIN}${rankingHref(locale, id)}`,
+    ...rankingIdentity(locale, id),
     inLanguage: locale,
     isAccessibleForFree: true,
-    license: source.licenseUrl,
     dateModified: rankingMeta(id).updated,
     temporalCoverage: rankingMeta(id).asOf,
     keywords: [rankingName(locale, id).name],
-    creator: { "@type": "Organization", name: source.name, url: source.url },
     isBasedOn: source.url,
     publisher: { "@type": "Organization", name: "cv.cm", url: ORIGIN },
     ...(rankingCsvHref(id) ? { distribution: [{ "@type": "DataDownload", encodingFormat: "text/csv", contentUrl: `${ORIGIN}${rankingCsvHref(id)}` }] } : {}),
