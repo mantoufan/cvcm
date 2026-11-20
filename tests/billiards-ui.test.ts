@@ -5,16 +5,16 @@ import { mountBilliards, unmountBilliards } from "../src/client/billiards/ui";
 describe("billiards page", () => {
   it("mounts both pages without WebGL or three.js, keeps settings, and Play falls back to the retry cover", async () => {
     window.localStorage.clear();
-    for (const page of ["billiards", "snooker"] as const) {
+    for (const page of ["billiards", "snooker", "pool-game"] as const) {
       // Changing the game writes ?game= into the URL, which the page reads on mount.
       window.history.replaceState(null, "", "/");
       const host = document.createElement("div");
       document.body.append(host);
       mountBilliards(host, page);
-      expect(host.querySelector("h1")!.textContent).toBe(page === "snooker" ? "Snooker" : "Billiards");
+      expect(host.querySelector("h1")!.textContent).toBe(page === "snooker" ? "Snooker" : page === "pool-game" ? "Pool game" : "Billiards");
       expect(host.querySelector("canvas")).toBeNull();
       const variant = host.querySelector<HTMLSelectElement>("[data-in=variant]")!;
-      expect(variant.value).toBe(page === "snooker" ? "snooker" : "9-ball");
+      expect(variant.value).toBe(page === "snooker" ? "snooker" : "8-ball");
       // Every game has its rules panel filled in (no raw keys).
       for (const v of Array.from(variant.options).map((o) => o.value)) {
         variant.value = v;
@@ -74,13 +74,13 @@ describe("saved games", () => {
     window.localStorage.clear();
     window.history.replaceState(null, "", "/?game=8ball");
     window.localStorage.setItem("cvcm.billiards.v1", JSON.stringify({ mode: "cpu" }));
-    const match = { ...newMatch("9-ball", 2), breakShot: false, inHand: null, shots: 2 };
-    window.localStorage.setItem("cvcm.billiards.game.billiards", JSON.stringify({ variant: "9-ball", mode: "two", match, balls: rack("9-ball"), breaker: 1 }));
+    const match = { ...newMatch("10-ball", 2), breakShot: false, inHand: null, shots: 2 };
+    window.localStorage.setItem("cvcm.billiards.game.billiards", JSON.stringify({ variant: "10-ball", mode: "two", match, balls: rack("10-ball"), breaker: 1 }));
     const host = document.createElement("div");
     document.body.append(host);
     mountBilliards(host, "billiards");
     expect(host.querySelector<HTMLSelectElement>("[data-in=mode]")!.value).toBe("two");
-    expect(host.querySelector<HTMLSelectElement>("[data-in=variant]")!.value).toBe("9-ball");
+    expect(host.querySelector<HTMLSelectElement>("[data-in=variant]")!.value).toBe("10-ball");
     expect(host.querySelector("[data-out=status]")!.textContent).toBe("Your game is back where you left it.");
     unmountBilliards();
     host.remove();
