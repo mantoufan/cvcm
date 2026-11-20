@@ -77,8 +77,25 @@ export function searchKey(s: string): string {
   return foldText(s)
     .replace(/[ぁ-ゖ]/g, (c) => String.fromCharCode(c.charCodeAt(0) + 0x60))
     .replace(/[\s.'’\-‐・:：()（）]/g, "")
-    // Hangul as jamo, so a syllable still being typed (한ㅋ) prefix-matches the finished one (한카리아스).
-    .normalize("NFD");
+    // Hangul syllables as jamo, so one still being typed (한ㅋ) prefix-matches the finished name (한카리아스). Only
+    // Hangul: decomposing kana would split off the voicing marks and let カ match ガ.
+    .replace(/[\uac00-\ud7a3]+/g, (h) => h.normalize("NFD"));
+}
+
+/** Final consonant → the same consonant as the next syllable's initial (simple finals only). */
+const FINAL_TO_INITIAL: Record<string, string> = {
+  "\u11a8": "\u1100", "\u11a9": "\u1101", "\u11ab": "\u1102", "\u11ae": "\u1103", "\u11af": "\u1105", "\u11b7": "\u1106",
+  "\u11b8": "\u1107", "\u11ba": "\u1109", "\u11bb": "\u110a", "\u11bc": "\u110b", "\u11bd": "\u110c", "\u11be": "\u110e",
+  "\u11bf": "\u110f", "\u11c0": "\u1110", "\u11c1": "\u1111", "\u11c2": "\u1112",
+};
+
+/**
+ * The keys a query may stand for. A Korean IME holds the next consonant as the last syllable's final while typing
+ * (한카리 passes through 한칼), so a key ending in a final consonant also stands for that consonant starting a new one.
+ */
+function queryKeys(key: string): string[] {
+  const alt = FINAL_TO_INITIAL[key.slice(-1)];
+  return alt ? [key, key.slice(0, -1) + alt] : [key];
 }
 
 /** Entries minus later ones that read the same and have the same types (Mega Tatsugiri's three forms in ja). */
@@ -99,14 +116,17 @@ function unique(entries: readonly DexEntry[]): DexEntry[] {
 export function searchDex(entries: readonly DexEntry[], query: string, limit = 8): DexEntry[] {
   const q = query.normalize("NFKC").trim();
   if (!q) return [];
-  const num = /^#?0*(\d{1,4})$/.exec(q);
+  const num = /^#?(\d+)$/.exec(q);
   if (num) return unique(entries.filter((e) => e.n === Number(num[1]))).slice(0, limit);
   const key = searchKey(q);
   if (!key) return [];
+  const keys = queryKeys(key);
   const scored: { e: DexEntry; score: number }[] = [];
   for (const e of entries) {
     const names = e.keys;
-    const score = names.some((s) => s === key) ? 0 : names.some((s) => s.startsWith(key)) ? 1 : names.some((s) => s.includes(key)) ? 2 : -1;
+    const score = names.some((s) => s === key) ? 0
+      : names.some((s) => keys.some((k) => s.startsWith(k))) ? 1
+      : names.some((s) => keys.some((k) => s.includes(k))) ? 2 : -1;
     if (score >= 0) scored.push({ e, score });
   }
   // Array.sort is stable, and entries are in Pokédex order: species before their forms.
@@ -114,7 +134,7 @@ export function searchDex(entries: readonly DexEntry[], query: string, limit = 8
 }
 
 /** Whether a query is a Pokédex number ("445", "#0445") rather than a name. */
-export const isDexNumberQuery = (query: string): boolean => /^#?0*\d{1,4}$/.test(query.normalize("NFKC").trim());
+export const isDexNumberQuery = (query: string): boolean => /^#?\d+$/.test(query.normalize("NFKC").trim());
 
 /** "#0445": the National Pokédex number as the games print it. */
 export const dexNumber = (n: number): string => `#${String(n).padStart(4, "0")}`;

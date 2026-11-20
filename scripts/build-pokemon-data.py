@@ -19,6 +19,8 @@ import unicodedata
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+if len(sys.argv) != 3 or not re.fullmatch(r"[0-9a-f]{40}", sys.argv[2]):
+    raise SystemExit("usage: build-pokemon-data.py <dir with PokeAPI's data/v2/csv files> <full 40-character commit SHA>")
 SRC = Path(sys.argv[1])
 COMMIT = sys.argv[2]
 
@@ -209,9 +211,11 @@ lines = [
     "export const NATURES: readonly { id: string; up: PokemonStat | null; down: PokemonStat | null }[] = [",
     *[f"  {{ id: {ts(n['id'])}, up: {ts(n['up'])}, down: {ts(n['down'])} }}," for n in natures],
     "];",
+    "type Names = { types: Record<PokemonType, string>; stats: Record<PokemonStat, string>; natures: Record<string, string> };",
+    f"const EN: Names = {ts(label['en'])};",
     "/** In-game names of types, stats and natures per site language (vi and id: English, as the games show). */",
-    "export const POKEMON_NAMES: Record<Locale, { types: Record<PokemonType, string>; stats: Record<PokemonStat, string>; natures: Record<string, string> }> = {",
-    *[f"  {ts(loc)}: {ts(label[loc])}," for loc in LOCALES],
+    "export const POKEMON_NAMES: Record<Locale, Names> = {",
+    *[f"  {ts(loc)}: {'EN' if label[loc] == label['en'] else ts(label[loc])}," for loc in LOCALES],
     "};",
     "",
 ]

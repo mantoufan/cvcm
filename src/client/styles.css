@@ -393,7 +393,7 @@ input[type="color"] { width: 2.6rem; height: 2.2rem; padding: 0; border: 1px sol
 .pkt-chart thead th:not(.pkt-corner) span { writing-mode: vertical-rl; display: inline-block; max-height: 7.5rem; white-space: nowrap; }
 .pkt-corner { font-size: 0.7rem; color: var(--ink-soft); font-weight: 400; white-space: nowrap; }
 .pkt-chart td { min-width: 1.6rem; }
-.pkt-chart tr:hover > :not(.pkt-0):not(.pkt-2) { background: var(--gray); }
+.pkt-chart tr:hover > :not(.pkt-0, .pkt-2, .on) { background: var(--gray); }
 .pkt-2 { color: var(--pink-deep); font-weight: 800; background: var(--pink-soft); }
 .pkt-half { color: var(--ink-soft); }
 .pkt-0 { color: var(--white); background: var(--ink-soft); font-weight: 700; }

@@ -101,6 +101,11 @@ describe("Pokédex data", () => {
     expect(searchDex(dex("ko"), "한카리아스")[0].en).toBe("Garchomp");
     // A Korean syllable still being typed (한 + ㅋ) already matches.
     expect(searchDex(dex("ko"), "한ㅋ")[0].en).toBe("Garchomp");
+    // …and so does the IME's in-between state, where the next consonant sits as a final (한카 → 한칼 → 한카리).
+    expect(searchDex(dex("ko"), "한칼")[0].en).toBe("Garchomp");
+    // Kana keep their voicing marks: カ does not find ガーディ.
+    expect(searchDex(dex("ja"), "カ").map((e) => e.en)).not.toContain("Growlithe");
+    expect(searchDex(en, "10000")).toEqual([]);
     expect(searchDex(en, "   ")).toEqual([]);
     expect(searchKey("ＰＩＫＡ")).toBe("pika");
     expect(dexNumber(25)).toBe("#0025");
@@ -151,10 +156,12 @@ describe("type chart page", () => {
     await new Promise((r) => setTimeout(r, 0));
     expect(text("[data-out=pair]")).toBe("#0445 Garchomp · Dragon / Ground");
     // A number no Pokémon has says so (not "no Pokémon by that name").
-    input.value = "1999";
-    input.dispatchEvent(new Event("input"));
-    await new Promise((r) => setTimeout(r, 0));
-    expect(text("[data-out=matches]")).toBe("No Pokémon has that number (1–1025).");
+    for (const n of ["1999", "#12345"]) {
+      input.value = n;
+      input.dispatchEvent(new Event("input"));
+      await new Promise((r) => setTimeout(r, 0));
+      expect(text("[data-out=matches]"), n).toBe("No Pokémon has that number (1–1025).");
+    }
     // Changing a type by hand drops the Pokémon's name.
     const t2 = q<HTMLSelectElement>("[data-field=type2]");
     t2.value = "";
@@ -203,5 +210,27 @@ describe("nature chart page", () => {
     host.replaceChildren();
     mountPokemonNatures(host);
     expect(text("[data-out=nature]")).toBe("Adamant");
+  });
+});
+
+describe("type chart page in Japanese", () => {
+  it("keeps a picked form that shares its name when Enter is pressed again", async () => {
+    setLocale("ja");
+    mountPokemonTypeChart(host);
+    const input = q<HTMLInputElement>("[data-field=search]");
+    input.value = "ケンタロス";
+    input.dispatchEvent(new Event("input"));
+    await loadDex("ja");
+    await new Promise((r) => setTimeout(r, 0));
+    const chips = [...host.querySelectorAll<HTMLButtonElement>("[data-dex='128']")];
+    expect(chips.map((c) => c.textContent)).toEqual([
+      "#0128 ケンタロス", "#0128 ケンタロス（パルデアのすがた） · かくとう", "#0128 ケンタロス（パルデアのすがた） · かくとう/ほのお",
+      "#0128 ケンタロス（パルデアのすがた） · かくとう/みず",
+    ]);
+    chips[3].click();
+    input.dispatchEvent(new KeyboardEvent("keydown", { key: "Enter" }));
+    await new Promise((r) => setTimeout(r, 0));
+    await new Promise((r) => setTimeout(r, 0));
+    expect(text("[data-out=pair]")).toBe("#0128 ケンタロス（パルデアのすがた） · かくとう / みず");
   });
 });

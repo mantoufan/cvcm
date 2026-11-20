@@ -63,6 +63,8 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
       // The Enter that commits an IME conversion (がぶ → ガブ) is not "pick".
       if (e.key !== "Enter" || e.isComposing || e.keyCode === 229) return;
       e.preventDefault();
+      // The box already holds the picked Pokémon: Enter keeps it (a shared name would otherwise re-pick its first form).
+      if (picked && search.value === picked.name) return;
       // Wait for this query's own matches (the Pokédex may still be loading), then take the best one.
       void find().then((found) => { if (found[0]) choose(found[0]); });
     },
@@ -130,12 +132,12 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
     for (const a of pair) {
       const g = offenseGroups(a);
       // "No effect on" only when there is something; the first two rows always show (even as "none").
-      const rows = ([[t(`${S}.superOn`), g[2]], [t(`${S}.notVeryOn`), g[0.5]], [t(`${S}.noEffectOn`), g[0]]] as [string, PokemonType[]][])
+      const rows = ([[t(`${S}.superOn`), g[2], 2], [t(`${S}.notVeryOn`), g[0.5], 0.5], [t(`${S}.noEffectOn`), g[0], 0]] as [string, PokemonType[], number][])
         .filter(([, xs], i) => xs.length || i < 2);
       offense.append(
         h("h4", null, t(`${S}.movesOf`, { type: typeName(a) })),
         h("dl", { class: "stats-grid pkt-groups", "data-offense": a },
-          ...rows.flatMap(([k, xs]) => [h("dt", null, k), h("dd", null, list(xs))])),
+          ...rows.flatMap(([k, xs, m]) => [h("dt", null, k), h("dd", { "data-mult": String(m) }, list(xs))])),
       );
       lines.push(t(`${S}.movesOf`, { type: typeName(a) }), ...rows.map(([k, xs]) => `${k}: ${list(xs)}`));
     }
