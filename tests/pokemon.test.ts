@@ -234,3 +234,26 @@ describe("type chart page in Japanese", () => {
     expect(text("[data-out=pair]")).toBe("#0128 ケンタロス（パルデアのすがた） · かくとう / みず");
   });
 });
+
+describe("search details", () => {
+  it("labels types only where a name really has several, finds Nidoran by f/m, and clears the box on a type pick", async () => {
+    const ja = dex("ja");
+    const tatsugiri = searchDex(ja, "メガシャリタツ");
+    expect(tatsugiri).toHaveLength(1);
+    expect(tatsugiri[0].shared).toBe(false);
+    expect(searchDex(dex("en"), "nidoran f")[0].name).toBe("Nidoran♀");
+    expect(searchDex(dex("en"), "nidoran m")[0].name).toBe("Nidoran♂");
+    mountPokemonTypeChart(host);
+    const input = q<HTMLInputElement>("[data-field=search]");
+    input.value = "garchomp";
+    input.dispatchEvent(new Event("input"));
+    await loadDex("en");
+    await new Promise((r) => setTimeout(r, 0));
+    q<HTMLButtonElement>("[data-dex='445']").click();
+    const t1 = q<HTMLSelectElement>("[data-field=type1]");
+    t1.value = "water";
+    t1.dispatchEvent(new Event("change"));
+    expect(input.value).toBe("");
+    expect(text("[data-out=pair]")).toBe("Water / Ground");
+  });
+});

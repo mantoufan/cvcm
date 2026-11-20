@@ -60,11 +60,15 @@ export interface DexEntry {
 }
 
 export function dexEntries(rows: readonly DexRow[]): DexEntry[] {
-  const count = new Map<string, number>();
-  for (const [, name] of rows) count.set(name, (count.get(name) ?? 0) + 1);
+  // Distinct type sets per name: rows equal in name and types too show once (unique), so they don't count.
+  const typeSets = new Map<string, Set<string>>();
+  for (const [, name, t] of rows) {
+    if (!typeSets.has(name)) typeSets.set(name, new Set());
+    typeSets.get(name)!.add(t.join("/"));
+  }
   return rows.map(([n, name, t, en]) => ({
     n, name, en: en ?? name, types: t.map((i) => TYPES[i]), keys: [searchKey(name), searchKey(en ?? name)],
-    shared: count.get(name)! > 1,
+    shared: typeSets.get(name)!.size > 1,
   }));
 }
 
@@ -76,6 +80,9 @@ export function searchKey(s: string): string {
   // foldText (site search) drops Latin accents and lower-cases; kana voicing marks and Hangul survive it.
   return foldText(s)
     .replace(/[ぁ-ゖ]/g, (c) => String.fromCharCode(c.charCodeAt(0) + 0x60))
+    // Nidoran♀ / Nidoran♂ as people type them: "nidoran f", "nidoran m".
+    .replace(/♀/g, "f")
+    .replace(/♂/g, "m")
     .replace(/[\s.'’\-‐・:：()（）]/g, "")
     // Hangul syllables as jamo, so one still being typed (한ㅋ) prefix-matches the finished name (한카리아스). Only
     // Hangul: decomposing kana would split off the voicing marks and let カ match ガ.
@@ -116,8 +123,10 @@ function unique(entries: readonly DexEntry[]): DexEntry[] {
 export function searchDex(entries: readonly DexEntry[], query: string, limit = 8): DexEntry[] {
   const q = query.normalize("NFKC").trim();
   if (!q) return [];
-  const num = /^#?(\d+)$/.exec(q);
-  if (num) return unique(entries.filter((e) => e.n === Number(num[1]))).slice(0, limit);
+  if (isDexNumberQuery(q)) {
+    const n = Number(q.replace("#", ""));
+    return unique(entries.filter((e) => e.n === n)).slice(0, limit);
+  }
   const key = searchKey(q);
   if (!key) return [];
   const keys = queryKeys(key);

@@ -26,10 +26,12 @@ const DEX: Record<Locale, () => Promise<{ default: unknown }>> = {
 };
 
 let dexPromise: Promise<DexEntry[]> | null = null;
-let dexLocale: Locale | null = null;
+let dexFile: Locale | null = null;
 export function loadDex(loc: Locale): Promise<DexEntry[]> {
-  if (!dexPromise || dexLocale !== loc) {
-    dexLocale = loc;
+  // en, vi and id read the same file: keep one parsed copy across them.
+  const file: Locale = loc === "vi" || loc === "id" ? "en" : loc;
+  if (!dexPromise || dexFile !== file) {
+    dexFile = file;
     const p = DEX[loc]().then((m) => dexEntries(m.default as DexRow[]));
     dexPromise = p;
     // A failed chunk (offline) may be retried on the next keystroke; an older language's failure leaves a newer one alone.
@@ -48,9 +50,11 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
   let picked: DexEntry | null = null;
   let last = "";
 
-  const first = h("select", { "data-field": "type1", onChange: () => { picked = null; paint(); } },
+  // Choosing a type by hand leaves the Pokémon behind: clear its name so Enter can't pick it again over the new types.
+  const byHand = () => { picked = null; search.value = ""; matches.replaceChildren(); paint(); };
+  const first = h("select", { "data-field": "type1", onChange: byHand },
     ...TYPES.map((x) => h("option", { value: x, selected: x === START[0] }, typeName(x))));
-  const second = h("select", { "data-field": "type2", onChange: () => { picked = null; paint(); } },
+  const second = h("select", { "data-field": "type2", onChange: byHand },
     h("option", { value: "", selected: START[1] === null }, t(`${S}.noSecond`)),
     ...TYPES.map((x) => h("option", { value: x, selected: x === START[1] }, typeName(x))));
 
@@ -64,7 +68,11 @@ export function mountPokemonTypeChart(host: HTMLElement): void {
       if (e.key !== "Enter" || e.isComposing || e.keyCode === 229) return;
       e.preventDefault();
       // The box already holds the picked Pokémon: Enter keeps it (a shared name would otherwise re-pick its first form).
-      if (picked && search.value === picked.name) return;
+      if (picked && search.value === picked.name) {
+        seq++;
+        matches.replaceChildren();
+        return;
+      }
       // Wait for this query's own matches (the Pokédex may still be loading), then take the best one.
       void find().then((found) => { if (found[0]) choose(found[0]); });
     },
