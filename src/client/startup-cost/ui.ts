@@ -20,8 +20,12 @@ const GROUPS: readonly { id: string; keys: readonly Key[] }[] = [
 ];
 export const PCT_KEYS: ReadonlySet<Key> = new Set<Key>(["cogsPct", "deliveryPct", "commissionPct"]);
 
-/** Currency signs and codes typed around an amount; spaces inside a number are kept, so "1 2" stays unreadable. */
-const CURRENCY = /(?:NT|US|HK|S|A)?\$|[%€¥￥₩₫£]|Rp|VND|USD|EUR|元|円|원|đồng|đ/gi;
+/**
+ * Currency signs and codes typed before or after an amount (never inside it, so "1$000" stays unreadable), and a
+ * percent sign after a share. Spaces inside a number are kept, so "1 2" stays unreadable too.
+ */
+const LEAD = /^(?:(?:NT|US|HK|S|A)?\$|[€¥￥₩₫£]|Rp\.?|VND|USD|EUR)\s*/i;
+const TRAIL = /\s*(?:[€¥￥₩₫$]|元|円|원|đồng|đ|VND|USD|EUR)$/i;
 /** Unit words after an amount: 12万 = 120,000, 3000만, 1.5억, 35k, 2 tr / 2 triệu, 5 jt / 5 juta, 500 rb / 500 ribu. */
 const UNITS: readonly [RegExp, number][] = [
   [/(?:[万萬만])$/, 1e4],
@@ -35,8 +39,10 @@ const UNITS: readonly [RegExp, number][] = [
  * Empty → undefined; not a number → NaN.
  */
 export function readField(raw: string, key: Key, loc: Locale): number | undefined {
-  let bare = raw.replace(CURRENCY, "").trim();
-  if (bare === "") return raw.trim() === "" ? undefined : NaN;
+  if (raw.trim() === "") return undefined;
+  let bare = raw.trim().replace(LEAD, "").replace(TRAIL, "");
+  if (PCT_KEYS.has(key)) bare = bare.replace(/\s*%$/, "");
+  if (bare === "") return NaN;
   let scale = 1;
   if (!PCT_KEYS.has(key)) {
     const unit = UNITS.find(([re]) => re.test(bare));
@@ -46,7 +52,8 @@ export function readField(raw: string, key: Key, loc: Locale): number | undefine
     }
   }
   const x = (PCT_KEYS.has(key) ? parseDecimalInput : parseMoneyInput)(bare, loc);
-  return x === undefined ? NaN : x * scale;
+  // 2.3 × 1,000 is 2299.9999999999995 in floating point: round the scaled figure back to what was typed.
+  return x === undefined ? NaN : scale === 1 ? x : Math.round(x * scale * 1e6) / 1e6;
 }
 
 /** Whether a read figure is allowed in its field: nothing negative, shares up to 100 %, 1–31 days open. */
@@ -54,7 +61,7 @@ export function fieldOk(x: number | undefined, key: Key): boolean {
   if (x === undefined) return key !== "days";
   if (!(Number.isFinite(x) && x >= 0)) return false;
   if (PCT_KEYS.has(key)) return x <= 100;
-  if (key === "days") return x >= 1 && x <= 31;
+  if (key === "days") return Number.isInteger(x) && x >= 1 && x <= 31;
   return true;
 }
 
@@ -81,8 +88,6 @@ export function shownValue(x: number, loc: Locale): string {
 export function mountStartupCost(host: HTMLElement): void {
   const loc = locale();
   let last = "";
-  // The sums are cheap: paint on every keystroke, so Copy never sees a result older than the fields.
-  const schedule = () => paint();
   const whole = numberFormat(loc, { maximumFractionDigits: 0 });
   const one = numberFormat(loc, { maximumFractionDigits: 1 });
   const two = numberFormat(loc, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -92,7 +97,7 @@ export function mountStartupCost(host: HTMLElement): void {
     for (const k of g.keys) {
       inputs[k] = h("input", {
         type: "text", inputmode: "decimal",
-        autocomplete: "off", spellcheck: "false", "data-field": k, onInput: schedule,
+        autocomplete: "off", spellcheck: "false", "data-field": k, onInput: () => paint(),
       });
     }
   }
@@ -153,7 +158,8 @@ export function mountStartupCost(host: HTMLElement): void {
       return;
     }
     const r = shopNumbers(v);
-    const need = Math.ceil(r.breakEvenOrders - 1e-9);
+    // Math.max(0, …) also turns the −0 that ceil(−1e-9) gives into 0.
+    const need = Math.max(0, Math.ceil(r.breakEvenOrders - 1e-9));
     const breakEven = Number.isFinite(r.breakEvenOrders) ? counted("ordersValue", need, whole.format(need)) : t(`${S}.lossPerOrder`);
     last = rowsTo(out, [
       [t(`${S}.payback`), months(r.paybackMonths), true],

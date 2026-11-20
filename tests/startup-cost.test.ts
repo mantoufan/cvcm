@@ -106,11 +106,17 @@ describe("reading a field", () => {
     expect(readField("US$6.50", "price", "en")).toBe(6.5);
     expect(readField("HK$40", "price", "zh-TW")).toBe(40);
     expect(readField("30k", "cogsPct", "en")).toBeNaN();
+    expect(readField("2.3k", "rent", "en")).toBe(2300);
+    expect(readField("1.1万", "rent", "zh-CN")).toBe(11000);
+    expect(readField("1$000", "rent", "en")).toBeNaN();
+    expect(readField("30%", "rent", "en")).toBeNaN();
+    expect(readField("Rp 26.000", "price", "id")).toBe(26000);
   });
   it("keeps shares to 100 % and days open to 1–31", () => {
     expect(fieldOk(250, "commissionPct")).toBe(false);
     expect(fieldOk(100, "cogsPct")).toBe(true);
     expect(fieldOk(60, "days")).toBe(false);
+    expect(fieldOk(30.5, "days")).toBe(false);
     expect(fieldOk(undefined, "days")).toBe(false);
     expect(fieldOk(undefined, "rent")).toBe(true);
     expect(fieldOk(-1, "rent")).toBe(false);
@@ -200,5 +206,7 @@ describe("startup cost ui", () => {
     // Singular in English: one order a day breaks even when fixed costs are tiny.
     set("[data-field=rent]", "0"); set("[data-field=staff]", "0"); set("[data-field=utilities]", "0"); set("[data-field=other]", "100");
     expect(text("[data-out=result]")).toContain("Break-even orders a day1 order");
+    set("[data-field=other]", "0");
+    expect(text("[data-out=result]")).toContain("Break-even orders a day0 orders");
   });
 });

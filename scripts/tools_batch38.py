@@ -20,6 +20,8 @@ for loc in LOCALES:
     src = json.loads(src_path.read_text(encoding="utf-8"))
     # A translation must carry exactly the English keys, or a page would show a missing string.
     for part in ("meta", "tools", "faq", "guides", "ui"):
+        if not isinstance(src.get(part), dict):
+            raise SystemExit(f"{loc}: {part} is missing")
         for key, value in en[part].items():
             got = src[part].get(key)
             if isinstance(value, dict) and set(value) != set(got or {}):
