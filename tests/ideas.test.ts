@@ -361,7 +361,7 @@ describe("ideas: page HTML and SEO", () => {
   });
 
   it("has the nav label in every core pack", () => {
-    const expected: Record<Locale, string> = { en: "Ideas", "zh-CN": "创意", "zh-TW": "創意", ja: "アイデア", ko: "아이디어", vi: "Ý tưởng", id: "Ide", es: "Ideas" };
+    const expected: Record<Locale, string> = { en: "Business Ideas", "zh-CN": "创业点子", "zh-TW": "創業點子", ja: "副業・起業", ko: "창업 아이템", vi: "Ý tưởng kinh doanh", id: "Ide Bisnis", es: "Ideas de negocio" };
     for (const locale of LOCALES) expect((messages(locale).ui.nav as Record<string, string>).ideas).toBe(expected[locale]);
   });
 });

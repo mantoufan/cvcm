@@ -16,9 +16,10 @@ describe("ideas shell", () => {
     const nav = document.querySelector<HTMLAnchorElement>('.nav a[data-nav="ideas"]');
     expect(nav?.getAttribute("href")).toBe("/en/ideas/");
     expect(nav?.classList.contains("on")).toBe(true);
-    // After Nostalgia in the top nav, and linked from the footer directory with its focus ideas.
-    const order = [...document.querySelectorAll(".nav a")].map((a) => a.getAttribute("data-nav"));
-    expect(order.indexOf("ideas")).toBe(order.indexOf("nostalgia") + 1);
+    // Last in the Wiki menu (the menu shows as current), and linked from the footer directory with its focus ideas.
+    const group = nav!.closest(".nav-group");
+    expect(group?.classList.contains("on")).toBe(true);
+    expect(group?.querySelector(".nav-group-pop a:last-child")?.getAttribute("data-nav")).toBe("ideas");
     expect(document.querySelector('.dir a[data-nav="ideas"]')).not.toBeNull();
     expect(document.querySelector('.dir a[data-nav="ideas-vending-machine"]')).not.toBeNull();
     expect(document.querySelector("#ranking table")).not.toBeNull();
@@ -41,7 +42,7 @@ describe("ideas shell", () => {
     select.dispatchEvent(new Event("change"));
     await whenRendered();
     expect(window.location.pathname).toBe("/zh-cn/ideas/laundromat/");
-    expect(document.querySelector('.nav a[data-nav="ideas"]')?.textContent).toBe("创意");
+    expect(document.querySelector('.nav a[data-nav="ideas"]')?.textContent).toBe("创业点子");
     expect(document.querySelector("h1")?.textContent).toMatch(/洗衣/);
 
     window.history.pushState(null, "", "/en/");
