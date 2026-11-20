@@ -1048,6 +1048,12 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountSimpleInterest(host);
     return m.unmountSimpleInterest;
   },
+  "startup-cost": async (host, ctx) => {
+    const m = await import("./startup-cost/ui");
+    if (!ctx.alive()) return undefined;
+    m.mountStartupCost(host);
+    return m.unmountStartupCost;
+  },
   "2048": async (host, ctx) => {
     const m = await import("./game-2048/ui");
     if (!ctx.alive()) return undefined;

@@ -811,7 +811,9 @@
     "titleResumeBuilder": "Buat CV online gratis — CV ATS siap PDF — cv.cm",
     "descResumeBuilder": "Buat CV gratis tanpa daftar: isi pengalaman, pendidikan, dan keahlian, lihat pratinjau langsung, lalu simpan PDF ramah ATS. Data tetap di browser Anda.",
     "titleIdPhoto": "Pas foto online — ukuran 2x3, 3x4, 4x6, ganti background, cetak — cv.cm",
-    "descIdPhoto": "Buat pas foto online gratis: potong ke 2x3, 3x4, 4x6 atau paspor dengan garis bantu kepala, ganti background merah, biru atau putih, lalu cetak."
+    "descIdPhoto": "Buat pas foto online gratis: potong ke 2x3, 3x4, 4x6 atau paspor dengan garis bantu kepala, ganti background merah, biru atau putih, lalu cetak.",
+    "titleStartupCost": "Kalkulator Modal Usaha Kedai Kopi — Modal Awal, BEP dan Balik Modal — cv.cm",
+    "descStartupCost": "Kalkulator modal usaha gratis untuk kedai kopi, franchise minuman boba atau toko roti: jumlahkan renovasi, peralatan, biaya franchise, uang oper kontrak dan deposit sewa, lalu lihat laba per bulan, berapa bulan balik modal dan berapa pesanan sehari agar BEP."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1823,6 +1825,10 @@
     "id-photo": {
       "name": "Pas foto online",
       "blurb": "Ukuran pas foto, ganti background, lembar cetak."
+    },
+    "startup-cost": {
+      "name": "Kalkulator modal usaha",
+      "blurb": "Modal awal, balik modal dan BEP usaha kecil."
     }
   },
   "watermark": {
@@ -6878,6 +6884,18 @@
       "a4": "Unduh lembar cetak: 4R (4 × 6 inci) berupa JPG 300 DPI yang bisa langsung dicetak di studio foto, atau A4 berupa PDF. Cetak dengan skala 100% (ukuran asli), bukan \"fit to page\", lalu gunting mengikuti garis tipis.",
       "q5": "Apakah foto saya diunggah?",
       "a5": "Tidak. Pemotongan dilakukan di halaman, dan model penghapus background diunduh sekali lalu berjalan di perangkat Anda. Foto tidak meninggalkan perangkat."
+    },
+    "startup-cost": {
+      "q1": "Berapa modal membuka kedai kopi?",
+      "a1": "Contoh di halaman ini, kedai kopi pinggir jalan sekitar 40 m² dengan renovasi Rp430.000.000 dan peralatan Rp290.000.000, butuh sekitar Rp826.000.000 sebelum buka, termasuk deposit sewa dan stok awal. Dengan 250 pesanan sehari modalnya kembali dalam sekitar 2,5 tahun. Angka Anda bergantung pada tempat, kontrak sewa dan berapa banyak renovasi yang ditanggung pemilik.",
+      "q2": "Berapa lama balik modal yang wajar?",
+      "a2": "Tidak ada aturan pasti. Batas yang berguna adalah setengah masa sewa: kalau sewa lima tahun dan balik modal butuh lebih dari dua setengah tahun, gagal perpanjang sewa bisa membuat Anda rugi. Lihat juga tabel di bawah hasil. Usaha yang tetap balik modal saat penjualan turun 20 % punya ruang aman.",
+      "q3": "Bagaimana memperkirakan pesanan sehari?",
+      "a3": "Hitung langsung. Berdirilah di dekat kedai sejenis di sekitar lokasi Anda selama satu jam saat makan siang, satu jam sore dan satu jam di akhir pekan, hitung gelas atau struk, lalu kalikan dengan jam buka. Untuk bulan-bulan pertama pakai angka lebih rendah selama orang belum mengenal Anda.",
+      "q4": "Apa yang perlu dicek sebelum membeli franchise?",
+      "a4": "Minta penjelasan tertulis dari pemberi waralaba sebelum tanda tangan: biaya awal, royalti, deposit, renovasi dengan pemasok yang ditunjuk, jumlah gerai milik sendiri dan mitra, serta berapa gerai yang tutup beberapa tahun terakhir. Pastikan mereknya terdaftar atas nama perusahaan yang Anda ajak kontrak, dan tanyakan biaya dan omzet sebenarnya kepada beberapa mitra yang masih jalan maupun yang sudah berhenti.",
+      "q5": "Apakah laba sudah dipotong pajak dan gaji saya sendiri?",
+      "a5": "Belum. Laba di sini sebelum pajak dan bunga pinjaman, dan belum menggaji pemilik. Jika Anda sendiri bekerja penuh waktu di toko, hitung diri Anda sebagai satu karyawan, agar balik modal tidak tampak lebih cepat dari kenyataan."
     }
   },
   "qr": {
@@ -18279,5 +18297,74 @@
     "p_c20x30": "Pas foto 2x3",
     "p_c40x60": "Pas foto 4x6",
     "p_c25x30": "2,5 × 3 cm (tamaño infantil Meksiko)"
+  },
+  "startupCost": {
+    "title": "Kalkulator modal usaha dan BEP",
+    "privacyNote": "Berapa modal membuka kedai kopi, gerai boba atau toko roti, berapa laba per bulan dan kapan balik modal. Angka Anda tetap di browser.",
+    "start": "Mulai dari",
+    "kind": "Contoh usaha",
+    "k_coffee": "Kedai kopi",
+    "k_tea": "Franchise minuman boba",
+    "k_bakery": "Toko roti",
+    "exampleNote": "Contoh dalam rupiah untuk toko pinggir jalan sekitar 40 m². Hanya untuk menunjukkan cara hitungnya: ketik penawaran Anda sendiri.",
+    "g_oneOff": "Modal awal",
+    "g_monthly": "Biaya tetap per bulan",
+    "g_perOrder": "Setiap pesanan",
+    "g_sales": "Penjualan",
+    "f_fee": "Biaya franchise atau merek",
+    "f_buildout": "Renovasi",
+    "f_equipment": "Peralatan",
+    "f_keyMoney": "Uang oper kontrak",
+    "f_depositMonths": "Deposit sewa (bulan)",
+    "f_stock": "Stok awal dan lain-lain",
+    "f_rent": "Sewa",
+    "f_staff": "Karyawan",
+    "f_wage": "Biaya per orang (gaji dan BPJS)",
+    "f_utilities": "Listrik, air dan gas",
+    "f_other": "Lainnya (aplikasi kasir, iuran, promosi)",
+    "f_price": "Rata-rata per pesanan",
+    "f_cogsPct": "Bahan baku, termasuk susut (%)",
+    "f_packaging": "Kemasan per pesanan",
+    "f_deliveryPct": "Pesanan lewat aplikasi ojek online (%)",
+    "f_commissionPct": "Komisi aplikasi (%)",
+    "f_orders": "Pesanan sehari",
+    "f_days": "Hari buka sebulan",
+    "result": "Hasil",
+    "payback": "Balik modal",
+    "breakEven": "BEP pesanan sehari",
+    "startup": "Modal untuk buka",
+    "profit": "Laba per bulan",
+    "revenue": "Omzet per bulan",
+    "perOrderNet": "Sisa dari setiap pesanan",
+    "fixed": "Biaya tetap per bulan",
+    "rentShare": "Sewa terhadap omzet",
+    "laborShare": "Gaji terhadap omzet",
+    "never": "Tidak pernah",
+    "underMonth": "Kurang dari sebulan",
+    "overFifty": "Lebih dari 50 tahun",
+    "months": "{n} bulan",
+    "monthsOne": "{n} bulan",
+    "years": "{n} tahun",
+    "yearsOne": "{n} tahun",
+    "ordersValue": "{n} pesanan",
+    "ordersValueOne": "{n} pesanan",
+    "lossPerOrder": "Setiap pesanan rugi",
+    "invalid": "Ketik angka nol atau lebih.",
+    "needDays": "Ketik berapa hari usaha buka dalam sebulan (1–31).",
+    "needPct": "Ketik persentase 0 sampai 100.",
+    "vLossPerOrder": "Setiap pesanan rugi: setelah bahan baku, kemasan dan komisi aplikasi, tidak ada sisa dari harga. Naikkan harga atau tekan biaya per pesanan dulu.",
+    "vLoss": "Dengan {orders} pesanan sehari usaha ini rugi {loss} per bulan. Perlu {need} sehari untuk BEP.",
+    "vEven": "Dengan {orders} pesanan sehari usaha ini pas BEP: tidak ada sisa untuk mengembalikan modal.",
+    "vSlow": "Usaha ini untung, tetapi balik modal butuh {time}. Bandingkan dengan masa sewa Anda.",
+    "vOk": "Dengan {orders} pesanan sehari modal kembali dalam {time}. Cek tabelnya: apakah tetap balik modal jika penjualan turun 20 %?",
+    "tableTitle": "Jika penjualan naik atau turun",
+    "colOrders": "Pesanan sehari",
+    "current": "{n} (angka Anda)",
+    "fewer": "{n} ({pct} % lebih sedikit)",
+    "more": "{n} ({pct} % lebih banyak)",
+    "disclaimer": "Hanya sebagai referensi. Contoh hanya ilustrasi, bukan penawaran harga. Laba dihitung sebelum pajak dan bunga pinjaman. Ini bukan nasihat keuangan.",
+    "copy": "Salin hasil",
+    "copied": "Disalin",
+    "copyFailed": "Gagal menyalin"
   }
 }

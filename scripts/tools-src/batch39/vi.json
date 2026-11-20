@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "titleStartupCost": "Máy tính vốn mở quán cà phê và thời gian hoàn vốn — cv.cm",
+    "descStartupCost": "Máy tính miễn phí cho quán cà phê, quán trà sữa nhượng quyền hoặc tiệm bánh: cộng chi phí sửa chữa, thiết bị, phí nhượng quyền, tiền sang nhượng và tiền cọc thuê, rồi xem lợi nhuận mỗi tháng, bao lâu hoàn vốn và mỗi ngày cần bao nhiêu đơn để hòa vốn."
+  },
+  "tools": {
+    "startup-cost": {
+      "name": "Máy tính vốn mở quán",
+      "blurb": "Vốn ban đầu, hoàn vốn và điểm hòa vốn của quán nhỏ."
+    }
+  },
+  "faq": {
+    "startup-cost": {
+      "q1": "Mở quán cà phê cần bao nhiêu vốn?",
+      "a1": "Ví dụ trên trang này là quán cà phê mặt phố khoảng 40 m², sửa chữa 560.000.000 đồng và thiết bị 380.000.000 đồng, cần khoảng 1.079.000.000 đồng trước khi mở, đã gồm tiền cọc thuê và nguyên liệu đầu tiên. Với 250 đơn mỗi ngày, quán hoàn vốn trong khoảng 2,1 năm. Con số thực tế phụ thuộc vào mặt bằng, hợp đồng thuê và việc chủ nhà có cho miễn tiền thuê lúc sửa chữa hay không.",
+      "q2": "Bao lâu hoàn vốn là hợp lý?",
+      "a2": "Không có quy định cố định. Một giới hạn hữu ích là một nửa thời hạn thuê: nếu hợp đồng thuê năm năm mà hoàn vốn mất hơn hai năm rưỡi, không gia hạn được có thể khiến bạn lỗ. Hãy xem cả bảng dưới kết quả: nếu bán ít hơn 20 % mà vẫn hoàn vốn, quán còn dư địa.",
+      "q3": "Ước tính số đơn mỗi ngày thế nào?",
+      "a3": "Hãy đếm. Đứng gần một quán tương tự cạnh vị trí bạn chọn một giờ buổi trưa, một giờ buổi chiều và một giờ cuối tuần, đếm số ly hoặc hóa đơn rồi nhân theo giờ mở cửa. Mấy tháng đầu hãy dùng con số thấp hơn vì khách chưa biết quán.",
+      "q4": "Cần kiểm tra gì trước khi mua nhượng quyền?",
+      "a4": "Đề nghị bên nhượng quyền cung cấp thông tin bằng văn bản trước khi ký: phí ban đầu, phí hằng tháng, tiền cọc, chi phí sửa chữa với nhà cung cấp chỉ định, số cửa hàng trực tiếp và nhượng quyền, số cửa hàng đã đóng mấy năm gần đây. Kiểm tra nhãn hiệu có được đăng ký đứng tên công ty bạn ký hợp đồng hay không, và hỏi vài chủ quán đang làm cũng như đã nghỉ về chi phí và doanh thu thật.",
+      "q5": "Lợi nhuận đã trừ thuế và lương của tôi chưa?",
+      "a5": "Chưa. Lợi nhuận ở đây là trước thuế và lãi vay, cũng chưa trả lương cho chủ quán. Nếu bạn tự đứng quán toàn thời gian, hãy tính mình là một nhân viên, nếu không thời gian hoàn vốn sẽ trông ngắn hơn thực tế."
+    }
+  },
+  "guides": {
+    "startup-cost": {
+      "lead": "Tính sổ một quán trong ba bước.",
+      "s1t": "Chọn ví dụ gần nhất",
+      "s1b": "Chọn quán cà phê, trà sữa nhượng quyền hoặc tiệm bánh, mọi ô sẽ được điền sẵn.",
+      "s2t": "Thay bằng báo giá của bạn",
+      "s2b": "Nhập tiền thuê, sửa chữa, thiết bị và phí nhượng quyền được báo giá, giá trung bình mỗi đơn và số đơn dự kiến mỗi ngày.",
+      "s3t": "Xem hoàn vốn và điểm hòa vốn",
+      "s3b": "Xem bao lâu thu hồi vốn, mỗi ngày bao nhiêu đơn thì đủ chi phí tháng, và chuyện gì xảy ra khi bán nhiều hơn hoặc ít hơn."
+    }
+  },
+  "ui": {
+    "startupCost": {
+      "title": "Máy tính vốn mở quán và điểm hòa vốn",
+      "privacyNote": "Mở quán cà phê, quán trà sữa hay tiệm bánh tốn bao nhiêu, mỗi tháng lãi bao nhiêu và khi nào hoàn vốn. Số liệu của bạn chỉ ở trong trình duyệt.",
+      "start": "Bắt đầu từ",
+      "kind": "Quán mẫu",
+      "k_coffee": "Quán cà phê",
+      "k_tea": "Trà sữa nhượng quyền",
+      "k_bakery": "Tiệm bánh",
+      "exampleNote": "Ví dụ tính bằng đồng cho một quán mặt phố khoảng 40 m². Chỉ để minh họa cách tính: hãy nhập báo giá của bạn.",
+      "g_oneOff": "Vốn ban đầu",
+      "g_monthly": "Chi phí cố định mỗi tháng",
+      "g_perOrder": "Mỗi đơn",
+      "g_sales": "Doanh số",
+      "f_fee": "Phí nhượng quyền hoặc thương hiệu",
+      "f_buildout": "Sửa chữa, trang trí",
+      "f_equipment": "Thiết bị",
+      "f_keyMoney": "Tiền sang nhượng mặt bằng",
+      "f_depositMonths": "Tiền cọc thuê (số tháng)",
+      "f_stock": "Nguyên liệu đầu tiên và linh tinh",
+      "f_rent": "Tiền thuê",
+      "f_staff": "Nhân viên",
+      "f_wage": "Chi phí mỗi người (lương và bảo hiểm)",
+      "f_utilities": "Điện, nước, gas",
+      "f_other": "Khác (phần mềm, phí, quảng cáo)",
+      "f_price": "Giá trung bình mỗi đơn",
+      "f_cogsPct": "Nguyên liệu, gồm hao hụt (%)",
+      "f_packaging": "Bao bì mỗi đơn",
+      "f_deliveryPct": "Đơn qua ứng dụng giao hàng (%)",
+      "f_commissionPct": "Chiết khấu ứng dụng (%)",
+      "f_orders": "Đơn mỗi ngày",
+      "f_days": "Ngày mở cửa mỗi tháng",
+      "result": "Kết quả",
+      "payback": "Hoàn vốn",
+      "breakEven": "Đơn mỗi ngày để hòa vốn",
+      "startup": "Vốn cần để mở",
+      "profit": "Lợi nhuận mỗi tháng",
+      "revenue": "Doanh thu mỗi tháng",
+      "perOrderNet": "Còn lại mỗi đơn",
+      "fixed": "Chi phí cố định mỗi tháng",
+      "rentShare": "Tiền thuê trên doanh thu",
+      "laborShare": "Nhân công trên doanh thu",
+      "never": "Không hoàn vốn",
+      "underMonth": "Dưới một tháng",
+      "overFifty": "Hơn 50 năm",
+      "months": "{n} tháng",
+      "monthsOne": "{n} tháng",
+      "years": "{n} năm",
+      "yearsOne": "{n} năm",
+      "ordersValue": "{n} đơn",
+      "ordersValueOne": "{n} đơn",
+      "lossPerOrder": "Đơn nào cũng lỗ",
+      "invalid": "Nhập số từ 0 trở lên.",
+      "needDays": "Nhập số ngày mở cửa mỗi tháng (1–31).",
+      "needPct": "Nhập tỷ lệ từ 0 đến 100.",
+      "vLossPerOrder": "Mỗi đơn đều lỗ: trừ nguyên liệu, bao bì và chiết khấu giao hàng thì giá bán không còn gì. Hãy tăng giá hoặc giảm chi phí mỗi đơn trước.",
+      "vLoss": "Với {orders} đơn mỗi ngày, quán lỗ {loss} mỗi tháng. Cần {need} mỗi ngày để hòa vốn.",
+      "vEven": "Với {orders} đơn mỗi ngày, quán vừa đủ hòa vốn: không còn dư để thu hồi vốn.",
+      "vSlow": "Quán có lãi nhưng hoàn vốn mất {time}. Hãy so với thời hạn hợp đồng thuê.",
+      "vOk": "Với {orders} đơn mỗi ngày, quán hoàn vốn trong {time}. Xem bảng: bán ít hơn 20 % thì còn hoàn vốn được không?",
+      "tableTitle": "Nếu bán nhiều hơn hoặc ít hơn",
+      "colOrders": "Đơn mỗi ngày",
+      "current": "{n} (của bạn)",
+      "fewer": "{n} (ít hơn {pct} %)",
+      "more": "{n} (nhiều hơn {pct} %)",
+      "disclaimer": "Chỉ để tham khảo. Ví dụ chỉ mang tính minh họa, không phải báo giá. Lợi nhuận tính trước thuế và lãi vay. Đây không phải lời khuyên tài chính.",
+      "copy": "Sao chép kết quả",
+      "copied": "Đã sao chép",
+      "copyFailed": "Không sao chép được"
+    }
+  }
+}

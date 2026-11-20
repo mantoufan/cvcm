@@ -1,0 +1,108 @@
+{
+  "meta": {
+    "titleStartupCost": "Coffee Shop Startup Cost Calculator: Payback and Break-Even — cv.cm",
+    "descStartupCost": "Free startup cost calculator for a coffee shop, bubble tea franchise or bakery: add up fit-out, equipment, fees and the rent deposit, then see monthly profit, how many months until you earn it back and how many orders a day you need to break even."
+  },
+  "tools": {
+    "startup-cost": {
+      "name": "Startup cost calculator",
+      "blurb": "Opening costs, payback and break-even for a small shop."
+    }
+  },
+  "faq": {
+    "startup-cost": {
+      "q1": "How much does it cost to open a coffee shop?",
+      "a1": "The example on this page, a 430 sq ft (40 m²) street-front coffee shop in the US with a $90,000 fit-out and $60,000 of equipment, needs about $172,000 before it opens, rent deposit and first stock included. At 250 orders a day it earns that back in about 2.1 years. Your own figures depend on the space, the lease and how much of the fit-out the landlord pays for.",
+      "q2": "How long should payback take?",
+      "a2": "There is no fixed rule. A useful limit is half the lease: if the lease runs five years and payback takes more than two and a half, a failed renewal can leave you with a loss. Check the table below the result too. A shop that still pays back when it sells 20 % less has some room.",
+      "q3": "How do I estimate orders a day?",
+      "a3": "Count them. Stand near a similar shop close to your site for an hour at lunch, an hour in the afternoon and an hour on a weekend, count cups or receipts, and scale by the opening hours. Start with a lower number for the first months while people find you.",
+      "q4": "What should I check before buying a franchise?",
+      "a4": "In the US the FTC Franchise Rule requires the franchisor to give you its Franchise Disclosure Document (FDD) at least 14 calendar days before you sign or pay anything. Read the fees, the list of franchisees who left, and Item 19, where the franchisor may state what its outlets earn. Call several current and former franchisees and ask what they really spend and sell.",
+      "q5": "Does the profit include tax and my own pay?",
+      "a5": "No. Profit here is before income tax and loan interest, and it does not pay the owner. If you will work in the shop full time, count yourself as one of the staff, or payback will look shorter than it is."
+    }
+  },
+  "guides": {
+    "startup-cost": {
+      "lead": "Work out a shop's numbers in three steps.",
+      "s1t": "Pick the closest example",
+      "s1b": "Choose a coffee shop, bubble tea franchise or bakery, and every field fills in.",
+      "s2t": "Replace the figures with your quotes",
+      "s2b": "Type the rent, fit-out, equipment and fees you were quoted, your price per order and how many orders a day you expect.",
+      "s3t": "Read payback and break-even",
+      "s3b": "See how long it takes to earn back the money put in, the orders a day that cover the month, and what happens if you sell more or less."
+    }
+  },
+  "ui": {
+    "startupCost": {
+      "title": "Startup cost and break-even calculator",
+      "privacyNote": "What a coffee shop, bubble tea shop or bakery costs to open, what a month earns and when you get the money back. Your figures stay in your browser.",
+      "start": "Start from",
+      "kind": "Example shop",
+      "k_coffee": "Coffee shop",
+      "k_tea": "Bubble tea franchise",
+      "k_bakery": "Bakery",
+      "exampleNote": "Examples are in US dollars for a 430 sq ft (40 m²) street-front shop. They only show how the numbers work: type your own quotes.",
+      "g_oneOff": "One-off costs",
+      "g_monthly": "Monthly fixed costs",
+      "g_perOrder": "Each order",
+      "g_sales": "Sales",
+      "f_fee": "Franchise or brand fee",
+      "f_buildout": "Fit-out and renovation",
+      "f_equipment": "Equipment",
+      "f_keyMoney": "Key money or lease takeover",
+      "f_depositMonths": "Rent deposit (months)",
+      "f_stock": "First stock and sundries",
+      "f_rent": "Rent",
+      "f_staff": "Staff",
+      "f_wage": "Cost per person (pay and payroll tax)",
+      "f_utilities": "Utilities",
+      "f_other": "Other (software, fees, marketing)",
+      "f_price": "Average order",
+      "f_cogsPct": "Ingredients, waste included (%)",
+      "f_packaging": "Packaging per order",
+      "f_deliveryPct": "Orders through delivery apps (%)",
+      "f_commissionPct": "Delivery app commission (%)",
+      "f_orders": "Orders a day",
+      "f_days": "Days open a month",
+      "result": "Result",
+      "payback": "Payback",
+      "breakEven": "Break-even orders a day",
+      "startup": "Money needed to open",
+      "profit": "Monthly profit",
+      "revenue": "Monthly sales",
+      "perOrderNet": "Left from each order",
+      "fixed": "Monthly fixed costs",
+      "rentShare": "Rent as a share of sales",
+      "laborShare": "Staff as a share of sales",
+      "never": "Never",
+      "underMonth": "Under a month",
+      "overFifty": "Over 50 years",
+      "months": "{n} months",
+      "monthsOne": "{n} month",
+      "years": "{n} years",
+      "yearsOne": "{n} year",
+      "ordersValue": "{n} orders",
+      "ordersValueOne": "{n} order",
+      "lossPerOrder": "Each order loses money",
+      "invalid": "Enter amounts of zero or more.",
+      "needDays": "Enter how many days a month the shop is open (1–31).",
+      "needPct": "Enter shares from 0 to 100 %.",
+      "vLossPerOrder": "Every order loses money: after ingredients, packaging and delivery commission nothing is left of the price. Raise the price or cut the cost per order first.",
+      "vLoss": "At {orders} orders a day the shop loses {loss} a month. It needs {need} a day to break even.",
+      "vEven": "At {orders} orders a day the shop just breaks even: nothing is left to pay back the money put in.",
+      "vSlow": "The shop makes money, but payback takes {time}. Compare that with the length of your lease.",
+      "vOk": "At {orders} orders a day the money comes back in {time}. Check the table: can the shop still pay back if it sells 20 % less?",
+      "tableTitle": "If you sell more or less",
+      "colOrders": "Orders a day",
+      "current": "{n} (yours)",
+      "fewer": "{n} ({pct} % fewer)",
+      "more": "{n} ({pct} % more)",
+      "disclaimer": "For reference only. The examples are illustrations, not quotes. Profit is before tax and loan interest. This is not financial advice.",
+      "copy": "Copy result",
+      "copied": "Copied",
+      "copyFailed": "Copy failed"
+    }
+  }
+}

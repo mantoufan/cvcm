@@ -458,3 +458,9 @@ agy (Antigravity, Gemini image tool) with `gpa-sweet.jpg` + `invoice-sweet.jpg` 
 - `cover-letter`: she holds up a lined cream letter with a pink bow clip, a pink folder under her arm; a pink briefcase and a teacup on the desk.
 - `resume-builder`: she holds a résumé page with a small portrait of herself in the corner and blank lines in two columns; a stack of pages, pastel sticky tabs and pink pens.
 - `id-photo`: she sits on a stool before a light-blue backdrop like a passport sitting; a pink camera on a tripod; a print sheet of six small portraits and pink scissors on the desk.
+
+## Startup cost calculator (2026-11-20)
+
+Codex was out of quota (gpt-6-astra usage limit; gpt-6.2/6.1 models 400), so on the owner's choice this one came from **agy** (Antigravity / Gemini image tool), text prompt only: in this run agy was denied reading the reference files, so the reference style was described in words. The prompt tells agy not to read files first (its startup notes make it read IMAGE_GEN.md, which headless mode denies). Output 1376×768 → `ffmpeg crop=1365:768:5:0,scale=1280:720`, C2PA/JUMBF metadata stripped (`-map_metadata -1` + `exiftool -all=`); checked at full size for a visible watermark (none). First try.
+
+- `startup-cost`: she holds up a dollhouse-sized cream café storefront with a pink and white striped awning, arched window and door, potted flower; on the table a heart latte, a pink macaron, a stack of plain gold coins and a pink piggy bank; bed, lace curtains, roses and a white bunny behind.

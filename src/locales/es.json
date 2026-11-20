@@ -811,7 +811,9 @@
     "titleResumeBuilder": "Hacer currículum gratis — curriculum vitae en PDF, sin registro — cv.cm",
     "descResumeBuilder": "Currículum gratis y sin registro: rellena experiencia, formación y habilidades, revisa la vista previa y guárdalo en PDF apto para ATS. Tus datos no se suben.",
     "titleIdPhoto": "Foto carnet online — DNI, pasaporte, tamaño infantil, cambiar fondo — cv.cm",
-    "descIdPhoto": "Haz tu foto carnet gratis: recorta a 32×26 mm (DNI), tamaño infantil, pasaporte y más con guías para la cabeza, cambia el fondo e imprime una hoja."
+    "descIdPhoto": "Haz tu foto carnet gratis: recorta a 32×26 mm (DNI), tamaño infantil, pasaporte y más con guías para la cabeza, cambia el fondo e imprime una hoja.",
+    "titleStartupCost": "¿Cuánto cuesta abrir una cafetería? Calculadora de inversión — cv.cm",
+    "descStartupCost": "Calculadora gratuita para abrir una cafetería, una franquicia de bubble tea o una panadería: suma obra, equipamiento, canon de franquicia, traspaso y fianza, y calcula el beneficio mensual, en cuántos meses recuperas la inversión y cuántos pedidos al día necesitas para cubrir gastos."
   },
   "brand": "cv.cm",
   "nav": {
@@ -1823,6 +1825,10 @@
     "id-photo": {
       "name": "Foto carnet online",
       "blurb": "Tamaños de foto carnet, fondo y hoja para imprimir."
+    },
+    "startup-cost": {
+      "name": "Calculadora para abrir un negocio",
+      "blurb": "Inversión inicial, recuperación y punto de equilibrio de un local."
     }
   },
   "watermark": {
@@ -6878,6 +6884,18 @@
       "a4": "Descarga la hoja: 10 × 15 cm (4 × 6 in) en JPG a 300 ppp para llevar a revelar, o A4 en PDF. Imprime al 100 % (tamaño real), no «ajustar a la página», y recorta por las líneas finas.",
       "q5": "¿Se sube mi foto a internet?",
       "a5": "No. El recorte se hace en la página y el modelo para quitar el fondo se descarga una vez y funciona en tu dispositivo. La foto no sale de él."
+    },
+    "startup-cost": {
+      "q1": "¿Cuánto cuesta abrir una cafetería?",
+      "a1": "El ejemplo de esta página, una cafetería a pie de calle de unos 40 m² con 46.000 de obra y 30.000 de equipamiento, necesita unos 87.100 antes de abrir, con la fianza y el primer stock incluidos. Con 250 pedidos al día recupera la inversión en unos 17,8 meses. Tus cifras dependen del local, del contrato y de si el propietario te da meses de carencia para la obra.",
+      "q2": "¿Cuánto debería tardar en recuperarse la inversión?",
+      "a2": "No hay una regla fija. Un límite útil es la mitad del contrato de alquiler: si el contrato es de cinco años y tardas más de dos y medio en recuperar, una renovación fallida puede dejarte con pérdidas. Mira también la tabla bajo el resultado: si el local recupera la inversión vendiendo un 20 % menos, tiene margen.",
+      "q3": "¿Cómo estimo los pedidos al día?",
+      "a3": "Cuéntalos. Ponte cerca de un local parecido junto a tu ubicación una hora a mediodía, otra por la tarde y otra en fin de semana, cuenta vasos o tickets y escala por las horas de apertura. Para los primeros meses usa una cifra más baja mientras la gente te descubre.",
+      "q4": "¿Qué debo comprobar antes de comprar una franquicia?",
+      "a4": "Pide al franquiciador la información por escrito antes de firmar: canon de entrada, royalties, fianzas, la obra con proveedores obligatorios, cuántos locales propios y franquiciados tiene y cuántos han cerrado en los últimos años. Comprueba que la marca está registrada a nombre de la empresa con la que firmas, y habla con varios franquiciados actuales y antiguos sobre lo que gastan y venden de verdad.",
+      "q5": "¿El beneficio incluye impuestos y mi propio sueldo?",
+      "a5": "No. El beneficio es antes de impuestos y de intereses de préstamos, y no paga al dueño. Si vas a trabajar en el local a tiempo completo, cuéntate como un empleado más, o el plazo de recuperación parecerá más corto de lo que es."
     }
   },
   "qr": {
@@ -18279,5 +18297,74 @@
     "p_c20x30": "2 × 3 cm",
     "p_c40x60": "4 × 6 cm",
     "p_c25x30": "Tamaño infantil (2,5 × 3 cm)"
+  },
+  "startupCost": {
+    "title": "Calculadora de inversión inicial y punto de equilibrio",
+    "privacyNote": "Cuánto cuesta abrir una cafetería, un local de bubble tea o una panadería, cuánto deja al mes y cuándo recuperas el dinero. Tus cifras se quedan en tu navegador.",
+    "start": "Empieza con",
+    "kind": "Ejemplo de local",
+    "k_coffee": "Cafetería",
+    "k_tea": "Franquicia de bubble tea",
+    "k_bakery": "Panadería",
+    "exampleNote": "Los ejemplos están en euros para un local a pie de calle de unos 40 m². Solo muestran cómo funcionan las cuentas: escribe tus propios presupuestos.",
+    "g_oneOff": "Inversión inicial",
+    "g_monthly": "Gastos fijos al mes",
+    "g_perOrder": "Cada pedido",
+    "g_sales": "Ventas",
+    "f_fee": "Canon de franquicia o de marca",
+    "f_buildout": "Obra y reforma",
+    "f_equipment": "Equipamiento",
+    "f_keyMoney": "Traspaso",
+    "f_depositMonths": "Fianza (meses de alquiler)",
+    "f_stock": "Primer stock y varios",
+    "f_rent": "Alquiler",
+    "f_staff": "Empleados",
+    "f_wage": "Coste por persona (sueldo y Seguridad Social)",
+    "f_utilities": "Luz, agua y gas",
+    "f_other": "Otros (software, comisiones, publicidad)",
+    "f_price": "Ticket medio",
+    "f_cogsPct": "Materia prima, mermas incluidas (%)",
+    "f_packaging": "Envases por pedido",
+    "f_deliveryPct": "Pedidos por apps de reparto (%)",
+    "f_commissionPct": "Comisión de la app de reparto (%)",
+    "f_orders": "Pedidos al día",
+    "f_days": "Días abiertos al mes",
+    "result": "Resultado",
+    "payback": "Recuperación",
+    "breakEven": "Pedidos al día para cubrir gastos",
+    "startup": "Inversión para abrir",
+    "profit": "Beneficio al mes",
+    "revenue": "Ventas al mes",
+    "perOrderNet": "Lo que deja cada pedido",
+    "fixed": "Gastos fijos al mes",
+    "rentShare": "Alquiler sobre ventas",
+    "laborShare": "Personal sobre ventas",
+    "never": "Nunca",
+    "underMonth": "Menos de un mes",
+    "overFifty": "Más de 50 años",
+    "months": "{n} meses",
+    "monthsOne": "{n} mes",
+    "years": "{n} años",
+    "yearsOne": "{n} año",
+    "ordersValue": "{n} pedidos",
+    "ordersValueOne": "{n} pedido",
+    "lossPerOrder": "Cada pedido pierde dinero",
+    "invalid": "Escribe importes de cero o más.",
+    "needDays": "Escribe cuántos días al mes abre el local (1–31).",
+    "needPct": "Escribe porcentajes de 0 a 100.",
+    "vLossPerOrder": "Cada pedido pierde dinero: tras la materia prima, el envase y la comisión de reparto no queda nada del precio. Sube el precio o baja el coste por pedido primero.",
+    "vLoss": "Con {orders} pedidos al día el local pierde {loss} al mes. Necesita {need} al día para cubrir gastos.",
+    "vEven": "Con {orders} pedidos al día el local solo cubre gastos: no queda nada para recuperar la inversión.",
+    "vSlow": "El local gana dinero, pero la recuperación tarda {time}. Compáralo con la duración de tu contrato.",
+    "vOk": "Con {orders} pedidos al día recuperas el dinero en {time}. Mira la tabla: ¿se recupera aún vendiendo un 20 % menos?",
+    "tableTitle": "Si vendes más o menos",
+    "colOrders": "Pedidos al día",
+    "current": "{n} (los tuyos)",
+    "fewer": "{n} ({pct} % menos)",
+    "more": "{n} ({pct} % más)",
+    "disclaimer": "Solo como referencia. Los ejemplos son ilustrativos, no presupuestos. El beneficio es antes de impuestos e intereses. No es asesoramiento financiero.",
+    "copy": "Copiar resultado",
+    "copied": "Copiado",
+    "copyFailed": "No se pudo copiar"
   }
 }
