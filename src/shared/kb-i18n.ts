@@ -1,5 +1,5 @@
 import type { Locale } from "./locale";
-import { kbArticleOf, kbHubOf, kbGroupOf, kbGroupsOf, kbMeta, kbShelfOf, kbShelfOfPage, kbUpdatedOn, type KbId, type KbPage, type KbShelf } from "./kb";
+import { KB_CULTURE_GROUPS, kbArticleOf, kbHubOf, kbGroupOf, kbGroupsOf, kbMeta, kbShelfOf, kbShelfOfPage, kbUpdatedOn, type KbId, type KbPage, type KbShelf } from "./kb";
 import { kbArticleMessages, kbMessages, messages, type KbMessages } from "./messages";
 import { HREFLANG } from "./sitemap";
 import { appHref, kbHref, learnHref } from "./path";
@@ -134,7 +134,7 @@ export function kbArticleJsonLd(locale: Locale, page: KbPage): Record<string, un
   const url = `${ORIGIN}${kbHref(locale, id)}`;
   return {
     "@context": "https://schema.org",
-    "@type": kbGroupOf(id) === "culture" ? "Article" : "TechArticle",
+    "@type": KB_CULTURE_GROUPS.has(kbGroupOf(id)) ? "Article" : "TechArticle",
     headline: copy.h1,
     description: copy.description,
     abstract: copy.answer.replaceAll("`", ""),

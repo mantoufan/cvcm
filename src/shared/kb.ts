@@ -76,6 +76,12 @@ const KNOWLEDGE_GROUPS: readonly { id: KbGroupId; articles: readonly KbId[] }[] 
   { id: "culture", articles: ["cultivation-levels"] },
 ];
 
+/**
+ * Knowledge groups about culture and fiction rather than formats and numbers: they need no tool
+ * and their JSON-LD is a plain Article instead of a TechArticle.
+ */
+export const KB_CULTURE_GROUPS: ReadonlySet<KbGroupId> = new Set<KbGroupId>(["culture"]);
+
 export const KB_GROUPS: readonly { id: KbGroupId; shelf: KbShelf; articles: readonly KbId[] }[] = [
   ...KNOWLEDGE_GROUPS.map((group) => ({ ...group, shelf: "knowledge" as const })),
   ...CODE_GROUPS.map((group) => ({ ...group, shelf: "code" as const })),
@@ -296,7 +302,7 @@ const KNOWLEDGE_META: Record<KnowledgeId, KbMeta> = {
   },
   "cultivation-levels": {
     published: "2026-11-20",
-    tools: ["tier-list"],
+    tools: [],
     tutorials: [],
     related: [],
     sources: [
