@@ -270,6 +270,8 @@ describe("knowledge: SEO", () => {
   it("describes each article as a dated TechArticle with its sources", () => {
     const ld = kbArticleJsonLd("en", "md5-vs-sha-256") as Record<string, unknown>;
     expect(ld["@type"]).toBe("TechArticle");
+    // Fiction lore in the culture group is a plain Article, not a TechArticle.
+    expect((kbArticleJsonLd("en", "cultivation-levels") as Record<string, unknown>)["@type"]).toBe("Article");
     expect(ld.datePublished).toBe(kbMeta("md5-vs-sha-256").published);
     expect(ld.dateModified).toBe(kbUpdated("en", "md5-vs-sha-256"));
     expect((ld.citation as unknown[]).length).toBe(kbMeta("md5-vs-sha-256").sources.length);

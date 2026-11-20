@@ -377,7 +377,7 @@ export const KB_MINUTES = {
     "es": 4
   },
   "cultivation-levels": {
-    "en": 10,
+    "en": 9,
     "zh-CN": 8,
     "zh-TW": 8,
     "ja": 10,

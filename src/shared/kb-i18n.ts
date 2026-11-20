@@ -105,7 +105,7 @@ export const PUBLISHER = {
   logo: `${ORIGIN}/favicon-512.png`,
 };
 
-/** TechArticle for an article; CollectionPage + ItemList for the hub. */
+/** TechArticle for an article (Article in the culture group); CollectionPage + ItemList for the hub. */
 export function kbArticleJsonLd(locale: Locale, page: KbPage): Record<string, unknown> {
   const id = kbArticleOf(page);
   if (!id) {
@@ -134,7 +134,7 @@ export function kbArticleJsonLd(locale: Locale, page: KbPage): Record<string, un
   const url = `${ORIGIN}${kbHref(locale, id)}`;
   return {
     "@context": "https://schema.org",
-    "@type": "TechArticle",
+    "@type": kbGroupOf(id) === "culture" ? "Article" : "TechArticle",
     headline: copy.h1,
     description: copy.description,
     abstract: copy.answer.replaceAll("`", ""),
