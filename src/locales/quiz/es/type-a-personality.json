@@ -1,0 +1,59 @@
+{
+  "title": "Test de personalidad tipo A o tipo B: ¿cuál eres? Test gratis — cv.cm",
+  "description": "Test de personalidad tipo A gratis: valora 14 afirmaciones sobre la prisa, la competitividad y la paciencia para ver si te inclinas hacia el tipo A, el tipo B o una mezcla, con una puntuación de 0 a 56 y consejos. Sin registro; tus respuestas no salen del navegador.",
+  "h1": "Test de personalidad tipo A o tipo B",
+  "scoreLabel": "Puntuación de tipo A (0 = tipo B, 56 = tipo A)",
+  "lede": "¿Siempre corriendo contra el reloj y llevando la cuenta, o feliz tomándote la vida como viene? Valora 14 afirmaciones para ver si te inclinas hacia el tipo A, el tipo B o algo intermedio.",
+  "about": [
+    "Las etiquetas tipo A y tipo B vienen de dos cardiólogos estadounidenses, Meyer Friedman y Ray Rosenman, que en los años cincuenta se dieron cuenta de que muchos de sus pacientes del corazón eran ambiciosos, impacientes y competitivos, siempre con prisa y de irritación fácil. A ese patrón lo llamaron tipo A, y al patrón más relajado y tranquilo, tipo B. Investigaciones posteriores vieron que el patrón en su conjunto predice las enfermedades del corazón peor de lo que se pensaba al principio; la parte de hostilidad e ira parece ser la que más importa. Aun así, las etiquetas se quedaron, porque mucha gente se reconoce en ellas.",
+    "Las afirmaciones se han escrito para cv.cm en torno a los signos clásicos del patrón: la urgencia por el tiempo, hacer varias cosas a la vez, la competitividad, la impaciencia y la dificultad para relajarse. No son el Jenkins Activity Survey ni ningún otro cuestionario publicado, y la mitad describen el tipo B, así que estar de acuerdo con todo te deja en el medio. La mayoría de la gente es una mezcla, así que tómate tu puntuación como una tendencia, no como un tipo fijo, y no como algo relacionado con tu salud."
+  ],
+  "faq": [
+    {
+      "q": "¿Qué es la personalidad tipo A?",
+      "a": "Un patrón de ambición, competitividad y prisa constante: haces malabares con las tareas, odias esperar, te mides por lo que consigues hacer y te cuesta desconectar."
+    },
+    {
+      "q": "¿Qué es la personalidad tipo B?",
+      "a": "El patrón contrario: relajado, paciente y menos competitivo. Las personas tipo B también pueden trabajar duro y tener éxito; simplemente sienten menos la presión del reloj."
+    },
+    {
+      "q": "¿Cómo se calcula la puntuación?",
+      "a": "Cada afirmación puntúa de 0 a 4, y las afirmaciones de tipo B se puntúan al revés, así que el total va de 0 a 56. 18 o menos se inclina al tipo B, de 19 a 37 es una mezcla y 38 o más se inclina al tipo A."
+    },
+    {
+      "q": "¿Ser tipo A es malo para el corazón?",
+      "a": "El patrón en general resultó ser un predictor débil. El enfado frecuente y la hostilidad parecen importar más, junto con los riesgos habituales, como el tabaco y la tensión arterial. Si te preocupa tu salud, habla con un médico; este test no puede decirte nada sobre tu corazón."
+    }
+  ],
+  "items": [
+    "A menudo siento que al día le faltan horas.",
+    "Puedo relajarme sin sentirme culpable.",
+    "Tener que esperar mi turno en una cola me impacienta enseguida.",
+    "No me importa mucho que gane otra persona.",
+    "A menudo hago dos o tres cosas a la vez.",
+    "Como, camino y hablo sin prisas.",
+    "Me irrita que los demás trabajen demasiado despacio.",
+    "Las fechas límite no me ponen tenso.",
+    "Juzgo mi día por todo lo que he hecho.",
+    "Puedo dejar trabajo sin terminar y aun así disfrutar de la noche.",
+    "Convierto hasta los juegos entre amigos en una competición.",
+    "Mantengo la paciencia cuando me hacen esperar.",
+    "Me cuesta sentarme sin hacer nada.",
+    "Rara vez me siento con prisas."
+  ],
+  "results": {
+    "typeb": {
+      "name": "Te inclinas al tipo B (0–18)",
+      "body": "Eres relajado, paciente y no te preocupan demasiado ni el reloj ni el marcador. Sabes desconectar, disfrutar del momento y dejar pasar los pequeños retrasos, algo bueno para ti y para quienes te rodean. Si alguna vez sientes que vas a la deriva, un plan sencillo para lo que más te importa puede darte impulso sin el estrés."
+    },
+    "mixed": {
+      "name": "Una mezcla de tipo A y B (19–37)",
+      "body": "Tienes las dos caras: ambicioso y competitivo cuando algo importa, relajado cuando no. Ahí es donde cae la mayoría de la gente, y es un equilibrio útil. Fíjate en qué situaciones sacan tu lado tipo A, como el trabajo, las fechas límite o el tráfico, y en si quieres que se quede ahí."
+    },
+    "typea": {
+      "name": "Te inclinas al tipo A (38–56)",
+      "body": "Eres ambicioso, rápido y competitivo, y consigues hacer mucho. Esa energía es una fortaleza, pero la prisa y la impaciencia pueden agotarte y tensar tus relaciones. Prueba a hacer pausas de verdad, a hacer una cosa cada vez y a darte cuenta de cuándo se dispara la irritación: es la parte del tipo A que más vale la pena domar."
+    }
+  }
+}
