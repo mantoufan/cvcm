@@ -19,7 +19,7 @@ import {
   datasetHubGroups,
   datasetFaqItems,
   datasetHub,
-  datasetLinkMeta,
+  datasetLinkItem,
   datasetName,
   datasetPageCopy,
   datasetTable,
@@ -52,10 +52,7 @@ function faq(locale: Locale, id: DatasetId | null): HTMLElement {
 }
 
 function setLinks(locale: Locale, ids: readonly DatasetId[]): HTMLElement {
-  return linkList(ids.map((id) => {
-    const name = datasetName(locale, id);
-    return { href: datasetHref(locale, id), name: name.name, blurb: name.blurb, meta: datasetLinkMeta(locale, id), nav: `dataset-${id}` };
-  }));
+  return linkList(ids.map((id) => datasetLinkItem(locale, id)));
 }
 
 export function mountDatasetHub(host: HTMLElement, locale: Locale): void {
