@@ -2295,7 +2295,7 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .clip { display: grid; gap: 0.75rem; }
 .clip-compose > .status:empty, .clip-result:empty { display: none; }
 .clip-editor { gap: 0; padding: 0; overflow: hidden; }
-.clip-editor:focus-within { border-color: var(--pink); }
+.clip-editor:focus-within { border-color: var(--pink-deep); }
 .clip-editor.over { border-color: var(--pink-deep); outline: 2px dashed var(--pink-deep); outline-offset: 2px; }
 .clip-editor.over .clip-rich, .clip-editor.over .clip-input { background: var(--pink-soft); }
 .clip-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.15rem; padding: 0.45rem 0.55rem; border-bottom: 1px solid var(--line); background: var(--gray); }
@@ -2305,7 +2305,7 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .clip-sep { width: 1px; height: 1.1rem; margin: 0 0.3rem; background: var(--line); }
 .clip-biu, .clip-attach { display: inline-flex; align-items: center; justify-content: center; gap: 0.3rem; min-width: 34px; min-height: 34px; padding: 0 0.4rem; border: 0; border-radius: 8px; background: transparent; color: var(--ink-soft); font-size: 0.9rem; font-weight: 700; cursor: pointer; }
 .clip-biu:hover, .clip-attach:hover { background: var(--pink-soft); color: var(--pink-deep); }
-.clip-biu.i { font-style: italic; font-family: Georgia, "Times New Roman", serif; }
+.clip-biu.i { font-style: italic; }
 .clip-biu.u { text-decoration: underline; }
 .clip-biu.s { text-decoration: line-through; }
 .clip-attach { margin-left: auto; padding: 0 0.65rem; font-size: 0.85rem; font-weight: 600; }

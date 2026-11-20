@@ -321,3 +321,10 @@ describe("home structured data", () => {
     expect(applyHtmlSeo(html, "en", { quiz: true, quizId: null })).not.toContain('id="website-jsonld"');
   });
 });
+
+describe("home structured data is idempotent", () => {
+  it("does not duplicate the WebSite block when run twice", () => {
+    const twice = applyHtmlSeo(applyHtmlSeo(html, "en", { tool: null }), "en", { tool: null });
+    expect(twice.match(/id="website-jsonld"/g)?.length).toBe(1);
+  });
+});

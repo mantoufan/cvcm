@@ -630,7 +630,7 @@ function rules(): HTMLElement {
       h("li", null, t("clip.ruleViews")),
       h("li", null, t("clip.ruleDay")),
       h("li", null, t("clip.ruleLogin")),
-      h("li", null, t("clip.ruleFiles")),
+      h("li", null, t("clip.ruleFiles", { mb: Math.round(CLIP_MAX_FILE_BYTES / 1024 / 1024) })),
     ),
   );
 }
