@@ -1,10 +1,10 @@
-"""Merge scripts/tools-src/batch38/<locale>.json (shop startup cost and break-even calculator) into the locale packs
+"""Merge scripts/tools-src/batch39/<locale>.json (shop startup cost and break-even calculator) into the locale packs
 (meta, tools, faq, tool UI) and guides."""
 import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / "scripts/tools-src/batch38"
+SRC = ROOT / "scripts/tools-src/batch39"
 LOCALES = ["en", "es", "id", "ja", "ko", "vi", "zh-CN", "zh-TW"]
 
 
