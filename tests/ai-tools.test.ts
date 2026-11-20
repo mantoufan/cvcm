@@ -22,7 +22,7 @@ describe("AI tool routes", () => {
       expect(appHref("zh-CN", tool)).toBe(`/zh-cn/${tool}/`);
       expect(isAiToolPath(`/ja/${tool}/`)).toBe(true);
     }
-    expect([...AI_TOOLS]).toEqual(["v", "ai-image-generator", "ai-music-generator", "remove-background", "image-upscaler", "speech-to-text", "depth-map"]);
+    expect([...AI_TOOLS]).toEqual(["v", "ai-image-generator", "ai-music-generator", "remove-background", "image-upscaler", "speech-to-text", "depth-map", "id-photo"]);
     expect(isAiToolPath("/en/json/")).toBe(false);
     expect(isAiToolPath("/en/")).toBe(false);
   });

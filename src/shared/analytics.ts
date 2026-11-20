@@ -22,6 +22,8 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
   "split-pdf", "invoice", "audio", "audio-cutter", "audio-joiner", "image-colors",
   "remove-background", "image-upscaler", "speech-to-text", "depth-map", "v", "ai-image-generator", "ai-music-generator", "mic-test", "webcam-test", "guitar-tuner", "rom-emulator", "flash-player", "notepad", "tier-list",
   "decibel-meter", "voice-recorder", "screen-recorder", "gif-maker", "image-splitter",
+  // Career papers hold the visitor's name, history and photo.
+  "resignation-letter", "cover-letter", "resume-builder", "id-photo",
 ]);
 
 /**

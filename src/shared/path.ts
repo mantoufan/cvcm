@@ -47,6 +47,8 @@ export const CATEGORIES = [
   { id: "ai", tools: ["v", "ai-image-generator", "ai-music-generator", "remove-background", "image-upscaler", "speech-to-text", "depth-map"] },
   { id: "image", tools: ["watermark", "mosaic", "collage", "portrait-sim", "convert", "resize", "crop", "rotate", "exif", "meme", "signature", "favicon", "screenshot", "image-colors", "tier-list", "gif-maker", "image-splitter"] },
   { id: "pdf", tools: ["image-pdf", "pdf-jpg", "merge-pdf", "compress-pdf", "split-pdf", "invoice"] },
+  // Job-hunting papers: letters and résumés printed to PDF or Word in the page; the ID photo runs the background model (an AI page, see AI_TOOLS).
+  { id: "career", tools: ["resignation-letter", "cover-letter", "resume-builder", "id-photo"] },
   { id: "audio", tools: ["audio", "audio-cutter", "audio-joiner", "voice-recorder", "screen-recorder", "text-to-speech", "white-noise", "tone-generator", "metronome", "guitar-tuner", "piano"] },
   { id: "text", tools: ["word-count", "case", "diff", "replace", "sort", "reverse", "slug", "lorem", "fancy-text", "markdown", "notepad", "reading-time", "morse"] },
   { id: "dev", tools: ["json", "data", "xml-json", "yaml-json", "base64", "url-encode", "html", "text-hex", "binary", "hash", "jwt", "uuid", "password", "regex", "cron", "cidr", "chmod", "timestamp"] },
@@ -298,6 +300,10 @@ export const TOOLS = [
   "harvard-referencing-generator",
   "title-case",
   "words-to-pages",
+  "resignation-letter",
+  "cover-letter",
+  "resume-builder",
+  "id-photo",
   "cube-solver",
   "pinball",
   "pool-game",
@@ -569,7 +575,8 @@ export function isPublishedTutorial(id: TutorialId): boolean {
 }
 
 /** AI tools: their pages are cross-origin isolated (threaded WebAssembly), so links into or out of them load a fresh document. */
-export const AI_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>(CATEGORIES.find((c) => c.id === "ai")!.tools);
+/** AI pages: the `ai` group plus the ID photo maker, which cuts the person out with the background model. */
+export const AI_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([...CATEGORIES.find((c) => c.id === "ai")!.tools, "id-photo"]);
 
 export function isAiToolPath(pathname: string): boolean {
   const parsed = parseAppPath(pathname);

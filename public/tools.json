@@ -35,6 +35,10 @@
       "name": "PDF"
     },
     {
+      "id": "career",
+      "name": "Job-hunting papers: a resignation letter generator (local formats such as the Japanese 退職届 / 退職願, notice periods), a cover letter generator (cover letters, Indonesian surat lamaran kerja, Vietnamese đơn xin việc, Japanese 送付状, Korean 자기소개서), a résumé builder (ATS-friendly CV, Japanese 履歴書 on the 2021 MHLW sample form and 職務経歴書, Korean 이력서, Chinese 简历) printed to PDF, and an ID photo maker (background removal on the device, passport and visa sizes, print sheets)"
+    },
+    {
       "id": "audio",
       "name": "Audio and recording"
     },
@@ -568,6 +572,53 @@
       "category": "pdf",
       "url": "https://cv.cm/en/invoice/",
       "data_handling": "Runs in the page. Inputs are not uploaded."
+    },
+    {
+      "id": "resignation-letter",
+      "name": "Resignation letter",
+      "description": "Two weeks' notice letter or email.",
+      "category": "career",
+      "url": "https://cv.cm/en/resignation-letter/",
+      "data_handling": "Builds the letter in the page and keeps the draft in this browser's local storage. Print saves it as a PDF and Download writes a Word file on the device. The draft is not uploaded."
+    },
+    {
+      "id": "cover-letter",
+      "name": "Cover letter generator",
+      "description": "One-page cover letter from a template.",
+      "category": "career",
+      "url": "https://cv.cm/en/cover-letter/",
+      "data_handling": "Builds the letter in the page and keeps the draft in this browser's local storage. Print saves it as a PDF and Download writes a Word file on the device. The draft is not uploaded."
+    },
+    {
+      "id": "resume-builder",
+      "name": "Resume builder",
+      "description": "ATS-friendly CV printed to PDF.",
+      "category": "career",
+      "url": "https://cv.cm/en/resume-builder/",
+      "data_handling": "Builds the résumé in the page and keeps the draft in this browser's local storage; a photo or saved JSON draft it opens is read in the page. Print saves it as a PDF and Save writes a JSON file on the device. The draft and files are not uploaded."
+    },
+    {
+      "id": "id-photo",
+      "name": "Passport photo maker",
+      "description": "ID photo sizes, background and print sheet.",
+      "category": "career",
+      "url": "https://cv.cm/en/id-photo/",
+      "data_handling": "Downloads an AI model once and runs it on the device. Files are not uploaded.",
+      "ai": {
+        "models": [
+          {
+            "option": "Background \"Replace\"",
+            "model": "cvcm/birefnet-lite-1024",
+            "license": "MIT",
+            "download_bytes": {
+              "webgpu_fp16": 101615014,
+              "webgpu": 180826341,
+              "cpu": 101615014
+            }
+          }
+        ],
+        "options": "Photo size: passport presets (US 2 × 2 in, UK / Japan / Korea / Taiwan 35 × 45 mm, China 33 × 48 mm, Vietnam 4 × 6 cm, Spain 26 × 32 mm, each with its head rule and official source) and common print sizes (25 × 35, 35 × 49, 35 × 45, 28 × 35, 30 × 40, 20 × 30, 40 × 60, 25 × 30 mm). Crop by drag, zoom and arrow keys over head guides; Auto fit places the crop from the model's mask. Background: \"Keep original\" (no model; the default for passports that reject edited backgrounds) or \"Replace\" (White / Light grey / Light blue / Blue / Red or a custom colour). Downloads a 300 DPI JPG (pixel size and a maximum file size in KB can be set) and a print sheet: 4 × 6 in JPG, or A4 / Letter PDF."
+      }
     },
     {
       "id": "audio",

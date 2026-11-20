@@ -2157,3 +2157,145 @@ p.cite-ref { margin: 0.5rem 0; line-height: 1.6; }
 .pp-status { min-height: 1.6em; margin: 0.5rem 0 0; }
 .pp-record { margin: 0.25rem 0 0; color: var(--ink-soft); font-size: 0.9rem; }
 .pp-root .g3d-stage { cursor: crosshair; }
+/* Paper preview for the letter and résumé tools (doc-sheet.ts). Sizes are em of a font that scales with the sheet,
+   so the preview is the printed page in miniature: 11 pt on a 210 mm page is 1.85 % of its width. */
+.doc-wrap { container-type: inline-size; width: 100%; }
+.doc-page { background: var(--white); color: #111; border: 1px solid var(--line); font-size: 1.85cqw; line-height: 1.6; padding: 9.5cqw; overflow-wrap: anywhere; font-family: var(--sans); }
+.doc-page.doc-a4 { aspect-ratio: 210 / 297; }
+.doc-page.doc-letter { aspect-ratio: 216 / 279; font-size: 1.8cqw; }
+.doc-page.doc-serif { font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Songti SC", "SimSun", "PMingLiU", "Batang", "Times New Roman", serif; }
+.doc-page.doc-vertical { writing-mode: vertical-rl; overflow-x: auto; width: 100%; }
+.doc-line { margin: 0; white-space: pre-wrap; }
+.doc-title { font-size: 1.45em; font-weight: 700; }
+.doc-small { font-size: 0.9em; }
+.doc-center { text-align: center; }
+.doc-end { text-align: end; }
+.doc-bold { font-weight: 700; }
+.doc-indent { text-indent: 1em; }
+.doc-table { width: 100%; border-collapse: collapse; }
+.doc-table th, .doc-table td { border: 1px solid #111; padding: 0.3em 0.6em; text-align: start; vertical-align: top; white-space: pre-wrap; }
+.doc-table th { width: 30%; font-weight: 700; }
+.print-root { display: none; }
+@media print {
+  body.printing-doc > :not(.print-root) { display: none !important; }
+  body.printing-doc .print-root { display: block; }
+  .print-root .doc-page { border: 0; padding: 0; font-size: 11pt; aspect-ratio: auto; overflow: visible; }
+  /* The column length is the printable height: A4 less 20 mm margins, Letter less 1 in margins (printSheet's @page). */
+  .print-root .doc-page.doc-vertical { height: calc(297mm - 40mm); width: auto; }
+  .print-root .doc-page.doc-vertical.doc-letter { height: calc(279.4mm - 2in); }
+}
+
+/* resignation-letter (batch 38) */
+/* Resignation letter (src/client/resignation-letter/ui.ts) */
+.rl-tool .stage { min-width: 0; }
+@media (min-width: 961px) { .rl-tool { grid-template-columns: 320px minmax(0, 1fr); } }
+.rl-date { display: flex; gap: 0.4rem; align-items: center; }
+.rl-date input { flex: 1; min-width: 0; }
+.rl-notice { display: block; }
+
+/* cover-letter (batch 38) */
+/* Cover letter (src/client/cover-letter/ui.ts): form on the left, the paper preview on the right; stacked on phones. */
+.cl-tool { display: grid; grid-template-columns: minmax(0, 360px) minmax(0, 1fr); gap: 1rem; align-items: start; }
+.cl-form fieldset { margin: 0 0 0.9rem; }
+.cl-form input, .cl-form textarea, .cl-form select { width: 100%; }
+.cl-form textarea { resize: vertical; }
+.cl-edit textarea { min-height: 14rem; }
+.cl-stage .rail-h { align-items: center; }
+.cl-paper select { width: auto; }
+@media (min-width: 961px) {
+  .cl-stage { position: sticky; top: max(0.75rem, env(safe-area-inset-top)); max-height: calc(100dvh - 1.5rem); overflow: auto; }
+}
+@media (max-width: 960px) {
+  .cl-tool { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* resume-builder (batch 38) */
+/* Résumé builder (src/client/resume-builder). Document sizes are em of the sheet's font (doc-sheet.ts), so the
+   preview is the printed page in miniature; 1em = 11 pt on paper. */
+@media (min-width: 961px) {
+  .rs-tool { grid-template-columns: 340px minmax(0, 1fr); }
+}
+.rs-form fieldset { border: 0; border-top: 1px solid var(--line); padding: 0.7rem 0 0.2rem; margin: 0; }
+.rs-form fieldset:first-child { border-top: 0; padding-top: 0; }
+.rs-form textarea, .rs-form input[type="text"], .rs-form input[type="email"], .rs-form input[type="tel"] { width: 100%; }
+.rs-entry-form { border: 1px solid var(--line) !important; border-radius: var(--radius); padding: 0.6rem !important; margin-bottom: 0.6rem !important; }
+.rs-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.rs-entry-tools { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.rs-mini { min-height: 32px; padding: 0.2rem 0.6rem; font-size: 0.8rem; }
+.rs-photo-thumb { width: 72px; aspect-ratio: 3 / 4; object-fit: cover; border: 1px solid var(--line); }
+.rs-crop { display: grid; gap: 0.4rem; justify-items: start; }
+.rs-crop-canvas { width: 180px; height: 240px; border: 1px solid var(--line); cursor: grab; touch-action: none; }
+
+/* The document */
+.rs { line-height: 1.45; }
+.rs p { margin: 0; }
+.rs-head { display: flex; justify-content: space-between; gap: 1.2em; align-items: flex-start; border-bottom: 1px solid #111; padding-bottom: 0.6em; margin-bottom: 0.6em; }
+.rs-name { font-size: 1.9em; font-weight: 700; line-height: 1.15; }
+.rs-title { font-size: 1.1em; margin-top: 0.15em; }
+.rs-contact { font-size: 0.92em; margin-top: 0.25em; overflow-wrap: anywhere; }
+.rs-photo { width: 7.7em; height: 10.3em; object-fit: cover; flex: none; }
+.rs-photo-empty { border: 1px dashed #888; display: flex; align-items: center; justify-content: center; text-align: center; font-size: 0.75em; color: #666; white-space: pre-line; }
+.rs-sec { margin-top: 0.8em; }
+.rs-h { font-weight: 700; font-size: 1.05em; text-transform: none; border-bottom: 1px solid #bbb; margin-bottom: 0.35em !important; padding-bottom: 0.1em; }
+.rs-entry { margin-bottom: 0.55em; break-inside: avoid; page-break-inside: avoid; }
+.rs-row { display: flex; justify-content: space-between; gap: 1em; }
+.rs-date { flex: none; white-space: nowrap; }
+.rs-ul { margin: 0.15em 0 0; padding-inline-start: 1.2em; }
+.rs-ul li { margin: 0.05em 0; }
+.rs-p { white-space: pre-wrap; }
+.rs-center { text-align: center; }
+.rs-end { text-align: end; }
+
+/* Japanese 履歴書 / 職務経歴書 */
+.rs-jp, .rs-shokumu { font-family: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", serif; }
+.rs-jp-top { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 0.4em; }
+.rs-jp-title { font-size: 1.8em; font-weight: 700; letter-spacing: 0.3em; }
+.rs-jp-id { display: flex; gap: 0.8em; align-items: flex-start; }
+.rs-jp-id .rs-tbl { flex: 1; }
+.rs-jp-photo { width: 7.7em; height: 10.3em; object-fit: cover; flex: none; }
+.rs-tbl { width: 100%; border-collapse: collapse; margin-top: 0.5em; }
+.rs-tbl th, .rs-tbl td { border: 1px solid #111; padding: 0.25em 0.45em; text-align: start; vertical-align: top; white-space: pre-wrap; }
+.rs-tbl th { font-weight: 400; white-space: nowrap; width: 1%; }
+.rs-tbl tr { break-inside: avoid; page-break-inside: avoid; }
+.rs-jp-person th { width: 6em; }
+.rs-kana { font-size: 0.85em; }
+.rs-jp-name { font-size: 1.6em; padding-block: 0.4em !important; }
+.rs-jp-hist td, .rs-jp-hist th { height: 1.9em; }
+.rs-jp-hist .rs-y { width: 4.2em; text-align: center; }
+.rs-jp-hist .rs-m { width: 2.4em; text-align: center; }
+.rs-jp-hist .rs-center { text-align: center; }
+.rs-jp-hist .rs-end { text-align: end; }
+.rs-jp-box { border: 1px solid #111; margin-top: 0.5em; padding: 0.3em 0.5em; min-height: 6em; break-inside: avoid; page-break-inside: avoid; }
+.rs-jp-label { font-size: 0.8em; margin-bottom: 0.3em !important; }
+
+/* Korean 이력서 */
+.rs-kr-title { font-size: 1.9em; font-weight: 700; text-align: center; letter-spacing: 0.4em; margin-bottom: 0.4em !important; }
+.rs-kr .rs-h { margin-top: 0.8em; border: 0; }
+.rs-kr .rs-tbl { margin-top: 0.2em; }
+.rs-kr .rs-tbl th { background: #f2f2f2; width: 6.5em; }
+.rs-kr-grid th { width: auto !important; text-align: center; }
+.rs-kr-photocell { width: 7.9em; padding: 0.2em !important; }
+.rs-kr-photo { width: 7.5em; height: 10em; object-fit: cover; display: flex; }
+.rs-kr-oath { text-align: center; margin-top: 1.6em !important; }
+
+@media print {
+  .print-root .rs-kr .rs-tbl th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
+
+/* id-photo (batch 38) */
+/* ID photo maker: the crop frame and its head guides are tool output (rule 7), drawn as plain dashed lines. */
+.idp-stage { display: grid; place-items: center; padding: 0.75rem; background: var(--gray); border-radius: var(--radius); }
+.idp-frame { position: relative; width: min(100%, 320px); max-height: 62vh; overflow: hidden; background: var(--white); border: 1px solid var(--line); touch-action: none; cursor: grab; user-select: none; }
+.idp-frame.dragging { cursor: grabbing; }
+.idp-canvas { display: block; width: 100%; height: 100%; }
+.idp-guide { position: absolute; left: 0; right: 0; pointer-events: none; }
+.idp-guide[hidden] { display: none; }
+.idp-top { border-top: 1px dashed var(--pink-deep); }
+.idp-chin { background: rgba(194, 51, 108, 0.14); border-block: 1px dashed var(--pink-deep); }
+.idp-mid { top: 0; bottom: 0; left: 50%; right: auto; border-left: 1px dashed rgba(194, 51, 108, 0.45); }
+.idp-dot { display: inline-block; width: 0.85em; height: 0.85em; border-radius: 50%; border: 1px solid var(--line); margin-inline-end: 0.35em; vertical-align: -0.1em; }
+.idp-colors { margin-top: 0.5rem; }
+.idp-px { display: flex; gap: 0.5rem; align-items: end; }
+.idp-px .field { flex: 1; min-width: 0; }
+.idp-px > span { padding-bottom: 0.6rem; }
+.idp-warn { color: var(--pink-dark); }

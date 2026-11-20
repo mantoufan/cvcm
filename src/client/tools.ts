@@ -1306,6 +1306,30 @@ export const TOOL_LOADERS: Record<ToolId, ToolLoader> = {
     m.mountWordsToPages(host);
     return m.unmountWordsToPages;
   },
+  "resignation-letter": async (host, ctx) => {
+    const m = await import("./resignation-letter/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountResignationLetter(host);
+    return m.unmountResignationLetter;
+  },
+  "cover-letter": async (host, ctx) => {
+    const m = await import("./cover-letter/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountCoverLetter(host);
+    return m.unmountCoverLetter;
+  },
+  "resume-builder": async (host, ctx) => {
+    const m = await import("./resume-builder/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountResumeBuilder(host);
+    return m.unmountResumeBuilder;
+  },
+  "id-photo": async (host, ctx) => {
+    const m = await import("./id-photo/ui");
+    if (!ctx.alive()) return undefined;
+    await m.mountIdPhoto(host);
+    return m.unmountIdPhoto;
+  },
   "cube-solver": async (host, ctx) => {
     const m = await import("./cube-solver/ui");
     if (!ctx.alive()) return undefined;
