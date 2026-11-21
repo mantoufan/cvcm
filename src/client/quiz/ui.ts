@@ -34,7 +34,7 @@ import {
   type QuizResultCopy,
 } from "../../shared/quiz-i18n";
 import { messages, quizMessages } from "../../shared/messages";
-import { UNTRACKED_QUIZZES } from "../../shared/analytics";
+import { showsNotDiagnosis } from "../../shared/analytics";
 
 /** Links under "More tests". */
 const MORE_LINKS = 6;
@@ -234,7 +234,7 @@ export function mountQuiz(host: HTMLElement, locale: Locale, id: QuizId): void {
       h("h1", null, copy.h1),
       h("p", { class: "lede" }, copy.lede),
     ),
-    h("p", { class: "muted quiz-privacy" }, ui.privacy, UNTRACKED_QUIZZES.has(id) ? ` ${ui.notDiagnosis}` : ""),
+    h("p", { class: "muted quiz-privacy" }, ui.privacy, showsNotDiagnosis(id) ? ` ${ui.notDiagnosis}` : ""),
     form,
     resultBox,
     h("section", { class: "quiz-about" }, h("h2", null, ui.about), ...copy.about.map((p) => h("p", null, p))),
@@ -326,7 +326,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
           h("p", null, levels[s.dim]?.[level] ?? ""),
         );
       });
-      if (UNTRACKED_QUIZZES.has(id)) nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
+      if (showsNotDiagnosis(id)) nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       const summary = result.scores.map((s) => `${label(s.dim)} ${s.pct}`).join(", ");
       return { nodes, summary };
     }
@@ -391,7 +391,7 @@ function resultView(locale: Locale, id: QuizId, copy: QuizCopy, result: QuizResu
       const next = FOLLOW_UP[id];
       if (next?.bands.includes(result.key)) nodes.push(testLinks(locale, [next.quiz]));
       if (help === "support") nodes.push(helpBox(locale, "support"));
-      if (UNTRACKED_QUIZZES.has(id)) nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
+      if (showsNotDiagnosis(id)) nodes.push(h("p", { class: "muted" }, ui.notDiagnosis));
       return { nodes, summary: `${results[result.key]?.name ?? result.key}, ${shown}` };
     }
   }

@@ -30,11 +30,20 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
  * Mental health self-checks: a visit is health information, so these pages send nothing to GA (or its ad links).
  * Kept apart from the page groups on purpose: tests in other groups whose copy talks about mental health are listed too
  * (narcissism and dark triad discuss personality disorders; codependency, often tied to addiction in the family, points
- * to counseling and CoDA). Imposter syndrome is tracked: its copy says it is a pattern
- * of thinking, not a condition, and it links no screening.
+ * to counseling and CoDA; relationship health asks about fear of a partner and points to domestic violence lines;
+ * self-compassion discusses anxiety and depression and mentions the self-esteem check). Imposter syndrome is tracked: its
+ * copy says it is a pattern of thinking, not a condition, and it links no screening.
  * A test checks every quiz in the wellbeing group is listed.
  */
-export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd", "narcissist", "dark-triad", "codependency", "anger"]);
+export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd", "narcissist", "dark-triad", "codependency", "anger", "loneliness", "relationship-health", "self-compassion"]);
+
+/** Untracked tests that are not about a mental health condition, so the page doesn't say "not a diagnosis". */
+const NO_DIAGNOSIS_NOTICE: ReadonlySet<QuizId> = new Set<QuizId>(["relationship-health", "self-compassion"]);
+
+/** Whether the page adds the "self-check, not a diagnosis" notice. */
+export function showsNotDiagnosis(id: QuizId): boolean {
+  return UNTRACKED_QUIZZES.has(id) && !NO_DIAGNOSIS_NOTICE.has(id);
+}
 
 /** Whether this page may report to GA. A clip URL is its own access key, so clip notes are never reported. */
 export function isTrackedPath(pathname: string): boolean {
