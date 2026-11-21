@@ -203,7 +203,7 @@ describe("test pages: copy", () => {
           expect(ui.scaleHint[def.scale], `${where} hint`).toBeTruthy();
         }
         // These ask about a set period, and an empty hint would silently fall back to "as you usually are".
-        if (id === "adhd" || id === "burnout" || id === "stress" || id === "ocd" || id === "insomnia" || id === "anger" || id === "loneliness") {
+        if (id === "adhd" || id === "burnout" || id === "stress" || id === "ocd" || id === "insomnia" || id === "anger" || id === "loneliness" || id === "relationship-health") {
           expect(copy.hint, `${where} own hint`).toBeTruthy();
           expect(quizStaticHtml(locale, id), `${where} static hint`).toContain(escapeHtml(copy.hint!));
         }
@@ -581,6 +581,8 @@ describe("test pages: scoring", () => {
   it("shows the support box and links the depression check at high loneliness only", () => {
     expect(SUPPORT.loneliness).toEqual(["high"]);
     expect(FOLLOW_UP.loneliness).toEqual({ bands: ["high"], quiz: "depression" });
+    expect(SUPPORT["relationship-health"]).toEqual(["strained"]);
+    expect(FOLLOW_UP["relationship-health"]).toBeUndefined();
   });
 
   it("bands the OCD self-check from few to many signs, with help at many and no crisis box", () => {
@@ -724,10 +726,10 @@ describe("test pages: scoring", () => {
     expect(isTrackedPath("/en/tests/insomnia/")).toBe(false);
     expect(isTrackedPath("/ja/tests/anger/")).toBe(false);
     expect(isTrackedPath("/en/tests/loneliness/")).toBe(false);
+    expect(isTrackedPath("/en/tests/relationship-health/")).toBe(false);
     expect(isTrackedPath("/en/tests/type-a-personality/")).toBe(true);
     expect(isTrackedPath("/en/tests/am-i-in-love/")).toBe(true);
     expect(isTrackedPath("/en/tests/self-compassion/")).toBe(true);
-    expect(isTrackedPath("/en/tests/relationship-health/")).toBe(true);
     expect(isTrackedPath("/en/tests/imposter-syndrome/")).toBe(true);
     expect(isTrackedPath("/en/tests/empath/")).toBe(true);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
