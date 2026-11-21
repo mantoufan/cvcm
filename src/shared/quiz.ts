@@ -1788,8 +1788,8 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
  * getting help now. Its low band only mentions that case in passing.
  * Loneliness only at high: that band's copy recommends a doctor or counselor and mentions helplines; moderate says so
  * only if it keeps growing.
- * Relationship health only at strained: its copy sends anyone afraid of a partner to a helpline, and the box gives a
- * way to find one.
+ * Not relationship health: these boxes list emotional-support lines, not domestic violence lines, so its own copy points
+ * to findahelpline.com instead.
  */
 export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   "wellbeing-index": ["low"],
@@ -1801,7 +1801,6 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   ocd: ["many"],
   anger: ["moderate", "high"],
   loneliness: ["high"],
-  "relationship-health": ["strained"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
