@@ -1,0 +1,60 @@
+{
+  "title": "Loneliness test: how lonely am I? Free loneliness self-check — cv.cm",
+  "description": "Free loneliness test: rate 14 statements about the past month, from feeling known and close to having someone to turn to, and see how lonely you've been with ideas that help. Not a diagnosis; answers stay in your browser.",
+  "h1": "Loneliness self-check",
+  "hint": "Thinking about the past month, how well does each statement describe you?",
+  "scoreLabel": "Loneliness score (0 = connected, 56 = very lonely)",
+  "lede": "Surrounded by people but still feeling alone, or missing someone to really talk to? Rate 14 statements about the past month to see how lonely you've been, and what can help.",
+  "about": [
+    "Loneliness is the painful gap between the connection you have and the connection you want. It isn't the same as being alone: some people are happy with little company, and others feel lonely in a crowd or a marriage. It's very common, and in 2025 the World Health Organization estimated that about one in six people worldwide feels lonely. Lasting loneliness is linked with poorer sleep, depression and heart disease, but it can change: small, regular contact, shared activities and talking about how you feel all help.",
+    "The statements here were written for cv.cm around the main sides of loneliness: feeling known, feeling close to someone, having people to turn to and feeling part of something. They are not the UCLA Loneliness Scale or any other questionnaire, half of them describe being connected, and they haven't been clinically validated, so the score bands are a rough guide. Loneliness isn't a diagnosis, and this check can't diagnose anything."
+  ],
+  "faq": [
+    {
+      "q": "How is the score worked out?",
+      "a": "Each statement scores 0 to 4, and the statements about feeling connected are reversed, so the total runs from 0 to 56. 18 or less means little loneliness, 19 to 37 some and 38 or more a lot."
+    },
+    {
+      "q": "Can you be lonely with people around you?",
+      "a": "Yes. Loneliness is about how close and understood you feel, not how many people you see. Many people feel lonely at work, in a busy family or in a relationship."
+    },
+    {
+      "q": "What helps with loneliness?",
+      "a": "Start small and regular: message one person, say yes to one invitation, join a class, club or volunteer group built around something you enjoy. Talking honestly to someone you trust about feeling lonely often brings you closer."
+    },
+    {
+      "q": "When should I get help?",
+      "a": "If loneliness has lasted a long time, or comes with low mood, hopelessness or trouble sleeping, talk to a doctor or counselor. Free helplines also listen to anyone who is struggling."
+    }
+  ],
+  "items": [
+    "I felt that nobody really knew me.",
+    "I had someone I could talk to about anything.",
+    "Plans and get-togethers seemed to happen without me.",
+    "I felt close to at least one person.",
+    "I wished I had more people to spend time with.",
+    "There was someone I could turn to if I needed help.",
+    "I felt alone even when I was with other people.",
+    "I felt part of a group, such as friends, family, a team or a community.",
+    "Days went by without a real conversation.",
+    "I felt that people cared about how I was doing.",
+    "My relationships felt less close than I wanted.",
+    "I had someone to share good news with.",
+    "I felt like an outsider, even in familiar places.",
+    "I felt understood by the people in my life."
+  ],
+  "results": {
+    "low": {
+      "name": "Little loneliness (0–18)",
+      "body": "You seem to feel connected right now: you have people who know you, people you can turn to and places where you belong. Keep looking after those ties, because they protect your health as much as sleep and exercise do. You might also be the person who notices when someone else seems alone."
+    },
+    "moderate": {
+      "name": "Some loneliness (19–37)",
+      "body": "You've felt lonely some of the time this past month. That's very common, especially after a move, a new job, a breakup or a busy stretch. Pick one small step this week: message someone you miss, say yes to an invitation, or try a regular activity where you'll see the same faces. If it keeps growing or your mood drops, talk to a doctor or counselor."
+    },
+    "high": {
+      "name": "A lot of loneliness (38–56)",
+      "body": "Your answers show you've felt very lonely, and that's hard to carry. It isn't a flaw in you, and it can change. Reach out in small ways, even when it feels awkward, and please talk to a doctor or counselor, especially if you also feel low or hopeless. Free helplines listen to anyone who is struggling. Long loneliness often goes with low mood; the depression check below can help you see whether it's part of the picture."
+    }
+  }
+}

@@ -4,14 +4,14 @@
 // Scoring runs in the page; answers never leave it.
 
 export const QUIZ_GROUPS = [
-  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad", "archetype", "communication-style", "type-a-personality"] },
-  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency", "parenting-style", "am-i-in-love"] },
+  { id: "personality", quizzes: ["mbti", "big-five", "introvert", "enneagram", "eq", "temperament", "disc", "highly-sensitive-person", "empath", "narcissist", "dark-triad", "archetype", "communication-style", "type-a-personality", "self-compassion"] },
+  { id: "love", quizzes: ["love-language", "attachment", "love-style", "marriage", "conflict-style", "crush", "codependency", "parenting-style", "am-i-in-love", "relationship-health"] },
   { id: "career", quizzes: ["career", "work-style", "leadership", "mindset", "learning-style", "money", "imposter-syndrome", "grit"] },
   { id: "games", quizzes: ["pokemon", "genshin", "sonic", "dnd-class", "fnaf-character"] },
-  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "sanrio", "dragon-ball-character", "my-hero-academia-character", "anime"] },
-  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob", "harry-potter-character", "lord-of-the-rings", "game-of-thrones-house", "star-wars-character"] },
-  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed", "flower", "mythical-creature", "superpower", "fruit", "bird", "dinosaur"] },
-  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "anger", "adhd"] },
+  { id: "anime", quizzes: ["naruto", "one-piece", "ghibli", "demon-slayer", "jujutsu-kaisen", "avatar-element", "attack-on-titan", "avatar-character", "sanrio", "dragon-ball-character", "my-hero-academia-character", "blue-lock-character", "bleach-character", "anime"] },
+  { id: "books", quizzes: ["hogwarts", "percy-jackson", "avengers", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "hunger-games-district", "friends-character", "spongebob", "harry-potter-character", "lord-of-the-rings", "game-of-thrones-house", "star-wars-character", "twilight-character", "ninja-turtle"] },
+  { id: "fun", quizzes: ["chronotype", "pet", "face-shape", "friend-role", "spirit-animal", "color-personality", "mental-age", "aura-color", "greek-god", "dog-breed", "personal-color", "aesthetic", "left-right-brain", "cat-breed", "flower", "mythical-creature", "superpower", "fruit", "bird", "dinosaur", "element"] },
+  { id: "wellbeing", quizzes: ["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "anger", "loneliness", "adhd"] },
 ] as const;
 
 export type QuizGroupId = (typeof QUIZ_GROUPS)[number]["id"];
@@ -223,6 +223,18 @@ const IMPOSTER = likert(Array(7).fill("imposter+ imposter-").join(" "));
 /** Written for cv.cm around perseverance and steady interest (not the Grit Scale or any other published scale), half reversed. */
 const GRIT = likert(Array(7).fill("grit+ grit-").join(" "));
 
+/**
+ * Written for cv.cm around Kristin Neff's three parts of self-compassion (kindness to yourself, common humanity,
+ * mindful balance), not her Self-Compassion Scale or any other published scale; half reversed.
+ */
+const SELF_COMPASSION = likert(Array(7).fill("compassion+ compassion-").join(" "));
+/** Written for cv.cm around the signs of a healthy relationship (trust, respect, communication, support, fair conflict), not any published scale; half reversed. */
+const RELATIONSHIP = likert(Array(7).fill("health+ health-").join(" "));
+/**
+ * Written for cv.cm around the sides of loneliness (feeling unseen, missing closeness, lacking people to turn to, feeling
+ * left out), not the UCLA Loneliness Scale or any other scale; half reversed, about the past month. Not clinically validated.
+ */
+const LONELINESS = likert(Array(7).fill("lonely+ lonely-").join(" "));
 /** Written for cv.cm around the Type A pattern (hurry, competitiveness, impatience, hostility), not the Jenkins Activity Survey or any other published scale; half reversed. */
 const TYPE_A = likert(Array(7).fill("typea+ typea-").join(" "));
 
@@ -1018,6 +1030,21 @@ const DINOSAUR = shift(relabel(GHIBLI, { chihiro: "trex", san: "triceratops", ki
 /** Signs of being in love, 0 to 3 points an answer: the `CRUSH` weights with options moved 1 place left, so the strongest answer never sits where the crush quiz puts it. */
 const IN_LOVE = shift(relabel(CRUSH, { signs: "love" }), 1);
 
+/** Eight Twilight characters: the `GHIBLI` layout with the results renamed, moved one place (Star Wars keeps it as is). */
+const TWILIGHT = shift(relabel(GHIBLI, { chihiro: "bella", san: "edward", kiki: "jacob", sophie: "alice", nausicaa: "carlisle", howl: "rosalie", haku: "jasper", totoro: "emmett" }), 1);
+
+/** Eight Blue Lock characters: the `GHIBLI` layout with the results renamed, moved two places (My Hero Academia uses one). */
+const BLUE_LOCK = shift(relabel(GHIBLI, { chihiro: "isagi", san: "bachira", kiki: "nagi", sophie: "reo", nausicaa: "chigiri", howl: "kunigami", haku: "barou", totoro: "rin" }), 2);
+
+/** Eight Bleach characters: the `GHIBLI` layout with the results renamed, moved three places. */
+const BLEACH = shift(relabel(GHIBLI, { chihiro: "ichigo", san: "rukia", kiki: "orihime", sophie: "uryu", nausicaa: "chad", howl: "renji", haku: "byakuya", totoro: "toshiro" }), 3);
+
+/** The four Ninja Turtles: the `HOGWARTS` layout with the results renamed, moved one place (the Hogwarts quiz keeps it as is). */
+const NINJA_TURTLE = shift(relabel(HOGWARTS, { gryffindor: "leonardo", hufflepuff: "michelangelo", ravenclaw: "donatello", slytherin: "raphael" }), 1);
+
+/** The four classical elements: the `HOGWARTS` layout with the results renamed, moved two places. */
+const ELEMENT = shift(relabel(HOGWARTS, { gryffindor: "fire", hufflepuff: "earth", ravenclaw: "air", slytherin: "water" }), 2);
+
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
   mbti: { id: "mbti", type: "likert", scale: "agree5", dims: ["EI", "SN", "TF", "JP"], items: TYPES, result: { kind: "types" } },
   "big-five": { id: "big-five", type: "likert", scale: "agree5", dims: ["O", "C", "E", "A", "N"], items: BIG_FIVE, result: { kind: "profile" } },
@@ -1678,6 +1705,68 @@ export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
     // 24 and 39 of 60 are 40% and 65%, as in the OCD and insomnia checks. Not clinical cut-offs; the copy says so.
     result: { kind: "band", bands: [{ max: 24, key: "low" }, { max: 39, key: "moderate" }, { max: 60, key: "high" }] },
   },
+  "twilight-character": {
+    id: "twilight-character",
+    type: "choice",
+    dims: ["bella", "edward", "jacob", "alice", "carlisle", "rosalie", "jasper", "emmett"],
+    items: TWILIGHT,
+    result: { kind: "top", tie: "spread" },
+  },
+  "blue-lock-character": {
+    id: "blue-lock-character",
+    type: "choice",
+    dims: ["isagi", "bachira", "nagi", "reo", "chigiri", "kunigami", "barou", "rin"],
+    items: BLUE_LOCK,
+    result: { kind: "top", tie: "spread" },
+  },
+  "bleach-character": {
+    id: "bleach-character",
+    type: "choice",
+    dims: ["ichigo", "rukia", "orihime", "uryu", "chad", "renji", "byakuya", "toshiro"],
+    items: BLEACH,
+    result: { kind: "top", tie: "spread" },
+  },
+  "ninja-turtle": {
+    id: "ninja-turtle",
+    type: "choice",
+    dims: ["leonardo", "raphael", "donatello", "michelangelo"],
+    items: NINJA_TURTLE,
+    result: { kind: "top", tie: "spread" },
+  },
+  element: {
+    id: "element",
+    type: "choice",
+    dims: ["fire", "water", "earth", "air"],
+    items: ELEMENT,
+    result: { kind: "top", tie: "spread" },
+  },
+  "self-compassion": {
+    id: "self-compassion",
+    type: "likert",
+    scale: "agree5",
+    dims: ["compassion"],
+    items: SELF_COMPASSION,
+    // Three equal bands around the neutral total of 28, as in the Type A test.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "moderate" }, { max: 56, key: "high" }] },
+  },
+  "relationship-health": {
+    id: "relationship-health",
+    type: "likert",
+    scale: "agree5",
+    dims: ["health"],
+    items: RELATIONSHIP,
+    // Three equal bands around the neutral total of 28.
+    result: { kind: "band", bands: [{ max: 18, key: "strained" }, { max: 37, key: "mixed" }, { max: 56, key: "healthy" }] },
+  },
+  loneliness: {
+    id: "loneliness",
+    type: "likert",
+    scale: "agree5",
+    dims: ["lonely"],
+    items: LONELINESS,
+    // Three equal bands around the neutral total of 28. Not clinical cut-offs; the copy says so.
+    result: { kind: "band", bands: [{ max: 18, key: "low" }, { max: 37, key: "moderate" }, { max: 56, key: "high" }] },
+  },
 };
 
 /**
@@ -1697,6 +1786,8 @@ export const SAFETY: Partial<Record<QuizId, { item: number; bands: readonly stri
  * depression check instead (FOLLOW_UP).
  * Anger's moderate and high bands are in: they recommend a doctor or counselor and, if anger has led to hurting someone,
  * getting help now. Its low band only mentions that case in passing.
+ * Loneliness only at high: that band's copy recommends a doctor or counselor and mentions helplines; moderate says so
+ * only if it keeps growing.
  */
 export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   "wellbeing-index": ["low"],
@@ -1707,6 +1798,7 @@ export const SUPPORT: Partial<Record<QuizId, readonly string[]>> = {
   "social-anxiety": ["high"],
   ocd: ["many"],
   anger: ["moderate", "high"],
+  loneliness: ["high"],
 };
 
 /** Band results whose copy sends the reader to another test: the page links it under the result (band quizzes only). */
@@ -1717,6 +1809,7 @@ export const FOLLOW_UP: Partial<Record<QuizId, { bands: readonly string[]; quiz:
   "social-anxiety": { bands: ["high"], quiz: "anxiety" },
   insomnia: { bands: ["many"], quiz: "depression" },
   anger: { bands: ["high"], quiz: "stress" },
+  loneliness: { bands: ["high"], quiz: "depression" },
 };
 
 export function questionCount(id: QuizId): number {

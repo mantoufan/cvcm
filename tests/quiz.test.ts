@@ -203,7 +203,7 @@ describe("test pages: copy", () => {
           expect(ui.scaleHint[def.scale], `${where} hint`).toBeTruthy();
         }
         // These ask about a set period, and an empty hint would silently fall back to "as you usually are".
-        if (id === "adhd" || id === "burnout" || id === "stress" || id === "ocd" || id === "insomnia" || id === "anger") {
+        if (id === "adhd" || id === "burnout" || id === "stress" || id === "ocd" || id === "insomnia" || id === "anger" || id === "loneliness") {
           expect(copy.hint, `${where} own hint`).toBeTruthy();
           expect(quizStaticHtml(locale, id), `${where} static hint`).toContain(escapeHtml(copy.hint!));
         }
@@ -500,6 +500,9 @@ describe("test pages: scoring", () => {
       { id: "imposter-syndrome", max: 56, keys: ["low", "moderate", "high"], cuts: [18, 37] },
       { id: "grit", max: 56, keys: ["low", "mid", "high"], cuts: [18, 37] },
       { id: "type-a-personality", max: 56, keys: ["typeb", "mixed", "typea"], cuts: [18, 37] },
+      { id: "self-compassion", max: 56, keys: ["low", "moderate", "high"], cuts: [18, 37] },
+      { id: "relationship-health", max: 56, keys: ["strained", "mixed", "healthy"], cuts: [18, 37] },
+      { id: "loneliness", max: 56, keys: ["low", "moderate", "high"], cuts: [18, 37] },
     ] as const;
     for (const { id, max, keys, cuts } of cases) {
       const def = QUIZ_DEFS[id];
@@ -575,6 +578,11 @@ describe("test pages: scoring", () => {
     expect(FOLLOW_UP.anger).toEqual({ bands: ["high"], quiz: "stress" });
   });
 
+  it("shows the support box and links the depression check at high loneliness only", () => {
+    expect(SUPPORT.loneliness).toEqual(["high"]);
+    expect(FOLLOW_UP.loneliness).toEqual({ bands: ["high"], quiz: "depression" });
+  });
+
   it("bands the OCD self-check from few to many signs, with help at many and no crisis box", () => {
     expect(maxTotal("ocd")).toBe(60);
     expect(QUIZ_DEFS.ocd.items.some((item) => "rev" in item)).toBe(false);
@@ -634,6 +642,11 @@ describe("test pages: scoring", () => {
     expect(first("fruit")).toEqual(["banana", "apple", "mango", "strawberry"]);
     expect(first("bird")).toEqual(["parrot", "swan", "owl", "eagle"]);
     expect(first("dinosaur")).toEqual(["stegosaurus", "trex", "triceratops", "velociraptor"]);
+    expect(first("twilight-character")).toEqual(["edward", "jacob", "alice", "bella"]);
+    expect(first("blue-lock-character")).toEqual(["nagi", "reo", "isagi", "bachira"]);
+    expect(first("bleach-character")).toEqual(["uryu", "ichigo", "rukia", "orihime"]);
+    expect(first("ninja-turtle")).toEqual(["michelangelo", "donatello", "raphael", "leonardo"]);
+    expect(first("element")).toEqual(["air", "water", "fire", "earth"]);
   });
 
   it("never puts the strongest in-love answer where the crush quiz puts its strongest answer", () => {
@@ -710,8 +723,11 @@ describe("test pages: scoring", () => {
     expect(isTrackedPath("/en/tests/codependency/")).toBe(false);
     expect(isTrackedPath("/en/tests/insomnia/")).toBe(false);
     expect(isTrackedPath("/ja/tests/anger/")).toBe(false);
+    expect(isTrackedPath("/en/tests/loneliness/")).toBe(false);
     expect(isTrackedPath("/en/tests/type-a-personality/")).toBe(true);
     expect(isTrackedPath("/en/tests/am-i-in-love/")).toBe(true);
+    expect(isTrackedPath("/en/tests/self-compassion/")).toBe(true);
+    expect(isTrackedPath("/en/tests/relationship-health/")).toBe(true);
     expect(isTrackedPath("/en/tests/imposter-syndrome/")).toBe(true);
     expect(isTrackedPath("/en/tests/empath/")).toBe(true);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);
@@ -899,8 +915,8 @@ describe("test pages: scoring", () => {
     // question (each in four, once in each position).
     const positions = [
       { ids: ["friend-role", "avengers", "friends-character"], min: 2, max: 2 },
-      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic", "harry-potter-character", "avatar-character", "game-of-thrones-house", "lord-of-the-rings", "sanrio", "cat-breed", "flower", "mythical-creature", "superpower", "star-wars-character", "fnaf-character", "my-hero-academia-character", "fruit", "bird", "dinosaur", "dragon-ball-character"], min: 1, max: 2 },
-      { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age", "communication-style"], min: 3, max: 3 },
+      { ids: ["one-piece", "ghibli", "spirit-animal", "percy-jackson", "aura-color", "stranger-things", "disney-princess", "lightsaber-color", "patronus", "dog-breed", "attack-on-titan", "spongebob", "aesthetic", "harry-potter-character", "avatar-character", "game-of-thrones-house", "lord-of-the-rings", "sanrio", "cat-breed", "flower", "mythical-creature", "superpower", "star-wars-character", "fnaf-character", "my-hero-academia-character", "fruit", "bird", "dinosaur", "dragon-ball-character", "twilight-character", "blue-lock-character", "bleach-character"], min: 1, max: 2 },
+      { ids: ["avatar-element", "hogwarts", "color-personality", "mental-age", "communication-style", "ninja-turtle", "element"], min: 3, max: 3 },
       { ids: ["hunger-games-district", "greek-god", "archetype"], min: 1, max: 1 },
     ] as const;
     for (const { ids, min, max } of positions) {
