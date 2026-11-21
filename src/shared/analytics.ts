@@ -31,7 +31,7 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
  * Kept apart from the page groups on purpose: tests in other groups whose copy talks about mental health are listed too
  * (narcissism and dark triad discuss personality disorders; codependency, often tied to addiction in the family, points
  * to counseling and CoDA; relationship health asks about fear of a partner and points to domestic violence lines;
- * self-compassion discusses anxiety and depression and links the self-esteem check). Imposter syndrome is tracked: its
+ * self-compassion discusses anxiety and depression and mentions the self-esteem check). Imposter syndrome is tracked: its
  * copy says it is a pattern of thinking, not a condition, and it links no screening.
  * A test checks every quiz in the wellbeing group is listed.
  */
