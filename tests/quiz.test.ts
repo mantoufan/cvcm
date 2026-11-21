@@ -85,7 +85,7 @@ const BALANCED_CHOICE: QuizId[] = QUIZZES.filter((id) => {
 });
 
 /** Tests whose copy brings its own scale hint. */
-const OWN_HINT: ReadonlySet<string> = new Set(["adhd", "burnout", "stress", "ocd", "insomnia", "anger", "loneliness", "relationship-health"]);
+const OWN_HINT: ReadonlySet<QuizId> = new Set<QuizId>(["adhd", "burnout", "stress", "ocd", "insomnia", "anger", "loneliness", "relationship-health"]);
 
 describe("test pages: routes", () => {
   it("parses locale and bare paths", () => {
@@ -736,7 +736,7 @@ describe("test pages: scoring", () => {
     expect(showsNotDiagnosis("self-compassion")).toBe(false);
     expect(isTrackedPath("/en/tests/type-a-personality/")).toBe(true);
     expect(isTrackedPath("/en/tests/am-i-in-love/")).toBe(true);
-    expect(isTrackedPath("/en/tests/self-compassion/")).toBe(true);
+    expect(isTrackedPath("/en/tests/self-compassion/")).toBe(false);
     expect(isTrackedPath("/en/tests/imposter-syndrome/")).toBe(true);
     expect(isTrackedPath("/en/tests/empath/")).toBe(true);
     expect(isTrackedPath("/en/tests/mbti/")).toBe(true);

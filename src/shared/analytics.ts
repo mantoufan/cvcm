@@ -30,15 +30,15 @@ export const UNTRACKED_TOOLS: ReadonlySet<ToolId> = new Set<ToolId>([
  * Mental health self-checks: a visit is health information, so these pages send nothing to GA (or its ad links).
  * Kept apart from the page groups on purpose: tests in other groups whose copy talks about mental health are listed too
  * (narcissism and dark triad discuss personality disorders; codependency, often tied to addiction in the family, points
- * to counseling and CoDA; relationship health asks about fear of a partner and points to domestic violence lines).
- * Imposter syndrome and self-compassion are tracked: their copy describes a pattern of thinking or a skill, not a
- * condition, and links no screening.
+ * to counseling and CoDA; relationship health asks about fear of a partner and points to domestic violence lines;
+ * self-compassion discusses anxiety and depression and links the self-esteem check). Imposter syndrome is tracked: its
+ * copy says it is a pattern of thinking, not a condition, and it links no screening.
  * A test checks every quiz in the wellbeing group is listed.
  */
-export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd", "narcissist", "dark-triad", "codependency", "anger", "loneliness", "relationship-health"]);
+export const UNTRACKED_QUIZZES: ReadonlySet<QuizId> = new Set<QuizId>(["wellbeing-index", "self-esteem", "anxiety", "depression", "burnout", "stress", "social-anxiety", "ocd", "insomnia", "adhd", "narcissist", "dark-triad", "codependency", "anger", "loneliness", "relationship-health", "self-compassion"]);
 
 /** Untracked tests that are not about a mental health condition, so the page doesn't say "not a diagnosis". */
-const NO_DIAGNOSIS_NOTICE: ReadonlySet<QuizId> = new Set<QuizId>(["relationship-health"]);
+const NO_DIAGNOSIS_NOTICE: ReadonlySet<QuizId> = new Set<QuizId>(["relationship-health", "self-compassion"]);
 
 /** Whether the page adds the "self-check, not a diagnosis" notice. */
 export function showsNotDiagnosis(id: QuizId): boolean {

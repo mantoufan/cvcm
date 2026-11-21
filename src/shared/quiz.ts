@@ -1030,19 +1030,19 @@ const DINOSAUR = shift(relabel(GHIBLI, { chihiro: "trex", san: "triceratops", ki
 /** Signs of being in love, 0 to 3 points an answer: the `CRUSH` weights with options moved 1 place left, so the strongest answer never sits where the crush quiz puts it. */
 const IN_LOVE = shift(relabel(CRUSH, { signs: "love" }), 1);
 
-/** Eight Twilight characters: the `GHIBLI` layout with the results renamed, moved one place so it differs from Star Wars, the other GHIBLI relabel in the books group. */
+/** Eight Twilight characters: the `GHIBLI` layout with the results renamed, moved one place so its answer positions differ from the books-group quizzes on the unmoved arrangement. */
 const TWILIGHT = shift(relabel(GHIBLI, { chihiro: "bella", san: "edward", kiki: "jacob", sophie: "alice", nausicaa: "carlisle", howl: "rosalie", haku: "jasper", totoro: "emmett" }), 1);
 
-/** Eight Blue Lock characters: the `GHIBLI` layout with the results renamed, moved two places so it differs from the other anime-group GHIBLI quizzes (Ghibli and Dragon Ball unmoved, My Hero Academia one). */
+/** Eight Blue Lock characters: the `GHIBLI` layout with the results renamed, moved two places so its answer positions differ from the other anime-group quizzes on this arrangement (unmoved, and My Hero Academia moved one). */
 const BLUE_LOCK = shift(relabel(GHIBLI, { chihiro: "isagi", san: "bachira", kiki: "nagi", sophie: "reo", nausicaa: "chigiri", howl: "kunigami", haku: "barou", totoro: "rin" }), 2);
 
-/** Eight Bleach characters: the `GHIBLI` layout with the results renamed, moved three places so it differs from the other anime-group GHIBLI quizzes. */
+/** Eight Bleach characters: the `GHIBLI` layout with the results renamed, moved three places so its answer positions differ from the other anime-group quizzes on this arrangement. */
 const BLEACH = shift(relabel(GHIBLI, { chihiro: "ichigo", san: "rukia", kiki: "orihime", sophie: "uryu", nausicaa: "chad", howl: "renji", haku: "byakuya", totoro: "toshiro" }), 3);
 
-/** The four Ninja Turtles: the `HOGWARTS` layout with the results renamed, moved one place so it differs from Hogwarts, the other HOGWARTS layout in the books group. */
+/** The four Ninja Turtles: the `HOGWARTS` layout with the results renamed, moved one place so its answer positions differ from the Hogwarts quiz. */
 const NINJA_TURTLE = shift(relabel(HOGWARTS, { gryffindor: "leonardo", hufflepuff: "michelangelo", ravenclaw: "donatello", slytherin: "raphael" }), 1);
 
-/** The four classical elements: the `HOGWARTS` layout with the results renamed, moved two places (the first HOGWARTS layout in the fun group; communication style, in personality, is unmoved). */
+/** The four classical elements: the `HOGWARTS` layout with the results renamed, moved two places so its answer positions differ from the fun-group quizzes laid out like it unmoved (color personality, mental age). */
 const ELEMENT = shift(relabel(HOGWARTS, { gryffindor: "fire", hufflepuff: "earth", ravenclaw: "air", slytherin: "water" }), 2);
 
 export const QUIZ_DEFS: Record<QuizId, QuizDef> = {
